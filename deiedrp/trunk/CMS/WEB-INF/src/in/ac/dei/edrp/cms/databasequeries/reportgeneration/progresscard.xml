@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================= -->
+<!--@author Ashutosh Pachauri                                          -->
+<!-- ================================================================= -->
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="progressCard">
+	<typeAlias alias="progressCardInfo"
+		type="in.ac.dei.edrp.cms.domain.reportgeneration.ProgressCardInfo" />
+
+	<select id="getEntityInfo" resultClass="progressCardInfo">
+		SELECT entity_id AS entityId,entity_name AS entityName FROM
+		entity_master WHERE university_id = #universityCode#;
+	</select>
+	<select id="programInEntity" resultClass="progressCardInfo">
+		SELECT program_name AS programName,program_id AS programId FROM
+		program_master WHERE program_id IN (SELECT program_id FROM
+		program_offered_by WHERE offered_by = #entityId#);
+	</select>
+
+	<select id="semesterDate" resultClass="progressCardInfo">
+		SELECT distinct pr.semester_start_date AS semesterStartDate, pr.semester_end_date AS semesterEndDate,
+		ptd.semester_sequence AS semesterSequence, ptd.final_semester_code AS finalSemesterCode FROM
+		program_registration pr, program_course_header pch, program_term_details ptd WHERE 
+		pr.program_course_key = pch.program_course_key AND 
+		substr(session_start_date,1,4) = substr(#sessionStartDate#,1,4) AND 
+		substr(session_end_date,1,4) = substr(#sessionEndDate#,1,4) AND pr.status = 'ACT' AND
+		pch.program_id = #programId# AND pch.semester_code = #semesterId# AND semester_status = 'ACT' AND 
+		ptd.program_id = #programId# AND ptd.semester_code = #semesterId# and entity_id=#entityId# and 
+		university_id=#universityCode#;
+
+	</select>
+	
+	<select id="semesterDateWithBranch" resultClass="progressCardInfo">
+		SELECT pr.semester_start_date AS
+		semesterStartDate,pr.semester_end_date AS
+		semesterEndDate,ptd.semester_sequence AS semesterSequence,
+		ptd.final_semester_code AS finalSemesterCode FROM
+		program_registration pr,program_course_header
+		pch,program_term_details ptd WHERE pr.program_course_key =
+		pch.program_course_key AND substr(session_start_date,1,4) =
+		substr(#sessionStartDate#,1,4) AND substr(session_end_date,1,4)
+		= substr(#sessionEndDate#,1,4) AND pr.status = 'ACT' AND
+		pch.program_id = #programId# AND pch.semester_code =
+		#semesterId# AND semester_status = 'ACT' AND ptd.program_id =
+		#programId# AND ptd.semester_code = #semesterId# AND 
+		pch.branch_id=#branchId# AND pch.specialization_id=#specializationId#;
+	</select>
+
+	<select id="semesterInProgram" resultClass="progressCardInfo">
+		SELECT ptd.semester_code AS semesterId,stt.component_description
+		AS semesterName FROM program_term_details ptd,system_table_two
+		stt WHERE program_id=#programId# AND stt.component_code =
+		ptd.semester_code AND stt.group_code = 'SEMCOD' and stt.university_code=#universityCode#;
+	</select>
+
+	<select id="getProgramCourseKey" resultClass="progressCardInfo">
+		SELECT pch.program_id AS programId, pch.branch_id AS
+		branchId,pch.specialization_id AS specializationId,
+		pch.semester_code AS semesterId, pch.program_course_key AS
+		programCourseKey, stt1.component_description AS
+		branchName,stt2.component_description AS semesterName ,
+		pm.program_name AS programName , pm.program_code AS programCode
+		FROM program_course_header pch,system_table_two
+		stt1,system_table_two stt2,program_master pm WHERE
+		pch.program_id = #programId# AND pch.semester_code=#semesterId#
+		AND pch.semester_status='ACT' AND stt1.component_code =
+		pch.branch_id AND stt1.group_code = 'BRNCOD' AND
+		stt1.university_code = #universityCode# AND stt2.component_code
+		= pch.semester_code AND stt2.group_code = 'SEMCOD' AND
+		stt2.university_code = #universityCode# AND pm.program_id =
+		pch.program_id;
+	</select>
+
+	<select id="programCourseKey" resultClass="progressCardInfo">
+		SELECT program_course_key AS programCourseKey FROM
+		program_course_header WHERE program_id = #programId# AND
+		branch_id = #branchId# AND specialization_id =
+		#specializationId# AND semester_code = #semesterId#;
+	</select>
+
+	<select id="getStudentsSatisfyingPCK"
+		resultClass="progressCardInfo">
+		SELECT sp.enrollment_number AS enrollmentNumber,
+		ucase(concat_ws(' ',student_first_name,student_middle_name,student_last_name)) AS
+		name,sp.roll_number AS rollNumber,sp.mode_of_entry AS
+		modeOfEntry,sp.switch_number switchNumber,sp.sequence_number AS
+		sequenceNumber,sp.program_status AS programStatus,sp.in_semester
+		AS inSemester,sp.out_semester AS outSemester,
+		pr.session_start_date AS sessionStartDate,pr.session_end_date AS
+		sessionEndDate, concat(sm.gender,srsh.attempt_number) as genAttempt
+		FROM student_registration_semester_header srsh
+		LEFT JOIN student_program sp using(roll_number,entity_id) LEFT
+		JOIN student_master sm ON sm.enrollment_number =
+		sp.enrollment_number LEFT JOIN program_registration pr ON
+		srsh.program_course_key = pr.program_course_key AND
+		pr.semester_start_date = srsh.session_start_date AND
+		pr.semester_end_date = srsh.session_end_date WHERE sp.program_id
+		= #programId# AND sp.branch_id = #branchId# AND
+		sp.specialization_id = #specializationId# AND
+		srsh.program_course_key = #programCourseKey# AND
+		srsh.session_start_date = #semesterStartDate# AND
+		srsh.session_end_date = #semesterEndDate# AND pr.status = 'ACT' and srsh.status!='YTR';
+	</select>
+
+	<select id="getProgressCardName" resultClass="progressCardInfo">
+		SELECT sp.enrollment_number AS enrollmentNumber,sp.roll_number
+		as rollNumber,sp.current_semester AS semesterName,
+		pr.semester_start_date AS semesterStartDate,pr.semester_end_date
+		AS semesterEndDate,pr.program_course_key AS programCourseKey,
+		concat_ws('
+		',student_first_name,student_middle_name,student_last_name) AS
+		name , pr.session_start_date AS
+		sessionStartDate,pr.session_end_date AS sessionEndDate FROM
+		(student_program sp LEFT JOIN student_master sm ON
+		sp.enrollment_number = sm.enrollment_number) LEFT JOIN
+		program_registration pr ON pr.semester_start_date =
+		#semesterStartDate# AND pr.semester_end_date = #semesterEndDate#
+		AND pr.status = 'ACT' WHERE sp.program_status = 'ACT' AND
+		sp.entity_id = #entityId# AND sp.program_id = #programId# AND
+		sp.branch_id=#branchId# AND sp.specialization_id =
+		#specializationId# AND sp.current_semester = #semesterId# AND
+		pr.program_course_key = #programCourseKey#;
+	</select>
+
+	<select id="getClassInfo" resultClass="progressCardInfo">
+		SELECT program_name as programName,print_aggregate AS printType
+		FROM program_master WHERE program_id = #programId#;
+	</select>
+	<select id="getProgressCardMarks" resultClass="progressCardInfo">
+	SELECT sc.roll_number AS rollNumber,sc.program_course_key
+		programCourseKey,sc.course_code courseCode,sc.student_status as
+		studentStatus,cm.course_name AS courseName,cm.marks_cont_eval AS
+		totalMarksInternal,cm.marks_end_semester AS totalMarksExternal
+		,marks_total AS totalMarks,course_classification AS courseClassification
+		,(case when(sms.internal_grade='F') then (case when(sm.attendence='ABS') then ('ABS') else(sms.internal_grade) end)
+   		else(sms.internal_grade) end) AS studentInternal,
+   		(case when(sms.external_grade='F') then (case when(sm1.attendence='ABS') then ('ABS') else(sms.external_grade) end)
+   		else(sms.external_grade) end) AS studentExternal,
+   		final_grade_point AS studentTotalMarks,credits AS credits,sm.attendence,sm1.attendence
+    FROM (student_course sc LEFT JOIN course_master cm ON
+		sc.course_code = cm.course_code) LEFT JOIN student_marks_summary
+		sms ON sc.course_code = sms.course_code AND
+		sc.program_course_key = sms.program_course_key AND
+		sms.roll_number = sc.roll_number AND sc.roll_number = #rollNoForDetail# 
+		AND sc.semester_start_date = sms.semester_start_date AND sc.semester_end_date = sms.semester_end_date
+		left join student_marks sm on
+		sm.program_course_key=sms.program_course_key  and
+		sm.course_code=sc.course_code and
+		sm.semester_start_date=sms.semester_start_date and
+		sm.semester_end_date=sms.semester_end_date and
+		sm.roll_number=sc.roll_number and
+		sm.evaluation_id='REM'
+		left join student_marks sm1 on
+		sm1.program_course_key=sms.program_course_key  and
+		sm1.course_code=sc.course_code and
+		sm1.semester_start_date=sms.semester_start_date and
+		sm1.semester_end_date=sms.semester_end_date and
+		sm1.roll_number=sc.roll_number and
+		sm1.evaluation_id='EXT'
+    WHERE sc.roll_number = #rollNoForDetail#
+		AND sc.semester_start_date = #semesterStartDate# AND
+		sc.semester_end_date = #semesterEndDate# AND
+		sc.program_course_key = #programCourseKey#;
+	
+	<!-- 
+		SELECT sc.roll_number AS rollNumber,sc.program_course_key
+		programCourseKey,sc.course_code courseCode,sc.student_status as
+		studentStatus,cm.course_name AS courseName,cm.marks_cont_eval AS
+		totalMarksInternal,cm.marks_end_semester AS totalMarksExternal
+		,marks_total AS totalMarks,course_classification AS
+		courseClassification, sms.internal_grade AS
+		studentInternal,sms.external_grade AS
+		studentExternal,final_grade_point AS studentTotalMarks,credits AS
+		credits FROM (student_course sc LEFT JOIN course_master cm ON
+		sc.course_code = cm.course_code) LEFT JOIN student_marks_summary
+		sms ON sc.course_code = sms.course_code AND
+		sc.program_course_key = sms.program_course_key AND
+		sms.roll_number = sc.roll_number AND sc.roll_number =
+		#rollNoForDetail# AND sc.semester_start_date =
+		sms.semester_start_date AND sc.semester_end_date =
+		sms.semester_end_date WHERE sc.roll_number = #rollNoForDetail#
+		AND sc.semester_start_date = #semesterStartDate# AND
+		sc.semester_end_date = #semesterEndDate# AND
+		sc.program_course_key = #programCourseKey#;
+		-->
+		
+	</select>
+
+	<select id="getTotalMarksDetails" resultClass="progressCardInfo">
+		SELECT sa.roll_number AS rollNumber,COALESCE((srsh.sgpa),0) AS
+		sgpa,COALESCE(theory_sgpa,0) AS
+		weightTheory,COALESCE(practical_sgpa,0) AS weightPractical,
+		COALESCE(registered_practical_credit_excluding_audit,0) AS
+		totalPracticalCredits,COALESCE(registered_theory_credit_excluding_audit,0) AS
+		totalTheoryCredits,COALESCE(registration_credit_excluding_audit,0) AS totalCredit, remarks AS
+		remark,status AS status ,sa.sgpa as sgpa ,sa.cgpa as cgpa FROM student_aggregate sa LEFT JOIN
+		student_registration_semester_header srsh ON srsh.roll_number =
+		sa.roll_number AND srsh.program_course_key =
+		sa.program_course_key AND srsh.session_start_date =
+		sa.semester_start_date AND srsh.session_end_date =
+		sa.semester_end_date WHERE sa.program_course_key =
+		#programCourseKey# AND sa.roll_number = #rollNoForDetail# AND
+		semester_start_date = #semesterStartDate# AND semester_end_date
+		= #semesterEndDate#;
+	</select>
+
+	<select id="getSemestersBetweenTwoSemester"
+		resultClass="progressCardInfo">
+		<![CDATA[
+			SELECT semester_code AS semesterId,semester_group AS semesterGroup FROM program_term_details WHERE program_id = #programId#
+			AND semester_sequence <= (SELECT semester_sequence FROM program_term_details WHERE semester_code = #firstSemesterId# AND program_id = #programId#)
+			AND semester_sequence >= (SELECT semester_sequence FROM program_term_details WHERE semester_code = #secondSemesterId# AND program_id =#programId#);
+			]]>
+	</select>
+	<select id="semesterIsGreater" resultClass="progressCardInfo">
+		SELECT semester_code AS semesterId FROM program_term_details
+		WHERE semester_sequence IN(SELECT semester_sequence FROM
+		program_term_details WHERE semester_code = #semesterId# AND
+		program_id=#programId#) > semester_sequence IN (SELECT
+		semester_sequence FROM program_term_details WHERE semester_code
+		= #inSemester# AND program_id=#programId#) AND
+		program_id=#programId#;
+	</select>
+	<select id="getSwitchRule" resultClass="progressCardInfo">
+		SELECT sr.rule_code_one AS ruleCodeOne,sr.rule_code_two AS
+		ruleCodeTwo,sr.rule_code_three AS ruleCodeThree,rule_formula AS
+		switchRuleFormula FROM switch_rule sr INNER JOIN program_switch
+		ps using(rule_id) INNER JOIN student_program sp ON
+		ps.from_program = sp.program_id AND ps.from_branch =
+		sp.branch_id AND ps.from_specialization = sp.specialization_id
+		AND ps.from_semester = sp.out_semester WHERE sp.sequence_number
+		= #sequenceNumber# AND sp.switch_number = #switchNumber# AND
+		ps.to_program = #programId# AND ps.to_branch = #branchId# AND
+		ps.to_specialization = #specializationId# AND ps.to_semester =
+		#semesterId# AND enrollment_number = #enrollmentNumber#;
+	</select>
+	<select id="getCombinationBeforeSwitch"
+		resultClass="progressCardInfo">
+		SELECT roll_number AS rollNoForDetail,program_id AS
+		programId,branch_id AS branchId,specialization_id AS
+		specializationId,in_semester AS secondSemesterId,out_semester AS
+		firstSemesterId FROM student_program WHERE sequence_number =
+		#sequenceNumber# AND switch_number = #switchNumber# AND
+		enrollment_number = #enrollmentNumber#;
+	</select>
+	<select id="getSemesterStartEndDate"
+		resultClass="progressCardInfo">
+		SELECT session_start_date AS semesterStartDate,session_end_date
+		AS semesterEndDate,attempt_number AS attemptNumber FROM
+		student_registration_semester_header WHERE roll_number =
+		#rollNoForDetail# AND program_course_key = #programCourseKey#
+		AND entity_id = #entityId# AND status!='YTR' order by attempt_number desc limit 1;
+	</select>
+	<select id="getMarksOfSemesterByRollNo"
+		resultClass="progressCardInfo">
+		SELECT sa.roll_number AS rollNumber,COALESCE(theory_sgpa,0) AS
+		weightTheory,COALESCE(practical_sgpa,0) AS weightPractical,
+		total_aggregate AS totalAggregate,COALESCE(registered_practical_credit_excluding_audit,0) AS
+		totalPracticalCredits,COALESCE(registered_theory_credit_excluding_audit,0) AS
+		totalTheoryCredits,COALESCE(registration_credit_excluding_audit,0) AS totalCredit, remarks AS
+		remark,status AS status,ptd.semester_sequence AS
+		semesterSequence FROM student_aggregate sa INNER JOIN
+		student_registration_semester_header srsh ON
+		srsh.program_course_key = sa.program_course_key AND
+		srsh.session_start_date = sa.semester_start_date AND
+		srsh.session_end_date = sa.semester_end_date AND
+		srsh.roll_number = sa.roll_number INNER JOIN
+		program_course_header pch ON srsh.program_course_key =
+		pch.program_course_key INNER JOIN program_term_details ptd
+		USING(program_id) WHERE pch.program_id = #programId# AND
+		pch.branch_id = #branchId# AND pch.specialization_id =
+		#specializationId# AND pch.semester_code = #semesterId# AND
+		semester_status = 'ACT' AND srsh.roll_number = #rollNoForDetail#
+		AND srsh.status='PAS' AND ptd.semester_code = #insertSemester#
+		order by attempt_number desc limit 1;
+	</select>
+
+	<select id="verifyInsertInReportControlLog"	resultClass="progressCardInfo">
+		SELECT pdf_generated AS pdfGenerated FROM report_control_log
+		WHERE program_course_key = #programCourseKey# AND
+		semester_start_date=#semesterStartDate# AND
+		semester_end_date=#semesterEndDate#;
+	</select>
+
+	<update id="updateReportLog">
+		UPDATE report_control_log SET pdf_generated =
+		#pdfGenerated#,pdf_generation_date = NOW(),no_of_students =	#noOfStudents#,no_of_pdf_generated=#noOfPdfGenerated# WHERE
+		program_course_key = #programCourseKey# AND
+		semester_start_date=#semesterStartDate# AND
+		semester_end_date=#semesterEndDate# AND session = #session#;
+	</update>
+
+	<insert id="insertInReportControlLog">
+		INSERT INTO report_control_log
+		(program_course_key,pdf_generated,pdf_generation_date,session,semester_start_date,
+		semester_end_date,no_of_students,no_of_pdf_generated,report_type)
+		VALUES(#programCourseKey#,#pdfGenerated#,NOW(),#session#,#semesterStartDate#,
+		#semesterEndDate#,#noOfStudents#,#noOfPdfGenerated#,#reportType#);
+	</insert>
+
+	<select id="verifyInsertInReportErrorLog" resultClass="progressCardInfo">
+	SELECT error_code AS errorCode FROM report_error_log WHERE program_course_key = #programCourseKey# AND
+	student_roll_number = #rollNumber# AND semester_start_date = #semesterStartDate# AND semester_end_date =#semesterEndDate#
+	AND session = #session#;
+	</select>
+	
+	<insert id="insertInReportErrorLog">
+		INSERT INTO	report_error_log(program_course_key,report_type,error_code,student_roll_number,semester_start_date,semester_end_date,session,insert_date)
+		VALUES(#programCourseKey#,#reportType#,#errorCode#,#rollNumber#,#semesterStartDate#,#semesterEndDate#,#session#,NOW());
+	</insert>
+	
+	<select id="getProgramCourseKeyForStudent" resultClass = "progressCardInfo">
+	SELECT program_course_key AS programCourseKey FROM student_registration_semester_header WHERE session_start_date = #semesterStartDate#
+	AND session_end_date = #semesterEndDate# AND roll_number = #rollNumber#;
+	</select>
+	
+	<insert id="insertInReportPrintLog">
+	INSERT INTO report_print_log(program_course_key,report_type,error_code,semester_start_date,semester_end_date,session,student_roll_number,print_status)
+	VALUES(#programCourseKey#,#reportType#,#errorCode#,#semesterStartDate#,#semesterEndDate#,#session#,#rollNumber#,#status#) on duplicate key update print_status = 'Y';
+	</insert>
+ 	
+ 	<select id="verifyInsertInReportPrintLog" resultClass = "progressCardInfo">
+ 	SELECT program_course_key AS programCourseKey,print_status AS status  FROM report_print_log
+	WHERE program_course_key = #programCourseKey# AND semester_start_date = #semesterStartDate# AND semester_end_date = #semesterEndDate#
+	AND session = #session# AND student_roll_number = #rollNumber#;
+ 	</select>
+ 	<select id="getCummulativeForFC" resultClass="progressCardInfo">
+ 	select cgpa,division,theory_division AS theoryDivision,practical_division AS practicalDivision,theory_cgpa AS cummulativeTheoryCgpa,practical_cgpa AS cummulativePracticalCgpa FROM student_program
+	WHERE roll_number = #rollNoForDetail# AND enrollment_number = #enrollmentNumber# AND program_id = #programId# AND entity_id = #entityId# AND branch_id = #branchId# AND specialization_id = #specializationId#
+	AND program_status = 'PAS' ;
+ 	</select>
+ 	
+ 	<select id="checkABVStatus" resultClass="progressCardInfo">
+ 		select activity_status as status from activity_master where entity_id=#entityId# and
+		semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and process='SEP' and activity='ABV' and
+		program_course_key=#programCourseKey# and activity_status='COM';
+ 	</select>
+ 	
+ 	<select id="getPreviousProgramCourseKey" resultClass="progressCardInfo">
+ 		SELECT srsh.session_start_date as semesterStartDate, srsh.session_end_date as semesterEndDate,
+ 		srsh.program_course_key as programCourseKey, roll_number as rollNoForDetail
+		FROM student_registration_semester_header srsh
+		where srsh.roll_number = #rollNumber# and 
+		srsh.session_start_date in (select srsh1.session_start_date from student_registration_semester_header srsh1
+		where program_course_key <![CDATA[<>]]> #programCourseKey# and srsh1.status  in ('PAS' ,'REM','UFM','INC') and  roll_number = #rollNumber# 
+		and session_start_date <![CDATA[<]]> #semesterStartDate#) ;
+ 	</select>
+ 	 	
+</sqlMap>
+

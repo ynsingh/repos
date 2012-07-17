@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CommonFunction.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300">
+	<mx:Metadata>
+		[ResourceBundle("Messages")]
+		[ResourceBundle("Constants")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.controls.AdvancedDataGrid;
+			import mx.managers.CursorManager;
+			import mx.controls.LinkButton;
+			import mx.controls.Button;
+			import mx.controls.DataGrid;
+			import mx.collections.ArrayCollection;
+			import mx.collections.XMLListCollection;
+			import mx.resources.*;
+			import mx.controls.Alert;
+			import mx.controls.CheckBox;
+			[Embed(source="/images/error.png")]private static var errorIcon:Class;
+
+
+/* Ankit's code */
+
+
+private static var tensNames:Array = [""," Ten"," Twenty"," Thirty"," Forty",
+        " Fifty"," Sixty"," Seventy"," Eighty"," Ninety"];
+   private static var numNames:Array = [""," One"," Two"," Three"," Four"," Five",
+        " Six"," Seven"," Eight"," Nine"," Ten"," Eleven"," Twelve",
+        " Thirteen"," Fourteen"," Fifteen"," Sixteen"," Seventeen"," Eighteen"," Nineteen"];
+
+     private static function convertLessThanOneThousand(number:int):String
+     {
+       var soFar:String;
+
+       if (number % 100 < 20){
+       soFar = numNames[number % 100];
+       number /= 100;
+      }
+      else {
+        soFar = numNames[number % 10];
+        number /= 10;
+  
+        soFar = tensNames[number % 10] + soFar;
+        number /= 10;
+      }
+      if (number == 0) return soFar;
+      return numNames[number] + " Hundred" + soFar;
+    }
+  
+  
+    public static function convertNumberToWord(number:int):String {
+      if (number == 0) { return "Zero"; }
+  
+      var snumber:String = number+"";
+  
+      snumber=padZero(snumber,12);
+      var billions:int = int(snumber.slice(0,3));
+      var millions:int  = int(snumber.slice(3,6));
+      var hundredThousands:int = int(snumber.slice(6,9));
+      var thousands:int = int(snumber.slice(9,12));   
+  
+      var tradBillions:String;
+      switch (billions) {
+      case 0:
+        tradBillions = "";
+        break;
+      case 1 :
+        tradBillions = convertLessThanOneThousand(billions)
+        + " Billion ";
+        break;
+      default :
+        tradBillions = convertLessThanOneThousand(billions)
+        + " Billion ";
+      }
+      var result:String =  tradBillions;
+  
+      var tradMillions:String;
+      switch (millions) {
+      case 0:
+        tradMillions = "";
+        break;
+      case 1 :
+        tradMillions = convertLessThanOneThousand(millions)
+        + " Million ";
+        break;
+      default :
+        tradMillions = convertLessThanOneThousand(millions)
+        + " Million ";
+      }
+      result =  result + tradMillions;
+  
+      var tradHundredThousands:String;
+      switch (hundredThousands) {
+      case 0:
+        tradHundredThousands = "";
+        break;
+      case 1 :
+        tradHundredThousands = "One Thousand ";
+        break;
+      default :
+        tradHundredThousands = convertLessThanOneThousand(hundredThousands)
+        + " Thousand ";
+      }
+      result =  result + tradHundredThousands;
+  
+      var tradThousand:String;
+      tradThousand = convertLessThanOneThousand(thousands);
+      result =  result + tradThousand;
+   return result;
+ }
+/******************/
+
+
+
+
+
+
+
+
+			
+			/** This function return selected rows data of Grid * */
+			public static function getSelectedRowData(dataGrid:DataGrid):ArrayCollection
+            {
+                var arrayCollection:ArrayCollection=new ArrayCollection()
+		    
+	            for each(var obj:Object in dataGrid.dataProvider)
+	            {
+	                if(obj.select==true)
+		            {
+		                var temp:Array=new Array;
+		                for(var i:String in obj)
+		                {
+		    	            temp[i]=obj[i];
+		                }
+		                arrayCollection.addItem(temp);
+		            }
+	            }
+	            return arrayCollection;
+            }
+            
+             /** This function return rows data of Advanced Data Grid * */
+			public static function getAdvancedDataGridRowData(dataGrid:AdvancedDataGrid):ArrayCollection
+            {
+                var arrayCollection:ArrayCollection=new ArrayCollection()
+		    
+	            for each(var obj:Object in dataGrid.dataProvider)
+	            {
+	                var temp:Array=new Array;
+		            for(var i:String in obj)
+		            {
+		            	if(i!='mx_internal_uid')
+		            	{
+		    	            temp[i]=obj[i];
+		    	        }
+		            }
+		            arrayCollection.addItem(temp);
+	            }
+	            return arrayCollection;
+            }
+            
+            /** This function return String by padding zero * */
+			public static function padZero(number:String,len:int):String
+            {
+	            if(number.toString().length<len)
+	            {
+	                while(number.toString().length<len)
+	                {
+		                number="0"+number;
+	                }
+	            }
+	            return number;
+            }
+            
+            /** This function enable disable edit delete button according to selected number of records * */
+			public static function editDeleteEnable(event:Event,grid:DataGrid,editButtonArray:Array,deleteButtonArray:Array):void
+		    {
+		        var currentIndex:int=grid.selectedIndex;
+		        var parseIndex:int=0;
+		        var i:int=0;
+		        for each(var obj:Object in grid.dataProvider)
+		        {
+		            var bool:Boolean=false;
+		            bool=obj.select;
+		            if(parseIndex==currentIndex)
+		            {
+		            	bool=event.currentTarget.selected;
+		            }
+		            if(bool)
+		            {
+		            	i++;
+		            }
+		            parseIndex++;
+		        }
+
+                if(i>0)
+		        {
+		            if(i==1)
+		            {
+		            	setButtonStatus(editButtonArray,true);
+		        	    setButtonStatus(deleteButtonArray,true);
+		            }
+		            else
+		            {
+		        	    setButtonStatus(editButtonArray,false);
+		        	    setButtonStatus(deleteButtonArray,true);
+		            }
+		        }
+		        else
+		        {
+		            setButtonStatus(editButtonArray,false);
+		        	setButtonStatus(deleteButtonArray,false);
+		        }
+		    }
+		    
+		     /** This function enable disable edit delete button according to selected number of records
+             * method added by ankit
+             **/
+            public static function editDeleteEnable2(event:Event,grid:DataGrid,editButtonArray:Array,deleteButtonArray:Array, relationButtonArray:Array):void
+            {
+                var currentIndex:int=grid.selectedIndex;
+                var parseIndex:int=0;
+                var i:int=0;
+                for each(var obj:Object in grid.dataProvider)
+                {
+                    var bool:Boolean=false;
+                    bool=obj.select;
+                    if(parseIndex==currentIndex)
+                    {
+                        bool=event.currentTarget.selected;
+                    }
+                    if(bool)
+                    {
+                        i++;
+                    }
+                    parseIndex++;
+                }
+
+                if(i>0)
+                {
+                    if(i==1)
+                    {
+                        setButtonStatus(editButtonArray,true);
+                        setButtonStatus(deleteButtonArray,true);
+                        setButtonStatus(relationButtonArray,false);
+                    }
+                    if(i==2){
+                        setButtonStatus(relationButtonArray, true)
+                    }
+                    else
+                    {
+                        setButtonStatus(editButtonArray,false);
+                        setButtonStatus(deleteButtonArray,true);
+                        setButtonStatus(relationButtonArray,false);
+                    }
+                }
+                else
+                {
+                    setButtonStatus(editButtonArray,false);
+                    setButtonStatus(deleteButtonArray,false);
+                    setButtonStatus(relationButtonArray,false);
+                }
+            }
+		    
+		    private static function setButtonStatus(buttonArray:Array,status:Boolean):void
+		    {
+		    	for each(var button:LinkButton in buttonArray)
+		    	{
+		    		button.enabled=status;
+		    	}
+		    }
+		    
+		    public static function selectAll(event:Event,grid:DataGrid,editButtonArray:Array,deleteButtonArray:Array):void
+		    {
+		    	var tempDataProvider:ArrayCollection=new ArrayCollection();
+		    	for each(var obj:Object in grid.dataProvider as ArrayCollection)
+		    	{
+		    		obj.select=event.target.selected;
+		    		tempDataProvider.addItem(obj);
+		    	}
+		    	grid.dataProvider=tempDataProvider;
+		    	commonFunction.editDeleteEnable(event,grid,editButtonArray,deleteButtonArray);
+		    }
+		    
+		    private function getConst(key:String):String
+		    {
+		    	return resourceManager.getString('Constants',key);
+		    }
+		    
+		    public static function getConstants(key:String):String
+		    {
+		    	return (new commonFunction()).getConst(key);
+		    }
+		    
+		    private function getMsgs(key:String):String
+		    {
+		    	return resourceManager.getString('Messages',key);
+		    }
+		    
+		    public static function getMessages(key:String):String
+		    {
+		    	return (new commonFunction()).getMsgs(key);
+		    }
+		    
+		    public static function checkForSpeacialCharAtStart(val:String):Boolean
+			{
+				var bool:Boolean=true;
+				
+				if(!((val.charCodeAt(0) > 64) && (val.charCodeAt(0) < 91)))
+				{
+					if (!((val.charCodeAt(0) > 96) && (val.charCodeAt(0) < 123)))
+					{
+						bool=false;
+					}
+				}
+				return bool;
+			}
+			
+			public static function checkForComma(str:String):Boolean
+			{
+				var bool:Boolean=true;
+				
+				for(var i:int=0;i<str.length;i++)
+				{
+					if(str.charCodeAt(i)==44)
+					{
+						bool=false;
+					}
+				}
+				return bool;
+			}
+			
+			/**
+				 * method to calculate the difference between two dates
+				 **/
+					public static function calculateDays(startDate:Date,endDate:Date):int{
+						var MS_PER_DAY:uint = 1000 * 60 * 60 * 24;
+						var tempDate:Date = new Date((endDate).getTime()-(startDate).getTime());
+										
+						return Math.round((tempDate.time / MS_PER_DAY) + 1);					
+										
+			}
+			
+						/**
+						 * method to return yes/no depending upon checkbox selection
+						 **/
+						 public static function returnSelection(checkBox:CheckBox):String{
+						 	
+						 	var selected:String  = "Y";
+						 	
+						 	if(checkBox.selected == false){
+						 		
+						 		selected = "N";
+						 		
+						 	}
+						 	
+						 	return selected;
+						 	
+			 }
+			 
+/** validate 3 dates values should be in order
+ *  added by ashish mohan
+ **/
+public static function validateDate(date1:DateMonthSelector,date2:DateMonthSelector,date3:DateMonthSelector):Boolean{
+	var examDate:String = date1.selectedValue.toString() ;
+	var dateFrom:String=date2.selectedValue.toString();
+	var dateTo:String = date3.selectedValue.toString() ;
+	var b:Boolean=false;
+	if((int(examDate.substr(0,2))-1)<=(int(dateFrom.substr(0,2))-1) && (int(dateFrom.substr(0,2))-1)<=(int(dateTo.substr(0,2))-1))
+	{	
+		if((int(examDate.substr(0,2))-1)==(int(dateFrom.substr(0,2))-1))
+		{
+			if(int(dateFrom.substr(3,2))>=int(examDate.substr(3,2)))
+			{
+				b=true;
+			}
+			else
+			{
+				b=false;
+				Alert.show(commonFunction.getMessages('date2GreaterDate1'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+			}
+		}
+		else if((int(dateTo.substr(0,2))-1)==(int(dateFrom.substr(0,2))-1))
+		{
+			if(int(dateTo.substr(3,2))>=int(dateFrom.substr(3,2)))
+			{
+				b=true;
+			}
+			else
+			{
+				b=false;
+				Alert.show(commonFunction.getMessages('date3GreaterDate2'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+			}
+		}
+		else
+		{
+			b=true;
+		}
+	}
+	else{
+		b=false;
+		Alert.show(commonFunction.getMessages('dateMonth'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	}
+	return b;
+}
+
+
+/**
+* method to show data tips on the datagrid columns 
+* added by Mohd. Amir
+**/
+public static function showDataTips(datagrid:DataGrid):void{
+	var columns:Array=datagrid.columns;
+	for each(var dataColumn:DataGridColumn in columns){
+		dataColumn.showDataTips=true;
+		dataColumn.dataTipField=dataColumn.dataField;
+	}
+	datagrid.columns=columns;
+}
+
+/**
+* Method to call the filter funtion for filtering data on one field in Grid
+* @author Devendra Singhal
+*/
+public static function searchForOneField(searchText:String,field:String,arrcol:ArrayCollection):void{
+	if(searchText!=''){
+		arrcol.filterFunction=filterForOneField(searchText,field,arrcol);
+		arrcol.refresh();
+	}
+	else{
+		arrcol.filterFunction=null;
+		arrcol.refresh();
+		}
+}
+
+
+/**
+* Method to filter data on one field in Grid
+* @author Devendra Singhal
+* @return Function
+*/
+private static function filterForOneField(searchText:String,field:String,arr:ArrayCollection):Function{
+	var fun:Function=function(item:Object):Boolean{
+		for each(var obj:Object in arr){
+			var str:String="";
+			for(var i:int=0;i<searchText.length;i++){
+				str=str+item[field].toString().charAt(i);
+			}
+			if(str.toUpperCase()==searchText.toUpperCase()){
+			return true;
+			}
+		}
+	return false;
+	};
+return fun;
+}
+
+/**
+* Method to call the filter funtion for filtering data on two columns in Grid
+* @author Devendra Singhal
+*/
+
+public static function searchForTwoFields(searchText1:String,field1:String,searchText2:String,field2:String,arrcol:ArrayCollection):void
+{
+
+if(searchText1!='' && searchText2!=''){
+	arrcol.filterFunction=filterForTwoFields(searchText1,field1,searchText2,field2,arrcol);
+	arrcol.refresh();
+}
+else if(searchText1=='' && searchText2!=''){
+	arrcol.filterFunction=filterForOneField(searchText2,field2,arrcol);
+	arrcol.refresh();
+}
+else if(searchText1!='' && searchText2==''){
+	arrcol.filterFunction=filterForOneField(searchText1,field1,arrcol);
+	arrcol.refresh();
+}
+else{
+	arrcol.filterFunction=null;
+	arrcol.refresh();
+}
+}
+
+/**
+* Method to filter data on two columns in Grid
+* @author Devendra Singhal
+* @return Function
+*/
+private static function filterForTwoFields(searchText1:String,field1:String,searchText2:String,field2:String,arr:ArrayCollection):Function
+{
+var fun:Function=function(item:Object):Boolean{
+for each(var obj:Object in arr){
+var str1:String="";
+var str2:String="";
+for(var i:int=0;i<searchText1.length;i++){
+	str1=str1+item[field1].toString().charAt(i);
+}
+for(var j:int=0;j<searchText2.length;j++){
+	str2=str2+item[field2].toString().charAt(j);
+}
+if((str1.toUpperCase()==searchText1.toUpperCase()) && (str2.toUpperCase()==searchText2.toUpperCase())){
+	return true;
+}
+}
+return false;
+};
+return fun;
+}
+
+			
+		]]>
+	</mx:Script>
+</mx:Canvas>

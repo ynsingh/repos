@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+* @(#) MAIN_HOME.mxml
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this  list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/-->
+
+
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="onCreationComplete()" preinitialize="javaScriptFunc()" layout="absolute" backgroundImage="../assets/background.jpg" horizontalAlign="center" verticalAlign="top">
+	<mx:Script source="asFiles/MainLoginForm.as"/>
+	<mx:Style source="cssFiles/CommonStyle.css"/>
+	<mx:XML source="common/application.xml" id="app"/>
+	
+      <mx:DateFormatter id="dateFormatter" formatString="DD" />                  
+<mx:Script>
+		<![CDATA[
+			import loginForm.remoteLogin;
+			import mx.controls.Alert;
+			import common.commonFunction;
+		    import loginForm.EnrollmentLogin;
+			import loginForm.LoginForm;
+            
+            public function javaScriptFunc():void{
+	        ExternalInterface.call("noback");
+            }
+			private function loadStudentLogin():void{
+			vStack.selectedIndex=1;
+			loaderCanvas2.addChild(new LoginForm());
+			
+		}
+            private function loadStudentEnrollmentLogin():void{
+            	
+			vStack.selectedIndex=1;
+			loaderCanvas2.removeAllChildren();
+			loaderCanvas2.addChild(new EnrollmentLogin());
+			
+		}
+		
+		
+		 private function loadRemoteLogin():void{            	
+			vStack.selectedIndex=1;
+			loaderCanvas2.removeAllChildren();
+			loaderCanvas2.addChild(new remoteLogin());	
+		}
+
+		
+		private function loadStudentAdmissionLogin():void{
+			vStack.selectedIndex=1;
+			loaderCanvas2.addChild(new LoginForm());			
+		}
+
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Metadata>
+		[ResourceBundle("Messages")]
+		[ResourceBundle("Constants")]
+		[ResourceBundle("icons")]
+	</mx:Metadata>
+
+		
+	<mx:StringValidator id="userNameValidator"  source="{userNameText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	<mx:StringValidator id="passwordValidator" source="{passwordText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	<mx:StringValidator id="appValidator" source="{applications}" required="true" property="selectedLabel" trigger="{loginButton}" triggerEvent="click"/>
+	
+	<mx:VDividedBox horizontalScrollPolicy="off" x="167" y="0" width="1070" height="180" horizontalAlign="center" verticalAlign="top" backgroundColor="#000000">
+		<mx:SWFLoader horizontalAlign="center" source="@Embed(source='common/assets/header1.swf')"/>
+	</mx:VDividedBox>
+
+	
+
+		<mx:ViewStack id="vStack" width="1070" height="496" x="167" y="179" horizontalCenter="true">
+				<mx:Canvas label="View 1" width="100%" height="100%" horizontalCenter="true">
+						<mx:Canvas width="1070" height="54" backgroundImage="@Embed(source='common/assets/login_bck.jpg')" backgroundColor="#000000" y="0" x="0" verticalScrollPolicy="off">
+								
+								<mx:Image source="@Embed(source='common/assets/glossy-blue-orb-icon-business-key6.png')" width="36" height="50" x="20" y="5"/>
+								<mx:Label x="74" y="20" text="{commonFunction.getConstants('userName')}:" color="#FFFFFF" fontSize="12" height="24"/>
+								<mx:Label x="322" y="20" text="{commonFunction.getConstants('password')}:" color="#FFFFFF" fontSize="12" height="24"/>
+								<mx:Label x="580" y="20" text="{commonFunction.getConstants('application')}:" color="#FFFFFF" fontSize="12" height="24"/>
+								<mx:TextInput id="userNameText"  x="154" y="20" keyDown="onTabUserName(event)" />
+								<mx:TextInput x="399" y="20" id="passwordText" displayAsPassword="true" keyDown="onTabPassword(event)" />
+								<mx:ComboBox x="666" y="20" id="applications" fontSize="12" prompt="{commonFunction.getConstants('select')}" toolTip="{applications.text}" dataProvider="{app.Application}" labelField="@type" selectedIndex="-1" width="222" keyDown="onApplicationTab(event)"></mx:ComboBox>
+								<mx:LinkButton x="899" y="20" label="Login" id="loginButton" click="Login()"  keyDown="onLogin(event)" color="#FFFFFF" fontWeight="bold"/>
+						</mx:Canvas>
+								
+						
+		
+		<mx:VDividedBox x="0" y="53" width="1070" height="431" backgroundColor="#FFFFFF" paddingLeft="10" paddingTop="10" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalAlign="center">
+				<mx:Canvas width="1070" backgroundColor="#FFFFFF" verticalScrollPolicy="off" >
+						<mx:SWFLoader source="@Embed(source='common/assets/anouncements.swf')" width="182" height="433"/>
+						<mx:SWFLoader source="@Embed(source='common/assets/cards.swf')" width="187.6" height="260" x="190"/>
+						<mx:LinkButton label="Student Registration" id="registrationLink" visible="false" click="loadStudentLogin()" y="220"/>
+					<mx:LinkButton label="Student Enrollment" id="enrollmentLink" visible="false" click="loadStudentEnrollmentLogin()" y="250"/>
+					<mx:LinkButton label="Apply For Admission" id="admissionLink" visible="true" click="LoginAdmission()" y="280"/>
+					<mx:LinkButton label="Remote Login" id="remoteLoginLink" visible="true" click="loadRemoteLogin()" y="300"/>
+					<mx:Label x="10" y="324"  id="enrollmentInfo" width="132"/>
+				</mx:Canvas>
+						
+		</mx:VDividedBox>
+				</mx:Canvas>
+				<mx:Canvas id="loaderCanvas2" horizontalScrollPolicy="off" width="100%" height="88%" y="70" borderColor="#FFFEFE" backgroundColor="#FFFEFE">
+				</mx:Canvas>
+		</mx:ViewStack>
+		
+		<mx:Label text="&#169; {commonFunction.getConstants('appFooter')}" height="28"  fontSize="11"  width="858" x="250" y="676"/>
+		
+		
+	
+</mx:Application>

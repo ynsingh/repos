@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#) AwardBlankReports.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="874" height="460" 
+	title="{commonFunction.getConstants('awardBlankReport')}" creationComplete="onLoad()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="getUniversitySessions" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getUniversitySession.htm"
+				resultFormat="e4x" 
+				result="resultGetUniversitySession(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+	<mx:HTTPService id="getEntities" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getEntities.htm"
+				resultFormat="e4x" 
+				result="resultGetEntity(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+	<mx:HTTPService id="getEntityPrograms" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getEntityProgram.htm"
+				resultFormat="e4x" 
+				result="resultGetPrograms(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+	<mx:HTTPService id="getProgramBranches" method="post"
+        		url="{commonFunction.getConstants('url')}/associatecoursewithinstructor/branchList.htm"
+        		resultFormat="e4x"
+        		result="resultGetBranches(event)"
+        		fault="onFailure(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="getProgramSpecializations" method="post"
+        		url="{commonFunction.getConstants('url')}/associatecoursewithinstructor/specializationList.htm"
+        		resultFormat="e4x"
+        		result="resultGetSpecializations(event)"
+        		fault="onFailure(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="getSemesters" method="post"
+        		url="{commonFunction.getConstants('url')}/startActivity/getSemesterList.htm"
+        		resultFormat="e4x"
+        		result="resultGetSemesters(event)"
+        		fault="onFailure(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="httpGetDisplayType" method="post"
+        		url="{commonFunction.getConstants('url')}/coursegradelimit/getDisplayType.htm"
+        		resultFormat="e4x"
+        		result="resultGetDisplayType(event)"
+        		fault="onFailure(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="getCourses" method="post"
+        		url="{commonFunction.getConstants('url')}/awardBlankCorrection/getProgramCourses.htm"
+        		resultFormat="e4x"
+        		result="resultGetCourses(event)"
+        		fault="onFailure(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="getSemesterDates" method="post"
+        		url="{commonFunction.getConstants('url')}/awardBlankCorrection/getSemesterDates.htm"
+        		resultFormat="e4x"
+        		result="resultGetSemesterDates(event)"
+        		fault="onFailure(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="getEmployeeDetail" method="post"
+        		url="{commonFunction.getConstants('url')}/awardBlankCorrection/getEmployeeDetail.htm"
+        		resultFormat="e4x"
+        		result="resultGetEmployeeDetail(event)"
+        		fault="onFailure(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="getData" method="post"
+        		url="{commonFunction.getConstants('url')}/awardBlankCorrection/getComponentDetail.htm"
+        		resultFormat="e4x"
+        		result="resultGetData(event)"
+        		fault="onReport(event)"
+        		useProxy="false"/>
+        		
+    <mx:HTTPService id="printReport" method="post"
+				url="{commonFunction.getConstants('url')}/printReport/printReport.htm"
+				resultFormat="e4x" 
+				result="onPrintReportSuccess(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+	<mx:HTTPService id="checkExistenceForDownload" method="post"
+				url="{commonFunction.getConstants('url')}/awardBlankCorrection/checkExistence.htm"
+				resultFormat="e4x" 
+				result="resultCheckExistence(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>
+					
+	<mx:Canvas x="46" y="22" styleName="SimpleCanvas" width="762" height="364">
+		<mx:Label x="44" y="47" text="{commonFunction.getConstants('session')}* :"/>
+		<mx:Label x="291" y="47" width="54" id="toYearCombo"/>
+		<mx:Label x="405" y="47" text="{commonFunction.getConstants('entity')}* :"/>
+		<mx:Label x="44" y="97" text="{commonFunction.getConstants('program')}* :"/>
+		<mx:Label x="405" y="97" text="{commonFunction.getConstants('branch')}* :"/>
+		<mx:Label x="44" y="146" text="{commonFunction.getConstants('specialization')}* :"/>
+		<mx:Label x="405" y="146" text="{commonFunction.getConstants('semester')}* :"/>
+		<mx:Label x="44" y="194" text="{commonFunction.getConstants('courseCode')}* :"/>
+		<mx:Label x="405" y="194" text="{commonFunction.getConstants('awardBlankType')}* :"/>
+		<mx:Label x="44" y="245" text="{commonFunction.getConstants('semesterStartDate')} :"/>
+		<mx:Label x="405" y="245" text="{commonFunction.getConstants('semesterEndDate')} :"/>
+		<mx:Label x="200" y="245" text="" id="startDate" fontStyle="italic"/>
+		<mx:Label x="553" y="245" text="" id="endDate" fontStyle="italic"/>
+		<mx:ComboBox x="185" y="44" width="85" id="fromYearCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="onYearChange()"></mx:ComboBox>
+		<mx:ComboBox x="550" y="44" width="160" id="entityCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="onEntityChange()" enabled="false"></mx:ComboBox>
+		<mx:ComboBox x="185" y="94" width="160" id="programCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="onProgramChange()" enabled="false"></mx:ComboBox>
+		<mx:ComboBox x="550" y="94" width="160" id="branchCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="onBranchChange()" enabled="false"></mx:ComboBox>
+		<mx:ComboBox x="185" y="143" width="160" id="specializationCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" enabled="false" change="onSpecializationChange()"></mx:ComboBox>
+		<mx:ComboBox x="550" y="143" width="160" id="semesterCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="onSemesterChange()" enabled="false"></mx:ComboBox>
+		<mx:ComboBox x="185" y="191" width="160" id="courseCodeCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" enabled="false" change="onCourseCodeChange()"></mx:ComboBox>
+		<mx:ComboBox x="550" y="191" width="160" id="awardBlankTypeCombo" labelField="displayType" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" enabled="false" change="onTypeChange()"></mx:ComboBox>
+		<mx:Button x="92" y="297" label="{commonFunction.getConstants('generateButton')}" width="92" click="generateConfirm()"/>
+		<mx:Button x="210" y="297" id="downloadButton" label="{commonFunction.getConstants('downloadButton')}" width="92" click="downloadConfirm()" enabled="false"/>
+		<mx:Button x="333" y="297" id="printButton" label="{commonFunction.getConstants('print')}" width="92" click="printConfirm()" enabled="false"/>
+		<mx:Button x="458" y="297" label="{commonFunction.getConstants('resetButton')}" width="92" click="reset()"/>
+		<mx:Button x="582" y="297" label="{commonFunction.getConstants('cancelButton')}" width="92" click="parentDocument.loaderCanvas.removeAllChildren()"/>
+		
+	</mx:Canvas>
+	<mx:Label x="46" y="391" id="note" color="Red"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import common.Mask;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			import awardBlankSheet.CreateAwardBlank;
+			
+			[Embed(source="/images/success.png")]private var successIcon:Class;	
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			var param = Object;
+			public var sessionXML:XML;
+			public var sessionAC:ArrayCollection;
+			public var entityXML:XML;
+			public var entityAC:ArrayCollection;
+			public var programXML:XML;
+			public var programAC:ArrayCollection;
+			public var branchXML:XML;
+			public var specializationXML:XML;
+			public var semesterXML:XML;
+			public var displayTypeXML:XML;
+			public var displayTypeAC:ArrayCollection;
+			public var courseXML:XML;
+			public var semesterDatesXML:XML;
+			public var employeeXML:XML;
+			public var programCourseKey:String=null;
+			var normalAwardBlank:CreateAwardBlank=new CreateAwardBlank;
+			var reportPath:String;
+			
+			public function onLoad():void{
+				getUniversitySessions.send([new Date]);
+				note.text=commonFunction.getConstants('noteFor*');
+				
+			}
+			public function resultGetUniversitySession(event:ResultEvent):void{
+				sessionXML=event.result as XML;
+//				Alert.show(sessionXML);
+				sessionAC=new ArrayCollection;
+				for each(var obj:Object in sessionXML.role){
+					var sessionStartDate:String = obj.id.toString();
+					var year:String = sessionStartDate.substr(0,4);
+					var sessionEndDate:String = obj.description.toString();
+					var endYear:String = sessionEndDate.substr(0,4);
+					sessionAC.addItem({select:false,id:year,description:endYear});		
+				}
+				fromYearCombo.dataProvider = sessionAC;
+				fromYearCombo.labelField = "id";
+				getEntities.send([new Date]);
+			}
+			
+			public function onYearChange():void{
+				for each(var obj:Object in sessionAC){		
+					if(fromYearCombo.selectedLabel == obj.id){			
+					toYearCombo.text = obj.description;			
+					}		
+				}
+				toYearCombo.visible = true;
+				entityCombo.enabled=true;
+			}
+			
+			public function resultGetEntity(event:ResultEvent):void{
+				entityXML = event.result as XML;
+//				Alert.show(entityXML);
+				entityAC = new ArrayCollection();
+				for each(var obj:Object in entityXML.role){
+					entityAC.addItem({select:false,id:obj.id,description:obj.description});		
+				}
+				entityCombo.dataProvider = entityAC;
+				entityCombo.labelField="description";
+				getSemesters.send([new Date]);
+			}
+			
+			public function onEntityChange():void{
+				param['entityId']=entityCombo.selectedItem.id;
+				getEntityPrograms.send(param);
+				programCombo.enabled=true;
+			}
+			
+			public function resultGetPrograms(event:ResultEvent):void{
+				programXML=event.result as XML;
+//				Alert.show(programXML);
+				programAC=new ArrayCollection;
+				for each(var obj:Object in programXML.Details){
+					programAC.addItem({select:false,id:obj.programId,description:obj.advanceProgram,
+					programCode:obj.courseCode,printType:obj.coursename});		
+				}
+				programCombo.dataProvider  = programAC;
+				programCombo.labelField = "description";
+			}
+			
+			public function onProgramChange():void{
+				param['entityId']=entityCombo.selectedItem.id;
+				param['programId']=programCombo.selectedItem.id;
+				getProgramBranches.send(param);
+				branchCombo.enabled=true;
+			}
+			
+			public function resultGetBranches(event:ResultEvent):void{
+				branchXML=event.result as XML;
+//				Alert.show(branchXML);
+				branchCombo.dataProvider=branchXML.branch.branchName;
+			}
+			
+			public function onBranchChange():void{
+				param['entityId']=entityCombo.selectedItem.id;
+				param['programId']=programCombo.selectedItem.id;
+				param['branchId']=branchXML.branch.(branchName==branchCombo.selectedLabel).branchId;
+				getProgramSpecializations.send(param);
+				specializationCombo.enabled=true;
+			}
+			
+			public function resultGetSpecializations(event:ResultEvent):void{
+				specializationXML=event.result as XML;
+//				Alert.show(specializationXML);
+				specializationCombo.dataProvider=specializationXML.specialization.specializationName;
+			}
+			
+			public function onSpecializationChange():void{
+				semesterCombo.enabled=true;
+			}
+				
+			public function resultGetSemesters(event:ResultEvent):void{
+				semesterXML=event.result as XML;
+//				Alert.show(semesterXML);
+				semesterCombo.dataProvider=semesterXML.Details.name;
+				httpGetDisplayType.send([new Date]);
+			}
+			
+			public function resultGetDisplayType(event:ResultEvent):void{
+				displayTypeXML=event.result as XML;
+//				Alert.show(displayTypeXML);
+				var session:String;
+				session=String(displayTypeXML.Details[3].startDate)+" --- "+String(displayTypeXML.Details[3].endDate);
+				displayTypeAC=new ArrayCollection();
+				for each (var o:Object in displayTypeXML.Details)
+				{		
+					if(o.displayType!=''){
+					displayTypeAC.addItem({displayType:o.displayType});
+					}
+				}
+			awardBlankTypeCombo.dataProvider=displayTypeAC;
+			}
+			
+			public function onSemesterChange():void{
+				param['programId']=programCombo.selectedItem.id;;
+				param['branchId']=branchXML.branch.(branchName==branchCombo.selectedLabel).branchId;
+				param['specializationId']=specializationXML.specialization.(specializationName==specializationCombo.selectedLabel).specializationId;
+				param['semesterCode']=semesterXML.Details.(name==semesterCombo.selectedLabel).id;
+				getCourses.send(param);
+				courseCodeCombo.enabled=true;
+			}
+			
+			public function resultGetCourses(event:ResultEvent):void{
+				courseXML=event.result as XML;
+//				Alert.show(courseXML);
+				courseCodeCombo.dataProvider=courseXML.StudentDetail.courseCode;
+				param['entityId']=entityCombo.selectedItem.id;
+				param['programId']=programCombo.selectedItem.id;;
+				param['branchId']=branchXML.branch.(branchName==branchCombo.selectedLabel).branchId;
+				param['specializationId']=specializationXML.specialization.(specializationName==specializationCombo.selectedLabel).specializationId;
+				param['semesterCode']=semesterXML.Details.(name==semesterCombo.selectedLabel).id;
+				param['sessionStartDate']=sessionXML.role.(id.toString().substr(0,4)==fromYearCombo.selectedLabel).id;
+				param['sessionEndDate']=sessionXML.role.(description.toString().substr(0,4)==toYearCombo.text).description;
+				getSemesterDates.send(param);
+			}
+			
+			public function onCourseCodeChange():void{
+				awardBlankTypeCombo.enabled=true;
+				awardBlankTypeCombo.selectedIndex=-1;
+				param['programCourseKey']=programCourseKey;
+				param['entityId']=entityCombo.selectedItem.id;
+				param['courseCode']=courseCodeCombo.selectedLabel;
+				getEmployeeDetail.send(param);
+			}
+			
+			public function resultGetSemesterDates(event:ResultEvent):void{
+				semesterDatesXML=event.result as XML;
+				var semDate:ArrayCollection=new ArrayCollection;
+//				Alert.show(semesterDatesXML);
+				for each(var o:Object in semesterDatesXML.StudentDetail ){
+					semDate.addItem({semesterStartDate:o.semesterStartDate,semesterEndDate:o.semesterEndDate});
+				}
+				if(semDate.length==0){
+					Alert.show(commonFunction.getMessages('semesterNotRegistered')+' '+fromYearCombo.selectedLabel+'-'+toYearCombo.text,
+					commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					reset();
+				}else{
+				startDate.text=semesterDatesXML.StudentDetail.semesterStartDate;
+				endDate.text=semesterDatesXML.StudentDetail.semesterEndDate;
+				programCourseKey=semesterDatesXML.StudentDetail.programCourseKey;
+				}
+			}
+			
+			public function onTypeChange():void{
+				reportPath=new String;
+				reportPath='/AwardSheet/'+fromYearCombo.selectedLabel+'-'+toYearCombo.text+'/'+entityCombo.selectedLabel+
+							'/'+startDate.text+'-'+endDate.text+'/'+programCombo.selectedLabel+'_'+branchCombo.selectedLabel+
+							'_'+specializationCombo.selectedLabel+'_'+semesterCombo.selectedLabel+'_'+courseCodeCombo.selectedLabel+
+							' '+'('+awardBlankTypeCombo.text.charAt(0)+')'+'.pdf';
+				param['filePath']=reportPath;
+				checkExistenceForDownload.send(param);		
+			}
+			
+			public function resultGetEmployeeDetail(event:ResultEvent):void{
+				employeeXML=event.result as XML;
+//				Aler+t.show(employeeXML);
+			}
+			
+			public function reset():void{
+				fromYearCombo.selectedIndex=-1;
+				toYearCombo.text='';
+				entityCombo.selectedIndex=-1;
+				programCombo.selectedIndex=-1;
+				branchCombo.selectedIndex=-1;
+				specializationCombo.selectedIndex=-1;
+				semesterCombo.selectedIndex=-1;
+				courseCodeCombo.selectedIndex=-1;
+				awardBlankTypeCombo.selectedIndex=-1;
+				startDate.text='';
+				endDate.text='';
+				entityCombo.enabled=false;
+				programCombo.enabled=false;
+				branchCombo.enabled=false;
+				specializationCombo.enabled=false;
+				semesterCombo.enabled=false;
+				courseCodeCombo.enabled=false;
+				awardBlankTypeCombo.enabled=false;
+				downloadButton.enabled=false;
+				printButton.enabled=false;
+			}
+			
+			private function generateConfirm():void{
+				Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,generateReport,questionIcon); 	
+			}
+			
+			public function generateReport(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
+					branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
+					courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+						param['entityId']=entityCombo.selectedItem.id;
+						param['programId']=programCombo.selectedItem.id;
+						param['displayType']=awardBlankTypeCombo.text.charAt(0);
+						param['courseCode']=courseCodeCombo.selectedLabel;
+						param['programCourseKey']=programCourseKey;
+						param['semesterStartDate']=startDate.text;
+						param['semesterEndDate']=endDate.text;
+						param['entityName']=entityCombo.selectedLabel;
+						param['programName']=programCombo.selectedLabel;
+						param['courseName']=courseXML.StudentDetail.(courseCode==courseCodeCombo.selectedLabel).courseName;
+						param['employeeName']=employeeXML.StudentDetail.employeeName;
+						param['semesterName']=semesterCombo.selectedLabel;
+						param['branchName']=branchCombo.selectedLabel;
+						param['spclName']=specializationCombo.selectedLabel;
+						param['sessionStart']=fromYearCombo.selectedLabel;
+						param['sessionEnd']=toYearCombo.text;
+						getData.send(param);
+						Mask.show(commonFunction.getConstants('pleaseWait'));
+					}else{
+						Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					}
+				}
+			}
+			
+			public function resultGetData(event:ResultEvent):void{
+				Mask.close();
+				Alert.show(commonFunction.getMessages('reportGeneratedSuccessfully'),commonFunction.getMessages('success'),4,null,null,successIcon);
+			}
+			
+			private function downloadConfirm():void{
+				Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,downloadReport,questionIcon); 	
+			}
+			
+			public function downloadReport(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
+						branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
+						courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+							var file:FileReference=new FileReference();
+							file.download(new URLRequest(commonFunction.getConstants('url')+reportPath));
+							reset();
+//							Alert.show('File Downloaded');
+					}else{
+						Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					}
+				}
+			}
+			
+			
+			private function printConfirm():void{
+				Alert.show(commonFunction.getMessages('areyousure'),commonFunction.getMessages('confirm'),3,null,printReports,questionIcon); 	
+			}
+			
+			
+			public function printReports(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					if(fromYearCombo.selectedIndex!=-1 && entityCombo.selectedIndex!=-1 && programCombo.selectedIndex!=-1 && 
+						branchCombo.selectedIndex!=-1 && specializationCombo.selectedIndex!=-1 && semesterCombo.selectedIndex!=-1 &&
+						courseCodeCombo.selectedIndex!=-1 && awardBlankTypeCombo.selectedIndex!=-1){
+						var reportPathForPrint:String;
+						reportPathForPrint='AwardSheet\\'+fromYearCombo.selectedLabel+'-'+toYearCombo.text+'\\'+entityCombo.selectedLabel+
+									'\\'+startDate.text+'-'+endDate.text+'\\';
+
+						var fileName:String;
+						fileName=programCombo.selectedLabel+'_'+branchCombo.selectedLabel+'_'+specializationCombo.selectedLabel+'_'+
+						 			semesterCombo.selectedLabel+'_'+courseCodeCombo.selectedLabel+' '+'('+awardBlankTypeCombo.text.charAt(0)+')'+'.pdf';
+							
+						param['programId']=programCombo.selectedItem.id;
+						param['branchId']=branchXML.branch.(branchName==branchCombo.selectedLabel).branchId;
+						param['specializationId']=specializationXML.specialization.(specializationName==specializationCombo.selectedLabel).specializationId;
+						param['entityId']=entityCombo.selectedItem.id;
+						param['semesterCode']=semesterXML.Details.(name==semesterCombo.selectedLabel).id;
+						param['semesterStartDate']=startDate.text;
+						param['semesterEndDate']=endDate.text;
+						param['fromSession']=fromYearCombo.selectedLabel;
+						param['toSession']=toYearCombo.text;
+						param['reportPath']=reportPathForPrint;
+						param['reportCode']='50';
+						param['reportType']='ABR';
+						param['fileName']=fileName;
+						Mask.show(commonFunction.getConstants('pleaseWait'));
+						printReport.send(param);
+						}else{
+							Alert.show(commonFunction.getMessages('requiredInfoMissing'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					}
+				}
+			}
+			
+			public function onPrintReportSuccess(event:ResultEvent):void{
+				Mask.close();
+				try{
+					if(event.result.sessionConfirm == true){
+ 					Alert.show(resourceManager.getString('Messages','sessionInactive'));
+	      			var url:String="";
+	 				url=commonFunction.getConstants('navigateHome');
+	 				var urlRequest:URLRequest=new URLRequest(url);
+	 				urlRequest.method=URLRequestMethod.POST;
+	 				navigateToURL(urlRequest,"_self");
+					}
+				}catch(e:Error){}
+ 
+	 			var status:String=(event.result.message+"");
+	 			if(status.substr(0,4)=="true"){
+	 				if(status.length>4){
+	 					Alert.show(status.substr(5,status.length-5),commonFunction.getMessages('success'),0,null,null,successIcon);
+	 				}else{
+			//Alert.show(commonFunction.getMessages('reportGenerated'),commonFunction.getMessages('success'),0,null,null,successIcon);
+	 				}
+				}else{
+					if(status.length>5){
+	 					Alert.show(status.substr(6,status.length-6),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 				}else{
+						Alert.show(commonFunction.getMessages('failToPrint'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 				}		       
+	 			}
+			}
+			
+			public function resultCheckExistence(event:ResultEvent):void{
+				var fileExistsXML:XML=event.result as XML;
+//				Alert.show(fileExistsXML);
+				if(fileExistsXML.count=="Yes"){
+					downloadButton.enabled=true;
+					printButton.enabled=true;
+				}else{
+					downloadButton.enabled=false;
+					printButton.enabled=false;
+				}
+			}
+			
+			public function onFailure(event:FaultEvent):void{	
+				Mask.close();		
+				Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+				reset();
+			}
+			public function onReport(event:FaultEvent){
+				Mask.close();
+				Alert.show(commonFunction.getMessages('reportGeneratedSuccessfully'),commonFunction.getMessages('success'),4,null,null,successIcon);
+				reset();
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+</mx:Panel>

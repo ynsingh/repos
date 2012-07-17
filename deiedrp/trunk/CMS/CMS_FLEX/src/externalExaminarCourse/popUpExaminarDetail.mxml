@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+* @(#) popUpExaminarDetail.mxml
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this  list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow"  verticalPageScrollSize="5" verticalScrollPolicy="on" x="30" y="5" horizontalScrollPolicy="auto" showCloseButton="true" creationComplete="onComplete()"  title="{commonFunction.getConstants('editExaminerDetial')}" layout="absolute" 
+	close="closePopup()" xmlns:ns1="common.*"  width="1202" height="802">
+	 <mx:Script source="asFiles/popUpExaminarDetailAction.as"/>
+	 <mx:XML id="gender" source="xmlFiles/gender.xml"/>
+	 <mx:XML id="prefix" source="xmlFiles/prefix.xml"/>
+		<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+		<mx:HTTPService id="updateExaminarDetail" 
+			        method="POST"
+					url="{commonFunction.getConstants('url')}/externalExaminarDetail/updateExaminarDetail.htm"
+					resultFormat="e4x"
+					result="onInsertSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="getExaminarId" 
+			        method="POST"
+					url="{commonFunction.getConstants('url')}/externalExaminarDetail/getExaminarId.htm"
+					resultFormat="e4x"
+					result="onExaminarIdSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>			
+		
+	<mx:StringValidator id="firstNameValid" property="text" required="true"/>
+	<mx:StringValidator id="lastNameValid" property="text" required="true"/>
+	<mx:Validator id="genderValid" property="selectedLabel" required="true"/>
+	<mx:Validator id="designationValid" property="text" required="true"/>
+	<mx:Validator id="departmentValid" property="text" required="true"/>
+	<mx:Validator id="colgNameValid" property="text" required="true"/>
+	<mx:Validator id="colgAddValid" property="text" required="true"/>
+	<mx:StringValidator source="{officePhoneField}" id="oficephonevalid" minLength="10" maxLength="20" property="text" required="true"/>
+    <mx:StringValidator source="{mobilePhoneField}" id="mobilephonevalid" minLength="10" maxLength="20" property="text" required="true"/>
+	<mx:StringValidator source="{faxPhoneField}" id="faxphonevalid" minLength="10" maxLength="20" property="text" required="false"/>
+	<mx:Validator id="addressValidator" property="text" required="true"/>
+	<mx:Validator id="stateValidator" property="selectedLabel" required="true"/>
+	<mx:Validator id="cityValidator" property="selectedLabel" required="true"/>
+	<mx:Validator id="coraddressValidator" property="text"/>
+	<mx:Validator id="corstateValidator" property="selectedLabel"/>
+	<mx:Validator id="corcityValidator" property="selectedLabel"/>
+
+	
+		<mx:TitleWindow styleName="DetailTitleWindow" title="{commonFunction.getConstants('personalDetails')}" x="31" y="26" width="1075" height="281" layout="absolute">
+				<mx:Label x="10" y="26" text="{commonFunction.getConstants('examiner')}*" width="124"/>
+				<mx:TextInput x="342" y="24" width="150" id="studentfirstnametext" editable="false" restrict="a-z A-Z"/>
+				<mx:TextInput x="573" y="24" width="150" id="studentmiddlenametext" editable="false"/>
+				<mx:TextInput x="816" y="24" width="150" id="studentlastnametext" restrict="a-z A-Z" editable="false"/>
+				<mx:Label x="573" y="-4" text="{commonFunction.getConstants('middleName')}"/>
+				<mx:Label x="816" y="-4" text="{commonFunction.getConstants('lastName')}*"/>
+				<mx:Label x="342" y="-4" text="{commonFunction.getConstants('firstName')}*"/>
+				<mx:Label x="10" y="72" text="{commonFunction.getConstants('gender')}*"/>
+				<mx:ComboBox x="152" y="69" id="genderCombo" change="onGenderChange()" toolTip="{genderCombo.text}" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+				<mx:Label x="10" y="114" text="{commonFunction.getConstants('designation')}*"/>
+				<mx:TextInput x="152" y="114" width="150" id="designation" />
+				<mx:TextInput x="152" y="166" width="150" id="colgName"/>
+				<mx:TextArea x="573" y="167" width="150" id="colgAdd"/>
+				<mx:Label x="10" y="168" text="{commonFunction.getConstants('colgName')}*"/>
+				<mx:Label x="342" y="168" text="{commonFunction.getConstants('colgAdd')}*"/>
+				<mx:TextInput x="573" y="114" width="150" id="department"/>
+				<mx:Label x="342" y="116" text="{commonFunction.getConstants('department')}*"/>
+				<mx:Label x="152" y="-4" text="Prefix*"/>
+				<mx:ComboBox x="152" y="23" width="83" id="prefixCombo" toolTip="{prefixCombo.text}" prompt="{commonFunction.getConstants('select')}"  dataProvider="{prefix.Prefix}"></mx:ComboBox>
+				
+		</mx:TitleWindow>
+		<mx:TitleWindow styleName="DetailTitleWindow" title="{commonFunction.getConstants('contactDetails')}" x="31" y="333" width="1075" height="363" layout="absolute">
+		<ns1:AddressField x="10" y="0" btn="{savebutton}" id="permanentAddressField" width="980" title="{commonFunction.getConstants('permanentAddress')}*" creationComplete="permanentAddressField.pinValidator.required=true" validationRequired="false">
+		</ns1:AddressField>
+		<mx:CheckBox x="372" y="100" id="checkboxField" label="{commonFunction.getConstants('sameAsAbove')}" click="copyAddress()"/>
+				<ns1:AddressField x="10" y="138" id="corspondenceAddressField" width="980" title="{commonFunction.getConstants('correspondenceAddress')}" validationRequired="false">
+		</ns1:AddressField>
+				<mx:Canvas x="10" y="248" width="980" height="69">
+						<mx:TextInput x="86" y="19" width="150" id="officePhoneField" restrict="0-9"/>
+						<mx:Label x="0" y="21" text="{resourceManager.getString('Constants','officePhone')}"/>
+						<mx:Label x="266" y="21" text="{commonFunction.getConstants('mobilePhone')}"/>
+						<mx:TextInput x="368" y="19" width="150" id="mobilePhoneField" restrict="0-9"/>
+						<mx:TextInput x="629" y="19" id="faxPhoneField" restrict="0-9"/>
+						<mx:Label x="582" y="21" text="{resourceManager.getString('Constants','faxNumber')}"/>
+				</mx:Canvas>
+		
+		
+		
+		</mx:TitleWindow>
+		<mx:Button x="214" y="722" label="{commonFunction.getConstants('updateButton')}" id="savebutton" click="onUpdate()"/>
+		<mx:Button x="409" y="722" label="{commonFunction.getConstants('resetButton')}" id="resetbutton" click="onReset()"/>
+		<mx:Button x="637" y="722" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelButtonAction()" />
+	
+</mx:TitleWindow>

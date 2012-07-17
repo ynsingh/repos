@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="buildNextSession">
+	<typeAlias alias="buildNextSession"
+		type="in.ac.dei.edrp.cms.domain.buildnextsession.BuildNextSession"/>
+		
+	 <select id="getSessionStartEndDate" resultClass="buildNextSession">
+        select um.start_date as sessionStartDate, um.end_date as sessionEndDate,DATE_ADD(um.start_date,INTERVAL 1 YEAR) as nextSessionStartDate,DATE_ADD(um.end_Date,INTERVAL 1 YEAR) as nextSessionEndDate
+		from university_master um
+		where um.university_code=#universityId# and um.current_status='1';
+    </select>
+    <select id="getNextInactiveSession" resultClass="buildNextSession">
+        select um.start_date as nextSessionStartDate, um.end_date as nextSessionEndDate
+		from university_master um
+		where um.university_code=#universityId# and um.current_status='0' and um.start_date=#nextSessionStartDate# and um.end_date=#nextSessionEndDate#;
+    </select>
+    <select id="getSessionDetails" resultClass="buildNextSession">
+    	select um.start_date as sessionStartDate, um.end_date as sessionEndDate,DATE_ADD(um.start_date,INTERVAL 1 YEAR) as nextSessionStartDate,DATE_ADD(um.end_Date,INTERVAL 1 YEAR) as nextSessionEndDate
+    	,um.university_name as universityName,um.university_address as universityAdd,um.university_city as universityCity,um.university_pincode as universityPin,um.university_phone_number as universityPhone
+    	,um.university_other_phone as universityOtherPh, um.university_fax as universityFax,nick_name as universityNickName,um.university_state as universityState,um.country as country
+    	from university_master um
+    	where um.university_code=#universityId# and um.current_status='1';
+    </select>
+    
+    <select id="getControlDetails" resultClass="buildNextSession">
+    	select yr.session_start_date as sessionStartDate,yr.session_end_date as sessionEndDate,yr.status as status
+		from yearend_process_control yr
+ 		where yr.session_start_date=#nextSessionStartDate# and yr.session_end_date=#nextSessionEndDate# and yr.process_code=#processCode# and yr.university_code=#universityId# and yr.group_code=#groupCode#;
+    </select>
+	
+    <select id="getProcessCode" resultClass = "buildNextSession">
+		SELECT component_code as processCode from system_table_two where university_code=#universityId# and group_code='YEPCOD' and dummy_flag_one=#dummyFlag#;
+	</select>
+	
+    <insert id="builNextSession">
+    	insert into university_master(university_code,start_date,end_date,current_status,university_name,university_address,
+		university_city,university_pincode,university_phone_number,university_other_phone,university_fax,insert_time,creator_id,nick_name,university_state,country)
+		values(#universityId#,#nextSessionStartDate#,#nextSessionEndDate#,'1',#universityName#,#universityAdd#,
+		#universityCity#,#universityPin#,#universityPhone#,#universityOtherPh#,#universityFax#,now(),#creatorId#,#universityNickName#,#universityState#,#country#);
+    </insert>
+    
+    <update id="updateStatus">
+     	update university_master um set um.current_status='0' where um.university_code=#universityId# and um.start_date=#sessionStartDate# and
+     	um.end_date=#sessionEndDate# and um.current_status='1';
+    </update>
+    <update id="updateStatusForNexSession">
+     	update university_master um set um.current_status='1' where um.university_code=#universityId# and um.start_date=#nextSessionStartDate# and
+     	um.end_date=#nextSessionEndDate# and um.current_status='0';
+    </update>
+    <insert id="setYearEndProcessControl">
+    	insert into yearend_process_control(session_start_date,session_end_date,process_code,status,group_code,insert_time,creator_id,university_code)
+		values(#nextSessionStartDate#,#nextSessionEndDate#,#processCode#,#status#,#groupCode#,now(),#creatorId#,#universityId#);
+    </insert>
+</sqlMap>

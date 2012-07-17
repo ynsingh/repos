@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) EnterDetailWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="644" height="486" showCloseButton="true"
+	close="popUpWindowClose();" creationComplete="popupWindowInitializeHandler()" keyDown="initializeForEsc(event)" title="Session: {sessionStartDate} / {sessionEndDate}" styleName="PopUpTitleWindow">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="processListHttpService" method="POST"
+		url="{urlPrefix+'processList.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="processListResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="activityListHttpService" method="POST"
+		url="{urlPrefix+'activityList.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="activityListResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="semesterStartEndDateHttpService" method="POST"
+		url="{urlPrefix+'SemesterStartEndDate.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="semesterStartEndDateResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getExistingActivitySequenceHttpService" method="POST"
+		url="{urlPrefix+'ExistingActivitySequence.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="existingActivitySequenceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+	
+	<mx:HTTPService id="formSubmitHttpService" method="POST"
+		url="{urlPrefix+'submitData.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="submitFormResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="getNumberOfActivityHttpService" method="POST"
+		url="{urlPrefix+'NoOfActivity.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getNumberOfActivityResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+	<mx:Script source="asFiles/ActivityMasterAScript.as"/>				
+	<mx:Script source="asFiles/EnterDetailWindow.as"/>
+	
+		
+		<mx:Label x="35" y="34" text="{commonFunction.getConstants('programName')}:"/>
+		<mx:Label x="159" y="36" text="" width="160" id="programNameLabel" fontWeight="bold"/>
+		<mx:Label x="349" y="34" text="{commonFunction.getConstants('branchName')}:"/>
+		<mx:Label x="450" y="34" text="" width="160" id="branchNameLabel" fontWeight="bold"/>
+		<mx:Label x="39" y="64" text="{commonFunction.getConstants('specialization')}:"/>
+		<mx:Label x="159" y="64" text="" width="160" id="specializationLabel" fontWeight="bold"/>
+		<mx:Label x="332" y="64" text="{commonFunction.getConstants('semesterName')}:"/>
+		<mx:Label x="450" y="64" text="" width="160" id="semesterCodeLabel" fontWeight="bold"/>
+		
+		<mx:HRule x="40" y="106" width="547" height="7"/>
+	
+		<mx:Label x="123.25" y="153" text="{commonFunction.getConstants('semesterStartDate')}:"/>
+		<mx:Label x="265.25" y="153" text="" width="159" id="semesterStartDateLabel"/>
+		<mx:Label x="128.25" y="189" text="{commonFunction.getConstants('semesterEndDate')}:"/>
+		<mx:Label x="265.25" y="189" text="" width="159" id="semesterEndDateLabel"/>
+		<mx:Label x="200.25" y="226" text="{commonFunction.getConstants('process')}:"/>
+		<mx:ComboBox x="265.25" y="224" id="processCB" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="160"
+			 change="processCBChangeHandler(event)" toolTip="{processCB.text}"></mx:ComboBox>
+		<mx:Label x="204.25" y="265" text="{commonFunction.getConstants('activity')}:"/>
+		<mx:ComboBox x="265.25" y="263" id="activityCB" enabled="false" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" width="160"
+			change="activityCBChangeHandler(event)" toolTip="{activityCB.text}"></mx:ComboBox>
+		<mx:Label x="142.25" y="305" text="{commonFunction.getConstants('activitySequence')}:"/>
+		<mx:TextInput x="265.25" y="303" id="activitySequence" toolTip="" restrict="0-9" width="160"/>
+		<mx:Button x="210.75" y="363" label="{commonFunction.getConstants('saveButton')}" id="submitButton" click="submitButtonClickHandler(event)" enabled="false"/>
+		<mx:Button x="362.75" y="363" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton"  click="popUpWindowClose()"/>
+</mx:TitleWindow>

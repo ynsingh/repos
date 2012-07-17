@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) universityWithMou.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*"  creationPolicy="all" creationComplete="showOnLoad()"  title="{resourceManager.getString('Constants','associateUniversityWithMultipleMou')}" layout="absolute" width="710" height="473">
+
+	<mx:Script source="asFiles/associateMouAction.as"/>
+	
+	<mx:HTTPService id="getUniversityList" method="post"
+					url="{urlPrefix}getUniversityList.htm"
+					resultFormat="e4x"
+					result="getUniversityListSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	
+	<mx:HTTPService id="getDefault" method="post"
+					url="{urlPrefix}getDefault.htm"
+					resultFormat="e4x"
+					result="getDefaultSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	
+	<mx:HTTPService id="setMouDetails" method="post"
+					url="{urlPrefix}setMouDetails.htm"
+					resultFormat="e4x"
+					result="setMouSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getMouDetails" method="post"
+					url="{urlPrefix}getMouDetails.htm"
+					resultFormat="e4x"
+					result="getMouDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deletMouDetails" method="post"
+					url="{urlPrefix}deletMouDetails.htm"
+					resultFormat="e4x"
+					result="deletMouSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Canvas styleName="SimpleCanvas" x="24" y="16" width="635.5" height="162">
+		<mx:Label x="147" y="23" text="{resourceManager.getString('Constants','universityName')}" />
+		<mx:Label x="150" y="57" text="{resourceManager.getString('Constants','mouUniversity')}" />
+		<mx:ComboBox x="283" y="56" width="196" id="mouCombo" prompt="{resourceManager.getString('Constants','select')}" toolTip="{mouCombo.text}" change="mouChange()"
+					  dataProvider="{universitydata}" labelField="university" selectedIndex="-1" > </mx:ComboBox>
+		<mx:Button x="178.5" y="105" label="Submit" id="submitButton" click="addMou()" enabled="false"  width="83.5"/>
+		<mx:Button x="285" y="104" label="{resourceManager.getString('Constants','cancelButton')}" click="cancelFunction()" id="cancelbutton"  width="84"/>
+		<mx:Label x="283" y="23" id="universityIdLabel"     /> 
+	</mx:Canvas>
+	
+	<mx:Canvas styleName="GridCanvas" id="detail"  visible="true" width="639.5" height="187" backgroundColor="#E2E2E2" x="20" y="192">
+		
+		<mx:LinkButton label="{resourceManager.getString('Constants','deleteButton')}" width="69" height="25" id="deletebutton" click="deleteRecords()" x="558" enabled="false"  y="2"/>
+		<mx:Label x="9" y="5" text="{resourceManager.getString('Constants','associatedMOUUniversities')}" fontSize="12" height="16"/>
+		<mx:DataGrid id="associatedMouGrid" width="618.5" height="128" horizontalScrollPolicy="off" 
+					 sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" x="10" y="29">
+			<mx:columns>
+				<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" 
+									editorDataField="selected" dataField="select" headerText=" ">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.associatedMouGrid,[new LinkButton],[outerDocument.deletebutton])">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										
+										import mx.controls.LinkButton;
+									]]>
+								</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn editable="false" dataField="idname" headerText="{resourceManager.getString('Constants','universityName')}" textAlign="center" width="260" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="mouidname" headerText="{resourceManager.getString('Constants','mouUniversity')}" textAlign="center" width="310" sortable="true" showDataTips="true"/>
+				
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>	
+	
+</mx:Panel>

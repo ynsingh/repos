@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) employeePopUp.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" verticalPageScrollSize="5" verticalScrollPolicy="on"
+	 styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" x="30" y="5" horizontalScrollPolicy="auto"
+	  width="1143" layout="absolute" title="{commonFunction.getConstants('manageEmployeeDetails')}"
+	   close="closePopup()" xmlns:ns1="common.*" showCloseButton="true" creationComplete="titlewindowInitializeHandler()" height="958">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import common.Mask;
+			import common.commonFunction;
+			
+			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			
+			
+			public var infoObject:Object={};
+			public var employeeStatus:String;
+			public var parentEntity:String;
+			public var designation:String;
+			public var buttonFunction:Function;
+			public var gender:String;
+			public var category:String;
+			public var permanentCity:String;
+			public var permanentState:String;
+			public var corspondenceCity:String;
+			public var corspondenceState:String;
+			public var arr:ArrayCollection;
+			public var o:Object;
+			public var pop:employeePopUp;
+			public var pg:String;
+			public var net:String;
+			public var physicalHandicapped:String;
+			public var minority:String;
+			public var pensionCode:String;
+			public var minorityFlag:String;
+			
+			protected function titlewindowInitializeHandler():void
+			{
+				
+				var endMonth:Date=new Date();
+				dateofBirthField.selectableRange={rangeEnd :endMonth};
+				
+				permanentAddressField.city=permanentCity;
+				permanentAddressField.stateField.selectedItem=permanentState;				
+				
+				corspondenceAddressField.city = corspondenceCity;
+				corspondenceAddressField.stateField.selectedItem = corspondenceState;
+				
+				statusCombo.selectedItem = 	statusxmlId.status.(@code==employeeStatus).@name+"";				
+				
+				infoObject["userId"] = new Date;
+				
+				getInputDetails.send(infoObject);				
+				
+				getDesignations.send(infoObject);
+				
+				getgenderDetails.send(infoObject);
+				
+				getCategoryDetails.send(infoObject);
+				
+				getMinorityDetails.send(infoObject);
+	
+				getPensionDetails.send(infoObject);
+				
+				if(pg =="Y"){					
+					grad.selected = true;					
+				}else{
+					grad.selected = false;
+				}
+				if(net =="Y"){					
+					netQualified.selected = true;					
+				}else{
+					netQualified.selected = false;
+				}
+				if(physicalHandicapped =="Y"){					
+					handicapped.selected = true;					
+				}else{
+					handicapped.selected = false;
+				}
+				if(minorityFlag =="Y"){					
+					minorGroup.selected = true;
+					minorityCombo.visible = true;
+					minorLabel.visible = true;					
+				}else{
+					minorGroup.selected = false;
+					minorityCombo.visible = false;
+					minorLabel.visible = false;
+				}
+			}
+			
+			/**
+			 * The function retrives the list of programs for the 
+			 * concerned university idSS
+			 * */
+			[Bindable]
+			public var details: XML;
+			public var detailslist:ArrayCollection;
+			public function onSuccess(event:ResultEvent):void{
+				
+				details=event.result as XML;
+				
+				
+				detailslist =new ArrayCollection();
+				
+				for each (var o:Object in details.role){
+					
+					detailslist.addItem({id:o.id,description:o.description});
+					
+				}
+				
+//				if(detailslist.length==0){
+//					
+//					Alert.show(commonFunction.getMessages('noRecordFound'),
+//			commonFunction.getMessages('alert'),4,null,null,errorIcon);
+//				}else{
+					
+					parententityCombo.dataProvider = details.role.description;
+					parententityCombo.selectedItem = details.role.(id==parentEntity).description+"";
+					
+//				}	
+			}
+			
+			/**
+			 * method executed on request failure 
+			 * */
+			public function onFailure(event:FaultEvent):void{
+				
+				Mask.close();
+				
+				Alert.show(commonFunction.getMessages('requestFailed'),
+				commonFunction.getMessages('failure'),0,null,null,errorIcon);	
+	
+			}
+			
+			/**
+			 * The function retrives the list of designations for the 
+			 * concerned university id
+			 * */
+			[Bindable]
+			public var designationsDetails: XML;
+			public function onDesignationsSuccess(event:ResultEvent):void{
+				
+				designationsDetails=event.result as XML;					
+					
+				designationCombo.dataProvider =designationsDetails.role.description;
+				designationCombo.selectedItem = designationsDetails.role.(id==designation).description+"";
+					
+			
+			}
+			
+			/**
+			 * The function retrives the list of genders for the 
+			 * concerned university id
+			 * */
+			[Bindable]
+			public var otherDetails: XML;
+			public function onGenderDetailsSuccess(event:ResultEvent):void{
+				
+				otherDetails=event.result as XML;			
+					
+				genderCombo.dataProvider =otherDetails.role.description;
+				genderCombo.selectedItem = otherDetails.role.(id==gender).description+"";
+					
+			
+			}
+			
+			/**
+			 * The function retrives the list of categories for the 
+			 * concerned university id
+			 * */
+			[Bindable]
+			public var categoryDetails: XML;
+			public function onCategoryDetailsSuccess(event:ResultEvent):void{
+				
+				categoryDetails=event.result as XML;				
+				
+				categoryCombo.dataProvider = categoryDetails.role.description;
+				categoryCombo.selectedItem = categoryDetails.role.(id==category).description+"";
+					
+				
+			}
+			
+			/**
+ * The function retrives the list of minorities groups for the 
+ * concerned university id
+ * */
+[Bindable]
+public var minorityDetails: XML;
+public function onMinorityDetailsSuccess(event:ResultEvent):void{
+	
+		minorityDetails=event.result as XML;		
+		minorityCombo.dataProvider = minorityDetails.role.description;
+		
+		minorityCombo.selectedItem = minorityDetails.role.(id==minority).description+"";
+}
+
+/**
+ * The function retrives the list of pension Descriptions for the 
+ * concerned university id
+ * */
+[Bindable]
+public var pensionDetails: XML;
+public function onPensionDetailsSuccess(event:ResultEvent):void{
+	
+		pensionDetails=event.result as XML;		
+		pensionCombo.dataProvider = pensionDetails.role.description;
+		
+		pensionCombo.selectedItem = pensionDetails.role.(id==pensionCode).description+"";
+
+}
+			
+			public function saveForms():void
+			{
+				if(validateForm())
+				{
+					if((checkEmployeeMiddleName())&&(checkQualification()))
+					{
+						
+						Alert.show(commonFunction.getMessages('areyousure'),
+				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,onOK,questionIcon);	
+						
+						
+						
+					}
+				}
+				else
+				{
+					Alert.show((commonFunction.getMessages('pleasecheckEntriesinRed')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
+				}
+			}
+	
+	public function onOK(event:CloseEvent):void{
+			
+			if(event.detail==Alert.YES){				
+				
+						infoObject["parentEntityId"] = detailslist.getItemAt(parententityCombo.selectedIndex).id+"";
+						infoObject["designationId"] = designationsDetails.role.(description==designationCombo.selectedLabel).id;
+						infoObject["dateOfJoining"] = dateFormatter.format(dateOfJoiningField.text);
+						infoObject["empFirstName"] = studentfirstnametext.text;
+						infoObject["empMiddleName"] = studentmiddlenametext.text;
+						infoObject["empLastName"] = studentlastnametext.text;
+						infoObject["primaryEmailId"] = primarymailtext.text;
+						infoObject["secondaryEmailId"] = secondarymailtext.text;
+						infoObject["dateOfBirth"] = dateFormatter.format(dateofBirthField.text);
+						infoObject["qualification"] = qualificationtext.text;
+						infoObject["employeeStatus"] = statusxmlId.status.(@name==statusCombo.selectedLabel).@code;
+						infoObject["gender"] = otherDetails.role.(description==genderCombo.selectedLabel).id;
+						infoObject["category"] = categoryDetails.role.(description==categoryCombo.selectedLabel).id;
+						infoObject["permanentAddress"] = permanentAddressField.addressLine1.text;
+						infoObject["state"] = permanentAddressField.stateField.selectedLabel;
+						infoObject["city"] = permanentAddressField.cityField.selectedLabel;
+						infoObject["pinCode"] = permanentAddressField.pinField.text;
+						infoObject["physical"] =  commonFunction.returnSelection(handicapped);
+						infoObject["net"] = commonFunction.returnSelection(netQualified);
+						infoObject["postGraduate"] = commonFunction.returnSelection(grad);
+						infoObject["minorityFlag"] = commonFunction.returnSelection(minorGroup);
+						infoObject["pension"] = pensionDetails.role.(description==pensionCombo.selectedLabel).id;
+			
+						if(minorityCombo.selectedIndex==-1)
+						{				
+						infoObject["minorityCode"] ="";				
+						}else
+						{
+						infoObject["minorityCode"] = minorityDetails.role.(description==minorityCombo.selectedLabel).id;
+						}
+						infoObject["coresspondenceAddress"] = corspondenceAddressField.addressLine1.text;
+						if(corspondenceAddressField.stateField.selectedIndex==-1){
+							infoObject["coresState"] = "";
+						}else{
+							infoObject["coresState"] = corspondenceAddressField.stateField.selectedLabel;
+						}
+						if(corspondenceAddressField.cityField.selectedIndex==-1){
+							infoObject["coresCity"] = "";
+						}else{
+							infoObject["coresCity"] = corspondenceAddressField.cityField.selectedLabel;
+						}
+						infoObject["coresPinCode"] = corspondenceAddressField.pinField.text;
+						infoObject["officePhone"] = phones.officePhoneField.text;
+						infoObject["homePhone"] = phones.homePhoneField.text;
+						infoObject["otherPhone"] = phones.otherPhoneField.text;
+						infoObject["faxPhone"] = phones.faxPhoneField.text;
+						infoObject["activity"] = "update";
+						infoObject["updateEmployeeCode"] = employeeCodeField.text;
+						
+						setEmployeeProfile.send(infoObject);
+				
+						Mask.show(commonFunction.getMessages('pleaseWait'));
+				
+			}
+			
+		}
+			
+			
+			public function onUpdateSuccess(event:ResultEvent):void{
+				var successDetails:XML=event.result as XML;
+				Mask.close();
+				if(String(successDetails.Details.list_values).search("ErrorInUpdate")>-1)
+				{
+				Alert.show(resourceManager.getString('Messages','cannotUpdate')+"\n"+String(successDetails.Details.list_values) ,resourceManager.getString('Messages','error'),4,null,null,errorIcon);
+ 				}
+				else{
+				Alert.show((commonFunction.getMessages('recordUpdatedSuccessfully')),
+					(commonFunction.getMessages('saved')),0,null,null,successIcon);
+				}
+				closePopup();
+				
+				buttonFunction();
+				
+
+			}
+			
+			public function resetWindow():void{
+				resetFunction(arr,o,pop);
+				titlewindowInitializeHandler();
+				permanentAddressField.cityField.errorString="";
+			}
+
+
+
+		]]>
+	</mx:Script>
+<mx:XML id="statusxmlId" source="xmlFiles/statusxml.xml" format="e4x" />
+<mx:Script source="asFiles/employeePopUpAction.as"/>
+	
+	<mx:HTTPService id="getInputDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getParentEntityDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getDesignations" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getDesignationsDetails.htm"
+					resultFormat="e4x"
+					result="onDesignationsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setEmployeeProfile" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/setEmployeeProfile.htm"
+					resultFormat="e4x"
+					result="onUpdateSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getgenderDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getGenderDetails.htm"
+					resultFormat="e4x"
+					result="onGenderDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCategoryDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getCategoryDetails.htm"
+					resultFormat="e4x"
+					result="onCategoryDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					<mx:HTTPService id="getMinorityDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getMinorityDetails.htm"
+					resultFormat="e4x"
+					result="onMinorityDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					<mx:HTTPService id="getPensionDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getPensionDetails.htm"
+					resultFormat="e4x"
+					result="onPensionDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	
+ 	<mx:Label x="504" y="24" text="{commonFunction.getConstants('employeeStatus')}*" />
+		<mx:ComboBox x="641" y="21" width="150" id="statusCombo" toolTip="{statusCombo.text}" prompt="{commonFunction.getConstants('select')}" labelField="@name"
+		 dataProvider="{statusxmlId.status.@name}" selectedIndex="-1" >
+		</mx:ComboBox>
+		<mx:Label x="62" y="23" text="{commonFunction.getConstants('parentEntity')}*"/>
+		<mx:Label x="504" y="57" text="{commonFunction.getConstants('designation')}*"/>
+		<mx:Label x="62" y="57" text="{commonFunction.getConstants('dateOfJoining')}*"/>
+		<mx:DateField x="189" y="55" id="dateOfJoiningField" width="160" yearNavigationEnabled="true"/>
+		<mx:ComboBox x="189" y="20" id="parententityCombo" toolTip="{parententityCombo.text}" width="160"></mx:ComboBox>
+		<mx:ComboBox x="641" y="54" id="designationCombo" toolTip="{designationCombo.text}"  width="150"></mx:ComboBox>
+		<mx:Label x="62" y="97" text="{commonFunction.getConstants('employeeCode')}*"/>
+		<mx:TextInput x="189" y="97" id="employeeCodeField" editable="false"/>
+	    <mx:TitleWindow layout="absolute" borderStyle="solid" title="{commonFunction.getConstants('personalDetails')}" borderThickness="2" borderColor="#000000" width="1036" height="339" y="150" x="13">
+		<mx:Label x="168" y="10" text="{commonFunction.getConstants('firstName')}*"/>
+		<mx:Label text="{commonFunction.getConstants('middleName')}" x="382" y="10"/>
+		<mx:Label x="613" y="10" text="{commonFunction.getConstants('lastName')}*"/>
+		<mx:Label x="37" y="42" text="{commonFunction.getConstants('employee')}"/>
+		<mx:TextInput x="168" y="38" width="150" id="studentfirstnametext" restrict="a-z A-Z"/>
+		<mx:TextInput x="382" y="39" width="150" id="studentmiddlenametext" />
+		<mx:TextInput x="613" y="40" width="160" id="studentlastnametext" restrict="a-z A-Z"/>
+		<mx:Label x="37" y="84" text="{commonFunction.getConstants('primaryEmailid')}*"/>
+		<mx:TextInput x="168" y="82" id="primarymailtext" width="150"/>
+		<mx:Label x="382" y="84" text="{commonFunction.getConstants('secondaryEmailid')}"/>
+		<mx:TextInput x="613" y="82" id="secondarymailtext" width="160"/>
+		<mx:Label x="37" y="124" text="{commonFunction.getConstants('dateOfBirth')}*"/>
+		<mx:DateField x="168" y="122" width="150" id="dateofBirthField" yearNavigationEnabled="true"/>
+		<mx:Label x="385" y="124" text="{commonFunction.getConstants('qualification')}*"/>
+		<mx:Label x="37" y="167" text="{commonFunction.getConstants('gender')}*"/>
+		<mx:ComboBox x="168" y="164" id="genderCombo"  prompt="{commonFunction.getConstants('select')}" width="150" selectedIndex="-1"></mx:ComboBox>
+		<mx:Label x="385" y="167" text="{commonFunction.getConstants('category')}*"/>
+		<mx:ComboBox x="613" y="164" id="categoryCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{categoryCombo.text}" selectedIndex="-1" width="160"></mx:ComboBox>
+		<mx:TextInput x="613" y="124" id="qualificationtext"/>
+		<mx:CheckBox x="37" y="201" label="{commonFunction.getConstants('minorityGroup')}" id="minorGroup" change="onChange()"/>
+		<mx:Label x="37" y="219" text="{commonFunction.getConstants('minority')}" visible="false" id="minorLabel"/>
+		<mx:ComboBox x="168" y="222" visible="false" id="minorityCombo" toolTip="{minorityCombo.text}" prompt="{commonFunction.getConstants('select')}" width="150" selectedIndex="-1"></mx:ComboBox>
+		<mx:Label x="385" y="203" text="{commonFunction.getConstants('pension')}"/>
+		<mx:ComboBox x="613" y="201" id="pensionCombo" prompt="{commonFunction.getConstants('select')}" width="160" selectedIndex="-1"></mx:ComboBox>
+		<mx:CheckBox x="37" y="252" label="{commonFunction.getConstants('handicapped')}" id="handicapped"/>
+		<mx:CheckBox x="385" y="252" label="{commonFunction.getConstants('netQualified')}" id="netQualified"/>
+		<mx:CheckBox x="613" y="252" label="{commonFunction.getConstants('postGrad')}" id="grad"/>
+		</mx:TitleWindow>
+		<mx:TitleWindow layout="absolute" borderColor="#000000" borderStyle="solid"
+			 borderThickness="2" height="308" y="505" title="{commonFunction.getConstants('contactDetails')}" x="14" width="1035">
+		<ns1:AddressField x="10" y="107" id="corspondenceAddressField" width="980" title="{commonFunction.getConstants('correspondenceAddress')}" validationRequired="false">
+		</ns1:AddressField>
+		<ns1:AddressField x="10" y="4" id="permanentAddressField" width="980" title="{commonFunction.getConstants('permanentAddress')}*" validationRequired="false">
+		</ns1:AddressField>
+		<ns1:PhoneField x="10" y="218" id="phones">
+		</ns1:PhoneField>
+		<mx:CheckBox x="308" y="108" id="checkboxField" label="{commonFunction.getConstants('sameAsAbove')}" click="copyaddress()"/>
+	</mx:TitleWindow>	
+		<mx:Button x="258.5" y="850" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="saveForms()"/>
+		<mx:Button x="678.5" y="850" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelButtonAction()" />
+		<mx:Button x="503.5" y="850" label="{commonFunction.getConstants('resetButton')}" click="resetWindow()"/>
+	
+    
+   <mx:DateValidator source="{dateOfJoiningField}" id="joindate" property="text" required="true" inputFormat="mm/dd/yyyy" allowedFormatChars="/" />
+<mx:StringValidator source="{parententityCombo}" id="entityvalid" property="text" required="true" trigger="{savebutton}" triggerEvent="click"/>
+<mx:StringValidator source="{designationCombo}" id="designationvalid" property="text" required="true" trigger="{savebutton}" triggerEvent="click"/>
+<mx:StringValidator source="{studentfirstnametext}" id="employeeFirstname" property="text" required="true"/>
+<mx:StringValidator source="{studentlastnametext}" id="employeeLastname" property="text" required="true"/>
+<mx:EmailValidator source="{primarymailtext}" id="primaryemailVal" property="text" required="true"/>
+<mx:EmailValidator source="{secondarymailtext}" id="secondaryemailVal" property="text" required="false"/>
+<mx:DateValidator source="{dateofBirthField}" id="birthdate" property="text" required="true" inputFormat="mm/dd/yyyy" allowedFormatChars="/"/>
+<mx:StringValidator source="{genderCombo}" id="gendervalid" property="selectedItem" required="true"/>
+<mx:StringValidator source="{qualificationtext}" id="qualificationvalid" property="text" required="true"/>
+<mx:StringValidator source="{categoryCombo}" id="categoryvalid" property="selectedItem" required="true"/>
+<mx:StringValidator source="{phones.officePhoneField}" minLength="10"  maxLength="20" id="oficephonevalid" property="text" required="true"/>
+<mx:StringValidator source="{phones.homePhoneField}" id="homephonevalid" minLength="10" maxLength="20" property="text" required="false"/>
+<mx:StringValidator source="{phones.otherPhoneField}" id="otherphonavalid" minLength="10" maxLength="20" property="text" required="false"/>
+<mx:StringValidator source="{phones.faxPhoneField}" id="faxphonevalid" minLength="10" maxLength="20" property="text" required="false"/>
+<mx:Validator id="addressValidator" property="text" required="true"/>
+<mx:Validator id="stateValidator" property="selectedLabel" required="true"/>
+<mx:Validator id="cityValidator" property="selectedLabel" required="true"/>
+<mx:Validator id="coraddressValidator" property="text"/>
+<mx:Validator id="corstateValidator" property="selectedLabel"/>
+<mx:Validator id="corcityValidator" property="selectedLabel"/>
+<mx:Validator id="pensionValidator" property="selectedLabel" required="true"/>
+<mx:Validator id="minorValidator" property="selectedLabel"/>
+</mx:TitleWindow>
+
+
+
+

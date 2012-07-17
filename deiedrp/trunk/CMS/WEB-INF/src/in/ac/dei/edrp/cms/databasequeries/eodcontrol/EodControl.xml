@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) EodControl.xml
+* @Author :Ankit Jain
+* @Date :04/08/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="eodControl">
+ 
+   <select id="getEodControlDetails" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+        select phase, dependent_phase as dependentPhase, step, frequency as stepFrequencyCode, stt.component_description as stepFrequencyDescription,
+			period_active_from as periodActiveFrom, period_active_to as periodActiveTo, method_to_run as methodToRunCode,
+			stt1.component_description as methodToRunDescription, method_before_run as methodBeforeRunCode, 
+			(case when status='ACT' then 'Active' else 'Inactive' end) as status, build_day as day, mm_dd as mmdd, month_start_point as flag
+		from eod_control ec, system_table_two stt, system_table_two stt1
+		where ec.frequency=stt.component_code and stt.group_code='STPFRQ' and stt.university_code=#universityId# and
+			ec.method_to_run=stt1.component_code and stt1.group_code='EODMTH' and stt1.university_code=#universityId#;
+   </select>
+   
+    <select id="getStepFrequency" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+        select component_code as stepFrequencyCode, component_description as stepFrequencyDescription
+		from system_table_two where group_code='STPFRQ' and university_code=#universityId#;
+   </select>
+   
+   <select id="getMethodsToRun" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+        select component_code as methodToRunCode, component_description as methodToRunDescription
+		from system_table_two where group_code='EODMTH' and university_code=#universityId#;
+   </select>
+   
+   <select id="getExistMethodDetail" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+   		select status from eod_control where method_to_run=#methodToRunCode# and status=#status#;
+   </select>
+   
+   <insert id="saveEodControlDetails" parameterClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+   		insert into eod_control (phase, dependent_phase, step, frequency, period_active_from,
+  			period_active_to, method_to_run, status, insertion_time, creator_id, build_day, mm_dd, month_start_point, remark) 
+  		values (#phase#, #dependentPhase#, #step#, #stepFrequencyCode#, #periodActiveFrom#, #periodActiveTo#,
+  			#methodToRunCode#, #status#, now(), #userId#, #day#, #mmdd#, #buildTime#, #remark#)
+   </insert> 
+   
+   <update id="updateEodControl" parameterClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+	   	update eod_control set dependent_phase=#dependentPhase#, frequency=#stepFrequencyCode#, period_active_from=#periodActiveFrom#, 
+	   	period_active_to=#periodActiveTo#, modification_time=now(), modifier_id=#userId#, build_day=#day#, mm_dd=#mmdd#, month_start_point=#flag#  
+	   	where phase=#phase# and step=#step# and method_to_run=#methodToRunCode# and status=#status#;
+   </update>
+   
+   <update id="updateEodControlStatus" parameterClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+   		update eod_control set status=(select case when status=(SELECT IF('Inactive'='Active','INA','ACT')) then 'INA' else 'ACT' end)
+        where phase=#phase# and step=#step# and method_to_run=#methodToRunCode#;
+   </update>
+   
+   <delete id="deleteEodControl" parameterClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+   		delete from eod_control where phase=#phase# and step=#step# and method_to_run=#methodToRunCode# and status=#status#
+   </delete>
+   
+   <select id="getMethodToRunStatus" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+		select status  as methodStatus from eod_control where method_to_run=#methodToRunCode# and status=#status#; 
+	</select>
+	
+	<!-- Query for Eod_Master Build -->
+	<select id="getEodMasterDetail" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+		select status from eod_master;
+	</select>
+	
+	<select id="getLastDate99thRecordsStatus" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+		select status from eod_master where phase='99' and step='99' and eod_date=DATE_SUB(CONCAT(#eodDate#, ' 00:00:00'), INTERVAL 1 DAY);
+	</select>
+	
+	<select id="getTheRecordsOfSelectedDate" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+		select phase, dependent_phase as dependentPhase, step, frequency as stepFrequencyCode, 
+		method_to_run as methodToRunCode, mm_dd as mmdd, build_day as day, month_start_point as flag
+		from eod_control 
+		where #eodDate#<![CDATA[ >= ]]> period_active_from and #eodDate#<![CDATA[ <= ]]>period_active_to;
+	</select>
+	
+	<insert id="buildEodMaster" parameterClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+		insert into eod_master (phase, dependent_phase, step, frequency, eod_date, method_to_run, creator_id, insert_time, status)
+		values(#phase#, #dependentPhase#, #step#, #stepFrequencyCode#, #eodDate#, #methodToRunCode#, #userId#, now(), null);
+	</insert>
+	
+	<select id="getEodStartDate" resultClass="in.ac.dei.edrp.cms.domain.eodcontrol.EodControl">
+		select start_time as eodStartTime 
+		from eod_master 
+		where method_to_run=#methodToRunCode# and eod_date=#eodDate#;
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="commonresultprocessquery">
+	<typeAlias alias="programtermdetail"
+		type="in.ac.dei.edrp.cms.domain.resultprocessing.PreProcessForResultBean" />
+	<typeAlias alias="previousSemester"
+		type="in.ac.dei.edrp.cms.utility.PreviousSemesterDetail" />
+	<typeAlias alias="programMasterDetail"
+		type="in.ac.dei.edrp.cms.domain.programmaster.ProgramMasterInfoGetter" />
+	<typeAlias alias="preProcessResultPCK"
+		type="in.ac.dei.edrp.cms.domain.resultprocessing.PreProcessForResultBean" />
+
+
+	<!-- This query returns status of process for program course key -->
+	<resultMap id="listOfStudentToProcessResult" class="programtermdetail">
+		<result property="rollNumber" column="srsh.roll_number" />
+		<result property="enrollmentNumber" column="sp.enrollment_number" />
+	</resultMap>
+	<select id="listOfStudentToProcess" resultMap="listOfStudentToProcessResult">
+		select
+		srsh.roll_number,sp.enrollment_number from
+		student_program sp,student_registration_semester_header srsh
+		where sp.entity_id=#entityId# and srsh.entity_id=sp.entity_id
+		and sp.program_id=#programId# and sp.branch_id=#branchId# and
+		sp.specialization_id=#specializationId#
+		and sp.current_semester=#semesterCode# and
+		sp.program_status=#programStatus#
+		and srsh.program_course_key=#programCourseKey# and
+		srsh.session_start_date=#semesterStartDate# and
+		srsh.session_end_date=#semesterEndDate# and
+		srsh.status=#semesterStatus#
+		and srsh.roll_number=sp.roll_number 
+    </select>
+
+	<resultMap id="getPreviousSemesterDetailsResult" class="previousSemester">
+		<result property="numberOfRemedials" column="srsh.number_of_remedials" />
+		<result property="sgpa" column="srsh.sgpa" />
+		<result property="cumulativeWeighted" column="srsh.weighted_percentage" />
+		<result property="previousSemesterStartDate" column="srsh.session_start_date" />
+		<result property="previousSemesterEndDate" column="srsh.session_end_date" />
+		<result property="programCourseKey" column="srsh.program_course_key" />
+		<result property="theorySGPAPoint" column="sa.point_secured_theory_sgpa" />
+		<result property="practicalSGPAPoint" column="sa.point_secured_practical_sgpa" />
+		<result property="theoryEarnedCredit" column="sa.earned_theory_credit" />
+		<result property="practicalEarnedCredit" column="sa.earned_practical_credit" />
+		<result property="theoryCGPAPoint" column="sa.point_secured_theory_cgpa" />
+		<result property="practicalCGPAPoint" column="sa.point_secured_practical_cgpa" />
+		<result property="theoryEarnedCgpaCredit" column="sa.earned_theory_credit_cgpa" />
+		<result property="practicalEarnedCgpaCredit" column="sa.earned_practical_credit_cgpa" />
+
+	</resultMap>
+	<select id="getPreviousSemesterDetailsForMarksSystem" resultMap="getPreviousSemesterDetailsResult">
+		select
+		srsh.number_of_remedials,srsh.sgpa,srsh.weighted_percentage,srsh.session_start_date,srsh.session_end_date,
+		srsh.program_course_key,sa.point_secured_theory_sgpa,sa.point_secured_practical_sgpa,
+		sa.earned_theory_credit,sa.earned_practical_credit,sa.point_secured_theory_cgpa,sa.point_secured_practical_cgpa,
+		sa.earned_theory_credit_cgpa,sa.earned_practical_credit_cgpa
+		from student_registration_semester_header srsh,
+		student_aggregate sa where srsh.roll_number=#rollNumber# and srsh.status in
+		('PAS','REM') and srsh.entity_id=#entityId# and
+		srsh.program_course_key=sa.program_course_key
+		and srsh.session_start_date=sa.semester_start_date and
+		srsh.session_end_date=sa.semester_end_date and
+		srsh.roll_number=sa.roll_number
+   </select>
+
+	<resultMap id="getProgramMaxDetailResult" class="programMasterDetail">
+		<result property="numberOfAttemptAllowed" column="number_of_attempt_allowed" />
+		<result property="maxNumberOfFailSubjects" column="max_number_of_fail_subjects" />
+		<result property="numberOfTerms" column="no_of_terms" />
+	</resultMap>
+	<select id="getProgramMaxDetail" resultMap="getProgramMaxDetailResult">
+		select number_of_attempt_allowed,max_number_of_fail_subjects,no_of_terms
+		from program_master where program_id=#programId#
+     </select>
+
+	<resultMap id="previousProgramResult" class="previousSemester">
+		<result property="programId" column="program_id" />
+		<result property="branchId" column="branch_id" />
+		<result property="specializationId" column="specialization_id" />
+		<result property="semesterCode" column="semester_code" />
+	</resultMap>
+	<select id="previousProgram" resultMap="previousProgramResult">
+		select program_id,branch_id,specialization_id,semester_code
+		from program_course_header where program_course_key=#programCourseKey#
+     </select>
+
+
+
+
+	<!--
+		This query returns previous program course key of a student written by
+		Arush on 12/15/2012
+	-->
+
+	<resultMap id="previouspck" class="previousSemester">
+		<result property="previousSemesterStartDate" column="session_start_date" />
+		<result property="previousSemesterEndDate" column="session_end_date" />
+		<result property="programCourseKey" column="program_course_key" />
+
+	</resultMap>
+	
+	 
+     <select id="previousProgramcoursekey" resultMap="previouspck">
+     <![CDATA[
+    	SELECT srsh.session_start_date,srsh.session_end_date,srsh.program_course_key 
+    	FROM student_registration_semester_header srsh
+		where srsh.roll_number = #rollNumber#
+		and srsh.entity_id =#entityId# and srsh.session_start_date = (select max(srsh1.session_start_date)
+		from student_registration_semester_header srsh1
+		where srsh1.program_course_key <> #programCourseKey# and srsh1.status  in ('PAS' ,'REM','UFM','INC') and  srsh1.roll_number = #rollNumber#
+		and session_start_date < #semesterStartDate#  ) and srsh.status not in ('YTR','WTH');
+   
+    ]]>
+ </select>
+ 
+ <resultMap id="PreviouspckDetails" class="previousSemester">
+		<result property="numberOfRemedials" column="srsh.number_of_remedials" />
+		<result property="sgpa" column="srsh.sgpa" />
+		<result property="cumulativeWeighted" column="srsh.weighted_percentage" />
+		<result property="previousSemesterStartDate" column="srsh.session_start_date" />
+		<result property="previousSemesterEndDate" column="srsh.session_end_date" />
+		<result property="programCourseKey" column="srsh.program_course_key" />
+		<result property="theorySGPAPoint" column="sa.point_secured_theory_sgpa" />
+		<result property="practicalSGPAPoint" column="sa.point_secured_practical_sgpa" />
+		<result property="theoryEarnedCredit" column="sa.earned_theory_credit" />
+		<result property="practicalEarnedCredit" column="sa.earned_practical_credit" />
+		<result property="theoryCGPAPoint" column="sa.point_secured_theory_cgpa" />
+		<result property="practicalCGPAPoint" column="sa.point_secured_practical_cgpa" />
+		<result property="theoryEarnedCgpaCredit" column="sa.earned_theory_credit_cgpa" />
+		<result property="practicalEarnedCgpaCredit" column="sa.earned_practical_credit_cgpa" />
+
+	</resultMap>
+	<select id="PreviouspckDetailsforgrade" resultMap="PreviouspckDetails">
+		select
+		srsh.number_of_remedials,srsh.sgpa,srsh.weighted_percentage,srsh.session_start_date,srsh.session_end_date,
+		srsh.program_course_key,sa.point_secured_theory_sgpa,sa.point_secured_practical_sgpa,
+		sa.earned_theory_credit,sa.earned_practical_credit,sa.point_secured_theory_cgpa,sa.point_secured_practical_cgpa,
+		sa.earned_theory_credit_cgpa,sa.earned_practical_credit_cgpa
+		from student_registration_semester_header srsh,
+		student_aggregate sa where srsh.roll_number=#rollNumber# and srsh.status in
+		('PAS','REM','FAL') and srsh.entity_id=#entityId# and
+		srsh.program_course_key=sa.program_course_key
+		and srsh.session_start_date=sa.semester_start_date and
+		srsh.session_end_date=sa.semester_end_date and
+		srsh.roll_number=sa.roll_number and  srsh.program_course_key = #programCourseKey#
+   </select>
+ 
+ 
+</sqlMap>
+
+
+
+
+
+
+

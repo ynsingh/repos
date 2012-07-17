@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="" width="610" height="298" creationComplete="initializeUrl();" title="{resourceManager.getString('Constants','studentCheckList')}" showCloseButton="true" close="closeMe()" fontFamily="Verdana" fontSize="12">
+<mx:Script source="asFiles/StudentCheckListScreenAction.as"/>
+
+<mx:HTTPService id="httpSubmitVerificationComponents" method="post"
+        url="{url+'/saveComponentStatus.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_SubmitVerificationComponents(event)"
+        fault="faultHandler_SubmitVerificationComponents(event)"
+        useProxy="false"/>               
+
+<mx:Canvas height="100%" width="100%">
+<mx:DataGrid x="41" y="33" id="checkListGrid" sortableColumns="false" draggableColumns="false" editable="true" itemEditEnd="setChangedIndex(event)"  height="167">
+	<mx:columns>
+		<mx:DataGridColumn headerText="{resourceManager.getString('Constants','checkListItem')}" width="200" dataField="component_description" editable="false" dataTipField="component_description" showDataTips="true"/>
+		<mx:DataGridColumn headerText="{resourceManager.getString('Constants','verified')}" width="100" labelFunction="getVerificationStatus" dataField="verified" editorDataField="selectedIndex">
+			<mx:itemEditor>
+				<mx:Component>
+					<mx:ComboBox dataProvider="{[resourceManager.getString('Constants','notVerified'),resourceManager.getString('Constants','verified')]}"/>
+				</mx:Component>
+			</mx:itemEditor>
+		</mx:DataGridColumn>
+		<mx:DataGridColumn headerText="{resourceManager.getString('Constants','notes')}" dataField="notes" dataTipField="notes" width="200" showDataTips="true"/>
+	</mx:columns>
+</mx:DataGrid>
+<mx:Button x="41" y="216" label="{resourceManager.getString('Constants','submitButton')}" click="submitCheckListData()"/>
+	<mx:Button x="222" y="214" label="{resourceManager.getString('Constants','cancelButton')}" click="{PopUpManager.removePopUp(this)}"/>
+</mx:Canvas>
+</mx:TitleWindow>

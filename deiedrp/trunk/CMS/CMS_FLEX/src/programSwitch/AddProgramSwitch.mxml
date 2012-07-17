@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) AddProgramSwitch.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="806" height="284" 
+	creationComplete="initFormElements()" showCloseButton="true" 
+	close="closeScreen()" title="{commonFunction.getConstants('addSwitch')}" creationPolicy="all">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="getSwitchType" method="post"
+					url="{urlPrefix+'getSwitchTypes.htm'}"
+					resultFormat="e4x"
+					result="onSwitchTypeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getSwitchRule" method="post"
+					url="{urlPrefix1+'getRecordsDetails.htm'}"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getBranchDetails" method="post"
+					url="{urlPrefix+'getProgramCourseTypeDetails.htm'}"
+					resultFormat="e4x"
+					result="programChangeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramDetails" method="post"
+					url="{urlPrefix+'getProgramCourseTypeDetails.htm'}"
+					resultFormat="e4x"
+					result="onProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getEntityDetails" method="post"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getParentEntityDetails.htm"
+					resultFormat="e4x"
+					result="onEntitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getspecializationDetails" method="post"
+					url="{urlPrefix+'getProgramCourseTypeDetails.htm'}"
+					resultFormat="e4x"
+					result="branchChangeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getsemesterDetails" method="post"
+					url="{urlPrefix2+'getProgramSemesterDetails.htm'}"
+					resultFormat="e4x"
+					result="specializationChangeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="setProgramSwitchDetails" method="post"
+					url="{urlPrefix+'setProgramSwitchDetails.htm'}"
+					resultFormat="e4x"
+					result="onSuccessfulEntry(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					<mx:HTTPService id="getOldSemesters" method="post"
+					url="{urlPrefix+'getOldSemestersDetails.htm'}"
+					resultFormat="e4x"
+					result="onOldSemester(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>	
+
+	
+	<mx:Script source="asFiles/AddProgramSwitchAction.as"/>
+	
+    <mx:Validator id="switchTypeValidator" property="selectedLabel" required="true" />
+    <mx:Validator id="switchRuleValidator" property="selectedLabel" required="true"/>
+    <mx:Validator id="newProgramValidator" property="selectedLabel" required="true"/>
+    <mx:Validator id="newBranchValidator" property="selectedLabel" required="true"/>
+    <mx:Validator id="newSpecializationValidator" property="selectedLabel" required="true"/>
+    <mx:Validator id="oldSemesterValidator" property="selectedLabel" required="true"/>
+    <mx:Validator id="newSemesterValidator" property="selectedLabel" required="true"/>
+    
+    <mx:Label x="30" y="30" text="{commonFunction.getConstants('switchType')}"/>
+	<mx:Label x="30" y="81" text="{commonFunction.getConstants('oldProgram')}"/>
+	<mx:Label x="30" y="111" text="{commonFunction.getConstants('oldBranch')}"/>
+	<mx:Label x="30" y="141" text="{commonFunction.getConstants('oldSpecialization')}"/>
+	<mx:Label x="30" y="171" text="{commonFunction.getConstants('oldSemester')}"/>
+	<mx:Label x="400" y="30" text="{commonFunction.getConstants('switchRule')}"/>
+	<mx:Label x="400" y="83" text="{commonFunction.getConstants('newProgram')}"/>
+	<mx:Label x="400" y="113" text="{commonFunction.getConstants('newBranch')}"/>
+	<mx:Label x="400" y="143" text="{commonFunction.getConstants('newSpecialization')}"/>
+	<mx:Label x="400" y="173" text="{commonFunction.getConstants('newSemester')}"/>
+	<mx:ComboBox id="switchTypeCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="150" y="30"  width="150"  />
+	<mx:Label x="150" y="30" text="" fontWeight="bold" id="switchTypeLabel"/>
+	<mx:Label x="30" y="53" text="{commonFunction.getConstants('oldEntity')}"/>
+	<mx:Label x="150" y="54" text="" fontWeight="bold" id="oldEntityLabel"/>
+	<mx:Label x="150" y="81" text="" fontWeight="bold" id="oldProgramLabel"/>
+	<mx:Label x="150" y="111" text="" fontWeight="bold" id="oldBranchLabel"/>
+	<mx:Label x="150" y="141" text="" fontWeight="bold" id="oldSpecializationLabel"/>
+	<mx:ComboBox id="oldSemesterCombo"  toolTip="{oldSemesterCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="150" y="171" width="150" labelField="semesterName"/>
+	<mx:Label x="150" y="171" text="" fontWeight="bold" id="oldSemesterLabel" visible="false"/>
+	<mx:ComboBox id="switchRuleCombo"  toolTip="{switchRuleCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="30" width="150" />
+	<mx:ComboBox id="newProgramCombo" toolTip="{newProgramCombo.text}" change="programChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="83" width="150" />
+	<mx:ComboBox id="newBranchCombo" toolTip="{newBranchCombo.text}" change="branchChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="113" width="150"/>
+	<mx:ComboBox id="newSpecializationCombo" toolTip="{newSpecializationCombo.text}" change="specializationChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="143" width="150"/>
+	<mx:ComboBox id="newSemesterCombo" toolTip="{newSemesterCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="173" width="150"/>
+	
+	<mx:Button x="150" y="200" visible="false" id="submitButton" label="{commonFunction.getConstants('submitButton')}" click="submitDetails()"/>
+	<mx:Button x="150" y="200" visible="false" id="updateButton" label="{commonFunction.getConstants('updateButton')}" click="updateDetails()"/>
+	<mx:Button x="240" y="200" visible="false" id="resetButton" label="{commonFunction.getConstants('resetButton')}" click="resetDetails()"/>
+	<mx:Button x="347" y="200" visible="true" label="{commonFunction.getConstants('cancelButton')}" click="PopUpManager.removePopUp(this)"/>
+	<mx:Label x="400" y="56" text="{commonFunction.getConstants('entity')}"/>
+	<mx:ComboBox id="entityCombo"  toolTip="{entityCombo.text}" change="entityChange(event)" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="530" y="56" width="150" />
+</mx:TitleWindow>

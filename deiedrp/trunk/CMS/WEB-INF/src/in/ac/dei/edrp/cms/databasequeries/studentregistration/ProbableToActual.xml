@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- /*
+ * @(#) ProbableToActual.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<sqlMap namespace="probableToActual">
+
+	<typeAlias alias="studentInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter" />
+	
+	
+<resultMap id="studentList" class="studentInfo">
+	<result property="enrollmentNumber" column="enrollment_number" />
+	<result property="rollNumber" column="roll_number" />
+	<result property="sequenceNumber" column="sequence_number" />
+	<result property="oldEntityId" column="old_entity_id" />
+	<result property="oldProgramId" column="old_program_id" />
+	<result property="oldBranchCode" column="old_branch_id" />
+	<result property="oldSpecialization" column="old_specialization_id" />
+	<result property="oldSemesterCode" column="from_semester" />
+	<result property="entityId" column="entity_id" />
+	<result property="programId" column="program_id" />
+	<result property="branchCode" column="branch_id" />
+	<result property="newSpecialization" column="specialization_id" />
+	<result property="semesterCode" column="to_semester" />	
+	<result property="sessionStartDate" column="to_semester_start_date" />
+	<result property="sessionEndDate" column="to_semester_end_date" />	
+	<result property="studentId" column="student_id" />
+	<result property="studentName" column="studentName" />
+</resultMap>
+
+
+	<select id="getStudentList" resultMap="studentList">
+<!--		select-->
+<!--		enrollment_number,roll_number,sequence_number,old_entity_id,old_program_id,old_branch_id,-->
+<!--		old_specialization_id,from_semester,entity_id,program_id,branch_id,specialization_id,to_semester  ,-->
+<!--		to_semester_start_date,to_semester_end_date  -->
+<!--		from-->
+<!--		temp_student_program where-->
+<!--		status_in_semester='REM' and admission_mode='NOR' and-->
+<!--		to_semester=#semesterCode# and entity_id=#entityId# and program_id=#programId# and-->
+<!--		branch_id=#branchCode# and specialization_id=#newSpecialization# -->
+<!--		and registration_status='N' and to_semester_start_date=#sessionStartDate# -->
+<!--		and to_semester_end_date=#sessionEndDate#-->
+
+
+		select tsp.student_id, tsp.enrollment_number,tsp.roll_number, tsp.sequence_number,tsp.old_entity_id, tsp.old_program_id, 
+		tsp.old_branch_id, tsp.old_specialization_id,tsp.from_semester, tsp.entity_id,tsp.program_id,tsp.branch_id,
+		tsp.specialization_id, tsp.to_semester  ,  tsp.to_semester_start_date, tsp.to_semester_end_date,
+		concat_ws(' ', tsm.first_name,tsm.middle_name,tsm.last_name) as studentName 
+		from temp_student_program tsp,student_registration_semester_header srsh, temp_student_master tsm where 
+   		srsh.status='FAL' and srsh.roll_number=tsp.roll_number and srsh.program_course_key=
+    	(select program_course_key from program_course_header
+		where program_id=tsp.old_program_id and branch_id=tsp.old_branch_id and
+		specialization_id=tsp.old_specialization_id and
+		semester_code=tsp.from_semester and semester_status='ACT') and
+		srsh.attempt_number=(select max(srsh.attempt_number) from student_registration_semester_header
+		where
+		srsh.roll_number=tsp.roll_number and
+		program_course_key=(select program_course_key from program_course_header
+		where program_id=tsp.old_program_id and branch_id=tsp.old_branch_id and
+		specialization_id=tsp.old_specialization_id and semester_code=tsp.from_semester and semester_status='ACT')) 
+		and tsp.admission_mode='NOR' and
+		tsp.to_semester=#semesterCode# and tsp.entity_id=#entityId# and tsp.program_id=#programId# and
+		tsp.branch_id=#branchCode# and tsp.specialization_id=#newSpecialization# 
+		and tsp.registration_status='G' and tsp.to_semester_start_date=#sessionStartDate# 
+		and tsp.to_semester_end_date=#sessionEndDate# and tsp.student_id=tsm.student_id and 
+		tsm.university_code=substring(tsp.entity_id,1,4);
+
+
+ </select>
+
+<resultMap id="status" class="studentInfo">
+	<result property="status" column="status" />
+</resultMap>
+	
+	<select id="getStatus" resultMap="status">
+<!--		select status from student_registration_semester_header where-->
+<!--		roll_number=#rollNumber# and-->
+<!--		program_course_key=(select program_course_key from program_course_header-->
+<!--		where program_id=#oldProgramId# and branch_id=#oldBranchCode# and-->
+<!--		specialization_id=#oldSpecialization# and-->
+<!--		semester_code=#oldSemesterCode# and semester_status='ACT') and -->
+<!--		attempt_number=(select max(attempt_number) from student_registration_semester_header -->
+<!--		where-->
+<!--		roll_number=#rollNumber# and-->
+<!--		program_course_key=(select program_course_key from program_course_header-->
+<!--		where program_id=#oldProgramId# and branch_id=#oldBranchCode# and-->
+<!--		specialization_id=#oldSpecialization# and-->
+<!--		semester_code=#oldSemesterCode# and semester_status='ACT'));-->
+
+
+	select status from student_registration_semester_header where
+		roll_number=#rollNumber# and
+		program_course_key=(select program_course_key from program_course_header
+		where program_id=#programId# and branch_id=#branchCode# and
+		specialization_id=#newSpecialization# and
+		semester_code=#semesterCode# and semester_status='ACT') and 
+		attempt_number=(select max(attempt_number) from student_registration_semester_header 
+		where
+		roll_number=#rollNumber# and
+		program_course_key=(select program_course_key from program_course_header
+		where program_id=#programId# and branch_id=#branchCode# and
+		specialization_id=#newSpecialization# and
+		semester_code=#semesterCode# and semester_status='ACT'));
+
+
+
+
+ </select>
+
+	<update id="updateStaging">
+		update staging_table set
+		processed_flag='N',
+		attempt_number=probable_attempt_number,
+		registration_due_date=probable_register_due_date,
+		semester_start_date=probable_semester_start_date,
+		semester_end_date=probable_semester_end_date,
+		modification_time=now(),
+		modifier_id=#modifierId#,
+		status_in_semester='YTR',
+		new_semester_id=probable_semester
+		where sequence_number=#sequenceNumber# and registration_roll_number=#rollNumber# 
+		and enrollment_number=#enrollmentNumber#
+ </update>
+
+
+	<update id="updateTempStdProg">
+		update temp_student_program set
+		registration_status='D',
+		modification_time=now(),
+		modifier_id=#modifierId# where roll_number=#rollNumber# and 
+		admission_mode='NOR' and enrollment_number=#enrollmentNumber#  
+		and to_semester=#semesterCode# and entity_id=#entityId#
+		and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization#
+		and sequence_number=#sequenceNumber#
+</update>
+
+	<update id="updateTempStdMaster">
+		update temp_student_master set
+		registration_status='D',
+		modification_time=now(),
+		modifier_id=#modifierId# where enrollment_number=#enrollmentNumber# 
+</update>
+
+	<update id="updateTempStdCourse">
+		update temp_student_courses set
+		registration_status='D',
+		modification_time=now(),
+		modifier_id=#modifierId# where enrollment_number=#enrollmentNumber# and
+		roll_number=#rollNumber# and semester_code=#semesterCode#
+		and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and
+		semester_start_date=#sessionStartDate# and semester_end_date=#sessionEndDate# 
+</update>
+
+<resultMap id="semesterGroupResult" class="studentInfo">
+	<result property="semesterGroup" column="semester_group" />
+</resultMap>
+
+<select id="getSemesterGroup" resultMap="semesterGroupResult">
+select distinct semester_group from program_term_details 
+where program_id=#programId# and semester_code=#semesterCode#
+</select>
+
+
+
+
+
+
+
+</sqlMap>

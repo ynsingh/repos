@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ManageEditWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="618" height="482" layout="absolute"  showCloseButton="true"
+				close="popUpWindowClose();" keyDown="initializeForEsc(event)" styleName="PopUpTitleWindow" creationComplete="popupWindowInitializeHandler()">
+	
+	<mx:HTTPService id="formUpdateHttpService" method="POST"
+		url="{urlPrefix+'updateActivityMasterData.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="updateFormResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="getExistingActivitySequenceHttpService" method="POST"
+		url="{urlPrefix+'ExistingActivitySequence.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="existingActivitySequenceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getNumberOfActivityHttpService" method="POST"
+		url="{urlPrefix+'NoOfActivity.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getNumberOfActivityResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+					
+	<mx:Script source="asFiles/ActivityMasterAScript.as"/>
+	<mx:Script source="asFiles/ManageEditWindow.as"/>
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Label x="34" y="42" text="{commonFunction.getConstants('programName')}:"/>
+	<mx:Label x="170" y="44" text="" width="137" id="programNameLabel" fontWeight="bold"/>
+	<mx:Label x="346" y="42" text="{commonFunction.getConstants('branchName')}:"/>
+	<mx:Label x="447" y="42" text="" width="137" id="branchNameLabel" fontWeight="bold"/>
+	<mx:Label x="35" y="82" text="{commonFunction.getConstants('specializationName')}:"/>
+	<mx:Label x="170" y="82" text="" width="137" id="specializationLabel" fontWeight="bold"/>
+	<mx:Label x="329" y="82" text="{commonFunction.getConstants('semesterName')}:"/>
+	<mx:Label x="447" y="82" text="" width="137" id="semesterCodeLabel" fontWeight="bold"/>
+	<mx:HRule x="41" y="122" width="516" height="7"/>
+	
+	<mx:Label x="114.5" y="161" text="{commonFunction.getConstants('semesterStartDate')}:"/>
+	<mx:Label x="261.5" y="161" width="159" id="semesterStartDatelabel"/>
+	<mx:Label x="121.5" y="189" text="{commonFunction.getConstants('semesterEndDate')}:"/>
+	<mx:Label x="261.5" y="189" width="159" id="semesterEndDateLabel"/>
+	<mx:Label x="193.5" y="220" text="{commonFunction.getConstants('process')}:"/>
+	<mx:Label x="260.5" y="217" id="processLabel" width="259"/>
+	<mx:Label x="200.5" y="261" text="{commonFunction.getConstants('activity')}:"/>
+	<mx:Label x="262.5" y="258" id="activityLabel" width="257"/>
+	<mx:Label x="134.5" y="301" text="{commonFunction.getConstants('activitySequence')}:"/>
+	<mx:TextInput x="262.5" y="299" id="activitySequence" restrict="0-9" change="activitySequenceChangeHandler()"/>
+	<mx:Button x="212.5" y="360" label="{commonFunction.getConstants('updateButton')}" id="updateButton" enabled="false" click="updateButtonClickHandler(event)"/>
+	<mx:Button x="356.5" y="360" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="popUpWindowClose()"/>
+	
+</mx:TitleWindow>

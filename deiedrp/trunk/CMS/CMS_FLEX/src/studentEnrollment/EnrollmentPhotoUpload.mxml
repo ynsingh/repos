@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="596" height="256" title="Enrollment Photo Upload" creationComplete="onCreationComplete()">
+<mx:Script>
+	<![CDATA[
+		import common.Mask;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import mx.controls.Alert;
+		import common.commonFunction;
+	
+		/** declaring public variables **/
+		[Bindable]public var params:Object={};
+		[Bindable]public var urlPrefix:String="";public var fileRef:FileReference;
+		[Bindable]public var uploadUrl:String;
+		[Embed(source="/images/error.png")] private var errorIcon:Class;
+		[Embed(source="/images/success.png")] private var successIcon:Class;
+		[Embed(source="/images/reset.png")] private var resetIcon:Class;
+		[Embed(source="/images/question.png")] private var questionIcon:Class;
+
+		/** on creation of form **/
+		public function onCreationComplete():void
+		{
+			uploadUrl=commonFunction.getConstants('url')+"/fileUpload/upload.jsp?fileName=";
+			urlPrefix=commonFunction.getConstants('url')+"/enrollmentForm/";
+		}
+		
+		public function browsePhotos():void
+		{
+			fileRef=new FileReference();
+			fileRef.addEventListener(Event.SELECT,onFileSelect);
+			fileRef.browse([new FileFilter("Archive File(.zip)","*.zip")]);
+		}
+	
+		public function onFileSelect(event:Event):void
+		{
+			fileRef.addEventListener(Event.COMPLETE,onLoadComplete);
+			fileRef.addEventListener(ProgressEvent.PROGRESS,onProgress);
+			fileRef.load();
+		}
+	
+		public function onProgress(event:ProgressEvent):void
+		{
+			fileProgress.setProgress(event.bytesLoaded,event.bytesTotal);
+		}
+	
+		public function onLoadComplete(event:Event):void
+		{
+			fileName.text=fileRef.name;
+			browseButton.enabled=false;
+			resetButton.enabled=true;
+			uploadButton.enabled=true;
+		}
+	
+		public function uploadPhotos():void
+		{
+			fileRef.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,onUploadComplete);
+			fileRef.upload(new URLRequest(uploadUrl+"StudentPhotos.zip&folder=tempFiles/"));
+		}
+	
+		public function onUploadComplete(event:DataEvent):void
+		{
+			params['filePath']="tempFiles/StudentPhotos.zip";
+			params['time']=new Date;
+			uploadStudentPhotos.send(params);
+		}
+	
+		public function reset(event:Event):void
+		{
+			fileRef=new FileReference();
+			fileName.text="";
+			fileProgress.setProgress(0,100);
+			browseButton.enabled=true;
+			resetButton.enabled=false;
+			uploadButton.enabled=false;
+		}
+
+		/** get academic info success handler **/
+		public function uploadPhotosSuccess(event:ResultEvent):void
+		{
+			Mask.close();
+			if(event.result.sessionConfirm == true)
+			{
+				Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+			   	this.parentDocument.vStack.selectedIndex=0;
+			   	this.parentDocument.loaderCanvas.removeAllChildren();
+			}
+		 	
+		    if(String(event.result.info)=="true")
+		    {
+		    	Alert.show("Photos uploaded successfully.",commonFunction.getMessages('success'),0,null,reset,successIcon);
+			}
+			else
+			{
+				Alert.show("Error in uploading photos on server.",commonFunction.getMessages('error'),0,null,reset,errorIcon);
+			}
+		}
+		
+		/** fault handler **/
+		public function faultHandler(event:FaultEvent):void
+		{
+			Mask.close();
+			Alert.show(commonFunction.getMessages('requestFailed'));
+		}
+	]]>
+</mx:Script>
+	<mx:HTTPService id="uploadStudentPhotos" method="post" url="{urlPrefix+'uploadStudentPhotos.htm'}" fault="faultHandler(event)" result="uploadPhotosSuccess(event)" resultFormat="e4x" showBusyCursor="true" />
+	<mx:Button id="browseButton" x="360" y="50" click="browsePhotos()" label="Browse"/>
+	<mx:ProgressBar x="50" y="80" width="300" mode="manual" id="fileProgress"/>
+	<mx:TextInput x="50" y="50" width="300" editable="false" id="fileName"/>
+	<mx:Button id="resetButton" x="445" y="50" click="reset(event)" label="Reset" enabled="false"/>
+	<mx:Button id="uploadButton" click="uploadPhotos()" x="50" y="120" label="Upload Photos" enabled="false"/>
+	
+</mx:Panel>

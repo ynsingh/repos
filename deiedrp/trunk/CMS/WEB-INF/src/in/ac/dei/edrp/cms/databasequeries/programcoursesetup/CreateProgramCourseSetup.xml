@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!--
+		=================================================================
+	-->
+	<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+	<!--
+		=================================================================
+	-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProgramCourseSetup">
+	<typeAlias alias="ProgramMaster"
+		type="in.ac.dei.edrp.cms.domain.programcoursesetup.ProgramMaster" />
+	<typeAlias alias="CourseDetails"
+		type="in.ac.dei.edrp.cms.domain.programcoursesetup.CourseDetails" />
+
+	<select id="getProgramNameList" resultClass="ProgramMaster">
+		SELECT
+		trim(p.program_id) as programId,
+		trim(p.program_code) as programCode,
+		trim(p.program_name) as programName FROM program_master p where
+		p.program_id LIKE #string# order by p.program_name
+    </select>
+	<select id="getBranchNameList" resultClass="ProgramMaster">
+		select
+		distinct(stt.component_code) as branchId,
+		stt.component_description as
+		branchName from program_branch_specialization pbs,
+		system_table_two stt
+		where stt.component_code=pbs.branch_id and
+		pbs.program_id=#programId#
+		and stt.group_code='BRNCOD' AND
+		stt.university_code=substring(#programId#,1,4);
+    </select>
+
+	<select id="getSemesterList" resultClass="ProgramMaster">
+		select
+		distinct(ptd.semester_code) as semesterCode,stt.component_description
+		AS semesterName
+		from program_term_details ptd,system_table_two stt
+		where ptd.program_id=#programId# AND stt.group_code = 'SEMCOD' AND
+		stt.component_code = ptd.semester_code AND
+		stt.university_code=substring(#programId#,1,4);
+    </select>
+
+	<select id="getSpecializationList" resultClass="ProgramMaster">
+       <![CDATA[
+       	select distinct(stt.component_code) as branchId,
+		stt.component_description as branchName from program_branch_specialization pbs,
+        system_table_two stt where stt.component_code=pbs.specialization_id and
+		pbs.program_id=#programId# and pbs.branch_id=#branchId# and stt.group_code='SPCLCD' and
+		stt.university_code=substring(#programId#,1,4) AND pbs.active_specialization_semester in(
+		select p.semester_code from (select ptd.semester_sequence as semester_sequence,
+        ptd.semester_code as semester_code from program_term_details ptd
+		where ptd.semester_code in(
+		select pbs.active_specialization_semester from
+		program_branch_specialization pbs where pbs.program_id=#programId#
+		and pbs.branch_id=#branchId#) group by ptd.semester_sequence) as p
+		where p.semester_sequence <=
+		(select ptd.semester_sequence as semester_sequence from program_term_details ptd
+		where ptd.semester_code=#semesterCode# and ptd.program_id=#programId#))
+		]]>
+	</select>
+	<select id="getCourseDetailList" resultClass="CourseDetails">
+		select
+		s.course_code as courseCode,
+		s.course_name as courseName,s.course_type
+		as courseType from (
+		select cm.course_code as course_code,
+		cm.course_name as course_name,
+		cm.course_type as course_type
+		from
+		course_master cm where (cm.owner_program=#programId#
+		and
+		cm.owner_branch=#branchId# and
+		cm.owner_specialization=#specializationId#)
+		union
+		select cm.course_code
+		as course_code,
+		cm.course_name as course_name,
+		cm.course_type as
+		course_type
+		from course_master cm where (cm.owner_program=#programId#
+		and
+		cm.owner_branch=#branchId#)
+		union
+		select cm.course_code as
+		course_code,
+		cm.course_name as course_name,
+		cm.course_type as
+		course_type
+		from course_master cm where
+		cm.university_code=substring(#programId#,1,4))
+		as s
+		where s.course_code
+		not in (SELECT p.course_code FROM program_course_detail
+		p
+		where
+		p.program_course_key=(SELECT pch.program_course_key
+		from
+		program_course_header pch where pch.program_id = #programId# and
+		pch.branch_id = #branchId# and pch.specialization_id =
+		#specializationId# and
+		pch.semester_code = #semesterCode# ))
+    </select>
+
+<!-- University Code also mapped in where clause from course_master table : Change done By Dheeraj on 6/2/2012 -->
+	<select id="getExistingProgramCourseDetails" resultClass="CourseDetails">
+		select
+		pcd.program_course_key as programCourseKey,pcd.course_code as
+		courseCode,
+		cm.course_name as courseName,cm.course_type as courseType,
+		stt.component_description as courseCategory,
+		stt1.component_description as courseGroup,
+		(case when pcd.available='N' then 'No' else 'Yes'
+		end) as
+		courseAvailability
+		from program_course_detail pcd,course_master
+		cm,
+		system_table_two stt,system_table_two stt1
+		where pcd.program_course_key=(SELECT pch.program_course_key
+		from
+		program_course_header pch where pch.program_id = #programId# and
+		pch.branch_id = #branchId# and pch.specialization_id =
+		#specializationId# and
+		pch.semester_code = #semesterCode#) and
+		cm.course_code=pcd.course_code and
+		cm.university_code=substring(#programId#,1,4)
+		and
+		(stt.component_code=pcd.course_category and stt.group_code='CRSCTG' AND stt.university_code=substring(#programId#,1,4))
+		and (stt1.component_code=pcd.course_group and
+		stt1.group_code='CRSGRP' AND stt1.university_code=substring(#programId#,1,4))
+    </select>
+
+	<select id="getCourseCtgGrpOpt" resultClass="CourseDetails">
+		SELECT
+		stt.group_code as groupCode,
+		stt.component_code as componentCode,
+		stt.component_description as componentDescription
+		FROM system_table_two
+		stt where stt.group_code
+		IN ('CRSCTG','CRSGRP','CRSOPT') AND stt.university_code=#universityId# AND stt.active=1 order by
+		stt.component_description;
+    </select>
+
+	<select id="checkProgramHeader" resultClass="java.lang.String">
+		SELECT
+		pch.program_course_key
+		FROM program_course_header pch where
+		pch.program_id = #programId# and
+		pch.branch_id = #branchId# and
+		pch.specialization_id =
+		#specializationId# and
+		pch.semester_code =
+		#semesterCode#
+    </select>
+
+	<select id="getMaxKey" resultClass="java.lang.String">
+		select
+		max(substr(program_course_key,10)) from program_course_header
+		where
+		substr(program_course_key,8,2)=Date_Format(Now(),'%y')
+    </select>
+
+	<insert id="insertProgramHeader" parameterClass="ProgramMaster">
+		insert into
+		program_course_header ( program_id, branch_id,
+		specialization_id,
+		semester_code,
+		program_course_key, insert_time, creator_id,
+		modification_time, modifier_id,
+		semester_status )
+		VALUES ( #programId#,
+		#branchId#, #specializationId#, #semesterCode#,
+		#programCourseKey#,
+		Now(), #creatorId#, #modifierId#, #modifierId#,
+		#semesterStatus# )
+    </insert>
+
+	<insert id="insertProgramCourseDetail" parameterClass="CourseDetails">
+		insert
+		into program_course_detail ( program_course_key, course_code,
+		course_category, available,
+		course_group, insert_time,
+		modification_time, creator_id, modifier_id )
+		VALUES (
+		#programCourseKey#, #courseCode#, #courseCategory#,
+		#courseAvailability#,
+		#courseGroup#, Now(),
+		#modifierId#, #creatorId#, #modifierId# )
+    </insert>
+
+</sqlMap>

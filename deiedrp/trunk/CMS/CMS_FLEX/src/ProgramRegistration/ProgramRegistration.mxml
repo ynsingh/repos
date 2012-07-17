@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramRegistration.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="868" height="374" title="{commonFunction.getConstants('createProgramRegistrationTitle')}({sessionDate})"
+	 creationComplete="init()" layout="absolute" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script source="asFiles/ProgramRegistrationAScript.as"/>
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="httpLoadSession" method="post"
+        url="{urlLoadSession}" 
+        resultFormat="e4x"
+        result="resultLoadSessionHandler(event)"
+        fault="faultLoadSessionHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpLoadProgramDetails" method="post"
+        url="{urlLoadProgramDetails}" 
+        resultFormat="e4x"
+        result="resultLoadProgramDetailsHandler(event)"
+        showBusyCursor="true"
+        fault="faultLoadSessionHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpInsertProgramDetails" method="post"
+        url="{urlInsertProgramDetails}" 
+        resultFormat="e4x"
+        result="resultInsertProgramHandler(event)"
+        showBusyCursor="true"
+        fault="faultLoadSessionHandler(event)"
+        useProxy="false"/>
+	
+	<mx:NumberValidator id="registrationValidator" property="value" required="true" minValue="1" domain="int" allowNegative="false"/>
+	<mx:NumberValidator id="addDropValidator" property="value" required="true" minValue="1" domain="int" allowNegative="false"/>
+	<mx:Canvas width="803.75" height="191" styleName="GridCanvas" x="22.1" y="24">
+	<mx:DataGrid id="programRegistrationDetailsGrid" rowHeight="25" sortableColumns="true" horizontalScrollPolicy="off" 
+		verticalScrollPolicy="on" draggableColumns="false" editable="true"  height="147" x="10" y="33" 
+		 width="782.75">
+		    <mx:columns>
+			    <dataGridClasses:MDataGridColumn width="20" headerText="" sortable="false" dataField="select" editorDataField="selected" rendererIsEditor="true">
+				  <dataGridClasses:headerRenderer>
+					<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.programRegistrationDetailsGrid,[],[outerDocument.t])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.LinkButton;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+				</dataGridClasses:headerRenderer>
+				  
+				  
+				
+				    <dataGridClasses:itemRenderer>
+					    <mx:Component>
+						    <mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  change="commonFunction.editDeleteEnable(event,outerDocument.programRegistrationDetailsGrid,[new LinkButton],[outerDocument.t])">
+			    		    <mx:Script>
+    						        <![CDATA[
+    						        	import mx.controls.LinkButton;
+    							        import common.commonFunction;
+    							    ]]>
+    						    </mx:Script>
+    					    </mx:CheckBox>
+					    </mx:Component>
+				    </dataGridClasses:itemRenderer>
+			    </dataGridClasses:MDataGridColumn>
+			    <mx:DataGridColumn width="200" headerText="{commonFunction.getConstants('entity')}" dataField="entityName" editable="false" showDataTips="true"/>
+			    <mx:DataGridColumn width="200" headerText="{commonFunction.getConstants('program')}" dataField="programName" editable="false" showDataTips="true"/>
+			    <mx:DataGridColumn width="100" headerText="{commonFunction.getConstants('branch')}" dataField="branchName"  editable="false" showDataTips="true"/>
+			    <mx:DataGridColumn width="120" headerText="{commonFunction.getConstants('specialization')}" dataField="specializationName"  editable="false" showDataTips="true"/>
+			    <mx:DataGridColumn width="90" headerText="{commonFunction.getConstants('semester')}" dataField="semesterCode"  editable="false" showDataTips="true"/>
+			    <mx:DataGridColumn width="90" headerText="{commonFunction.getConstants('semester')}" dataField="semesterName"  editable="false" showDataTips="true"/>
+				<mx:DataGridColumn width="120" sortable="true" headerText="{commonFunction.getConstants('registrationPeriod')}" dataField="registrationPeriod" rendererIsEditor="true" editorDataField="value">
+				    <mx:itemRenderer>
+			    		<mx:Component>
+			    			<mx:NumericStepper maximum="10000">
+			    				<mx:Script>
+    						        <![CDATA[
+    							        import common.commonFunction;
+    							    ]]>
+    						    </mx:Script>
+			    			</mx:NumericStepper>
+			    		</mx:Component>
+			    	</mx:itemRenderer>
+			    </mx:DataGridColumn>
+			    <mx:DataGridColumn width="120" sortable="true" headerText="{commonFunction.getConstants('addDropPeriod')}" dataField="addDropPeriod" editorDataField="value" rendererIsEditor="true" showDataTips="true">
+			    	<mx:itemRenderer>
+			    		<mx:Component>
+			    			<mx:NumericStepper maximum="10000">
+			    				<mx:Script>
+    						        <![CDATA[
+    							        import common.commonFunction;
+    							    ]]>
+    						    </mx:Script>
+			    			</mx:NumericStepper>
+			    		</mx:Component>
+			    	</mx:itemRenderer>
+			    </mx:DataGridColumn>
+		    </mx:columns>
+	    </mx:DataGrid>
+	    	</mx:Canvas>
+	<mx:Button enabled="{t.enabled}" label="{commonFunction.getConstants('submitButton')}" id="submitButton" click="submitForm()" x="40.3" y="260"/>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="this.parentDocument.loaderCanvas.removeAllChildren();" x="251.3" y="260"/>
+	
+	
+	
+</mx:Panel>

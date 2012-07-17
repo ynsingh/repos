@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramGroup.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="856" height="784" 
+	title="{commonFunction.getConstants('programGroup')}" creationComplete="applicationCreationHandler()" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	
+	<mx:HTTPService id="groupDetailsHttpService" method="POST"
+					url="{urlPrefix+'getProgramGroupDetails.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="groupDetailsHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="programListHttpService" method="POST"
+					url="{urlPrefix+'programList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="programListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="branchListHttpService" method="POST"
+					url="{urlPrefix+'branchList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="branchListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>	
+	
+	<mx:HTTPService id="specializationListHttpService" method="POST"
+					url="{urlPrefix+'specializationList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="specializationListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="semesterListHttpService" method="POST"
+					url="{urlPrefix+'semesterList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="groupHttpService" method="POST"
+					url="{urlPrefix+'groupList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="groupHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>	
+	
+	<mx:HTTPService id="subGroupListHttpService" method="POST"
+					url="{urlPrefix+'subGroupList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="subGroupListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="saveDetailsHttpService" method="POST"
+					url="{urlPrefix+'saveDetail.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="saveDetailsHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="deleteRecordsHttpService" method="POST"
+					url="{urlPrefix+'deleteDetail.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="deleteRecordsHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="groupOrderHttpService" method="POST"
+					url="{urlPrefix+'groupOrder.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="groupOrderHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="unlinkRecordsHttpService" method="POST"
+					url="{urlPrefix+'unlinkLinkedGroup.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="unlinkRecordsHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+																					
+	<mx:HTTPService id="conditionalGroupOrderHttpService" method="POST"
+					url="{urlPrefix+'conditionalGroupOrder.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="conditionalGroupOrderHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>								
+					
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.ToolTipManager;
+			import mx.controls.ToolTip;
+			import common.Mask;
+			import common.commonFunction;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.ListEvent;
+			import mx.logging.targets.MiniDebugTarget;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.validators.Validator;
+			
+			protected var programList:XML;
+			protected var branchList:XML;
+			protected var specializationList:XML;
+			protected var semesterList:XML;
+			private var groupList:XML;
+			[Bindable] protected var urlPrefix:String;
+			private var subGroupList:XML;
+			private var programGroupDetail:XML;
+			private var subGroupArrCol:ArrayCollection;
+			private var programGroupArrCol:ArrayCollection;
+			private var programCourseKey:String;
+			[Bindable]public var tempButton:LinkButton=new LinkButton;
+			public var selectedRecordArrColl:ArrayCollection;
+			
+			[Bindable]private var groupOrder:int=0;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			[Bindable]public var condition:XML=<root>
+													<element>
+														<status name="Yes" code="Y"/>											
+													</element>
+													<element>
+														<status name="No" code="N"/>											
+													</element>
+												</root>; 
+
+			/**
+			 * @protected
+			 * function will called on the popup window creation 
+			 */
+			protected function applicationCreationHandler():void{
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				urlPrefix=commonFunction.getConstants('url')+"/programgroup/";
+				groupConditionCB.dataProvider=condition.element.status.@name;
+				tempButton.enabled=false;
+				var param:Object=new Object();
+                param["time"]=new Date();
+				programListHttpService.send(param);
+			}
+			
+			private function unlinkRecordsHttpServiceResultHandler(event:ResultEvent):void{
+				var unlinkResult:XML= event.result as XML;
+				if(unlinkResult.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+								
+				if(unlinkResult.result.message=="success"){
+					refreshProgramGroupGrid();
+					Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);	
+				}
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+				}
+				Mask.close();
+			}
+			
+			
+			
+			/**
+			 * @private
+			 * This function will called on success of delete operaion. 
+			 * @return void 
+			 */
+			private function deleteRecordsHttpServiceResultHandler(event:ResultEvent):void{
+				var saveResult:XML= event.result as XML;
+				if(saveResult.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+							
+				else if(String(saveResult.result.message).search("success")>-1){
+					refreshProgramGroupGrid();
+					Alert.show(String(saveResult.result.message).slice(7)+" "+commonFunction.getMessages('recordsDeletedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);	
+				}
+				//added by ashish mohan 
+				else if(String(saveResult.result.message).search("failure")>-1){
+				Alert.show("Error occured \n Details are as follows: \n"+String(saveResult.result.message)  ,resourceManager.getString('Messages','error'),4,null,null,errorIcon);	
+				}
+				else if(int(String(saveResult.result.message).slice(7))==0){
+				Alert.show(resourceManager.getString('Messages','recordNotDelete'),resourceManager.getString('Messages','error'),4,null,null,errorIcon);	
+				}
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+				}
+				Mask.close();
+			}
+			
+			/**
+			 * @protected
+			 * This function will called on success http service 
+			 * @return void 
+			 */
+			protected function groupDetailsHttpServiceResultHandler(event:ResultEvent):void{
+				
+				programGroupDetail= event.result as XML;
+				if(programGroupDetail.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				programGroupArrCol= new ArrayCollection();
+				for each (var o:Object in programGroupDetail.programGroup)
+				{
+					programGroupArrCol.addItem({select:false, programCourseKey:o.programCourseKey, groupCode:o.groupCode, groupDescription:o.groupDescription, groupOrder:o.groupOrder,
+					minimumSelection:o.minimumSelection, maximumSelection:o.maximumSelection, conditionalGroup:o.conditionalGroup,
+					subgroupCode:o.subgroupCode, subgroupDescription:o.subgroupDescription, linkedGroupCode:o.linkedGroupCode,
+					linkedGroupDescription:o.linkedGroupDescription, linkedMinimumSelection:o.linkedMinimumSelection, linkedMaximumSelection:o.linkedMaximumSelection});
+					programCourseKey=o.programCourseKey;
+				}
+				groupDetailsGrid.dataProvider=null;
+				groupDetailsGrid.dataProvider=programGroupArrCol;
+				groupDetailsGrid.dataProvider.refresh();
+				editButton.enabled=false;
+				deleteButton.enabled=false;
+				unlinkButton.enabled=false;
+				updateGroupLinkedButton.enabled=false;
+				saveButton.enabled=false;
+				Mask.close();
+			}
+			
+			/**
+			 * @protected
+			 * This function will called on success http service 
+			 * @return void 
+			 */
+			private function saveDetailsHttpServiceResultHandler(event:ResultEvent):void{
+				var saveResult:XML= event.result as XML;	
+				if(saveResult.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+							
+				if(saveResult.result.message=="success"){
+					Alert.show(commonFunction.getMessages('savedSuccessfully'),(commonFunction.getMessages('success')),4,null,confirmFunction,successIcon);	
+				}
+				//added by ashish mohan 
+				else if(String(saveResult.result.message).search("failure")>-1){
+				Alert.show("Error occured \n Details are as follows: \n"+String(saveResult.result.message)  ,resourceManager.getString('Messages','error'),4,null,null,errorIcon);	
+				}
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+				}
+				Mask.close();
+			}
+			
+			protected function confirmFunction(event:CloseEvent):void{
+				if(event.detail == Alert.OK){
+					refreshProgramGroupGrid();
+					Alert.show(commonFunction.getMessages('EnterMoreDetailMessage'),(commonFunction.getMessages('success')),3,null,YesOrNoFunction,questionIcon);
+				}
+			}
+			
+			protected function  YesOrNoFunction(event:CloseEvent):void{
+				if(event.detail == Alert.YES){
+					//reset allfields
+					groupOrderNS.value=0;
+					groupCB.selectedIndex=-1;
+					maxSubGroupNS.value=0;
+					minSubGroupNS.value=0;
+					groupConditionCB.selectedIndex=-1;
+					groupConditionCB.enabled=false;
+					subGroupGrid.dataProvider=null;
+					saveButton.enabled=false;
+				}
+				else{
+					refreshSubgroup();
+					groupCB.selectedIndex=-1;
+					groupOrderNS.value=0;
+					maxSubGroupNS.value=0;
+					minSubGroupNS.value=0;
+					groupConditionCB.selectedIndex=-1;
+					Alert.show(commonFunction.getMessages('doYouWantToSetLinkedGroup'),(commonFunction.getMessages('confirm')),3,null,groupRelationFunction,questionIcon);
+				}
+			}
+			
+			private function groupRelationFunction(event:CloseEvent):void{
+				if(event.detail == Alert.YES){
+					//open a popup window asking for the relation
+					var popUpWin:GroupRelationWindow=GroupRelationWindow(PopUpManager.createPopUp(this, GroupRelationWindow, true));
+			        popUpWin.programGroupXML=groupList;
+			        popUpWin.programCourseKey=programCourseKey;
+			        popUpWin.refreshProgramGroupGrid=refreshProgramGroupGrid;
+					PopUpManager.centerPopUp(popUpWin);		
+				}
+				else{
+					refreshProgramGroupGrid();
+				}
+			}
+			
+			private function refreshSubgroup():void{
+				var param:Object=new Object();
+				param["time"]=new Date();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+				param["groupCode"]=groupList.group.(groupDescription==groupCB.selectedLabel).groupCode;
+				subGroupListHttpService.send(param);
+			}
+			
+			/**
+			 * @private
+			 * This function will called on sucess http service 
+			 * @return void 
+			 */
+			private function subGroupListHttpServiceResultHandler(event:ResultEvent):void{
+				subGroupList= event.result as XML;
+				if(subGroupList.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				subGroupArrCol= new ArrayCollection();
+				for each (var o:Object in subGroupList.subgroup)
+				{
+					subGroupArrCol.addItem({select:false,subgroupCode:o.subgroupCode, subgroupDescription:o.subgroupDescription});
+				}
+				
+				subGroupGrid.dataProvider=subGroupArrCol;
+				Mask.close();
+				
+				for each(var obj:Object in programGroupArrCol){
+					if(obj.groupDescription==groupCB.selectedLabel){
+						groupOrderNS.value = obj.groupOrder;
+						groupConditionCB.selectedItem = obj.conditionalGroup.toString();
+						groupConditionCB.enabled=false;
+						break;
+					}
+				}
+			}
+			
+			/**
+			 * @protected
+			 * This function will called on sucess http service 
+			 * @return void 
+			 */
+			private function groupHttpServiceResultHandler(event:ResultEvent):void{
+				groupList=event.result as XML;
+				if(groupList.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				groupCB.dataProvider=groupList.group.groupDescription;
+				Mask.close();
+			}
+
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function semesterListHttpServiceResultHandler(event:ResultEvent):void{
+				semesterList = event.result as XML;
+				if(semesterList.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				semesterCB.dataProvider=semesterList.semester.semesterName;
+				Mask.close();
+			}
+			
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function specializationListHttpServiceResultHandler(event:ResultEvent):void{
+				specializationList = event.result as XML;
+				if(specializationList.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				specializationCB.dataProvider=specializationList.specialization.specializationName;
+				Mask.close();
+			}
+					
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function branchListHttpServiceResultHandler(event:ResultEvent):void{
+				branchList = event.result as XML;
+				if(branchList.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				branchCB.dataProvider=branchList.branch.branchName;
+				Mask.close();
+			}
+			
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function programListHttpServiceResultHandler(event:ResultEvent):void{
+				programList = event.result as XML;
+				if(programList.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				programCB.dataProvider=programList.program.programName;
+				Mask.close();
+			}
+			
+			/**
+			 * @protected
+			 * this method is called when a fault occur from the server. 
+			 * @param event a Fault event object.
+			 */
+			protected function httpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+				Mask.close();
+			}
+			
+			/**
+			 * @private
+			 * This function will called on program combobox change event. 
+			 * @return void 
+			 */
+			protected function programCBChangeHandler():void{
+				 branchCB.enabled=true;
+				 specializationCB.enabled=false;
+				 semesterCB.enabled=false;
+				 branchCB.selectedIndex=-1;
+				 specializationCB.selectedIndex=-1;
+				 semesterCB.selectedIndex=-1;
+				 groupCB.selectedIndex=-1;
+				 subGroupGrid.dataProvider=null;
+				 groupConditionCB.selectedIndex=-1;
+				 groupOrderNS.value=0;
+			     var param:Object=new Object();
+				 param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				 Mask.show(commonFunction.getMessages('pleaseWait'));
+				 branchListHttpService.send(param);
+			}
+			
+			/**
+			 * @private
+			 * This function will called on branch combobox change event. 
+			 * @return void 
+			 */
+			protected function branchCBChangeHandler():void{
+				specializationCB.enabled=true;
+				semesterCB.enabled=false;
+				specializationCB.selectedIndex=-1;
+				semesterCB.selectedIndex=-1;
+				subGroupGrid.dataProvider=null;
+				groupCB.selectedIndex=-1;
+				groupConditionCB.selectedIndex=-1;
+				groupOrderNS.value=0;
+			    var param:Object=new Object();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			    specializationListHttpService.send(param);	        
+			}
+			
+			/**
+			 * @protected 
+			 * This function will called on specialization combobox change event. 
+			 * @param event a ListEvent object.
+			 */
+			protected function specializationCBChangeHandler():void{
+				semesterCB.enabled=true;
+				semesterCB.selectedIndex=-1;
+				subGroupGrid.dataProvider=null;
+				groupCB.selectedIndex=-1;
+				groupConditionCB.selectedIndex=-1;
+				groupOrderNS.value=0;
+				var param:Object=new Object();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				semesterListHttpService.send(param);					
+			}
+			
+			/**
+			 * @protected 
+			 * This function will called on semester combobox item change event. 
+			 */
+			protected function semesterCBChangeHandler():void{
+				groupCB.enabled=true;
+				subGroupGrid.dataProvider=null;
+				groupCB.selectedIndex=-1;
+				groupConditionCB.selectedIndex=-1;
+				groupOrderNS.value=0;
+				var param:Object=new Object();
+				param["time"]=new Date();
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				groupHttpService.send(param);
+				refreshProgramGroupGrid();
+			}
+			
+			/**
+			 * @private
+			 * this method is called on group combobox item changed event.
+			 * @return void 
+			 */
+			private function groupCBChangeHandler():void{
+				var param:Object=new Object();
+				groupConditionCB.enabled=true;
+				groupOrderNS.maximum=999;
+//				groupOrderNS.value=maxGroupOrder+1;
+				maxSubGroupNS.value=0;
+				minSubGroupNS.value=0;
+				groupConditionCB.selectedIndex=-1;
+				param["time"]=new Date();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+				param["groupCode"]=groupList.group.(groupDescription==groupCB.selectedLabel).groupCode;
+				subGroupListHttpService.send(param);
+			}
+			
+			/**
+			 * @private
+			 * this method is called to refresh the grid
+			 * @return void 
+			 */
+			private function refreshProgramGroupGrid():void{
+				var param:Object=new Object();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+				groupDetailsHttpService.send(param);
+			}
+			
+			private function saveConfirm(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					var gridData:ArrayCollection=commonFunction.getSelectedRowData(subGroupGrid);
+				    selectedRecordArrColl=new ArrayCollection();
+				
+					for each(var o:Object in gridData){
+						selectedRecordArrColl.addItem([o.subgroupCode]);
+					}
+					
+					var param:Object=new Object();
+					param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+					param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+					param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+					param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+					param["groupCode"]=groupList.group.(groupDescription==groupCB.selectedLabel).groupCode;
+					param["groupOrder"]=groupOrderNS.value;
+					param["minimumSelection"]=minSubGroupNS.value;
+					param["maximumSelection"]=maxSubGroupNS.value;
+					param["conditionalGroup"]=condition.element.status.(@name==groupConditionCB.selectedLabel).@code;
+					param["selectedSubGroupCode"]=selectedRecordArrColl;
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+					saveDetailsHttpService.send(param);
+				}
+			}
+			
+			/**
+			 * @private
+			 * this method is called on save Button clicked
+			 * @return void 
+			 */
+			private function saveButtonClickHandler():void{
+				
+				if(validate()){
+					Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, saveConfirm,questionIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+			}
+			
+			/**
+			 * @private
+			 * this method will validate the inputs
+			 * @return Boolean 
+			 */
+			private function validate():Boolean{
+				var flag:Boolean=true;
+				if(int(minSubGroupNS.value)>int(maxSubGroupNS.value)){
+					flag=false;
+					minSubGroupNS.errorString=commonFunction.getMessages('minCannotGreator');
+				}
+				if(groupConditionCB.selectedIndex==-1){
+					flag=false;
+					groupConditionCB.errorString=commonFunction.getMessages('fieldIsRequired');
+				}
+				else{
+					groupConditionCB.errorString="";
+				}
+				
+//				if(int(groupOrderNS.value)==0){
+//					flag=false;
+//					groupOrderNS.errorString=commonFunction.getMessages('zeroIsNotAllowed');
+//				}
+//				else{
+//					groupOrderNS.errorString="";
+//				}
+				
+				return flag;
+			}	
+			
+			
+			/**
+			 * @private
+			 * this method is called on delete Button clicked
+			 * @return void 
+			 */
+			private function deleteButtonClickHandler():void{
+				Alert.show(commonFunction.getMessages('deleteConfirmMessage'),(commonFunction.getMessages('confirm')),3,null,deleteConfirmFunction,questionIcon);
+			}
+			
+			private function deleteConfirmFunction(event:CloseEvent):void{
+				if(event.detail == Alert.YES){
+					var gridData:ArrayCollection=commonFunction.getSelectedRowData(groupDetailsGrid);
+					var selectedRecordArrColl:ArrayCollection=new ArrayCollection();
+					
+					for each(var o:Object in gridData){
+						selectedRecordArrColl.addItem([o.programCourseKey, o.groupCode, o.subgroupCode]);
+					}
+					
+					var param:Object=new Object();
+					param["selectedRecords"]=selectedRecordArrColl;
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+					deleteRecordsHttpService.send(param);
+				}	
+			}
+			
+			/**
+			 * @private
+			 * this method is called on editButton clicked
+			 * @return void 
+			 */
+			private function editButtonClickHandler():void{
+				var gridData:ArrayCollection=commonFunction.getSelectedRowData(groupDetailsGrid);
+				var selectedRecordArrColl:ArrayCollection=new ArrayCollection();
+				var popUpWin:EditProgramGroup=EditProgramGroup(PopUpManager.createPopUp(this, EditProgramGroup, true));
+	    	        popUpWin.programCourseKey=gridData[0].programCourseKey;
+			        popUpWin.groupLabel.text=gridData[0].groupDescription;
+			        popUpWin.groupCode=gridData[0].groupCode;
+			        popUpWin.groupOrderNS.value=gridData[0].groupOrder;
+			        popUpWin.minimumSelectionNS.value=gridData[0].minimumSelection;
+			        popUpWin.maximumSelectionNS.value=gridData[0].maximumSelection;
+			        popUpWin.conditonalGroup=gridData[0].conditionalGroup;
+			        popUpWin.subgroupCode=gridData[0].subgroupCode;
+			        popUpWin.refreshProgramGroupGrid=refreshProgramGroupGrid;		        
+					PopUpManager.centerPopUp(popUpWin);
+			}
+			
+			/**
+			 * @private
+			 * this method is called on updateLinkedButton clicked
+			 * @return void 
+			 */
+			private function updateGroupLinkedButtonClickHandler():void{
+				var popUpWin:GroupRelationWindow=GroupRelationWindow(PopUpManager.createPopUp(this, GroupRelationWindow, true));
+			        popUpWin.programGroupXML=groupList;
+			        popUpWin.programCourseKey=programCourseKey;
+			        popUpWin.refreshProgramGroupGrid=refreshProgramGroupGrid;
+					PopUpManager.centerPopUp(popUpWin);
+			}
+			
+			private function resetButtonClickHandler():void{
+				programCB.selectedIndex=-1;
+				branchCB.selectedIndex=-1;
+				branchCB.enabled=false;
+				specializationCB.selectedIndex=-1;
+				specializationCB.enabled=false;
+				semesterCB.selectedIndex=-1;
+				semesterCB.enabled=false;
+				groupCB.selectedIndex=-1;
+				groupCB.enabled=false;
+				groupOrderNS.value=0;
+				maxSubGroupNS.value=0;
+				minSubGroupNS.value=0;
+				groupConditionCB.selectedIndex=-1;
+				groupConditionCB.enabled=false;
+				groupConditionCB.errorString="";
+				subGroupGrid.dataProvider=null;
+				groupDetailsGrid.dataProvider=null;
+			}
+			
+			private function unlinkButtonClickHandler():void{
+				Alert.show(commonFunction.getMessages('unlinkMessage'),(commonFunction.getMessages('confirm')),3,null,unlinkConfirmFunction,questionIcon);
+			}
+			
+			private function unlinkConfirmFunction(event:CloseEvent):void{
+				if(event.detail == Alert.YES){
+					var gridData:ArrayCollection=commonFunction.getSelectedRowData(groupDetailsGrid);
+					var selectedRecordArrColl:ArrayCollection=new ArrayCollection();
+					
+					for each(var o:Object in gridData){
+						selectedRecordArrColl.addItem([o.programCourseKey, o.groupCode, o.subgroupCode]);
+					}
+					
+					var param:Object=new Object();
+					param["selectedRecords"]=selectedRecordArrColl;
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+					unlinkRecordsHttpService.send(param);
+				}	
+			}
+			
+			private function groupConditionCBChangeHandler():void{
+				
+				var param:Object=new Object();
+				param["time"]=new Date();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+				param["groupCode"]=groupList.group.(groupDescription==groupCB.selectedLabel).groupCode;
+				groupOrderHttpService.send(param);
+				
+				if(groupOrder==0){
+					param["time"]=new Date();
+                  	param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+					param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+					param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+					param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+					param["conditionalGroup"]=condition.element.status.(@name==groupConditionCB.selectedLabel).@code;
+					conditionalGroupOrderHttpService.send(param);
+				}
+				
+			}
+			
+			private function conditionalGroupOrderHttpServiceResultHandler(event:ResultEvent):void{
+				var resultData:XML = event.result as XML;
+				if(resultData=="" && groupConditionCB.selectedLabel=="Yes"){
+					groupOrderNS.maximum=100;
+					groupOrderNS.value=100;
+					groupOrderNS.enabled=false;
+				}
+				else if(int(resultData.result.message)>99 && groupConditionCB.selectedLabel=="Yes"){
+					groupOrderNS.maximum = int(resultData.result.message)+1;
+					groupOrderNS.value =  int(resultData.result.message)+1;
+				}
+				else if(int(resultData.result.message)>0 && groupConditionCB.selectedLabel=="No"){
+					groupOrderNS.maximum = int(resultData.result.message)+1;
+					groupOrderNS.value =  int(resultData.result.message)+1;
+				}
+				else{
+					groupOrderNS.maximum = int(resultData.result.message)+1;
+					groupOrderNS.value =  int(resultData.result.message)+1;
+				}
+			}
+
+			private function groupOrderHttpServiceResultHandler(event:ResultEvent):void{
+				var resultData:XML=event.result as XML;
+				if(resultData.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				groupOrder=int(resultData.result.message);
+			}
+		
+						
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas x="31.5" y="24" styleName="SimpleCanvas" width="773" height="110">
+		<mx:Label x="96" y="25" text="{commonFunction.getConstants('program')}:"/>
+		<mx:ComboBox x="161" y="23" width="160" id="programCB" selectedIndex="-1" toolTip="{programCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="programCBChangeHandler()"/>
+		<mx:Label x="468" y="25" text="{commonFunction.getConstants('branch')}:"/>
+		<mx:ComboBox x="533" y="23" width="160" id="branchCB" enabled="false" selectedIndex="-1" toolTip="{branchCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="branchCBChangeHandler()"/>
+		<mx:Label x="67" y="70" text="{commonFunction.getConstants('specialization')}:"/>
+		<mx:ComboBox x="161" y="68" width="160" id="specializationCB" enabled="false" selectedIndex="-1" toolTip="{specializationCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="specializationCBChangeHandler()"/>
+		<mx:Label x="462" y="70" text="{commonFunction.getConstants('semester')}:"/>
+		<mx:ComboBox x="533" y="68" width="160" id="semesterCB" enabled="false" selectedIndex="-1" toolTip="{semesterCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="semesterCBChangeHandler()"/>
+	</mx:Canvas>	
+	
+		<mx:Label x="191.5" y="162" text="{commonFunction.getConstants('group')}:"/>
+		<mx:ComboBox x="242.5" y="158" enabled="false" width="160" id="groupCB" toolTip="{groupCB.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="groupCBChangeHandler()"/>
+		<mx:Label x="508.5" y="160" text="{commonFunction.getConstants('groupOrder')}:"/>
+		<mx:NumericStepper x="624.5" y="158" id="groupOrderNS" width="160" enabled="false"/>
+		<mx:Label x="31.5" y="201" text="{commonFunction.getConstants('maximumSubGroupCanBeSelected')}:"/>
+		<mx:NumericStepper x="242.5" y="199" id="maxSubGroupNS" width="160"/>
+		<mx:Label x="434.5" y="201" text="{commonFunction.getConstants('minimumSubGroupToBeSelected')}:"/>
+		<mx:NumericStepper x="624.5" y="199" id="minSubGroupNS" width="160"/>		
+		<mx:Label x="59.5" y="242" text="{commonFunction.getConstants('isThisGroupConditional')}:"/>
+		<mx:ComboBox x="242.5" y="240" width="160" id="groupConditionCB" toolTip="{groupConditionCB.text}" selectedIndex="-1" enabled="false" prompt="{commonFunction.getConstants('select')}" change="groupConditionCBChangeHandler()"/>
+	
+	<mx:Label x="114.5" y="290" text="{commonFunction.getConstants('selectSubGroup')}:"/>
+	<mx:Button x="241" y="439" id="saveButton" enabled="{tempButton.enabled}" label="{commonFunction.getConstants('saveButton')}" click="saveButtonClickHandler()"/>
+	<mx:Button x="433.5" y="439" id="resetButton" label="{commonFunction.getConstants('resetButton')}" click="resetButtonClickHandler()"/>
+	<mx:Button x="624.5" y="439" id="cancelButton" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	<controls:MDataGrid x="242.5" y="287" id="subGroupGrid" allowMultipleSelection="true" resizableColumns="true" sortableColumns="true"
+		verticalScrollPolicy="on" horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true" width="338">
+		<controls:columns>
+			<dataGridClasses:MDataGridColumn rendererIsEditor="true" resizable="false" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+				<dataGridClasses:headerRenderer>
+	    			<mx:Component>
+	    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.subGroupGrid,[],[outerDocument.tempButton])">
+	    					<mx:Script>
+	    						<![CDATA[
+	    							import common.commonFunction;
+	    							
+	    						]]>
+	    					</mx:Script>
+	    				</mx:CheckBox>
+	    			</mx:Component>
+		    	</dataGridClasses:headerRenderer>
+				<dataGridClasses:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="commonFunction.editDeleteEnable(event,outerDocument.subGroupGrid,[],[outerDocument.tempButton])">
+						    <mx:Script>
+						    <![CDATA[
+							    import common.commonFunction;
+							    import mx.controls.LinkButton;
+							]]>
+						   </mx:Script>
+						</mx:CheckBox>
+					</mx:Component>	
+				</dataGridClasses:itemRenderer>
+			</dataGridClasses:MDataGridColumn>
+			<dataGridClasses:MDataGridColumn headerText="SubGroup Code" showDataTips="true" dataField="subgroupCode" editable="false"/>
+			<dataGridClasses:MDataGridColumn headerText="SubGroup Name" showDataTips="true" dataField="subgroupDescription" editable="false" width="200"/>
+		</controls:columns>
+	</controls:MDataGrid>				
+	
+	
+	<mx:Canvas width="773" height="236" styleName="GridCanvas" x="31.5" y="479">	
+		<mx:DataGrid x="16" y="40" id="groupDetailsGrid" allowMultipleSelection="true" creationComplete="commonFunction.showDataTips(groupDetailsGrid)" resizableColumns="true" sortableColumns="true"
+		verticalScrollPolicy="on" horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true" width="747" height="186">
+			<mx:columns>
+				<mx:DataGridColumn rendererIsEditor="true" resizable="false" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" 
+								change="commonFunction.editDeleteEnable(event,outerDocument.groupDetailsGrid,[outerDocument.editButton],[outerDocument.deleteButton,outerDocument.updateGroupLinkedButton, outerDocument.unlinkButton])">
+							    <mx:Script>
+							    <![CDATA[
+							    import common.commonFunction;
+							    import mx.controls.LinkButton;
+							    ]]>
+							    </mx:Script>
+							</mx:CheckBox>
+						</mx:Component>	
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('group')}" dataField="groupDescription" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('groupOrder')}" dataField="groupOrder" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('maximumSelection')}" dataField="maximumSelection" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('minimumSelection')}" dataField="minimumSelection" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('subGroup')}" dataField="subgroupDescription" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('conditionalGroup')}" dataField="conditionalGroup" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('linkedGroup')}" dataField="linkedGroupDescription" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('linkedMinimum')}" dataField="linkedMinimumSelection" editable="false"/>
+				<mx:DataGridColumn headerText="{commonFunction.getConstants('linkedMaximum')}" dataField="linkedMaximumSelection" editable="false"/>
+				
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:LinkButton x="630" y="10" id="editButton" label="{commonFunction.getConstants('editButton')}" enabled="false" click="editButtonClickHandler()"/>
+		<mx:LinkButton x="483" y="10" id="updateGroupLinkedButton" label="{commonFunction.getConstants('editLinkedGroup')}" enabled="false" click="updateGroupLinkedButtonClickHandler()"/>
+		<mx:LinkButton x="690" y="11" id="deleteButton" label="{commonFunction.getConstants('deleteButton')}" enabled="false" click="deleteButtonClickHandler()"/>
+		<mx:LinkButton x="399" y="10" id="unlinkButton" label="{commonFunction.getConstants('unlink')}" enabled="false" click="unlinkButtonClickHandler()"/>
+		
+	</mx:Canvas>
+</mx:Panel>

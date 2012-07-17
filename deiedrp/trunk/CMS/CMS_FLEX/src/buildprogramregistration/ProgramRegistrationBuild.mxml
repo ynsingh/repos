@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramRegistrationBuild.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="722" height="314" 
+	title="{commonFunction.getConstants('buildProgramRegistrationTitle')}({sessionDate})"
+	creationComplete="init()" layout="absolute">
+	
+	<mx:Script source="asFiles/BuildProgramRegistrationAction.as"/>
+	<mx:Script>
+		<![CDATA[
+			
+					
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="xmlLoadSession" method="post"
+        url="{urlLoadSession}" 
+        resultFormat="e4x"
+        result="resultLoadSessionHandler(event)"
+        fault="faultLoadSessionHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="xmlInsertProgramReg" method="post"
+        url="{urlInsertProgramReg}" 
+        resultFormat="e4x"
+        result="resultInsertProgramRegHandler(event)"
+        fault="faultLoadSessionHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="checkSequenceAndStatus" method="post"
+        url="{urlCheckStatus}" 
+        resultFormat="e4x"
+        result="resultStatusHandler(event)"
+        fault="faultLoadSessionHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:StringValidator id="registrationPeriodValid" property="text" source="{registrationPeriod}" required="true"/>
+	<mx:StringValidator id="addDropPeriodValid" property="text" source="{addDropPeriod}" required="true"/>
+	<mx:Canvas id="secondCanvas" visible="true"  width="653.5" height="213" x="24.25" y="24" styleName="SimpleCanvas">
+		<mx:Label x="10" y="10" text="{commonFunction.getConstants('enterDetails')} :"/>
+		<mx:Label text="{commonFunction.getConstants('registrationPeriod')}:" x="150" y="40"/>
+		<mx:TextInput x="286" y="38" id="registrationPeriod" toolTip="in Days" restrict="0-9" text="{commonFunction.getConstants('registrationPeriodDate')}"/>
+		<mx:Label text="{commonFunction.getConstants('addDropPeriod')}:" x="168" y="80"/>
+		<mx:TextInput x="286" y="78" id="addDropPeriod" toolTip="in Days" restrict="0-9" text="{commonFunction.getConstants('addDropPeriodDate')}"/>
+		<mx:Button x="204.75" y="142" id="saveButton" label="{commonFunction.getConstants('buildButton')}" width="72" click="saveButtonClickHandler(event)"/>
+		<mx:Button x="365.75" y="142" id="cancelButton" label="{commonFunction.getConstants('cancelButton')}" click="cancelButtonClickHandler(event)" width="72"/>
+		
+	</mx:Canvas>
+	
+</mx:Panel>

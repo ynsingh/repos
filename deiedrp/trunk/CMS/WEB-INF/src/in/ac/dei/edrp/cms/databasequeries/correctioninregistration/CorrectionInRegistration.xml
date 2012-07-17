@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--
+
+		* @(#) CorrectionInRegistration.xml * @Author :Rohit * @Date
+		:04/08/2011 * Version 1.0 * Copyright (c) 2011 EdRP, Dayalbagh
+		Educational Institute. * All Rights Reserved. * * Redistribution and
+		use in source and binary forms, with or * without modification, are
+		permitted provided that the following * conditions are met: * *
+		Redistributions of source code must retain the above copyright *
+		notice, this list of conditions and the following disclaimer. * *
+		Redistribution in binary form must reproducuce the above copyright *
+		notice, this list of conditions and the following disclaimer in * the
+		documentation and/or other materials provided with the * distribution.
+
+		* * * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES *
+		OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE *
+		DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR
+		ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR *
+		CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF
+		SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR *
+		BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, *
+		EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors:
+		Members of EdRP, Dayalbagh Educational Institute */
+	-->
+<sqlMap namespace="correctioninregistration">
+	<typeAlias alias="correctionInRegistration"
+		type="in.ac.dei.edrp.cms.domain.correctioninregistration.CorrectionInRegistrationInfoGetter" />
+
+
+
+	<select id="getGridRecords" resultClass="correctionInRegistration">
+		select
+		tsp.enrollment_number as enrollNo,tsp.roll_number as
+		rollNo,tsp.registration_number as regNo,tsp.admission_mode as
+		admissionMode,
+		pm.program_id as programId,pm.program_name as
+		programName,
+		sys1.component_code as branchId,sys1.component_description
+		as
+		branchName,sys2.component_code as specializationId,tsp.student_id as
+		studentId,
+		sequence_number as sequenceNo,sys2.component_description
+		as
+		specializationName,reason_code as reasoncode,description as
+		description,tsp.old_entity_id as oldEntity,tsp.old_program_id as
+		oldProgram,tsp.old_branch_id as oldBranch,tsp.old_specialization_id as
+		oldSpecialization,tsp.from_semester as oldSemester ,
+		sys3.component_code as
+		semesterId,sys3.component_description as
+		semesterName,tsm.first_name as
+		studentfname,tsm.middle_name as
+		studentmname,tsm.last_name as
+		studentlname,
+		tsm.father_first_name as
+		fatherfname,tsm.father_middle_name as
+		fathermname,tsm.father_last_name
+		as fatherlname,
+		tsm.date_of_birth as dob,sys4.component_description as
+		category,sys4.component_code as
+		categoryId,tsm.gender as gender
+		from
+		temp_student_program tsp,system_table_two sys1,system_table_two
+		sys2,program_master pm,system_table_two sys3,temp_student_master
+		tsm,system_table_two sys4
+		where
+		pm.program_id=tsp.program_id and
+		sys1.component_code=tsp.branch_id
+		and
+		sys2.component_code=tsp.specialization_id and
+		sys1.group_code='BRNCOD'
+		and sys2.group_code='SPCLCD' and
+		tsp.to_semester=sys3.component_code
+		and sys3.group_code='SEMCOD' and
+		tsp.entity_id=#entityId# and
+		tsp.student_id=tsm.student_id and
+		tsp.program_id like #programId# and
+		tsm.category=sys4.component_code and
+		sys4.group_code='STDCTG' and
+		tsp.registration_status='E' and sys1.university_code=#universityId# and sys2.university_code=#universityId# and sys3.university_code=#universityId# and sys4.university_code=#universityId#;
+	</select>
+
+	<update id="setNewSeqRecord">
+		update temp_student_program
+		set
+		sequence_number=#sequenceNo#,registration_status=#regStatus#,modifier_id=#userId#,modification_time=now()
+		where
+		registration_number=#regNo#;
+	</update>
+
+	<update id="setSwtSeqRecord">
+		update temp_student_program
+		set
+		sequence_number=#sequenceNo#,registration_status=#regStatus#,modifier_id=#userId#,modification_time=now()
+		where
+		roll_number=#rollNo# and program_id=#programId#;
+	</update>
+
+	<select id="getSMRecords" resultClass="correctionInRegistration">
+		select
+		sm.student_first_name as studentfname,sm.student_middle_name as
+		studentmname,sm.student_last_name as studentlname,
+		sm.father_first_name as fatherfname,sm.father_middle_name as
+		fathermname,sm.father_last_name as fatherlname,
+		sm.date_of_birth as
+		dob,sys.component_description as category,sys.component_code as
+		categoryId,sm.gender as gender
+		from student_master sm,system_table_two
+		sys
+		where sm.enrollment_number=#enrollNo# and
+		sm.category_code=sys.component_code and sys.group_code='STDCTG' and sys.university_code=#universityId#;
+	</select>
+
+	<select id="getTSMRecords" resultClass="correctionInRegistration">
+		select tsm.first_name as
+		studentfname,tsm.middle_name as
+		studentmname,tsm.last_name as
+		studentlname,
+		tsm.father_first_name as
+		fatherfname,tsm.father_middle_name as
+		fathermname,tsm.father_last_name
+		as fatherlname,
+		tsm.date_of_birth as dob,sys.component_description as
+		category,sys.component_code as
+		categoryId,tsm.gender as gender
+		from
+		temp_student_master tsm,system_table_two sys
+		where
+		tsm.student_id=#studentId# and tsm.category=sys.component_code and
+		sys.group_code='STDCTG' and sys.university_code=#universityId#;
+	</select>
+
+	<select id="getEnrollValue" resultClass="correctionInRegistration">
+		select
+		sm.enrollment_number as enrollNo from student_master sm where
+		COALESCE(sm.student_first_name,sm.student_middle_name,sm.student_last_name)=
+		COALESCE(#studentfname#,#studentmname#,#studentlname#) AND
+		COALESCE(sm.father_first_name,sm.father_middle_name,sm.father_last_name)=COALESCE(#fatherfname#,#fathermname#,#fatherlname#)
+		AND
+		sm.date_of_birth=#dob#
+		AND sm.gender=#gender# AND
+		sm.category_code=#categoryId#;
+	</select>
+
+	<select id="getRollValue" resultClass="correctionInRegistration">
+		select roll_number as
+		enrollNo from student_program
+		where entity_id=#oldEntity# and
+		program_id=#oldProgram# and branch_id=#oldBranch# and
+		specialization_id=#oldSpecialization# and
+		current_semester=#oldSemester# and enrollment_number=#enrollNo#;
+	</select>
+
+	<update id="setEnrRoll">
+		Update temp_student_master tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc SET
+		tsm.enrollment_number=#enrollNo#,
+		tsp.enrollment_number=#enrollNo#,
+		tsc.enrollment_number=#enrollNo#,
+		tsp.registration_status=#regStatus#,
+		tsp.roll_number=#rollNo#,
+		tsc.roll_number=#rollNo#,
+		tsm.modifier_id=#userId#,tsm.modification_time=now(),
+		tsp.modifier_id=#userId#,tsp.modification_time=now(),
+		tsc.modifier_id=#userId#,tsc.modification_time=now()
+		where
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id
+		AND
+		tsc.student_id=#studentId#;
+	</update>
+
+	<update id="setEnr">
+		Update temp_student_master tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc SET
+		tsm.enrollment_number=#enrollNo#,
+		tsp.enrollment_number=#enrollNo#,
+		tsc.enrollment_number=#enrollNo#,
+		tsp.registration_status=#regStatus#,
+		tsm.modifier_id=#userId#,tsm.modification_time=now(),
+		tsp.modifier_id=#userId#,tsp.modification_time=now(),
+		tsc.modifier_id=#userId#,tsc.modification_time=now()
+		where
+		tsm.student_id=tsp.student_id
+		AND
+		tsp.student_id=tsc.student_id
+		AND
+		tsc.student_id=#studentId#;
+	</update>
+
+	<select id="checkRecord" resultClass="correctionInRegistration">
+		select count(*) as count
+		from student_program where enrollment_number=#enrollNo# and
+		program_status='ACT';
+	</select>
+
+	<update id="rejectRecords">
+		update temp_student_program set
+		registration_status='N',reason='rej',modifier_id=#userId#,modification_time=now()
+		where registration_number=#regNo# and
+		student_id=#studentId# and reason_code=#reasoncode# and
+		entity_id=#entityId# and program_id=#programId# and
+		branch_id=#branchId# and specialization_id=#specializationId# and
+		registration_status='E';
+    </update>
+
+
+
+</sqlMap>

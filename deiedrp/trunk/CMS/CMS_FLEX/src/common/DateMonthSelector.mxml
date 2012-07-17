@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) DateMonthSelector.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" borderColor="#000000" borderThickness=".5" borderStyle="solid" width="160" height="25">
+<mx:Script>
+	<![CDATA[
+		import mx.automation.codec.DateScrollDetailPropertyCodec;
+		var monthsArray:Array=new Array("JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC");
+		var datesArray:Array;
+		public var selectedValue:String="";
+		public var selectedDate:int;
+		
+		//Setting Date in field
+		public function setDate():void
+		{
+			dateCombo.enabled=true;
+			
+			datesArray=new Array;
+			
+			var i:int=31;
+			var j:int=1;
+			var sm:int=monthsCombo.selectedIndex+1;
+			
+			if((sm==4)||(sm==6)||(sm==9)||(sm==11))
+			{
+				i=30;
+			}
+			else if(sm==2)
+			{
+				if((new Date).fullYear%4==0)
+				{
+					i=29;
+				}
+				else
+				{
+					i=28;
+				}
+			}
+			else
+			{
+				i=31;
+			}
+			
+			while(i>0)
+			{
+				datesArray.push(j++);
+				i--;
+			}
+			dateCombo.dataProvider=datesArray;
+			dateCombo.selectedIndex=-1;
+			setValue();
+			dateCombo.selectedIndex=selectedDate-1;
+		}
+		
+		//Setting value
+		private function setValue():void
+		{
+			if((monthsCombo.selectedIndex<0)||(dateCombo.selectedIndex<0))
+			{
+				selectedValue="";
+			}
+			else
+			{
+				selectedValue=commonFunction.padZero((monthsCombo.selectedIndex+1).toString(),2)+"-"
+									+commonFunction.padZero(dateCombo.selectedLabel.toString(),2);
+			}
+		}
+	]]>
+</mx:Script>
+	<mx:ComboBox id="monthsCombo" updateComplete="setDate()" selectedIndex="-1" prompt="Month" dataProvider="{monthsArray}" height="23" width="85" y="1" x="1"></mx:ComboBox>
+	<mx:ComboBox id="dateCombo" updateComplete="setValue()" enabled="false" prompt="Date" x="89" height="23" width="70" y="1"></mx:ComboBox>
+</mx:Canvas>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" x="372" y="153" width="380" height="178" title="{resourceManager.getString('Constants','login')}" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			
+			
+			private function loadStudentLogOut():void{
+			this.parentDocument.vStack.selectedIndex=0;
+			this.parentDocument.loaderCanvas2.removeAllChildren();
+					}
+		]]>
+	</mx:Script>
+
+	<mx:Script source="asFiles/LoginForm.as"/>
+	
+	<mx:RemoteObject id="test" destination="testDestination" result="resultHandler(event)" fault="faultHandler(event)"/>
+	
+	<mx:HTTPService id="httpLogin" method="post"
+        url="{commonFunction.getConstants('url')+'/studentlogin/getStudentLoginInfo.htm'}"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>	
+	
+	<mx:StringValidator id="userNameValidator" source="{userNameText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	<mx:StringValidator id="passwordValidator" source="{passwordText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	
+	<mx:Label  text="{resourceManager.getString('Constants','registrationRollNo')}" x="30" y="30"/>
+	<mx:Label  text="{resourceManager.getString('Constants','password')}" x="30" y="60"/>
+	
+	<mx:TextInput id="userNameText" x="164" y="30"/>
+	<mx:TextInput id="passwordText" displayAsPassword="true" x="164" y="60"/>
+	
+	<mx:Button id="loginButton" label="{resourceManager.getString('Constants','login')}" click="Login()" x="164" y="90"/>
+	<mx:Button x="243" y="90" label="Cancel" width="81" id="cancelButton" click="loadStudentLogOut()"/>
+	
+</mx:TitleWindow>

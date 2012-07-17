@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ManageUniversityMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="844" height="714"
+		  title="{resourceManager.getString('Constants','managePanelTitle')}" fontWeight="normal" fontSize="14" fontFamily="Times New Roman"
+		  xmlns:shared="shared.*" xmlns:Components="common.Components.*" initialize="panel1InitializeHandler()" creationComplete="onCreationComplete()">
+	
+	<mx:Script source="asFiles/universityService.as"/> 
+	<mx:Script source="asFiles/manageUniversity.as"/> 
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.collections.ArrayCollection;
+			import mx.collections.XMLListCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			
+			[Bindable]public var urlPrefix:String;
+			
+			/**
+			 * @protected
+			 * on page enitialization.
+			 * @param event a Flex Event object.
+			 */
+			public function panel1InitializeHandler():void
+			{
+				urlPrefix=resourceManager.getString('Constants','url')+"/universityMaster/";
+			}						
+			
+			
+			/**
+			 * @protected
+			 * to close the form.
+			 * @param event a mouse event object.
+			 */
+			protected function resetButtonClickHandler(event:MouseEvent):void
+			{
+				editButtonClickHandler(event);
+			}
+			
+			
+			
+			/**
+			 * @protected
+			 * this method is called on universitySearch comboBox item change event.
+			 * @param event a ListEvent event object.
+			 */
+			protected function universitySearchCBChangeHandler(event:ListEvent):void
+			{
+				editButton.enabled=true;
+				editWindow.visible=false;
+				deleteButton.enabled=true;
+			}
+			
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="getUniversity" method="post"
+					url="{urlPrefix+'getUniversities.htm'}"
+					resultFormat="e4x"
+					result="ongetUniversitySuccess(event)"
+					fault="ongetUniversityFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="updateUniversity" method="post"
+					url="{urlPrefix+'updateUniversitiesDetails.htm'}"
+					resultFormat="e4x"	
+					result="onupdateUniversitySuccess(event)"
+					fault="onupdateUniversityFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="updatestatusUniversity" method="post"
+					url="{urlPrefix+'updateuniversitystatus.htm'}"
+					resultFormat="e4x"	
+					result="onupdateUniversityStatusSuccess(event)"
+					fault="onupdateUniversityStatusFailure(event)"
+					useProxy="false"/>
+					
+					<mx:HTTPService id="getUniversityDetails" method="post"
+					url="{urlPrefix+'getUniversitiesDetails.htm'}"
+					resultFormat="e4x"	
+					result="ongetDetailsSuccess(event)"
+					fault="ongetUniversityFailure(event)"
+					useProxy="false"/>
+					
+		
+					
+	<mx:XML id="stateXml" format="e4x" source="/common/stateCity.xml"/>
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	
+	<mx:Canvas width="735.5" height="68" styleName="SimpleCanvas" verticalCenter="-281" horizontalCenter="-2">
+		<mx:Label x="38" y="18" text="University Name:" fontSize="14" fontWeight="normal" fontFamily="Georgia"/>
+		<mx:ComboBox x="172" y="17"  id="universitySearchCB" width="160" toolTip="{universitySearchCB.selectedItem.universityName}" 
+					 change="universitySearchCBChangeHandler(event)" 
+					 prompt="Select" fontSize="12" fontWeight="normal" fontFamily="Georgia"/>
+		<mx:Button x="398" y="18" label="{commonFunction.getConstants('editButton')}" id="editButton" click="editButtonClickHandler(event)" 
+				  enabled="false"/>
+		<mx:Button x="499" y="18" label="{commonFunction.getConstants('deleteButton')}" id="deleteButton" click="editButtonClickHandler(event)" 
+				   enabled="false"/>
+		<mx:Button x="620" y="18" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+
+		
+	</mx:Canvas>
+	
+	<mx:Panel x="53" y="98" layout="absolute" id="editWindow" width="552.5" height="542" title="{titleDetails}" visible="false">
+		<mx:Label x="74" y="22" text="{resourceManager.getString('Constants','universityName')}:"/>
+		<mx:Label x="74" y="55" text="{resourceManager.getString('Constants','universityNickName')}:"/>
+		<mx:TextInput x="232" y="20" id="universityName" width="160" toolTip="{universityName.text}" restrict="a-z () A-Z"/>
+		<mx:TextInput x="232" y="53" id="universityNickName" maxChars="3" restrict="a-zA-Z" width="160"/>
+		<mx:Label x="74" y="84" text="Current Status:"/>
+		<mx:Label x="232" y="84" width="160" id="currentStatus"/>
+		<mx:Label x="74" y="115" text="{resourceManager.getString('Constants','sessionStartDate')}:"/>
+		<mx:DateField x="232" y="113" yearNavigationEnabled="true" width="158" id="sessionStartDate" />
+		<mx:Label x="74" y="148" text="{resourceManager.getString('Constants','sessionEndDate')}:"/>
+		<mx:DateField x="232" y="146" yearNavigationEnabled="true" width="158" id="sessionEndDate"/>
+		<mx:Label x="73" y="191" text="{resourceManager.getString('Constants','universityAddress')}:"/>
+		<mx:TextArea x="232" y="179" id="address" height="44" width="158" restrict="a-z, A-Z, 0-9, ,-,/"/>
+		<mx:Label x="71" y="233" text="{resourceManager.getString('Constants','universityCity')}:"/>
+		<mx:TextInput x="232" y="231" id="city" fontFamily="Times New Roman" fontSize="15" restrict="a-z A-Z"/>
+		<mx:TextInput x="232" y="262" id="stateCB" fontFamily="Times New Roman" fontSize="15" restrict="a-z A-Z"/>
+		<mx:TextInput x="232" y="293" id="countryCB" fontFamily="Times New Roman" fontSize="15" restrict="a-z A-Z"/>
+		<mx:Label x="71" y="268" text="{resourceManager.getString('Constants','universityState')}:"/>
+		<mx:Label x="71" y="295" text="{resourceManager.getString('Constants','countryName')}:"/>
+		<mx:Label x="71" y="325" text="{resourceManager.getString('Constants','universityPinCode')}:"/>
+		<mx:TextInput x="232" y="323" id="pincode" restrict="0-9" maxChars="6" width="160"/>
+		<mx:Label x="71" y="355" text="{resourceManager.getString('Constants','universityPhoneNumber')}:"/>
+		<mx:TextInput x="232" y="353" id="phoneNumber" restrict="0-9" maxChars="20"/>
+		<mx:Label x="74" y="385" text="{resourceManager.getString('Constants','otherPhone')}:"/>
+		<mx:TextInput x="232" y="383" id="otherPhone" restrict="0-9" maxChars="20"/>
+		<mx:Label x="74" y="415" text="{resourceManager.getString('Constants','faxNumber')}:"/>
+		<mx:TextInput x="232" y="413" id="faxNumber" restrict="0-9" maxChars="20"/>
+		<mx:Button x="126" y="445" label="{resourceManager.getString('Constants','updateButton')}" id="updateButton" click="updateButtonClickHandler(event)" width="75"/>
+		<mx:Button x="285" y="445" label="{resourceManager.getString('Constants','resetButton')}" id="resetButton" click="resetButtonClickHandler(event)" width="75"/>
+		<mx:Button x="126" y="445" label="{resourceManager.getString('Constants','deleteButton')}" id="activeButton" click="activeButtonClickHandler(event)" width="94"/>
+		<mx:Button x="412" y="445" label="{commonFunction.getConstants('cancelButton')}" click="{editWindow.visible=false}" width="70"/>
+		
+	</mx:Panel>
+	
+</mx:Panel>

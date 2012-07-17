@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) StudentProgramSwitch.mxml
+ * Author : Arush
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" showCloseButton="true" close="Cancel()" layout="absolute" width="850"
+	 textAlign="center" title="Student Program Switch" height="578" xmlns:local="*"  xmlns:studentprogramswitch="studentprogramswitch.*">
+	
+	
+	
+			<mx:HTTPService id="switchstudent" method="POST"
+		url="{urlPrefix+'switchstudent.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="switchstudentSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/> 
+	
+	
+	<mx:Script>
+		<![CDATA[
+		
+		]]>
+	</mx:Script>
+		<mx:Script>
+	<![CDATA[
+		
+
+		
+
+
+		
+	]]>
+</mx:Script>
+
+
+
+	<mx:DateFormatter id="fmtdate" formatString="DD.MM.YYYY">
+	
+		
+	</mx:DateFormatter>
+			
+	
+
+	<mx:Canvas styleName="SimpleCanvas" x="47" y="10" width="100%" height="100%">
+	
+		    <mx:HDividedBox width="100%" height="100%">
+
+            <mx:Canvas label="Canvas 1" width="389" height="111" backgroundColor="#FFFFCC">
+          <mx:VBox verticalGap="20">
+          <mx:HBox horizontalGap="20">
+          	<mx:Label text="Switch From" fontWeight="bold"/>
+          	<mx:Text id="fment" toolTip="Faculty/Department/college.."  htmlText="Entity" initialize=""/>
+	      </mx:HBox>
+            
+		<mx:HBox  horizontalGap="20">
+				<mx:Text id="fmpgm" toolTip="Program" htmlText="Program"  text=""   />
+				<mx:Text id="fmbrn" toolTip="Branch" htmlText="Branch" text="" />
+				<mx:Text id="fmspc" toolTip="Specilization" htmlText="Specilization" text=""/>
+			
+		</mx:HBox>
+		<mx:HBox  horizontalGap="20">
+		 
+				<mx:Text id="fmsem" toolTip="From Semester" htmlText="From Semester" initialize=""/>
+				<mx:Text  id="fmsemstdt" toolTip="From Semester Start Date"   />
+				<mx:Text id="fmsemeddt" toolTip="From Semester End   Date" />
+			
+		</mx:HBox>
+		
+				
+		</mx:VBox>
+                
+            </mx:Canvas>
+
+            <mx:Canvas label="Canvas 2" width="368" height="111" backgroundColor="#99CCFF">
+                
+          <mx:VBox verticalGap="20">
+          <mx:HBox horizontalGap="20">
+          	<mx:Label text="Switch To" fontWeight="bold"/>
+          	<mx:Text id="toent" toolTip="Faculty/Department/college.." htmlText="Entity" initialize=""/>
+	      </mx:HBox>
+            
+		<mx:HBox  horizontalGap="20">
+				<mx:Text id="topgm" toolTip="Program" htmlText="Program" initialize="" />
+				<mx:Text id="tobrn" toolTip="Branch" htmlText="Branch" initialize=""/>
+				<mx:Text id="tospc" toolTip="Specilization" htmlText="Specilization" initialize=""/>
+			
+		</mx:HBox>
+		<mx:HBox  horizontalGap="20">
+				<mx:Text id="tosem" toolTip="To Semester" htmlText="To Semester" initialize="" />
+				<mx:Text id="tosemstdt" toolTip="To Semester Start Date" htmlText="01-07-12" initialize=""/>
+				<mx:Text id="tosemeddt" toolTip="To Semester End   Date" htmlText="31-12-12" initialize=""/>
+			
+		</mx:HBox>
+		
+				
+		</mx:VBox>
+            </mx:Canvas>
+
+        </mx:HDividedBox>
+
+
+
+		<mx:Canvas styleName="GridCanvas" x="30" y="121" width="730" height="397">
+		
+<mx:Script source="AsFiles/StudentProgramSwitch.as" />
+		
+
+	
+		
+			<mx:DataGrid   x="26.25" id="studentgrid" y="69" width="659.5"  height="297"    >
+			
+				<mx:columns>
+
+					<mx:DataGridColumn headerText="Roll number" width="100" dataField="rollNo" />
+					<mx:DataGridColumn headerText="Name" width="250" dataField="name" />
+					
+					
+					<mx:DataGridColumn headerText="Status" width="50" dataField="swsts" id="switchstatus"  />
+					
+													
+					
+					
+					<mx:DataGridColumn headerText="Action" width="100" dataField="act"> 
+				<mx:itemRenderer>
+				
+						<mx:Component>
+							
+							 
+							<mx:HBox horizontalScrollPolicy="off"  horizontalGap="5" horizontalAlign="left">
+						
+							
+								<mx:Image source="@Embed(source='/images/Actions-dialog-ok-apply-icon.png')"  id="swtact" 
+									 toolTip="Switch Student" visible="{data.ss}"  click="outerDocument.processstudent(event)"  buttonMode="true"  />
+								<mx:Image source="@Embed(source='/images/arrow_undo.png')" visible="{data.cs}"   id="swtcan"
+									toolTip="Cancel Switching"  click="outerDocument.processstudent(event)"  buttonMode="true"/>
+								<mx:Image source="@Embed(source='/images/Cancel-icon.png')"  visible="{data.ctr}"   id="regcan"
+									toolTip="Cancel  Temporary Registration " click="outerDocument.processstudent(event)" />
+						
+							</mx:HBox>
+								
+					
+					
+						</mx:Component>
+					</mx:itemRenderer>
+					</mx:DataGridColumn>
+				
+					
+				</mx:columns>
+							
+							
+			</mx:DataGrid>
+			<mx:Button x="528" y="19" label="Cancel" click="Cancel()"/>
+			<mx:LinkButton x="628.75" y="19" label="Switch" enabled="false" id="Switch" />
+		
+		</mx:Canvas>
+	
+	</mx:Canvas>
+
+<mx:Script>
+	<![CDATA[
+		
+		import mx.events.DataGridEvent;
+		import mx.managers.PopUpManager;
+		public function Cancel():void{
+	PopUpManager.removePopUp(this);
+	
+}
+	]]>
+</mx:Script>
+
+</mx:TitleWindow>
+

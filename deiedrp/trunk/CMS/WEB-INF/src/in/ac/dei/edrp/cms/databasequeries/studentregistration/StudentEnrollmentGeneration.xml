@@ -1,0 +1,970 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+<sqlMap namespace="studentenrollment">
+	<typeAlias alias="studentenrollment"
+		type="in.ac.dei.edrp.cms.domain.studentregistration.StudentNumbersInfoGetter" />
+	<typeAlias alias="studentmaster"
+		type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter" />
+
+	<resultMap id="entitiylevel" class="studentenrollment">
+
+		<!--		<result property="entity_id" column="entity_id" />-->
+		<result property="entityName" column="entity_name" />
+
+	</resultMap>
+
+	<select id="selectlevelentity" resultMap="entitiylevel">
+
+		select
+		entity_name from
+		entity_master where parent_entity_id
+		=#universityId#;
+
+	</select>
+
+	<select id="selecttheentity" resultMap="entitiylevel">
+
+		select
+		entity_name from
+		entity_master where entity_id
+		=#universityId#;
+
+	</select>
+
+	<select id="selectlevelentities" resultMap="entitiylevel">
+
+		select em.entity_name
+		from entity_master em,entity_master em1 where
+		em.parent_entity_id=em1.entity_id AND em1.entity_name=#String#;
+
+	</select>
+
+	<resultMap id="entityprograms" class="studentenrollment">
+
+		<result property="programId" column="program_id" />
+		<result property="programName" column="program_name" />
+
+	</resultMap>
+
+	<select id="selectentityprogram" resultMap="entityprograms">
+
+		select distinct
+		pob.program_id,epm.program_name from program_offered_by
+		pob,program_master epm,entity_master em where
+		epm.program_id=pob.program_id AND pob.offered_by=em.entity_id AND
+		em.entity_name=#entityName# AND
+		em.university_id=substring(em.entityId,1,4);
+
+	</select>
+
+	<resultMap id="programbranch" class="studentenrollment">
+
+		<result property="branchId" column="component_code" />
+		<result property="branchName" column="component_description" />
+
+	</resultMap>
+
+	<select id="selectprogrambranch" resultMap="programbranch">
+
+		select
+		stt.component_code,stt.component_description from system_table_two
+		stt,program_offered_by pob where
+		stt.component_code=pob.branch_id AND
+		pob.program_id=#programId#
+		AND stt.university_code=#universityId# AND
+		stt.group_code='BRNCOD'
+		AND stt.active=1;
+
+	</select>
+
+	<resultMap id="programbranchspecialization" class="studentenrollment">
+
+		<result property="specializationId" column="component_code" />
+		<result property="specializationName" column="component_description" />
+
+	</resultMap>
+
+	<select id="selectprogrambranchspecialization" resultMap="programbranchspecialization">
+
+		select
+		stt.component_code,stt.component_description from system_table_two
+		stt,program_offered_by pob where
+		stt.component_code=pob.specialization_id AND
+		pob.program_id=#programId# AND pob.branch_id=#branchId#
+		AND
+		stt.university_code=#universityId# AND stt.group_code='SPCLCD'
+		AND
+		stt.active=1;
+	</select>
+
+	<resultMap id="programterms" class="studentenrollment">
+
+		<result property="semesterCode" column="component_code" />
+		<result property="semesterName" column="component_description" />
+
+	</resultMap>
+
+	<select id="selectprogramtermdetails" resultMap="programterms">
+
+		select
+		stt.component_code,stt.component_description from
+		system_table_two
+		stt,program_term_details ptd where
+		stt.component_code=ptd.semester_code AND
+		ptd.program_id=#programId#
+		AND
+		stt.group_code='SEMCOD' AND
+		stt.active=1;
+
+	</select>
+
+	<resultMap id="programtermss" class="studentenrollment">
+
+		<result property="semesterStartDate" column="semester_start_date" />
+		<result property="semesterEndDate" column="semester_end_date" />
+
+	</resultMap>
+
+	<select id="selectttermdetails" resultMap="programtermss">
+
+		select
+		semester_start_date,semester_end_date from program_term_details
+		where
+		program_id=#programId# AND
+		semester_code=#semesterCode#;
+
+	</select>
+
+	<resultMap id="programcoursekey" class="studentenrollment">
+
+		<result property="programCourseKey" column="program_course_key" />
+
+	</resultMap>
+
+	<select id="getprogramcoursekey" resultMap="programcoursekey">
+
+		select
+		program_course_key from program_course_header where
+		program_id=#programId# AND
+		branch_id=#branchId# AND
+		specialization_id=#specializationId# AND
+		semester_code=#semesterCode#;
+
+	</select>
+
+	<resultMap id="verificationstatus" class="studentenrollment">
+
+		<result property="verificationStatus" column="status" />
+
+	</resultMap>
+
+	<select id="getlastverification" resultMap="verificationstatus">
+
+		select status from
+		activity_master where
+		program_course_key=#programCourseKey# AND
+		process=#process# AND semester_start_date=#semesterStartDate# AND
+		semester_end_date=#semesterEndDate#
+		AND
+		activity_sequence=(select
+		activity_sequence-1
+		from activity_master where
+		activity=#activity# AND
+		program_course_key=#programCourseKey# AND
+		process=#process#);
+
+	</select>
+
+	<select id="getverification" resultMap="verificationstatus">
+
+		select status from
+		activity_master where
+		program_course_key=#program_course_key# AND
+		process=#process# AND
+		activity=#activity# AND
+		semester_start_date=#semesterStartDate# AND
+		semester_end_date=#semesterEndDate#;
+
+	</select>
+
+	<resultMap id="studentids" class="studentmaster">
+
+		<result property="studentId" column="student_id" />
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="firstName" column="first_name" />
+		<result property="middleName" column="middle_name" />
+		<result property="lastName" column="last_name" />
+		<result property="fatherName" column="father_name" />
+		<result property="gender" column="gender" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="category" column="category" />
+		<result property="admissionMode" column="admission_mode" />
+		<result property="fromSemester" column="from_semester" />
+		<result property="sequenceNumber" column="sequence_number" />
+		<result property="reasonCode" column="reason" />
+
+
+	</resultMap>
+	
+	<select id="getlistofstudents" resultMap="studentids">
+
+		select distinct
+		tsm.student_id,tsm.enrollment_number,tsm.first_name,tsm.middle_name,
+		tsm.last_name,concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,
+		tsm.father_last_name)
+		as father_name,tsm.gender,
+		tsm.date_of_birth,tsm.category,tsp.admission_mode,
+		tsp.roll_number,tsp.from_semester,tsp.sequence_number,tsp.reason
+		from
+		temp_student_master
+		tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc where
+		tsp.program_id=#programId# AND
+		tsp.branch_id=#branchCode#
+		AND
+		tsp.specialization_id=#specializationId# AND tsp.entity_id
+		=#entityId#
+		AND tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate#
+		AND
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id AND
+		tsp.registration_status=#status#;
+
+		</select>
+
+	<select id="getlistofstudentswithNORMode" resultMap="studentids">
+
+		select
+		distinct
+		tsm.student_id,tsm.enrollment_number,tsm.first_name,tsm.middle_name,
+		tsm.last_name,concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,
+		tsm.father_last_name)
+		as father_name,tsm.gender,
+		tsm.date_of_birth,tsm.category,tsp.admission_mode,
+		tsp.roll_number,tsp.from_semester,tsp.sequence_number,tsp.reason
+		from
+		temp_student_master
+		tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc where
+		tsp.program_id=#programId# AND
+		tsp.branch_id=#branchCode#
+		AND
+		tsp.specialization_id=#specializationId# AND tsp.entity_id
+		=#entityId#
+		AND tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate#
+		AND
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id AND
+		tsp.registration_status=#status# AND tsp.admission_mode='NOR';
+
+		</select>
+
+	<!--
+		query updated for entering enrollment_number to
+		enrollment_personal_details table
+	-->
+	<update id="updateenrollmentstables">
+
+		update temp_student_master tsm,temp_student_program
+		tsp,temp_student_courses tsc,enrollment_personal_details epd SET
+		tsm.enrollment_number=#enrollmentNumber#,
+		tsm.modification_time=now(),tsm.modifier_id=#userId#,
+		tsp.enrollment_number=#enrollmentNumber#,
+		tsc.enrollment_number=#enrollmentNumber#,
+		epd.enrollment_number=#enrollmentNumber#,
+		epd.modification_time=now(),epd.modifier_id=#userId#
+		where
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id AND
+		tsc.student_id=tsm.student_id AND
+		tsm.student_id=epd.student_id AND
+		epd.student_id=#studentId# AND
+		tsp.registration_status=#status#;
+				
+		</update>
+
+	<resultMap id="studentidss" class="studentmaster">
+
+		<result property="studentId" column="student_id" />
+		<result property="admissionMode" column="admission_mode" />
+		<result property="oldProgramId" column="old_program_id" />
+		<result property="oldBranchCode" column="old_branch_id" />
+		<result property="oldSpecialization" column="old_specialization_id" />
+		<result property="fromSemester" column="from_semester" />
+		<result property="toSemester" column="to_semester" />
+		<result property="oldEntityId" column="old_entity_id" />
+		<result property="rollNumber" column="roll_number" />
+
+
+	</resultMap>
+
+
+	<select id="getlistofstudentsforrolls" resultMap="studentidss">
+
+		select
+		distinct
+		tsm.student_id,tsp.admission_mode,tsp.old_program_id,tsp.old_branch_id,
+		tsp.old_specialization_id,tsp.from_semester,tsp.to_semester,tsp.old_entity_id,tsp.roll_number
+		from
+		temp_student_master
+		tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc where
+		tsp.program_id=#programId#
+		AND
+		tsp.branch_id=#branchId# AND
+		tsp.specialization_id=#specializationId# AND
+		tsp.entity_id=#entityId#
+		AND tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate#
+		AND
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id AND
+		tsp.enrollment_number=tsc.enrollment_number AND
+		tsm.enrollment_number=tsp.enrollment_number AND
+		tsp.registration_status='V' AND tsp.admission_mode!='NOR' AND
+		(tsp.enrollment_number !='');
+
+		</select>
+
+	<update id="updaterollnumbers">
+
+		update temp_student_master tsm,temp_student_program
+		tsp,temp_student_courses tsc SET
+		tsp.roll_number=#rollNumber#,
+		tsc.roll_number=#rollNumber#,
+		tsp.registration_status='G',
+		tsp.modifier_id=#modifierId#,
+		tsp.modification_time=now(),
+		tsc.modifier_id=#modifierId#,
+		tsc.modification_time=now()
+		where
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id
+		AND
+		tsm.enrollment_number=tsp.enrollment_number AND
+		tsp.enrollment_number=tsc.enrollment_number AND
+		tsm.student_id=#studentId#
+		AND tsp.registration_status='V'; 
+		
+		</update>
+
+
+
+	<update id="updaterollstables">
+
+		update temp_student_master tsm,temp_student_program
+		tsp SET
+		tsp.roll_number=#rollNumber#
+		where
+		tsm.student_id=tsp.student_id
+		AND
+		tsm.enrollment_number=tsp.enrollment_number AND
+		tsm.student_id=#studentId#
+		AND tsp.registration_status='Y' AND
+		program_id=#programId# AND branch_code=#branchId#;
+		
+		</update>
+
+	<resultMap id="systemvalues" class="studentenrollment">
+
+		<result property="systemValue" column="value" />
+
+
+	</resultMap>
+
+	<select id="sysvalue" resultMap="systemvalues">
+
+		select value from system_values
+		where university_id=#universityId# AND code=#code#;
+
+	</select>
+
+	<select id="sysvalueforroll" resultMap="systemvalues">
+
+		select value from
+		system_table_one
+		where entity_id = #entityId# AND
+		program_id=#programId# AND
+		year=#year# AND code=#code#;
+
+	</select>
+
+	<update id="updatesysvalue">
+
+		update system_values SET
+		value=#systemValue#
+		where
+		university_id=#universityId# AND code=#code#;
+		
+		</update>
+
+	<update id="updaterollvalue">
+		
+<!--		update system_table_one SET-->
+<!--		value=#systemValue#,modifier_id=#modifierId#,-->
+<!--		modification_time=now()-->
+<!--		where-->
+<!--		entity_id LIKE concat(substring(#entityId#,0,4),'%') AND-->
+<!--		program_id=#programId# AND year=#year#-->
+<!--		AND-->
+<!--		code=#code#;-->
+		
+		
+		update system_table_one SET
+		value=#systemValue#,modifier_id=#modifierId#,
+		modification_time=now()
+		where
+		entity_id =#entityId# AND
+		program_id=#programId# AND year=#year#
+		AND
+		code=#code#;
+		
+		</update>
+
+	<resultMap id="universitysession" class="studentenrollment">
+
+		<result property="session" column="start_date" />
+
+
+	</resultMap>
+
+	<select id="getsessionstartdate" resultMap="universitysession">
+
+		select start_date
+		from
+		university_master
+		where university_code=#universityId#;
+
+	</select>
+
+	<!--	<update id="updateverificationstatus">-->
+<!---->
+	<!--		update STUDENT_PROGRAM_VERIFICATION SET-->
+	<!--		registration_status='G'-->
+	<!--		where-->
+	<!--		program_id=#program_id# AND-->
+	<!--
+		branch_id=#branch_id# AND university_id=substring(program_id,1,4);
+	-->
+	<!--		-->
+	<!--		</update>-->
+
+	<resultMap id="entitysystemvalue" class="studentenrollment">
+
+		<result property="statusFlag" column="status_flag" />
+
+
+	</resultMap>
+
+	<select id="checkvalues" resultMap="entitysystemvalue">
+
+		select status_flag from
+		system_table_one where entity_id=#entityId# AND
+		program_id=#programId#
+		AND year=#year#;
+
+	</select>
+
+	<insert id="insertprogramsystemvalue">
+
+<!--		insert into-->
+<!--		system_table_one(entity_id,program_id,code,year,status_flag,value,insert_time,creator_id)-->
+<!--		values(#entityId#,#programId#,#code#,#year#,'L',-->
+<!--		(select max(value)-->
+<!--		from system_table_one sys where sys.entity_id-->
+<!--		Like concat(substring(#entityId#,0,4),'%')-->
+<!--		AND sys.year=#year#),-->
+<!--		now(),#creatorId#);-->
+
+
+			insert into		
+			system_table_one(entity_id,program_id,code,year,status_flag,value,insert_time,creator_id)		
+			values(#entityId#,#programId#,#code#,#year#,'L','000',now(),#creatorId#);
+		
+
+	</insert>
+
+	<update id="updateentitysatusflag">
+
+		update system_table_one SET
+		status_flag=#statusFlag#,modifier_id=#modifierId#,
+		modification_time=now()
+		where
+		entity_id=#entityId# AND
+		program_id=#programId# AND
+		year=#year#;
+		
+		</update>
+
+	<!-- query not in use -->
+	<update id="updateonlystatus">
+
+		update temp_student_program SET
+		registration_status='G',modifier_id=#modifierId#,
+		modification_time=now()
+		where
+		student_id=#studentId#;
+		
+		</update>
+
+	<resultMap id="entityid" class="studentenrollment">
+
+		<result property="entityCode" column="entity_code" />
+
+	</resultMap>
+
+	<select id="getentityid" resultMap="entityid">
+
+		select entity_code
+		from
+		entity_master where entity_id=#entityId#;
+
+		</select>
+
+
+
+	<select id="getstudentidvalue" resultMap="systemvalues">
+
+		select value from
+		system_values
+		where university_id=#universityId# AND
+		code=#code#;
+
+	</select>
+
+	<resultMap id="sstudentenrolls" class="studentmaster">
+
+		<result property="enrollmentNumber" column="enrollment_number" />
+
+	</resultMap>
+
+	<select id="getmatchingresults" resultMap="sstudentenrolls">
+
+		select
+		sm.enrollment_number from student_master sm where
+		concat_ws('	',sm.student_first_name,sm.student_middle_name,sm.student_last_name)=
+		concat_ws(' ',#firstName#,#middleName#,#lastName#) AND
+		concat_ws(' ',sm.father_first_name,sm.father_middle_name,sm.father_last_name)=#fatherName#
+		AND
+		sm.date_of_birth=#dateOfBirth#
+		AND sm.gender=#gender# AND
+		sm.category_code=#category#;
+
+	</select>
+
+	<select id="getmatchingwithenrollment" resultMap="sstudentenrolls">
+
+		select distinct
+		sm.enrollment_number from student_master sm,
+		temp_student_program tsp,
+		temp_student_courses tsc where
+		concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name)=
+		concat_ws(' ',#firstName#,#middleName#,#lastName#) AND
+		concat_ws(' ',sm.father_first_name,sm.father_middle_name,sm.father_last_name)=#fatherName#
+		AND
+		sm.date_of_birth=#dateOfBirth#
+		AND sm.gender=#gender# AND
+		sm.category_code=#category# AND
+		sm.enrollment_number=tsp.enrollment_number AND
+		tsp.enrollment_number=tsc.enrollment_number AND
+		tsc.enrollment_number=#enrollmentNumber#;
+
+	</select>
+
+	<update id="updateverificationstatus">
+
+		update temp_student_program SET
+		registration_status='P',modifier_id=#modifierId#,
+		modification_time=now()
+		where
+		student_id=#studentId# AND
+		registration_status='N';
+		
+		</update>
+
+	<update id="updatereasondescriptionstatus">
+
+		update temp_student_program SET
+		registration_status
+		='E',reason_code=#reason#,description=#description#,
+		modifier_id=#modifierId#,modification_time=now()
+		where
+		student_id=#studentId# AND registration_status='N';
+		
+		</update>
+		
+		<update id="updatereasondescriptionstatusR">
+
+		update temp_student_program SET
+		registration_status
+		='R',reason_code=#reason#,description=#description#,
+		modifier_id=#modifierId#,modification_time=now()
+		where
+		student_id=#studentId# AND registration_status='N';
+		
+		</update>
+
+	<select id="studentprogrammatchingdetails" resultMap="sstudentenrolls">
+
+		select
+		tsp.enrollment_number from temp_student_program tsp,student_program
+		sp
+		where tsp.old_program_id = sp.program_id AND
+		tsp.old_entity_id=sp.entity_id AND tsp.old_branch_id=sp.branch_id AND
+		tsp.old_specialization_id=sp.specialization_id AND
+		tsp.from_semester=sp.current_semester AND
+		tsp.enrollment_number=sp.enrollment_number AND
+		tsp.enrollment_number=#enrollmentNumber#;
+
+
+	</select>
+
+	<select id="checkswitchvalidity" resultMap="sstudentenrolls">
+
+		select
+		tsp.enrollment_number from temp_student_program tsp,program_switch
+		pswt where tsp.old_program_id=pswt.from_program AND
+		tsp.old_branch_id=pswt.from_branch AND
+		tsp.old_specialization_id=pswt.from_specialization AND
+		tsp.from_semester=pswt.from_semester AND
+		tsp.program_id=pswt.to_program AND tsp.branch_id=pswt.to_branch AND
+		tsp.specialization_id=pswt.to_specialization AND
+		tsp.to_semester=pswt.to_semester AND
+		tsp.enrollment_number=#enrollmentNumber#;
+
+
+	</select>
+
+<!-- Semester Dates were added by Dheeraj on 9/2/2012 -->
+	<update id="updateverificationstatuswithenroll">
+
+		update temp_student_program SET
+		registration_status=#status#,modifier_id=#modifierId#,
+		modification_time=now()
+		where
+		enrollment_number=#enrollmentNumber# and 
+		to_semester_start_date=#semesterStartDate# and 
+		to_semester_end_date=#semesterEndDate#;
+		
+		</update>
+
+<!-- Semester Dates were added by Dheeraj on 9/2/2012 -->
+	<update id="updatereasondescriptionstatuswithenroll">
+
+		update temp_student_program SET
+		registration_status='E',reason_code=#reason#,description=#description#,
+		modifier_id=#modifierId#,modification_time=now()
+		where
+		enrollment_number=#enrollmentNumber# and 
+		to_semester_start_date=#semesterStartDate# and 
+		to_semester_end_date=#semesterEndDate#;
+		
+		</update>
+
+	<resultMap id="studentidsssss" class="studentmaster">
+
+		<result property="studentId" column="student_id" />
+		<result property="admissionMode" column="admission_mode" />
+
+	</resultMap>
+
+	<select id="getlistforenrollments" resultMap="studentidsssss">
+
+		select distinct
+		tsm.student_id,tsp.admission_mode
+		from
+		temp_student_master
+		tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc,enrollment_personal_details esp where
+		tsp.program_id=#programId#
+		AND
+		tsp.branch_id=#branchCode#
+		AND
+		tsp.specialization_id=#specializationId# AND tsp.entity_id
+		=#entityId#
+		AND tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate# AND
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id AND
+		tsp.registration_status=#status# AND
+		(tsm.enrollment_number IS
+		NULL or
+		tsm.enrollment_number='') AND
+		tsp.admission_mode='NEW';
+
+		</select>
+
+	<resultMap id="switchruleone" class="studentmaster">
+
+		<result property="ruleCodeOne" column="rule_code_one" />
+
+	</resultMap>
+
+
+	<select id="getrulecodevalue" resultMap="switchruleone">
+
+		select
+		swt.rule_code_one
+		from switch_rule swt,program_switch prgs where
+		prgs.from_entity=#oldEntityId# AND prgs.to_entity=#entityId# AND prgs.from_program
+		=#oldProgramId# AND prgs.to_program=#programId#
+		AND
+		prgs.from_branch=#oldBranchCode#
+		AND prgs.to_branch=#branchCode#
+		AND
+		prgs.from_specialization=#oldSpecialization# AND
+		prgs.to_specialization=#specializationId# AND
+		prgs.from_semester=#fromSemester# AND
+		prgs.to_semester=#toSemester#
+		AND
+		prgs.rule_id=swt.rule_id;
+
+		</select>
+
+	<resultMap id="registrationstatus" class="studentmaster">
+
+		<result property="status" column="status" />
+
+
+	</resultMap>
+
+
+	<select id="getstudentstatus" resultMap="registrationstatus">
+	
+	select  srsh.status from student_registration_semester_header srsh,temp_student_program tsp
+		where tsp.admission_mode='NOR' AND tsp.status_in_semester NOT
+		IN('pas','fal') AND tsp.roll_number=srsh.roll_number AND
+		tsp.roll_number=#rollNumber# AND
+		tsp.from_semester=#fromSemester# AND
+		tsp.enrollment_number=#enrollmentNumber# AND srsh.program_course_key in(select program_course_key
+		from program_course_header where program_id=#programId# AND branch_id=#branchCode#
+		AND specialization_id=#specializationId# AND semester_code IN(select t2.semester_code from program_term_details t1,program_term_details t2
+		where t1.semester_code=#fromSemester# AND t1.semester_group=t2.semester_group AND t1.program_id=t2.program_id AND t2.program_id=#programId#)) 
+		AND srsh.status IN('REM','REG');
+		
+<!--		removed from the above query temporarily,'UFM','INC','FAL'-->
+
+<!--		select srsh.status from-->
+<!--		student_registration_semester_header srsh,temp_student_program tsp-->
+<!--		where tsp.admission_mode='NOR' AND tsp.status_in_semester NOT-->
+<!--		IN('pas','fal') AND tsp.roll_number=srsh.roll_number AND-->
+<!--		tsp.roll_number=#rollNumber# AND-->
+<!--		tsp.from_semester=#fromSemester# AND-->
+<!--		tsp.enrollment_number=#enrollmentNumber# AND srsh.program_course_key-->
+<!--		IN(select program_course_key from program_course_header where-->
+<!--		program_id=#programId# AND branch_id=#branchCode# AND-->
+<!--		specialization_id=#specializationId#-->
+<!--		AND-->
+<!--		semester_code=#fromSemester#);-->
+
+		</select>
+		
+<select id="getsemestergroupflag" resultClass="studentmaster">
+
+		select (case when t1.semester_group=t2.semester_group then 'Y' else 'N' end)  as semesterStatus from program_term_details t1,
+		program_term_details t2 where t1.semester_code=#fromSemester# AND t2.semester_code=#currentSemester# 
+		AND  t1.program_id=t2.program_id AND t2.program_id=#programId#;
+		
+		
+		</select>
+
+	<select id="getregistrationStatus" resultClass="studentmaster">
+
+		select
+		tsp.registration_status as status,tsp.student_id studentId,
+		tsp.registration_number rollNumber
+		from
+		temp_student_program
+		tsp
+		where
+		tsp.program_id=#programId# AND
+		tsp.branch_id=#branchCode#
+		AND
+		tsp.specialization_id=#specializationId#
+		AND tsp.entity_id
+		=#entityId#
+		AND
+		tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate# AND
+		tsp.registration_status
+		IN('E','P') ;
+		
+		
+		</select>
+
+	<update id="updateregistrationstatus">
+
+		update temp_student_program tsp
+		SET
+		tsp.registration_status='G' where
+		tsp.program_id=#programId# AND
+		tsp.branch_id=#branchCode#
+		AND
+		tsp.specialization_id=#specializationId#
+		AND tsp.entity_id
+		=#entityId#
+		AND
+		tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate# AND roll_number=#rollNumber#;
+				
+		</update>
+
+	<select id="getstudenttrackingrecords" resultClass="studentmaster">
+
+		SELECT
+		st.roll_number as rollNumber, pm.program_name as
+		programName,pch.semester_code as
+		semesterCode,sys.component_description as
+		componentDescription,sys1.component_description as componentCode,
+		st.sequence_number as sequenceNumber,st.student_semester_status as
+		statusInSemester, st.student_program_status as
+		status,substring(st.insert_time,1,10) as insertTime,
+		sys2.component_description as activityId, sys3.component_description
+		as processId FROM student_tracking st,program_master
+		pm,program_course_header pch,
+		system_table_two sys,system_table_two
+		sys1,system_table_two sys2,system_table_two sys3
+		where
+		st.roll_number=#rollNumber# AND
+		st.program_course_key=pch.program_course_key AND
+		pm.program_id=pch.program_id
+		AND sys.component_code=pch.branch_id AND
+		sys.group_code='BRNCOD' AND sys.university_code=#universityId#
+		AND sys1.component_code=pch.specialization_id
+		AND
+		sys1.group_code='SPCLCD' AND sys1.university_code=#universityId#
+		AND sys2.component_code=st.created_activity
+		AND sys2.group_code='ACTMST' AND sys2.university_code=#universityId#
+		AND sys3.component_code=st.process_id AND
+		sys3.group_code='PRCMST' AND sys3.university_code=#universityId#
+		order by st.insert_time;
+		
+		</select>
+		
+		<select id="selectstudentswitherror" resultClass="studentmaster">
+
+		select distinct
+		tsm.student_id studentId,
+		tsp.roll_number rollNumber,tsp.description reasonDescription
+		from
+		temp_student_master
+		tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc where
+		tsp.program_id=#programId# AND
+		tsp.branch_id=#branchCode#
+		AND
+		tsp.specialization_id=#specializationId# AND tsp.entity_id
+		=#entityId#
+		AND tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate#
+		AND
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id AND
+		tsp.registration_status='E' ;
+
+		</select>
+		
+		<select id="selectstudentswitherrorinnor" resultClass="studentmaster">
+
+		select distinct
+		tsm.student_id studentId,
+		tsp.roll_number rollNumber,tsp.description reasonDescription
+		from
+		temp_student_master
+		tsm,temp_student_program
+		tsp,temp_student_courses
+		tsc where
+		tsp.program_id=#programId# AND
+		tsp.branch_id=#branchCode#
+		AND
+		tsp.specialization_id=#specializationId# AND tsp.entity_id
+		=#entityId#
+		AND tsp.to_semester=#semesterCode# AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=#semesterEndDate#
+		AND
+		tsm.student_id=tsp.student_id AND
+		tsp.student_id=tsc.student_id AND
+		tsp.registration_status='E' AND tsp.admission_mode
+		='NOR';
+
+		</select>
+
+
+
+</sqlMap>

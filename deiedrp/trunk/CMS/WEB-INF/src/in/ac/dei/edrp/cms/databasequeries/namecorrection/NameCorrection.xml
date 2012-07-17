@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--
+
+		* @(#) NameCorrection.xml * @Author :Rohit * @Date :04/08/2011 *
+		Version 1.0 * Copyright (c) 2011 EdRP, Dayalbagh Educational
+		Institute. * All Rights Reserved. * * Redistribution and use in source
+		and binary forms, with or * without modification, are permitted
+		provided that the following * conditions are met: * * Redistributions
+		of source code must retain the above copyright * notice, this list of
+		conditions and the following disclaimer. * * Redistribution in binary
+		form must reproducuce the above copyright * notice, this list of
+		conditions and the following disclaimer in * the documentation and/or
+		other materials provided with the * distribution. * * * THIS SOFTWARE
+		IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES,
+		INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES * OF
+		MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE * DISCLAIMED.
+		IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR ANY DIRECT,
+		INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL DAMAGES
+		(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS OR
+		SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION)
+		HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT,
+		STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE)
+		ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, * EVEN IF ADVISED
+		OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors: Members of EdRP,
+		Dayalbagh Educational Institute */
+	-->
+<sqlMap namespace="namecorrection">
+	<typeAlias alias="NameCorrection"
+		type="in.ac.dei.edrp.cms.domain.namecorrection.NameCorrectionInfoGetter" />
+
+	<select id="getPrograms" resultClass="NameCorrection">
+		select
+		Distinct
+		pm.program_id as id,pm.program_name as name
+		from temp_student_program
+		tsp,program_master pm
+		where
+		tsp.program_id=pm.program_id and tsp.program_id like concat(#universityId#,'%') and
+		tsp.registration_number in (select
+		registration_number from
+		student_verification_status where
+		component_code='NC' and
+		verified='0');
+	</select>
+
+	<select id="getBranchs" resultClass="NameCorrection">
+		select
+		Distinct
+		sys.component_code as id,sys.component_description as name
+		from
+		temp_student_program tsp,system_table_two sys
+		where
+		tsp.branch_id=sys.component_code and
+		sys.university_code=#universityId# and tsp.program_id=#programId# and
+		tsp.registration_number in (select registration_number from
+		student_verification_status where
+		component_code='NC' and
+		verified='0');
+	</select>
+
+	<select id="getSpecializations" resultClass="NameCorrection">
+		select
+		Distinct
+		sys.component_code as id,sys.component_description as name
+		from
+		temp_student_program tsp,system_table_two sys
+		where
+		tsp.specialization_id=sys.component_code and sys.university_code=#universityId# and
+		tsp.program_id=#programId#
+		and tsp.branch_id=#branchId# and
+		tsp.registration_number in (select
+		registration_number from
+		student_verification_status where
+		component_code='NC' and
+		verified='0');
+	</select>
+
+
+
+
+
+
+	<select id="getNameErrorRecords" resultClass="NameCorrection">
+		select
+		svs.student_id as studentId,svs.verified as
+		verified,svs.registration_number as
+		registrationNo,tsm.first_name as
+		studentfname,
+		tsm.middle_name as studentmname,tsm.last_name as
+		studentlname,tsm.father_first_name
+		as fatherfname,
+		tsm.father_middle_name as fathermname,tsm.father_last_name as
+		fatherlname,tsm.mother_first_name as motherfname,
+		tsm.mother_middle_name as mothermname,tsm.mother_last_name as
+		motherlname
+		from temp_student_program tsp,student_verification_status
+		svs,temp_student_master tsm
+		where tsp.program_id=#programId# and tsp.program_id like concat(#universityId#,'%') and
+		tsp.branch_id like #branchId# and
+		tsp.specialization_id like
+		#specializationId# and
+		tsp.registration_number=svs.registration_number
+		and
+		svs.student_id=tsm.student_id and svs.component_code='NC' and
+		svs.verified='0' and tsp.student_id=svs.student_id;
+	</select>
+
+	<update id="updateRecords">
+		Update temp_student_master
+		tsm,enrollment_personal_details epd
+		set tsm.first_name=#studentfname#
+		,tsm.middle_name=#studentmname#,tsm.last_name=#studentlname#,tsm.father_first_name=#fatherfname#,tsm.father_middle_name=#fathermname#,tsm.father_last_name=#fatherlname#,
+		tsm.mother_first_name=#motherfname#,tsm.mother_middle_name=#mothermname#,tsm.mother_last_name=#motherlname#,
+		epd.student_first_name=#studentfname#,epd.student_middle_name=#studentmname#,epd.student_last_name=#studentlname#,epd.father_first_name=#fatherfname#,epd.father_middle_name=#fathermname#,
+		epd.father_last_name=#fatherlname#,epd.mother_first_name=#motherfname#,epd.mother_middle_name=#mothermname#,epd.mother_last_name=#motherlname#,tsm.modifier_id=#userId#,tsm.modification_time=now()
+		where tsm.student_id=#studentId# and
+		epd.registration_number=#registrationNo#;
+	</update>
+
+
+
+</sqlMap>

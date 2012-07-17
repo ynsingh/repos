@@ -1,0 +1,105 @@
+##############################################################################
+Copyright © 2009-2011 DEI Agra.
+Created by:- Nupur Dixit
+Created on 14 July 2011
+##############################################################################
+
+This document describes procedure to install CMS system on any Linux machine.
+
+Installing CMS for linux
+---------------------------------
+
+Download the following
+
+1. jdk-1_5_0_02-linux-i586-rpm.bin or higher version from http://java.sun.com
+2. apache-ant-1.8.2-bin.zip or higher version (apache-ant-1.8.2-bin.zip,apache-ant-1.8.0RC1) from http://ant.apache.org/
+(Kindly notice the version)
+3. download mysql from http://dev.mysql.com/downloads/
+	MySQL-shared-5.1.54.0
+	MySQl-server-5.1.54.0
+	MySQL-client-5.1.54.0
+	//MySQl-server: mysql-5.1.54-win32.msi or higher version 
+4. download apache tomcat from http://tomcat.apache.org/
+	apache-tomcat-6.0.20
+
+Configuration Steps to be followed
+-------------------------------------------------
+Step 1: Login as root.
+Step 2: Install JDK
+	# chmod +x jdk-1_5_0_02-linux-i586-rpm.bin
+	# ./jdk-1_5_0_02-linux-i586-rpm.bin
+
+It will show licence, you should opt
+
+	opt yes
+
+One can also use jdk-1_5_0_02-linux-i586-rpm for installing JDK using the following
+
+	# rpm -ivh jdk-1_5_0_02-linux-i586-rpm
+
+(Make sure no other installation of java exist in the path e.g., gcj (gnu
+Cjava compiler). These are usually installed when the linux is installed.)
+
+
+Step 3:	Install MYSQL
+
+	# rpm -ivh MySQL-shared-5.1.54.0
+	# rpm -ivh MySQl-server-5.1.54.0
+	# rpm -ivh MySQL-client-5.1.54.0
+
+Step 4: Install tomcat
+
+	# tar -xzvf apache-tomcat-6.0.20.tar
+
+Step 5: Install ant
+
+	# unzip -a apache-ant-1.8.2-bin.tar.gz
+	# cd apache-ant-1.8.2
+	# chmod	+x bin/*
+
+Step 6:	Update Environment Variable in .bashrc file in home
+Directory. The following command should be
+replicated in rc file to avoid typing them again when loging in next time.
+
+   # JAVA_HOME=/usr/java/j2sdk-1_5_0
+   # ANT_HOME=/home/{user}/apache-ant-1.8.2
+   # TOMCAT_HOME=/home/{user}/apache-tomcat-6.0.20
+   # PATH=/usr/java/j2sdk-1_5_0/bin:/home/{user}/apache-ant-1.8.1/:/home/{user}/apache-tomcat-6.0.20:$PATH
+   # export JAVA_HOME ANT_HOME TOMCAT_HOME PATH 
+
+Note: Here {user} is the name of user home.
+
+
+Step 7: Installing CMS 
+ i) Go into the webapps folder of apache-tomcat and make a folder name CMS. Now checkout the latest version     of CMS from this location into CMS folder
+   ( https://cms-dei-vone.googlecode.com/svn/trunk/)
+
+
+ii) Go into webapps\CMS\WEB-INF\build folder and modify these lines of build.properties file 
+according to your database setting-
+
+
+
+databaseUrl = jdbc:mysql://localhost/cms
+database.driver=com.mysql.jdbc.Driver
+database.url=jdbc:mysql://localhost:3306/cms
+database.username=root
+database.password=mysql
+
+
+iv) Now go into webapps\CMS\WEB-INF\build directory and type the command 
+ # ant 
+(if every thing is ok then message comes as Build successful..)
+
+
+v)Go into the bin directory of tomcat and execute this command for start the tomcat
+
+# ./startup.sh
+
+vi) Now open your browser and type this url into the address bar
+ 	http://localhost:8080/CMS
+   or http://IP address of your server:port number on which your tomcat is running/CMS
+
+Now login as amir or deepak and see the magic ;)
+   
+Note: mysql-connector.jar and jstl.jar should be inside lib folder of tomcat 

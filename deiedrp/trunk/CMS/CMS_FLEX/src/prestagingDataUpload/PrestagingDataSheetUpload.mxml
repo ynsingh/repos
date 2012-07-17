@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) PrestagingDataSheetUpload.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="832" creationComplete="onPageCreate()" title="{commonFunction.getConstants('prestagingDataSheet')}">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/PrestagingAction.as"/>
+	<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix}getEntityList.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:Panel styleName="DetailTitleWindow" width="100%" layout="absolute" height="104" title="{commonFunction.getConstants('downloadButton')}">
+		<mx:Label x="48" y="25" text="{commonFunction.getConstants('studentType')}" />
+		<mx:ComboBox selectedIndex="-1" id="studentType" change="onStudentTypeChange(event)" toolTip="{studentType.text}" prompt="{commonFunction.getConstants('select')}" width="150" dataProvider="{['New','Existing']}" x="141" y="25" />
+		<mx:Button x="306" y="25" id="downloadButton" enabled="false" click="onDownload()" label="{commonFunction.getConstants('clickToDownloadExcelTemplate')}"/>
+		<mx:Button x="608" y="25" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Panel>
+	
+	<mx:Panel layout="absolute" styleName="DetailTitleWindow" width="100%" title="{commonFunction.getConstants('uploadButton')}">
+		
+		
+		<mx:Label x="45" y="20" text="{commonFunction.getConstants('studentType')}" />
+		<mx:Label x="45" y="50" text="{commonFunction.getConstants('entity')}" />
+		<mx:Label x="415" y="50" text="{commonFunction.getConstants('program')}" />
+		<mx:Label x="45" y="80" text="{commonFunction.getConstants('branch')}" />
+		<mx:Label x="415" y="80" text="{commonFunction.getConstants('specialization')}"/>
+		
+		<mx:ComboBox x="180" y="20" selectedIndex="-1" id="uploadStudentType" prompt="{commonFunction.getConstants('select')}" toolTip="{uploadStudentType.text}" width="200" change="onUploadStudentTypeChange(event)" dataProvider="{['New','Existing']}"/>
+		<mx:ComboBox x="180" y="50" toolTip="{entityCombo.text}" width="200" id="entityCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onEntityChange(event)"/>
+		<mx:ComboBox x="545" y="50" toolTip="{programCombo.text}" id="programCombo" width="200" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onProgramChange(event)"/>
+		<mx:ComboBox x="180" y="80" toolTip="{branchCombo.text}" width="200" id="branchCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onBranchChange(event)"/>
+		<mx:ComboBox x="545" y="80" toolTip="{specilizationCombo.text}" width="200" id="specilizationCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onSpecializationChange(event)"/>
+		
+		<mx:Canvas id="uploadPanel" enabled="false" y="124" width="100%" height="125">
+			<mx:Label id="fileLabel" x="44" y="3" width="267" text="{commonFunction.getConstants('selectExcelToUpload')}"/>
+			<mx:ProgressBar id="uploadFileName" mode="manual" x="44" y="33" width="255" height="30"/>
+			<mx:Button x="304" y="3" id="browseButton" label="{commonFunction.getConstants('browseButton')}" click="onBrowse(event)"/>
+			<mx:Button x="394" y="3" id="resetButton" enabled="false" click="onReset(event)" label="{commonFunction.getConstants('resetButton')}"/>
+			<mx:Button x="44" y="78" id="uploadButton" enabled="false" click="onUpload(event)" label="{commonFunction.getConstants('uploadButton')}"/>
+			
+		</mx:Canvas>
+	</mx:Panel>
+</mx:Panel>

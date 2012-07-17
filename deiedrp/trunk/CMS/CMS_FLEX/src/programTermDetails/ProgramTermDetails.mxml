@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramTermDetails.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="865" height="663" 
+		  title="{commonFunction.getConstants('programTermDetailsTitle')}" horizontalAlign="left" verticalAlign="top" 
+		  xmlns:shared="shared.*" xmlns:Components="shared.Components.*" creationComplete="loadCombo()" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="asFiles/ProgramTermDetailValidation.as"/>  
+	
+	 <mx:HTTPService id="httpSemList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/getSemesterList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_SemList(event)"
+        fault="faultHandler_SemList(event)"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpSemGroupList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/getSemesterGroupList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_SemGroup(event)"
+        fault="faultHandler_SemGroup(event)"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpAddTerm" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/insertTermDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_AddTerm(event)"
+        fault="faultHandler_AddTerm(event)"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpSquenceList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/getProgSequenceList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Sequence(event)"
+        fault="faultHandler_Sequence(event)"
+        useProxy="false"/>
+		
+	<mx:Canvas width="787.65" height="554.5" x="26.1" y="26" styleName="SimpleCanvas">
+	
+	<mx:Label x="74.25" y="24.4" text="{commonFunction.getConstants('programName')}"/>
+	<mx:ComboBox id="programCB" toolTip="{programCB.text}" x="186.25" y="23.4" prompt="{commonFunction.getConstants('select')}" 
+				 selectedIndex="-1"  width="160" change="getSequence()"/>
+	<mx:Label x="429.95" y="24.4" text="{commonFunction.getConstants('semester')}"/>
+	<mx:ComboBox id="semesterCB" toolTip="{semesterCB.text}" x="551.95" y="21.4" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" labelField="name" change="semesterCBChangeHandler(event)" width="162"/>
+	
+	<mx:Label x="41.25" y="57.35" text="{commonFunction.getConstants('semesterStartDate')}"/>
+	<!--<mx:DateField id="semesterStartDate" x="188.25" y="55.4" yearNavigationEnabled="true" width="158" formatString="MM-DD" />-->
+	<common:DateMonthSelector id="semesterStartDate" x="188.25" y="55.4"/>
+	<mx:Label x="418.95" y="57.35" text="{commonFunction.getConstants('semesterEndDate')}"/>
+	<!--<mx:DateField id="semesterEndDate" x="553.95" y="55.35" yearNavigationEnabled="true" width="158" formatString="MM-DD"/>-->
+	<common:DateMonthSelector id="semesterEndDate" x="553.95" y="55.35"/>
+	
+	<mx:Label x="44.25" y="89.35" text="{commonFunction.getConstants('semesterSequence')}"/>
+	<mx:TextInput id="semesterSequence" x="188.25" y="87.35" restrict="0-9"/>
+	<mx:Label x="433.95" y="92.35" text="{commonFunction.getConstants('semesterGroup')}"/>
+	<mx:ComboBox id="semesterGroupCB" toolTip="{semesterGroupCB.text}" x="553.95" y="89.35" labelField="name" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1"  width="160"/>
+	
+	<mx:Label x="74.25" y="117.35" text="{commonFunction.getConstants('finalSemester')}"/>
+	<mx:ComboBox id="finalSemesterCodeCB" toolTip="{finalSemesterCodeCB.text}" x="188" y="119.35" width="160.25" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" dataProvider="{['Yes','No']}" />
+	
+	<mx:Label x="37.25" y="197.95" text="{commonFunction.getConstants('noOfTeachingDays')}"/>
+	<mx:TextInput id="noOfTeachingDay" x="188.25" y="196.95" restrict="0-9"/>
+	<mx:Label x="420.95" y="197.95" text="{commonFunction.getConstants('durationInWeeks')}"/>
+	<mx:TextInput id="durationInWeeks" x="553.95" y="196.95" restrict="0-9"/>
+	<mx:Label x="52.5" y="230.9" text="{commonFunction.getConstants('minSgpa')}"/>
+	<mx:TextInput id="minSgpa" x="188.25" y="228.9" restrict="0-9,."/>
+	
+	<mx:Label x="420.95" y="230.9" text="{commonFunction.getConstants('minCgpa')}"/>
+	<mx:TextInput id="minCgpa" x="553.95" y="228.9" restrict="0-9,."/>
+	
+	<mx:Label x="96.25" y="304" text="{commonFunction.getConstants('maxCredits')}"/>
+	<mx:TextInput id="maxCredits" x="188.25" y="302" restrict="0-9,."/>
+	<mx:Label x="465.95" y="302" text="{commonFunction.getConstants('minCredits')}"/>
+	<mx:TextInput id="minCredits"  x="553.95" y="300" restrict="0-9,."/>
+	
+	<mx:Label x="44.2" y="381" text="{commonFunction.getConstants('maxLectureCredits')}"/>
+	<mx:TextInput id="maxLectureCredits" x="186.2" y="379" restrict="0-9,."/>
+	<mx:Label x="413.95" y="379" text="{commonFunction.getConstants('minLectureCredits')}"/>
+	<mx:TextInput id="minLectureCredits" x="551.95" y="377" restrict="0-9,."/>
+	<mx:Label x="18.65" y="413" text="{commonFunction.getConstants('maxCreditsSpecialCase')}"/>
+	<mx:TextInput id="maxCreditsSpecialCase" x="187.65" y="411" restrict="0-9"/>
+	<mx:Label x="364.95" y="413" text="{commonFunction.getConstants('maxSpecialLectureCourse')}"/>
+	<mx:TextInput id="maxSpecialLectureCourse" x="551.95" y="411" restrict="0-9"/>
+	
+	<mx:HRule x="0" y="175.95" width="51.6" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:Label x="52.55" y="168.95" text="{commonFunction.getConstants('teachingDetailsLabel')}" color="#5A5959" fontWeight="bold" fontStyle="italic"/>
+	<mx:HRule x="181.55" y="175.95" width="573.10004" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:HRule x="0" y="274" width="51.6" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:Label x="52.55" y="267" text="{commonFunction.getConstants('creditsDetailsLabel')}" color="#5A5959" fontWeight="bold" fontStyle="italic"/>
+	<mx:HRule x="167.55" y="274" width="587.1" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:HRule x="0" y="353" width="51.6" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:Label x="52.55" y="346" text="{commonFunction.getConstants('lectureDetailsLabel')}" color="#5A5959" fontWeight="bold" fontStyle="italic"/>
+	<mx:HRule x="167.55" y="353" width="587.10004" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	
+	<mx:Button id="saveButton" x="198.65" y="473.8" label="{commonFunction.getConstants('saveButton')}" enabled="false" click="saveButtonClickHandler(event)"/>
+	<mx:Button id="resetButton" x="374.9" y="473.8" label="{commonFunction.getConstants('resetButton')}" click="resetButtonClickHandler(event)"/>
+	<mx:Button x="551.95" y="473.8" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	</mx:Canvas>
+</mx:Panel>

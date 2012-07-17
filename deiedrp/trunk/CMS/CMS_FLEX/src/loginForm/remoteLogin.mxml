@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"  width="100%" height="100%" backgroundColor="white"  
+	horizontalScrollPolicy="off" verticalScrollPolicy="off" layout="absolute"
+	 defaultButton="{submit}" verticalAlign="top" initialize="{emailId.setFocus()}"  borderColor="#FCF8F8" borderStyle="none">	
+	 		
+<mx:HTTPService id="remoteLoginService" method="POST"
+	url="{urlPrefix}/remoteLogin/getRemoteLoginDetails.htm"
+	resultFormat="e4x"
+	result="remoteLoginServiceSuccess(event)"
+	fault="onFailure(event)"
+	showBusyCursor="true"
+	useProxy="false"/>
+				
+<mx:EmailValidator source="{emailId}" id="emailValid" property="text"/>
+
+<mx:VBox height="100%" width="100%" x="0" y="6">
+	<!--<mx:Image source="images/header.png" width="1343"/>-->	
+	<mx:HRule width="100%"/>
+	<mx:Canvas width="100%" height="39" backgroundColor="#A5C9F5" backgroundAlpha="0.56" alpha="0.55">
+		<mx:Label x="0" y="4" text="Remote Login" fontWeight="bold" width="123" height="25" fontSize="15" fontFamily="verdana"/>
+	</mx:Canvas>
+	<mx:Canvas width="100%" height="39" backgroundColor="#EAE3DE">
+		<mx:Label x="0" y="5" text="Email" width="96" height="26" fontSize="15" fontFamily="verdana"/>
+		<mx:TextInput id="emailId" x="141" y="5" height="29" fontSize="13" fontStyle="italic" borderThickness="5" borderColor="black" width="208"/>
+	</mx:Canvas>
+	<mx:Canvas width="100%" height="39" backgroundColor="#A5C9F5" backgroundAlpha="0.56" alpha="0.55">
+		<mx:Button id="submit" x="0" y="2" label="Submit" click="onSubmitClick()" height="34" width="87" fontSize="15" fontFamily="verdana" fillAlphas="[1.0, 1.0, 1.0, 1.0]" fillColors="[#BAF7B3, #F5F1F1, #149B05, #149B05]"/>
+	</mx:Canvas>		
+	<mx:HRule width="100%"/>
+</mx:VBox>
+
+<mx:Script>
+	<![CDATA[
+		import mx.validators.Validator;
+		import mx.controls.Alert;
+		import common.commonFunction;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import common.Mask;
+		[Bindable]public var urlPrefix:String=commonFunction.getConstants('urlCms');		 	
+    	import common.Mask;        
+		var  params:Object = new Object();
+		[Bindable]private var emailid:String;
+		
+		public function remoteLoginServiceSuccess(event:ResultEvent):void{
+			try{
+				Mask.close();
+				var urlRequest:URLRequest=new URLRequest(event.result.response);			
+				urlRequest.method=URLRequestMethod.POST;
+				navigateToURL(urlRequest,"_self");			
+			}
+	 		catch(e:Error){}
+		}
+		
+		/**
+		 * Failure Handler
+		 * @Param Event(FaultEvent)
+		 **/
+		public function onFailure(event:FaultEvent):void{
+			 Alert.show("Error in Remote Login Process: "+event);
+			 Mask.close();
+		}
+
+
+		public function onSubmitClick():void{			
+			if(Validator.validateAll([emailValid]).length!=0){
+				Alert.show("Not A Valid Email Id");
+			}
+			else{
+				params["emailId"]=emailId.text;
+				params["successUrl"] = urlPrefix+'/Flex/REMOTE_LOGIN.html';
+				params["date"]=new Date();
+				Mask.show();
+				remoteLoginService.send(params);				
+			}
+		}
+	]]>
+	</mx:Script>
+</mx:TitleWindow>

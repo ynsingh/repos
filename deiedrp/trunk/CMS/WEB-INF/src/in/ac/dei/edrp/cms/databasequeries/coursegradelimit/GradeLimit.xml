@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 	
+	* @(#) GradeLimit.xml 
+	* @Author :Ashish Mohan 
+	* @Date :27/2/2012 
+	* Version 1.0 
+	* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. * All Rights 
+	Reserved. * * Redistribution and use in source and binary forms, with or 
+	* without modification, are permitted provided that the following * conditions 
+	are met: * * Redistributions of source code must retain the above copyright 
+	* notice, this list of conditions and the following disclaimer. * * Redistribution 
+	in binary form must reproducuce the above copyright * notice, this list of 
+	conditions and the following disclaimer in * the documentation and/or other 
+	materials provided with the * distribution. * * * THIS SOFTWARE IS PROVIDED 
+	``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES, INCLUDING, BUT NOT LIMITED 
+	TO, THE IMPLIED WARRANTIES * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+	PURPOSE ARE * DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+	* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL 
+	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS 
+	OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION) HOWEVER 
+	CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT, STRICT LIABILITY, 
+	OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+	USE OF THIS SOFTWARE, * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+	* * Contributors: Members of EdRP, Dayalbagh Educational Institute */ -->
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="coursegradelimit">
+	<typeAlias alias="gradelimitInfo"
+		type="in.ac.dei.edrp.cms.domain.coursegradelimit.GradeLimitDomain" />
+
+	<select id="getCourseDetails" resultClass="gradelimitInfo">
+	<!--  	SELECT course_code as courseCode,course_name as courseName,marks_cont_eval marksContEval,
+		marks_end_semester marksEndSemester,marks_total totalMarks,owner_entity ownerEntityId,
+		em.entity_name ownerEntityName,pm.program_name ownerProgramName,
+		owner_program ownerProgramId,owner_branch ownerBranchId,
+		stt3.component_description as ownerSpecializationName,
+		stt2.component_description as ownerBranchName,owner_specialization ownerSpecializationId,
+		internal_external_active internalActive 
+		FROM course_master cm,system_table_two stt2,system_table_two stt3,entity_master em,
+		program_master pm where cm.owner_program=pm.program_id and cm.owner_entity=em.entity_id 
+		and grade_limit_active='1' and  stt2.component_code=cm.owner_branch and 
+		stt2.group_code='BRNCOD' and stt2.university_code=#universityCode# and 
+		stt3.component_code=cm.owner_specialization and stt3.group_code='SPCLCD' 
+		and stt3.university_code=#universityCode# and cm.university_code=#universityCode#;
+		SELECT ic.entity_id ownerEntityId,ic.course_code as courseCode,course_name as courseName,marks_cont_eval marksContEval,
+		marks_end_semester marksEndSemester,marks_total totalMarks,em.entity_name ownerEntityName,internal_external_active internalActive FROM
+		instructor_course ic,course_master cm,entity_master em where cm.course_code=ic.course_code and ic.employee_id=#employeeId# 
+		and ic.status='ACT' and cm.university_code=#universityCode# and ic.entity_id=em.entity_id
+		and grade_limit_active='1' and  (ic.semester_start_date between #startDate# and #endDate#);-->
+		
+		SELECT cm.owner_entity ownerEntityId,ic.course_code as courseCode,course_name as courseName,marks_cont_eval marksContEval,
+		marks_end_semester marksEndSemester,marks_total totalMarks,(select entity_name from entity_master where entity_id=cm.owner_entity ) ownerEntityName,
+		internal_external_active internalActive FROM
+		instructor_course ic,course_master cm,entity_master em where cm.course_code=ic.course_code and ic.employee_id=#employeeId#
+  		and ic.status='ACT' and cm.university_code=#universityCode# and ic.entity_id=em.entity_id and ic.course_code like concat(#courseCode#,'%') and grade_limit_active='1' and
+   		(ic.semester_start_date between #startDate# and #endDate#);
+		
+	</select>
+
+	<select id="getCourseGradeDetails" resultClass="gradelimitinfo">
+		SELECT courseCode,
+		max(if(strcmp(grade,'A'),null,marksFrom))as lowerA,
+		max(if(strcmp(grade,'A-'),null,marksFrom))as lowerAM,
+		max(if(strcmp(grade,'B'),null,marksFrom))as lowerB,
+		max(if(strcmp(grade,'B-'),null,marksFrom))as lowerBM,
+		max(if(strcmp(grade,'C'),null,marksFrom))as lowerC,
+		max(if(strcmp(grade,'C-'),null,marksFrom))as lowerCM,
+		max(if(strcmp(grade,'D'),null,marksFrom))as lowerD,
+		max(if(strcmp(grade,'D-'),null,marksFrom))as lowerDM,
+		max(if(strcmp(grade,'E'),null,marksFrom))as lowerE,
+		max(if(strcmp(grade,'E-'),null,marksFrom))as lowerEM,
+		max(if(strcmp(grade,'F'),null,marksFrom))as lowerF
+		from(Select courseCode,if(marksFrom<![CDATA[<=>]]>-1,null,marksFrom) marksFrom,grade from
+		(SELECT set1.*, cgl.lower_cut_point marksFrom, cgl.grade grade FROM
+		(SELECT ic.course_code as courseCode FROM
+		instructor_course ic,course_master cm where cm.course_code=ic.course_code and ic.employee_id=#employeeId#
+  		and ic.status='ACT' and cm.university_code=#universityCode#  and grade_limit_active='1' and
+   		(ic.semester_start_date between #startDate# and #endDate#) and ic.course_code like concat(#courseCode#,'%'))set1
+ 		left join course_grade_limit cgl on cgl.course_code=set1.courseCode  and display_type=#displayType# and
+		cgl.status='ACT')set2 )set3 group by courseCode;
+		
+	</select>
+	
+	<insert id="setCourseGradeDetails">
+		insert into course_grade_limit(university_code,course_code,display_type,grade,lower_cut_point,upper_cut_point,status,insert_time,creator_id,session_start_date,session_end_date)
+		values(#universityCode#,#courseCode#,#displayType#,#grade#,#marksFrom#,#marksTo#,'ACT',now(),#userId#,#startDate#,#endDate#); 
+	</insert>
+	
+	<update id="updateCourseGradeDetails">
+		update course_grade_limit set lower_cut_point=#marksFrom#,
+		upper_cut_point=#marksTo#,modifier_id=#userId#,modification_time=now()
+		where university_code=#universityCode# and
+		course_code=#courseCode# and display_type=#displayType#  and status='ACT' and 
+		session_start_date=#startDate# and session_end_date=#endDate# and grade=#grade#;
+	</update>
+	
+	<select id="getCount" resultClass="java.lang.Integer">
+		SELECT count(*) as value FROM course_grade_limit where course_code=#courseCode# and 
+		university_code=#universityCode# and display_type=#displayType# and grade=#grade# and status='ACT';
+	</select>
+	
+	<select id="getExamDetails" resultClass="gradelimitinfo">
+		SELECT component_description displayType
+		FROM system_table_two 
+		where group_code='DISTYP' and university_code=#universityCode#;
+	</select>
+	
+	<delete id="deleteCourseGradeDetails">
+		delete from course_grade_limit where university_code=#universityCode# and 
+		course_code=#courseCode# and display_type=#displayType# and session_start_date=#startDate#
+		and session_end_date=#endDate# and status='ACT'; 
+	</delete>
+	
+<!-- Queries for external Grade limit -->
+
+	<select id="getCourseDetailsExternal" resultClass="gradelimitInfo">
+		SELECT owner_entity ownerEntityId,course_code as courseCode,course_name as courseName,marks_cont_eval marksContEval,
+		marks_end_semester marksEndSemester,marks_total totalMarks,internal_external_active internalActive FROM
+		course_master where university_code=#universityCode# and course_code like concat(#courseCode#,'%') and grade_limit_active='1';
+	</select>
+	
+	<select id="getCourseGradeDetailsExternal" resultClass="gradelimitinfo">
+		select courseCode,
+		max(if(strcmp(grade,'A'),null,marksFrom))as lowerA,
+		max(if(strcmp(grade,'A-'),null,marksFrom))as lowerAM,
+		max(if(strcmp(grade,'B'),null,marksFrom))as lowerB,
+		max(if(strcmp(grade,'B-'),null,marksFrom))as lowerBM,
+		max(if(strcmp(grade,'C'),null,marksFrom))as lowerC,
+		max(if(strcmp(grade,'C-'),null,marksFrom))as lowerCM,
+		max(if(strcmp(grade,'D'),null,marksFrom))as lowerD,
+		max(if(strcmp(grade,'D-'),null,marksFrom))as lowerDM,
+		max(if(strcmp(grade,'E'),null,marksFrom))as lowerE,
+		max(if(strcmp(grade,'E-'),null,marksFrom))as lowerEM,
+		max(if(strcmp(grade,'F'),null,marksFrom))as lowerF
+		from(Select courseCode,if(marksFrom<![CDATA[<=>]]>-1,null,marksFrom) marksFrom,grade from
+		(SELECT set1.*, cgl.lower_cut_point marksFrom, cgl.grade grade FROM
+		(SELECT cm.course_code as courseCode FROM
+		course_master cm where cm.course_code like concat(#courseCode#,'%') and cm.university_code=#universityCode#  and grade_limit_active='1')set1
+		left join course_grade_limit cgl on cgl.course_code=set1.courseCode  and display_type=#displayType# and   cgl.status='ACT')set2 )set3
+		group by courseCode;
+	</select>
+	
+	<!-- Queries for Remedial Grade limit -->
+	
+	<select id="getCourseDetailsRemedial" resultClass="gradelimitInfo">
+		SELECT course_code as courseCode,course_name as courseName,marks_cont_eval marksContEval,
+		marks_end_semester marksEndSemester,marks_total totalMarks,internal_external_active internalActive 
+		FROM course_master where owner_program in
+		(select program_id from program_master where ug_pg='u') and university_code=#universityCode#  and grade_limit_active='1';
+	</select>
+	
+	<select id="getCourseGradeDetailsRemedial" resultClass="gradelimitinfo">
+		select courseCode,
+		max(if(strcmp(grade,'D'),null,marksFrom))as lowerD,
+		max(if(strcmp(grade,'F'),null,marksFrom))as lowerF
+		from(Select courseCode,if(marksFrom<![CDATA[<=>]]>-1,null,marksFrom) marksFrom,grade from
+		(SELECT set1.*, cgl.lower_cut_point marksFrom, cgl.grade grade FROM
+		(SELECT course_code as courseCode FROM course_master where owner_program in
+		(select program_id from program_master where ug_pg='u') and university_code=#universityCode#  and grade_limit_active='1')set1
+		left join course_grade_limit cgl on cgl.course_code=set1.courseCode  and display_type=#displayType# and   cgl.status='ACT')set2)set3
+		group by courseCode;
+	</select>
+	
+	<!-- Queries for Internal Grade limit for Core courses-->
+	
+	<select id="getCourseDetailsCore" resultClass="gradelimitInfo">
+		SELECT course_code as courseCode,course_name as courseName,subject_wise_group as ownerEntityName, marks_cont_eval marksContEval,
+		marks_end_semester marksEndSemester,marks_total totalMarks,internal_external_active internalActive 
+		FROM course_master  where internal_external_active='0' and
+		course_type='CO' and university_code=#universityCode#  and grade_limit_active='1';
+	</select>
+	
+	<select id="getCourseGradeDetailsCore" resultClass="gradelimitinfo">
+		select courseCode,totalMarks,
+		max(if(strcmp(grade,'A'),null,marksFrom))as lowerA,
+		max(if(strcmp(grade,'A-'),null,marksFrom))as lowerAM,
+		max(if(strcmp(grade,'B'),null,marksFrom))as lowerB,
+		max(if(strcmp(grade,'B-'),null,marksFrom))as lowerBM,
+		max(if(strcmp(grade,'C'),null,marksFrom))as lowerC,
+		max(if(strcmp(grade,'C-'),null,marksFrom))as lowerCM,
+		max(if(strcmp(grade,'D'),null,marksFrom))as lowerD,
+		max(if(strcmp(grade,'D-'),null,marksFrom))as lowerDM,
+		max(if(strcmp(grade,'E'),null,marksFrom))as lowerE,
+		max(if(strcmp(grade,'E-'),null,marksFrom))as lowerEM,
+		max(if(strcmp(grade,'F'),null,marksFrom))as lowerF
+		from(Select courseCode,totalMarks,if(marksFrom<![CDATA[<=>]]>-1,null,marksFrom) marksFrom,grade from
+		(SELECT set1.*, cgl.lower_cut_point marksFrom, cgl.grade grade FROM
+		(SELECT cm.course_code as courseCode,cm.marks_total as totalMarks FROM
+		course_master cm where cm.course_code like concat(#courseCode#,'%') and cm.university_code=#universityCode#  and grade_limit_active='1'
+		and internal_external_active='0' and course_type='CO' 
+		<dynamic prepend="and cm.course_code IN ">
+			<iterate property="courseCodeList" open="(" close=")" conjunction=",">
+				#courseCodeList[]#
+			</iterate>
+		</dynamic>)set1
+		left join course_grade_limit cgl on cgl.course_code=set1.courseCode  and display_type=#displayType# and   cgl.status='ACT')set2 )set3
+		group by courseCode;
+	</select>
+	
+<!-- Queries For course Cancellation Interface by Mandeep-->
+
+	<select id="getApprovedCourses" resultClass="gradelimitinfo">
+	select distinct course_code as courseCode from course_marks_approval_status where status='APR' and display_type='I'
+ 	and approval_order in (select max(approval_order) from course_marks_approval_status group by course_code,program_course_key)
+ 	and semester_end_date between #startDate# and #endDate#
+  	and semester_start_date between #startDate# and #endDate#;
+	
+	</select>
+	
+	<select id="getApprovedCourseDetail" resultClass="gradelimitinfo">
+	
+	select @prog:=program_id ownerProgramId,branch_id ownerBranchId,
+	(select component_description from system_table_two where group_code='BRNCOD' and component_code=branch_id and university_code=#universityCode#) as ownerBranchName,
+	specialization_id ownerSpecializationId,(select component_description from system_table_two where group_code='SPCLCD'
+	and component_code=specialization_id and university_code=#universityCode#) ownerSpecializationName,
+	(select program_name from program_master pm where pm.program_id=@prog)  ownerProgramName,
+	semester_code,(select component_description from system_table_two where group_code='SEMCOD' and component_code=semester_code and university_code=#universityCode#) marksEndSemester,
+	course_code courseCode, entity_id ownerEntityId ,(select entity_name from entity_master where entity_id=table1.entity_id) ownerEntityName,
+	pch.program_course_key courseName,(select concat_ws(' ',first_name,middle_name,last_name) from employee_master where employee_code=request_getter) userId,
+ 	if(status='APR','Approved','') grade,
+ 	semester_start_date startDate,semester_end_date endDate,if(display_type='I','Internal','') displayType
+	from program_course_header pch,
+	(select max(approval_order) maxOrder,request_getter,combine,semester_start_date,semester_end_date,program_course_key,course_code,entity_id,status,display_type
+	 from(SELECT concat_ws(':',entity_id,program_course_key) as combine,request_getter,approval_order,
+     program_course_key,course_code,entity_id,status,display_type,
+	 semester_start_date,semester_end_date FROM course_marks_approval_status where display_type='I' and substr(entity_id,1,4)=#universityCode# and status='APR'
+ 	 and semester_end_date between #startDate# and #endDate# and semester_start_date between #startDate# and #endDate#
+     and course_code=#courseCode#)as com
+	 group by combine) table1
+     where pch.program_course_key=table1.program_course_key;
+		
+	</select>
+	
+	<update id="CancelApprovedCourses">
+	update course_marks_approval_status
+	set status='WDW'
+	where course_code=#courseCode# and program_course_key=#courseName# and entity_id=#ownerEntityId# and semester_start_date=#startDate# and semester_end_date=#endDate#
+	and display_type='I'
+	</update>	
+
+	<select id="getAprCoursesOfTeacher" resultClass="gradelimitinfo">
+	SELECT distinct cmas.course_code as courseCode,cmas.request_date,cmas.approval_order 
+	FROM cms_reg.instructor_course ic,cms_reg.course_marks_approval_status cmas
+ 	where employee_id=#userId# and ic.employee_id=cmas.request_sender
+ 	and ic.course_code=cmas.course_code and ic.entity_id=cmas.entity_id and cmas.display_type='I' and cmas.status='APR'
+ 	and ic.program_course_key=cmas.program_course_key and cmas.semester_end_date between #startDate# and #endDate#
+ 	and cmas.semester_start_date between #startDate# and #endDate# and cmas.semester_start_date=ic.semester_start_date
+ 	and cmas.semester_end_date=ic.semester_end_date
+	and cmas.approval_order in (select min(approval_order) from course_marks_approval_status group by course_code,program_course_key,entity_id)
+ 	and DATEDIFF(CURDATE(),request_date)>=0 and DATEDIFF(CURDATE(),request_date)<![CDATA[<=]]>10	
+	</select>
+	
+	<select id="getAprCoursesDetailOfTeacher" resultClass="gradelimitinfo">
+	select @prog:=program_id ownerProgramId,branch_id ownerBranchId,
+	(select component_description from system_table_two where group_code='BRNCOD' and component_code=branch_id and university_code=#universityCode#) as ownerBranchName,
+	specialization_id ownerSpecializationId,(select component_description from system_table_two where group_code='SPCLCD'
+	and component_code=specialization_id and university_code=#universityCode#) ownerSpecializationName,
+	(select program_name from program_master pm where pm.program_id=@prog)  ownerProgramName,
+	semester_code,(select component_description from system_table_two where group_code='SEMCOD' and component_code=semester_code and university_code=#universityCode#) marksEndSemester,
+	course_code courseCode, entity_id ownerEntityId ,(select entity_name from entity_master where entity_id=table1.entity_id) ownerEntityName,
+	pch.program_course_key courseName,(select concat_ws(' ',first_name,middle_name,last_name) from employee_master where employee_code=request_getter) userId,
+ 	if(status='APR','Approved','') grade,
+ 	semester_start_date startDate,semester_end_date endDate,if(display_type='I','Internal','') displayType
+	from program_course_header pch,
+	(select max(approval_order) maxOrder,request_getter,combine,semester_start_date,semester_end_date,program_course_key,course_code,entity_id,status,display_type,request_date
+	 from(SELECT concat_ws(':',entity_id,program_course_key) as combine,request_getter,approval_order,request_date,
+     program_course_key,course_code,entity_id,status,display_type,
+	 semester_start_date,semester_end_date FROM course_marks_approval_status where display_type='I' and substr(entity_id,1,4)=#universityCode# and status='APR'
+ 	 and semester_end_date between #startDate# and #endDate# and semester_start_date between #startDate# and #endDate#
+     and course_code=#courseCode#)as com
+	 group by combine) table1
+     where pch.program_course_key=table1.program_course_key
+    and DATEDIFF(CURDATE(),table1.request_date)>=0 and DATEDIFF(CURDATE(),table1.request_date)<![CDATA[<=]]>10		
+
+	</select>
+	
+<!-- Queries For Delay In Display Of Component marks Interface by Mandeep-->
+	
+	<select id="getComponentDetails" resultClass="gradelimitinfo">
+	SELECT *,IF(DATEDIFF(table1.act,table1.dis)<![CDATA[<]]>0,'-',DATEDIFF(table1.act,table1.dis)) as lowerA,
+	DATE_FORMAT(table1.act,'%d-%m-%Y') as endDate,
+	DATE_FORMAT(table1.dis,'%d-%m-%Y') as startDate,
+	if(DATEDIFF(table1.act,table1.dis)<![CDATA[<]]>0,'On Track','Delay') as limitActive	
+	FROM (SELECT IFNULL(sm.modifier_id,sm.creator_id) as teacherCode,
+	concat_ws(' ',em.first_name,em.middle_name,em.last_name)as userId,
+	sm.course_code as courseCode,
+	stt.component_description as marksContEval,
+	CONCAT(#grade#,'-',cec.date_from_display_marks) as dis ,
+	IF((max(sm.modification_time)>max(sm.insert_time)),
+   (max(sm.modification_time)),
+   (IF((max(sm.insert_time)>max(sm.modification_time))
+      ,max(sm.insert_time) ,
+      IF(max(sm.modification_time)=NULL,max(sm.insert_time),'')))) as act
+	FROM student_marks sm ,program_registration pr,
+	course_evaluation_component cec,employee_master em,
+	system_table_two stt
+	WHERE sm.program_course_key=#courseName#
+	AND pr.program_course_key=sm.program_course_key
+	AND pr.entity_id=#ownerEntityId#
+	AND pr.semester_start_date=sm.semester_start_date
+	AND pr.semester_end_date=sm.semester_end_date
+	AND pr.session_start_date=#startDate#
+	AND pr.session_end_date=#endDate#
+	AND pr.university_id=#universityCode#
+	AND cec.course_code=sm.course_code
+	AND cec.evaluation_id=sm.evaluation_id
+	AND stt.component_code=sm.evaluation_id
+	AND em.parent_entity=sm.entity_id
+	AND em.employee_code=IFNULL(sm.modifier_id,sm.creator_id)
+	AND stt.group_code='EVLCOM'
+    AND sm.course_code=#courseCode#
+	GROUP BY sm.course_code,sm.evaluation_id) table1 
+	UNION
+	select ic.employee_id as teacherCode,
+	(select concat_ws(' ',em.first_name,em.middle_name,em.last_name) from employee_master em where em.employee_code=ic.employee_id) as teacher,
+	cec.course_code as courseCode,
+	(select component_description from system_table_two where group_code='EVLCOM' and component_code=cec.evaluation_id) as evaluationId,
+	@compDate:=CONCAT(#grade#,'-',cec.date_from_display_marks),
+	CURDATE(),
+	if(DATEDIFF(CURDATE(),@compDate)<![CDATA[<]]>0,'-',
+	DATEDIFF(CURDATE(),@compDate)) as lowerA,
+	'Not Displayed' as compDisplaydays,
+	DATE_FORMAT(@compDate,'%d-%m-%Y') as actualDisplayDates,
+	if(DATEDIFF(CURDATE(),@compDate)<![CDATA[<]]>0,'On Track','Delay') as limitActive	
+	FROM course_evaluation_component cec,instructor_course ic where
+	ic.course_code=cec.course_code and cec.evaluation_id not in (select evaluation_id
+	FROM student_marks sm,program_registration pr
+  	where cec.course_code=sm.course_code
+	AND cec.evaluation_id=sm.evaluation_id)
+	AND cec.course_code=#courseCode#
+	AND ic.program_course_key=#courseName#	
+	order by lowerA desc 
+	</select>
+
+	<select id="getAllCourseCode" resultClass="gradelimitinfo">
+	select distinct course_code as courseCode from student_course where semester_end_date between #startDate# and #endDate# and semester_start_date between #startDate# and #endDate#;
+	</select>
+	
+	<select id="getAllCourseDetail" resultClass="gradelimitinfo">
+	select distinct sc.course_code as courseCode,sc.entity_id ownerEntityId ,(select entity_name from entity_master where entity_id=sc.entity_id) ownerEntityName,
+	pch.program_id ownerProgramId,(select program_name from program_master pm where pm.program_id=pch.program_id)  ownerProgramName,
+	pch.branch_id ownerBranchId,(select component_description from system_table_two where group_code='BRNCOD' and component_code=pch.branch_id and university_code=#universityCode#) as ownerBranchName,
+	pch.specialization_id,(select component_description from system_table_two where group_code='SPCLCD'
+	and component_code=pch.specialization_id and university_code=#universityCode#) ownerSpecializationName,
+	sc.program_course_key courseName,
+	semester_code,semester_code,(select component_description from system_table_two where group_code='SEMCOD' and component_code=semester_code and university_code=#universityCode#) marksEndSemester,
+	semester_start_date startDate,semester_end_date endDate
+	FROM student_course sc,program_course_header pch
+	where sc.course_code=#courseCode#
+	AND semester_end_date between #startDate# and #endDate# and semester_start_date between #startDate# and #endDate#
+	and sc.program_course_key=pch.program_course_key;
+	
+	</select>		
+</sqlMap>

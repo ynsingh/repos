@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) CreateProgramSwitch.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1267" height="552" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*"
+	 xmlns:ns1="*" title="{commonFunction.getConstants('programSwitch')}" creationComplete="onCreationComplete()" initialize="panelInitializeHandler(event)" creationPolicy="all">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.events.FlexEvent;
+			[Bindable]public var urlPrefix:String;
+
+			protected function panelInitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=resourceManager.getString('Constants','url')+"/programswitch/";
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="getInputRecords" method="post"
+					url="{urlPrefix+'getInputRecords.htm'}"
+					resultFormat="e4x"
+					result="onRecordsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getSetRecords" method="post"
+					url="{urlPrefix+'getSetRecords.htm'}"
+					resultFormat="e4x"
+					result="getSwitchDetails(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	
+	
+	<mx:Script source="asFiles/CreateProgramSwitchAction.as"/>
+	
+    
+    <mx:Canvas styleName="GridCanvas" x="99" y="12" width="954" height="210">
+        <mx:Label text="{commonFunction.getConstants('entityProgramDetails')}" top="6" left="10" fontWeight="bold"  />
+	    <mx:LinkButton label="{commonFunction.getConstants('addSwitch')}" enabled="false" id="addButton" click="addASwitch()" x="851" y="4"/>
+    	<mx:DataGrid id="programBranchSpecializationGrid" draggableColumns="false" x="14" y="33"  height="164" editable="true" width="929">
+		    <mx:columns>
+		        <dataGridClasses:MDataGridColumn width="20" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
+			    	<dataGridClasses:headerRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox click="data.selected=!data.selected" selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.programBranchSpecializationGrid,[outerDocument.addButton],[new LinkButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:headerRenderer>
+			    	<dataGridClasses:itemRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.programBranchSpecializationGrid,[outerDocument.addButton],[new LinkButton])">
+			    				<mx:Script>
+			    					<![CDATA[
+			    						import common.commonFunction;
+			    						import mx.controls.LinkButton;
+			    					]]>
+			    				</mx:Script>
+			    			</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:itemRenderer>
+			    </dataGridClasses:MDataGridColumn>
+			    <mx:DataGridColumn width="200" editable="false" headerText="{commonFunction.getConstants('oldEntity')}" dataField="entityName" showDataTips="true"/>
+                <mx:DataGridColumn width="200" editable="false" headerText="{commonFunction.getConstants('oldProgram')}" dataField="programName" showDataTips="true"/>
+			    <mx:DataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('oldBranch')}" dataField="branchName" showDataTips="true"/>
+			    <mx:DataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('oldSpecialization')}" dataField="specializationName" showDataTips="true"/>
+		    </mx:columns>
+	    </mx:DataGrid>
+    </mx:Canvas>
+
+	<mx:Canvas styleName="GridCanvas" x="10" y="276" width="1227" height="209">
+        <controls:MDataGrid id="recordsDisplayDataGrid" draggableColumns="false" sortableColumns="true" x="10" y="32" verticalScrollPolicy="on" width="1206">
+		    <controls:columns>
+		    	<dataGridClasses:MDataGridColumn width="90" headerText="{commonFunction.getConstants('switchType')}" dataField="componentDescription" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="90" headerText="{commonFunction.getConstants('switchRule')}" dataField="switchRuleId" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="90" headerText="{commonFunction.getConstants('oldEntity')}" dataField="fromEntityName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="100" headerText="{commonFunction.getConstants('oldProgram')}" dataField="oldProgramName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="100" headerText="{commonFunction.getConstants('oldBranch')}" dataField="oldBranchName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="100" headerText="{commonFunction.getConstants('oldSpecialization')}" dataField="oldSpecializationName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="105" headerText="{commonFunction.getConstants('oldSemester')}" dataField="oldSemesterName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="80" headerText="{commonFunction.getConstants('entity')}" dataField="entityName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="100" headerText="{commonFunction.getConstants('program')}" dataField="programName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="80" headerText="{commonFunction.getConstants('branch')}" dataField="branchName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="105" headerText="{commonFunction.getConstants('specialization')}" dataField="specializationName" showDataTips="true"/>
+		    	<dataGridClasses:MDataGridColumn width="90" headerText="{commonFunction.getConstants('semester')}" dataField="semesterName" showDataTips="true"/>
+	    	</controls:columns>
+	    </controls:MDataGrid>
+	</mx:Canvas>
+	<mx:Button x="99" y="236" visible="true" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+
+</mx:Panel>

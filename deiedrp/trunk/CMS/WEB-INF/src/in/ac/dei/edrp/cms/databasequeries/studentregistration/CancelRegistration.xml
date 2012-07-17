@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- /*
+ * @(#) CancelRegistration.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+
+  <sqlMap namespace="cancelRegistration">  
+  
+  <typeAlias alias="studentInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter" />
+ 
+	<resultMap id="details" class="studentInfo">
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="registrationNumber" column="registration_number" />
+		<result property="entityName" column="entity_name" />
+		<result property="programName" column="program_name" />
+		<result property="branchName" column="branch" />
+		<result property="newSpecializationDescription" column="spcl" />
+		<result property="semester" column="sem" />
+		<result property="attempt" column="attempt_number" />
+		<result property="studentName" column="name" />
+		<result property="fatherName" column="father_name" />
+		<result property="motherName" column="mother_name" />
+		<result property="category" column="category" />
+		<result property="categoryDescription" column="category_description" />
+		<result property="gender" column="gender" />
+		<result property="genderDescription" column="gender_description" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="studentId" column="student_id" />
+		<result property="statusInSemester" column="registration_status" />
+		<result property="entityId" column="entity_id" />
+		<result property="programId" column="program_id" />
+		<result property="branchCode" column="branch_id" />
+		<result property="newSpecialization" column="specialization_id" />		
+	</resultMap>
+  
+  
+	<select id="getDetails" resultMap="details">
+		select tsp.enrollment_number,tsp.roll_number,tsp.registration_number,em.entity_name,
+			pm.program_name,bm.component_description branch,sm.component_description spcl,
+			sem.component_description sem,tsp.attempt_number,
+			concat_ws(' ',tsm.first_name,tsm.middle_name,tsm.last_name) name,
+			concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name) father_name,
+			concat_ws(' ',tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name) mother_name,
+			tsm.date_of_birth,tsm.gender,tsm.category,cat.component_description category_description,
+			gen.component_description gender_description, tsm.student_id,tsp.registration_status,
+			tsp.program_id,tsp.entity_id,tsp.branch_id,tsp.specialization_id
+		from temp_student_program tsp,temp_student_master tsm, entity_master em,
+			program_master pm, system_table_two bm, system_table_two sm, system_table_two sem,
+			system_table_two cat, system_table_two gen, university_master um, program_registration pr
+		where (tsp.registration_number=#input# or tsp.roll_number=#input#) and tsp.student_id=tsm.student_id
+			and tsp.entity_id=em.entity_id and tsp.program_id=pm.program_id and
+			tsp.branch_id=bm.component_code and bm.group_code='BRNCOD' AND
+			bm.university_code=substring(tsp.entity_id,1,4) and
+			tsp.specialization_id=sm.component_code and sm.group_code='SPCLCD' AND
+			sm.university_code=substring(tsp.entity_id,1,4) and
+			tsp.to_semester=sem.component_code and sem.group_code='SEMCOD' AND
+			sem.university_code=substring(tsp.entity_id,1,4) and
+			tsm.category=cat.component_code and cat.group_code='STDCTG' AND
+			cat.university_code=substring(tsp.entity_id,1,4) AND tsm.gender=gen.component_code
+			and gen.group_code='GENDER' AND gen.university_code=substring(tsp.entity_id,1,4) and
+      pr.program_course_key=(select program_course_key from program_course_header where
+      program_id=tsp.program_id and branch_id=tsp.branch_id and specialization_id=tsp.specialization_id and semester_code=tsp.to_semester and semester_status='ACT') and
+      pr.university_id=substring(tsp.entity_id,1,4) and pr.status='ACT' and
+      pr.semester_start_date=tsp.to_semester_start_date and pr.semester_end_date=tsp.to_semester_end_date and
+      pr.session_start_date=um.start_date and um.university_code=substring(tsp.entity_id,1,4) and um.current_status='1' and tsp.registration_status!='D' and
+      (tsm.registration_status is null OR tsm.registration_status='');
+	</select>
+    
+	<update id="updateTempStdProg">
+		update temp_student_program set
+			registration_status='D', modification_time=now(), reason=#reason#, modifier_id=#modifierId# 
+		where (roll_number=#rollNumber# or registration_number=#rollNumber#)  
+			and student_id=#studentId# and entity_id=#entityId#
+			and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and registration_status!='D'; 
+	</update>
+			
+		
+	<update id="updateTempStdMaster">
+		update temp_student_master set
+			registration_status='D', modification_time=now(), modifier_id=#modifierId# 
+		where student_id=#studentId# and (registration_status is null or registration_status='');
+	</update>
+
+	<update id="updateTempStdCourse">
+		update temp_student_courses set
+			registration_status='D', modification_time=now(), modifier_id=#modifierId# 
+		where student_id=#studentId# and (roll_number=#rollNumber# or registration_number=#rollNumber#)  
+			and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and (registration_status!='D' OR registration_status is null);
+	</update>
+	  
+	<update id="updateStagingTable">
+		update prestaging_table set
+			process_status=null,	modification_time=now(), modifier_id=#modifierId# 
+		where registration_roll_number=#rollNumber#  and (semester_start_date between
+		(SELECT start_date FROM university_master where current_status='1' and university_code=(SELECT substr(#modifierId#,2,4))) and
+		(SELECT end_date FROM university_master where current_status='1' and university_code=(SELECT substr(#modifierId#,2,4)))); 
+	</update>
+	
+	<delete id="deleteStudVerifiStatus">
+		delete from student_verification_status where registration_number=#rollNumber#;
+	</delete>
+	
+	<delete id="deleteAppInfo">
+		delete FROM applicant_info where user_name=#rollNumber#;
+	</delete>
+	
+	<insert id="insertTmpStdMasterHistory">
+		insert into temp_student_master_history (university_code, student_id, enrollment_number, first_name, middle_name, last_name,
+			primary_email_id, secondary_email_id, date_of_birth, category, gender, father_first_name, mother_first_name, registered_in_session,
+			insert_time, modification_time, creator_id, modifier_id, registration_status, per_address, per_city, per_state, per_pincode,
+			cor_address, cor_city, cor_state, cor_pincode, office_phone, extra_phone, other_phone, fax, father_middle_name, father_last_name,
+			mother_middle_name, mother_last_name)
+		select university_code, student_id, enrollment_number, first_name, middle_name, last_name, primary_email_id, secondary_email_id,
+	        date_of_birth, category, gender, father_first_name, mother_first_name, registered_in_session, now(), null, #modifierId#, 
+	        null, registration_status, per_address, per_city, per_state, per_pincode, cor_address, cor_city, cor_state, cor_pincode,
+	        office_phone, extra_phone, other_phone, fax, father_middle_name, father_last_name, mother_middle_name, mother_last_name
+		from temp_student_master tsm
+		where student_id=#studentId# and registration_status='D';
+	</insert>
+	
+	
+	
+	<insert id="insertTmpStdProgHistory">
+		insert into temp_student_program_history (enrollment_number, roll_number, registration_number, admission_mode, register_date, registration_status, insert_time, 
+			modification_time, creator_id, modifier_id, entity_id, program_id, branch_id, specialization_id, old_entity_id, old_program_id, 
+			old_branch_id, old_specialization_id, from_semester, to_semester, student_id, to_semester_start_date, to_semester_end_date, sequence_number, 
+			reason_code, description, probable_semester, probable_semester_start_date, probable_semester_end_date, probable_attempt_number, 
+			probable_register_due_date, status_in_semester, attempt_number, reason)
+		select enrollment_number,roll_number,registration_number,admission_mode,register_date,registration_status,now(),
+			null,#modifierId#,null,entity_id,program_id,branch_id,specialization_id,old_entity_id,old_program_id,
+			old_branch_id,old_specialization_id,from_semester,to_semester,student_id,to_semester_start_date,
+			to_semester_end_date,sequence_number,reason_code,description,probable_semester,probable_semester_start_date,
+			probable_semester_end_date,probable_attempt_number,probable_register_due_date,status_in_semester,attempt_number,reason
+		from temp_student_program
+			where (roll_number=#rollNumber# or registration_number=#rollNumber#)
+			and student_id=#studentId# and entity_id=#entityId#
+			and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and registration_status='D';
+	</insert>
+	
+	<insert id="insertTmpStdCourseHistory">
+		insert into temp_student_courses_history  			
+		select tsc.program_id, tsc.course_code, tsc.option, tsc.enrollment_number, tsc.roll_number, tsc.student_id, tsc.registration_number, tsc.status,
+			now(),null,#modifierId#,null,tsc.branch_id,tsc.specialization_id,tsc.semester_code,tsc.semester_start_date,
+			tsc.semester_end_date,tsc.registration_status,tsc.course_group
+		from temp_student_courses tsc
+		where tsc.student_id=#studentId# and (tsc.roll_number=#rollNumber# or tsc.registration_number=#rollNumber#)
+			and tsc.program_id=#programId# and tsc.branch_id=#branchCode# and tsc.specialization_id=#newSpecialization# and tsc.registration_status='D';		
+	</insert>
+	
+	<delete id="deleteTmpStdMaster">
+		delete from temp_student_master where student_id=#studentId# and registration_status='D';
+	</delete>
+	
+	<delete id="deleteTmpStdProg">
+		delete from temp_student_program
+		where (roll_number=#rollNumber# or registration_number=#rollNumber#)
+			and student_id=#studentId# and entity_id=#entityId#
+			and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and registration_status='D';
+	</delete>
+	
+	<delete id="deleteTmpStdCourse">
+		delete from temp_student_courses 
+		where student_id=#studentId# and (roll_number=#rollNumber# or registration_number=#rollNumber#)
+			and program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and registration_status='D';
+	</delete>
+    
+  </sqlMap>

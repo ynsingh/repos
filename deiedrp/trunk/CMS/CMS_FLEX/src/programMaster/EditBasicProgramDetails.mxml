@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setValues()" layout="absolute" width="870" height="360" title="{commonFunction.getConstants('editButton')+' '+commonFunction.getConstants('basicProgramDetails')}" showCloseButton="true" close="PopUpManager.removePopUp(this)">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import common.commonFunction;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			public var programType:String;
+			public var programMode:String;
+			public var ugOrPg:String;
+			public var tenCodes:String;
+			public var printAggregate:String;
+			public var fixedOrVariable:String;
+		
+			public var updateButtonFunction:Function;
+			
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+	public function validateBasicProgramDetails():Boolean
+{
+	var i:int=Validator.validateAll([programCodeValidator,programModeValidator,programTypeValidator,programNameValidator,
+	              printAggregateValidator,tenCodesValidator,ugOrPgValidator,creditsRequiredValidator,dgpaValidator]).length;
+          
+	if(i==0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}			
+
+public function updateClickHandler():void{
+	Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, updateConfirm,questionIcon);
+}
+
+public function updateConfirm(event:CloseEvent):void{
+	if(event.detail==Alert.YES){
+		updateButtonFunction.call()
+	}
+} 
+
+public function closePopUp():void{
+	
+	PopUpManager.removePopUp(this);
+}
+
+public function setValues():void{
+	
+ugOrPgCombo.selectedItem=ugpgXML.option.(code==ugOrPg).name.toString();
+printAggregateCombo.selectedItem=aggregateXML.option.(code==printAggregate).name.toString();
+tenCodesCombo.selectedItem=tenCodesXML.option.(code==tenCodes).name.toString();
+	
+}
+		]]>
+		
+	</mx:Script>	
+	
+	   <mx:Model id="aggregateModel" source="xmlFiles/aggregate.xml"/>
+    <mx:ArrayCollection id="aggregateAC" source="{aggregateModel.option}" />
+    
+        <mx:Model id="ugpgModel" source="xmlFiles/UGPG.xml"/>
+    <mx:ArrayCollection id="ugpgAC" source="{ugpgModel.option}" />
+    
+    <mx:XML id="ugpgXML" source="xmlFiles/UGPG.xml"/>
+    <mx:XML id="aggregateXML" source="xmlFiles/aggregate.xml"/>
+    <mx:XML id="tenCodesXML" source="xmlFiles/TenCodes.xml"/>
+    
+     <mx:Model id="tenCodesModel" source="xmlFiles/TenCodes.xml"/>
+    <mx:ArrayCollection id="tenCodesAC" source="{tenCodesModel.option}" />
+    
+    
+    <mx:StringValidator id="programCodeValidator" tooLongError="{commonFunction.getMessages('lengthTooLong')}" maxLength="3" minLength="1" source="{programCodeText}" property="text" required="true" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:StringValidator id="programNameValidator" maxLength="100" source="{programNameText}" property="text" required="true" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:Validator id="programTypeValidator" source="{programTypeCombo}" property="selectedItem" required="true" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:Validator id="programModeValidator" source="{programModeCombo}" property="selectedItem" required="true" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:NumberValidator id="creditsRequiredValidator" source="{creditsRequiredText}" minValue=".01" maxValue="999.00" required="true" property="text" domain="real" precision="2" allowNegative="false" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:NumberValidator id="dgpaValidator" source="{dgpaText}" minValue=".001" maxValue="100.000" required="true" property="text" domain="real" precision="3" allowNegative="false" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:Validator id="ugOrPgValidator" source="{ugOrPgCombo}" property="selectedItem" required="true" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:Validator id="tenCodesValidator" source="{tenCodesCombo}" property="selectedItem" required="true" trigger="{updateButton}" triggerEvent="click"/>
+    <mx:Validator id="printAggregateValidator" source="{printAggregateCombo}" property="selectedItem" required="true" trigger="{updateButton}" triggerEvent="click" />
+    <mx:StringValidator id="programDescriptionValidator" maxLength="100" source="{programDescriptionText}" property="text" required="true"/>
+	
+    
+	<mx:Label text="{commonFunction.getConstants('programCode')}" x="40" y="36" />
+	<mx:Label text="{commonFunction.getConstants('programName')}" x="40" y="66" />
+	<mx:Label text="{commonFunction.getConstants('programType')}" x="40" y="96" />
+	<mx:Label text="{commonFunction.getConstants('programMode')}" x="40" y="126" />
+	<mx:Label text="{commonFunction.getConstants('numberOfTerms')}" x="40" y="156" />
+	<mx:Label text="{commonFunction.getConstants('dgpa')}" x="40" y="186" />
+	<mx:Label text="{commonFunction.getConstants('ugOrPg')}" x="445" y="36" />
+	<mx:Label text="{commonFunction.getConstants('tenCodes')}" x="445" y="66" />
+	<mx:Label text="{commonFunction.getConstants('numberOfAttemptsAllowed')}" x="445" y="96" />
+	<mx:Label text="{commonFunction.getConstants('maximumNumberOfFailSubject')}" x="445" y="126" />
+	<mx:Label text="{commonFunction.getConstants('maximumRegSemester')}" x="445" y="156" />
+	<mx:Label text="{commonFunction.getConstants('creditsRequired')}" x="445" y="186" />
+	<mx:Label text="{commonFunction.getConstants('printAggregate')}" x="40" y="217" />
+	<mx:TextInput x="165" y="36" color="#000000" width="150" id="programCodeText" restrict="0-9,a-z,A-Z" editable="false" />
+	<mx:TextInput x="165" y="66" color="#000000" width="150" id="programNameText" restrict="0-9,a-z, ,.,A-Z" />
+	<mx:ComboBox x="165" y="96" color="#000000" width="150" id="programTypeCombo" prompt="{commonFunction.getConstants('select')}"  />
+	<mx:ComboBox x="165" y="126" color="#000000" width="150" id="programModeCombo" prompt="{commonFunction.getConstants('select')}"   />
+	<mx:NumericStepper x="165" y="156" color="#000000" width="150" id="noOfTermsText" minimum="1"  maximum="99" />
+	<mx:TextInput x="165" y="186" color="#000000" width="150" id="dgpaText"  />
+	<mx:ComboBox x="660" y="36" color="#000000" width="150" id="ugOrPgCombo" dataProvider="{ugpgXML.option.name}" prompt="{commonFunction.getConstants('select')}" />
+	<mx:ComboBox x="660" y="66" color="#000000" width="150" id="tenCodesCombo" dataProvider="{tenCodesXML.option.name}" prompt="{commonFunction.getConstants('select')}"   />
+	<mx:NumericStepper x="660" y="96" color="#000000" width="150" minimum="1" maximum="99" id="maxAttemptAllowedText"  />
+	<mx:NumericStepper x="660" y="126" color="#000000" width="150" maximum="99" id="maxFailSubjectText"  />
+	<mx:NumericStepper x="660" y="156" color="#000000" width="150" minimum="1" maximum="99" id="maxRegSemText"  />
+	<mx:TextInput x="660" y="186" color="#000000" width="150" id="creditsRequiredText"  />
+	<mx:ComboBox x="165" y="214" color="#000000" width="150" id="printAggregateCombo" dataProvider="{aggregateXML.option.name}" prompt="{commonFunction.getConstants('select')}"  />
+	<mx:Label text="{commonFunction.getConstants('program_description')}" x="40" y="245" />
+	<mx:TextInput x="165" y="242" color="#000000" width="150" id="programDescriptionText" restrict="0-9,a-z, ,.,A-Z"/>
+	<mx:Button id="updateButton" x="165" y="278" label="{commonFunction.getConstants('updateButton')}" click="updateClickHandler()"/>
+	<mx:Label x="445" y="217" text="{commonFunction.getConstants('fixOrVariable')}"/>
+	 <mx:RadioButtonGroup id="fixOrVariableGroup"/>
+	<mx:RadioButton x="660" y="215" value="F"  label="{commonFunction.getConstants('fixed')}" groupName="fixOrVariableGroup"/>
+	<mx:RadioButton x="734" y="215" value="V" label="{commonFunction.getConstants('variable')}" groupName="fixOrVariableGroup"/>
+<mx:Button label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="PopUpManager.removePopUp(this)"  y="278" x="303"/>	
+</mx:TitleWindow>

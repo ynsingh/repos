@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+      
+<!--
+	/* * @(#) AdmissionIntegration.xml * Copyright (c) 2011 EdRP, Dayalbagh
+	Educational Institute. * All Rights Reserved. * * Redistribution and
+	use in source and binary forms, with or * without modification, are
+	permitted provided that the following * conditions are met: * *
+	Redistributions of source code must retain the above copyright *
+	notice, this list of conditions and the following disclaimer. * *
+	Redistribution in binary form must reproducuce the above copyright *
+	notice, this list of conditions and the following disclaimer in * the
+	documentation and/or other materials provided with the * distribution.
+	* * * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES *
+	OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE *
+	DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR
+	ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR *
+	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR *
+	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, *
+	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors:
+	Members of EdRP, Dayalbagh Educational Institute */
+-->
+
+    <sqlMap namespace="admissionIntegration">
+    	<select id="getSessionDates" resultClass="in.ac.dei.edrp.cms.domain.admissionIntegration.AdmissionIntegrationInfo">
+			SELECT DATE(SUBSTR(value,1,8)) AS sessionStartDate, DATE(SUBSTR(value,9,16)) AS sessionEndDate
+			FROM system_values WHERE code='ADMSSN';
+		</select>
+    	
+		<select id="getEntities" resultClass="in.ac.dei.edrp.cms.domain.admissionIntegration.AdmissionIntegrationInfo">
+			SELECT sfml.entity_id AS entityId, em.entity_name AS entityName
+			FROM student_final_merit_list sfml JOIN entity_master em
+			WHERE sfml.entity_id=em.entity_id AND sfml.start_date=#sessionStartDate#
+			AND sfml.end_date=#sessionEndDate# Group By sfml.entity_id;
+		</select>
+		
+		<select id="getPrograms" resultClass="in.ac.dei.edrp.cms.domain.admissionIntegration.AdmissionIntegrationInfo">
+			SELECT sfml.program_id AS entityId, pm.program_name AS entityName
+			FROM student_final_merit_list sfml JOIN program_master pm
+			WHERE sfml.program_id=pm.program_id AND sfml.start_date=#sessionStartDate#
+			AND sfml.end_date=#sessionEndDate# AND sfml.entity_id=#entityId# GROUP BY sfml.program_id;
+		</select>
+		
+		<select id="getStudentDetails" resultClass="in.ac.dei.edrp.cms.domain.admissionIntegration.AdmissionIntegrationInfo">
+			SELECT sfml.entity_id AS entityId, sfml.program_id AS programId, sfml.registration_number AS registrationNo, es.enrollment_number AS enrollmentNo, sr.student_id AS studentId,
+			es.first_name AS studentFirstName, es.middle_name AS studentMiddleName, es.last_name AS studentLastName, es.father_first_name AS fatherFirstName,
+			es.father_middle_name AS fatherMiddleName, es.father_last_name AS fatherLastName, es.mother_first_name AS motherFirstName,
+			es.mother_last_name AS motherLastName, es.date_of_birth AS dateOfBirth, es.category_code AS category, es.primary_email_id AS primaryMail,
+			es.secondary_email_id AS secondaryMail, es.nationality AS nationality, es.religion AS religion, es.guardian_name AS guardian, es.gender AS gender,
+			aam.address_key AS addressKey, if(length(aam.address_line2)!=0,CONCAT_WS(', ',aam.address_line1,aam.address_line2),aam.address_line1) AS perAddress, aam.city AS perCity, aam.state AS perState,
+			aam.pincode AS perPincode, aam.home_phone AS phone
+			FROM entity_student es JOIN admission_addresses_master aam JOIN student_final_merit_list sfml JOIN student_registration sr
+			ON sfml.registration_number=sr.registration_number AND sr.student_id=es.student_id AND sr.student_id=aam.user_id
+			WHERE aam.address_key='PER' AND sfml.entity_id=#entityId# AND sfml.program_id=#programId# AND sfml.status='selected' AND (sfml.imported!='Y' OR sfml.imported is null)
+			AND sfml.registration_number NOT IN (SELECT pt.registration_roll_number FROM prestaging_table pt WHERE pt.semester_start_date IN
+			(SELECT semester_start_date FROM program_registration WHERE program_course_key LIKE CONCAT((#programId#),'%') AND status='ACT'
+			AND session_start_date=#sessionStartDate# AND session_end_date=#sessionEndDate# AND entity_id=#entityId#));
+		</select>
+		
+		<select id="getBranchDetails" resultClass="in.ac.dei.edrp.cms.domain.admissionIntegration.AdmissionIntegrationInfo">
+			SELECT pbs.branch_id AS branchId, pbs.specialization_id AS specializationId, stt1.component_description AS branchName, stt2.component_description AS specializationName
+			FROM program_branch_specialization pbs, system_table_two stt1, system_table_two stt2
+			WHERE pbs.branch_id=stt1.component_code AND pbs.specialization_id=stt2.component_code
+			AND stt1.group_code='BRNCOD' AND stt2.group_code='SPCLCD' AND program_id=#programId#;
+		</select>
+		
+		<select id="getSystemValue" resultClass="in.ac.dei.edrp.cms.domain.admissionIntegration.AdmissionIntegrationInfo">
+			SELECT value AS codeValue
+			FROM system_values
+			WHERE  code=#code# AND university_id=#universityId#;
+		</select>
+	
+	<update id="updateSysValue">
+		UPDATE system_values
+		SET value=#codeValue#,modifier_id=#creatorId#,modification_time=now()
+		WHERE code=#code# AND university_id=#universityId#;
+	</update>
+	
+	<insert id="insertIntoEnrollmentPersonalDetails">
+		INSERT INTO enrollment_personal_details
+		(registration_number,enrollment_number,student_id,student_first_name,student_middle_name,student_last_name,father_first_name,father_middle_name,father_last_name,
+		mother_first_name,mother_middle_name,mother_last_name,primary_email_id,secondary_email_id,guardian_name,date_of_birth,nationality,religion,category_code,entity_id,
+		program_id,branch_id,specialization_id,status,gender,session_start_date,session_end_date,submit_date,creator_id,insert_time)
+		VALUES
+		(#registrationNo#,#enrollmentNo#,#studentId#,#studentFirstName#,#studentMiddleName#,#studentLastName#,#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+		#motherFirstName#,#motherMiddleName#,#motherLastName#,#primaryMail#,#secondaryMail#,#guardian#,#dateOfBirth#,#nationality#,#religion#,#category#,#entityId#,
+		#programId#,#branchId#,#specializationId#,'SUB',#gender#,#sessionStartDate#,#sessionEndDate#,now(),#creatorId#,now());
+	</insert>
+	
+	<insert id="insertIntoEnrollmentAddressesMaster">
+		INSERT INTO enrollment_addresses_master
+		(user_type,address_key,address,city,state,pincode,home_phone,insert_time,creator_id,user_id)
+		VALUES
+		('STD',#addressKey#,#perAddress#,#perCity#,#perState#,#perPincode#,#phone#,now(),#creatorId#,#studentId#);
+	</insert>
+	
+	<insert id="insertIntoEmailTable">
+		INSERT INTO email_table
+		(user_id,entity_id,program_id,branch_id,specialization_id,user_group_id,user_name,email_id,AIOrUI,is_ready,insert_time,creator_id)
+		VALUES
+		(#studentId#,#entityId#,#programId#,#branchId#,#specializationId#,'STD',#registrationNo#,#primaryMail#,'AI','Y',now(),#creatorId#);
+	</insert>
+	
+	<update id="updateImportedStatus">
+		UPDATE student_final_merit_list
+		SET imported='Y' WHERE entity_id=#entityId# AND program_id=#programId# 
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate# AND registration_number=#registrationNo# AND status='selected';
+	</update>
+	
+	<insert id="insertIntoPrestaging">
+		INSERT INTO prestaging_table
+		(student_id,registration_roll_number,enrollment_number,date_of_birth,student_category,gender,student_first_name,student_middle_name,student_last_name,
+		father_first_name,father_middle_name,father_last_name,mother_first_name,mother_middle_name,mother_last_name,new_entity,new_program,new_branch,new_specialization,
+		new_semester,attempt_number,admission_mode,registration_due_date,semester_start_date,semester_end_date,primary_email_id,insert_time,creator_id,status_in_semester,
+		per_address,per_city,per_state,per_pincode,extra_phone,other_phone)
+		VALUES
+		(#studentId#,#registrationNo#,#enrollmentNo#,#dateOfBirth#,#category#,#gender#,#studentFirstName#,#studentMiddleName#,#studentLastName#,
+		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,#motherFirstName#,#motherMiddleName#,#motherLastName#,#entityId#,#programId#,#branchId#,#specializationId#,
+		'SM1','1','NEW',#regStartDate#,#semesterStartDate#,#semesterEndDate#,#primaryMail#,now(),#creatorId#,'REG',#perAddress#,#perCity#,#perState#,#perPincode#,#phone#,#phone#);
+	</insert>
+	
+	<select id="getSemesterDates" resultClass="in.ac.dei.edrp.cms.domain.admissionIntegration.AdmissionIntegrationInfo">
+		SELECT pr.registration_start_date AS regStartDate, pr.semester_start_date AS semesterStartDate, pr.semester_end_date AS semesterEndDate
+		FROM program_registration pr JOIN program_course_header pch
+		ON pr.program_course_key=pch.program_course_key WHERE pr.entity_id=#entityId# AND pch.program_id=#programId#
+		AND pch.branch_id=#branchId# AND pch.specialization_id=#specializationId# 
+		AND session_start_date=#sessionStartDate# AND session_end_date=#sessionEndDate# AND semester_code='SM1' AND pr.status='ACT' AND pch.semester_status='ACT';
+	</select>
+</sqlMap>

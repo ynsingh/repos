@@ -1,0 +1,122 @@
+Panel{
+   dropShadowEnabled: true;
+   fontWeight: normal;
+   fontSize: 15;
+   fontFamily: Verdana;
+   borderColor: #B8B7B7;
+   color: #000000;  
+}
+
+.DetailTitleWindow
+{
+	border-style: solid;
+	border-thickness: 2;
+	border-color: #000000;
+	fontSize: 12;
+}	
+
+.PopUpTitleWindow {
+   borderColor: #4B4A4A;
+   dropShadowEnabled: true;
+   fontSize: 12;
+}
+
+.GridCanvas{
+   borderStyle: solid;
+   borderThickness: .5; 
+   cornerRadius: 6; 
+   backgroundColor: #E2E0E0; 
+   color: #727272;
+   dropShadowEnabled: true;
+   shadowDirection: right;
+   shadowDistance: 3;
+   
+}
+
+.SimpleCanvas{
+   borderStyle: solid;
+   borderThickness: .5; 
+   cornerRadius: 6; 
+   backgroundColor: #ffffff; 
+   color: #727272;
+   dropShadowEnabled: true;
+   shadowDirection: right;
+   shadowDistance: 3;
+   
+}
+
+.BorderCanvas{
+	 borderStyle: solid;
+	 cornerRadius: 9; 
+	 borderColor: #1D1F21;
+	 borderThickness: 1.5;
+	 shadowDirection: right;
+	 shadowDistance: 1;
+	 dropShadowEnabled: true; 
+}
+
+Button{
+	fontFamily: Verdana;
+	fontSize: 12;
+	color: #000000;
+}
+
+LinkButton{
+	fontFamily: Verdana;
+	fontSize: 12;
+	color: #5968F4;
+	cornerRadius: 5;
+}
+
+Label{
+	fontFamily: Verdana;
+	fontSize: 12;
+	fontWeight: normal;
+	color: #000000;		
+}
+
+TextInput{
+	fontFamily: Verdana;
+	fontSize: 12;
+	fontWeight: normal;
+	color: #000000;	
+}
+
+ComboBox{
+	fontFamily: Verdana;
+	fontSize: 12;
+	fontWeight: normal;
+	color: #000000;	
+}
+
+DateField{
+	fontFamily: Verdana;
+	fontSize: 12;
+	fontWeight: normal;
+	color: #000000;	
+}		
+
+DataGrid{
+	fontFamily: Verdana;
+	fontSize: 10;
+	fontWeight: bold;	
+}
+
+AdvancedDataGrid{
+	fontFamily: Verdana;
+	fontSize: 10;
+	fontWeight: normal;	
+}
+
+Alert{
+	fontFamily: Verdana;
+	fontSize: 12;
+	fontWeight: normal;
+}				
+
+TextArea{
+    fontFamily: Verdana;
+    fontSize: 12;
+    fontWeight: normal;
+    color: #000000;
+}

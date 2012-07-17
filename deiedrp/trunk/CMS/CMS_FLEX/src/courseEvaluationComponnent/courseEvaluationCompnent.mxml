@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) courseEvaluationComponent.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1047" 
+	height="638" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*" xmlns:ns1="*"  
+	creationComplete="applicationCreationHandler()"   title="{commonFunction.getConstants('courseEvaluationComponent')}">
+	
+					
+	<mx:HTTPService id="getProgramCourseService" method="POST"
+		url="{urlPrefix+'getProgramCourse.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getprogramcourseSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+				
+	<mx:HTTPService id="getCecListService" method="POST"
+		url="{urlPrefix+'getCecList.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getceclistSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="deleteCecService" method="POST"
+		url="{urlPrefix+'deleteCecDetails.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="deleteCecSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	
+	<mx:Script source="asFiles/courseEvaluationCompnentAction.as"/>
+	
+	<mx:Canvas styleName="GridCanvas" x="322.5" y="36" width="369" height="210">
+    <mx:Label text="{commonFunction.getConstants('entityProgramDetails')}" top="6" left="10" fontWeight="bold"  />
+	<mx:LinkButton label="{commonFunction.getConstants('addComponent')}" enabled="false" id="addButton" click="addComponent()" x="225" y="4"/>
+    <controls:MDataGrid id="programCourseGrid" allowMultipleSelection="false" draggableColumns="false"  x="14" y="33"  height="164" editable="true">
+    <controls:columns>
+	<dataGridClasses:MDataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
+	<dataGridClasses:headerRenderer>
+		<mx:Component>
+			<mx:Label/>
+		</mx:Component>
+	</dataGridClasses:headerRenderer>
+	<dataGridClasses:itemRenderer>
+	<mx:Component>
+	<mx:CheckBox click="data.select=!data.select;checkbox1ClickHandler(event,outerDocument.programCourseGrid)" change="commonFunction.editDeleteEnable(event,outerDocument.programCourseGrid,[outerDocument.addButton],[])">
+	<mx:Script>
+	  <![CDATA[
+			    import mx.events.CloseEvent;
+			    import common.commonFunction;
+			    import mx.controls.LinkButton;
+			    import mx.controls.*;
+			    import mx.collections.*;
+			    
+				[Embed(source="/images/error.png")]private var errorIcon:Class;
+			    
+			    public function checkbox1ClickHandler(event:Event,grid:DataGrid):void
+			    {
+					var gridrecords:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.programCourseGrid);
+					
+					if(gridrecords.length>1)
+					{
+            	    	Alert.show(commonFunction.getMessages('selectOnlyOneRecord'),commonFunction.getMessages('warning'),0,null,refresh,errorIcon);
+            	    }
+            	     
+            	    outerDocument.getAllEvaluationDetails();
+
+            	}
+            	     
+            	    
+            	protected function refresh(event:CloseEvent):void
+            	{
+            		var gridRecordData:ArrayCollection=outerDocument.programCourseGrid.dataProvider as ArrayCollection;
+										
+            		for(var e:int=0;e<gridRecordData.length;e++)
+            		{
+	            		var gridItem:Object=gridRecordData.getItemAt(e);
+	            	    if(gridItem.select==true)
+	            	    {
+	            			gridItem.select=false;
+	            			gridRecordData.setItemAt(gridItem,e);
+	            	    	outerDocument.programCourseGrid.dataProvider=gridRecordData;
+	            	    }
+	            	}
+		            outerDocument.addButton.enabled=false;
+		            outerDocument.componentsGrid.dataProvider=null;
+	            }
+             ]]>
+	</mx:Script>
+	</mx:CheckBox>
+	</mx:Component>
+	</dataGridClasses:itemRenderer>
+	</dataGridClasses:MDataGridColumn>
+			 
+    		<dataGridClasses:MDataGridColumn showDataTips="true" width="100" editable="false" headerText="{commonFunction.getConstants('program')}" dataField="programName"/>
+			<dataGridClasses:MDataGridColumn showDataTips="true" width="100" editable="false" headerText="{commonFunction.getConstants('semester')}" dataField="semesterName"/>
+			<dataGridClasses:MDataGridColumn showDataTips="true" width="120" editable="false" headerText="{commonFunction.getConstants('course')}" dataField="coursecode"/>
+		    </controls:columns>
+	      </controls:MDataGrid>
+        </mx:Canvas>
+
+	
+    	<mx:Canvas styleName="GridCanvas" x="28" y="305" width="929" height="199">
+		<mx:Label text="{commonFunction.getConstants('evaluationComponentDetails')}" top="6" left="10" fontWeight="bold"  />
+		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" enabled="false" id="editButton" x="744" y="4" width="106.5" click="openEditWindow()"/>   
+		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" enabled="false" id="deleteButton" x="808.5" y="4" width="97.5" click="deleteRecords()"/>
+        <mx:DataGrid editable="true" id="componentsGrid"   draggableColumns="false" textAlign="center" sortableColumns="true" x="10" y="32" verticalScrollPolicy="on" width="896">
+		  <mx:columns>
+		  <mx:DataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
+			<mx:itemRenderer>
+			<mx:Component>
+			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.componentsGrid,[outerDocument.editButton],[outerDocument.deleteButton])">
+			<mx:Script>
+			  <![CDATA[
+					   import common.commonFunction;
+					   import mx.controls.*
+			  ]]>
+			</mx:Script>
+			</mx:CheckBox>
+			</mx:Component>
+			</mx:itemRenderer>
+			</mx:DataGridColumn>
+			
+			<mx:DataGridColumn showDataTips="true" editable="false" width="105" headerText="{commonFunction.getConstants('evaluationId')}" dataField="iddescription" />
+		    <mx:DataGridColumn showDataTips="true" editable="false" width="105" headerText="{commonFunction.getConstants('group')}" dataField="groupName" />
+		    <mx:DataGridColumn showDataTips="true" editable="false" width="110" headerText="{commonFunction.getConstants('rule')}" dataField="ruleName" />
+		    <mx:DataGridColumn showDataTips="true" editable="false" width="100" headerText="{commonFunction.getConstants('examDate')}" dataField="examDate" />
+		    <mx:DataGridColumn showDataTips="true" editable="false" width="120" headerText="{commonFunction.getConstants('maximumMarks')}" dataField="maximumMarks" />
+		    <mx:DataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('dateFromDisplayMarks')}" dataField="daysFromDisplayMarks" />
+		    <mx:DataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('dateToDisplayMarks')}" dataField="daysToDisplayMarks" />
+		    <mx:DataGridColumn showDataTips="true" editable="false" width="160" headerText="{commonFunction.getConstants('orderInMarksheet')}" dataField="orderInMarksheet" />
+            </mx:columns>
+	      </mx:DataGrid>
+		</mx:Canvas>
+    	<mx:Button x="417" y="530" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancel()"/>
+</mx:Panel>

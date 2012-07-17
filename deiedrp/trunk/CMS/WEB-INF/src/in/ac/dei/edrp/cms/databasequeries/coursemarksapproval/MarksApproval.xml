@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) MarksApproval.xml
+* @Author :Mohd Amir
+* @Date :21/3/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="marksApproval">
+	<typeAlias alias="marksApprovalInfo"
+		type="in.ac.dei.edrp.cms.domain.coursemarksapproval.MarksApprovalInfo" />
+
+	<select id="getCourseList" resultClass="marksApprovalInfo">
+		SELECT pcd.program_course_key AS programCourseKey,
+		pcd.course_code AS courseCode, cm.course_name AS courseName
+		FROM program_course_detail pcd,	course_master cm
+		WHERE pcd.course_code=cm.course_code AND pcd.program_course_key in (
+			SELECT program_course_key
+			FROM program_course_header 
+			WHERE program_id=#programCode# AND branch_id=#branchCode#
+			AND specialization_id=#specializationCode# AND semester_code=#semesterCode# AND semester_status='ACT'
+		);
+    </select>
+
+	<select id="getEmployeeList" resultClass="marksApprovalInfo">		
+		SELECT empl.employee_code AS employeeCode,
+		concat_ws(' ',empl.first_name,empl.middle_name,empl.last_name) AS employeeName,empl.parent_entity AS entityCode,em.entity_name as entityName
+		FROM employee_master empl JOIN entity_master em
+   		ON empl.parent_entity=entity_id and em.university_id=#universityCode#
+		AND empl.university_code=#universityCode#;
+    </select>
+
+	<select id="getMarksApprovalDetails" resultClass="marksApprovalInfo">
+		SELECT cma.program_course_key as programCourseKey, cma.course_code as courseCode,
+		cm.course_name as courseName, cma.employee_id as employeeCode,
+		concat_ws(' ',em.first_name,em.middle_name,em.last_name) as employeeName,
+		cma.approval_order as approvalOrder
+		FROM course_marks_approval cma, employee_master em, course_master cm
+		WHERE cma.program_course_key in (select
+		program_course_key from program_course_header where
+		program_id=#programCode# AND branch_id=#branchCode# AND
+		specialization_id=#specializationCode# AND
+		semester_code=#semesterCode#) and cma.course_code=cm.course_code
+		and cma.employee_id=em.employee_code and cma.entity_id=#entityCode#
+    </select>
+
+	<insert id="setMarksApprovalDetails">
+		INSERT into course_marks_approval
+		(entity_id,program_course_key,course_code,employee_id,approval_order,sequence_number,insert_time,creator_id,display_type)
+		VALUES
+		(#entityCode#,#programCourseKey#,#courseCode#,#employeeCode#,#approvalOrder#,#sequenceNo#,now(),#userId#,#evaluationId#)
+    </insert>
+
+	<select id="getDuplicateRecordCount" resultClass="marksApprovalInfo">
+		SELECT count(*) as count
+		FROM course_marks_approval
+		WHERE program_course_key=#programCourseKey# and course_code=#courseCode# and entity_id=#entityCode# and employee_id=#employeeCode# and approval_order=#approvalOrder# and display_type=#evaluationId#;
+    </select>
+
+	<delete id="deleteApprovalDetails">
+		DELETE
+		FROM course_marks_approval
+		WHERE entity_id=#entityCode# and program_course_key=#programCourseKey# and course_code=#courseCode# and employee_id=#employeeCode# and approval_order=#approvalOrder# and sequence_number=#sequenceNo# and display_type=#evaluationId#
+    </delete>
+
+	<delete id="deleteApprovalDetailsForSeqNull">
+		DELETE
+		FROM course_marks_approval
+		WHERE entity_id=#entityCode# and program_course_key=#programCourseKey# and course_code=#courseCode# and employee_id=#employeeCode# and approval_order=#approvalOrder# and sequence_number is #sequenceNo# and display_type=#evaluationId#;
+    </delete>
+    
+	<update id="updateApprovalDetails">
+		UPDATE course_marks_approval
+		SET employee_id=#employeeCode#,modification_time=now(),modifier_id=#userId#
+		WHERE program_course_key=#programCourseKey# and	course_code=#courseCode# and approval_order=#approvalOrder#
+    </update>
+	
+	<select id="getProgramDetails" resultClass="in.ac.dei.edrp.cms.domain.programcoursetypesummary.ProgramCourseTypeSummaryInfoGetter">
+		SELECT pob.program_id AS programId,pm.program_name AS programName,pob.branch_id AS branchId,stt1.component_description AS branchName,pob.specialization_id AS specializationId,
+		stt2.component_description AS specializationName,pch.semester_code AS semesterCode,stt3.component_description AS semesterName,pob.offered_by AS entityId,em.entity_name AS entityName
+		FROM program_offered_by pob JOIN program_course_header pch JOIN program_master pm JOIN system_table_two stt1 JOIN system_table_two stt2 JOIN system_table_two stt3 JOIN entity_master em
+		ON pob.program_id=pch.program_id and
+		pob.program_id=pm.program_id and
+		pob.branch_id=pch.branch_id and
+		pob.branch_id=stt1.component_code and
+		pob.specialization_id=pch.specialization_id and
+		pob.specialization_id=stt2.component_code and
+		pch.semester_code=stt3.component_code and
+		pob.offered_by=em.entity_id and
+		stt1.group_code='BRNCOD' and stt2.group_code='SPCLCD' and stt3.group_code='SEMCOD' and
+		stt1.university_code=#universityId# and stt2.university_code=#universityId# and stt3.university_code=#universityId#
+		and em.university_id=#universityId# and pob.offered_by like #entityId#;
+    </select>
+    
+    <select id="getEntity" resultClass="in.ac.dei.edrp.cms.domain.programcoursetypesummary.ProgramCourseTypeSummaryInfoGetter">
+		SELECT distinct pob.offered_by AS entityId,em.entity_name AS entityName
+		FROM program_offered_by pob JOIN entity_master em
+		ON pob.offered_by=em.entity_id and
+		em.university_id=#universityId# and pob.program_id like #componentId#;
+    </select>
+    
+    <select id="getCourseMarksApprovalDetails" resultClass="marksApprovalInfo">
+		SELECT cma.entity_id as entityCode,em.entity_name as entityName,cma.program_course_key as programCourseKey, cma.course_code as courseCode,
+		cma.employee_id as employeeCode,cma.approval_order as approvalOrder,cma.sequence_number as sequenceNo,pm.program_name as programCode,
+    	stt1.component_description as branchCode ,stt2.component_description as specializationCode ,stt3.component_description as semesterCode,stt4.component_description AS displayType,cma.display_type AS evaluationId
+		FROM course_marks_approval cma join entity_master em join program_course_header pch join program_master pm join system_table_two stt1 join
+   	 	system_table_two stt2 join system_table_two stt3 join system_table_two stt4
+		ON em.entity_id=cma.entity_id and pch.program_course_key=cma.program_course_key and pm.program_id=pch.program_id
+    	and stt1.group_code='BRNCOD' and stt2.group_code='SPCLCD' and stt3.group_code='SEMCOD' and stt4.group_code='DISTYP' and stt1.component_code=pch.branch_id and stt2.component_code=pch.specialization_id
+    	and stt3.component_code=pch.semester_code and stt4.component_code=cma.display_type
+    	and cma.entity_id like #entityCode# and em.university_id=#universityCode# and stt1.university_code=#universityCode# and stt2.university_code=#universityCode# and stt3.university_code=#universityCode# and stt4.university_code=#universityCode#;
+    </select>
+    
+     <select id="getCourseEmployee" resultClass="java.lang.String">
+		SELECT COUNT(*) FROM instructor_course ic,program_registration pr
+		WHERE ic.employee_id=#employeeCode# AND ic.entity_id=#entityCode# AND ic.course_code=#courseCode# AND ic.status='ACT'
+		AND ic.program_course_key=#programCourseKey# AND
+		ic.semester_start_date=pr.semester_start_date AND
+		ic.semester_end_date=pr.semester_end_date AND
+		pr.program_course_key=ic.program_course_key ANd
+		pr.entity_id=ic.entity_id AND pr.university_id=#universityCode# AND pr.session_start_date=#programCode# AND pr.session_end_date=#branchCode# AND pr.status='ACT'
+    </select>
+    
+    <select id="getSequenceNo" resultClass="java.lang.String">
+		SELECT MAX(sequence_number) FROM course_marks_approval WHERE approval_order=#approvalOrder# AND entity_id=#entityCode# AND 
+		program_course_key=#programCourseKey# AND course_code=#courseCode# and display_type=#evaluationId#;
+    </select>
+    
+    <select id="getSequenceToCheck" resultClass="java.lang.String">
+		SELECT IF(COUNT(*)>=1,'alreadyExist','notExists') FROM course_marks_approval WHERE program_course_key=#programCourseKey#
+		and course_code=#courseCode# and entity_id=#entityCode# AND approval_order=#approvalOrder# AND sequence_number=#sequenceNo# and display_type=#evaluationId#;
+    </select>
+    
+     <select id="getDisplayType" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT component_code AS evaluationId,component_description AS displayType FROM system_table_two 
+		WHERE group_code ='DISTYP' AND university_code=#universityCode#;
+    </select>
+</sqlMap>

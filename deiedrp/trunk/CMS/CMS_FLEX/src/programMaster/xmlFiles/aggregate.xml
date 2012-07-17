@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<printaggregate>
+
+<option>
+<name>Theory And Practical</name>
+<code>TAP</code>
+</option>
+
+<option>
+<name>Semester Aggregate</name>
+<code>SAG</code>
+</option>
+
+</printaggregate>

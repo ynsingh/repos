@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) PhoneField.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="990" height="26">
+	    <mx:Label x="2" text="{resourceManager.getString('Constants','officePhone')}" y="3"/>
+		<mx:Label x="264" text="{resourceManager.getString('Constants','homePhone')}" y="3"/>
+		<mx:Label x="524" text="{resourceManager.getString('Constants','otherPhone')}" y="3"/>
+    	<mx:Label x="797" text="{resourceManager.getString('Constants','faxNumber')}" y="3"/>
+		<mx:TextInput id="officePhoneField" maxChars="20" restrict="0-9" textAlign="right" x="90" width="150" y="1"/>
+		<mx:TextInput id="homePhoneField" maxChars="20" x="353" restrict="0-9" width="150" textAlign="right" y="1"/>
+		<mx:TextInput id="otherPhoneField" maxChars="20" x="609" restrict="0-9" width="150" textAlign="right" y="1"/>
+    	<mx:TextInput id="faxPhoneField" maxChars="20" x="840" restrict="0-9" width="150" textAlign="right" y="1"/>
+
+</mx:Canvas>

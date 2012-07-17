@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" layout="absolute" 
+	creationComplete="onCreationComplete()" initialize="panel1InitializeHandler(event)" xmlns:common="common.*">
+	
+	
+	
+	<mx:HTTPService id="getemployeeitems" method="post"
+					url="{urlPrefix+'getmenusforemployee.htm'}"
+					resultFormat="e4x"
+					result="onItemsSuccess(event)"
+					fault="onItemsFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getusersfromuserinfo" method="post"
+					url="{urlPrefix+'getUsers.htm'}"
+					resultFormat="e4x"
+					result="onUsersSuccess(event)"
+					fault="onItemsFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.resources.ResourceBundle;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			import common.commonFunction;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;	
+			
+			
+			[Bindable]public var createAuthority:String;
+			[Bindable]public var deleteAuthority:String;
+			[Bindable]public var updateAuthority:String;
+			[Bindable]public var viewAuthority:String;
+			public var authority:String;
+			
+			
+			public function onCreationComplete():void{
+	
+			var infoObject:Object={};
+			infoObject["userId"]=new Date;
+			infoObject["counter"] = "two";
+		
+			Mask.show(commonFunction.getMessages('pleaseWait'));
+			
+			getusersfromuserinfo.send(infoObject);
+	
+			}
+			
+			/**
+			 *This method is used to get the list
+			 * of menu items(links) associated to
+			 * the role of the selected employee
+			 **/
+			public function getRoleItems():void{				
+				
+				var i:int=Validator.validateAll([textvalidate]).length;
+				
+				
+				if(i!=0){
+					
+					Alert.show(resourceManager.getString('Messages','pleasecheckEntriesinRed'),
+					resourceManager.getString('Messages','error'),0,null,null,errorIcon);
+					
+					Mask.close();
+					
+				}else{
+					
+					var infoObject:Object={};
+					infoObject["userId"]=new Date;
+					infoObject["empCode"]=empId.text;
+					
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+					
+					getemployeeitems.send(infoObject);
+					
+				}
+				
+			}
+			
+[Bindable]
+public var usersXml:XML;
+[Bindable]
+public var userList:ArrayCollection;
+public function onUsersSuccess(event:ResultEvent):void{
+	
+	usersXml = event.result as XML;
+	
+	if(usersXml.sessionConfirm == true)
+             {
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          this.parentDocument.vStack.selectedIndex=0;
+          this.parentDocument.loaderCanvas.removeAllChildren();
+            }
+	
+	userList = new ArrayCollection();
+	
+	for each(var userObj:Object in usersXml.role){
+		
+		userList.addItem({id:userObj.id,description:userObj.description});
+		
+	}
+	
+	empId.selectedIndex=-1;
+	
+	empId.dataProvider = userList;
+	empId.labelField = "description";
+	
+	Mask.close();
+	
+}
+			
+			[Bindable]
+			var details: XML;
+			public function onItemsSuccess(event:ResultEvent):void{
+				
+				itemscanvas.visible=true;
+				
+				details=event.result as XML;
+				
+				if(details.sessionConfirm == true)
+             {
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          this.parentDocument.vStack.selectedIndex=0;
+          this.parentDocument.loaderCanvas.removeAllChildren();
+            }
+				
+				var detailslist:ArrayCollection =new ArrayCollection();
+				
+				for each (var o:Object in details.role){
+					authority = o.authority;					
+					
+					if((authority.charAt(0))=='1'){
+						
+						createAuthority="Yes";						
+						
+					}else{
+						
+						createAuthority="No";
+						
+					}
+					if((authority.charAt(1))=='1'){
+						
+						deleteAuthority ="Yes";
+						
+					}else{
+						
+						deleteAuthority="No";
+						
+					}
+					if((authority.charAt(2))=='1'){
+						
+						updateAuthority="Yes";
+						
+					}else{
+						
+						updateAuthority="No";
+						
+					}
+					if((authority.charAt(3))=='1'){
+						
+						viewAuthority ="Yes";
+						
+					}else{
+						
+						viewAuthority="No";
+						
+					}
+					detailslist.addItem({select:false,id:o.id,description:o.description,role_id:o.role_id,authority:o.authority,user_id:o.user_id,
+					role_description:o.role_description,createAuthority:createAuthority,
+					deleteAuthority:deleteAuthority,updateAuthority:updateAuthority,viewAuthority:viewAuthority});
+					
+				}
+				
+				if(detailslist.length==0){			
+					Alert.show(commonFunction.getMessages('noRecordFound'),
+					commonFunction.getMessages('alert'),4,null,null,errorIcon);
+					itemscanvas.visible=false;
+					
+					
+				}else{
+				
+				roleLabel.text=detailslist.getItemAt(0).role_description;	
+				roleitemdata.dataProvider=detailslist;
+				roleitemdata.labelField="description";
+				
+				}
+				
+				Mask.close();
+				
+			}
+			
+			public function onItemsFailure(event:FaultEvent):void{
+				
+				Alert.show(commonFunction.getMessages('requestFailed'),
+				commonFunction.getMessages('failure'),0,null,null,errorIcon);
+	
+				Mask.close();
+				
+				
+			}
+			
+			[Bindable]public var urlPrefix:String;
+			
+			protected function panel1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=resourceManager.getString('Constants','url')+"/employeerole/";				
+				
+			}
+			
+			
+			/**
+			 *This method is used to update the revoked
+			 * authority for the concerned user
+			 **/
+			var itemsPopup:manageAuthority;
+			public function setAddedAuthority():void{
+				
+				var arraylist:ArrayCollection=new ArrayCollection();
+				
+				for each(var o:Object in roleitemdata.dataProvider){
+					
+					if(o.select==true){
+						
+						arraylist.addItem({id:o.id,description:o.description,role_id:o.role_id,authority:o.authority,user_id:o.user_id,
+							createAuthority:createAuthority,deleteAuthority:deleteAuthority,
+							updateAuthority:updateAuthority,viewAuthority:viewAuthority});						
+					}					
+				}
+				
+				if(arraylist.length==1){
+					
+					itemsPopup=manageAuthority(PopUpManager.createPopUp(this,manageAuthority,true));				
+					
+					itemsPopup.authority = arraylist.getItemAt(0).authority;
+					itemsPopup.empId.text=empId.text;
+					itemsPopup.menuIitemId = arraylist.getItemAt(0).id;
+					itemsPopup.itemName.text = arraylist.getItemAt(0).description;
+					
+					itemsPopup.empid = arraylist.getItemAt(0).user_id;
+					
+					itemsPopup.buttonFunction=getRoleItems;
+					
+					itemsPopup.linkbutton = updateButton;
+					
+					itemsPopup.setAutorityOnItem();
+					
+					PopUpManager.centerPopUp(itemsPopup);
+					
+				}else if(arraylist.length==0){
+					Alert.show(resourceManager.getString('Messages','selectARecord'),resourceManager.getString('Messages','error'));
+				}else if(arraylist.length>1){
+					Alert.show(resourceManager.getString('Messages','selectOnlyOneRecord'),resourceManager.getString('Messages','error'));
+				}
+				
+				Mask.close();			
+				
+			}
+
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Validator id="textvalidate" source="{empId}" property="text" trigger="{okButton}" triggerEvent="click">
+		
+	</mx:Validator>
+	
+	<mx:Panel x="10" y="19" width="440" height="202" layout="absolute" title="{resourceManager.getString('Constants','manage')} {resourceManager.getString('Constants','user')} {resourceManager.getString('Constants','authority')}">
+		<mx:Label x="19" y="10" text="{resourceManager.getString('Constants','user')} {resourceManager.getString('Constants','name')}"/>
+		<common:AutoCompleteCB x="177" y="10" id="empId" fontWeight="normal"/>
+		<mx:Button x="19" y="86" label="{resourceManager.getString('Constants','okButton')}" click="getRoleItems()" id="okButton"/>
+		<mx:Button x="197" y="86" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Panel>
+	<mx:Canvas x="10" y="262" width="584" height="228" styleName="GridCanvas" id="itemscanvas" visible="false">
+		<mx:DataGrid x="10" y="41" width="564" editable="true" height="177" id="roleitemdata" verticalScrollPolicy="on">
+			<mx:columns>
+				<mx:DataGridColumn rendererIsEditor="true" width="8" editorDataField="selected" textAlign="center" dataField="select" headerText="" >
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.roleitemdata,[outerDocument.updateButton],[new LinkButton])">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										import mx.controls.*;
+										
+									]]>
+								</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','itemnames')}" dataField="description" editable="false" width="100"/>
+				<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','create')}" dataField="createAuthority" editable="false" width="20"/>
+				<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','deleteButton')}" dataField="deleteAuthority" editable="false" width="20"/>
+				<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','updateButton')}" dataField="updateAuthority" editable="false" width="20"/>
+				<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','view')}" dataField="viewAuthority" editable="false" width="20"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="10" y="15" text="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','role')}" fontWeight="bold"/>
+		<mx:Label x="107" y="15" id="roleLabel"/>
+		<mx:LinkButton x="513" y="10" id="updateButton" label="{resourceManager.getString('Constants','updateButton')}" click="setAddedAuthority()" enabled="false"/>
+	</mx:Canvas>
+</mx:Panel>

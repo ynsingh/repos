@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#) createUniversityRoles.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" initialize="panel1_initializeHandler(event)" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.events.FlexEvent;
+			[Bindable]public var urlPrefix:String;
+
+			protected function panel1_initializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/universityrole/";
+			}
+
+		]]>
+	</mx:Script>
+		
+<mx:Script source="asFiles/universityRoles.as">
+	
+</mx:Script>
+	
+	<mx:HTTPService id="unirole" method="post"
+					url="{urlPrefix+'getRole.htm'}"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="menus" method="post"
+					url="{urlPrefix+'getMenuList.htm'}"
+					resultFormat="e4x"
+					result="onSuccessMenus(event)"
+					fault="onFailureMenus(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setmenus" method="post"
+					url="{urlPrefix+'setRoleAuthorities.htm'}"
+					resultFormat="e4x"
+					result="onSuccesssetMenus(event)"
+					fault="onFailuresetMenus(event)"
+					useProxy="false"/>
+
+<mx:Validator id="roleValidate" property="selectedItem" required="true"/>
+<mx:Validator id="applicationValidate" property="selectedItem" required="true"/>
+	
+	<mx:XML source="/common/application.xml" id="applicationXML" format="e4x"/>
+
+
+	<mx:Panel x="10" y="10" width="425" height="184" layout="absolute" title="{resourceManager.getString('Constants','unirolesetup')}" creationComplete="getRoles()" >
+	<mx:Label x="10" y="10" text="{resourceManager.getString('Constants','select')} {resourceManager.getString('Constants','role')}" width="82" fontWeight="bold"/>
+	<mx:ComboBox x="136" y="8" id="rolecombobox" toolTip="{rolecombobox.text}" change="gridcanvas.visible=false" width="160" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}"></mx:ComboBox>
+	<mx:Label x="10" y="43" text="{resourceManager.getString('Constants','select')} {resourceManager.getString('Constants','application')}"  fontWeight="bold"/>
+	<mx:ComboBox x="136" y="40" id="applicationCombo" toolTip="{applicationCombo.text}" width="160" change="gridcanvas.visible=false" selectedIndex="-1" 
+					prompt="{commonFunction.getConstants('select')}" dataProvider="{applicationXML.Application}" labelField="@type"></mx:ComboBox>
+	<mx:Button x="10" y="87" id="okButton" label="{resourceManager.getString('Constants','okButton')}" click="getMenus()"/>
+	<mx:Button x="200" y="87" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+		
+	</mx:Panel>
+	<mx:Canvas x="10" y="208" width="500" height="275" visible="false" id="gridcanvas" styleName="GridCanvas">
+		<mx:DataGrid x="25" y="29" width="450" height="236" id="menuitemsdislpay" resizableColumns="false" editable="true">
+			<mx:columns>
+			<dataGridClasses:MDataGridColumn rendererIsEditor="true" width="20" editorDataField="selected" textAlign="center" dataField="select" headerText="" >
+				<dataGridClasses:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.menuitemsdislpay,[new LinkButton],[outerDocument.linkbutton])">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;
+									import mx.controls.*;
+									
+								]]>
+							</mx:Script>
+						</mx:CheckBox>
+					</mx:Component>
+				</dataGridClasses:itemRenderer>
+				<dataGridClasses:headerRenderer>
+					<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.menuitemsdislpay,[],[outerDocument.linkbutton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+				</dataGridClasses:headerRenderer>
+			</dataGridClasses:MDataGridColumn>			
+				<mx:DataGridColumn headerText="{resourceManager.getString('Constants','itemnames')}" dataField="description" editable="false" showDataTips="true"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="27" y="8" text="{resourceManager.getString('Constants','defineroleauthority')}" width="162" fontWeight="bold"/>
+		<mx:LinkButton x="348" y="8" label="{resourceManager.getString('Constants','addroleauthority')}" click="setRoleAuthorities()" id="linkbutton" enabled="false"/>
+	</mx:Canvas>
+</mx:Panel>

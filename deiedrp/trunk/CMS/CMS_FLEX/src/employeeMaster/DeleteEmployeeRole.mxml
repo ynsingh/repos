@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#) DeleteEmployeeRole.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1233" height="440" xmlns:common="common.*" initialize="panel1InitializeHandler(event)" creationComplete="onCreationComplete()">
+<mx:Script>
+	<![CDATA[
+		import mx.events.CloseEvent;
+		import mx.rpc.events.ResultEvent;
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import common.Mask;
+		import common.commonFunction;
+		
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		
+		public var infoObject:Object={};
+		
+			import mx.events.FlexEvent;
+			[Bindable]public var urlPrefix:String;
+			[Bindable]public var urlPrefixEmployee:String;
+
+			protected function panel1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=resourceManager.getString('Constants','url')+"/universityrole/";
+				urlPrefixEmployee=resourceManager.getString('Constants','url')+"/employeerole/";
+			}
+			
+			public function onCreationComplete():void{
+				
+				empId.text="";
+				empdetails.visible=false;
+				linkbutton.enabled=false;
+				
+				infoObject["userId"]=new Date();      	 		
+		
+				Mask.show(commonFunction.getMessages('pleaseWait'));			
+				
+				getApplicationUsers.send(infoObject);
+				
+			}
+			
+			[Bindable] public var userDetails:XML;
+			[Bindable] public var userDetailsList:ArrayCollection;
+			public function onUsersSuccess(event:ResultEvent):void{
+				
+				userDetails=event.result as XML;
+				
+				if(userDetails.sessionConfirm == true)
+            	 {
+           			  Alert.show(resourceManager.getString('Messages','sessionInactive'));
+//          			this.parentDocument.vStack.selectedIndex=0;
+//          			this.parentDocument.loaderCanvas.removeAllChildren();
+          	
+          	 			var url:String="";
+            			url=commonFunction.getConstants('navigateHome');
+          				var urlRequest:URLRequest=new URLRequest(url);
+           				urlRequest.method=URLRequestMethod.POST;
+            			navigateToURL(urlRequest,"_self");
+           	     }
+	
+					 userDetailsList=new ArrayCollection();
+					 
+					 for each (var o:Object in userDetails.role){		
+		
+					userDetailsList.addItem({componentId:o.id,componentDescription:o.description});
+					
+							empId.dataProvider = userDetailsList;
+							empId.labelField = "componentId";	
+							empId.selectedIndex=-1;
+							empId.setFocus();
+							Mask.close();
+		
+				}			
+				
+			}
+			
+			[Bindable]
+			var details: XML;
+			[Bindable]
+			var detailslist:ArrayCollection;
+			[Bindable]
+			public var gridData:ArrayCollection;
+			public function onEmpSuccess(event:ResultEvent):void{
+	
+				details=event.result as XML;				
+	
+				if(details.sessionConfirm == true)
+            	 {
+           			  Alert.show(resourceManager.getString('Messages','sessionInactive'));
+//          			this.parentDocument.vStack.selectedIndex=0;
+//          			this.parentDocument.loaderCanvas.removeAllChildren();
+          	
+          	 			var url:String="";
+            			url=commonFunction.getConstants('navigateHome');
+          				var urlRequest:URLRequest=new URLRequest(url);
+           				urlRequest.method=URLRequestMethod.POST;
+            			navigateToURL(urlRequest,"_self");
+           	     }
+	
+					 detailslist=new ArrayCollection();
+	 				 var name:String;
+	 				 
+	 				 var i:int=Validator.validateAll([textvalidate]).length;
+	
+	
+					if(i!=0){
+		
+							Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),
+							commonFunction.getMessages('error'),0,null,null,errorIcon);
+		
+							}else{
+								
+								for each (var o:Object in details.Details){		
+		
+					detailslist.addItem({employeeId:o.employee_id,componentId:o.component_id,
+							componentDescription:o.component_description,application:o.application});
+		
+				}
+				
+				if(detailslist.length==0){
+			
+						Alert.show(commonFunction.getMessages('userCodeError'),
+						commonFunction.getMessages('error'),0,null,null,errorIcon);
+			
+						empdetails.visible=false;
+			
+				}				
+					
+				gridData=new ArrayCollection();
+				for each(var object:Object in detailslist){
+		
+					if(object.employeeId==empId.selectedLabel){						
+						
+							gridData.addItem({select:false,description:object.componentDescription,
+									id:object.componentId,application:object.application});
+					}
+		
+				empdetails.visible=true;
+				empdetailsdislpay.dataProvider=gridData;
+			}
+								
+							}	
+	
+				
+				Mask.close();
+				
+	
+			}
+			
+			private function onEmpFailure(event:FaultEvent):void{
+	
+				Alert.show(commonFunction.getMessages('requestFailed'),
+				commonFunction.getMessages('failure'),0,null,null,errorIcon);
+	
+				Mask.close();
+	
+			}
+			
+			
+			public function getApplicationUserDetails():void{
+				
+				infoObject["employeeCode"] = empId.text;
+				
+				Mask.show(commonFunction.getMessages('pleaseWait'));				
+				
+				getUserRoles.send(infoObject);				
+			}
+			
+			public function OKFunction():void{
+				
+				Alert.show(commonFunction.getMessages('areyousure'),
+				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,deleteRecords,questionIcon);	
+				
+			}
+			
+			public function deleteRecords(event:CloseEvent):void{
+				
+				if(event.detail==Alert.YES){
+					
+				var data:ArrayCollection = new ArrayCollection();
+				
+				data = commonFunction.getSelectedRowData(empdetailsdislpay);				
+				
+				var infoObject:Object={};
+				infoObject["userId"]=new Date();
+				infoObject["employeeCode"] = empId.text;
+				infoObject["userGroupId"] = data.getItemAt(0).id;
+				infoObject["applicationId"] = data.getItemAt(0).application;
+		
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				
+				deleteUserRole.send(infoObject);
+					
+				}				
+			}
+			
+			
+			var successXml:XML;
+			private function onDeleteSuccess(event:ResultEvent):void{
+				
+				successXml=event.result as XML;				
+	
+				if(successXml.sessionConfirm == true)
+            	 {
+           			  Alert.show(resourceManager.getString('Messages','sessionInactive'));
+//          			this.parentDocument.vStack.selectedIndex=0;
+//          			this.parentDocument.loaderCanvas.removeAllChildren();
+          	
+          	 			var url:String="";
+            			url=commonFunction.getConstants('navigateHome');
+          				var urlRequest:URLRequest=new URLRequest(url);
+           				urlRequest.method=URLRequestMethod.POST;
+            			navigateToURL(urlRequest,"_self");
+           	     }
+           	     
+           	     if(successXml.Details.list_values=="success"){
+           	     	
+           	     	Alert.show(commonFunction.getMessages('recordsDeletedSuccessfully'),
+					commonFunction.getMessages('success'),0,null,null,successIcon);					
+
+						Mask.close();	
+
+						onCreationComplete();
+           	     	
+           	     }else{
+           	     	
+           	     	Mask.close();	
+           	     	
+           	     	Alert.show(commonFunction.getMessages('requestFailed'),
+					commonFunction.getMessages('failure'),0,null,null,errorIcon);
+           	     	
+           	     }
+				
+			}
+		
+	]]>
+	
+</mx:Script>
+
+	<mx:Validator id="textvalidate" source="{empId}" property="text" trigger="{okButton}" triggerEvent="click">
+	</mx:Validator>
+
+		<mx:HTTPService id="getUserRoles" method="post"
+					url="{urlPrefixEmployee+'getUserDetails.htm'}"
+					resultFormat="e4x"
+					result="onEmpSuccess(event)"
+					fault="onEmpFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="deleteUserRole" method="post"
+					url="{urlPrefixEmployee+'deleteUsers.htm'}"
+					resultFormat="e4x"
+					result="onDeleteSuccess(event)"
+					fault="onEmpFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="getApplicationUsers" method="post"
+					url="{urlPrefixEmployee+'getApplicationUsers.htm'}"
+					resultFormat="e4x"
+					result="onUsersSuccess(event)"
+					fault="onEmpFailure(event)"
+					useProxy="false"/>
+
+	<mx:Panel x="10" y="10" width="344" height="139" title="{resourceManager.getString('Constants','deleteButton')} {resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','role')}" layout="absolute">
+		<mx:Label x="10" y="10" text="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','id')}" width="117"/>
+		<common:AutoCompleteCB  x="135" y="8" id="empId" />
+		<mx:Button x="10" y="52" label="{resourceManager.getString('Constants','okButton')}" id="okButton" click="getApplicationUserDetails()"/>
+		<mx:Button x="176" y="52" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Panel>
+	
+	<mx:Canvas x="10" y="171" width="512" height="200" visible="false" id="empdetails" styleName="GridCanvas">		
+		<mx:DataGrid x="10" y="28" editable="true" width="469" height="140" id="empdetailsdislpay" draggableColumns="false">
+		<mx:columns>
+			<mx:DataGridColumn rendererIsEditor="true" width="20" editorDataField="selected" textAlign="center" dataField="select" headerText="">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.empdetailsdislpay,[outerDocument.linkbutton],[new LinkButton])">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;
+									import mx.controls.*;
+									
+								]]>
+							</mx:Script>
+						</mx:CheckBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn  showDataTips="true" headerText="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','role')}" dataField="description" width="220" editable="false"/>
+			<mx:DataGridColumn  showDataTips="true" headerText="{resourceManager.getString('Constants','application')}" dataField="application" width="220" editable="false"/>
+		</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="9" y="6" text="{resourceManager.getString('Constants','details')}" fontWeight="bold"/>
+		<mx:LinkButton x="421" y="4" label="{resourceManager.getString('Constants','deleteButton')}" click="OKFunction()" id="linkbutton" enabled="false"/>
+	</mx:Canvas>
+	
+</mx:Panel>

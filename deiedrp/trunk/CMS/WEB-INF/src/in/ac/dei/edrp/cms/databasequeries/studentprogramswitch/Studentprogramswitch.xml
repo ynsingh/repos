@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#)studentprogramswitch.xml
+* @Author :Arush Kumar
+* @Date :30/12/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="studentprogramswitch">
+
+<typeAlias alias="studentprogramswitch" type="in.ac.dei.edrp.cms.domain.studentprogramswitch.Studentprogramswitch" />
+
+<resultMap id="Switchedetail" class="studentprogramswitch">
+ 	
+<result property= "fmentityId" column= "ps.from_entity" />
+<result property= "fmprogramId" column="ps.from_program" />
+<result property= "fmbranchId" column= "ps.from_branch" />
+<result property= "fmspecializationId" column= "ps.from_specialization" />
+<result property=	 "fmsemesterCode" column="ps.from_semester" />
+	
+<result property=	 "toentityId" column= "ps.to_entity" />
+<result property=	 "toprogramId" column= "ps.to_program" />
+<result property=	 "tobranchId" column= "ps.to_branch" />
+<result property=	 "tospecializationId" column="ps.to_specialization" />
+<result property=	 "tosemesterCode" column="ps.to_semester"  />
+	
+<result property=	 "fmentityIdName" column= "from_entity_name" />
+<result property=	 "fmprogramIdName" column="fm_program_name" />
+<result property=	 "fmbranchIdName" column="fm_branch_name" />
+<result property=	 "fmspecializationIdName" column= "fm_spc_name" />
+<result property=	 "fmsemesterCodeName" column="fm_sem_name" />
+	
+<result property=	 "toentityIdName" column="to_entity_name" />
+<result property=	 "toprogramIdName" column="to_program_name" />
+<result property=	 "tobranchIdName" column="to_branch_name" />
+<result property=	 "tospecializationIdName" column="to_spc_name" />
+<result property=	 "tosemesterCodeName" column= "to_sem_name" />
+
+
+</resultMap>
+
+
+<select id="getSwitches" resultMap="Switchedetail">
+
+SELECT  ps.from_program, pmf.program_name as fm_program_name,
+ps.to_program,pmt.program_name as to_program_name,
+ps.from_branch,sttfmbrn.component_description as fm_branch_name ,
+ps.to_branch,stttobrn.component_description  as to_branch_name ,
+ps.from_specialization, sttfmspc.component_description as fm_spc_name ,
+ps.to_specialization,stttospc.component_description as to_spc_name,
+ps.from_semester,sttfmsm.component_description as fm_sem_name ,
+ps.to_semester,stttosm.component_description as to_sem_name ,
+
+ps.from_entity,  entfrm.entity_name as from_entity_name,
+
+ps.to_entity,  entto.entity_name as to_entity_name
+
+FROM program_switch ps join program_master pmf on ps.from_program= pmf.program_id
+
+join program_master pmt on ps.to_program= pmt.program_id
+
+left join system_table_two  sttfmbrn   on ps.from_branch = sttfmbrn.component_code
+
+left join system_table_two  stttobrn   on ps.to_branch = stttobrn.component_code
+
+left join system_table_two  sttfmspc   on ps.from_specialization = sttfmspc.component_code
+
+left join system_table_two  stttospc   on ps.to_specialization = stttospc.component_code
+
+left join system_table_two  sttfmsm   on ps.from_semester = sttfmsm.component_code
+
+left join system_table_two  stttosm   on ps.to_semester = stttosm.component_code
+
+left join entity_master entfrm    on ps.from_entity = entfrm.entity_id
+left join entity_master entto   on ps.to_entity = entto.entity_id
+
+where
+sttfmbrn.group_code='BRNCOD' and sttfmbrn.university_code = '0001' and
+
+stttobrn.group_code  = 'BRNCOD'  and stttobrn.university_code = '0001' and
+
+sttfmspc.group_code  = 'SPCLCD' and sttfmspc.university_code = '0001' and
+
+stttospc.group_code  = 'SPCLCD' and stttospc.university_code = '0001' and
+
+sttfmsm.group_code  = 'SEMCOD' and sttfmsm.university_code = '0001' and
+stttosm.group_code  = 'SEMCOD'  and stttosm.university_code = '0001'
+
+
+</select>
+
+<resultMap id="studentlistmap" class="studentprogramswitch" >
+
+<result property ="rollNumber" column ="rollnumber" />
+<result property ="name" column ="fullname" />
+
+<result property ="switchstatus" column ="switchstatus" />
+<result property ="processstatus" column ="processstatus" />
+<result property ="registrationduedate" column ="registrationduedate" />
+</resultMap>
+
+
+<select id="getstudentforSwitches" resultMap="studentlistmap">
+
+SELECT srsh.roll_number as rollnumber,
+
+concat_ws(' ' , sm.student_first_name,sm.student_middle_name,sm.student_last_name) as fullname ,
+pst.admission_mode as switchstatus,
+pst.process_status as processstatus,
+
+pst.registration_due_date as  registrationduedate
+ FROM student_registration_semester_header srsh  join prestaging_table pst
+
+ on srsh.roll_number = pst.registration_roll_number and pst.old_entity = srsh.entity_id
+
+ join student_program sp on srsh.roll_number =sp.roll_number  join student_master sm
+on sp.enrollment_number = sm.enrollment_number
+
+ where srsh.status = 'PAS'
+and srsh.program_course_key = #fmprogramcoursekey#
+
+and srsh.entity_id = #fmentityId#
+
+and sp.program_status = 'ACT' and
+old_program = #fmprogramId# and
+old_branch = #fmbranchId# and old_specialization = #fmspecializationId# 
+and old_semester = #fmsemesterCode#
+
+and new_semester = #tosemesterCode#
+
+and registration_due_date between #tosemesterstartdate# and  #tosemesterenddate#
+
+
+</select>
+
+
+
+
+<resultMap id="semesterdate" class="studentprogramswitch">
+ 	
+<result property= "fmprogramcoursekey" column= "fmprogram_course_key" />
+<result property= "fmsemesterstartdate" column="fmsemstrdate" />
+<result property= "fmsemesterenddate" column= "fmsemenddate" />
+<result property= "toprogramcoursekey" column= "toprogram_course_key" />
+<result property=	 "tosemesterstartdate" column="tosemstrdate" />
+	
+<result property=	 "tosemesterenddate" column= "tosemenddate" />
+
+
+
+</resultMap>
+
+
+<select  id="getsemsterdate" resultMap="semesterdate">
+
+SELECT pr1.program_course_key as fmprogram_course_key,pr1.semester_start_date as fmsemstrdate ,pr1.semester_end_date as fmsemenddate,
+pr2.program_course_key as toprogram_course_key ,pr2.semester_start_date as tosemstrdate ,pr2.semester_end_date as tosemenddate
+ FROM program_registration pr1,program_registration pr2 where
+pr1.session_start_date = (SELECT date_sub(start_date,interval 1 year) FROM university_master where current_status = '1'  and university_code = '0001')
+
+
+and pr2.session_start_date =(SELECT start_date FROM university_master where current_status = '1'  and university_code = '0001')
+and pr1.program_course_key
+
+ = (SELECT program_course_key FROM program_course_header
+where program_id = #fmprogramId# and branch_id = #fmbranchId#
+and specialization_id = #fmspecializationId# and semester_code= #fmsemesterCode#)  and pr1.entity_id = #fmentityId# and
+
+pr2.program_course_key
+
+ = (SELECT program_course_key FROM program_course_header
+where program_id = #toprogramId# and branch_id = #tobranchId#
+and specialization_id = #tospecializationId# and semester_code= #tosemesterCode#)  and pr2.entity_id = #toentityId#
+
+</select>
+
+
+
+
+
+
+<update id="switchstudent" >
+update prestaging_table pst ,  (select * from prestaging_table )set2 
+  set pst.admission_mode = #switchstatus#,pst.new_semester = #tosemesterCode#,
+pst.new_program = #toprogramId# ,pst.new_branch =#tobranchId#  ,pst.new_specialization =#tospecializationId# ,pst.new_entity = #toentityId#,
+
+pst.BK_new_semester = set2.new_semester,
+pst.BK_new_program = set2.new_program ,pst.BK_new_branch = set2.new_branch   ,pst.BK_new_specialization =set2.new_specialization
+,pst.BK_new_entity = set2.new_entity
+
+where
+pst.old_program = #fmprogramId# and pst.old_branch= #fmbranchId# and pst.old_specialization = #fmspecializationId# 
+ and pst.old_semester = #fmsemesterCode#  
+ and  pst.semester_start_date = #tosemesterstartdate# and pst.semester_end_date= #tosemesterenddate#
+  and pst.processed_flag is null and pst.registration_roll_number = #rollNumber#
+ and pst.old_entity = #fmentityId# and pst.admission_mode = #prvswitchstatus#  and 
+ 
+ pst.registration_roll_number = set2.registration_roll_number and pst.new_semester = set2.new_semester
+ and pst.semester_start_date = set2.semester_start_date and pst.semester_end_date = set2.semester_end_date
+ and  pst.old_semester =  set2.old_semester
+ and 
+ 
+ pst.old_program = set2.old_program  and pst.old_branch= set2.old_branch and pst.old_specialization = set2.old_specialization
+
+</update>
+
+
+<select id="getswitchstatus" resultMap="studentlistmap">
+
+SELECT pst.registration_roll_number as rollnumber,
+null as fullname,
+pst.admission_mode as switchstatus,
+
+pst.process_status as processstatus,
+
+pst.registration_due_date as  registrationduedate
+ FROM  prestaging_table pst
+
+where 
+
+pst.old_program = #fmprogramId# and pst.old_branch= #fmbranchId# and pst.old_specialization = #fmspecializationId# 
+ and pst.old_semester = #fmsemesterCode#
+ and  pst.semester_start_date = #tosemesterstartdate#  and pst.semester_end_date= #tosemesterenddate#
+  and processed_flag is null and registration_roll_number = #rollNumber#
+ and old_entity = #fmentityId# 
+
+
+</select>
+
+<update id="unswitchstudent" >
+update prestaging_table pst 
+  set pst.admission_mode = #switchstatus#,pst.new_semester = pst.BK_new_semester,
+pst.new_program = BK_new_program ,pst.new_branch =pst.BK_new_branch ,pst.new_specialization =pst.BK_new_specialization ,
+pst.new_entity = pst.BK_new_entity,
+
+pst.BK_new_semester = null,
+pst.BK_new_program = null ,pst.BK_new_branch = null   ,pst.BK_new_specialization = null
+,pst.BK_new_entity = null
+
+where
+pst.old_program = #fmprogramId# and pst.old_branch= #fmbranchId# and pst.old_specialization = #fmspecializationId# 
+ and pst.old_semester = #fmsemesterCode#  
+ and  pst.semester_start_date = #tosemesterstartdate# and pst.semester_end_date= #tosemesterenddate#
+  and pst.processed_flag is null and pst.registration_roll_number = #rollNumber#
+ and pst.old_entity = #fmentityId# and pst.admission_mode = #prvswitchstatus#  
+
+</update>
+
+
+
+
+</sqlMap>

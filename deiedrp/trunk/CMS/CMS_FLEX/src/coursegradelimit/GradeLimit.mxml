@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) GradeLimit.mxml
+ * Author :Ashish Mohan
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *	
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="{commonFunction.getConstants('courseGradeLimit')} ({session})" width="1178" height="510" creationComplete="onLoad()" initialize="init()" >
+
+	<mx:Script source="asfiles/GradeLimitAs.as"/>
+
+	<mx:HTTPService id="getCourseDetails"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')}/coursegradelimit/getCourseDetails.htm"
+		result="getCourseDetailsSuccess(event)"
+		fault="fault(event)"/>
+		
+	<mx:HTTPService id="insertCourseGrade"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')}/coursegradelimit/insertCourseGrade.htm"
+		result="getInsertCourseGradeSuccess(event)"
+		fault="fault(event)"/>		
+	
+	<mx:HTTPService id="getDisplayType"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')}/coursegradelimit/getDisplayType.htm"
+		result="getDisplayTypeSuccess(event)"
+		fault="fault(event)"/>
+	
+	<mx:HTTPService id="deleteCourseGradeLimit"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')}/coursegradelimit/deleteCourseGradeLimit.htm"
+		result="deleteCourseGradeLimitSuccess(event)"
+		fault="fault(event)"/>
+		
+	<mx:HTTPService id="getCourseGradeLimit"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')}/coursegradelimit/getCourseGradeLimit.htm"
+		result="getCourseGradeLimitSuccess(event)"
+		fault="fault(event)"/>
+
+	
+	<mx:Label x="45" y="24" text="{commonFunction.getConstants('selectExam')}" width="150" fontWeight="bold"/>
+	<mx:ComboBox x="205" y="21" id="examType" selectedIndex="-1" labelField="displayType" prompt="{commonFunction.getConstants('select')}" width="160" change="onExamChange()" />
+		
+	<mx:Canvas x="25.5" y="53" width="743" height="48">
+		<mx:Label x="176" y="14" text="{commonFunction.getConstants('entityName')}:" width="99"/>
+		<mx:TextInput x="291.5" id="searchName" y="12" change="onSearchChange()"/>
+		<mx:Label x="469" y="14" text="{commonFunction.getConstants('courseCode')}:"/>
+		<mx:TextInput x="573" y="10" id="searchCode" change="onSearchChange()"/>
+		<mx:Label x="20" y="15" text="{commonFunction.getConstants('searchBy')}:" fontWeight="bold" width="99"/>
+	</mx:Canvas>
+	
+	<mx:Canvas x="25.5" y="118" styleName="GridCanvas" width="1105" height="277">
+		<mx:DataGrid  x="20" y="26" id="courseGrid" width="1061" height="231" creationComplete="commonFunction.showDataTips(courseGrid)"   horizontalScrollPolicy="off" 
+			 sortableColumns="true"  editable="true" itemEditBegin="disableRows(event)" resizableColumns="true" draggableColumns="false">
+        	<mx:columns>
+
+				<mx:DataGridColumn width="80" editable="false" headerText="{commonFunction.getConstants('courseCode')}" dataField="courseCode"/>
+				<mx:DataGridColumn width="150" editable="false" headerText="{commonFunction.getConstants('courseName')}" dataField="courseName"/>
+				<mx:DataGridColumn width="150" editable="false" headerText="{commonFunction.getConstants('ownerEntity')}" dataField="ownerEntity"/>
+
+				<mx:DataGridColumn width="50" headerText="A" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="aGrade"/>
+				<mx:DataGridColumn width="50" headerText="A-" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="amGrade" />
+				<mx:DataGridColumn width="50" headerText="B" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="bGrade"/>
+				<mx:DataGridColumn width="50" headerText="B-" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="bmGrade"/>
+				<mx:DataGridColumn width="50" headerText="C" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="cGrade"/>
+				<mx:DataGridColumn width="50" headerText="C-" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="cmGrade"/>
+				<mx:DataGridColumn width="50" headerText="D" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="dGrade"/>
+				<mx:DataGridColumn width="50" headerText="D-" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="dmGrade"/>
+				<mx:DataGridColumn width="50" headerText="E" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="eGrade"/>
+				<mx:DataGridColumn width="50" headerText="E-" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="emGrade"/>
+				<mx:DataGridColumn width="50" headerText="F" editable="false" editorDataField="value" itemEditor="{myNumericStepper}" dataField="fGrade"/>
+				
+				<mx:DataGridColumn headerText="Action" width="80" editable="false" dataField="{commonFunction.getConstants('action')}"> 
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:HBox horizontalScrollPolicy="off"  horizontalGap="5" horizontalAlign="left">
+								<mx:Script>
+	              					<![CDATA[
+										[Bindable][Embed(source='/images/edit.jpg')]private var editIcon:Class;
+										[Bindable][Embed(source='/images/save.jpg')]private var saveIcon:Class;
+										[Bindable][Embed(source='/images/delete.jpg')]private var deleteIcon:Class;
+									]]>
+	                   	 		</mx:Script>
+							
+								<mx:Image source="{editIcon}"  id="edit" 
+									 toolTip="edit lower cut point of grades for selected course" scaleContent="false" click="outerDocument.clickAction(event)"  buttonMode="true"  />
+								<mx:Image source="{saveIcon}"  id="save"
+									 toolTip="save lower cut point of grades for selected course" scaleContent="false" click="outerDocument.clickAction(event)"  buttonMode="true"/>
+								<mx:Image id="deleteImage" source="{deleteIcon}" 
+									 toolTip="delete lower cut point of grades for selected course" click="outerDocument.clickAction(event)" scaleContent="false" buttonMode="true"/>	
+							</mx:HBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	<mx:Button x="544" y="416" label="{commonFunction.getConstants('cancelButton')}" click="parentDocument.loaderCanvas.removeAllChildren()"/>
+
+</mx:Panel>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<qualification>
+	
+	<qualification value="HS" label="10th"></qualification>
+	<qualification value="IN" label="12th"></qualification>
+	<qualification value="UG" label="Graduation"></qualification>
+	<qualification value="PG" label="Post Graduation"></qualification>
+	<qualification value="OT" label="Others"></qualification>
+	
+</qualification>

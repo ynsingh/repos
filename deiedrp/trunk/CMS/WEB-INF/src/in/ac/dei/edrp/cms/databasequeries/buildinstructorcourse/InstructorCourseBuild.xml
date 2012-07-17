@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="buildInstructorCourse">
+	<typeAlias alias="buildInstructorCourse"
+		type="in.ac.dei.edrp.cms.domain.buildinstructorcourse.InstructorCourseBuild"/>
+	
+    <select id="getInstructorCourseDetails" resultClass="buildInstructorCourse">
+    	select ic.program_course_key as programCourseKey, ic.employee_id as employeeId,ic.course_code as courseCode,ic.status,ic.entity_id as entityId
+		from program_registration pr, instructor_course ic
+		where ic.status='ACT' and ic.program_course_key=pr.program_course_key and
+    	ic.semester_start_date=pr.semester_start_date and ic.semester_end_date=pr.semester_end_date and
+ 		pr.session_start_date=(select DATE_SUB(#sessionStartDate#,INTERVAL 1 YEAR)) and pr.university_id=#universityId# and ic.entity_id Like #entityId#;
+    </select>
+    
+    <select id="getSemesterStartEndDate" resultClass="buildInstructorCourse">
+    	select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate
+		from program_registration
+		where session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and
+		program_course_key=#programCourseKey# and university_id=#universityId# and status='ACT';
+    </select>
+    
+    <select id="checkAlreadyExistSemesterStartEndDate" resultClass="buildInstructorCourse">
+    	select program_course_key as programCourseKey, employee_id as employeeId, semester_start_date as semesterStartDate,
+		semester_end_date as semesterEndDate, entity_id as entityId, course_code as courseCode, status
+		from instructor_course
+		where semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+		program_course_key=#programCourseKey# and employee_id=#employeeId# and
+		course_code=#courseCode# and entity_id Like #entityId#;
+    </select>
+    
+    <select id="getSessionStartEndDate" resultClass="buildInstructorCourse">
+        select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master
+		where university_code=#universityId# and current_status='1';
+    </select>
+    
+    <insert id="insertInstructorCourse" parameterClass="buildInstructorCourse">
+    	insert into instructor_course (program_course_key, employee_id, semester_start_date, semester_end_date,
+		insert_time, creator_id, entity_id, course_code, status) values
+		(#programCourseKey#, #employeeId#, #semesterStartDate#, #semesterEndDate#,
+		now(), #creatorId#, #entityId#, #courseCode#, #status#);
+    </insert>
+    
+    
+    
+     <select id="getPreviousProcessDetail" resultClass = "buildInstructorCourse">
+		SELECT component_code as processCode from system_table_two
+		where university_code=#universityId# and group_code='YEPCOD'
+		and dummy_flag_one=(select  dummy_flag_one from system_table_two where component_code=#processCode# and university_code=#universityId# and group_code='YEPCOD')-1;
+	</select>
+	
+	<select id="getControlDetailStatus" resultClass = "buildInstructorCourse">
+		SELECT status as status from yearend_process_control where
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and process_code=#processCode# 
+		and university_code=#universityId# and group_code='YEPCOD';
+	</select>
+	
+	 <insert id="setControlDetailStatus">
+    	insert into yearend_process_control(session_start_date,session_end_date,process_code,status,group_code,insert_time,creator_id,university_code)
+		values(#sessionStartDate#,#sessionEndDate#,#processCode#,#status#,'YEPCOD',now(),#creatorId#,#universityId#);
+    </insert>
+    
+    <update id="updateControlDetailStatus">
+    	update yearend_process_control set status=#status# where session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and university_code=#universityId# and process_code=#processCode# and group_code='YEPCOD';
+    </update>
+</sqlMap>

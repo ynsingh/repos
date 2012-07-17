@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================= -->
+<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+<!-- ================================================================= -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+ 
+
+<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">       
+        <!--<property name="location" value="classpath:in/ac/dei/edrp/cms/databasesetting/SqlMapConfig.properties"/>-->
+        <property name="location" value="classpath:../build/build.properties"/>
+    </bean>
+ 
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${database.driver}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+                                          
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+        
+    </bean>
+     <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+<property name="transactionManager">
+<ref bean="transactionManager"/>
+</property>
+</bean>
+ 
+    <bean id="sqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="classpath:in/ac/dei/edrp/cms/databasesetting/SqlMapConfig.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="useTransactionAwareDataSource" value="true"/>
+    </bean>
+ 
+    
+<bean id="abstractTransactionProxy"
+class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean"
+abstract="true">
+<property name="transactionManager" ref="transactionManager" />
+<property name="transactionAttributes">
+<props>
+<prop key="get*">PROPAGATION_REQUIRED,-CRException</prop>
+<prop key="set*">PROPAGATION_REQUIRED,readOnly</prop>
+<prop key="save">PROPAGATION_REQUIRES_NEW</prop>
+<prop key="*">PROPAGATION_SUPPORTS,readOnly</prop>
+</props>
+</property>
+</bean>
+
+
+<bean id="activityMasterServiceTarget" class="in.ac.dei.edrp.cms.daoimpl.registration.prestagingdaoimpl.ReadyPreStagingDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="transactionTemplate" ref="transactionTemplate" />
+</bean>
+
+<bean id="activityMasterService" parent="abstractTransactionProxy">
+<property name="target" ref="activityMasterServiceTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.registration.prestagingdao.ReadyPreStagingDAO" />
+</bean>
+<!-- Start Activity Start:Deepak -->
+<bean id="startActivityServiceTarget" class="in.ac.dei.edrp.cms.daoimpl.activitymaster.StartActivityDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="transactionTemplate" ref="transactionTemplate" />
+</bean>
+
+<bean id="startActivityDao" parent="abstractTransactionProxy">
+<property name="target" ref="startActivityServiceTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.activitymaster.StartActivityDao" />
+</bean>
+<!--Process P2 and P5-->
+<bean id="readyPreStagingDAOTarget" class="in.ac.dei.edrp.cms.daoimpl.registration.prestagingdaoimpl.ReadyPreStagingDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="transactionTemplate" ref="transactionTemplate" />
+</bean>
+
+<bean id="readyPreStagingDAO" parent="abstractTransactionProxy">
+<property name="target" ref="readyPreStagingDAOTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.registration.prestagingdao.ReadyPreStagingDAO" />
+</bean>
+<!-- Start Activity ends:Deepak -->
+
+  <!-- Ankit Code starts-->
+   <bean id="activityMasterDAO" class="in.ac.dei.edrp.cms.daoimpl.activitymaster.ActivityMasterDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="buildActivityMasterDAO" class="in.ac.dei.edrp.cms.daoimpl.buildactivitymaster.BuildActivityMasterDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	<bean id="AwardBlankRequestResolvedDao" class="in.ac.dei.edrp.cms.daoimpl.correctionInAwardBlank.AwardBlankRequestResolved">
+   <property name="sqlMapClient" ref="sqlMapClient"/>        
+</bean>
+	<bean id="associateCourseWithInstructorDAO" class="in.ac.dei.edrp.cms.daoimpl.associatecoursewithinstructor.AssociateCourseWithInstructorDAOImpl">
+   <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="DuplicateStudentListPDFView" class = "in.ac.dei.edrp.cms.controller.studentregistration.DuplicateStudentListPDFView"/>
+	
+	<bean id="subjectWiseMeritListDAO" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.SubjectWiseMeritListDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+    </bean>
+    
+    <bean id="subjectCategoryWiseStudentListDAO" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.SubjectCategoryWiseStudentListDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+    </bean>
+    
+    <bean id="SubjectCategoryWiseStudentPDFView" class = "in.ac.dei.edrp.cms.controller.reportgeneration.SubjectCategoryWiseStudentListPDFView"
+    p:subjectCategoryWiseStudentListDAO-ref="subjectCategoryWiseStudentListDAO"
+    p:reportDao-ref="reportDao"/>
+    
+    <bean id="finalSemesterResultStatisticsDAO" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.FinalSemesterResultStatisticsDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+    </bean>
+    
+	<bean id="finalSemesterResultStatisticsPDFView" class = "in.ac.dei.edrp.cms.controller.reportgeneration.FinalSemesterResultStatisticsPDFView"
+    p:finalSemesterResultStatisticsDao-ref="finalSemesterResultStatisticsDAO"/>
+	
+	<bean id="eodControlDAO" class="in.ac.dei.edrp.cms.daoimpl.eodcontrol.EodControlDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+  <!-- Ankit code ends-->
+	<!-- Added for Amir starts-->
+ <bean id="courseGroup" class="in.ac.dei.edrp.cms.daoimpl.coursegroup.CourseGroupImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="courseMaster"
+		class="in.ac.dei.edrp.cms.daoimpl.coursemaster.CourseMasterImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	<bean id="marksApprovalService"
+		class="in.ac.dei.edrp.cms.daoimpl.coursemarksapproval.MarksApprovalServiceImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="enrollmentService"
+		class="in.ac.dei.edrp.cms.daoimpl.enrollment.EnrollmentServiceImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+	</bean>
+    	
+	<bean id="login" class="in.ac.dei.edrp.cms.daoimpl.login.LoginServiceImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="studentMasterService"
+		class="in.ac.dei.edrp.cms.daoimpl.studentmaster.StudentMasterServiceImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+	</bean>
+	<bean id="systemTableTwo"
+		class="in.ac.dei.edrp.cms.daoimpl.systemtabletwo.SystemTableTwoImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+<bean id="universityReservation"
+		class="in.ac.dei.edrp.cms.daoimpl.universityreservation.UniversityReservationServiceImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+<bean id="associateMOUDAO" class="in.ac.dei.edrp.cms.daoimpl.associateMOU.AssociateMOUdaoimpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="cecDAO" class="in.ac.dei.edrp.cms.daoimpl.courseEvaluationComponent.CecDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+<bean id="prestagingService" class="in.ac.dei.edrp.cms.daoimpl.prestaging.PrestagingServiceImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="settingService" class="in.ac.dei.edrp.cms.daoimpl.settings.SettingServiceImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+	
+	<bean id="sendPasswordService" class="in.ac.dei.edrp.cms.daoimpl.sendpassword.SendPasswordImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+	<bean id="addDropCourseService" class="in.ac.dei.edrp.cms.daoimpl.adddropcourse.AddDropCourseImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+	</bean>
+	
+<bean id="transferEnrollmentToPrestagingService" class="in.ac.dei.edrp.cms.daoimpl.prestaging.TransferEnrollmentToPrestagingImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+<property name="transactionTemplate" ref="transactionTemplate"/>
+	</bean>
+
+	<bean id="consolidatedChartService"
+		class="in.ac.dei.edrp.cms.daoimpl.consolidatedchart.ConsolidatedChartImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="consolidatedChartGenerator"
+		class="in.ac.dei.edrp.cms.controller.consolidatedchart.ConsolidatedChartGeneration" 
+		p:reportDao-ref="reportDao"/>
+
+	<bean id="resultStatisticsGenerator"
+		class="in.ac.dei.edrp.cms.controller.consolidatedchart.ResultStatisticsGeneration" 
+		p:reportDao-ref="reportDao" />
+
+	<bean id="enrollmentReportGenerator"
+		class="in.ac.dei.edrp.cms.controller.enrollment.EnrollmentReportGeneration"
+		p:enrollmentService-ref="enrollmentService"/>
+
+	<bean id="transferOldStudentToPrestagingService"
+		class="in.ac.dei.edrp.cms.daoimpl.prestaging.TransferOldStudentToPrestagingImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+
+    <!-- Added of Amir ends --> 
+   
+  
+	
+	<!-- Manpreet code -->
+	<bean id="StudentRegistrationFormTarget" class="in.ac.dei.edrp.cms.daoimpl.studentregistration.StudentRegistrationFormImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="transactionTemplate" ref="transactionTemplate"/>
+    </bean>
+    
+    <bean id="StudentVerificationDao" class="in.ac.dei.edrp.cms.daoimpl.studentregistration.StudentVerificationImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+<!--        <property name="transactionTemplate" ref="transactionTemplate"/>-->
+    </bean>
+    
+    <bean id="LoginConnectDao" class="in.ac.dei.edrp.cms.daoimpl.studentregistration.LoginConnectImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+<!--        <property name="transactionTemplate" ref="transactionTemplate"/>-->
+    </bean>
+    
+    
+    <bean id="EntityMasterDaoTarget" class="in.ac.dei.edrp.cms.daoimpl.entity.EntityMasterDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+       <property name="transactionTemplate" ref="transactionTemplate"/>
+    </bean>
+    
+<bean id="ProgramMasterDaoTarget" class="in.ac.dei.edrp.cms.daoimpl.programmaster.ProgramMasterDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+       <property name="transactionTemplate" ref="transactionTemplate"/>
+    </bean>
+
+<bean id="ProgramTermDetailsDaoTarget" class="in.ac.dei.edrp.cms.daoimpl.programmaster.ProgramTermDetailsDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+       <property name="transactionTemplate" ref="transactionTemplate"/>
+    </bean>
+    
+<bean id="ProbableToActualDaoTarget" class="in.ac.dei.edrp.cms.daoimpl.studentregistration.ProbableToActualDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+       <property name="transactionTemplate" ref="transactionTemplate"/>
+    </bean>    
+  <bean id="AwardSheetDaoTarget" class="in.ac.dei.edrp.cms.daoimpl.awardsheet.AwardSheetDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+       <property name="transactionTemplate" ref="transactionTemplate"/>
+    </bean> 
+
+ <bean id="CancelRegistrationFormTarget" class="in.ac.dei.edrp.cms.daoimpl.studentregistration.CancelStudentRegistrationDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+        <property name="transactionTemplate" ref="transactionTemplate"/>
+    </bean>
+    
+    
+    
+    
+    
+<bean id="PdfRevenueSummary" class="in.ac.dei.edrp.cms.common.utility.PdfRevenueReportView" /> 
+    
+<bean id="StudentRegistrationFormDao" parent="abstractTransactionProxy">
+<property name="target" ref="StudentRegistrationFormTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.studentregistration.StudentRegistrationFormDao" />
+</bean>
+
+<bean id="CancelStudentRegistrationDao" parent="abstractTransactionProxy">
+<property name="target" ref="CancelRegistrationFormTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.studentregistration.CancelStudentRegistrationDao" />
+</bean>
+
+
+
+<bean id="EntityMasterDao" parent="abstractTransactionProxy">
+<property name="target" ref="EntityMasterDaoTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.entity.EntityMasterDao" />
+</bean>
+
+
+<bean id="ProgramMasterDao" parent="abstractTransactionProxy">
+<property name="target" ref="ProgramMasterDaoTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.programmaster.ProgramMasterDao" />
+</bean>
+
+<bean id="ProgramTermDetailsDao" parent="abstractTransactionProxy">
+<property name="target" ref="ProgramTermDetailsDaoTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.programmaster.ProgramTermDetailsDao" />
+</bean>
+
+<bean id="ProbableToActualDao" parent="abstractTransactionProxy">
+<property name="target" ref="ProbableToActualDaoTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.studentregistration.ProbableToActualDao" />
+</bean>
+ 
+ 
+ <bean id="AwardSheetDao" parent="abstractTransactionProxy">
+<property name="target" ref="AwardSheetDaoTarget"/>
+<property name="proxyInterfaces"
+value="in.ac.dei.edrp.cms.dao.awardsheet.AwardSheetDao" />
+</bean>
+    
+    <!-- Anil's -->
+    <bean id="programCourseSetupDAO" class="in.ac.dei.edrp.cms.daoimpl.programcoursesetup.ProgramCourseSetupDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+
+<bean id="manageProgramCourseSetupDAO" class="in.ac.dei.edrp.cms.daoimpl.programcoursesetup.ManageProgramCourseSetupDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+
+<bean id="createProgramOfferedByDAO" class="in.ac.dei.edrp.cms.daoimpl.programofferedby.CreateProgramOfferedByDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+<bean id="manageProgramOfferedByDAO" class="in.ac.dei.edrp.cms.daoimpl.programofferedby.ManageProgramOfferedByDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+
+<bean id="buildProgramRegistrationDAO" class="in.ac.dei.edrp.cms.daoimpl.programregistration.BuildProgramRegistrationDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+<bean id="manageProgramRegistrationDAO" class="in.ac.dei.edrp.cms.daoimpl.programregistration.ManageProgramRegistrationDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+
+
+    <!-- Anil's code Ends-->
+    
+	
+
+
+
+	
+	<!-- Ashutosh report generation -->
+	<bean id="progressCardDao" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.ProgressCardImpl">
+<property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+<bean id="progressCardInfoDao" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.ProgressCardInfoImpl">
+<property name="sqlMapClient" ref="sqlMapClient"/>
+</bean>
+<bean id="pdfViewConverter" class = "in.ac.dei.edrp.cms.controller.reportgeneration.PdfProgresscardView" p:progressCardDao-ref = "progressCardDao"/>
+
+<bean id="reportPrintDao"
+		class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.ReportPrintImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+<bean id="tempCoursePdf" class="in.ac.dei.edrp.cms.daoimpl.studentregistration.TempCoursePdfImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+	<bean id = "studentCoursePdf" class="in.ac.dei.edrp.cms.controller.studentregistration.TempCoursePdf" p:tempCoursePdfDao-ref="tempCoursePdf"/>
+	<bean id = "studentCheckList" class="in.ac.dei.edrp.cms.controller.studentregistration.TempExtendedCheckListPdf"
+	p:reportDao-ref="reportDao"/>
+	<bean id = "finalStudentCheckList" class="in.ac.dei.edrp.cms.controller.studentregistration.FinalExtendedCheckListPdf"
+	p:reportDao-ref="reportDao"/>
+	<bean id = "tempCoursePdfDao" class="in.ac.dei.edrp.cms.daoimpl.studentregistration.TempCoursePdfImpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
+
+<!-- Ashu report ends -->
+	
+	<!-- Ashish Code Starts -->
+	<bean id="RoleConnect" class="in.ac.dei.edrp.cms.daoimpl.university.UnivRoleImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+
+	<bean id="EmployeeRoleConnect" class="in.ac.dei.edrp.cms.daoimpl.employee.EmployeeRoleImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<!--
+			<property name="transactionTemplate" ref="transactionTemplate"/>
+		-->
+	</bean>
+
+
+	<bean id="universityMasterConnect"
+		class="in.ac.dei.edrp.cms.daoimpl.university.UniversityMasterImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean>
+
+	<bean id="programCourseTypeSummaryConnect"
+		class="in.ac.dei.edrp.cms.daoimpl.programcoursetypesummary.ProgramCourseTypeSummaryImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean>
+
+	<bean id="advanceParentProgramConnect"
+		class="in.ac.dei.edrp.cms.daoimpl.advanceparentprogram.AdvanceParentProgramImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean>
+
+	<bean id="employeeMasterConnect" class="in.ac.dei.edrp.cms.daoimpl.employee.EmployeeMasterImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+
+	</bean>
+
+	<bean id="switchRuleConnect" class="in.ac.dei.edrp.cms.daoimpl.switchrule.SwitchRuleImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean>
+
+	<bean id="evaluationComponentConnect"
+		class="in.ac.dei.edrp.cms.daoimpl.evaluationcomponent.EvaluationComponentImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean>
+
+	<bean id="externalExaminerCourseConnect"
+		class="in.ac.dei.edrp.cms.daoimpl.externalexaminercourse.ExternalExaminerCourseImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean>
+
+	<bean id="mouCoursesConnect" class="in.ac.dei.edrp.cms.daoimpl.moucourses.MouCoursesImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean>
+
+
+	<bean id="programSwitchConnect"
+		class="in.ac.dei.edrp.cms.daoimpl.programswitch.ProgramSwitchImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+	<bean id="cgpaDivisionConnect"
+		class="in.ac.dei.edrp.cms.daoimpl.cgpadivision.CgpaDivisionImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	
+	<bean id="StudentMasterConnect" parent="abstractTransactionProxy">
+			<property name="target" ref="studentEnrollmentGeneration" />
+			<property name="proxyInterfaces"
+				value="in.ac.dei.edrp.cms.dao.studentregistration.StudentMasterConnect" />
+		</bean>
+	
+		<bean id="studentEnrollmentGeneration"
+			class="in.ac.dei.edrp.cms.daoimpl.studentregistration.StudentMasterImpl">
+			<property name="sqlMapClient" ref="sqlMapClient" />
+			<property name="transactionTemplate" ref="transactionTemplate" />
+		</bean>
+		
+		<bean id="preProcessConnect" parent="abstractTransactionProxy">
+				<property name="target" ref="preProcessValidation" />
+				<property name="proxyInterfaces"
+					value="in.ac.dei.edrp.cms.dao.studentregistration.preProcessConnect" />
+			</bean>
+		
+		<bean id="preProcessValidation"
+			class="in.ac.dei.edrp.cms.daoimpl.studentregistration.preProcessImpl">
+			<property name="sqlMapClient" ref="sqlMapClient" />
+			<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>
+
+<bean id="degreeListConnect"
+				class="in.ac.dei.edrp.cms.daoimpl.degreeList.DegreeListImpl">
+				<property name="sqlMapClient" ref="sqlMapClient" />
+		</bean>
+		
+	<bean id = "degreeListPdf" class="in.ac.dei.edrp.cms.controller.degreelist.DegreeListPdf" p:degreeListConnect-ref="degreeListConnect"/>
+	
+	<bean id="resultReportConnect"
+				class="in.ac.dei.edrp.cms.daoimpl.resultreport.ResultReportImpl">
+				<property name="sqlMapClient" ref="sqlMapClient" />
+		</bean>
+		
+	<bean id="resultReportPdf" class="in.ac.dei.edrp.cms.controller.resultreport.ResultReportPdf"
+				p:resultReportConnect-ref="resultReportConnect"
+				p:reportDao-ref="reportDao"/>
+				
+	<bean id="VerificationOfResultReportPdf" class="in.ac.dei.edrp.cms.controller.resultreport.VerificationOfResultReportPdf"
+				p:resultReportConnect-ref="resultReportConnect"/>
+				
+	<bean id="MedalLitReport" class="in.ac.dei.edrp.cms.controller.resultreport.MedalListReportPdf"
+				p:resultReportConnect-ref="resultReportConnect"/>	
+
+	<!-- Ashish -->
+
+        <!-- rohit start -->
+	  <bean id="studentRemedialConnect" class="in.ac.dei.edrp.cms.daoimpl.studentremedial.StudentRemedialImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		
+	</bean>
+
+	<bean id="updatePrestagingConnect" class="in.ac.dei.edrp.cms.daoimpl.updateprestaging.UpdatePrestagingImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		
+	</bean>
+
+<bean id="correctionInRegistrationConnect" class="in.ac.dei.edrp.cms.daoimpl.correctioninregistration.CorrectionInRegistrationImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		
+	</bean>
+		
+	<bean id="nameCorrectionConnect" class="in.ac.dei.edrp.cms.daoimpl.namecorrection.NameCorrectionImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		
+	</bean>
+
+<bean id="marksheetService" class="in.ac.dei.edrp.cms.daoimpl.consolidatedchart.ConsolidatedMarksheetImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>
+	</bean>
+
+<bean id="consolidatedMarkSheetGenerator" class="in.ac.dei.edrp.cms.controller.consolidatedchart.ConsolidatedMarkSheetGeneration" 
+p:reportDao-ref="reportDao" />
+
+<bean id="studentIssueConnect" class="in.ac.dei.edrp.cms.daoimpl.studentissue.StudentIssueImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="transactionTemplate" ref="transactionTemplate" />
+	</bean>	
+	<!-- rohit end -->
+
+	<bean id="programGroupDAO" class="in.ac.dei.edrp.cms.daoimpl.programgroup.ProgramGroupDAOImpl">
+	<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+
+<!-- Nupur manual process -->
+<bean id="studentUploadDao" class="in.ac.dei.edrp.cms.daoimpl.manualprocess.StudentUploadDaoImpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+	<property name="transactionTemplate" ref="transactionTemplate"/>
+</bean>
+<bean id="studentUploadFirstSemesterDao" class="in.ac.dei.edrp.cms.daoimpl.manualprocess.StudentUploadFirstSemDaoImpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+	<property name="transactionTemplate" ref="transactionTemplate"/>	
+</bean>
+<bean id="manualProcessDao" class="in.ac.dei.edrp.cms.daoimpl.manualprocess.ManualProcessImpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+</bean>
+<bean id="finalSemesterResultStatisticsCategoryWiseDAO" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.FinalSemesterResultStatisticsCategoryWiseDAOImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>        
+    </bean>
+    <bean id="studentNameInfoUploadDao" class="in.ac.dei.edrp.cms.daoimpl.manualprocess.StudentNameInfoUploadDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/> 
+        <property name="transactionTemplate" ref="transactionTemplate"/>       
+    </bean>
+    <bean id="transcriptDao" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.TranscriptDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>        
+    </bean>	
+     <bean id="studentMarksSummaryDao" class="in.ac.dei.edrp.cms.daoimpl.studentmarkssummary.StudentMarksSummaryImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>        
+    </bean>
+    	
+    <!-- Devendra code starts--> 
+    	<bean id="buildSessionDao" class="in.ac.dei.edrp.cms.daoimpl.buildnextsession.BuildNextSessionDaoImpl">
+    		<property name="sqlMapClient" ref="sqlMapClient"></property>
+    		<property name="transactionTemplate" ref="transactionTemplate" />
+    	</bean>
+    		
+    	<bean id="systemValueService" class="in.ac.dei.edrp.cms.daoimpl.utility.ResetCodes">
+    		<property name="sqlMapClient" ref="sqlMapClient" />
+    		<property name="transactionTemplate" ref="transactionTemplate"/>
+    	</bean>
+    	
+    	<bean id="buildInstructorCourseDao" class="in.ac.dei.edrp.cms.daoimpl.buildinstructorcourse.InstructorCourseBuildDAOImpl">
+    		<property name="sqlMapClient" ref="sqlMapClient" />
+    	</bean>
+    	
+    	<bean id="buildSemesterEndProcessDao" class="in.ac.dei.edrp.cms.daoimpl.buildsemesterendprocess.BuildSemesterEndProcessImpl">
+    		<property name="sqlMapClient" ref="sqlMapClient" />
+    		<property name="transactionTemplate" ref="transactionTemplate"/>
+    	</bean>
+		<bean id="provisionalCertificate" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.ProvisionalCertificateImpl">
+			<property name="sqlMapClient" ref="sqlMapClient"/>        
+		</bean>
+		<bean id="cancelCourseGroupService" class="in.ac.dei.edrp.cms.daoimpl.cancelcoursegroup.CancelCourseGroupImpl">
+			<property name="sqlMapClient" ref="sqlMapClient"/> 
+			<property name="transactionTemplate" ref="transactionTemplate"/>       
+		</bean>
+		<bean id="finalStudentService" class="in.ac.dei.edrp.cms.daoimpl.enrollment.EnrollmentServiceImpl">
+			<property name="sqlMapClient" ref="sqlMapClient"/> 			       
+		</bean>	
+		<bean id="withdrawStudentService" class="in.ac.dei.edrp.cms.daoimpl.withrawstudent.WithdrawStudentServiceImpl">
+			<property name="sqlMapClient" ref="sqlMapClient"/> 	
+			<property name="transactionTemplate" ref="transactionTemplate"/>  					      
+		</bean>
+   <!-- Devendra code Ends--> 
+
+<!-- ashish mohan starts -->
+<bean id="unsatisfactoryPerformanceDao" class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.UnsatisfactoryPerformanceImpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+</bean>
+<bean id="unsatisfactoryPerformance" class="in.ac.dei.edrp.cms.controller.reportgeneration.UnsatisfactoryPerformancePdf"
+p:reportDao-ref="reportDao"/>
+<bean id="MeritListCP" class="in.ac.dei.edrp.cms.controller.reportgeneration.MeritListCPPdf"
+p:reportDao-ref="reportDao"/>
+<bean id="MeritListGroup" class="in.ac.dei.edrp.cms.controller.reportgeneration.MeritListGroupPdf"/>
+<bean id="cancelDao" class="in.ac.dei.edrp.cms.daoimpl.cancelfinalregistration.CancelDaoimpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+	<property name="transactionTemplate" ref="transactionTemplate"/>
+</bean>
+<bean id="gradeLimitDao" class="in.ac.dei.edrp.cms.daoimpl.coursegradelimit.GradeLimitDaoImpl">
+	<property name="sqlMapClient" ref="sqlMapClient"></property>
+</bean>
+<!-- ashish mohan ends -->
+<!-- Mandeep starts -->
+ 	<bean id="externalExaminarDetailDao"
+		class="in.ac.dei.edrp.cms.daoimpl.externalexaminercourse.ExternalExaminarDetailImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+
+	</bean> 
+
+	<bean id="courseWisePanelOfExaminersDao"
+		class="in.ac.dei.edrp.cms.daoimpl.reportgeneration.CourseWisePanelOfExaminersImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean> 	
+<!-- Mandeep ends -->	
+<bean id="reportDao" class="in.ac.dei.edrp.cms.daoimpl.report.ReportDaoImpl">
+        <property name="sqlMapClient" ref="sqlMapClient"/>               
+    </bean>	
+    <bean id="printMechanismDao"
+		class="in.ac.dei.edrp.cms.daoimpl.report.printMechanismImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+
+	</bean> 
+<bean id="printReport" class="in.ac.dei.edrp.cms.utility.PrintReport">
+		<property name="sqlMapClient" ref="sqlMapClient" />
+		<property name="reportDao" ref="reportDao"></property>
+	</bean>	
+    <bean id="remoteLoginDao" class="in.ac.dei.edrp.cms.daoimpl.login.RemoteLoginDaoImpl">
+		<property name="sqlMapClient" ref="sqlMapClient" />		
+ 	</bean>	
+ <!-- Arush  code starts--> 
+	<bean id="studentprogramswitch" class="in.ac.dei.edrp.cms.daoimpl.studentprogramswitch.Studentprogramswitchdaoimpl">
+		<property name="sqlMapClient" ref="sqlMapClient"/>        
+	</bean>
+  
+    <!-- Arush  code End-->
+    
+    <!-- Dheeraj Code Starts -->
+       
+       	<bean id="awardBlankCorrectionDao" class="in.ac.dei.edrp.cms.daoimpl.correctionInAwardBlank.AwardBlankCorrectionDaoImpl">
+   		<property name="sqlMapClient" ref="sqlMapClient"/>        
+    	</bean>
+    	<bean id="admissionIntegrationDao" class="in.ac.dei.edrp.cms.daoimpl.admissionIntegration.AdmissionIntegrationDaoImpl">
+   		<property name="sqlMapClient" ref="sqlMapClient"/>        
+    	</bean>
+	<bean id="withdrawMarksTransferDao" class="in.ac.dei.edrp.cms.daoimpl.withdrawmarkstransfer.WithdrawMarksTransferDaoImpl">
+   		<property name="sqlMapClient" ref="sqlMapClient"/>
+   		<property name="transactionTemplate" ref="transactionTemplate"/>
+   		</bean>
+    <!-- Dheeraj Code Ends -->
+</beans>
+
+
+ 

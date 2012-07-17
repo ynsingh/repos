@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) hindiKeyBoard.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */  -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="808" height="352" title="{commonFunction.getConstants('typeNameInHindi')}" >
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			public var refFunction:Function;
+			
+			//setting value when button is clicked
+			public function setValue(event:Event):void
+			{
+				textValue.text=textValue.text+""+event.currentTarget.label;
+			}
+			
+			//deleting value when backspace button is clicked
+			public function deleteValue(event:Event):void
+			{
+				var s:String=textValue.text;
+				textValue.text=s.substring(0,s.length-1);	
+			}
+			
+			//sending value when user done
+			public function sendValue(event:Event):void
+			{
+				var s:String=textValue.text;
+				refFunction(s);
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</mx:Script>
+	<mx:TextInput id="textValue" editable="false" x="10" y="10" width="766" height="45" fontWeight="bold" fontSize="25" fontStyle="normal" color="#000000"/>
+	<mx:Button label="म" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="394" y="143" color="#000000"/>
+	<mx:Button label="न" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="154" y="143" color="#000000"/>
+	<mx:Button label="व" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="589" y="143" color="#000000"/>
+	<mx:Button label="ल" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="538" y="143" color="#000000"/>
+	<mx:Button label="स" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="736" y="143" color="#000000"/>
+	<mx:Button label="ष" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="686" y="143" color="#000000"/>
+	<mx:Button label="य" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="442" y="143" color="#000000"/>
+	<mx:Button label="ठ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="542" y="103" color="#000000"/>
+	<mx:Button label="ड" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="593" y="103" color="#000000"/>
+	<mx:Button label="छ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="298" y="103" color="#000000"/>
+	<mx:Button label="थ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="10" y="143" color="#000000"/>
+	<mx:Button label="ख" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="58" y="103" color="#000000"/>
+	<mx:Button label="र" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="490" y="143" color="#000000"/>
+	<mx:Button label="फ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="250" y="143" color="#000000"/>
+	<mx:Button label="ढ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="641" y="103" color="#000000"/>
+	<mx:Button label="झ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="396" y="103" color="#000000"/>
+	<mx:Button label="ध" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="106" y="143" color="#000000"/>
+	<mx:Button label="घ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="154" y="103" color="#000000"/>
+	<mx:Button label="ङ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="202" y="103" color="#000000"/>
+	<mx:Button label="भ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="346" y="143" color="#000000"/>
+	<mx:Button label="ब" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="298" y="143" color="#000000"/>
+	<mx:Button label="ह" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="10" y="183" color="#000000"/>
+	<mx:Button label="ग" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="106" y="103" color="#000000"/>
+	<mx:Button label="द" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="58" y="143" color="#000000"/>
+	<mx:Button label="ज" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="346" y="103" color="#000000"/>
+	<mx:Button label="ट" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="494" y="103" color="#000000"/>
+	<mx:Button label="च" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="250" y="103" color="#000000"/>
+	<mx:Button label="त" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="735" y="103" color="#000000"/>
+	<mx:Button label="क" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="10" y="103" color="#000000"/>
+	<mx:Button label="प" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="202" y="143" color="#000000"/>
+	<mx:Button label="ण" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="689" y="103" color="#000000"/>
+	<mx:Button label="ज्ञ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="202" y="183" color="#000000"/>
+	<mx:Button label="श" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="638" y="143" color="#000000"/>
+	<mx:Button label="क्ष" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="58" y="183" color="#000000"/>
+	<mx:Button label="श्र" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="154" y="183" color="#000000"/>
+	<mx:Button label="त्र" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="106" y="183" color="#000000"/>
+	<mx:Button label="ऍ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="494" y="63" color="#000000"/>
+	<mx:Button label="औ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="444" y="63" color="#000000"/>
+	<mx:Button label="ए" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="298" y="63" color="#000000"/>
+	<mx:Button label="अ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="10" y="63" color="#000000"/>
+	<mx:Button label="इ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="106" y="63" color="#000000"/>
+	<mx:Button label="ई" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="154" y="63" color="#000000"/>
+	<mx:Button label="आ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="56" y="63" color="#000000"/>
+	<mx:Button label="उ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="202" y="63" color="#000000"/>
+	<mx:Button label="ऊ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="250" y="63" color="#000000"/>
+	<mx:Button label="ऐ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="346" y="63" color="#000000"/>
+	<mx:Button label="ऑ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="590" y="63" color="#000000"/>
+	<mx:Button label="ऋ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="250" y="183" color="#000000"/>
+	<mx:Button label="ञ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="446" y="103" color="#000000"/>
+	<mx:Button label="." click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="346" y="183" color="#000000"/>
+	<mx:Button label="्र" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="684" y="183" color="#000000"/>
+	<mx:Button label="र्" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="298" y="183" color="#000000"/>
+	<mx:Button click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="250" y="223" width="280" height="33" label=" " color="#000000"/>
+	<mx:Button label="ं" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="736" y="183" color="#000000"/>
+	<mx:Button label="ँ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="538" y="183" color="#000000"/>
+	<mx:Button label="ो" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="202" y="224" color="#000000"/>
+	<mx:Button label="े" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="442" y="183" color="#000000"/>
+	<mx:Button label="्" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="490" y="183" color="#000000"/>
+	<mx:Button label="ि" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="638" y="183" color="#000000"/>
+	<mx:Button label="ु" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="10" y="224" color="#000000"/>
+	<mx:Button label="़" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="637" y="224" color="#000000"/>
+	<mx:Button label="ी" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="538" y="224" color="#000000"/>
+	<mx:Button label="ू" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="589" y="224" color="#000000"/>
+	<mx:Button label="ा" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="685" y="224" color="#000000"/>
+	<mx:Button label="ै" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="736" y="224" color="#000000"/>
+	<mx:Button label="ौ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="106" y="224" color="#000000"/>
+	<mx:Button label="ऍ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="542" y="63" color="#000000"/>
+	<mx:Button label="ॅ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="589" y="183" color="#000000"/>
+	<mx:Button label="BackSpace" click="deleteValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="640" y="63" width="136" color="#000000"/>
+	<mx:Button label="ः" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="394" y="183" color="#000000"/>
+	<mx:Button label="ृ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="154" y="224" color="#000000"/>
+	<mx:Button label="ॉ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="58" y="224" color="#000000"/>
+	<mx:Button label="ओ" click="setValue(event)" fontWeight="normal" fontFamily="Times New Roman" fontSize="20" fontStyle="normal" textDecoration="normal" x="394" y="63" color="#000000"/>
+	<mx:HRule y="264" width="100%"/>
+	<mx:Button x="709" y="274" label="{commonFunction.getConstants('okButton')}" fontWeight="normal" fontSize="15" click="sendValue(event)" color="#000000"/>
+	<mx:Button x="10" y="274" label="{commonFunction.getConstants('cancelButton')}" click="PopUpManager.removePopUp(this)" fontWeight="normal" fontSize="15" color="#000000"/>
+	<mx:Button x="104" y="274" label="{commonFunction.getConstants('clearButton')}" click="textValue.text=''" fontWeight="normal" fontSize="15" color="#000000"/>
+</mx:Panel>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+	
+<sqlMap namespace="cancelCourseGroup">
+	<typeAlias alias="cancelCourseGroup"
+		type="in.ac.dei.edrp.cms.domain.adddropcourse.AddDropCourseBean"/>
+		
+		<select id="getSemesterDates" resultClass = "cancelCourseGroup">		
+			SELECT pch.program_course_key AS programName,pr.semester_start_date AS semesterStartDate,pr.semester_end_date AS semesterEndDate FROM program_course_header pch ,student_program sp,program_registration pr
+			WHERE sp.roll_number=#rollNumber# AND sp.program_status='ACT' AND pch.semester_status='ACT' AND pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate# AND pr.university_id=#universityId#
+			AND sp.current_semester=semester_code AND pch.program_id=sp.program_id AND pch.branch_id=sp.branch_id AND pch.specialization_id=sp.specialization_id AND
+			pr.entity_id=sp.entity_id AND pr.program_course_key=pch.program_course_key;
+		</select>
+		
+		<select id="getStudentCourseGroupForCancel" resultClass = "cancelCourseGroup">		
+			SELECT distinct sc.course_group AS courseGroup,stt.component_description AS courseGroupName,sc.program_course_key AS programName, sc.semester_start_date AS semesterStartDate ,sc.semester_end_date AS semesterEndDate,sc.entity_id AS entityId, sc.student_status AS branchName FROM student_course sc ,system_table_two stt
+			WHERE stt.university_code=#universityId# AND stt.component_code=sc.course_group AND stt.group_code='CRSGRP' AND sc.roll_number=#rollNumber# and sc.program_course_key=#programName# and sc.semester_start_date=#semesterStartDate# and sc.semester_end_date=#semesterEndDate# and sc.course_status='REG';
+		</select>
+		
+		<select id="getStudentCourseCodeForCancel" resultClass = "cancelCourseGroup">		
+			SELECT sc.course_code AS courseCode,cm.course_name AS courseName,cm.credits AS credits,cm.course_classification AS courseClass,pcd.course_category AS name FROM student_course sc ,course_master cm ,program_course_detail pcd
+			WHERE sc.course_code=cm.course_code AND pcd.course_code=sc.course_code AND pcd.program_course_key=sc.program_course_key AND pcd.available='Y' AND pcd.course_group=sc.course_group AND cm.university_code=#universityId# and sc.roll_number=#rollNumber# and sc.program_course_key=#programName# 
+			and sc.semester_start_date=#semesterStartDate# and sc.semester_end_date=#semesterEndDate# and sc.course_status='REG' and sc.student_status='REG' AND cm.course_classification IN('T','P') and sc.course_group=#courseGroup# ;
+		</select>
+		
+		<select id="getStudentCourseGroupForAdd" resultClass="cancelCourseGroup"> 
+  			SELECT distinct pcd.course_group AS courseGroup,stt.component_description AS courseGroupName FROM program_course_detail pcd,system_table_two stt
+			WHERE stt.university_code=#universityId# AND stt.component_code=pcd.course_group AND stt.group_code='CRSGRP' AND pcd.program_course_key=#programName# AND pcd.available='Y' AND pcd.course_group NOT IN (SELECT course_group FROM student_course sc 
+			WHERE sc.roll_number=#rollNumber# AND sc.program_course_key=#programName# AND sc.semester_start_date=#semesterStartDate# AND sc.semester_end_date=#semesterEndDate# AND sc.student_status='REG' AND sc.course_status IN('REG','CAN'));
+		</select>
+		
+		<select id="getStudentCourseCodeForAdd" resultClass = "cancelCourseGroup">		
+			SELECT pcd.course_code AS courseCode ,cm.course_name AS courseName , cm.credits AS credits, cm.course_classification AS courseClass ,pcd.course_category AS name FROM program_course_detail pcd, course_master cm
+			WHERE pcd.program_course_key=#programName# AND pcd.course_group=#courseGroup# AND
+			cm.course_code=pcd.course_code AND pcd.available='Y' AND cm.university_code=#universityId# AND cm.course_classification IN ('T','P');
+		</select>
+		
+		<update id="updateStudentCourse">
+			UPDATE student_course set course_status='CAN',modification_time=now(),modifier_id=#userId#
+			WHERE student_status='REG' AND roll_number=#rollNumber# AND program_course_key=#programName# AND semester_start_date=#semesterStartDate# 
+			AND semester_end_date=#semesterEndDate# AND course_group=#courseGroup# AND entity_id=#entityId#;
+		</update>
+		
+		<update id="updateSRSH">
+			UPDATE student_registration_semester_header set registered_credit=#minimumCredits# ,registered_theory_credit_excluding_audit=#theoryCredits# ,registered_practical_credit_excluding_audit=#practicalCredits# , registration_credit_excluding_audit=#maximumCredits#,modification_time=now(),modifier_id=#userId#
+			WHERE status='REG' AND roll_number=#rollNumber# AND session_start_date=#semesterStartDate# AND session_end_date=#semesterEndDate# AND student_process_status='REG' AND entity_id=#entityId# AND program_course_key=#programName#;
+		</update>
+		
+		<insert id="insertStudentCourse">
+			INSERT INTO student_course(roll_number,program_course_key,semester_start_date,semester_end_date,course_code,course_name,course_status,student_status,insert_time,creator_id,attempt_number,course_group,entity_id)
+			VALUES(#rollNumber#,#programName#,#semesterStartDate#,#semesterEndDate#,#courseCode#,#courseName#,'REG','REG',now(),#userId#,'1',#courseGroup#,#entityId#);
+		</insert>
+		
+		<select id="getSRSHCreditsForUpdate" resultClass = "cancelCourseGroup">		
+			SELECT registered_theory_credit_excluding_audit AS theoryCredits,registered_practical_credit_excluding_audit AS practicalCredits,registration_credit_excluding_audit AS maximumCredits ,registered_credit AS minimumCredits FROM student_registration_semester_header
+			WHERE status='REG' AND roll_number=#rollNumber# AND session_start_date=#semesterStartDate# AND session_end_date=#semesterEndDate# AND student_process_status='REG' ANd entity_id=#entityId# AND program_course_key=#programName#;
+		</select>
+		
+		<select id="getMaxCredit" resultClass = "java.lang.String">		
+			SELECT ptd.maximum_credit AS credits FROM program_course_header pch ,student_program sp,program_registration pr,program_term_details ptd
+			WHERE sp.roll_number=#rollNumber# AND sp.program_status='ACT' AND pch.semester_status='ACT' AND pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate# AND pr.university_id=#universityId#
+			AND sp.current_semester=pch.semester_code AND pch.program_id=sp.program_id AND pch.branch_id=sp.branch_id AND pch.specialization_id=sp.specialization_id AND
+			pr.entity_id=sp.entity_id AND pr.program_course_key=pch.program_course_key AND ptd.program_id=pch.program_id AND ptd.semester_code=pch.semester_code AND ptd.semester_start_date=SUBSTRING(pr.semester_start_date,'6','5') AND ptd.semester_end_date=SUBSTRING(pr.semester_end_date,'6','5');
+		</select>
+</sqlMap>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) AddressField.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="970" height="92" borderThickness="0" dropShadowEnabled="false" backgroundColor="#FFFFFF" creationComplete="initFields();">
+	<mx:XML id="stateCity" source="stateCity.xml" format="e4x"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Button;
+		    import mx.controls.Alert;
+			
+			public var title:String="";
+		    public var city:String="";
+		    public var state:String="";
+		    public var btn:Button;
+		    public var validationRequired:Boolean=false;
+		
+		//Setting city in combobox
+			private function setCity():void
+			{
+				cityField.dataProvider=stateCity.state.(@name==stateField.selectedLabel).city;
+				cityField.selectedItem=city;
+			}
+			
+			//on Init of Page
+			private function initFields():void
+			{
+				titleLabel.text=title;
+				addressValidator.enabled=validationRequired;
+				stateValidator.enabled=validationRequired;
+				cityValidator.enabled=validationRequired;
+				pinValidator.required=validationRequired;
+				
+				stateField.dataProvider=stateCity.state.@name;
+			}
+		]]>
+	</mx:Script>
+    <mx:Validator id="addressValidator" enabled="false" source="{addressLine1}" property="text" required="true"/>
+    <mx:Validator id="stateValidator" enabled="false" source="{stateField}" property="selectedLabel" trigger="{btn}" triggerEvent="click" required="true"/>
+    <mx:Validator id="cityValidator" enabled="false" source="{cityField}" property="selectedLabel" trigger="{btn}" triggerEvent="click"/>
+    <mx:NumberValidator id="pinValidator" source="{pinField}" property="text" minValue="100000" domain="int" lowerThanMinError="Invalid Pin Code"  required="true"/>
+    <mx:Label id="titleLabel" x="8" fontWeight="bold"/>
+	<mx:Label x="10" y="32" text="{commonFunction.getConstants('address')}" />
+	<mx:Label x="323" y="32" text="{commonFunction.getConstants('state')}" />
+	<mx:Label x="588" y="32" text="{commonFunction.getConstants('city')}" />
+	<mx:Label x="831" y="32" text="{commonFunction.getConstants('pinCode')}" />
+	
+	<mx:TextArea change="chars.text=(100-addressLine1.text.length)+' Char Left'" restrict="0-9 a-z A-Z - #   / , . + ( ) _" id="addressLine1" maxChars="100" width="150" x="84" y="30" />
+	
+	<mx:ComboBox id="stateField" width="150" toolTip="{stateField.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" x="364" y="30" updateComplete="setCity()" labelField="name"/>
+	<mx:ComboBox id="cityField" width="150" toolTip="{cityField.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" x="619" y="30" />
+		
+	<mx:TextInput id="pinField" x="894" y="30" width="60" maxChars="6" restrict="0-9" />
+	<mx:Label fontSize="9" color="#FF0000" id="chars" x="234" y="31" text="{(100-addressLine1.text.length)} Char Left"/>
+</mx:Canvas>

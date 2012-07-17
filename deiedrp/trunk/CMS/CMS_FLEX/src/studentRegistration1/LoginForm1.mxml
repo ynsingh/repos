@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" x="372" y="100" width="380" height="178" title="Student Registration Details" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			
+			
+			private function loadStudentLogOut():void{
+			//this.parentDocument.vStack.selectedIndex=0;
+			//this.parentDocument.loaderCanvas2.removeAllChildren();
+			this.parentDocument.loaderCanvas.removeAllChildren();
+					}
+		]]>
+	</mx:Script>
+
+	<mx:Script source="asFiles/LoginForm1.as"/>
+	
+	
+	<mx:HTTPService id="httpLogin" method="post"
+        url="{commonFunction.getConstants('url')+'/studentlogin/getStudentLoginInfo1.htm'}"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>	
+	
+	<mx:StringValidator id="userNameValidator" source="{userNameText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+
+	<mx:Label  text="{resourceManager.getString('Constants','registrationRollNo')}" x="30" y="30"/>
+	
+	
+	<mx:TextInput id="userNameText" x="164" y="30"/>
+
+	
+	<mx:Button id="loginButton" label="{resourceManager.getString('Constants','login')}" click="Login()" x="164" y="90"/>
+	<mx:Button x="243" y="90" label="Cancel" width="81" id="cancelButton" click="loadStudentLogOut()"/>
+	
+</mx:TitleWindow>

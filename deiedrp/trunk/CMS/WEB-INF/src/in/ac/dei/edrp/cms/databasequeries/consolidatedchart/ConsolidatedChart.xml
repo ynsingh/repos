@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+* @(#) ConsolidatedChart.xml 
+* @Author :Mohd Amir * @Date :21/3/2011 
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. 
+* All Rights Reserved. 
+* 
+* Redistribution and use in source and binary forms, with or 
+* without modification, are permitted provided that the following 
+* conditions are met: 
+* 
+* Redistributions of source code must retain the above copyright 
+* notice, this list of conditions and the following disclaimer. 
+* 
+* Redistribution in binary form must reproducuce the above copyright 
+* notice, this list of conditions and the following disclaimer in 
+* the documentation and/or other materials provided with the 
+* distribution. 
+* 
+* 
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+* 
+* Contributors: Members of EdRP, Dayalbagh Educational Institute 
+*/ -->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="consolidatedchart">
+
+	<typeAlias alias="consolidatedChartInfo"
+		type="in.ac.dei.edrp.cms.domain.consolidatedchart.ConsolidatedChartBean" />
+
+	<typeAlias alias="resultStatisticsInfo"
+		type="in.ac.dei.edrp.cms.domain.consolidatedchart.ResultStatisticsInfo" />
+
+	<select id="getEntityList" resultClass="consolidatedChartInfo">
+		SELECT distinct
+		pob.offered_by componentId,em.entity_name
+		componentDescription,
+		em.entity_code groupCode
+		FROM entity_master em,program_offered_by pob
+		WHERE
+		pob.offered_by=em.entity_id AND em.university_id=#universityCode#
+		ORDER BY em.entity_name;
+	</select>
+
+	<select id="getSemSeqNo" resultClass="consolidatedChartInfo">
+		SELECT semester_code
+		semesterCode,semester_sequence semSeqNo
+		FROM
+		program_term_details
+		WHERE
+		program_id=#programCode# AND semester_code
+		like #semesterCode#
+		AND
+		semester_sequence like #semSeqNo#;
+	</select>
+
+	<select id="getPreviousSemPercentage" resultClass="consolidatedChartInfo">
+		SELECT
+		weighted_percentage AS weighted,sgpa
+		FROM
+		student_registration_semester_header
+		WHERE status='PAS' and
+		program_course_key in(
+		SELECT program_course_key
+		FROM
+		program_course_header
+		WHERE program_id=#programCode# AND
+		branch_id=#branchCode# AND
+		specialization_id=#specializationCode# AND
+		semester_code
+		=#semesterCode#)
+		AND roll_number=#rollNo#
+	</select>
+
+		<select id="getChartData" resultClass="consolidatedChartInfo">
+		SELECT concat_ws(' ',upper(smt.student_first_name), IFNULL(upper(smt.student_middle_name), ''),
+   		IFNULL(upper(smt.student_last_name), '')) name, sm.roll_number rollNo,
+		smt.enrollment_number enrollmentNo, smt.category_code category,
+		smt.gender gender,
+		srsh.attempt_number attemptNo,
+		srsh.weighted_percentage weighted,srsh.sgpa as sgpa,
+		concat(sm.course_code , case when sc.student_status ='REM' then '*'
+		else '' end) AS courseCode, srsh.status result,
+		sm.total_internal internal, sm.total_external external,
+		sm.total_marks totalMarks, sm.internal_grade internalGr,
+		sm.external_grade externalGr, sm.final_grade_point finalGr
+		FROM student_program sp JOIN student_master smt JOIN course_group cg JOIN 
+		(student_marks_summary sm JOIN student_registration_semester_header
+		srsh JOIN
+		student_course sc ON
+		sc.program_course_key=sm.program_course_key AND
+		srsh.program_course_key=sm.program_course_key AND
+		sc.roll_number=sm.roll_number AND srsh.roll_number=sm.roll_number AND
+		sc.semester_start_date=sm.semester_start_date AND
+		srsh.session_start_date=sm.semester_start_date AND
+		sc.semester_end_date=sm.semester_end_date AND
+		srsh.session_end_date=sm.semester_end_date AND
+		sc.course_code=sm.course_code) ON
+		sp.roll_number=sm.roll_number AND
+		smt.enrollment_number=sp.enrollment_number AND
+		cg.program_course_key=sc.program_course_key AND
+		cg.course_group_code= sc.course_group
+		WHERE
+		sc.entity_id=sp.entity_id AND
+		sp.program_id=#programCode# AND sp.branch_id=#branchCode# AND
+		sp.specialization_id=#specializationCode#
+		AND sp.entity_id=#entityCode#
+		AND sm.program_course_key IN (
+		SELECT program_course_key
+		FROM
+		program_course_header
+		WHERE program_id=#programCode# AND
+		branch_id=#branchCode# AND specialization_id=#specializationCode#
+		AND
+		semester_code =#semesterCode#) AND smt.parent_entity=#entityCode# AND
+		sm.semester_start_date BETWEEN #sessionStartDate# and #sessionEndDate#
+		ORDER BY sm.roll_number,cg.order_in_marksheet,sc.course_code
+	</select>
+	
+	<select id="getPBSInfo" resultClass="resultStatisticsInfo">
+	SELECT pob.offered_by entityId,em.entity_code entityName,
+		pob.program_id programId, pm.program_code programName,pob.branch_id branchId,
+		stt1.component_description branchName, pob.specialization_id specializationId,
+		stt2.component_description specializationName,ptd.semester_code semesterId,
+		stt3.component_description semesterName,pch.program_course_key	programCourseKey,
+		pr.semester_start_date semesterStartDate,pr.semester_end_date semesterEndDate
+	FROM
+		program_offered_by pob, program_term_details ptd,
+		program_course_header pch,entity_master em,program_master pm,
+		system_table_two stt1,system_table_two stt2,system_table_two stt3,program_registration pr
+	WHERE 
+		pob.offered_by=#entityId#
+    	AND ptd.program_id=pob.program_id
+   		AND (ptd.semester_sequence+#semesterWise#)%2=0
+		AND pch.program_id=pob.program_id AND pch.branch_id=pob.branch_id
+		AND pch.specialization_id=pob.specialization_id AND pch.semester_status=#status#
+		AND pch.semester_code=ptd.semester_code AND em.entity_id=pob.offered_by
+		AND pm.program_id=pob.program_id AND stt1.group_code='BRNCOD'
+		AND stt1.component_code=pob.branch_id AND stt2.group_code='SPCLCD'
+		AND stt2.component_code=pob.specialization_id
+		AND stt3.group_code='SEMCOD' AND stt3.component_code=ptd.semester_code
+		AND stt1.university_code=#universityId# 
+		AND stt2.university_code=stt1.university_code
+ 		AND stt3.university_code=stt1.university_code
+ 		AND pr.program_course_key =pch.program_course_key
+ 		AND pr.university_id=#universityId#
+ 		AND pr.session_start_date=#sessionStartDate#
+ 		AND pr.session_end_date = #sessionEndDate#;
+	
+	<!-- 
+		SELECT distinct pob.offered_by entityId,em.entity_code entityName,
+		pob.program_id programId, pm.program_code programName,pob.branch_id branchId,
+		stt1.component_description branchName, pob.specialization_id specializationId,
+		stt2.component_description specializationName,ptd.semester_code semesterId,
+		stt3.component_description semesterName,pch.program_course_key	programCourseKey
+		FROM program_offered_by pob, program_term_details ptd,
+		program_course_header pch,entity_master em,program_master pm,
+		system_table_two stt1,system_table_two stt2,system_table_two stt3
+		WHERE pob.offered_by=#entityId# AND (semester_sequence+#semesterWise#)%2=0
+		AND pch.program_id=pob.program_id AND pch.branch_id=pob.branch_id
+		AND pch.specialization_id=pob.specialization_id AND pch.semester_status=#status# 
+		AND pch.semester_code=ptd.semester_code AND em.entity_id=pob.offered_by
+		AND pm.program_id=pob.program_id AND stt1.group_code='BRNCOD'
+		AND stt1.component_code=pob.branch_id AND stt2.group_code='SPCLCD'
+		AND stt2.component_code=pob.specialization_id
+		AND stt3.group_code='SEMCOD' AND stt3.component_code=ptd.semester_code;
+		 -->
+	</select>
+<!-- Changes By Mandeep 29-3-12 remove distinct AND added  sp.program_status in ('ACT','PAS','FAL') -->
+	<select id="getStudentCountInfo" resultClass="resultStatisticsInfo">
+		SELECT count(srsh.roll_number) count
+		FROM student_registration_semester_header srsh, student_master sm, student_program sp
+		WHERE srsh.program_course_key=#programCourseKey# AND
+		srsh.entity_id=#entityId# AND sp.roll_number=srsh.roll_number
+		AND sm.enrollment_number=sp.enrollment_number AND sm.gender like #gender#
+		AND srsh.status like #status# AND attempt_number like #attemptNo# AND sp.program_status in ('ACT','PAS','FAL')
+		AND srsh.session_start_date=#semesterStartDate# AND srsh.session_end_date=#semesterEndDate#;
+	</select>
+<!-- Changes By Mandeep 29-3-12 remove distinct AND added  sp.program_status in ('ACT','PAS','FAL') -->
+	<select id="getStudentCountByDiv" resultClass="resultStatisticsInfo">
+		SELECT count(srsh.roll_number) count
+		FROM student_registration_semester_header srsh, student_master sm, student_program sp
+		WHERE srsh.program_course_key=#programCourseKey# AND srsh.entity_id=#entityId#
+		AND sp.roll_number=srsh.roll_number AND sm.enrollment_number=sp.enrollment_number
+		AND sm.gender like #gender# AND srsh.status like 'PAS' AND sp.cgpa between #cgpaL# and #cgpaU# AND sp.program_status in ('ACT','PAS','FAL')
+		AND srsh.session_start_date=#semesterStartDate# AND srsh.session_end_date=#semesterEndDate#;
+	</select>
+
+</sqlMap>

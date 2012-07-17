@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) assignPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" keyDown="initializeForEsc(event)" x="250" y="150" 
+	title="{commonFunction.getConstants('assisnCoursesToInstructor')}" layout="absolute" width="669" height="459" 
+	showCloseButton="true" close="closePopup()" creationComplete="popUpIntilize()" styleName="PopUpTitleWindow">
+
+	
+	<mx:HTTPService id="employeeListHttpService" method="POST"
+					url="{urlPrefix+'employeeList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="employeeListHttpServiceResultHandler(event)"
+					fault="employeeListHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="assignEmployeeHttpService" method="POST"
+					url="{urlPrefix+'AssignEmployee.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="assignEmployeeHttpServiceResultHandler(event)"
+					fault="assignEmployeeHttpServiceFaultHandler(event)"
+					useProxy="false"/>				
+	
+	
+	<mx:Script source="asFiles/assignPopup.as"/>
+  
+	<mx:Label x="213" y="16" text="{commonFunction.getConstants('courses')}:" fontSize="12"/>
+	<mx:List x="284" y="15" height="67" width="106" id="changecourse" labelField="courseCode" backgroundColor="#E2E0E0" verticalScrollPolicy="on"></mx:List>
+	
+	<mx:Canvas height="62" x="24.5" y="90" width="600" borderColor="black" styleName="GridCanvas">
+		<mx:Label  text="{commonFunction.getConstants('employeeCode')}" x="10" y="25" />
+		<mx:TextInput id="searchCode" text="" x="122" y="22" width="160" change="onSearchChange()" />
+		<mx:Label text="{commonFunction.getConstants('employeeName')}" x="298" y="25"/>
+		<mx:TextInput id="searchName" x="411" y="22" width="160" change="onSearchChange()"/>
+		<mx:Label x="10" y="2" text="{commonFunction.getConstants('searchBy')}:" width="63" fontSize="10" fontWeight="bold"/>
+	</mx:Canvas>
+    
+	<mx:Canvas styleName="GridCanvas" height="208" y="170" width="600" x="24.5" borderColor="black">
+	<mx:DataGrid id="employeeGrid" width="580" height="150" creationComplete="commonFunction.showDataTips(employeeGrid)"   horizontalScrollPolicy="off" 
+			 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="33" >
+        <mx:columns>
+        	<mx:DataGridColumn width="20" resizable="false" rendererIsEditor="true" textAlign="center" sortable="false" 
+				editorDataField="selected" dataField="select" headerText="">
+				<mx:itemRenderer>
+   	    			<mx:Component>
+   						<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.employeeGrid,[],[outerDocument.saveLinkButton])">
+ 							<mx:Script>
+        						<![CDATA[
+                    				import common.commonFunction;
+                   				 	import mx.controls.*;
+              
+                				]]>
+        					</mx:Script>
+        				</mx:CheckBox>
+        			</mx:Component>
+        		</mx:itemRenderer>
+        	</mx:DataGridColumn>
+            <mx:DataGridColumn editable="false" dataField="employeeCode" headerText="{commonFunction.getConstants('employeeCode')}" width="80"/>
+            <mx:DataGridColumn editable="false" dataField="employeeName" headerText="{commonFunction.getConstants('employeeName')}" width="180"/>
+
+        </mx:columns>
+    </mx:DataGrid>
+    <mx:Label x="10" y="7" text="{commonFunction.getConstants('selectInstructor')}" width="391" fontSize="11"/>
+ 	<mx:LinkButton x="528" y="4" id="saveLinkButton" enabled="false" label="save" click="saveAssigned()"/>
+ 	</mx:Canvas>   
+	<mx:Button x="282" y="386" label="{commonFunction.getConstants('cancelButton')}"  click="cancelPopup()" id="cancel"/>
+  
+</mx:TitleWindow>

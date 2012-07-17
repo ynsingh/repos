@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) EditEntityMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="1036" height="328" xmlns:common="common.*" layout="absolute" showCloseButton="true" close="closeMe()">
+<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		public function closeMe():void
+		{
+			PopUpManager.removePopUp(this);
+		}
+		
+		public function updateDetails():void
+		{
+			PopUpManager.removePopUp(this);
+		}
+	]]>
+</mx:Script>
+	<mx:Label x="35" y="10" text="{commonFunction.getConstants('entityType')}" />
+	<mx:Label x="307" y="10" text="{commonFunction.getConstants('entityLevel')}" />
+	<mx:Label x="556.5" y="10" text="{commonFunction.getConstants('parentEntity')}" />
+	<mx:Label x="35" y="40" text="{commonFunction.getConstants('entityHead')}" />
+	<mx:Label x="307" y="40" text="{commonFunction.getConstants('knowBy')}" />
+	<mx:Label x="556.5" y="40" text="{commonFunction.getConstants('location')}" />
+	<mx:Label x="35" y="70" text="{commonFunction.getConstants('entityCode')}" />
+	<mx:Label x="307" y="70" text="{commonFunction.getConstants('entityName')}" />
+	<mx:Label x="35" y="207" text="{commonFunction.getConstants('phoneNo')}" />
+	<mx:Label x="355" y="207" text="{commonFunction.getConstants('fax')}" />
+	
+	<mx:Label x="132" y="10" width="150" id="entityTypeLabel" fontWeight="bold" />
+	<mx:Label x="390" y="10" width="150" id="levelLabel" fontWeight="bold" />
+	<mx:Label x="642" y="10" width="150" id="parentEntityLabel" fontWeight="bold" />
+	<mx:ComboBox x="132" y="40" width="150" id="entityHeadCombo" toolTip="{entityHeadCombo.text}" prompt="{commonFunction.getConstants('select')}" />
+	<mx:TextInput x="390" y="40" width="150" id="knowByText" />
+	<mx:ComboBox x="642" y="40" width="150" id="locationCombo" toolTip="{locationCombo.text}" prompt="{commonFunction.getConstants('select')}" />
+	<mx:TextInput x="132" y="70" width="150" id="entityCodeText" maxChars="3"/>
+	<mx:TextInput x="390" y="70" width="150" id="entityNameText" />
+	<common:AddressField id="address" x="25" y="105" title="{commonFunction.getConstants('contactDetails')}" validationRequired="true"/>
+	<mx:TextInput x="133" y="207" width="150" id="phoneNoText" />
+	<mx:TextInput x="390" y="207" width="150" id="faxText" />
+	
+	<mx:Button x="134" y="248" id="updateButton" click="updateDetails()" label="{commonFunction.getConstants('updateButton')}" />
+	
+	<mx:Validator id="entityHeadValidator" source="{entityHeadCombo}" required="true" property="selectedItem" trigger="{updateButton}" triggerEvent="click"/>
+	<mx:Validator id="entityLocationValidator" source="{locationCombo}" required="true" property="selectedItem" trigger="{updateButton}" triggerEvent="click"/>
+	<mx:StringValidator id="entityNameValidator" source="{entityNameText}" required="true" property="text" maxLength="100" minLength="3" trigger="{updateButton}" triggerEvent="click"/>
+	<mx:StringValidator id="entityCodeValidator" source="{entityCodeText}" property="text" required="true" maxLength="3" minLength="1" trigger="{updateButton}" triggerEvent="click"/>
+	<mx:PhoneNumberValidator id="phoneValidator" source="{phoneNoText}" property="text" required="true" trigger="{updateButton}" triggerEvent="click"/>
+
+</mx:TitleWindow>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"  width="100%" height="100%" backgroundColor="white"  
+	horizontalScrollPolicy="off" verticalScrollPolicy="off" layout="absolute">
+	<!--
+	 <mx:HTTPService id="getRoleService" method="POST"
+		url="{urlPrefix}/remoteLogin/getRole.htm"
+		resultFormat="e4x"
+		result="getRoleHttpServiceResultHandler(event)"
+		fault="onFailure(event)"
+		showBusyCursor="true"
+		useProxy="false"/>
+		-->
+	 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	 	<mx:VBox y="70" horizontalAlign="left" verticalGap="15">
+	 		<mx:LinkButton x="225" y="70" width="20%" label="ADMISSION SYSTEM" id="ADM" click="adm(event)" enabled="false" 
+	 		color="#112C70" fontWeight="bold" fontStyle="italic" fontSize="25" fontFamily="Verdana" height="39" />
+ 			<mx:LinkButton x="40" y="100" width="20%" label="COURSE MANAGEMENT SYSTEM" id="CMS" click="cms(event)" enabled="false" 
+	 		color="#112C70" fontWeight="bold" fontStyle="italic" fontSize="25" fontFamily="Verdana" height="39"/>
+		 </mx:VBox>
+	
+<mx:Script>
+	<![CDATA[
+		import common.RoleSelector;
+		import mx.rpc.http.HTTPService;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import common.commonFunction;
+		import mx.controls.Alert;		
+    	import common.Mask;
+    	import mx.collections.ArrayCollection;
+    	import mx.managers.PopUpManager;
+    	[Embed(source="/images/error.png")] var errorIcon:Class;
+		[Bindable]private var emailid:String;
+		[Bindable]public var urlPrefix:String=commonFunction.getConstants('urlCms');
+		public var params:Object={};		
+		public var emailId = "";
+		public var urlPath:String = "";
+		
+//		public var sessionId:String = "";
+		[Bindable] public var universityId:String;
+		[Bindable] public var userId:String;
+		[Bindable] public var userGroupId:String;
+		[Bindable] public var userGroupName:String;
+		[Bindable] public var userName:String;
+		[Bindable] public var universityName:String;
+		[Bindable] public var startDate:String;
+		[Bindable] public var endDate:String;
+		[Bindable] public var application:String;
+		[Bindable] public var sessionId:String;
+		[Bindable] public var userInfoXmlSuccess:XML=new XML;
+		
+		public function urlReturn(values:ArrayCollection):String{			
+			if(values.length>0){
+				userId=values[0].userId;
+				userName=values[0].userName;
+				universityId=values[0].universityId;
+				universityName=values[0].universityName;
+				startDate=values[0].startDate;
+				endDate=values[0].endDate;
+				sessionId = values[0].sessionId;
+				application = values[0].application;
+				if(values.length>1){
+					var selectRolectPopup:RoleSelector=RoleSelector(PopUpManager.createPopUp(this,RoleSelector,true));					
+					selectRolectPopup.roleCombo.dataProvider=userInfoXmlSuccess.loginInfo.userGroupName;
+					selectRolectPopup.roleCombo.selectedIndex=-1;
+					selectRolectPopup.dataXml=userInfoXmlSuccess;
+					PopUpManager.centerPopUp(selectRolectPopup);
+				}//end if>1
+				else{
+					userGroupId=values[0].userGroupId;
+					userGroupName=values[0].userGroupName;
+				}						
+				if(application=="CMS"){
+					urlPath = commonFunction.getConstants('navigateUrlCms')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='
+					+userName+'&application='+application+'&university='+universityName
+				}
+				else if(application=="ADM"){
+					urlPath=commonFunction.getConstants('navigateUrlAdm')+'?userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userId='+userId+'&userName='+userName+'&urlHome='
+					+commonFunction.getConstants('navigateHome')+'&universityId='+universityId+'&application='+application
+				}
+						
+			}//end if>0
+			else{
+				Alert.show((commonFunction.getMessages('invalidLoginDetails')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
+				urlPath="invalid path";
+			}   			
+			return urlPath;
+		}
+		
+		public function adm(event:Event):void{
+			Mask.show();			
+         	var values:ArrayCollection=new ArrayCollection();
+         	for each(var obj:Object in userInfoXmlSuccess.loginInfo){
+         		if(obj.application=="ADM"){
+         			values.addItem({userId:obj.userId,universityId:obj.universityId,userGroupId:obj.userGroupId,
+					userGroupName:obj.userGroupName,userName:obj.userName, universityName:obj.universityName,application:obj.application,sessionId:obj.sessionId});
+         		}				
+			}//end for
+			urlPath = urlReturn(values);
+			var urlRequest:URLRequest=new URLRequest(urlPath+";jsessionid="+sessionId);			
+			urlRequest.method=URLRequestMethod.POST;
+			navigateToURL(urlRequest,"_self");
+			Mask.close();		  
+         }
+         
+         public function cms(event:Event):void{   
+         	Mask.show();                  	
+         	var values:ArrayCollection=new ArrayCollection();
+         	for each(var obj:Object in userInfoXmlSuccess.loginInfo){
+         		if(obj.application=="CMS"){
+         			values.addItem({userId:obj.userId,universityId:obj.universityId,userGroupId:obj.userGroupId,
+					userGroupName:obj.userGroupName,userName:obj.userName, universityName:obj.universityName,application:obj.application,sessionId:obj.sessionId});
+         		}				
+			}//end for
+			urlPath = urlReturn(values);			
+         	var urlRequest:URLRequest=new URLRequest(urlPath+";jsessionid="+sessionId);	         	         			
+			urlRequest.method=URLRequestMethod.POST;
+			navigateToURL(urlRequest,"_self");	
+			Mask.close();	 
+         }
+         
+      /*
+ protected function getRoleHttpServiceResultHandler(event:ResultEvent):void{
+   	userInfoXml=event.result as XML;	
+   	
+	var values:ArrayCollection=new ArrayCollection();
+	for each(var obj:Object in userInfoXml.loginInfo){
+		values.addItem({userId:obj.userId,universityId:obj.universityId,userGroupId:obj.userGroupId,
+		userGroupName:obj.userGroupName,userName:obj.userName, universityName:obj.universityName,application:obj.application,sessionId:obj.sessionId});
+	}
+	vStack.selectedIndex=1;
+	loaderCanvas2.removeAllChildren();
+	loaderCanvas2.addChild(remoteLSucc);
+	if(values.length>0){
+		userId=values[0].userId;
+		userName=values[0].userName;
+		universityId=values[0].universityId;
+		universityName=values[0].universityName;
+		startDate=values[0].startDate;
+		endDate=values[0].endDate;
+		sessionId = values[0].sessionId;
+		remoteLSucc.sessionId=this.sessionId;
+		if(values.length>=1){
+			for(var i:int=0;i<values.length;i++){
+				var application=values[i].application;
+				userName=values[i].userName;
+				userGroupId=values[i].userGroupId;
+				userGroupName=values[i].userGroupName;
+				userId=values[i].userId;
+				universityId=values[i].universityId;
+				var universityName=obj.universityName;
+				var url:String=""
+				if(application=='UPM'){
+			   		url=commonFunction.getConstants('navigateUrlUpm')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+
+			   		'&userName='+userName+'&application='+application
+				}
+				else if(application=='CMS'){	
+//					remoteLSucc = new remoteLoginSuccess();
+					remoteLSucc.CMS.enabled=true;
+					remoteLSucc.urlCMS = commonFunction.getConstants('navigateUrlCms')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='
+					+userName+'&application='+application+'&university='+universityName		
+				}
+				else if(application=='ADM'){
+					remoteLSucc.ADM.enabled=true;
+					remoteLSucc.urlADM=commonFunction.getConstants('navigateUrlAdm')+'?userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userId='+userId+'&userName='+userName+'&urlHome='
+					+commonFunction.getConstants('navigateHome')+'&universityId='+universityId+'&application='+application
+				}
+				else{
+					url=commonFunction.getConstants('navigateHome');
+				}
+			}//end for
+		}//end if
+	}//end outer if
+//	else{
+//		var selectRolectPopup:RoleSelector=RoleSelector(PopUpManager.createPopUp(this,RoleSelector,true));
+//		selectRolectPopup.roleCombo.dataProvider=userInfoXml.loginInfo.userGroupName;
+//		selectRolectPopup.roleCombo.selectedIndex=-1;
+//		selectRolectPopup.dataXml=userInfoXml;
+//		PopUpManager.centerPopUp(selectRolectPopup);
+//	}
+//	}
+	else{
+		Alert.show((commonFunction.getMessages('invalidLoginDetails')),(commonFunction.getMessages('error')),0,null,null,errorIcon);
+	}
+	
+}
+*/
+        	
+        	protected function roleHttpServiceResultHandler(event:ResultEvent):void{
+			    Mask.close();
+			    var emailId:String = event.result.emailId;
+			    var msg:String = event.result.msg;
+			    
+//				var menuString:String=event.result as XML;
+//				if(menuString.localeCompare("errorMenu")==1){
+//					Alert.show(commonFunction.getMessages('menuError')+" ( "+menuString.substring(10, menuString.length)+" ) "+ commonFunction.getMessages('checkLogFile'), 
+//						commonFunction.getMessages('error'),4,null,null,errorIcon);
+//				}
+//				else{
+//					usersXML= new XML(menuString);
+//					menuData =  new XMLListCollection(usersXML.*);
+//					vStack.selectedIndex=1;
+//				}
+			}
+			
+			/**
+		 * Failure Handler
+		 * @Param Event(FaultEvent)
+		 **/
+		public function onFailure(event:FaultEvent):void{
+			 Alert.show("Error in Remote Login Process: "+event);
+			 Mask.close();
+//		     rollNoTxt.text="";
+		}
+	]]>
+</mx:Script>
+
+</mx:Canvas>
+</mx:TitleWindow>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) InitializaUniversity.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300" creationComplete="onCreationComplete()">
+<mx:XML source="systemValues.xml" id="system"/>
+
+<mx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		import mx.binding.utils.BindingUtils;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+	
+		[Bindable]public var urlPrefix:String = commonFunction.getConstants('url')+"/systemTableTwo/";	
+		
+		public function onCreationComplete():void{
+			
+			var object = Object;
+			
+			object["userId"] = new Date();
+			object["counter"] = "two";			
+						
+			Systemvalues.send(object);
+			
+		}
+		
+		/**
+		 * The method builds the system_value table for the concerned university
+		 **/
+		public function buildSystemValues():void{
+			
+			var systemList:ArrayCollection = new ArrayCollection();
+			
+			for each(var object:Object in system.systemvalue){				
+				
+				systemList.addItem([object.group_code,object.group_value]);
+				
+			}		
+						
+			var object = Object;
+			
+			object["userId"] = new Date();
+			object["systemCodes"] = systemList;
+			object["counter"] = "one";
+			
+			Mask.show(commonFunction.getMessages('pleaseWait'));
+			buildSystemvalues.send(object);	
+			
+		}
+		
+		/**
+		 * The method is executed on successful initialization 
+		 * of the codes in system_values table
+		 **/ 
+		public function successResultHandler(event:ResultEvent):void{
+			
+			Mask.close();			
+			
+			if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),
+	 		commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	this.parentDocument.vStack.selectedIndex=0;
+	    	this.parentDocument.loaderCanvas.removeAllChildren();
+		}else{
+			
+			Alert.show(commonFunction.getMessages('initialize'),
+			commonFunction.getMessages('success'),0,null,null,successIcon);
+			
+			systemValues.enabled=false;
+			
+		}		
+			
+	}	
+	/**
+	 * success handler of creation complete 
+	 **/
+	public function successHandler(event:ResultEvent):void{
+		
+		 if(event.result.Details.list_values == "failure"){
+			
+			Alert.show(resourceManager.getString('Messages','reInitilize'),
+	 		commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 		
+	 		systemValues.enabled=false;
+		
+		}
+		
+	}
+		
+		/**
+		 * The method executed on failure of the request
+		 **/ 
+		public function faultHandler(event:FaultEvent):void{
+			
+			Alert.show(commonFunction.getMessages('requestFailed'),
+			commonFunction.getMessages('failure'),0,null,null,errorIcon);
+			Mask.close();
+			
+		}
+		
+		
+		
+	]]>
+</mx:Script>
+
+<mx:HTTPService id="buildSystemvalues" method="post"
+        url="{urlPrefix+'buildSystemValues.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="successResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="Systemvalues" method="post"
+        url="{urlPrefix+'buildSystemValues.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="successHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+
+
+	<mx:Button x="129.5" y="112" label="{commonFunction.getConstants('initialize')}" id="systemValues" click="buildSystemValues()"/>
+	
+</mx:TitleWindow>

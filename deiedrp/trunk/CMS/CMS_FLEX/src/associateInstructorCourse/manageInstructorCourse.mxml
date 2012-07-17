@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) manageInstructorCourse.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous(entityCombo);applicationCreationHandler()"
+		  layout="absolute" width="732" x="10" title="{commonFunction.getConstants('manageInstructor')}" height="568">
+	
+	<mx:HTTPService id="entityListHttpService" method="POST"
+					url="{urlPrefix+'entityList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="entityListHttpServiceResultHandler(event)"
+					fault="entityListHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="programListHttpService" method="POST"
+					url="{urlPrefix+'programList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="programListHttpServiceResultHandler(event)"
+					fault="programListHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="branchListHttpService" method="POST"
+					url="{urlPrefix+'branchList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="branchListHttpServiceResultHandler(event)"
+					fault="branchListHttpServiceFaultHandler(event)"
+					useProxy="false"/>	
+	
+	<mx:HTTPService id="specializationListHttpService" method="POST"
+					url="{urlPrefix+'specializationList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="specializationListHttpServiceResultHandler(event)"
+					fault="specializationListHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="semesterListHttpService" method="POST"
+					url="{urlPrefix+'semesterList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterListHttpServiceResultHandler(event)"
+					fault="semesterListHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="semesterDateHttpService" method="POST"
+					url="{urlPrefix+'semesterDates.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterDateHttpServiceResultHandler(event)"
+					fault="semesterDateHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="courseInstructorDetailsHttpService" method="POST"
+					url="{urlPrefix+'InstructorDetails.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="courseInstructorDetailsHttpServiceResultHandler(event)"
+					fault="courseInstructorDetailsHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteCourseInstructorHttpService" method="POST"
+					url="{urlPrefix+'deleteCourseInstructor.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="deleteCourseInstructorHttpServiceResultHandler(event)"
+					fault="deleteCourseInstructorHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+		
+
+<mx:Script source="asFiles/manageInstructorCourseAction.as"/>	
+
+		<mx:Canvas  styleName="SimpleCanvas" x="19" y="14"  width="673" height="260">
+	    <mx:Label x="18" y="21" text="{commonFunction.getConstants('entityMandatory')}" />
+	    <mx:ComboBox x="159" y="18" width="160" id="entityCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{entityCombo.text}"
+	    selectedIndex="-1" labelField="@name" change="entityChange(event)"/>
+	    <mx:Label x="378" y="21" text="{commonFunction.getConstants('programMandatory')}" />
+	    <mx:ComboBox width="160" x="481" id="programCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{programCombo.text}"
+	    selectedIndex="-1" labelField="@name"	 change="programChange(event)" y="18" enabled="false"/>
+	    <mx:Label x="18" y="59" text="{commonFunction.getConstants('branchMandatory')}" />
+	    <mx:ComboBox x="159" y="62" width="160" id="branchCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{branchCombo.text}"
+		selectedIndex="-1" labelField="@name" enabled="false" change="branchChange(event)"/>
+		<mx:Label x="378" y="65" text="{commonFunction.getConstants('specilizationMandatory')}"/>
+		<mx:ComboBox x="481" y="62" width="160" id="specializationCombo" prompt="{commonFunction.getConstants('select')}" change="specializationChange(event)"
+		selectedIndex="-1" labelField="@name" enabled="false" toolTip="{specializationCombo.text}"/>
+		<mx:Label x="18" y="110" text="{commonFunction.getConstants('semesterMandatory')}" />
+		<mx:ComboBox x="160" y="107" width="160" id="semesterCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="semesterChange()" 
+			selectedIndex="-1" toolTip="{semesterCombo.text}"/>
+		<mx:Label x="18" y="154" text="{commonFunction.getConstants('semesterStartDate')}"/>
+		<mx:Label x="328" y="153" text="{commonFunction.getConstants('semesterEndDate')}"/>
+		<mx:Button x="227.5" y="204" enabled="false" id="resetbutton" click="refresh()" label="{commonFunction.getConstants('resetButton')}"/>
+		<mx:Button x="373" y="204" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelFunction()"/>
+		<mx:TextInput x="161" y="152" id="semesterStartDateField" editable="false"  width="160"/>
+		<mx:TextInput x="485" y="152" id="semesterEndDateField" editable="false"  width="160"/>
+	</mx:Canvas>
+
+    
+
+	<mx:Canvas id="manageDetailCanvas" styleName="GridCanvas"  visible="true" width="672.5" height="195" backgroundColor="#E2E2E2" x="20" y="292">
+		<mx:Label x="12" y="5" text="{commonFunction.getConstants('manageCourseDetails')}" fontWeight="bold" fontSize="12"/>
+		<mx:LinkButton x="516" y="3" enabled="false" label="{commonFunction.getConstants('editButton')}" id="editbutton" click="openEditpopup()"/>
+	    <mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" width="69" height="25" id="deleteButton" enabled="false" x="568" click="deleteOrNot()" y="2"/>
+		<mx:DataGrid id="manageInstructorGrid" width="651.5" height="143" horizontalScrollPolicy="off" textAlign="center" 
+		sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="34">
+		<mx:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" width="55"  sortable="false" textAlign="center" editorDataField="selected" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+	   			<mx:Component>
+	   				<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.manageInstructorGrid,[outerDocument.editbutton],[outerDocument.deleteButton])">
+	 					<mx:Script>
+	                       <![CDATA[
+	                           import common.commonFunction;
+	                           import mx.controls.LinkButton;
+	                       ]]>
+	                    </mx:Script>
+	                </mx:CheckBox>
+	            </mx:Component>
+	        </mx:itemRenderer>
+	    </mx:DataGridColumn>
+		<mx:DataGridColumn editable="false" dataField="courseCode" headerText="{commonFunction.getConstants('courseCode')}" width="230" sortable="true" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" dataField="courseName" headerText="{commonFunction.getConstants('courseName')}" width="230" sortable="true" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" dataField="employeeName" headerText="{commonFunction.getConstants('instructorName')}" width="290" sortable="true" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" dataField="employeeCode" headerText="{commonFunction.getConstants('instructorCode')}" width="290" sortable="true" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="290" sortable="true" showDataTips="true"/>
+		</mx:columns>
+		</mx:DataGrid>
+     </mx:Canvas>		
+</mx:Panel>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+<sqlMap namespace="externalExaminerCourse">
+	<typeAlias alias="externalExaminerCourse"
+		type="in.ac.dei.edrp.cms.domain.externalexaminercourse.ExternalExaminerCourseInfoGetter" />
+
+
+
+	<resultMap id="coursesList" class="externalExaminerCourse">
+
+		<result property="componentId" column="component_id" />
+		<result property="componentDescription" column="component_description" />
+
+	</resultMap>
+
+	<select id="getcoursesList" resultMap="coursesList">
+
+		select course_code as
+		component_id,course_name as component_description from course_master
+		where university_code=#universityCode#  and internal_external_active='1';
+	</select>
+
+	<select id="getexaminersList" resultMap="coursesList">
+
+		select examinar_id as
+		component_id,concat_ws(' ',first_name,middle_name,last_name) as
+		component_description from
+		external_examinar_detail where examinar_id
+		NOT
+		IN(select external_examinar from
+		external_examinar_course where
+		course_code=#courseCode# AND university_code=#universityCode#)
+		AND university_code=#universityCode#;
+	</select>
+
+	<insert id="insertRecord">
+
+		insert into external_examinar_course
+		(university_code,
+		external_examinar, course_code,
+		insert_time,
+		creator_id,first_exam_date,second_exam_date,third_exam_date,first_exam_time,second_exam_time,third_exam_time,session_start_date,session_end_date)
+		values(#universityCode#,#externalExaminerId#,#courseCode#,now(),
+		#userId#,#firstDate#,#secondDate#,#thirdDate#,#time#,#secondTime#,#thirdTime#,#sessionStartDate#,#sessionEndDate#);
+	
+	</insert>
+
+	<resultMap id="recordList" class="externalExaminerCourse">
+
+		<result property="courseCode" column="course_code" />
+		<result property="courseName" column="course_name" />
+		<result property="externalExaminerId" column="examinar_id" />
+		<result property="externalExaminerName" column="employee_name" />
+		<result property="firstDate" column="first_exam_date" />
+		<result property="secondDate" column="second_exam_date" />
+		<result property="thirdDate" column="third_exam_date" />
+		<result property="time" column="first_exam_time" />
+		<result property="secondTime" column="second_exam_time" />
+		<result property="thirdTime" column="third_exam_time" />
+	</resultMap>
+
+	<select id="getrecordsList" resultMap="recordList">
+
+		select
+		crs.course_code,crs.course_name,emp.examinar_id,concat_ws(' ',first_name,middle_name,last_name)
+		as employee_name,eec.first_exam_date,eec.second_exam_date,
+		eec.third_exam_date,eec.first_exam_time,eec.second_exam_time,eec.third_exam_time
+		from course_master
+		crs,external_examinar_detail
+		emp,external_examinar_course
+		eec where
+		eec.course_code=crs.course_code
+		AND
+		eec.external_examinar=emp.examinar_id AND
+		eec.course_code=#courseCode#
+		AND eec.university_code=#universityCode# AND eec.session_start_date=#sessionStartDate# AND eec.session_end_date=#sessionEndDate#;
+	
+	</select>
+
+	<delete id="deleteRecords">
+
+		delete from external_examinar_course where
+		external_examinar=#externalExaminerId# AND course_code=#courseCode#
+		AND university_code=#universityCode# AND session_start_date=#sessionStartDate# AND session_end_date=#sessionEndDate#;
+	
+	</delete>
+	
+	<update id="updateRecords">
+
+		update external_examinar_course set first_exam_date=#firstDate#,second_exam_date=#secondDate#,third_exam_date=#thirdDate#,
+		first_exam_time=#time#,second_exam_time=#secondTime#,third_exam_time=#thirdTime#,modification_time=now(),modifier_id=#userId# where
+		external_examinar=#externalExaminerId# AND course_code=#courseCode#
+		AND university_code=#universityCode# AND session_start_date=#sessionStartDate# AND session_end_date=#sessionEndDate#;
+	
+	</update>
+
+
+</sqlMap>

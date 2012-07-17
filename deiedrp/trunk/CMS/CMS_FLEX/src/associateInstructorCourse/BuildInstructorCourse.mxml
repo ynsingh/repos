@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) BuildInstructorCourse.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="552" height="386" layout="absolute"
+	creationComplete="moduleCreationCompleteHandler()" title="Build Instructor Course">
+	
+	<mx:HTTPService id="entityListHttpService" method="POST"
+		url="{urlPrefix+'entityList.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="entityListHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSessionHttpService" method="POST"
+		url="{urlPrefix+'getSession.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getSessionHttpResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="BuildInstructorCourseHttpService" method="POST"
+		url="{urlPrefix+'BuildInstructorCourse.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="BuildInstructorCourseHttpResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import mx.events.CloseEvent;
+			import mx.events.ListEvent;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import common.commonFunction;
+			
+			[Bindable]private var urlPrefix:String=""; 
+			[Embed(source="/images/error.png")]public var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/warning.png")]private var warningIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			private var entityList:XML;
+			private var sessionDetail:XML;
+			
+			private function moduleCreationCompleteHandler():void{
+				urlPrefix=commonFunction.getConstants('url')+"/associatecoursewithinstructor/";
+				
+				var param:Object= new Object();
+				param["time"]=new Date();
+				entityListHttpService.send(param);
+			}
+			
+			private function getSessionHttpResultHandler(event:ResultEvent):void{
+				sessionDetail=event.result as XML;
+				
+				if(sessionDetail.sessionConfirm == true){
+					Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+				}
+				
+				this.title= "Build Instructor Course, Session: ("+sessionDetail.SessionStartDate+" : "+sessionDetail.SessionEndDate+ ")";
+				var startDate:String = String(sessionDetail.SessionStartDate).substring(0,4);
+				var endDate:String = String(sessionDetail.SessionEndDate).substring(0,4);
+				buildButton.label="Build Session: ("+startDate+"-"+endDate+")";
+			}
+			
+			private function buildButtonClickHandler():void{
+				Alert.show(commonFunction.getMessages('conformForContinue'), commonFunction.getMessages('confirm'),3,this, confirmFunction,questionIcon);			
+			}
+			
+			private function confirmFunction(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					var param:Object= new Object();
+					param["time"]=new Date();
+					param["entityId"]=entityList.entity.(entityName==entityCombo.selectedLabel).entityId;
+					param["sessionStartDate"]=sessionDetail.SessionStartDate;
+					param["sessionEndDate"]=sessionDetail.SessionEndDate;
+					BuildInstructorCourseHttpService.send(param);
+					Mask.show(commonFunction.getMessages('pleaseWait'));	
+				}
+			}
+			
+			private function BuildInstructorCourseHttpResultHandler(event:ResultEvent):void{
+				var resultData:XML = event.result as XML;
+				
+				if(resultData.sessionConfirm == true){
+					Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+				}
+				
+				if(resultData.result.message=="datamissing"){
+					Alert.show(commonFunction.getMessages('dataMissing'),commonFunction.getMessages('info'),0,null,null,infoIcon);
+				}
+				else if(resultData.result.message=="success"){
+					Alert.show(commonFunction.getMessages('success'),commonFunction.getMessages('success'),0,null,null,successIcon);
+				}
+				else if(resultData.result.message=="error"){
+					Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('failure'),0,null,null,infoIcon);
+				}
+				else if(resultData.result.message=="noRecordFoundOfLastSession"){
+					Alert.show(commonFunction.getMessages('noRecordFoundInLastSession'),commonFunction.getMessages('info'),0,null,null,infoIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('failure'),0,null,null,errorIcon);
+				}
+				Mask.close();
+			}
+			
+			/**
+			 * @protected 
+			 * This function enables programcombo and make grid null on entity change 
+			 * @param event a ListEvent object.
+			 */
+			protected function entityChange():void{
+				buildButton.enabled=true;
+				var param:Object=new Object();
+				param["time"]=new Date();
+				param["entityId"]=entityList.entity.(entityName==entityCombo.selectedLabel).entityId;
+				getSessionHttpService.send(param);
+			}
+			
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function entityListHttpServiceResultHandler(event:ResultEvent):void{
+				entityList = event.result as XML
+				if(entityList.sessionConfirm == true){
+					Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+				}
+				
+				entityCombo.dataProvider=entityList.entity.entityName;
+			}
+			
+			/**
+			 * @private
+			 * this method is called when a failure come from the server. 
+			 * @param event a fault event object.
+			 */	
+			private function httpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Button x="68" y="218" id="buildButton" enabled="false" label="Build  Session" click="buildButtonClickHandler()"/>
+	<mx:Button x="353" y="218" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	<mx:Label x="115" y="66" text="{commonFunction.getConstants('entityMandatory')}" />
+	<mx:ComboBox x="199" y="64" width="160" id="entityCombo" toolTip="{entityCombo.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="entityChange()"/>
+	
+	
+</mx:Panel>

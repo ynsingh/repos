@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) MajorGroupWiseMeritList.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Major Group Wise Merit List" layout="absolute" width="640" height="522"
+		 creationComplete="applicationCreationHandler()">
+	
+	
+	<mx:HTTPService id="semesterListHttpService" method="POST"
+					url="{urlPrefix+'semesterList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="courseGroupListHttpService" method="POST"
+					url="{urlPrefix+'courseGroupList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="courseGroupListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="specializationListHttpService" method="POST"
+					url="{urlPrefix+'specializationList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="specializationListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="branchListHttpService" method="POST"
+					url="{urlPrefix+'branchList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="branchListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="programListHttpService" method="POST"
+					url="{urlPrefix+'getProgramList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="programListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	
+	<mx:HTTPService id="generatePDFHttpService" method="POST"
+					url="{urlPrefix+'generatePDF.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="generatePDFHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="entityListHttpService" method="POST"
+					url="{urlPrefix+'getEntityList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="entityListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import common.commonFunction;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.controls.LinkButton;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]var tempButton:LinkButton=new LinkButton;
+			[Bindable]protected var urlPrefix:String;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/warning.png")]private var warningIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;			
+			
+			protected var programListXml:XML
+			protected var branchList:XML;
+			protected var programCourseKeyList:XML;
+			protected var courseGroupList:XML;
+			protected var semesterList:XML;
+			protected var specializationList:XML;
+			protected var semesterListArrCol:ArrayCollection;
+			protected var selectedSemesterArrColl:ArrayCollection;
+			private var entityListXML:XML;
+			
+			protected function applicationCreationHandler():void{
+				urlPrefix=commonFunction.getConstants('url')+"/reports/";
+				var param:Object=new Object();
+				param["time"]=new Date();
+				entityListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+			
+			private function entityListHttpServiceResultHandler(event:ResultEvent):void{
+				entityListXML = event.result as XML;
+				
+				if(entityListXML.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		entityCB.dataProvider=entityListXML.entity.entityName;
+        		Mask.close();	
+			}
+			
+			private function entityCBChangeHandler():void{
+				var param:Object=new Object();
+				param["time"]=new Date();
+				param["entityId"]=entityListXML.entity.(entityName==entityCB.selectedLabel).entityId;				
+				programListHttpService.send(param);
+				
+				programCB.selectedIndex=-1;
+				branchCB.selectedIndex=-1;
+				specializationCB.selectedIndex=-1;
+				semesterGrid.dataProvider=null;
+				courseGroupCB.selectedIndex=-1;
+				courseGroupCB.enabled=false;
+				generateReportButton.enabled=false;					
+			}
+			
+			protected function courseGroupListHttpServiceResultHandler(event:ResultEvent):void{
+				courseGroupList = event.result as XML;
+				Mask.close();
+				if(courseGroupList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+        		if(String(courseGroupList).length==0){
+        			Alert.show(commonFunction.getMessages('courseGroupNotFound'),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+				
+				courseGroupCB.dataProvider=courseGroupList.courseGroup.group;
+				courseGroupCB.enabled=true;
+			}
+			
+			protected function semesterListHttpServiceResultHandler(event:ResultEvent):void{
+				semesterList = event.result as XML;
+				Mask.close();
+				if(semesterList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				
+				semesterListArrCol= new ArrayCollection();
+				for each (var o:Object in semesterList.semester)
+				{
+					semesterListArrCol.addItem({select:true,id:o.id, name:o.name});
+				}
+				
+				semesterGrid.dataProvider=semesterListArrCol;
+			}
+			
+			protected function specializationListHttpServiceResultHandler(event:ResultEvent):void{
+				specializationList = event.result as XML;
+				Mask.close();
+				if(specializationList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+				specializationCB.dataProvider.refresh();
+				specializationCB.dataProvider=specializationList.specialization.specializationName;
+				specializationCB.enabled=true;
+				specializationCB.selectedIndex=-1;
+			}
+			
+			protected function branchListHttpServiceResultHandler(event:ResultEvent):void{
+				branchList = event.result as XML;
+				Mask.close();
+				if(branchList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				branchCB.dataProvider.refresh();
+				branchCB.dataProvider=branchList.branch.branchName;
+				branchCB.enabled=true;
+			}
+			
+			protected function programListHttpServiceResultHandler(event:ResultEvent):void{
+				programListXml=event.result as XML;
+				Mask.close();
+				if(programListXml.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+				programCB.dataProvider=programListXml.program.programName;
+			}
+			
+			protected function generatePDFHttpServiceResultHandler(event:ResultEvent):void{
+				var serviceResult:XML= event.result as XML;
+				Mask.close();				
+				if(serviceResult.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				if(serviceResult.result.message=="studentsNotFound"){
+					Alert.show(commonFunction.getMessages('studentNotExist'),(commonFunction.getMessages('success')),4,null,null,warningIcon);	
+				}
+				else if(serviceResult.result.message=="success"){
+					Alert.show(commonFunction.getMessages('reportGeneratedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+				}
+			}
+			
+			protected function httpServiceFaultHandler(event:FaultEvent):void{
+				Mask.close();
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+			}
+			
+			protected function programCBChangeHandler():void
+			{
+				var param:Object=new Object();
+				branchCB.selectedIndex=-1;
+				specializationCB.enabled=false;
+				specializationCB.selectedIndex=-1;
+				param["programId"]=programListXml.program.(programName==programCB.selectedLabel).programId;
+				param["entityId"]=entityListXML.entity.(entityName==entityCB.selectedLabel).entityId;
+				branchListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				semesterGrid.dataProvider=null;
+				courseGroupCB.selectedIndex=-1;
+				courseGroupCB.enabled=false;
+				generateReportButton.enabled=false;
+			}
+
+
+			protected function branchCBChangeHandler():void
+			{
+				var param:Object=new Object();
+				param["programId"]=programListXml.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["entityId"]=entityListXML.entity.(entityName==entityCB.selectedLabel).entityId;
+				specializationListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				semesterGrid.dataProvider=null;
+				courseGroupCB.selectedIndex=-1;
+				courseGroupCB.enabled=false;
+				generateReportButton.enabled=false;
+			}
+
+
+			protected function specializationCBChangeHandler():void
+			{
+				var param:Object=new Object();
+				param["programId"]=programListXml.program.(programName==programCB.selectedLabel).programId;
+				semesterListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				courseGroupCB.selectedIndex=-1;
+				courseGroupCB.enabled=false;
+				generateReportButton.enabled=false;
+			}
+
+
+			protected function okButtonClickHandler(event:MouseEvent):void
+			{
+				var gridData:ArrayCollection=commonFunction.getSelectedRowData(semesterGrid);
+				selectedSemesterArrColl=new ArrayCollection();
+				
+				for each(var o:Object in gridData){
+					selectedSemesterArrColl.addItem([o.id]);
+				}
+				
+				var param:Object=new Object();
+				param["programId"]=programListXml.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["selectedSemester"]=selectedSemesterArrColl;
+				courseGroupListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+			
+			protected function generateReportButtonClickHandler():void{
+				var param:Object = new Object(); 
+				param["programId"]=programListXml.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["selectedSemester"]=selectedSemesterArrColl;
+				param["courseGroup"]=courseGroupCB.selectedItem;	
+				param["entityId"]=entityListXML.entity.(entityName==entityCB.selectedLabel).entityId;			
+				generatePDFHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+			
+
+			protected function courseGroupCBChangeHandler():void
+			{
+				generateReportButton.enabled=true;
+			}			
+
+
+			protected function resetButtonClickHandler():void
+			{
+				entityCB.selectedIndex=-1;
+				programCB.selectedIndex=-1;
+				branchCB.selectedIndex=-1;
+				branchCB.enabled=false;
+				specializationCB.selectedIndex=-1;
+				specializationCB.enabled=false;
+				semesterGrid.dataProvider=null;
+				courseGroupCB.selectedIndex=-1;
+				courseGroupCB.enabled=false;
+				generateReportButton.enabled=false;
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:Label x="72" y="46" text="{commonFunction.getConstants('entity')}:"/>
+	<mx:ComboBox x="146" y="43" id="entityCB" width="160" prompt="select" selectedIndex="-1" change="entityCBChangeHandler()" toolTip="{entityCB.text}"/>
+	<mx:Label x="62" y="87" text="{commonFunction.getConstants('program')}:"/>
+	<mx:ComboBox x="146" y="85" id="programCB" width="160" prompt="select" selectedIndex="-1" change="programCBChangeHandler()" toolTip="{programCB.text}"/>	
+	<mx:Label x="372" y="87" text="{commonFunction.getConstants('branch')}:"/>
+	<mx:ComboBox x="427" y="85" id="branchCB" width="160" prompt="select" selectedIndex="-1" change="branchCBChangeHandler()" toolTip="{branchCB.text}"/>
+	<mx:Label x="33" y="126" text="{commonFunction.getConstants('specialization')}:"/>
+	<mx:ComboBox x="146" y="124" width="160" id="specializationCB" prompt="select" selectedIndex="-1" change="specializationCBChangeHandler()" toolTip="{specializationCB.text}"/>
+	<mx:Label x="60" y="177" text="{commonFunction.getConstants('semester')}:"/>
+	<mx:Canvas styleName="SimpleCanvas" x="146" y="168" width="200" height="164">
+		<mx:DataGrid x="6" y="10" id="semesterGrid" allowMultipleSelection="true" width="188" height="108" 
+					 visible="true" resizableColumns="true" sortableColumns="true" verticalScrollPolicy="on" 
+					 horizontalScrollPolicy="off" draggableColumns="false" editable="true">
+			<mx:columns>
+				<mx:DataGridColumn rendererIsEditor="true" resizable="false" width="30" textAlign="center" sortable="false" editorDataField="selected" dataField="select" headerText=" ">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.semesterGrid,[],[outerDocument.tempButton])">
+								<mx:Script>
+								<![CDATA[
+									import common.commonFunction;
+									
+									import mx.controls.LinkButton;
+								]]>
+							</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn editable="false" dataField="name" headerText="{commonFunction.getConstants('semesters')}" width="230"/>			
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Button enabled="{tempButton.enabled}" x="78.5" y="126" id="okButton" label="OK" click="okButtonClickHandler(event)"/>
+	</mx:Canvas>
+	<mx:Label x="37" y="351" text="{commonFunction.getConstants('courseGroup')}:"/>
+	<mx:ComboBox x="146" y="349" id="courseGroupCB" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" enabled="false" width="160" 
+		change="courseGroupCBChangeHandler()" toolTip="{courseGroupCB.text}"/>
+	<mx:Button x="152.5" y="415" id="generateReportButton" enabled="false" label="{commonFunction.getConstants('generateReport')}" click="generateReportButtonClickHandler()"/>
+	<mx:Button x="356" y="415" id="resetButton" label="Reset" click="resetButtonClickHandler()"/>
+	<mx:Button x="472" y="415" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+</mx:Panel>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+
+<sqlMap namespace="programSwitch">
+	<typeAlias alias="programSwitch"
+		type="in.ac.dei.edrp.cms.domain.programswitch.ProgramSwitchInfoGetter" />
+
+	<resultMap id="records" class="programSwitch">
+
+		<result property="entityId" column="entity_id" />
+		<result property="entityName" column="entity_name" />
+		<result property="programId" column="program_id" />
+		<result property="programName" column="program_name" />
+		<result property="branchId" column="branch_code" />
+		<result property="branchName" column="branch_name" />
+		<result property="specializationId" column="specialization_code" />
+		<result property="specializationName" column="specialization_name" />
+
+
+	</resultMap>
+
+	<select id="getHeaderRecords" resultMap="records">
+
+		select
+		em.entity_name,em.entity_id,pm.program_id,pm.program_name,sys1.component_code
+		as branch_code,sys1.component_description as branch_name,
+		sys2.component_code as specialization_code,sys2.component_description
+		as specialization_name
+		from program_master pm,system_table_two
+		sys1,system_table_two
+		sys2,program_offered_by pch,entity_master em
+		where pch.offered_by=em.entity_id AND pch.program_id=pm.program_id AND
+		pch.branch_id=sys1.component_code AND
+		pch.specialization_id=sys2.component_code
+		AND sys1.group_code='BRNCOD'
+		AND sys2.group_code='SPCLCD' AND
+		sys1.university_code=sys2.university_code
+		AND
+		sys2.university_code=#universityCode# AND pch.program_id LIKE #flag#
+		AND em.entity_id LIKE #flag#;
+		
+	
+	</select>
+
+	<insert id="insertRecord">
+
+		insert into program_switch (switch_type, rule_id,
+		from_program, to_program,
+		from_branch, to_branch, from_specialization,
+		to_specialization,
+		from_semester, to_semester, insert_time,
+		creator_id,from_entity,to_entity)
+		values(#switchTypeId#,#switchRuleId#,#oldProgramId#,#programId#,
+		#oldBranchId#,#branchId#,#oldSpecializationId#,#specializationId#,
+		#oldSemesterCode#,#semesterCode#,now(),#userId#,#fromEntityId#,#entityId#);	
+	
+	</insert>
+
+
+	<resultMap id="definedRecords" class="programSwitch">
+
+		<result property="fromEntityId" column="from_entity_id" />
+		<result property="fromEntityName" column="from_entity_name" />
+		<result property="oldProgramId" column="from_program" />
+		<result property="oldProgramName" column="from_program_name" />
+		<result property="oldBranchId" column="from_branch_code" />
+		<result property="oldBranchName" column="from_branch_name" />
+		<result property="oldSpecializationId" column="from_specialization_code" />
+		<result property="oldSpecializationName" column="from_specialization_name" />
+		<result property="oldSemesterCode" column="from_semester_code" />
+		<result property="oldSemesterName" column="from_semester_name" />
+		<result property="entityId" column="to_entity_id" />
+		<result property="entityName" column="to_entity_name" />
+		<result property="programId" column="to_program" />
+		<result property="programName" column="to_program_name" />
+		<result property="branchId" column="to_branch_code" />
+		<result property="branchName" column="to_branch_name" />
+		<result property="specializationId" column="to_specialization_code" />
+		<result property="specializationName" column="to_specialization_name" />
+		<result property="semesterCode" column="to_semester_code" />
+		<result property="semesterName" column="to_semester_name" />
+		<result property="componentId" column="switch_type_id" />
+		<result property="componentDescription" column="switch_type" />
+		<result property="switchRuleId" column="rule_id" />
+
+	</resultMap>
+
+	<select id="getDefinedRecords" resultMap="definedRecords">
+
+		select
+		pswt.rule_id,em.entity_id as from_entity_id,em.entity_name as
+		from_entity_name,em1.entity_id as to_entity_id,em1.entity_name as
+		to_entity_name,pm.program_id as from_program,pm.program_name as
+		from_program_name, pm1.program_id as to_program,
+		pm1.program_name as to_program_name, sys1.component_code as
+		from_branch_code,sys1.component_description as from_branch_name,
+		sys2.component_code as
+		from_specialization_code,sys2.component_description as
+		from_specialization_name,
+		sys3.component_code as from_semester_code,sys3.component_description as
+		from_semester_name,sys4.component_code as to_branch_code,
+		sys4.component_description as to_branch_name, sys5.component_code as
+		to_specialization_code,
+		sys5.component_description as to_specialization_name, sys6.component_code as to_semester_code,
+		sys6.component_description as to_semester_name, sys7.component_code as
+		switch_type_id,sys7.component_description as switch_type
+		from entity_master em,entity_master em1,program_master pm, program_master
+		pm1,system_table_two sys1,system_table_two sys2,system_table_two sys3,
+		system_table_two sys4,system_table_two sys5,system_table_two
+		sys6,system_table_two sys7,program_switch pswt
+		where pswt.from_program=pm.program_id AND pswt.to_program=pm1.program_id
+		AND pswt.from_branch=sys1.component_code
+		AND pswt.from_specialization=sys2.component_code AND
+		pswt.from_semester=sys3.component_code
+		AND pswt.to_branch=sys4.component_code AND
+		pswt.to_specialization=sys5.component_code
+		AND pswt.to_semester=sys6.component_code AND
+		sys1.group_code=sys4.group_code
+		AND sys4.group_code='BRNCOD' AND sys2.group_code=sys5.group_code AND
+		sys5.group_code='SPCLCD'
+		AND sys3.group_code=sys6.group_code AND sys6.group_code='SEMCOD' AND
+		pswt.switch_type=sys7.component_code AND sys7.group_code='SWTTYP'
+		AND sys1.university_code=sys2.university_code AND
+		sys2.university_code=sys3.university_code
+		AND sys3.university_code=sys4.university_code AND
+		sys4.university_code=sys5.university_code
+		AND sys5.university_code=sys6.university_code AND
+		sys6.university_code=sys7.university_code
+		AND sys7.university_code=#universityCode# AND pswt.from_program LIKE
+		#flag# AND pswt.to_program LIKE #flag#
+		AND em.entity_id=pswt.from_entity AND em1.entity_id=pswt.to_entity;
+		
+	
+	</select>
+
+	<update id="updateRecord">
+
+		update program_switch set
+		rule_id=#switchRuleId#,to_entity=#entityId#,to_program=#programId#,
+		to_branch=#branchId#,to_specialization=#specializationId#,
+		to_semester=#semesterCode#,modification_time=now(),modifier_id=#userId#
+		where from_program=#oldProgramId# AND from_branch=#oldBranchId# AND
+		from_specialization=#oldSpecializationId# AND
+		from_semester=#oldSemesterCode# AND switch_type=#switchTypeId# AND
+		rule_id=#oldSwitchRuleId# AND from_entity=#fromEntityId#;
+	
+	</update>
+
+	<delete id="deleteRecord">
+
+		delete from program_switch where
+		rule_id=#switchRuleId# AND to_entity=#entityId# AND to_program=#programId# AND
+		to_branch=#branchId# AND to_specialization=#specializationId# AND
+		to_semester=#semesterCode# AND from_program=#oldProgramId# AND
+		from_branch=#oldBranchId# AND
+		from_specialization=#oldSpecializationId# AND
+		from_semester=#oldSemesterCode# AND switch_type=#switchTypeId# AND from_entity=#fromEntityId#;
+	
+	</delete>
+
+	<resultMap id="oldSemesters" class="programSwitch">
+
+		<result property="componentId" column="component_code" />
+		<result property="componentDescription" column="component_description" />
+
+	</resultMap>
+
+	<select id="getOldSemesterRecords" resultMap="oldSemesters">
+
+		select
+		component_code,component_description from system_table_two where
+		component_code IN(select semester_code from program_course_header
+		where program_id=#programId# AND branch_id=#branchId#
+		AND
+		specialization_id=#specializationId# AND semester_status='ACT') AND
+		group_code='SEMCOD' AND university_code=#universityCode#;
+	
+	</select>
+
+
+	<select id="getprograms4entity" resultClass="programSwitch">
+
+		select distinct
+		pm.program_id as componentId,pm.program_name
+		componentDescription,pob.offered_by from program_master
+		pm,program_offered_by pob where
+		pob.program_id=pm.program_id AND
+		pob.offered_by=#entityId#;
+	
+	</select>
+
+	<select id="getbranch4entityprogram" resultClass="programSwitch">
+
+		select
+		sys.component_code as componentId,sys.component_description
+		componentDescription
+		from system_table_two sys,program_offered_by pob
+		where
+		pob.program_id=#programId# AND pob.branch_id=sys.component_code
+		AND sys.group_code='BRNCOD'
+		AND
+		sys.university_code=substr(#entityId#,1,4) AND
+		pob.offered_by=#entityId#;
+	
+	</select>
+
+	<select id="getspecialization4entityprogrambranch" resultClass="programSwitch">
+
+		select distinct sys.component_code as
+		componentId,sys.component_description componentDescription
+		from
+		system_table_two sys,program_offered_by pob where
+		pob.program_id=#programId# AND
+		pob.specialization_id=sys.component_code
+		AND sys.group_code='SPCLCD'
+		AND sys.university_code=substr(#entityId#,1,4) AND
+		pob.offered_by=#entityId# AND pob.branch_id=#branchId#;
+	
+	</select>
+
+</sqlMap>

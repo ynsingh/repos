@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--/**
+ * @(#) CheckDuplicateStudent.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="checkDuplicateStudent">
+
+	<select id="getStudentsRecord" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select tsm.first_name as firstName, tsm.middle_name as middleName, tsm.last_name as lastName, date_of_birth as dateOfBirth,
+		tsm.category, tsm.gender, tsm.father_first_name as fatherFirstName, tsm.father_middle_name as fatherMiddleName, tsm.father_last_name as fatherLastName,
+		tsm.mother_first_name as motherFirstName, tsm.mother_middle_name as motherMiddleName, tsm.mother_last_name as motherLastName, tsm.student_id as studentId
+		from temp_student_master tsm, temp_student_program tsp 
+		where tsm.university_code=#universityId# and tsm.student_id=tsp.student_id and tsp.admission_mode='NEW' order by tsm.student_id;
+	</select>
+	
+	<select id="findDuplicateStudent" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select tsp.registration_number as registrationNumber, tsm.first_name as firstName, tsm.middle_name as middleName, tsm.last_name as lastName, date_of_birth as dateOfBirth,
+			category, gender, tsm.father_first_name as fatherFirstName, tsm.father_middle_name as fatherMiddleName, tsm.father_last_name as fatherLastName,
+			tsm.mother_first_name as motherFirstName, tsm.mother_middle_name as motherMiddleName, tsm.mother_last_name as motherLastName, tsp.student_id as studentId
+		from temp_student_master tsm, temp_student_program tsp 
+		where first_name=#firstName# and middle_name=#middleName# and last_name=#lastName# and 
+			father_first_name=#fatherFirstName# and father_middle_name=#fatherMiddleName# and father_last_name=#fatherLastName# and
+			mother_first_name=#motherFirstName# and mother_middle_name=#motherMiddleName# and mother_last_name=#motherLastName# and category=#category# and
+			gender=#gender# and date_of_birth=#dateOfBirth# and university_code=#universityId# and tsm.student_id=tsp.student_id and 
+			tsp.admission_mode='NEW';
+	</select>
+	
+	<select id="getDuplicateStudentsProgramInfo" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select tsp.program_id as programId, tsp.branch_id as branchId, tsp.specialization_id as specializationId, 
+		tsp.to_semester as semesterCode, tsp.student_id as studentId
+		from temp_student_program tsp where student_id=#studentId#;
+		
+	</select>
+	
+	<insert id="InsertDuplicateStudents" parameterClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		insert into temp_duplicate_student (university_code , registration_number, student_id, first_name, middle_name, last_name, father_first_name, 
+		father_middle_name, father_last_name, mother_first_name, mother_middle_name, mother_last_name, date_of_birth, gender, category, 
+		program_id, branch_id, specialization_id, to_semester, insert_time, creator_id) 
+		values (#universityId#, #registrationNumber#, #studentId#, #firstName#, #middleName#, #lastName#, #fatherFirstName#, #fatherMiddleName#, #fatherLastName#,
+		#motherFirstName#, #motherMiddleName#, #motherLastName#, #dateOfBirth#, #gender#, #category#, #programId#, #branchId#,
+		#specializationId#, #semesterCode#, now(), #creatorId#);
+	</insert>
+	
+	<delete id="cleanTempDuplicateStudentTable" parameterClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		delete from temp_duplicate_student where university_code=#universityId#;
+	</delete>
+	
+	<select id="getDuplicateRecordExistFlag" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select value as status from system_values where university_id=#universityId# and code='DUPEXT';
+	</select>
+	
+	<insert id="setDuplicateRecordExistFlag" parameterClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		insert into system_values (university_id, code, value, insert_time, creator_id) values 
+		(#universityId#, 'DUPEXT', #status#, now(), #creatorId#); 
+	</insert>
+	
+	<update id="updateDuplicateRecordExistFlag" parameterClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		update system_values set value=#status# where university_id=#universityId# and code='DUPEXT';
+	</update>
+	
+	<select id="getDuplicateStudentList" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select tds.university_code as universityId, student_id as studentId, registration_number as registrationNumber, concat_ws(' ',first_name, middle_name, last_name) as studentName,
+			concat_ws(' ',father_first_name, father_middle_name, father_last_name) as fatherName,
+			concat_ws(' ',mother_first_name, mother_middle_name, mother_last_name) as motherName,
+			date_of_birth as dateOfBirth, stt3.component_description as gender, stt4.component_description as category, tds.program_id as programId, pm.program_name as programName,
+	    	branch_id as branchId, stt.component_description as branchName, specialization_id as specializationId,
+	    	stt1.component_description as newSpecialization, to_semester as semesterCode, stt2.component_description as semester, tds.insert_time as insertTime
+		from temp_duplicate_student tds, program_master pm, system_table_two stt, system_table_two stt1,
+    		 system_table_two stt2, system_table_two stt3, system_table_two stt4
+		where tds.university_code=#universityId# and pm.program_id=tds.program_id and stt.component_code=tds.branch_id and
+	    	stt.group_code='BRNCOD' and stt1.component_code=tds.specialization_id and stt1.group_code='SPCLCD' and
+	    	stt2.component_code=tds.to_semester and stt2.group_code='SEMCOD' and stt3.component_code=tds.gender and
+        	stt3.group_code='GENDER' and stt4.component_code=tds.category and stt4.group_code='STDCTG' order by first_name;
+	</select>
+	
+	<select id="duplicateStudentList" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		SELECT tsm.university_code as universityId,tsm.first_name as firstName,tsm.middle_name as middleName, tsm.last_name as lastName,
+		tsm.father_first_name as fatherFirstName, tsm.father_middle_name as fatherMiddleName, tsm.father_last_name as fatherLastName,
+		tsm.mother_first_name as motherFirstName, tsm.mother_middle_name as motherMiddleName, tsm.mother_last_name as motherLastName,
+		tsm.date_of_birth as dateOfBirth, tsm.category as category,tsm.gender as gender,
+		tsp.student_id as studentId, tsp.program_id as programId, tsp.branch_id as branchId, tsp.specialization_id as specializationId, 
+		tsp.to_semester as toSemester, tsp.registration_number as registrationNumber
+		FROM temp_student_master tsm, temp_student_program tsp
+		WHERE CONCAT_WS(',',tsm.first_name,tsm.middle_name,tsm.last_name,
+		tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name,
+		tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name,tsm.date_of_birth,tsm.gender,tsm.category) IN(
+		SELECT CONCAT_WS(',',tsm.first_name,tsm.middle_name,tsm.last_name,
+		tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name,
+		tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name,tsm.date_of_birth,tsm.gender,tsm.category)as studentName
+		FROM temp_student_master tsm ,temp_student_program tsp
+		WHERE tsm.student_id=tsp.student_id AND tsp.admission_mode='NEW' AND
+		tsp.program_id=#programId# AND tsp.branch_id=#branchId# AND tsp.specialization_id=#specializationId# AND to_semester=#semesterCode#) AND
+		tsm.student_id=tsp.student_id AND tsp.admission_mode='NEW' AND tsp.program_id!=#programId#;
+	</select>
+	
+	<select id="getStudents" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select tsm.first_name as firstName, tsm.middle_name as middleName, tsm.last_name as lastName, date_of_birth as dateOfBirth,
+		tsm.category, tsm.gender, tsm.father_first_name as fatherFirstName, tsm.father_middle_name as fatherMiddleName, tsm.father_last_name as fatherLastName,
+		tsm.mother_first_name as motherFirstName, tsm.mother_middle_name as motherMiddleName, tsm.mother_last_name as motherLastName, tsm.student_id as studentId
+		from temp_student_master tsm, temp_student_program tsp 
+		where tsm.university_code=#universityId# and tsm.student_id=tsp.student_id and tsp.admission_mode='NEW' and 
+		tsp.program_id=#programId# and tsp.branch_id=#branchId# and tsp.specialization_id=#specializationId# and tsp.to_semester=#semesterCode#;
+	</select>
+	
+	<insert id="InsertDuplicateStudentList" parameterClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		insert into temp_duplicate_student (university_code , registration_number, student_id, first_name, middle_name, last_name, father_first_name, 
+		father_middle_name, father_last_name, mother_first_name, mother_middle_name, mother_last_name, date_of_birth, gender, category, 
+		program_id, branch_id, specialization_id, to_semester, insert_time, creator_id, program_course_key) 
+		values (#universityId#, #registrationNumber#, #studentId#, #firstName#, #middleName#, #lastName#, #fatherFirstName#, #fatherMiddleName#, #fatherLastName#,
+		#motherFirstName#, #motherMiddleName#, #motherLastName#, #dateOfBirth#, #gender#, #category#, #programId#, #branchId#,
+		#specializationId#, #toSemester#, now(), #creatorId#, #programCourseKey#);
+	</insert>
+	
+	<select id="duplicateStudentOnProgram" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select tsm.university_code as universityId,tsp.registration_number as registrationNumber, tsm.first_name as firstName, tsm.middle_name as middleName, tsm.last_name as lastName, date_of_birth as dateOfBirth,
+			category, gender, tsm.father_first_name as fatherFirstName, tsm.father_middle_name as fatherMiddleName, tsm.father_last_name as fatherLastName,
+			tsm.mother_first_name as motherFirstName, tsm.mother_middle_name as motherMiddleName, tsm.mother_last_name as motherLastName, tsp.student_id as studentId,
+			tsp.program_id as programId, tsp.branch_id as branchId, tsp.specialization_id as specializationId, tsp.to_semester as toSemester
+		from temp_student_master tsm, temp_student_program tsp 
+		where first_name=#firstName# and middle_name=#middleName# and last_name=#lastName# and 
+			father_first_name=#fatherFirstName# and father_middle_name=#fatherMiddleName# and father_last_name=#fatherLastName# and
+			mother_first_name=#motherFirstName# and mother_middle_name=#motherMiddleName# and mother_last_name=#motherLastName# and category=#category# and
+			gender=#gender# and date_of_birth=#dateOfBirth# and university_code=#universityId# and tsm.student_id=tsp.student_id and 
+			tsp.admission_mode='NEW' and tsp.program_id=#programId# and tsp.branch_id=#branchId# and tsp.specialization_id=#specializationId# and
+			tsp.to_semester=#toSemester#;
+	</select>
+	
+	<delete id="cleanDupliStuTable" parameterClass="in.ac.dei.edrp.cms.domain.activitymaster.StartActivityBean">
+		delete from temp_duplicate_student where university_code=#universityId#;
+	</delete>
+	
+	<select id="getPCKOfDuplicateStudent" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		select program_course_key as programCourseKey from program_course_header where program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and semester_code=#toSemester# and semester_status='ACT';
+	</select>
+	
+</sqlMap>

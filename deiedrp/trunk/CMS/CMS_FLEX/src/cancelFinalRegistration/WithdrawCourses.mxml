@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) WithdrawCourses.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *	Author:Ashish Mohan
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1090" height="756" creationComplete="onCreationComplete()" title="{commonFunction.getConstants('withdrawCourses')}" fontFamily="Verdana" fontSize="12" color="#000000">
+	<mx:Script source="WithdrawCoursesAction.as"/>
+	
+	<mx:HTTPService id="httpStudentDetails" method="post"
+        url="{commonFunction.getConstants('url')+'/cancelfinalregistration/getStudentDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_StudentDetails(event)"
+        fault="fault(event)"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="getCourseDetails"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')+'/addDropCourse/getStudentCourseList.htm'}"
+		result="getStudentCourseSuccess(event)"
+		fault="fault(event)"/>
+	
+
+	
+	<mx:HTTPService id="getAvailbaleCourse"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')+'/addDropCourse/getCourseAvailable.htm'}"
+		result="getAvailbaleCourseSuccess(event)"
+		fault="fault(event)"/>
+		
+	<mx:HTTPService id="addDropCourse"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{commonFunction.getConstants('url')+'/addDropCourse/addDropStudentCourse.htm'}"
+		result="addDropCourseSuccess(event)"
+		fault="fault(event)"/>
+	
+	<mx:HTTPService id="getCourseTypeSummary" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCourseTypeSummary.htm'}"
+        resultFormat="e4x"
+        result="typeSummarySuccess(event)"
+        fault="fault(event)"
+        useProxy="false"/>        
+        
+	<mx:HTTPService id="getTermDetailsSummary" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCreditDetailsFromTermDetails.htm'}"
+        resultFormat="e4x"
+        result="termSummarySuccess(event)"
+        fault="fault(event)"
+        useProxy="false"/>
+	
+	<mx:Label x="154" y="21" text="{commonFunction.getConstants('enterRollNo')}:" fontWeight="bold" fontThickness="10" />
+	<mx:TextInput id="regRollText" x="355" y="19" width="200" restrict="0-9"/>
+	<mx:Button x="563" y="19" label="Submit" id="regSubmitButton" click="onRegSubmit()"/>
+	<mx:Button x="644" y="19" label="Cancel" id="regCancelButton" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	
+	<mx:Canvas id="dropCourseCanvas" visible="false"  y="62" width="1036" x="21" height="642">
+		<mx:TitleWindow  width="987" layout="absolute" title="{resourceManager.getString('Constants','personalDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" x="21.5" y="10" height="119">
+			<mx:Label x="30" y="10" text="{commonFunction.getConstants('studentName')}"/>
+			<mx:Label x="369" y="10" text="{commonFunction.getConstants('fatherName')}"/>
+			<mx:Label x="670" y="10" text="{commonFunction.getConstants('motherName')}"/>
+			<mx:Label x="30" y="40" text="{commonFunction.getConstants('dateOfBirth')}"/>
+			<mx:Label x="369" y="40" text="{commonFunction.getConstants('gender')}"/>
+			<mx:Label x="670" y="40" text="{commonFunction.getConstants('category')}"/>
+			<mx:TextInput id="studentName" enabled="false" x="165" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="fatherName" enabled="false" x="469" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="motherName" enabled="false" x="770" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="dob" enabled="false" x="165" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="gender" enabled="false" x="469" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="category" enabled="false" x="770" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		</mx:TitleWindow>    
+		<mx:TitleWindow width="987" layout="absolute" title="{commonFunction.getConstants('academicDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" color="#000000" x="21.5" y="137" height="146">
+			<mx:Label x="28" y="10" text="{commonFunction.getConstants('registrationRollNo')}"/>
+			<mx:Label x="365" y="10" text="{commonFunction.getConstants('enrollmentNo')}"/>
+			<mx:TextInput id="rollNoText" enabled="false" x="163" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="enrollmentNoText" enabled="false" x="466" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:Label x="365" y="40" text="{commonFunction.getConstants('semester')}"/>
+			<mx:Label x="670" y="40" text="{commonFunction.getConstants('attemptNo')}"/>
+			<mx:TextInput id="semesterText" enabled="false" x="466" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="attemptNoText" enabled="false" x="770" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput x="163" y="40" id="specializationText" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:Label x="28" y="40" text="{commonFunction.getConstants('specialization')}"/>
+			<mx:Label x="28" y="72" text="{commonFunction.getConstants('belongsTo')}"/>
+			<mx:Label x="365" y="72" text="{commonFunction.getConstants('programName')}"/>
+			<mx:Label x="670" y="72" text="{commonFunction.getConstants('branch')}"/>
+			<mx:TextInput id="belongsToText" enabled="false" x="163" y="70" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="programNameText" enabled="false" x="466" y="70" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="branchNameText" enabled="false" x="770" y="70" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		</mx:TitleWindow>
+		
+		<mx:Label x="21.5" y="303" id="dropComboLabel" visible="false"  text="{commonFunction.getConstants('selectWithdrawCourse')}" fontWeight="bold"/>
+		<mx:ComboBox toolTip="{dropCourseCombo.text}" id="dropCourseCombo" visible="false" prompt="{commonFunction.getConstants('select')}" change="onDropCourseSelect()" x="328" y="300" width="200" />
+		<mx:Label id="dropCredit" x="535" y="303" fontThickness="8" visible="false"/>
+		<mx:Label x="21.5" y="351" id="addLabel" text="Select Course Which You Want To Opt" visible="false" fontWeight="bold"/>
+		<mx:Canvas styleName="GridCanvas" id="addCourseCanvas" visible="false"  x="21.5" y="379" height="225" width="650">
+			<mx:LinkButton  x="8" y="192" click="onAddDropSubmit()" id="addDropSubmitButton" label="Submit"/>
+			<mx:DataGrid id="addCourseGrid" x="15" y="39" height="150" creationComplete="commonFunction.showDataTips(addCourseGrid)" resizableColumns="true"  horizontalScrollPolicy="off" textAlign="center" sortableColumns="true" draggableColumns="false" editable="true">
+				<mx:columns>
+				    <mx:DataGridColumn  rendererIsEditor="true" width="20" textAlign="center" editorDataField="selected" sortable="false" dataField="select" headerText="">
+				    	<mx:itemRenderer>
+				    	  	<mx:Component>
+				    	  		<mx:CheckBox toolTip="{commonFunction.getConstants('select')}">
+				    	  		<mx:Script>
+					      			<![CDATA[
+					      				import common.commonFunction;
+					      			]]>
+					      		</mx:Script>	
+				    	  		</mx:CheckBox>
+				    	  	</mx:Component>
+				    	</mx:itemRenderer>
+				    </mx:DataGridColumn>
+					<mx:DataGridColumn editable="false" width="150" headerText="Course Code" dataField="courseCode"/>
+					<mx:DataGridColumn editable="false" width="200" headerText="Course Name" dataField="courseName"/>
+					<mx:DataGridColumn editable="false" width="150" headerText="Course Type" dataField="courseType"/>
+					<mx:DataGridColumn editable="false" width="100" headerText="Credits" dataField="credits"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Label x="14" y="8" text="Course Group"/>
+			<mx:Label id="courseGroupLabel" x="115" y="8" toolTip="{courseGroupLabel.text}" width="243" fontWeight="bold" fontStyle="italic"/>
+			<mx:Label x="380" y="8" text="Min Credits"/>
+			<mx:Label id="minCreditLabel" x="464" y="8" fontWeight="bold" fontStyle="italic" width="30"/>
+			<mx:Label x="516" y="8" text="Max Credits"/>
+			<mx:Label id="maxCreditLabel" x="604" y="8" fontWeight="bold" fontStyle="italic" width="30"/>
+		</mx:Canvas>
+	</mx:Canvas>
+</mx:Panel>

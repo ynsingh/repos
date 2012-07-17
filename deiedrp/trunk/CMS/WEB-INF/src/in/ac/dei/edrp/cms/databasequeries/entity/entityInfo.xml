@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+    <!--
+/*
+ * @(#) entityInfo.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<sqlMap namespace="entityInfo">
+	<typeAlias alias="entityInformation" type="in.ac.dei.edrp.cms.domain.entity.EntityInfoGetter" />
+
+	<resultMap id="selectUniId" class="entityInformation">
+
+		<result property="entityId" column="entity_id" />
+
+	</resultMap>
+
+	<select id="selectNextUniEntityID" resultMap="selectUniId">
+<!--		select MAX(substr(entity_id,5,8)) entity_id from entity_master where-->
+<!--		entity_id LIKE #value#-->
+select concat(university_id,value) entity_id from system_values where university_id=#universityId# and 
+code='ENTYCD'
+  </select>
+
+
+	<select id="selectParentEntity" resultMap="selectUniId">
+		select entity_id from entity_master where entity_name=#parentEntityName#
+  </select>
+
+<select id="getChildListForDelete" resultMap="selectUniId">
+select entity_id from entity_master where parent_entity_id=#entityId#
+</select>
+
+
+	<insert id="insertNewEntity">
+		insert into entity_master
+		(university_id,entity_id,entity_type,entity_name,entity_address,
+		entity_city,entity_state,entity_phone,entity_fax,parent_entity_id,level,insert_time,creator_id,
+		location_id,entity_code,knownby,entity_pincode) values
+		(#universityId#,#entityId#,#entityType#,#entityName#,#entityAddress#,
+		#entityCity#,#entityState#,#entityPhone#,#fax#,#parentEntityId#,#level#,now(),#creatorId#,
+		#locationId#,#entityCode#,#knownBy#,#pinCode#)
+ </insert>
+
+
+	<resultMap id="selectEntityType" class="entityInformation">
+
+		<result property="entityType" column="entity_type" />
+		<result property="level" column="level" />
+
+	</resultMap>
+	<select id="selectEntityType" resultMap="selectEntityType">
+		select component_code entity_type,dummy_flag_one level from system_table_two where
+		component_code=#entityType# AND university_code=#universityId# and active=1 and group_code='ENTTYP';
+  </select>
+
+
+
+<resultMap id="selectentityList" class="entityInformation">
+	<result property="entityId" column="entity_id" />
+		<result property="entityName" column="entity_name" />
+	</resultMap>
+
+
+<select id="getLocationList" resultMap="selectentityList">
+select component_code entity_id,component_description entity_name from system_table_two where 
+ group_code='LCNMST' and university_code=#universityId# and active=1
+</select>
+
+
+<resultMap id="selectentityDetails" class="entityInformation">
+	<result property="entityId" column="entity_id" />
+		<result property="entityName" column="entity_name" />
+		<result property="level" column="level" />
+	</resultMap>
+
+<select id="entityList" resultMap="selectentityDetails">
+select component_code entity_id,component_description entity_name,dummy_flag_one level from system_table_two 
+where university_code=#universityId# and  group_code='ENTTYP' and active=1 order by dummy_flag_one;
+</select>
+
+<select id="parentList" resultMap="selectentityList">
+ select entity_id,concat(entity_name,'(',entity_code,')') entity_name from entity_master where university_id=#universityId# and
+  level NOT IN ( select level from entity_master where university_id=#universityId# AND level >= #level#)
+</select>
+
+<select id="selectParentUni" resultMap="selectentityList">
+		select university_code entity_id,university_name entity_name from university_master where university_code=#universityId# and current_status='1'
+</select>
+
+
+<resultMap id="selectentityCityList" class="entityInformation">
+		<result property="entityCity" column="entity_city" />
+</resultMap>
+
+
+<select id="entityCityList" resultMap="selectentityCityList">
+
+select entity_city from entity_master where university_id=#universityId# AND entity_type=#entityType#
+
+</select>
+
+<!--<select id="entityNameList" resultMap="selectentityList">-->
+<!---->
+<!--select entity_name from entity_master where university_id=#university_id# AND entity_type=#entity_type#-->
+<!---->
+<!--</select>-->
+
+<resultMap id="selectentityDetailsForManage" class="entityInformation">
+		<result property="entityId" column="entity_id" />
+		<result property="entityName" column="entity_name" />
+		<result property="entityAddress" column="entity_address" />
+		<result property="entityCity" column="entity_city" />
+		<result property="entityState" column="entity_state" />
+		<result property="entityPhone" column="entity_phone" />
+		<result property="fax" column="fax" />
+		<result property="parentEntityName" column="parent_entity" />
+		<result property="parentEntityId" column="parent_entity_id" />
+		<result property="entityCode" column="entity_code" />
+		<result property="locationId" column="location_id" />
+		<result property="location" column="location" />
+		<result property="knownBy" column="knownby" />
+		<result property="pinCode" column="entity_pincode" />
+		
+</resultMap>
+
+<select id="selectFromName" resultMap="selectentityDetailsForManage">
+select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,
+e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,
+e.entity_fax fax,b.entity_id parent_entity_id,concat(b.entity_name,'(',b.entity_code,')') parent_entity ,e.entity_code entity_code,
+e.location_id location_id, stt.component_description location,e.knownby,e.entity_pincode  
+from 
+entity_master e, entity_master b, system_table_two stt where e.university_id=#universityId#  
+AND e.parent_entity_id = b.entity_id AND e.level=#entityType# AND 
+stt.group_code='LCNMST' and stt.university_code=e.university_id and stt.active=1 AND 
+stt.component_code=e.location_id
+
+</select>
+
+<update id="updateSystemValues">
+update system_values set value=#formatted# where code='ENTYCD'
+</update>
+
+<select id="selectFromCity" resultMap="selectentityDetailsForManage">
+select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,
+e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,
+e.entity_fax fax,b.entity_name parent_entity_id,e.entity_code entity_code,e.location_id location_id, stt.component_description location  from
+entity_master e, entity_master b, system_table_two stt where e.university_id=#universityId# 
+AND e.parent_entity_id = b.entity_id AND e.entity_type=#entityType# AND 
+stt.group_code='LCNMST' and stt.university_code=e.university_id and stt.active=1 AND 
+stt.component_code=e.location_id
+
+</select>
+
+
+
+<select id="selectFromNameUniWise" resultMap="selectentityDetailsForManage">
+select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,
+e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,
+e.entity_fax fax,b.university_code parent_entity_id,university_name parent_entity, 
+e.entity_code entity_code,e.location_id location_id, stt.component_description location,e.knownby,e.entity_pincode 
+  from
+entity_master e, university_master b, system_table_two stt where e.university_id=#universityId#  
+AND e.parent_entity_id = b.university_code AND e.level=#entityType# AND 
+stt.group_code='LCNMST' and stt.university_code=e.university_id and stt.active=1 AND 
+stt.component_code=e.location_id and b.current_status='1'
+
+</select>
+
+<!--<select id="selectFromCityUniWise" resultMap="selectentityDetailsForManage">-->
+<!--select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,-->
+<!--e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,-->
+<!--e.entity_fax fax,university_name parent_entity_id,e.entity_code entity_code,e.location_id location_id, stt.component_description location  from-->
+<!--entity_master e, university_master b, system_table_two stt where e.university_id=#universityId# -->
+<!--AND e.parent_entity_id = b.university_code AND e.level=#entityType# AND -->
+<!--stt.group_code='LCNMST' and stt.university_code=e.university_id and stt.active=1 AND -->
+<!--stt.component_code=e.location_id-->
+<!---->
+<!--</select>-->
+
+
+
+
+
+
+<!--<select id="parentEntityName" resultMap="selectentityList">-->
+<!---->
+<!--select entity_name from entity_master where entity_id=#entityId#-->
+<!---->
+<!--</select>-->
+<!---->
+<!--<select id="universityName" resultMap="selectentityList">-->
+<!---->
+<!--select university_code entity_id,university_name entity_name from university_master where university_code=#univId# and current_status='1'-->
+<!---->
+<!--</select>-->
+<select id="getChildList" resultMap="selectentityList">
+select entity_name,entity_id from entity_master where parent_entity_id=#entityId#
+</select>
+
+<update id="updateEntity">
+update entity_master set entity_name=#entityName#, parent_entity_id=#parentEntityId#,
+entity_address=#entityAddress#,entity_code=#entityCode#,location_id=#locationId#,
+entity_city=#entityCity#, entity_state=#entityState#, entity_phone=#entityPhone#, entity_fax=#fax#,
+knownby=#knownBy#,entity_pincode=#pinCode#,
+modification_time=now(),modifier_id=#modifierId#
+where entity_id=#entityId#
+</update>
+
+<delete id="deleteEntity">
+delete from entity_master where entity_id=#entityId#
+</delete>
+
+
+
+
+
+ 
+
+
+
+
+</sqlMap>

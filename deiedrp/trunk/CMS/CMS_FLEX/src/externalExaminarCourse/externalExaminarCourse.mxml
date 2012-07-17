@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) externalExaminarCourse.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setFirstFocous(courseCodeCombo)" xmlns:common="common.*" title="{commonFunction.getConstants('externalExaminarCourse')}" layout="absolute" width="846" height="555">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/externalExaminarCourseAction.as"/>   
+	
+	
+	<mx:HTTPService id="getcoursesList" method="post"
+					url="{commonFunction.getConstants('url')}/externalExaminerCourse/getCourseDetails.htm"
+					resultFormat="e4x"
+					result="onCoursesSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getexaminerList" method="post"
+					url="{commonFunction.getConstants('url')}/externalExaminerCourse/getExaminerDetails.htm"
+					resultFormat="e4x"
+					result="onExaminerSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setDetails" method="post"
+					url="{commonFunction.getConstants('url')}/externalExaminerCourse/setDetails.htm"
+					resultFormat="e4x"
+					result="onSetSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseRecords" method="post"
+					url="{commonFunction.getConstants('url')}/externalExaminerCourse/getCourseExaminerDetails.htm"
+					resultFormat="e4x"
+					result="onRecordsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteExaminerCourseRecords" method="post"
+					url="{commonFunction.getConstants('url')}/externalExaminerCourse/deleteExaminerReocrd.htm"
+					resultFormat="e4x"
+					result="onDeleteSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+			<mx:DateFormatter id="dateFormatter" formatString="YYYY/MM/DD"/>
+      	    <mx:Canvas styleName="SimpleCanvas" x="22" y="10" width="785" height="281">
+			<mx:Label x="51" y="33" text="{commonFunction.getConstants('courseCode')}*"/>
+			<mx:ComboBox x="186" y="30" id="courseCodeCombo" selectedIndex="-1" width="160" prompt="{commonFunction.getConstants('select')}"
+			 change="courseCodeChange()" labelField="id" enabled="true" toolTip="{courseCodeCombo.text}"></mx:ComboBox>
+			<mx:Label x="373" y="33" text="{commonFunction.getConstants('externalExaminar')}*"/>
+			<mx:ComboBox x="505" y="30" id="externalExaminarCombo" width="160" prompt="{commonFunction.getConstants('select')}" labelField="description"  
+			  change="externalExaminarChnage()" enabled="false" toolTip="{externalExaminarCombo.selectedItem}"></mx:ComboBox>
+			<mx:Button x="284" y="214" label="{commonFunction.getConstants('saveButton')}" enabled="false" id="savebutton" click="saveDetails()"/>
+			<mx:Button x="371" y="214" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancel()"/>
+			
+			<mx:NumericStepper id="timeInHour" minimum="0" maximum="23" x="505" y="70" width="44"/>
+			<mx:Label x="551" y="72" text="{commonFunction.getConstants('hour')}" width="39" />
+			<mx:NumericStepper id="timeInMinute" minimum="0" maximum="59" x="590" y="70" width="44"/>
+			<mx:Label x="634" y="72" text="{commonFunction.getConstants('mins')}" width="38" />
+			
+			<mx:NumericStepper id="secondTimeInHour" minimum="0" maximum="23" x="505" y="110" width="44" visible="false"/>
+			<mx:Label x="551" y="112" id="secondHourLabel" text="{commonFunction.getConstants('hour')}" width="39" visible="false" />
+			<mx:NumericStepper id="secondTimeInMinute" minimum="0" maximum="59" x="590" y="110" width="44" visible="false"/>
+			<mx:Label x="634" y="112" id="secondMinLabel" text="{commonFunction.getConstants('mins')}" width="38" visible="false" />
+			
+			<mx:NumericStepper id="thirdTimeInHour" minimum="0" maximum="23" x="505" y="150" width="44" visible="false"/>
+			<mx:Label x="551" y="152" id="thirdHourLabel" text="{commonFunction.getConstants('hour')}" width="39" visible="false" />
+			<mx:NumericStepper id="thirdTimeInMinute" minimum="0" maximum="59" x="590" y="150" width="44" visible="false"/>
+			<mx:Label x="634" y="152" id="thirdMinLabel" text="{commonFunction.getConstants('mins')}" width="38" visible="false" />
+			
+			
+			
+			<mx:Label x="51" y="72" text="{commonFunction.getConstants('firstDate')}*" width="131"/>
+			<mx:Label x="51" y="112" text="{commonFunction.getConstants('secondDate')}" width="131"/>
+			<mx:Label x="51" y="152" text="{commonFunction.getConstants('thirdDate')}" width="131"/>
+			<mx:Label x="373" y="72" text="{commonFunction.getConstants('time')}*" width="131"/>
+			<mx:Label x="373" y="112" id="secondTimeLabel" text="{commonFunction.getConstants('time')}" width="131"/>
+			<mx:Label x="373" y="152" id="thirdTimeLabel" text="{commonFunction.getConstants('time')}" width="131"/>
+			
+			<mx:DateField x="186" id="firstDate" y="70" width="160" formatString="YYYY/MM/DD"/>
+			<mx:DateField x="186" id="secondDate" close="visibleSecondTime()" y="110" width="160" formatString="YYYY/MM/DD"/>
+			<mx:DateField x="186" id="thirdDate"  close="visibleThirdTime()" y="150" width="160" formatString="YYYY/MM/DD"/>
+			
+			</mx:Canvas>
+			
+	        <mx:Canvas  styleName="GridCanvas" x="22" y="309" width="785" height="179">
+	        <mx:LinkButton x="664" y="3" label="{commonFunction.getConstants('editButton')}" id="editButton" enabled="false" click="openEditWindow()"/>
+	        <mx:LinkButton x="712" y="3" label="{commonFunction.getConstants('deleteButton')}" id="deletebutton" enabled="false" click="deleteOrNot()"/>
+			<mx:DataGrid id="externalExaminarCourseGrid" creationComplete="commonFunction.showDataTips(externalExaminarCourseGrid)" width="764" height="137" horizontalScrollPolicy="off" 
+	 		 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="26">
+			<mx:columns>
+			<mx:DataGridColumn  width="45" rendererIsEditor="true" textAlign="center" sortable="false" 
+						        editorDataField="selected" resizable="false" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+   			<mx:Component>
+   			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.externalExaminarCourseGrid,[outerDocument.editButton],[outerDocument.deletebutton])">
+ 			<mx:Script>
+             <![CDATA[
+                        import common.commonFunction;
+                        import mx.controls.LinkButton;
+               ]]>
+            </mx:Script>			
+			</mx:CheckBox>
+            </mx:Component>
+            </mx:itemRenderer>
+            </mx:DataGridColumn>
+			<mx:DataGridColumn editable="false" dataField="courseCode" headerText="{commonFunction.getConstants('courseCode')}" textAlign="center" width="205" sortable="true"/>
+			<mx:DataGridColumn editable="false" dataField="externalExaminerName" headerText="{commonFunction.getConstants('externalExaminar')}" width="300" textAlign="center" sortable="true"/>
+			<mx:DataGridColumn editable="false" dataField="firstDate" headerText="{commonFunction.getConstants('firstDate')}" textAlign="center" width="290" sortable="true"/>
+			<mx:DataGridColumn editable="false" dataField="time" headerText="{commonFunction.getConstants('time')}" width="185" textAlign="center" sortable="true"/>
+			<mx:DataGridColumn editable="false" dataField="secondDate" headerText="{commonFunction.getConstants('secondDate')}" width="300" textAlign="center" sortable="true"/>
+			<mx:DataGridColumn editable="false" dataField="secondTime" headerText="{commonFunction.getConstants('time')}" width="185" textAlign="center" sortable="true"/>
+			<mx:DataGridColumn editable="false" dataField="thirdDate" headerText="{commonFunction.getConstants('thirdDate')}" textAlign="center" width="290" sortable="true"/>
+			<mx:DataGridColumn editable="false" dataField="thirdTime" headerText="{commonFunction.getConstants('time')}" width="185" textAlign="center" sortable="true"/>
+			</mx:columns>
+			</mx:DataGrid>
+			
+			</mx:Canvas>
+</mx:Panel>

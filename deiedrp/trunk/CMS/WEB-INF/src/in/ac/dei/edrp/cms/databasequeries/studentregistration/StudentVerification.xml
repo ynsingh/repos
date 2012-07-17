@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- /*
+ * @(#) StudentVerification.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<sqlMap namespace="studentVerification">
+
+	<typeAlias alias="studentInfo"
+		type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter" />
+
+
+	<resultMap id="getStudentVerificationBasicDetails" class="studentInfo">
+		<result property="studentId" column="student_id" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="registrationNumber" column="registration_number" />
+		<result property="status" column="registration_status" />
+		<result property="admissionMode" column="admission_mode" />
+		<result property="studentName" column="name" />
+		<result property="fatherName" column="father_name" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="sequenceNumber" column="sequence_number" />
+		<result property="programName" column="program_name" />
+	</resultMap>
+
+
+	<select id="getStudentVerificationBasicDetails" resultMap="getStudentVerificationBasicDetails">
+		select
+		tsp.enrollment_number,tsp.roll_number,tsp.registration_number,tsp.registration_status,
+		tsp.admission_mode,tsp.student_id,concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name) AS father_name,
+		concat_ws(' ',tsm.first_name,tsm.middle_name,tsm.last_name)
+		name,tsm.date_of_birth,tsp.sequence_number ,pm.program_name 
+		from temp_student_program tsp,temp_student_master tsm,program_master pm where
+		tsp.to_semester=#semesterCode# and tsp.entity_id=#entityId# and
+		tsp.program_id=#programId# and
+		tsp.branch_id=#branchCode# and
+		tsp.specialization_id=#newSpecialization# and
+		tsp.student_id=tsm.student_id and
+		to_semester_start_date=#sessionStartDate# and
+		to_semester_end_date=#sessionEndDate# and tsp.registration_status IN (#falg1#,#falg2#) and 
+		pm.program_id=tsp.program_id AND admission_mode IN ('NEW','SWT');
+	</select>
+
+
+	<resultMap id="componentList" class="studentInfo">
+		<result property="componentCode" column="component_code" />
+		<result property="componentDescription" column="component_description" />
+		<result property="notes" column="notes" />
+		<result property="verified" column="verified" />
+	</resultMap>
+
+	<select id="getIntersectedComponentListForNew" resultMap="componentList">
+		select
+		component_code,null notes,component_description,null verified from
+		system_table_two where group_code='VRFCMP' and active=1
+		and
+		university_code=substring(#programId#,1,4) and
+		verification_required=1 and
+		component_code NOT IN (select
+		component_code from student_verification_status
+		where
+		registration_number=#registrationNumber# And
+		sequence_number=#sequenceNumber#)
+</select>
+
+	<select id="getIntersectedComponentListForSwt" resultMap="componentList">
+		select
+		component_code,null notes,component_description,null verified from
+		system_table_two where group_code='VRFCMP' and active=1
+		and
+		university_code=substring(#programId#,1,4) and dummy_flag_two=1 and
+		component_code NOT IN (select component_code from
+		student_verification_status
+		where
+		registration_number=#rollNumber# And
+		sequence_number=#sequenceNumber#)
+</select>
+
+	<select id="getCompleteComponentList" resultMap="componentList">
+		select
+		svs.component_code,svs.notes
+		notes,stt.component_description,svs.verified
+		from
+		student_verification_status svs,system_table_two stt
+		where
+		svs.registration_number=#insertNumber# And
+		svs.sequence_number=#sequenceNumber# and
+		stt.group_code='VRFCMP' and
+		stt.active=1 and stt.university_code=substring(#programId#,1,4)
+		and
+		stt.component_code=svs.component_code;
+</select>
+
+	<select id="check verification" resultMap="componentList">
+		select null notes,null
+		component_description,null verified,component_code
+		from
+		student_verification_status where
+		registration_number=#registrationNumber# And verified=0
+</select>
+
+
+
+
+	<update id="updateStudentVerificationStatus">
+		update student_verification_status set
+		verified=#verified#, notes=#notes#
+		where
+		registration_number=#registrationNumber# and
+		component_code=#componentCode#
+		and sequence_number=#sequenceNumber#
+</update>
+
+	<update id="setVerifiedNew">
+		update temp_student_program set
+		registration_status='V' where
+		(registration_number=#registrationNumber# )
+		And
+		sequence_number=#sequenceNumber#
+		and registration_status='P'
+
+</update>
+
+	<update id="setVerifiedSwt">
+		update temp_student_program set
+		registration_status='V' where
+		((roll_number=#rollNumber# and
+		enrollment_number=#enrollmentNumber#))
+		And
+		sequence_number=#sequenceNumber#
+		and registration_status='P'
+
+</update>
+
+
+
+
+	<update id="setUnVerifiedNew">
+		update temp_student_program set
+		registration_status='P' where
+		(registration_number=#registrationNumber# )
+		And
+		sequence_number=#sequenceNumber# and
+		registration_status='V'
+
+</update>
+
+
+	<update id="setUnVerifiedSwt">
+		update temp_student_program set
+		registration_status='P' where
+		((roll_number=#rollNumber# and
+		enrollment_number=#enrollmentNumber#))
+		And
+		sequence_number=#sequenceNumber# and
+		registration_status='V'
+		</update>
+
+
+
+<resultMap id="getStudentFullDetailsForNew" class="studentInfo">
+		<result property="registrationNumber" column="registration_number" />
+	<result property="enrollmentNumber" column="enrollment_number" />
+	<result property="dateOfBirth" column="date_of_birth" />
+	<result property="category" column="category" />
+	<result property="gender" column="gender" />
+	<result property="studentName" column="name" />
+	<result property="fatherName" column="father_name" />
+	<result property="motherName" column="mother_name" />
+	<result property="entityName" column="entity_name" />
+	<result property="programName" column="program_name" />
+	<result property="branchName" column="branch_name" />
+	<result property="newSpecialization" column="specialization" />
+	<result property="semesterCode" column="semester" />
+	<result property="admissionMode" column="admission_mode" />
+	<result property="sessionStartDate" column="session_start_date" />
+	<result property="sessionEndDate" column="session_end_date" />
+	<result property="sequenceNumber" column="sequence_number" />
+	<result property="status" column="registration_status" />
+</resultMap>
+
+	<select id="getFullDetailsForNew" resultMap="getStudentFullDetailsForNew">	
+			select
+		tsp.enrollment_number,tsp.registration_number,tsp.admission_mode,tsp.registration_status,
+		em.entity_name,pm.program_name,sttb.component_description branch_name,
+		stts.component_description specialization,sem.component_description semester,
+		tsp.sequence_number,concat_ws(' ',tsm.first_name,tsm.middle_name,tsm.last_name) AS name,
+		tsm.date_of_birth,stt.component_description	category,stt1.component_description gender,
+    concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name) AS father_name,
+    concat_ws(' ',tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name) AS mother_name,
+    tsp.to_semester_start_date session_start_date,tsp.to_semester_end_date session_end_date
+		from
+		temp_student_program tsp, temp_student_master tsm,system_table_two stt, system_table_two stt1,
+		system_table_two sttb, system_table_two stts, system_table_two sem,
+		entity_master em,program_master pm where
+		tsp.registration_number=#registrationNumber# and
+		tsm.student_id=tsp.student_id and tsp.sequence_number=#sequenceNumber#
+		AND tsm.category=stt.component_code and stt.group_code='STDCTG' AND
+		stt.university_code=substring(tsp.entity_id,1,4)
+		AND tsm.gender=stt1.component_code and stt1.group_code='GENDER' AND
+		stt1.university_code=substring(tsp.entity_id,1,4)
+		AND tsp.branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND
+		sttb.university_code=substring(tsp.entity_id,1,4) AND
+		tsp.specialization_id=stts.component_code and stts.group_code='SPCLCD'
+		AND stts.university_code=substring(tsp.entity_id,1,4) AND
+		tsp.to_semester=sem.component_code and sem.group_code='SEMCOD' AND
+		sem.university_code=substring(tsp.entity_id,1,4)
+		AND em.entity_id=tsp.entity_id and pm.program_id=tsp.program_id;
+		
+</select>
+
+<resultMap id="getStudentFullDetailsForSwt" class="studentInfo">
+	<result property="rollNumber" column="roll_number" />
+	<result property="enrollmentNumber" column="enrollment_number" />
+	<result property="dateOfBirth" column="date_of_birth" />
+	<result property="category" column="category" />
+	<result property="gender" column="gender" />
+	<result property="studentName" column="name" />
+	<result property="fatherName" column="father_name" />
+	<result property="motherName" column="mother_name" />
+	<result property="entityName" column="entity_name" />
+	<result property="programName" column="program_name" />
+	<result property="branchName" column="branch_name" />
+	<result property="oldEntityName" column="old_entity" />
+	<result property="oldProgramName" column="old_program" />
+	<result property="oldBranchName" column="old_branch" />
+	<result property="oldSpecialization" column="old_specialization" />
+	<result property="newSpecialization" column="specialization" />
+	<result property="semesterCode" column="to_semester" />
+	<result property="oldSemesterCode" column="from_semester" />
+	<result property="admissionMode" column="admission_mode" />
+	<result property="sessionStartDate" column="session_start_date" />
+	<result property="sessionEndDate" column="session_end_date" />
+	<result property="sequenceNumber" column="sequence_number" />	
+</resultMap>
+
+
+<select id="getFullDetailsForSwt" resultMap="getStudentFullDetailsForSwt">
+select tsp.enrollment_number,tsp.roll_number,tsp.registration_number,tsp.admission_mode,
+tsp.registration_status,em.entity_name,pm.program_name,sttb.component_description branch_name,
+stts.component_description specialization,emo.entity_name old_entity, pmo.program_name old_program, 
+sttbo.component_description old_branch,sttso.component_description old_specialization,
+sem.component_description from_semester,semo.component_description to_semester,
+tsp.sequence_number,concat_ws(' ',tsm.first_name,tsm.middle_name,tsm.last_name) name,
+tsm.date_of_birth,stt.component_description category,stt1.component_description gender,
+concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name) AS father_name,
+concat_ws(' ',tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name) AS mother_name,
+tsp.to_semester_start_date session_start_date,tsp.to_semester_end_date session_end_date  
+from 
+temp_student_program tsp, temp_student_master tsm,system_table_two stt, system_table_two stt1, 
+system_table_two sttb, system_table_two stts, system_table_two sem, system_table_two sttbo,
+ system_table_two sttso,  system_table_two semo, 
+entity_master em,program_master pm,entity_master emo,program_master pmo 
+where 
+tsp.roll_number=#rollNumber# and tsm.enrollment_number=tsp.enrollment_number and tsp.sequence_number=#sequenceNumber# 
+AND tsm.category=stt.component_code and stt.group_code='STDCTG' AND stt.university_code=substring(tsp.entity_id,1,4) 
+AND tsm.gender=stt1.component_code and stt1.group_code='GENDER' AND stt1.university_code=substring(tsp.entity_id,1,4) 
+AND tsp.branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=substring(tsp.entity_id,1,4) AND 
+tsp.specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=substring(tsp.entity_id,1,4) 
+AND tsp.from_semester=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=substring(tsp.entity_id,1,4) 
+AND em.entity_id=tsp.entity_id and pm.program_id=tsp.program_id
+AND emo.entity_id=tsp.old_entity_id and pmo.program_id=tsp.old_program_id
+AND tsp.old_branch_id=sttbo.component_code and sttbo.group_code='BRNCOD' AND sttbo.university_code=substring(tsp.entity_id,1,4) AND 
+tsp.old_specialization_id=sttso.component_code and sttso.group_code='SPCLCD' AND sttso.university_code=substring(tsp.entity_id,1,4) AND 
+tsp.to_semester=semo.component_code and semo.group_code='SEMCOD' AND semo.university_code=substring(tsp.entity_id,1,4)
+</select>
+
+
+
+<resultMap id="courseDetails" class="courseInfo">
+		<result property="courseCode" column="course_code" />
+	<result property="courseName" column="course_name" />
+	<result property="credits" column="credits" />
+	<result property="courseType" column="course_type" />
+</resultMap>
+
+<select id="getCourseListForNew" resultMap="courseDetails">
+select tsc.course_code,stt.component_description course_type,cm.course_name,cm.credits from course_master cm,
+temp_student_courses tsc,system_table_two stt where tsc.course_code=cm.course_code and 
+tsc.registration_number=#registrationNumber# and tsc.program_id=#programId# AND cm.course_type=stt.component_code 
+and stt.group_code='CRSTYP' AND stt.university_code=substring(tsc.program_id,1,4) and 
+tsc.semester_start_date=#sessionStartDate# and tsc.semester_end_date=#sessionEndDate#
+</select>
+
+<select id="getCourseListForSwt" resultMap="courseDetails">
+select tsc.course_code,stt.component_description course_type,cm.course_name,cm.credits from course_master cm,
+temp_student_courses tsc,system_table_two stt where tsc.course_code=cm.course_code and 
+tsc.roll_number=#rollNumber# and tsc.program_id=#programId# AND cm.course_type=stt.component_code 
+and stt.group_code='CRSTYP' AND stt.university_code=substring(tsc.program_id,1,4) and 
+tsc.semester_start_date=#sessionStartDate# and tsc.semester_end_date=#sessionEndDate#
+</select>
+
+<!-- getting enrollment details from ashutosh -->
+<select id="getEnrollmetPersonalDetails" resultClass="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo">
+SELECT epd.enrollment_number AS enrollmentNo,epd.student_id AS studentId,
+concat_ws(' ',tsm.first_name,tsm.middle_name,tsm.last_name) AS studentName,
+concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name) AS fatherName,
+concat_ws(' ',tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name) AS motherName,
+tsm.primary_email_id AS primaryMail,tsm.date_of_birth AS dob,epd.nationality,epd.religion ,stt3.component_description AS categoryName,em.entity_name AS entity,
+stt1.component_description AS branch,stt2.component_description AS specialization,
+tsm.per_address AS address ,tsm.per_city AS city,tsm.per_state AS state,tsm.per_pincode AS pinCode,
+tsm.cor_address AS corAddress,tsm.cor_city AS corCity,tsm.cor_state AS corState,tsm.cor_pincode AS corPincode
+FROM enrollment_personal_details epd,system_table_two stt1,system_table_two stt2,system_table_two stt3,entity_master em,
+temp_student_master tsm
+WHERE epd.registration_number = #registrationNo# AND stt1.component_code = branch_id AND stt1.group_code = 'BRNCOD'
+AND tsm.student_id = epd.student_id
+AND specialization_id = stt2.component_code AND stt2.group_code='SPCLCD'
+AND category_code = stt3.component_code AND stt3.group_code = 'STDCTG'
+AND em.entity_id = epd.entity_id
+</select>
+<insert id="insertIntoVerificationTable">
+insert into student_verification_status 
+(student_id,registration_number,component_code,verified,insert_time,creator_id,sequence_number) 
+values 
+(#studentId#,#insertNumber#,#componentCode#,0,now(),'Verification',#sequenceNumber#)
+</insert>
+
+<select id="getEnrollmetAcademicDetails" resultClass="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo">
+SELECT  registration_number AS registrationNo,examination AS exam,passing_year AS year,total_marks AS totalMarks,marks_obtained AS marksObtained,college_name AS college,
+board_or_university AS board 
+FROM enrollment_academic_details
+WHERE registration_number = #registrationNo#;
+</select>
+
+<update id="updateStudentStatusForNew">
+UPDATE temp_student_program SET registration_status = 'R' WHERE registration_number=#registrationNo#  AND admission_mode = 'NEW';
+</update>
+
+<update id="updateStudentStatusForSwt">
+UPDATE temp_student_program SET registration_status = 'R' WHERE enrollment_number=#enrollmentNo# AND admission_mode = 'SWT';
+</update>
+
+<update id="updateStudentStatusForRejectedforNew">
+UPDATE temp_student_program SET registration_status = 'P' WHERE registration_number=#registrationNo#  AND admission_mode = 'NEW';
+</update>
+
+<update id="updateStudentStatusForRejectedforSwt">
+UPDATE temp_student_program SET registration_status = 'P' WHERE enrollment_number=#enrollmentNo# AND admission_mode = 'SWT';
+</update>
+
+<!-- getting enrollment details for SWT-->
+<select id="getEnrollmetPersonalDetailsSWT" resultClass="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo">
+SELECT epd.enrollment_number AS enrollmentNo,epd.student_id AS studentId,
+concat_ws(' ',tsm.first_name,tsm.middle_name,tsm.last_name) AS studentName,
+concat_ws(' ',tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name) AS fatherName,
+concat_ws(' ',tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name) AS motherName,
+tsm.primary_email_id AS primaryMail,tsm.date_of_birth AS dob,epd.nationality,epd.religion ,stt3.component_description AS categoryName,em.entity_name AS entity,
+stt1.component_description AS branch,stt2.component_description AS specialization,
+tsm.per_address AS address ,tsm.per_city AS city,tsm.per_state AS state,tsm.per_pincode AS pinCode,
+tsm.cor_address AS corAddress,tsm.cor_city AS corCity,tsm.cor_state AS corState,tsm.cor_pincode AS corPincode
+FROM enrollment_personal_details epd,system_table_two stt1,system_table_two stt2,system_table_two stt3,entity_master em,
+temp_student_master tsm
+WHERE epd.enrollment_number = #enrollmentNo# AND stt1.component_code = branch_id AND stt1.group_code = 'BRNCOD'
+AND epd.enrollment_number =tsm.enrollment_number
+AND specialization_id = stt2.component_code AND stt2.group_code='SPCLCD'
+AND category_code = stt3.component_code AND stt3.group_code = 'STDCTG'
+AND em.entity_id = epd.entity_id
+</select>
+
+<!-- getting enrollment academic details for SWT-->
+<select id="getEnrollmetAcademicDetailsSWT" resultClass="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo">
+SELECT  registration_number AS registrationNo,examination AS exam,passing_year AS year,total_marks AS totalMarks,marks_obtained AS marksObtained,college_name AS college,
+board_or_university AS board
+FROM enrollment_academic_details
+WHERE registration_number in (SELECT registration_number FROM enrollment_personal_details where enrollment_number=#enrollmentNo#);
+</select>
+
+</sqlMap>

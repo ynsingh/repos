@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================= -->
+<!--@author Deepak Pandey mailto:deepak2rok@gmail.com        -->
+<!-- ================================================================= -->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TransferPSTRDYInST">
+ 
+ 	<!-- Pick up list of students with their personal details and having status RDY in Prestaging_table-->
+	<resultMap id="getReadyStudentFromPSTResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferPSTRDYInSTBean">
+		<result property="studentId" column="student_id" />
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="registration_roll_number" />
+		<result property="oldRollNumber" column="old_roll_number" />
+		<result property="newBranch" column="new_branch" />
+		<result property="newSpecialization" column="new_specialization" />
+		
+		<result property="oldEntity" column="old_entity" />
+		<result property="oldProgram" column="old_program" />
+		<result property="oldBranch" column="old_branch" />
+		<result property="oldSpecialization" column="old_specialization" />
+		<result property="oldSemester" column="old_semester" />
+		
+		<result property="admissionMode" column="admission_mode" />
+		
+		<result property="studentFirstName" column="student_first_name" />
+		<result property="studentMiddleName" column="student_middle_name" />
+		<result property="studentLastName" column="student_last_name" />
+		<result property="fatherFirstName" column="father_first_name" />
+		<result property="fatherMiddleName" column="father_middle_name" />
+		<result property="fatherLastName" column="father_last_name" />
+		<result property="motherFirstName" column="mother_first_name" />
+		<result property="motherMiddleName" column="mother_middle_name" />
+		<result property="motherLastName" column="mother_last_name" />
+		
+		<result property="categoryCode" column="student_category" />
+		<result property="gender" column="gender" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="primaryEmailId" column="primary_email_id" />
+		
+		<result property="registerDueDate" column="registration_due_date" />
+		<result property="attemptNumber" column="attempt_number" />
+		<result property="probableSemester" column="probable_semester" />
+		<result property="probableSemesterStartDate" column="probable_semester_start_date" />
+		<result property="probableSemesterEndDate" column="probable_semester_end_date" />
+		<result property="probableRegisterDueDate" column="probable_register_due_date" />
+		<result property="probableAttemptNumber" column="probable_attempt_number" />
+		<result property="statusInSemester" column="status_in_semester" />
+		
+		<result property="perAddress" column="per_address" />
+		<result property="perCity" column="per_city" />
+		<result property="perState" column="per_state" />
+		<result property="perPincode" column="per_pincode" />
+		<result property="corAddress" column="cor_address" />
+		<result property="corCity" column="cor_city" />
+		<result property="corState" column="cor_state" />
+		<result property="corPincode" column="cor_pincode" />
+		<result property="officePhone" column="office_phone" />
+		<result property="extraPhone" column="extra_phone" />
+		<result property="otherPhone" column="other_phone" />
+		<result property="fax" column="fax" />
+				
+	</resultMap>
+	<select id="getReadyStudentFromPST" resultMap="getReadyStudentFromPSTResult">
+		select student_id, enrollment_number, registration_roll_number,old_roll_number,
+		new_branch,new_specialization,
+		old_entity,old_program,
+		old_branch,old_specialization,old_semester,
+		admission_mode,
+		student_first_name,student_middle_name,student_last_name,
+		father_first_name,father_middle_name,father_last_name,
+		mother_first_name,mother_middle_name,mother_last_name,
+		student_category,gender,date_of_birth,primary_email_id,
+		registration_due_date,attempt_number,
+		probable_semester,probable_semester_start_date,probable_semester_end_date,
+		probable_register_due_date,
+		case when probable_attempt_number is null then 0 else probable_attempt_number end as probable_attempt_number,
+		status_in_semester,
+		per_address,per_city,per_state,per_pincode,
+		cor_address,cor_city,cor_state,cor_pincode,
+		office_phone,extra_phone,other_phone,fax 
+		from prestaging_table where new_entity=#entityId# and new_program=#programId# and
+		new_semester=#semesterCode# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+		process_status=#processStatus#
+	</select>
+
+	<!-- Take password and student id from USER_INFO -->
+    <resultMap id="getUserLoginDetailsResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ApplicantUserInfoBean">
+		<result property="studentId" column="user_id" />
+		<result property="passWord" column="password" />					
+	</resultMap>
+	<select id="getUserLoginDetails" resultMap="getUserLoginDetailsResult">
+	select user_id,password from user_info where 
+	user_name=#userName# and user_group_id=#userGroupId#
+	</select>
+    
+    <!-- Take password and student id from USER_INFO -->
+    <resultMap id="getSequenceNumberResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferPSTRDYInSTBean">
+		<result property="sequenceNumber" column="sequenceNumber" />
+							
+	</resultMap>
+	<select id="getSequenceNumber" resultMap="getSequenceNumberResult">
+	select case when max(sequence_number) is null then 1 else max(sequence_number)+1 end as sequenceNumber from 
+					staging_table where concat_ws(',',student_first_name,student_middle_name,student_last_name,father_first_name,father_middle_name,
+					father_last_name,date_of_birth,gender,student_category)=concat_ws(',',#studentFirstName#,#studentMiddleName#,#studentLastName#,
+					#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,#dateOfBirth#,#gender#,#categoryCode#)
+					and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+	</select>
+	
+  
+	<!-- udpate PST with PRC -->
+	<update id="updateStudentInPST" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferPSTRDYInSTBean">
+		update prestaging_table  
+					set process_status=#processStatus#,modification_time=now(),modifier_id=#creatorId# 
+					where registration_roll_number=#rollNumber# and new_entity=#entityId# and new_program=#programId# 
+					and new_semester=#semesterCode# and new_branch=#newBranch# and new_specialization=#newSpecialization# 
+					and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# 
+	</update>
+
+	<!-- insert student in Staging_table -->
+	<insert id="insertStudentInST" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferPSTRDYInSTBean">
+		insert into staging_table 
+					(student_id,registration_roll_number,
+					enrollment_number,
+					old_entity_id,old_program_id,old_branch_id,old_specialization_id,old_semester_code,
+					new_entity_id,new_program_id,new_branch_id,new_specialization_id,new_semester_id,
+					student_first_name,student_middle_name,student_last_name,
+					father_first_name,father_middle_name,father_last_name,
+					mother_first_name,mother_middle_name,mother_last_name,
+					student_category,gender,date_of_birth,
+					semester_start_date,semester_end_date,
+					old_roll_number,admission_mode,registration_due_date,attempt_number,primary_email_id,
+					probable_semester,
+					probable_semester_start_date,probable_semester_end_date,
+					probable_attempt_number,probable_register_due_date,
+					status_in_semester,
+					insert_time,creator_id,
+					per_address,per_city,per_state,per_pincode,
+					cor_address,cor_city,cor_state,cor_pincode,
+					office_phone,extra_phone,other_phone,fax,processed_flag,sequence_number) 
+					values 
+					(#studentId#,#rollNumber#,
+					#enrollmentNumber#,
+					#oldEntity#,#oldProgram#,#oldBranch#,#oldSpecialization#,#oldSemester#,
+					#entityId#,#programId#,#newBranch#,#newSpecialization#,#semesterCode#,
+					#studentFirstName#,#studentMiddleName#,#studentLastName#,
+					#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+					#motherFirstName#,#motherMiddleName#,#motherLastName#,
+					#categoryCode#,#gender#,#dateOfBirth#,
+					#semesterStartDate#,#semesterEndDate#,
+					#oldRollNumber#,#admissionMode#,#registerDueDate#,#attemptNumber#,#primaryEmailId#,
+					#probableSemester#,
+					#probableSemesterStartDate#,#probableSemesterEndDate#,
+					#probableAttemptNumber#,#probableRegisterDueDate#,
+					#statusInSemester#,
+					now(),#creatorId#,
+					#perAddress#,#perCity#,#perState#,#perPincode#,
+					#corAddress#,#corCity#,#corState#,#corPincode#,
+					#officePhone#,#extraPhone#,#otherPhone#,#fax#,'N',
+					#sequenceNumber#);
+	</insert>
+	
+	<!-- Query Changed By Dheeraj For By-Passing The Logic of Enrollment Form -->
+	<!-- insert student in Applicant Info  -->
+	<insert id="insertInApplicantInfo" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ApplicantUserInfoBean">
+		insert into applicant_info 
+		(university_code,student_id,user_name,password,user_group_id,status,creator_id) values 
+		(#universityId#,#studentId#,(select user_name from user_info where user_id=#studentId# and user_group_id=#userGroupId#),
+		(select password from user_info where user_id=#studentId# and user_group_id=#userGroupId#),#userGroupId#,#activeStatus#,#creatorId#)
+	</insert>
+	
+	
+	<resultMap id="getSequenceNumberForDuplicateStudentResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		<result property="count" column="count(*)" />
+	</resultMap>
+     <select id="getSequenceNumberForDuplicateStudent" resultMap="getSequenceNumberForDuplicateStudentResult">
+	    select max(sequence_number) from staging_table where 
+	</select>
+	
+	<select id="getCTTStatus" resultClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ActivityMasterBean">
+	
+	select status as status from semesterend_control where semester_start_date=#semesterStartDate# 
+	AND semester_end_date=#semesterEndDate# AND process_code='CTT' AND group_code='BSEPCD';	
+	
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+<sqlMap namespace="unirolesetup">
+	<typeAlias alias="unirolesetup"
+		type="in.ac.dei.edrp.cms.domain.university.UnivRoleInfoGetter" />
+
+	<resultMap id="defaulteroles" class="unirolesetup">
+
+		<result property="componentId" column="component_code" />
+		<result property="componentDescription" column="component_description" />
+
+	</resultMap>
+
+	<select id="getComponentsInfo" resultMap="defaulteroles">
+
+		select
+		component_code,component_description from system_table_two where
+		group_code=#groupCode# AND university_code=#universityCode# AND
+		active=1;
+</select>
+
+	<select id="getsetmenulist" resultClass="unirolesetup">
+
+<!--		select-->
+<!--		sys1.component_code,sys1.component_description from system_table_two-->
+<!--		sys1,user_group ug where sys1.component_code-->
+<!--		=ug.menu_item_id AND-->
+<!--		ug.user_group_id=#roleId# AND ug.university_code=sys1.university_code-->
+<!--		AND sys1.university_code=#universityCode# AND-->
+<!--		sys1.active=1;-->
+		
+		select
+		
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="CMS">
+             sys1.component_code as componentId,sys1.component_description as componentDescription from
+              system_table_two sys1,user_group ug where sys1.component_code=ug.menu_item_id AND
+		     ug.user_group_id=#roleId# AND ug.university_code=sys1.university_code
+		     AND sys1.university_code=#universityCode# AND
+		     sys1.active=1 and application=#applicationId#;
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="UPM">
+               sys1.component_code componentId,sys1.component_description as  componentDescription from
+                system_table_two_upm sys1,user_group ug where sys1.component_code
+				=ug.menu_item_id AND
+				ug.user_group_id=#roleId# AND ug.university_code=sys1.university_code
+				AND sys1.university_code=#universityCode# AND
+				sys1.active=1 and application=#applicationId#;
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="ADM">
+               	 mil.menu_item_id as componentId,mil.menu_item_name as  componentDescription from menu_items_list mil ,user_group ug
+				where mil.menu_item_id=ug.menu_item_id and ug.application=#applicationId# and ug.user_group_id=#roleId# ;
+			</isEqual>	
+
+</select>
+
+	<select id="getsetuniversityroles" resultMap="defaulteroles">
+
+		select distinct
+		sys2.component_description,sys2.component_code from system_table_two
+		sys2,user_group usr where sys2.component_code=usr.user_group_id AND
+		usr.university_code=#universityCode# AND sys2.active=1 AND
+		sys2.group_code='UNROLE' AND sys2.university_code=#universityCode#;
+</select>
+
+	<select id="getemployeeroles" resultMap="defaulteroles">
+	
+	select distinct sys2.component_description,sys2.component_code from system_table_two sys2 where sys2.component_code IN
+ 	(select user_group_id from user_group where university_code=#universityCode# AND application=#applicationId#) AND sys2.component_code NOT IN(select
+		user_group_id from user_info
+		where user_name=#employeeCode# and
+		university_code=#universityCode# AND application=#applicationId#) and sys2.group_code='UNROLE'
+		AND
+		sys2.university_code=#universityCode#;
+
+<!--		select distinct-->
+<!--		sys2.component_description,sys2.component_code from system_table_two-->
+<!--		sys2,user_info ui where sys2.component_code not IN(select-->
+<!--		user_group_id from user_info-->
+<!--		where user_name=#employeeCode#and-->
+<!--		university_code=#universityCode#) AND-->
+<!--		sys2.group_code='UNROLE'-->
+<!--		AND-->
+<!--		sys2.university_code=#universityCode# AND-->
+<!--		ui.university_code=#universityCode#;-->
+</select>
+
+
+	<select id="getmenulist" resultClass="unirolesetup"  remapResults="true">
+
+<!--		select-->
+<!--		component_code,component_description from system_table_two where-->
+<!--		group_code='MNUITM' AND active=1 AND dummy_flag_one=1 AND-->
+<!--		component_code NOT IN(select-->
+<!--		menu_item_id from-->
+<!--		user_group where-->
+<!--		user_group_id=#roleId# AND-->
+<!--		university_code=#universityCode#);-->
+		
+		
+		select  
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="CMS">
+                component_code as componentId,component_description as componentDescription from
+			    system_table_two  where
+				group_code='MNUITM' AND active=1 AND dummy_flag_one=1 AND
+				university_code=#universityCode# AND
+				component_code NOT IN(select
+				menu_item_id from
+				user_group where
+				user_group_id=#roleId# AND
+				university_code=#universityCode# and application=#applicationId#);
+               
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="UPM">
+               component_code as componentId,component_description as componentDescription from
+			    system_table_two_upm  where
+				group_code='MNUITM' AND active=1 AND dummy_flag_one=1 AND
+				university_code=#universityCode# AND
+				component_code NOT IN(select
+				menu_item_id from
+				user_group where
+				user_group_id=#roleId# AND
+				university_code=#universityCode# and application=#applicationId#);
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="ADM">
+              menu_item_id as componentId,menu_item_name as componentDescription  from
+               menu_items_list where menu_item_id NOT IN(select     menu_item_id from  user_group where     user_group_id=#roleId#  AND     university_code=#universityCode# and application=#applicationId#);
+               
+			</isEqual>			
+
+
+</select>
+ 
+
+	<insert id="setroleauthorities">
+
+		insert into user_group
+
+		(user_group_id,menu_item_id,authority,university_code,insert_time,creator_id,application)
+
+		values(#roleId#,#menuItemId#,#authority#,#universityCode#,now(),#creatorId#,#applicationId#)
+	
+	</insert>
+
+	<delete id="deletemenuitemauthority">
+
+		delete from user_group where
+		menu_item_id=#menuItemId# AND user_group_id=#roleId# AND
+		university_code=#universityCode# AND application=#applicationId#;
+	</delete>
+
+	<select id="getuniversitylist" resultClass="unirolesetup">
+
+		select
+		university_code as componentId,university_name as
+		componentDescription
+		from university_master
+		where university_code!='0000' AND
+		current_status=1;
+	
+	</select>
+
+	<select id="getuniversityloginlist" resultClass="unirolesetup">
+
+		select
+		distinct
+		um.university_code as componentId,ui.user_name as
+		componentDescription
+		from university_master um,user_info ui
+		where
+		um.university_code!='0000'
+		AND um.current_status=1 AND
+		ui.university_code=um.university_code AND
+		um.university_code=#universityCode# AND ui.user_id=#creatorId# AND ui.application=#applicationId#;
+	
+	</select>
+
+	<select id="getmenulists" resultClass="unirolesetup" remapResults="true">
+
+<!--		select component_code as-->
+<!--		componentId,component_description as componentDescription from-->
+<!--		system_table_two where group_code='MNUITM' AND component_code!='MAAAC'-->
+<!--		AND dummy_flag_one=1;-->
+
+<!--  Query changed by Dheeraj for getting distinct menus  -->
+			select distinct 
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="CMS">
+             component_code as
+			componentId,component_description as componentDescription from
+               system_table_two where group_code='MNUITM' AND component_code!='MAAAC'
+				AND dummy_flag_one=1;
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="UPM">
+             component_code as
+			componentId,component_description as componentDescription from
+               system_table_two_upm where group_code='MNUITM'
+			AND dummy_flag_one=1;
+			</isEqual>
+			<isEqual prepend=""
+             property="applicationId"
+             compareValue="UPM">
+             menu_item_id as
+			componentId,menu_item_name as componentDescription from menu_items_list;
+			</isEqual>
+			
+			
+	
+	</select>
+
+	<select id="getuserswithid" resultClass="unirolesetup">
+
+		select count(user_name)
+		as authority from user_info where
+		user_name=#componentId# AND application=#applicationId#;
+	
+	</select>
+
+	<insert id="insertdefaultuser">
+
+		insert into user_info (user_id, user_name, password,
+		status,
+		registered_timestamp, university_code, user_group_id,application)
+		values(#creatorId#,#componentId#,SHA1(#componentDescription#),'INA',now(),#universityCode#,'ADM',#applicationId#
+		);
+	
+	</insert>
+
+	<insert id="insertdefaultitems">
+
+
+		insert into user_group(menu_item_id,university_code,
+		user_group_id,
+		authority, insert_time, creator_id,application)
+		values(#menuItemId#,#universityCode#,'ADM',1,now(),#userId#,#applicationId#);
+	
+	</insert>
+	
+	<insert id="insertdefrole">
+	
+	insert into system_table_two (university_code, component_code, component_description, active, insert_time,
+	creator_id, group_code) values(#universityCode#,'ADM','Administrator',1,now(),#creatorId#,'UNROLE');
+	
+	</insert>
+
+	<update id="updatedefaultuser">
+
+		update user_info set
+		user_name=#componentId#,password=SHA1(#componentDescription#),status='INA',registered_timestamp=now()
+		where user_id=#creatorId# AND application=#applicationId#;
+	
+	</update>
+
+
+</sqlMap>

@@ -1,0 +1,6 @@
+07/15/11 03:56:48 PM  INFO  in.ac.dei.edrp.cms.daoimpl.login.LoginServiceImpl getMenu - getMenu
+07/15/11 03:56:58 PM  INFO  in.ac.dei.edrp.cms.daoimpl.associatecoursewithinstructor.AssociateCourseWithInstructorDAOImpl getEntityList - in getEntityList
+07/15/11 03:57:01 PM  INFO  in.ac.dei.edrp.cms.daoimpl.associatecoursewithinstructor.AssociateCourseWithInstructorDAOImpl getProgramList - in getProgramList
+07/15/11 03:57:07 PM  INFO  in.ac.dei.edrp.cms.daoimpl.associatecoursewithinstructor.AssociateCourseWithInstructorDAOImpl getBranchList - in getBranchList
+07/15/11 03:57:11 PM  INFO  in.ac.dei.edrp.cms.daoimpl.associatecoursewithinstructor.AssociateCourseWithInstructorDAOImpl getSpecializationList - in getSpecializationList
+07/15/11 03:57:26 PM  INFO  in.ac.dei.edrp.cms.daoimpl.associatecoursewithinstructor.AssociateCourseWithInstructorDAOImpl getBranchList - in getBranchList

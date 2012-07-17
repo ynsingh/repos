@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramCourseType.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous(programCombo)" title="{commonFunction.getConstants('programCourseTypeSummary')}" layout="absolute" width="710" height="541">
+
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			
+			[Bindable]public var urlPrefix:String;
+			
+        ]]>
+	</mx:Script>
+
+
+	
+	<mx:HTTPService id="getBranchDetails" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/getProgramBranchDetails.htm"
+					resultFormat="e4x"
+					result="programChangeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getInputDetails" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/getProgramCourseTypeDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getspecializationDetails" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/getProgramSpecializationDetails.htm"
+					resultFormat="e4x"
+					result="branchChangeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getsemesterDetails" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/getProgramSemesterDetails.htm"
+					resultFormat="e4x"
+					result="specializationChangeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseTypeDetails" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/getCourseTypeDetails.htm"
+					resultFormat="e4x"
+					result="semesterChangeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setProgramCoursetypeSummary" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/setProgramCoursetypeSummary.htm"
+					resultFormat="e4x"
+					result="onSuccessfulEntry(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getRecords" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/getProgramCoursetypeSummary.htm"
+					resultFormat="e4x"
+					result="onRecordsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteCoursetypeSummaryRecords" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/deleteRecords.htm"
+					resultFormat="e4x"
+					result="onRecordsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+<mx:Script source="asFiles/programCourseTypeAction.as"/>
+
+	    <mx:Canvas styleName="SimpleCanvas" x="19" y="16" width="639" height="239">
+		<mx:Label x="21" y="16" text="{commonFunction.getConstants('program')}*" />
+		<mx:ComboBox width="150" x="154.5" id="programCombo" prompt="{resourceManager.getString('Constants','select')}"
+		selectedIndex="-1" change="programChange(event)" y="13" toolTip="{programCombo.selectedItem}"></mx:ComboBox>
+		<mx:Label x="330" y="16" text="{commonFunction.getConstants('branch')}*" />
+		<mx:ComboBox x="450" y="13" width="150" id="branchCombo" prompt="{commonFunction.getConstants('select')}"
+		 selectedIndex="-1" enabled="false" change="branchChange(event)" toolTip="{branchCombo.selectedItem}"></mx:ComboBox>
+		<mx:Label x="21" y="54" text="{commonFunction.getConstants('specialization')}*" />
+		<mx:ComboBox x="154.5" y="51" width="150" toolTip="{specilizationCombo.selectedItem}" id="specilizationCombo" prompt="{commonFunction.getConstants('select')}" change="specializationChange(event)"
+		 selectedIndex="-1" enabled="false"></mx:ComboBox>
+		<mx:Label x="330" y="54" text="{commonFunction.getConstants('semester')}*" />
+		<mx:ComboBox x="450" y="51" width="150" id="semesterCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="semesterChange()"
+		selectedIndex="-1" toolTip="{semesterCombo.selectedItem}"></mx:ComboBox>
+		<mx:Label x="21" y="95" text="{commonFunction.getConstants('courseType')}*" />
+		<mx:ComboBox x="154.5" y="92" width="150" id="courseCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="courseChange(event)" 
+		enabled="false" toolTip="{courseCombo.selectedItem}"></mx:ComboBox>
+		<mx:Label x="21" y="134" text="{commonFunction.getConstants('minimumCredit')}*" />
+		<mx:NumericStepper x="154.5" y="132" id="minCreditCombo" width="150" minimum="0" maximum="100" enabled="false"/>
+		<mx:Label x="330" y="134" text="{commonFunction.getConstants('maximumCredit')}*" />
+		<mx:NumericStepper x="450" y="132" id="maxCreditCombo" width="150" minimum="0" maximum="100" enabled="false"/>
+		<mx:Button x="232.5" y="181" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="checkValidations()" width="70.5"/>
+		<mx:Button x="334" y="182" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelFunction()" width="84"/>
+	</mx:Canvas>
+    
+    <mx:Canvas styleName="GridCanvas" id="detail" width="639.5" height="192" x="20" y="268">
+		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" width="72" height="25" click="openEditWindow()" enabled="false" id="editbutton" x="485"  y="2"/>
+		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" width="69" height="25" id="deletebutton" x="558" enabled="false" click="deleteOrNot()" y="2"/>
+		<mx:Label x="10" y="5" text="{commonFunction.getConstants('courseDetails')}" height="16"/>
+		<mx:DataGrid id="courseDetailGrid" creationComplete="commonFunction.showDataTips(courseDetailGrid)" width="619.5" height="155" horizontalScrollPolicy="off" 
+			 sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" x="10" y="29">
+		<mx:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" resizable="true" textAlign="center" sortable="false" 
+			editorDataField="selected" dataField="select" headerText="">
+		<mx:itemRenderer>
+   	    <mx:Component>
+   		<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.courseDetailGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+ 		<mx:Script>
+        <![CDATA[
+                    import common.commonFunction;
+                    
+                    import mx.controls.LinkButton;
+                ]]>
+        </mx:Script>
+        </mx:CheckBox>
+        </mx:Component>
+        </mx:itemRenderer>
+        </mx:DataGridColumn>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('courseType')}" textAlign="center" width="230" sortable="true" dataField="courseTypeDescription"/>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('minimumCredit')}" textAlign="center" width="290" sortable="true" dataField="minCredits"/>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('maximumCredit')}" textAlign="center" width="290" sortable="true" dataField="maxCredits"/>
+		</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>	
+
+</mx:Panel>

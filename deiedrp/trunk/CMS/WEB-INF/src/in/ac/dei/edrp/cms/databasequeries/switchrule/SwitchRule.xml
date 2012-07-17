@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+
+
+<sqlMap namespace="switchrule">
+	<typeAlias alias="switchrule"
+		type="in.ac.dei.edrp.cms.domain.switchrule.SwitchRuleInfoGetter" />
+
+	<resultMap id="ruleIdforrule" class="switchrule">
+
+		<result property="ruleId" column="rule_id" />
+
+	</resultMap>
+
+	<select id="getmaxrulecode" resultMap="ruleIdforrule">
+
+		select max(rule_id)
+		rule_id from switch_rule where university_code=#ruleDesc3#;
+
+	</select>
+
+	<insert id="insertrules">
+
+		insert into switch_rule(rule_id, rule_code_one,
+		rule_code_two,
+		rule_code_three, insert_time, creator_id,
+		rule_code_four,
+		rule_code_five, rule_code_six,
+		rule_formula,university_code)
+		values(#ruleId#,#ruleCode1#,#ruleCode2#,#ruleCode3#,now(),
+		#userId#,#ruleCode4#,#ruleCode5#,#ruleCode6#,#ruleFormula#,#ruleDesc3#);
+	
+	</insert>
+
+	<resultMap id="ruleRecords" class="switchrule">
+
+		<result property="ruleId" column="rule_id" />
+		<result property="ruleCode1" column="rule_code_one" />
+		<result property="ruleCode2" column="rule_code_two" />
+		<result property="ruleCode3" column="rule_code_three" />
+		<result property="ruleCode4" column="rule_code_four" />
+		<result property="ruleCode5" column="rule_code_five" />
+		<result property="ruleCode6" column="rule_code_six" />
+		<result property="ruleFormula" column="rule_formula" />
+		<result property="ruleDesc3" column="ruleDesc3" />
+		<result property="ruleDesc4" column="ruleDesc4" />
+		<result property="ruleDesc5" column="ruleDesc5" />
+		<result property="ruleDesc6" column="ruleDesc6" />
+
+
+	</resultMap>
+
+	<select id="getSetRecords" resultMap="ruleRecords">
+
+		select
+		sr.rule_id,sr.rule_code_one,sr.rule_code_two,sys1.component_code as
+		rule_code_three,sys1.component_description AS ruleDesc3,
+		sys2.component_code as rule_code_four,sys2.component_description AS
+		ruleDesc4,sys3.component_code as
+		rule_code_five,sys3.component_description AS ruleDesc5,
+		sys4.component_code as rule_code_six,sys4.component_description AS
+		ruleDesc6,sr.rule_formula,sr.university_code
+		from switch_rule sr LEFT
+		JOIN
+		(system_table_two sys1) ON
+		(sr.rule_code_three=sys1.component_code
+		AND sr.university_code=sys1.university_code AND
+		sys1.university_code=#componentId#) AND
+		sys1.group_code='SWTRL3' LEFT
+		JOIN
+		system_table_two sys2 ON
+		(sr.rule_code_four=sys2.component_code AND
+		sr.university_code=sys2.university_code AND
+		sys2.university_code=#componentId#) AND sys2.group_code='SWTRL4'
+		LEFT
+		JOIN
+		system_table_two sys3 ON
+		(sr.rule_code_five=sys3.component_code AND
+		sr.university_code=sys3.university_code AND
+		sys3.university_code=#componentId#) AND sys3.group_code='SWTRL5'
+		LEFT
+		JOIN
+		system_table_two sys4 ON
+		(sr.rule_code_six=sys4.component_code AND
+		sr.university_code=sys4.university_code AND
+		sys4.university_code=#componentId#)
+		AND sys4.group_code='SWTRL6' where
+		sr.university_code=#componentId#;
+
+	</select>
+
+	<update id="updaterulesforid">
+
+		update switch_rule set
+		rule_code_one=#ruleCode1#,rule_code_two=#ruleCode2#,rule_code_three=#ruleCode3#,rule_code_four=#ruleCode4#,rule_code_five=#ruleCode5#,
+		rule_code_six=#ruleCode6#,rule_formula=#ruleFormula#,modification_time=now(),modifier_id=#userId#
+		where rule_id=#ruleId# AND university_code=#ruleDesc3#;
+	
+	</update>
+
+	<delete id="deleteSwitchReocrd">
+		delete from switch_rule where rule_id=#ruleId# AND
+		university_code=#ruleDesc3#;
+	</delete>
+
+</sqlMap>
+

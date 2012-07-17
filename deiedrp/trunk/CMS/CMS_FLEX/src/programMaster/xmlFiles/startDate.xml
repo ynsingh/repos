@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<startDateData>
+
+<startDate>
+<programCode>pc1</programCode>
+<programName>B.Tech</programName>
+<startDayMonth>05-05</startDayMonth>
+</startDate>
+
+<startDate>
+<programCode>pc2</programCode>
+<programName>M.Tech</programName>
+<startDayMonth>06-09</startDayMonth>
+</startDate>
+
+<startDate>
+<programCode>pc3</programCode>
+<programName>B.E.</programName>
+<startDayMonth>08-09</startDayMonth>
+</startDate>
+
+</startDateData>

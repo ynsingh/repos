@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas styleName="GridCanvas" xmlns:mx="http://www.adobe.com/2006/mxml" width="202" height="196">
+<mx:Script>
+	<![CDATA[
+		import common.commonFunction;
+		public var previousVisible=false;
+		public var nextFunction:Function;
+		public var previousFunction:Function;
+	]]>
+</mx:Script>
+	<mx:Label x="5" y="4" text="{commonFunction.getConstants('courseGroup')}"/>
+	<mx:DataGrid id="majorGrid" sortableColumns="true" draggableColumns="false" verticalScrollPolicy="on" horizontalScrollPolicy="off" x="7" y="25" editable="true" height="141">
+		<mx:columns>
+			<mx:DataGridColumn width="20" headerText="" sortable="false" dataField="select" editorDataField="selected" rendererIsEditor="true">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox creationComplete="setDisable(event)">
+						<mx:Script>
+							<![CDATA[
+								function setDisable(event:Event):void
+								{
+									if(event.currentTarget.selected)
+									{
+										event.currentTarget.enabled=false;
+									}
+								}
+							]]>
+						</mx:Script>
+						</mx:CheckBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn id="groupColumn" width="150"  dataField="subGroupName" editable="false" showDataTips="true"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:LinkButton id="nextButton" x="139" y="169" label="{commonFunction.getConstants('nextButton')}" click="nextFunction()"/>
+	<mx:LinkButton id="previousButton" visible="{previousVisible}" x="15" y="169" label="{commonFunction.getConstants('previousButton')}" click="previousFunction()"/>
+</mx:Canvas>

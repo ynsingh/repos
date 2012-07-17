@@ -1,0 +1,7 @@
+<resultSystem>
+
+<system id="GR" name="Grades"/>
+<system id="MK" name="Marks"/>
+<system id="PF" name="Pass/Fail"/>
+
+</resultSystem>

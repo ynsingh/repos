@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+       <!--
+/*
+ * @(#) ProgramMaster.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<sqlMap namespace="ProgMasterInfo">
+
+<typeAlias alias="programMasterInfo" type="in.ac.dei.edrp.cms.domain.programmaster.ProgramMasterInfoGetter" />
+	
+  <resultMap id="progidGetter" class="programMasterInfo">
+
+    <result property="programId" column="program_id"/>
+    
+  </resultMap>
+	
+	<select id="sysvalue" resultMap="progidGetter">
+	select concat(university_id,value) program_id from system_values where university_id=#universityId# AND code=#systemCode#
+	</select>
+	
+	<update id="updatesysvalue">
+	update system_values set value=#systemValue# where university_id=#universityId# AND code=#systemCode#
+	</update>
+	
+	<select id="progIdFromCode" resultMap="progidGetter">
+	select program_id from program_master where program_code=#programCode# and program_id LIKE #programId#
+	</select>
+	
+	
+	
+<insert id="insertintoprogmaster">
+
+insert into program_master
+		 (program_id,program_code,program_name,program_type,program_mode,branch_exists,specialization_exists,no_of_terms,
+		 number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,tencodes,print_aggregate,
+      max_reg_semester,dgpa,credit_required,fixed_or_variable_credit,
+		 insert_time,creator_id,program_description)
+		  values (#programId#,#programCode#,#programName#,#programType#,#programMode#,#branch#,#specilization#,#numberOfTerms#,
+		 #numberOfAttemptAllowed#,#maxNumberOfFailSubjects#,#fixedDuration#,#ugOrPg#,#tencodes#,#printAggregate#,
+		  #maxRegSemester#,#dgpa#,#creditRequired#,#fixedOrVariableCredit#,
+		 now(),#creatorId#,#programDescription#)
+
+</insert>
+	
+	<insert id="insertprogduration">
+	insert into program_duration 
+		  (program_id,minimum_duration,maximum_duration,start_day_month,insert_time,creator_id)
+		   values 
+		  (#programId#,#minimunDuration#,#maximumDuration#,#startdate#,
+		  now(),#creatorId#)
+	</insert>
+	
+	<insert id="insertbranchdetail">
+	insert into program_branch_specialization
+	(program_id, branch_id, specialization_id, active_specialization_semester, insert_time, creator_id)
+		   values 
+ (#programId#,#branchcode#,#specializationCode#,#activeSemester#,now(),#creatorId#) 
+
+	</insert>
+	
+	<insert id="insertbranchdetail1">
+	insert into program_branch_specialization
+	(program_id, branch_id, specialization_id, active_specialization_semester, insert_time, creator_id)
+		   values 
+		   (#programId#,#branchcode#,#specializationCode#,(select component_code active_specialization 
+ from system_table_two where group_code='SEMCOD' and dummy_flag_one=1 and 
+ university_code=#universityId# and active=1),now(),#creatorId#) 
+	</insert>
+	
+	
+	<resultMap id="branchListGetter" class="programMasterInfo">
+	 <result property="branchcode" column="branch_code"/>
+    <result property="branchname" column="branch_name"/>
+   	</resultMap>
+   	
+   	<resultMap id="progListGetter" class="programMasterInfo">
+   	<result property="programId" column="program_id"/>
+	 <result property="branchcode" column="branch_code"/>
+    <result property="branchname" column="branch_name"/>
+   	</resultMap>
+   	
+	
+	<select id="selectProgList" resultMap="progListGetter">
+	select distinct program_id,program_code branch_code ,program_name branch_name from program_master where program_id LIKE #universityId# order by branch_name
+	</select>
+	
+	 
+	
+	
+	<resultMap id="progMasterDetailGetter" class="programMasterInfo">
+	
+	<result property="programId" column="program_id"/>
+    <result property="programCode" column="program_code"/>
+    <result property="programName" column="program_name"/>
+    <result property="programType" column="program_type"/>
+    <result property="programMode" column="program_mode"/>
+    <result property="numberOfTerms" column="no_of_terms"/>
+    <result property="totalCredits" column="total_credits"/>
+    <result property="numberOfAttemptAllowed" column="number_of_attempt_allowed"/>
+    <result property="maxNumberOfFailSubjects" column="max_number_of_fail_subjects"/>
+    <result property="fixedDuration" column="fixed_duration"/>
+    <result property="ugOrPg" column="ug_pg"/>
+    <result property="tencodes" column="tencodes"/>
+    <result property="printAggregate" column="print_aggregate"/>
+    <result property="dgpa" column="dgpa"/>
+    <result property="maxRegSemester" column="max_reg_semester"/>
+    <result property="creditRequired" column="credit_required"/>
+    <result property="fixedOrVariableCredit" column="fixed_or_variable_credit"/>
+        <result property="programDescription" column="program_description"/>
+    
+    
+  	
+	</resultMap>
+	
+	<select id="progBasicDetail" resultMap="progMasterDetailGetter">
+select distinct pm.program_id,pm.program_code,pm.program_name,stt.component_description program_type,
+sttm.component_description program_mode,pm.no_of_terms, pm.total_credits,pm.number_of_attempt_allowed,
+ pm.max_number_of_fail_subjects ,pm.fixed_duration,pm.ug_pg,pm.tencodes,
+ pm.print_aggregate,pm.dgpa,pm.max_reg_semester,pm.credit_required,pm.fixed_or_variable_credit,pm.program_description  
+ from program_master pm, system_table_two stt,system_table_two sttm
+		 where program_id LIKE concat_ws('',#programId#,'%') and program_id LIKE concat(#universityId#,'%')  
+		 and stt.university_code=#universityId# and stt.active=1 and stt.group_code='PRGTYP' and stt.component_code=pm.program_type
+and sttm.university_code=#universityId# and sttm.active=1 and sttm.group_code='PRGMOD' and sttm.component_code=pm.program_mode
+	</select>
+	
+	<select id="progBasicDetailFromCode" resultMap="progMasterDetailGetter">
+select distinct pm.program_id,pm.program_code,pm.program_name,stt.component_description program_type,
+sttm.component_description program_mode,pm.no_of_terms, pm.total_credits,pm.number_of_attempt_allowed,
+ pm.max_number_of_fail_subjects ,pm.fixed_duration,pm.ug_pg,pm.tencodes,
+ pm.print_aggregate,pm.dgpa,pm.max_reg_semester,pm.credit_required,pm.fixed_or_variable_credit,pm.program_description 
+ from program_master pm, system_table_two stt,system_table_two sttm
+		 where program_code LIKE concat_ws('',#programCode#,'%') and program_id LIKE concat(#universityId#,'%')  
+		 and stt.university_code=#universityId# and stt.active=1 and stt.group_code='PRGTYP' and stt.component_code=pm.program_type
+and sttm.university_code=#universityId# and sttm.active=1 and sttm.group_code='PRGMOD' and sttm.component_code=pm.program_mode
+	</select>
+	
+	
+	<resultMap id="progDurationDetailGetter" class="programMasterInfo">
+	
+	<result property="programId" column="program_id"/>
+    <result property="programName" column="program_name"/>
+    <result property="programCode" column="program_code"/>
+    <result property="minimunDuration" column="minimum_duration"/>
+    <result property="maximumDuration" column="maximum_duration"/>
+      <result property="fixedDuration" column="fixed_duration"/>
+    <result property="startdate" column="startdate"/>
+	</resultMap>
+	
+	<select id="progDurationDetail" resultMap="progDurationDetailGetter">
+ select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,m.fixed_duration,
+ d.minimum_duration minimum_duration,d.maximum_duration maximum_duration,d.start_day_month startdate 
+ from program_duration d, program_master m where d.program_id LIKE #programId# AND m.program_id=d.program_id 
+	</select>
+		
+	
+	<resultMap id="progBranchDetailGetter" class="programMasterInfo">
+	<result property="programId" column="program_id"/>
+	 <result property="programName" column="program_name"/>
+    <result property="programCode" column="program_code"/>
+    <result property="branchname" column="branch_name"/>
+  <result property="branchcode" column="branch_code"/>  
+	</resultMap>
+	
+	
+	
+	<select id="progBranchDetail" resultMap="progBranchDetailGetter">
+	
+select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,b.branch_name,b.branch_code from ENTITY_PROGRAM_BRANCH_DETAIL bd,program_master m,PROGRAM_BRANCHES b where bd.program_id LIKE #programId# AND m.program_id=bd.program_id AND bd.branch NOT IN ('000') AND bd.branch=b.branch_code
+	
+	</select>
+	
+	<resultMap id="progSpecDetailGetter" class="programMasterInfo">
+	<result property="programId" column="program_id"/>
+	 <result property="programName" column="program_name"/>
+    <result property="programCode" column="program_code"/>
+    <result property="branchname" column="branch_name"/>
+    <result property="specname" column="specialization_name"/>
+     <result property="branchcode" column="branch_id"/>
+    <result property="specializationCode" column="specializationCode"/>
+     <result property="activeSemester" column="active_specialization_semester"/>
+	</resultMap>
+	
+	<select id="progBranchSpecDetail" resultMap="progSpecDetailGetter">
+	
+	select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,
+	ss.component_description specialization_name,s.specialization_id specializationCode,
+	bb.component_description branch_name, s.branch_id,ass.component_description active_specialization_semester 
+	from system_table_two bb,program_branch_specialization s,system_table_two ss  ,
+	 program_master m ,system_table_two ass  
+	 where s.program_id = #programId# AND m.program_id=s.program_id AND 
+	 s.branch_id=bb.component_code AND  bb.university_code=#universityId# and bb.active=1 and bb.group_code='BRNCOD' and
+	 s.specialization_id=ss.component_code AND ss.university_code=#universityId# and ss.active=1 and ss.group_code='SPCLCD' and
+	s.active_specialization_semester=ass.component_code AND  ass.university_code=#universityId# and ass.active=1 and ass.group_code='SEMCOD'
+	</select>
+	
+		<select id="progBranchSpecDetailWithCode" resultMap="progSpecDetailGetter">
+	
+	select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,
+	ss.component_description specialization_name,s.specialization_id specializationCode,
+	bb.component_description branch_name ,s.branch_id,ass.component_description active_specialization_semester 
+	from system_table_two bb,program_branch_specialization s,system_table_two ss,program_master m ,system_table_two ass  
+	 where m.program_code = #programCode# AND m.program_id=s.program_id AND m.program_id LIKE concat(#universityId#,'%') and
+	 s.branch_id=bb.component_code AND  bb.university_code=#universityId# and bb.active=1 and bb.group_code='BRNCOD' and
+	 s.specialization_id=ss.component_code AND  ss.university_code=#universityId# and ss.active=1 and ss.group_code='SPCLCD' and
+	s.active_specialization_semester=ass.component_code AND  ass.university_code=#universityId# and ass.active=1 and ass.group_code='SEMCOD'
+	</select>
+	
+	
+	
+	
+	
+	
+	<resultMap id="progreserveDetailGetter" class="programMasterInfo">
+	<result property="programId" column="program_id"/>
+	 <result property="programName" column="program_name"/>
+    <result property="programCode" column="program_code"/>
+    <result property="category" column="category_name"/>
+    <result property="percentageSeats" column="percentage_seats"/>
+      <result property="categoryCode" column="category_code"/>
+	</resultMap>
+	
+	<select id="progReserveDetail" resultMap="progreserveDetailGetter">
+	select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,rr.category_name,r.percentage_seats,rr.category_code from  program_seat_reservation r ,SEAT_RESERVATION_CATEGORY rr, program_master m where r.program_id LIKE #programId# AND m.program_id=r.program_id AND r.category_code=rr.category_code
+	</select>
+	
+	
+	
+	
+	<select id="branchList" resultMap="branchListGetter">
+	select component_description branch_name,component_code branch_code from system_table_two where 
+university_code=#universityId# and active=1 and group_code='BRNCOD' order by component_code
+	</select>
+	
+	
+	<select id="specList" resultMap="branchListGetter">
+select component_description branch_name,component_code branch_code from system_table_two where 
+university_code=#universityId# and active=1 and group_code='SPCLCD' order by component_code
+	</select>
+	
+	<select id="semList" resultMap="branchListGetter">
+select component_description branch_name,component_code branch_code from system_table_two where 
+university_code=#universityId# and active=1 and group_code='SEMCOD' order by component_code
+	</select>
+	
+	
+	<resultMap id="categoryListGetter" class="programMasterInfo">
+	 <result property="categoryCode" column="category_code"/>
+    <result property="category" column="category_name"/>
+   	</resultMap>
+	
+	<select id="categoryList" resultMap="categoryListGetter">
+	select component_code category_code,component_description category_name from system_table_two where 
+	university_code=#universityId# and active=1 and group_code='STDCTG' order by component_code
+	</select>
+	
+	<update id="updateProgBasicDetail">
+	
+update program_master set program_name=#programName#, no_of_terms=#numberOfTerms#,total_credits=#totalCredits#,
+number_of_attempt_allowed=#numberOfAttemptAllowed#,max_number_of_fail_subjects=#maxNumberOfFailSubjects#,ug_pg=#ugOrPg#,
+modification_time=now(),modifier_id=#modifierId#,program_type=#programType#,program_mode=#programMode#,tencodes=#tencodes#,
+print_aggregate=#printAggregate#,max_reg_semester=#maxRegSemester#,dgpa=#dgpa#,credit_required=#creditRequired#,
+fixed_or_variable_credit=#fixedOrVariableCredit#,program_description=#programDescription# where program_id=#programId#
+	</update>
+	
+	<update id="updateProgDurationDetails1">
+	update program_duration set minimum_duration=#minimunDuration# ,maximum_duration=#maximumDuration#,modification_time=now(),modifier_id=#modifierId# where program_id=#programId# 
+	</update>
+	
+	<update id="updateProgDurationDetails2">
+	update program_master set fixed_duration=#fixedDuration#,modification_time=now(),modifier_id=#modifierId# where program_id=#programId#
+	</update>
+	
+	<update id="updateSeatReserve">
+	update program_seat_reservation set percentage_seats=#percentageSeats# ,modification_time=#modificationTime#,modifier_id=#modifierId# where program_id=#programId# AND category_code LIKE #category_code#
+	</update>
+	
+	
+	<delete id="deleteProgBasicDetails">
+	delete from program_master where program_id=#programId#
+	</delete>
+	
+	<delete id="deleteProgDurationDetails">
+	delete from program_duration where program_id=#programId# AND start_day_month LIKE #startdate#
+	</delete>
+	
+	<delete id="deleteProgBranchDetails">
+	delete from program_branch_specialization where program_id=#programId# AND branch_id LIKE #branchcode# and specialization_id LIKE #specializationCode#
+	</delete>
+	
+	<delete id="deleteProgSpecDetails">
+	<!-- complete query by adding branch code also-->
+	delete from ENTITY_PROGRAM_SPECIALIZATION_DETAIL where program_id=#programId# AND specialization LIKE #specializationCode#
+	</delete>
+	
+	<delete id="deleteProgReserveDetails">
+	delete from program_seat_reservation where program_id=#programId# AND category_code LIKE #category_code#
+	</delete>
+	
+	
+	
+	<resultMap id="noOfTerms" class="programMasterInfo">
+	   <result property="numberOfTerms" column="number_of_terms"/>
+   	</resultMap>
+	
+	<select id="noOfTerms" resultMap="noOfTerms">
+	select number_of_terms from program_master where program_id=#programId#
+	</select>	
+
+
+  <resultMap id="uniModeGetter" class="programMasterInfo">
+
+    <result property="modeName" column="mode_name"/>
+     <result property="programMode" column="program_mode"/>
+
+  </resultMap>
+
+<select id="uniMode" resultMap="uniModeGetter">
+select component_description mode_name,component_code program_mode from system_table_two where 
+university_code=#universityId# and active=1 and group_code='PRGMOD'
+</select>
+
+
+ <resultMap id="uniTypeGetter" class="programMasterInfo">
+
+    <result property="typeName" column="type_name"/>
+     <result property="programType" column="program_type"/>
+
+  </resultMap>
+
+
+	<select id="uniType" resultMap="uniTypeGetter">
+	select component_description type_name,component_code program_type from system_table_two where 
+	university_code=#universityId# and active=1 and group_code='PRGTYP'
+	</select>
+
+
+	
+	
+	
+	
+	</sqlMap>

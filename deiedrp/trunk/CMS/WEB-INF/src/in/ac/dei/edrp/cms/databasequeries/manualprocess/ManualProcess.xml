@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+	
+<sqlMap namespace="manualProcess">
+	<typeAlias alias="manualProcess"
+		type="in.ac.dei.edrp.cms.domain.manualprocess.ManualProcessBean" />
+		
+		<select id="getOwnerEntityList" resultClass="manualProcess">
+			SELECT e.entity_name as entityName,e.entity_id as entityId FROM entity_master e where university_id=#universityId#;
+		</select>
+		
+		<select id="getProgramNameList" resultClass="manualProcess">
+			  SELECT distinct pob.program_id as programId,pm.program_name as programName,pm.program_code as programCode
+	   			 FROM program_offered_by pob,program_master pm
+	  			 WHERE pob.offered_by=#entityId# and pob.program_id like #programId# and pob.program_id=pm.program_id
+	    		order by programName;
+		</select>
+		
+		<select id="getBranchList" resultClass="manualprocess">
+			SELECT pbs.branch_id as branchId,stt.component_description as branchName
+	  		  FROM program_branch_specialization pbs,system_table_two stt
+	  		  WHERE pbs.program_id=#programId# and stt.university_code=#universityId# and stt.component_code=pbs.branch_id
+	   		  and stt.group_code='BRNCOD' order by branchName;
+		</select>
+		
+		<select id="getSpecializationList" resultClass="manualprocess">
+	    SELECT pbs.specialization_id as specializationId,stt.component_description as specializationName
+	    FROM program_branch_specialization pbs,system_table_two stt
+	    WHERE pbs.program_id=#programId# and pbs.branch_id=#branchId# and stt.university_code=#universityId#
+	    and stt.component_code=pbs.specialization_id and stt.group_code='SPCLCD'
+	    order by specializationName;
+	</select>
+	
+	<select id="getSemesterList" resultClass="manualprocess">
+		SELECT ptd.semester_code as semesterId ,stt.component_description as semesterName
+		FROM program_term_details ptd,system_table_two stt
+		WHERE ptd.program_id=#programId# and stt.university_code=#universityId# and stt.component_code=ptd.semester_code and stt.group_code='SEMCOD'
+	    order by semesterName;
+	</select>
+	
+	<select id="getSessionList" resultClass="manualprocess">
+		select concat_ws('-',substring(start_date,1,4),substring(end_date,3,2)) as sessionStartDate from university_master where university_code=#universityId#;
+	</select>
+</sqlMap>

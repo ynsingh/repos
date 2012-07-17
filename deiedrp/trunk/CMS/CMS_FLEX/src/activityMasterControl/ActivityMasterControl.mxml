@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ActivityMasterControl.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ns1="common.*" title="{commonFunction.getConstants('activityMasterControl')}" creationComplete="setDateRangeAndFocus()" width="1048" height="965">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			public var uuuuu:String;
+		]]>
+	</mx:Script>
+	<mx:String id="univId"/>
+	    
+	
+	<mx:HTTPService id="httpXmlEntityList" method="post"
+        url="{urlEntityList}"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpXmlProcessList" method="post"
+        url="{urlProcessList}"
+        resultFormat="e4x"
+        result="processResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+
+<mx:HTTPService id="httpXmlSemesterList" method="post"
+        url="{urlSemesterList}"
+        resultFormat="e4x"
+        result="semesterResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+
+<mx:HTTPService id="httpXmlProgramList" method="post"
+        url="{urlProgramList}"
+        resultFormat="e4x"
+        result="programResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+
+<mx:HTTPService id="httpXmlBranchList" method="post"
+        url="{urlBranchList}"
+        resultFormat="e4x"
+        result="branchResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+
+<mx:HTTPService id="httpXmlSpecializationList" method="post"
+        url="{urlSpecializationList}"
+        resultFormat="e4x"
+        result="specializationResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="httpXmlProcessGridList" method="post"
+        url="{urlProcessGridList}"
+        resultFormat="e4x"
+        result="processGridResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="httpXmlActivityGridList" method="post"
+        url="{urlActivityGridList}"
+        resultFormat="e4x"
+        result="activityGridResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="sessionDataList" method="post"
+        url="{commonFunction.getConstants('url')}/startActivity/sessionDataList.htm"
+        resultFormat="e4x"
+        result="sessionDataResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+                           
+	
+
+
+<mx:Script source="asFiles/ActivityMasterControl.as"/>
+
+
+
+<mx:Validator source="{entityCombo}" property="selectedItem" required="true" id="entityvalidator" trigger="{okButton}" triggerEvent="click" />
+<mx:Validator source="{processCombo}" property="selectedItem" required="true" id="processvalidator" trigger="{okButton}" triggerEvent="click" />
+<mx:Validator source="{semesterCombo}" property="selectedItem" required="true" id="semestervalidator" trigger="{okButton}" triggerEvent="click"/>
+
+<mx:Validator source="{programCombo}" property="selectedItem" required="true" id="programComboValidator" trigger="{okButton}" triggerEvent="click"/>
+    <mx:Canvas styleName="SimpleCanvas" x="68" y="28" width="839" height="217" scroll="false">
+        <mx:Label  x="129.5" y="28" text="{commonFunction.getConstants('entity')}*"  />
+	    <mx:Label x="437" y="26" text="{commonFunction.getConstants('process')}*" />
+		<mx:Label x="437" y="60" text="{commonFunction.getConstants('program')}*" />
+		<mx:Label x="130.5" y="104" text="{commonFunction.getConstants('branch')}" />
+		<mx:Label x="437" y="102" text="{commonFunction.getConstants('specialization')}" />
+		<mx:Label x="129.5" y="62" text="{commonFunction.getConstants('semester')}*" />
+		<mx:Label x="38.5" y="104" text="{commonFunction.getConstants('search')}" />
+		<mx:ComboBox x="235" y="26" width="139" id="entityCombo" toolTip="{entityCombo.text}" prompt="{commonFunction.getConstants('select')}" change="entityChangeHandler()"
+		 selectedIndex="-1" />
+		<mx:ComboBox x="570.5" y="24" width="139" id="processCombo" toolTip="{processCombo.text}" prompt="{commonFunction.getConstants('select')}"
+		 selectedIndex="-1"  change="processChangeHandler()"/>
+		<mx:ComboBox x="235" y="60" width="139" id="semesterCombo" toolTip="{semesterCombo.text}" prompt="{commonFunction.getConstants('select')}" 
+		 selectedIndex="-1"  change="semesterChangeHandler()"></mx:ComboBox>
+		<mx:ComboBox x="570.5" y="58" width="139" id="programCombo" toolTip="{programCombo.text}" prompt="{commonFunction.getConstants('select')}" enabled="true" change="programChangeHandler()"
+		 selectedIndex="-1"></mx:ComboBox>
+		<mx:ComboBox x="235" y="100" width="139" id="branchCombo" toolTip="{branchCombo.text}" prompt="{commonFunction.getConstants('select')}" enabled="false"
+		 selectedIndex="-1" change="branchChangeHandler()"></mx:ComboBox>
+		<mx:ComboBox width="139" id="specializationCombo" toolTip="{specializationCombo.text}" prompt="{commonFunction.getConstants('select')}" enabled="false"
+		selectedIndex="-1" x="570.5" y="100" change="specilizationChangeHandler()"></mx:ComboBox>
+		<mx:Button label="{commonFunction.getConstants('okButton')}" x="262" y="143" width="60" id="okButton" click="validationforOk()"/>
+		<mx:Button x="330" y="143" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
+	</mx:Canvas>
+			
+	<mx:Canvas styleName="GridCanvas" id="processGridCanvas"  x="67" y="257" width="839" height="244" visible="false">
+		<mx:TextInput id="entityProcesSemesterforProcess" x="17" y="12" width="721" height="25" visible="true" editable="false" />
+		<mx:LinkButton x="737" y="13" enabled="false" label="{commonFunction.getConstants('activity')}" height="25" id="getButton" visible="true" click="showActivityGrid()" width="78"/>
+		<mx:DataGrid  x="19" y="45" id="processGrid" width="800" height="129" 
+			visible="true" sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" >
+		<mx:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" 
+						    editorDataField="selected" dataField="select" headerText=" ">
+		<mx:itemRenderer>
+   		<mx:Component>
+   		<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.processGrid,[outerDocument.getButton],[new LinkButton])">
+ 		<mx:Script>
+        <![CDATA[
+                 import common.commonFunction;
+                 import mx.controls.LinkButton;
+              ]]>
+       </mx:Script>
+       </mx:CheckBox>
+       </mx:Component>
+       </mx:itemRenderer>
+       </mx:DataGridColumn>
+	   <mx:DataGridColumn editable="false"  dataField="programname" headerText="{commonFunction.getConstants('programName')}" width="300" sortable="true"/>
+	   <mx:DataGridColumn editable="false" dataField="branchname" headerText="{commonFunction.getConstants('branchName')}" width="260" sortable="true"/>
+	   <mx:DataGridColumn editable="false" dataField="specilizationname" headerText="{commonFunction.getConstants('specializationName')}" width="380" sortable="true"/>
+	   <mx:DataGridColumn editable="false" dataField="semesterstartdate" headerText="{commonFunction.getConstants('semesterStartDate')}" width="400" sortable="true" />
+	   <mx:DataGridColumn editable="false" dataField="semesterenddate" headerText="{commonFunction.getConstants('semesterEndDate')}" width="400" sortable="true" />
+	   <mx:DataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="200" sortable="true" />
+	   </mx:columns>
+	   </mx:DataGrid>
+	  </mx:Canvas>
+
+   <mx:Canvas styleName="GridCanvas" x="12" id="activityGridCanvas" y="259" width="994" height="242" visible="false" >
+	  <mx:TextInput id="entityProcesSemesterforActivity" x="11" y="14" width="741" height="25" editable="false" visible="true"/>
+	   <mx:LinkButton x="759" y="16" label="{commonFunction.getConstants('start')}" height="24" enabled="false" id="StartButton" visible="true" click="forStartActivity()" width="67"/>
+	  <mx:LinkButton x="910" y="14" label="back" width="80" visible="true" id="backbutton" click="backFunction()" height="27"/>
+	 
+	  <mx:DataGrid allowMultipleSelection="false" creationComplete="commonFunction.showDataTips(activitiesGrid)" sortableColumns="true" x="15" y="52" id="activitiesGrid" width="957" 
+	  height="165" visible="true" editable="true" resizableColumns="false" draggableColumns="false"  >
+	 <mx:columns>
+	  <mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false"  
+  		editorDataField="selected" dataField="select" headerText=" " >
+	  <mx:itemRenderer>
+   	  <mx:Component>
+   	  <mx:CheckBox  change="commonFunction.editDeleteEnable(event,outerDocument.activitiesGrid,[outerDocument.StartButton],[new LinkButton]);showErrorButton(data.activitystatus,event)">
+ 	  <mx:Script>
+      <![CDATA[
+      	import mx.controls.Alert;
+      	import mx.collections.ArrayCollection;
+             import common.commonFunction;
+             import mx.controls.LinkButton;
+             public function showErrorButton(aa:String,event:Event):void{
+             	
+             	
+                    if((aa=="Error")&&(String(event.currentTarget.selected)=="true")){
+             			outerDocument.pdfbutton.enabled=true;
+             		}else{
+             			outerDocument.pdfbutton.enabled=false;
+             		}
+             }
+            ]]>
+     </mx:Script>
+     </mx:CheckBox>
+     </mx:Component>
+     </mx:itemRenderer>
+     </mx:DataGridColumn>
+	 <mx:DataGridColumn editable="false" dataField="activityprogramname" headerText="{commonFunction.getConstants('programName')}" width="350" sortable="true"/>
+	 <mx:DataGridColumn editable="false" dataField="activitybranchname" headerText="{commonFunction.getConstants('branchName')}" width="350" sortable="true"/>
+	 <mx:DataGridColumn editable="false" dataField="activityspecilizationname" headerText="{commonFunction.getConstants('specializationName')}" width="450" sortable="true"/>
+	 <mx:DataGridColumn editable="false" dataField="activitysemesterstartdate" headerText="{commonFunction.getConstants('semesterStartDate')}" width="440" sortable="true" />
+	 <mx:DataGridColumn editable="false" dataField="activitysemesterenddate" headerText="{commonFunction.getConstants('semesterEndDate')}" width="440" sortable="true" />
+	 <mx:DataGridColumn editable="false" dataField="activitystage" headerText="{commonFunction.getConstants('stage')}" width="350" sortable="true"/>
+	 <mx:DataGridColumn editable="false" dataField="activitystagesequence" dataTipField="activitystagesequence" showDataTips="true" headerText="{commonFunction.getConstants('stageSequence')}" width="390" sortable="true"/>
+	 <mx:DataGridColumn editable="false" dataField="activitystatus" headerText="{commonFunction.getConstants('status')}" dataTipField="activitystatus" showDataTips="true" width="250" sortable="true" />
+	 </mx:columns>
+	 </mx:DataGrid>
+	  <mx:LinkButton x="834" y="16" id="pdfbutton" enabled="false" click="openPDF()" label="View Errors"/>
+</mx:Canvas>
+
+  <mx:Canvas styleName="GridCanvas" x="12" id="rejectedGridCanvas" y="527" width="994" height="242" visible="false" >
+	  <mx:LinkButton x="820" y="10" label=" Print Records" height="24" click="printGridData()" width="152"/>
+	  	 
+	  <mx:DataGrid sortableColumns="true" x="15" y="52" id="rejectedGrid" width="957" 
+	  height="165" editable="true" resizableColumns="false" textAlign="center" draggableColumns="false"  >
+	 <mx:columns>
+	  
+	 <mx:DataGridColumn editable="false" dataField="rollno" headerText="Registration/Roll No." width="250" sortable="true"/>
+	 <mx:DataGridColumn editable="false" dataField="reason" headerText="Reason of Rejection" width="550" sortable="true"/>
+	 <mx:DataGridColumn editable="false" dataField="details" headerText="Details" width="150" sortable="true">
+	 <mx:itemRenderer>
+	 	<mx:Component>
+	 	    <mx:Button label="Full Details" click="showDetails(data.rollno,data.detail)">
+	 	    <mx:Script>
+	 	    	<![CDATA[
+	 	    		import mx.controls.PopUpButton;
+	 	    		import mx.managers.PopUpManager;
+	 	    		import mx.controls.Alert;
+	 	    		import mx.collections.ArrayCollection;
+	 	    		public function showDetails(a:String,b:String):void{
+	 	    			
+	 	    			
+	 	    		var detailpopup:detailErrorWindow=detailErrorWindow(PopUpManager.createPopUp(this,detailErrorWindow,true));
+	 	    		detailpopup.rolLabel.text=a;
+	 	    		detailpopup.reasondetaillabel.text=b;
+	 	    		detailpopup.y=10;
+	 	    		detailpopup.x=this.outerDocument.width/3;
+	 	    		
+	 	    		}
+	 	    		
+	 	    	]]>
+	 	    </mx:Script>
+	 	    </mx:Button>
+	 	</mx:Component>
+	 </mx:itemRenderer>
+	 </mx:DataGridColumn>
+	 	 </mx:columns>
+	 </mx:DataGrid>
+	  <mx:Label x="15" y="12" text="Rejected Records "/>
+</mx:Canvas>
+
+
+</mx:Panel>
+

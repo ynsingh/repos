@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * @(#) MakeStatusReadyPorcess.xml
+* Author :Deepak Pandey
+
+* Date :21/5/2011
+
+* Version 1.0
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="MakeStatusReadyPreStaging">
+ 
+ 
+ 	<resultMap id="getActivityListResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ActivityMasterBean">
+		<result property="activityId" column="component_code" />
+		<result property="activityName" column="component_description" />
+	</resultMap>
+    <select id="getActivityList" resultMap="getActivityListResult">
+       SELECT component_code,component_description from system_table_two where university_code=#universityId# AND group_code='PACMST';
+    </select>
+    
+       
+   <resultMap id="getNormalStudentsWithSwitchResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="registration_roll_number" />
+		<result property="studentId" column="student_id" />
+	</resultMap>
+    <select id="getNormalStudentsWithSwitch" resultMap="getNormalStudentsWithSwitchResult">
+       SELECT distinct enrollment_number,registration_roll_number,student_id 
+       FROM prestaging_table WHERE enrollment_number IN 
+       (SELECT enrollment_number FROM prestaging_table  WHERE admission_mode=#admissionSwitchMode# AND new_entity=#entityId# 
+       AND new_program=#programId# AND new_semester=#semesterCode# AND semester_start_date=#semesterStartDate# AND 
+       semester_end_date=#semesterEndDate# AND process_status is null) 
+       AND new_entity=#entityId# AND new_program=#programId# AND new_semester=#semesterCode# AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# 
+       AND admission_mode=#admissionNormalMode# AND process_status is null;
+    </select>
+    
+    <resultMap id="getDetailsForSRSHupdateResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		<result property="branchId" column="new_branch" />
+		<result property="specializationId" column="new_specialization" />
+		
+	</resultMap>
+    <select id="getDetailsForSRSHupdate" resultMap="getDetailsForSRSHupdateResult">
+       SELECT new_branch,new_specialization 
+       FROM prestaging_table WHERE enrollment_number=#enrollmentNumber# and registration_roll_number=#rollNumber# 
+       AND new_entity=#entityId# AND new_program=#programId# AND new_semester=#semesterCode# AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# 
+       AND admission_mode=#admissionMode# AND process_status is null;
+    </select>
+    
+<!--    <resultMap id="getNormalOrSwitchStudentResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">-->
+<!--		<result property="enrollmentNumber" column="enrollment_number" />-->
+<!--		<result property="rollNumber" column="registration_roll_number" />-->
+<!--		<result property="studentId" column="student_id" />-->
+<!--		<result property="admissionMode" column="admission_mode" />-->
+<!--	</resultMap>-->
+    <select id="getNormalOrSwitchStudent" resultClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+    
+    select enrollment_number as enrollmentNumber,student_id as studentId,registration_roll_number as rollNumber,
+	concat_ws(',',student_first_name,student_middle_name,student_last_name)as studentName,
+	concat_ws(',',father_first_name,father_middle_name,father_last_name)as fatherName,
+	concat_ws(',',mother_first_name,mother_middle_name,mother_last_name)as motherName,date_of_birth as dateOfBirth,
+	gender,student_category as category,admission_mode as admissionMode from prestaging_table where new_entity=#entityId# and 
+	   new_program=#programId# and new_semester=#semesterCode# and semester_start_date=#semesterStartDate# 
+	   and semester_end_date=#semesterEndDate# and 
+    (admission_mode=#admissionNormalMode# OR admission_mode=#admissionSwitchMode#) and process_status is null;
+    
+<!--    select distinct enrollment_number,registration_roll_number,student_id,admission_mode from prestaging_table -->
+<!--    where new_entity=#entityId# and new_program=#programId# and new_semester=#semesterCode# and -->
+<!--    semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and -->
+<!--    (admission_mode=#admissionNormalMode# OR admission_mode=#admissionSwitchMode#) -->
+    </select>
+    
+<!--     <resultMap id="getNewStudentResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">-->
+<!--		<result property="enrollmentNumber" column="enrollment_number"/>-->
+<!--		<result property="rollNumber" column="registration_roll_number"/>-->
+<!--		<result property="studentId" column="student_id"/>-->
+<!--	</resultMap>-->
+    <select id="getNewStudent" resultClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+    
+    
+    select enrollment_number as enrollmentNumber,student_id as studentId,registration_roll_number as rollNumber,
+	concat_ws(',',student_first_name,student_middle_name,student_last_name)as studentName,
+	concat_ws(',',father_first_name,father_middle_name,father_last_name)as fatherName,
+	concat_ws(',',mother_first_name,mother_middle_name,mother_last_name)as motherName,date_of_birth as dateOfBirth,
+	gender,student_category as category from prestaging_table where new_entity=#entityId# and 
+	   new_program=#programId# and new_semester=#semesterCode# and semester_start_date=#semesterStartDate# 
+	   and semester_end_date=#semesterEndDate# and admission_mode=#admissionMode# and process_status is null;
+    
+<!--	   select enrollment_number,student_id,-->
+<!--	   registration_roll_number from prestaging_table where new_entity=#entityId# and -->
+<!--	   new_program=#programId# and new_semester=#semesterCode# and semester_start_date=#semesterStartDate# -->
+<!--	   and semester_end_date=#semesterEndDate# and admission_mode=#admissionMode# and process_status is null;-->
+    </select>
+    
+     <resultMap id="getCountForDuplicateEnrollmentResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		<result property="count" column="count(*)" />
+		
+	</resultMap>
+     <select id="getCountForDuplicateEnrollment" resultClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+     
+<!--     select admission_mode as admissionMode from prestaging_table where-->
+<!--	concat_ws(',',student_first_name,student_middle_name,student_last_name)=#studentName#-->
+<!--	and concat_ws(',',father_first_name,father_middle_name,father_last_name)=#fatherName#-->
+<!--	and concat_ws(',',mother_first_name,mother_middle_name,mother_last_name)=#motherName#-->
+<!--	and date_of_birth=#dateOfBirth# AND gender=#gender# AND student_category=#category#-->
+<!--	and new_entity=#entityId# and new_program=#programId# and new_semester=#semesterCode#-->
+<!--	    and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# -->
+<!--	    AND enrollment_number=#enrollmentNumber# and registration_roll_number=#rollNumber#;-->
+     
+	    select count(*) from prestaging_table where enrollment_number=#enrollmentNumber#
+	    and registration_roll_number=#rollNumber# and new_entity=#entityId# and 
+	    new_program=#programId# and new_semester=#semesterCode#
+	    and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+	    admission_mode=#admissionMode# and process_status is null
+	</select>
+		
+	<resultMap id="getCountForDuplicateNewEnrollmentResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		<result property="count" column="count(*)" />
+	</resultMap>
+     <select id="getCountForDuplicateNewEnrollment" resultMap="getCountForDuplicateNewEnrollmentResult">
+     
+     	select count(*) from prestaging_table where
+	concat_ws(',',student_first_name,student_middle_name,student_last_name)=#studentName#
+	and concat_ws(',',father_first_name,father_middle_name,father_last_name)=#fatherName#
+	and concat_ws(',',mother_first_name,mother_middle_name,mother_last_name)=#motherName#
+	and date_of_birth=#dateOfBirth# AND gender=#gender# AND student_category=#category#
+	and new_entity=#entityId# and new_program=#programId# and new_semester=#semesterCode#
+	    and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+	    admission_mode=#admissionMode#;
+     
+<!--	    select count(*) from prestaging_table where registration_roll_number=#rollNumber#-->
+<!--	    and new_entity=#entityId# and new_program=#programId# and new_semester=#semesterCode#-->
+<!--	    and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and-->
+<!--	    admission_mode=#admissionMode# and process_status is null-->
+	</select>
+				
+    <update id="updatePSTReasonAndStatus" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		update prestaging_table set process_status=#processStatus#,
+		reason_code=#reasonCode#,description=#description#,modifier_id=#modifierId#,modification_time=now() where 
+		enrollment_number=#enrollmentNumber# and registration_roll_number=#rollNumber# and new_entity=#entityId# 
+		and new_program=#programId# and new_semester=#semesterCode# 
+		and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# 
+		and admission_mode=#admissionMode# and process_status is null
+	</update>
+	
+	<update id="updatePSTReasonAndStatusForNEW" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		update prestaging_table set process_status=#processStatus#,
+		reason_code=#reasonCode#,description=#description#,modifier_id=#modifierId#,modification_time=now() where 
+		registration_roll_number=#rollNumber# and new_entity=#entityId# 
+		and new_program=#programId# and new_semester=#semesterCode# 
+		and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# 
+		and admission_mode=#admissionMode# and process_status is null
+	</update>
+	
+	<update id="updateSRSHStatus" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.ReadyPreStagingBean">
+		update student_registration_semester_header 
+		set status=#processStatus#,modifier_id=#modifierId#,modification_time=now() 
+		where roll_number=#rollNumber# and 
+		program_course_key=(select program_course_key from program_course_header where program_id=#programId# 
+		and branch_id=#branchId# and specialization_id=#specializationId# and semester_code=#semesterCode#) 
+		and session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate# and 
+		status='YTR';
+	</update>
+		
+</sqlMap>

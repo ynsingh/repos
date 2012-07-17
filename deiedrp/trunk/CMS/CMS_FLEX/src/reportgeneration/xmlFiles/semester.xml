@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Semester>
+	<semester>
+		Odd
+	</semester>
+	<semester>
+		Even
+	</semester>
+	<semester>
+		All
+	</semester>
+</Semester>

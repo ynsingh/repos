@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) BuildNextSession.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="{resourceManager.getString('Constants','buildNextSessionTitle',[nextSessionStartDate,nextSessionEndDate])}" 
+		  width="634" height="286" creationComplete="onCreationComplete(event)"  initialize="panel1_initializeHandler(event)">	
+		  
+		  <mx:HTTPService id="getSessionHttpService" method="POST"
+					url="{urlPrefix+'getCurrentSession.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="sessionDetailsHttpServiceResultHandler(event)"
+					fault="sessionDetailsHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+		<mx:HTTPService id="buildNextSessionHttpService" method="POST"
+					url="{urlPrefix+'buildNextSession.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="ResultHandlerForBuilNextSession(event)"
+					fault="FaultHandlerForBuilNextSession(event)"
+					useProxy="false"/>			
+		
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import common.commonFunction;
+			import entityMaster.asFiles.CommonEntityFunctions;
+			
+			[Bindable]protected var sessionStartDate:String="";
+			[Bindable]protected var sessionEndDate:String="";
+			[Bindable]protected var nextSessionStartDate:String="";
+			[Bindable]protected var nextSessionEndDate:String="";
+			[Bindable]protected var urlPrefix:String;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			/**
+ 			 * Method to fire the initialize event of the panel
+			 * This Function set url
+			 *  @Param Event(FlexEvent)
+ 			**/
+			protected function panel1_initializeHandler(event:FlexEvent):void{
+				urlPrefix=commonFunction.getConstants('url')+"/buildnextsession/";
+			}	
+			/**
+ 			 * Method to fire the creationComplete event of the panel
+			 * This Function send request for get session start date and session end date
+			 * @Param Event(FlexEvent)
+ 			**/
+			protected function onCreationComplete(event:FlexEvent):void{
+				getSessionHttpService.send(new Date());
+			}
+			
+			/**
+ 			 * Failure Handler for getSessionHttpService  
+ 			 * @Param Event(FaultEvent)
+ 			**/
+			public function sessionDetailsHttpServiceFaultHandler(event:FaultEvent):void{
+				 Alert.show(commonFunction.getMessages('problemGetStartEndDates'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			/**
+ 			 * Success Handler for getSessionHttpService  
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			public function sessionDetailsHttpServiceResultHandler(event:ResultEvent):void{
+				 var data:XML=event.result as XML;
+				 
+				 if(data.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		sessionStartDate=data.SessionStartDate;
+				sessionEndDate=data.SessionEndDate;
+				nextSessionStartDate=data.NextSessionStartDate;
+				nextSessionEndDate=	data.NextSessionEndDate;	
+			}
+			
+			/**
+ 			 * Method to fire the click event of Button
+			 * This Function ask the confirmation for Buil Next Session
+ 			**/
+			public function onButtonClick():void{
+				Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, buildConfirm,questionIcon);
+			}
+			
+			/**
+ 			 * Confirmation Method to send request for Build Next Session
+ 			**/
+			public function buildConfirm(event:CloseEvent){
+				if(event.detail==Alert.YES){
+					buildNextSessionHttpService.send(new Date());
+				}
+			}
+			
+			/**
+ 			 * Failure Handler for buildNextSession Service  
+ 			 * @Param Event(FaultEvent)
+ 			**/
+			public function FaultHandlerForBuilNextSession(event:FaultEvent):void{
+				 Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			/**
+ 			 * Success Handler for buildNextSession Service  
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			public function ResultHandlerForBuilNextSession(event:ResultEvent):void{
+				 var data:XML=event.result as XML;
+				 var message:String=data.resultdata;
+				 if(data.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		if(message=="success"){
+        			Alert.show(resourceManager.getString('Messages','nextSessionBuildSuccess',[nextSessionStartDate,nextSessionEndDate]),commonFunction.getMessages('success'),4,null,null,successIcon);
+        		}
+        		else if(message=="duplicate"){
+        			Alert.show(commonFunction.getMessages('allreadyBuildNextSession'),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="lessDate"){
+        			Alert.show(resourceManager.getString('Messages','sessionNotComplete',[sessionStartDate,sessionEndDate]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="null"){
+        			Alert.show(commonFunction.getMessages('noActiveSession'),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="dateParseError"){
+        			Alert.show(commonFunction.getMessages('dateParseError'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+        		}
+        		else if(message=="sqlError"){
+        			Alert.show(commonFunction.getMessages('sqlErrorinBuildNextSession'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+        		}
+				else if(message=="NOProcessCode"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["YEPCOD","1"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else{
+        			Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+        		}
+        		getSessionHttpService.send(new Date());
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas x="21" y="27" width="572" height="184" styleName="BorderCanvas">
+		<mx:Button x="154" y="78" label="{commonFunction.getConstants('buildNextSession')}" click="onButtonClick()"/>
+		<mx:Button x="312" y="78" label="{commonFunction.getConstants('cancelButton')}" click="{parent.removeChild(this)}"/>
+	</mx:Canvas>
+</mx:Panel>

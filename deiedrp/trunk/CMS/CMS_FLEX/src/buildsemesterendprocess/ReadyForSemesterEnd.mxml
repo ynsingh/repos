@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ReadyForSemesterEnd.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="634" height="286" initialize="panel1_initializeHandler(event)"  title="{commonFunction.getConstants('readyForSep')}">
+	 <mx:HTTPService id="readyForSemesterEndService" method="POST"
+					url="{urlPrefix+'readyForRegSep.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="readyForSepHttpServiceResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import common.commonFunction;
+			import mx.validators.Validator;
+			import mx.core.UIComponent;
+			
+			[Bindable]protected var urlPrefix:String;
+			[Bindable] var params:Object=new Object();
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			/**
+ 			 * Method to fire the initialize event of the panel
+			 * This Function set url
+			 *  @Param Event(FlexEvent)
+ 			**/
+			protected function panel1_initializeHandler(event:FlexEvent):void{
+				urlPrefix=commonFunction.getConstants('url')+"/buildsemesterendprocess/";
+			}	
+			/**
+ 			 * Method to fire the click event of Ready for Semester End Button
+			 * This Function ask the confirmation of Ready for Semester End
+ 			**/
+			public function onButtonClick():void{
+				if(Validator.validateAll([semStartDateVal,semEndDateVal]).length>0){
+					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'), commonFunction.getMessages('error'),null,null,null,errorIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, clearConfirm,questionIcon);
+				}
+			}
+			
+			/**
+ 			 * Confirmation Method to send request for Ready for Ready For Semester End
+ 			**/
+			public function clearConfirm(event:CloseEvent){
+				if(event.detail==Alert.YES){
+					params["startDate"]=startDate.text;
+					params["endDate"]=endDate.text;
+					params["buildFor"]="SEP";
+					params["date"]=new Date();
+					readyForSemesterEndService.send(params);
+				}
+			}
+				
+			/**
+ 			 * Failure Handler 
+ 			 * @Param Event(FaultEvent)
+ 			**/
+			public function HttpServiceFaultHandler(event:FaultEvent):void{
+				 Alert.show(commonFunction.getMessages('problemGetStartEndDates'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			/**
+ 			 * Success Handler for readyForSemesterEndService  
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			public function readyForSepHttpServiceResultHandler(event:ResultEvent):void{
+				 var data:XML=event.result as XML;
+				 var tempMsg:String=data.resultdata.toString();
+				 var msg:Array=tempMsg.split("/");
+				 if(data.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		startDate.text="";
+        		endDate.text="";
+        		if(msg[0].toString()=="success"){
+        			Alert.show(resourceManager.getString("Messages","successBuildReg",[msg[1],msg[2],msg[3]]), commonFunction.getMessages('success'),4,null, null, successIcon);
+        		}
+        		else if(msg[0].toString()=="lessSysDate"){
+        			Alert.show(resourceManager.getString("Messages","lessSysDateToBuildSemesterEnd",["Ready for Semester End",msg[1]]), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+        		else if(msg[0].toString()=="greaterSysDate"){
+        			Alert.show(resourceManager.getString("Messages","greaterSysDateToBuildSemesterEnd",["Ready for Semester End",msg[1]]), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+        		else if(msg[0].toString()=="noProgram"){
+        			Alert.show(commonFunction.getMessages('noProgramToClearTemp'), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+        		else if(msg[0].toString()=="parseError"){
+        			Alert.show(commonFunction.getMessages('dateCantParse'), commonFunction.getMessages('error'),4,null, null, errorIcon);
+        		}
+        		else if(msg[0].toString()=="buildPrevious"){
+        			Alert.show(resourceManager.getString("Messages","firstBuild",["Build Ready for Registration"]), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+        		else if(msg[0].toString()=="allreadyBuild"){
+        			Alert.show(commonFunction.getMessages('alreadyBuildSep'), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+				else if(msg[0].toString()=="NOProcessCode"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["BSEPCD","3"]), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+        		else{
+        			Alert.show(commonFunction.getMessages('problemInService'), commonFunction.getMessages('error'),4,null, null, errorIcon);
+        		}
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas x="21" y="27" width="572" height="184" styleName="BorderCanvas">
+		<mx:Button x="136" y="118" label="{commonFunction.getConstants('readyForSep')}" click="onButtonClick()" id="clearButton"/>
+		<mx:Button x="334" y="118" label="{commonFunction.getConstants('cancelButton')}" click="{parent.removeChild(this)}"/>
+		<mx:Label x="106" y="30" text="{commonFunction.getConstants('semesterStartDate')}"/>
+		<mx:Label x="106" y="60" text="{commonFunction.getConstants('semesterEndDate')}"/>
+		<mx:DateField x="302" y="28" id="startDate" showToday="true" yearNavigationEnabled="true" width="144" change="{UIComponent(startDate).errorString=''}" cachePolicy="off"/>
+		<mx:DateField x="302" y="59" id="endDate" showToday="true" yearNavigationEnabled="true" width="144" change="{UIComponent(endDate).errorString=''}" cachePolicy="off"/>
+	</mx:Canvas>
+	<mx:DateValidator id="semStartDateVal" required="true" source="{startDate}" inputFormat="mm/dd/yyyy" property="text" trigger="{clearButton}" triggerEvent="click" requiredFieldError="{commonFunction.getMessages('pleaseSelectOne')}"/>
+	<mx:DateValidator id="semEndDateVal" required="true" source="{endDate}" inputFormat="mm/dd/yyyy" property="text" trigger="{clearButton}" triggerEvent="click" requiredFieldError="{commonFunction.getMessages('pleaseSelectOne')}"/>
+</mx:Panel>

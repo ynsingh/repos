@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) editpopup.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" keyDown="initializeForEsc(event)" x="250" y="150" 
+	title="{commonFunction.getConstants('editCourseDetails')}" layout="absolute" width="411" height="400"  
+	creationComplete="popUpIntilize()" showCloseButton="true" close="closeMe()" horizontalAlign="center" verticalAlign="middle" styleName="PopUpTitleWindow">
+<mx:Script source="asFiles/editpopupAction.as"/>
+
+	<mx:HTTPService id="employeeListHttpService" method="POST"
+					url="{urlPrefix+'employeeList.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="employeeListHttpServiceResultHandler(event)"
+					fault="employeeListHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="updateInstructorHttpService" method="POST"
+					url="{urlPrefix+'UpdateInstructor.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="updateInstructorHttpServiceResultHandler(event)"
+					fault="updateInstructorHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:Label x="60" y="90" id="courseNameLabelName" toolTip="{courseNameLabelName.text}" text="{commonFunction.getConstants('courseName')}"/>
+	<mx:Label x="174" y="90" width="160" id="courseNameLabel"/>
+	<mx:Label x="60" y="132" text="{commonFunction.getConstants('employees')}"/>
+	<mx:ComboBox x="174" y="132" width="160" id="assignEmployCombo" toolTip="{assignEmployCombo.text}"/>
+	<mx:Label x="60" y="169" text="{commonFunction.getConstants('status')}" />
+	<mx:ComboBox x="174" y="169" width="160" id="statusCB" dataProvider="{statusData.element.status.@name}" toolTip="{statusCB.text}"/>
+	<mx:Button x="94" y="244" label="{commonFunction.getConstants('saveButton')}" click="saveClickHandler()" id="save"/>
+	<mx:Button x="209" y="244" label="{commonFunction.getConstants('cancelButton')}" click="cancelClickHandler()" id="cancel"/>
+
+</mx:TitleWindow>

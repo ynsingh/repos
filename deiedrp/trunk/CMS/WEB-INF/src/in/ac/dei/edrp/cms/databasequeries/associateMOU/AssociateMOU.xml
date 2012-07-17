@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+/**
+ * @(#) AssociateMOU.xml
+ * Author :Mohd Amir
+ * Date :21/3/2011
+ * Version 1.0
+ * 
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+  -->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="AssociateMOU">
+
+	<select id="getUniversityList" resultClass="in.ac.dei.edrp.cms.domain.associateMOU.AssociateMOU">
+		select university_code as universityId,university_name as universityName
+		from university_master where university_code != #universityId# and current_status=1 and
+		university_code not in (select mou_university_code
+		from mou_university)
+    </select>
+
+
+	<insert id="setMouDetails" parameterClass="in.ac.dei.edrp.cms.domain.associateMOU.AssociateMOU">
+		insert into mou_university (
+		university_code,mou_university_code,insert_time,creator_id)
+		values(#universityId#,#mouId#,NOW(),#creatorId#)
+       				
+    </insert>
+
+	<select id="getMouDetails" resultClass="in.ac.dei.edrp.cms.domain.associateMOU.AssociateMOU">
+		select mu.university_code as universityId ,mu.mou_university_code as
+		mouId,um.university_name as universityName,
+		um1.university_name as mouName from mou_university as mu , university_master as um
+		,university_master as um1
+		where mu.university_code = um.university_code and mu.mou_university_code =
+		um1.university_code and
+		mu.university_code = #universityId# and um.current_status=1 and um1.current_status=1
+    </select>
+	<delete id="deletMouDetails" parameterClass="in.ac.dei.edrp.cms.domain.associateMOU.AssociateMOU">
+		delete FROM mou_university
+		where university_code = #universityId# and mou_university_code = #mouId#
+    </delete>
+
+
+
+
+
+
+</sqlMap>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+<sqlMap namespace="employeemaster">
+	<typeAlias alias="employeemaster"
+		type="in.ac.dei.edrp.cms.domain.employee.EmployeeMasterInfoGetter" />
+	<typeAlias alias="unirolesetup"
+		type="in.ac.dei.edrp.cms.domain.university.UnivRoleInfoGetter" />
+
+	<resultMap id="parententities" class="unirolesetup">
+
+		<result property="componentId" column="component_code" />
+		<result property="componentDescription" column="component_description" />
+
+	</resultMap>
+
+	<select id="getparentEntity" resultMap="parententities">
+
+		select 
+		em1.entity_id as component_code,em1.entity_name as
+		component_description from entity_master em1
+		where		
+		em1.university_id=#universityCode# order by em1.entity_name;
+</select>
+
+	<select id="getuniversity" resultMap="parententities">
+
+		select distinct
+		um.university_code as
+		component_code,um.university_name as
+		component_description from
+		university_master
+		um,entity_master em where
+		em.parent_entity_id=um.university_code AND
+		um.university_code=#universityCode# AND um.current_status=1;
+</select>
+
+	<insert id="inputemployeebasicdetails">
+
+		insert into employee_master (employee_id,
+		parent_entity, first_name,
+		middle_name, last_name, primary_email_id,
+		secondary_email_id,
+		qualification, designations, dob, doj, insert_time,
+		creator_id,employee_code,
+		university_code,
+		employee_status, gender,
+		category_code,physical_handicapped, net, pg, minority,
+		pen,minority_flag)
+		values(#employeeId#, #parentEntity#,
+		#employeeFirstName#, #employeeMiddleName#, #employeeLastName#,
+		#primaryEmailId#, #secondryEmailId#, #qualification#, #designation#,
+		#dateOfBirth#, #dateOfJoining#, now(),#userId#,
+		#employeeCode#,
+		#universityCode#, 'ACT', #genderCode#,
+		#categoryCode#,#handicapped#,#netQualified#,#postGraduate#,#minority#,#pensionCode#,#minorityFlag#);
+
+	</insert>
+
+	<insert id="inputpermanentaddressdetails">
+
+		insert into addresses_master (user_type, address_key,
+		address, city, state, pincode,
+		office_phone, home_phone, other_phone,
+		fax, insert_time,
+		creator_id,user_id)
+		values(#userType#,
+		#permanentAddressKey#,
+		#permanentAddress#,
+		#permanentCity#,
+		#permanentState#,
+		#permanentPinCode#,
+		#officePhoneNumber#,
+		#homePhoneNumber#,
+		#otherPhoneNumber#,
+		#faxNumber#,
+		now(),
+		#userId#,
+		#employeeId#);
+
+	</insert>
+
+	<insert id="inputcoresspondenceaddressdetails">
+
+		insert into addresses_master (user_type, address_key,
+		address, city, state, pincode,
+		office_phone, home_phone, other_phone,
+		fax, insert_time,
+		creator_id,user_id)
+		values(#userType#,
+		#coresAddresskey#, #coresspondAddress#,
+		#coresspondenceCity#,
+		#coresspondenceState#, #coresspondencePinCode#,
+		#officePhoneNumber#,
+		#homePhoneNumber#,
+		#otherPhoneNumber#,
+		#faxNumber#,
+		now(),
+		#userId#,
+		#employeeId#);
+
+	</insert>
+
+	<resultMap id="employeedetails" class="employeemaster">
+
+		<result property="parentEntity" column="parent_entity" />
+		<result property="employeeFirstName" column="first_name" />
+		<result property="employeeMiddleName" column="middle_name" />
+		<result property="employeeLastName" column="last_name" />
+		<result property="primaryEmailId" column="primary_email_id" />
+		<result property="secondryEmailId" column="secondary_email_id" />
+		<result property="qualification" column="qualification" />
+		<result property="designation" column="designations" />
+		<result property="dateOfBirth" column="dob" />
+		<result property="dateOfJoining" column="doj" />
+		<result property="gender" column="gender" />
+		<result property="category" column="category_code" />
+		<result property="employeeCode" column="employee_code" />
+		<result property="employeeStatus" column="employee_status" />
+		<result property="postGraduate" column="pg" />
+		<result property="netQualified" column="net" />
+		<result property="handicapped" column="physical_handicapped" />
+		<result property="minority" column="minority" />
+		<result property="pensionCode" column="pen" />
+		<result property="minorityFlag" column="minority_flag" />
+
+	</resultMap>
+
+	<select id="getEmployeeDetails" resultMap="employeedetails">
+
+		select
+		em.parent_entity, em.first_name, em.middle_name,
+		em.last_name,
+		em.primary_email_id, em.secondary_email_id, em.qualification,
+		em.designations, em.dob, em.doj, em.employee_code,em.employee_status,
+		em.gender, em.category_code,em.physical_handicapped, em.net, em.pg,
+		em.minority,
+		em.pen,em.minority_flag
+		from employee_master em
+		where
+		first_name
+		LIKE
+		#employeeFirstName# AND
+		employee_code LIKE
+		#employeeCode# AND university_code=#universityCode# order by em.employee_code;
+</select>
+
+	<resultMap id="addressdetails" class="employeemaster">
+
+		<result property="addressKey" column="address_key" />
+		<result property="permanentAddress" column="address" />
+		<result property="permanentCity" column="city" />
+		<result property="permanentState" column="state" />
+		<result property="permanentPinCode" column="pincode" />
+		<result property="officePhoneNumber" column="office_phone" />
+		<result property="otherPhoneNumber" column="other_phone" />
+		<result property="faxNumber" column="fax" />
+		<result property="homePhoneNumber" column="home_phone" />
+
+	</resultMap>
+
+	<select id="getAddressDetails" resultMap="addressdetails">
+
+		SELECT
+		adm.address_key,adm.address, adm.city, adm.state, adm.pincode,
+		adm.office_phone, adm.home_phone, adm.other_phone, adm.fax
+		from
+		addresses_master adm,employee_master em where
+		adm.user_id=em.employee_id AND em.employee_code=#employeeCode#;
+</select>
+
+<select id="getduplicateemployee" resultClass="employeemaster">
+
+select count(*) as componentId from employee_master
+ where first_name=#employeeFirstName# AND last_name = #employeeLastName# 
+  AND primary_email_id=#primaryEmailId# AND dob =#dateOfBirth#;
+
+</select>
+
+<select id="getduplicateemployeecodes" resultClass="employeemaster">
+
+select count(*) as componentId from employee_master
+ where employee_code=#employeeCodeUpdate#;
+
+</select>
+
+	<update id="updateEmployeeDetails">
+
+		update employee_master em,addresses_master
+		adm,addresses_master adm1 SET
+		em.parent_entity=#parentEntity#,
+		em.first_name=#employeeFirstName#,
+		em.middle_name=#employeeMiddleName#,
+		em.last_name=#employeeLastName#,
+		em.primary_email_id=#primaryEmailId#,
+		em.secondary_email_id=#secondryEmailId#,
+		em.qualification=#qualification#, em.designations=#designation#,
+		em.dob=#dateOfBirth#, em.doj=#dateOfJoining#,
+		em.employee_status=#employeeStatus#,
+		em.gender=#genderCode#,
+		em.category_code=#categoryCode#,em.modifier_id=#userId#,em.modification_time=now(),em.physical_handicapped=#handicapped#,
+		em.net=#netQualified#, em.pg=#postGraduate#, em.minority=#minority#,
+		em.pen=#pensionCode#,em.minority_flag=#minorityFlag#,
+		adm.user_id=#employeeId#,
+		adm.address=#coresspondAddress#,
+		adm.city=#coresspondenceCity#,
+		adm.state=#coresspondenceState#,
+		adm.pincode=#coresspondencePinCode#,
+		adm.office_phone=#officePhoneNumber#,
+		adm.home_phone=#homePhoneNumber#, adm.other_phone=#otherPhoneNumber#,
+		adm.fax=#faxNumber#,adm.modifier_id=#userId#,
+		adm.modification_time=now(),adm1.user_id=#employeeId#,adm1.address=#permanentAddress#,
+		adm1.city=#permanentCity#, adm1.state=#permanentState#,
+		adm1.pincode=#permanentPinCode#,
+		adm1.office_phone=#officePhoneNumber#,
+		adm1.home_phone=#homePhoneNumber#,
+		adm1.other_phone=#otherPhoneNumber#,
+		adm1.fax=#faxNumber#,
+		adm1.modifier_id=#userId#,adm1.modification_time=now()
+		where
+		adm.address_key='COR' AND
+		adm1.address_key='PER'
+		AND
+		adm.user_id=adm1.user_id AND
+		adm1.user_id=em.employee_id AND em.employee_id=#oldEmployeeId# AND 
+		em.employee_code=#employeeCodeUpdate#;
+
+</update>
+
+<select id="getEmployeeId" resultClass="employeemaster">
+
+	select employee_id as oldEmployeeId from employee_master where employee_code=#employeeCodeUpdate# AND university_code=#universityCode#;
+
+</select>
+
+</sqlMap>

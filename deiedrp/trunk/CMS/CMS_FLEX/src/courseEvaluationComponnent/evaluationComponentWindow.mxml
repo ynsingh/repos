@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) evaluationComponentWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="826" height="422" showCloseButton="true"  initialize="applicationCreationHandler1()" close="closeScreen(e)" title="{commonFunction.getConstants('evaluationComponentDetails')}" xmlns:common="common.*">
+	
+	<mx:HTTPService id="getEvaluationIdsService" method="POST"
+		url="{urlPrefix+'getEvaluationIds.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getevalidsSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="getComponentService" method="POST"
+		url="{urlPrefix2+'getComponents.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getComponentSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="getDuplicateService" method="POST"
+		url="{urlPrefix+'getDuplicateCount.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getDuplicateSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="setCecDetailService" method="POST"
+		url="{urlPrefix+'setCecDetail.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="writececdetailSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:Script source="asFiles/addEvaluationComponentAction.as"/>
+	<mx:Validator id="evaluationIdValidator" source="{evaluationIdCombo}" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click" />
+    <mx:Validator id="groupValidator" source="{groupCombo}" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/>
+    <mx:Validator id="ruleValidator" source="{ruleCombo}" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/>
+    <mx:Validator id="examDateValidator" source="{examDateField}" property="selectedValue" required="true" trigger="{saveButton}" triggerEvent="click"/>
+  
+    <mx:Label x="30" y="25" text="{commonFunction.getConstants('program')}"/>
+    <mx:Label x="30" y="55" text="{commonFunction.getConstants('semester')}"/>
+	<mx:Label x="30" y="85" text="{commonFunction.getConstants('course')}"/>
+	<mx:Label x="160" y="25" fontWeight="bold" id="programLabel" />
+	<mx:Label x="160" y="55" text="" fontWeight="bold" id="semesterLabel" />
+	<mx:Label x="160" y="85" text="" fontWeight="bold" id="courseLabel"/>
+	
+	<mx:Label x="17" y="120" text="{commonFunction.getConstants('evaluationId')}"/>
+	<mx:Label x="439" y="120" text="{commonFunction.getConstants('group')}"/>
+	<mx:Label x="19" y="168" text="{commonFunction.getConstants('rule')}"/>
+	<mx:Label x="439" y="165" text="{commonFunction.getConstants('examDate')}"/>
+	<mx:Label x="19" y="220" text="{commonFunction.getConstants('maximumMarks')}"/>
+	<mx:Label x="439" y="220" text="{commonFunction.getConstants('dateFromDisplayMarks')}"/>
+	<mx:Label x="439" y="265" text="{commonFunction.getConstants('dateToDisplayMarks')}"/>
+	<mx:Label x="19" y="261" text="{commonFunction.getConstants('orderInAwardBlank')}"/>
+	<mx:ComboBox id="evaluationIdCombo" toolTip="{evaluationIdCombo.text}" labelField="evid" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="161" y="117"  width="150"/>
+    <mx:ComboBox id="groupCombo"  toolTip="{groupCombo.text}" labelField="idgrp" dataProvider="{idgrouparray}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="608" y="117" width="160"/>
+	<mx:ComboBox id="ruleCombo"  toolTip="{ruleCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="161" y="165" width="150"/>
+	<common:DateMonthSelector x="608" y="166" id="examDateField" width="160" />
+	<mx:NumericStepper x="161" y="218"  width="150" id="maximumMarks" minimum="1" maximum="1000"/>
+	<common:DateMonthSelector x="608" y="262" id="datetoDispalyMarks" width="160" />
+	<common:DateMonthSelector x="608" y="218" id="datefromDispalyMarks" width="160" />
+	<mx:NumericStepper x="161" y="259" id="orderinMarkshet" width="150" maximum="30"/>
+	<mx:Button x="240" y="320" id="saveButton" visible="false" label="{commonFunction.getConstants('saveButton')}" click="submitDetails(event)"/>
+	<mx:Button x="240" y="320" id="updateButton" visible="false" label="{commonFunction.getConstants('updateButton')}" click="updateDetails(event)"/>
+	<mx:Button x="371" y="320" visible="true" id="cancelButton" label="{commonFunction.getConstants('cancelButton')}" click="closeScreen(e)" />
+</mx:TitleWindow>

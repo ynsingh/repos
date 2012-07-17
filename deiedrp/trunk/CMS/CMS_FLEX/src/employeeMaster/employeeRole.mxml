@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#) employeeRole.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" creationComplete="onCreationComplete()" initialize="panel1InitializeHandler(event)" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			[Bindable]public var urlPrefix:String;
+			[Bindable]public var urlPrefixEmployee:String;
+
+			protected function panel1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=resourceManager.getString('Constants','url')+"/universityrole/";
+				urlPrefixEmployee=resourceManager.getString('Constants','url')+"/employeerole/";
+			}
+
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/employeeRole.as">
+	
+</mx:Script>
+	
+	<mx:Validator id="textvalidate" source="{empId}" property="text" trigger="{okButton}" triggerEvent="click">
+		
+	</mx:Validator>
+	
+	<mx:HTTPService id="getempdetails" method="post"
+					url="{urlPrefixEmployee+'getEmployeeDetails.htm'}"
+					resultFormat="e4x"
+					result="onEmpSuccess(event)"
+					fault="onEmpFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="unirole" method="post"
+					url="{urlPrefix+'getRole.htm'}"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Panel x="10" y="10" width="344" height="139" title="{resourceManager.getString('Constants','define')} {resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','role')}" layout="absolute">
+		<mx:Label x="10" y="10" text="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','id')}" width="117"/>
+		<common:AutoCompleteCB  x="135" y="8" id="empId" />
+		<mx:Button x="10" y="52" label="{resourceManager.getString('Constants','okButton')}" click="getEmployeeDetails()" id="okButton"/>
+		<mx:Button x="176" y="52" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Panel>
+	<mx:Canvas x="10" y="193" width="700" height="200" visible="false" id="empdetails" styleName="GridCanvas">		
+		<mx:DataGrid x="10" y="28" editable="true" width="680" height="140" id="empdetailsdislpay">
+		<mx:columns>
+			<mx:DataGridColumn rendererIsEditor="true" width="20" editorDataField="selected" textAlign="center" dataField="select" headerText="">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.empdetailsdislpay,[outerDocument.linkbutton],[new LinkButton])">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;
+									import mx.controls.*;
+									
+								]]>
+							</mx:Script>
+						</mx:CheckBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','name')}" dataField="empname" width="150" editable="false"/>
+			<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','dob')}" dataField="dob" width="50" editable="false"/>
+			<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','category')}" dataField="category" width="40" editable="false"/>
+			<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','gender')}" dataField="gender" width="35" editable="false"/>
+			<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','primary_email')}" dataField="email_id" width="100" editable="false"/>
+		</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="9" y="6" text="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','details')}" fontWeight="bold"/>
+		<mx:LinkButton x="598" y="4" label="{resourceManager.getString('Constants','assign')} {resourceManager.getString('Constants','role')}" click="getRoles()" id="linkbutton" enabled="false"/>
+	</mx:Canvas>
+	
+	
+</mx:Panel>

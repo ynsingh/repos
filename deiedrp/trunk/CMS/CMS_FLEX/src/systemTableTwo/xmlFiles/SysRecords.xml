@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<records>
+	<group group_code="STDCTG" max="2" min="2" group_description="Student Category">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+									
+	<group    group_code="BRNCOD" max="3" min="2"   group_description="Branch Details">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+									
+	<group    group_code="ADRSKY" max="3" min="3" group_description="Address Key">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+									
+	<group    group_code="CRSGRP" max="3" min="2"   group_description="Course Group">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+									
+	<group    group_code="CRSOPT" max="2" min="2"   group_description="Course Option">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+									
+	<group    group_code="CRSTYP" max="2" min="2"   group_description="Course Type">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>	
+	
+	<group    group_code="ENTTYP" max="3" min="3"   group_description="Entity Type">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description="Level"></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="LCNMST" max="3" min="2"   group_description="Location Master">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description=""></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="MNUITM" max="6" min="2"   group_description="Menu Item">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description="Menu Flag"></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SEMCOD" max="3" min="3"   group_description="Semester Details">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description="Is First Semester"></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SPCLCD" max="3" min="2"   group_description="Specialization Details">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description=""></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="UNROLE" max="3" min="3"   group_description="University Roles">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="CRCLSF" max="1" min="1"   group_description="Course Classification">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PRGTYP" max="1" min="1"   group_description="Program Type">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description=""></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PRGMOD" max="1" min="1"   group_description="Program Mode">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description=""></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="DVSCOD" max="2" min="1"   group_description="Division Code">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description=""></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	
+	<group    group_code="GENDER" max="1" min="1"   group_description="Gender">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1 flag1_description=""></dummy_flag1>
+		<dummy_flag2 flag2_description=""></dummy_flag2>
+		<dummy_flag3 flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="VRFCMP" max="3" min="2"   group_description="Verification Component">
+		<verification_required allow="yes"></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description="Verification Flag"></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PRCSTG" max="3" min="3"   group_description="Activity Process Stage">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="DESGNS" max="3" min="2"   group_description="Designations">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PRCMST" max="3" min="3"   group_description="Process Description">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="ACTMST" max="3" min="3"   group_description="Activity Description">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SEMGRP" max="3" min="2"   group_description="Semester Group">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="TENCOD" max="2" min="2"   group_description="Ten Codes">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="EVLCOM" max="3" min="3"   group_description="Evaluation Component">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="EVLGRP" max="2" min="2"   group_description="Course Evaluation Group">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PENCOD" max="3" min="3"   group_description="Penality Code">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description="Penality Flag"></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="ISUCOD" max="3" min="3"   group_description="Issue Code">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SWTRL3" max="2" min="2"   group_description="Switch Rule 3">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SWTRL4" max="2" min="2"   group_description="Switch Rule 4">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SWTRL5" max="2" min="2"   group_description="Switch Rule 5">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SWTRL6" max="2" min="2"   group_description="Switch Rule 6">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SWTTYP" max="3" min="3"   group_description="Switch Type">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="IDTYPE" max="2" min="2"   group_description="Id Type">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="DISTYP"  max="1" min="1"  group_description="Display Type">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="CERULE" max="3" min="3"   group_description="Course Evaluation Rule">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="REGDIS" max="1" min="1"   group_description="Program Learning Type">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PACMST" max="3" min="3"   group_description="Program Level Activity">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PROGRP" max="3" min="3"   group_description="Program Group">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="LNKGRP" max="3" min="3"   group_description="Linked Group">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SBWGRP" max="3" min="3"   group_description="Subject Wise Group">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="CRSCTG" max="3" min="3"   group_description="Course Category">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="GRPRUL" max="1" min="1"   group_description="Group Rule">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="EODMTH" max="4" min="3"   group_description="EOD Methods">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="STPFRQ" max="3" min="3"   group_description="EOD Step Frequency">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PENSON" max="3" min="3"   group_description="Pension Description">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="MNORTY" max="3" min="3"   group_description="Minority Group">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="GRADEP" max="3" min="1"   group_description="Grades">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PSTSTG" max="4" min="2"   group_description="Post Stages">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="CENCOD" max="4" min="2"   group_description="Examination Center Code">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="CATTYP" max="1" min="1"   group_description="Categorization Type ">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>	
+	
+	<group    group_code="SUBCOD" max="1" min="1"   group_description="Subject Code">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+
+	<group    group_code="MRTCOM" max="3" min="2"   group_description="Final Merit Components">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>	
+	
+	<group    group_code="PAPGRP" max="2" min="2"   group_description="Paper Groups">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="PAPCOD" max="2" min="2"   group_description="Paper Codes">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="BOARDS" max="2" min="2"   group_description="Boards">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="DOCLST" max="2" min="2"   group_description="Document Lists">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="CALBAS" max="1" min="1"   group_description="Calculation Basis For Tie Rule">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="LOGCTR" max="2" min="2"   group_description="Logic Calculation For Tie Rule">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+	<group    group_code="SPWCOD" max="2" min="2"   group_description="Special Weightage Components">
+		<verification_required allow=""></verification_required>
+		<dummy_flag1   flag1_description=""></dummy_flag1>
+		<dummy_flag2   flag2_description=""></dummy_flag2>
+		<dummy_flag3   flag3_description=""></dummy_flag3>
+	</group>
+	
+</records>

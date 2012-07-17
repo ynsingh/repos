@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="associateCourseWithInstructor">
+    <select id="entityList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select entity_id as entityId, entity_name as entityName 
+        from entity_master 
+        where university_id=#universityId#;
+    </select>
+    <select id="getProgramList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select program_id as programId, program_name as programName, program_code as programCode 
+        from program_master
+		where program_id in (select program_id from program_offered_by where offered_by=#entityId#);
+    </select>
+    
+    <select id="getBranchList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select component_code as branchId, component_description as branchName from system_table_two
+        where group_code='BRNCOD' and component_code in (SELECT branch_id FROM program_offered_by where program_id=#programId# and offered_by=#entityId#)
+        and university_code=#universityId#;
+    </select>
+    
+     <select id="getSpecializationList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select component_code as specializationId, component_description as specializationName from system_table_two
+        where group_code='SPCLCD' and component_code in (SELECT specialization_id 
+        FROM program_offered_by where program_id=#programId# and offered_by=#entityId# and branch_id=#branchId# )
+        and university_code=#universityId#;
+    </select>
+    
+    <select id="getSemesterList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select component_description as semesterName, component_code as semesterCode
+		from system_table_two where component_code in (select semester_code from program_term_details where program_id=#programId#)
+		and group_code='SEMCOD' and university_code=#universityId#; 
+    </select>
+    
+    <select id="getSemesterDates" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate
+		from program_registration, university_master um
+		where university_id=#universityId# and status='ACT'
+		and session_start_date=um.start_date and session_end_date=um.end_date and
+		program_course_key=(select program_course_key from program_course_header where program_id=#programId#
+		and branch_id=#branchId# and specialization_id=#specializationId# and semester_code=#semesterCode#) and um.university_code=#universityId# and um.current_status='1';
+    </select>
+    
+    <select id="getCourseCodeAndName" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select pcd.program_course_key as programCourseKey, pcd.course_code as courseCode, cm.course_name as courseName
+		from program_course_detail pcd, course_master cm
+		where cm.university_code=#universityId# and cm.course_code=pcd.course_code and 
+		program_course_key in (select program_course_key from program_course_header where program_id=#programId# and branch_id=#branchId# and 
+		specialization_id=#specializationId# and semester_code=#semesterCode#);
+    </select>
+    
+    <select id="getInstructorDetails" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select distinct ic.program_course_key as programCourseKey, ic.employee_id as employeeCode, ic.course_code as courseCode,
+		(case when ic.status='ACT' then 'Active' else 'Inactive' end) as status, cm.course_name as courseName, concat_ws(' ',em.first_name, em.middle_name, em.last_name) as employeeName
+		from instructor_course ic, course_master cm, program_course_detail pcd, employee_master em
+		where cm.university_code=#universityId# and
+		cm.course_code=pcd.course_code and ic.course_code=pcd.course_code and
+		ic.employee_id=em.employee_code and
+		ic.program_course_key in (select pch.program_course_key
+		from program_course_header pch where pch.program_id=#programId# and pch.branch_id=#branchId# and
+		pch.specialization_id=#specializationId# and pch.semester_code=#semesterCode#);
+
+    </select>
+    
+    <select id="checkExistingCourseDetails" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+    	select program_course_key as programCourseKey, course_code as CourseCode, ic.employee_id as employeeCode, 
+    	(case when status='ACT' then 'Active' else 'Inactive' end) as status, concat_ws(' ',em.first_name, em.middle_name, em.last_name) as employeeName
+		from instructor_course ic, employee_master em
+		where program_course_key=#programCourseKey# and entity_id=#entityId# and
+		semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and 
+		course_code=#courseCode# and status='ACT' and ic.employee_id=em.employee_code;
+    </select>
+    
+    <select id="getEmployeeList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select employee_id as employeeId, concat_ws(' ',first_name, middle_name, last_name)  as employeeName, employee_code as employeeCode
+		from employee_master
+		where employee_id like #universityId#;
+    </select>
+    
+    <insert id="insertCourseInstructor" parameterClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        insert into instructor_course (program_course_key, employee_id, semester_start_date,
+        semester_end_date, insert_time, creator_id, entity_id, course_code, status) 
+        values (#programCourseKey#, #employeeCode#, #semesterStartDate#, #semesterEndDate#,now(),#creatorId#, #entityId#, #courseCode#, 'ACT')         
+    </insert>
+        
+    <update id="updateEmployee" parameterClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        update instructor_course set employee_id=#employeeCode#, status=#status#
+        where program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and
+        semester_end_date=#semesterEndDate# and entity_id=#entityId# and course_code=#courseCode#         
+    </update>
+    
+    <delete id="deleteCourseInstructor" parameterClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        delete from instructor_course 
+        where program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and
+        semester_end_date=#semesterEndDate# and entity_id=#entityId# and course_code=#courseCode#         
+    </delete>
+    
+    <select id="getInstructorCourseDetails" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+    	select ic.program_course_key as programCourseKey, ic.employee_id as employeeId,
+		ic.entity_id as entityId, ic.course_code as courseCode, ic.status, ic.entity_id as entityId
+		from program_registration pr, instructor_course ic
+		where ic.entity_id=#entityId# and ic.status='ACT' and ic.program_course_key=pr.program_course_key and
+    	ic.semester_start_date=pr.semester_start_date and ic.semester_end_date=pr.semester_end_date and
+ 		pr.session_start_date=(select DATE_SUB(#sessionStartDate#,INTERVAL 1 YEAR));
+    </select>
+    
+    <select id="getSemesterStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+    	select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate
+		from program_registration
+		where session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and
+		program_course_key=#programCourseKey# and university_id=#universityId# and status='ACT';
+    </select>
+    
+    <select id="checkAlreadyExistSemesterStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+    	select program_course_key as programCourseKey, employee_id as employeeId, semester_start_date as semesterStartDate,
+		semester_end_date as semesterEndDate, entity_id as entityId, course_code as courseCode, status
+		from instructor_course
+		where semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+		program_course_key=#programCourseKey# and employee_id=#employeeId# and entity_id=#entityId# and
+		course_code=#courseCode#;
+    </select>
+    
+    <select id="getSessionStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master
+		where university_code=#universityId# and current_status='1';
+    </select>
+    
+    <insert id="insertInstructorCourse" parameterClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+    	insert into instructor_course (program_course_key, employee_id, semester_start_date, semester_end_date,
+		insert_time, creator_id, entity_id, course_code, status) values
+		(#programCourseKey#, #employeeId#, #semesterStartDate#, #semesterEndDate#,
+		now(), #creatorId#, #entityId#, #courseCode#, #status#);
+    </insert>
+</sqlMap>

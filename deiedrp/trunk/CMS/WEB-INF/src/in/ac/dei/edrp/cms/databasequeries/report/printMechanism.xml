@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="printMechanism">
+	<typeAlias alias="printMechanism"
+		type="in.ac.dei.edrp.cms.domain.report.printMechanismInfoGetter" />
+
+	<select id="getEntities" resultClass="printMechanism">
+		select distinct
+		em.entity_id as entityId,em.entity_name as
+		entityName, em.entity_code as entityCode
+		from
+		entity_master em,program_offered_by
+		pob where
+		pob.offered_by=em.entity_id AND
+		em.entity_id LIKE #universityCode#;
+	</select>
+	
+	<select id="getReportsDetails" resultClass="printMechanism">
+		<!--  select
+ui.user_group_id,stt.component_description,stt.dummy_flag_one,stt1.component_code as reportCode ,
+stt1.component_description as reportDescription,stt2.component_code as reportTypeCode,stt2.component_description as reportTypeDescription
+from user_info ui,system_table_two stt,system_table_two stt1,system_table_two stt2
+where ui.user_id=#userId# and stt.group_code='UNROLE' and stt.component_code=ui.user_group_id
+and stt1.group_code='RPORTS' and stt1.university_code='0001' and stt2.group_code='REPTYP'
+and stt1.dummy_flag_three=stt2.component_code
+and stt.dummy_flag_one=stt1.dummy_flag_one ;-->
+	<!--  	select
+		sys.component_code reportCode,sys.component_description
+		reportDescription,
+		sys1.component_code
+		reportTypeCode,sys1.component_description reportTypeDescription
+		from
+		system_table_two sys,system_table_two sys1 where
+		sys.dummy_flag_three=sys1.component_code
+		AND sys1.group_code='REPTYP'
+		AND sys.university_code=sys1.university_code
+		AND
+		sys.university_code=#universityCode# AND sys.group_code='RPORTS'
+		order by cast(reportCode as signed);-->
+ SELECT stt.component_code as reportCode,stt.component_description as
+		reportDescription,
+		stt1.component_code as
+		reportTypeCode,stt1.component_description as reportTypeDescription,ra.user_role_id as roleId,
+        generate_authority as generateAuthority,download_authority as downloadAuthority
+  FROM  system_table_two stt,report_authority ra,user_info ui,system_table_two stt1
+  WHERE stt.group_code='RPORTS' and ra.report_code=stt.component_code and ui.user_id=#userId#
+  		and ui.application=#application#
+        and ui.user_group_id=ra.user_role_id and stt1.group_code='REPTYP' AND stt.dummy_flag_two IS NULL
+        and stt.dummy_flag_three=stt1.component_code
+        order by cast(ra.report_code as signed);
+	</select>
+
+	<select id="getCombinations4Entity" resultClass="printMechanism">
+		SELECT
+		pm.program_name programName,pm.program_id
+		programId,pm.program_code
+		programCode,sys.component_code
+		branchId,sys.component_description
+		branchName,
+		sys1.component_code
+		specializationId,sys1.component_description specializationName,
+		sys2.component_code semesterCode,sys2.component_description
+		semesterName,pr.semester_start_date
+		semesterStartDate,pr.semester_end_date semesterEndDate from
+		program_registration pr,program_master pm,
+		system_table_two
+		sys,system_table_two sys1,system_table_two
+		sys2,program_course_header
+		pch where pr.entity_id=#entityId#
+		AND
+		pr.program_course_key=pch.program_course_key AND
+		pch.program_id=pm.program_id AND pch.branch_id=sys.component_code
+		AND
+		pch.specialization_id=sys1.component_code AND
+		pch.semester_code=sys2.component_code AND sys.group_code='BRNCOD' AND
+		sys1.group_code='SPCLCD' AND sys2.group_code='SEMCOD' AND
+		sys.university_code=sys1.university_code
+		AND
+		sys1.university_code=sys2.university_code AND
+		sys2.university_code=pr.university_id AND
+		pr.university_id=#universityCode# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND
+		status='ACT' order by
+		pm.program_id;		
+	</select>
+
+	<select id="getCombinationsEPS" resultClass="printMechanism">
+
+		select * from
+		(SELECT
+		distinct pm.program_name programName,pm.program_code
+		programCode,pm.program_id
+		programId
+		FROM
+		program_registration
+		pr,program_master pm,program_course_header pch
+		where
+		pr.entity_id=#entityId# AND
+		pr.session_start_date=#passedFromSession#
+		AND
+		pr.session_end_date=#passedToSession# AND pr.status='ACT'
+		AND
+		pch.program_course_key=pr.program_course_key AND
+		pch.program_id=pm.program_id)set1 join
+		(select ('Even Semesters') as
+		semesterName
+		union select ('Odd Semesters'))set2
+		;
+	
+	</select>
+
+	<select id="getCombinationsREP" resultClass="printMechanism">
+
+		SELECT
+		distinct
+		pm.program_name programName,pm.program_code
+		programCode,pm.program_id
+		programId,pm.print_aggregate semesterName
+		FROM
+		program_registration
+		pr,program_master
+		pm,program_course_header pch
+		where
+		pr.entity_id=#entityId# AND
+		pr.session_start_date=#passedFromSession#
+		AND
+		pr.session_end_date=#passedToSession# AND pr.status='ACT'
+		AND
+		pch.program_course_key=pr.program_course_key AND
+		pch.program_id=pm.program_id;
+	
+	</select>
+
+	<select id="getCombinationsPSS" resultClass="printMechanism">
+
+<!--		SELECT distinct-->
+<!--		pm.program_name programName,pm.program_id-->
+<!--		programId,pm.program_code-->
+<!--		programCode,-->
+<!--		sys2.component_code-->
+<!--		semesterCode,sys2.component_description-->
+<!--		semesterName,pr.semester_start_date-->
+<!--		semesterStartDate,pr.semester_end_date semesterEndDate from-->
+<!--		program_registration pr,program_master pm,-->
+<!--		system_table_two-->
+<!--		sys2,program_course_header-->
+<!--		pch where pr.entity_id=#entityId#-->
+<!--		AND-->
+<!--		pr.program_course_key=pch.program_course_key AND-->
+<!--		pch.program_id=pm.program_id AND-->
+<!--		pch.semester_code=sys2.component_code-->
+<!--		AND sys2.group_code='SEMCOD' AND-->
+<!--		sys2.university_code=pr.university_id-->
+<!--		AND-->
+<!--		pr.university_id=#universityCode# AND-->
+<!--		session_start_date=#passedFromSession# AND-->
+<!--		session_end_date=#passedToSession# AND-->
+<!--		status='ACT' order by-->
+<!--		pm.program_id,sys2.component_code;	-->
+
+		SELECT distinct
+		pm.program_name programName,pm.program_id
+		programId,pm.program_code
+		programCode,
+		sys2.component_code
+		semesterCode,sys2.component_description
+		semesterName,pr.semester_start_date
+		semesterStartDate,pr.semester_end_date semesterEndDate ,ptd.final_semester_code as finalSemCode,
+		ptd.semester_sequence AS semesterSequence
+		from
+		program_registration pr,program_master pm,
+		system_table_two
+		sys2,program_course_header pch,program_term_details ptd
+		 where pr.entity_id=#entityId#
+		AND pch.semester_code=ptd.semester_code AND
+        pch.program_id=ptd.program_id AND
+		pr.program_course_key=pch.program_course_key AND
+		pch.program_id=pm.program_id AND
+		pch.semester_code=sys2.component_code
+		AND sys2.group_code='SEMCOD' AND
+		sys2.university_code=pr.university_id
+		AND
+		pr.university_id=#universityCode# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND
+		status='ACT' order by
+		pm.program_id,sys2.component_code;
+	
+	
+	</select>
+
+	<select id="getCombinationsPBS" resultClass="printMechanism">
+
+		SELECT distinct
+		pm.program_name programName,pm.program_id
+		programId,pm.program_code
+		programCode,sys.component_code
+		branchId,sys.component_description
+		branchName,
+		sys1.component_code
+		specializationId,sys1.component_description specializationName
+		from
+		program_registration pr,program_master pm,
+		system_table_two
+		sys,system_table_two sys1,program_course_header
+		pch where
+		pr.entity_id=#entityId#
+		AND
+		pr.program_course_key=pch.program_course_key AND
+		pch.program_id=pm.program_id AND pch.branch_id=sys.component_code
+		AND
+		pch.specialization_id=sys1.component_code AND
+		sys.group_code='BRNCOD'
+		AND
+		sys1.group_code='SPCLCD' AND
+		sys.university_code=sys1.university_code
+		AND
+		sys1.university_code=pr.university_id AND
+		pr.university_id=#universityCode# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND
+		status='ACT' order by
+		pm.program_id;
+	
+	</select>
+
+	<insert id="insertReportlog">
+		<!--  insert into report_control_log (university_code,
+		entity_id, program_id, branch_code,
+		specialization_code, semester_code,
+		semester_start_date,
+		semester_end_date, enrollment_number, roll_number,
+		report_code,
+		report_generated, report_printed, session_start_date,
+		session_end_date, insert_time, creator_id,semester_type)
+		values(#universityCode#,#entityId#,#programId#,#branchId#,#specializationId#,
+		#semesterCode#,#semesterStartDate#,#semesterEndDate#,#enrollmentNumber#,#rollNumber#,
+		#reportCode#,1,'No',#passedFromSession#,#passedToSession#,now(),#userId#,#programPrintType#);-->
+		
+		insert into report_control_log (university_code,
+		entity_id, program_id, branch_code,
+		specialization_code, semester_code,
+		semester_start_date,
+		semester_end_date,
+		report_code,
+		report_generated, report_printed, session_start_date,
+		session_end_date, insert_time, creator_id,semester_type)
+		values(#universityCode#,#entityId#,#programId#,#branchId#,#specializationId#,
+		#semesterCode#,#semesterStartDate#,#semesterEndDate#,
+		#reportCode#,1,'No',#passedFromSession#,#passedToSession#,now(),#userId#,#programPrintType#);
+
+	</insert>
+
+
+	<select id="getflagStatusEPS" resultClass="printMechanism">
+
+		select
+		report_generated
+		as reportGenerated,report_printed as printStatus
+		from
+		report_control_log
+		where entity_id=#entityId# AND
+		program_id=#programId# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND
+		semester_type=#programPrintType# AND report_code=#reportCode#;
+
+	</select>
+
+	<select id="getflagStatusREP" resultClass="printMechanism">
+
+		select
+		report_generated
+		as reportGenerated,report_printed as printStatus
+		from
+		report_control_log
+		where entity_id=#entityId# AND
+		program_id=#programId# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND
+		report_code=#reportCode#;
+
+	</select>
+
+	<select id="getflagStatusRCL" resultClass="printMechanism">
+		select
+		report_generated as reportGenerated,report_printed as printStatus
+		from
+		report_control_log where
+		entity_id=#entityId# AND
+		program_id=#programId# AND
+		branch_code=#branchId#
+		AND
+		specialization_code=#specializationId# AND
+		semester_code=#semesterCode#
+		AND
+		semester_start_date=#semesterStartDate# AND
+		semester_end_date=#semesterEndDate# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND report_code=#reportCode#
+		;
+	</select>
+
+	<select id="getflagStatusPSS" resultClass="printMechanism">
+
+		select
+		report_generated as reportGenerated,report_printed as
+		printStatus
+		from
+		report_control_log
+		where entity_id=#entityId# AND
+		program_id=#programId# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND
+		report_code=#reportCode# AND
+		semester_code=#semesterCode# AND
+		semester_start_date=#semesterStartDate# AND
+		semester_end_date=#semesterEndDate#;
+		
+		</select>
+
+	<select id="getflagStatusPBS" resultClass="printMechanism">
+
+		select
+		report_generated as reportGenerated,report_printed as
+		printStatus
+		from
+		report_control_log
+		where entity_id=#entityId# AND
+		program_id=#programId# AND
+		session_start_date=#passedFromSession# AND
+		session_end_date=#passedToSession# AND
+		report_code=#reportCode# AND
+		branch_code=#branchId# AND specialization_code=#specializationId#;
+
+	</select>
+	<select id="getGeneralReports" resultClass="printMechanism">
+ SELECT stt.component_code as reportCode,stt.component_description as
+		reportDescription,
+		stt1.component_code as
+		reportTypeCode,stt1.component_description as reportTypeDescription,ra.user_role_id as roleId,
+        generate_authority as generateAuthority,download_authority as downloadAuthority
+  FROM  system_table_two stt,report_authority ra,user_info ui,system_table_two stt1
+  WHERE stt.group_code='RPORTS' and ra.report_code=stt.component_code and ui.user_id=#userId#
+        and ui.user_group_id=ra.user_role_id and stt1.group_code='REPTYP' AND stt.dummy_flag_two='GN'
+        and stt.dummy_flag_three=stt1.component_code
+        order by cast(ra.report_code as signed);
+	</select>
+	
+	<select id="getCombinationsRCO" resultClass="printMechanism">
+	select course_code courseCode,course_name courseName from course_master;
+    </select>
+    
+        <select id="getReportDetail" resultClass="printMechanism">
+    SELECT component_description as reportDescription,component_code as reportCode,t.generate_authority as generateAuthority,t.download_authority as downloadAuthority
+    FROM system_table_two stt
+    LEFT JOIN
+	(SELECT * FROM report_authority ra where ra.user_role_id=#userRoleId# and ra.university_code=#universityCode#)t
+	on stt.component_code=t.report_code where stt.group_code='RPORTS' and stt.university_code=#universityCode# order by cast(stt.component_code as signed);
+    </select>
+    
+    <insert id="setReportAuthority">
+    INSERT INTO report_authority (university_code,user_role_id,report_code,generate_authority,download_authority,insert_time,creator_id)
+    VALUES(#universityCode#,#userRoleId#,#reportCode#,#generateAuthority#,#downloadAuthority#,now(),#userId#);
+    </insert>
+    
+    <select id="getCount" resultClass="java.lang.String">
+    SELECT count(report_code)
+    FROM report_authority
+    WHERE report_code=#reportCode# AND user_role_id=#userRoleId# AND university_code=#universityCode#;
+    </select>
+    
+    <update id="updateReportAuthority" >
+    UPDATE report_authority
+    SET generate_authority=#generateAuthority#, download_authority=#downloadAuthority#
+    WHERE university_code=#universityCode# AND user_role_id=#userRoleId# AND report_code=#reportCode#;
+    </update>
+    
+    <delete id="deleteRecords">
+    DELETE FROM report_authority
+    WHERE report_code=#deleteReportCode# AND university_code=#universityCode# AND user_role_id=#userRoleId#;
+    </delete>
+	
+	<select id="getCombinationsRVR" resultClass="printMechanism">
+    select company_name as companyName,request_date as reqDate from report_verification order by reqDate;
+    </select>
+</sqlMap>

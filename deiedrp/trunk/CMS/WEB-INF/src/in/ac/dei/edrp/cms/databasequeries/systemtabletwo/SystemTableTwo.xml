@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!--
+* @(#) SystemTableTwo.xml
+* @Author :Mohd Amir
+* @Date :21/3/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<sqlMap namespace="systemTableTwo">
+
+	<typeAlias alias="systemTableTwoInfo"
+		type="in.ac.dei.edrp.cms.domain.systemtabletwo.SystemTableTwoBean" />
+	
+	<select id="getGroupInfo" resultClass="systemTableTwoInfo">
+	    SELECT component_code as componentCode, component_description as componentDescription, active, verification_required as verificationRequired,dummy_flag_one as dummyFlag1, dummy_flag_two as dummyFlag2, dummy_flag_three as dummyFlag3
+	    FROM system_table_two
+	    WHERE group_code=#groupCode# and university_code=#universityCode#
+	</select>
+	
+	<select id="getCount" resultClass="systemTableTwoInfo">
+	    SELECT count(*) as count
+	    FROM system_table_two
+	    WHERE group_code=#groupCode# and university_code=#universityCode# and component_code=#componentCode#
+	</select>
+	
+	<insert id="setComponentInfo">
+	    INSERT INTO system_table_two(university_code,component_code,component_description,active,verification_required,insert_time,creator_id,group_code,dummy_flag_one,dummy_flag_two,dummy_flag_three)
+        VALUES(#universityCode#,#componentCode#,#componentDescription#,#active#,#verificationRequired#,now(),#userId#,#groupCode#,#dummyFlag1#,#dummyFlag2#,#dummyFlag3#)
+	</insert>
+	
+	<delete id="deleteComponent">
+	    DELETE FROM system_table_two
+	    WHERE group_code=#groupCode# and university_code=#universityCode# and component_code=#componentCode#
+	</delete>
+	
+	<update id="updateComponent">
+	    UPDATE system_table_two
+	    set component_description=#componentDescription#,active=#active#,verification_required=#verificationRequired#,dummy_flag_one=#dummyFlag1#,dummy_flag_two=#dummyFlag2#,dummy_flag_three=#dummyFlag3#,modification_time=now(),modifier_id=#userId#
+	    WHERE group_code=#groupCode# and university_code=#universityCode# and component_code=#componentCode#
+	</update>
+	
+</sqlMap>

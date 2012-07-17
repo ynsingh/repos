@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * @(#) TransferNORinPST.xml
+* Author :Deepak Pandey
+
+* Date :21/5/2011
+
+* Version 1.0
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="TransferNORInPSTBean">
+ 
+ 	<!-- Query to return next semester code -->
+	<resultMap id="getNextSemesterResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="nextSemesterCode" column="ptd2.semester_code" />
+		<result property="checkSemesterGroup" column="samegroup" />
+		<result property="semesterStartDate" column="ptd2.semester_start_date" />
+		<result property="semesterEndDate" column="ptd2.semester_end_date" />
+		
+	</resultMap>
+	<select id="getNextSemester" resultMap="getNextSemesterResult">
+		select ptd2.semester_code,
+		case when ptd2.semester_group=ptd1.semester_group then true
+		else false end as samegroup,ptd2.semester_start_date,ptd2.semester_end_date 
+		from program_term_details ptd1,program_term_details ptd2
+		where ptd1.program_id=#programId# and ptd1.semester_code=#semesterCode# and
+		ptd1.semester_sequence+1=ptd2.semester_sequence
+		and ptd1.program_id=ptd2.program_id;
+	</select>
+
+	<!-- program course key -->
+	<resultMap id="getProgramCourseKeyResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="programCourseKey" column="program_course_key" />
+	</resultMap>
+    <select id="getProgramCourseKey" resultMap="getProgramCourseKeyResult">
+	select program_course_key 
+	from program_course_header where program_id=#programId# and branch_id=#branchId# and 
+	specialization_id=#specializationId# and semester_code=#semesterCode#
+	</select>
+	
+	<!-- Register due date -->
+	<resultMap id="getRegisterDueDateResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="registerDueDate" column="registration_start_date" />
+	</resultMap>
+     <select id="getRegisterDueDate" resultMap="getRegisterDueDateResult">
+	 select registration_start_date from program_registration 
+					where program_course_key=#programCourseKey# 
+					and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#
+	</select>
+	
+	<!-- Minimum semester code -->
+	<resultMap id="getMinimumSemesterResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="nextSemesterCode" column="semester_code" />
+	</resultMap>
+     <select id="getMinimumSemester" resultMap="getMinimumSemesterResult">
+	  select semester_code from program_term_details std1
+					where program_id=#programId# and
+         semester_sequence=(select min(semester_sequence)
+          from program_term_details where
+          program_id=#programId# and semester_group=(select semester_group from
+  program_term_details where program_id=#programId# and semester_code=#semesterCode#));
+	</select>
+	<!-- Maximum attempt number for program -->
+	<resultMap id="getMaxAttemptResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="maxAttemptAllowed" column="number_of_attempt_allowed" />
+	</resultMap>
+    <select id="getMaxAttempt" resultMap="getMaxAttemptResult">
+   		select number_of_attempt_allowed from program_master where program_id=#programId#
+    </select>
+    
+    
+	<!-- Student to process in User Input semester with details 
+	SM: User personal detail
+	SRSH: Semester level details like status, student_process_status, attempt_number etc
+	SP: Pick up students to process
+	-->
+	<resultMap id="getListOfStudentToProcessResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="enrollmentNumber" column="sp.enrollment_number" />
+		<result property="rollNumber" column="sp.roll_number" />
+		<result property="studentId" column="sm.student_id" />
+		
+		<result property="studentFirstName" column="sm.student_first_name" />
+		<result property="studentMiddleName" column="sm.student_middle_name" />
+		<result property="studentLastName" column="sm.student_last_name" />
+		<result property="fatherFirstName" column="sm.father_first_name" />
+		<result property="fatherMiddleName" column="sm.father_middle_name" />
+		<result property="fatherLastName" column="sm.father_last_name" />
+		<result property="motherFirstName" column="sm.mother_first_name" />
+		<result property="motherMiddleName" column="sm.mother_middle_name" />
+		<result property="motherLastName" column="sm.mother_last_name"/>
+		
+		<result property="category" column="sm.category_code" />
+		<result property="gender" column="sm.gender" />
+		<result property="dateOfBirth" column="sm.date_of_birth"/>
+		
+			
+		<result property="primaryEmailId" column="sm.primary_email_id" />
+		
+		<result property="statusInSemester" column="sr.status" />
+		<result property="attemptNumber" column="sr.attempt_number" />
+		
+		
+		
+	</resultMap>
+    <select id="getListOfStudentToProcess" resultMap="getListOfStudentToProcessResult">
+      select sp.enrollment_number,sp.roll_number,
+						sm.student_first_name,sm.student_middle_name,sm.student_last_name,
+						sm.category_code,sm.gender,sm.date_of_birth,
+						sm.father_first_name,sm.father_middle_name,sm.father_last_name,
+						sm.mother_first_name,sm.mother_middle_name,sm.mother_last_name,
+						 sm.student_id,sm.primary_email_id,sr.status,sr.attempt_number 
+						 from student_program sp,student_master sm,student_registration_semester_header sr
+						where sp.entity_id=#entityId# and
+						sp.program_id=#programId# and sp.branch_id=#branchId# and
+						sp.specialization_id=#specializationId# and
+						sp.current_semester=#semesterCode# and sp.program_status=#programStatus#
+						and sm.enrollment_number=sp.enrollment_number and
+ sp.roll_number=sr.roll_number and sr.entity_id=#entityId# and sr.program_course_key=#programCourseKey#
+ and sr.session_start_date=#semesterStartDate# and  sr.session_end_date=#semesterEndDate# and
+ (sr.student_process_status!=#processStatus# || sr.student_process_status is null) and sm.parent_entity=sp.entity_id;
+    </select>
+
+		<!-- Last previous semester details -->
+		<resultMap id="getPreviousSemesterDetailResult" class="in.ac.dei.edrp.cms.utility.PreviousSemesterDetail">
+		<result property="previousSemesterStartDate" column="sm.session_start_date" />
+		<result property="previousSemesterEndDate" column="sm.session_end_date" />
+		<result property="status" column="sm.status" />
+		</resultMap>
+    <select id="getPreviousSemesterDetail" resultMap="getPreviousSemesterDetailResult">
+       select sm.status,sm.attempt_number,sm.session_start_date,sm.session_end_date 
+       from student_registration_semester_header sm where sm.roll_number=#rollNumber# and 
+					sm.entity_id=#entityId# and sm.program_course_key=#programCourseKey# and 
+					sm.session_end_date=(select max(sm1.session_end_date) from student_registration_semester_header sm1 where 
+					sm1.roll_number=#rollNumber# and sm1.entity_id=#entityId# and sm1.program_course_key=#programCourseKey#)
+    </select>
+
+	<!-- Increments date by 1 year -->
+ 	<select id="getNextRegisterDueDate" parameterClass="String" resultClass="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+	   select addDate(#registerDueDate#, INTERVAL 1 YEAR) as registerDueDate
+	</select>
+    
+  
+  	<!-- insert query in case of pass or fail in PST -->
+	<insert id="insertPSTPassOrFail" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		insert into prestaging_table 
+					(student_id,registration_roll_number,
+					enrollment_number,
+					old_entity,old_program,old_branch,old_specialization,old_semester,
+					new_entity,new_program,new_branch,new_specialization,new_semester,
+					student_first_name,student_middle_name,student_last_name,
+					father_first_name,father_middle_name,father_last_name,
+					mother_first_name,mother_middle_name,mother_last_name,
+					student_category,gender,date_of_birth,
+					semester_start_date,semester_end_date,
+					old_roll_number,admission_mode,registration_due_date,attempt_number,primary_email_id,
+					status_in_semester,
+					insert_time,creator_id) values 
+					(#studentId#,#rollNumber#,
+					#enrollmentNumber#,
+					#entityId#,#programId#,#branchId#,#specializationId#,#semesterCode#,
+					#entityId#,#programId#,#branchId#,#specializationId#,#nextSemesterCode#,
+					#studentFirstName#,#studentMiddleName#,#studentLastName#,
+					#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+					#motherFirstName#,#motherMiddleName#,#motherLastName#,
+					#category#,#gender#,#dateOfBirth#,
+					#nextSemesterStartDate#,#nextSemesterEndDate#,
+					#rollNumber#,#admissionMode#,#registerDueDate#,#attemptNumber#,#primaryEmailId#,
+					#statusInSemester#,
+					now(),#creatorId#);
+	</insert>
+	
+	<!-- udpate SRSH with LRG -->
+	<update id="updateSRSHWithLRG" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		update student_registration_semester_header 
+					set student_process_status=#processStatus#,modification_time=now(),modifier_id=#creatorId# 
+					where roll_number=#rollNumber# and entity_id=#entityId# and program_course_key=#programCourseKey# and 
+					session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate#
+	</update>
+	
+	<!-- insert with YTR -->
+	<insert id="insertSRSHWithYTR" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		insert into student_registration_semester_header 
+					(entity_id,program_course_key,
+					roll_number,
+					session_start_date,session_end_date,
+					register_due_date,attempt_number,status,
+					insert_time,creator_id) values 
+					(#entityId#,#nextProgramCourseKey#,
+					#rollNumber#,
+					#nextSemesterStartDate#,#nextSemesterEndDate#,
+					#registerDueDate#,#attemptNumber#,#nextStatus#,now(),#creatorId#)
+	</insert>
+	
+	
+	<!-- insert PST remedial -->
+	<insert id="insertPSTRemedial" parameterClass="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		insert into prestaging_table 
+					(student_id,registration_roll_number,
+					enrollment_number,
+					old_entity,old_program,old_branch,old_specialization,old_semester,
+					new_entity,new_program,new_branch,new_specialization,new_semester,
+					student_first_name,student_middle_name,student_last_name,
+					father_first_name,father_middle_name,father_last_name,
+					mother_first_name,mother_middle_name,mother_last_name,
+					student_category,gender,date_of_birth,
+					semester_start_date,semester_end_date,
+					old_roll_number,admission_mode,registration_due_date,attempt_number,primary_email_id,
+					probable_semester,
+					probable_semester_start_date,probable_semester_end_date,
+					probable_attempt_number,probable_register_due_date,
+					status_in_semester,
+					insert_time,creator_id) values 
+					(#studentId#,#rollNumber#,
+					#enrollmentNumber#,
+					#entityId#,#programId#,#branchId#,#specializationId#,#semesterCode#,
+					#entityId#,#programId#,#branchId#,#specializationId#,#nextSemesterCode#,
+					#studentFirstName#,#studentMiddleName#,#studentLastName#,
+					#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+					#motherFirstName#,#motherMiddleName#,#motherLastName#,
+					#category#,#gender#,#dateOfBirth#,
+					#nextSemesterStartDate#,#nextSemesterEndDate#,
+					#rollNumber#,#admissionMode#,#registerDueDate#,#attemptNumber#,#primaryEmailId#,
+					#probableSemester#,
+					#probableSemesterStartDate#,#probableSemesterEndDate#,
+					#probableAttemptNumber#,#probableRegisterDueDate#,
+					#statusInSemester#,
+					now(),#creatorId#);
+	</insert>
+	
+		<resultMap id="getYTRDateResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="semesterStartDate" column="semester_start_date" />
+		<result property="semesterEndDate" column="semester_end_date" />
+	
+		</resultMap>
+    <select id="getYTRDate" resultMap="getYTRDateResult">
+      	select semester_start_date,semester_end_date from program_registration where
+		session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate# and
+		program_course_key=#programCourseKey#  </select>
+		
+		<!-- In case of final semester only FAIL students will be pickup -->
+    <!-- Student to process in User Input semester with details 
+	SM: User personal detail
+	SRSH: Semester level details like status, student_process_status, attempt_number etc
+	SP: Pick up students to process
+	-->
+	<resultMap id="getListOfStudentToProcessFinalSemesterResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferNORInPSTBean">
+		<result property="enrollmentNumber" column="sp.enrollment_number" />
+		<result property="rollNumber" column="sp.roll_number" />
+		<result property="studentId" column="sm.student_id" />
+		
+		<result property="studentFirstName" column="sm.student_first_name" />
+		<result property="studentMiddleName" column="sm.student_middle_name" />
+		<result property="studentLastName" column="sm.student_last_name" />
+		<result property="fatherFirstName" column="sm.father_first_name" />
+		<result property="fatherMiddleName" column="sm.father_middle_name" />
+		<result property="fatherLastName" column="sm.father_last_name" />
+		<result property="motherFirstName" column="sm.mother_first_name" />
+		<result property="motherMiddleName" column="sm.mother_middle_name" />
+		<result property="motherLastName" column="sm.mother_last_name"/>
+		
+		<result property="category" column="sm.category_code" />
+		<result property="gender" column="sm.gender" />
+		<result property="dateOfBirth" column="sm.date_of_birth"/>
+		
+			
+		<result property="primaryEmailId" column="sm.primary_email_id" />
+		
+		<result property="statusInSemester" column="sr.status" />
+		<result property="attemptNumber" column="sr.attempt_number" />
+		
+		
+		
+	</resultMap>
+    <select id="getListOfStudentToProcessFinalSemester" resultMap="getListOfStudentToProcessFinalSemesterResult">
+      select sp.enrollment_number,sp.roll_number,
+						sm.student_first_name,sm.student_middle_name,sm.student_last_name,
+						sm.category_code,sm.gender,sm.date_of_birth,
+						sm.father_first_name,sm.father_middle_name,sm.father_last_name,
+						sm.mother_first_name,sm.mother_middle_name,sm.mother_last_name,
+						 sm.student_id,sm.primary_email_id,sr.status,sr.attempt_number 
+						 from student_program sp,student_master sm,student_registration_semester_header sr
+						where sp.entity_id=#entityId# and
+						sp.program_id=#programId# and sp.branch_id=#branchId# and
+						sp.specialization_id=#specializationId# and
+						sp.current_semester=#semesterCode# and sp.program_status=#programStatus#
+						and sm.enrollment_number=sp.enrollment_number and
+ sp.roll_number=sr.roll_number and sr.entity_id=#entityId# and sr.program_course_key=#programCourseKey#
+ and sr.session_start_date=#semesterStartDate# and  sr.session_end_date=#semesterEndDate# and
+ (sr.student_process_status!=#processStatus# || sr.student_process_status is null) and sr.status='FAL'
+    </select>
+
+</sqlMap>

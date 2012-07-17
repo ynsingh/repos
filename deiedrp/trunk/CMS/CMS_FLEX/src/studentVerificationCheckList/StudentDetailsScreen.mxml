@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow styleName="PopUpTitleWindow" xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setcan()" verticalScrollPolicy="auto" verticalPageScrollSize="10" width="1090" showCloseButton="true" close="closeMe()">
+	<mx:title>{resourceManager.getString('Constants','studentDetails')}</mx:title>
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			public function closeMe():void
+		    {
+			    PopUpManager.removePopUp(this);			
+		    }
+		    
+		    public function setcan():void{
+		    	
+		    	can.height=this.parentDocument.loaderCanvas.height;
+		    }
+		]]>
+	</mx:Script>
+	<mx:Canvas width="100%" id="can">
+	
+	  
+	
+	<mx:TitleWindow styleName="DetailTitleWindow" width="1012" height="301" layout="absolute" title="{resourceManager.getString('Constants','programDetails')}" x="21">
+		<mx:Label x="493" y="10" text="{resourceManager.getString('Constants','registrationRollNo')}"/>
+		<mx:Label x="82" y="10" text="{resourceManager.getString('Constants','enrollmentNo')}"/>
+		<mx:Label x="84" y="40" text="{resourceManager.getString('Constants','modeOfAdmission')}"/>
+        <mx:Label x="84" y="70" text="{resourceManager.getString('Constants','entity')}"/>
+		<mx:Label x="84" y="100" text="{resourceManager.getString('Constants','program')}"/>
+		<mx:Label x="84" y="130" text="{resourceManager.getString('Constants','branch')}"/>
+		<mx:Label x="84" y="160" text="{resourceManager.getString('Constants','specialization')}"/>
+		<mx:Label x="84" y="190" text="{resourceManager.getString('Constants','semester')}"/>
+		
+		<mx:Label x="493" y="42" text="{resourceManager.getString('Constants','registrationStatus')}"/>
+		
+		<mx:Canvas id="fromField" visible="true" x="493" y="70">	
+		    <mx:Label text="{resourceManager.getString('Constants','oldEntity')}"/>
+    		<mx:Label y="30" text="{resourceManager.getString('Constants','oldProgram')}"/>
+	    	<mx:Label y="60" text="{resourceManager.getString('Constants','oldBranch')}"/>
+		    <mx:Label y="90" text="{resourceManager.getString('Constants','oldSpecialization')}"/>
+		    <mx:Label y="120" text="{resourceManager.getString('Constants','oldSemester')}"/>
+		    <mx:TextInput editable="false" x="158" width="255" id="fromEntityText"/>
+		    <mx:TextInput editable="false" x="158" y="30" width="255" id="fromProgramText"/>
+		    <mx:TextInput editable="false" x="158" y="60" width="255" id="fromBranchText"/>
+		    <mx:TextInput editable="false" x="158" y="90" width="255" id="fromSpecializationText"/>
+		    <mx:TextInput editable="false" x="158" y="120" width="255" id="fromSemesterText"/>
+		</mx:Canvas>
+		
+		<mx:TextInput editable="false" x="215" y="10" width="227" id="enrolmentNoText"/>
+		<mx:TextInput editable="false" x="215" y="40" width="227" id="admissionModeText"/>
+		<mx:TextInput editable="false" x="651" y="10" width="255" id="registartionRollNoText"/>
+		<mx:TextInput editable="false" x="215" y="70" width="227" id="toEntityText"/>
+		<mx:TextInput editable="false" x="215" y="100" width="227" id="toProgramText"/>
+		<mx:TextInput editable="false" x="215" y="130" width="227" id="toBranchText"/>
+		<mx:TextInput editable="false" x="215" y="160" width="227" id="toSpecializationText"/>
+		<mx:TextInput editable="false" x="215" y="190" width="227" id="toSemesterText"/>
+		<mx:TextInput editable="false" x="651" y="40" width="255" id="registrationStatusText"/>
+	</mx:TitleWindow>
+	<mx:TitleWindow styleName="DetailTitleWindow" y="309" width="435" height="316" layout="absolute" title="{resourceManager.getString('Constants','personalDetails')}" x="21">
+		<mx:Label x="13.5" y="12" text="{resourceManager.getString('Constants','studentName')}"/>
+		<mx:Label x="13.5" y="45" text="{resourceManager.getString('Constants','fatherName')}"/>
+		<mx:Label x="13.5" y="77" text="{resourceManager.getString('Constants','motherName')}"/>
+		<mx:Label x="13.5" y="111" text="{resourceManager.getString('Constants','dateOfBirth')}"/>
+		<mx:Label x="13.5" y="147" text="{resourceManager.getString('Constants','category')}"/>
+		<mx:Label x="13.5" y="187" text="{resourceManager.getString('Constants','gender')}"/>
+		<mx:TextInput editable="false" x="140.5" y="10" width="250" id="studentNameText"/>
+		<mx:TextInput editable="false" x="140.5" y="43" width="250" id="fatherNameText"/>
+		<mx:TextInput editable="false" x="140.5" y="75" width="250" id="motherNameText"/>
+		<mx:TextInput editable="false" x="140.5" y="109" width="250" id="dobText"/>
+		<mx:TextInput editable="false" x="140.5" y="145" width="250" id="categoryText"/>
+		<mx:TextInput editable="false" x="140.5" y="185" width="250" id="genderText"/>
+	</mx:TitleWindow>
+	<mx:TitleWindow styleName="DetailTitleWindow" x="464" y="309" width="569" height="318" layout="absolute" title="{resourceManager.getString('Constants','courseDetails')}">
+		<mx:DataGrid id="courseDetailsGrid" x="26.5" y="10" height="235">
+			<mx:columns>
+				<mx:DataGridColumn headerText="{resourceManager.getString('Constants','courseCode')}" width="100" dataField="course_code" showDataTips="true" dataTipField="course_code"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('Constants','courseName')}" width="200" dataField="course_name" showDataTips="true" dataTipField="course_name"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('Constants','courseType')}" width="100" dataField="course_type" showDataTips="true" dataTipField="course_type"/>
+				<mx:DataGridColumn headerText="{resourceManager.getString('Constants','credits')}" width="100" dataField="credits" showDataTips="true" dataTipField="credits"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:TitleWindow>
+</mx:Canvas>
+</mx:TitleWindow>

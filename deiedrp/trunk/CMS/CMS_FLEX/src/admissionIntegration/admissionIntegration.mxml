@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) admissionIntegration.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1206" height="512" 
+	title="{commonFunction.getConstants('integration')}" creationComplete="onLoad()" xmlns:controls="common.Components.com.iwobanas.controls.*" 
+	xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	
+	<mx:HTTPService id="httpGetEntities" method="post"
+        url="{commonFunction.getConstants('url')}/admissionIntegration/getEntities.htm"
+        resultFormat="e4x"
+        result="resultGetEntities(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpGetPrograms" method="post"
+        url="{commonFunction.getConstants('url')}/admissionIntegration/getPrograms.htm"
+        resultFormat="e4x"
+        result="resultGetPrograms(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpGetStudents" method="post"
+        url="{commonFunction.getConstants('url')}/admissionIntegration/getStudentDetails.htm"
+        resultFormat="e4x"
+        result="resultGetStudents(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpBranchDetails" method="post"
+        url="{commonFunction.getConstants('url')}/admissionIntegration/getBranchDetails.htm"
+        resultFormat="e4x"
+        result="resultGetBranchDetails(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpSubmit" method="post"
+        url="{commonFunction.getConstants('url')}/admissionIntegration/submitDetails.htm"
+        resultFormat="e4x"
+        result="resultSubmit(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/admissionIntegration.as"/>
+	<mx:Canvas x="208" y="24" styleName="SimpleCanvas" width="770" height="68">
+		<mx:Label x="58" y="24" text="{commonFunction.getConstants('entity')}"/>
+		<mx:Label x="319" y="24" text="{commonFunction.getConstants('program')}"/>
+		<mx:ComboBox x="120" y="21" width="160" id="entityCombo" labelField="entityName" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="onEntityChange()"></mx:ComboBox>
+		<mx:ComboBox x="403" y="21" width="160" id="programCombo" labelField="entityName" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="onProgramChange()" enabled="false"></mx:ComboBox>
+		<mx:Button x="621" y="22" label="{commonFunction.getConstants('cancelButton')}" width="91" click="parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Canvas>
+	
+	<mx:Canvas x="41" y="115" id="studentCanvas" styleName="GridCanvas" width="696" height="278" visible="false">
+		<mx:Label text="{commonFunction.getConstants('studentInfo')}:" top="6" left="10" fontWeight="bold"  />
+		<controls:MDataGrid id="studentsGrid" resizableColumns="true" horizontalScrollPolicy="off" verticalScrollPolicy="on" draggableColumns="false" y="34" x="10" editable="true" height="233" width="675">
+			    <controls:columns>
+			     <dataGridClasses:MDataGridColumn width="20" resizable="false" sortable="false" headerText="" dataField="select" editorDataField="selected" rendererIsEditor="true">
+			     	<dataGridClasses:headerRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" textAlign="center" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.studentsGrid,[new LinkButton],[new LinkButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:headerRenderer>
+		    		<dataGridClasses:itemRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" textAlign="center" change="commonFunction.editDeleteEnable(event,outerDocument.studentsGrid,[new LinkButton],[new LinkButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:itemRenderer>
+			     </dataGridClasses:MDataGridColumn>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('registraionNo')}" dataField="registrationNo" dataTipField="registrationNo" showDataTips="true" width="120"/>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('studentName')}" dataField="studentName" dataTipField="studentName" showDataTips="true" width="200"/>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('dateOfBirth')}" dataField="dob" dataTipField="dateOfBirth" showDataTips="true" width="120"/>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('fatherName')}" dataField="fatherName" dataTipField="fatherName" showDataTips="true" width="200"/>
+			     </controls:columns>
+		</controls:MDataGrid>
+	</mx:Canvas>
+	
+	<mx:Canvas x="754.5" y="115" id="branchCanvas" styleName="GridCanvas" width="391" height="278" visible="false">
+		<mx:Label text="{commonFunction.getConstants('branchSpecDetails')}:" top="8" left="10" fontWeight="bold"  />
+		<controls:MDataGrid id="branchGrid" width="370" height="230" horizontalScrollPolicy="off" verticalScrollPolicy="on" sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="37">
+		<controls:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" width="20"  sortable="false" textAlign="center" editorDataField="selected" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+	   			<mx:Component>
+	   				<mx:CheckBox click="data.select=event.currentTarget.selected; checkbox1ClickHandler(event, outerDocument.branchGrid)">
+	 					<mx:Script>
+	                       <![CDATA[
+	                           import common.commonFunction;
+	                           import mx.controls.LinkButton;
+	                           import common.commonFunction;
+								
+								import mx.collections.ArrayCollection;
+								import mx.containers.Grid;
+								import mx.controls.*;
+								import mx.graphics.IFill;
+								import mx.logging.errors.InvalidFilterError;
+								
+								protected var arrayCollection:ArrayCollection;
+								[Embed(source="/images/warning.png")]private var warningIcon:Class;
+								
+							  	protected function checkbox1ClickHandler(event:Event, grid:DataGrid):void
+								{	
+									var currentIndex:int=grid.selectedIndex;
+									var parseIndex:int=0;
+									var j:int=0;
+									var gridrecords:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.branchGrid);
+									if(gridrecords.length>1)
+									{
+				            	    	Alert.show(commonFunction.getMessages('selectOneRecord'),commonFunction.getConstants('warning'),0,null,null,warningIcon);
+				            	    	
+				            	    }
+				            	}	
+	                       ]]>
+	                    </mx:Script>
+	                </mx:CheckBox>
+	            </mx:Component>
+	        </mx:itemRenderer>
+	    </mx:DataGridColumn>
+	    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" width="150" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}" width="150" sortable="true"/>
+		</controls:columns>
+		</controls:MDataGrid>
+	</mx:Canvas>
+	<mx:Button x="500.5" y="422" id="submitButton" label="{commonFunction.getConstants('submitButton')}" width="185" visible="false" click="submitConfirm()"/>
+	
+</mx:Panel>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) AwardBlankCorrection.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1325" height="500"
+	title="{commonFunction.getConstants('correctionInAwardBlank')}" creationComplete="onLoad()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/AwardBlankCorrection.as"/>	
+	<mx:Script source="asFiles/AwardBlankUtility.as"/>
+	
+	<mx:HTTPService id="httpGetDisplayType" method="post"
+        url="{commonFunction.getConstants('url')}/coursegradelimit/getDisplayType.htm"
+        resultFormat="e4x"
+        result="resultGetDisplayType(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpGetGrades" method="post"
+		url="{commonFunction.getConstants('url')}/awardsheet/getGrades.htm"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="resultGetGrades(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+        
+     <mx:HTTPService id="httpGetCurrentDetails" method="post"
+        url="{commonFunction.getConstants('url')}/awardBlankCorrection/getCurrentDetails.htm"
+        resultFormat="e4x"
+        result="resultGetCurrentDetails(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpGetComponentList" method="post"
+        url="{commonFunction.getConstants('url')}/awardsheet/getEvaluationComponents.htm"
+        resultFormat="e4x"
+        result="resultGetComponentList(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="httpStudentMarks" method="post"
+        url="{commonFunction.getConstants('url')}/awardBlankCorrection/getStudentMarks.htm"
+        resultFormat="e4x"
+        result="resultGetStudentMarks(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="httpGetGradeLimit" method="post"
+		url="{commonFunction.getConstants('url')}/awardsheet/getgradelimit.htm"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="resultGradeLimit(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="httpSaveSheet" method="post"
+		url="{commonFunction.getConstants('url')}/awardBlankCorrection/saveStudentMarks.htm"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="resultSaveSheet(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+
+	<mx:Canvas styleName="SimpleCanvas" x="25.5" y="24" width="919" height="111" scroll="false">
+		<mx:Label x="31" y="27" text="{commonFunction.getConstants('rollNumber')}"/>
+		<mx:Label x="306" y="27" text="{commonFunction.getConstants('courseCode')}"/>
+		<mx:Label x="595" y="27" text="{commonFunction.getConstants('awardBlankType')}"/>
+		<mx:TextInput x="117" y="25" id="rollNumber" restrict="0-9" width="160" change="enableCourseInput()" maxChars="8"/>
+		<mx:TextInput x="401" y="25" id="courseCode" restrict="0-9,A-Z" width="160" enabled="false" change="enableAwardTypeCombo()" maxChars="8"/>
+		<mx:ComboBox x="720" y="24" id="awardBlankType" selectedIndex="-1" labelField="displayType" prompt="{commonFunction.getConstants('select')}" width="160" enabled="false" change="checkDetails()"></mx:ComboBox>
+		<mx:Button x="324" y="71" label="{commonFunction.getConstants('resetButton')}" click="reset()"/>
+		<mx:Button x="482" y="71" label="{commonFunction.getConstants('cancelButton')}" click="parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Canvas>
+		
+	<mx:Canvas id="awardSheetCanvas" styleName="GridCanvas" width="1250" height="185" x="25.5" y="171" visible="false">
+		<mx:AdvancedDataGrid id="awardSheetGrid" editable="true" selectable="true" x="10" y="43" height="100"/>
+		<mx:Label x="10" y="10" text="" id="courseCodeLabel" fontWeight="bold"/>
+		<mx:Label x="80" y="10" text="" id="marksTypeLable" fontWeight="bold"/> 
+		<mx:LinkButton y="153" label="{commonFunction.getConstants('saveMarksButton')}" id="saveButton" right="10" click="saveConfirm()"/>
+	</mx:Canvas>
+</mx:Panel>

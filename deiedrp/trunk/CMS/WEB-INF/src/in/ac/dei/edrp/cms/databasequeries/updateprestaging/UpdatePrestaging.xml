@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--
+
+		* @(#) UpdatePrestaging.xml * @Author :Rohit * @Date :04/08/2011 *
+		Version 1.0 * Copyright (c) 2011 EdRP, Dayalbagh Educational
+		Institute. * All Rights Reserved. * * Redistribution and use in source
+		and binary forms, with or * without modification, are permitted
+		provided that the following * conditions are met: * * Redistributions
+		of source code must retain the above copyright * notice, this list of
+		conditions and the following disclaimer. * * Redistribution in binary
+		form must reproducuce the above copyright * notice, this list of
+		conditions and the following disclaimer in * the documentation and/or
+		other materials provided with the * distribution. * * * THIS SOFTWARE
+		IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES,
+		INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES * OF
+		MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE * DISCLAIMED.
+		IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR ANY DIRECT,
+		INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL DAMAGES
+		(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS OR
+		SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION)
+		HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT,
+		STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE)
+		ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, * EVEN IF ADVISED
+		OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors: Members of EdRP,
+		Dayalbagh Educational Institute */
+	-->
+
+<sqlMap namespace="updateprestaging">
+	<typeAlias alias="updatePrestaging"
+		type="in.ac.dei.edrp.cms.domain.updateprestaging.UpdatePrestagingInfoGetter" />
+
+
+
+	<select id="getErrorRecords" resultClass="updatePrestaging">
+		SELECT pt.student_id as
+		studentId,pt.registration_roll_number as
+		regRollNo,pt.enrollment_number as
+		enrollNo,pt.date_of_birth as dob,
+		sys8.component_description as category,sys8.component_code as
+		categoryId,pt.gender as
+		gender,pt.student_first_name as
+		studentfname,pt.student_middle_name as
+		studentmname,
+		pt.student_last_name as studentlname,pt.father_first_name as
+		fatherfname,pt.father_middle_name
+		as fathermname,pt.father_last_name as
+		fatherlname,
+		pt.mother_first_name as motherfname,pt.mother_middle_name
+		as
+		mothermname,pt.mother_last_name as
+		motherlname,em1.entity_name as
+		newEntity,em1.entity_id as newEntityId,
+		pm1.program_name as
+		newProgram,pm1.program_id as newProgramId,
+		sys1.component_description
+		as newBranch,sys1.component_code as
+		newBranchId,sys2.component_description
+		as
+		newSpecialization,sys2.component_code as
+		newSpecializationId,sys3.component_description as
+		newSemester,sys3.component_code as newSemesterId,
+		pt.attempt_number as
+		attemptNumber,
+		pt.admission_mode as
+		admissionMode,pt.processed_flag as
+		processsedFlag,
+		SUBSTR(pt.registration_due_date,1,10) as
+		registrationDueDate,pt.semester_start_date as
+		semesterStartDate,pt.semester_end_date as semesterEndDate,
+		pt.primary_email_id as primaryMail,pt.process_status as
+		processStatus,pt.reason_code as reasoncode,pt.description as
+		description,
+		pt.per_address
+		as
+		perAddress,pt.per_city as perCity,
+		pt.per_state as
+		perState,pt.per_pincode as
+		perPincode,pt.cor_address as
+		corAddress,pt.cor_city as corCity,pt.cor_state as
+		corState,
+		pt.cor_pincode as corPincode,pt.office_phone as
+		officePhone,pt.extra_phone as
+		extraPhone,pt.other_phone as otherPhone,
+		pt.fax as fax
+		FROM prestaging_table pt,program_master pm1,entity_master
+		em1,
+		system_table_two sys1,system_table_two sys2,system_table_two
+		sys3,system_table_two sys8
+		where pt.process_status IN ('ERR','INA') and
+		em1.entity_id=pt.new_entity and
+		pm1.program_id=pt.new_Program and
+		sys1.component_code=pt.new_Branch
+		and
+		sys1.group_code='BRNCOD' and
+		sys1.university_code=#universityId# and
+		sys2.university_code=#universityId# and
+		sys3.university_code=#universityId# and
+		sys8.university_code=#universityId# and
+		sys2.component_code=pt.new_Specialization and
+		sys2.group_code='SPCLCD'
+		and
+		sys3.component_code=pt.new_Semester and sys3.group_code='SEMCOD'
+		and
+		sys8.component_code=pt.student_category and
+		sys8.group_code='STDCTG' and pt.student_id like concat('S',#universityId#,'%')
+		group by (pt.student_id);
+	</select>
+
+	<delete id="deletePrestageRecords">
+		delete from prestaging_table
+		where
+		registration_roll_number=#regRollNo# and
+		enrollment_number=#enrollNo#
+		and new_entity=#newEntityId# and
+		new_program=#newProgramId# and
+		new_branch=#newBranchId#
+		and new_specialization=#newSpecializationId#
+		and
+		new_semester=#newSemesterId# and attempt_number=#attemptNumber#
+		and
+		admission_mode=#admissionMode#;
+	</delete>
+
+	<update id="updatePrestageRecords">
+		update prestaging_table
+		set
+		registration_roll_number=#regRollNo#,enrollment_number=null,student_first_name=#studentfname#,
+		student_middle_name=#studentmname#,student_last_name=#studentlname#,father_first_name=#fatherfname#,father_middle_name=#fathermname#,
+		father_last_name=#fatherlname#,mother_first_name=#motherfname#,mother_middle_name=#mothermname#,mother_last_name=#motherlname#,
+		student_category=#categoryId#,primary_email_id=#primaryMail#,
+		date_of_birth=#dob#,gender=#gender#,new_entity=#newEntityId#,new_program=#newProgramId#,
+		new_branch=#newBranchId#,new_specialization=#newSpecializationId#,new_semester=#newSemesterId#,
+		attempt_number=#attemptNumber#,admission_mode=#admissionMode#,
+		registration_due_date=#registrationDueDate#,semester_start_date=#semesterStartDate#,semester_end_date=#semesterEndDate#,
+		primary_email_id=#primaryMail#,process_status=#processStatus#,
+		per_address=#perAddress#,per_city=#perCity#,per_state=#perState#,per_pincode=#perPincode#,
+		cor_address=#corAddress#,cor_city=#corCity#,cor_state=#corState#,cor_pincode=#corPincode#,office_phone=#officePhone#,
+		extra_phone=#extraPhone#,other_phone=#otherPhone#,fax=#fax#,modification_time=now(),modifier_id=#userId#
+		where
+		registration_roll_number=#updRegRollNo# and
+		enrollment_number<![CDATA[ <=> ]]>null and
+		new_entity=#updNewEntity# and
+		new_program=#updNewProgram# and
+		new_branch=#updNewBranch# and
+		new_specialization=#updNewSpecialization# and
+		new_semester=#updNewSemester# and
+		attempt_number=#updAttemptNumber# and
+		admission_mode=#updAdmissionMode#;
+	</update>
+
+</sqlMap>

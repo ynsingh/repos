@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) studentMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setFirstFocus()" title="{commonFunction.getConstants('studentMaster')}" layout="absolute" xmlns:ns1="common.*" width="1092" height="993">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+		]]>
+	</mx:Script>
+	<mx:XML id="statusxmlId" source="xmlFiles/statusxml.xml" format="e4x" />	
+	<mx:XML id="genderxmlId" source="xmlFiles/genderxml.xml" format="e4x" />	
+	<mx:XML id="nationality" source="/common/nationality.xml" format="e4x"/>
+	<mx:XML id="religion" source="/common/religion.xml" format="e4x"/>
+	
+	<mx:Script source="asFiles/studentMasterAction.as"/> 
+	
+	<mx:HTTPService id="checkEnrollmentInfo" method="post"
+	    url="{urlPrefix+'checkEnrollmentInfo.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="checkEnrollmentResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	
+	<mx:HTTPService id="checkDuplicateInfo" method="post"
+	    url="{urlPrefix+'checkDuplicateInfo.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="checkDuplicateResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	        
+	<mx:HTTPService id="getCategoryService" method="post"
+	    url="{commonFunction.getConstants('url')+'/universityReservation/getCategories.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="getCategoryResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	        
+	<mx:HTTPService id="setStudentDetailsService" method="post"
+	    url="{urlPrefix+'setStudentDetails.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="setStudentDetailsResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	        
+	<mx:HTTPService id="getEntityList" method="post"
+	    url="{commonFunction.getConstants('url')+'/associatecoursewithinstructor/entityList.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="getEntityResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	        
+	<mx:Label x="53" y="25" text="{commonFunction.getConstants('enrollmentNo')}"/>
+    <mx:TextInput x="155" y="25" id="enrolllmentNoField" width="151" restrict="a-zA-Z0-9"/>
+	<mx:Button x="323" y="25" label="{commonFunction.getConstants('submitButton')}" id="submitEnrollmentButton" click="submitEnrollmentInfo()"/>
+	
+    <mx:Canvas id="masterForm" visible="false" height="892" y="53" width="1062">
+		<mx:Label x="350" y="8" text="{commonFunction.getConstants('registeredSession')}*"/>
+		<mx:ComboBox x="497" y="5" width="87" prompt="{commonFunction.getConstants('select')}" id="sessionComboBox" toolTip="{sessionComboBox.text}" />
+		<mx:TextInput editable="false" x="587" y="6" width="60" id="session" text="{(int(sessionComboBox.selectedItem)+1).toString().substring(2,4)}"/>
+		<mx:Label x="55" y="10" text="{commonFunction.getConstants('status')}*"/>
+		<mx:ComboBox id="statusCombo" dataProvider="{statusxmlId.status.@name}" enabled="false" selectedIndex="0" x="156" y="7" width="150" toolTip="{statusCombo.text}" />
+		<mx:Label x="55" y="40" text="{commonFunction.getConstants('parentEntity')}*"/>
+		<mx:ComboBox x="156" y="38" width="150" prompt="{commonFunction.getConstants('select')}" id="parentEntityCombo" toolTip="{parentEntityCombo.text}"/>
+		<mx:Label x="55" y="70" text="{commonFunction.getConstants('studenNameInHindi')}"/>
+	    <mx:TextInput editable="false" id="studentHindiName" x="226" y="70" width="386" fontWeight="bold" fontSize="16"/>
+	    <mx:Button x="612" y="70" icon="@Embed(source='/images/keyBoard.png')" click="showHindiKeyboardForStudent()" height="27" width="35"/>
+	    <mx:Label x="55" y="105" text="{commonFunction.getConstants('fatherNameInHindi')}"/>
+	    <mx:TextInput editable="false" id="fatherHindiName" x="226" y="105" width="386" fontWeight="bold" fontSize="16"/>
+	    <mx:Button x="612" y="105" icon="@Embed(source='/images/keyBoard.png')" click="showHindiKeyboardForFather()" height="27" width="35"/>
+		<mx:Label x="55" y="140" text="{commonFunction.getConstants('motherNameInHindi')}"/>
+		<mx:TextInput editable="false" id="motherHindiName" x="226" y="140" width="386" fontWeight="bold" fontSize="16"/>
+	    <mx:Button x="612" y="140" icon="@Embed(source='/images/keyBoard.png')" click="showHindiKeyboardForMother()" height="28" width="35"/>
+		<ns1:ImageUpload id="photoUpload" x="786" y="1"/>
+		<mx:TitleWindow styleName="DetailTitleWindow" layout="absolute" title="{commonFunction.getConstants('personalDetails')}" width="1045" height="318" y="199" x="13">
+			<mx:Label x="168" y="10" text="{commonFunction.getConstants('firstName')}*"/>
+			<mx:Label text="{commonFunction.getConstants('middleName')}" x="382" y="10"/>
+			<mx:Label x="628" y="10" text="{commonFunction.getConstants('lastName')}*"/>
+			<mx:Label x="37" y="40" text="{commonFunction.getConstants('student')}"/>
+			<mx:TextInput x="168" y="40" width="150" id="studentFirstNameText" restrict="a-zA-Z"/>
+			<mx:TextInput x="382" y="40" width="150" id="studentMiddleNameText" restrict="a-z A-Z  "/>
+			<mx:TextInput x="628" y="40" width="150" id="studentLastNameText" restrict="a-zA-Z"/>
+			<mx:Label x="37" y="70" text="{commonFunction.getConstants('father')}"/>
+			<mx:TextInput x="168" y="70" width="150" id="fatherFirstNameText" restrict="a-zA-Z"/>
+			<mx:TextInput x="382" y="70" width="150" id="fatherMiddleNameText" restrict="a-z A-Z"/>
+			<mx:TextInput x="628" y="70" width="150" id="fatherLastNameText" restrict="a-zA-Z"/>
+			<mx:Label x="37" y="104" text="{commonFunction.getConstants('mother')}"/>
+			<mx:TextInput x="168" y="100" width="150" id="motherFirstNameText" restrict="a-zA-Z"/>
+			<mx:TextInput x="382" y="100" width="150" id="motherMiddleNameText" restrict="a-z A-Z"/>
+			<mx:TextInput x="628" y="100" width="150" id="motherLastNameText" restrict="a-zA-Z"/>
+			
+			<mx:Label x="37" y="145" text="{commonFunction.getConstants('guardianName')}"/>
+			<mx:Label x="471" y="145" text="{commonFunction.getConstants('category')}*"/>
+			<mx:Label x="37" y="175" text="{commonFunction.getConstants('nationality')}*"/>
+			<mx:Label x="471" y="175" text="{commonFunction.getConstants('religion')}*"/>
+			<mx:Label x="37" y="205" text="{commonFunction.getConstants('dateOfBirth')}*"/>
+			<mx:Label x="471" y="205" text="{commonFunction.getConstants('gender')}*"/>
+			<mx:Label x="37" y="235" text="{commonFunction.getConstants('primaryEmailid')}*"/>
+			<mx:Label x="471" y="235" text="{commonFunction.getConstants('secondaryEmailid')}"/>
+			<mx:TextInput x="168" y="145" width="150" id="guardianNameText" restrict="a-z A-Z"/>
+			<mx:ComboBox x="628" y="145" id="categoryCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150" toolTip="{categoryCombo.text}"></mx:ComboBox>
+			<mx:ComboBox x="168" y="175" width="150" id="nationalityCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" dataProvider="{nationality.nationality}" toolTip="{nationalityCombo.text}"/>
+			<mx:ComboBox x="628" y="175" id="religionCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" dataProvider="{religion.religion}" width="150" toolTip="{religionCombo.text}"></mx:ComboBox>
+			<mx:DateField x="168" y="205" width="150" formatString="YYYY-MM-DD" id="dateOfBirthField" yearNavigationEnabled="true"/>
+			<mx:ComboBox x="628" y="205" id="genderCombo" width="150" prompt="{commonFunction.getConstants('select')}" dataProvider="{genderxmlId.gender.@name}" selectedIndex="-1" toolTip="{genderCombo.text}"/>
+			<mx:TextInput x="168" y="235" id="primarymailtext" width="150"/>
+			<mx:TextInput x="628" y="235" id="secondarymailtext" width="152"/>
+		</mx:TitleWindow>
+		
+		<mx:TitleWindow styleName="DetailTitleWindow" layout="absolute" height="316" y="525" title="{commonFunction.getConstants('contactDetails')}" x="14" width="1044">
+			<ns1:AddressField x="17" y="7" title="{commonFunction.getConstants('permanentAddress')}*" width="993" id="permanentAddressComponent" validationRequired="true">
+			</ns1:AddressField>
+			<mx:CheckBox x="242" y="100" id="checkBoxField" label="{commonFunction.getConstants('sameAsAbove')}" click="copyToCorrespondenceAddress()"/>
+			<ns1:AddressField x="18" y="127" title="{commonFunction.getConstants('correspondenceAddress')}" id="correspondenceAddressComponent" width="992" validationRequired="false">
+			</ns1:AddressField>
+			<ns1:PhoneField x="16" y="232" id="phones" width="994">
+			</ns1:PhoneField>
+		</mx:TitleWindow>	
+		
+		<mx:Button x="150" y="860" label="{commonFunction.getConstants('saveButton')}" id="savebutton" visible="false" click="submitForm()"/>
+		<mx:Button x="150" y="860" label="{commonFunction.getConstants('updateButton')}" id="updatebutton" visible="false" click="updateForm()"/>
+		<mx:Button x="350" y="860" label="{commonFunction.getConstants('resetButton')}" id="resetbutton" visible="false" click="resetForm()"/>
+		<mx:Button x="550" y="860" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelForm()"/>
+	</mx:Canvas>
+	
+	<mx:StringValidator source="{studentHindiName}" id="studentHindiValid" property="text" required="true"/>
+	<mx:StringValidator source="{fatherHindiName}" id="fatherHindiValid" property="text" required="true"/>
+	<mx:StringValidator source="{motherHindiName}" id="motherHindiValid" property="text" required="true"/>
+	
+ 	<mx:StringValidator source="{enrolllmentNoField}" id="enrollmentValidator" property="text" trigger="{submitEnrollmentButton}" triggerEvent="click" required="true"/>
+	<mx:StringValidator id="sessionValidator" property="selectedItem" required="true"/>
+	<mx:StringValidator source="{studentFirstNameText}" id="studentFirstname" property="text" required="true"/>
+	<mx:StringValidator source="{studentLastNameText}" id="studentLastname" property="text" required="true"/>
+	<mx:StringValidator source="{fatherFirstNameText}" id="fatherFirstname" property="text" required="true"/>
+	<mx:StringValidator source="{fatherLastNameText}" id="fatherLastname" property="text" required="true"/>
+	<mx:StringValidator source="{motherFirstNameText}" id="motherFirstname" property="text" required="true"/>
+	<mx:StringValidator source="{motherLastNameText}" id="motherLastname" property="text" required="true"/>
+	<mx:EmailValidator source="{primarymailtext}" id="primaryemailVal" property="text" required="true" />
+	<mx:EmailValidator source="{secondarymailtext}" id="secondaryemailVal" property="text" required="false"/>
+	<mx:DateValidator source="{dateOfBirthField}" id="birthdate" property="text" required="true" allowedFormatChars="-" inputFormat="yyyy-mm-dd" />
+	<mx:StringValidator source="{genderCombo}" id="gendervalid" property="selectedItem" required="true" trigger="{savebutton}" triggerEvent="click" />
+	<mx:StringValidator source="{parentEntityCombo}" id="parentEntityvalid" property="selectedItem" required="true" trigger="{savebutton}" triggerEvent="click" />
+	<mx:StringValidator source="{categoryCombo}" id="categoryvalid" property="selectedItem" required="true" trigger="{savebutton}" triggerEvent="click"/>
+	<mx:StringValidator source="{nationalityCombo}" id="nationalityvalid" property="selectedItem" required="true" trigger="{savebutton}" triggerEvent="click"/>
+	<mx:StringValidator source="{religionCombo}" id="religionvalid" property="selectedItem" required="true" trigger="{savebutton}" triggerEvent="click"/>
+	<mx:StringValidator source="{guardianNameText}" id="guardianvalid" property="text" required="true" trigger="{savebutton}" triggerEvent="click"/>
+	<mx:StringValidator source="{phones.officePhoneField}" minLength="10" maxLength="15" id="oficephonevalid" property="text" required="false"/>
+	<mx:StringValidator source="{phones.homePhoneField}" minLength="10" maxLength="15" id="homephonevalid" property="text" required="false"/>
+	<mx:StringValidator source="{phones.otherPhoneField}" minLength="10" maxLength="15" id="otherphonavalid" property="text" required="false"/> 
+	<mx:StringValidator source="{phones.faxPhoneField}" minLength="10" maxLength="15" id="faxphonevalid" property="text" required="false"/>
+</mx:Panel>

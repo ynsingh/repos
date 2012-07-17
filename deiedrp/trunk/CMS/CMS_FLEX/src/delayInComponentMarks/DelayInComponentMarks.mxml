@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) delayInComponentMarks.mxml
+ * Author :Mandeep Sodhi
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *	
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1242" height="726" title="{commonFunction.getConstants('componentMarksStatus')}" creationComplete="onCreationComplete()" xmlns:common="common.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*" xmlns:controls="common.Components.com.iwobanas.controls.*">
+<mx:Script source="asFiles/delayInComponentMarksAction.as"/>
+
+	  <mx:HTTPService id="getAllCourses" method="POST"
+	       url="{commonFunction.getConstants('url')}/coursegradelimit/getAllCourses.htm"
+	       resultFormat="e4x"
+	       result="onApprovedCourseCodeSuccess(event)"
+	       fault="onFailure(event)"
+	       useProxy="false"
+	       /> 
+	       
+	   <mx:HTTPService id="getCourseDetails" method="POST"
+	       url="{commonFunction.getConstants('url')}/coursegradelimit/getAllCourseDetail.htm"
+	        resultFormat="e4x"
+	        result="onApprovedCourseDetailsSuccess(event)"
+	        fault="onFailure(event)"
+	        useProxy="false"
+	        />  
+	        
+
+	              
+	   	   <mx:HTTPService id="getComponentDetails" method="POST"
+	       url="{commonFunction.getConstants('url')}/coursegradelimit/getComponentDetails.htm"
+	        resultFormat="e4x"
+	        result="getComponentDetailsSuccess(event)"
+	        fault="onFailure(event)"
+	        useProxy="false"
+	        /> 	    
+	         
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:StringValidator id="courseComboValidate" source="{courseCombo}" minLength="6" maxLength="8" property="text" trigger="{okButton}" triggerEvent="click"/>
+	<mx:Canvas styleName="GridCanvas" id="gridCanvas" visible="false" x="41" y="167" width="1100" height="243">
+	
+	<mx:DataGrid id="courseGridId" x="36.5" y="45" height="173" sortableColumns="true" editable="true" resizableColumns="true" width="1000">
+	<mx:columns>
+		<mx:DataGridColumn rendererIsEditor="true" resizable="false" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+			<mx:itemRenderer>
+				<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}"  click="data.select=event.currentTarget.selected;outerDocument.onCheckBoxChange(event,outerDocument.courseGridId)">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+				</mx:Component>
+			</mx:itemRenderer>
+		</mx:DataGridColumn>
+		
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('courseCode')}" editable="false" dataField="courseCode"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('entityName')}" editable="false" dataField="entityName"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('programName')}" editable="false" dataField="programName"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('branchName')}" editable="false" dataField="branchName"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('specialization')}" editable="false" dataField="SpecializationName"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('semester')}" editable="false" dataField="semester"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('semStartDate')}" editable="false" dataField="semStart"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('semesterEndDate')}" editable="false" dataField="semEnd"/>
+		           
+		
+	</mx:columns>	
+	</mx:DataGrid>
+	<mx:Label x="36.5" y="10" text="{commonFunction.getConstants('courseDetails')}" width="134"/>
+	
+
+	</mx:Canvas>
+	<mx:Canvas x="41" y="10" width="424" styleName="SimpleCanvas" height="149">
+		<mx:Button x="251" y="103" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+		<mx:Button x="161.5" y="103" label="{commonFunction.getConstants('okButton')}"  id="okButton" click="onOkClick()"/>
+		<mx:Label x="28" y="35.5" text="{commonFunction.getConstants('course_code')} :"/>
+		<common:AutoCompleteCB id="courseCombo" x="161.5" y="32.5" fontWeight="normal"/>
+		
+	</mx:Canvas>
+	<mx:Canvas x="41" y="430" visible="false" width="1100" height="222" styleName="GridCanvas" id="searchCanvas">
+	<controls:MDataGrid id="searchGrid"  x="38.5" y="36" height="173" editable="true" sortableColumns="true" width="1000" resizableColumns="true" >
+		<controls:columns>
+		 <dataGridClasses:MDataGridColumn sortable="false" width="70" textAlign="left"  showDataTips="true" headerText="{commonFunction.getConstants('components')}" editable="false" dataField="componentId"/>
+		 <dataGridClasses:MDataGridColumn width="50" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('teacher')}" editable="false" dataField="teacher"/>
+		 <dataGridClasses:MDataGridColumn width="80" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('actualDate')}" editable="false" dataField="actualDate"/>
+		 <dataGridClasses:MDataGridColumn width="80" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('displayDate')}" editable="false" dataField="displayDate"/>
+		 <dataGridClasses:MDataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('status')}" editable="false" dataField="componentStatus"/>
+		 <dataGridClasses:MDataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('delayDays')}" editable="false" dataField="delayDays"/>				
+
+	</controls:columns>		
+	</controls:MDataGrid>
+	<mx:Label x="36.5" y="10" text="{commonFunction.getConstants('courseComponentStatus')}" width="179"/>
+
+	</mx:Canvas>
+	
+</mx:Panel>

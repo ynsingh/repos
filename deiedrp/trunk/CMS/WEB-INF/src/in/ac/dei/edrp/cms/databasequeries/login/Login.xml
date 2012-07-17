@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- * @(#) Login.xml * @Author :Mohd Amir * @Date :21/3/2011 * Version 1.0 
+	* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. * All Rights 
+	Reserved. * * Redistribution and use in source and binary forms, with or 
+	* without modification, are permitted provided that the following * conditions 
+	are met: * * Redistributions of source code must retain the above copyright 
+	* notice, this list of conditions and the following disclaimer. * * Redistribution 
+	in binary form must reproducuce the above copyright * notice, this list of 
+	conditions and the following disclaimer in * the documentation and/or other 
+	materials provided with the * distribution. * * * THIS SOFTWARE IS PROVIDED 
+	``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES, INCLUDING, BUT NOT LIMITED 
+	TO, THE IMPLIED WARRANTIES * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+	PURPOSE ARE * DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+	* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL 
+	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS 
+	OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION) HOWEVER 
+	CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT, STRICT LIABILITY, 
+	OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+	USE OF THIS SOFTWARE, * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+	* * Contributors: Members of EdRP, Dayalbagh Educational Institute */ -->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="login">
+
+	<typeAlias alias="loginBean" type="in.ac.dei.edrp.cms.domain.login.Login" />
+
+	<select id="getLoginInfo" resultClass="loginBean">
+		SELECT ui.university_code
+		as universityId,um.university_name as
+		universityName,
+		ui.user_id as
+		userId,ui.user_name as userName,ui.user_group_id as userGroupId,
+		um.university_address address, um.university_city city,
+		um.university_pincode pinCode, um.university_phone_number phone,
+		um.university_other_phone otherPhone, um.university_fax fax,
+		um.nick_name nickName, um.university_state state,um.start_date as
+		startDate,
+		um.end_date as endDate,stt.component_description as
+		userGroupName,  um.country as country
+		FROM user_info ui,university_master um,system_table_two
+		stt
+		WHERE ui.password=sha1(#password#) and ui.user_name=#userName#
+		and
+		ui.status='ACT' and um.university_code=ui.university_code and ui.application=#application#
+		and
+		stt.group_code='UNROLE' and stt.component_code=ui.user_group_id
+		and
+		um.current_status=1 and stt.university_code=um.university_code
+	</select>
+
+	<update id="updateLastLogin">
+		UPDATE user_info
+		SET last_login=now()
+		where
+		user_id=#userId#
+	</update>
+
+
+	<select id="getAuthorizedMenuItem" resultClass="loginBean">
+		select
+		menu_item_id as menuId from user_group where
+		university_code=#universityId# and user_group_id=#userGroupId# and application=#application#;
+	</select>
+
+	<select id="getMenuDetail" resultClass="loginBean">
+		select stt.component_code
+		as menuId, stt.component_description as menuName
+		from system_table_two
+		stt
+		where stt.group_code='MNUITM' and stt.component_code=#menuId#;
+	</select>
+
+	<update id="changePassword">
+		UPDATE user_info
+		SET password=sha1(#newPassword#),modified_timestamp=now()
+		WHERE user_name=#userName# and password=sha1(#password#)
+		and
+		status='ACT'
+	</update>
+    
+    <select id="getSessionDate" resultClass="loginBean">
+    SELECT start_date as sessionStartDate FROM university_master u
+    where university_code=#universityId# and current_status='1';
+	</select>
+	
+	<select id="getEnrollmentPeriod" resultClass="loginBean">
+    SELECT value as enrollmentPeriod FROM system_values 
+    where code='ENDAYS' AND university_id=#universityId#; 	    
+	</select>
+	
+	<select id="getRegistrationDate" resultClass="loginBean">
+	SELECT distinct concat(year(now()),'-',semester_start_date) as regStartDate 
+	FROM program_term_details ;
+	</select>
+	
+	<select id="getEnrollExtend"  resultClass="loginBean">
+	select value as enrollExtendDays from system_values where code='ENEXD' and university_id=#universityId#;
+	</select>
+	
+	<select id="getRegDays"  resultClass="loginBean">
+	  select value as regDays from system_values where code='REGDAY' and university_id=#universityId#;
+    
+	</select>
+	<select id="getRegExtDays"  resultClass="loginBean">
+      select value as regExtDays from system_values where code='REGEXD' and university_id=#universityId#;
+	</select>
+    
+	<select id="getRemoteLoginInfo" resultClass="loginBean">
+		SELECT ui.university_code as universityId,um.university_name as
+			universityName,ui.application as application,ui.user_id as
+			userId,ui.user_name as userName,ui.user_group_id as userGroupId,
+			um.university_address address, um.university_city city,
+			um.university_pincode pinCode, um.university_phone_number phone,
+			um.university_other_phone otherPhone, um.university_fax fax,
+			um.nick_name nickName, um.university_state state,um.start_date as startDate,
+			um.end_date as endDate,stt.component_description as userGroupName,  um.country as country
+		FROM 
+			user_info ui,university_master um,system_table_two stt
+		WHERE 
+			ui.user_id=#userId#
+			and
+			ui.status='ACT' and um.university_code=ui.university_code
+			and
+			stt.group_code='UNROLE' and stt.component_code=ui.user_group_id
+			and
+			um.current_status=1 and stt.university_code=um.university_code
+	</select>
+	
+</sqlMap>

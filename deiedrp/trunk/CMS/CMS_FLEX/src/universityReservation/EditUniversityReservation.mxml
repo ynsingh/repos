@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+* @(#) EditUniversityReservation.mxml
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this  list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" keyDown="closeKey(event)" layout="absolute" width="424" height="202" showCloseButton="true" close="closeMe()" title="{commonFunction.getConstants('editReservationDetails')}">
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import common.commonFunction;
+			import mx.events.CloseEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			import mx.validators.Validator;
+			import mx.managers.PopUpManager;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+            [Embed(source="/images/success.png")]private var successIcon:Class;
+            [Embed(source="/images/reset.png")]private var resetIcon:Class;
+            [Embed(source="/images/question.png")]private var questionIcon:Class;
+            
+            [Bindable]public var urlPrefix:String;
+			public var categoryId:String;
+			public var params:Object={};
+			public var total:Number;
+				    
+			public var referenceFunction:Function;
+			
+			/** Closing Edit PopUp Window **/
+			private function closeKey(event:KeyboardEvent):void
+			{
+				if(event.keyCode==27)
+				{
+				    PopUpManager.removePopUp(this);
+				    referenceFunction.call();
+				}
+			}
+			
+			/** close PopUp Screen **/
+			private function closeMe():void
+			{
+				PopUpManager.removePopUp(this);
+				referenceFunction.call();
+			}
+			
+			/** Update Reservation Details **/
+			public function updateDetail():void
+			{
+				var errorCount:int=Validator.validateAll([percentageValidator]).length;
+				if(errorCount==0)
+				{
+					var gt:Number=Number(percentageText.text)+total;
+					if(gt<=100)
+					{
+						params["categoryCode"]=categoryId;
+					    params["percentage"]=percentageText.text;
+					    Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,updateOrNot,questionIcon);
+					}
+					else
+					{
+						Alert.show('Total sum of percentage of all categories must be less than or equal to 100',commonFunction.getMessages('error'),0,null,null,errorIcon);
+					}
+				}
+				else
+				{
+					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+				}
+			}
+			
+			/** Update Confirm Handler Function **/
+			public function updateOrNot(event:CloseEvent):void
+            {
+	            if(event.detail==1)
+	            {
+	            	updateDetailsService.send(params);
+	            	Mask.show(commonFunction.getMessages('pleaseWait'));
+	            }
+            }
+
+            /** Updating Reservation Details Success Result Handler **/
+            public function updateDetailsResultHandler(event:ResultEvent):void
+            {
+            	Mask.close();
+	try
+	{
+		if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	this.parentDocument.vStack.selectedIndex=0;
+	    	this.parentDocument.loaderCanvas.removeAllChildren();
+		}
+	}
+ 	catch(e:Error){}
+    
+			    Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),commonFunction.getMessages('success'),0,null,closeIt,successIcon);
+            }
+
+            /** Updating Reservation Details Fault Handler **/
+            public function updateDetailsFaultHandler(event:FaultEvent):void
+            {
+            	Mask.close();
+	            Alert.show(commonFunction.getMessages('requestFailed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+            }
+            
+            /** Update Success Alert Handler Function **/
+            public function closeIt(event:CloseEvent):void
+            {
+	            closeMe();
+            }
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="updateDetailsService" method="post"
+        url="{urlPrefix+'updateReservation.htm'}"
+        resultFormat="e4x"
+        showBusyCursor="true"
+        result="updateDetailsResultHandler(event)"
+        fault="updateDetailsFaultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:NumberValidator id="percentageValidator" source="{percentageText}" property="text" minValue="0" allowNegative="false" maxValue="100" required="true" precision="2" trigger="{updateButton}" triggerEvent="click"/>
+	<mx:Label x="50" y="35" text="{commonFunction.getConstants('category')}" />
+	<mx:Label x="50" y="65" text="{commonFunction.getConstants('percentageOfSeats')}" />
+	<mx:Label id="categoryLabel" x="185" y="35" fontWeight="bold"/>
+	<mx:TextInput id="percentageText" x="185" y="65" width="150"/>
+	<mx:Button x="185" y="107" label="{commonFunction.getConstants('updateButton')}" click="updateDetail()" id="updateButton" />
+	
+</mx:TitleWindow>

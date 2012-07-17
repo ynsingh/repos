@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		/* * @(#) SystemValue.xml * Author :Deepak Pandey * Date :21/5/2011 *
+		Version 1.0 * Copyright (c) 2011 EdRP, Dayalbagh Educational
+		Institute. * All Rights Reserved. * * Redistribution and use in source
+		and binary forms, with or * without modification, are permitted
+		provided that the following * conditions are met: * * Redistributions
+		of source code must retain the above copyright * notice, this list of
+		conditions and the following disclaimer. * * Redistribution in binary
+		form must reproducuce the above copyright * notice, this list of
+		conditions and the following disclaimer in * the documentation and/or
+		other materials provided with the * distribution. * * * THIS SOFTWARE
+		IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES,
+		INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES * OF
+		MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE * DISCLAIMED.
+		IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR ANY DIRECT,
+		INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL DAMAGES
+		(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS OR
+		SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION)
+		HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT,
+		STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE)
+		ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, * EVEN IF ADVISED
+		OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors: Members of EdRP,
+		Dayalbagh Educational Institute */
+	-->
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="systemValue">
+
+	<typeAlias alias="systemValue"
+		type="in.ac.dei.edrp.cms.domain.utility.SystemValue" />
+
+	<!-- Deepak Part starts-->
+
+	<resultMap id="getSystemValueResult" class="systemValue">
+		<result property="value" column="value" />
+	</resultMap>
+	<select id="getSystemValue" resultMap="getSystemValueResult">
+		SELECT value FROM
+		system_values where code=#code# and university_id=#univeristyCode#;
+	</select>
+
+	<update id="updateSystemValue" parameterClass="systemValue">
+		UPDATE
+		system_values SET
+		value=#value#,modification_time=now(),modifier_id=#modifierId#
+		WHERE
+		code=#code# and university_id=#univeristyCode#;
+	</update>
+	<!-- Deepak part ends -->
+
+	<!-- Ashish Part starts-->
+
+	<update id="resetSystemValues">
+
+		update system_values set value=#value# where
+		code=#code# AND
+		university_id=#univeristyCode#;
+      
+      </update>
+
+	<select id="getValuesForCodes" resultClass="systemValue">
+		SELECT length(value)
+		as value,code FROM system_values where code
+		IN('EMPCOD','SWTNUM','FSTUID','ENROLL','REGNUM','STUID','ISUEID') AND
+		university_id=#univeristyCode#;
+   	</select>
+
+	<select id="getProgramCourseKeysDetails" resultClass="systemValue">
+		select
+		pch.program_course_key as programCourseKey,pch.semester_code as
+		semesterCode,pr.semester_start_date as
+		semesterStartDate,pr.semester_end_date as
+		semesterEndDate,pob.offered_by as entityId from program_course_header
+		pch,program_offered_by pob,program_registration pr
+		where
+		pch.program_course_key=pr.program_course_key AND
+		pch.program_id=pob.program_id AND
+		pch.program_course_key NOT IN(select
+		spc.program_course_key from semester_processing_control
+		spc where
+		spc.entity_id=pob.offered_by AND
+		spc.semester_start_date=pr.semester_start_date AND
+		spc.semester_end_date=pr.semester_end_date) AND
+		pch.branch_id=pob.branch_id AND
+		pch.specialization_id=pob.specialization_id AND pob.program_id
+		LIKE
+		#univeristyCode#;
+   	</select>
+
+	<insert id="insertSemesterCotrolRecord">
+
+		insert into semester_processing_control(entity_id,
+		semester_start_date,
+		semester_end_date, status, insert_time,
+		creator_id,
+		process,
+		program_course_key)Values(#entityId#,#semesterStartDate#,#semesterEndDate#,
+		'RDY',now(),'semesterControl',#process#,#programCourseKey#);
+   	
+   	</insert>
+
+
+	<insert id="insertSystemValue">
+
+		insert into system_values (university_id, code, value, insert_time,
+		creator_id) values(#univeristyCode#,#code#,#value#,now(),#creatorId#);
+   	
+   	</insert>
+   	
+   	<select id="getUniversity" resultClass="systemValue">
+   	
+   	select distinct university_id as code from system_values where university_id=#universityCode#;
+   	
+   	</select>
+   	
+
+	<!-- Ashish Part Ends-->
+	
+	<!-- Devendra Starts-->
+	
+	<select id="getSessionStartEndDate" resultClass="systemValue">
+        select start_date as sessionStartDate, end_date as sessionEndDate,date_sub(start_date,interval 2 year) as previousSessionStartDate,date_sub(end_date,interval 2 year) as previousSessionEndDate
+		from university_master
+		where university_code=#univeristyCode# and current_status=1
+    </select>
+    <select id="getPreviousProcessDetail" resultClass = "systemValue">
+		SELECT component_code as processCode from system_table_two
+		where university_code=#univeristyCode# and group_code='YEPCOD'
+		and dummy_flag_one=(select  dummy_flag_one from system_table_two where component_code=#processCode# and university_code=#univeristyCode# and group_code='YEPCOD')-1;
+	</select>
+	
+	<select id="getControlDetailStatus" resultClass = "systemValue">
+		SELECT status as status from yearend_process_control where
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and process_code=#processCode# 
+		and university_code=#univeristyCode# and group_code='YEPCOD';
+	</select>
+	
+	 <insert id="setControlDetailStatus">
+    	insert into yearend_process_control(session_start_date,session_end_date,process_code,status,group_code,insert_time,creator_id,university_code)
+		values(#sessionStartDate#,#sessionEndDate#,#processCode#,#status#,'YEPCOD',now(),#creatorId#,#univeristyCode#);
+    </insert>
+    
+    <update id="updateControlDetailStatus">
+    	update yearend_process_control set status=#status# where session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and university_code=#univeristyCode# and process_code=#processCode# and group_code='YEPCOD';
+    </update>
+    
+    <select id="getprestagingList" resultClass = "systemValue">
+		SELECT pst.student_id as studentId,pst.registration_roll_number as regRollNo,pst.new_entity as entityId,
+		pst.new_program as program,pst.new_branch as branch,pst.new_specialization as specialization,pst.new_semester as semester,pst.attempt_number as attemptNo,
+		pst.admission_mode as admissionMode,pst.semester_start_date as semesterStartDate,pst.semester_end_date as semesterEndDate
+		from prestaging_table pst,program_registration pr where
+		pr.semester_start_date=pst.semester_start_date
+		and pr.semester_end_date=pst.semester_end_date
+		and pr.session_start_date=#previousSessionStartDate#
+		and pr.session_end_date=#previousSessionEndDate#
+		and pr.university_id=#univeristyCode#
+		and pst.process_status='PRC' group by pst.student_id;
+	</select>
+	
+	<select id="getStagingList" resultClass = "systemValue">
+		SELECT st.student_id as studentId,st.semester_start_date as semesterStartDate,st.semester_end_date as semesterEndDate,registration_roll_number as regRollNo from staging_table st where st.registration_roll_number=#regRollNo# and st.new_entity_id=#entityId# and
+		st.new_program_id=#program# and st.new_branch_id=#branch# and st.new_specialization_id=#specialization# and st.new_semester_id=#semester# and st.attempt_number=#attemptNo# and
+		st.admission_mode=#admissionMode# and st.semester_start_date=#semesterStartDate# and st.semester_end_date=#semesterEndDate# and processed_flag='P';
+	</select>
+	
+	<insert id="setPrestagingHistory">
+    	insert into prestaging_table_history select * from prestaging_table pst where pst.registration_roll_number=#regRollNo# and pst.new_entity=#entityId# and
+		pst.new_program=#program# and pst.new_branch=#branch# and pst.new_specialization=#specialization# and pst.new_semester=#semester# and pst.attempt_number=#attemptNo# and
+		pst.admission_mode=#admissionMode# and pst.semester_start_date=#semesterStartDate# and pst.semester_end_date=#semesterEndDate# and pst.process_status='PRC';
+    </insert>
+    
+    <delete id="clearPrestaging">
+		delete from prestaging_table  where registration_roll_number=#regRollNo# and new_entity=#entityId# and
+		new_program=#program# and new_branch=#branch# and new_specialization=#specialization# and new_semester=#semester# and attempt_number=#attemptNo# and
+		admission_mode=#admissionMode# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and process_status='PRC';
+   	</delete>
+   	
+   	<delete id="clearStaging">
+		delete from staging_table where registration_roll_number=#regRollNo# and new_entity_id=#entityId# and
+		new_program_id=#program# and new_branch_id=#branch# and new_specialization_id=#specialization# and new_semester_id=#semester# and attempt_number=#attemptNo# and
+		admission_mode=#admissionMode# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and processed_flag='P';
+   	</delete>
+	<!-- Devendra Ends-->
+</sqlMap>

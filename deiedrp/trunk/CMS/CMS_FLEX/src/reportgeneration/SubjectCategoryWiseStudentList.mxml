@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) SubjectCategoryWiseStudentList.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="646" height="424"
+		  creationComplete="applicationCreationCompleteHandler()" title="{commonFunction.getConstants('subjectCategoryWiseStudentMeritList')}">
+	
+	<mx:HTTPService id="getCurrentSessionHttpService" method="POST"
+					url="{urlPrefix+'getCurrentSession.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="getCurrentSessionHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="entityListHttpService" method="POST"
+					url="{commonFunction.getConstants('url')+'/associatecoursewithinstructor/entityList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="entityListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="programListHttpService" method="POST"
+					url="{commonFunction.getConstants('url')+'/associatecoursewithinstructor/programList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="programListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="branchListHttpService" method="POST"
+					url="{commonFunction.getConstants('url')+'/associatecoursewithinstructor/branchList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="branchListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="specializationListHttpService" method="POST"
+					url="{commonFunction.getConstants('url')+'/associatecoursewithinstructor/specializationList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="specializationListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="semesterListHttpService" method="POST"
+					url="{commonFunction.getConstants('url')+'/associatecoursewithinstructor/semesterList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="generatePDFHttpService" method="POST"
+					url="{urlPrefix+'generatePDF.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="generatePDFHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import common.commonFunction;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]protected var urlPrefix:String;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			[Bindable]protected var entityList:XML
+			[Bindable]protected var programList:XML
+			[Bindable]protected var branchList:XML;
+			[Bindable]protected var programCourseKeyList:XML;
+			[Bindable]protected var courseGroupList:XML;
+			[Bindable]protected var semesterList:XML;
+			[Bindable]protected var specializationList:XML;
+			protected var semesterListArrCol:ArrayCollection;
+			protected var selectedSemesterArrColl:ArrayCollection;
+			protected var semesterDates:XML;
+			public var yearDataProvider:Array=new Array;
+			
+			protected function applicationCreationCompleteHandler():void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/subjectcategorywisestudentlist/";
+				
+				
+				var endMonth:Date=new Date();
+				var currentYear:int=int(endMonth.getFullYear());
+				for(var year:int=currentYear; currentYear>=1950; currentYear--){
+					yearDataProvider.push(year);
+					year--;
+				}
+				
+				sessionStartDateCB.dataProvider=yearDataProvider;
+				
+				var param:Object=new Object();
+				param["time"]=new Date();
+				entityListHttpService.send(param);
+				getCurrentSessionHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+			
+			protected function getCurrentSessionHttpServiceResultHandler(event:ResultEvent):void{
+				var sessionDetail:XML= event.result as XML;
+				Mask.close();
+				if(sessionDetail.sessionConfirm == true){
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        			this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				sessionStartDateCB.selectedItem=sessionDetail.session.startDate.toString();
+				SessionEndLab.text=sessionDetail.session.endDate.toString();				
+				
+			}
+			
+			protected function entityListHttpServiceResultHandler(event:ResultEvent):void{
+				entityList=event.result as XML;
+				Mask.close();
+				if(entityList.sessionConfirm == true){
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        			this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				entityCB.dataProvider=entityList.entity.entityName;
+			}
+			
+			protected function programListHttpServiceResultHandler(event:ResultEvent):void{
+				programList=event.result as XML;
+				Mask.close();
+				if(programList.sessionConfirm == true){
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        			this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				programCB.dataProvider=programList.program.programName;
+			}
+			
+			protected function branchListHttpServiceResultHandler(event:ResultEvent):void{
+				branchList = event.result as XML;
+				Mask.close();
+				if(branchList.sessionConfirm == true){
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        			this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+				branchCB.dataProvider.refresh();
+				branchCB.dataProvider=branchList.branch.branchName;
+				branchCB.enabled=true;
+			}
+			
+			protected function specializationListHttpServiceResultHandler(event:ResultEvent):void{
+				specializationList = event.result as XML;
+				Mask.close();
+				if(specializationList.sessionConfirm == true){
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        			this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				specializationCB.dataProvider.refresh();
+				specializationCB.dataProvider=specializationList.specialization.specializationName;
+				specializationCB.enabled=true;
+				specializationCB.selectedIndex=-1;
+			}
+			
+			protected function semesterListHttpServiceResultHandler(event:ResultEvent):void{
+				semesterList=event.result as XML;
+				Mask.close();
+				if(semesterList.sessionConfirm == true){
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        			this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				semesterCB.dataProvider.refresh();
+				semesterCB.dataProvider=semesterList.semester.semesterName;				
+			}
+			
+			protected function generatePDFHttpServiceResultHandler(event:ResultEvent):void{
+				var serviceResult:XML= event.result as XML;				
+				Mask.close();
+				if(serviceResult.sessionConfirm == true){
+        			Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        			this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+				if(serviceResult.result.message=="success"){
+					Alert.show(commonFunction.getMessages('savedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);	
+				}
+				else if(serviceResult.result.message=="semesterDatesMissing"){
+					Alert.show(commonFunction.getMessages('semesterStartEndDateMissing'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+				}
+			}
+			
+			protected function httpServiceFaultHandler(event:FaultEvent):void{
+				Mask.close();
+				Alert.show(commonFunction.getMessages('reportGeneratedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);
+			}
+			
+			protected function resetButtonClickHandler():void
+			{
+				entityCB.selectedIndex=-1;
+				programCB.selectedIndex=-1;
+				programCB.enabled=false;
+				branchCB.selectedIndex=-1;
+				branchCB.enabled=false;
+				specializationCB.selectedIndex=-1;
+				specializationCB.enabled=false;
+				semesterCB.selectedIndex=-1;
+				semesterCB.enabled=false;
+				generateReportButton.enabled=false;
+			}
+
+			protected function entityCBChangeHandler():void
+			{
+				programCB.selectedIndex=-1;
+				branchCB.selectedIndex=-1;
+				specializationCB.selectedIndex=-1;
+				semesterCB.selectedIndex=-1;
+				programCB.enabled=true;
+				generateReportButton.enabled=false;
+				
+				var param:Object=new Object();
+				param["entityId"]=entityList.entity.(entityName==entityCB.selectedLabel).entityId;
+				programListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+
+
+			protected function programCBChangeHandler():void
+			{
+				branchCB.selectedIndex=-1;
+				specializationCB.selectedIndex=-1;
+				semesterCB.selectedIndex=-1;
+				generateReportButton.enabled=false;
+				branchCB.enabled=true;
+				
+				var param:Object=new Object();
+				param["entityId"]=entityList.entity.(entityName==entityCB.selectedLabel).entityId;
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				branchListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+
+
+			protected function branchCBChangeHandler():void
+			{
+				specializationCB.selectedIndex=-1;
+				semesterCB.selectedIndex=-1;
+				generateReportButton.enabled=false;
+				specializationCB.enabled=true;
+				var param:Object=new Object();
+				param["entityId"]=entityList.entity.(entityName==entityCB.selectedLabel).entityId;
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				specializationListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+
+			protected function specializationCBChangeHandler():void
+			{
+				semesterCB.selectedIndex=-1;
+				semesterCB.enabled=true;
+				generateReportButton.enabled=false;
+				var param:Object=new Object();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				semesterListHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+			
+			protected function sessionStartCBChangeHandler():void{
+				
+				var sessionEnd:Number = new Number(sessionStartDateCB.selectedLabel)+1;
+				SessionEndLab.text=sessionEnd.toString();				
+			}
+			
+			protected function generateReportButtonClickHandler():void
+			{
+				var param:Object=new Object();
+				param["selectedEntityId"]=entityList.entity.(entityName==entityCB.selectedLabel).entityId;
+				param["selectedEntityName"]=entityCB.selectedLabel;
+				param["programName"]=programCB.selectedLabel;
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["programCode"]=programList.program.(programName==programCB.selectedLabel).programCode;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["branchName"]=branchCB.selectedLabel;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["specializationName"]=specializationCB.selectedLabel;
+				param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+				param["semesterName"]=semesterCB.selectedLabel;
+				param["sessionStartYear"]=sessionStartDateCB.selectedItem;
+				param["sessionEndYear"]=SessionEndLab.text;
+				generatePDFHttpService.send(param);
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+			}
+			
+			private function semesterCBChangeHandler():void{				
+				generateReportButton.enabled=true;
+			}
+
+		]]>
+	</mx:Script>
+
+	<mx:Label x="58" y="66" text="{commonFunction.getConstants('entity')}"/>
+	<mx:ComboBox x="115" y="62" id="entityCB" width="160" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="entityCBChangeHandler()"/>
+	<mx:Label x="363" y="64" text="{commonFunction.getConstants('program')}:"/>
+	<mx:ComboBox x="428" y="62" id="programCB" width="160" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="programCBChangeHandler()"/>
+	<mx:Label x="54" y="105" text="{commonFunction.getConstants('branch')}:"/>
+	<mx:ComboBox x="115" y="103" id="branchCB" width="160" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="branchCBChangeHandler()"/>
+	<mx:Label x="334" y="105" text="{commonFunction.getConstants('specialization')}:"/>
+	<mx:ComboBox x="428" y="103" id="specializationCB" width="160" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="specializationCBChangeHandler()"/>
+	<mx:Label x="38" y="145" text="{commonFunction.getConstants('semester')}:"/>
+	<mx:ComboBox x="115" y="143" id="semesterCB" width="160" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="semesterCBChangeHandler()"/>
+	<mx:Label x="38" y="183" text="{commonFunction.getConstants('session')}:"/>
+	<mx:ComboBox x="115" y="181" id="sessionStartDateCB" width="75" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="sessionStartCBChangeHandler()"/>	
+	<mx:Label x="196.5" y="183" text="{commonFunction.getConstants('to')}"/>
+	<mx:Label x="227" y="183" id="SessionEndLab" width="160"/>
+	<mx:Button x="149" y="280" id="generateReportButton" label="{commonFunction.getConstants('generateReport')}" enabled="false" click="generateReportButtonClickHandler()"/>
+	<mx:Button x="363" y="280" id="resetButton" label="{commonFunction.getConstants('resetButton')}" click="resetButtonClickHandler()"/>
+</mx:Panel>

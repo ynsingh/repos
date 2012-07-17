@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) ConsolidatedChart.xml * @Author :Rohit Saxena * @Date :07/09/2011 *
+Version 1.0 * Copyright (c) 2011 EdRP, Dayalbagh Educational
+	Institute. * All Rights Reserved. * * Redistribution and use in source
+		and binary forms, with or * without modification, are permitted
+		provided that the following * conditions are met: * * Redistributions
+		of source code must retain the above copyright * notice, this list of
+		conditions and the following disclaimer. * * Redistribution in binary
+		form must reproducuce the above copyright * notice, this list of
+		conditions and the following disclaimer in * the documentation and/or
+		other materials provided with the * distribution. * * * THIS SOFTWARE
+		IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES,
+		INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES * OF
+		MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE * DISCLAIMED.
+		IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR ANY DIRECT,
+		INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL DAMAGES
+		(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS OR
+		SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION)
+		HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT,
+		STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE)
+		ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, * EVEN IF ADVISED
+		OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors: Members of EdRP,
+		Dayalbagh Educational Institute */
+	-->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="consolidatedmarksheet">
+
+	<typeAlias alias="consolidatedMarkSheetInfo"
+		type="in.ac.dei.edrp.cms.domain.consolidatedchart.ConsolidatedMarkSheetInfo" />
+
+	
+	<select id="getStudentDetails" resultClass="consolidatedMarkSheetInfo">
+		SELECT sp.roll_number
+		rollNo, sp.enrollment_number enrollNo,sp.cgpa as cgpa,sys2.component_description
+		division,
+		concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name)
+		studentName,
+		concat_ws(' ',sm.father_first_name,sm.father_middle_name,sm.father_last_name)
+		fatherName,
+		concat_ws(' ',sm.mother_first_name,sm.mother_middle_name,sm.mother_last_name)
+		motherName,
+		sm.date_of_birth dob, epd.photo_path photoPath
+		FROM
+		student_program sp,student_master sm, enrollment_personal_details epd,system_table_two sys2
+		WHERE sp.entity_id=#entityId# and sp.program_id=#programId#
+		and
+		sp.branch_id=#branchId# and sp.specialization_id=#specializationId#
+		and sp.program_status='PAS'
+		and sp.division=sys2.component_code and sys2.group_code='DVSCOD' and
+		sm.enrollment_number=sp.enrollment_number and
+		epd.enrollment_number=sm.enrollment_number and passed_from_session
+		like #passFromDate# and passed_to_session like #passToDate#;
+	</select>
+
+	<select id="getCourseMarksDetails" resultClass="consolidatedMarkSheetInfo">
+		SELECT
+		sms.course_code courseCode, sms.final_grade_point gradePoint,
+		cm.course_name courseName,cm.credits credits,cm.subject_wise_group
+		courseGroup,sys.component_description courseGroupName
+		FROM
+		student_marks_summary sms, course_master cm,system_table_two sys
+		WHERE
+		cm.course_code=sms.course_code and
+		cm.subject_wise_group=sys.component_code and sys.group_code='CRSGRP'
+		and sms.roll_number=#rollNo#
+		and
+		sms.program_course_key in (
+		SELECT
+		pch.program_course_key
+		FROM
+		program_course_header pch
+		WHERE
+		pch.program_id=#programId# and
+		pch.branch_id=#branchId#
+		and
+		pch.specialization_id=#specializationId#
+		and pch.semester_code in (
+		SELECT distinct ptd.semester_code
+		FROM
+		program_term_details ptd
+		WHERE
+		ptd.program_id=pch.program_id)) and
+		sms.course_code in (
+		SELECT
+		distinct
+		pcd.course_code
+		FROM
+		program_course_detail pcd
+		WHERE
+		pcd.program_course_key in (
+		SELECT
+		pch.program_course_key
+		FROM
+		program_course_header pch
+		WHERE
+		pch.program_id=#programId# and
+		pch.branch_id=#branchId#
+		and
+		pch.specialization_id=#specializationId#
+		and pch.semester_code in (
+		SELECT distinct ptd.semester_code
+		FROM
+		program_term_details ptd
+		WHERE
+		ptd.program_id=pch.program_id))) order
+		by
+		sys.dummy_flag_one,courseGroup;
+	</select>
+
+	<select id="getEntity" resultClass="consolidatedMarkSheetInfo">
+		SELECT entity_name componentDescription, entity_id componentId,
+        entity_address address, entity_city city,
+        entity_state state, entity_pincode pinCode,
+        entity_phone phoneNumber, entity_fax fax
+        FROM entity_master
+        WHERE entity_id IN (
+            SELECT DISTINCT offered_by entity
+            FROM program_offered_by
+            WHERE program_id IN (
+                SELECT program_id
+                FROM program_master
+                WHERE program_code='HS' OR program_code='IM'
+            )
+        )
+        AND entity_id LIKE #universityId#;
+	</select>
+	
+	<select id="getAddressEntity" resultClass="consolidatedMarkSheetInfo">
+		SELECT 
+        entity_address address, entity_city city,
+        entity_state state, entity_pincode pinCode,
+        entity_phone phoneNumber, entity_fax fax
+        FROM entity_master
+        WHERE entity_id =#entityId#;        
+	</select>
+	
+
+	<select id="getProgram" resultClass="consolidatedMarkSheetInfo">
+		select program_name as
+		componentDescription,program_id as componentId
+		from program_master
+		where program_id in(select distinct program_id from program_offered_by
+		where offered_by=#entityId#) and program_id like concat(#universityId#,'%');;
+	
+	</select>
+
+	<select id="getBranch" resultClass="consolidatedMarkSheetInfo">
+		select component_description
+		as componentDescription,component_code as
+		componentId
+		from
+		system_table_two
+		where group_code='BRNCOD' and university_code=#universityId# and component_code in(select
+		distinct branch_id
+		from program_offered_by
+		where offered_by=#entityId#
+		and program_id=#programId#);
+	</select>
+
+	<select id="getSpecialization" resultClass="consolidatedMarkSheetInfo">
+		select
+		component_description as componentDescription,component_code as
+		componentId
+		from system_table_two
+		where group_code='SPCLCD' and university_code=#universityId# and
+		component_code in(select distinct
+		specialization_id from
+		program_offered_by
+		where offered_by=#entityId# and
+		program_id=#programId# and
+		branch_id=#branchId#);
+	</select>
+</sqlMap>

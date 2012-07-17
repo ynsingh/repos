@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="loadCombo()" layout="absolute" width="630" height="670" title="{commonFunction.getConstants('manageProgramDurationDetails')}" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*" xmlns:common="common.*">
+	<mx:Script source="asFiles/ManageProgramDurationAction.as" />
+	
+	
+	
+	
+	
+	
+	 <mx:HTTPService id="httpDurationDetails" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodProgDurationDetailsForManage.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_DurationDetails(event)"
+        fault="faultHandler_DurationDetails(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpUpdateDurationDetails" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodUpdateProgDurationDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_update(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        <mx:HTTPService id="httpDeleteDurationDetails" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodProgDurationDelete.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_delete(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        <mx:HTTPService id="httpAddDurationDetails" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodAddStartDate.htm'}"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+	
+	
+	
+<!--	<mx:Validator id="programCodevalidator" source="{programCodeText}" property="text" required="true"/>
+-->
+	<mx:Label text="{commonFunction.getConstants('programName')}" x="132" y="17"/>
+	<mx:ComboBox toolTip="{programNameComboBox.text}" x="232" width="220" id="programNameComboBox" dataProvider="{['B.Tech','M.Tech','B.E.']}" selectedIndex="-1" change="changeProgram()" prompt="{commonFunction.getConstants('select')}" y="17"/>
+	<mx:TitleWindow x="62.5" y="49" width="491" layout="absolute" height="82" title="{commonFunction.getConstants('searchBy')}" borderStyle="solid" borderThickness="1">
+		<mx:Label x="29.5" text="{commonFunction.getConstants('programCode')}"/>
+	    <mx:TextInput x="129.5" width="220" id="programCodeText" enabled="false"/>
+	    <mx:Button x="357.5" y="0" label="{commonFunction.getConstants('showButton')}" id="showButton" click="showDetails()"/>
+	</mx:TitleWindow>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="this.parentDocument.loaderCanvas.removeAllChildren()"  y="139" x="457.5"/>	
+	<mx:Canvas styleName="SimpleCanvas" id="programDurationDetailPanel" x="58" y="165" visible="false" width="494" height="451" >
+	    <mx:Label x="79" y="24" text="{commonFunction.getConstants('duration')}" />
+	    <mx:Label x="79" y="77" text="{commonFunction.getConstants('minimumDuration')}" />
+	    <mx:Label x="79" y="108" text="{commonFunction.getConstants('maximumDuration')}" />
+	    <mx:RadioButtonGroup id="fixedDurationRadio" labelPlacement="right" selectedValue="Y" change="showDurationBox()"/>
+	    <mx:RadioButton x="216" y="21" value="Y" label="{commonFunction.getConstants('fixedDuration')}" groupName="fixedDurationRadio"  fontWeight="bold"/>
+	    <mx:RadioButton x="216" y="43" value="N" label="{commonFunction.getConstants('floatingDuration')}" groupName="fixedDurationRadio"  fontWeight="bold"/>
+	    <mx:NumericStepper x="217" y="75" color="#000000" width="130" id="minDurationText" minimum="1" maximum="999" />
+	    <mx:NumericStepper x="217" y="106" color="#000000" width="130" id="maxDurationText" enabled="false" minimum="1" maximum="999"/>
+	    <mx:Button x="335" y="404" label="{commonFunction.getConstants('addButton')}" click="addStartDate()"/>
+	    <mx:Canvas styleName="GridCanvas" x="12.5" y="190" width="466" height="190">
+	        <mx:Label text="{commonFunction.getConstants('programStartDate')}" top="6" left="10" fontWeight="bold"  />
+	        <mx:LinkButton enabled="false" label="{commonFunction.getConstants('deleteButton')}" id="deleteButton" x="391" y="4" click="deleteDetails()"/>
+	        <controls:MDataGrid id="programStartDateGrid" draggableColumns="false" resizableColumns="false" editable="true" horizontalScrollPolicy="off" verticalScrollPolicy="on" y="34" x="13" height="143">
+	            <controls:columns>
+	                <dataGridClasses:MDataGridColumn sortable="false" width="20" headerText="" dataField="select" rendererIsEditor="true" editorDataField="selected">
+	                	<dataGridClasses:headerRenderer>
+		    			<mx:Component>
+		    				<mx:Label/>
+		    			</mx:Component>
+		    		</dataGridClasses:headerRenderer>
+		    		<dataGridClasses:itemRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="deleteEnable(event,outerDocument.programStartDateGrid,outerDocument.deleteButton)">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*;
+		    							
+		    							 /** This function enable disable edit delete button according to selected number of records * */
+			public function deleteEnable(event:Event,grid:DataGrid,deleteButton:LinkButton):void
+		    {
+		        var currentIndex:int=grid.selectedIndex;
+		        var parseIndex:int=0;
+		        var i:int=0;
+		        for each(var obj:Object in grid.dataProvider)
+		        {
+		            var bool:Boolean=false;
+		            bool=obj.select;
+		            if(parseIndex==currentIndex)
+		            {
+		            	bool=event.currentTarget.selected;
+		            }
+		            if(bool)
+		            {
+		            	i++;
+		            }
+		            parseIndex++;
+		        }
+
+                if(i>0){
+                	if(i<grid.dataProvider.length){
+                		deleteButton.enabled=true;
+                	}else{
+                	deleteButton.enabled=false;
+                }
+                }
+                else{
+                	deleteButton.enabled=false;
+                }
+		    }
+		    							
+		    							
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:itemRenderer>
+	                </dataGridClasses:MDataGridColumn>
+	                <dataGridClasses:MDataGridColumn editable="false" width="90" headerText="{commonFunction.getConstants('programCode')}" dataField="programCode" showDataTips="true"/>
+	                <dataGridClasses:MDataGridColumn editable="false" width="200" headerText="{commonFunction.getConstants('programName')}" dataField="programName" showDataTips="true"/>
+	                <dataGridClasses:MDataGridColumn editable="false" width="110" headerText="{commonFunction.getConstants('startDayMonth')}" dataField="startdate" showDataTips="true"/>
+	            </controls:columns>
+	        </controls:MDataGrid>
+	    </mx:Canvas>
+	    <mx:Label x="63" y="405" text="{commonFunction.getConstants('startDayMonth')}" />
+	    <common:DateMonthSelector id="startDateField" x="171" y="403" width="160"/>
+	    <mx:Button  x="217" y="138" label="{commonFunction.getConstants('updateButton')}" click="updateDetails()"/>
+	    <mx:HRule x="57" y="395" width="382" height="5"/>
+	    <mx:HRule x="57" y="434" width="382" height="5"/>
+	    <mx:VRule x="56" y="396" height="39" width="5"/>
+	    <mx:VRule x="436" y="396" height="39" width="5"/>
+	    <mx:HRule x="55.5" y="10" width="382" height="5"/>
+	    <mx:HRule x="55.5" y="170" width="382" height="5"/>
+	    <mx:VRule x="54.5" y="11" height="161" width="5"/>
+	    <mx:VRule x="436" y="11" height="161" width="5"/>
+	</mx:Canvas>
+</mx:Panel>

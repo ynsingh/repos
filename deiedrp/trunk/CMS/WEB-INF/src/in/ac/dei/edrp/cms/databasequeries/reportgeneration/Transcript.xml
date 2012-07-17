@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="transcript">
+	<select id="getPersonalDetail" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.Transcript">
+	SELECT concat_ws(' ',concat(upper(substring(student_first_name,1,1)),lower(substring(student_first_name,2))),
+		concat(upper(substring(student_middle_name,1,1)),lower(substring(student_middle_name,2))),
+		concat(upper(substring(student_last_name,1,1)),lower(substring(student_last_name,2)))) as studentName,
+		concat_ws(' ',concat(upper(substring(father_first_name,1,1)),lower(substring(father_first_name,2))),
+		concat(upper(substring(father_middle_name,1,1)),lower(substring(father_middle_name,2))),
+		concat(upper(substring(father_last_name,1,1)),lower(substring(father_last_name,2)))) as fatherName, date_of_birth as dob
+	FROM student_master 
+	WHERE enrollment_number=#enrollmentNumber#
+	AND university_code=#universityId#;
+	</select>
+	<select id="getProgramCourseKey" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.Transcript">
+	SELECT ifnull(cgpa,0) as cgpa,enrollment_number as enrollmentNumber,
+	sp.roll_number as rollNumber,ptd2.semester_code as semesterCode,stt.component_description semesterName,pch.program_course_key as
+	programCourseKey,entity_id,sp.program_id,sp.branch_id,sp.specialization_id,ifnull(ptd2.final_semester_code,'N') as finalSemesterCode,
+	IF(division,upper((SELECT component_description FROM system_table_two
+                    	WHERE
+                    	group_code='DVSCOD' AND component_code=division AND university_code=#universityId#)),division) as division,
+	switch_number,sequence_number
+	FROM student_program sp,program_term_details ptd,program_term_details ptd1,program_term_details ptd2,
+	system_table_two stt,program_course_header pch
+	WHERE
+	enrollment_number=#enrollmentNumber#
+	AND sp.entity_id like concat(#universityId#,'%')
+	AND sp.program_id=ptd.program_id
+	AND sp.current_semester=ptd.semester_code
+	AND sp.program_id=ptd1.program_id
+	AND sp.in_semester=ptd1.semester_code
+	AND sp.program_id=ptd2.program_id
+	AND ptd2.semester_sequence<![CDATA[ <= ]]>ptd.semester_sequence
+	AND ptd2.semester_sequence<![CDATA[ >= ]]>ptd1.semester_sequence
+	AND stt.group_code='SEMCOD'
+	AND stt.component_code = ptd2.semester_code
+	AND stt.university_code=#universityId#
+	AND sp.program_id=pch.program_id
+	AND sp.branch_id=pch.branch_id
+	AND sp.specialization_id=pch.specialization_id
+	AND ptd2.semester_code=pch.semester_code
+	ORDER BY registered_from_session;
+<!-- 
+	SELECT ifnull(cgpa,0) as cgpa,enrollment_number as enrollmentNumber,roll_number as rollNumber
+		,sp.program_id as programId,sp.branch_id as branchId,sp.specialization_id as specializationId
+		,pch.program_course_key as programCourseKey,pch.semester_code as semesterCode,stt.component_description semesterName,
+		ifnull(ptd2.final_semester_code,'N') as finalSemesterCode,IF(division,upper((SELECT component_description
+FROM system_table_two
+WHERE
+group_code='DVSCOD' AND component_code=division)),division) as division,switch_number as switchNumber,sequence_number as sequenceNumber
+group_code='DVSCOD' AND component_code=division AND university_code=#universityId#)),division) as division,switch_number as switchNumber,sequence_number as sequenceNumber
+	FROM student_program sp,program_term_details ptd,program_course_header pch,program_term_details ptd1,system_table_two stt,
+		program_term_details ptd2
+	WHERE enrollment_number=#enrollmentNumber#
+		and current_semester=ptd.semester_code
+		and sp.program_id = ptd.program_id
+		and pch.program_id = ptd.program_id
+		and pch.branch_id = sp.branch_id
+		and pch.specialization_id = sp.specialization_id
+		and ptd1.semester_code=pch.semester_code
+		and ptd.program_id =ptd1.program_id
+		and ptd1.semester_sequence <![CDATA[ <= ]]>  ptd.semester_sequence
+		and stt.group_code='SEMCOD'
+		and stt.component_code = pch.semester_code
+		and pch.program_id = ptd2.program_id
+		and pch.semester_code = ptd2.semester_code
+		and sp.entity_id like concat(#universityId#,'%')
+    	and stt.university_code=#universityId#
+   	 	and pch.program_id like concat(#universityId#,'%')
+	ORDER BY registered_from_session;
+	 -->
+	</select>
+    
+    <select id="getProgramName" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.Transcript">
+    select pm.program_name as programName,stt.component_description as branchName,stt1.component_description as specialization
+	from program_master pm,system_table_two stt,program_course_header pch,system_table_two stt1
+	where
+	pch.program_course_key=#programCourseKey#
+	and pch.program_id=pm.program_id
+	and stt.component_code=pch.branch_id	
+	and stt1.component_code = pch.specialization_id
+	and stt.university_code=#universityId#
+    and stt1.university_code=#universityId#;
+    </select>
+    <select id="getSgpaCgpa" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.Transcript">
+    SELECT sa.roll_number as rollNumber,sa.semester_start_date as semesterStartDate,sa.semester_end_date as semesterEndDate,
+    	sa.program_course_key as programCourseKey,
+		ifnull(sa.practicalcgpa,0) as practicalCgpa,ifnull(sa.theorycgpa,0) as theoryCgpa,
+		ifnull(sa.cgpa,0) as cgpa,
+		sa.sgpa as sgpa,srsh.status as status,stt.component_description statusName
+	FROM student_aggregate sa,student_registration_semester_header srsh,system_table_two stt
+	WHERE sa.roll_number in(select roll_number from student_program where enrollment_number=#enrollmentNumber#)
+		and srsh.roll_number=sa.roll_number
+		and srsh.program_course_key = sa.program_course_key
+		and stt.group_code='SSMSTS'
+		and stt.component_code = srsh.status
+		and stt.university_code=#universityId#
+	GROUP BY sa.program_course_key
+	HAVING sa.program_course_key = #programCourseKey#
+	ORDER BY sa.semester_start_date desc
+	</select>
+	<select id="getMarksDetail" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.Transcript">
+	SELECT
+	sms.roll_number as rollNumber,sms.program_course_key as programCourseKey,sms.semester_start_date as semesterStartDate,
+	sms.semester_end_date as semesterEndDate,sms.course_code as courseCode,
+	sms.internal_grade as internalGrade,sms.external_grade as externalGrade,sms.final_grade_point as finalGradePoint,
+	sms.earned_credits as earnedCredit,cm.course_name as courseName,cm.credits as credit
+	FROM student_marks_summary sms,course_master cm
+	where sms.course_code = cm.course_code
+	and cm.university_code=#universityId#
+	and sms.university_code=#universityId#
+	and sms.roll_number in(select roll_number from student_program where enrollment_number=#enrollmentNumber#)
+	and sms.program_course_key = #programCourseKey#
+	</select> 
+	<select id="getEnrollment" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.Transcript">
+		select enrollment_number as enrollmentNumber from student_master where university_code=#universityId#
+	</select>
+	
+</sqlMap>

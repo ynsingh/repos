@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="finalSemesterResultStatisticsCategoryWise">
+ 
+    
+    <select id="getSessionList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+	   select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master
+		where university_code=#universityId#;
+   </select>
+   
+    <select id="getCurrentSession" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master 
+		where university_code=#universityId# and current_status='1';
+   </select>
+   <select id="getProgramDetails" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatisticsCategoryWise">
+   SELECT
+   		pch.program_course_key as programCourseKey, pch.branch_id as branchId, ptd.program_id as programId,
+ 		ptd.semester_code as semesterCode,pch.specialization_id as specializationId, pm.program_code as programCode,
+ 		pr.semester_start_date as semesterStartDate,pr.semester_end_date as semesterEndDate
+		FROM
+		program_course_header pch join
+		program_term_details ptd  join 
+		program_offered_by po join 
+		program_master pm join 
+		program_registration pr 
+		ON
+		po.offered_by =#entityId# AND po.program_id=ptd.program_id AND pm.program_id=po.program_id AND ptd.final_semester_code='F' AND
+		pch.program_id=po.program_id AND pch.branch_id=po.branch_id AND pch.specialization_id=po.specialization_id
+		AND ptd.semester_code=pch.semester_code AND 
+		ptd.semester_sequence%#semAll#=#sem# AND pch.program_course_key=pr.program_course_key
+		AND pr.university_id=#universityId# AND pr.session_start_date= #sessionStartDate# AND pr.session_end_date= #sessionEndDate#
+		AND pr.entity_id=#entityId#;
+		
+		<!-- 
+		select pch.program_course_key as programCourseKey, pch.branch_id as branchId, ptd.program_id as programId, ptd.semester_code as semesterCode, 
+		pch.specialization_id as specializationId, pm.program_code as programCode 
+		from program_course_header pch join
+		program_term_details ptd  join program_offered_by po join program_master pm on
+		po.offered_by =#entityId# AND po.program_id=ptd.program_id AND pm.program_id=po.program_id AND ptd.final_semester_code='F' AND
+		pch.program_id=po.program_id AND pch.branch_id=po.branch_id AND pch.specialization_id=po.specialization_id
+		and ptd.semester_code=pch.semester_code
+		and ptd.semester_sequence%#semAll#=#sem#;
+		 -->
+   </select>
+  
+   <select id="getCompleteDetail" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatisticsCategoryWise">
+   select a.Enrolled as value,a.gender as gender,a.category as category,a.enroll as total from (
+   select 'Enrolled',gender,category_code as category,count(enrollment_number) as enroll from student_master
+where enrollment_number in(
+SELECT distinct  sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status NOT in ('YTR') AND srsh.session_start_date
+     between #semesterStartDate# AND #semesterEndDate#
+     AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND
+		 sp.program_id=#programId# AND program_course_key=#programCourseKey# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+
+UNION
+   select 'Appeared',gender,category_code,count(enrollment_number) as app from student_master where enrollment_number in(
+SELECT distinct  sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status NOT in ('YTR', 'REG') AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate#
+     AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND
+		 sp.program_id=#programId# AND program_course_key=#programCourseKey# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+
+UNION
+select 'UFM',gender,category_code as category,count(enrollment_number) as UFM from student_master
+where enrollment_number in(
+SELECT distinct  sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('UFM') AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate#
+      AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND sp.program_id=#programId# AND program_course_key=#programCourseKey#
+       AND sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+       
+UNION
+select 'Passed',gender,category_code as category,count(enrollment_number) as passed from student_master
+where enrollment_number in(
+SELECT distinct  sp.enrollment_number from student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.program_completion_date between #semesterStartDate# AND #semesterEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+UNION
+
+select 'I-Distinction',gender,category_code as category,count(enrollment_number) as IDistinction from student_master
+where enrollment_number in(
+SELECT distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division='01' AND sp.program_completion_date between
+		 #semesterStartDate# AND #semesterEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+UNION
+
+select 'I-Div',gender,category_code as category,count(enrollment_number) as IDiv from student_master
+where enrollment_number in(
+SELECT distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division='02' AND 
+		sp.program_completion_date between #semesterStartDate# AND #semesterEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+UNION
+select 'II-Div',gender,category_code as category,count(enrollment_number) as IIDiv from student_master
+where enrollment_number in(
+SELECT distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division='03' AND 
+		sp.program_completion_date between #semesterStartDate# AND #semesterEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+UNION
+select 'Pass',gender,category_code as category,count(enrollment_number) as pass from student_master
+where enrollment_number in(
+SELECT  distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division in('01','02','03') AND 
+		sp.program_completion_date between #semesterStartDate# AND #semesterEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+UNION
+select 'Elig. For Remedial',gender,category_code as category,count(enrollment_number) as remedial from student_master
+where enrollment_number in(
+SELECT distinct sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('REM') AND sp.program_id=#programId# AND program_course_key LIKE #programCourseKey2# AND
+		 srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# 
+		 AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+UNION
+select 'Failed 1st Attempt',gender,category_code as category,count(enrollment_number) as failFirstattempt from student_master
+where enrollment_number in(
+SELECT distinct sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('FAL') AND attempt_number=1 AND 
+		 srsh.session_start_date between #semesterStartDate# AND #semesterEndDate#
+     AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND
+		 sp.program_id=#programId# AND program_course_key LIKE #programCourseKey2# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code
+UNION
+select 'Failed 2nd Attempt',gender,category_code as category,count(enrollment_number) as failSecondattempt from student_master
+where enrollment_number in(
+SELECT distinct sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('FAL') AND attempt_number=2 AND 
+		 srsh.session_start_date between #semesterStartDate# AND #semesterEndDate#
+     AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND sp.program_id=#programId# AND program_course_key LIKE #programCourseKey2# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by gender,category_code	
+
+		) as a;
+   </select>
+   <select id="getEntityInfo" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatisticsCategoryWise">
+   		select entity_code as entityCode,entity_name as entityName from entity_master where entity_id=#entityId#
+   		and university_id=#universityId#;
+   </select>   
+</sqlMap>

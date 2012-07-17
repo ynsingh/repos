@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ConformWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow styleName="PopUpTitleWindow" horizontalScrollPolicy="off" keyDown="initializeForEsc(event)" xmlns:mx="http://www.adobe.com/2006/mxml"  title="{commonFunction.getConstants('confirmationWindow')}" layout="vertical" x="250" y="50" width="100%" height="100%" alpha="2"  showCloseButton="true" close="closeConfirmWindow()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>  
+	</mx:Script>
+<mx:Script source="asFiles/confirmWindowAction.as"/>
+
+<mx:HTTPService id="httpXmlStartActivityList" method="post"
+        url="{urlStartActivityList}"
+        resultFormat="e4x"
+        result="startActivityResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="emailService" method="post"
+		url="{commonFunction.getConstants('url')+ '/sendPassword/sendEmail.htm'}"
+		resultFormat="e4x"
+		useProxy="false"/>
+    
+    
+    
+        
+   <mx:Canvas  width="373" height="416">
+	<mx:Label text="{commonFunction.getConstants('programName')}" x="23" y="39"/>
+	<mx:TextInput editable="false" width="160" toolTip="{programforConfirmWindow.text}" id="programforConfirmWindow" x="160" y="37"/>
+	<mx:Label x="23" y="78" text="{commonFunction.getConstants('branchName')}"/>
+	<mx:TextInput editable="false" width="160" x="160" y="76" toolTip="{branchforConfirmWindow.text}" id="branchforConfirmWindow"/>
+	<mx:Label x="23" y="119" text="{commonFunction.getConstants('specializationName')}"/>
+	<mx:TextInput editable="false" width="160" x="160" y="117" toolTip="{specilizationforConfirmWindow.text}" id="specilizationforConfirmWindow"/>
+	<mx:Label x="23" y="151" text="{commonFunction.getConstants('semesterStartDate')}"/>
+	<mx:TextInput editable="false" width="160" x="160" y="147" id="semesterStartDateforConfirmWindow"/>
+	<mx:Label x="23" y="181" text="{commonFunction.getConstants('semesterEndDate')}"/>
+	<mx:TextInput editable="false" width="160" x="160" y="179" id="semesterEndDateforConfirmWindow"/>
+	<mx:Label x="23" y="209" text="{commonFunction.getConstants('stage')}"/>
+	<mx:TextInput editable="false" width="160" x="160" y="209" toolTip="{stageforConfirmWindow.text}" id="stageforConfirmWindow"/>
+	<mx:Label x="23" y="237" text="{commonFunction.getConstants('stageSequence')}"/>
+	<mx:Button label="{commonFunction.getConstants('confirm')}" click="confirmFunction()"  x="78" y="351"/>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" click="cancelConfirmWindow()"  x="189" y="351"/>
+	<mx:TextInput editable="false" x="160" y="235" id="stageSequenceforConfirmWindow"/>
+	<mx:Label x="23" y="267" text="{commonFunction.getConstants('status')}"/>
+	<mx:TextInput editable="false" x="160" y="265" id="statusforConfirmWindow"/>
+   </mx:Canvas>
+</mx:TitleWindow>

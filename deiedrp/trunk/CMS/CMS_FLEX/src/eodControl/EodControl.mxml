@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) EodControl.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="844" height="710" 
+	title="{commonFunction.getConstants('eodControl')}" creationComplete="moduleCreationCompleteHandler()" xmlns:common="common.*">
+	
+	<mx:HTTPService id="getEodControlDetails" method="POST"
+		url="{urlPrefix+'getEodControlDetails.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getEodControlDetailsResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getStepFrequencyHttpService" method="POST"
+		url="{urlPrefix+'getStepFrequency.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getStepFrequencyHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getMethodsToRunHttpService" method="POST"
+		url="{urlPrefix+'getMethodsToRun.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getMethodsToRunHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>				
+	
+	<mx:HTTPService id="saveDetailsHttpService" method="POST"
+		url="{urlPrefix+'saveDetails.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="saveDetailsHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="changeEodControlStatusHttpService" method="POST"
+		url="{urlPrefix+'ChangeEodControlStatus.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="changeEodControlStatusResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+	
+	<mx:HTTPService id="deleteEodControlDetailsHttpService" method="POST"
+		url="{urlPrefix+'deleteEodControlDetails.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="deleteEodControlDetailsHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:Script source="asFiles/EodControlAS.as"/>
+	
+	<mx:NumberValidator id="phaseNSValidator" source="{phaseNS}" minValue="1" required="true" property="value" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:NumberValidator id="stepNSValidator" source="{stepNS}" required="true" minValue="1" property="value" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:StringValidator id="stepFrequencyCBValidator" source="{stepFrequencyCB}" required="true" property="selectedItem" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:DateValidator id="periodActiveFromDFValidator" source="{periodActiveFromDF}" required="true" property="text" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:DateValidator id="periodActiveToDFValidator" source="{peridActiveToTF}" required="true" property="text" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:StringValidator id="methodToRunValidator" source="{methodToRunCB}" required="true" property="selectedItem" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:StringValidator id="buildTimeValidator" source="{buildTimeCB}" required="true" property="selectedItem" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:Validator id="mmddValidator" source="{mmdd}" required="true" property="selectedValue" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	
+	<mx:TitleWindow x="40.5" y="24" width="741.75" height="79" layout="absolute" styleName="DetailTitleWindow" title="{commonFunction.getConstants('phaseDetail')}">
+		<mx:Label x="102" y="7" text="{commonFunction.getConstants('phase')}"/>
+		<mx:NumericStepper x="170" y="7" id="phaseNS" width="160" maximum="99"/>
+		<mx:Label x="369.5" y="8" text="{commonFunction.getConstants('dependentPhase')}"/>
+		<mx:NumericStepper x="501.5" y="8" id="dependentPhaseNS" width="160" maximum="99"/>
+	</mx:TitleWindow>
+	
+	<mx:TitleWindow x="40.85" y="116" width="741.4" height="228" layout="absolute" styleName="DetailTitleWindow" title="{commonFunction.getConstants('stepDetail')}">
+		<mx:Label x="103.95" y="14" text="{commonFunction.getConstants('step')}"/>
+		<mx:NumericStepper x="170.95" y="14" id="stepNS" width="160" maximum="99"/>
+		<mx:Label x="380.95" y="14" text="{commonFunction.getConstants('stepFrequency')}"/>
+		<mx:ComboBox x="500.95" y="12" id="stepFrequencyCB" toolTip="{stepFrequencyCB.text}" prompt="select" selectedIndex="-1" width="160" change="stepFrequencyChangeHandler()"/>
+		<mx:Label x="29.95" y="58" text="{commonFunction.getConstants('periodActiveFrom')}"/>	
+		<mx:DateField x="170.95" y="58" id="periodActiveFromDF" width="160" yearNavigationEnabled="true"/>
+		<mx:Label x="338.95" y="60" id="errorLabel" fontWeight="bold"/>
+		<mx:Label x="380.95" y="60" text="{commonFunction.getConstants('periodActiveTo')}"/>
+		<mx:DateField x="499.95" y="58" id="periodActiveToDF" width="160" yearNavigationEnabled="true"/>
+		<mx:Label x="54.95" y="104" text="{commonFunction.getConstants('methodToRun')}"/>
+		<mx:ComboBox x="170.95" y="102" id="methodToRunCB" toolTip="{methodToRunCB.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" width="160"/>
+		<mx:Label x="386" y="104" text="" id="buildTimelabel" visible="true"/>
+		<mx:ComboBox x="499" y="102" id="buildTimeCB" toolTip="{buildTimeCB.text}" prompt="select" width="160" visible="false"/>
+		<common:DateMonthSelector x="499.95" y="102" id="mmdd" visible="false"/>
+		<mx:TextInput x="499.95" y="57" width="143.70001" height="25" id="peridActiveToTF" text="{periodActiveToDF.text}" restrict="0-9,/"/>
+		<mx:Label x="51.95" y="142" text="{commonFunction.getConstants('methodRemark')}"/>
+		<mx:TextInput x="170" y="140" width="160" id="methodRemark"/>
+		
+	</mx:TitleWindow>
+	
+	<mx:Button x="219.5" y="376" label="{commonFunction.getConstants('saveButton')}" id="saveButton" click="saveButtonClickHandler()"/>
+	<mx:Button x="375.5" y="376" label="{commonFunction.getConstants('resetButton')}" click="resetForm()"/>
+	<mx:Button x="531.5" y="376" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	
+	<mx:Canvas styleName="GridCanvas" width="740.5" height="226" visible="true" x="41.75" y="427">
+		<mx:Label text="{commonFunction.getConstants('eodControl')}" fontWeight="bold" top="6" left="10"/>
+		<mx:LinkButton id="editButton" x="437" y="6.35" enabled="false" label="{commonFunction.getConstants('editButton')}" click="editButtonClickHandler()"/>
+		<mx:LinkButton id="statusButton" x="496" y="6.35" enabled="false" label="{commonFunction.getConstants('changeStatusButton')}" click="statusButtonClickHandler()"/>
+		<mx:LinkButton id="deleteButton" x="619" y="6.35" enabled="false" label="{commonFunction.getConstants('deleteButton')}" click="deleteButtonClickHandler()"/>
+		<mx:DataGrid id="eodControlGrid" allowMultipleSelection="true" x="11" y="36.35" width="710" height="177.4" 
+				visible="true" resizableColumns="true" sortableColumns="true" verticalScrollPolicy="on" 
+		 			   horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true" >
+			<mx:columns>
+					<mx:DataGridColumn rendererIsEditor="true" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" 
+								change="commonFunction.editDeleteEnable(event,outerDocument.eodControlGrid,[outerDocument.editButton, outerDocument.statusButton],[outerDocument.deleteButton])">
+							    <mx:Script>
+							    <![CDATA[
+							    import common.commonFunction;
+							    import mx.controls.LinkButton;
+							    ]]>
+							    </mx:Script>
+							</mx:CheckBox>
+						</mx:Component>	
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="phase" headerText="{commonFunction.getConstants('phase')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="dependentPhase" headerText="{commonFunction.getConstants('dependentPhase')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="step" headerText="{commonFunction.getConstants('step')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="stepFrequencyDescription" headerText="{commonFunction.getConstants('stepFrequency')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="periodActiveFrom" headerText="{commonFunction.getConstants('periodActiveFrom')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="periodActiveTo" headerText="{commonFunction.getConstants('periodActiveTo')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="methodToRunDescription" headerText="{commonFunction.getConstants('methodToRun')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="status" headerText="{commonFunction.getConstants('status')}"/>
+			</mx:columns>
+		</mx:DataGrid>		    
+	</mx:Canvas>		
+</mx:Panel>

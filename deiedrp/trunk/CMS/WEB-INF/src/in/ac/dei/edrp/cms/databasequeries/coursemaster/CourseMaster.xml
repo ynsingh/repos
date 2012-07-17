@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) CourseMaster.xml
+* @Author :Mohd Amir
+* @Date :21/3/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="courseMaster">
+
+	<typeAlias alias="courseMasterInfo"
+		type="in.ac.dei.edrp.cms.domain.coursemaster.CourseMasterBean" />
+	
+	<select id="getDuplicateCourseCount" resultClass="courseMasterInfo">
+	    SELECT count(*) as count
+	    FROM course_master
+	    WHERE university_Code=#universityCode# and course_code=#courseCode#
+	</select>
+
+	<select id="getEntityList" resultClass="courseMasterInfo">
+	    SELECT entity_code as componentId, entity_id as groupCode, entity_name as componentDescription
+	    FROM entity_master
+	    WHERE university_id=#universityCode# order by componentDescription
+	</select>
+	
+	<select id="getProgramList" resultClass="courseMasterInfo">
+		SELECT distinct pob.program_id as componentId,pm.program_name as componentDescription
+		FROM program_offered_by pob,program_master pm
+	    WHERE offered_by=#ownerEntityId# and pob.program_id=pm.program_id
+	    order by componentDescription
+	</select>
+	
+	<select id="getBranchList" resultClass="courseMasterInfo">
+	    SELECT distinct pbs.branch_id as componentId,stt.component_description as componentDescription
+	    FROM program_branch_specialization pbs,system_table_two stt
+	    WHERE pbs.program_id=#componentId# and stt.component_code=pbs.branch_id
+	    and stt.group_code='BRNCOD' and stt.university_code=#universityCode# order by componentDescription
+	</select>
+	
+	<select id="getSpecializationList" resultClass="courseMasterInfo">
+	    SELECT pbs.specialization_id as componentId,stt.component_description as componentDescription
+	    FROM program_branch_specialization pbs,system_table_two stt
+	    WHERE pbs.program_id=#ownerProgramId# and pbs.branch_id=#ownerBranchId#
+	    and stt.component_code=pbs.specialization_id and stt.group_code='SPCLCD'
+	    and stt.university_code=#universityCode# order by componentDescription
+	</select>
+	
+	<insert id="setCourseDetails">
+	    INSERT INTO course_master(university_code,course_code,course_name,marks_cont_eval,marks_end_semester,
+	    marks_total,course_classification,insert_time,creator_id,owner_program,owner_branch,owner_specialization,
+	    credits,lectures,tutorials,practicals,since_session,units,course_type,owner_entity,subject_wise_group,result_system,internal_external_active,grade_limit_active,edei_status)
+        VALUES(#universityCode#,#courseCode#,#courseName#,#marksContEval#,#marksEndSemester#,#marksTotal#,
+        #courseClassificationId#,now(),#userId#,#ownerProgramId#,#ownerBranchId#,#ownerSpecializationId#,#credits#,
+        #lectures#,#tutorials#,#practicals#,#sinceSession#,#units#,#courseTypeId#,#ownerEntityId#,#courseGroupId#,#resultSystem#,#dummyFlag#,#gradeLimit#,#edeiStatus#)
+	</insert>
+	
+	<update id="updateCourseDetails">
+	    UPDATE course_master
+	    SET course_name=#courseName#,marks_cont_eval=#marksContEval#,marks_total=#marksTotal#,
+	    marks_end_semester=#marksEndSemester#,course_classification=#courseClassificationId#,
+	    modification_time=now(),units=#units#,modifier_id=#userId#,credits=#credits#,lectures=#lectures#,
+	    tutorials=#tutorials#,practicals=#practicals#,since_session=#sinceSession#,internal_external_active=#dummyFlag#,
+	    course_type=#courseTypeId#,subject_wise_group=#courseGroupId#,result_system=#resultSystem#,grade_limit_active=#gradeLimit#,
+		edei_status=#edeiStatus#
+        WHERE university_code=#universityCode# and course_code=#courseCode#
+	</update>
+	
+	<delete id="deleteCourseDetails">
+	    DELETE
+	    FROM course_master
+	    WHERE university_code=#universityCode# and course_code=#courseCode#
+	</delete>
+	
+	<select id="getCourseDetails" resultClass="courseMasterInfo">
+	    SELECT cm.course_code as courseCode,cm.course_name as courseName,cm.marks_cont_eval as marksContEval,
+	    cm.marks_end_semester as marksEndSemester,cm.marks_total as marksTotal,cm.course_classification as courseClassificationId,
+	    stt1.component_description as courseClassificationName,cm.owner_program as ownerProgramId,
+	    pm.program_name as ownerProgramName,cm.owner_branch as ownerBranchId,stt2.component_description as ownerBranchName,
+	    cm.owner_specialization as ownerSpecializationId,stt3.component_description as ownerSpecializationName,
+	    cm.credits as credits,cm.lectures as lectures,cm.tutorials as tutorials,cm.practicals as practicals,
+	    cm.since_session as sinceSession,cm.units as units,cm.course_type as courseTypeId,stt4.component_description as courseTypeName,
+	    cm.owner_entity as ownerEntityId,em.entity_name as ownerEntityName,cm.subject_wise_group as courseGroupId,
+	    stt5.component_description as courseGroupName,cm.result_system as resultSystem,internal_external_active as dummyFlag,grade_limit_active as gradeLimit,
+		edei_status as edeiStatus
+        FROM course_master cm,system_table_two stt1,system_table_two stt2,system_table_two stt3,system_table_two stt4,
+        system_table_two stt5,program_master pm,entity_master em
+        WHERE pm.program_id=cm.owner_program and em.entity_id=cm.owner_entity
+        and stt1.component_code=cm.course_classification and stt1.group_code='CRCLSF' and stt1.university_code=#universityCode#
+        and stt2.component_code=cm.owner_branch and stt2.group_code='BRNCOD' and stt2.university_code=#universityCode#
+        and stt3.component_code=cm.owner_specialization and stt3.group_code='SPCLCD' and stt3.university_code=#universityCode#
+        and stt4.component_code=cm.course_type and stt4.group_code='CRSTYP' and stt4.university_code=#universityCode#
+        and stt5.component_code=cm.subject_wise_group and stt5.group_code='SBWGRP' and stt5.university_code=#universityCode#
+        and cm.owner_entity=#ownerEntityId# and owner_program like #ownerProgramId# and cm.owner_branch like #ownerBranchId# 
+        and cm.owner_specialization like #ownerSpecializationId# and cm.course_code like #courseCode#
+        and cm.university_code=#universityCode#
+	</select>
+</sqlMap>

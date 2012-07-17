@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CreateDefaultUser.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="276"
+	 title="{commonFunction.getConstants('defaultUniversityUser')}" creationComplete="onCreationComplete()" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.collections.ArrayCollection;
+			import common.Mask;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			import mx.validators.Validator;
+			import common.commonFunction;
+			
+			public var counter:String;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+	
+			[Bindable]public var urlPrefix:String = commonFunction.getConstants('url')+"/universityrole/";
+			
+			/**
+			 * The method is executed on creation complete
+			 **/ 
+			public function onCreationComplete():void{
+				
+				var object = Object;
+				
+				object["userId"] = new Date();				
+				
+				requestOnCreation.send(object);			
+				
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				
+			}
+			
+			/**
+			 * The method sends a request to 
+			 * create a default user for the selected university
+			 **/ 
+			public function onSubmit():void{
+				
+				emailValidate.source = emailInput;
+				 				
+				
+				if((Validator.validateAll([emailValidate]).length!=0)){
+					
+					Alert.show(resourceManager.getString('Messages','pleasecheckEntriesinRed'),
+	 				commonFunction.getMessages('error'),0,null,null,errorIcon);
+					
+				}else{					
+						
+					var object = Object;
+					
+					object["userId"] = new Date();
+					object["universityId"] = universityCombo.selectedItem.id;
+					object["emailId"] = emailInput.text;
+					object["counter"] = counter;
+					object["applicationId"] = applicationCombo.selectedItem;
+					
+					if((counter=="update")&&(emailInput.text==loginList.getItemAt(0).description)){
+						
+						Alert.show(resourceManager.getString('Messages','sameId'),
+	 					commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 					
+	 					okButton.enabled = false;
+						
+					}else{					
+					
+					setDefaultLogin.send(object);
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+					
+					}
+					
+				}
+				
+			}
+			
+		/**
+		 * The method retrieves the list of universities from the database
+		 **/ 
+		 public var universityXML:XML;
+		 public var universityList:ArrayCollection;
+		public function successResultHandler(event:ResultEvent):void{
+			
+			Mask.close();
+			
+			if(event.result.sessionConfirm == true){
+		
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+//          	this.parentDocument.vStack.selectedIndex=0;
+//          	this.parentDocument.loaderCanvas.removeAllChildren();
+          	
+          	 	var url:String="";
+            	url=commonFunction.getConstants('navigateHome');
+          		var urlRequest:URLRequest=new URLRequest(url);
+           		urlRequest.method=URLRequestMethod.POST;
+            	navigateToURL(urlRequest,"_self");
+      }else{
+			
+			universityXML = event.result as XML;			
+			universityList = new ArrayCollection();
+			
+			for each(var object:Object in universityXML.role){
+				
+				universityList.addItem({select:false,id:object.id,description:object.description});
+				
+				}
+			
+			universityCombo.dataProvider = universityList;
+			universityCombo.labelField = "description";
+			
+			universityCombo.selectedIndex=-1;
+						
+			}			
+		}
+		
+		/**
+		 * The method validates the field and
+		 * seneds a request to get the login details for
+		 * the selected university
+		 **/ 
+		public function onFocusOut():void{
+			
+			univValidate.source = universityCombo;
+			universityCombo.errorString = "";
+			
+			applicationValidate.source = applicationCombo;
+			applicationCombo.errorString = "";	
+			
+			if((Validator.validateAll([univValidate,applicationValidate]).length!=0)){
+					
+					Alert.show(resourceManager.getString('Messages','pleasecheckEntriesinRed'),
+	 				commonFunction.getMessages('error'),0,null,null,errorIcon);
+					
+				}else{					
+			
+			var object = Object;
+			
+			object["user"] = new Date();
+			object["universityId"] = universityCombo.selectedItem.id;
+			object["applicationId"] = applicationCombo.selectedItem;
+			
+			Mask.show(commonFunction.getMessages('pleaseWait'));
+			getUniversities.send(object);
+			}
+			
+		}
+		
+		/**
+		 * The method gets the login details of the
+		 * selected university
+		 **/ 
+		public var loginXML:XML;
+		public var loginList:ArrayCollection;
+		public function successLoginHandler(event:ResultEvent):void{
+			
+			
+			
+			loginXML = event.result as XML;
+			loginList  = new ArrayCollection();
+			
+			for each(var object:Object in loginXML.role){
+				
+				loginList.addItem({select:false,id:object.id,description:object.description});
+				
+			}		
+			
+			if(loginList.length>0){
+				
+				Alert.show(commonFunction.getMessages('loginExists'),
+				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,onOK,null);			
+				
+			}else{				
+				counter="insert";
+				emailLabel.visible=true;
+				emailInput.visible=true;
+				verifyButton.visible=false;
+				universityCombo.enabled=false;
+				cancelButton.visible = false;
+				okButton.visible=true;
+				canelButton.visible=true;				
+			}			
+			
+			Mask.close();
+			
+		}
+		
+		/**
+		 * The methods sets the login detail in the respective
+		 * field and updates the counter to "update"
+		 **/ 
+		public function onOK(event:CloseEvent):void{
+			
+			if(event.detail==Alert.YES){			
+								
+				counter="update";
+				
+				universityCombo.enabled=false;
+				cancelButton.visible = false;
+				emailLabel.visible=true;
+				emailInput.visible=true;
+				verifyButton.visible=false;
+				okButton.visible=true;
+				canelButton.visible=true;
+				emailInput.text = loginList.getItemAt(0).description;				
+				
+			}
+			
+		}
+		
+		/**
+		 * The method resets the page as and when 
+		 * the university input is changed
+		 **/ 
+		public function onChange():void{
+			
+			
+			emailInput.text="";
+			emailLabel.visible=false;
+			emailInput.visible=false;
+			verifyButton.visible=true;
+			okButton.visible=false;
+			canelButton.visible=false;
+			
+		}		
+		
+		/**
+		 * The method is executed on successful record insertion
+		 * and finally resets the input fields
+		 **/ 
+		public function successCreation(event:ResultEvent):void{			
+			
+			if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+//          	this.parentDocument.vStack.selectedIndex=0;
+//          	this.parentDocument.loaderCanvas.removeAllChildren();
+          	
+          	 	var url:String="";
+            	url=commonFunction.getConstants('navigateHome');
+          		var urlRequest:URLRequest=new URLRequest(url);
+           		urlRequest.method=URLRequestMethod.POST;
+            	navigateToURL(urlRequest,"_self");
+	    	
+		}else if(event.result.Details.list_values == "true"){
+			
+			Alert.show(resourceManager.getString('Messages','emailDetails'),
+	 		commonFunction.getMessages('success'),0,null,onSuccess,successIcon);
+			
+		}else if(event.result.Details.list_values == "duplicate"){
+			
+			Alert.show(resourceManager.getString('Messages','duplicateUserName'),
+	 		commonFunction.getMessages('failure'),0,null,onSuccess,errorIcon);
+		
+		}else{
+			
+			Alert.show(resourceManager.getString('Messages','requestFailed'),
+	 		commonFunction.getMessages('failure'),0,null,onSuccess,errorIcon);
+			
+		}		
+		
+			Mask.close();		
+			
+		}
+		
+		public function onSuccess(event:CloseEvent):void{
+			
+			emailInput.text="";
+			universityCombo.selectedIndex = -1;
+			applicationCombo.errorString = "";
+			applicationCombo.selectedIndex = -1;
+			emailLabel.visible=false;
+			emailInput.visible=false;
+			verifyButton.visible=true;
+			okButton.visible=false;
+			canelButton.visible=false;
+			universityCombo.enabled=true;
+			cancelButton.visible = true;
+			universityCombo.setFocus();
+			
+			
+			
+		}
+		
+		/**
+		 * The method executed on failure of the request
+		 **/ 
+		public function faultHandler(event:FaultEvent):void{
+			
+			Alert.show(commonFunction.getMessages('requestFailed'),
+			commonFunction.getMessages('failure'),0,null,null,errorIcon);
+			Mask.close();
+			
+		}
+		]]>
+	</mx:Script>
+	
+<mx:HTTPService id="requestOnCreation" method="post"
+        url="{urlPrefix+'getUniversities.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="successResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="getUniversities" method="post"
+        url="{urlPrefix+'getUniversitieswithLogins.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="successLoginHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>        
+        
+<mx:HTTPService id="setDefaultLogin" method="post"
+        url="{urlPrefix+'addDefaultUser.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="successCreation(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+	<mx:EmailValidator id="emailValidate" property="text" required="true"/>
+	<mx:StringValidator id="univValidate" property="text" required="true"/>
+	<mx:Validator id="applicationValidate" property="selectedItem" required="true"/>
+	
+	<mx:XML source="/common/application.xml" id="applicationXML" format="e4x"/>
+
+	<mx:Label x="10" y="10" text="{commonFunction.getConstants('universityName')}"/>
+	<common:AutoCompleteCB x="133" y="8" id="universityCombo" change="onChange()"/>
+	<mx:Label x="10" y="38" text="{commonFunction.getConstants('application')}"/>
+	<mx:ComboBox x="133" y="35" width="160" id="applicationCombo" change="onChange()" selectedIndex="-1"
+			 prompt="{commonFunction.getConstants('select')}" dataProvider="{applicationXML.Application}" labelField="@type" toolTip="{applicationCombo.text}"/>
+	<mx:Button x="10" y="78" label="{commonFunction.getConstants('okButton')}" id="verifyButton" click="onFocusOut()"/>	
+	<mx:Button x="133" y="78" label="{commonFunction.getConstants('cancelButton')}" visible="true"
+		 click="this.parentDocument.loaderCanvas.removeAllChildren()" id="cancelButton"/>
+	<mx:Label x="10" y="76" text="{commonFunction.getConstants('emialId')}" visible="false" id="emailLabel"/>	
+	<mx:TextInput x="133" y="74" id="emailInput" visible="false" change="okButton.enabled=true"/>
+	<mx:Button x="10" y="146" label="{commonFunction.getConstants('okButton')}" id="okButton" click="onSubmit()" visible="false" enabled="false"/>
+	<mx:Button x="89" y="146" label="{commonFunction.getConstants('cancelButton')}" visible="false"
+		 click="this.parentDocument.loaderCanvas.removeAllChildren()" id="canelButton"/>
+	
+	
+</mx:TitleWindow>

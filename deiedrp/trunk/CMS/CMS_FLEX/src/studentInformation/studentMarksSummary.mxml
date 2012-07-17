@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" verticalScrollPolicy="auto" layout="vertical" creationComplete="init()" width="1016" title="{commonFunction.getConstants('stuMarkSummary')}" xmlns:common="common.*">
+<mx:Script source="asFiles/studentMarksSummaryAction.as"/>
+<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			public var programCourseKey:String;
+        ]]>
+	</mx:Script>					
+		 <mx:HTTPService id="getMarksDetail" method="post"
+			url="{urlPrefix}getMarksDetail.htm"
+			showBusyCursor="true"
+			resultFormat="e4x"
+			result="getMarksDetailSuccess(event)"
+			fault="onFailure(event)"
+			useProxy="false"/>
+																			
+	<mx:Canvas  styleName="SimpleCanvas"  width="529" height="65" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		<mx:Label x="25" y="22" text="{commonFunction.getConstants('rollNo')}:"/>
+		<mx:Label x="92" y="22" text="Label" width="97" id="rollNoLbl"/>
+	</mx:Canvas>
+	<mx:Canvas  styleName="SimpleCanvas" id="belowCanvas" width="916" visible="true" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		<mx:Canvas id="headerCanvas" styleName="SimpleCanvas" x="13.5" y="12" width="875" height="149" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+			
+			<mx:Label x="10" y="22" fontWeight="bold" text="{commonFunction.getConstants('program')}:"/>
+			<mx:Label x="116" y="22" text="Label" width="97" id="programLbl"/>
+			<mx:Label x="245" y="22" fontWeight="bold" text="{commonFunction.getConstants('branch')}:"/>
+			<mx:Label x="387" y="22" text="Label" width="99" id="branchLbl"/>
+			<mx:Label x="554" y="22" fontWeight="bold" text="{commonFunction.getConstants('specialization')}:"/>
+			<mx:Label x="697.5" y="22" text="Label" width="108" id="specializationLbl"/>
+			<mx:Label x="10" y="62"  fontWeight="bold" text="{commonFunction.getConstants('semester')}:"/>
+			<mx:Label x="116" y="62" text="Label" width="97" id="semesterLbl"/>
+			<mx:Label x="245" y="62" fontWeight="bold" text="{commonFunction.getConstants('semesterStartDate')}:"/>
+			<mx:Label x="387" y="62" text="Label" width="99" id="semesterStartDateLbl"/>
+			<mx:Label x="554" y="62" fontWeight="bold" text="{commonFunction.getConstants('semesterEndDate')}:"/>
+			<mx:Label x="710.5" y="62" text="Label" width="95" id="semesterEndDateLbl"/>
+			<mx:Label x="14" y="100" fontWeight="bold" text="{commonFunction.getConstants('courseCode')}:"/>
+			<mx:Label x="116" y="100" text="Label" width="130" id="courseLbl"/>
+			<mx:Label x="245" y="100" fontWeight="bold" text="{commonFunction.getConstants('courseName')}:"/>
+			<mx:Label x="387" y="100" text="Label" width="300" id="courseNameLbl"/>
+		</mx:Canvas>
+		<mx:Canvas id="vboxCanvas" styleName="SimpleCanvas" x="15.5" y="179" width="875" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+			<mx:VBox id="vbox" x="10" y="20" horizontalAlign="left" width="875">			 
+        		<mx:VBox id="vboxI" x="10" y="20" horizontalAlign="left" width="875"  paddingBottom="10" paddingTop="10" >
+        		<mx:TextInput enabled="false" text="Internal" backgroundColor="#B8B7B7" width="100%"  disabledColor="#000000" />
+        		</mx:VBox>        				
+        		<mx:VBox id="vboxE" x="10" y="20" horizontalAlign="left" width="875"  paddingBottom="10" paddingTop="10">
+        		<mx:TextInput enabled="false" text="External" backgroundColor="#B8B7B7" width="100%"  disabledColor="#000000" />
+        		</mx:VBox>			
+        		<mx:VBox id="vboxR" x="10" y="20" horizontalAlign="left" width="875"  paddingBottom="10" paddingTop="10">
+        		<mx:TextInput enabled="false" text="Remedial" backgroundColor="#B8B7B7" width="100%"  disabledColor="#000000" />
+        		</mx:VBox>
+        		<mx:VBox id="vboxT" x="10" y="20" horizontalAlign="left" width="875"  paddingBottom="10" paddingTop="10">
+        		<mx:TextInput enabled="false" text="Summary" backgroundColor="#B8B7B7" width="100%"  disabledColor="#000000" />
+        		</mx:VBox>
+			</mx:VBox>
+		</mx:Canvas>		
+	<!--<mx:TextArea id="txtArea" x="10" y="200"  editable="false"/>-->
+	</mx:Canvas>	
+</mx:Panel>

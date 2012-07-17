@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) EditCourseDetails.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+        layout="absolute" creationComplete="init_ProgramCourseCtgOptGrp();" showCloseButton="true" width="464"  height="390"
+        close="titleWindow_close();" borderColor="#343131">
+<!--	<mx:Script source="SystemTableValidation.as"/> -->
+	
+    <mx:Script>
+        <![CDATA[
+        	import common.commonFunction;
+       // 	import shared.validations.CommonValidations;
+        	import mx.controls.Alert;
+        	import mx.collections.ArrayCollection;
+        	import mx.events.FlexEvent;
+            import mx.events.CloseEvent;
+            import mx.managers.PopUpManager;
+            import mx.rpc.events.FaultEvent;
+  	        import mx.rpc.events.ResultEvent;  	        
+            
+        [Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+				
+		public var url_DNS:String ="";
+		[Bindable] public var urlProgramCourseCtgOptGrp:String = "";
+		[Bindable] public var urlUpdateCourseCtgOptGrp:String = "";
+	
+     	[Bindable] public var xmldata_UpdateCourseCtgOptGrp:XML;
+     	[Bindable]	public var programCourseKey:String=null;
+	    [Bindable] public var xmldata_ProgramCourseCtgOptGrp:XML;
+		[Bindable] public var course_category:String=null;
+		[Bindable] public var course_group:String=null;
+		[Bindable] public var course_option:String=null;
+		[Bindable] public var course_availability:String=null;
+		[Bindable] public var xml_course_availability:XML=<availability>
+										<name code="Y">
+											<value>Yes</value>
+										</name>
+										<name code="N">
+											<value>No</value>
+										</name>
+									</availability>;	
+
+			private var msg:String=null;
+			public var parentFun:Function;
+							
+			public function getString(pass_key:String):String{
+				return commonFunction.getConstants(pass_key);
+			}
+			
+			 public function init_ProgramCourseCtgOptGrp():void{
+			url_DNS = getString('url');
+    		urlProgramCourseCtgOptGrp = url_DNS+"/manageprogsetup/programCourseCtgOptGrp.htm";
+    		urlUpdateCourseCtgOptGrp = url_DNS+"/manageprogsetup/updateCourseCtgOptGrp.htm";
+    			get_ProgramCourseCtgOptGrp();
+		}
+			
+     private function resultCourseCtgOptGrpHandler(event:ResultEvent):void{
+        xmldata_ProgramCourseCtgOptGrp=event.result as XML;
+         if(xmldata_ProgramCourseCtgOptGrp.sessionConfirm == true)
+    		    {
+        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        category_cb.dataProvider=xmldata_ProgramCourseCtgOptGrp.group.(@code=='CRSCTG').componentDes;
+        category_cb.selectedItem = course_category;
+        
+        group_cb.dataProvider=xmldata_ProgramCourseCtgOptGrp.group.(@code=='CRSGRP').componentDes;
+        group_cb.selectedItem=course_group;
+        
+        availability_cb.dataProvider=xml_course_availability.name.value;
+        availability_cb.selectedItem=xml_course_availability.name.(value==course_availability).value.toString();
+        
+     }
+      private function resultUpdateCourseCtgOptGrpHandler(event:ResultEvent):void{
+        xmldata_UpdateCourseCtgOptGrp=event.result as XML;
+         if(xmldata_UpdateCourseCtgOptGrp.sessionConfirm == true)
+    		    {
+        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+				    var url:String="";
+				    url=commonFunction.getConstants('navigateHome');
+				    var urlRequest:URLRequest=new URLRequest(url);
+				    urlRequest.method=URLRequestMethod.POST;
+				    navigateToURL(urlRequest,"_self");
+        		}
+        if(xmldata_UpdateCourseCtgOptGrp.message=='1'){
+          	msg=getString('updation_successful');
+          	Alert.show(msg, getString('success'),0, null, alertListener,successIcon);
+        }
+        else if(xmldata_UpdateCourseCtgOptGrp.message=='0'){
+            	msg=getString('noRecordUpdated');
+          	Alert.show(msg, getString('info'),0, null, alertListener,successIcon);      	
+        }
+        else if(String(xmldata_UpdateCourseCtgOptGrp.message).search("updateError")>-1){
+       	msg=xmldata_UpdateCourseCtgOptGrp.message
+       	Alert.show(msg, getString('updateError'),0,null,alertListener,errorIcon);
+       }
+       else{
+        	msg=xmldata_UpdateCourseCtgOptGrp.message
+       	Alert.show(msg, getString('updateError'),0,null,alertListener,errorIcon);      	
+       }
+       
+     }
+      private function alertListener(eventObj:CloseEvent):void {
+                if (eventObj.detail==Alert.OK) {
+	               	parentFun.call();
+                   PopUpManager.removePopUp(this);
+                    }
+            }
+                 
+       private function faultCourseCtgOptGrpHandler(event:FaultEvent):void{
+        mx.controls.Alert.show(event.fault.message,getString('errorInResult'),4,null,null,errorIcon);
+    }
+       public function get_ProgramCourseCtgOptGrp():void {
+    	     var date:Date =new Date();
+    	     xmlProgramCourseCtgOptGrp.send(date);
+        }
+		public function update_CourseCtgOptGrp(event:MouseEvent):void {
+		 	Alert.show(commonFunction.getMessages('updateConfirmMessage'), commonFunction.getMessages('confirm'), 3, this, updateConfirm,questionIcon);
+        }
+		
+		public function updateConfirm(event:CloseEvent):void{
+			if(event.detail==Alert.YES){
+				var params:Object = {};
+	      		params["program_course_key"] = programCourseKey;
+	      		params["course_code"] = title;
+	      		params["course_category"] = xmldata_ProgramCourseCtgOptGrp.group.(@code=='CRSCTG').(componentDes==category_cb.text).componentCode;
+	      		params["course_group"] = xmldata_ProgramCourseCtgOptGrp.group.(@code=='CRSGRP').(componentDes==group_cb.text).componentCode;
+	      		params["course_availability"] = xml_course_availability.name.(value==availability_cb.text).@code;
+	            xmlUpdateCourseCtgOptGrp.send(params);
+		  }
+		}
+
+            private function titleWindow_close():void
+            {
+                PopUpManager.removePopUp(this);
+            }
+
+            protected function cancelButton_ClickHandler(event:MouseEvent):void
+            {
+            	PopUpManager.removePopUp(this);
+            }
+            
+        ]]>
+    </mx:Script>
+    
+    <mx:HTTPService id="xmlProgramCourseCtgOptGrp" method="post"
+        url="{urlProgramCourseCtgOptGrp}"
+        resultFormat="e4x"
+        result="resultCourseCtgOptGrpHandler(event)"
+        fault="faultCourseCtgOptGrpHandler(event)"
+        useProxy="false"/>
+    <mx:HTTPService id="xmlUpdateCourseCtgOptGrp" method="post"
+        url="{urlUpdateCourseCtgOptGrp}"
+        resultFormat="e4x"
+        result="resultUpdateCourseCtgOptGrpHandler(event)"
+        fault="faultCourseCtgOptGrpHandler(event)"
+        useProxy="false"/>
+  
+    
+	<mx:Label x="70.5" y="47" text="{getString('description')}:"/>
+	<mx:Label x="61.5" y="87" text="{getString('course_type')}:"/>
+	<mx:Label x="82.5" y="127" text="{getString('category')}:"/>
+	<mx:ComboBox x="158.5" y="127" id="category_cb" width="160" toolTip="{category_cb.text}"></mx:ComboBox>
+	<mx:Label x="102.5" y="167" text="{getString('group')}:"/>
+	<mx:ComboBox x="158.5" y="167" id="group_cb" width="160" toolTip="{group_cb.text}"></mx:ComboBox>
+	<mx:Label x="82.5" y="207" text="{getString('availability')}:"/>
+	<mx:ComboBox x="158.5" y="207" id="availability_cb" width="160" toolTip="{availability_cb.text}"></mx:ComboBox>
+	
+	<mx:Button x="134.5" y="273" id="updateButton" label="{getString('update_button')}" click="update_CourseCtgOptGrp(event)"/>
+	<mx:Button x="273.5" y="273" id="cancelButton" label="{getString('cancel_button')}" click="cancelButton_ClickHandler(event)"/>
+	<mx:Label x="158" y="49" text="Label" width="160.5" id="description_lab"/>
+	<mx:Label x="158.5" y="87" text="Label" width="160.5" id="course_type_lab"/>
+	
+
+</mx:TitleWindow>

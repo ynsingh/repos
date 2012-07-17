@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- ================================================================= -->
+<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+<!-- ================================================================= -->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ProgramRegistration">
+ <typeAlias alias="ProgramRegistrationDetails" type="in.ac.dei.edrp.cms.domain.programregistration.ProgramRegistrationDetails"/>
+ <typeAlias alias="ProgramMaster" type="in.ac.dei.edrp.cms.domain.programcoursesetup.ProgramMaster"/>
+ 
+ 
+  <resultMap id="selectProgrRegis" class="ProgramRegistrationDetails">
+    <result property="entityId" column="pob.offered_by"/>
+    <result property="entityName" column="em.entity_name"/>
+	<result property="semesterStartDate" column="semester_start_date"/>
+    <result property="semesterEndDate" column="semester_end_date"/>
+    <result property="programMaster"  resultMap="ProgramRegistration.selectProgramMaster" />
+  </resultMap>
+ 
+ <resultMap id="selectProgramMaster" class="ProgramMaster">
+    <result property="programId" column="pob.program_id"/>
+    <result property="programName" column="pm.program_name"/>
+    <result property="branchId" column="pob.branch_id" />
+    <result property="branchName" column="branchName" />
+    <result property="specializationId" column="pob.specialization_id" />
+    <result property="specializationName" column="specializationName" />
+    <result property="semesterCode" column="ptd.semester_code" />
+	<result property="semesterName" column="semesterName" />
+    <result property="programCourseKey" column="pch.program_course_key" />
+    <result property="semesterName" column="semesterName" />
+ </resultMap>
+
+  <select id="getProgramRegistrationDetail" resultMap="selectProgrRegis"> 		
+	select ptd.semester_start_date, ptd.semester_end_date,
+  		pob.program_id, pm.program_name,
+		pob.branch_id, stt1.component_description AS branchName,
+  		pob.specialization_id, stt2.component_description AS specializationName,
+  		ptd.semester_code, stt3.component_description AS semesterName,
+  		pch.program_course_key, pob.offered_by, em.entity_name
+	FROM program_term_details ptd, program_course_header pch,
+  		system_table_two stt1, system_table_two stt2, system_table_two stt3,
+  		program_offered_by pob, program_master pm, entity_master em
+	WHERE pch.program_id = ptd.program_id AND  pob.program_id = pch.program_id AND pm.program_id=pob.program_id AND
+  		ptd.program_id = pob.program_id AND ptd.program_id like concat(#universityId#,'%') AND
+  		pch.semester_code = ptd.semester_code AND
+  		stt1.group_code='BRNCOD' AND stt1.component_code= pob.branch_id AND stt1.university_code=#universityId# AND
+  		stt2.group_code = 'SPCLCD' AND stt2.component_code = pob.specialization_id AND stt2.university_code=#universityId# AND
+  		stt3.group_code='SEMCOD' AND stt3.component_code = pch.semester_code AND stt3.university_code=#universityId# AND
+		pob.offered_by=em.entity_id AND em.university_id=#universityId# AND
+		pch.branch_id=pob.branch_id AND pch.specialization_id=pob.specialization_id AND ptd.semester_code=pch.semester_code AND
+  		pch.program_course_key NOT IN (SELECT program_course_key FROM program_registration pr WHERE
+		  pr.session_start_date = #sessionStartDate# AND pr.session_end_date = #sessionEndDate# AND
+      	date_format(pr.semester_start_date,'%m-%d') = ptd.semester_start_date AND
+      	date_format(pr.semester_end_date,'%m-%d') = ptd.semester_end_date)
+	order by ptd.semester_code,ptd.program_id,branch_id ;
+ 		
+  </select>
+
+    <select id="getSessionDate" resultClass="ProgramRegistrationDetails">
+    	select CONCAT_WS('-',date_format(um.start_date,'%Y'),date_format(um.end_date,'%y'))
+    	 as sessionDate,um.start_date as sessionStartDate,
+    	 um.end_date as sessionEndDate from university_master um
+			where um.university_code=#value# and um.current_status=1;
+	</select>
+    
+     <select id="getSemesterDate" resultClass="ProgramRegistrationDetails">
+    	select pob.program_id as programId, pch.semester_code as semesterCode,
+  			pch.program_course_key as programCourseKey, ptd.semester_start_date as semesterStartDate,
+			ptd.semester_end_date as semesterEndDate, pob.offered_by as entityId
+		from program_term_details ptd,program_course_header pch, program_offered_by pob
+		where pob.program_id=pch.program_id and pob.program_id=ptd.program_id and ptd.program_id=pch.program_id and
+		ptd.semester_code=pch.semester_code and
+		pch.program_course_key in(SELECT pch.program_course_key FROM program_course_header pch
+		where pch.program_id=pob.program_id and pch.branch_id=pob.branch_id and pch.specialization_id=pob.specialization_id and
+		pch.semester_status='ACT') AND pch.program_id like concat(#string#,'%');
+	</select>
+	
+	
+	<insert id="insertProgramRegistrationDetail" parameterClass="ProgramRegistrationDetails">
+        insert into program_registration ( university_id, program_course_key, registration_start_date,
+         last_date, addordropperiod, semester_start_date, semester_end_date,
+         session_start_date, session_end_date, insert_time, 
+          creator_id,  modifier_id, status, entity_id)
+        VALUES ( #universityId#, #programCourseKey#, #registrationStartDate#, #registrationLastDate#,
+        #addDropPeriod#, #semesterStartDate#, #semesterEndDate#, #sessionStartDate#, #sessionEndDate#,
+         Now(), #creatorId#, #modifierId#, #status#, #entityId#);
+    </insert>
+    
+    <insert id="insertNextSessionProgramRegistrationDetail" parameterClass="ProgramRegistrationDetails">
+        insert into program_registration ( university_id, program_course_key, registration_start_date,
+         last_date, addordropperiod, semester_start_date, semester_end_date,
+         session_start_date, session_end_date, insert_time,
+          creator_id,  modifier_id, status, entity_id)
+        VALUES ( #universityId#, #programCourseKey#, DATE_ADD(#registrationStartDate#, INTERVAL 1 YEAR), DATE_ADD(#registrationLastDate#, INTERVAL 1 YEAR),
+        #addDropPeriod#, DATE_ADD(#semesterStartDate#, INTERVAL 1 YEAR), DATE_ADD(#semesterEndDate#, INTERVAL 1 YEAR), DATE_ADD(#sessionStartDate#, INTERVAL 1 YEAR), 
+        DATE_ADD(#sessionEndDate#, INTERVAL 1 YEAR), Now(), #creatorId#, #modifierId#, #status#, #entityId#);
+    </insert>
+	
+	<select id="checkExistance" parameterClass="ProgramRegistrationDetails" resultClass="ProgramRegistrationDetails">
+    	select program_course_key as programCourseKey from program_registration where
+		program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+ 		and semester_end_date=#semesterEndDate# and entity_id=#entityId#;
+	</select>
+	
+	<select id="checkExistanceOfNextSession" parameterClass="ProgramRegistrationDetails" resultClass="ProgramRegistrationDetails">
+    	select program_course_key as programCourseKey from program_registration where
+		program_course_key=#programCourseKey# and semester_start_date=DATE_ADD(#semesterStartDate#, INTERVAL 1 YEAR)
+ 		and semester_end_date=DATE_ADD(#semesterEndDate#, INTERVAL 1 YEAR)  and entity_id=#entityId#;
+	</select>
+	
+	<update id="systemUpdatePreviousRegistration">
+	UPDATE program_registration SET status = 'INA'
+	WHERE date_format(session_start_date,'%Y') = date_format(DATE_SUB(#sessionStartDate#,INTERVAL 1 YEAR),'%Y') 
+	AND date_format(session_end_date,'%Y') = date_format(DATE_SUB(#sessionEndDate#,INTERVAL 1 YEAR),'%Y')
+	AND university_id = #universityId#;	
+	</update>
+	
+	<insert id="systemBuildProgramRegistration">
+	INSERT INTO program_registration(registration_start_date,last_date,addordropperiod,insert_time,semester_start_date,semester_end_date,
+	modification_time,creator_id,modifier_id,university_id,program_course_key,session_start_date,session_end_date,status)
+	SELECT DATE_ADD(registration_start_date,INTERVAL 1 YEAR),DATE_ADD(last_date,INTERVAL 1 YEAR),addordropperiod,now(),
+	DATE_ADD(semester_start_date,INTERVAL 1 YEAR),DATE_ADD(semester_end_date,INTERVAL 1 YEAR),
+	now(),'build',null,university_id,program_course_key,DATE_ADD(session_start_date,INTERVAL 1 YEAR),DATE_ADD(session_end_date,INTERVAL 1 YEAR),'ACT'
+	FROM program_registration pr,university_master um WHERE pr.session_start_date =  DATE_SUB(um.start_date,INTERVAL 1 YEAR) 
+	AND pr.session_end_date = DATE_SUB(um.end_date,INTERVAL 1 YEAR)
+	AND um.current_status = 1 AND um.university_code = #universityId# AND pr.university_id = um.university_code AND pr.status = 'ACT'
+	AND pr.program_course_key IN (SELECT program_course_key FROM program_course_header WHERE semester_status = 'ACT');
+	</insert>
+	
+	<select id="checkProgramRegistration" parameterClass = "ProgramRegistrationDetails" resultClass = "ProgramRegistrationDetails">
+	SELECT program_course_key FROM program_registration WHERE date_format(session_start_date,'%Y') = date_format(#sessionStartDate#,'%Y') 
+	AND date_format(session_end_date,'%Y') = date_format(#sessionEndDate#,'%Y')
+	AND university_id = #universityId# AND status = 'ACT';
+	</select>
+	
+	
+	<select id="getPreviousProcessDetail" resultClass = "ProgramRegistrationDetails">
+		SELECT component_code as processCode from system_table_two
+		where university_code=#universityId# and group_code='YEPCOD'
+		and dummy_flag_one=(select  dummy_flag_one from system_table_two where component_code=#processCode# and university_code=#universityId# and group_code='YEPCOD')-1;
+	</select>
+	
+	<select id="getControlDetailStatus" resultClass = "ProgramRegistrationDetails">
+		SELECT status as status from yearend_process_control where
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and process_code=#processCode# 
+		and university_code=#universityId# and group_code='YEPCOD';
+	</select>
+	
+	<select id="getCurrentSession" resultClass="ProgramRegistrationDetails">
+    	SELECT um.start_date as sessionStartDate,um.end_date as sessionEndDate from university_master um 
+    	where um.university_code=#universityId# and um.current_status=1;
+	</select>
+	
+	 <insert id="setControlDetailStatus">
+    	insert into yearend_process_control(session_start_date,session_end_date,process_code,status,group_code,insert_time,creator_id,university_code)
+		values(#sessionStartDate#,#sessionEndDate#,#processCode#,#status#,'YEPCOD',now(),#creatorId#,#universityId#);
+    </insert>
+    
+    <update id="updateControlDetailStatus">
+    	update yearend_process_control set status=#status# where session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and university_code=#universityId# and process_code=#processCode# and group_code='YEPCOD';
+    </update>
+ </sqlMap>

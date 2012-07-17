@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" 
+	creationComplete="onCreationComplete()" layout="absolute" initialize="panel1InitializeHandler(event)" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			[Bindable]public var urlPrefix:String;
+
+			protected function panel1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=resourceManager.getString('Constants','url')+"/employeerole/";
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:Script source="asFiles/employeeAuthority.as">
+		
+	</mx:Script>
+	
+	<mx:HTTPService id="getemployeeitems" method="post"
+					url="{urlPrefix+'getmenusforrole.htm'}"
+					resultFormat="e4x"
+					result="onItemsSuccess(event)"
+					fault="onItemsFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getusersfromuserinfo" method="post"
+					url="{urlPrefix+'getUsers.htm'}"
+					resultFormat="e4x"
+					result="onUsersSuccess(event)"
+					fault="onItemsFailure(event)"
+					useProxy="false"/>				
+	
+	<mx:Validator id="textvalidate" source="{empId}" property="text" trigger="{okButton}" triggerEvent="click">
+		
+	</mx:Validator>
+	
+	<mx:Panel x="10" y="19" width="440" height="202" layout="absolute" title="{resourceManager.getString('Constants','define')} {resourceManager.getString('Constants','user')} {resourceManager.getString('Constants','authority')}" >
+		<mx:Label x="19" y="10" text="{resourceManager.getString('Constants','user')} {resourceManager.getString('Constants','name')}"/>
+		<common:AutoCompleteCB x="175" y="10" id="empId" fontWeight="normal"/>
+		<mx:Button x="19" y="86" label="{resourceManager.getString('Constants','okButton')}" click="getRoleItems()" id="okButton"/>
+		<mx:Button x="197" y="86" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Panel>
+	<mx:Canvas x="10" y="262" width="584" height="228" styleName="GridCanvas" id="itemscanvas" visible="false">
+		<mx:DataGrid x="10" y="41" editable="true" width="564" height="177" id="roleitemdata" verticalScrollPolicy="on">
+			<mx:columns>
+				<mx:DataGridColumn rendererIsEditor="true" width="20" editorDataField="selected" textAlign="center" dataField="select" headerText="">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.roleitemdata,[outerDocument.linkbutton],[new LinkButton])">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										import mx.controls.*;
+										
+									]]>
+								</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn showDataTips="true" headerText="{resourceManager.getString('Constants','itemnames')}" dataField="description" editable="false"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="10" y="15" text="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','role')}" fontWeight="bold"/>
+		<mx:Label x="111" y="15" id="roleLabel" />
+		<mx:LinkButton x="472" y="10" label="{resourceManager.getString('Constants','set')} {resourceManager.getString('Constants','authority')}" click="setaddedauthority()" id="linkbutton" enabled="false"/>
+	</mx:Canvas>
+</mx:Panel>

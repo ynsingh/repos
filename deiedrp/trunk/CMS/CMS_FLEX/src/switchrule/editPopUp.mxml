@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) editPopUp.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" title="{commonFunction.getConstants('modifyRules')}" layout="absolute" width="560" height="420" showCloseButton="true" keyDown="initializeForEsc(event)" close="closePopUp()" creationComplete="titlewindowInitializeHandler(event)">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+
+	<mx:Script source="asFiles/editPopUpAction.as"/>
+	
+	<mx:HTTPService id="getRule3Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule3Details.htm"
+					resultFormat="e4x"
+					result="onRule3Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getRule4Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule4Details.htm"
+					resultFormat="e4x"
+					result="onRule4Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getRule5Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule5Details.htm"
+					resultFormat="e4x"
+					result="onRule5Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getRule6Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule6Details.htm"
+					resultFormat="e4x"
+					result="onRule6Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setRuleDetails" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/setRuleDetails.htm"
+					resultFormat="e4x"
+					result="onSetSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	
+	
+	<mx:XML id="label1XmlId" source="xmlFiles/label1xml.xml" format="e4x" />
+    <mx:Label x="138" y="8" text="Rule Id" width="106"/>
+	<mx:Label x="278" y="8" id="ruleIdText" width="150"/>
+	<mx:Label x="138" y="34" text="{commonFunction.getConstants('rule1')}"/>
+	<mx:ComboBox x="278" y="32" id="editRule1Combo" toolTip="{editRule1Combo.text}" dataProvider="{label1XmlId.label1Data.@name}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+	<mx:Label x="138" y="76" text="{commonFunction.getConstants('rule2')}"/>
+	<mx:ComboBox x="278" y="73" enabled="true" id="editRule2Combo" toolTip="{editRule2Combo.text}" dataProvider="{label1XmlId.label1Data.@name}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" width="150"></mx:ComboBox>
+	<mx:Label x="138" y="121" text="{commonFunction.getConstants('rule3')}"/>
+	<mx:ComboBox x="278" y="118" id="editRule3Combo" toolTip="{editRule3Combo.text}" enabled="true"  selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+	<mx:Label x="138" y="161" text="{commonFunction.getConstants('rule4')}"/>
+	<mx:ComboBox x="278" y="159" id="editRule4Combo" toolTip="{editRule4Combo.text}" enabled="true" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+	<mx:Label x="138" y="207" text="{commonFunction.getConstants('rule5')}"/>
+	<mx:ComboBox x="278" y="205" id="editRule5Combo" toolTip="{editRule5Combo.text}" enabled="true" selectedIndex="-1"  prompt="{commonFunction.getConstants('select')}" width="150" ></mx:ComboBox>
+	<mx:Label x="138" y="246" text="{commonFunction.getConstants('rule6')}" width="106"/>
+	<mx:ComboBox x="278" y="244" id="editRule6Combo" toolTip="{editRule6Combo.text}" width="150" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1"></mx:ComboBox>
+	<mx:Label x="138" y="290" text="{commonFunction.getConstants('ruleFormula')}" height="20"/>
+	<mx:TextInput x="278" y="288" id="editRuleFormulaField" width="150"/>
+	<mx:Button x="138" y="349" label="{commonFunction.getConstants('saveButton')}" click="saveChanges()"/>
+	<mx:Button x="275" y="349" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
+	
+</mx:TitleWindow>

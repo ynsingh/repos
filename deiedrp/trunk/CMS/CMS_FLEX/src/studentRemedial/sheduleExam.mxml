@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) sheduleExam.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setUrl()" keyDown="initializeForEsc(event)" styleName="PopUpTitleWindow" layout="absolute" width="806" height="414" showCloseButton="true" title="{commonFunction.getConstants('confirmWindow')}" close="closeScreen()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="insertRemedialDetails" method="post"
+					url="{urlPrefix1}insertRemedialDetails.htm"
+					showBusyCursor="true"
+					resultFormat="e4x"
+					result="onInsertSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Script source="asFiles/sheduleExamAction.as"/>
+	
+    <mx:Label x="36" y="10" text="{commonFunction.getConstants('studentCurrentInformation')}" fontWeight="bold"/>
+    <mx:Label x="36" y="33" text="{commonFunction.getConstants('program')}" fontWeight="bold"/>
+    <mx:Label x="421" y="35" text="{commonFunction.getConstants('branch')}" fontWeight="bold"/>
+    <mx:Label x="36" y="60" text="{commonFunction.getConstants('specialization')}" fontWeight="bold"/>
+    <mx:Label x="421" y="62" text="{commonFunction.getConstants('semester')}" fontWeight="bold"/>
+	<mx:Label x="36" y="83" text="{commonFunction.getConstants('rollNo')}" fontWeight="bold"/>
+	<mx:Label x="32" y="119" text="{commonFunction.getConstants('studentRemedialInformation')}" fontWeight="bold"/>  
+	<mx:Label x="32" y="147" text="{commonFunction.getConstants('program')}" fontWeight="bold"/>
+	<mx:Label x="421" y="147" text="{commonFunction.getConstants('branch')}" fontWeight="bold"/>
+	<mx:Label x="32" y="170" text="{commonFunction.getConstants('specialization')}" fontWeight="bold"/>
+	<mx:Label x="421" y="170" text="{commonFunction.getConstants('semester')}" fontWeight="bold"/>
+	<mx:Label x="32" y="194" text="{commonFunction.getConstants('courseCode')}" fontWeight="bold"/>
+	<mx:Label x="418" y="194" text="{commonFunction.getConstants('courseStatus')}" fontWeight="bold"/>
+	<mx:Label x="32" y="222" text="{commonFunction.getConstants('semesterStartDate')}" fontWeight="bold"/>
+	<mx:Label x="418" y="222" text="{commonFunction.getConstants('semesterEndDate')}" fontWeight="bold"/>
+	<mx:Label x="24" y="264" text="{commonFunction.getConstants('applyingtoGiveExaminSemester')}" fontWeight="bold"/>
+	<mx:Label x="24" y="294" text="{commonFunction.getConstants('applyingSemesterStartDate')}" fontWeight="bold"/>
+	<mx:Label x="418" y="294" text="{commonFunction.getConstants('applyingSemesterEndDate')}" fontWeight="bold"/>
+	<mx:Label x="421" y="264" text="{commonFunction.getConstants('attemptNumber')}" fontWeight="bold"/>
+	<mx:Label x="258" y="35" id="currentProgramLabel" width="150"/>
+	<mx:Label x="608" y="35" id="currentBranchLabel" width="150"/>
+	<mx:Label x="258" y="62" id="currentSpecialisationLabel" width="150"/>
+	<mx:Label x="608" y="62" text="" id="currentSemesterLabel" width="150"/>
+	<mx:Label x="258" y="91" id="currentRollNoLabel" width="150"/>
+	<mx:Label x="258" y="147" width="150" id="remedialProgramLabel"/>
+	<mx:Label x="610" y="147" width="150" id="remedialBranchLabel"/>
+	<mx:Label x="258" y="170" width="150" id="remedialSpecialisationLabel"/>
+	<mx:Label x="610" y="170" width="150" id="remedialSemesterLabel"/>
+	<mx:Label x="258" y="194" text="" id="remedialCourseLabel" width="150"/>
+	<mx:Label x="610" y="194" width="148" id="remedialCourseStatusLabel"/>
+	<mx:Label x="258" y="222" width="150" id="remedialStartDateLabel"/>
+	<mx:Label x="610" y="222" height="22" width="150" id="remedialEndDateLabel"/>
+	<mx:Label x="258" y="264" width="150" id="ApplyingSemesterLabel"/>
+	<mx:Label x="258" y="294" width="150" id="applyingSemesterStartLabel"/>
+	<mx:Label x="610" y="294" width="150" id="applyingSemesterEndLabel"/>
+	<mx:Label x="610" y="264" id="attemptNumberLabel" width="150"/>
+	<mx:Button x="258" y="329" visible="true" id="saveButton" label="{commonFunction.getConstants('confirm')}" click="submitDetails()"/>
+	<mx:Button x="389" y="329" visible="true" id="cancelButton" label="{commonFunction.getConstants('cancelButton')}" click="cancelPopup()" />
+</mx:TitleWindow>

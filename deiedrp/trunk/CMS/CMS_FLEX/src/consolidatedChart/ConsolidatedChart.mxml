@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) ConsolidatedChart.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="878" height="368" title="Consolidated Chart" creationComplete="OnCreatPage()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/ConsolidatedChartAction.as"/>
+	
+	<mx:HTTPService id="getSessionList" method="POST"
+		url="{commonFunction.getConstants('url')}/degreeList/getUniversitySession.htm"
+		resultFormat="e4x"
+		result="getSessionSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix1}getEntityList.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="getSemesterList" method="POST"
+		url="{commonFunction.getConstants('url')}/programCourseType/getProgramSemesterDetails.htm"
+		resultFormat="e4x"
+		result="getSemesterSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="generateConsolidatedChart" method="POST"
+		url="{urlPrefix1}getConsolidatedChartData.htm"
+		resultFormat="e4x"
+		result="generateConsolidatedChartSuccess(event)"
+		fault="onFailureGenerate(event)"
+		useProxy="false"/>
+		
+	<mx:Label x="50" y="50" text="{commonFunction.getConstants('entity')}" />
+	<mx:Label x="50" y="80" text="{commonFunction.getConstants('program')}" />
+	<mx:Label x="465" y="80" text="{commonFunction.getConstants('branch')}" />
+	<mx:Label x="50" y="110" text="{commonFunction.getConstants('specialization')}"/>
+	<mx:Label x="465" y="110" text="{commonFunction.getConstants('semester')}"/>
+	<mx:Label x="50" y="140" text="{commonFunction.getConstants('sessionStartDate')}"/>
+	<mx:Label x="465" y="140" text="{commonFunction.getConstants('sessionEndDate')}"/>
+	<mx:ComboBox x="190" y="50" toolTip="{entityCombo.text}" width="200" id="entityCombo" prompt="{commonFunction.getConstants('select')}" change="onEntityChange(event)"/>
+	<mx:ComboBox x="190" y="80" toolTip="{programCombo.text}" id="programCombo" width="200" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onProgramChange(event)"/>
+	<mx:ComboBox x="600" y="80" toolTip="{branchCombo.text}" width="200" id="branchCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onBranchChange(event)"/>
+	<mx:ComboBox x="190" y="110" toolTip="{specilizationCombo.text}" width="200" id="specilizationCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onSpecializationChange(event)"/>
+	<mx:ComboBox x="600" y="110" toolTip="{semesterCombo.text}" width="200" id="semesterCombo" change="onSemesterChange(event)" prompt="{commonFunction.getConstants('select')}" enabled="false" selectedIndex="-1" />
+	<mx:ComboBox x="190" id="startDateField" change="onStartDateChange()" prompt="{commonFunction.getConstants('select')}" enabled="false" width="200" y="140"/>
+	<mx:Label x="600" id="endDateField" width="200" y="140"/>
+	<mx:Button x="190" y="191" label="Generate Consolidated Chart" click="generateChart()" id="generateButton" enabled="false"/>
+	<mx:Button x="465" y="191" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="this.parentDocument.loaderCanvas.removeAllChildren()" />
+</mx:Panel>

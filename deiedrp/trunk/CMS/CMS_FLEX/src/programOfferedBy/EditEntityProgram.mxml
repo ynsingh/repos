@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) EditEntityProgram.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" showCloseButton="true" close="closeThis()" 
+	layout="absolute" width="518" height="308" title="{commonFunction.getConstants('editEntityProgram')}" 
+	fontFamily="Verdana" fontSize="12" color="#000000" creationComplete="initEmployeeList();">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			 import mx.rpc.events.FaultEvent;
+  	        import mx.rpc.events.ResultEvent;
+  	        import mx.events.CloseEvent;
+  	        
+[Embed(source="/images/error.png")]private var errorIcon:Class;
+[Embed(source="/images/success.png")]private var successIcon:Class;
+[Embed(source="/images/reset.png")]private var resetIcon:Class;
+[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+[Embed(source="/images/question.png")]private var questionIcon:Class;
+
+
+
+[Bindable] public var entityId:String=null;
+[Bindable] public var programId:String=null;
+[Bindable] public var branchId:String=null;
+[Bindable] public var specializationId:String=null;
+
+[Bindable]public var employeeListAC:XMLList;
+[Bindable] public var xmldataUpdateProgramOfferedBy:XML;
+[Bindable] public var desiredEmployee:String=null;
+
+public var url_DNS:String ="";
+[Bindable] public var urlUpdateProgramOfferedBy:String = "";
+
+private var msg:String=null;
+private var msgHeader:String=null;
+public var image:Class;
+public var parentFun:Function;
+public var editButton:Button;
+public var deleteButton:Button;
+
+			
+			 public function initEmployeeList():void
+            {
+               	mentorCombo.dataProvider = employeeListAC.employee.@name;
+				mentorCombo.selectedItem = desiredEmployee;
+				url_DNS = commonFunction.getConstants('url');
+				urlUpdateProgramOfferedBy = url_DNS+"/manageprogramofferedby/updateProgramOfferedBy.htm";
+    		}
+           
+            
+            //Edited by Nikita for asking the confirmation to update
+           
+           public function updateProgramOfferedBy():void
+           {
+            	Alert.show(resourceManager.getString('Messages','updateConfirmMessage'),
+            	resourceManager.getString('Messages','confirm'),(Alert.YES|Alert.NO),null,
+            	onUpdateConfirmation,questionIcon);
+           }
+            
+            public function onUpdateConfirmation(event:CloseEvent):void{
+            	if(event.detail==Alert.YES){
+            		if(Validator.validateAll([mentorValidator,seatsValidator]).length==0)
+            	{
+            		 var params:Object = {};
+      				params["entityId"] = entityId;
+      				params["programId"] = programId;
+      				params["branchId"] = branchId;
+      				params["specializationId"] = specializationId;
+      				params["employeeCode"] = employeeListAC.employee.(@name==mentorCombo.selectedItem).employeeCode;
+      				params["seats"] = seatsText.text;
+      				
+            		xmlUpdateProgramOfferedBy.send(params);
+            	}
+            	else
+            	{
+            		Alert.show(resourceManager.getString('Messages','pleasecheckEntriesinRed')
+            		,resourceManager.getString('Messages','error'),0,null,null,errorIcon);
+            	}
+            	}
+            }
+
+          // Nikita editing ended 
+
+    private function resultUpdateProgramOfferedByHandler(event:ResultEvent):void{
+        xmldataUpdateProgramOfferedBy = event.result as XML;
+          if(xmldataUpdateProgramOfferedBy.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        if(xmldataUpdateProgramOfferedBy.message=="1"){
+          	msg=commonFunction.getMessages('recordUpdatedSuccessfully');
+          	image = successIcon;
+          	msgHeader = commonFunction.getMessages('success');
+        }
+        else if(xmldataUpdateProgramOfferedBy.message=="0"){
+         msg=commonFunction.getMessages('noRecordUpdated');
+         image=infoIcon;
+         msgHeader=	commonFunction.getMessages('error');
+        }
+        else if(String(xmldataUpdateProgramOfferedBy.message).search('DataAccess')>-1){
+       	msg=commonFunction.getConstants('updation_fail');
+       	image = errorIcon;
+       	msgHeader = commonFunction.getMessages('updateError');
+       }
+       else if(String(xmldataUpdateProgramOfferedBy.message).search('updateError')>-1){
+        msg=xmldataUpdateProgramOfferedBy.message;
+       	image = errorIcon;
+       	msgHeader = commonFunction.getMessages('updateError');      	
+       }
+       Alert.show(msg,msgHeader,0,null,alertListener,image);
+//       Alert.show((msg, commonFunction.getConstants('message'), Alert.OK, this, alertListener, successIcon);
+     }
+      private function alertListener(eventObj:CloseEvent):void {
+                if (eventObj.detail==Alert.OK) {
+	               	parentFun.call();
+                   PopUpManager.removePopUp(this);
+                   editButton.enabled= false;
+          		   deleteButton.enabled = false;
+                    }
+            }
+                 
+       private function faultUpdateProgramOfferedByHandler(event:FaultEvent):void{
+        mx.controls.Alert.show(event.fault.message,commonFunction.getConstants('errorInResult'));
+    }
+            
+            public function closeThis():void
+            {
+                PopUpManager.removePopUp(this);
+            }
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="xmlUpdateProgramOfferedBy" method="post"
+        url="{urlUpdateProgramOfferedBy}"
+        resultFormat="e4x"
+        result="resultUpdateProgramOfferedByHandler(event)"
+        fault="faultUpdateProgramOfferedByHandler(event)"
+        useProxy="false"/>
+	
+	
+	<mx:Validator id="mentorValidator" required="true" source="{mentorCombo}" property="selectedItem" trigger="{updateButton}" triggerEvent="click" />
+	<mx:NumberValidator id="seatsValidator" required="true" source="{seatsText}" domain="int" allowNegative="false" property="text" trigger="{updateButton}" triggerEvent="click" />
+	<mx:Label x="119.5" y="10" text="{commonFunction.getConstants('program')}"  />
+	<mx:Label x="119.5" y="40" text="{commonFunction.getConstants('branch')}"  />
+	<mx:Label x="119.5" y="70" text="{commonFunction.getConstants('specialization')}"  />
+	<mx:Label x="119.5" y="100" text="{commonFunction.getConstants('offeredBy')}"  />
+	<mx:Label x="119.5" y="130" text="{commonFunction.getConstants('mentor')}"  />
+	<mx:Label x="119.5" y="160" text="{commonFunction.getConstants('seats')}"  />
+	
+	<mx:Label id="programLabel" x="219.5" y="10" text="" fontWeight="bold"/>
+	<mx:Label id="branchLabel" x="219.5" y="40" text="" fontWeight="bold"/>
+	<mx:Label id="specializationLabel" x="219.5" y="70" text="" fontWeight="bold"/>
+	<mx:Label id="offeredByLabel" x="219.5" y="100" text="" fontWeight="bold"/>
+	<mx:ComboBox id="mentorCombo" toolTip="{mentorCombo.text}" x="219.5" y="130" width="150"  />
+	<mx:TextInput id="seatsText" x="219.5" y="160" width="150"  fontWeight="normal" />
+	<mx:Button label="{commonFunction.getConstants('updateButton')}" click="updateProgramOfferedBy()" id="updateButton" x="218.5" y="195"  />
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" click="closeThis()" x="300.5" y="195"  />
+</mx:TitleWindow>

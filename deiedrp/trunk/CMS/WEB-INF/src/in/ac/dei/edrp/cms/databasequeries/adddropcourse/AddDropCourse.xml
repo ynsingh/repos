@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) AddDropCourse.xml
+* @Author :Mohd Amir
+* @Date :21/3/2011
+* Version 1.0
+* @Author :Ashish Mohan
+* @Date :17/2/2012
+* Version 2.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="addDropCourse">   
+
+	<typeAlias alias="courseInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.CourseInfoGetter" />
+	<typeAlias alias="addDropInfo" type="in.ac.dei.edrp.cms.domain.adddropcourse.AddDropCourseBean" />
+	
+	<select id="getProgramDetails" resultClass="addDropInfo">
+		SELECT concat_ws(' ',tsm.first_name,tsm.middle_name,tsm.last_name) name,tsp.enrollment_number 
+		enrollNumber,tsp.student_id studentId,tsp.roll_number rollNumber, pm.program_id programId,
+		pm.program_name programName, em.entity_id entityId, em.entity_name entityName,
+		tsp.branch_id branchId, stt1.component_description branchName,
+		tsp.specialization_id specializationId, stt2.component_description specializationName,
+		tsp.to_semester semesterId, stt3.component_description semesterName,
+		tsp.to_semester_start_date semesterStartDate,tsp.to_semester_end_date semesterEndDate
+		FROM temp_student_program tsp, temp_student_master tsm, program_master pm,entity_master em,
+		system_table_two stt1, system_table_two stt2, system_table_two stt3
+		WHERE pm.program_id=tsp.program_id AND em.entity_id=tsp.entity_id AND stt1.component_code=tsp.branch_id
+		AND stt2.component_code=tsp.specialization_id AND stt3.component_code=tsp.to_semester
+		AND stt1.group_code='BRNCOD' AND stt2.group_code='SPCLCD' AND stt3.group_code='SEMCOD'
+		AND tsp.student_id=tsm.student_id AND tsp.enrollment_number=tsm.enrollment_number AND registration_number=#regNumber#
+		AND stt1.university_code=stt2.university_code=stt3.university_code=tsm.university_code;
+	</select>
+	
+	<select id="getStudentCourseList" resultClass="addDropInfo">
+		SELECT distinct tsc.course_code courseCode, cm.course_name courseName,
+		cm.credits credits,pcd.course_group courseGroup, cm.course_classification courseClass
+		FROM temp_student_courses tsc,course_master cm,program_course_detail pcd
+		WHERE tsc.course_code=cm.course_code AND tsc.registration_number=#regNumber#
+		AND pcd.course_code=tsc.course_code AND cm.university_code=#userId#
+		AND pcd.program_course_key in (
+			SELECT program_course_key
+			FROM program_course_header
+			Where program_id=#programId# AND branch_id=#branchId#
+			AND specialization_id=#specializationId# AND semester_code=#semesterId#
+		)
+		ORDER By courseName 
+	</select>
+	
+	<select id="getTotalCredits" resultClass="addDropInfo">
+		SELECT sum(cm.credits) credits
+		FROM temp_student_courses tsc,course_master cm
+		WHERE tsc.course_code=cm.course_code AND tsc.registration_number=#regNumber#
+	</select>
+	
+	<select id="getCourseAvailable" resultClass="addDropInfo">
+		SELECT distinct pcd.course_code courseCode, cm.course_name courseName,cm.course_type courseType,
+ 		ct.component_description courseTypeName,cgd.component_description courseGroupName, pcd.course_group courseGroup,
+ 		cg.minimum_credit minimumCredits, cg.maximum_credit maximumCredits,cm.credits credits,
+ 		cm.course_classification courseClass,cs.component_description courseClassName
+		FROM program_course_detail pcd, course_master cm, system_table_two ct,
+		course_group cg, system_table_two cgd, system_table_two cs
+		WHERE pcd.course_code=cm.course_code AND ct.component_code=cm.course_type AND ct.group_code='CRSTYP' 
+		AND ct.university_code=substring(#programId#,1,4) AND pcd.available='Y' AND pcd.course_category='REG' 
+		AND pcd.course_group=cg.course_group_code AND cgd.component_code=pcd.course_group AND cgd.group_code='CRSGRP' 
+		AND cs.component_code=cm.course_classification AND cs.group_code='CRCLSF'
+		AND cgd.university_code=substring(#programId#,1,4) AND cg.program_course_key=pcd.program_course_key 
+		AND pcd.program_course_key in (
+		SELECT program_course_key
+		FROM program_course_header 
+		WHERE program_id=#programId# AND branch_id=#branchId# AND specialization_id=#specializationId#
+		AND semester_code=#semesterId# AND semester_status='ACT') 
+		AND pcd.course_code not in (
+		SELECT course_code
+		FROM temp_student_courses
+		WHERE registration_number=#regNumber#) AND pcd.course_group in (
+		SELECT course_group
+		FROM program_course_detail
+		WHERE course_code=#courseCode#) AND cm.university_code=#userId#
+		ORDER BY courseName
+	</select>
+	
+	<delete id="deleteCourse">
+		DELETE FROM temp_student_courses
+		WHERE course_code=#courseCode# AND registration_number=#regNumber#
+		AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate#
+	</delete>
+	
+	<insert id="insertCourse">
+		insert into temp_student_courses 
+		(course_code,enrollment_number,roll_number,student_id,registration_number,status,
+		insert_time,creator_id,semester_start_date,
+		semester_end_date,program_id,branch_id,specialization_id,semester_code,course_group,course_name) 
+		values
+		(#courseCode#,#enrollNumber#,#rollNumber#,#studentId#,#regNumber#,'REG',
+		now(),#userId#,#semesterStartDate#,
+		#semesterEndDate#,#programId#,#branchId#,#specializationId#,#semesterId#,#courseGroup#,#courseName#)
+	</insert>
+	
+	<!-- queries for withdraw courses added by ashish mohan -->
+	
+	<select id="getStudentCourseListMain" resultClass="addDropInfo">
+		SELECT distinct sc.course_code courseCode, cm.course_name courseName,pcd.course_category courseType,
+		cm.credits credits,pcd.course_group courseGroup, cm.course_classification courseClass
+		FROM student_course sc,course_master cm,program_course_detail pcd
+		WHERE sc.course_code=cm.course_code AND sc.roll_number=#rollNumber#
+		AND pcd.course_code=sc.course_code AND cm.university_code=#userId#
+		AND pcd.program_course_key in (
+			SELECT program_course_key
+			FROM program_course_header
+			Where program_id=#programId# AND branch_id=#branchId#
+			AND specialization_id=#specializationId# AND semester_code=#semesterId#
+		) and sc.student_status='REG' and sc.course_status='REG'
+		ORDER By courseName ;
+	</select>
+	
+	<select id="getCourseAvailableMain" resultClass="addDropInfo">
+		SELECT distinct pcd.course_code courseCode, cm.course_name courseName,cm.course_type courseType,
+ 		ct.component_description courseTypeName,cgd.component_description courseGroupName, pcd.course_group courseGroup,
+ 		cg.minimum_credit minimumCredits, cg.maximum_credit maximumCredits,cm.credits credits,
+ 		cm.course_classification courseClass,cs.component_description courseClassName,pcd.course_category name
+		FROM program_course_detail pcd, course_master cm, system_table_two ct,
+		course_group cg, system_table_two cgd, system_table_two cs
+		WHERE pcd.course_code=cm.course_code AND ct.component_code=cm.course_type AND ct.group_code='CRSTYP' 
+		AND ct.university_code=substring(#programId#,1,4) AND pcd.available='Y' AND pcd.course_category='REG' 
+		AND pcd.course_group=cg.course_group_code AND cgd.component_code=pcd.course_group AND cgd.group_code='CRSGRP' 
+		AND cs.component_code=cm.course_classification AND cs.group_code='CRCLSF'
+		AND cgd.university_code=substring(#programId#,1,4) AND cg.program_course_key=pcd.program_course_key 
+		AND pcd.program_course_key in (
+		SELECT program_course_key
+		FROM program_course_header 
+		WHERE program_id=#programId# AND branch_id=#branchId# AND specialization_id=#specializationId#
+		AND semester_code=#semesterId# AND semester_status='ACT') 
+		AND pcd.course_code not in (
+		SELECT course_code
+		FROM student_course
+		WHERE roll_number=#rollNumber# and course_status in ('REG','WTH')) AND pcd.course_group in (
+		SELECT course_group
+		FROM program_course_detail
+		WHERE course_code=#courseCode#) AND cm.university_code=#userId#
+		ORDER BY courseName
+	</select>
+	
+	<update id="updateCourse">
+		UPDATE student_course set course_status='WTH',modifier_id=#userId#,modification_time=now() 
+		where program_course_key=(select program_course_key from program_course_header where program_id=#programId#
+		and branch_id=#branchId# and specialization_id=#specializationId# and semester_code=#semesterId#) and 
+		roll_number=#rollNumber# and course_code=#courseCode# and entity_id=#entityId# and semester_start_date=#semesterStartDate#
+		and	semester_end_date=#semesterEndDate# and student_status='REG';
+	</update>
+	
+	<update id="updateSRSH">
+		UPDATE student_registration_semester_header set modification_time=now(), modifier_id=#userId#,
+		reason_description='credits altered through withdraw course',
+		registered_credit=#maximumCredits#,
+		registered_theory_credit_excluding_audit=#maximumLectureCredits#,
+		registered_practical_credit_excluding_audit=#minimumLectureCredits#,
+		registration_credit_excluding_audit=#minimumCredits#
+		where status='REG' and roll_number=#rollNumber# and entity_id=#entityId#  and 
+		program_course_key=(select program_course_key from program_course_header where
+		program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and semester_code=#semesterId# ) ;
+	</update>
+	
+	<insert id="insertCourseMain">
+		insert into student_course
+		(roll_number,program_course_key,semester_start_date,semester_end_date,course_code,course_name,course_status,student_status,
+		insert_time,creator_id,attempt_number,course_group,entity_id)
+		values
+		(#rollNumber#,(select program_course_key from program_course_header where program_id=#programId#
+		and branch_id=#branchId# and specialization_id=#specializationId# and semester_code=#semesterId#),#semesterStartDate#,#semesterEndDate#,
+		#courseCode#,#courseName#,'REG','REG',now(),#userId#,1,#courseGroup#,#entityId#); 
+	</insert>	
+	
+	<delete id="deleteStuMarks">
+		delete from student_marks where roll_number=#rollNumber# and program_course_key=(select program_course_key 
+		from program_course_header where program_id=#programId# and branch_id=#branchId# and 
+		specialization_id=#specializationId# and semester_code=#semesterId#) and course_code=#courseCode#
+		and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+	</delete>
+	
+	<delete id="deleteStuMarksSum">
+		delete from student_marks_summary where roll_number=#rollNumber# and program_course_key=(select program_course_key 
+		from program_course_header where program_id=#programId# and branch_id=#branchId# and 
+		specialization_id=#specializationId# and semester_code=#semesterId#) and course_code=#courseCode#
+		and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+	</delete>
+	
+	
+	
+</sqlMap>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CourseGroup.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous(programCombo)" title="{commonFunction.getConstants('courseGroup')}" layout="absolute" width="716" height="541">
+
+	<mx:Script>
+		<![CDATA[
+			protected function savebuttonkeyDownHandler(event:KeyboardEvent):void
+			{
+				if(event.keyCode==Keyboard.ENTER)
+				{
+					saveDetails();
+				}
+			}
+		]]>
+	</mx:Script>
+
+
+	<mx:Script source="asFiles/courseGroupAction.as"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+					url="{urlPrefix1}getProgramBranchDetails.htm"
+					resultFormat="e4x"
+					result="getBranchSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+					url="{urlPrefix1}getProgramCourseTypeDetails.htm"
+					resultFormat="e4x"
+					result="getProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getspecializationList" method="POST"
+					url="{urlPrefix1}getProgramSpecializationDetails.htm"
+					resultFormat="e4x"
+					result="getspecializationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getSemesterList" method="POST"
+					url="{urlPrefix1}getProgramSemesterDetails.htm"
+					resultFormat="e4x"
+					result="getSemesterSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseGroupList" method="POST"
+					url="{urlPrefix2}getGroupList.htm"
+					resultFormat="e4x"
+					result="getCourseGroupSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseGroupDetails" method="POST"
+					url="{urlPrefix2}getGroupDetails.htm"
+					resultFormat="e4x"
+					result="getDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setCourseGroupDetails" method="POST"
+					url="{urlPrefix2}setGroupDetails.htm"
+					resultFormat="e4x"
+					result="setCourseGroupSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getDuplicateCount" method="POST"
+					url="{urlPrefix2}getDuplicateRecordCount.htm"
+					resultFormat="e4x"
+					result="getDuplicateCountSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteGroupService" method="POST"
+					url="{urlPrefix2}deleteGroupDetails.htm"
+					resultFormat="e4x"
+					result="onDeleteSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Validator id="courseGroupValidator" property="selectedLabel"/>
+	<mx:NumberValidator id="minCreditsValidator" minValue="1.00" maxValue="100.00" property="text" required="true" precision="2" precisionError="should contain upto 2 digit after decimal" domain="real" allowNegative="false"/>
+	<mx:NumberValidator id="maxCreditsValidator" minValue="1.00" maxValue="100.00" property="text" required="true" precision="2" precisionError="should contain upto 2 digit after decimal" domain="real" allowNegative="false"/>
+	    <mx:Canvas styleName="SimpleCanvas" x="19" y="20" width="630" height="255">
+		<mx:Label x="21" y="16" text="{commonFunction.getConstants('program')}" />
+		<mx:ComboBox width="150" x="154.5" id="programCombo" prompt="{commonFunction.getConstants('select')}"
+		selectedIndex="-1" labelField="@name" toolTip="{programCombo.text}" change="programChange(event)" y="13"/>
+		<mx:Label x="330" y="16" text="{commonFunction.getConstants('branch')}" />
+		<mx:ComboBox x="450" y="13" width="150" id="branchCombo" toolTip="{branchCombo.text}" prompt="{commonFunction.getConstants('select')}"
+		 selectedIndex="-1" labelField="@name" enabled="false" change="branchChange(event)"/>
+		<mx:Label x="21" y="54" text="{commonFunction.getConstants('specialization')}"  width="125.5"/>
+		<mx:ComboBox x="154.5" y="51" width="150" id="specilizationCombo" toolTip="{specilizationCombo.text}" prompt="{commonFunction.getConstants('select')}" change="specializationChange(event)"
+		 selectedIndex="-1" labelField="@name"	 enabled="false" />
+		<mx:Label x="330" y="51" text="{commonFunction.getConstants('semester')}"  height="23" width="125"/>
+		<mx:ComboBox x="450" y="51" width="150" id="semesterCombo" toolTip="{semesterCombo.text}" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onSemesterChange()"
+		selectedIndex="-1" />
+		<mx:Label x="21" y="95" text="{commonFunction.getConstants('courseGroup')}" />
+		<mx:ComboBox x="154.5" y="92" width="150" id="courseGroupCombo" toolTip="{courseGroupCombo.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" enabled="false" />
+		<mx:Label x="330" y="95" text="{commonFunction.getConstants('elective')}"  height="23" width="125"/>
+		<mx:RadioButtonGroup id="isElectiveGroup" selectedValue="0"/>
+		<mx:RadioButton x="469" y="93" label="Yes" value="1" groupName="isElectiveGroup"/>
+		<mx:RadioButton x="535" y="93" label="No" value="0" groupName="isElectiveGroup"/>
+		<mx:Label x="21" y="134" text="{commonFunction.getConstants('minimumCredit')}" />
+		<mx:Label x="330" y="134" text="{commonFunction.getConstants('maximumCredit')}" />
+		<mx:Button enabled="false" keyDown="savebuttonkeyDownHandler(event)" x="234" y="220" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="saveDetails()" width="70.5"/>
+		<mx:Button x="330" y="220" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelFunction()" width="84"/>
+		<mx:TextInput id="aa" visible="false" x="21" y="160" width="579" height="3"/>
+		<mx:TextInput id="minCreditCombo" x="154.5" y="132" width="150" restrict="0-9."/>
+        <mx:TextInput id="maxCreditCombo" x="454" y="132" width="146" restrict="0-9."/>
+        <mx:Label x="21" y="178" text="Order In MarkSheet"/>
+        <mx:NumericStepper id="orderInMarksheet" x="154.5" y="176" width="72" minimum="1" maximum="50"/>
+	</mx:Canvas>
+    
+    <mx:Canvas styleName="GridCanvas" id="detailCanvas"  visible="false" width="630" height="202" x="19" y="283">
+		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" click="openEditWindow()" enabled="false" id="editbutton" x="452"  y="3"/>
+		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" id="deletebutton" x="525.5" enabled="false" click="deleteRecords()" y="4"/>
+		<mx:Label x="13" y="5" text="{commonFunction.getConstants('courseDetails')}" fontWeight="bold"/>
+		<mx:DataGrid id="courseGroupDetailGrid"  height="155" horizontalScrollPolicy="off" 
+			 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="22.5" y="33" width="584">
+		<mx:columns>
+		<mx:DataGridColumn width="20" resizable="false" rendererIsEditor="true" textAlign="center" sortable="false" 
+			editorDataField="selected" dataField="select" headerText="">
+		<mx:itemRenderer>
+   	    <mx:Component>
+   		<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.courseGroupDetailGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+ 		<mx:Script>
+        <![CDATA[
+                    import common.commonFunction;
+                    import mx.controls.*;
+                ]]>
+        </mx:Script>
+        </mx:CheckBox>
+        </mx:Component>
+        </mx:itemRenderer>
+        </mx:DataGridColumn>
+		<mx:DataGridColumn width="220" editable="false" showDataTips="true"  headerText="{commonFunction.getConstants('courseGroup')}" textAlign="center" dataField="courseGroupName"/>
+		<mx:DataGridColumn width="100" editable="false" showDataTips="true"  headerText="{commonFunction.getConstants('minCredits')}" textAlign="center" dataField="minCredits"/>
+		<mx:DataGridColumn width="100" editable="false" showDataTips="true"  headerText="{commonFunction.getConstants('maxCredits')}" textAlign="center" dataField="maxCredits"/>
+		<mx:DataGridColumn width="120" editable="false" showDataTips="true"  headerText="{commonFunction.getConstants('orderInMarksheet')}" textAlign="center" dataField="orderInMarksheet"/>
+		</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>	
+    
+
+</mx:Panel>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) editPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" x="250" y="150" title="{commonFunction.getConstants('changeEvaluationComponentDetails')}"
+				creationComplete="titlewindowInitializeHandler(event)"
+layout="vertical" width="461" height="370" 
+ showCloseButton="true" close="closePopup()" horizontalAlign="center" verticalAlign="middle">
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import common.Mask;
+			import common.commonFunction;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			public var idType:String;
+			public var displayType:String;
+			[Bindable]public var eComp:String;
+			public var infoObject:Object={};
+			public var evalId:String;
+			public var buttonFunction:Function;
+			public var idDescription:String;
+			public var displayDescription:String;
+			public var editButton:Button;
+			public var deleteButton:Button;
+			
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			
+			/**
+			 * The function retrives the list of programs for the 
+			 * concerned university idSS
+			 * */
+			[Bindable]
+			public var details: XML;
+			public var dislpayDetails:XML;
+			public var detailsList:ArrayCollection;
+			var i:int=0;
+			public function onSuccess(event:ResultEvent):void{
+				
+				
+					if(eComp=="idtypes"){	
+						 
+						 details=event.result as XML;
+						 
+						 if(details.sessionConfirm == true)
+             {
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          this.parentDocument.vStack.selectedIndex=0;
+          this.parentDocument.loaderCanvas.removeAllChildren();
+            }	
+						 
+						 editIdTypeCombo.dataProvider = details.role.description;
+						 editIdTypeCombo.selectedItem=idDescription;
+						 
+						 infoObject["userId"] = new Date;
+						infoObject["evaluationComponent"] = "displayType";
+						eComp = "displayType";				
+						getInputDetails.send(infoObject);						
+					}
+					else if(eComp=="displayType"){
+						dislpayDetails=event.result as XML;
+						 
+						 if(dislpayDetails.sessionConfirm == true)
+             {
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          this.parentDocument.vStack.selectedIndex=0;
+          this.parentDocument.loaderCanvas.removeAllChildren();
+            }						
+						editDisplayTypeCombo.dataProvider = dislpayDetails.role.description;
+						editDisplayTypeCombo.selectedItem=displayDescription;
+					}
+					
+					Mask.close();
+
+			}
+			
+			/**
+			 * method executed on request failure 
+			 * */
+			public function onFailure(event:FaultEvent):void{
+				
+				Alert.show(commonFunction.getMessages('requestFailed'),
+				commonFunction.getMessages('failure'),0,null,null,errorIcon);
+				
+				Mask.close();	
+	
+			}			
+
+			/**
+			 * method executed on processing of the request
+			 * */
+			[Bindable]
+			public var successDetails: XML;
+			public function onSetSuccess(event:ResultEvent):void{
+				
+				Mask.close();
+				
+				
+				successDetails=event.result as XML;	
+				
+				 if(successDetails.sessionConfirm == true)
+             {
+            Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          this.parentDocument.vStack.selectedIndex=0;
+          this.parentDocument.loaderCanvas.removeAllChildren();
+            }	
+				
+				
+				if(successDetails.Details.list_values=="success"){
+					
+					Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),
+					commonFunction.getMessages('success'),0,null,null,successIcon);
+					closePopup();
+					buttonFunction();
+					editButton.enabled = false;
+					deleteButton.enabled = false;
+					
+				}else{
+					Alert.show(commonFunction.getMessages('requestFailed'),
+					commonFunction.getMessages('failure'),0,null,null,errorIcon);
+				}	
+				
+						
+			}
+			
+			/**  fires on load 
+			 *   and send request for getting inputs
+			 * */
+			 
+			protected function titlewindowInitializeHandler(event:FlexEvent):void
+			{
+				
+				infoObject["userId"] = new Date;
+				infoObject["evaluationComponent"] = "idtypes";
+				eComp = "idtypes";
+				
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				
+				getInputDetails.send(infoObject);
+				
+			}
+			
+			/**  fires on change of evaluation id 
+			 *   and send request for getting inputs
+			 * */
+			public function onIdChange():void{
+				
+				infoObject["userId"] = new Date;
+				infoObject["evaluationComponent"] = "displayType";
+				eComp = "displayType";				
+				
+				
+				getInputDetails.send(infoObject);
+				
+				
+			}
+			
+			public function onValidationSuccess():void{
+				
+				Alert.show(commonFunction.getMessages('areyousure'),
+				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,updateRecord,questionIcon);	
+				
+			}
+			
+			/**  fires on click of update button
+			 *   and send request for updation
+			 * */
+			public function updateRecord(event:CloseEvent):void 
+			{
+				
+				if(event.detail==Alert.YES){
+					
+					infoObject["evaluationComponentId"] = evalId;
+				
+				infoObject["typeId"] = details.role.(description==editIdTypeCombo.selectedLabel).id;
+				infoObject["displayId"] = dislpayDetails.role.(description==editDisplayTypeCombo.selectedLabel).id;
+				infoObject["activity"] = "update";				
+				
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				
+				setRecords.send(infoObject);
+							
+				closePopup();
+					
+				}		
+			}
+
+		]]>
+	</mx:Script>
+		
+	<mx:HTTPService id="getInputDetails" method="post"
+					url="{commonFunction.getConstants('url')}/evaluationComponent/getInputDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setRecords" method="post"
+					url="{commonFunction.getConstants('url')}/evaluationComponent/setDetails.htm"
+					resultFormat="e4x"
+					result="onSetSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	
+  <mx:Script source="asFiles/editPopupAction.as"/>
+  <mx:Canvas width="390" height="259">
+	<mx:Label x="90" y="52" text="{commonFunction.getConstants('evaluationId')}:"/>
+	<mx:Label x="179" y="52" width="134" id="programLabel"/>
+	<mx:Label x="90" y="94" text="{commonFunction.getConstants('idType')}"/>
+	<mx:Label x="90" y="133" text="{commonFunction.getConstants('displayType')}"/>
+	<mx:ComboBox x="179" y="91" id="editIdTypeCombo" toolTip="{editIdTypeCombo.text}" width="134"></mx:ComboBox>
+	<mx:ComboBox x="179" y="130" id="editDisplayTypeCombo" toolTip="{editDisplayTypeCombo.text}" width="134"></mx:ComboBox>
+	<mx:Button x="90" y="199" label="{commonFunction.getConstants('updateButton')}" click="onValidationSuccess()" id="updatebutton"/>
+	<mx:Button x="183" y="199" label="{commonFunction.getConstants('cancelButton')}" click="cancelpopup()" id="cancel"/>
+  </mx:Canvas>
+</mx:TitleWindow>

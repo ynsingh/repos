@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="266" layout="absolute" showCloseButton="true" close="closeMe()" initialize="titlewindow1InitializeHandler(event)">
+	
+	
+	<mx:HTTPService id="setauthority" method="post"
+					url="{urlPrefix+'setSecondaryAuthority.htm'}"
+					resultFormat="e4x"
+					result="onsetSuccess(event)"
+					fault="onfailFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import mx.controls.Alert;
+			import mx.controls.LinkButton;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.resources.ResourceBundle;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			import common.commonFunction;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;			
+			
+			public var employeeId:String;
+			public var empId:String;
+			public var menuItemId:String;
+			public var authority:String;
+			
+			public var getRoleItems:Function;
+			public var linkbutton:LinkButton;
+			
+			[Bindable]public var urlPrefix:String;
+			
+			
+			/**
+			 *This method is called in order to
+			 * close the popUp window after the
+			 * execution is completed 
+			 **/
+			public function closeMe():void
+			{
+				PopUpManager.removePopUp(this);			
+			}
+			
+			
+			/**
+			 *This method is used in order to set the 
+			 *updated authority on the selected menu item(link)
+			 *for the concerned employee  
+			 **/
+			public function setAutorityOnItem():void{
+				
+				var createAuthority:String;
+				var deleteAuthority:String;
+				var updateAuthority:String;
+				var viewAuthority:String;
+				
+				
+				if(createCheckbox.selected==true){
+					
+					createAuthority="1";
+					
+				}else{
+					createAuthority="0";
+				}
+				if(deleteCheckbox.selected==true){
+					
+					deleteAuthority="1";
+					
+				}else{
+					deleteAuthority="0";
+				}
+				if(updateCheckbox.selected==true){
+					
+					updateAuthority="1";
+					
+				}else{
+					updateAuthority="0";
+				}
+				if(viewCheckbox.selected==true){
+					
+					viewAuthority="1";
+					
+				}else{
+					viewAuthority="0";
+				}
+				
+				authority=createAuthority+
+					deleteAuthority+
+					updateAuthority+
+					viewAuthority;
+
+				
+				/*
+				*The condition varifies the set authority
+				*and asks for confirmation from the user
+				*/
+				if(authority=='1111'){
+					
+					Alert.show(resourceManager.getString('Messages','norevokedAuthority'),
+						resourceManager.getString('Messages','alert'),3,null,onOK,questionIcon);								
+					
+				}
+					/*
+					*The condition varifies the set authority
+					*and alerts him to set up appropriate authority,
+					*then proceed
+					*/
+				else if(authority=='0000'){
+					
+					Alert.show(resourceManager.getString('Messages','oneselect'),
+						resourceManager.getString('Messages','alert'),0,null,null,errorIcon);
+					
+				}
+				else{
+					var assignrole:Object={};
+					assignrole["userId"]=new Date;
+					assignrole["empCode"]=employeeId;
+					assignrole["authority"] = authority;
+					assignrole["employeeId"] = empId;
+					assignrole["menuItemId"]=menuItemId;
+					
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+					
+					setauthority.send(assignrole);		
+					
+				}				
+			}
+			
+
+			
+			public function onsetSuccess(event:ResultEvent):void{				
+				
+				Alert.show(resourceManager.getString('Messages','successOnInsert'),
+					resourceManager.getString('Messages','confirm'),4,null,onOK,successIcon);
+					
+					Mask.close();
+				
+			}
+			
+			public function onfailFailure(event:FaultEvent):void{
+				
+				Mask.close();
+				
+			}
+			
+			/**
+			 *Method to fire the click event of the button
+			 * ie. to reflect the changes made in the record
+			 * onto the application 
+			 **/
+			public function onOK(event:CloseEvent):void{
+				
+				if(event.detail==Alert.OK){
+					
+					closeMe();
+					
+					getRoleItems.call();
+					
+					linkbutton.enabled=false;
+					
+				}
+				
+				if(event.detail==Alert.YES){
+					
+					var assignrole:Object={};
+					assignrole["userId"]=new Date;
+					assignrole["empCode"]=employeeId;
+					assignrole["authority"] = authority;
+					assignrole["employeeId"] = empId;
+					assignrole["menuItemId"]=menuItemId;
+					
+					setauthority.send(assignrole);		
+					
+					closeMe();					
+					
+				}
+				
+				if(event.detail==Alert.NO){
+					
+					closeMe();				
+					
+				}
+				
+				Mask.close();
+				
+			}
+
+			protected function titlewindow1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=resourceManager.getString('Constants','url')+"/employeerole/";
+			}
+
+		]]>
+		
+		
+	</mx:Script>
+	
+	<mx:Label text="{resourceManager.getString('Constants','updateButton')} {resourceManager.getString('Constants','user')} {resourceManager.getString('Constants','authority')}" x="10" y="0" fontWeight="bold"/>
+	<mx:Label text="{resourceManager.getString('Constants','itemname')}" x="10" y="37" fontWeight="bold"/>
+	<mx:Label x="88" y="37" id="itemNameId"/>
+	<mx:CheckBox x="27" y="63" label="{resourceManager.getString('Constants','create')}" id="createCheckbox" selected="true"/>
+	<mx:CheckBox x="159" y="63" label="{resourceManager.getString('Constants','deleteButton')}" id="deleteCheckbox" selected="true"/>
+	<mx:CheckBox x="27" y="93" label="{resourceManager.getString('Constants','updateButton')}" id="updateCheckbox" selected="true"/>
+	<mx:CheckBox x="159" y="93" label="{resourceManager.getString('Constants','view')}" id="viewCheckbox" selected="true"/>
+	<mx:Button x="27" y="171" label="{resourceManager.getString('Constants','updateButton')}" id="updateauthority" click="setAutorityOnItem()"/>
+	<mx:Button
+visible="true" label="{commonFunction.getConstants('cancelButton')}" click="PopUpManager.removePopUp(this)" x="159" y="171"/>
+</mx:TitleWindow>

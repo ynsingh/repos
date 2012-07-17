@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" title="Reports" 
+	xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*" creationComplete="onCreationComplete()">
+	<mx:Script source="asFiles/PrintReports.as"/>
+	<mx:Script>
+		<![CDATA[			
+			import common.commonFunction;			
+		]]>		
+	</mx:Script>
+	
+	<mx:HTTPService id="getUniversitySessions" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getUniversitySession.htm"
+				resultFormat="e4x" 
+				result="getUniversitySessionList(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>	
+				
+	<mx:HTTPService id="getReportsStatus" method="post"
+					url="{commonFunction.getConstants('url')}/printMechanism/getReportsSession.htm"
+					resultFormat="e4x"
+					result="onSuccessReportDetails(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getEntities" method="post"
+				url="{commonFunction.getConstants('url')}/printMechanism/getEntities.htm"
+				resultFormat="e4x" 
+				result="getEntityList(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+	<mx:HTTPService id="getCombinations" method="post"
+				url="{commonFunction.getConstants('url')}/printMechanism/getCombinations4Entity.htm"
+				resultFormat="e4x" 
+				result="getCombinationsList(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+	<mx:HTTPService id="reportRequest" method="post"
+				resultFormat="e4x" 
+				result="onSuccess(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>
+		
+	<mx:HTTPService id="downloadRequest" method="post"
+				url="{commonFunction.getConstants('url')}/report/getReportPath.htm"
+				resultFormat="e4x" 
+				result="onDownloadRequestSuccess(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+	<mx:HTTPService id="printReport" method="post"
+				url="{commonFunction.getConstants('url')}/printReport/printReport.htm"
+				resultFormat="e4x" 
+				result="onPrintReportSuccess(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>
+	
+	<mx:HTTPService id="generalReportsList" method="post"
+				url="{commonFunction.getConstants('url')}/printMechanism/getGeneralReports.htm"
+				resultFormat="e4x" 
+				result="onGeneralSuccess(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>
+	
+		<mx:HTTPService id="getReportDetailsWithoutEntity" method="post"
+				url="{commonFunction.getConstants('url')}/printMechanism/getReportDetailsWithoutEntity.htm"
+				resultFormat="e4x" 
+				result="reportDetailsWithoutEntitySuccess(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>			
+							
+	<mx:Label x="20" y="24" text="{commonFunction.getConstants('fromyear')}"/>
+	<mx:ComboBox x="156" y="21" id="fromYear" change="onYearChange()" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" width="160"></mx:ComboBox>
+	<mx:Label x="389" y="24" text="{commonFunction.getConstants('toyear')}"/>
+	<mx:Label x="520" y="24" id="toYear"></mx:Label>
+	
+	<mx:Panel layout="absolute" x="20" y="52" width="100%" height="494"  visible="false"
+		id="canvasId" title="{commonFunction.getConstants('reportname')}" verticalScrollPolicy="off">
+	<mx:RadioButtonGroup id="rbGroup" >
+	</mx:RadioButtonGroup>
+	<mx:TileList height="395" itemClick="showAlert(event)"
+		 columnCount="2" rowCount="15" verticalScrollPolicy="off" x="79.5" y="10"  id="reportTileList" 
+		  width="60%" direction="vertical" borderThickness="2">
+		 <mx:itemRenderer>
+		 	<mx:Component>
+		 	<mx:HBox horizontalAlign="left">
+		 		<mx:RadioButton group="{outerDocument.rbGroup}"  label="{data.reportDescription}" >		 	
+		 		</mx:RadioButton>
+		 	</mx:HBox>		 			 	
+		 	</mx:Component>
+		 </mx:itemRenderer>		
+	</mx:TileList>
+	
+	<mx:TileList height="395" itemClick="showAlert(event)" columnCount="2" rowCount="15" visible="false" 
+		verticalScrollPolicy="off" x="79.5" y="10" id="reportTileList2" width="510" direction="vertical">
+		 <mx:itemRenderer>
+		 	<mx:Component>
+		 	<mx:HBox horizontalAlign="left">
+		 		<mx:RadioButton group="{outerDocument.rbGroup}"  label="{data.reportDescription}" >		 	
+		 		</mx:RadioButton>
+		 	</mx:HBox>		 			 	
+		 	</mx:Component>
+		 </mx:itemRenderer>		
+	</mx:TileList>
+		
+	<mx:LinkButton x="572" y="413" label="{commonFunction.getConstants('nextButton')}" enabled="false" click="onClickNext()" id="nextButton"/>
+	<mx:LinkButton x="484" y="413" label="{commonFunction.getConstants('previousButton')}" enabled="false" click="onPrevClick()" id="previosButton"/>
+	
+	</mx:Panel>
+	
+	<mx:Canvas x="20" y="132"  height="235" styleName="GridCanvas" visible="false" id="gridCanvasId">
+	<mx:Label text="{commonFunction.getConstants('details')}" fontWeight="bold" fontSize="14" x="22" y="0"/>
+	
+	<mx:DataGrid x="5" y="28" id="reportsDetails" editable="true" height="182" width="100%" sortableColumns="false">
+		<mx:columns>							
+			<!--<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('branchName')}" width="150" dataField="branchName" draggable="false" textAlign="center" color="#000000"/>
+			<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('specializationName')}" width="150" dataField="specializationName" draggable="false" textAlign="center" color="#000000"/>
+			<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('semesterName')}" width="110" dataField="semesterName" draggable="false" textAlign="center" color="#000000"/>
+			<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('semesterStartDate')}" width="130" dataField="semesterStartDate" draggable="false" textAlign="center" color="#000000"/>
+			<mx:DataGridColumn editable="false" headerText="{commonFunction.getConstants('semesterEndDate')}" width="130" dataField="semesterEndDate" draggable="false" textAlign="center" color="#000000"/>-->
+			<mx:DataGridColumn headerText="{commonFunction.getConstants('reportactivity')}" editorDataField="label" rendererIsEditor="true" width="150" textAlign="center" color="#000000">		
+				<mx:itemRenderer>
+					<mx:Component>
+					<mx:HBox horizontalGap="5" horizontalAlign="center">
+						<mx:Button id="generateId" enabled="{outerDocument.genBoolean}" click="outerDocument.onButtonClick(event,data.reportCode)" 
+							icon="@Embed(source='/images/generate2.png')" height="23" width="37" toolTip="{outerDocument.genToolTip}">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;							
+								]]>
+							</mx:Script>						
+						</mx:Button>
+						<mx:Button id="downloadId" enabled="{outerDocument.dwnBoolean}" click="outerDocument.onButtonClick(event,data.reportCode)"
+							icon="@Embed(source='/images/downloads1.png')" height="23" width="37" toolTip="{outerDocument.dwnToolTip}">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;							
+								]]>
+							</mx:Script>							
+						</mx:Button>
+						<mx:Button id="printId" enabled="{outerDocument.dwnBoolean}" click="outerDocument.onButtonClick(event,data.reportCode)"
+							icon="@Embed(source='/images/print1.png')" height="23" width="37" toolTip="{outerDocument.printToolTip}">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;							
+								]]>
+							</mx:Script>
+						</mx:Button>
+					</mx:HBox>				
+					</mx:Component>
+				</mx:itemRenderer>		
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+	</mx:Canvas>
+	<mx:Label x="20" y="85" text="{commonFunction.getConstants('entityName')}" visible="false" id="entityLabel"/>
+	<mx:ComboBox x="156" y="82" visible="false" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1"
+		 width="160" toolTip="{entityComboBox.text}" id="entityComboBox" change="onEntityChange()"></mx:ComboBox>
+	<mx:Label x="20" y="52" text="{commonFunction.getConstants('report')}" visible="false" id="reportLabel"/>
+	<mx:Label x="156" y="52" id="reportLabelId" visible="false"/>
+	<mx:Button x="20" y="375" label="{commonFunction.getConstants('back')}" id="backButton" visible="false" click="onClickBack()"/>
+	<mx:Button x="20" y="153" label="Generate" visible="false" id="gene"/>
+	<mx:Button x="294" y="153" label="Print" visible="false" id="down"/>
+	<mx:Button x="156" y="153" label="Download" visible="false" id="pri"/>
+	<mx:Button x="389" y="83" label="{commonFunction.getConstants('back')}" id="backButton2" visible="false" click="onClickBack()"/>
+</mx:Panel>

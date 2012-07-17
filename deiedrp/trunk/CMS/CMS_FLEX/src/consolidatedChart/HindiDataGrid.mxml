@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" textAlign="center" creationComplete="onCreate()" width="1220" title="Enrollment Student List">
+	<mx:Script>
+		<![CDATA[
+			import mx.printing.FlexPrintJobScaleType;
+			import mx.managers.PopUpManager;
+			import mx.printing.FlexPrintJob;
+			public function onCreate():void
+			{
+				const printJob:FlexPrintJob = new FlexPrintJob();
+
+				if ( printJob.start() )
+				{
+					printJob.addObject(this,FlexPrintJobScaleType.MATCH_WIDTH);
+						
+					printJob.send();
+				}
+				PopUpManager.removePopUp(this);
+			}
+			//
+		]]>
+	</mx:Script>
+	<mx:Text id="infoLabel" textAlign="center" fontSize="20" fontWeight="bold" fontFamily="Times New Roman" width="100%"/>
+	<mx:DataGrid id="hindiDataGrid" x="15" y="40" verticalScrollPolicy="on" horizontalScrollPolicy="off">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Name" width="150" dataField="name"/>
+			<mx:DataGridColumn headerText="Name in Hindi" width="200" dataField="nameHindi"/>
+			<mx:DataGridColumn headerText="Date of Birth" width="100" dataField="dob"/>
+			<mx:DataGridColumn headerText="Father's Name" width="150" dataField="fname"/>
+			<mx:DataGridColumn headerText="Father's Name in Hindi" width="200" dataField="fnameHindi"/>
+			<mx:DataGridColumn headerText="Mother's Name" width="150" dataField="mname"/>
+			<mx:DataGridColumn headerText="Mother's Name in Hindi" width="200" dataField="mnameHindi"/>
+		</mx:columns>
+	</mx:DataGrid>
+</mx:Panel>

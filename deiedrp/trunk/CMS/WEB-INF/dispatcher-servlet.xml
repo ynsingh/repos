@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================= -->
+<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+<!-- ================================================================= -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="viewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" />
+  
+  <!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+
+<property name="viewClass" value=
+"org.springframework.web.servlet.view.JstlView"/>
+
+<property name="suffix" value=".htm"/>
+
+</bean>
+  -->
+<!-- Manpreet -->
+  <bean name="/registrationform/*.htm" class="in.ac.dei.edrp.cms.controller.studentregistration.StudentRegistrationController" p:studentRegistrationFormDao-ref="StudentRegistrationFormDao"/>
+<bean name="/*.htm" class="in.ac.dei.edrp.cms.controller.studentregistration.StudentVerificationController" p:studentVerificationDao-ref="StudentVerificationDao"/>
+  <bean name="/studentlogin/*.htm" class="in.ac.dei.edrp.cms.controller.studentregistration.StudentLoginController" p:loginConnectDao-ref="LoginConnectDao"/>
+<bean name="/entity/*.htm" class="in.ac.dei.edrp.cms.controller.entity.EntityMasterController" p:entityMasterDao-ref="EntityMasterDao"/>
+<bean name="/programmaster/*.htm" class="in.ac.dei.edrp.cms.controller.programmaster.ProgramMasterController" p:programMasterDao-ref="ProgramMasterDao"/>
+<bean name="/programtermdetails/*.htm" class="in.ac.dei.edrp.cms.controller.programmaster.ProgramTermDetailsController" p:programTermDetailsDao-ref="ProgramTermDetailsDao"/>
+<bean name="/pta/*.htm" class="in.ac.dei.edrp.cms.controller.studentregistration.ProbableToActualController" p:probableToActualDao-ref="ProbableToActualDao"/>
+<bean name="/awardsheet/*.htm" class="in.ac.dei.edrp.cms.controller.awardsheet.AwardSheetController" p:awardSheetDao-ref="AwardSheetDao"/>
+
+<bean name="/pdf/*.htm" class="in.ac.dei.edrp.cms.controller.utility.RevenueReportController" />
+
+<bean name="/progsetup/*.htm" class="in.ac.dei.edrp.cms.controller.programcoursesetup.ProgramCourseSetupController"
+ p:programCourseSetupDAO-ref="programCourseSetupDAO"/>
+ 
+<bean name="/manageprogsetup/*.htm" class="in.ac.dei.edrp.cms.controller.programcoursesetup.ManageProgramCourseController"
+ p:manageProgramCourseSetupDAO-ref="manageProgramCourseSetupDAO"/>
+
+<bean name="/programofferedby/*.htm" class="in.ac.dei.edrp.cms.controller.programofferedby.CreateProgramOfferedByController"
+ p:createProgramOfferedByDAO-ref="createProgramOfferedByDAO"/>
+ 
+ <bean name="/manageprogramofferedby/*.htm" class="in.ac.dei.edrp.cms.controller.programofferedby.ManageProgramOfferedByController"
+ p:manageProgramOfferedByDAO-ref="manageProgramOfferedByDAO"/>
+ 
+ <bean name="/programregistration/*.htm" class="in.ac.dei.edrp.cms.controller.programregistration.BuildProgramRegistrationController"
+ p:buildProgramRegistrationDAO-ref="buildProgramRegistrationDAO"/>
+ 
+ <bean name="/manageprogramregistration/*.htm" class="in.ac.dei.edrp.cms.controller.programregistration.ManageProgramRegistrationController"
+ p:manageProgramRegistrationDAO-ref="manageProgramRegistrationDAO"/>
+
+
+   <bean name="/cancelregistration/*.htm" class="in.ac.dei.edrp.cms.controller.studentregistration.CancelStudentRegistrationController" p:cancelRegistrationDao-ref="CancelStudentRegistrationDao"/>
+ 
+
+<!-- Manpreet code End -->
+
+
+
+	<!-- URL create by: Amir starts -->
+<!-- Amir code starts--> 
+	
+	<bean name="/courseGroup/*.htm"
+		class="in.ac.dei.edrp.cms.controller.coursegroup.CourseGroupController"
+		p:courseGroupService-ref="courseGroup" />
+		
+	<bean name="/courseMaster/*.htm"
+		class="in.ac.dei.edrp.cms.controller.coursemaster.CourseMasterController"
+		p:courseMasterService-ref="courseMaster" />
+		
+	<bean name="/marksApproval/*.htm"
+		class="in.ac.dei.edrp.cms.controller.coursemarksapproval.MarksApprovalController"
+		p:marksApprovalService-ref="marksApprovalService"/>
+	
+	<bean name="/enrollmentForm/*.htm"
+		class="in.ac.dei.edrp.cms.controller.enrollment.EnrollmentController"
+		p:enrollmentService-ref="enrollmentService"/>
+		
+	<bean name="/login/*.htm" class="in.ac.dei.edrp.cms.controller.login.LoginController"
+		p:loginService-ref="login" />
+		
+	<bean name="/studentMaster/*.htm"
+		class="in.ac.dei.edrp.cms.controller.studentmaster.StudentMasterController"
+		p:studentMasterService-ref="studentMasterService"/>
+		
+	<bean name="/systemTableTwo/*.htm"
+		class="in.ac.dei.edrp.cms.controller.systemtabletwo.SystemTableTwoController"
+		p:systemTableTwoService-ref="systemTableTwo" />
+		
+	
+		<bean name="/universityReservation/*.htm"
+		class="in.ac.dei.edrp.cms.controller.universityreservation.UniversityReservationController"
+		p:universityReservationService-ref="universityReservation" />
+
+<bean name="/AssociateMOU/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.associateMOU.AssociateMOUController"
+		p:associateMOUDAO-ref="associateMOUDAO"/>
+		
+		<bean name="/CourseEvaluationComponent/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.courseEvaluationComponent.CecController"
+		p:cecDAO-ref="cecDAO"/>
+		
+<bean name="/prestagingData/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.prestaging.PrestagingController"
+		p:prestagingService-ref="prestagingService"/>
+		
+	<bean name="/settings/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.settings.SettingController"
+		p:settingService-ref="settingService"/>
+		
+	<bean name="/sendPassword/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.sendpassword.SendPasswordController"
+		p:sendPasswordService-ref="sendPasswordService"/>
+		
+	<bean name="/addDropCourse/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.adddropcourse.AddDropCourseController"
+		p:addDropCourseService-ref="addDropCourseService"/>
+
+	<bean name="/prestagingTransfer/*.htm"
+		class="in.ac.dei.edrp.cms.controller.prestaging.TransferEnrollmentToPrestagingController"
+		p:transferEnrollmentToPrestagingService-ref="transferEnrollmentToPrestagingService" />
+
+	<bean name="/consolidatedChart/*.htm"
+		class="in.ac.dei.edrp.cms.controller.consolidatedchart.ConsolidatedChartController"
+		p:consolidatedChartService-ref="consolidatedChartService"
+		p:reportDao-ref="reportDao" 
+		p:consolidatedChartGenerator-ref="consolidatedChartGenerator"/>
+
+	<bean name="/enrollmentReport/*.htm"
+		class="in.ac.dei.edrp.cms.controller.enrollment.EnrollmentReportController"
+		p:enrollmentService-ref="enrollmentService" 
+		p:reportDao-ref="reportDao"/>
+
+	<bean name="/prestagingOldTransfer/*.htm"
+		class="in.ac.dei.edrp.cms.controller.prestaging.TransferOldStudentToPrestagingController"
+		p:transferOldStudentToPrestagingService-ref="transferOldStudentToPrestagingService" />
+
+		
+<!-- Amir code ends -->
+
+
+<!-- Ankit code starts -->
+<bean name="/activitymaster/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.activitymaster.ActivityMasterController" 
+		p:activityMasterDAO-ref="activityMasterDAO"/>
+		
+<bean name="/buildactivitymaster/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.buildactivitymaster.BuildActivityMasterController"
+		p:buildActivityMasterDAO-ref="buildActivityMasterDAO"/>		
+
+		<bean name="/associatecoursewithinstructor/*.htm"
+		class="in.ac.dei.edrp.cms.controller.associatecoursewithinstructor.AssociateCourseWithInstructorController"
+		p:associateCourseWithInstructorDAO-ref="associateCourseWithInstructorDAO"/>
+
+<bean name="/programgroup/*.htm"
+		class="in.ac.dei.edrp.cms.controller.programgroup.ProgramGroupController"
+		p:programGroupDAO-ref="programGroupDAO"/>			
+
+<bean name="/reports/*.htm"
+		class="in.ac.dei.edrp.cms.controller.reportgeneration.SubjectWiseMeritListController"
+		p:subjectWiseMeritListDAO-ref="subjectWiseMeritListDAO"/>
+
+<bean name="/subjectcategorywisestudentlist/*.htm"
+		class="in.ac.dei.edrp.cms.controller.reportgeneration.SubjectCategoryWiseStudentListController"
+		p:subjectCategoryWiseStudentListDAO-ref="subjectCategoryWiseStudentListDAO"/>
+		
+<bean name="/finalsemesterresultstatistics/*.htm"
+		class="in.ac.dei.edrp.cms.controller.reportgeneration.FinalSemesterResultStatisticsController"
+		p:finalSemesterResultStatisticsDAO-ref="finalSemesterResultStatisticsDAO"
+		p:reportDao-ref="reportDao"/>		
+ 
+ <bean name="/eodcontrol/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.eodcontrol.EodControlController" 
+		p:activityMasterDAO-ref="eodControlDAO"/>
+<!-- Ankit code ends -->		 	
+<!--Deepak Code starts-->
+<!--1-For Starting any activity-->
+ 	  <bean name="/startActivity/*.htm" class="in.ac.dei.edrp.cms.controller.activitymaster.StartActivityController"
+ p:startActivityDao-ref="startActivityDao"/>
+
+<!--1-For PR2 any PR5-->
+<bean name="/prestaging/*.htm" class="in.ac.dei.edrp.cms.controller.registration.prestagingcontroller.RegistrationActivityController"
+ p:readyPreStagingDAO-ref="readyPreStagingDAO"/>
+
+<!--Deepak Code ends-->
+
+ <!-- Ashu code starts -->
+<bean name="/progresscard/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.ProgressCard" p:progressCardDao-ref = "progressCardDao"
+p:reportDao-ref="reportDao"  />
+       <bean name="/progresscardinfo/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.ProgressCardInfoController" p:progressCardInfoDao-ref="progressCardInfoDao"/>   	
+
+	   <bean name="/progresscardprint/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.GettingFilesInFolder" p:reportPrintDao-ref = "reportPrintDao"/>
+		<bean name="/studentCheckList/*.htm" class="in.ac.dei.edrp.cms.controller.studentregistration.TempCoursePdfController" p:tempCoursePdfDao-ref="tempCoursePdfDao"> </bean>
+	 <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+       <property name="location">
+          <value>/WEB-INF/applicationContext.xml</value>
+       </property>
+       <property name="order" value="0">       	
+       </property>
+    </bean>
+<!-- Ashu Code ends -->
+
+<!-- Ashish Code Starts -->
+  <bean name="/universityMaster/*.htm" class="in.ac.dei.edrp.cms.controller.university.UniversityMasterController" p:universityMasterConnect-ref="universityMasterConnect"/>
+  <bean name="/programCourseType/*.htm" class="in.ac.dei.edrp.cms.controller.programcoursetypesummary.ProgramCourseTypeSummaryController" p:programCourseTypeSummaryConnect-ref="programCourseTypeSummaryConnect"/>
+  <bean name="/advanceprogramSetup/*.htm" class="in.ac.dei.edrp.cms.controller.advanceparentprogram.AdvanceParentProgramController" p:advanceParentProgramConnect-ref="advanceParentProgramConnect"/>
+  <bean name="/employeeMaster/*.htm" class="in.ac.dei.edrp.cms.controller.employee.EmployeeMasterController" p:employeeMasterConnect-ref="employeeMasterConnect"/>
+  <bean name="/switchRule/*.htm" class="in.ac.dei.edrp.cms.controller.switchrule.SwitchRuleController" p:switchRuleConnect-ref="switchRuleConnect"/>
+  <bean name="/evaluationComponent/*.htm" class="in.ac.dei.edrp.cms.controller.evaluationcomponent.EvaluationComponentController" p:evaluationComponentConnect-ref="evaluationComponentConnect"/>	
+  <bean name="/externalExaminerCourse/*.htm" class="in.ac.dei.edrp.cms.controller.externalexaminercourse.ExternalExaminerCourseController" p:externalExaminerCourseConnect-ref="externalExaminerCourseConnect"/>
+  <bean name="/MOUCourses/*.htm" class="in.ac.dei.edrp.cms.controller.moucourses.MouCoursesController" p:mouCoursesConnect-ref="mouCoursesConnect"/>
+  <bean name="/programswitch/*.htm" class="in.ac.dei.edrp.cms.controller.programswitch.ProgramSwitchController" p:programSwitchConnect-ref="programSwitchConnect"/>		
+  <bean name="/cgpaDivision/*.htm" class="in.ac.dei.edrp.cms.controller.cgpadivision.CgpaDivisionController" p:cgpaDivisionConnect-ref="cgpaDivisionConnect"/>
+  <bean name="/universityrole/*.htm" class="in.ac.dei.edrp.cms.controller.university.UnivRoleController" p:roleConnect-ref="RoleConnect"/>
+  <bean name="/employeerole/*.htm" class="in.ac.dei.edrp.cms.controller.employee.EmployeeRoleController" p:employeeRoleConnect-ref="EmployeeRoleConnect"/>
+<bean name="/degreeList/*.htm" class="in.ac.dei.edrp.cms.controller.degreelist.DegreeListController" p:degreeListConnect-ref="degreeListConnect"
+p:reportDao-ref="reportDao" />
+<bean name="/resultReport/*.htm" class="in.ac.dei.edrp.cms.controller.resultreport.ResultReportController" 
+p:resultReportConnect-ref="resultReportConnect"
+p:reportDao-ref="reportDao"/>
+ <!-- Ashish Code Ends -->
+
+ 
+  <!-- rohit start -->
+  <bean name="/studentRemedial/*.htm" class="in.ac.dei.edrp.cms.controller.studentremedial.StudentRemedialController"   p:studentRemedialConnect-ref="studentRemedialConnect"/>
+
+<bean name="/updatePrestaging/*.htm" class="in.ac.dei.edrp.cms.controller.updateprestaging.UpdatePrestagingController"   p:updatePrestagingConnect-ref="updatePrestagingConnect"/>
+
+<bean name="/correctionInRegistration/*.htm" class="in.ac.dei.edrp.cms.controller.correctioninregistration.CorrectionInRegistrationController"   p:correctionInRegistrationConnect-ref="correctionInRegistrationConnect"/>
+  <bean name="/namecorrection/*.htm" class="in.ac.dei.edrp.cms.controller.namecorrection.NameCorrectionController"   p:nameCorrectionConnect-ref="nameCorrectionConnect"/>
+
+<bean name="/consolidatedMarksheet/*.htm" 
+		class="in.ac.dei.edrp.cms.controller.consolidatedchart.ConsolidatedMarksheetController"
+		p:marksheetService-ref="marksheetService"
+        p:consolidatedMarkSheetGeneration-ref="consolidatedMarkSheetGenerator"/>
+
+<bean name="/studentIssue/*.htm" class="in.ac.dei.edrp.cms.controller.studentissue.StudentIssueController" p:studentIssueConnect-ref="studentIssueConnect"/>
+
+  <!-- rohit end -->
+  
+  <!-- nupur manual process start -->
+	 <bean name="/studentUpload/*.htm" class="in.ac.dei.edrp.cms.controller.manualprocess.StudentUpload" p:studentUploadDao-ref="studentUploadDao"></bean>
+     <bean name="/studentUploadFirstSemester/*.htm" class="in.ac.dei.edrp.cms.controller.manualprocess.StudentUpload" p:studentUploadDao-ref="studentUploadFirstSemesterDao"></bean>
+	 <bean name="/manualProcess/*.htm" class="in.ac.dei.edrp.cms.controller.manualprocess.ManualProcessController" p:manualProcessDao-ref="manualProcessDao"/>
+     <bean name="/UploadStudentNameInfo/*.htm"
+	class="in.ac.dei.edrp.cms.controller.manualprocess.StudentNameInfoUploadController"
+	p:studentNameInfoUploadDao-ref="studentNameInfoUploadDao"/>
+    <bean name="/studentMarksSummary/*.htm" class="in.ac.dei.edrp.cms.controller.studentmarkssummary.StudentMarksSummary" p:studentMarksSummaryDao-ref="studentMarksSummaryDao"></bean>
+	<!-- nupur manual process end -->
+<!-- nupur final semester result cate process start -->
+	<bean name="/finalSemesterResultStatisticsCategoryWise/*.htm"
+	class="in.ac.dei.edrp.cms.controller.reportgeneration.FinalSemesterResultStatisticsCategoryWiseController"
+	p:finalSemesterResultStatisticsCategoryWiseDAO-ref="finalSemesterResultStatisticsCategoryWiseDAO"
+	p:reportDao-ref="reportDao"/>	
+    <bean name="/transcript/*.htm"
+	class="in.ac.dei.edrp.cms.controller.reportgeneration.TranscriptController"
+	p:transcriptDao-ref="transcriptDao" p:reportDao-ref="reportDao" />
+<!-- nupur final semester result cate process end -->
+
+<!-- Devendra code starts--> 
+	 <bean name="/buildnextsession/*.htm" class="in.ac.dei.edrp.cms.controller.buildnextsession.BuildNextSessionController" p:buildSessionDao-ref="buildSessionDao"/>
+	 <bean name="/systemvalue/*.htm" class="in.ac.dei.edrp.cms.controller.utility.ResetSystemValueController" p:systemValueService-ref="systemValueService"/>
+	 <bean name="/buildinstructorcourse/*.htm" class="in.ac.dei.edrp.cms.controller.buildinstructorcourse.InstructorCourseBuildController" p:buildInstructorCourseDao-ref="buildInstructorCourseDao"/>
+	 <bean name="/buildsemesterendprocess/*.htm" class="in.ac.dei.edrp.cms.controller.buildsemesterendprocess.BuildSemesterEndProcessController" p:buildSemesterEndProcessDao-ref="buildSemesterEndProcessDao"/>
+	 <bean name="/provisionalcertificate/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.ProvisionalCertificateController" p:provisionalCertificate-ref="provisionalCertificate"></bean> 
+	 <bean name="/cancelcoursegroup/*.htm" class="in.ac.dei.edrp.cms.controller.cancelcoursegroup.CancelCourseGroupController" p:cancelCourseGroupService-ref="cancelCourseGroupService" />
+	 <bean name="/finalstudentlist/*.htm" class="in.ac.dei.edrp.cms.controller.finalstudentlist.FinalStudentListController" p:finalStudentService-ref="finalStudentService" p:reportDao-ref="reportDao" />
+	 <bean name="/withdrawstudent/*.htm" class="in.ac.dei.edrp.cms.controller.withdrawstudent.WithdrawStudentController" p:withdrawStudentService-ref="withdrawStudentService" p:cancelRegistrationDao-ref="CancelStudentRegistrationDao"/>
+<!-- Devendra code Ends--> 
+<!-- ashish mohan start -->
+<bean name="/performance/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.UnsatisfactoryPerformanceController" p:unsatisfactoryPerformanceDao-ref="unsatisfactoryPerformanceDao"
+p:meritListCPPdf-ref="MeritListCP"/>
+<bean name="/cancelfinalregistration/*.htm" class="in.ac.dei.edrp.cms.controller.cancelfinalregistration.CancelController" p:cancelDao-ref="cancelDao"/>
+<bean name="/coursegradelimit/*.htm" class="in.ac.dei.edrp.cms.controller.coursegradelimit.GradeLimitController" p:gradeLimitDao-ref="gradeLimitDao"/>
+<bean name="/awardBlankRequestCorrection/*.htm" class="in.ac.dei.edrp.cms.controller.correctionInAwardBlank.AwardBlankRequestResolved" p:awardBlankRequestResolvedDao-ref="AwardBlankRequestResolvedDao"/>
+<!-- ashish mohan ends -->
+<!-- Mandeep External Examinar Detail Start -->
+ <bean name="/externalExaminarDetail/*.htm" class="in.ac.dei.edrp.cms.controller.externalexaminercourse.ExternalExaminarDetailController" p:externalExaminarDetailDao-ref="externalExaminarDetailDao"/>
+ <bean name="/courseWiseExaminerPdf/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.CourseWisePanelOfExaminersController" p:courseWisePanelOfExaminersDao-ref="courseWisePanelOfExaminersDao"/>
+ <bean name="/delayInDisplay/*.htm" class="in.ac.dei.edrp.cms.controller.reportgeneration.DelayInDisplayMarksController" p:courseWisePanelOfExaminersDao-ref="courseWisePanelOfExaminersDao"/>
+ <!-- Mandeep External Examinar Detail end -->
+<bean name="/report/*.htm" class="in.ac.dei.edrp.cms.controller.report.ReportController" />
+<bean name="/REN_11/*.htm"
+		class="in.ac.dei.edrp.cms.controller.reportgeneration.FinalSemesterResultStatisticsController"
+		p:finalSemesterResultStatisticsDAO-ref="finalSemesterResultStatisticsDAO"
+		p:reportDao-ref="reportDao" />
+<bean name="/printReport/*.htm" class="in.ac.dei.edrp.cms.controller.report.PrintController" p:printReport-ref = "printReport"/>
+<bean name="/printMechanism/*.htm" class="in.ac.dei.edrp.cms.controller.report.printMechanismController" p:printMechanismDao-ref="printMechanismDao"/>
+<bean name="/remoteLogin/*.htm" class="in.ac.dei.edrp.cms.controller.login.RemoteLoginController" p:remoteLoginDao-ref="remoteLoginDao"/>
+<!-- Arush code starts--> 
+	 <bean name="/programswitches/*.htm" class="in.ac.dei.edrp.cms.controller.studentprogramswitch.StudentprogramswitchController" p:studentswitchdao-ref="studentprogramswitch"/>
+
+<!-- Dheeraj Code Starts -->
+<bean name="/awardBlankCorrection/*.htm" class="in.ac.dei.edrp.cms.controller.correctionInAwardBlank.AwardBlankCorrectionController" p:awardBlankCorrectionDao-ref="awardBlankCorrectionDao"/>
+<bean name="/admissionIntegration/*.htm" class="in.ac.dei.edrp.cms.controller.admissionIntegration.AdmissionIntegrationController" p:admissionIntegrationDao-ref="admissionIntegrationDao"/>
+<bean name="/withdrawMarksTransfer/*.htm" class="in.ac.dei.edrp.cms.controller.withdrawmarkstransfer.WithdrawMarksTransferController" p:withdrawMarksTransferDao-ref="withdrawMarksTransferDao"/>
+<!-- Dheeraj Code Ends -->
+</beans>

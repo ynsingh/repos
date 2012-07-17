@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  width="370" height="336" xmlns:net="flash.net.*" creationComplete="creationComplete()" borderStyle="solid" backgroundColor="#ffffff" borderColor="#000505" cornerRadius="20" fontSize="12" borderThickness="2" themeColor="#4B88EC">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/ResultFileNameUploadAs.as"/>
+
+<mx:HTTPService id="setStudentNameEntry" method="POST"
+					url="{urlPrefix1+'uploadStudentNameInfo.htm'}"
+					resultFormat="e4x"
+					result="setStudentNameEntrySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getOwnerEntity" method="POST"
+					url="{urlPrefix+'getOwnerEntity.htm'}"
+					resultFormat="e4x"
+					result="getOwnerEntitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+																							
+	<mx:Label x="38" y="89" text="File Name " fontWeight="normal" width="75" textAlign="left"/>	
+		<mx:TextArea x="168" y="85" height="22" width="160" wordWrap="false" editable="true" id="fileNameText" themeColor="#979C9F" focusOut="{if(fileNameText.text!=''){UIComponent(fileNameText).errorString=''}}"/>																						
+		<mx:Label x="38" y="142" text="Entity Name " fontWeight="normal" width="95" textAlign="left"/>
+		<mx:ComboBox x="168" y="139" width="160" enabled="true" id="entityName" toolTip="{entityName.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="submit.enabled=true"></mx:ComboBox>
+		
+		<mx:Button x="103" y="243" label="Submit" click="submitData()" id="submit" enabled="false"/>
+		<mx:Button x="193" y="243" label="Cancel" click="exit()"/>
+	<mx:StringValidator id="fileNameVal" source="{fileNameText}" property="text" required="true" trigger="{submit}" triggerEvent="click"/>
+	<mx:NumberValidator id="entityNameVal" source="{entityName}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>	
+</mx:Canvas>

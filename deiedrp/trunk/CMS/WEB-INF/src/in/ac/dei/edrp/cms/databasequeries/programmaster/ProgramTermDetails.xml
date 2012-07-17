@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+	<!--
+		/* * @(#) ProgramTermDetails.xml * Copyright (c) 2011 EdRP, Dayalbagh
+		Educational Institute. * All Rights Reserved. * * Redistribution and
+		use in source and binary forms, with or * without modification, are
+		permitted provided that the following * conditions are met: * *
+		Redistributions of source code must retain the above copyright *
+		notice, this list of conditions and the following disclaimer. * *
+		Redistribution in binary form must reproducuce the above copyright *
+		notice, this list of conditions and the following disclaimer in * the
+		documentation and/or other materials provided with the * distribution.
+		* * * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES *
+		OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE *
+		DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR
+		ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR *
+		CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF
+		SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR *
+		BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, *
+		EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors:
+		Members of EdRP, Dayalbagh Educational Institute */
+	-->
+
+<sqlMap namespace="ProgTermDetail">
+
+	<typeAlias alias="programTermInfo"
+		type="in.ac.dei.edrp.cms.domain.programmaster.ProgramTermDetailsInfoGetter" />
+
+	<insert id="insertTermDetails">
+		insert into program_term_details
+		(semester_code, program_id, minimum_sgpa,minimum_cgpa, number_of_teaching_days,
+		duration_in_weeks,
+		semester_start_date, semester_end_date, insert_time, creator_id,
+		semester_sequence, semester_group, final_semester_code, minimum_credit,
+		maximum_credit, minimum_lecture_credit, maximum_lecture_credit,
+		maximum_credit_specialcase, max_spec_lecture_course)
+		values
+		(#semesterCode#,#programId#,#minimumSgpa#,#minimumCgpa#,#numberOfTeachingDays#,#durationInWeeks#,
+		#semesterStartDate#,#semesterEndDate#,now(),#creatorId#,
+		#semesterSequence#,#semesterGroup#,#finalSemesterCode#,#minimumCredit#,
+		#maximumCredit#,#minimumLectureCredit#,#maximumLectureCredit#,
+		#maximumCreditSpecialcase#,#maxSpecLectureCourse#)
+  </insert>
+
+
+	<delete id="deleteTermDetails">
+		delete from program_term_details where program_id=#programId# and
+		semester_code=#semesterCode#
+</delete>
+
+	<update id="updateTermDetails">
+		update program_term_details set
+		minimum_sgpa=#minimumSgpa#,
+		minimum_cgpa=#minimumCgpa#,
+		number_of_teaching_days=#numberOfTeachingDays#,
+		duration_in_weeks=#durationInWeeks#,
+		semester_start_date=#semesterStartDate#,
+		semester_end_date=#semesterEndDate#,
+		modification_time=now(),
+		modifier_id=#modifierId#,
+		semester_sequence=#semesterSequence#,
+		semester_group=#semesterGroup#,
+		final_semester_code=#finalSemesterCode#,
+		minimum_credit=#minimumCredit#,
+		maximum_credit=#maximumCredit#,
+		minimum_lecture_credit=#minimumLectureCredit#,
+		maximum_lecture_credit=#maximumLectureCredit#,
+		maximum_credit_specialcase=#maximumCreditSpecialcase#,
+		max_spec_lecture_course=#maxSpecLectureCourse#
+		where program_id=#programId# and semester_code=#semesterCode#
+</update>
+
+	<select id="getcountforProgram"
+		resultClass="in.ac.dei.edrp.cms.domain.programmaster.ProgramTermDetailsInfoGetter">
+
+		select distinct substring(semester_start_date,6) as oldSemesterStartDate,substring(semester_end_date,6) as oldSemesterEndDate 
+		from program_registration where program_course_key
+		IN(select program_course_key from program_course_header
+		where program_id=#programId# AND semester_code=#semesterCode#) AND
+		session_start_date=#sessionStartDate# AND
+		session_end_date=#sessionEndDate#;
+
+</select>
+
+	<resultMap id="progTermDetailGetter" class="programTermInfo">
+		<result property="minimumSgpa" column="minimum_sgpa" />
+		<result property="minimumCgpa" column="minimum_cgpa" />
+		<result property="numberOfTeachingDays" column="number_of_teaching_days" />
+		<result property="durationInWeeks" column="duration_in_weeks" />
+		<result property="semesterStartDate" column="semester_start_date" />
+		<result property="semesterEndDate" column="semester_end_date" />
+		<result property="semesterSequence" column="semester_sequence" />
+		<result property="semesterGroup" column="semester_group" />
+		<result property="finalSemesterCode" column="final_semester_code" />
+		<result property="minimumCredit" column="minimum_credit" />
+		<result property="maximumCredit" column="maximum_credit" />
+		<result property="minimumLectureCredit" column="minimum_lecture_credit" />
+		<result property="maximumLectureCredit" column="maximum_lecture_credit" />
+		<result property="maximumCreditSpecialcase" column="maximum_credit_specialcase" />
+		<result property="maxSpecLectureCourse" column="max_spec_lecture_course" />
+	</resultMap>
+
+	<select id="selectFromTermDetails" resultMap="progTermDetailGetter">
+		select minimum_sgpa,minimum_cgpa, number_of_teaching_days,
+		duration_in_weeks,
+		semester_start_date, semester_end_date, insert_time, creator_id,
+		semester_sequence, semester_group, final_semester_code, minimum_credit,
+		maximum_credit, minimum_lecture_credit, maximum_lecture_credit,
+		maximum_credit_specialcase, max_spec_lecture_course from
+		program_term_details
+		where program_id=#programId# and semester_code=#semesterCode#
+
+</select>
+
+	<resultMap id="sysTwoGetter" class="programTermInfo">
+		<result property="code" column="component_code" />
+		<result property="name" column="component_description" />
+	</resultMap>
+
+
+	<select id="getCodeListFromSysTwo" resultMap="sysTwoGetter">
+		select component_code,component_description from system_table_two
+		where university_code=#programId# and active=1 and group_code=#code#
+</select>
+
+	<select id="getSequenceNumber" resultMap="sysTwoGetter">
+		select program_id component_code,semester_sequence component_description
+		from program_term_details where
+		program_id=#programId#;
+</select>
+
+	<select id="getProgramForManage" resultMap="sysTwoGetter">
+		select distinct ptd.program_id component_code, pm.program_name
+		component_description
+		from program_term_details ptd,program_master pm where
+		ptd.program_id=pm.program_id
+		and ptd.program_id LIKE #programId# order by component_description
+</select>
+
+	<select id="getSemesterForManage" resultMap="sysTwoGetter">
+		select ptd.semester_code component_code,stt.component_description from
+		program_term_details ptd,system_table_two stt
+		where ptd.program_id=#programId# and stt.component_code=ptd.semester_code
+		and
+		university_code=substring(#programId#,1,4) and active=1 and group_code=#code#
+</select>
+
+
+</sqlMap>

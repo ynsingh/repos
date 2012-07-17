@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) BuildActivityMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="Build Activity Master For Session {sessionStartDate} {sessionEndDate}" 
+		  width="634" height="300" creationComplete="panel1CreationCompleteHandler(event)" initialize="panel1_initializeHandler(event)">
+	
+	<mx:HTTPService id="sessionDetailsHttpService" method="POST"
+					url="{urlPrefix+'getSessionDetails.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="sessionDetailsHttpServiceResultHandler(event)"
+					fault="sessionDetailsHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="buildActivityMasterHttpService" method="POST"
+					url="{urlPrefix+'setActivityForNewSession.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="buildActivityMasterHttpServiceResulthandler(event)"
+					fault="buildActivityMasterHttpServiceFaulthandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="buildCheckHttpService" method="POST"
+					url="{urlPrefix+'BuildCheck.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="buildCheckHttpServiceResulthandler(event)"
+					fault="buildActivityMasterHttpServiceFaulthandler(event)"
+					useProxy="false"/>				
+	
+	 <mx:HTTPService id="checkSequenceAndStatus" method="post"
+        			url="{urlPrefix+'checkStatus.htm'}" 
+       				resultFormat="e4x"
+       				result="resultStatusHandler(event)"
+        			fault="buildActivityMasterHttpServiceFaulthandler(event)"
+        			showBusyCursor="true"
+        			useProxy="false"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import common.commonFunction;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]protected var sessionStartDate:String="";
+			[Bindable]protected var sessionEndDate:String="";
+			[Bindable]protected var urlPrefix:String;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			protected function panel1_initializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/buildactivitymaster/";
+			}			
+			
+			protected function sessionDetailsHttpServiceResultHandler(event:ResultEvent):void{
+				var data:XML=event.result as XML;
+				if(data.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				sessionStartDate=data.SessionStartDate;
+				sessionEndDate=data.SessionEndDate;
+				var param:Object=new Object();
+				param["sessionStartDate"]=sessionStartDate;
+				param["sessionEndDate"]=sessionEndDate;
+				buildCheckHttpService.send(param);
+				
+			}
+			
+			private function buildCheckHttpServiceResulthandler(event:ResultEvent):void{
+				var resultXml:XML=event.result as XML;
+				if(resultXml.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				if(resultXml.resultdata=="EXIST"){
+					buildButton.toolTip=commonFunction.getMessages('recordAlreadyBuild');
+				}
+				else if(resultXml.result=="NOTEXIST"){
+					buildButton.toolTip=commonFunction.getMessages('buildRecord');
+				}	
+				
+			}
+			
+			protected function sessionDetailsHttpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);	
+			}
+			
+			protected function buildActivityMasterHttpServiceResulthandler(event:ResultEvent):void{
+				var data:XML=event.result as XML;
+				var msg:String=data.resultdata;
+				var msgArr:Array=msg.split("/");
+				if(data.sessionConfirm == true){
+					Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+				
+				if(msgArr[0]=="success"){
+					Alert.show(resourceManager.getString("Messages","buildActivitySuccess",[msgArr[1],msgArr[2],msgArr[3]]),commonFunction.getMessages('success'),4,null,null,successIcon);
+				}
+				else if(msgArr[0]=="datamissing"){
+					Alert.show(commonFunction.getMessages('semesterStartEndDateMissing'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+				else{
+					Alert.show(data.resultdata,commonFunction.getMessages('error'),4,null,null,errorIcon);	
+				}	
+			}
+			
+			protected function buildActivityMasterHttpServiceFaulthandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			protected function panel1CreationCompleteHandler(event:FlexEvent):void
+			{
+				sessionDetailsHttpService.send();
+			}
+
+			protected function buildButtonClickHandler(event:MouseEvent):void
+			{
+				Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, buildConfirm,questionIcon);	
+			}
+			
+			private function buildConfirm(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					checkSequenceAndStatus.send(new Date());
+				}
+			}
+			
+			/**
+ 			 * Success Handler for checkSequenceAndStatus Service  
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			public function resultStatusHandler(event:ResultEvent):void{
+				 var data:XML=event.result as XML;
+				 var message:String=data.resultdata;
+				 if(data.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+        		if(message=="run"){
+        			var param:Object=new Object();
+					param["sessionStartDate"]=sessionStartDate;
+					param["sessionEndDate"]=sessionEndDate;				
+					buildActivityMasterHttpService.send(param);	
+        		}
+        		else if(message=="buildPrevious"){
+        			Alert.show(resourceManager.getString("Messages","firstBuild",["Build Program Registration"]), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+        		else if(message=="allreadyBuild"){
+        			Alert.show(resourceManager.getString("Messages","allreadyBuild",["Activity Master",sessionStartDate+" "+sessionEndDate]), commonFunction.getMessages('info'),4,null, null, infoIcon);
+        		}
+        		else if(message=="noSequence"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["YEPCOD","2"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="NOProcessCode"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["YEPCOD","3"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else{
+        			Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+        		}
+			}			
+		]]>
+	</mx:Script>
+	
+	<mx:Button id="buildButton" label="{commonFunction.getConstants('buildActivityMasterNextSession')}" x="136.5" y="82" click="buildButtonClickHandler(event)"/>
+	<mx:Button x="381" y="82" label="{commonFunction.getConstants('cancelButton')}" click="{parent.removeChild(this)}"/>
+	
+</mx:Panel>

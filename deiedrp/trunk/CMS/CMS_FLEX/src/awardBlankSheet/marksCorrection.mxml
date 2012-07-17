@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ *
+ * @(#) marksCorrection.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ *
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" title="{commonFunction.getConstants('studentRequest')}"  showCloseButton="true" close="closeMainPopUp(event)" layout="absolute" width="762" height="294" creationComplete="onCreationComplete()" xmlns:awardBlankSheet="awardBlankSheet.*">
+
+	<mx:HTTPService id="getRequest" method="post"
+			url="{commonFunction.getConstants('url')}/awardBlankRequestCorrection/getStudentRequestDetail.htm"
+			showBusyCursor="true"
+			resultFormat="e4x"
+			result="onSuccess(event)"
+			fault="onFailure(event)"
+			useProxy="false"/>
+			
+			
+	<mx:Canvas x="0" y="0" width="738" styleName="GridCanvas" height="216">
+		<mx:DataGrid x="19" y="19" horizontalGridLines="true" horizontalGridLineColor="0x9fc6eb" width="705" id="grid" textAlign="center" resizableColumns="false" editable="true" variableRowHeight="true"  
+			horizontalScrollPolicy="off" verticalScrollPolicy="auto" creationComplete="commonFunction.showDataTips(grid)" draggableColumns="false" height="174" borderColor="#8AA3B4" themeColor="#A3806F">
+			<mx:columns>		
+				<mx:DataGridColumn width="160" headerText="{commonFunction.getConstants('rollNumber')}" dataField="rollNumber" editable="false" />
+				<mx:DataGridColumn width="180" headerText="{commonFunction.getConstants('evaluationId')}" dataField="evaluationId" editable="false" />
+				<mx:DataGridColumn width="200" headerText="{commonFunction.getConstants('marksObtained')}" dataField="marksObtained" editable="false"/>
+				<mx:DataGridColumn width="310" headerText="Student Requested Marks" dataField="requestedMarks" editable="false"/>
+				<mx:DataGridColumn width="300" wordWrap="true" headerText="{commonFunction.getConstants('teacherRemark')}" dataField="remark" editable="false"/>
+				<mx:DataGridColumn width="140" sortable="false" headerText="{commonFunction.getConstants('status')}" dataField="status" editable="false">
+				    <mx:itemRenderer>
+				     <mx:Component>
+
+				      <awardBlankSheet:ColorChanger width="100%" textAlign="center" click="outerDocument.showPopUp()" fontStyle="italic" fontWeight="bold" enabled="true"/>
+
+				     </mx:Component>
+				    </mx:itemRenderer>
+				 </mx:DataGridColumn>	
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.binding.utils.BindingUtils;
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import common.*;
+			import entityMaster.EntityMaster;
+			import mx.controls.Alert;
+			public var param:Object={};
+			public var courseCode:String;
+			public var entityId:String;
+			public var programCourseKey:String;
+			public var semesterStartDate:String;
+			public var semesterEndDate:String;
+			[Bindable]public var pendingLeft:Boolean;
+			public var arry:ArrayCollection=new ArrayCollection;
+			public var popUp:markCorrectionPopUp=new markCorrectionPopUp;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			//public var sendingPending:Function;
+			public var method:Function;
+			
+			public function onCreationComplete():void{
+				param['courseCode']=courseCode;
+				param['entityId']=entityId;
+				param['programCourseKey']=programCourseKey;
+				param['semesterStartDate']=semesterStartDate;
+				param['semesterEndDate']=semesterEndDate;
+				getRequest.send(param);
+			}
+			
+			public function onSuccess(event:ResultEvent):void{
+				var result:XML=event.result as XML;
+				arry=new ArrayCollection;
+				var i:int=0;
+				for each(var ob:Object in result.marks){
+					if(String(ob.status)=="Pending"){
+						i++;
+					}
+					arry.addItem({rollNumber:ob.studentLeft,evaluationId:ob.evaluationId,marksObtained:ob.mark,
+					requestedMarks:ob.totalMarks,status:ob.status,remark:ob.displayType});
+				}
+				grid.dataProvider=arry;
+				
+				if(i==0){
+					pendingLeft=false;
+				}
+				else{
+					pendingLeft=true;
+				}
+				//sendingPending.call();//function call to get variable of this popup after creating complete in parent
+			}
+			
+			public function onFailure(event:FaultEvent):void{
+				Alert.show(event.fault+"",commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			public function showPopUp():void{
+				
+					popUp=markCorrectionPopUp(PopUpManager.createPopUp(this,markCorrectionPopUp,true));
+					popUp.roll.text=grid.selectedItem.rollNumber
+					popUp.component.text=grid.selectedItem.evaluationId
+					popUp.obtainedMarks.text=grid.selectedItem.marksObtained
+					popUp.requestedMarks.text=grid.selectedItem.requestedMarks
+					popUp.param=param;
+					popUp.refreshGrid=onCreationComplete
+					PopUpManager.centerPopUp(popUp);
+			}
+			
+			public function closeMainPopUp(event:CloseEvent):void{
+				method.call();
+				PopUpManager.removePopUp(this);
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Button x="355" y="224" label="Cancel" id="CancelButton" click="PopUpManager.removePopUp(this)"/>
+</mx:TitleWindow>

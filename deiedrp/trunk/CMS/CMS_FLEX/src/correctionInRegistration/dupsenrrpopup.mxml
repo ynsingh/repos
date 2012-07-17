@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) dupsenrrpopUp.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" verticalPageScrollSize="5" close="closepopup()" verticalScrollPolicy="on" styleName="PopUpTitleWindow"  x="30" y="5" horizontalScrollPolicy="auto" width="1143" layout="absolute" title="{commonFunction.getConstants('correctionWindow')}"  xmlns:ns1="common.*" showCloseButton="true" creationComplete="titlewindowInitializeHandler()" height="514">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/dupsPopupAction.as"/>
+<mx:XML source="xmlFiles/genderxml.xml" id="genders" format="e4x"/>
+
+	
+					
+		<mx:HTTPService id="getEnrollNo" method="post"
+					url="{urlPrefix4+'getEnrollNo.htm'}"
+					resultFormat="e4x"
+					result="ongetEnrollNoSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="getRollNo" method="post"
+					url="{urlPrefix4+'getRollNo.htm'}"
+					resultFormat="e4x"
+					result="ongetRollNoSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+		<mx:HTTPService id="setNumbers" method="post"
+					url="{urlPrefix4+'setNumbers.htm'}"
+					resultFormat="e4x"
+					result="onSetNumbersSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	
+	
+ 		<mx:Label x="515" y="352" text="{commonFunction.getConstants('registrationRollNo')}" id="r1"  height="17" fontWeight="bold"/>
+		<mx:Label x="84" y="354" text="{commonFunction.getConstants('enrollmentNo')}" fontWeight="bold"/>
+		<mx:TextInput x="673" y="350" id="regrollNo" width="160" editable="false"/>
+		<mx:TextInput x="217" y="352" id="enrollNo" width="160" editable="false"/>
+		<mx:Button x="84" y="406" label="{commonFunction.getConstants('saveButton')}" id="updateButton" click="updateValues()" />
+		<mx:Button x="528" y="406" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="closepopup()"/>
+		
+		<mx:Label x="81" y="137" text="{commonFunction.getConstants('registrationRollNo')}"  height="17" fontWeight="bold"/>
+		<mx:Label x="513" y="102" text="{commonFunction.getConstants('admissionMode')}" fontWeight="bold"/>
+		<mx:Label x="82" y="34" text="{commonFunction.getConstants('entity')}" fontWeight="bold"/>
+		<mx:Label x="82" y="63" text="{commonFunction.getConstants('branch')}" fontWeight="bold"/>
+		<mx:Label x="513" y="34" text="{commonFunction.getConstants('program')}" fontWeight="bold"/>
+		<mx:Label x="513" y="69" text="{commonFunction.getConstants('specialization')}" fontWeight="bold"/>
+		<mx:Label x="81" y="102" text="{commonFunction.getConstants('semester')}" fontWeight="bold"/>
+		<mx:Label x="513" y="137" text="{commonFunction.getConstants('reasonCode')}" fontWeight="bold"/>
+		<mx:Label x="81" y="176" text="{commonFunction.getConstants('description')}" fontWeight="bold"/>
+		<mx:Label x="215" y="34" id="entityLabel" width="160"/>
+		<mx:Label x="215" y="63" id="branchLabel" width="160"/>
+		<mx:Label x="215" y="102" id="semesterLabel" width="160"/>
+		<mx:Label x="215" y="137" id="regrolLabel" width="160"/>
+		<mx:Label x="215" y="176" id="descriptionLabel" width="160"/>
+		<mx:Label x="671" y="34" id="programLabel" width="160"/>
+		<mx:Label x="671" y="69" id="specilizationLabel" width="160"/>
+		<mx:Label x="671" y="102" id="admModeLabel" width="160"/>
+		<mx:Label x="671" y="137" id="reasoncodeLabel" width="160"/>
+		<mx:Label x="513" y="176" text="{commonFunction.getConstants('studentId')}"  height="17" fontWeight="bold"/>
+		<mx:Label x="81" y="220" text="{commonFunction.getConstants('studentName')}" fontWeight="bold"/>
+		<mx:Label x="84" y="256" text="{commonFunction.getConstants('fatherName')}" fontWeight="bold"/>
+		<mx:Label x="671" y="176" id="studentIdLabel" width="160"/>
+		<mx:Label x="215" y="256" id="fatherNameLabel" width="604"/>
+		<mx:Label x="84" y="308" text="{commonFunction.getConstants('category')}" fontWeight="bold"/>
+		<mx:Label x="215" y="308" id="categoryLabel" width="160"/>
+		<mx:Label x="84" y="282" text="{commonFunction.getConstants('gender')}" fontWeight="bold"/>
+		<mx:Label x="215" y="282" id="genderNameLabel" width="160"/>
+		<mx:Label x="513" y="282" text="{commonFunction.getConstants('dateOfBirth')}" fontWeight="bold"/>
+		<mx:Label x="644" y="282" id="dobLabel" width="160"/>
+		<mx:Label x="215" y="220" id="studentNameLabel" width="604"/>
+	</mx:TitleWindow>
+
+
+
+

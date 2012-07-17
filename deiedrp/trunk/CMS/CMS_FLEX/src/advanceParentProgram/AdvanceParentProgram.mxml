@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) AdvanceParentProgram.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setFirstFocous(programCombo)" xmlns:ns1="common.*" title="{commonFunction.getConstants('advanceCoursesAvilableinProgram')}" layout="absolute" width="716" height="539">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+
+	<mx:HTTPService id="getInputDetails" method="post"
+					url="{commonFunction.getConstants('url')}/advanceprogramSetup/getProgramDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getcoursesDetails" method="post"
+					url="{commonFunction.getConstants('url')}/advanceprogramSetup/getCoursesDetails.htm"
+					resultFormat="e4x"
+					result="onCoursesSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setDetails" method="post"
+					url="{commonFunction.getConstants('url')}/advanceprogramSetup/setAdvanceProgramRecord.htm"
+					resultFormat="e4x"					
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getsetRecords" method="post"
+					url="{commonFunction.getConstants('url')}/advanceprogramSetup/getadvanceProgramRecords.htm"
+					resultFormat="e4x"
+					result="onRecordsSuccess(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteAdvanceProgramRecords" method="post"
+					url="{commonFunction.getConstants('url')}/advanceprogramSetup/deleteRecords.htm"
+					resultFormat="e4x"
+					result="onRecordsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+<mx:Script source="asFiles/AdvanceParentProgramAction.as"/>   
+
+      	    <mx:Canvas styleName="SimpleCanvas" x="22" y="20" width="650" height="258">
+		    <mx:Label text="{commonFunction.getConstants('program')}*" x="124" y="28"/>
+			<mx:ComboBox x="256" y="28" id="programCombo" width="250" prompt="{commonFunction.getConstants('select')}" 
+			change="programChange(event)" selectedIndex="-1" toolTip="{programCombo.text}"></mx:ComboBox>
+			<mx:Label x="124" y="78" text="{commonFunction.getConstants('advanceProgram')}*"/>
+			<mx:ComboBox x="256" y="75" id="advanceProgramCombo" selectedIndex="-1" width="250" prompt="{commonFunction.getConstants('select')}"
+			 change="advanceProgramChange()" enabled="false" toolTip="{advanceProgramCombo.text}"></mx:ComboBox>
+			<mx:Label x="124" y="124" text="{commonFunction.getConstants('course')}*"/>
+			<mx:ComboBox x="256" y="121" id="courseCombo" width="250" prompt="{commonFunction.getConstants('select')}"  
+			 enabled="false" change="showCourseCode()" toolTip="{courseCombo.text}"></mx:ComboBox>
+			<mx:TextInput x="514" y="121" width="105" id="courseCode" editable="false"/>
+			<mx:Button x="169" y="172" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="saveDetails()"/>
+			<mx:Button x="256" y="172" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancel()"/>	
+			
+	        </mx:Canvas>
+	        
+	        <mx:Canvas  styleName="GridCanvas" x="22" y="289" width="650" >
+	        <mx:Label x="13" y="7" text="{commonFunction.getConstants('coursesofAdvanceProgramfor')}"/>
+			<mx:TextInput x="256" y="3" id="programtext" editable="false" width="239"/>
+			<mx:LinkButton x="511" y="3" label="{commonFunction.getConstants('deleteButton')}" id="deletebutton" enabled="false" click="deleteOrNot()"/>
+			<mx:DataGrid id="advanceprogramcoursegrid" width="630" height="147" horizontalScrollPolicy="off" 
+	 		 sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" x="10" y="26">
+			<mx:columns>
+			<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" 
+						            	editorDataField="selected" dataField="select" resizable="true" headerText=" ">
+			<mx:itemRenderer>
+   			<mx:Component>
+   			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.advanceprogramcoursegrid,[new LinkButton],[outerDocument.deletebutton])">
+ 			<mx:Script>
+             <![CDATA[
+                        import common.commonFunction;
+                        import mx.controls.LinkButton;
+               ]]>
+            </mx:Script>			
+			</mx:CheckBox>
+            </mx:Component>
+            </mx:itemRenderer>
+            </mx:DataGridColumn>
+			<mx:DataGridColumn editable="false" showDataTips="true" resizable="true" dataField="advanceProgram" headerText="{commonFunction.getConstants('advanceProgramcolumn')}" textAlign="center" width="300" sortable="true"/>
+			<mx:DataGridColumn editable="false" showDataTips="true" resizable="true" dataField="coursename" headerText="{commonFunction.getConstants('coursecolumn')}" width="230" textAlign="center" sortable="true"/>
+			</mx:columns>
+			</mx:DataGrid>
+			</mx:Canvas>
+</mx:Panel>

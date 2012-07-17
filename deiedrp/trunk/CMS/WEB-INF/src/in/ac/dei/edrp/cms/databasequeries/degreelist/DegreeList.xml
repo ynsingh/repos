@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*@(#) DegreeList.xml-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+<sqlMap namespace="degreeList">
+	<typeAlias alias="degreeList"
+		type="in.ac.dei.edrp.cms.domain.degreelist.DegreeListInfoGetter"></typeAlias>	
+
+	<select id="getEntities" resultClass="degreeList">
+
+		select distinct
+		em.entity_id as componentId,em.entity_name as
+		componentDescription
+		from
+		entity_master em,program_offered_by
+		pob,student_program sp where
+		sp.entity_id=pob.offered_by AND pob.offered_by=em.entity_id AND
+		em.entity_id LIKE #universityCode#;
+	
+	</select>
+
+	<select id="getProgramsforEntity" resultClass="degreeList">
+
+		select distinct
+		pm.program_id as advanceProgramId,pm.program_name as
+		advanceProgramName,pm.program_code as courseCode,
+		pm.print_aggregate as courseName
+		from program_master pm,program_offered_by
+		pob,student_program sp
+		where
+		sp.entity_id=pob.offered_by AND sp.program_id=pob.program_id AND
+		pob.program_id=pm.program_id AND pob.offered_by=#entityId#;
+	
+	</select>
+
+	<select id="getUniversitySession" resultClass="degreeList">
+
+		select start_date
+		componentId,end_date as componentDescription from
+		university_master
+		where university_code=#universityCode#;
+	
+	</select>
+
+	<select id="getduplicatestudentmasterdetails" resultClass="degreeList">
+
+		select concat_ws(' ', student_first_name,student_middle_name,student_last_name,(case when gender='M' then 'S/O' else 'D/O' end),father_first_name,
+    	father_middle_name,father_last_name) as
+		studentName, sm.enrollment_number,sm.gender as gender,sp.roll_number as rollNumber,sp.cgpa as
+		cgpa,sp.cumulative_wp as cumPercentage,sm.name_in_hindi as
+		studentNameInHindi,sm.father_name_in_hindi as
+		fatherNameInHindi,sm.mother_name_in_hindi as
+		motherNameInHindi,sys.component_code
+		as divisionIdInTheory,sys3.component_description as divisionInPractical,
+		sys.component_description as divisionInTheory,sys1.component_code as
+		branchId,sys1.component_description as branchName,
+		sys2.component_code
+		as specializationId,sys2.component_description as
+		specializationName,sp.theory_cwp as theoryCWP,sp.practical_cwp as practialCWP,
+		sp.theory_cgpa as theoryCGPA,sp.practical_cgpa as practicalCGPA,sys4.component_description as division
+		from student_master sm,student_program
+		sp,system_table_two sys,
+		system_table_two sys1,system_table_two sys2,system_table_two sys3,system_table_two sys4 where 
+   		sm.enrollment_number=sp.enrollment_number AND sp.program_status='PAS'
+		AND sp.entity_id=#entityId# AND sp.program_id=#programId#
+		AND
+		sp.branch_id=sys1.component_code AND sp.practical_division=sys3.component_code AND
+		sp.theory_division=sys.component_code
+		AND
+		sp.specialization_id=sys2.component_code AND sp.division=sys4.component_code
+		AND sys.group_code='DVSCOD' AND sys3.group_code='DVSCOD'
+		AND sys1.group_code='BRNCOD' AND
+		sys2.group_code='SPCLCD' AND sys4.group_code='DVSCOD' AND sys.university_code = sys1.university_code
+     	AND sys1.university_code = sys2.university_code
+      	AND sys2.university_code = sys3.university_code AND
+       	sys3.university_code=sys4.university_code AND sys4.university_code=#universityCode# AND
+		sp.passed_from_session=#passedFromSession#
+		AND
+		sp.passed_to_session=#passedToSession# AND concat_ws(' ', student_first_name,student_middle_name,student_last_name)
+    	in(select concat_ws(' ', student_first_name,student_middle_name,student_last_name)
+    	as studentName from student_master sm1 where sm1.university_code=#universityCode# AND sp.entity_id=#entityId# AND sp.program_id=#programId# AND sp.program_status='PAS'
+    	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession# group by studentName
+    	having count(*)>1);
+	
+	</select>
+	
+	<select id="getduplicatestudentdetails" resultClass="degreeList">
+
+		select concat_ws(' ', student_first_name,student_middle_name,student_last_name,(case when gender='M' then 'S/O' else 'D/O' end),father_first_name,
+		father_middle_name,father_last_name) as studentName,sm.gender,sm.enrollment_number,sp.roll_number as rollNumber,sp.cgpa as
+		cgpa,sp.cumulative_wp as cumPercentage,sm.name_in_hindi as
+		studentNameInHindi,sm.father_name_in_hindi as
+		fatherNameInHindi,sm.mother_name_in_hindi as
+		motherNameInHindi,sys.component_code
+		as divisionIdInTheory,
+		sys.component_description as divisionInTheory,sys1.component_code as branchId,
+    	sys1.component_description as branchName,sys2.component_code
+		as specializationId,sys2.component_description as
+		specializationName
+		from student_master sm,student_program
+		sp,system_table_two sys,system_table_two sys1,system_table_two sys2 where
+    	sm.enrollment_number=sp.enrollment_number AND sp.program_status='PAS'
+		AND sp.entity_id=#entityId# AND sp.program_id=#programId#
+		AND
+		sp.branch_id=sys1.component_code AND sys1.component_code=#branchId# AND sys1.group_code='BRNCOD' AND
+		sp.division=sys.component_code
+		AND
+		sp.specialization_id=sys2.component_code
+		AND sys.group_code='DVSCOD'
+		AND sys2.group_code='SPCLCD' AND sys.university_code = sys1.university_code
+     AND sys1.university_code = sys2.university_code
+      AND sys2.university_code =#universityCode# AND
+		sp.passed_from_session=#passedFromSession#
+		AND
+		sp.passed_to_session=#passedToSession# AND concat_ws(' ', student_first_name,student_middle_name,student_last_name)
+    in(select concat_ws(' ', student_first_name,student_middle_name,student_last_name)
+    as studentName from student_master sm1 where sm1.university_code=#universityCode# AND sp.entity_id=#entityId# AND sp.program_id=#programId# AND sp.program_status='PAS'
+    AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#  group by studentName
+    having count(*)>1);
+	
+	</select>
+	
+	<select id="getdistinctstudentdetails" resultClass="degreeList">
+	
+	select concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name)
+		as studentName,
+		concat_ws(' ',sm.father_first_name,sm.father_middle_name,sm.father_last_name) as
+		fatherName,
+		sp.roll_number as rollNumber,sp.cgpa as
+		cgpa,sp.cumulative_wp as cumPercentage,sm.name_in_hindi as
+		studentNameInHindi,sm.father_name_in_hindi as
+		fatherNameInHindi,sm.mother_name_in_hindi as
+		motherNameInHindi,sys.component_code
+		as divisionIdInTheory,
+		sys.component_description as divisionInTheory,sys1.component_code as branchId,
+    	sys1.component_description as branchName,sys2.component_code
+		as specializationId,sys2.component_description as
+		specializationName
+		from student_master sm,student_program
+		sp,system_table_two sys,system_table_two sys1,system_table_two sys2
+		where
+		sp.enrollment_number=sm.enrollment_number AND sp.program_status='PAS'
+		AND sp.entity_id=#entityId# AND sp.program_id=#programId#
+		AND
+		sp.branch_id=sys1.component_code AND sys1.component_code=#branchId# AND  sys1.group_code='BRNCOD' AND
+		sp.division=sys.component_code
+		AND
+		sp.specialization_id=sys2.component_code
+		AND sys.group_code='DVSCOD'
+		AND sys2.group_code='SPCLCD'
+		AND sys.university_code = sys1.university_code
+     	AND sys1.university_code = sys2.university_code
+      	AND sys2.university_code =#universityCode# AND
+		sp.passed_from_session=#passedFromSession#
+		AND
+		sp.passed_to_session=#passedToSession# AND sm.enrollment_number NOT IN(select sm.enrollment_number from student_master sm,student_program sp where
+ 		(select count(*) from student_master sm1 where sm.student_first_name=sm1.student_first_name
+  		and sm.student_middle_name=sm1.student_middle_name AND sm.student_last_name=sm1.student_last_name AND
+   		sm.university_code=sm1.university_code AND sm1.university_code=#universityCode#)>1 AND sp.enrollment_number=sm.enrollment_number
+    	AND sp.entity_id=#entityId# AND sp.program_id=#programId#) order by sp.branch_id,sp.program_id,sp.specialization_id;
+	
+	</select >
+	
+	<select id="getdistinctstudents" resultClass="degreeList">
+	
+	select concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name)
+		as studentName,
+		concat_ws(' ',sm.father_first_name,sm.father_middle_name,sm.father_last_name) as
+		fatherName,sm.gender as gender,sm.enrollment_number,sp.roll_number as rollNumber,sp.cgpa as
+		cgpa,sp.cumulative_wp as cumPercentage,sm.name_in_hindi as
+		studentNameInHindi,sm.father_name_in_hindi as
+		fatherNameInHindi,sm.mother_name_in_hindi as
+		motherNameInHindi,sys.component_code
+		as divisionIdInTheory,sys3.component_description as divisionInPractical,
+		sys.component_description as divisionInTheory,sys1.component_code as
+		branchId,sys1.component_description as branchName,
+		sys2.component_code
+		as specializationId,sys2.component_description as
+		specializationName,sp.theory_cwp as theoryCWP,sp.practical_cwp as practialCWP,
+		sp.theory_cgpa as theoryCGPA,sp.practical_cgpa as practicalCGPA,sys4.component_description as division
+		from student_master sm,student_program
+		sp,system_table_two sys,
+		system_table_two sys1,system_table_two sys2,system_table_two sys3,system_table_two sys4
+		where
+		sp.enrollment_number=sm.enrollment_number AND sp.program_status='PAS'
+		AND sp.entity_id=#entityId# AND sp.program_id=#programId#
+		AND
+		sp.branch_id=sys1.component_code AND
+		sp.practical_division=sys3.component_code AND
+		sp.theory_division=sys.component_code
+		AND
+		sp.specialization_id=sys2.component_code
+		AND sp.division=sys4.component_code AND sys.group_code='DVSCOD' AND sys3.group_code='DVSCOD'
+		AND sys1.group_code='BRNCOD' AND
+		sys2.group_code='SPCLCD' AND sys4.group_code='DVSCOD'
+		AND sys.university_code = sys1.university_code
+     	AND sys1.university_code = sys2.university_code
+      	AND sys2.university_code = sys3.university_code AND
+       	sys3.university_code=sys4.university_code AND sys4.university_code=#universityCode# AND
+		sp.passed_from_session=#passedFromSession#
+		AND
+		sp.passed_to_session=#passedToSession# AND sm.enrollment_number NOT IN(select sm.enrollment_number from student_master sm,student_program sp where
+ 		(select count(*) from student_master sm1 where sm.student_first_name=sm1.student_first_name
+  		and sm.student_middle_name=sm1.student_middle_name AND sm.student_last_name=sm1.student_last_name AND
+   		sm.university_code=sm1.university_code AND sm1.university_code=#universityCode#)>1 AND sp.enrollment_number=sm.enrollment_number
+    	AND sp.entity_id=#entityId# AND sp.program_id=#programId#) order by sp.branch_id,sp.program_id,sp.specialization_id;
+	
+	</select >
+	
+	<select id="getIntermediateStudents" resultClass="degreeList">
+	
+	select concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) as studentName,
+        concat_ws(' ',sm.father_first_name,sm.father_middle_name,sm.father_last_name) as fatherName,
+        sm.name_in_hindi as studentNameInHindi,sm.father_name_in_hindi as fatherNameInHindi,
+        sp.roll_number as rollNumber,sp.cgpa,sp.cumulative_wp as cumPercentage,sys.component_code
+		as divisionIdInTheory,sys.component_description as divisionInTheory,sys2.component_code as specializationId,sys2.component_description as
+		specializationName from student_master sm,student_program sp,system_table_two sys,
+		system_table_two sys2
+        where sp.enrollment_number=sm.enrollment_number AND sp.program_id=#programId#
+        AND sp.entity_id=#entityId# AND sp.program_status='PAS' AND sp.passed_from_session=#passedFromSession#
+		AND
+		sp.passed_to_session=#passedToSession# AND
+		sp.branch_id=#branchId# AND
+		sp.division=sys.component_code
+		AND
+		sp.specialization_id=sys2.component_code
+		AND sys.group_code='DVSCOD'
+		AND
+		sys2.group_code='SPCLCD' AND sys.university_code=sys2.university_code
+     	AND sys2.university_code=#universityCode#;
+		
+	</select>
+	
+	<select id="getHighSchoolStudents" resultClass="degreeList">
+	
+	select concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) as studentName,
+        concat_ws(' ',sm.father_first_name,sm.father_middle_name,sm.father_last_name) as fatherName,
+        sm.name_in_hindi as studentNameInHindi,sm.father_name_in_hindi as fatherNameInHindi,sm.date_of_birth as dob,
+        sp.roll_number as rollNumber,sp.cgpa,sp.cumulative_wp as cumPercentage,sys.component_code
+		as divisionIdInTheory,sys.component_description as divisionInTheory,sys2.component_code as specializationId,sys2.component_description as
+		specializationName from student_master sm,student_program sp,system_table_two sys,
+		system_table_two sys2
+        where sp.enrollment_number=sm.enrollment_number AND sp.program_id=#programId#
+        AND sp.entity_id=#entityId# AND sp.program_status='PAS' AND sp.passed_from_session=#passedFromSession#
+		AND
+		sp.passed_to_session=#passedToSession# AND
+		sp.branch_id=#branchId# AND
+		sp.division=sys.component_code
+		AND
+		sp.specialization_id=sys2.component_code
+		AND sys.group_code='DVSCOD'
+		AND
+		sys2.group_code='SPCLCD' AND sys.university_code=sys2.university_code
+     	AND sys2.university_code=#universityCode#;
+		
+	</select>
+	
+	<select id="getStudentsCourses" resultClass="degreeList">
+	
+	SELECT distinct sys.component_code as courseCode,sys.component_description as courseName FROM program_group pg,system_table_two sys,program_course_header pch
+ 	where pg.program_course_key=pch.program_course_key AND pch.program_id=#programId# AND pch.branch_id=#branchId# AND pg.group_code='MAJ'
+  	AND sys.group_code='CRSGRP' AND pg.subgroup_code=sys.component_code order by sys.dummy_flag_one;
+		
+	</select>
+	
+	<select id="getBranchforprogram" resultClass="degreeList">
+	
+	select distinct sys.component_code as branchId,sys.component_description as branchName from system_table_two sys,student_program sp
+ 	where sp.branch_id=sys.component_code AND sp.program_id=#programId#
+    AND sp.entity_id=#entityId# AND sp.program_status='PAS' AND sp.passed_from_session=#passedFromSession#
+	AND sp.passed_to_session=#passedToSession# AND sys.group_code='BRNCOD';
+		
+	</select>
+	
+	<select id="getResultSystemCount" resultClass="degreeList">
+	
+	select count(result_system) as programResultSystem from course_master where course_code in(select pcd.course_code from program_course_detail
+ 	pcd,course_master cm,program_course_header pch where pcd.program_course_key=pch.program_course_key
+  	AND pcd.course_code=cm.course_code AND pch.program_id=#programId# AND result_system=#resultSystem#);
+	
+	</select>
+	
+	<select id="getProgramDetails" resultClass="degreeList">
+	
+	select pr.program_course_key as programCourseKey,pr.semester_start_date as semesterStartDate,pr.semester_end_date as semesterEndDate,
+	sys.component_code as semesterCode,sys.component_description as semesterName,ptd.final_semester_code as finalSemesterCode
+	from program_registration pr,program_course_header pch,system_table_two sys,
+	program_term_details ptd where pr.program_course_key =pch.program_course_key AND pch.program_id =#programId#
+	AND pch.semester_code =ptd.semester_code AND ptd.program_id=#programId#
+	AND session_start_date=#passedFromSession# AND session_end_date=#passedToSession# AND (ptd.semester_sequence+#programResultSystem#)%2=0
+	AND ptd.semester_code=sys.component_code AND sys.group_code='SEMCOD' AND sys.university_code=#universityCode# order by sys.component_code;
+	
+	</select>
+	
+	<select id="getCombinationStudents" resultClass="degreeList">
+	
+	SELECT sp.roll_number as rollNumber,sp.division as division,substring(srsh.status,1,1) as studentStatus FROM student_program sp,student_registration_semester_header srsh
+	where srsh.program_course_key=#programCourseKey# AND srsh.session_start_date=#semesterStartDate# AND srsh.session_end_date=#semesterEndDate# 
+	AND srsh.entity_id=sp.entity_id AND sp.entity_id=#entityId# AND sp.roll_number=srsh.roll_number;
+	
+	</select>
+	
+	<select id="getStudents4Verification" resultClass="degreeList">
+	
+	select concat_ws(' ', student_first_name,student_middle_name,student_last_name,
+	(case when gender='M' then 'S/o' else 'D/o' end),father_first_name,father_middle_name,father_last_name) as
+	studentName,pm.program_name programName,pm.print_aggregate programPrintType,
+	sys.component_description branchName,sys1.component_description specializationName,pch.semester_code semesterCode,
+	concat(substring(sp.passed_from_session,1,4),'-',substring(sp.passed_to_session,1,4)) passedFromSession,
+	sp.cgpa cgpa,sag.sgpa SGPA,sag.theory_sgpa theorySGPA,sag.practical_sgpa practicalSGPA,
+	sp.theory_cgpa theoryCGPA,sp.practical_cgpa practicalCGPA,sys2.component_description division,sp.roll_number studentRollNumber
+	from student_master sm,program_course_header pch,student_program sp,program_master pm,
+	student_aggregate sag,system_table_two sys,system_table_two sys1,system_table_two sys2
+	where pch.program_id=sp.program_id AND sp.program_id=pm.program_id AND pch.branch_id=sp.branch_id AND
+	pch.specialization_id=sp.specialization_id AND pch.program_course_key=sag.program_course_key
+	AND sag.roll_number=sp.roll_number AND sp.roll_number=#rollNumber# AND sp.branch_id=sys.component_code AND sys.group_code='BRNCOD'
+	AND sp.specialization_id=sys1.component_code AND sys1.group_code='SPCLCD'
+	AND sys.university_code=sys1.university_code AND sys.university_code=#universityCode# AND sys2.component_code=sp.division
+	AND sys2.group_code='DVSCOD' AND sys2.university_code=#universityCode#
+	AND sp.enrollment_number=sm.enrollment_number AND sm.university_code=#universityCode#;
+	
+	</select>
+	
+	<select id ="getcretificateexamstudents" resultClass="degreeList">
+	
+	select sm.enrollment_number,concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) studentName,
+	sp.roll_number rollNumber,sp.enrollment_number,pm.program_id programId,pm.program_name programName,pm.program_code programCode,
+	sp.cgpa cgpa from student_program sp,student_master sm,program_master pm where
+	sp.enrollment_number = sm.enrollment_number AND sm.university_code=#universityCode# AND sp.program_status='PAS'
+	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#
+	AND sp.program_id=pm.program_id AND pm.program_id LIKE concat(#universityCode#,'%') 
+	AND pm.tencodes=#programCourseKey# AND sp.cgpa=#theoryCGPA# AND pm.program_id=#programId# group by sp.program_id;
+	
+	</select>
+	
+	<select id ="getcretificateexamstudentsforothercodes" resultClass="degreeList">
+	
+	select concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) studentName,
+	sp.roll_number rollNumber,sp.cgpa cgpa,pm.program_id programId,
+	concat(pm.program_name,'( ',sys.component_description,' ',sys1.component_description,')') programName,
+	pm.tencodes from student_program sp,program_master pm,student_master sm,system_table_two sys,system_table_two sys1
+	where pm.program_id=sp.program_id AND sm.enrollment_number=sp.enrollment_number
+	AND sm.university_code=#universityCode# AND sp.program_status='PAS'
+	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession# AND sp.branch_id=sys.component_code AND
+	sys.group_code='BRNCOD' AND sp.specialization_id=sys1.component_code AND sys1.group_code='SPCLCD' AND
+	sys.university_code=sys1.university_code AND sys1.university_code=#universityCode# AND pm.program_id LIKE concat(#universityCode#,'%')
+	AND pm.tencodes=#programCourseKey# AND sp.cgpa=#theoryCGPA# AND pm.program_id=#programId# ;
+	
+	</select>
+	
+	<select id="getmaxinUG" resultClass="degreeList">
+	
+	select concat(concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name),' (',pm.program_name,
+	sys.component_description,' ',sys1.component_description,')') studentName,pm.tencodes programCode,
+	sp.roll_number rollNumber,sp.cgpa cgpa,sys.component_description branchName,sys1.component_description specializationName
+	from student_program sp,student_master sm,program_master pm,system_table_two sys,system_table_two sys1 where
+	sp.enrollment_number = sm.enrollment_number AND sm.university_code=#universityCode# AND sp.program_status='PAS'
+	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#
+	AND sp.program_id=pm.program_id AND pm.program_id LIKE concat(#universityCode#,'%') AND sp.branch_id=sys.component_code AND
+	sys.group_code='BRNCOD' AND sp.specialization_id=sys1.component_code AND sys1.group_code='SPCLCD' AND
+	sys.university_code=sys1.university_code AND sys1.university_code=#universityCode# AND sp.program_id=#programId# AND sp.cgpa=#theoryCGPA#;
+	
+	</select>
+	
+	<select id ="getcoursename" resultClass="degreeList">
+	
+	select distinct(course_name) courseName from course_master where course_code LIKE 
+	concat(#programCode#,'%') AND university_code=#universityCode#;
+	
+	</select>
+	
+	<select id ="getmaxavgonprogram" resultClass="degreeList">
+	
+	select max(average)as avgsgpa,a.program_id as programId from
+	(select sms.roll_number,sms.course_code,sms.final_grade_point,sum(final_grade_point)/2 as average,sp.program_id
+ 	from student_marks_summary sms,student_program sp
+ 	where (sms.course_code like 'CEC%' or sms.course_code like 'CRC%')
+	and sms.roll_number=sp.roll_number AND sp.program_status='PAS'
+	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#
+	group by roll_number) as a
+	group by a.program_id;
+	
+	</select>
+	
+	<select id ="getmaxavgofstudent" resultClass="degreeList">
+	
+	select sms.roll_number rollNumber,sum(final_grade_point)/2 as cgpa,sp.cgpa theoryCGPA,
+	concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) studentName,pm.program_name programName
+	from student_marks_summary sms,student_program sp,student_master sm,program_master pm
+	where (sms.course_code like 'CEC%' or sms.course_code like 'CRC%')
+	and sms.roll_number=sp.roll_number AND pm.program_id=sp.program_id AND sp.program_id=#programId# 
+	AND sp.enrollment_number=sm.enrollment_number AND sp.program_status='PAS'
+	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#
+	group by sp.roll_number having cgpa=#avgsgpa#;
+	
+	</select>
+	
+	<select id="getmaxcgpafortencode" resultClass="degreeList">
+	
+	select max(cgpa) theoryCGPA,sp.program_id programId from student_program sp, program_master pm where sp.program_status='PAS'
+	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#
+	AND sp.program_id=pm.program_id AND pm.program_id LIKE concat(#universityCode#,'%') 
+	AND pm.tencodes=#programCourseKey# group by sp.program_id;
+	
+	</select>
+	
+	<select id="getmaxcgpafortencodes" resultClass="degreeList">
+	
+	select sp.cgpa theoryCGPA,sp.program_id programId from student_program sp, program_master pm where sp.program_status='PAS'
+	AND sp.passed_from_session=#passedFromSession# AND sp.passed_to_session=#passedToSession#
+	AND sp.program_id=pm.program_id AND pm.program_id LIKE concat(#universityCode#,'%') 
+	AND pm.tencodes=#programCourseKey# order by sp.cgpa desc limit 1;;
+	
+	</select>
+
+</sqlMap>
+	

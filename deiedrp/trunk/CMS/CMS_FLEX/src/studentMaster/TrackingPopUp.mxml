@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#) TrackingPopUp.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1286" height="402" showCloseButton="true"
+	 close="closePopUp()" creationComplete="onCreationComplete()" title="{resourceManager.getString('Constants','studentTracking')}">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import common.commonFunction;
+			import common.Mask;
+			import mx.managers.PopUpManager;			
+			public var rollNumber:String;
+			public var creation:Function;			
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/question.png")]private var confirmIcon:Class;
+			
+			/**
+			 * The method sends a request to get the records from the server for the user
+			 **/ 
+			public function onCreationComplete():void{
+				
+				var infoObject:Object={};
+				
+				infoObject["userId"]=new Date();
+				infoObject["employeeCode"] = rollNumber;
+				
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+					
+					getempdetails.send(infoObject);
+			}
+			
+		/**
+		 * The method retieves the details of the user and displays them on the pop-up
+		 **/	
+		var successXml:XML;
+		private function onSuccess(event:ResultEvent):void{
+	
+			successXml=event.result as XML;				
+	
+				if(successXml.sessionConfirm == true)
+            	 {
+           			 Alert.show(resourceManager.getString('Messages','sessionInactive'));
+          			 this.parentDocument.vStack.selectedIndex=0;
+         			 this.parentDocument.loaderCanvas.removeAllChildren();
+           	     }         	     
+           	     
+           	     var successList:ArrayCollection = new ArrayCollection();
+           	     
+           	     for each(var obj:Object in successXml.Details){
+           	     	
+           	     	successList.addItem({rollNumber:obj.rollNumber,programName:obj.programName,semesterCode:obj.semesterCode,
+           	     						componentDescription:obj.componentDescription,componentCode:obj.componentCode,
+           	     						sequenceNumber:obj.sequenceNumber,statusInSemester:obj.statusInSemester,
+           	     						status:obj.status,insertTime:obj.insertTime,activityId:obj.activityId,processId:obj.processId});
+           	     	
+           	     }          	     
+           	     
+           	     trackingGrid.dataProvider = successList;
+           	     Mask.close();
+}
+
+		/**
+ 		 * The method to be called when the request is not processed on the server
+ 		 * */
+		private function onFailure(event:FaultEvent):void{
+	
+			Alert.show(commonFunction.getMessages('requestFailed'),
+			commonFunction.getMessages('failure'),0,null,null,errorIcon);
+	
+			Mask.close();
+}
+/**
+ * Method to close the pop-up window
+ * */
+public function closePopUp():void{
+	
+	PopUpManager.removePopUp(this);
+	creation();
+	
+}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="getempdetails" method="post"
+					url="{commonFunction.getConstants('url')+'/studentMaster/ViewStudentTracking.htm'}"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:DataGrid x="10" y="32" width="1246" height="290" id="trackingGrid">
+		<mx:columns>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','rollNumber')}" dataField="rollNumber" width="80" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','sequenceNumber')}" dataField="sequenceNumber" width="110" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','programName')}" dataField="programName" width="120" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','branchName')}" dataField="componentDescription" width="120" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','specializationName')}" dataField="componentCode" width="130" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','semester')}" dataField="semesterCode" width="60" showDataTips="true"/>						
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','semesterStatus')}" dataField="statusInSemester" width="100" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','programStatus')}" dataField="status" width="100" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','trackingDate')}" dataField="insertTime" width="90" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','activity')}" dataField="activityId" width="100" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','processName')}" dataField="processId" width="130" showDataTips="true"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<mx:Button x="611.5" y="330" label="OK" click="closePopUp()"/>
+	
+</mx:TitleWindow>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="finalSemesterResultStatistics">
+ 
+    
+    <select id="getSessionList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+	   select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master
+		where university_code=#universityId#;
+   </select>
+   
+    <select id="getCurrentSession" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master 
+		where university_code=#universityId# and current_status='1';
+   </select>
+   <select id="getProgramDetails" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+   		SELECT
+   		pch.program_course_key as programCourseKey, pch.branch_id as branchId, ptd.program_id as programId,
+ 		ptd.semester_code as semesterCode,pch.specialization_id as specializationId, pm.program_code as programCode,
+ 		pr.semester_start_date as semesterStartDate,pr.semester_end_date as semesterEndDate
+		FROM
+		program_course_header pch join
+		program_term_details ptd  join 
+		program_offered_by po join 
+		program_master pm join 
+		program_registration pr 
+		ON
+		po.offered_by =#entityId# AND po.program_id=ptd.program_id AND pm.program_id=po.program_id AND ptd.final_semester_code='F' AND
+		pch.program_id=po.program_id AND pch.branch_id=po.branch_id AND pch.specialization_id=po.specialization_id
+		AND ptd.semester_code=pch.semester_code AND pch.program_course_key=pr.program_course_key
+		AND pr.university_id=#universityId# AND pr.session_start_date= #sessionStartDate# AND pr.session_end_date= #sessionEndDate#
+		AND pr.entity_id=#entityId#
+		AND cast(ptd.semester_sequence as signed)%2 =#semesterWise#;		
+   </select>
+   <!-- ************************************* commented by Nupur 15/02/2012 *******************************************-->
+    <!--  
+   select pch.program_course_key as programCourseKey, pch.branch_id as branchId, ptd.program_id as programId, ptd.semester_code as semesterCode, 
+		pch.specialization_id as specializationId, pm.program_code as programCode 
+		from program_course_header pch join
+		program_term_details ptd  join program_offered_by po join program_master pm on
+		po.offered_by =#entityId# AND po.program_id=ptd.program_id AND pm.program_id=po.program_id AND ptd.final_semester_code='F' AND
+		pch.program_id=po.program_id AND pch.branch_id=po.branch_id AND pch.specialization_id=po.specialization_id
+		and ptd.semester_code=pch.semester_code;
+    --> 
+   <select id="getCompleteDetail" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+		select IFNULL(r.gender, 'Total') as sex, r.Appeared as appeared, a.enrolled, p.passed, d.IDistinction, sd.IDiv, secdiv.IIDiv, pas.Pass as pass, u.UFM as ufm,
+		inc.incomplete as incomplete,rem.remedial, failI.failIAttempt as failedFirstAttempt, failII.failIIAttempt as failedSecondAttempt, 
+		IFNULL(((p.passed/r.Appeared)*100),0.0) as percent  from
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as Appeared from
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g 
+		left join student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status NOT in ('YTR', 'REG') AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND
+		 sp.program_id=#programId# AND program_course_key=#programCourseKey# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup) r join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as enrolled from (select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g 
+		left join student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status NOT in ('YTR') AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate#
+		 AND sp.program_id=#programId# AND program_course_key=#programCourseKey# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup ) a join
+				
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as passed from
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.program_completion_date between #sessionStartDate# AND #sessionEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup ) p join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as UFM from
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('UFM') AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND sp.program_id=#programId# AND program_course_key=#programCourseKey# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup) u join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as incomplete from
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('INC') AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND sp.program_id=#programId# AND program_course_key=#programCourseKey# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup) inc join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as IDistinction from 
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division='01' AND sp.program_completion_date between #sessionStartDate# AND #sessionEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup ) d join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as IDiv from 
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division='02'  AND sp.program_completion_date between #sessionStartDate# AND #sessionEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup ) sd join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as IIDiv from 
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division='03' AND sp.program_completion_date between #sessionStartDate# AND #sessionEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup ) secdiv join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as Pass from 
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT  distinct  sp.enrollment_number FROM  student_program sp where
+		sp.program_status in ('PAS') AND sp.program_id=#programId# AND sp.division in('01','02','03') AND sp.program_completion_date between #sessionStartDate# AND #sessionEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup ) pas join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as remedial from
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g left join
+		student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('REM') AND sp.program_id=#programId# AND program_course_key LIKE #programCourseKey2# AND
+		 srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup) rem join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as failIAttempt from
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g 
+		left join student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('FAL') AND attempt_number=1 AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND
+		 sp.program_id=#programId# AND program_course_key LIKE #programCourseKey2# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup) failI join
+		
+		(select IFNULL(g.gender, 'Total') as gender, count(sm.enrollment_number) as failIIAttempt from
+		(select stt.component_code as gender from system_table_two stt where group_code='GENDER' and university_code=#universityId#) g 
+		left join student_master sm on g.gender=sm.gender AND sm.enrollment_number in(
+		SELECT distinct sp.enrollment_number FROM student_registration_semester_header srsh join student_program sp
+		 on srsh.roll_number=sp.roll_number AND srsh.status in ('FAL') AND attempt_number=2 AND srsh.session_start_date between #semesterStartDate# AND #semesterEndDate# AND srsh.session_end_date between #semesterStartDate# AND #semesterEndDate# AND sp.program_id=#programId# AND program_course_key LIKE #programCourseKey2# AND
+		sp.branch_id=#branchId# AND sp.specialization_id=#specializationId# AND sp.entity_id=#entityId#) group by g.gender with rollup) failII
+		
+		on r.gender=a.gender AND a.gender=p.gender AND p.gender=u.gender AND u.gender=inc.gender AND inc.gender=d.gender AND d.gender=sd.gender AND secdiv.gender=sd.gender
+		AND secdiv.gender=pas.gender AND pas.gender=rem.gender AND rem.gender=failI.gender AND failI.gender=failII.gender
+		;
+   </select>
+   
+   <select id="getEntityInfo" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+   		select entity_code as entityCode,entity_name as entityName  from entity_master where entity_id=#entityId#;
+   </select>   
+</sqlMap>

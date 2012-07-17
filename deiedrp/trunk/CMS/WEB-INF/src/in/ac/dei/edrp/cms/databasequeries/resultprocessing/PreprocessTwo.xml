@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+	<!--
+		/* * @(#) PreprocessTwo.xml * Copyright (c) 2011 EdRP, Dayalbagh
+		Educational Institute. * All Rights Reserved. * * Redistribution and
+		use in source and binary forms, with or * without modification, are
+		permitted provided that the following * conditions are met: * *
+		Redistributions of source code must retain the above copyright *
+		notice, this list of conditions and the following disclaimer. * *
+		Redistribution in binary form must reproduce the above copyright *
+		notice, this list of conditions and the following disclaimer in * the
+		documentation and/or other materials provided with the * distribution.
+		* * * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES *
+		OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE *
+		DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR
+		ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR *
+		CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF
+		SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR *
+		BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, *
+		EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors:
+		Members of EdRP, Dayalbagh Educational Institute */
+	-->
+<sqlMap namespace="preprocessTwo">
+
+	<typeAlias alias="proprocessTwoClass" type="in.ac.dei.edrp.cms.domain.resultprocessing.PreprocessTwoInfoGetter" />
+
+<resultMap id="getStudent" class="proprocessTwoClass">
+		<result property="rollNumber" column="roll_number" />
+		<result property="attemptNumber" column="attempt_number" />
+  </resultMap>
+
+
+	<select id="getStudentList" resultMap="getStudent">
+		Select roll_number,attempt_number from
+		student_registration_semester_header
+		where program_course_key=(select
+		program_course_key from
+		program_course_header
+		where
+		program_id=#programId# and
+		branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		semester_code=#semesterCode#
+		and
+		semester_status='ACT') and
+		session_start_date=#startDate# and
+		session_end_date=#endDate# and 
+		status='REM' and entity_id=#entityId#
+</select>
+
+<resultMap id="getCourse" class="proprocessTwoClass">
+		<result property="rollNumber" column="roll_number" />
+		<result property="courseCode" column="course_code" />
+		<result property="attemptNumber" column="attempt_number" />
+  </resultMap>
+
+<select id="getStudentCourseList" resultMap="getCourse">
+		Select roll_number,course_code,attempt_number from
+		student_course
+		where program_course_key=(select
+		program_course_key from
+		program_course_header
+		where
+		program_id=#programId# and
+		branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		semester_code=#semesterCode#
+		and
+		semester_status='ACT') and
+		semester_start_date=#startDate# and
+		semester_end_date=#endDate# and 
+		student_status='REM' and
+		roll_number=#rollNumber#
+</select>
+
+<resultMap id="getMarks" class="proprocessTwoClass">
+		<result property="marks" column="marks" />
+  </resultMap>
+
+<select id="getComponentMarks" resultMap="getMarks">
+SELECT marks FROM student_marks where program_course_key=(select
+		program_course_key from
+		program_course_header
+		where
+		program_id=#programId# and
+		branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		semester_code=#semesterCode#
+		and
+		semester_status='ACT') and
+university_code=#universityId# and 
+semester_start_date=#startDate# and 
+semester_end_date=#endDate# and
+evaluation_id=#evaluationId# and attempt_number=#attemptNumber# 
+and course_code=#courseCode# and roll_number=#rollNumber#
+</select>
+
+
+
+
+<update id="updateStudentCourse">
+Update student_course set student_status=#status#,modification_time=now(),modifier_id=#modifierId# where 
+program_course_key=(select
+		program_course_key from
+		program_course_header
+		where
+		program_id=#programId# and
+		branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		semester_code=#semesterCode#
+		and
+		semester_status='ACT') and 
+		semester_start_date=#startDate# and 
+semester_end_date=#endDate# and 
+roll_number=#rollNumber#
+and student_status='REM' and course_code=#courseCode# 
+</update>
+
+<update id="updateSRSH">
+update student_registration_semester_header set status=#status# ,modification_time=now(),modifier_id=#modifierId#
+where roll_number=#rollNumber# and program_course_key=(select
+		program_course_key from
+		program_course_header
+		where
+		program_id=#programId# and
+		branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		semester_code=#semesterCode#
+		and
+		semester_status='ACT') and 
+		session_start_date=#startDate# and 
+session_end_date=#endDate# and 
+ status='REM'
+</update>
+
+<!-- student program updates -->
+
+<resultMap id="getMaxAttemptsAllowed" class="proprocessTwoClass">
+		<result property="maxAllowedAttempt" column="number_of_attempt_allowed" />
+  </resultMap>
+  
+  <select id="getMaxNumberOfAttempts" resultMap="getMaxAttemptsAllowed">
+  Select number_of_attempt_allowed from program_master where program_id=#programId#
+  </select>
+  
+  
+  <resultMap id="getMaxAttemptsAllowed" class="proprocessTwoClass">
+		<result property="semesterCode" column="semester_code" />
+		<result property="finalSemester" column="final_semester_code" />
+  </resultMap>
+  
+  
+   <select id="getallSemesters" resultMap="getMaxAttemptsAllowed">
+Select distinct semester_code, final_semester_code from program_term_details 
+where program_id=#programId# 
+<!--and semester_group=(select distinct semester_group -->
+<!--from program_term_details where program_id=#programId# and semester_code=#semesterCode#)-->
+</select>
+
+  <resultMap id="getPCK" class="proprocessTwoClass">
+		<result property="attemptNumber" column="attempt_number" />
+		<result property="programCourseKey" column="program_course_key" />
+  </resultMap>
+
+<select id="getPCKAttempt" resultMap="getPCK">
+select max(attempt_number) attempt_number,program_course_key from student_registration_semester_header 
+where roll_number=#rollNumber# and program_course_key IN(select program_course_key 
+from program_course_header where program_id=#programId# and branch_id=#branchId# 
+and specialization_id=#specializationId# and semester_code IN(Select distinct semester_code 
+from program_term_details where program_id=#programId#)) group by program_course_key
+</select>
+
+<resultMap id="getFromStatus" class="proprocessTwoClass">
+		<result property="status" column="program_status" />
+  </resultMap>
+
+
+<select id="getEachSemStatus" resultMap="getFromStatus">
+select status program_status from student_registration_semester_header
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and attempt_number=#attemptNumber#
+</select>
+
+<resultMap id="getTotalFail" class="proprocessTwoClass">
+		<result property="totalFail" column="count(*)" />
+  </resultMap>
+  
+  <select id="getTotalFailSemester" resultMap="getTotalFail">
+select count(*) from student_registration_semester_header 
+where roll_number=#rollNumber# and attempt_number=#attemptNumber# 
+and status=#status# and program_course_key IN(select program_course_key 
+from program_course_header where program_id=#programId# and branch_id=#branchId# 
+and specialization_id=#specializationId# and semester_code IN(Select distinct semester_code 
+from program_term_details where program_id=#programId# and semester_group=(select distinct semester_group 
+ from program_term_details where program_id=#programId# and semester_code=#semesterCode#)))
+
+</select>
+
+
+<resultMap id="getTotalPass" class="proprocessTwoClass">
+		<result property="totalPass" column="passSemester" />
+  </resultMap>
+  
+  <select id="getTotalPassSemester" resultMap="getTotalPass">
+Select count(*) as passSemester from student_registration_semester_header 
+where roll_number=#rollNumber# 
+and program_course_key IN (select program_course_key from 
+program_course_header where program_id=#programId# and
+		branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		semester_code IN (Select semester_code from program_term_details 
+where program_id=#programId# 
+and semester_group=(select distinct semester_group 
+ from program_term_details where program_id=#programId# and semester_code=#semesterCode#)
+ ))  
+ and attempt_number=#attemptNumber# and status=#status#
+</select>
+
+
+<update id="updateStudentProgram">
+Update student_program set 
+program_status=#status#,modification_time=now(),modifier_id=#modifierId# 
+where roll_number=#rollNumber# 
+and program_id=#programId# and branch_id=#branchId# 
+and specialization_id=#specializationId#
+</update>
+
+
+<resultMap id="getSwitchNumber" class="proprocessTwoClass">
+		<result property="switchNumber" column="switch_number" />
+  </resultMap>
+
+<select id="getSwitchNumber" resultMap="getSwitchNumber">
+Select switch_number from student_program 
+where roll_number=#rollNumber# and program_id=#programId# 
+and branch_id=#branchId# and specialization_id=#specializationId#
+</select>
+
+
+
+<resultMap id="getSwitchNumber" class="proprocessTwoClass">
+		<result property="programMode" column="program_mode" />
+  </resultMap>
+
+<select id="checkIntegrated" resultMap="getSwitchNumber">
+SELECT program_mode FROM program_master where program_id=#programId#
+</select>
+
+
+
+
+
+<resultMap id="getINP" class="proprocessTwoClass">
+		<result property="toProgram" column="program_id" />
+		<result property="toBranch" column="branch_id" />
+		<result property="toSpecialization" column="specialization_id" />
+  </resultMap>
+
+<!--<select id="getIntegratedPrograms" resultMap="getINP">-->
+<!--Select distinct program_id,branch_id,specialization_id from -->
+<!--student_program where program_id !=#toProgram# and -->
+<!--switch_number=#switchNumber# and mode_of_entry='INP'-->
+<!--</select>-->
+
+
+<select id="getFwdProgram" resultMap="getINP">
+select ps.to_program,ps.to_branch,ps.to_specialization from program_switch ps,student_program sp where
+from_program=#programId# and from_branch=#branchId# and from_specialization=#specializationId#
+and sp.switch_number=#switchNumber# and sp.program_id= ps.to_program and
+sp.branch_id= ps.to_branch and sp.specialization_id=ps.to_specialization
+and sp.sequence_number>=(select sequence_number from student_program where switch_number=#switchNumber#
+and program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId#)
+</select>
+
+<resultMap id="getINPFromProgram" class="proprocessTwoClass">
+		<result property="fromProgram" column="from_program" />
+		<result property="fromBranch" column="from_branch" />
+		<result property="fromSpecialization" column="from_specialization" />
+  </resultMap>
+
+<!--<select id="getIntegratedFromPrograms" resultMap="getINPFromProgram">-->
+<!--Select ps.from_program, ps.from_branch, ps.from_specialization -->
+<!--from program_switch ps, student_program sp -->
+<!--where ps.to_program=#toProgram# and ps.to_branch=#toBranch# -->
+<!--and ps.to_specialization=#toSpecialization# -->
+<!--and sp.switch_number=#switchNumber# and sp.program_id= ps.to_program and -->
+<!--sp.branch_id= ps.to_branch and sp.specialization_id=ps.to_specialization-->
+<!--</select>-->
+
+
+
+<select id="getBwdProgram" resultMap="getINPFromProgram">
+select ps.from_program,ps.from_branch,ps.from_specialization from program_switch ps,student_program sp where
+to_program=#programId# and to_branch=#branchId# and to_specialization=#specializationId#
+and sp.switch_number=#switchNumber# and sp.program_id= ps.to_program and
+sp.branch_id= ps.to_branch and sp.specialization_id=ps.to_specialization
+and (select sequence_number from student_program where switch_number=#switchNumber#
+and program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId#)>=sp.sequence_number
+</select>
+
+
+
+
+
+<select id="getInpProgramStatus" resultMap="getFromStatus">
+Select program_status from student_program 
+where program_id=#programId# and branch_id=#branchId# 
+and specialization_id=#specializationId# and switch_number=#switchNumber#
+</select>
+
+<update id="updateInpStatus">
+Update student_program set program_status=#status#,modification_time=now(),modifier_id=#modifierId# 
+where program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and 
+switch_number=#switchNumber#
+</update>
+
+</sqlMap>

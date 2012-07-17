@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) CourseMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:TitleWindow width="793" height="462" layout="absolute" creationPolicy="all" close="onOk(e)" showCloseButton="false" backgroundColor="#FFFFFF"  creationComplete="createForm()" keyUp="onKeyUp(event)" title="{commonFunction.getConstants('courseMaster')}" xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script source="asFiles/CourseMasterAction.as"/>
+	
+	<mx:HTTPService id="getComponentList" method="POST"
+					url="{urlPrefix}getComponents.htm"
+					resultFormat="e4x"
+					result="getComponentSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseGroupList" method="POST"
+					url="{urlPrefix}getComponents.htm"
+					resultFormat="e4x"
+					result="getCourseGroupSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseClassificationList" method="POST"
+					url="{urlPrefix}getComponents.htm"
+					resultFormat="e4x"
+					result="getCourseClassificationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseTypeList" method="POST"
+					url="{urlPrefix}getComponents.htm"
+					resultFormat="e4x"
+					result="getCourseTypeSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getEntityList" method="POST"
+					url="{urlPrefix}getEntities.htm"
+					resultFormat="e4x"
+					result="getEntitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+					url="{urlPrefix}getEntityPrograms.htm"
+					resultFormat="e4x"
+					result="getProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+					url="{urlPrefix}getProgramBranches.htm"
+					resultFormat="e4x"
+					result="getBranchSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+					url="{urlPrefix}getProgramSpecializations.htm"
+					resultFormat="e4x"
+					result="getSpecializationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getDuplicateCourseCount" method="POST"
+					url="{urlPrefix}getDuplicateCourseCount.htm"
+					resultFormat="e4x"
+					result="getDuplicateSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setCourseDetails" method="POST"
+					url="{urlPrefix}setCourseDetails.htm"
+					resultFormat="e4x"
+					result="setCourseDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteCourseDetails" method="POST"
+					url="{urlPrefix}deleteCourseDetails.htm"
+					resultFormat="e4x"
+					result="deleteCourseDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="updateCourseDetails" method="POST"
+					url="{urlPrefix}updateCourseDetails.htm"
+					resultFormat="e4x"
+					result="updateCourseDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:Label x="35.5" y="25" text="{commonFunction.getConstants('ownerEntity')}" />
+	<mx:Label x="352.5" y="25" text="{commonFunction.getConstants('ownerProgram')}" />
+	<mx:Label x="35.5" y="55" text="{commonFunction.getConstants('ownerBranch')}" />
+	<mx:Label x="352.5" y="55" text="{commonFunction.getConstants('ownerSpecialization')}" />
+	<mx:Label x="35.5" y="85" text="{commonFunction.getConstants('courseType')}" />
+	<mx:Label x="352.5" y="85" text="{commonFunction.getConstants('courseClassification')}" />
+	<mx:Label x="35.5" y="115" text="{commonFunction.getConstants('courseCode')}" />
+	<mx:Label x="352.5" y="115" text="{commonFunction.getConstants('courseName')}" />
+	<mx:Label x="35.5" y="175" text="{commonFunction.getConstants('internalMarks')}" />
+	<mx:Label x="35.5" y="209" text="{commonFunction.getConstants('externalMarks')}" />
+	<mx:Label x="35.5" y="239" text="{commonFunction.getConstants('totalMarks')}" />
+	<mx:Label x="352.5" y="175" text="{commonFunction.getConstants('credits')}"  height="28"/>
+	<mx:Label x="352.5" y="205" text="{commonFunction.getConstants('subjectGroup')}" />
+	<mx:Label x="352.5" y="237" text="{commonFunction.getConstants('resultSystem')}" />
+	<mx:Label x="38.5" y="265" text="{commonFunction.getConstants('lectures')}" />
+	<mx:Label x="352.5" y="265" text="{commonFunction.getConstants('tutorials')}" />
+	<mx:Label x="38.5" y="295" text="{commonFunction.getConstants('practicals')}" />
+
+	<mx:Label x="352.5" y="299" text="{commonFunction.getConstants('units')}" />
+	<mx:Label x="38.5" y="328" text="{commonFunction.getConstants('sinceSession')}" />			
+	<mx:ComboBox x="135.5" y="25" width="160" id="ownerEntityComboBox" prompt="{commonFunction.getConstants('select')}" change="ownerProgramComboBox.enabled=true" updateComplete="onEntityChange()" toolTip="{ownerEntityComboBox.text}"/>
+	<mx:ComboBox x="489.5" y="25" width="160" enabled="false" id="ownerProgramComboBox" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="ownerBranchComboBox.enabled=true" updateComplete="onProgramChange()" toolTip="{ownerProgramComboBox.text}"/>
+	<mx:ComboBox x="135.5" y="55" width="160" enabled="false" id="ownerBranchComboBox" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="ownerSpecializationComboBox.enabled=true" updateComplete="onBranchChange()" toolTip="{ownerBranchComboBox.text}"/>
+	<mx:ComboBox x="489.5" y="55" width="160" enabled="false" id="ownerSpecializationComboBox" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{ownerSpecializationComboBox.text}" />
+	<mx:ComboBox x="135.5" y="85" width="160" id="courseTypeComboBox" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{courseTypeComboBox.text}"/>
+	<mx:ComboBox x="489.5" y="85" width="160" id="courseClassificationComboBox" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{courseClassificationComboBox.text}"/>
+	<mx:TextInput x="135.5" y="115" width="160" id="courseCodeTextInput" restrict="0-9a-zA-Z" />
+	<mx:TextInput x="489.5" y="115" width="160" id="courseNameTextInput"/>
+	<mx:Label x="35.5" y="145" text="{commonFunction.getConstants('internalExternalActive')}"/>
+	<mx:RadioButtonGroup id="InternalExternalActive" selectedValue="1" change="setIntExtActive()"/>
+	<mx:RadioButton x="200" y="145" label="Yes" value="1" groupName="InternalExternalActive"/>
+	<mx:RadioButton x="254" y="145" label="No" value="0" groupName="InternalExternalActive"/>
+    <mx:RadioButtonGroup id="gradeLimitActive" selectedValue="1"/>
+	<mx:RadioButton x="489" y="145" value="1" label="Yes" groupName="gradeLimitActive"/>
+	<mx:RadioButton x="555" y="145" value="0" label="No" groupName="gradeLimitActive"/>
+	<mx:TextInput x="135.5" y="175" width="160" id="internalMarksField" restrict="0-9" focusOut="setTotal()" text="0"/>
+	<mx:TextInput x="137" y="207" width="160" id="externalMarksField" restrict="0-9" focusOut="setTotal()" text="0"/>
+	<mx:TextInput x="135.5" y="237" width="160" id="totalMarksField" restrict="0-9" text="0" height="22"/>
+	<mx:TextInput x="489.5" y="173" width="160" id="creditsField" />
+	<mx:ComboBox x="489.5" y="205" width="160" id="courseGroupComboBox" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{courseGroupComboBox.text}"/>
+	<mx:ComboBox x="489.5" y="237" width="160" id="resultSystemCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{resultSystemCombo.text}"/>
+	<mx:TextInput x="135.5" y="263" width="160" id="lecturesField" />
+	<mx:TextInput x="489.5" y="265" width="160" id="tutorialsField" />
+	<mx:TextInput x="135.5" y="293" width="160" id="practicalsField" />
+
+	
+	
+	
+	<mx:TextInput x="489.5" y="297" width="160" id="unitsField" />
+	<mx:ComboBox x="135.5" y="325" width="87" prompt="{commonFunction.getConstants('select')}" id="sinceSessionComboBox" toolTip="{sinceSessionComboBox.text}"/>
+	<mx:TextInput x="230.5" y="325" width="65" id="toSessionTextInput" text="{(int(sinceSessionComboBox.selectedItem)+1).toString().substring(2,4)}" editable="false" />
+	<mx:RadioButtonGroup id="edeiStatusGroup" selectedValue="0"/>
+	<mx:RadioButton x="489.5" y="331" label="Yes" value="1" groupName="edeiStatusGroup"/>
+	<mx:RadioButton x="555" y="331" label="No" value="0" groupName="edeiStatusGroup"/>
+	<mx:Button x="135" y="375" label="{commonFunction.getConstants('submitButton')}" id="submitButton" click="submitForm()"  />
+	<mx:Button x="228" y="375" visible="false" label="{commonFunction.getConstants('updateButton')}" id="updateButton" click="updateForm()"  />
+	<mx:Button x="228" y="375" visible="false" label="{commonFunction.getConstants('deleteButton')}" id="deleteButton" click="deleteDetails()"  />
+	<mx:Button x="229" y="375" label="{commonFunction.getConstants('resetButton')}" id="resetButton" click="resetForm()" />
+	<mx:Button x="325" y="375" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="onOk(e)" />
+	
+	<mx:Validator id="resultSystemValidator" property="selectedItem"/>
+	<mx:Validator id="ownerEntityValidator" property="selectedItem"/>
+	<mx:Validator id="ownerProgramValidator" property="selectedItem"/>
+	<mx:Validator id="ownerBranchValidator" property="selectedItem"/>
+	<mx:Validator id="ownerSpecValidator" property="selectedItem"/>
+	<mx:Validator id="courseTypeValidator" property="selectedItem"/>
+	<mx:Validator id="courseClassValidator" property="selectedItem"/>
+	<mx:Validator id="courseGroupValidator" property="selectedItem"/>
+	<mx:Validator id="sinceSessionValidator" property="selectedItem"/>
+	<mx:StringValidator id="courseNameValidator" maxLength="100" source="{courseNameTextInput}" property="text"/>
+	<mx:NumberValidator id="totalMarksValidator" maxValue="9999" source="{totalMarksField}" allowNegative="false" property="text" domain="int" />
+	<mx:NumberValidator id="internalMarksValidator" maxValue="999" source="{internalMarksField}" allowNegative="false" property="text" domain="int" />
+	<mx:NumberValidator id="externalMarksValidator" maxValue="999" source="{externalMarksField}" allowNegative="false" property="text" domain="int"/>
+	<mx:NumberValidator id="creditsValidator" source="{creditsField}" allowNegative="false" maxValue="100.00" minValue=".01" property="text" domain="real" precision="2"/>
+	<mx:NumberValidator id="lecturesValidator" source="{lecturesField}" maxValue="999" allowNegative="false" property="text" domain="int"/>
+	<mx:NumberValidator id="tutorialsValidator" source="{tutorialsField}" maxValue="999" allowNegative="false" property="text" domain="int"/>
+	<mx:NumberValidator id="practicalsValidator" source="{practicalsField}" maxValue="999" allowNegative="false" property="text" domain="int"/>
+	<mx:NumberValidator id="unitsValidator" source="{unitsField}" property="text" maxValue="10" allowNegative="false" minValue="1" domain="int"/>
+	<mx:StringValidator id="courseCodeValidator" source="{courseCodeTextInput}" property="text" maxLength="8" minLength="6" tooLongError="{commonFunction.getMessages('invalidLengthCourseCode')}"/>
+	<mx:Label x="352.5" y="147" text="{commonFunction.getConstants('gradeLimitActive')}" width="134"/>
+	<mx:Label x="352.5" y="334" text="{commonFunction.getConstants('edeiCourse')}"/>
+
+
+</mx:TitleWindow>

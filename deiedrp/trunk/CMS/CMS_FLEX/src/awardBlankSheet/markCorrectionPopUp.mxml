@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ *
+ * @(#) markCorrectionPopUp.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ *
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" showCloseButton="true" close="closePopUp(event)" layout="absolute" width="320" height="326">
+
+	<mx:HTTPService id="resolvedIssue"
+					url="{commonFunction.getConstants('url')}/awardBlankRequestCorrection/resolvedIssue.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	<mx:Label x="10" y="10" text="{commonFunction.getConstants('rollNumber')} :"/>
+	<mx:Label x="133" y="10" id="roll"/>
+	<mx:Label x="10" y="34" text="{commonFunction.getConstants('component')} :" width="115"/>
+	<mx:Label x="133" y="34" id="component"/>
+	<mx:Label x="10" y="62" text="{commonFunction.getConstants('marksObtained')} :"/>
+	<mx:Label x="133" y="62" id="obtainedMarks"/>
+	<mx:Label x="10" y="90" text="{commonFunction.getConstants('requestedMarks')} :" height="19" width="125"/>
+	<mx:Label x="133" y="90" id="requestedMarks"/>
+	<mx:CheckBox id="newMarkVisible" x="13" y="116" label="{commonFunction.getConstants('changeMark')}" change="visibleMarks()" width="232.5"/>
+	<mx:Label id="newMarksLabel" x="10" y="148" text="{commonFunction.getConstants('newMark')} :" width="85" height="22" visible="false"/>
+	<mx:TextInput id="newMarks" x="133" y="146" width="39" height="23" restrict="0-9" maxChars="3" visible="false"/>
+	<mx:Label x="10" y="187" text="{commonFunction.getConstants('teacherRemark')} :"/>
+	<mx:TextArea id="teacherRemark" maxChars="200" x="133" y="172" width="140" height="53"/>
+	<mx:CheckBox id="issueStatus" x="89.5" y="225" change="onSubmitClick()" label="{commonFunction.getConstants('issueResolve')}"/>
+	<mx:Button x="89.5" y="252" label="{commonFunction.getConstants('cancelButton')}" click="var evt:CloseEvent;closePopUp(evt)"/>
+	
+	<mx:Script>
+		<![CDATA[
+			
+		import common.Mask;
+		import common.commonFunction;
+		import mx.collections.*;
+		import mx.controls.Alert;
+		import mx.events.CloseEvent;
+		import mx.managers.PopUpManager;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/reset.png")]private var resetIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+		public var param:Object={};
+		public var refreshGrid:Function;
+		
+
+		
+		/** this method fires on click of close button and closes pop up
+ 		* */
+		public function closePopUp(event:CloseEvent):void
+		{	
+			PopUpManager.removePopUp(this);
+			refreshGrid();
+		}
+
+		/**
+ 		* This fire on pressing down ESC key 
+ 		* and closes popup
+ 		* */
+		public function initializeForEsc(event:KeyboardEvent):void
+		{
+    		if (event.keyCode == Keyboard.ESCAPE)
+    		{
+				var evt:CloseEvent;
+				closePopUp(evt);
+    		}
+		}
+		
+		
+		private function onSubmitClick():void{
+			if(issueStatus.selected==true)
+			{
+				if(teacherRemark.text.length>0){
+					Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,resolvedOrNot,questionIcon);
+				}
+				else{
+					Alert.show("Remark should be Filled",commonFunction.getMessages('info'),4,null,refreshCheckBox,infoIcon);
+				}
+			}
+		}
+		
+		private function visibleMarks():void{
+			newMarks.text="";
+			if(newMarkVisible.selected==true)
+			{
+				newMarksLabel.visible=true;
+				newMarks.visible=true;
+			}
+			else
+			{
+				newMarksLabel.visible=false;
+				newMarks.visible=false;
+			}
+		}
+		
+		public function refreshCheckBox(event:CloseEvent):void{
+			issueStatus.selected=false;
+		}
+		
+		private function resolvedOrNot(event:CloseEvent):void{
+			if(event.detail==Alert.YES){
+				param['rollNumber']=roll.text;
+				param['evaluationId']=component.text;
+				if(newMarks.text.length!=0){
+					param['newMarks']=newMarks.text;
+				}
+				param['teacherRemark']=teacherRemark.text;
+				resolvedIssue.send(param);
+			}
+			else{
+				issueStatus.selected=false;
+			}
+		}
+		
+		private function onSuccess(event:ResultEvent):void{
+			if(event.result.message=="true"){
+				Alert.show(commonFunction.getMessages('resolved'),commonFunction.getMessages('success'),4,null,closePopUp,successIcon);
+			}
+			else{
+				Alert.show(commonFunction.getMessages('errorDetail')+"\n\n"+event.result.message,commonFunction.getMessages('error'),4,null,closePopUp,errorIcon);
+			}
+		}
+		
+
+		
+		private function onFailure(event:FaultEvent):void{
+			Alert.show(event.fault+"",commonFunction.getMessages('error'),4,null,null,errorIcon);
+		}
+			
+		]]>
+	</mx:Script>
+	
+
+	
+</mx:TitleWindow>
+

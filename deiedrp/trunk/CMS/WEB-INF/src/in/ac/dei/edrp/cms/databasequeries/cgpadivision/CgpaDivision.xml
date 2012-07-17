@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+<sqlMap namespace="cgpaDivision">
+	<typeAlias alias="cgpaDivision"
+		type="in.ac.dei.edrp.cms.domain.cgpadivision.CgpaDivisionInfoGetter" />
+
+
+
+	<insert id="insertCGPADivision">
+		insert into cgpa_division(division, min_cgpa_value,
+		max_cgpa_value,
+		insert_time, creator_id, university_code)
+		values(#divisionId#,#minCGPA#,#maxCGPA#,now(),#userId#,#universityCode#);
+    
+    </insert>
+
+	<resultMap id="getDivisions" class="cgpaDivision">
+
+		<result property="divisionId" column="component_code" />
+		<result property="divisionDescription" column="component_description" />
+		<result property="minCGPA" column="min_cgpa_value" />
+		<result property="maxCGPA" column="max_cgpa_value" />
+
+	</resultMap>
+
+	<select id="getRecords" resultMap="getDivisions">
+		select
+		sys.component_code,sys.component_description,cgpa.min_cgpa_value,cgpa.max_cgpa_value
+		from system_table_two sys,cgpa_division cgpa where
+		sys.component_code=cgpa.division AND
+		sys.group_code='DVSCOD' AND
+		sys.university_code=cgpa.university_code AND
+		cgpa.university_code=#universityCode#;
+	</select>
+
+	<update id="updateCGPADivision">
+		update cgpa_division set
+		min_cgpa_value=#minCGPA#,max_cgpa_value=#maxCGPA#,modifier_id=#userId#,modification_time=now()
+		where division=#divisionId# and
+		university_code=#universityCode#;
+    
+    </update>
+
+	<delete id="deleteDivisionRecords">
+		delete from cgpa_division where
+		university_code=#universityCode# and division=#divisionId#;
+    </delete>
+
+	<resultMap id="defaulteroles" class="unirolesetup">
+
+		<result property="componentId" column="component_code" />
+		<result property="componentDescription" column="component_description" />
+
+	</resultMap>
+
+	<select id="getDistinctDivisions" resultMap="defaulteroles">
+
+		select
+		component_code,component_description from system_table_two where
+		group_code=#groupCode# AND active=1 AND
+		component_code NOT IN(select
+		division from cgpa_division where university_code=#universityCode#)
+		AND university_code=#universityCode#;    
+		
+    
+    </select>
+
+</sqlMap>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

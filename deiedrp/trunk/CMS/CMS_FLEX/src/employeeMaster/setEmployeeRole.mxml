@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#) setEmployeeRole.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="232" layout="absolute" showCloseButton="true" close="closeMe()" creationComplete="onCreation()" initialize="titlewindow1InitializeHandler(event)">
+	
+	<mx:Script>
+		<![CDATA[
+			import common.AutoCompleteCB;
+			import mx.collections.ArrayCollection;
+			import common.Mask;
+			import mx.controls.TextInput;
+			import common.commonFunction;
+			import mx.containers.Canvas;
+			import mx.controls.Alert;
+			import mx.controls.DataGrid;
+			import mx.controls.LinkButton;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;		
+			public var mailId:String;
+			public var employeeId:String;
+			public var empId:String;
+			public var canvas:Canvas;
+			public var linkbutton:LinkButton;
+			public var employeecode:String;
+			public var roleList:int;
+			public var employeeRoleList:int;
+			public var rolls:XML;
+			public var getEmployeeDetails:Function;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			[Bindable]public var urlPrefix:String;
+			[Bindable]public var urlPrefixEmployee:String;
+
+			
+			public function onCreation():void{
+				if(rolls==''){
+		
+				Alert.show(commonFunction.getMessages('errorOnRoles'),
+				commonFunction.getMessages('error'),0,this,onOK,errorIcon);
+		
+	}
+			}
+			
+			/**
+			 *This method is called in order to
+			 * close the popUp window after the
+			 * execution is completed 
+			 **/
+			public function closeMe():void
+			{
+				PopUpManager.removePopUp(this);	
+			}
+			
+			public function OKFuntion():void{
+				
+				roleValidate.source = roleCombo;
+				roleCombo.errorString = "";
+				applicationValidate.source = applicationCombo;
+				applicationCombo.errorString = "";
+				
+				if((Validator.validateAll([roleValidate,applicationValidate]).length!=0)){					
+					Alert.show(resourceManager.getString('Messages','pleasecheckEntriesinRed'),
+	 				commonFunction.getMessages('error'),0,null,null,errorIcon);
+					
+				}else{					
+					Alert.show(commonFunction.getMessages('areyousure'),
+						commonFunction.getMessages('confirm'),
+							(Alert.YES|Alert.NO),null,assignRole,questionIcon);						
+				}
+			}
+			
+			/**
+			 *Method to assign the selected role
+			 * to the concerned employee of the 
+			 * university
+			 **/
+			public function assignRole(event:CloseEvent):void{
+				
+				if(event.detail==Alert.YES){
+					
+				var assignrole:Object={};
+				
+				assignrole["userId"]=new Date();
+				assignrole["roleId"]=roleCombo.selectedItem.id;
+				assignrole["roleDescription"]=roleCombo.selectedItem.description;
+				assignrole["applicationId"]=applicationCombo.selectedItem;
+				assignrole["empCode"]=employeeId;
+				assignrole["mailId"] = mailId;
+				assignrole["employeeId"] = empId;
+				
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				
+				setrole.send(assignrole);	
+					
+				}	
+				
+						
+			}
+			
+			public var roll:XML;
+			public function onSuccess(event:ResultEvent):void{
+			
+				roll=event.result as XML;
+				
+				if(roll.sessionConfirm == true)
+             {
+            		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+
+						var url:String="";
+            			url=commonFunction.getConstants('navigateHome');
+          				var urlRequest:URLRequest=new URLRequest(url);
+           				urlRequest.method=URLRequestMethod.POST;
+            			navigateToURL(urlRequest,"_self");
+            }           
+				
+				if(String(roll.role.id).length==0){
+
+					Alert.show(commonFunction.getMessages('requestFailed'),
+					commonFunction.getMessages('failure'),0,null,null,errorIcon);
+				}
+					
+				else if(String(roll.role.id).length>8){
+
+						Alert.show(commonFunction.getMessages('roleassigned'),
+						commonFunction.getMessages('success'),4,this,onOK,successIcon);
+						
+				} 
+				else{
+					
+					Alert.show("Role assigned successfully," + 
+						"username: " + roll.role.description + " password : " + roll.role.id,
+						resourceManager.getString('Messages','success'),4,this,onOK,successIcon);
+						
+					}
+								
+				Mask.close();
+						
+				
+			}
+			
+			public function onFailure(event:FaultEvent):void{
+				
+				Mask.close();
+				
+				Alert.show(commonFunction.getMessages('requestFailed'),
+					commonFunction.getMessages('failure'),0,null,null,errorIcon);
+				
+			}
+			
+			
+			/**
+			 *Method to fire the click event of the button
+			 * ie. to reflect the changes made in the record
+			 * onto the application 
+			 **/
+			public function onOK(event:CloseEvent):void{
+				
+				if(event.detail==Alert.OK){					
+					
+					linkbutton.enabled=false;
+					
+					closeMe();
+					
+					canvas.visible=false;					
+					
+				}
+				
+			}
+
+			protected function titlewindow1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/employeerole/";
+				urlPrefixEmployee = commonFunction.getConstants('url')+"/universityrole/"
+			}
+			
+			private function getRoles():void{				
+				
+				var userId:Object={};
+				userId["userId"]=new Date();
+				userId["employeeCode"] = employeeId;
+				userId["applicationId"] = applicationCombo.selectedItem; 
+				userId["counter"]="three";	
+	
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+	
+				unirole.send(userId);				
+				
+			}
+			
+			public var univRole:XML;
+			public var univRolelist:ArrayCollection;
+			private function onSuccessGetRole(event:ResultEvent):void{
+				
+				Mask.close();
+				
+				univRole = new XML;
+				univRole = event.result as XML;			
+				
+				if(univRole.sessionConfirm == true){
+          			Alert.show(resourceManager.getString('Messages','sessionInactive'));
+//          			this.parentDocument.vStack.selectedIndex=0;
+//          			this.parentDocument.loaderCanvas.removeAllChildren();
+
+						var url:String="";
+            			url=commonFunction.getConstants('navigateHome');
+          				var urlRequest:URLRequest=new URLRequest(url);
+           				urlRequest.method=URLRequestMethod.POST;
+            			navigateToURL(urlRequest,"_self");
+            			
+         		}else{        			
+         			univRolelist = new ArrayCollection();         			
+         			for each(var obj:Object in univRole.role){         				
+         				univRolelist.addItem({id:obj.id,description:obj.description});         				
+         			}
+         			
+         			roleCombo.dataProvider = univRolelist;
+         			roleCombo.labelField = "description";
+         			
+         			employeeRoleList = int(univRolelist.length);
+         			
+         		}			
+				
+			}
+
+		]]>
+		
+		
+	</mx:Script>
+	
+	<mx:Validator id="applicationValidate" property="selectedItem" required="true"/>
+	<mx:Validator id="roleValidate" property="selectedItem" required="true"/>
+	
+	<mx:XML source="/common/application.xml" id="applicationXML" format="e4x"/>
+	
+	<mx:HTTPService id="setrole" method="post"
+					url="{urlPrefix+'setEmployeeRole.htm'}"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="unirole" method="post"
+					url="{urlPrefixEmployee+'getRole.htm'}"
+					resultFormat="e4x"
+					result="onSuccessGetRole(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	
+	<mx:Label x="10" y="10" text="{resourceManager.getString('Constants','employee')} {resourceManager.getString('Constants','name')}" fontWeight="bold"  width="200"/>
+	<mx:Label x="125" y="10" id="empName"/>
+	<mx:Label x="10" y="65" text="{resourceManager.getString('Constants','select')} {resourceManager.getString('Constants','role')}" width="91" fontWeight="bold"/>
+	<mx:Label x="10" y="38" text="{resourceManager.getString('Constants','select')} {resourceManager.getString('Constants','application')}" fontWeight="bold"/>
+	<mx:ComboBox x="156" y="62" width="160" id="roleCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{roleCombo.text}"></mx:ComboBox>
+	<mx:ComboBox x="156" y="35" id="applicationCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="160" 
+					dataProvider="{applicationXML.Application}" labelField="@type" change="getRoles()" toolTip="{applicationCombo.text}"></mx:ComboBox>
+	<mx:Button x="10" y="133" label="{resourceManager.getString('Constants','okButton')}" id="assignRoleButton" click="OKFuntion()"/>
+	<mx:Button visible="true" label="{commonFunction.getConstants('cancelButton')}" click="PopUpManager.removePopUp(this)" x="153" y="133"/>
+	
+</mx:TitleWindow>

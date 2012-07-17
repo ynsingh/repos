@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" width="1016" title="{commonFunction.getConstants('listCourse')}" xmlns:common="common.*">
+<mx:Script source="asFiles/studentCourseListAction.as"/>
+<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			public var rollNumber:String;
+			public var programCourseKey:String;
+        ]]>
+	</mx:Script>
+																			
+	<mx:Canvas styleName="SimpleCanvas" id="belowCanvas" x="31" y="101" width="916" visible="true" horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+	<mx:Canvas id="headerCanvas" styleName="SimpleCanvas" x="15.5" y="22" width="889.5" height="120" horizontalScrollPolicy="off" verticalScrollPolicy="off">		
+		<mx:Label x="10" y="22" fontWeight="bold" text="{commonFunction.getConstants('program')}:"/>
+		<mx:Label x="92" y="22" text="Label" width="97" id="programLbl"/>
+		<mx:Label x="245" y="22" fontWeight="bold" text="{commonFunction.getConstants('branch')}:"/>
+		<mx:Label x="387" y="22" text="Label" width="99" id="branchLbl"/>
+		<mx:Label x="554" y="22" fontWeight="bold" text="{commonFunction.getConstants('specialization')}:"/>
+		<mx:Label x="697.5" y="22" text="Label" width="108" id="specializationLbl"/>
+		
+		<mx:Label x="10" y="62"  fontWeight="bold" text="{commonFunction.getConstants('semester')}:"/>
+		<mx:Label x="92" y="62" text="Label" width="97" id="semesterLbl"/>
+		<mx:Label x="245" y="62" fontWeight="bold" text="{commonFunction.getConstants('semesterStartDate')}:"/>
+		<mx:Label x="387" y="62" text="Label" width="99" id="semesterStartDateLbl"/>
+		<mx:Label x="554" y="62" fontWeight="bold" text="{commonFunction.getConstants('semesterEndDate')}:"/>
+		<mx:Label x="697.5" y="62" text="Label" width="95" id="semesterEndDateLbl"/>				
+	</mx:Canvas>
+	
+	</mx:Canvas>	
+	<mx:Canvas width="905" visible="true" id="gridcanvas" styleName="GridCanvas" height="212">
+		<mx:DataGrid x="10" y="10" width="884" id="courseDislpay" resizableColumns="false" editable="true" rowHeight="25"  horizontalScrollPolicy="off" verticalScrollPolicy="auto" draggableColumns="false" fontSize="11" color="#181717" >
+			<mx:columns>		
+				<mx:DataGridColumn width="200" headerText="{commonFunction.getConstants('listCourse')}" dataField="courseCode" editable="false" dataTipField="courseName" showDataTips="true" />
+				<mx:DataGridColumn width="150" headerText="{commonFunction.getConstants('courseStatus')}" dataField="courseStatus" editable="false" dataTipField="courseStatusName" showDataTips="true" />
+				<mx:DataGridColumn width="150" headerText="{commonFunction.getConstants('currentStatus')}" dataField="studentStatus" editable="false" dataTipField="studentStatusName" showDataTips="true" />
+				<mx:DataGridColumn width="150" headerText="{commonFunction.getConstants('attemptNumber')}" dataField="attemptNumber" editable="false" showDataTips="true"/>
+				<mx:DataGridColumn width="200" sortable="false" headerText="" editorDataField="selected" rendererIsEditor="true">
+				    <mx:itemRenderer>
+				     <mx:Component>
+				      <mx:LinkButton width="100%" label="{resourceManager.getString('Constants','showMarks')}" click="outerDocument.showMarks()" enabled="true"/>
+				     </mx:Component>
+				    </mx:itemRenderer>
+				   </mx:DataGridColumn>		
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:Button x="10" y="187" label="Back" click="closePop()"/>
+	</mx:Canvas>
+</mx:Panel>

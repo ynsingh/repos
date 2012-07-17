@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow styleName="PopUpTitleWindow" width="100%" verticalScrollPolicy="on" verticalLineScrollSize="10" layout="absolute" showCloseButton="true" close="closePopup()" title="{commonFunction.getConstants('enrollmentDetails')}" xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="initFir()" height="829">
+	<mx:Script>
+	<![CDATA[
+		import mx.controls.Button;
+		import mx.collections.ArrayCollection;
+		import common.commonFunction;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.Fault;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		[Bindable]public var regNo:String;
+		[Bindable]public var enrollNo:String;
+		[Bindable] public var url:String; 
+		[Bindable]public var admissionMode:String;
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		var inputs:Object = {};
+		import mx.managers.*;
+		public function initFir():void
+		{			
+			url = commonFunction.getConstants('url');				
+			inputs["regNo"] = regNo;
+			inputs["enrollNo"] = enrollNo;
+			inputs["admissionMode"]=admissionMode;	
+			getPersonalDetails.send(inputs);			
+		}
+		public function resultHandler(event:ResultEvent):void
+		{			
+			var personalDetail:XML = event.result as XML;		
+			 if(personalDetail.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		}   
+		    var details:ArrayCollection=new ArrayCollection();		    
+			for each(var obj:Object in personalDetail.details){
+				details.addItem({enrollmentNo:obj.enrollmentNo,studentId:obj.studentId,studentName:obj.studentName,fatherName:obj.fatherName,
+				motherName:obj.motherName,primaryMail:obj.primaryMail,dob:obj.dob,nationality:obj.nationality,religion:obj.religion,
+				categoryName:obj.categoryName,entity:obj.entity,branch:obj.branch,specialization:obj.specialization,
+				address:obj.address,city:obj.city,pincode:obj.pincode,state:obj.state,
+				corAddress:obj.corAddress,corCity:obj.corCity,corPincode:obj.corPincode,corState:obj.corState});
+			}			
+				
+			if(details.length>0)
+			{
+			name1.text=details.getItemAt(0).studentName;
+			fatherName.text=details.getItemAt(0).fatherName;
+			motherName.text=details.getItemAt(0).motherName;
+			emailId.text=details.getItemAt(0).primaryMail;
+			nationality.text=details.getItemAt(0).nationality;
+			dob.text=details.getItemAt(0).dob;
+			addressLabelId.text=details.getItemAt(0).address;
+				cityLableId.text=details.getItemAt(0).city;
+				stateLabelId.text=details.getItemAt(0).state;
+				pincodeLableId.text=details.getItemAt(0).pincode;				
+				addressCorLabelId.text=details.getItemAt(0).corAddress;
+				cityCorLabelId.text=details.getItemAt(0).corCity;
+				stateCorLabelId.text=details.getItemAt(0).corState;
+				pincodeCorLabelId.text=details.getItemAt(0).corPincode;
+			}
+			else{
+				PopUpManager.removePopUp(this);
+				
+			}						
+		getAcademicDetails.send(inputs);
+		}
+		public function faultHandler(fault:FaultEvent):void
+		{
+			Alert.show(commonFunction.getConstants('requestFailed'),commonFunction.getConstants('failure'),0,null,null,errorIcon);
+		}
+		
+		public function academicResultHandler(event:ResultEvent):void
+		{
+			var academicDetails:XML = event.result as XML;		
+			 if(academicDetails.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		}   	
+			var academics:ArrayCollection=new ArrayCollection();
+			for each(var obj:Object in academicDetails.academicDetail){
+				academics.addItem({registrationNo:obj.registrationNo,exam:obj.exam,year:obj.year,totalMarks:obj.totalMarks,marksObtained:obj.marksObtained,
+				college:obj.college,board:obj.board});
+			}
+			academicDetailGrid.dataProvider=academics;			
+		}
+		
+		
+/**
+ *  executed on click of close button and closes pop up
+ */
+public function closePopup():void
+{
+	PopUpManager.removePopUp(this);			
+}
+		
+	]]>
+</mx:Script>
+ <mx:HTTPService id="getPersonalDetails" method="post"
+        url="{url+'/getEnrollmentPersonalDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+<mx:HTTPService id="getAcademicDetails" method="post"
+        url="{url+'/getEnrollmentAcademicDetails.htm'}"
+        resultFormat="e4x"
+        result="academicResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>	        	
+	
+	
+	
+	<mx:Canvas styleName="SimpleCanvas" x="25" y="11" width="784" height="156" id="personalDetails">
+		<mx:Label x="1" y="4" visible="false" id="a"/>
+		<mx:Label x="2" y="4" visible="false" id="b"/>
+		<mx:Label x="37" y="21" text="{commonFunction.getConstants('name')}" width="60"/>
+		<mx:TextInput x="130" y="21" id="name1" editable="false"/>
+		<mx:Label x="37" y="67" text="{commonFunction.getConstants('fatherName')}"/>
+		<mx:TextInput x="130" y="65" id="fatherName" editable="false"/>
+		<mx:Label x="340" y="67" text="{commonFunction.getConstants('motherName')}"/>
+		<mx:TextInput x="461" y="65" id="motherName" editable="false"/>
+		<mx:Label x="340" y="23" text="{commonFunction.getConstants('emialId')} :"/>
+		<mx:TextInput x="461" y="21" id="emailId" editable="false"/>
+		<mx:Label x="37" y="116" text="{commonFunction.getConstants('dateOfBirth')}"/>
+		<mx:TextInput x="130" y="116" editable="false" id="dob"/>
+		<mx:Label x="340" y="118" text="{commonFunction.getConstants('nationality')}"/>
+		<mx:TextInput x="461" y="116" editable="false" id="nationality"/>
+		
+	</mx:Canvas>
+	<mx:TitleWindow title="Address" styleName="DetailTitleWindow" layout="absolute" x="25" y="196" width="784" height="258">
+		<mx:Label x="25" y="10" text="{commonFunction.getConstants('permanentAddress')} :" width="152"/>
+		<mx:Label x="196" y="10" id="addressLabelId"/>
+		<mx:Label x="196" y="128" id="addressCorLabelId"/>
+		<mx:Label x="144" y="52" text="{commonFunction.getConstants('city')} :"/>
+		<mx:Label x="196" y="52" id="cityLableId"/>
+		<mx:Label x="297" y="52" text="{commonFunction.getConstants('state')} :"/>
+		<mx:Label x="347" y="52" id="stateLabelId"/>
+		<mx:Label x="506" y="52" text="{commonFunction.getConstants('pinCode')} :"/>
+		<mx:Label x="585" y="52" id="pincodeLableId"/>
+		<mx:Label x="25" y="128" text="{commonFunction.getConstants('correspondenceAddress')} :"/>
+		<mx:Label x="144" y="179" text="{commonFunction.getConstants('city')} :"/>
+		<mx:Label x="197" y="179" id="cityCorLabelId"/>
+		<mx:Label x="297" y="179" text="{commonFunction.getConstants('state')} :"/>
+		<mx:Label x="347" y="179" id="stateCorLabelId"/>
+		<mx:Label x="506" y="179" text="{commonFunction.getConstants('pinCode')} :"/>
+		<mx:Label x="585" y="179" id="pincodeCorLabelId"/>
+	</mx:TitleWindow>
+	
+	
+  <mx:Canvas styleName="GridCanvas" id="detail" width="647.5" height="211" x="37" y="488">
+		<mx:Label x="0" y="5" text="{commonFunction.getConstants('academicDetails')}" height="16" fontWeight="bold"/>
+		<mx:DataGrid id="academicDetailGrid" width="619.5" height="164" horizontalScrollPolicy="off" 
+			 sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" x="10" y="29">
+		<mx:columns>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('exam')}" textAlign="center" width="230" sortable="true" dataField="exam" dataTipField="exam" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('passingYear')}" textAlign="center" width="290" sortable="true" dataField="year" dataTipField="year" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('boardUniversity')}" textAlign="center" width="290" sortable="true" dataField="board" dataTipField="board" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('schoolCollege')}" textAlign="center" width="230" sortable="true" dataField="college" dataTipField="college" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('totalMarks')}" textAlign="center" width="290" sortable="true" dataField="totalMarks" dataTipField="totalMarks" showDataTips="true"/>
+		<mx:DataGridColumn editable="false" resizable="true"  headerText="{commonFunction.getConstants('marksObtained')}" textAlign="center" width="290" sortable="true" dataField="marksObtained" dataTipField="marksObtained" showDataTips="true"/>
+
+		</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>	
+  <mx:Button x="712" y="692" label="{commonFunction.getConstants('cancelButton')}" click="{PopUpManager.removePopUp(this)}"/>
+	
+</mx:TitleWindow>

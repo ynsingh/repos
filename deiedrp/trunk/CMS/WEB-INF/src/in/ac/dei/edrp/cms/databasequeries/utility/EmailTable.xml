@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="emailTable">   
+
+  <typeAlias alias="emailTable" type="in.ac.dei.edrp.cms.domain.utility.EmailTableBean" />
+  
+  <!-- Deepak Part starts-->
+  
+  <insert id="insertIntoEMailTable" parameterClass="emailTable">
+		INSERT INTO email_table
+		(user_id,entity_id,program_id,branch_id,specialization_id,semester_code,user_group_id,
+		user_name,email_id,AIorUI,is_ready,insert_time,creator_id)
+		VALUES(#userId#,#entityId#,#programId#,#branchId#,#specializationId#,#semesterCode#,
+		#userGroupId#,#userName#,#emailId#,#referTable#,(case when #isReady#=true then 'Y' else 'N' end),now(),#creatorId#);
+	</insert>
+
+	<!-- Deepak part ends -->
+  
+  
+  
+</sqlMap>

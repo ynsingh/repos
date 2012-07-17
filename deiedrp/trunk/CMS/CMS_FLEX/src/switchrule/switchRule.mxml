@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) switchRule.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1028" height="656" creationComplete="setFirstFocous(label1Combo)" title="{commonFunction.getConstants('switchRule')}">	
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:XML id="label1XmlId" source="xmlFiles/label1xml.xml" format="e4x" />
+	<mx:Script source="asFiles/switchRuleAction.as"/>	
+	
+	<mx:HTTPService id="getRule3Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule3Details.htm"
+					resultFormat="e4x"
+					result="onRule3Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	<mx:HTTPService id="getRule4Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule4Details.htm"
+					resultFormat="e4x"
+					result="onRule4Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	<mx:HTTPService id="getRule5Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule5Details.htm"
+					resultFormat="e4x"
+					result="onRule5Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	<mx:HTTPService id="getRule6Details" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRule6Details.htm"
+					resultFormat="e4x"
+					result="onRule6Success(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setRuleDetails" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/setRuleDetails.htm"
+					resultFormat="e4x"
+					result="onSetSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getSetRuleRecords" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/getRecordsDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteSwitchRuleRecords" method="post"
+					url="{commonFunction.getConstants('url')}/switchRule/deleteRecords.htm"
+					resultFormat="e4x"
+					result="onSetDeleteSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Canvas styleName="SimpleCanvas" x="19" y="23" width="979" height="370">
+		<mx:Label x="89" y="16" text="{commonFunction.getConstants('rule1')}"/>
+		<mx:ComboBox x="358" y="14" id="label1Combo" toolTip="{label1Combo.selectedItem}" dataProvider="{label1XmlId.label1Data.@name}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+		<mx:Label x="89" y="58" text="{commonFunction.getConstants('rule2')}"/>
+		<mx:ComboBox x="358" y="55" enabled="true" id="label2Combo" toolTip="{label2Combo.selectedItem}" dataProvider="{label1XmlId.label1Data.@name}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" width="150"></mx:ComboBox>
+		<mx:Label x="89" y="100" text="{commonFunction.getConstants('rule3')}"/>
+		<mx:ComboBox x="358" y="97" id="label3Combo" enabled="true" toolTip="{label3Combo.selectedItem}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+		<mx:Label x="89" y="143" text="{commonFunction.getConstants('rule4')}"/>
+		<mx:ComboBox x="358" y="141" id="label4Combo" enabled="true" toolTip="{label4Combo.selectedItem}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+		<mx:Label x="89" y="189" text="{commonFunction.getConstants('rule5')}"/>
+		<mx:ComboBox x="358" y="187" id="label5Combo" enabled="true" toolTip="{label5Combo.selectedItem}" selectedIndex="-1"  prompt="{commonFunction.getConstants('select')}" width="150" ></mx:ComboBox>
+		<mx:Label x="89" y="228" text="{commonFunction.getConstants('rule6')}" width="106"/>
+		<mx:ComboBox x="358" y="226" id="label6Combo" toolTip="{label6Combo.selectedItem}" width="150" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1"></mx:ComboBox>
+		<mx:Label x="89" y="270" text="{commonFunction.getConstants('ruleFormula')}" height="22"/>
+		<mx:TextInput x="358" y="270" id="ruleFormulaField" width="150"/>
+		<mx:Button x="141" y="331" label="{commonFunction.getConstants('saveButton')}" id="saveButton" click="validateForm()"/>
+		<mx:Button x="304" y="331" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
+		<mx:Label x="141" y="16" text="({commonFunction.getConstants('rollNumberGeneration')})"/>
+		<mx:Label x="141" y="58" text="({commonFunction.getConstants('fromProgramMarks')})"/>
+	</mx:Canvas>
+	<mx:Validator source="{label1Combo}" id="label1ComboValidator" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/> 
+	<mx:Validator source="{label2Combo}" id="label2ComboValidator" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/>
+	<mx:Validator source="{label3Combo}" id="label3ComboValidator" property="selectedItem" required="true" trigger="{saveButton}" triggerEvent="click"/>
+	
+	<mx:Canvas styleName="GridCanvas" id="detail"  visible="true" width="978" height="190" x="20" y="410">
+		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" width="72" height="25"  enabled="false" id="editbutton" click="openEditPopUp()" x="829"  y="5"/>
+		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" width="69" height="25" enabled="false" id="deletebutton" x="902" click="deleteFunction()"  y="5"/>
+		<mx:Label x="6" y="5" text="{commonFunction.getConstants('ruleDetails')}" height="16"/>
+		<mx:DataGrid id="ruleDetailGrid" width="957" height="155" horizontalScrollPolicy="off" 
+					 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="29">
+			<mx:columns>
+				<mx:DataGridColumn editable="true"  rendererIsEditor="true" resizable="false" width="50" textAlign="center" sortable="false" 
+									editorDataField="selected" dataField="select" headerText=" ">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.ruleDetailGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										import mx.controls.LinkButton;
+									]]>
+								</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn editable="false" dataField="ruleId" headerText="{commonFunction.getConstants('ruleId')}" textAlign="center" width="98" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="ruleCodeOne" headerText="{commonFunction.getConstants('rollNumberGeneration')}" textAlign="center" width="200" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="ruleCodeTwo" headerText="{commonFunction.getConstants('fromProgramMarks')}" textAlign="center" width="240" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="ruleDescthree" headerText="{commonFunction.getConstants('rule3')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="ruleDescfour" headerText="{commonFunction.getConstants('rule4')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="ruleDescfive" headerText="{commonFunction.getConstants('rule5')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="ruleDescsix" headerText="{commonFunction.getConstants('rule6')}" textAlign="center" width="120" sortable="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="ruleFormula" headerText="{commonFunction.getConstants('ruleFormula')}" textAlign="center" width="150" sortable="true" showDataTips="true"/>		
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>	
+</mx:Panel>

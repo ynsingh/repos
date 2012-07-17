@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!--
+	/* * @(#) AwardBlank.xml * Copyright (c) 2011 EdRP, Dayalbagh
+	Educational Institute. * All Rights Reserved. * * Redistribution and
+	use in source and binary forms, with or * without modification, are
+	permitted provided that the following * conditions are met: * *
+	Redistributions of source code must retain the above copyright *
+	notice, this list of conditions and the following disclaimer. * *
+	Redistribution in binary form must reproducuce the above copyright *
+	notice, this list of conditions and the following disclaimer in * the
+	documentation and/or other materials provided with the * distribution.
+	* * * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES *
+	OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE *
+	DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR
+	ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR *
+	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR *
+	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, *
+	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors:
+	Members of EdRP, Dayalbagh Educational Institute */
+-->
+
+<sqlMap namespace="AwardSheet">
+	<typeAlias alias="awardBlank" type="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter"/>
+	<typeAlias alias="programTermInfo" type="in.ac.dei.edrp.cms.domain.programmaster.ProgramTermDetailsInfoGetter" />
+	
+	<select id="getCourseList" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		select distinct ic.entity_id as entityId, pch.program_id as programId, pch.branch_id as branchId, pch.specialization_id as specializationId, pch.semester_code as semesterCode,
+			ic.semester_start_date as semesterStartDate, ic.semester_end_date as semesterEndDate, ic.course_code as courseCode, stt.component_description as branchName,
+			stt1.component_description as semesterName, stt2.component_description as specializationName, pm.program_name as programName, cm.course_name as courseName,cm.grade_limit_active as gradelimit, 
+			ic.program_course_key as programCourseKey, cm.result_system as resultSystem, em.employee_code as employeeCode, concat_ws(' ', em.first_name, em.middle_name, em.last_name) as employeeName,
+			enm.entity_type as entityType, enm.entity_name as entityName, um.start_date as startDate, um.end_date as endDate			
+		from entity_master enm, course_master cm, program_master pm, system_table_two stt, system_table_two stt1, system_table_two stt2, program_course_header pch,
+			university_master um join program_registration pr join instructor_course ic join employee_master em
+		where um.university_code=#universityId# and um.current_status='1' and um.start_date=pr.session_start_date
+			and pr.semester_start_date=ic.semester_start_date and pr.semester_end_date=ic.semester_end_date and ic.employee_id=em.employee_code and
+			em.employee_id=#creatorId# and ic.status='ACT' and ic.program_course_key=pch.program_course_key and
+			stt.group_code='BRNCOD' and stt.component_code=pch.branch_id and stt.university_code=#universityId# and stt1.group_code='SEMCOD' and stt1.component_code=pch.semester_code and
+			stt1.university_code=#universityId# and stt2.group_code='SPCLCD' and stt2.component_code=pch.specialization_id and stt2.university_code=#universityId# and pm.program_id=pch.program_id and
+			cm.university_code=#universityId# and cm.course_code=ic.course_code and ic.entity_id=enm.entity_id;
+	</select>
+	
+	<!-- Query Added By Dheeraj For Getting Courses For Remedial AND External Award Blanks -->
+	<select id="getCourseListForRemedialAndExternal" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT DISTINCT ic.entity_id AS entityId, cma.approval_order, pch.program_id AS programId, pch.branch_id AS branchId, pch.specialization_id AS specializationId,
+		pch.semester_code AS semesterCode, ic.semester_start_date AS semesterStartDate, ic.semester_end_date AS semesterEndDate,
+		cma.course_code AS courseCode, stt.component_description AS branchName, stt1.component_description AS semesterName,
+		stt2.component_description AS specializationName, pm.program_name AS programName, cm.course_name AS courseName,
+		cm.grade_limit_active AS gradelimit, cma.program_course_key AS programCourseKey, cm.result_system AS resultSystem,
+		em.employee_code AS employeeCode, concat_ws(' ', em.first_name, em.middle_name, em.last_name) AS employeeName,
+		enm.entity_type AS entityType, enm.entity_name AS entityName, um.start_date AS startDate, um.end_date AS endDate
+		FROM entity_master enm, course_master cm, program_master pm, system_table_two stt, system_table_two stt1,
+		system_table_two stt2, program_course_header pch, university_master um
+		JOIN program_registration pr JOIN instructor_course ic JOIN employee_master em JOIN course_marks_approval cma
+		WHERE um.university_code=#universityId# AND um.current_status='1' AND um.start_date=pr.session_start_date
+		AND pr.semester_start_date=ic.semester_start_date AND pr.semester_end_date=ic.semester_end_date
+		AND em.employee_code IN (SELECT cma1.employee_id FROM course_marks_approval cma1 WHERE cma1.course_code=cm.course_code
+		AND cma1.display_type=#displayType# AND cma1.approval_order=(SELECt MIN(cma2.approval_order) from course_marks_approval cma2 WHERE cma2.course_code=cm.course_code
+		AND cma2.display_type=#displayType# AND cma2.program_course_key=pch.program_course_key AND cma2.entity_id=ic.entity_id))
+		AND em.employee_id=#creatorId# AND ic.status='ACT' AND ic.program_course_key=pch.program_course_key
+		AND ic.program_course_key=cma.program_course_key
+		AND stt.group_code='BRNCOD' AND stt.component_code=pch.branch_id AND stt.university_code=#universityId# AND stt1.group_code='SEMCOD'
+		AND stt1.component_code=pch.semester_code AND stt1.university_code=#universityId# AND stt2.group_code='SPCLCD' AND stt2.component_code=pch.specialization_id
+		AND stt2.university_code=#universityId# AND pm.program_id=pch.program_id
+		AND cm.university_code=#universityId# AND cm.course_code=cma.course_code AND cm.course_code=ic.course_code AND ic.entity_id=enm.entity_id
+		AND ic.entity_id=cma.entity_id AND cma.display_type=#displayType# GROUP BY cma.course_code, ic.entity_id, cma.program_course_key, cma.display_type;
+	</select>
+
+	<resultMap id="sysTwoGetter" class="programTermInfo">
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+	</resultMap>
+	
+	<resultMap id="semesterListGetter" class="programTermInfo">
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="semesterStartDate" column="semester_start_date" />
+		<result property="semesterEndDate" column="semester_end_date" />
+	</resultMap>
+
+	<resultMap id="studentList" class="awardBlank">
+		<result property="studentName" column="student_name" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="attemptNumber" column="attempt_number" />
+
+	</resultMap>
+
+	<select id="getStudentList" resultMap="studentList">
+<!--		select sc.roll_number,sc.attempt_number,-->
+<!--		concat_ws(' ',sm.student_first_name, sm.student_middle_name,sm.student_last_name) student_name -->
+<!--		from student_course sc, student_program sp, student_master sm -->
+<!--		where sc.program_course_key=(select program_course_key from program_course_header where program_id=#programId# and-->
+<!--		branch_id=#branchcode# and specialization_id=#specializationCode# and semester_code=#systemCode# and semester_status='ACT') and-->
+<!--		sc.roll_number=sp.roll_number and-->
+<!--		sp.enrollment_number=sm.enrollment_number and-->
+<!--		sc.course_code=#courseCode# and sc.student_status=#systemValue# and -->
+<!--		sm.parent_entity=#entityId# and sp.entity_id=sm.parent_entity and-->
+<!--		sp.program_id=#programId# and sp.branch_id=#branchcode# and sp.specialization_id=#specializationCode# and sp.current_semester=#systemCode#; -->
+
+		select sc.roll_number, sc.attempt_number, concat_ws(' ',sm.student_first_name, sm.student_middle_name,sm.student_last_name) student_name
+		from student_registration_semester_header srsh,student_program sp,
+		program_course_header pch,student_course sc,student_master sm 
+		where
+		sc.program_course_key=srsh.program_course_key AND srsh.program_course_key=pch.program_course_key
+		AND sc.roll_number=srsh.roll_number
+		AND srsh.status=#systemValue# AND srsh.session_start_date=#semesterStartDate# AND 
+		srsh.session_end_date=#semesterEndDate# and
+		pch.program_id=#programId# and pch.branch_id=#branchcode# and
+		pch.specialization_id=#specializationCode# and pch.semester_code=#systemCode# AND srsh.entity_id =#entityId# AND 
+		srsh.roll_number=sp.roll_number
+		AND sp.enrollment_number=sm.enrollment_number AND sm.university_code=substring(#entityId#,1,4) AND
+		sc.student_status=#systemValue# AND sc.course_code=#courseCode#
+		AND sp.program_status='ACT' AND sc.course_status='REG';
+
+	</select>
+	
+	<!-- Query Changed By Dheeraj For Getting Students For Different Course Combinations -->
+	<select id="getStudentList1" resultMap="studentList">
+		<!--  select sc.roll_number,sc.attempt_number, concat_ws(' ',sm.student_first_name, sm.student_middle_name,sm.student_last_name) student_name 
+		from student_course sc, student_program sp, student_master sm 
+		where sc.program_course_key=(select program_course_key from	program_course_header where program_id=#programId# and
+		branch_id=#branchcode# and specialization_id=#specializationCode# and semester_code=#systemCode# and semester_status='ACT') and
+		sc.roll_number=sp.roll_number and sp.enrollment_number=sm.enrollment_number and	sc.course_code=#courseCode# and 
+		sc.student_status!='WDR' and sc.student_status not in ('REM','FAL') and 
+		sm.parent_entity like concat(substring(#entityId#,1,4),'%') and 
+		sp.program_id=#programId# and sp.branch_id=#branchcode# and sp.specialization_id=#specializationCode# and sp.current_semester=#systemCode#
+		and sc.semester_start_date=#semesterStartDate# and sc.semester_end_date=#semesterEndDate# AND sc.course_status='REG';
+		-->
+		SELECT sc.roll_number,sc.attempt_number, CONCAT_WS(' ',sm.student_first_name, sm.student_middle_name,sm.student_last_name) student_name
+		FROM student_course sc, student_program sp, student_master sm
+		WHERE sc.program_course_key=(SELECT program_course_key FROM program_course_header
+		WHERE program_id=#programId# AND branch_id=#branchcode# AND specialization_id=#specializationCode# AND semester_code=#systemCode# AND semester_status='ACT')
+		AND sc.roll_number=sp.roll_number AND sp.enrollment_number=sm.enrollment_number AND sc.course_code=#courseCode#
+		AND sc.student_status!='WDR' AND sc.student_status NOT IN ('REM','FAL')
+		AND sm.parent_entity=#entityId# AND sm.parent_entity=sp.entity_id AND sp.entity_id=sc.entity_id
+		AND sp.program_id=#programId# AND sp.branch_id=#branchcode# AND sp.specialization_id=#specializationCode# AND sp.current_semester=#systemCode#
+		AND sc.semester_start_date=#semesterStartDate# AND sc.semester_end_date=#semesterEndDate# AND sc.course_status='REG';
+	</select>
+
+	<resultMap id="evaluationComponentList" class="awardBlank">
+		<result property="evaluationId" column="evaluation_id" />
+		<result property="group" column="group_id" />
+		<result property="rule" column="rule" />
+		<result property="idType" column="id_type" />
+		<result property="displayType" column="display_type" />
+		<result property="maximumMarks" column="maximum_marks" />
+	</resultMap>
+
+	<select id="getEvaluationComponent" resultMap="evaluationComponentList">
+		select cec.evaluation_id,cec.group_id,cec.rule,ec.id_type,ec.display_type,cec.maximum_marks
+		from evaluation_component ec, course_evaluation_component cec
+		where cec.program_id=#programId# and course_code=#courseCode# and
+		ec.evaluation_id=cec.evaluation_id and ec.display_type=#displayType#
+		and	ec.university_code=#universityId# order by cec.order_in_awardsheet	
+	</select>
+
+	<resultMap id="marksList" class="awardBlank">
+		<result property="evaluationId" column="evaluation_id" />
+		<result property="attendence" column="attendence" />
+
+	<result property="rollNumber" column="roll_number" />
+		<result property="marks" column="marks" />
+		<result property="grades" column="grades" />
+		<result property="passfail" column="pass_fail" />
+		<result property="totalInternal" column="total_internal" />
+		<result property="totalExternal" column="total_external" />
+		<result property="total" column="total_marks" />
+		<result property="internalGrade" column="internal_grade" />
+
+		<result property="externalGrade" column="external_grade" />	
+			<result property="inserttime" column="insert_time" />
+		<result property="modificationtime" column="modification_time" />	
+			<result property="requestedmarks" column="requested_marks" />
+		<result property="requesterremarks" column="requester_remarks" />		
+		<result property="issuestatus" column="issue_status" />
+
+		
+	</resultMap>
+
+	<select id="getStudentMarks" resultMap="marksList">
+	select sm.roll_number,sm.evaluation_id,sm.attendence,sm.marks,sm.grades, sm.pass_fail,sms.total_internal,sms.total_external,sms.total_marks,
+
+
+		sms.internal_grade, sms.external_grade ,sm.insert_time,sm.modification_time ,sm.requested_marks ,sm.requester_remarks,sm.issue_status	
+
+		from student_marks sm,student_marks_summary sms
+		where sm.course_code=#courseCode# and sm.course_code=sms.course_code and sm.university_code=#universityId# and 
+			sm.semester_start_date=#startdate# and 	sm.semester_end_date=#endDate# and sm.entity_id=#entityId# and	
+			sm.entity_id=sms.entity_id and sm.program_course_key=#programCourseKey# and sm.roll_number=sms.roll_number and 
+			sm.evaluation_id IN (select	cec.evaluation_id from evaluation_component ec, course_evaluation_component cec
+			where cec.program_id=#programId# and course_code=#courseCode# and ec.evaluation_id=cec.evaluation_id
+			and ec.display_type=#displayType# and ec.university_code=#universityId#);
+	</select>
+	
+	<select id="getStudentgrade" resultMap="marksList">
+		select sms.roll_number,null  as evaluation_id,null as marks,null as grades, null as pass_fail,
+		sms.total_internal,sms.total_external,sms.total_marks,
+		sms.internal_grade, sms.external_grade
+		from student_marks_summary sms
+		where sms.course_code=#courseCode# and   sms.university_code=#universityId# and
+			sms.semester_start_date=#startdate# and 	sms.semester_end_date=#endDate# and sms.entity_id=#entityId# and
+			  sms.program_course_key=#programCourseKey#;
+	</select>
+
+	<select id="getRule" resultMap="sysTwoGetter">
+		select distinct cec.group
+		code,stt.component_description name from
+		course_evaluation_component
+		cec,system_table_two stt
+		where stt.university_code=#universityId# and
+		stt.active='1' and
+		stt.group_code='CRSRUL' and
+		cec.rule=stt.component_code;
+	</select>
+
+	<select id="getSemesterDates" resultMap="sysTwoGetter">
+		select
+		pr.semester_start_date code,pr.semester_end_date name from
+		program_registration pr,university_master um where
+		pr.session_start_date=um.start_date and
+		pr.session_end_date=um.end_date and um.university_code=#universityId#
+		and
+		um.current_status='1' and program_course_key=#programCourseKey#;
+	</select>
+
+	<!-- Queries for save marks -->
+
+	<insert id="insertIntoStudentMarks">
+		insert into student_marks
+		(university_code, entity_id,
+		roll_number, program_course_key, evaluation_id,attendence, marks, grades,
+
+		pass_fail, status,
+		course_code, semester_start_date, semester_end_date,
+
+		insert_time, creator_id, attempt_number )
+
+		values(#universityId#, #entityId#,
+		#rollNumber#,#programCourseKey#,#evaluationId#,#attendence#,#marks#,#grades#,
+		#passfail#, 'ACT',
+		#courseCode#,#startDate#, #endDate#, now(),
+		#creatorId#, '1');
+	</insert>
+
+	<update id="updateStudentMarks">
+		update student_marks set 
+		marks=#marks# ,attendence=#attendence#, grades=#grades#,pass_fail=#passfail#, modifier_id=#creatorId#,modification_time=now() 
+ 
+		, old_marks = #oldmarks#
+		where university_code=#universityId# and roll_number=#rollNumber# and program_course_key=#programCourseKey# and 
+		evaluation_id=#evaluationId# and course_code=#courseCode# and entity_id=#entityId# and 
+		semester_start_date=#startDate# and semester_end_date=#endDate# 
+	</update>
+
+	<insert id="insertIntoStudentMarksSummaryInternal">
+		insert into student_marks_summary
+		(university_code, entity_id,
+		roll_number, program_course_key, semester_start_date,
+		semester_end_date, total_internal,
+		course_code,insert_time,
+		creator_id,internal_grade) values
+		(#universityId#,#entityId#,#rollNumber#,#programCourseKey#,
+		#startDate#, #endDate#,
+		#totalInternal#,
+		#courseCode#,now(),#creatorId#,
+		#internalGrade#);
+	</insert>
+
+	<update id="updateStudentMarksSummaryInternal">
+		update student_marks_summary set total_internal=#totalInternal#, 
+		internal_grade=#internalGrade#,
+		modifier_id=#creatorId#,modification_time=now() where 
+		university_code=#universityId# and entity_id=#entityId# and program_course_key=#programCourseKey# and 
+		roll_number=#rollNumber# and course_code=#courseCode# and semester_start_date=#startDate# and 
+		semester_end_date=#endDate# 
+	</update>
+
+	<insert id="insertIntoStudentMarksSummaryExternal">
+		insert into student_marks_summary
+		(university_code,entity_id,
+		roll_number, program_course_key, semester_start_date,
+		semester_end_date,
+		total_external,
+		course_code,insert_time,
+		creator_id,external_grade) values
+		(#universityId#,#entityId#,#rollNumber#,#programCourseKey#,
+		#startDate#, #endDate#,
+		#totalExternal#,
+		#courseCode#,now(),#creatorId#, #externalGrade#);
+	</insert>
+
+	<update id="updateStudentMarksSummaryExternal">
+		update student_marks_summary set  
+		total_external=#totalExternal# , external_grade=#externalGrade#,
+		modifier_id=#creatorId#,modification_time=now() where 
+		university_code=#universityId# and program_course_key=#programCourseKey# and 
+		roll_number=#rollNumber# and course_code=#courseCode# and semester_start_date=#startDate# and 
+		semester_end_date=#endDate# and entity_id=#entityId#;
+	</update>
+		
+	<insert id="insertIntoStudentMarksSummaryRemedial">
+		insert into student_marks_summary
+		(university_code, entity_id,
+		roll_number, program_course_key, semester_start_date,
+		semester_end_date, 
+		course_code,insert_time,
+		creator_id,total_internal,internal_grade) values
+		(#universityId#,#entityId#,#rollNumber#,#programCourseKey#,
+		#startDate#, #endDate#,
+		#courseCode#,now(),#creatorId#,#marks#,
+		#finalGrade#);
+	</insert>
+
+	<update id="updateStudentMarksSummaryRemedial">
+		update student_marks_summary set total_internal=#marks#, total_external=null,
+		internal_grade=#finalGrade#, external_grade=null,
+		modifier_id=#creatorId#,modification_time=now() where 
+		university_code=#universityId# and program_course_key=#programCourseKey# and 
+		roll_number=#rollNumber# and course_code=#courseCode# and semester_start_date=#startDate# and 
+		semester_end_date=#endDate# and entity_id=#entityId#;
+	</update>
+
+	<insert id="insertIntoCourseMarksApprovalStatus">
+		insert into course_marks_approval_status
+		(program_course_key, entity_id, approval_order, status, request_sender, request_getter,
+		request_date,semester_start_date, semester_end_date, course_code, display_type,insert_time,creator_id,submit_dates)
+		
+		values
+		(#programCourseKey#,#entityId#,#approvalOrder#,#status#,#requestSender#,
+		#requestGetter#,now(),#startDate#,#endDate#,#courseCode#, #displayType#,now(),#creatorId#,#submitdates#)
+		
+	</insert>
+	
+	<!-- Query Added By Dheeraj For Submitting The Award Blank For Approval -->
+	<update id="submitForApprove">
+		update course_marks_approval_status set request_sender=#requestSender#,
+		status=#status#, modifier_id=#creatorId#, modification_time=now(), reason=#reason# ,
+		submit_dates = concat(COALESCE(submit_dates,''),#submitdates#)
+		 where
+		program_course_key=#programCourseKey# 
+		and semester_start_date=#startDate# and semester_end_date=#endDate# 
+		and entity_id=#entityId# and approval_order=#approvalOrder# and course_code=#courseCode# 
+		and status IN ('WDW','REJ') and display_type=#displayType#
+	</update>
+	<update id="updateStatus">
+		update course_marks_approval_status set
+		status=#status#, modifier_id=#creatorId#, modification_time=now(), reason=#reason# ,request_date =#requestdate# 
+		
+		where
+		program_course_key=#programCourseKey# 
+		and semester_start_date=#startDate# and semester_end_date=#endDate# 
+		and entity_id=#entityId# and approval_order=#approvalOrder# and course_code=#courseCode# 
+		and status like #previousStatus# and display_type=#displayType#
+	</update>
+	
+		<update id="updateStatusapproval">
+		update course_marks_approval_status set
+		status=#status#, modifier_id=#creatorId#, modification_time=now(), reason=#reason# ,completion_date = #completiondate# where
+		program_course_key=#programCourseKey# 
+		and semester_start_date=#startDate# and semester_end_date=#endDate# 
+		and entity_id=#entityId# and approval_order=#approvalOrder# and course_code=#courseCode# 
+		and status like #previousStatus# and display_type=#displayType#
+	</update>
+
+<!-- Query Changed By Dheeraj For Getting Result on basis of Display Type -->
+	<select id="getEmployeeLevel" resultMap="sysTwoGetter">
+		select employee_id code,approval_order name from course_marks_approval
+		where program_course_key=#programCourseKey# and entity_id=#entityId# and 
+		course_code=#courseCode# and employee_id=#employeeCode# and display_type=#displayType#
+	</select>
+
+<!-- Query Changed By Dheeraj For Getting Result on basis of Display Type -->
+	<select id="getNextGetter" resultMap="sysTwoGetter">
+		select employee_id code,approval_order name  from course_marks_approval where
+		program_course_key=#programCourseKey# and entity_id=#entityId# and course_code=#courseCode# and
+		approval_order=#approvalOrder#+1 and display_type=#displayType#
+	</select>
+
+	<!-- Query Changed By Dheeraj For Getting Status On group of approval order -->
+	<select id="checkStatus" resultMap="sysTwoGetter">
+		select status name,null
+		code from course_marks_approval_status where
+		program_course_key=#programCourseKey# and
+		semester_start_date=#startdate# and semester_end_date=#endDate# and
+		course_code=#courseCode# and entity_id=#entityId#  and
+		status!='REJ' and approval_order=#approvalOrder# and display_type=#displayType# Group By approval_order
+	</select>
+
+	<select id="getEmployeeCode" resultClass="awardBlank">
+		select employee_code code, null name from employee_master where
+		employee_id=#employeeId#
+	</select>
+
+	<resultMap id="pendingListGetter" class="awardBlank">
+		<result property="courseName" column="course_name" />
+		<result property="courseCode" column="course_code" />
+		<result property="entityId" column="entity_id" />
+		<result property="entityType" column="entity_type" />
+		<result property="programId" column="program_id" />
+		<result property="branchId" column="branch_id" />
+		<result property="specializationId" column="specialization_id" />
+		<result property="semesterCode" column="semester_code" />
+		<result property="startDate" column="semester_start_date" />
+		<result property="endDate" column="semester_end_date" />
+		<result property="entityName" column="entity_name" />
+		<result property="entityTypeName" column="entityTypeName" />
+		<result property="programName" column="program_name" />
+		<result property="branchName" column="branchName" />
+		<result property="specializationName" column="specName" />
+		<result property="semesterName" column="semesterName" />
+		<result property="resultSystem" column="result_system" />
+		<result property="programCourseKey" column="program_course_key" />
+		<result property="reason" column="reason" />
+		<result property="displayType" column="display_type" />
+		<result property="employeeId" column="employee_id" />		
+		<result property="employeeName" column="employee_name"/>
+	</resultMap>
+
+
+	<select id="getPendingList" resultMap="pendingListGetter">
+		select cm.course_name,cmas.course_code,cmas.entity_id, em.entity_name, em.entity_type,
+			stte.component_description entityTypeName, pch.program_id,pm.program_name, pch.branch_id,
+			sttb.component_description branchName, pch.specialization_id,stts.component_description specName,
+			pch.semester_code,sem.component_description semesterName, cmas.semester_start_date,cmas.semester_end_date,
+			cm.result_system, cmas.program_course_key, cmas.reason, cmas.display_type, 
+			epm.employee_id, concat_ws(' ', epm.first_name, epm.middle_name, epm.last_name) as employee_name
+		from employee_master epm, course_marks_approval_status cmas, course_master cm, 
+			entity_master em,program_course_header pch,program_master pm,
+			system_table_two sttb,system_table_two stts,system_table_two sem,system_table_two stte
+		where cmas.request_getter=#creatorId# and cm.course_code=cmas.course_code and status=#systemCode#
+		and cmas.entity_id=em.entity_id and cmas.program_course_key=pch.program_course_key and
+		cmas.entity_id LIKE concat(#universityId#,'%') and pch.program_id=pm.program_id
+		AND pch.branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=#universityId#
+		AND pch.specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=#universityId#
+		AND pch.semester_code=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=#universityId#
+		AND em.entity_type=stte.component_code and stte.group_code='ENTTYP' AND stte.university_code=#universityId# 
+		and cmas.request_sender=epm.employee_code;
+	</select>
+<!--and cmas.display_type=#displayType#	-->
+
+	<update id="withdrawSheet">
+       update course_marks_approval_status set
+		status=#status#, modifier_id=#creatorId#,modification_time=now() where
+		program_course_key=#programCourseKey# 
+		and semester_start_date=#startDate# and semester_end_date=#endDate# 
+		and entity_id=#entityId# and course_code=#courseCode# and 
+		status='SUB' and display_type=#displayType#
+	</update>
+	
+	<select id="getGrade" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		select component_code as grades from system_table_two where group_code='GRADEP' and university_code=#universityId#;
+	</select>
+	
+	<resultMap id="rejectingListGetter" class="awardBlank">
+		<result property="courseName" column="course_name" />
+		<result property="courseCode" column="course_code" />
+		<result property="entityId" column="entity_id" />
+		<result property="entityType" column="entity_type" />
+		<result property="programId" column="program_id" />
+		<result property="branchId" column="branch_id" />
+		<result property="specializationId" column="specialization_id" />
+		<result property="semesterCode" column="semester_code" />
+		<result property="startDate" column="semester_start_date" />
+		<result property="endDate" column="semester_end_date" />
+		<result property="entityName" column="entity_name" />
+		<result property="entityTypeName" column="entityTypeName" />
+		<result property="programName" column="program_name" />
+		<result property="branchName" column="branchName" />
+		<result property="specializationName" column="specName" />
+		<result property="semesterName" column="semesterName" />
+		<result property="resultSystem" column="result_system" />
+		<result property="reason" column="reason" />
+		<result property="displayType" column="display_type" />
+		<result property="employeeId" column="employee_id" />		
+		<result property="employeeName" column="employee_name" />
+		<result property="requestGetter" column="request_getter"/>
+		<result property="programCourseKey" column="program_course_key" />
+		<result property="universityId" column="university_code" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<!-- Query Changed By Dheeraj For Getting List Of Courses On Group Base of Submitters, Only For Current Session -->
+	<select id="getRejectedList" resultMap="rejectingListGetter">
+		<!--
+		select cm.course_name,cmas.course_code,cmas.entity_id,
+		em.entity_name,em.entity_type,stte.component_description entityTypeName,
+		pch.program_id,pm.program_name, sttb.university_code,
+		pch.branch_id,sttb.component_description branchName,
+		pch.specialization_id,stts.component_description specName,
+		pch.semester_code,sem.component_description semesterName, cmas.status,
+		 cmas.semester_start_date,cmas.semester_end_date,cm.result_system,cmas.reason, cmas.program_course_key,
+		 cmas.display_type, epm.employee_id, cmas.request_getter, concat_ws(' ', epm2.first_name, epm2.middle_name, epm2.last_name) as employee_name  
+		from employee_master epm, employee_master epm2, course_marks_approval_status cmas, course_master cm,
+		entity_master em,program_course_header pch,program_master pm,
+		system_table_two sttb,system_table_two stts,system_table_two sem,system_table_two stte
+		where
+		cmas.request_sender=#requestSender# and cm.course_code=cmas.course_code and status=#status#
+		and cmas.entity_id=em.entity_id and cmas.program_course_key=pch.program_course_key and
+		cmas.entity_id LIKE concat(#universityId#,'%') and pch.program_id=pm.program_id
+		AND pch.branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=#universityId#
+		AND pch.specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=#universityId#
+		AND pch.semester_code=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=#universityId#
+		AND em.entity_type=stte.component_code and stte.group_code='ENTTYP' AND stte.university_code=#universityId#
+		and cmas.request_sender=epm.employee_code and
+		cmas.request_getter=epm2.employee_code;				
+		-->
+		SELECT DISTINCT cm.course_name, cmas.course_code, cmas.entity_id, enm.entity_name, enm.entity_type, stt1.component_description AS entityTypeName,
+		pm.program_id, pm.program_name, stt1.university_code, pch.branch_id, stt2.component_description AS branchName,  pch.specialization_id, stt3.component_description AS specName,
+		pch.semester_code, stt4.component_description AS semesterName, cmas.status, cmas.semester_start_date, cmas.semester_end_date, cm.result_system, cmas.reason,
+		cmas.program_course_key, cmas.display_type, epm2.employee_id, cmas.request_getter,
+		CONCAT_WS(' ',epm1.first_name, epm1.middle_name, epm1.last_name) AS employee_name
+		FROM course_marks_approval_status cmas JOIN course_master cm JOIN entity_master enm JOIN program_master pm
+		JOIN program_course_header pch JOIN course_marks_approval cma JOIN employee_master epm1 JOIN employee_master epm2
+		JOIN system_table_two stt1 JOIN system_table_two stt2 JOIN system_table_two stt3 JOIN system_table_two stt4
+		JOIN program_registration pr
+		WHERE cmas.course_code=cm.course_code AND cmas.entity_id=enm.entity_id AND enm.entity_type=stt1.component_code
+		AND pm.program_id=pch.program_id AND pch.branch_id=stt2.component_code AND pch.specialization_id=stt3.component_code
+		AND pch.semester_code=stt4.component_code
+		AND cmas.program_course_key=pch.program_course_key
+		AND cmas.entity_id=cma.entity_id
+		AND cmas.program_course_key=cma.program_course_key
+		AND cmas.course_code=cma.course_code
+		AND cmas.display_type=cma.display_type
+		AND cmas.approval_order=cma.approval_order
+		AND epm1.employee_id=cmas.modifier_id
+		AND epm1.employee_code=cmas.request_getter
+		AND pr.semester_start_date=cmas.semester_start_date
+		AND pr.semester_end_date=cmas.semester_end_date
+		AND epm2.employee_code=#requestSender#
+		AND stt1.group_code='ENTTYP' AND stt2.group_code='BRNCOD' AND stt3.group_code='SPCLCD' AND stt4.group_code='SEMCOD'
+		AND pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate# AND cmas.status=#status#
+		AND #requestSender# IN (SELECT cmaa.employee_id FROM course_marks_approval cmaa WHERE cmaa.course_code=cmas.course_code
+		AND cmaa.entity_id=cmas.entity_id AND cmaa.program_course_key=cmas.program_course_key AND cmaa.display_type=cmas.display_type
+		AND cmaa.approval_order=cmas.approval_order-1);
+	</select>
+	
+	<!-- Query Changed By Dheeraj For Getting List Of Courses On Group Base of Submitters, Only For Current Session -->
+	<select id="searchHigherApprovalRejected" resultMap="rejectingListGetter">
+		<!-- 
+		select cm.course_name,cmas.course_code,cmas.entity_id,
+			em.entity_name,em.entity_type,stte.component_description entityTypeName,
+			pch.program_id,pm.program_name, sttb.university_code,
+			pch.branch_id,sttb.component_description branchName,
+			pch.specialization_id,stts.component_description specName,
+			pch.semester_code,sem.component_description semesterName, cmas.status,
+			cmas.semester_start_date,cmas.semester_end_date,cm.result_system,cmas.reason, cmas.program_course_key,
+			cmas.display_type, epm.employee_id, cmas.request_getter, concat_ws(' ', epm2.first_name, epm2.middle_name, epm2.last_name) as employee_name
+			from employee_master epm, employee_master epm2, course_marks_approval_status cmas, course_master cm,
+			entity_master em,program_course_header pch,program_master pm,
+			system_table_two sttb,system_table_two stts,system_table_two sem,system_table_two stte
+			where cm.course_code=cmas.course_code and status=#status#
+			and cmas.entity_id=em.entity_id and cmas.program_course_key=pch.program_course_key and
+			cmas.entity_id LIKE concat(#universityId#,'%') and pch.program_id=pm.program_id
+			AND pch.branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=#universityId#
+			AND pch.specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=#universityId#
+			AND pch.semester_code=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=#universityId#
+			AND em.entity_type=stte.component_code and stte.group_code='ENTTYP' AND stte.university_code=#universityId#
+			and cmas.request_sender=epm.employee_code and approval_order IN(select MAX(approval_order) from course_marks_approval_status 
+			where entity_id LIKE concat(#universityId#,'%') and display_type=#displayType# and program_course_key=#programCourseKey# and 
+			course_code=#courseCode# and status=#status#) 
+			and	cmas.request_getter=epm2.employee_code and cmas.display_type=#displayType# and cmas.program_course_key=#programCourseKey# and 
+			cmas.course_code=#courseCode#;
+			-->
+			SELECT cm.course_name,cmas.course_code,cmas.entity_id, em.entity_name,em.entity_type,stte.component_description entityTypeName,
+			pch.program_id,pm.program_name, sttb.university_code, pch.branch_id,sttb.component_description branchName,
+			pch.specialization_id,stts.component_description specName, pch.semester_code,sem.component_description semesterName, cmas.status,
+			cmas.semester_start_date,cmas.semester_end_date,cm.result_system,cmas.reason, cmas.program_course_key,
+			cmas.display_type, epm.employee_id, cmas.request_getter, concat_ws(' ', epm2.first_name, epm2.middle_name, epm2.last_name) as employee_name
+			FROM employee_master epm, employee_master epm2, course_marks_approval_status cmas, course_master cm, entity_master em,
+			program_course_header pch,program_master pm, system_table_two sttb, system_table_two stts, system_table_two sem, system_table_two stte
+			WHERE cm.course_code=cmas.course_code AND status=#status#
+			AND cmas.entity_id=em.entity_id AND cmas.program_course_key=pch.program_course_key AND
+			cmas.entity_id =#entityId# AND pch.program_id=pm.program_id
+			AND pch.branch_id=sttb.component_code AND sttb.group_code='BRNCOD' AND sttb.university_code=#universityId#
+			AND pch.specialization_id=stts.component_code AND stts.group_code='SPCLCD' AND stts.university_code=#universityId#
+			AND pch.semester_code=sem.component_code AND sem.group_code='SEMCOD' AND sem.university_code=#universityId#
+			AND em.entity_type=stte.component_code AND stte.group_code='ENTTYP' AND stte.university_code=#universityId#
+			AND cmas.request_sender=epm.employee_code and approval_order IN(SELECT MAX(approval_order) from course_marks_approval_status
+			WHERE entity_id =#entityId# AND display_type=#displayType# AND program_course_key=#programCourseKey# AND
+			course_code=#courseCode# AND status=#status#)
+			AND cmas.request_getter=epm2.employee_code AND cmas.display_type=#displayType# AND cmas.program_course_key=#programCourseKey#
+			AND cmas.course_code=#courseCode# AND cmas.modifier_id=epm2.employee_id
+			AND cmas.semester_start_date=#startDate# AND cmas.semester_end_date=#endDate#;
+							
+	</select>
+	
+	<select id="getEmployeeEmailId" resultClass="awardBlank">
+		select primary_email_id as emailId
+		from employee_master 
+		where university_code=#universityId# and employee_code=#employeeCode#;
+	</select>
+
+<!-- Query Changed By Dheeraj For Getting Result on basis of Display Type -->
+	<select id="getStarterEmployee" resultClass="awardBlank">
+		select cma.employee_id as employeeCode, cma.approval_order, em.employee_id as employeeId
+		from course_marks_approval cma, employee_master em
+		where cma.entity_id=#entityId# and cma.program_course_key=#programCourseKey# and
+		cma.course_code=#courseCode# and cma.employee_id=em.employee_code and
+		cma.display_type=#displayType# order by cma.approval_order asc limit 1;
+	</select>
+	
+	<select id="getLastSendedRequest" resultClass="awardBlank">
+		select request_sender as requestSender
+		from course_marks_approval_status
+		where program_course_key=#programCourseKey# and entity_id=#entityId# and display_type=#displayType# and
+		status=#status# and request_getter=#employeeCode# and course_code=#courseCode#;
+	</select>
+
+<!-- Query Changed By Dheeraj For Getting Result on basis of Display Type -->	
+	<select id="getLastEmployee" resultClass="awardBlank">
+		select cma.employee_id as employeeCode	from course_marks_approval cma
+		where cma.entity_id=#entityId# and cma.program_course_key=#programCourseKey# and
+		cma.course_code=#courseCode# and approval_order=#approvalOrder# and cma.display_type=#displayType#;
+	</select>
+
+<!-- Query Changed By Dheeraj For Getting Result on basis of Display Type -->		
+	<select id="isNextApprovalExist" resultClass="awardBlank">
+		select cma.approval_order as approvalOrder	from course_marks_approval cma
+		where cma.entity_id=#entityId# and cma.program_course_key=#programCourseKey# and
+		cma.course_code=#courseCode# and cma.display_type=#displayType#;
+	</select>
+	
+	<select id="IsExternalAwardAllowed" resultClass="awardBlank">
+		select internal_external_active as code 
+		from course_master 
+		where university_code=#universityId# and course_code=#courseCode#;
+	</select>
+	
+	<select id="checkExistingForUpload" resultClass="awardBlank">
+		select roll_number as rollNumber
+		from student_marks 
+		where university_code=#universityId# and roll_number=#rollNumber# and program_course_key=#programCourseKey# and evaluation_id=#evaluationId# and course_code=#courseCode#
+		and semester_start_date=#startDate# and semester_end_date=#endDate#;
+	</select>
+	<select id="checkExistingSummaryForUpload" resultClass="awardBlank">
+		select roll_number as rollNumber
+		from student_marks_summary
+		where university_code=#universityId# and roll_number=#rollNumber# and program_course_key=#programCourseKey# and course_code=#courseCode#
+		and semester_start_date=#startDate# and semester_end_date=#endDate#;
+	</select>
+	
+	<!-- Query Changed By Dheeraj For Remedial Grades Updation -->
+	<update id="updateStudentMarksForUpload">
+		update student_marks set 
+		entity_id=#entityId#,marks=#marks#,old_marks = #oldmarks#,attendence = #attendence# ,grades=#grades#,modifier_id=#creatorId#,modification_time=now() 
+		where university_code=#universityId# and roll_number=#rollNumber# and program_course_key=#programCourseKey# and 
+		evaluation_id=#evaluationId# and course_code=#courseCode# and 
+		semester_start_date=#startDate# and semester_end_date=#endDate#  
+	</update>
+	<update id="updateStudentMarksSummaryInternalForUpload">
+		update student_marks_summary set entity_id=#entityId#,total_internal=#totalInternal#, 
+		internal_grade=#internalGrade#,
+		modifier_id=#creatorId#,modification_time=now() where 
+		university_code=#universityId# and program_course_key=#programCourseKey# and 
+		roll_number=#rollNumber# and course_code=#courseCode# and semester_start_date=#startDate# and 
+		semester_end_date=#endDate#
+	</update>
+	
+	<update id="updateStudentMarksSummaryExternalForUpload">
+		update student_marks_summary set  
+		entity_id=#entityId#,total_external=#totalExternal# , external_grade=#externalGrade#,
+		modifier_id=#creatorId#,modification_time=now() where 
+		university_code=#universityId# and program_course_key=#programCourseKey# and 
+		roll_number=#rollNumber# and course_code=#courseCode# and semester_start_date=#startDate# and 
+		semester_end_date=#endDate#;
+	</update>
+	
+	
+	<select id="getAprStatus" resultClass="awardBlank">
+		select status as code 
+		from course_marks_approval_status
+		where program_course_key=#programCourseKey# and entity_id=#entityId# and approval_order=#approvalOrder# and course_code=#courseCode# and display_type=#displayType# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+	</select>
+	
+	<select id="getgradelimit1" resultClass="awardBlank">
+	SELECT course_code  as courseCode , grade as grades, lower_cut_point as marksfrom ,upper_cut_point as marksto FROM course_grade_limit 
+	where course_code  = #courseCode#  and display_type = #displayType#  and university_code = #universityId# 
+	and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and status='ACT';
+	</select>
+	
+	<!-- Query Written By Dheeraj For getting grades only for Remedial Students -->
+	<resultMap id="gradeList" class="awardBlank">
+		<result property="evaluationId" column="evaluation_id" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="marks" column="marks" />
+		<result property="total" column="total_marks"/>
+		<result property="grades" column="grades" />
+		<result property="passfail" column="pass_fail" />
+	</resultMap>	
+
+	<select id="getRemedialStudentgrade" resultMap="gradeList">
+		SELECT roll_number, null as evaluation_id, null as marks, null as total_marks, grades, null as pass_fail
+		FROM student_marks WHERE course_code=#courseCode# AND university_code=#universityId#
+		AND semester_start_date=#startdate# AND semester_end_date=#endDate# AND entity_id=#entityId#
+		AND program_course_key=#programCourseKey# AND evaluation_id='REM';
+	</select>
+	
+
+	
+
+	
+	<select id="getcourseAprStatus" resultClass="awardBlank">
+			
+			select course_code as courseCode, status  ,approval_order as approvalOrder ,request_sender as requestSender
+		,request_getter as requestGetter ,request_date as requestdate,completion_date as completiondate,
+    concat(em1.first_name,em1.middle_name,em1.last_name) as requestSendername,
+    concat(em2.first_name,em1.middle_name,em1.last_name) as requestgettername,
+    st1.component_description as requestSenderdesignation,
+    st2.component_description as requestGetterdesignation,submit_dates as submitdates
+		from course_marks_approval_status left join employee_master em1 on request_sender = em1.employee_code left join
+
+		  employee_master em2 on request_getter = em2.employee_code
+		  left join system_table_two st1 on em1.designations = st1.component_code
+		 left join system_table_two st2 on em2.designations = st2.component_code
+
+		where st1.group_code = 'DESGNS'
+		and st2.group_code = 'DESGNS'
+		and program_course_key=#programCourseKey# and entity_id=#entityId#  and course_code=#courseCode# 
+		and display_type=#displayType# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#
+
+	
+		order by approval_order ;
+		
+		
+		
+	</select>
+	
+	<select id="getApprovalOrder" resultClass="awardBlank">
+		SELECT cma.approval_order AS approvalOrder FROM course_marks_approval cma JOIN employee_master em
+		ON em.employee_code=cma.employee_id AND em.employee_id=#creatorId#
+		AND cma.entity_id=#entityId# AND cma.program_course_key=#programCourseKey#
+		AND cma.course_code=#courseCode# AND cma.display_type=#displayType#;
+	</select>
+	
+	<!-- Query Added By Dheeraj For Checking the Exixtence Of Record in course_marks_approval_status table Before performing operation -->
+	<select id="recordExists" resultClass="awardBlank">
+		SELECT program_course_key AS programCourseKey, entity_id AS entityId, course_code AS courseCode, semester_start_date AS semesterStartDate,
+		semester_end_date AS semesterEndDate, display_type AS display_type FROM course_marks_approval_status
+		WHERE program_course_key=#programCourseKey# AND entity_id=#entityId# AND semester_start_date=#startDate# AND semester_end_date=#endDate#
+		AND display_type=#displayType# AND course_code=#courseCode# AND approval_order=#approvalOrder#+1;
+	</select>
+	
+
+</sqlMap>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramCourseSetup.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1052" height="491" title="{getString('program_course')}" 
+	fontWeight="normal"  borderColor="#B8B7B7" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	<!-- <mx:XML id="xmlFormatData" source="data.xml"/> -->
+	<mx:Script source="as/ProgList.as"/>
+
+	<mx:HTTPService id="httpXmlProgList" method="post"
+        url="{urlProgramList}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+         <mx:HTTPService id="httpXmlBranchList" method="post"
+        url="{urlBranchList}"
+        resultFormat="e4x"
+        result="resultHandler_BranchList(event)"
+        fault="faultHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        <mx:HTTPService id="httpXmlSemList" method="post"
+        url="{urlSemList}"
+        resultFormat="e4x"
+        result="resultHandler_SemList(event)"
+        fault="faultHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        <mx:HTTPService id="httpXmlSpecialList" method="post"
+        url="{urlSpecialList}"
+        resultFormat="e4x"
+        result="resultHandler_SpecialList(event)"
+        fault="faultHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        <mx:HTTPService id="httpXmlCourseDetail" method="post"
+        url="{urlCourseDetail}"
+        resultFormat="e4x"
+        result="resultHandler_CourseDetail(event)"
+        fault="faultHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        <mx:HTTPService id="httpXmlExistingCourseDetail" method="post"
+        url="{urlExistingCourseDetail}"
+        resultFormat="e4x"
+        result="resultHandler_ExistingCourseDetail(event)"
+        fault="faultHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        <mx:HTTPService id="httpInsertProgCourseDetail" method="post"
+        url="{urlProgCourseDetail}"
+        resultFormat="e4x"
+        result="resultHandler_insertProgCourseDetail(event)"
+        fault="faultHandler(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+	
+	<mx:Canvas width="951.5" height="107.954544"  styleName="SimpleCanvas" x="43.25" y="22">
+		<mx:Label x="146.75" y="22" text="{getString('prog_name')}:"/>
+		<mx:ComboBox x="260.75" y="19" id="program_nameCB" toolTip="{program_nameCB.text}" prompt="{commonFunction.getConstants('select')}" dataProvider="{xmldata_progName.program}"
+		labelField="@name" change="get_branch();" width="150"/>
+		<mx:Label x="546.75" y="22" text="{getString('branch_name')}:"/>
+		<mx:ComboBox x="653.75" y="19" id="branch_nameCB" toolTip="{branch_nameCB.text}" prompt="{commonFunction.getConstants('select')}" enabled="false" labelField="@name"
+					 dataProvider="{xmldata_branchName.branch}" change="get_semester();" width="150"/>
+		<mx:Label x="177.75" y="65" text="{getString('semester')}:"/>
+		<mx:ComboBox x="260.75" y="62" id="semester_nameCB" toolTip="{semester_nameCB.text}" prompt="{commonFunction.getConstants('select')}"  enabled="false" 					 
+					  change="get_specialization()" width="150"/>
+
+		<mx:Label x="542.75" y="65" text="{getString('specialization')}:"/>
+		<mx:ComboBox x="653.75" y="62" id="specializationCB" toolTip="{specializationCB.text}" prompt="{commonFunction.getConstants('select')}" enabled="false" labelField="@name"
+					 dataProvider="{xmldata_specialList.branch}" change="specializationCB_changeHandler(event)" width="150"/>
+	</mx:Canvas>
+	
+	<mx:Canvas id="gridCanvas" width="951.5" height="168.75" styleName="GridCanvas" visible="false" x="43.25" y="161.35">
+		<mx:Label text="{getString('course_details')}" top="6" left="10" fontWeight="bold"/>
+		<mx:LinkButton id="new_row_Button" x="723.5" y="4" label="{getString('add_more')}" click="new_row_Button_clickHandler(event)" />
+		<mx:LinkButton id="remove_row_Button" x="802.5" y="4" label="{getString('removeRow')}" click="remove_row_Button_clickHandler(event)" />
+		<mx:DataGrid id="courseDetailGrid"  editable="true" width="930.5" height="127.75" dataProvider="{initialGridData}"  x="10" y="32"
+				    itemRollOver="courseDetailGrid_ItemRollOver(event)" sortableColumns="false">        
+				
+				<mx:columns>
+					<mx:DataGridColumn editable="true" editorDataField="value" dataField="course_code" headerText="{getString('course_code')}">
+						<mx:itemEditor>
+							<mx:Component>
+								<mx:ComboBox width="100%" prompt="{commonFunction.getConstants('select')}" change="comboBox_ChangeHandler(event)" dataProvider="{outerDocument.xmldata_courseDetail.course.@code}">
+								 <mx:Script>
+		                                <![CDATA[
+		                                	import common.commonFunction;
+		                                	import mx.charts.series.ColumnSeries;
+		                                	import mx.collections.IViewCursor;
+		                                	import mx.collections.ListCollectionView;
+		                                	import mx.containers.Grid;
+		                                	import mx.controls.Alert;
+		                                	import mx.controls.DataGrid;
+		                                	import mx.controls.dataGridClasses.DataGridColumn;
+		                                	import mx.events.ListEvent;
+		                                	
+		                                	
+		                                	protected function comboBox_ChangeHandler(event:ListEvent):void
+		                                	{
+		                                		
+		                                	//	outerDocument.courseDes = 
+												//outerDocument.courseType = 
+												outerDocument.current_coursecode=event.currentTarget.selectedItem;
+		                                		var columns:Array = outerDocument.courseDetailGrid.columns;
+												var columnCount:int = columns.length;
+												var column:DataGridColumn;
+												var dataProvider:Object = outerDocument.courseDetailGrid.dataProvider;
+												var dp:Object = null;
+												var currentRowIndex:int=0;
+												var cursor:IViewCursor = dataProvider.createCursor ();
+												
+												var secondColumn:Number=outerDocument.selectedColumn;
+												var thirdColumn:Number=outerDocument.selectedColumn;
+												secondColumn++;
+												thirdColumn=secondColumn+1;
+											
+												//loop through rows
+												while (!cursor.afterLast)
+												{
+													var obj:Object = null;
+													obj = cursor.current;
+																	
+													if(currentRowIndex==outerDocument.selectedRow)
+													{
+														//loop through all columns for the row
+														for(var k:int = 0; k < columnCount; k++)
+														{	
+															column = columns[k];
+															if(k==secondColumn)
+															{	
+																var data_field:String = column.dataField; 
+																ListCollectionView(dataProvider).getItemAt(outerDocument.selectedRow)[data_field] = outerDocument.xmldata_courseDetail.course.(@code==event.currentTarget.selectedItem).courseName;
+															}
+																
+															if(k==thirdColumn)
+															{
+																var data_field2:String = column.dataField;
+																ListCollectionView(dataProvider).getItemAt(outerDocument.selectedRow)[data_field2] = outerDocument.xmldata_courseDetail.course.(@code==event.currentTarget.selectedItem).courseType;
+															}
+														}
+													 }
+													currentRowIndex++;
+													cursor.moveNext ();
+												}
+												
+												//set references to null:
+												dataProvider = null;
+												columns = null;
+												column = null;
+		                                	outerDocument.check_CourseCode(outerDocument.current_coursecode);
+		                                	}
+		                                	
+		                                ]]>     
+		                           </mx:Script>
+		                          </mx:ComboBox> 
+		                          
+							</mx:Component>
+						</mx:itemEditor>
+					</mx:DataGridColumn>
+					
+					<mx:DataGridColumn  editable="false" width="250" dataField="description"  headerText="{getString('description')}" showDataTips="true"/>
+					
+					<mx:DataGridColumn editable="false" dataField="course_type" headerText="{getString('course_type')}" showDataTips="true"/>
+							
+					
+					<mx:DataGridColumn dataField="category"  headerText="{getString('category')}" editable="true" editorDataField="value" showDataTips="true">
+						<mx:itemEditor>
+							<mx:Component>
+									<mx:ComboBox width="100%" dataProvider="{outerDocument.xmldata_courseDetail.group.(@code=='CRSCTG').componentDes}"/>
+							</mx:Component>
+						</mx:itemEditor>	
+					</mx:DataGridColumn>
+					
+					<mx:DataGridColumn dataField="group" headerText="{getString('group')}" editable="true" editorDataField="value" showDataTips="true">
+						<mx:itemEditor>
+							<mx:Component>
+								<mx:ComboBox width="100%" toolTip="{this.selectedItem}" dataProvider="{outerDocument.xmldata_courseDetail.group.(@code=='CRSGRP').componentDes}"/>
+							</mx:Component>
+						</mx:itemEditor>
+					</mx:DataGridColumn>
+					
+					<mx:DataGridColumn width="80" editable="true" editorDataField="text" dataField="availability" headerText="{getString('availability')}" showDataTips="true">
+						<mx:itemEditor>
+							<mx:Component>
+		                          <mx:ComboBox height="100%" width="100%" textAlign="center" dataProvider="{outerDocument.course_availability.name.@value}"/>
+							</mx:Component>
+						</mx:itemEditor>
+					</mx:DataGridColumn>
+				</mx:columns>
+			</mx:DataGrid>
+	</mx:Canvas>
+	
+	<mx:Button x="307.25" y="384" label="{getString('submit_button')}" id="submitButton" click="submitButton_clickHandler(current_coursecode)" enabled="false"/>
+	<mx:Button x="441.95" y="384" label="{getString('reset_button')}" id="resetButton" click="resetButton_clickHandler(/*event*/)"/>
+	<mx:Button x="564.7" y="384" label="{getString('cancel_button')}" id="cancelButton"
+		 click="cancelButton_clickHandler(event)" focusOut="cancelButton_FocusOutHandler(event)"/>
+	
+	<mx:Canvas id="gridCanvas2" width="951.5" height="245.75" styleName="GridCanvas" visible="false" x="43.25" y="161.35">
+		<mx:Label text="{getString('existing_courses')}" fontSize="11" top="6" left="10" fontWeight="bold"/>
+		<mx:DataGrid id="courseDetailGrid2" allowMultipleSelection="true" x="9.95" y="36.35" width="930.55" height="197.4" 
+				visible="true" sortableColumns="false" resizableColumns="true" dataProvider="{xmldata_existingCourseDetail.programCourseKey}"
+				draggableColumns="false" editable="true" borderThickness="1" borderColor="#7F7F7F">
+			<mx:columns>
+			<mx:DataGridColumn editable="false" dataField="courseCode" dataTipField="courseCode" headerText="{getString('course_code')}" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseName" dataTipField="courseName" headerText="{getString('description')}" width="200" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseType" dataTipField="courseType" headerText="{getString('course_type')}" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseCategory" dataTipField="courseCategory" headerText="{getString('category')}" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseGroup" dataTipField="courseGroup" headerText="{getString('group')}" sortable="true" showDataTips="true" />
+			<mx:DataGridColumn editable="false" dataField="courseAvailability" dataTipField="courseAvailability" headerText="{getString('availability')}" width="80" sortable="true" showDataTips="true"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	
+</mx:Panel>

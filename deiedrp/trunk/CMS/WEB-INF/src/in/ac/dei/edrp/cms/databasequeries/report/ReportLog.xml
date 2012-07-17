@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="report">
+<typeAlias alias="reportLog" type = "in.ac.dei.edrp.cms.domain.report.ReportLogBean"/>
+
+	<insert id="insertReportControlLog">
+	INSERT INTO report_control_log
+	VALUES(#universityCode#,#entityId#,#programId#,#branchCode#,#specializationCode#,
+		#semesterCode#,#semesterStartDate#,#semesterEndDate#,#reportCode#,#reportGenerated#,
+		#reportPrinted#,#sessionStartDate#,#sessionEndDate#,now(),#creatorId#,#semesterType#);
+	</insert>
+	
+	<update id="updateReportControlLog">
+	UPDATE report_control_log
+	SET 
+	university_code=#universityCode#,entity_id=#entityId#,program_id=#programId#,branch_code=#branchCode#,specialization_code=#specializationCode#,
+	semester_code=#semesterCode#,semester_start_date=#semesterStartDate#,semester_end_date=#semesterEndDate#,report_code=#reportCode#,
+	report_generated=#reportGenerated#,report_printed=#reportPrinted#,session_start_date=#sessionStartDate#,session_end_date=#sessionEndDate#,
+	insert_time=now(),
+	creator_id=#creatorId#,semester_type=#semesterType#
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="and" property="universityCode">
+		university_code = #universityCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="entityId">
+		entity_id=#entityId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="programId">
+		program_id=#programId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchCode">
+		branch_code=#branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specializationCode">
+		specialization_code=#specializationCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterCode">
+		semester_code=#semesterCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterStartDate">
+		semester_start_date=#semesterStartDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterEndDate">
+		semester_end_date=#semesterEndDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportCode">
+		report_code=#reportCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportGenerated">
+		report_generated=#reportGenerated#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportPrinted">
+		report_printed=#reportPrinted#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sessionStartDate">
+		session_start_date=#sessionStartDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sessionEndDate">
+		session_end_date=#sessionEndDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterType">
+		semester_type=#semesterType#
+		</isNotEmpty>
+	</dynamic>	
+	</update>
+	
+	<select id="selectReportControlLog" resultClass="reportLog">
+	SELECT * 
+	FROM
+	report_control_log	
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="and" property="universityCode">
+		university_code = #universityCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="entityId">
+		entity_id=#entityId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="programId">
+		program_id=#programId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchCode">
+		branch_code=#branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specializationCode">
+		specialization_code=#specializationCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterCode">
+		semester_code=#semesterCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterStartDate">
+		semester_start_date=#semesterStartDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterEndDate">
+		semester_end_date=#semesterEndDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportCode">
+		report_code=#reportCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportGenerated">
+		report_generated=#reportGenerated#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportPrinted">
+		report_printed=#reportPrinted#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sessionStartDate">
+		session_start_date=#sessionStartDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sessionEndDate">
+		session_end_date=#sessionEndDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterType">
+		semester_type=#semesterType#
+		</isNotEmpty>
+	</dynamic>	
+	</select>
+	
+	<insert id="insertReportErrorLog">
+	INSERT INTO report_error_log
+	VALUES(#universityCode#,#entityId#,#programId#,#branchCode#,#specializationCode#,
+		#semesterCode#,#reportCode#,#errorCode#,#studentRollNumber#,#semesterStartDate#,#semesterEndDate#,#session#,now());
+	</insert>
+	<insert id="insertReportPrintLog">
+	INSERT INTO report_print_log
+	VALUES(#universityCode#,#entityId#,#programId#,#branchCode#,#specializationCode#,
+		#semesterCode#,#reportCode#,#errorCode#,#semesterStartDate#,#semesterEndDate#,#session#,
+		#studentRollNumber#,#printStatus#);
+	</insert>
+	
+	<update id="updateReportControlLogForPrint">
+	UPDATE report_control_log
+	SET 
+	report_printed=#reportPrinted#,insert_time=now(),creator_id=#creatorId#
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="and" property="universityCode">
+		university_code = #universityCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="entityId">
+		entity_id=#entityId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="programId">
+		program_id=#programId#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="branchCode">
+		branch_code=#branchCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specializationCode">
+		specialization_code=#specializationCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterCode">
+		semester_code=#semesterCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterStartDate">
+		semester_start_date=#semesterStartDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterEndDate">
+		semester_end_date=#semesterEndDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportCode">
+		report_code=#reportCode#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reportGenerated">
+		report_generated=#reportGenerated#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sessionStartDate">
+		session_start_date=#sessionStartDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="sessionEndDate">
+		session_end_date=#sessionEndDate#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="semesterType">
+		semester_type=#semesterType#
+		</isNotEmpty>
+	</dynamic>	
+	</update>	
+</sqlMap>

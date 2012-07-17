@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramRuleEditWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="458" height="386" title="{commonFunction.getConstants('editButton')}"
+	showCloseButton="true" close="popUpWindowClose();" creationComplete="popupWindowInitializeHandler()" styleName="PopUpTitleWindow">
+	
+	<mx:HTTPService id="updateDetailsHttpServices" method="POST"
+					url="{urlPrefix+'updateProgramRuleDetails.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="updateDetailsHttpServicesResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.managers.PopUpManager;
+			import common.commonFunction;
+			
+			public var programCourseKey:String;
+			public var groupCode:String;
+			public var groupDescription:String;
+			public var subgroupCode:String;
+			public var subgroupDescription:String;
+			[Bindable] public var urlPrefix:String;
+			public var gridRefreshFunction:Function;
+			public var ruleXML:XML;
+			[Bindable]public var groupRule:String;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+//			ruleXML.group.(groupDescription==groupRuleCB.selectedLabel).groupCode;
+			
+			/**
+			 * @protected
+			 * this method is called on initilize the popUp window.
+			 */
+        	protected function popupWindowInitializeHandler():void
+        	{
+        		urlPrefix=commonFunction.getConstants('url')+"/programgroup/";
+        		groupRuleCB.dataProvider=ruleXML.group.groupDescription;
+				groupRuleCB.selectedItem=groupRule;
+//        		grpupLabel.text=groupDescription;
+//        		subgroupLabel.text=subgroupDescription;
+        	}
+        	
+        	/**
+			 * @private
+			 * This function will called on sucess http service 
+			 * @return void 
+			 */
+        	private function updateDetailsHttpServicesResultHandler(event:ResultEvent):void{
+				var saveResult:XML= event.result as XML;	
+				if(saveResult.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+        		if(String(saveResult.result.message).search("success")>-1){
+					Alert.show(String(saveResult.result.message).slice(7)+" "+commonFunction.getMessages('recordUpdatedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);
+					gridRefreshFunction.call();
+					popUpWindowClose();
+				}
+				//added by ashish mohan 
+				else if(String(saveResult.result.message).search("failure")>-1){
+				Alert.show("Error occured \n Details are as follows: \n"+String(saveResult.result.message)  ,resourceManager.getString('Messages','error'),4,null,null,errorIcon);	
+					gridRefreshFunction.call();	
+					popUpWindowClose();
+				}
+				else if(int(String(saveResult.result.message).slice(7))==0){
+				Alert.show(resourceManager.getString('Messages','recordNotUpdate'),resourceManager.getString('Messages','error'),4,null,null,errorIcon);	
+					gridRefreshFunction.call();	
+					popUpWindowClose();
+				}
+							
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+				}
+				Mask.close();
+			}
+			
+			/**
+			 * @private
+			 * this method is called when a fault occur from the server. 
+			 * @param event a Fault event object.
+			 */
+			private function httpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+				Mask.close();
+			}
+		
+			/**
+			 * @private
+			 * This function will called on update button clicked  
+			 * @return void 
+			 */
+			private function updateButtonClickHandler():void{
+        		var param:Object=new Object();
+        		param["programCourseKey"]=programCourseKey;
+        		param["groupCode"]=groupCode;
+        		param["subgroupCode"]=subgroupCode;
+        		param["groupRule"]=ruleXML.group.(groupDescription==groupRuleCB.selectedLabel).groupCode;
+        		updateDetailsHttpServices.send(param);
+        	}
+			
+			/**
+			 * @private
+			 * This function will called to close the popup window 
+			 * @return void 
+			 */
+			private function popUpWindowClose():void
+        	{
+				PopUpManager.removePopUp(this);
+        	} 
+		]]>
+	</mx:Script>
+	
+	<mx:Label x="90" y="84" text="{commonFunction.getConstants('firstGroup')}:"/>
+	<mx:Label x="196.25" y="84" width="160" id="groupLabel" fontWeight="bold"/>
+	<mx:Label x="90" y="126" text="{commonFunction.getConstants('secondGroup')}:"/>
+	<mx:Label x="196.25" y="126" width="160" id="subgroupLabel" fontWeight="bold"/>
+	<mx:Label x="90" y="166" text="{commonFunction.getConstants('rule')}:"/>
+	<mx:ComboBox x="196.25" y="164" id="groupRuleCB" toolTip="{groupRuleCB.text}" width="160"/>
+	<mx:Button x="121.75" y="232" label="{commonFunction.getConstants('updateButton')}" id="updateButton" click="updateButtonClickHandler()"/>
+	<mx:Button x="250.75" y="232" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="popUpWindowClose()"/>
+	
+</mx:TitleWindow>

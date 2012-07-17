@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel width="1446" height="1007" layout="absolute" title="{commonFunction.getConstants('studentWiseDetails')}" xmlns:mx="http://www.adobe.com/2006/mxml" initialize="init()" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+
+<mx:Script source="asFiles/StudentCheckListAction.as"/>
+	    
+	    <mx:HTTPService id="httpXmlDataService" method="post"
+        url="{url+'/getStudentDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"
+		showBusyCursor="true"/>	    
+        
+         <mx:HTTPService id="httpGetStudentFullDetails" method="post"
+        url="{url+'/getStudentFullDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_GetStudentFullDetails(event)"
+        fault="faultHandler(event)"
+	  	showBusyCursor="true"
+        useProxy="false"/>	
+        
+        
+	 <mx:HTTPService id="httpGetOptedCourses" method="post"
+        url="{url+'/getCourseList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_GetCourseList(event)"
+        fault="faultHandler(event)"
+		showBusyCursor="true"
+        useProxy="false"/>	
+        
+        <mx:HTTPService id="httpGetVerificationComponents" method="post"
+        url="{url+'/getComponentVerificationDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_GetVerificationComponents(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="entityListHttpService" method="POST"
+					url="{urlPrefix+'entityList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="entityListHttpServiceResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="programListHttpService" method="POST"
+					url="{urlPrefix+'programList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="programListHttpServiceResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="branchListHttpService" method="POST"
+					url="{urlPrefix+'branchList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="branchListHttpServiceResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>	
+	
+		<mx:HTTPService id="specializationListHttpService" method="POST"
+					url="{urlPrefix+'specializationList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="specializationListHttpServiceResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>
+	
+		<mx:HTTPService id="semesterListHttpService" method="POST"
+					url="{urlPrefix+'semesterList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterListHttpServiceResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="semesterDateHttpService" method="POST"
+					url="{urlPrefix+'semesterDates.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterDateHttpServiceResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="rejectStudentHttpService" method="POST"
+					url="{url+'/setStudentStatusToReject.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="rejectStudentHttpServiceResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="getRejectedStudents" method="post"
+       			 url="{url+'/getStudentDetails.htm'}"
+       			 resultFormat="e4x"
+        		result="rejectResultHandler(event)"
+       			 fault="faultHandler(event)"
+        		useProxy="false"
+				showBusyCursor="true"/>	
+				
+		<mx:HTTPService id="cancelRejectStudent" method="POST"
+					url="{url+'/cancelRejectStudent.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="cancelRejectResultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>
+								
+		<mx:Script>
+				<![CDATA[
+					import mx.rpc.events.ResultEvent;
+					import common.commonFunction;
+					import mx.events.ListEvent;
+					import mx.rpc.events.FaultEvent;
+					
+					protected var entityList:XML; 
+					protected var programList:XML;
+					protected var branchList:XML;
+					protected var specializationList:XML;
+					protected var semesterList:XML;
+					protected var semesterDate:XML;
+				
+					
+					
+/**
+ * @protected
+ * this method is called when a result come from the server. 
+ * @param event a Result event object.
+ */
+protected function entityListHttpServiceResultHandler(event:ResultEvent):void{
+	entityList = event.result as XML	
+	 if(entityList.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		}   	
+	studentCheckListGrid.dataProvider = null;
+	entityCombo.dataProvider=entityList.entity.entityName;
+}
+
+/**
+ * @protected
+ * this method is called when a result come from the server. 
+ * @param event a Result event object.
+ */
+protected function programListHttpServiceResultHandler(event:ResultEvent):void{
+	programList = event.result as XML;
+	if(programList.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		}   	
+	studentCheckListGrid.dataProvider = null;
+	programCombo.dataProvider=programList.program.programName;
+}
+
+/**
+ * @protected
+ * this method is called when a result come from the server. 
+ * @param event a Result event object.
+ */
+protected function branchListHttpServiceResultHandler(event:ResultEvent):void{
+	branchList = event.result as XML;
+	if(branchList.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		}   	
+	studentCheckListGrid.dataProvider = null;
+	branchCombo.dataProvider=branchList.branch.branchName;
+}
+
+/**
+ * @protected
+ * this method is called when a result come from the server. 
+ * @param event a Result event object.
+ */
+protected function specializationListHttpServiceResultHandler(event:ResultEvent):void{
+	specializationList = event.result as XML;
+		if(specializationList.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		} 
+	studentCheckListGrid.dataProvider = null;
+	specializationCombo.dataProvider=specializationList.specialization.specializationName;
+}
+
+/**
+ * @protected
+ * this method is called when a result come from the server. 
+ * @param event a Result event object.
+ */
+protected function semesterListHttpServiceResultHandler(event:ResultEvent):void{
+	semesterList = event.result as XML;
+	if(semesterList.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		} 
+	studentCheckListGrid.dataProvider = null;
+	semesterCombo.dataProvider=semesterList.semester.semesterName;
+}
+
+/**
+ * @protected
+ * this method is called when a result come from the server. 
+ * @param event a Result event object.
+ */
+protected function semesterDateHttpServiceResultHandler(event:ResultEvent):void{
+	semesterDate= event.result as XML;
+	if(semesterDate.sessionConfirm == true)
+    		    {
+        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+        		this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas.removeAllChildren();
+        		} 
+	var startDate:String=semesterDate.semester.semesterStartDate;
+	semesterStartDateField.text=startDate;
+
+	var endDate:String=semesterDate.semester.semesterEndDate;
+	semesterEndDateField.text=endDate;
+	
+	var param:Object=new Object();
+	if(startDate != "" && endDate != "")
+		{
+		inputs["program_id"]=programList.program.(programName==programCombo.selectedLabel).programId;
+        inputs["entity_id"]= entityList.entity.(entityName == entityCombo.selectedLabel).entityId;
+        inputs["branch_id"]=branchList.branch.(branchName==branchCombo.selectedLabel).branchId;
+        inputs["specialization_id"]=specializationList.specialization.(specializationName==specializationCombo.selectedLabel).specializationId;
+        inputs["semester"]=semesterList.semester.(semesterName==semesterCombo.selectedLabel).semesterCode;
+        inputs["semester_start_date"]=semesterStartDateField.text;
+        inputs["semester_end_date"]=semesterEndDateField.text;
+        inputs["flag"]="P";         
+        send_data(inputs);
+  }
+  else               
+  {
+  	studentCheckListGrid.dataProvider = null;
+    Alert.show(resourceManager.getString('Messages','errorSemDate'));
+  }
+}
+/**
+ * @protected 
+ * This function enables programcombo and make grid null on entity change 
+ * @param event a ListEvent object.
+ */
+protected function entityChange():void{
+	 programCombo.enabled=true;
+	 makeNullOnChange();
+	 var param:Object=new Object();
+	 param["entityId"]=entityList.entity.(entityName==entityCombo.selectedLabel).entityId;
+	 programListHttpService.send(param);
+}
+
+
+/**
+ * @protected 
+ * This function enables programcombo and make grid null on program change 
+ * @param event a ListEvent object.
+ */
+protected function programChange():void{
+	 branchCombo.enabled=true;
+     makeNullOnChange();
+     var param:Object=new Object();
+	 param["programId"]=programList.program.(programName==programCombo.selectedLabel).programId;
+	 param["entityId"]=entityList.entity.(entityName==entityCombo.selectedLabel).entityId;
+     branchListHttpService.send(param);
+}
+
+
+protected function branchChange():void{
+	specializationCombo.enabled=true;
+    makeNullOnChange();
+    var param:Object=new Object();
+	param["programId"]=programList.program.(programName==programCombo.selectedLabel).programId;
+	param["entityId"]=entityList.entity.(entityName==entityCombo.selectedLabel).entityId;
+	param["branchId"]=branchList.branch.(branchName==branchCombo.selectedLabel).branchId;
+    specializationListHttpService.send(param);	        
+}
+
+/**
+ * @protected 
+ * This function enables specilizationcombo and make grid null on branch change 
+ * @param event a ListEvent object.
+ */
+protected function specializationChange():void{
+	semesterCombo.enabled=true;
+	makeNullOnChange();
+	var param:Object=new Object();
+	param["programId"]=programList.program.(programName==programCombo.selectedLabel).programId;
+	semesterListHttpService.send(param);
+		
+}	
+
+
+/**
+ * @public 
+ * this Function Called in above all change functons and this make null both grid and both semester date values 
+ */
+public function makeNullOnChange():void{
+	semesterStartDateField.text=null;
+	semesterEndDateField.text=null;
+}	
+
+/**
+ *  @public
+ * This function calculate semester start and end date from the given selections
+ */
+protected function semesterChange():void{			    
+  
+	var param:Object=new Object();
+	param["programId"]=programList.program.(programName==programCombo.selectedLabel).programId;
+	param["branchId"]=branchList.branch.(branchName==branchCombo.selectedLabel).branchId;
+	param["specializationId"]=specializationList.specialization.(specializationName==specializationCombo.selectedLabel).specializationId;
+	param["semesterCode"]=semesterList.semester.(semesterName==semesterCombo.selectedLabel).semesterCode;
+	semesterDateHttpService.send(param);				
+
+}
+ public function rejectStudentHttpServiceResultHandler(event:ResultEvent)
+ 	{
+ 		var rejectStatus:XML = event.result as XML; 
+ 		var status:Number=Number(rejectStatus);		 		
+ 		if(status == 1)
+ 		{ 			
+ 			 send_data(inputs); 			   			 
+ 		}
+ 	}
+ 	
+				]]>
+				
+			</mx:Script>	    
+	        <mx:Canvas styleName="SimpleCanvas" x="41" y="31" width="1193.25" height="129">
+			
+			<mx:Label x="60.75" y="41" text="{resourceManager.getString('Constants','entity')}"/>
+			<mx:Label x="341.75" y="39" text="{resourceManager.getString('Constants','program')}" height="20"/>
+			<mx:Label x="627" y="39" text="{resourceManager.getString('Constants','branch')}"/>
+			<mx:Label x="901" y="39" text="{resourceManager.getString('Constants','specialization')}"/>
+			<mx:Label x="60.75" y="73" text="{resourceManager.getString('Constants','semester')}"/>
+			<mx:Label x="332.75" y="75" text="{resourceManager.getString('Constants','semesterStartDate')}"/>
+			<mx:Label x="699" y="73" text="{resourceManager.getString('Constants','semesterEndDate')}"/>
+			<mx:ComboBox x="177.75" y="39" id="entityCombo" change="entityChange()" prompt="{commonFunction.getConstants('select')}" width="132" toolTip="{entityCombo.text}" ></mx:ComboBox>
+			<mx:ComboBox x="438" y="37" id="programCombo" change="programChange()" prompt="{commonFunction.getConstants('select')}" width="153" toolTip="{programCombo.text}" ></mx:ComboBox>
+			<mx:ComboBox x="722.25" y="37" id="branchCombo" change="branchChange()" prompt="{commonFunction.getConstants('select')}" width="161" toolTip="{branchCombo.text}"></mx:ComboBox>
+			<mx:ComboBox x="1015" y="37" id="specializationCombo" change="specializationChange()" prompt="{commonFunction.getConstants('select')}" width="149" toolTip="{specializationCombo.text}"></mx:ComboBox>
+			<mx:ComboBox x="177.75" y="71" id="semesterCombo" change="semesterChange()" prompt="{commonFunction.getConstants('select')}" width="147" toolTip="{semesterCombo.text}"></mx:ComboBox>
+			<mx:TextInput x="492.25" y="71" editable="false" id="semesterStartDateField"/>
+			<mx:TextInput x="829" y="71" editable="false" id="semesterEndDateField"/>
+			</mx:Canvas>
+			
+			<mx:Canvas styleName="GridCanvas" x="42" y="191" width="1192.25" height="345">
+			<mx:DataGrid allowMultipleSelection="false" x="10" editable="true" y="40" liveScrolling="true" id="studentCheckListGrid" height="260" itemClick="showButton(event);" width="1172.25">
+				<mx:columns>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationRollNo')}" width="120" dataField="registration_roll_number" showDataTips="true" />
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','enrollmentNo')}" width="100" dataField="enrollment_number" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','modeOfAdmission')}" width="120" dataField="admission_mode" labelFunction="getAdmissionMode" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationStatus')}" width="120" dataField="status" labelFunction="getRegistrationStatus" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','name')}" width="160" dataField="student_name" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','fatherName')}" width="150" dataField="father_name" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','dob')}" width="100" dataField="date_of_birth" showDataTips="true"/>				
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','program')}" width="100" dataField="program_name" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','sequenceNo')}" width="120" dataField="sequence_number" showDataTips="true"/>
+					<mx:DataGridColumn sortable="false" editable="false" headerText="{commonFunction.getConstants('action')}" textAlign="center" width="100" dataField="action" showDataTips="true">
+					<mx:itemRenderer>
+					<mx:Component>
+					<mx:Button width="85" enabled="{data.enabled}" label="Reject" click="rejectRecord()" >
+					<mx:Script>
+						<![CDATA[
+							import mx.collections.ArrayCollection;
+							import mx.events.CloseEvent;
+							import common.commonFunction;
+							import mx.controls.Alert;
+							[Embed(source="/images/question1.png")]private var questionIcon:Class;
+							public var bb:Boolean=true;
+							
+							
+							public function rejectRecord():void{
+								
+														
+								Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,confirmReject,questionIcon);		
+								
+																					
+							}
+							
+							public function confirmReject(event:CloseEvent):void{
+								
+								if(event.detail==1){
+									var params:Object = {};
+								var regRollNo:String=outerDocument.studentCheckListGrid.selectedItem.registration_roll_number;
+								var enrollNo:String = outerDocument.studentCheckListGrid.selectedItem.enrollment_number;
+								var modeOfAdmission:String = outerDocument.studentCheckListGrid.selectedItem.admission_mode;																															
+								params["regNo"] = regRollNo;
+								params["enrollNo"] = enrollNo;
+								params["modeOfAdmission"] = modeOfAdmission;
+								outerDocument.rejectStudentHttpService.send(params);
+								}
+	
+							}
+						]]>
+					</mx:Script> 
+						</mx:Button>
+					</mx:Component>
+					</mx:itemRenderer>
+					</mx:DataGridColumn> 
+		        </mx:columns>
+			</mx:DataGrid>
+			<mx:Button label="{resourceManager.getString('Constants','showFullDetails')}" id="showDetailsButton" click="showFullDetails(studentCheckListGrid)" x="671.25" y="310" />
+			<mx:Button label="{resourceManager.getString('Constants','showCheckList')}" id="showCheckListButton" click="showStudentCheckList(studentCheckListGrid,componentList)" x="456.25" y="310" />	
+			
+			<!--<mx:Button x="235.25" y="310" label="{resourceManager.getString('Constants','enrollmentDetails')}" click="open()" id="enrollButton"/>-->			
+			<mx:Label x="10" y="10" text="{commonFunction.getConstants('verifyRejectStudents')}" fontWeight="bold"/>
+			
+			
+			</mx:Canvas>
+			
+			<mx:Canvas styleName="GridCanvas" x="42" y="556" width="1200" height="326">
+			
+			<mx:DataGrid allowMultipleSelection="false" x="6" editable="true" y="57" liveScrolling="true" id="rejectionGrid" height="260" width="1180">
+				<mx:columns>
+				<dataGridClasses:MDataGridColumn width="20" headerText="" sortable="false" dataField="select" editorDataField="selected" rendererIsEditor="true">
+				  <dataGridClasses:headerRenderer>
+				  <mx:Component>
+				    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.rejectionGrid,[],[outerDocument.ss])">
+				    				<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.LinkButton;
+		    						]]>
+		    					</mx:Script>
+				    			</mx:CheckBox>
+				    		</mx:Component>
+				  </dataGridClasses:headerRenderer>
+				    
+				    
+				    
+				    <dataGridClasses:itemRenderer>
+				     <mx:Component>
+				      <mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  change="commonFunction.editDeleteEnable(event,outerDocument.rejectionGrid,[new LinkButton],[outerDocument.ss])">
+				         <mx:Script>
+    						        <![CDATA[
+    						        	import mx.controls.LinkButton;
+    							        import common.commonFunction;
+    							    ]]>
+    						    </mx:Script>
+				      </mx:CheckBox>
+				     </mx:Component>
+				    </dataGridClasses:itemRenderer>
+				   </dataGridClasses:MDataGridColumn>
+					
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationRollNo')}" width="120" dataField="registration_roll_number" showDataTips="true" />
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','enrollmentNo')}" width="100" dataField="enrollment_number" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','modeOfAdmission')}" width="120" dataField="admission_mode" labelFunction="getAdmissionMode" />
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','registrationStatus')}" width="120" dataField="status" labelFunction="getRegistrationStatus" />
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','name')}" width="160" dataField="student_name" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','fatherName')}" width="150" dataField="father_name" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','dob')}" width="100" dataField="date_of_birth" showDataTips="true"/>				
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','program')}" width="100" dataField="program_name" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','sequenceNo')}" width="120" dataField="sequence_number" showDataTips="true"/>
+				
+				      </mx:columns>
+			</mx:DataGrid>
+			<mx:Button label="Cancel Rejection" id="canRej" enabled="{ss.enabled}" x="1050" y="25" click="cancelReject()" />
+			<mx:Label x="10" y="27" text="{commonFunction.getConstants('rejectedStudents')}" fontWeight="bold"/>
+		
+			</mx:Canvas>
+			<mx:Button label="{resourceManager.getString('Constants','cancelButton')}" id="cancelButton" click="closeScreen()" x="1086" y="914" />
+			
+			
+			
+</mx:Panel>

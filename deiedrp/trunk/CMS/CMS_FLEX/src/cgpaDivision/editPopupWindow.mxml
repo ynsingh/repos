@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) editPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" creationPolicy="all" keyDown="initializeForEsc(event)" x="250" y="150" title="{commonFunction.getConstants('changeDivisionDetails')}"
+layout="vertical" width="461" height="314"
+ showCloseButton="true" close="closePopup()" horizontalAlign="center" verticalAlign="middle">
+	      	
+	      <mx:HTTPService id="saveDetail" method="post"
+					url="{commonFunction.getConstants('url')}/cgpaDivision/setDivisionDetails.htm"
+					resultFormat="e4x"
+					result="onSetSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+        <mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.events.FlexEvent;
+       ]]>
+	   </mx:Script>
+	
+<mx:Script source="asFiles/editPopupAction.as"/>
+<mx:Canvas width="390" height="225">
+	<mx:Label x="53" y="25" text="{commonFunction.getConstants('division')}"/>
+	<mx:Label x="52" y="59" text="{commonFunction.getConstants('minimumCGPA')}"/>
+	<mx:Label x="52" y="102" text="{commonFunction.getConstants('maximumCGPA')}"/>
+	<mx:Label x="194" y="25" id="coursetypeLabel" width="160"/>
+	<mx:TextInput x="194" y="53" id="changedmincgpa"/>
+	<mx:TextInput x="194" y="94" id="changedmaxcgpa"/>
+    <mx:Button x="102" y="154" label="{commonFunction.getConstants('updateButton')}" click="updateRecord()" id="updatebutton"/>
+	<mx:Button x="195" y="154" label="{commonFunction.getConstants('cancelButton')}" click="cancelpopup()" id="cancel"/>
+</mx:Canvas>
+<mx:NumberValidator source="{changedmincgpa}" id="changeMinCgpaFieldValidator" domain="real" precision="4" allowNegative="false" maxValue="10" property="text" required="true" trigger="{updatebutton}" exceedsMaxError="{commonFunction.getMessages('maxValueCanBeEnteredIs10')}" triggerEvent="click" />
+   <mx:NumberValidator source="{changedmaxcgpa}" id="changeMaxCgpaFieldValidator"  domain="real" precision="4" allowNegative="false" maxValue="10" property="text" required="true" trigger="{updatebutton}" exceedsMaxError="{commonFunction.getMessages('maxValueCanBeEnteredIs10')}" triggerEvent="click"/> 
+</mx:TitleWindow>

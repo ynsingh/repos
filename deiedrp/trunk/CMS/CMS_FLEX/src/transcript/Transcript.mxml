@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) Transcript.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="646" height="424"
+		  creationComplete="applicationCreationCompleteHandler()" title="{commonFunction.getConstants('transcript')}" xmlns:common="common.*">
+	
+	<mx:HTTPService id="getEnrollmentHttpService" method="POST"
+					url="{urlPrefix+'getEnrollment.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="getEnrollmentHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="mouListHttpService" method="POST"
+					url="{commonFunction.getConstants('url')+'/associatecoursewithinstructor/entityList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="mouListHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="generatePDFHttpService" method="POST"
+					url="{urlPrefix+'generatePDF.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="generatePDFHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
+			import common.commonFunction;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.events.ListEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;			
+			
+			[Bindable]protected var urlPrefix:String;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			[Bindable]protected var mouList:XML
+			[Bindable]protected var programList:XML
+			[Bindable]protected var branchList:XML;
+			[Bindable]protected var programCourseKeyList:XML;
+			[Bindable]protected var courseGroupList:XML;
+			[Bindable]protected var sessionList:XML;
+			[Bindable]protected var specializationList:XML;
+			protected var semesterListArrCol:ArrayCollection;
+			protected var selectedSemesterArrColl:ArrayCollection;
+			protected var semesterDates:XML;
+			public var yearDataProvider:Array=new Array;
+			public var universityName:String;
+			public var path:String;
+			protected function applicationCreationCompleteHandler():void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/transcript/";
+				var param:Object=new Object();
+				param["time"]=new Date();
+				getEnrollmentHttpService.send(param);				
+			}
+			
+			protected function getEnrollmentHttpServiceResultHandler(event:ResultEvent):void{
+				var enrollmentDetail:XML= event.result as XML;
+				enrollmentCB.dataProvider = enrollmentDetail.enrollment;
+							
+			}
+			
+			protected function mouListHttpServiceResultHandler(event:ResultEvent):void{
+				mouList=event.result as XML;
+//				entityCB.dataProvider=entityList.entity.entityName;
+			}
+			
+			protected function httpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+			}
+			
+			protected function enrollmentCBChangeHandler():void
+			{
+				issuedToTxt.enabled = true;
+				generateTranscriptButton.enabled=true;					
+			}
+
+			var startIndex:Number=0;
+			var len:Number=4;
+			protected function generatePDFHttpServiceResultHandler(event:ResultEvent):void{
+				var status:String=(event.result.Exception+"");
+			 	if(status=="true"){
+						Alert.show(commonFunction.getMessages('pdfSuccess')+commonFunction.getMessages('downloadConfirmation'),
+						commonFunction.getMessages('success'),
+						(Alert.YES|Alert.NO),null,downloadPdf,successIcon,1);
+						enrollmentCB.selectedIndex=-1;
+						 enrollmentCB.typedText="";
+						issuedToTxt.text="";
+						issuedToTxt.enabled=false;
+						generateTranscriptButton.enabled=false;											
+				}
+				else{
+					 Alert.show(event.result.Exception,commonFunction.getMessages('error'),0,null,null,errorIcon);
+					 enrollmentCB.selectedIndex=-1;
+					 enrollmentCB.typedText="";
+					 issuedToTxt.text="";
+					 issuedToTxt.enabled=false;
+					 generateTranscriptButton.enabled=false;
+ 				}
+			}
+			
+			public function downloadPdf(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					var file:FileReference=new FileReference;
+					file.download(new URLRequest(commonFunction.getConstants('url')+path));
+				}
+			} 
+			var invalidResult:Array ;
+			protected function generateTranscriptButtonClickHandler():void
+			{
+//				invalidResult = Validator.validateAll([issuedValidator]);
+//				if(invalidResult.length==0){
+//Alert.show(issuedToTxt.text);
+					var param:Object=new Object();
+				param["enrollmentNumber"]=enrollmentCB.selectedItem;
+				param["issuedTo"]=issuedToTxt.text;				
+				generatePDFHttpService.send(param);
+				path="/PDF/"+universityName+"/Transcripts/Transcript_"+enrollmentCB.selectedItem+".pdf";
+//				}
+//				else{
+//					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+//					var valueInvalid:Validator = invalidResult.pop();
+//					UIComponent(valueInvalid.source).setFocus();					
+//				}				
+			}			
+		]]>
+	</mx:Script>
+	
+ 	<mx:XML id="semesterXML" source="xmlFiles/semester.xml"/>
+ 	<!--<mx:Validator id="issuedValidator" source="{issuedToTxt}" property="text" required="true" trigger="{generateTranscriptButton}" triggerEvent="click"/>-->
+	<mx:Label x="85" y="70" text="{commonFunction.getConstants('enrollmentNumber')}"/>
+	
+	<common:AutoCompleteCB x="210" y="66" id="enrollmentCB" width="160" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="enrollmentCBChangeHandler()"/>
+	<mx:Label x="85" y="114" text="{commonFunction.getConstants('issuedTo')}:"/>
+	<mx:TextArea x="210" y="112" id="issuedToTxt" width="160"  enabled="false"/>
+	
+	<mx:Button x="191" y="250" id="generateTranscriptButton" label="{commonFunction.getConstants('generateTranscript')}" enabled="false" click="generateTranscriptButtonClickHandler()"/>
+	<mx:Button x="361" y="250" visible="true" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>	
+</mx:Panel>

@@ -1,0 +1,15 @@
+When your project is successfully deployed and it is running fine then some steps to keep it updated with SVN-
+
+1- After proper deployement run "svn update" to keep it updated.
+2- Whenever making any changes in java files run
+	ant compile
+    This is used to compile the java files
+3- Whenever making any changes in mxml files run
+	ant compile-flex
+    this is used to compile mxml files
+4- whenever want to send content to commit on svn run "svn update" to update your code with the latest revision, don't worry your local changes won't vanish off that will remain as such.
+	Now go to CMS directory and type
+		 svn diff>myPatch.diff
+Look into the webapps/CMS your diff file is created.Have a look of the file and see the changes are according to your expectation. If changes are not to be commit on svn then delete them and send only the final patch file to svn.
+If any new file is added that will be sent separately. it won't come in the patch file.
+

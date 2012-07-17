@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CreateAwardBlank.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1266" height="712" 
+	title="{commonFunction.getConstants('awardBlankSheet')}" creationComplete="moduleCreationCompleteHandler()" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+    <mx:Script>
+    	<![CDATA[
+    		import common.commonFunction;
+    	]]>
+    </mx:Script>
+    
+    <mx:Script source="asFiles/CreateAwardBlankAction.as"/>
+    <mx:Script source="asFiles/AwardBlankAction.as"/>
+    <mx:DateFormatter id="ddmmm" formatString="DDMMM">
+    	
+    </mx:DateFormatter>
+     <mx:DateFormatter id="ddmmyy" formatString="DD-MM-YYYY" >
+     	
+     </mx:DateFormatter>
+     
+    
+    <mx:HTTPService id="employeeCourseHttpService" method="post"
+        url="{urlPrefix+'getCourseList.htm '}"
+        resultFormat="e4x"
+        result="employeeCourseHttpServiceResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+    
+    <mx:HTTPService id="httpEmployeeCode" method="post"
+        url="{urlPrefix+'getEmployeeCode.htm '}"
+        resultFormat="e4x"
+        result="resultHandlerEmployeeCode(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpPendingRequests" method="post"
+        url="{urlPrefix+'getPendingRequestList.htm '}"
+        resultFormat="e4x"
+        result="resultHandlerPendingList(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+    
+    <mx:HTTPService id="httpApprovedRequests" method="post"
+        url="{urlPrefix+'getRejectedRequestList.htm'}"
+        resultFormat="e4x"
+        result="resultHandlerApprovedList(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpShowApprovedRequests" method="post"
+        url="{urlPrefix+'showApprovedRequest.htm '}"
+        resultFormat="e4x"
+        result="showFileResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpStatus" method="post"
+        url="{urlPrefix+'getStatus.htm '}"
+        resultFormat="e4x"
+        showBusyCursor="true"
+        result="resultHandlerStatus(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+        
+    <mx:HTTPService id="httpComponentList" method="post"
+        url="{urlPrefix+'getEvaluationComponents.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerComponent(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpStudentList" method="post"
+        url="{urlPrefix+'getStudentList.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerStudent(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>        
+        
+    <mx:HTTPService id="httpStudentMarksList" method="post"
+        url="{urlPrefix+'getStudentMarks.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerStudentMarks(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpSaveSheet" method="post"
+        url="{urlPrefix+'saveStudentMarks.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerSave(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>    
+  
+    <mx:HTTPService id="httpSaveSheet2" method="post"
+        url="{urlPrefix+'saveStudentMarks.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerSave2(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>             
+        
+    <mx:HTTPService id="httpSubmitApprovalRequest" method="post"
+        url="{urlPrefix+'submitForApproval.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerSubmit(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpWithdrawRequest" method="post"
+        url="{urlPrefix+'withdrawRequest.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerWithdraw(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>  
+        
+    <mx:HTTPService id="httpApproveRequestPdf" method="post"
+        url="{resourceManager.getString('Constants','url')+ '/pdf/revenuereport.htm'}"
+        showBusyCursor="true"
+        resultFormat="text"
+        result="resultHandlerApproveRequestPdf(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="httpApproveRequest" method="post"
+        url="{urlPrefix+'approveRequest.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerApproveRequest(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="httpRejectRequest" method="post"
+        url="{urlPrefix+'rejectRequest.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerRejectRequest(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpRejectedRequests" method="post"
+        url="{urlPrefix+'getRejectedRequestList.htm '}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandler_RejectedList(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>  
+     
+    <mx:HTTPService id="gradeHttpService" method="post"
+		url="{urlPrefix+'getGrades.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="gradeHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="httpIsNextApprovalOrderExist" method="post"
+		url="{urlPrefix+'isNextApprovalExist.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="httpIsNextAppOrderExistResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+		<mx:HTTPService id="httprequestgetgradelimit" method="post"
+		url="{urlPrefix+'getgradelimit.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="getgradelimitResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+				<mx:HTTPService id="httprequestgetcourseAprStatus" method="post"
+		url="{urlPrefix+'getcourseAprStatus.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="getcourseAprStatusResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+			<mx:HTTPService id="httprequestgetupdatedgradelimit" method="post"
+		url="{urlPrefix+'getgradelimit.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="getupdatedgradelimitResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="httpIsExtAwardAllowed" method="post"
+		url="{urlPrefix+'IsExternalAwardAllowed.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="httpIsExtAwardAllowedResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>		
+		
+ 	<mx:HTTPService id="httpDownloadTemplate" method="post"
+		url="{urlPrefix+'downloadTemplate.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="httpDownloadTemplateResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+	<mx:HTTPService id="httpUploadTemplate" method="post"
+		url="{urlPrefix+'uploadTemplate.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="httpUploadTemplateResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+   	<mx:HTTPService id="getAprStatus" method="post"
+		url="{urlPrefix+'getAprStatus.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="httpAprStatusService(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+		
+	<mx:HTTPService id="getApprovalOrder" method="post"
+		url="{urlPrefix+'getApprovalOrder.htm '}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="httpGetApprovalOrder(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+		
+	<mx:Canvas id="courselistCanvas" styleName="GridCanvas"  visible="true" width="1130.5" height="218" backgroundColor="#E2E2E2" x="56" y="{vbox.y}">
+		<mx:Label x="12" y="5" text="{commonFunction.getConstants('courseDetail')}" fontWeight="bold" fontSize="12" id="courselabel"/>
+		<controls:MDataGrid id="courseListGrid" width="1110.5" height="174" horizontalScrollPolicy="off" textAlign="center" 
+		sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="34">
+		<controls:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" width="55"  sortable="false" textAlign="center" editorDataField="selected" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+	   			<mx:Component>
+	   				<mx:CheckBox click="data.select=event.currentTarget.selected; checkbox1ClickHandler(event, outerDocument.courseListGrid)">
+	 					<mx:Script>
+	                       <![CDATA[
+	                           import common.commonFunction;
+	                           import mx.controls.LinkButton;
+	                           import common.commonFunction;
+								
+								import mx.collections.ArrayCollection;
+								import mx.containers.Grid;
+								import mx.controls.*;
+								import mx.graphics.IFill;
+								import mx.logging.errors.InvalidFilterError;
+								
+								protected var arrayCollection:ArrayCollection;
+								[Embed(source="/images/warning.png")]private var warningIcon:Class;
+								
+							  	protected function checkbox1ClickHandler(event:Event, grid:DataGrid):void
+								{	
+									var currentIndex:int=grid.selectedIndex;
+									var parseIndex:int=0;
+									var j:int=0;
+									
+									var gridrecords:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.courseListGrid);
+									
+									if(gridrecords.length==0){
+										outerDocument.awardSheetCanvas.visible=false;
+										outerDocument.awardSheetGrid.dataProvider=null;
+										outerDocument.helpLabel.visible=false;
+									}
+									else if(gridrecords.length>1)
+									{
+				            	    	Alert.show(commonFunction.getMessages('selectOneRecord'),commonFunction.getConstants('warning'),0,null,null,warningIcon);
+				            	    }
+				            	    else{
+										for each(var obj:Object in grid.dataProvider)
+										{
+											if(obj.select==true)
+											{
+												var gridData:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.courseListGrid);
+												outerDocument.furtherExecution(gridData.getItemAt(0).entityId, gridData.getItemAt(0).programId, gridData.getItemAt(0).programName,
+													gridData.getItemAt(0).branchId, gridData.getItemAt(0).branchName, gridData.getItemAt(0).specializationId, gridData.getItemAt(0).specializationName,
+													gridData.getItemAt(0).semesterCode, gridData.getItemAt(0).semesterName, gridData.getItemAt(0).courseCode,
+													gridData.getItemAt(0).courseName, gridData.getItemAt(0).semesterStartDate, gridData.getItemAt(0).semesterEndDate,
+													gridData.getItemAt(0).programCourseKey, gridData.getItemAt(0).resultSystem, gridData.getItemAt(0).employeeCode, gridData.getItemAt(0).entityType,
+													gridData.getItemAt(0).entityName, gridData.getItemAt(0).startDate, gridData.getItemAt(0).endDate, gridData.getItemAt(0).employeeName,gridData.getItemAt(0).gradelimit); // Gradelimit added by Arush
+												
+													outerDocument.courseCodeLabel.text="Course : "+gridData.getItemAt(0).courseCode;
+													outerDocument.helpLabel.visible=true;
+											}
+										}
+									
+										for each(var object:Object in grid.dataProvider)
+										{
+											var bool:Boolean=false;
+											bool=object.select;
+											if(parseIndex==currentIndex)
+											{
+												bool=event.currentTarget.selected;
+												object.select=false;
+											}
+											if(bool)
+											{
+												
+											}
+											parseIndex++;
+										}
+				            	    }
+								}	
+	                       ]]>
+	                    </mx:Script>
+	                </mx:CheckBox>
+	            </mx:Component>
+	        </mx:itemRenderer>
+	    </mx:DataGridColumn>
+	    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="courseCode" headerText="{commonFunction.getConstants('courseCode')}" width="200" sortable="true" color="black"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="courseName" headerText="{commonFunction.getConstants('courseName')}" width="310" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="entityName" headerText="{commonFunction.getConstants('entityName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" width="230" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterStartDate" headerText="{commonFunction.getConstants('semesterStartDate')}" width="230" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterEndDate" headerText="{commonFunction.getConstants('semesterEndDate')}" width="250" sortable="true"/>		
+		</controls:columns>
+		</controls:MDataGrid>
+     </mx:Canvas>		
+
+		
+	
+	<mx:Canvas id="awardSheetCanvas" styleName="GridCanvas" visible="false" x="56" y="{courselistCanvas.y+courselistCanvas.height+20}" 
+		 autoLayout="false"  width="{awardSheetGrid.width+20}" height="301" >
+		<mx:AdvancedDataGrid id="awardSheetGrid" editable="true" selectable="true" x="10" y="43" height="225"  /> 
+		<mx:LinkButton x="10" y="273" label="{commonFunction.getConstants('saveButton')}" click="saveMarks()" id="saveButton" enabled="false"/>
+	<!--	<mx:LinkButton x="61" y="273" label="{commonFunction.getConstants('submitForApproval')}" id="submitForApprovalButton" enabled="false" click="submitConfirm()"/> -->
+	<mx:LinkButton x="61" y="273" label="Submit" id="submitForApprovalButton" enabled="false" click="submitConfirm()"/>
+		<mx:LinkButton x="130" y="273" label="{commonFunction.getConstants('withdraw')}" id="withdrawButton" enabled="false" click="withdrawConfirm()"/>
+		<mx:Label x="10" y="9" text="" id="courseCodeLabel" fontWeight="bold"/>
+		<mx:HBox>
+			
+		
+		<mx:LinkButton  x="{awardSheetGrid.width-450}" y="10" width="100" id="mkcorrectionButton" height="30" label="Correction" click="onClickMarksCorrection()" />
+		<mx:LinkButton x="{awardSheetGrid.width-350}" y="10" width="100" id="gradelimitButton" height="30" label="GradeLimit" click="onClickgradelimit()" toolTip="click to edit grade limit"/>
+		<mx:Button  x="{awardSheetGrid.width-198}" y="10" width="27" id="downloadButton" height="21" icon="@Embed(source='/images/down2.JPG')" click="onClickDownloadTemplate()" toolTip="{commonFunction.getConstants('downloadTemplate')  }"/>
+		<mx:Button  x="{awardSheetGrid.width-70}" y="10" width="27" id="uploadButton" height="21" icon="@Embed(source='/images/up2.JPG')" click="onClickUploadTemplate()" toolTip="{commonFunction.getConstants('uploadTemplate')}" />
+	</mx:HBox>
+		
+	</mx:Canvas>
+	
+	
+	
+	<mx:VBox x="997.5" y="10" id="vbox"/>
+	<mx:Label x="58" y="630" visible="false" text="{commonFunction.getMessages('awardblankHelp')}" id="helpLabel"/>
+	<mx:Button x="1089" y="630" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+</mx:Panel>

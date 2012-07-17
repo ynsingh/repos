@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ *
+ * @(#) editPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ *
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:common="common.*" styleName="PopUpTitleWindow" layout="absolute" keyDown="initializeForEsc(event)" title="{commonFunction.getConstants('changeExamDetails')}" showCloseButton="true" close="closePopUp(event)" height="230" width="731" creationComplete="checkDateForTimeVisibility()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.events.FlexEvent;
+		]]>
+	</mx:Script>
+	
+<mx:HTTPService id="updateCourseExaminerService" method="POST"
+					url="{commonFunction.getConstants('url')+'/externalExaminerCourse/updateExaminerReocrd.htm'}"
+					resultFormat="e4x"
+					result="updateCourseExaminerResultHandler(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+<mx:Script source="asFiles/editPopupAction.as"/>
+<mx:DateFormatter id="dateFormatter" formatString="YYYY/MM/DD"/>
+<mx:Label id="externalExaminerId" visible="false"/>
+
+<mx:Label x="190" y="13" id="courseCode"/>
+<mx:Label x="510" y="13" id="externalExaminer"/>
+			<mx:DateField x="190" y="42" id="firstDate" width="160" formatString="YYYY/MM/DD"/>
+			<mx:DateField x="190" y="74" id="secondDate" close="visibleSecondTime()" width="160" formatString="YYYY/MM/DD"/>
+			<mx:DateField x="190" y="107" id="thirdDate" close="visibleThirdTime()" width="160" formatString="YYYY/MM/DD" />
+			
+			<mx:NumericStepper id="timeInHour" minimum="0" maximum="23" x="510" y="38" width="44"/>
+			<mx:NumericStepper id="timeInMinute" minimum="0" maximum="59" x="592" y="38" width="44"/>
+			<mx:Label x="555" y="38" text="{commonFunction.getConstants('hour')}" width="38" />
+			<mx:Label x="636" y="38" text="{commonFunction.getConstants('mins')}" width="38" />
+			
+			<mx:NumericStepper id="secondTimeInHour" minimum="0" maximum="23" x="510" y="73" width="44" visible="false"/>
+			<mx:NumericStepper id="secondTimeInMinute" minimum="0" maximum="59" x="592" y="73" width="44" visible="false"/>
+			<mx:Label x="555" y="73" id="secondHourLabel" text="{commonFunction.getConstants('hour')}" width="38" visible="false"/>
+			<mx:Label x="636" y="73" id="secondMinLabel" text="{commonFunction.getConstants('mins')}" width="38" visible="false"/>
+			
+			<mx:NumericStepper id="thirdTimeInHour" minimum="0" maximum="23" x="510" y="106" width="44" visible="false"/>
+			<mx:NumericStepper id="thirdTimeInMinute" minimum="0" maximum="59" x="592" y="106" width="44" visible="false"/>
+			<mx:Label x="555" y="106" id="thirdHourLabel" text="{commonFunction.getConstants('hour')}" width="38" visible="false"/>
+			<mx:Label x="636" y="106" id="thirdMinLabel" text="{commonFunction.getConstants('mins')}" width="38" visible="false"/>
+			
+			<mx:Label x="50" y="13" text="{commonFunction.getConstants('courseCode')}:" fontWeight="bold"/>
+			<mx:Label x="50" y="46" text="{commonFunction.getConstants('firstDate')}:*"  fontWeight="bold"/>
+			<mx:Label x="50" y="78" text="{commonFunction.getConstants('secondDate')}:"  fontWeight="bold"/>
+			<mx:Label x="50" y="111" text="{commonFunction.getConstants('thirdDate')}:"  fontWeight="bold"/>
+			
+			<mx:Label x="375" y="13" text="{commonFunction.getConstants('externalExaminar')}:" fontWeight="bold"/>
+			<mx:Label x="375" y="46" text="{commonFunction.getConstants('time')}:*" fontWeight="bold"/>
+			<mx:Label x="375" y="78" id="secondTimeLabel" text="{commonFunction.getConstants('time')}:" fontWeight="bold"/>
+			<mx:Label x="375" y="111" id="thirdTimeLabel" text="{commonFunction.getConstants('time')}:" fontWeight="bold"/>
+			
+	<mx:Button label="{commonFunction.getConstants('updateButton')}" click="updateRecord()" id="updatebutton" x="243" y="150"/>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" click="var evt:CloseEvent;closePopUp(evt)" id="cancel" x="345" y="150"/>
+	
+</mx:TitleWindow>

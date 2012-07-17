@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- * @(#) CourseGroup.xml * @Author :Mohd Amir * @Date :21/3/2011 * Version 
+	1.0 * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. * All Rights 
+	Reserved. * * Redistribution and use in source and binary forms, with or 
+	* without modification, are permitted provided that the following * conditions 
+	are met: * * Redistributions of source code must retain the above copyright 
+	* notice, this list of conditions and the following disclaimer. * * Redistribution 
+	in binary form must reproducuce the above copyright * notice, this list of 
+	conditions and the following disclaimer in * the documentation and/or other 
+	materials provided with the * distribution. * * * THIS SOFTWARE IS PROVIDED 
+	``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES, INCLUDING, BUT NOT LIMITED 
+	TO, THE IMPLIED WARRANTIES * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+	PURPOSE ARE * DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+	* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL 
+	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS 
+	OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION) HOWEVER 
+	CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT, STRICT LIABILITY, 
+	OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+	USE OF THIS SOFTWARE, * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+	* * Contributors: Members of EdRP, Dayalbagh Educational Institute */ -->
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="withdrawStudent">
+	<typeAlias alias="withdrawStudent"
+		type="in.ac.dei.edrp.cms.domain.studentremedial.StudentRemedialInfoGetter" />
+
+	<select id="getStudentProgramDetail" resultClass="withdrawStudent">
+		SELECT sp.enrollment_number AS enrollmentNumber,sp.entity_id AS entityId,em.entity_name AS entityName,pch.program_course_key AS programCourseKey,
+		sp.program_id AS programId,pm.program_name AS programName,sp.branch_id AS branchId,stt1.component_description AS branchName,sp.specialization_id AS specializationId,
+		stt2.component_description AS specializationName,pr.semester_start_date AS appliedStartDate,pr.semester_end_date AS appliedEndDate,sp.current_semester AS semesterId,stt3.component_description AS semesterName
+		FROM program_course_header pch ,student_program sp,program_registration pr,program_master pm,entity_master em,system_table_two stt1,system_table_two stt2,system_table_two stt3
+		WHERE sp.roll_number=#rollNo# AND sp.program_status='ACT' AND pch.semester_status='ACT' AND pr.session_start_date=#semesterStartDate# AND pr.session_end_date=#semesterEndDate# AND pr.university_id=#universityCode#
+		AND sp.current_semester=pch.semester_code AND pch.program_id=sp.program_id AND pch.branch_id=sp.branch_id AND pch.specialization_id=sp.specialization_id AND
+		pr.entity_id=sp.entity_id AND pr.program_course_key=pch.program_course_key AND pm.program_id=sp.program_id AND em.entity_id=sp.entity_id AND stt1.component_code=sp.branch_id AND stt2.component_code=sp.specialization_id
+		AND stt3.component_code=sp.current_semester AND stt1.group_code='BRNCOD' AND stt2.group_code='SPCLCD' AND stt3.group_code='SEMCOD' AND stt1.university_code=#universityCode# AND stt2.university_code=#universityCode# AND stt3.university_code=#universityCode#;
+    </select>
+    
+	<select id="getNextSessionDates" resultClass="withdrawStudent">
+		SELECT DATE_ADD(start_date,INTERVAL 1 YEAR) nextSessionStartDate,DATE_ADD(end_date,INTERVAL 1 YEAR) AS nextSessionEndDate FROM university_master 
+		WHERE current_status='1' AND university_code=#universityCode#;
+	</select>
+	
+	<select id="getNextSessionSemesterDates" resultClass="withdrawStudent">
+		SELECT semester_start_date AS appliedStartDate,semester_end_date AS appliedEndDate FROM program_registration 
+		WHERE session_start_date=#nextSessionStartDate# AND session_end_date=#nextSessionEndDate# AND program_course_key=#programCourseKey# AND university_id=#universityCode# AND entity_id=#entityId#;
+	</select>
+	
+	<select id="getAttemptNoFromSRSH" resultClass="withdrawStudent">
+		SELECT attempt_number AS attemptNumber,status AS courseStatus FROM student_registration_semester_header
+		WHERE roll_number=#rollNo# AND session_start_date=#semesterStartDate# AND session_end_date=#semesterEndDate# AND entity_id=#entityId# AND program_course_key=#programCourseKey#;
+	</select>
+	
+	<update id="UpdateSRSH">
+		UPDATE student_registration_semester_header set status='WTH' 
+		WHERE roll_number=#rollNo# AND session_start_date=#semesterStartDate# AND session_end_date=#semesterEndDate# AND entity_id=#entityId# AND program_course_key=#programCourseKey#;
+	</update>
+		
+	<insert id="YTREntryInSRSH">
+		INSERT INTO student_registration_semester_header(status,insert_time,creator_id,roll_number,session_start_date,session_end_date,attempt_number,register_due_date,entity_id,program_course_key)
+		VALUES('YTR',now(),#userId#,#rollNo#,#appliedStartDate#,#appliedEndDate#,#attemptNumber#,#appliedStartDate#,#entityId#,#programCourseKey#);
+	</insert>	
+	
+	<select id="getSemesterSequence" resultClass="java.lang.String">
+		SELECT semester_sequence FROM program_term_details 
+		WHERE semester_code=#semesterId# AND program_id=#programId# AND semester_start_date= SUBSTRING(#semesterStartDate#,6,5) AND semester_end_date=SUBSTRING(#semesterEndDate#,6,5);
+	</select>
+	
+	<select id="getPreviousSemesterSequence" resultClass="java.lang.String">
+		SELECT ptd2.semester_code
+		from program_term_details ptd1,program_term_details ptd2
+		where ptd1.program_id=#programId# and ptd1.semester_code=#semesterId# and
+		ptd1.semester_sequence-1=ptd2.semester_sequence
+		and ptd1.program_id=ptd2.program_id;
+	</select>
+	
+	<update id="updateStudentProgram">
+		UPDATE student_program SET current_semester=#semesterId#,modifier_id=#userId#,modification_time=now()  
+		WHERE enrollment_number=#enrollmentNumber# AND roll_number=#rollNo# AND entity_id=#entityId# AND program_id=#programId# AND branch_id=#branchId# AND specialization_id=#specializationId# ;
+	</update>
+	
+	<update id="updateStudentCourse">
+		UPDATE STUDENT_COURSE SET course_status='WTH',student_status='WTH',modification_time=now(),modifier_id=#userId# 
+		WHERE roll_number=#rollNo# AND program_course_key=#programCourseKey# AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# AND entity_id=#entityId#;		
+	</update>
+	
+	<update id="updateStudentMarks">
+		UPDATE student_marks SET status='WTH',modification_time=now(),modifier_id=#userId#
+		WHERE roll_number=#rollNo# AND program_course_key=#programCourseKey# AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate#;			
+	</update>
+	
+	<select id="getStudentTrackSeqNo" resultClass="java.lang.String">
+		SELECT MAX(sequence_number) FROM student_tracking 
+		WHERE entity_id=#entityId# AND roll_number=#rollNo# AND program_course_key=#programCourseKey# AND created_activity='WDR' AND process_id='WDR';
+	</select>
+	
+	<insert id="entryInStudentTracking">
+		INSERT INTO student_tracking(entity_id,roll_number,program_course_key,sequence_number,student_semester_status,student_program_status,
+		semester_start_date,semester_end_date,session_start_date,session_end_date,creator_id,insert_time,created_activity,process_id)
+		VALUES(#entityId#,#rollNo#,#programCourseKey#,#applied#,'WTH','ACT',#semesterStartDate#,#semesterEndDate#,#sessionStartDate#,#sessionEndDate#,#userId#,now(),'WDR','WDR');
+	</insert>
+	
+	<select id="getStudentDetails" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		SELECT date_of_birth AS dateOfBirth,category_code AS category,gender AS gender,student_id AS studentId,student_first_name AS firstName,student_middle_name AS middleName,student_last_name AS lastName,
+		father_first_name AS fatherFirstName,father_middle_name AS fatherMiddleName,father_last_name AS fatherLastName,mother_first_name AS motherFirstName,mother_middle_name AS motherMiddleName,mother_last_name AS motherLastName,
+		primary_email_id AS primaryEmailId
+		FROM student_master
+		WHERE enrollment_number=#enrollmentNumber#;
+	</select>
+	
+	<select id="getProbableSemester" resultClass="java.lang.String">
+		  SELECT semester_code FROM program_term_details std1
+		  WHERE program_id=#programId# AND semester_sequence=(select MIN(semester_sequence) FROM program_term_details WHERE program_id=#programId# AND semester_group=(select semester_group FROM program_term_details WHERE program_id=#programId# AND semester_code=#semesterId#));
+	</select>
+	
+	<select id="getPrestagingDetail" resultClass="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter">
+		SELECT attempt_number AS attemptNumber,old_entity AS oldEntityId,old_program AS oldProgramId,old_branch AS oldBranchCode,old_specialization AS oldSpecialization,old_semester AS oldSemester,old_roll_number AS oldRollNumber,
+		DATE_ADD(#appliedStartDate#,INTERVAL 1 YEAR) AS probableSemesterStartDate,DATE_ADD(#appliedEndDate#,INTERVAL 1 YEAR)AS probableSemesterEndDate
+		FROM prestaging_table
+		WHERE registration_roll_number=#rollNo# AND enrollment_number=#enrollmentNumber# AND new_entity=#entityId# AND new_program=#programId# AND new_branch=#branchId# 
+		AND new_specialization=#specializationId# AND new_semester=#semesterId# AND semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate#;
+	</select>
+	
+	<insert id="entryInPrestaging">
+		INSERT INTO prestaging_table (student_id,registration_roll_number,enrollment_number,date_of_birth,student_category,gender,student_first_name,
+		student_middle_name,student_last_name,father_first_name,father_middle_name,father_last_name,mother_first_name,mother_middle_name,mother_last_name,
+		new_entity,new_program,new_branch,new_specialization,new_semester,attempt_number,old_entity,old_program,old_branch,old_specialization,old_semester,admission_mode,
+		old_roll_number,registration_due_date,semester_start_date,semester_end_date,primary_email_id,insert_time,creator_id,probable_semester,
+		probable_semester_start_date,probable_semester_end_date,probable_attempt_number,probable_register_due_date,status_in_semester)
+		VALUES(#studentId#,#rollNumber#,#enrollmentNumber#,#dateOfBirth#,#category#,#gender#,#firstName#,#middleName#,#lastName#,#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+		#motherFirstName#,#motherMiddleName#,#motherLastName#,#entityId#,#programId#,#branchCode#,#newSpecialization#,#semesterCode#,#attemptNumber#,#oldEntityId#,#oldProgramId#,#oldBranchId#,
+		#oldSpecializationId#,#oldSemesterCode#,'NOR',#oldRollNumber#,#registerDate#,#semesterStartDate#,#semesterEndDate#,#primaryEmailId#,now(),#creatorId#,
+		#probableSemester#,#probableSemesterStartDate#,#probableSemesterEndDate#,#probableAttemptNumber#,#probableRegisterDueDate#,'REG');
+	</insert>
+	
+	<select id="checkForTempTables" resultClass="java.lang.String">
+		SELECT count(*) FROM temp_student_courses tsc,temp_student_program tsp,temp_student_master tsm
+		WHERE tsc.program_id=tsp.program_id AND tsc.branch_id=tsp.branch_id AND tsc.specialization_id=tsp.specialization_id
+		AND tsc.enrollment_number=tsp.enrollment_number AND tsc.student_id=tsp.student_id AND tsc.registration_number=tsp.registration_number
+		AND tsm.enrollment_number=tsp.enrollment_number AND tsm.student_id=tsp.student_id AND tsc.semester_start_date=tsp.to_semester_start_date AND tsc.semester_end_date=tsp.to_semester_end_date
+		AND tsc.roll_number=tsp.roll_number AND tsc.roll_number=#rollNo# AND tsc.program_id=#programId# AND tsc.branch_id=#branchId# AND tsc.specialization_id=#specializationId#
+		AND tsp.entity_id=#entityId# AND tsc.enrollment_number=#enrollmentNumber# AND tsm.university_code=#universityCode# AND tsc.semester_start_date=#semesterStartDate# AND tsc.semester_end_date=#semesterEndDate#;
+	</select>
+</sqlMap>

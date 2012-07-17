@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CancelCourseGroup.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1014" height="640" title="{commonFunction.getConstants('cancelCourseGroup')}" xmlns:controls="common.Components.com.iwobanas.controls.*" creationComplete="init()" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>	
+
+<mx:HTTPService id="getCancelCourseGroupService" method="POST"
+					url="{urlPrefix+'getCancelCourseGroup.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="cancelCourseHttpServiceResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getCancelCourseCodeService" method="POST"
+					url="{urlPrefix+'getCancelCourseCode.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="cancelCourseCodeHttpServiceResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>
+<mx:HTTPService id="getAddCourseGroupService" method="POST"
+					url="{urlPrefix+'getAddCourseGroup.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="AddCourseGroupHttpServiceResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getAddCourseCodeService" method="POST"
+					url="{urlPrefix+'getAddCourseCode.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="AddCourseCodeHttpServiceResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>	
+					
+<mx:HTTPService id="cancelCourseService" method="POST"
+					url="{urlPrefix+'cancelCourseGroup.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="cancelCourseResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>		
+																																															
+	<mx:Script source="asFiles/CancelCourseGroupAs.as"/>
+	
+	<mx:Canvas x="283" y="20" width="393" height="102" styleName="SimpleCanvas">
+		<mx:Label x="60" y="26" text="{commonFunction.getConstants('rollNumber')}"/>
+		<mx:TextInput x="154" y="24" id="rollNumberInput" restrict="0-9"/>
+		<mx:Button x="151" y="59" label="{commonFunction.getConstants('okButton')}" id="okButton" click="onClickOk()"/>
+	</mx:Canvas>
+	
+	<mx:StringValidator id="rollVal" source="{rollNumberInput}" property="text" trigger="{okButton}" triggerEvent="click" required="true"/>
+	<mx:Canvas x="33" y="143" width="939" height="194" styleName="BorderCanvas" id="cancelGroupCanvas">
+		<mx:Label x="10" y="6" text="{commonFunction.getConstants('cancelCourseGroup')}"/>
+		<controls:MDataGrid x="10" y="32" width="289" id="cancelGroupGrid" allowMultipleSelection="false" draggableColumns="false" verticalScrollPolicy="on" height="142">
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn width="10" dataField="select" rendererIsEditor="true" editorDataField="selected" sortable="false" >
+			    	<dataGridClasses:itemRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="{data.select=!data.select};checkIndex(event)">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import mx.controls.Alert;
+		    							import common.commonFunction;		    							
+		    							[Embed(source="/images/infoIcon.png")]private var infoIcon1:Class;
+		    							function checkIndex(event:Event){		    								
+		    								if(event.currentTarget.selected){		    									
+		    									outerDocument.flag=outerDocument.flag+1;	
+		    									if(outerDocument.flag>1){		    									
+		    										Alert.show(commonFunction.getMessages('pleaseSelectOne'),commonFunction.getMessages('info'),0,null,null,infoIcon1);			    								
+			    									outerDocument.resetCancelGroupGrid();
+			    									outerDocument.resetCancelCourseGrid();
+			    									outerDocument.addGroupGrid.dataProvider.removeAll();
+			    									outerDocument.addGroupGrid.dataProvider.refresh();
+			    									outerDocument.resetAddCourseGrid();
+			    									outerDocument.addGroupCanvas.visible=false;
+			    									outerDocument.flag=0;
+			    									outerDocument.flag1=0;
+			    								}
+			    								else if(outerDocument.flag==1){
+		    										outerDocument.getCourseCode();
+		    									}
+			    								
+		    								}
+		    								else{		    								
+		    									outerDocument.flag=outerDocument.flag-1;
+	    										outerDocument.resetCancelCourseGrid();
+		    									outerDocument.addGroupGrid.dataProvider.removeAll();
+			    								outerDocument.addGroupGrid.dataProvider.refresh();
+		    									outerDocument.resetAddCourseGrid();	
+		    									outerDocument.flag1=0;	 
+		    									outerDocument.addGroupCanvas.visible=false;   											    										    						
+		    								}
+		    									    									
+		    							}
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:itemRenderer>
+			   </dataGridClasses:MDataGridColumn>
+			   <dataGridClasses:MDataGridColumn editable="false" width="150" headerText="{commonFunction.getConstants('courseGroup')}" dataField="name" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="115" headerText="{commonFunction.getConstants('courseGroupCode')}" dataField="group" showDataTips="true"/>
+			  </controls:columns>
+			</controls:MDataGrid>
+			
+		<controls:MDataGrid x="307" y="32" width="619" id="cancelCourseGrid" allowMultipleSelection="false" draggableColumns="false" verticalScrollPolicy="on" height="142">
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('courseName')}" dataField="name" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="115" headerText="{commonFunction.getConstants('courseCode')}" dataField="code" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="110" headerText="{commonFunction.getConstants('courseType')}" dataField="typeName" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="80" headerText="{commonFunction.getConstants('courseCredits')}" dataField="credit" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="95" headerText="{commonFunction.getConstants('courseCategory')}" dataField="courseCategory" showDataTips="true"/>
+			</controls:columns>
+		</controls:MDataGrid>
+	</mx:Canvas>
+	
+	<mx:Canvas x="33" y="349.5" width="939" height="194" styleName="BorderCanvas" visible="false" id="addGroupCanvas">
+		<mx:Label x="10" y="6" text="{commonFunction.getConstants('addlCourseGroup')}"/>
+		<controls:MDataGrid x="10" y="32" width="289"  id="addGroupGrid" allowMultipleSelection="false" draggableColumns="false" verticalScrollPolicy="on" height="142">			
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn width="10" dataField="select" rendererIsEditor="true" editorDataField="selected" sortable="false">
+					<dataGridClasses:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="{data.select=!data.select};checkIndex(event)">
+								<mx:Script>
+		    						<![CDATA[
+		    							import mx.controls.Alert;
+		    							import common.commonFunction;
+		    							[Embed(source="/images/infoIcon.png")]private var infoIcon1:Class;
+		    							function checkIndex(event:Event):void{
+		    								if(event.currentTarget.selected){	
+		    									outerDocument.flag1=outerDocument.flag1+1;
+		    									if(outerDocument.flag1>1){		    									
+		    										Alert.show(commonFunction.getMessages('pleaseSelectOne'),commonFunction.getMessages('info'),0,null,null,infoIcon1);
+			    									outerDocument.resetAddGroupGrid();
+			    									outerDocument.resetAddCourseGrid();
+			    									outerDocument.flag1=0;
+			    								}
+			    								else if(outerDocument.flag1==1){
+		    										outerDocument.getCourseCodeForAdd();
+		    									}
+		    								}
+		    								else{		    									
+		    									outerDocument.flag1=outerDocument.flag1-1;
+		    									outerDocument.resetAddCourseGrid();
+		    								}
+		    							}
+		    						]]>
+		    						</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</dataGridClasses:itemRenderer>
+				</dataGridClasses:MDataGridColumn>
+			   <dataGridClasses:MDataGridColumn editable="false" width="150" headerText="{commonFunction.getConstants('courseGroup')}" dataField="name" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="115" headerText="{commonFunction.getConstants('courseGroupCode')}" dataField="addGroup" showDataTips="true"/>
+			  </controls:columns>
+		</controls:MDataGrid>
+		
+		<controls:MDataGrid x="307" y="32" width="619" id="addCourseGrid" allowMultipleSelection="false" draggableColumns="false" verticalScrollPolicy="on" height="142">
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn width="20" dataField="select" rendererIsEditor="true" editorDataField="selected" sortable="false">
+					<dataGridClasses:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="{data.select=!data.select}">
+								<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;		    							
+		    						]]>
+		    						</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</dataGridClasses:itemRenderer>
+				</dataGridClasses:MDataGridColumn>
+			   <dataGridClasses:MDataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('courseName')}" dataField="name" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="115" headerText="{commonFunction.getConstants('courseCode')}" dataField="code" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="110" headerText="{commonFunction.getConstants('courseType')}" dataField="typeName" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="80" headerText="{commonFunction.getConstants('courseCredits')}" dataField="credit" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="95" headerText="{commonFunction.getConstants('courseCategory')}" dataField="courseCategory" showDataTips="true"/>
+			  </controls:columns>
+		</controls:MDataGrid>
+	</mx:Canvas>
+	<mx:Button x="756" y="557" label="{commonFunction.getConstants('submitButton')}" click="onClickSubmit()"/>
+	<mx:Button x="842" y="558" label="{commonFunction.getConstants('cancelButton')}" click="onClickCancel()"/>
+	
+</mx:Panel>

@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel creationPolicy="all" title="{commonFunction.getConstants('studentRegistration')}" width="1074" layout="absolute" xmlns:mx="http://www.adobe.com/2006/mxml" height="678" xmlns:ns1="common.*" creationComplete="getStudentDetails()" xmlns:studentRegistration="studentRegistration.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import loginForm.LoginForm;
+		
+		private function loadStudentLogOut():void{
+			
+			if(forCancel=="outer"){
+			this.parentDocument.vStack.selectedIndex=0;
+			this.parentDocument.loaderCanvas2.removeAllChildren();
+			setLogoutService.send();
+			}else if(forCancel=="inner"){
+				this.parentDocument.loaderCanvas.removeAllChildren();
+			}
+		}
+		
+		
+		public function logoutResultHandler(event:ResultEvent):void
+{
+	logout();
+}
+
+public function logoutFaultHandler(event:FaultEvent):void
+{
+	logout();
+}
+
+public function logout():void
+{
+	Alert.show(commonFunction.getMessages('successOnLogout'),commonFunction.getMessages('success'),0,null,null,successIcon);
+	
+}
+		
+
+
+
+
+		
+		
+		]]>
+	</mx:Script>
+<!--<mx:Model id="courseComp" source="xmlFiles/CompulsoryCourseData.xml"/>
+<mx:ArrayCollection id="cC" source="{compulsaryCourseXml.compulsory}"/>
+<mx:Model id="courseElec" source="xmlFiles/ElectiveCourseData.xml"/>
+<mx:ArrayCollection id="cE" source="{courseElec.Course}"/>-->
+<mx:Script source="asFiles/StudentRegistrationAction.as"/>
+
+
+<mx:HTTPService id="httpStudentDetails" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getStudentDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_StudentDetails(event)"
+        fault="faultHandler_StudentDetails(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="httpRegistrationDeadlines" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getRegistrationDeadlines.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_RegistrationDeadlines(event)"
+        fault="faultHandler_RegistrationDeadlines(event)"
+        useProxy="false"/>	
+
+<mx:HTTPService id="httpCompulsaryCourses" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getStudentCoreSubject.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_CompulsaryCourses(event)"
+        fault="faultHandler_CompulsaryCourses(event)"
+        useProxy="false"/>	
+        
+        <mx:HTTPService id="httpCoreCourseGroup" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCompulsoryCourseGroup.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_CoreGroup(event)"
+        fault="faultHandler_CompulsaryCourses(event)"
+        useProxy="false"/>	
+        
+           <mx:HTTPService id="httpOldCourseGroup" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getOldCourseGroup.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_OldCoreGroup(event)"
+        fault="faultHandler_CompulsaryCourses(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpCoreCourseGroupRule" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCompulsoryGroupRule.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_CoreGroupRule(event)"
+        fault="faultHandler_CompulsaryCourses(event)"
+        useProxy="false"/>	
+
+
+<mx:HTTPService id="httpElectiveCourses" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getElectiveSubject.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_ElectiveCourses(event)"
+        fault="faultHandler_ElectiveCourses(event)"
+        useProxy="false"/>	
+        
+<mx:HTTPService id="httpCourseTypeSummary" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCourseTypeSummary.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_CourseTypeSummary(event)"
+        fault="faultHandler_CourseTypeSummary(event)"
+        useProxy="false"/>        
+        
+<mx:HTTPService id="httpTermSummary" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCreditDetailsFromTermDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_TermSummary(event)"
+        fault="faultHandler_TermSummary(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="httpSubmitForm" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/registerStudent.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_SubmitForm(event)"
+        fault="faultHandler_SubmitForm(event)"
+        useProxy="false"/>
+        
+        	<mx:HTTPService id="setLogoutService" method="post"
+					url="{commonFunction.getConstants('url')+'setLogout.htm'}"
+					showBusyCursor="true"
+					resultFormat="e4x"
+					result="logoutResultHandler(event)"
+					fault="logoutFaultHandler(event)"
+					useProxy="false"/>
+        
+     <!--   <mx:XML id="dep" source="xmlFiles/dep.xml" format="e4x"/>
+        <mx:XML id="groupCat" source="xmlFiles/groupCat.xml" format="e4x"/>
+		<mx:XML id="regData" source="xmlFiles/regData.xml" format="e4x"/>-->
+
+<mx:ViewStack id="registratinStack" selectedIndex="0" width="100%" height="622">
+	<mx:Canvas width="100%" height="100%">
+		<mx:TitleWindow width="987" layout="absolute" title="{commonFunction.getConstants('academicDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" color="#000000" x="36" y="32">
+			<mx:Label x="30" y="10" text="{commonFunction.getConstants('belongsTo')}"/>
+			<mx:Label x="369" y="10" text="{commonFunction.getConstants('programName')}"/>
+			<mx:Label x="670" y="10" text="{commonFunction.getConstants('branch')}"/>
+			<mx:Label x="30" y="40" text="{commonFunction.getConstants('semester')}"/>
+			<mx:Label x="369" y="40" text="{commonFunction.getConstants('attemptNo')}"/>
+			<mx:Label x="670" y="40" text="{commonFunction.getConstants('specialization')}"/>
+			<mx:Label x="30" y="70" text="{commonFunction.getConstants('registrationRollNo')}"/>
+			<mx:Label x="369" y="70" text="{commonFunction.getConstants('enrollmentNo')}"/>
+			<mx:TextInput id="belongsToText" enabled="false" x="165" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="programNameText" enabled="false" x="469" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="branchNameText" enabled="false" x="770" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="semesterText" enabled="false" x="165" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="attemptNoText" enabled="false" x="469" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="specializationNameText" enabled="false" x="770" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="rollNoText" enabled="false" x="165" y="70" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="enrollmentNoText" enabled="false" x="469" y="70" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		</mx:TitleWindow>
+				
+		<mx:TitleWindow  width="987" layout="absolute" title="{commonFunction.getConstants('personalDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" x="36" y="183">
+			<mx:Label x="30" y="10" text="{commonFunction.getConstants('studentName')}"/>
+			<mx:Label x="369" y="10" text="{commonFunction.getConstants('fatherName')}"/>
+			<mx:Label x="670" y="10" text="{commonFunction.getConstants('motherName')}"/>
+			<mx:Label x="30" y="40" text="{commonFunction.getConstants('dateOfBirth')}"/>
+			<mx:Label x="369" y="40" text="{commonFunction.getConstants('gender')}"/>
+			<mx:Label x="670" y="40" text="{commonFunction.getConstants('category')}"/>
+			<mx:TextInput id="studentName" enabled="false" x="165" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="fatherName" enabled="false" x="469" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="motherName" enabled="false" x="770" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="dob" enabled="false" x="165" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="gender" enabled="false" x="469" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="category" enabled="false" x="770" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		</mx:TitleWindow>
+		<mx:TitleWindow id="electivePanel" visible="false" width="987" layout="absolute" borderStyle="solid" borderThickness="2" borderColor="#000000" title="{commonFunction.getConstants('electiveCourse')}" x="36.5" y="305">
+			<mx:AdvancedDataGrid x="30" y="10" id="electiveCourseGrid"  displayItemsExpanded="true" editable="true" enabled="true" sortableColumns="false"  resizableColumns="false" initialize="groupByCourseGroup.refresh();"> 
+				<mx:groupItemRenderer>
+			    	<mx:Component>
+			    	    <mx:Label click="setValue(event)" >
+			    			<mx:Script>
+			    				<![CDATA[
+			    				    public var selected:String;
+			    				    private function setValue(event:Event):void
+			    				    {
+			    				    	selected=event.currentTarget.text;
+			    				    }
+			    				]]>
+			    			</mx:Script>
+			    		</mx:Label>
+			    	</mx:Component>
+			    </mx:groupItemRenderer>
+			    <mx:dataProvider>
+			    	<mx:GroupingCollection id="groupByCourseGroup">
+		                <mx:Grouping>
+		                    <mx:GroupingField name="course_group">
+		                    	<mx:summaries>
+		                    		<mx:SummaryRow summaryPlacement="group">
+		                    		<mx:fields>
+		                    			<mx:SummaryField dataField="minimum_credits" label="minCredits" operation="MAX"/>
+		                    		    <mx:SummaryField dataField="maximum_credits" label="maxCredits" operation="MIN"/>
+		                    		</mx:fields>
+		                    		</mx:SummaryRow>
+		                    	</mx:summaries>
+		                    </mx:GroupingField>
+		                </mx:Grouping>
+		            </mx:GroupingCollection>				
+			    </mx:dataProvider>
+			    <mx:columns>
+					<mx:AdvancedDataGridColumn width="120" headerText="{commonFunction.getConstants('courseGroup')}" rendererIsEditor="true" textAlign="center" editorDataField="selected" dataField="select">
+					<mx:itemRenderer>
+							<mx:Component>
+								<mx:CheckBox change="validateCredits(event)" creationComplete="setState(event)"  dataChange="checkSelect(event)">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										import mx.collections.IViewCursor;
+										import mx.controls.Alert;
+										[Embed(source="/images/error.png")]private var errorIcon:Class;
+		                                [Embed(source="/images/success.png")]private var successIcon:Class;
+		                                
+		                                public function setState(event:Event):void
+										{
+											if(event.currentTarget.selected){
+												event.currentTarget.enabled=false;
+											}
+											//event.currentTarget.enabled=!(event.currentTarget.selected);
+										}
+										public function checkSelect(event:Event):void{
+											if(!event.currentTarget.selected){
+												event.currentTarget.enabled=true;
+											}
+											else{
+												event.currentTarget.enabled=false;
+											}
+										}
+		                                
+		                                public function validateCredits(event:Event):void
+										{
+											var selectedCourseCode:String=outerDocument.electiveCourseGrid.selectedItem.course_code;
+										    var gridData:Object = outerDocument.electiveCourseGrid.dataProvider;
+					                        var SelectedCourseGroup:String=outerDocument.electiveCourseGrid.selectedItem.course_group;
+					                        var totalCredits:Number=0;
+					                        var minCredits:Number=0;
+					                        var maxCredits:Number=0;
+					                        var cursor:IViewCursor=gridData.createCursor();
+					                        while(!cursor.afterLast)
+					                        {
+						                        var obj:Object=cursor.current;
+						                        var g:String=obj.course_group
+						                        var checked:Boolean=obj.select;
+						                        if(selectedCourseCode==obj.course_code)
+						                        {
+						                            checked=event.currentTarget.selected;
+						                        }
+						                        
+						                        if(g!=null)
+						                        {
+					    	                        if(g==SelectedCourseGroup)
+					    	                        {
+					        		                    minCredits=obj.minimum_credits;
+					    	                            maxCredits=obj.maximum_credits;
+					    	                            if(checked)
+					        	                        {
+					    	                                totalCredits+=Number(obj.credits);
+				 	                                    }
+					        	                    }
+					        	                }
+						                        cursor.moveNext();
+						                        if(cursor.afterLast)
+						                        {
+		/* 			                                if(totalCredits<minCredits)
+					                                {
+					                                    Alert.show(SelectedCourseGroup,"Less Than Min Error",0,null,null,errorIcon);
+					                                }
+					                                else */
+					                                 if(totalCredits>maxCredits)
+					                                {
+//					                                	event.currentTarget.selected=!event.currentTarget.selected
+					                                	for each(var o:Object in outerDocument.electiveAC){
+					                                		if(o.course_group==SelectedCourseGroup){
+					                                			o.select=false;
+					                                		}
+					                                	}
+//					                                	outerDocument.groupByCourseGroup.source=outerDocument.electiveAC;
+					                                	outerDocument.groupByCourseGroup.refresh();
+					                             		Alert.show(commonFunction.getMessages('pleaseSelectLessThanorEqualto')+maxCredits+commonFunction.getMessages('creditsFrom')+SelectedCourseGroup+".",commonFunction.getMessages('error'),0,null,null,errorIcon);
+					                                }
+					                            }
+					                        }
+					                    }
+									]]>
+								</mx:Script>
+								</mx:CheckBox>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:AdvancedDataGridColumn>
+		            <mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('courseCode')}" dataField="course_code" width="100" editable="false" showDataTips="true"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('courseName')}" dataField="course_name" width="200" editable="false" showDataTips="true"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('courseClassification')}" dataField="courseClassificationName" width="150" editable="false" showDataTips="true"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('credits')}" dataField="credits" width="100" editable="false" showDataTips="true"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('minCredits')}" dataField="minCredits" width="100" editable="false" showDataTips="true"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('maxCredits')}" dataField="maxCredits" width="100" editable="false" showDataTips="true"/>
+				</mx:columns>
+			</mx:AdvancedDataGrid>
+		</mx:TitleWindow>
+		<mx:Button x="36" y="534" label="Next" click="validateNext()"/>
+		<mx:Button id="cancelButton" x="117" y="534" label="Cancel" click="loadStudentLogOut()"/>
+	</mx:Canvas>
+	
+	<mx:TitleWindow  width="100%" height="100%" layout="absolute" borderStyle="solid" borderThickness="2" borderColor="#000000" title="{commonFunction.getConstants('compulsoryCourse')}" x="15" y="283">			
+		<mx:TitleWindow id="SubgroupWindow" borderStyle="solid" horizontalScrollPolicy="on" borderThickness="2" borderColor="#000000" x="15" y="11" width="999" height="272" layout="horizontal">
+			<studentRegistration:GroupList id="major"/>
+		</mx:TitleWindow>
+		<mx:Canvas styleName="GridCanvas" id="compulsoryCourseCanvas" verticalScrollPolicy="off" x="14" y="10" height="502" width="1000" visible="false" >
+			<mx:Label x="5" y="4" text="Courses" fontWeight="bold"/>
+			<mx:AdvancedDataGrid x="10" y="58" id="compulsoryCourseGrid" editable="true" displayItemsExpanded="true" sortableColumns="true" resizableColumns="false" draggableColumns="false" verticalScrollPolicy="on" horizontalScrollPolicy="off" initialize="groupByCourseType.refresh();" height="404">
+			    <mx:groupItemRenderer>
+			    	<mx:Component>
+			    	    <mx:Label click="setValue(event)" >
+			    			<mx:Script>
+			    				<![CDATA[
+			    				    public var selected:String;
+			    				    private function setValue(event:Event):void
+			    				    {
+			    				    	selected=event.currentTarget.text;
+			    				    }
+			    				]]>
+			    			</mx:Script>
+			    		</mx:Label>
+			    	</mx:Component>
+			    </mx:groupItemRenderer>
+			    <mx:dataProvider>
+			    	<mx:GroupingCollection id="groupByCourseType">
+		                <mx:Grouping>
+		                    <mx:GroupingField name="course_group">
+		                    	<mx:summaries >
+		                    		<mx:SummaryRow summaryPlacement="group">
+		                    		    <mx:fields>
+		                    		        <mx:SummaryField dataField="minimum_credits" label="minimumCredits" operation="MAX"/>
+		                    		        <mx:SummaryField dataField="maximum_credits" label="maximumCredits" operation="MIN"/>
+		                    		    </mx:fields>
+		                    		</mx:SummaryRow>
+		                    	</mx:summaries>
+		                    </mx:GroupingField>
+		                </mx:Grouping>
+		            </mx:GroupingCollection>				
+			    </mx:dataProvider>
+			    <mx:columns>
+			        <mx:AdvancedDataGridColumn width="120" headerText="{commonFunction.getConstants('courseGroup')}"  rendererIsEditor="true" textAlign="center" editorDataField="selected" dataField="select">
+						<mx:itemRenderer>
+							<mx:Component>
+								<mx:CheckBox change="validateCredits(event)" color="#000000" mouseFocusEnabled="true" creationComplete="setState(event)" dataChange="checkSelect(event)">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										import mx.resources.ResourceManager;
+										import mx.collections.IViewCursor;
+										import mx.controls.Alert;
+										import mx.collections.*;
+										[Embed(source="/images/error.png")]private var errorIcon:Class;
+		                                [Embed(source="/images/success.png")]private var successIcon:Class;
+		                                
+		                                public function setState(event:Event):void
+										{
+											if(event.currentTarget.selected){
+												event.currentTarget.enabled=false;
+											}
+											//event.currentTarget.enabled=!(event.currentTarget.selected);
+										}
+										public function checkSelect(event:Event):void{
+											if(!event.currentTarget.selected){
+												event.currentTarget.enabled=true;
+											}
+											else{
+												event.currentTarget.enabled=false;
+											}
+										}
+		                                public function validateCredits(event:Event):void
+										{
+											var selectedCourseCode:String=outerDocument.compulsoryCourseGrid.selectedItem.courseCode;
+										    var gridData:Object = outerDocument.compulsoryCourseGrid.dataProvider;
+					                        var selectedCourseGroup:String=outerDocument.compulsoryCourseGrid.selectedItem.course_group;
+					                        var totalCredits:Number=0;
+					                        var minCredits:Number=0;
+					                        var maxCredits:Number=0;
+					                        var cursor:IViewCursor=gridData.createCursor();
+					                        while(!cursor.afterLast)
+					                        {
+						                        var obj:Object=cursor.current;
+						                        var s:String=obj.course_group
+						                        var checked:Boolean=obj.select;;
+						                        if(selectedCourseCode==obj.courseCode)
+						                        {
+						                            checked=event.currentTarget.selected;
+						                        }
+						                        
+						                        if(s!=null)
+						                        {
+					    	                        if(s==selectedCourseGroup)
+					    	                        {
+					        		                    minCredits=obj.minimum_credits;
+					    	                            maxCredits=obj.maximum_credits;
+					    	                            if(checked)
+					        	                        {
+					    	                                totalCredits+=Number(obj.credits);
+				 	                                    }
+					        	                    }
+					        	                }
+						                        cursor.moveNext();
+						                        if(cursor.afterLast)
+						                        {
+													if(totalCredits>maxCredits){
+//					                                	event.currentTarget.selected=!event.currentTarget.selected
+					                                	for each(var o:Object in outerDocument.regDataArray){
+					                                		if(o.course_group==selectedCourseGroup){
+					                                			o.select=false;
+					                                		}
+					                                	}
+//					                                	outerDocument.groupByCourseType.source=outerDocument.regDataArray;
+					                                	outerDocument.groupByCourseType.refresh();
+					                             		Alert.show(commonFunction.getMessages('pleaseSelectLessThanorEqualto')+" "+maxCredits+" "+commonFunction.getMessages('creditsFrom')+" "+selectedCourseGroup+".",commonFunction.getMessages('error'),0,null,null,errorIcon);
+					                                }
+					                            }
+					                        }
+					                    }
+									]]>
+								</mx:Script>
+								</mx:CheckBox>
+							</mx:Component>
+						</mx:itemRenderer>
+					</mx:AdvancedDataGridColumn>
+		            <mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('courseType')}" dataField="courseType" width="100" editable="false" showDataTips="true" sortable="false"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('courseCode')}" dataField="courseCode" width="100" editable="false" showDataTips="true" sortable="true"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('courseName')}" dataField="courseName" width="200" editable="false" showDataTips="true" sortable="false"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('courseClassification')}" dataField="courseClassificationName" width="150" editable="false" showDataTips="true" sortable="false"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('credits')}" dataField="credits" width="100" editable="false" showDataTips="true" sortable="false"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('minCredits')}" dataField="minimumCredits" width="100" editable="false" showDataTips="true" sortable="false"/>
+					<mx:AdvancedDataGridColumn headerText="{commonFunction.getConstants('maxCredits')}" dataField="maximumCredits" width="100" editable="false" showDataTips="true" sortable="false"/>
+				</mx:columns>
+		    </mx:AdvancedDataGrid>
+		    <mx:LinkButton id="previousButton" x="10" y="470" click="removeCourseGrid()" label="{commonFunction.getConstants('previousButton')}"/>
+		    <mx:Label x="287" y="10" text="{commonFunction.getConstants('minimumCreditsRequired')}"/>
+		    <mx:Label x="287" y="36" text="{commonFunction.getConstants('minimunTheoryCreditsRequired')}"/>
+		    <mx:Label x="503" y="10" id="minimumCreditLabel"/>
+		    <mx:Label x="503" y="36"  id="minimumLectureCreditLabel"/>
+		    <mx:Label x="567" y="36" text="{commonFunction.getConstants('maximunTheoryCreditsLimit')}"/>
+		    <mx:Label x="567" y="10" text="{commonFunction.getConstants('maximumCreditsLimit')}"/>
+		    <mx:Label x="792" y="10" id="maximumCreditLabel"/>
+		    <mx:Label x="792" y="36"  id="maximumLectureCreditLabel"/>
+	    </mx:Canvas>
+		<mx:Button id="submitButton" click="submitForm()" label="{commonFunction.getConstants('submitButton')}" enabled="false" x="869" y="542"/>
+		<mx:Button x="19" y="542" label="{commonFunction.getConstants('back')}" click="registratinStack.selectedIndex=0"/>
+		<mx:Button id="cancelButton1" x="761" y="542" label="{commonFunction.getConstants('cancelButton')}" click="loadStudentLogOut()"/>
+	</mx:TitleWindow>			
+</mx:ViewStack>
+
+</mx:Panel>

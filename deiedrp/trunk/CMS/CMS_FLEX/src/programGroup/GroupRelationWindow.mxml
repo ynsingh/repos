@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) GroupRelationWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="606" height="508" title="Group Relation"
+	showCloseButton="true" close="popUpWindowClose();" creationComplete="popupWindowInitializeHandler()" styleName="PopUpTitleWindow">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	
+	<mx:HTTPService id="linkedGroupHttpService" method="POST"
+					url="{urlPrefix+'linkedGroupList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="linkedGroupHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="groupHttpService" method="POST"
+					url="{urlPrefix+'existingGroupList.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="groupHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>				
+	
+	<mx:HTTPService id="saveDetailsHttpService" method="POST"
+					url="{urlPrefix+'saveLinkedGroup.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="saveDetailsHttpServiceResultHandler(event)"
+					fault="httpServiceFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import mx.controls.LinkButton;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.managers.PopUpManager;
+			import common.commonFunction;
+			
+			[Bindable]public var urlPrefix:String;
+			private var groupList:XML;
+			public var programGroupXML:XML;
+			public var programCourseKey:String;
+			public var refreshProgramGroupGrid:Function;
+			[Bindable]public var linkedGroupXML:XML;
+			[Bindable]public var tempButton:LinkButton=new LinkButton;
+			public var linkedMinimum:String;
+			public var linkedMaximum:String;
+
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+						
+			/**
+			 * @protected
+			 * this method is called on initilize the popUp window.
+			 */
+        	protected function popupWindowInitializeHandler():void
+        	{
+        		Mask.show(commonFunction.getMessages('pleaseWait'));
+        		urlPrefix=commonFunction.getConstants('url')+"/programgroup/";
+        		tempButton.enabled=false;
+        		
+        		linkedMaximumNS.value=int(linkedMaximum);
+        		linkedMinimumNS.value=int(linkedMinimum);
+
+				var param:Object=new Object();
+				param["time"]=new Date();
+				param["programCourseKey"]=programCourseKey;
+				groupHttpService.send(param);
+				linkedGroupHttpService.send(param);
+        	}
+        	
+        	/**
+			 * @private
+			 * This function will called on sucess http service 
+			 * @return void 
+			 */
+        	private function groupHttpServiceResultHandler(event:ResultEvent):void{
+        		var groupXML:XML=event.result as XML;
+        		if(groupXML.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+        		var programGroupArrCol:ArrayCollection= new ArrayCollection();
+
+				for each (var o:Object in groupXML.group)
+				{
+					programGroupArrCol.addItem({select:false, programCourseKey:programCourseKey, groupCode:o.groupCode, groupDescription:o.groupDescription, linkedGroup:""});
+				}
+				groupRelationGrid.dataProvider=null;
+				groupRelationGrid.dataProvider=programGroupArrCol;
+				Mask.close();
+        	}
+        	
+        	/**
+			 * @private
+			 * This function will called on sucess http service 
+			 * @return void 
+			 */
+        	private function saveDetailsHttpServiceResultHandler(event:ResultEvent):void{
+        		var saveResult:XML= event.result as XML;
+        		if(saveResult.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        						
+				if(saveResult.result.message=="success"){
+					Alert.show(commonFunction.getMessages('savedSuccessfully'),(commonFunction.getMessages('success')),4,null,null,successIcon);
+					refreshProgramGroupGrid.call();
+					popUpWindowClose();
+						
+				}
+				
+				// added by ashish mohan
+				else if(String(saveResult.result.message).search("failure")>-1){
+				Alert.show("Error occured \n Details are as follows: \n"+String(saveResult.result.message)  ,resourceManager.getString('Messages','error'),4,null,null,errorIcon);	
+				}
+				
+				else{
+					Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);	
+				}
+				Mask.close();
+        	}
+        	
+        	/**
+			 * @private
+			 * This function will called on sucess http service 
+			 * @return void 
+			 */
+        	private function linkedGroupHttpServiceResultHandler(event:ResultEvent):void{
+        		linkedGroupXML= event.result as XML;
+        		if(linkedGroupXML.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+        		Mask.close();
+        	}
+        	
+        	/**
+			 * @protected
+			 * This function will called on save button clicked 
+			 * @return void 
+			 */
+        	private function saveButtonClickHandler():void{
+        		var gridData:ArrayCollection=commonFunction.getSelectedRowData(groupRelationGrid);
+				var selectedRecordArrColl:ArrayCollection=new ArrayCollection();
+				var linkedGroupCode:String;
+				
+					for each(var o:Object in gridData){
+						linkedGroupCode=linkedGroupXML.linkedGroup.(groupDescription==o.linkedGroup).groupCode;
+						selectedRecordArrColl.addItem([o.programCourseKey, o.groupCode, linkedGroupCode]);
+					}
+					
+					if(int(linkedMinimumNS.value)>int(linkedMaximumNS.value)){
+						linkedMinimumNS.errorString=commonFunction.getMessages('minCannotGreator');
+						Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'), commonFunction.getMessages('error'),4,null,null,errorIcon);
+					}
+					else if(linkedGroupCode==""){
+						linkedMinimumNS.errorString="";
+						Alert.show(commonFunction.getMessages('selectLinkedGroup'), commonFunction.getMessages('error'),4,null,null,errorIcon);
+					}
+					else{
+						var param:Object=new Object();
+						param["selectedLinkedGroup"]=selectedRecordArrColl;
+
+						param["linkedMaximum"]=linkedMaximumNS.value;
+						param["linkedMinimum"]=linkedMinimumNS.value;
+
+						Mask.show(commonFunction.getMessages('pleaseWait'));
+					    saveDetailsHttpService.send(param);
+        					
+					}
+        	}
+        	
+        	/**
+			 * @private
+			 * This function will called to close popup window 
+			 * @return void 
+			 */
+        	private function popUpWindowClose():void
+        	{
+				PopUpManager.removePopUp(this);
+        	}
+        	
+        	/**
+			 * @protected
+			 * this method is called when a fault occur from the server. 
+			 * @param event a Fault event object.
+			 */
+			protected function httpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+				Mask.close();
+			}
+
+		]]>
+	</mx:Script>
+	
+	    <mx:Canvas height="172" width="493" visible="true" x="44.5" y="57" styleName="GridCanvas">
+		    <mx:DataGrid id="groupRelationGrid" rowHeight="25" creationComplete="commonFunction.showDataTips(groupRelationGrid)" horizontalScrollPolicy="off" verticalScrollPolicy="on" draggableColumns="false" editable="true" 
+		    	height="150" x="8" y="12" width="476">
+			    <mx:columns>
+				    <mx:DataGridColumn width="20" sortable="false" headerText="" dataField="select" editorDataField="selected" rendererIsEditor="true">
+					    <mx:itemRenderer>
+						    <mx:Component>
+							    <mx:CheckBox change="commonFunction.editDeleteEnable2(event,outerDocument.groupRelationGrid,[],[],[outerDocument.tempButton])">
+								<mx:Script>
+								<![CDATA[
+									import common.commonFunction;									
+									import mx.controls.LinkButton;
+								]]>
+							</mx:Script>
+							</mx:CheckBox>
+						    </mx:Component>
+					    </mx:itemRenderer>
+				    </mx:DataGridColumn>
+				    <mx:DataGridColumn headerText="{commonFunction.getConstants('group')}" dataField="groupDescription" editable="false"/>
+				    <mx:DataGridColumn sortable="false" headerText="{commonFunction.getConstants('linkedGroup')}" dataField="linkedGroup" rendererIsEditor="true" editorDataField="selectedItem">
+				    	<mx:itemRenderer>
+					    	<mx:Component>
+						        <mx:ComboBox width="100%" prompt="select" dataProvider="{outerDocument.linkedGroupXML.linkedGroup.groupDescription}"/>
+						    </mx:Component>
+				    	</mx:itemRenderer>
+				    </mx:DataGridColumn>
+			    </mx:columns>
+		    </mx:DataGrid>
+		</mx:Canvas>
+	    <mx:Button x="151.5" y="371" label="{commonFunction.getConstants('saveButton')}" id="saveButton" enabled="{tempButton.enabled}" click="saveButtonClickHandler()"/>
+	    <mx:Button x="312.5" y="371" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="popUpWindowClose()"/>
+	    <mx:Label x="44.5" y="283" text="{commonFunction.getConstants('linkedMaximum')}"/>
+	    <mx:NumericStepper x="160.5" y="281" id="linkedMaximumNS" width="100"/>
+	    <mx:Label x="321.5" y="283" text="{commonFunction.getConstants('linkedMinimum')}"/>
+	    <mx:NumericStepper x="432.5" y="281" id="linkedMinimumNS" width="100"/>
+</mx:TitleWindow>

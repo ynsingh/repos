@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) WithDrawStudent.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1040" height="392" title="{commonFunction.getConstants('withdrawStudent')}" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			 import mx.core.UIComponent;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/WithdrawStudentAs.as"/>
+	
+	<mx:HTTPService id="getProgramDetailsService" method="POST"
+					url="{urlPrefix+'getProgramDetail.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="getProgramDetailResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	<mx:HTTPService id="withdrawStudentService" method="POST"
+					url="{urlPrefix+'withdrawStudent.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="withdrawStudentResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>
+								
+	<mx:Label x="48" y="37" text="{commonFunction.getConstants('enterRollNo')}: " fontWeight="bold"/>
+	<mx:TextInput x="200" y="35" id="rollnumberInput" restrict="0-9" change="onChangeOfInputText()"/>
+	<mx:Button x="368" y="35" label="{commonFunction.getConstants('submit_button')}" id="submitButton" click="onClickSubmit()" />
+	<mx:Button x="448" y="35" label="{commonFunction.getConstants('cancel_button')}" id="cancelButton" click="{parent.removeChild(this);}"/>
+	<mx:StringValidator id="rollVal" source="{rollnumberInput}" property="text" required="true" trigger="{submitButton}" triggerEvent="click"/>
+	<mx:Canvas x="15" y="81" width="988" height="202" styleName="BorderCanvas" visible="false" id="gridCanvas">
+		<controls:MDataGrid x="10" y="30" width="966" id="programDetailGrid" allowMultipleSelection="false" draggableColumns="false" verticalScrollPolicy="on" height="142">
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn width="10" dataField="select" rendererIsEditor="true" editorDataField="selected" sortable="false" >
+			    	<dataGridClasses:itemRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="{data.select=!data.select};commonFunction.editDeleteEnable(event,outerDocument.programDetailGrid,[outerDocument.withrawLink],[])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;		    									    														
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:itemRenderer>
+			   </dataGridClasses:MDataGridColumn>
+			   <dataGridClasses:MDataGridColumn editable="false" width="135" headerText="{commonFunction.getConstants('entity')}" dataField="entityName" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="130" headerText="{commonFunction.getConstants('program')}" dataField="programName" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="130" headerText="{commonFunction.getConstants('branch')}" dataField="branchName" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="130" headerText="{commonFunction.getConstants('specialization')}" dataField="spclName" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="100" headerText="{commonFunction.getConstants('semester')}" dataField="semesterName" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('semesterStartDate')}" dataField="semesterStartDate" showDataTips="true"/>
+			   <dataGridClasses:MDataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('semesterEndDate')}" dataField="semesterEndDate" showDataTips="true"/>
+			  </controls:columns>
+			</controls:MDataGrid>
+		<mx:Label x="12" y="7" text="{commonFunction.getConstants('student')} {commonFunction.getConstants('programDetails')}" fontWeight="bold" fontStyle="italic" fontFamily="Georgia"/>
+		<mx:LinkButton x="12" y="176" label="{commonFunction.getConstants('withdrawStudent')}" height="17" click="onClickWithrawLink()" id="withrawLink" enabled="false"/>
+	</mx:Canvas>
+</mx:Panel>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) updateprestagingPopup.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" verticalPageScrollSize="5" close="closepopup()" verticalScrollPolicy="on" styleName="PopUpTitleWindow"  x="30" y="5" horizontalScrollPolicy="auto" width="1143" layout="absolute" title="{commonFunction.getConstants('editErrorRecords')}"  xmlns:ns1="common.*" showCloseButton="true" creationComplete="titlewindowInitializeHandler()" height="1012">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/UpdatePrestgingPopupAction.as"/>
+<mx:XML source="xmlFiles/genderxml.xml" id="genders" format="e4x"/>
+
+	<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix1}getEntityList.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix1}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix1}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix1}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="getSemesterList" method="POST"
+		url="{commonFunction.getConstants('url')}/programCourseType/getProgramSemesterDetails.htm"
+		resultFormat="e4x"
+		result="getSemesterSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+
+	<mx:HTTPService id="getCategoryDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getCategoryDetails.htm"
+					resultFormat="e4x"
+					result="onCategoryDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>		
+					
+	<mx:HTTPService id="updateRecords" method="post"
+					url="{urlPrefix2+'updateRecords.htm'}"
+					resultFormat="e4x"
+					result="onUpdateSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	
+ 		<mx:Label x="504" y="24" text="{commonFunction.getConstants('registrationRollNo')}" height="17"/>
+		<mx:Label x="61" y="26" text="{commonFunction.getConstants('enrollmentNo')}"/>
+		<mx:TextInput x="646" y="22" id="regrollNo" width="160" editable="false"/>
+		<mx:TextInput x="178" y="24" id="enrollNo" width="160" editable="false"/>
+	    <mx:TitleWindow layout="absolute" borderStyle="solid" title="{commonFunction.getConstants('personalDetails')}" borderThickness="2" borderColor="#000000" width="1036" height="245" y="71" x="13">
+		<mx:Label x="168" y="10" text="{commonFunction.getConstants('firstName')}"/>
+		<mx:Label text="{commonFunction.getConstants('middleName')}" x="382" y="10"/>
+		<mx:Label x="613" y="10" text="{commonFunction.getConstants('lastName')}"/>
+		<mx:Label x="37" y="42" text="{commonFunction.getConstants('student')}"/>
+		<mx:TextInput x="168" y="38" width="160" id="studentFirstName" restrict="a-z A-Z"/>
+		<mx:TextInput x="382" y="39" width="160" id="studentmiddleName" />
+		<mx:TextInput x="613" y="40" width="160" id="studentLastName" restrict="a-z A-Z"/>
+		<mx:Label x="37" y="133" text="{commonFunction.getConstants('primaryEmailid')}"/>
+		<mx:TextInput x="168" y="131" id="primarymailtext" width="160"/>
+		<mx:Label x="382" y="131" text="{commonFunction.getConstants('dateOfBirth')}"/>
+		<mx:DateField x="613" y="131" width="160" id="dateofBirthField" yearNavigationEnabled="true" formatString="YYYY-MM-DD"/>
+		<mx:Label x="37" y="171" text="{commonFunction.getConstants('gender')}"/>
+		<mx:ComboBox x="168" y="168" id="genderCombo" dataProvider="{genders.gender.@name}" prompt="{commonFunction.getConstants('select')}" width="160" selectedIndex="-1" toolTip="{genderCombo.text}">
+		</mx:ComboBox>
+		<mx:Label x="385" y="171" text="{commonFunction.getConstants('category')}"/>
+		<mx:ComboBox x="613" y="168" id="categoryCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{categoryCombo.text}" selectedIndex="-1" width="160"></mx:ComboBox>
+		<mx:Label x="37" y="70" text="{commonFunction.getConstants('father')}"/>
+		<mx:TextInput x="168" y="68" width="160" id="fatherFirstName" restrict="a-z A-Z"/>
+		<mx:TextInput x="382" y="68" width="160" id="fatherMiddleName" />
+		<mx:TextInput x="613" y="68" width="160" id="fatherLastName" restrict="a-z A-Z"/>
+		<mx:Label x="37" y="100" text="{commonFunction.getConstants('mother')}"/>
+		<mx:TextInput x="168" y="98" width="160" id="motherFirstName" restrict="a-z A-Z"/>
+		<mx:TextInput x="382" y="98" width="160" id="motherMiddleName" />
+		<mx:TextInput x="613" y="98" width="160" id="motherLastName" restrict="a-z A-Z"/>
+		</mx:TitleWindow>
+		<mx:TitleWindow layout="absolute" borderStyle="solid" title="{commonFunction.getConstants('programDetails')}" borderThickness="2" borderColor="#000000" width="1036" height="237" y="338" x="13">
+		<mx:DateField x="261" y="158" width="160" id="registrationDueDate" yearNavigationEnabled="true" formatString="YYYY-MM-DD"/>
+		<mx:Label x="67" y="16" text="{commonFunction.getConstants('newEntity')}"/>
+		<mx:Label x="67" y="51" text="{commonFunction.getConstants('newBranch')}"/>
+		<mx:Label x="540" y="11" text="{commonFunction.getConstants('newProgram')}"/>
+		<mx:Label x="540" y="47" text="{commonFunction.getConstants('newSpecialization')}"/>
+		<mx:Label x="67" y="81" text="{commonFunction.getConstants('newSemester')}"/>
+		<mx:Label x="540" y="81" text="{commonFunction.getConstants('attemptNo')}"/>
+		<mx:TextInput x="728" y="81" id="atemptNo" restrict="1-9"/>
+		<mx:Label x="67" y="160" text="{commonFunction.getConstants('registrationDueDate')}"/>
+		<mx:Label x="67" y="120" text="{commonFunction.getConstants('semesterStartDate')}"/>
+		<mx:DateField x="261" y="118" width="160" id="semStartDate" formatString="YYYY-MM-DD"/>
+		<mx:Label x="540" y="118" text="{commonFunction.getConstants('semesterEndDate')}"/>
+		<mx:DateField x="728" y="116" width="160" id="semEndDate" formatString="YYYY-MM-DD"/>
+		<mx:ComboBox x="261" y="6" id="newEntityCombo" width="160" updateComplete="onEntityChange(event)" toolTip="{newEntityCombo.text}"></mx:ComboBox>
+		<mx:ComboBox x="728" y="9" id="newProgramCombo" prompt="Select" width="160" updateComplete="onProgramChange(event)" toolTip="{newProgramCombo.text}" ></mx:ComboBox>
+		<mx:ComboBox x="261" y="42" id="newBranchCombo" prompt="Select" width="160" updateComplete="onBranchChange(event)" toolTip="{newBranchCombo.text}" ></mx:ComboBox>
+		<mx:ComboBox x="728" y="45" id="newSpecializationCombo" prompt="Select" width="160" updateComplete="onSpecializationChange(event)" toolTip="{newSpecializationCombo.text}" ></mx:ComboBox>
+		<mx:ComboBox x="261" y="79" id="newSemesterCombo" prompt="Select" width="160" toolTip="{newSemesterCombo.text}"></mx:ComboBox>
+		</mx:TitleWindow>
+		<mx:TitleWindow layout="absolute" borderColor="#000000" borderStyle="solid"
+			 borderThickness="2" height="308" y="600" title="{commonFunction.getConstants('contactDetails')}" x="14" width="1035">
+		<ns1:AddressField x="10" y="107" id="corspondenceAddressField" width="980" title="{commonFunction.getConstants('correspondenceAddress')}" validationRequired="false">
+		</ns1:AddressField>
+		<ns1:AddressField x="10" y="4" id="permanentAddressField" width="980" title="{commonFunction.getConstants('permanentAddress')}*" validationRequired="false">
+		</ns1:AddressField>
+		<ns1:PhoneField x="10" y="218" id="phones">
+		</ns1:PhoneField>
+		</mx:TitleWindow>	
+		<mx:Button x="224" y="931" label="{commonFunction.getConstants('updateButton')}" id="updateButton" click="updateValues()" />
+		<mx:Button x="668" y="931" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="closepopup()"/>
+		<mx:Validator property="text" source="{studentFirstName}" id="studentFirstNameValid" required="true"/>
+		<mx:Validator property="text" source="{fatherFirstName}" id="fatherFirstNameValid" required="true"/>
+		<mx:Validator property="text" source="{motherFirstName}" id="motherFirstNameValid" required="true"/>
+		<mx:Validator property="selectedLabel" source="{newEntityCombo}" id="newEntityComboValid" required="true" triggerEvent="click" trigger="{updateButton}"/>
+		<mx:Validator property="selectedLabel" source="{newProgramCombo}" id="newProgramComboValid" required="true" triggerEvent="click" trigger="{updateButton}"/>
+		<mx:Validator property="selectedLabel" source="{newBranchCombo}" id="newBranchComboValid" required="true" triggerEvent="click" trigger="{updateButton}"/>
+		<mx:Validator property="selectedLabel" source="{newSpecializationCombo}" id="newSpecializationComboValid" required="true" triggerEvent="click" trigger="{updateButton}"/>
+		<mx:Validator property="selectedLabel" source="{newSemesterCombo}" id="newSemesterComboValid" required="true" triggerEvent="click" trigger="{updateButton}"/>
+		<mx:Validator property="text" source="{atemptNo}" id="atemptNoValid" required="true"/>	
+		<mx:Validator property="text" source="{registrationDueDate}" id="registrationDueDateValid" required="true"/>
+		<mx:Validator property="text" source="{semStartDate}" id="semStartDateValid" required="true"/>
+		<mx:Validator property="text" source="{semEndDate}" id="semEndDateValid" required="true"/>	
+	</mx:TitleWindow>
+
+
+
+

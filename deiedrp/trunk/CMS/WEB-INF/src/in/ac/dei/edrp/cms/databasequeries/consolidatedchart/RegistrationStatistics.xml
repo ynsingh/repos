@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+* @(#) RegistrationStatistics.xml 
+* @Author :Mohd Amir * @Date :21/3/2011 
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. 
+* All Rights Reserved. 
+* 
+* Redistribution and use in source and binary forms, with or 
+* without modification, are permitted provided that the following 
+* conditions are met: 
+* 
+* Redistributions of source code must retain the above copyright 
+* notice, this list of conditions and the following disclaimer. 
+* 
+* Redistribution in binary form must reproducuce the above copyright 
+* notice, this list of conditions and the following disclaimer in 
+* the documentation and/or other materials provided with the 
+* distribution. 
+* 
+* 
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR 
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+* 
+* Contributors: Members of EdRP, Dayalbagh Educational Institute 
+*/ -->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="registrationStats">
+
+	<typeAlias alias="resultStatisticsInfo"
+		type="in.ac.dei.edrp.cms.domain.consolidatedchart.ResultStatisticsInfo" />
+<!--Mapped Branch_id and specialization_id in program_course_header table BY MANDEEP-->
+	<select id="getStudentCount" resultClass="resultStatisticsInfo">
+		SELECT count(srsh.roll_number) count
+		FROM program_offered_by pob, program_master pm,
+		program_term_details ptd, student_registration_semester_header srsh,
+		student_master sm, student_program sp
+		WHERE srsh.entity_id=#entityId# AND sp.program_status='ACT'
+		AND srsh.session_start_date between #sessionStartDate# and #sessionEndDate#
+		AND srsh.session_end_date between #sessionStartDate# and #sessionEndDate#
+		AND sm.university_code=#universityId# AND sm.status='ACT'
+		AND sp.roll_number=srsh.roll_number AND sm.enrollment_number=sp.enrollment_number
+		AND pob.offered_by=srsh.entity_id AND pob.program_id=pm.program_id
+		AND ptd.program_id=pm.program_id AND (ptd.semester_sequence+#semesterWise#)%2=0
+		AND srsh.program_course_key in (
+			SELECT  program_course_key
+			FROM program_course_header pch
+			WHERE pch.program_id=pm.program_id and pob.branch_id=pch.branch_id and pob.specialization_id=pch.specialization_id
+			AND pch.semester_code=ptd.semester_code AND pch.semester_status='ACT'
+		)
+		AND sm.gender like #gender# AND sm.category_code like #category#
+		AND pm.tencodes like #level#;
+	</select>
+	
+	<select id="getEntityLevel" resultClass="resultStatisticsInfo">
+		SELECT distinct pob.offered_by entityId, em.entity_name entityName,
+		em.entity_code entityCode, pm.tencodes level
+		FROM entity_master em, program_offered_by pob, program_master pm
+		WHERE pob.offered_by=em.entity_id AND pob.program_id=pm.program_id 
+    	AND em.university_id=#universityId#
+		ORDER BY entityId, level;
+    </select>
+</sqlMap>

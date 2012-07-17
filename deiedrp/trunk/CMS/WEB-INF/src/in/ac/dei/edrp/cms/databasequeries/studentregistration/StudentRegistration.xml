@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- /*
+ * @(#) StudentRegistration.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+  <sqlMap namespace="studentRegistration">   
+
+  <typeAlias alias="studentInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter" />
+  <typeAlias alias="courseInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.CourseInfoGetter" />
+  <typeAlias alias="loginInfo" type="in.ac.dei.edrp.cms.domain.LoginInfoGetter" />
+  
+ 
+
+<resultMap id="coreSubjectsDetails" class="courseInfo">
+		<result property="courseCode" column="course_code" />
+	<result property="courseName" column="course_name" />
+	<result property="credits" column="credits" />
+	<result property="courseType" column="course_type" />
+	<result property="programCourseKey" column="program_course_key" />
+	<result property="minimumCourses" column="minimum_credits" />
+	<result property="maximumCourses" column="maximum_credits" />
+	<result property="courseClassification" column="course_classification" />
+</resultMap>
+
+
+<select id="getCoreSubjects" resultMap="coreSubjectsDetails">
+ select pcd.course_code,cm.course_name,cm.credits,stt.component_description course_type ,
+ pcd.program_course_key,cm.course_classification,pcts.minimum_credits,pcts.maximum_credits  
+ from program_course_detail pcd,course_master cm,system_table_two stt,program_course_type_summary pcts where  
+ pcd.program_course_key=(select program_course_key from program_course_header 
+ where program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+ semester_code=#semesterCode# and semester_status='ACT') AND pcd.course_code=cm.course_code 
+ and pcd.available='Y' and pcd.course_category='REG' and cm.course_type=stt.component_code  
+ and stt.group_code='CRSTYP' AND stt.university_code=substring(#programId#,1,4) and stt.active=1 
+ AND cm.university_code=substring(#programId#,1,4) AND 
+ pcd.course_group='XX' AND cm.course_type=pcts.course_type
+ 
+
+</select>
+
+<resultMap id="coreProgramGroup" class="courseInfo">
+	<result property="groupCode" column="group_code" />
+	<result property="groupName" column="group_name" />
+	<result property="groupOrder" column="group_order" />
+	<result property="minimumSelection" column="minimum_selection" />
+	<result property="maximumSelection" column="maximum_selection" />
+	<result property="subGroupCode" column="subgroup_code" />
+	<result property="subGroupName" column="subgroup_name" />
+	<result property="conditionalGroup" column="conditional_group" />
+	<result property="linkedGroup" column="linked_group" />
+	<result property="linkedMinimumSelection" column="linked_minimum_selection" />
+	<result property="linkedMaximumSelection" column="linked_maximum_selection" />
+</resultMap>
+
+
+
+<select id="getCompulsaryProgramGroup" resultMap="coreProgramGroup">
+SELECT  pg.group_code,stt1.component_description group_name, pg.group_order, pg.minimum_selection, pg.maximum_selection,
+pg.subgroup_code,stt.component_description subgroup_name, pg.conditional_group, pg.linked_group, pg.linked_minimum_selection,
+pg.linked_maximum_selection FROM program_group pg,system_table_two stt,system_table_two stt1 
+where program_course_key=(select program_course_key from 
+ program_course_header 
+ where program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+ semester_code=#semesterCode# and semester_status='ACT') 
+ and stt.component_code=pg.subgroup_code and stt.group_code='CRSGRP'
+ AND stt.university_code=substring(#programId#,1,4)
+and stt1.component_code=pg.group_code and stt1.group_code='PROGRP'
+ AND stt1.university_code=substring(#programId#,1,4)
+</select>
+
+
+
+<resultMap id="coreProgramRule" class="courseInfo">
+	<result property="groupCode" column="pr.group_code" />
+	<result property="groupName" column="stt1.component_description" />
+	<result property="subGroupCode" column="pr.subgroup_code" />
+	<result property="subGroupName" column="stt2.component_description" />
+	<result property="groupRule" column="pr.group_rule" />
+</resultMap>
+
+  <select id="getProgramRule" resultMap="coreProgramRule">
+select  pr.group_code, pr.subgroup_code, pr.group_rule,stt1.component_description,stt2.component_description
+from program_rule pr, system_table_two stt1, system_table_two stt2
+where 
+pr.program_course_key=(select program_course_key from 
+ program_course_header 
+ where program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+ semester_code=#semesterCode# and semester_status='ACT') and
+ stt1.group_code='CRSGRP' and stt1.component_code=pr.group_code and
+ stt2.group_code='CRSGRP' and stt2.component_code=pr.subgroup_code
+</select>
+
+
+<resultMap id="elecSubjectsDetails" class="courseInfo">
+		<result property="courseCode" column="course_code" />
+	<result property="courseName" column="course_name" />
+	<result property="credits" column="credits" />
+	<result property="courseType" column="course_type" />
+	<result property="courseGroup" column="course_group" />
+	<result property="minimumCourses" column="minimum_courses" />
+	<result property="maximumCourses" column="maximum_courses" />
+	<result property="programCourseKey" column="program_course_key" />
+	<result property="courseClassification" column="course_classification" />
+	<result property="courseClassificationName" column="course_classification_name" />
+	<result property="courseGroupCode" column="course_group_code" />
+</resultMap>
+
+
+<select id="getElectiveSubjects" resultMap="elecSubjectsDetails">
+ select pcd.course_code course_code, cm.course_name course_name,cm.credits credits,
+ ct.component_description course_type,cgd.component_description course_group, pcd.course_group course_group_code,cg.minimum_credit minimum_courses,
+ cg.maximum_credit maximum_courses,pcd.program_course_key,sys2.component_code course_classification,sys2.component_description course_classification_name
+ from program_course_detail pcd, course_master cm,
+ system_table_two ct,course_group cg, system_table_two cgd,system_table_two sys2 where
+ pcd.program_course_key=(select program_course_key from program_course_header
+ where program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and
+ semester_code=#semesterCode# and semester_status='ACT') AND pcd.course_group!='XX' AND
+ pcd.course_code=cm.course_code AND ct.component_code=cm.course_type and ct.group_code='CRSTYP' AND
+ cm.course_classification=sys2.component_code AND sys2.group_code='CRCLSF'
+ AND ct.university_code=substring(#programId#,1,4) AND pcd.available='Y' AND pcd.course_category='REG'
+ AND pcd.course_group=cg.course_group_code AND cgd.component_code=pcd.course_group and cgd.group_code='CRSGRP'
+ AND cgd.university_code=substring(#programId#,1,4) AND sys2.university_code=substring(#programId#,1,4) 
+ AND cg.program_course_key=(select program_course_key from program_course_header
+ where program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and
+ semester_code=#semesterCode# and semester_status='ACT') and cg.elective='1';
+</select>
+
+
+
+<select id="getCoreGroupSubjects" resultMap="elecSubjectsDetails">
+ select pcd.course_code course_code, cm.course_name course_name,cm.credits credits, 
+  ct.component_description course_type,cgd.component_description course_group,
+  pcd.course_group course_group_code,sys2.component_code course_classification,sys2.component_description course_classification_name,
+  cg.minimum_credit minimum_courses, cg.maximum_credit maximum_courses,pcd.program_course_key  
+  from program_course_detail pcd, course_master cm,system_table_two sys2,
+  system_table_two ct,course_group cg, system_table_two cgd where 
+  pcd.program_course_key=(select program_course_key from program_course_header 
+  where program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+  semester_code=#semesterCode# and semester_status='ACT') AND pcd.course_group=#componentCode# AND 
+  pcd.course_code=cm.course_code AND ct.component_code=cm.course_type and ct.group_code='CRSTYP' AND
+  cm.course_classification=sys2.component_code AND sys2.group_code='CRCLSF'
+  AND ct.university_code=substring(#programId#,1,4) AND pcd.available='Y' AND pcd.course_category='REG' 
+  AND pcd.course_group=cg.course_group_code AND cgd.component_code=pcd.course_group and cgd.group_code='CRSGRP' 
+  AND cgd.university_code=substring(#programId#,1,4) AND sys2.university_code=substring(#programId#,1,4) 
+  AND cg.program_course_key=(select program_course_key from program_course_header 
+  where program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+ semester_code=#semesterCode# and semester_status='ACT') and cg.elective='0'
+</select>
+
+
+
+<resultMap id="studentLogin" class="loginInfo">
+	<result property="studentId" column="student_id" />
+	<result property="universityId" column="universityId" />
+	<result property="universityName" column="universityName" />
+	<result property="sessionStartDate" column="sessionStartDate" />
+	<result property="sessionEndDate" column="sessionEndDate" />
+</resultMap>
+
+
+<select id="userInfoFromRegNo" resultMap="studentLogin">
+select ai.student_id student_id,SUBSTRING(ai.student_id,2,4) universityId,um.university_name universityName,
+um.start_date sessionStartDate,um.end_date sessionEndDate
+FROM applicant_info ai,university_master um
+WHERE ai.user_name=#userName# AND ai.password=SHA1(#password#) AND ai.status='ACT' 
+AND um.current_status='1' AND um.university_code =SUBSTRING(ai.student_id,2,4);
+</select>
+
+<select id="userInfoFromRegNo1" resultClass="loginInfo">
+select ai.student_id studentId
+FROM applicant_info ai
+WHERE ai.user_name=#userName# AND ai.status='ACT' and ai.university_code=#universityId#;
+</select>
+
+
+<resultMap id="getDeadlines" class="studentInfo">
+	<result property="registrationStartDate" column="registration_start_date" />
+	<result property="registrationEndDate" column="registration_last_date" />
+</resultMap>
+<select id="getRegistrationDeadlines" resultMap="getDeadlines">
+select registration_start_date,last_date registration_last_date from program_registration  
+where program_course_key=(select program_course_key from program_course_header where 
+semester_code=#semesterCode# AND program_id=#programId# and branch_id=#branchCode# 
+and specialization_id=#newSpecialization#) and university_id=substring(#entityId#,1,4)
+and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and entity_id=#entityId#
+<!--and registration_start_date=#registrationStartDate#--> 
+and status='ACT';
+
+</select>
+
+
+<resultMap id="getCourseSummary" class="courseInfo">
+	<result property="courseType" column="course_type_name" />
+	<result property="minimumCourses" column="minimum_credits" />
+	<result property="maximumCourses" column="maximum_credits" />
+</resultMap>
+<select id="getCourseTypeSummary" resultMap="getCourseSummary">
+
+select distinct ct.component_description course_type_name,pcts.minimum_credits,pcts.maximum_credits from 
+program_course_type_summary pcts,system_table_two ct,program_course_detail pc,course_master cm 
+where pcts.program_course_key=(select program_course_key from program_course_header where 
+program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+semester_code=#semesterCode# and semester_status='ACT')
+ and pcts.course_type=ct.component_code and cm.course_type=pcts.course_type 
+ and pc.course_category='REG' and ct.group_code='CRSTYP' AND ct.university_code=substring(#programId#,1,4) 
+ and cm.university_code=substring(#programId#,1,4);
+
+</select>
+
+
+
+<resultMap id="getStudentDetails" class="studentInfo">
+	<result property="studentId" column="student_id" />
+		<result property="rollNumber" column="roll_number" />
+	<result property="enrollmentNumber" column="enrollment_number" />
+	<result property="dateOfBirth" column="date_of_birth" />
+	<result property="category" column="category" />
+	<result property="categoryDescription" column="category_description" />
+	<result property="gender" column="gender" />
+	<result property="genderDescription" column="gender_description" />
+	<result property="studentName" column="name" />
+	<result property="fatherName" column="father_name" />
+	<result property="motherName" column="mother_name" />
+	<result property="entityName" column="new_entity_name" />
+	<result property="programName" column="new_program_name" />
+	<result property="branchName" column="new_branch_name" />
+	<result property="entityId" column="new_entity_id" />
+	<result property="programId" column="new_program_id" />
+	<result property="branchCode" column="new_branch_code" />
+	<result property="oldEntityName" column="old_entity_name" />
+	<result property="oldProgramName" column="old_program_name" />
+	<result property="oldBranchName" column="old_branch_name" />
+	<result property="oldEntityId" column="old_entity_id" />
+	<result property="oldProgramId" column="old_program_id" />
+	<result property="oldBranchCode" column="old_branch_code" />
+	<result property="oldSpecialization" column="old_specialization" />
+	<result property="oldSpecializationDescription" column="old_specialization_description" />
+	<result property="newSpecialization" column="new_specialization" />
+	<result property="newSpecializationDescription" column="new_specialization_description" />
+	<result property="semesterCode" column="new_semester" />
+	<result property="semester" column="new_semester_description" />
+	<result property="oldSemesterCode" column="old_semester" />
+	<result property="oldSemester" column="old_semester_description" />
+	<result property="admissionMode" column="admission_mode" />
+	<result property="sessionStartDate" column="session_start_date" />
+	<result property="sessionEndDate" column="session_end_date" />
+	<result property="attempt" column="attempt_number" />
+	<result property="firstName" column="student_first_name" />
+	<result property="middleName" column="student_middle_name" />
+	<result property="lastName" column="student_last_name" />
+	<result property="primaryEmailId" column="primary_email_id" />
+	<result property="sequenceNumber" column="sequence_number" />
+		<result property="probableSemester" column="probable_semester" />
+	<result property="probableSemesterStartDate" column="probable_semester_start_date" />
+	<result property="probableSemesterEndDate" column="probable_semester_end_date" />
+	<result property="probableAttemptNumber" column="probable_attempt_number" />
+	<result property="probableRegisterDueDate" column="probable_register_due_date" />
+	<result property="statusInSemester" column="status_in_semester" />
+	<result property="fatherFirstName" column="father_first_name" />
+	<result property="fatherMiddleName" column="father_middle_name" />
+	<result property="fatherLastName" column="father_last_name" />
+	<result property="motherFirstName" column="mother_first_name" />
+	<result property="motherMiddleName" column="mother_middle_name" />
+	<result property="motherLastName" column="mother_last_name" />
+
+</resultMap>
+
+
+<select id="getStudentDetailsForNew" resultMap="getStudentDetails">
+select st.student_id ,null roll_number,st.enrollment_number,st.date_of_birth,st.student_category category, 
+stt.component_description category_description, st.gender gender,  stt1.component_description 
+gender_description, concat_ws(' ',st.student_first_name,st.student_middle_name,st.student_last_name) name,
+concat_ws(' ',st.father_first_name,st.father_middle_name,st.father_last_name) father_name,
+st.father_first_name,st.father_middle_name,st.father_last_name,
+concat_ws(' ',st.mother_first_name,st.mother_middle_name,st.mother_last_name) mother_name, 
+st.mother_first_name,st.mother_middle_name,st.mother_last_name,
+st.new_entity_id new_entity_id, em.entity_name new_entity_name,  st.new_program_id new_program_id,
+pm.program_name new_program_name, st.new_branch_id new_branch_code,sttb.component_description new_branch_name ,
+st.new_specialization_id new_specialization,stts.component_description new_specialization_description, 
+st.new_semester_id new_semester,sem.component_description new_semester_description , 
+st.old_entity_id old_entity_id, null old_entity_name, st.old_program_id old_program_id, 
+null old_program_name, st.old_branch_id old_branch_code, null old_branch_name ,
+st.old_specialization_id old_specialization,null old_specialization_description, 
+st.old_semester_code old_semester, null old_semester_description, st.admission_mode, 
+st.semester_start_date session_start_date,st.semester_end_date session_end_date,st.attempt_number,
+st.student_first_name,st.student_middle_name,st.student_last_name,st.primary_email_id,st.sequence_number,
+st.probable_semester, st.probable_semester_start_date, st.probable_semester_end_date,
+st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester  
+from staging_table st , system_table_two stt, system_table_two stt1, 
+system_table_two sttb, system_table_two stts, system_table_two sem, 
+entity_master em,program_master pm where 
+st.registration_roll_number=#rollNumber# AND st.processed_flag != 'P' AND now()>=st.registration_due_date 
+AND st.student_category=stt.component_code and stt.group_code='STDCTG' AND 
+stt.university_code=substring(st.new_entity_id,1,4) AND st.gender=stt1.component_code 
+and stt1.group_code='GENDER' AND stt1.university_code=substring(st.new_entity_id,1,4) 
+AND st.new_branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND 
+sttb.university_code=substring(st.new_entity_id,1,4) AND 
+st.new_specialization_id=stts.component_code and stts.group_code='SPCLCD' AND 
+stts.university_code=substring(st.new_entity_id,1,4) AND st.new_semester_id=sem.component_code and 
+sem.group_code='SEMCOD' AND sem.university_code=substring(st.new_entity_id,1,4) 
+AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id
+
+</select>
+
+<select id="getStudentDetailsForSwt" resultMap="getStudentDetails">
+select st.student_id ,st.registration_roll_number roll_number, st.enrollment_number,st.date_of_birth,st.student_category category, 
+stt.component_description category_description, st.gender gender,  stt1.component_description 
+gender_description, concat_ws(' ',st.student_first_name,st.student_middle_name,st.student_last_name) name, 
+concat_ws(' ',st.father_first_name,st.father_middle_name,st.father_last_name) father_name,
+st.father_first_name,st.father_middle_name,st.father_last_name,
+concat_ws(' ',st.mother_first_name,st.mother_middle_name,st.mother_last_name) mother_name, 
+st.mother_first_name,st.mother_middle_name,st.mother_last_name,
+st.new_entity_id new_entity_id, em.entity_name new_entity_name,  st.new_program_id new_program_id,
+pm.program_name new_program_name, st.new_branch_id new_branch_code,sttb.component_description new_branch_name ,
+st.new_specialization_id new_specialization,stts.component_description new_specialization_description, 
+st.new_semester_id new_semester,sem.component_description new_semester_description , 
+st.old_entity_id old_entity_id, null old_entity_name, st.old_program_id old_program_id, null old_program_name, 
+st.old_branch_id old_branch_code, null old_branch_name ,st.old_specialization_id old_specialization,null 
+old_specialization_description, st.old_semester_code old_semester, null old_semester_description, 
+st.admission_mode,st.semester_start_date session_start_date,st.semester_end_date session_end_date,st.attempt_number,
+st.student_first_name,st.student_middle_name,st.student_last_name,st.primary_email_id,st.sequence_number,
+st.probable_semester, st.probable_semester_start_date, st.probable_semester_end_date,
+st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester  
+ from staging_table st , 
+system_table_two stt, system_table_two stt1, system_table_two sttb, system_table_two stts, 
+system_table_two sem, entity_master em,program_master pm where 
+st.registration_roll_number=#rollNumber# AND st.processed_flag != 'P' AND now()>=st.registration_due_date 
+AND st.student_category=stt.component_code and stt.group_code='STDCTG' AND stt.university_code=substring(st.new_entity_id,1,4) 
+AND st.gender=stt1.component_code and stt1.group_code='GENDER' AND stt1.university_code=substring(st.new_entity_id,1,4) 
+AND st.new_branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=substring(st.new_entity_id,1,4) 
+AND st.new_specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=substring(st.new_entity_id,1,4) 
+AND st.new_semester_id=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=substring(st.new_entity_id,1,4) 
+AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id
+</select>
+
+<select id="getStudentDetailsForNor" resultMap="getStudentDetails">
+select st.student_id ,st.registration_roll_number roll_number, st.enrollment_number,st.date_of_birth,st.student_category category, 
+stt.component_description category_description, st.gender gender,  stt1.component_description 
+gender_description, concat_ws(' ',st.student_first_name,st.student_middle_name,st.student_last_name) name, 
+concat_ws(' ',st.father_first_name,st.father_middle_name,st.father_last_name) father_name,
+st.father_first_name,st.father_middle_name,st.father_last_name,
+concat_ws(' ',st.mother_first_name,st.mother_middle_name,st.mother_last_name) mother_name, 
+st.mother_first_name,st.mother_middle_name,st.mother_last_name,
+st.new_entity_id new_entity_id, em.entity_name new_entity_name,  st.new_program_id new_program_id,
+pm.program_name new_program_name, st.new_branch_id new_branch_code,sttb.component_description new_branch_name ,
+st.new_specialization_id new_specialization,stts.component_description new_specialization_description, 
+st.new_semester_id new_semester,sem.component_description new_semester_description , 
+st.old_entity_id old_entity_id, null old_entity_name, st.old_program_id old_program_id, null old_program_name, 
+st.old_branch_id old_branch_code, null old_branch_name ,st.old_specialization_id old_specialization,null 
+old_specialization_description, st.old_semester_code old_semester, null old_semester_description, 
+st.admission_mode,st.semester_start_date session_start_date,st.semester_end_date session_end_date,st.attempt_number,
+st.student_first_name,st.student_middle_name,st.student_last_name,st.primary_email_id,st.sequence_number,
+st.probable_semester, st.probable_semester_start_date, st.probable_semester_end_date,
+st.probable_attempt_number, st.probable_register_due_date, st.status_in_semester  
+from staging_table st , 
+system_table_two stt, system_table_two stt1, system_table_two sttb, system_table_two stts, 
+system_table_two sem, entity_master em,program_master pm where 
+st.registration_roll_number=#rollNumber# AND st.processed_flag != 'P' AND now()>=st.registration_due_date 
+AND st.student_category=stt.component_code and stt.group_code='STDCTG' AND stt.university_code=substring(st.new_entity_id,1,4) 
+AND st.gender=stt1.component_code and stt1.group_code='GENDER' AND stt1.university_code=substring(st.new_entity_id,1,4) 
+AND st.new_branch_id=sttb.component_code and sttb.group_code='BRNCOD' AND sttb.university_code=substring(st.new_entity_id,1,4) 
+AND st.new_specialization_id=stts.component_code and stts.group_code='SPCLCD' AND stts.university_code=substring(st.new_entity_id,1,4) 
+AND st.new_semester_id=sem.component_code and sem.group_code='SEMCOD' AND sem.university_code=substring(st.new_entity_id,1,4) 
+AND em.entity_id=st.new_entity_id and pm.program_id=st.new_program_id
+</select>
+
+
+<resultMap id="checkRecord" class="studentInfo">
+	<result property="studentId" column="student_id" />
+	<result property="enrollmentNumber" column="enrollment_number" />
+	<result property="admissionMode" column="admission_mode" />
+</resultMap>	
+<select id="checkStudentRecord"  resultMap="checkRecord">
+select st.student_id,st.enrollment_number,st.admission_mode from staging_table st 
+where st.registration_roll_number=#rollNumber# AND st.processed_flag != 'P' AND 
+now()>=st.registration_due_date
+</select>
+
+
+<resultMap id="getCreditDetailsFromTermDetails" class="studentInfo">
+	<result property="minimumCourses" column="minimum_credits" />
+	<result property="maximumCourses" column="maximum_credits" />
+	<result property="minimumLectureCredit" column="minimum_lecture_credit" />
+	<result property="maximumLectureCredit" column="maximum_lecture_credit" />
+</resultMap>
+
+
+<select id="getCreditDetailsFromTermDetails" resultMap="getCreditDetailsFromTermDetails">
+select minimum_credit minimum_credits ,maximum_credit maximum_credits,minimum_lecture_credit,maximum_lecture_credit from program_term_details
+where program_id=#programId# and semester_code=#semesterCode#
+</select>
+
+
+
+
+
+<!-- New -->
+<insert id="insertTempStudentMaster">
+insert into temp_student_master 
+(university_code,student_id,enrollment_number,first_name,middle_name,last_name,
+primary_email_id,date_of_birth,category,gender,father_first_name,father_middle_name,father_last_name,
+mother_first_name,mother_middle_name,mother_last_name,insert_time,creator_id) 
+values
+(substring(#programId#,1,4),#studentId#,#enrollmentNumber#,#firstName#,#middleName#,#lastName#,
+#primaryEmailId#,#dateOfBirth#,#category#,#gender#,#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+#motherFirstName#,#motherMiddleName#,#motherLastName#,#insertTime#,#creatorId#);
+</insert>
+
+<resultMap id="getAddress" class="studentInfo">
+	<result property="studentId" column="student_id" />
+	<result property="enrollmentNumber" column="enrollment_number" />
+	<result property="perAddress" column="per_address" />
+	<result property="perCity" column="per_city" />
+	<result property="perState" column="per_state" />
+	<result property="perPincode" column="per_pincode" />
+	<result property="corAddress" column="cor_address" />
+	<result property="corCity" column="cor_city" />
+	<result property="corState" column="cor_state" />
+	<result property="corPincode" column="cor_pincode" />
+	<result property="officePhone" column="office_phone" />
+	<result property="extraPhone" column="extra_phone" />
+	<result property="otherPhone" column="other_phone" />
+	<result property="fax" column="fax" />	
+</resultMap>	
+
+
+<select id="getStudentAddress" resultMap="getAddress">
+select student_id,enrollment_number,per_address,per_city,per_state,
+per_pincode,cor_address,cor_city,cor_state,
+cor_pincode,office_phone,extra_phone,other_phone,fax from staging_table
+where registration_roll_number=#regRollNumber# and new_entity_id=#entityId# 
+and new_program_id=#programId# and
+new_branch_id=#branchCode# and new_specialization_id=#newSpecialization# 
+and new_semester_id=#semesterCode#  and sequence_number=#sequenceNumber#
+</select>
+
+<update id="updateStudentAddress">
+update temp_student_master set per_address=#perAddress#,per_city=#perCity#,per_state=#perState#,
+per_pincode=#perPincode#,cor_address=#corAddress#,cor_city=#corCity#,
+cor_state=#corState#,cor_pincode=#corPincode#, 
+office_phone=#officePhone#,extra_phone=#extraPhone#,other_phone=#otherPhone#,fax=#fax#,modifier_id=#modifierId#,modification_time=now()
+where student_id=#studentId# and (enrollment_number=#enrollmentNumber# or enrollment_number is null);
+</update>
+
+<insert id="insertTempStudentProgram">
+insert into temp_student_program
+(enrollment_number,roll_number,registration_number, admission_mode,register_date,registration_status, insert_time,
+creator_id, entity_id, program_id, branch_id, specialization_id,
+old_entity_id, old_program_id, old_branch_id, old_specialization_id, from_semester, to_semester,
+student_id, to_semester_start_date, to_semester_end_date, sequence_number,
+probable_semester, probable_semester_start_date, probable_semester_end_date,
+probable_attempt_number, probable_register_due_date, status_in_semester,attempt_number,
+registered_credit,registered_credit_excluding_audit,registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit)
+values
+(#enrollmentNumber#,#rollNumber#,#registrationNumber#,#admissionMode#,now(),'N',#insertTime#,
+#creatorId#,#entityId#,#programId#,#branchCode#,
+#newSpecialization#,#oldEntityId#,#oldProgramId#,#oldBranchCode#,#oldSpecialization#,
+#oldSemesterCode#,#semesterCode#,#studentId#,#sessionStartDate#,#sessionEndDate#,#sequenceNumber#,
+#probableSemester#,#probableSemesterStartDate#,#probableSemesterEndDate#,
+#probableAttemptNumber#,#probableRegisterDueDate#,#statusInSemester#,#attempt#,#regCredit#,#creditExcludeAudit#,#theoryCredit#,#pracCredit#);
+</insert>
+
+<insert id="insertTempStudentCourse">
+insert into temp_student_courses 
+(course_code,course_name,enrollment_number,roll_number,student_id,registration_number,status,
+insert_time,creator_id,semester_start_date,
+semester_end_date,program_id,branch_id,specialization_id,semester_code,course_group) 
+values
+(#courseCode#,#courseName#,#enrollmentNumber#,#rollNumber#,#studentId#,#registrationNumber#,#status#,
+#insertTime#,#creatorId#,#sessionStartDate#,
+#sessionEndDate#,#programId#,#branchCode#,#newSpecialization#,#semesterCode#,#courseGroupCode#)
+<!-- /*status here is course_status ie. REG,AUDIT etc*/ -->
+</insert>
+
+
+<update id="updateRegistrationProcessingFlag">
+update staging_table set processed_flag='P',modifier_id=#modifierId#,modification_time=now() where 
+registration_roll_number=#regRollNumber# and new_entity_id=#entityId# and new_program_id=#programId# and 
+new_branch_id=#branchCode# and new_specialization_id=#newSpecialization# and new_semester_id=#semesterCode#
+</update>
+
+
+<insert id="insertIntoVerificationTable">
+insert into student_verification_status 
+(student_id,registration_number,component_code,verified,insert_time,creator_id,sequence_number) 
+values 
+(#studentId#,#registrationNumber#,#componentCode#,0,now(),#creatorId#,#sequenceNumber#)
+</insert>
+
+<resultMap id="getVerificationComponents" class="studentInfo">
+	
+	<result property="componentCode" column="component_code" />
+
+</resultMap>
+
+
+<select id="getVerificationComponents" resultMap="getVerificationComponents">
+select component_code from system_table_two 
+where university_code=substring(#programId#,1,4) and group_code='VRFCMP' 
+AND active=1 and verification_required=1
+</select>
+
+<select id="getVerificationComponentsSWT" resultMap="getVerificationComponents">
+select component_code from system_table_two 
+where university_code=substring(#programId#,1,4) and group_code='VRFCMP' 
+AND active=1 and dummy_flag_two=1
+</select>
+
+<select id="getStudentOptedGroup" resultMap="coreProgramGroup">
+<!-- SElect distinct course_group instead of substring(course_code,1,3)to get student's previously 
+opted groups for from_program-->
+SELECT distinct course_group group_code,null group_order,null minimum_selection,null maximum_selection,null group_name,null subgroup_name,
+null subgroup_code,null conditional_group,null linked_group,null linked_minimum_selection,
+null linked_maximum_selection FROM student_course where roll_number=#rollNumber# and program_course_key=(select program_course_key from program_course_header where 
+program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+semester_code=#semesterCode# and semester_status='ACT')
+</select>
+
+</sqlMap>

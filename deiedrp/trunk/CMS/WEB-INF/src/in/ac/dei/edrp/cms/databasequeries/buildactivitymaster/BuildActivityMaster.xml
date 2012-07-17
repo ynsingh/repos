@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="buildActivityMaster">
+ 
+    <select id="getSessionStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master
+		where university_code=#universityId# and current_status=1
+    </select>
+    
+    <select id="getSemesterStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate  
+        from program_registration
+        where university_id=#universityId# and status='ACT' and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and 
+        program_course_key=#programCourseKey#
+    </select>
+    
+    <select id="checkAlreadyExistSemesterStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select entity_id as entityId, semester_start_date as semesterStartDate,  semester_end_date as semesterEndDate, process as processCode,
+		activity as activityCode, activity_sequence as activitySequence,activity_status as activityStatus, process_activity_start_date as processActivityStartDate,
+		process_activity_end_date as processActivityEndDate, activity_status as activityStatus, creator_id as creatorId, 
+		program_course_key as programCourseKey, status, session_start_date as sessionStartDate, session_end_date as sessionEndDate
+    	from activity_master
+    	where entity_id=#entityId# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+    	process=#processCode# and activity=#activityCode# and program_course_key=#programCourseKey# and 
+    	session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+    	
+    </select>
+    
+    <select id="getActivityMasterDetails" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+       select entity_id as entityId, semester_start_date as semesterStartDate,  semester_end_date as semesterEndDate, process as processCode,
+		activity as activityCode, activity_sequence as activitySequence, process_activity_start_date as processActivityStartDate,
+		process_activity_end_date as processActivityEndDate, activity_status as activityStatus, creator_id as creatorId, 
+		program_course_key as programCourseKey, status, session_start_date as sessionStartDate, session_end_date as sessionEndDate
+    	from activity_master
+    	where session_start_date=(select DATE_SUB(#sessionStartDate#,INTERVAL 1 YEAR)) and entity_id like #code#;
+    </select>
+    
+    <insert id="insertActivityMasterDetails" parameterClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        insert into activity_master ( entity_id, semester_start_date, semester_end_date, process,
+        activity, activity_sequence, process_activity_start_date, process_activity_end_date, activity_status,
+        program_course_key, creator_id, insert_time, status, session_start_date, session_end_date)
+        VALUES ( #entityId#, #semesterStartDate#, #semesterEndDate#, #processCode#, #activityCode#, #activitySequence#, 
+        null, null, null, #programCourseKey#, #creatorId#, Now(), #status#, #sessionStartDate#, #sessionEndDate#)
+    </insert>
+
+	<select id="checkBuild" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+       select * from activity_master
+    	where session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#;
+    </select>
+    
+    <select id="getEntity" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select entity_id as entityId, entity_name as entityName from entity_master where university_id=#universityId# ;
+    </select>
+    
+    <select id="getProgramList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select program_id as programId, program_name as programName, program_code as programCode 
+        from program_master
+		where program_id in (select program_id from program_offered_by where offered_by=#entityId#);
+    </select>
+    
+    <select id="getBranchList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select component_code as branchId, component_description as branchName from system_table_two
+        where group_code='BRNCOD' and component_code in (SELECT branch_id FROM program_offered_by where program_id=#programId# and offered_by=#entityId#)
+        and university_code=#universityId#;
+    </select>
+    
+     <select id="getSpecializationList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+       select component_code as specializationId, component_description as specializationName from system_table_two
+        where group_code='SPCLCD' and component_code in (SELECT specialization_id 
+        FROM program_offered_by where program_id=#programId# and offered_by=#entityId# and branch_id=#branchId# )
+        and university_code=#universityId#;
+    </select>
+    
+    <select id="getSemesterList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+       select component_description as semesterName, component_code as semesterCode
+		from system_table_two where component_code in (select semester_code from program_term_details where program_id=#programId#)
+		and group_code='SEMCOD' and university_code=#universityId#;
+    </select>
+    
+    <select id="getProgramCourseKey" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+       select program_course_key as selectedProgramCourseKey from program_course_header
+        where program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and semester_code=#semesterCode#
+    </select>
+    
+    <select id="getSelectedProgramActivities" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+    	select entity_id as entityId, semester_start_date as semesterStartDate,  semester_end_date as semesterEndDate, process as processCode,
+	 	activity as activityCode, activity_sequence as activitySequence, process_activity_start_date as processActivityStartDate,
+		process_activity_end_date as processActivityEndDate, activity_status as activityStatus, creator_id as creatorId,
+		program_course_key as programCourseKey, status, session_start_date as sessionStartDate, session_end_date as sessionEndDate, activity_status as activityStatus
+		from activity_master
+		where program_course_key=#selectedProgramCourseKey# and entity_id=#entityId#;
+    </select>
+    
+    <select id="getAllProgramCourseKey" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+    	select program_course_key as programCourseKey from program_course_header where program_course_key!=#selectedProgramCourseKey#
+    </select>
+    
+     <insert id="buildActivityForAllPrograms" parameterClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        insert into activity_master ( entity_id, semester_start_date, semester_end_date, process,
+        activity, activity_sequence, process_activity_start_date, process_activity_end_date, activity_status,
+        program_course_key, creator_id, insert_time, status, session_start_date, session_end_date)
+        VALUES ( #entityId#, #semesterStartDate#, #semesterEndDate#, #processCode#, #activityCode#, #activitySequence#, 
+        null, null, null, #programCourseKey#, #creatorId#, Now(), #status#, #sessionStartDate#, #sessionEndDate#)
+    </insert>
+    
+    <select id="getProgramCourseHeaderList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select pch.program_course_key as programCourseKey, pm.program_name as programName, stt.component_description as branchName,
+			   stt1.component_description as specializationName, stt2.component_description as semesterName,
+         	   pch.semester_code as semesterCode, (case when pch.semester_status='ACT' then 'Active' else 'Inactive' end) as semesterStatus
+		from program_course_header pch,program_master pm,system_table_two stt,system_table_two stt1, system_table_two stt2, program_offered_by pob
+		where pm.program_id=pch.program_id and (pch.branch_id=stt.component_code and stt.group_code='BRNCOD' and stt.university_code=#universityId#) and
+			(pch.specialization_id=stt1.component_code and stt1.group_code='SPCLCD' and stt1.university_code=#universityId#) and
+      		(pch.semester_code=stt2.component_code and stt2.group_code='SEMCOD' and stt2.university_code=#universityId#) and pob.offered_by=#entityId# and 
+      		pob.program_id=pch.program_id and pob.branch_id=pch.branch_id and
+			pob.specialization_id=pch.specialization_id	and program_course_key!=#selectedProgramCourseKey# order by pch.program_course_key;
+    </select>
+    
+    <select id="getPreviousProcessDetail" resultClass = "in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+		SELECT component_code as processCode from system_table_two
+		where university_code=#universityId# and group_code='YEPCOD'
+		and dummy_flag_one=(select  dummy_flag_one from system_table_two where component_code=#processCode# and university_code=#universityId# and group_code='YEPCOD')-1;
+	</select>
+	
+	<select id="getControlDetailStatus" resultClass = "in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+		SELECT status as status from yearend_process_control where
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and process_code=#processCode# 
+		and university_code=#universityId# and group_code='YEPCOD';
+	</select>
+	
+	 <insert id="setControlDetailStatus">
+    	insert into yearend_process_control(session_start_date,session_end_date,process_code,status,group_code,insert_time,creator_id,university_code)
+		values(#sessionStartDate#,#sessionEndDate#,#processCode#,#status#,'YEPCOD',now(),#creatorId#,#universityId#);
+    </insert>
+    
+    <update id="updateControlDetailStatus">
+    	update yearend_process_control set status=#status# where session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and university_code=#universityId# and process_code=#processCode# and group_code='YEPCOD';
+    </update>
+</sqlMap>

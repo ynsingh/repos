@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="730" height="430"
+	 title="{commonFunction.getConstants('managebasicProgramDetails')}" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script source="asFiles/ManageBasicProgramDetailsAction.as"/>
+	
+	
+	
+	  <mx:HTTPService id="httpProgramCode" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodprogList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_ProgramCode(event)"
+        fault="faultHandler_ProgramCode(event)"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="httpProgramDetail" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodProgMasterDetailsForManage.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_ProgramDetails(event)"
+        fault="faultHandler_ProgramDetails(event)"
+        useProxy="false"/>
+	
+	<mx:HTTPService id="httpUpdateDetail" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodUpdateProgDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_UpdateDetails(event)"
+        fault="faultHandler_UpdateDetails(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpDeleteAllDetail" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodDeleteProg.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_DeleteDetails(event)"
+        fault="faultHandler_DeleteDetails(event)"
+        useProxy="false"/>
+	
+	
+	<mx:Model source="xmlFiles/semester.xml" id="programData"/>
+	<mx:ArrayCollection id="pData" source="{programData.programMaster}"/>
+	<mx:TitleWindow x="67" y="24" width="576" layout="absolute" height="74" title="{commonFunction.getConstants('searchBy')}" borderStyle="solid" borderThickness="1" creationComplete="httpProgramCodeList()">
+		<mx:Label text="{commonFunction.getConstants('programName')}"/>
+	    <mx:Label x="288" text="{commonFunction.getConstants('programCode')}"/>
+	    <mx:ComboBox toolTip="{programNameComboBox.text}" x="100" width="160" id="programNameComboBox" prompt="{commonFunction.getConstants('select')}" change="displayCode()"/>
+	    <mx:TextInput x="388" width="160" id="programCodeText" enabled="false"/>
+	</mx:TitleWindow>
+	<mx:Button id="sendButton" x="67" y="106" label="{commonFunction.getConstants('showButton')}" click="showDetails()"/>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="this.parentDocument.loaderCanvas.removeAllChildren()"  y="105" x="212"/>	
+	<mx:Canvas styleName="GridCanvas" id="programDetailPanel" x="20" y="160" visible="false" height="195" width="669">
+	    <mx:Label text="{commonFunction.getConstants('basicProgramDetails')}" top="6" left="10" fontWeight="bold"  />
+	    <mx:LinkButton enabled="false" label="{commonFunction.getConstants('editButton')}" id="editButton" click="editDetails()" x="541" y="5"/>
+		<mx:LinkButton enabled="false" label="{commonFunction.getConstants('deleteButton')}" id="deleteButton" click="deleteDetails()" x="589" y="5"/>
+		<controls:MDataGrid id="programDetailsGrid" editable="true" draggableColumns="false" resizableColumns="false" horizontalScrollPolicy="off" verticalScrollPolicy="on" y="35" x="13" height="145">
+		    <controls:columns>
+			    <dataGridClasses:MDataGridColumn width="20" sortable="false" headerText="" dataField="select" editorDataField="selected" rendererIsEditor="true">
+			    	<dataGridClasses:headerRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.programDetailsGrid,[outerDocument.editButton],[outerDocument.deleteButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:headerRenderer>
+		    		<dataGridClasses:itemRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="commonFunction.editDeleteEnable(event,outerDocument.programDetailsGrid,[outerDocument.editButton],[outerDocument.deleteButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:itemRenderer>
+			    </dataGridClasses:MDataGridColumn>
+			    <dataGridClasses:MDataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('programCode')}" dataField="programCode" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="200" editable="false" headerText="{commonFunction.getConstants('programName')}" dataField="programName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('programType')}" dataField="programType" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('programMode')}" dataField="programMode" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="100" editable="false" headerText="{commonFunction.getConstants('ugOrPg')}" dataField="ugOrPg" showDataTips="true"/>
+			</controls:columns>
+	    </controls:MDataGrid>
+	</mx:Canvas>
+</mx:Panel>

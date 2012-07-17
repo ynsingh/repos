@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- /*
+	 *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+	 * All Rights Reserved.
+	 *
+	 * Redistribution and use in source and binary forms, with or
+	 * without modification, are permitted provided that the following
+	 * conditions are met:
+	 *
+	 * Redistributions of source code must retain the above copyright
+	 * notice, this  list of conditions and the following disclaimer.
+	 *
+	 * Redistribution in binary form must reproduce the above copyright
+	 * notice, this list of conditions and the following disclaimer in
+	 * the documentation and/or other materials provided with the
+	 * distribution.
+	 *
+	 *
+	 * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	 * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	 * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	 * DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	 * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+	 * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	 * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	 * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	 * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	 * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	 *
+	 * Contributors: Members of EdRP, Dayalbagh Educational Institute
+	 */ -->
+
+<sqlMap namespace="switchMarksTransfer">
+	<typeAlias alias="transferBean"
+		type="in.ac.dei.edrp.cms.domain.switchmarkstransfer.SwitchMarksTransferInfo" />
+
+	<select id="getSwitchedStudent" resultClass="transferBean">
+		SELECT enrollment_number enrollmentNo, roll_number rollNumber,
+		registration_number registrationNo, student_id studentId,
+		old_entity_id oldEntityId, old_program_id oldProgramId,
+		old_branch_id oldBranchId, old_specialization_id oldSpecializationId,
+		from_semester fromSemester
+		FROM temp_student_program
+		WHERE entity_id=#entityId# AND program_id=#programId#
+		AND branch_id=#branchId# AND specialization_id=#specializationId#
+		AND to_semester=#semesterCode# AND admission_mode=#admissionMode#;
+	</select>
+
+	<select id="getRuleId" resultClass="transferBean">
+		SELECT switch_type switchType, rule_id ruleId
+		FROM program_switch
+		WHERE from_entity=#oldEntityId# AND to_entity=#entityId#
+		AND from_program=#oldProgramId# AND to_program=#programId#
+		AND from_branch=#oldBranchId# AND to_branch=#branchId#
+		AND from_specialization=#oldSpecializationId# AND to_specialization=#specializationId#
+		AND from_semester=#fromSemester# AND to_semester=#semesterCode#;
+	</select>
+
+	<select id="getRuleFormulaDetails" resultClass="transferBean">
+		SELECT rule_code_one ruleCodeOne, rule_code_two ruleCodeTwo,
+		rule_formula ruleFormula
+		FROM switch_rule
+		WHERE rule_id=#ruleId# AND university_code=#universityCode#;
+	</select>
+	
+	<select id="getSemesterDateDetails" resultClass="transferBean">
+		SELECT max(semester_start_date) semesterStartDate, max(semester_end_date) semesterEndDate
+		FROM program_registration
+		WHERE status='ACT' AND university_id=#universityCode# AND program_course_key=#programCourseKey#
+		AND #semesterStartDate#>session_start_date AND #semesterEndDate#>session_end_date;
+	</select>	
+
+	<!-- Modifications done by Dheeraj to fix sgpa misconception and transfer cgpa fields -->
+	<select id="getMarksCreditDetails" resultClass="transferBean">
+		SELECT srsh.register_date registerDate,srsh.register_due_date registerDueDate,
+		srsh.total_credit_earned totalCreditEarned, sa.sgpa sgpa,
+		srsh.registered_credit registeredCredit,
+		srsh.registered_theory_credit_excluding_audit registeredTheoryCreditExcludingAudit,
+		srsh.registered_practical_credit_excluding_audit registeredPracticalCreditExcludingAudit,
+		srsh.registration_credit_excluding_audit registrationCreditExcludingAudit,
+		sa.theory_weighted_percentage theoryWeightedPercentage,
+		sa.practical_weighted_percentage practicalWeightedPercentage,
+		sa.earned_practical_credit earnedPracticalCredit,
+		sa.earned_theory_credit earnedTheoryCredit,
+		sa.point_secured_theory_sgpa pointSecuredTheorySgpa,
+		sa.point_secured_practical_sgpa pointSecuredPracticalSgpa,
+		sa.point_secured_theory_cgpa pointSecuredTheoryCgpa,
+		sa.point_secured_practical_cgpa pointSecuredPracticalCgpa,
+		sa.earned_theory_credit_cgpa earnedTheoryCreditCgpa,
+		sa.earned_practical_credit_cgpa earnedPracticalCreditCgpa,
+		sa.earned_theory_aud_credit earnedTheoryAudCredit,
+		sa.earned_practical_aud_credit earnedPracticalAudCredit,
+		sa.weighted_percentage weightedPercentage,
+		sa.theory_sgpa theorySgpa,sa.practical_sgpa practicalSgpa,
+    	sa.cgpa cgpa, sa.theorycgpa theoryCgpa, sa.practicalcgpa practicalCgpa
+		FROM student_registration_semester_header srsh, student_aggregate sa
+		WHERE srsh.program_course_key=sa.program_course_key AND srsh.roll_number=sa.roll_number
+		AND srsh.roll_number=#registrationNo# AND srsh.program_course_key=#programCourseKey#
+		AND srsh.entity_id=#entityId# AND sa.university_code=#universityCode# AND srsh.status='PAS';
+	</select>
+	
+	<insert id="setSRSH">
+		INSERT INTO student_registration_semester_header
+		(register_Date,number_of_remedials,status,insert_time,
+		creator_id,roll_number,session_start_date,session_end_date,
+		attempt_number,total_credit_earned,sgpa,weighted_percentage,
+		student_process_status,register_due_date,entity_id,program_course_key,
+		registered_credit,registered_theory_credit_excluding_audit,
+		registered_practical_credit_excluding_audit,registration_credit_excluding_audit)
+		VALUES
+		(#registerDate#,0,'PAS',now(),#userId#,#rollNumber#,
+		#semesterStartDate#,#semesterEndDate#,1,#totalCreditEarned#,#sgpa#,
+		#weightedPercentage#,#userId#,#registerDueDate#,#entityId#,#programCourseKey#,
+		#registeredCredit#,#registeredTheoryCreditExcludingAudit#,
+		#registeredPracticalCreditExcludingAudit#,#registrationCreditExcludingAudit#);
+	</insert>
+	
+	
+	<!-- Modifications done by Dheeraj to transfer cgpa fields and entity_id -->
+	<insert id="setStudentAggregate">
+		INSERT INTO student_aggregate
+		(university_code, roll_number,semester_start_date,semester_end_date,
+		theory_weighted_percentage,practical_weighted_percentage,remarks,
+		earned_practical_credit,earned_theory_credit,program_course_key,
+		point_secured_theory_sgpa,point_secured_practical_sgpa,
+		point_secured_theory_cgpa,point_secured_practical_cgpa,
+		earned_theory_credit_cgpa,earned_practical_credit_cgpa,
+		earned_theory_aud_credit,earned_practical_aud_credit,
+		theory_sgpa,practical_sgpa,sgpa,weighted_percentage,
+		cgpa,practicalcgpa,theorycgpa,entity_id)
+		VALUES
+		(#universityCode#,#rollNumber#,#semesterStartDate#,#semesterEndDate#,
+		#theoryWeightedPercentage#,#practicalWeightedPercentage#,#remarks#,
+		#earnedPracticalCredit#,#earnedTheoryCredit#,#programCourseKey#,
+		#pointSecuredTheorySgpa#,#pointSecuredPracticalSgpa#,
+		#pointSecuredTheoryCgpa#,#pointSecuredPracticalCgpa#,
+		#earnedTheoryCreditCgpa#,#earnedPracticalCreditCgpa#,
+		#earnedTheoryAudCredit#,#earnedPracticalAudCredit#,
+		#theorySgpa#,#practicalSgpa#,#sgpa#,#weightedPercentage#,
+		#cgpa#,#practicalCgpa#,#theoryCgpa#,#entityId#);
+	</insert>
+</sqlMap>

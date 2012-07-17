@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramCourseEditWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" title="{commonFunction.getConstants('manageProgramCourseWindow')}"
+        layout="absolute" showCloseButton="true" width="808"  height="506"
+        close="titleWindow_close();" borderColor="#332E2E" alpha="1.0" fontWeight="normal">
+
+
+    <mx:Script>
+        <![CDATA[
+        	import common.commonFunction;
+       
+        	import mx.collections.ArrayCollection;
+           	import mx.controls.Alert;
+        	import mx.events.FlexEvent;
+            import mx.events.CloseEvent;
+            import mx.managers.PopUpManager;
+            import mx.rpc.events.FaultEvent;
+            import mx.rpc.events.ResultEvent;
+  	
+			[Bindable] public var xmldata_DeleteCourse:XML;
+			[Bindable] public var urlDeleteProgramCourse:String = "";
+			[Bindable] public var courseDetails:ArrayCollection=null;
+			[Bindable] public var programCourseKey:String=null;
+			public var topParentFun:Function;
+			private var msg:String=null;
+			
+			
+			[Embed(source="/images/warning.png")]private var warningIcon:Class;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			public function getString(pass_key:String):String{
+				return commonFunction.getConstants(pass_key);
+			}
+			
+            private function titleWindow_close():void {
+                PopUpManager.removePopUp(this);
+            }
+            public function doSomething():void{
+				topParentFun.call();
+			}
+            
+            protected function cancelButton_ClickHandler(event:MouseEvent):void
+            {
+            	PopUpManager.removePopUp(this);
+            }
+           
+            protected function editButton_ClickHandler(event:MouseEvent):void
+			{	
+				
+				var myAC4:ArrayCollection = new ArrayCollection();
+	        	var gridData:ArrayCollection=courseDetailGrid.dataProvider as ArrayCollection;
+            	var colc:int=gridData.length;
+            	var x:int=0;
+            	gridData.enableAutoUpdate();
+            	var selecgtedRowData:Array=new Array();
+            	
+            	for(var i:int=0;i<colc;i++)
+            	{
+            	 	var gridItem:Object=gridData.getItemAt(i);
+            		if(gridItem.Select==true)
+            		{
+            			x=x+1;
+            			selecgtedRowData[0]=gridItem.courseCode;
+            			selecgtedRowData[1]=gridItem.courseName;
+            			selecgtedRowData[2]=gridItem.courseType;
+            			selecgtedRowData[3]=gridItem.courseCategory;
+            			selecgtedRowData[4]=gridItem.courseGroup;
+            			selecgtedRowData[6]=gridItem.courseAvailability;
+            		}
+            	}
+            	
+            	if(x==0)
+            	{
+            		Alert.show(getString('select_for_updation'),getString('message'),0,null,null,errorIcon);
+            	}
+            	else if(x==1)
+            	{
+		        	var editWindowObj:EditCourseDetails=EditCourseDetails(PopUpManager.createPopUp(this,EditCourseDetails,true));
+	            	
+		            editWindowObj.title=selecgtedRowData[0];
+		            editWindowObj.description_lab.text=selecgtedRowData[1]
+					editWindowObj.course_type_lab.text=selecgtedRowData[2]
+					editWindowObj.course_category=selecgtedRowData[3]
+					editWindowObj.course_group=selecgtedRowData[4]
+					editWindowObj.course_availability=selecgtedRowData[6]
+					editWindowObj.programCourseKey = programCourseKey;
+					editWindowObj.parentFun =doSomething;
+					PopUpManager.centerPopUp(editWindowObj);
+		                       
+            	}
+            	else
+            	{
+            		Alert.show(getString('select_only_one')+" "+x+" "+getString('records'));
+            	}
+       		}
+			
+			protected var recordArr:Array=null;
+			private var courseCodesAc:ArrayCollection=null;
+			protected function deleteButton_clickHandler(event:MouseEvent):void
+			{	
+					recordArr=new Array();
+					courseCodesAc=new ArrayCollection;
+					var gridData:ArrayCollection=courseDetailGrid.dataProvider as ArrayCollection;
+					var rows:int=gridData.length;
+					for(var i:int=0;i<rows;i++)
+            		{
+            	 		var gridItem:Object=gridData.getItemAt(i);
+            			if(gridItem.Select==true)
+            			{
+            				recordArr[i]=gridItem.courseCode;
+           					courseCodesAc.addItem(recordArr[i]);
+            			}
+               		}
+				   
+				   if(courseCodesAc.length==0){
+				   		Alert.show(getString('select_for_deletion'));
+				   }
+				   else{
+				  		Alert.show(getString('confirmation_to_delete'), getString('click_yn'), 3, this, deleteForm, errorIcon);
+					   }
+			}
+			
+			public function deleteForm(event:CloseEvent):void
+			{
+				urlDeleteProgramCourse = getString('url')+"/manageprogsetup/deleteProgramCourse.htm";
+				if(event.detail == Alert.YES)
+				{
+					var params:Object = {};
+      				params["program_course_key"] =programCourseKey;
+      				params["courseCodes"] = courseCodesAc;
+    	     		xmlDeleteProgramCourse.send(params);
+				} 
+			}
+			
+		 private function faultCourseCtgOptGrpHandler(event:FaultEvent):void{
+         mx.controls.Alert.show(event.fault.message,getString('errorInResult'));
+    }
+		private function resultDeleteCourseHandler(event:ResultEvent):void{
+			
+        xmldata_DeleteCourse=event.result as XML;
+        var count:int=parseInt(xmldata_DeleteCourse.message);
+         if(xmldata_DeleteCourse.sessionConfirm == true)
+    		    {
+        		Alert.show("session is inactive");
+					var url:String="";
+				    url=commonFunction.getConstants('navigateHome');
+				   	var urlRequest:URLRequest=new URLRequest(url);
+				   	urlRequest.method=URLRequestMethod.POST;
+				    navigateToURL(urlRequest,"_self");
+        		}
+        if(count>0){
+          	msg=getString('deletion_successful');
+       	Alert.show(msg, getString('success'),0,null,
+            alertListener,successIcon);
+       }
+        else if(String(xmldata_DeleteCourse.message).search("deleteError")>-1){
+       	msg=xmldata_DeleteCourse.message;
+       Alert.show(msg, commonFunction.getMessages('ForiengnKeyError'),0,null,
+            alertListener,errorIcon);
+       }
+       else if(count==0){
+       	  	msg=getString('noRecordDeleted');
+       	Alert.show(msg, getString('info'),0,null,
+            alertListener,infoIcon);
+       }
+
+       
+     }
+      private function alertListener(eventObj:CloseEvent):void {
+                  if (eventObj.detail==Alert.OK) {
+                      	doSomething();
+                 }
+            }
+         ]]>
+    </mx:Script>
+    
+    <mx:HTTPService id="xmlDeleteProgramCourse" method="post"
+        url="{urlDeleteProgramCourse}"
+        resultFormat="e4x"
+        result="resultDeleteCourseHandler(event)"
+        fault="faultCourseCtgOptGrpHandler(event)"
+        useProxy="false"/>
+    
+    
+    <mx:Canvas width="742" height="99" styleName="SimpleCanvas" left="23" top="33">
+		 
+	<mx:Label x="96.5" y="59" text="{commonFunction.getConstants('specialization')}:"/>
+	<mx:Label x="392" y="58.949997" text="{commonFunction.getConstants('semester')}:"/>
+	<mx:Label x="200.5" y="59" text="Label" width="160.5" id="specialization_lab" fontWeight="bold"/>
+	<mx:Label x="200.5" y="20" text="Label" width="160.5" id="program_name_lab" fontWeight="bold"/>
+	<mx:Label x="89.5" y="20" text="{commonFunction.getConstants('programName')}:"/>
+	<mx:Label x="409" y="20" text="{commonFunction.getConstants('branch')}:"/>
+	<mx:Label x="470" y="20" text="Label" width="160.5" id="branch_name_lab" fontWeight="bold"/>
+	<mx:Label x="470" y="58.949997" text="Label" width="160.5" id="semester_lab" fontWeight="bold"/>
+	
+	</mx:Canvas>
+	
+	
+	<mx:Canvas id="gridCanvas" width="742" height="245.75" styleName="GridCanvas" visible="true" x="23" y="164">
+		<mx:Label text="{getString('program_details')}" top="6" left="10" fontWeight="bold"/>
+		<mx:LinkButton id="editButton" x="615.95" y="5.35" label="{getString('edit_link')}" click="editButton_ClickHandler(event)"/>
+		<mx:LinkButton id="deleteButton" x="668.95" y="5.35" label="{getString('delete_link')}" click="deleteButton_clickHandler(event)" width="62"/>
+		<mx:DataGrid id="courseDetailGrid" allowMultipleSelection="true" x="9.95" y="36.35" width="721" height="197.4" 
+				visible="true" sortableColumns="false" resizableColumns="true" dataProvider="{courseDetails}"
+				draggableColumns="false" editable="true" borderThickness="1" borderColor="#7F7F7F">
+			<mx:columns>
+			<mx:DataGridColumn  rendererIsEditor="true" width="20" textAlign="center" editorDataField="selected" 
+				dataField="Select" headerText="" itemRenderer="mx.controls.CheckBox" resizable="false">
+				
+			</mx:DataGridColumn>
+			<mx:DataGridColumn editable="false" dataField="courseCode" headerText="{getString('course_code')}" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseName" headerText="{getString('description')}" width="200" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseType" headerText="{getString('course_type')}" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseCategory" headerText="{getString('category')}" sortable="true" showDataTips="true"/>
+			<mx:DataGridColumn editable="false" dataField="courseGroup" headerText="{getString('group')}" sortable="true" showDataTips="true" />
+			<mx:DataGridColumn editable="false" dataField="courseAvailability" headerText="{getString('availability')}" width="70" sortable="true" showDataTips="true"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	<mx:Button x="695" y="430" id="cancelButton" label="{getString('cancel_button')}" click="cancelButton_ClickHandler(event)"/>
+</mx:TitleWindow>
+

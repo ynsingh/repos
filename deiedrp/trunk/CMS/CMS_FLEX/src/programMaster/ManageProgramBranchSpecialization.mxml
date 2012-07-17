@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="loadCombo()" layout="absolute" width="854" height="610" title="{commonFunction.getConstants('manageBranchSpecializationDetails')}" xmlns:ns1="programMaster.*" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script source="asFiles/ManageProgramBranchSpecializationAction.as" />
+	
+	
+	
+	
+	 <mx:HTTPService id="httpBranchSpec" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodProgBranchSpecDetailsForManage.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_BranchSpec(event)"
+        fault="faultHandler_BranchSpec(event)"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpAddNewBranch" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodAddAnotherBranch.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_NewBranch(event)"
+        fault="faultHandler_NewBranch(event)"
+        useProxy="false"/>
+     <mx:HTTPService id="httpDeleteBranch" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodBranchDelete.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_DeleteBranch(event)"
+        fault="faultHandler_DeleteBranch(event)"
+        useProxy="false"/>  
+        
+        
+	   <mx:HTTPService id="httpBranchList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodBranchList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Branch(event)"
+        fault="faultHandler_Branch(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpSpecList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodSpecList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Spec(event)"
+        fault="faultHandler_Spec(event)"
+        useProxy="false"/>
+        
+       <mx:HTTPService id="httpSemList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodSemList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Semester(event)"
+        fault="faultHandler_Semester(event)"
+        useProxy="false"/>
+	
+	
+	<mx:Validator id="programCodeValidator" source="{programCodeText}" property="text" required="true"/>
+	<mx:Validator id="branchValidator" source="{branchCombo}" property="selectedItem" required="true" trigger="{addButton}" triggerEvent="click"/>
+	<mx:Validator id="specializationValidator" source="{specializationCombo}" property="selectedItem" required="true" trigger="{addButton}" triggerEvent="click"/>
+	<mx:Validator id="activeSemValidator" source="{ActiveSemCombo}" property="selectedItem" required="true" trigger="{addButton}" triggerEvent="click"/>
+	<mx:Label text="{commonFunction.getConstants('programName')}" x="38" y="32"/>
+	<mx:ComboBox toolTip="{programNameComboBox.text}" x="138" width="220" id="programNameComboBox" change="changeProgram()" prompt="{commonFunction.getConstants('select')}" y="32"/>
+	<mx:TitleWindow x="38" y="74" styleName="DetailTitleWindow" width="455" layout="absolute" height="72" title="{commonFunction.getConstants('searchBy')}" borderStyle="solid" borderThickness="1">
+		<mx:Label x="29.5" text="{commonFunction.getConstants('programCode')}"/>
+	    <mx:TextInput x="129.5" width="220" id="programCodeText" enabled="false"/>
+	    <mx:Button x="356.5" y="0" label="{commonFunction.getConstants('showButton')}" id="showButton" click="showDetails()"/>
+	</mx:TitleWindow>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="this.parentDocument.loaderCanvas.removeAllChildren()"  y="530" x="690"/>	
+
+		<mx:TitleWindow x="38" y="169" width="758" styleName="DetailTitleWindow" layout="absolute" height="116" title="{commonFunction.getConstants('addABranch')}" borderStyle="solid" borderThickness="1">
+		    <mx:Label text="{commonFunction.getConstants('branch')}" height="20"  x="7.5"  y="3"/>
+		    <mx:Label x="190.5" text="{commonFunction.getConstants('specialization')}"   y="3"/>
+		    <mx:Label x="417.5" text="{commonFunction.getConstants('activeFrom')}"   y="3"/>
+		    <mx:ComboBox id="branchCombo" toolTip="{branchCombo.text}" prompt="{commonFunction.getConstants('select')}" labelField="branchName" selectedIndex="-1" x="55.5" width="125"   y="1" enabled="false"/>
+		    <mx:ComboBox id="specializationCombo" toolTip="{specializationCombo.text}" change="setSpecialization()" prompt="{commonFunction.getConstants('select')}" labelField="branchName" selectedIndex="-1" x="282.5"   width="125"  y="1" enabled="false"/>
+		    <mx:ComboBox id="ActiveSemCombo" x="585" toolTip="{ActiveSemCombo.text}" prompt="{commonFunction.getConstants('select')}" labelField="branchName" selectedIndex="-1"  width="125"  y="1" enabled="false"/>
+		    <mx:Button x="619" y="42" label="{commonFunction.getConstants('addButton')}" id="addButton" click="addBranch()" enabled="false"/>
+		</mx:TitleWindow>
+		<mx:Canvas styleName="GridCanvas" x="38" y="310" height="188" width="758">
+		    <mx:Label text="{commonFunction.getConstants('programBranchSpecializationDetails')}" top="6" left="10" fontWeight="bold"  />
+		    <mx:LinkButton enabled="false" label="{commonFunction.getConstants('deleteButton')}" id="deleteButton" click="deleteDetails()" x="647" y="4"/>
+			<controls:MDataGrid id="branchSpecializationGrid" resizableColumns="true" horizontalScrollPolicy="off" verticalScrollPolicy="on" draggableColumns="false" y="34" x="10" editable="true" height="145" width="737">
+			    <controls:columns>
+			     <dataGridClasses:MDataGridColumn width="20" resizable="false" sortable="false" headerText="" dataField="select" editorDataField="selected" rendererIsEditor="true">
+			     	<dataGridClasses:headerRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" textAlign="center" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.branchSpecializationGrid,[new LinkButton],[outerDocument.deleteButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:headerRenderer>
+		    		<dataGridClasses:itemRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" textAlign="center" change="commonFunction.editDeleteEnable(event,outerDocument.branchSpecializationGrid,[new LinkButton],[outerDocument.deleteButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:itemRenderer>
+			     </dataGridClasses:MDataGridColumn>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('programCode')}" dataField="programCode" dataTipField="programCode" showDataTips="true"/>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('programName')}" dataField="programName" dataTipField="programName" showDataTips="true"/>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('branch')}" dataField="branchName" dataTipField="branchName" showDataTips="true"/>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('specialization')}" dataField="specName" dataTipField="specName" showDataTips="true"/>
+			     <dataGridClasses:MDataGridColumn editable="false" headerText="{commonFunction.getConstants('activeFrom')}" dataField="activeSemester" dataTipField="activeSemester" showDataTips="true"/>
+			    </controls:columns>
+			   </controls:MDataGrid>
+		</mx:Canvas>
+	
+</mx:Panel>

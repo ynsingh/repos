@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL MAP 2.0//EN"
+	"http://www.ibatis.com/dtd/sql-map-2.dtd">
+	
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+	
+<sqlMap namespace="buildSemesterEndProcess">
+	<typeAlias alias="buildSemesterEndProcess"
+		type="in.ac.dei.edrp.cms.domain.buildsemesterendprocess.BuildSemesterEndProcess"/>
+		
+	<select id="getPreviousProcessDetail" resultClass = "buildSemesterEndProcess">
+		SELECT component_code as processCode from system_table_two
+		where university_code=#universityId# and group_code='BSEPCD'
+		and dummy_flag_one=(select  dummy_flag_one from system_table_two where component_code=#processCode# and university_code=#universityId# and group_code='BSEPCD')-1;
+	</select>
+	
+	<select id="getControlDetailStatus" resultClass = "buildSemesterEndProcess">
+		SELECT status as status from semesterend_control where
+		semester_start_date=#nextSemStartDate# and semester_end_date=#nextSemEndDate# and process_code=#processCode# 
+		and university_code=#universityId# and group_code='BSEPCD';
+	</select>
+	
+	<select id="getSystemValueDays" resultClass = "buildSemesterEndProcess">
+		SELECT value as periodDay from system_values where university_id=#universityId# and code=#code#;
+	</select>
+	
+	<select id="getProgramRegistraionList" resultClass = "buildSemesterEndProcess">
+		SELECT program_course_key as programCourse,entity_id as entityId ,semester_start_date as semesterStartDate,semester_end_date as semesterEndDate
+		from program_registration where university_id=#universityId# and semester_start_date=#nextSemStartDate# and semester_end_date=#nextSemEndDate#;
+	</select>
+	
+	<select id="checkSemesterProcessing" resultClass = "buildSemesterEndProcess">
+		SELECT entity_id as entityId,semester_start_date as semesterStartDate,semester_end_date as semesterEndDate,program_course_key as programCourse
+		from semester_processing_control
+		where entity_id=#entityId# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and process=#processCode# and program_course_key=#programCourse#; 
+	</select>
+	
+	<select id="checkActivity" resultClass = "buildSemesterEndProcess">
+		SELECT entity_id as entityId,activity_status as status from activity_master where entity_id=#entityId# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and process=#processCode# and activity_sequence='1' and program_course_key=#programCourse#;
+	</select>
+	<select id="getProcessCode" resultClass = "buildSemesterEndProcess">
+		SELECT component_code as processCode from system_table_two where university_code=#universityId# and group_code='BSEPCD' and dummy_flag_one=#dummyFlag#;
+	</select>
+	<insert id="setControlDetailStatus">
+    	insert into semesterend_control(semester_start_date,semester_end_date,process_code,status,group_code,insert_time,creator_id,university_code)
+		values(#nextSemStartDate#,#nextSemEndDate#,#processCode#,#status#,'BSEPCD',now(),#creatorId#,#universityId#);
+    </insert>
+    
+    <insert id="insertTempMasterHistory">
+    	insert into temp_student_master_history(select * from temp_student_master where student_id like #code#);
+    </insert>
+    
+    <insert id="insertTempProgramHistory">
+    	insert into temp_student_program_history(select * from temp_student_program where student_id like #code#);
+    </insert>
+    
+    <insert id="insertTempCourseHistory">
+    	insert into temp_student_courses_history(select * from temp_student_courses where student_id like #code#);
+    </insert>
+    
+     <insert id="insertSemesterProcessing">
+    	insert into semester_processing_control(entity_id,semester_start_date,semester_end_date,status,insert_time,creator_id,process,program_course_key)
+    	values(#entityId#,#semesterStartDate#,#semesterEndDate#,#status#,now(),#creatorId#,#processCode#,#programCourse#);
+    </insert>
+    
+    <insert id="insertApplicantInfoHistory">
+        insert into applicant_info_history(select * from applicant_info where student_id like #code#);
+    </insert>
+     <delete id="clearApplicantInfo">
+         delete ai from applicant_info AS ai inner join staging_table AS st ON
+         ai.student_id=st.student_id and ai.user_name=st.registration_roll_number and ai.university_code=#universityId# and st.processed_flag!='N' and st.student_id like #code# and st.new_entity_id like substring(#code#,2);
+    </delete>
+    <delete id="clearTempStudentMaster">
+	delete from temp_student_master where student_id like #code#;
+    </delete>
+    <delete id="clearTempStudentProgram">
+	delete from temp_student_program where student_id like #code#;
+    </delete>
+    <delete id="clearTempStudentCourses">
+	delete from temp_student_courses where student_id like #code#;
+    </delete>
+    <update id="updateControlDetailStatus">
+    	update semesterend_control set status=#status# where semester_start_date=#nextSemStartDate# and semester_end_date=#nextSemEndDate# and university_code=#universityId# and process_code=#processCode# and group_code='BSEPCD';
+    </update>
+    
+     <update id="updateActivity">
+    	update activity_master set activity_status=#status# where entity_id=#entityId# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and process=#processCode# and activity_sequence='1' and program_course_key=#programCourse#;
+    </update>
+</sqlMap>

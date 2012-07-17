@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) RoleSelector.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" cornerRadius="10" styleName="PopUpTitleWindow" title="{commonFunction.getConstants('selectRole')}" layout="absolute" creationComplete="roleCombo.setFocus()" borderThickness="2" width="386" height="122" borderColor="#181717" color="#0D0D0D" backgroundColor="#F0EBEB">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			public var dataXml:XML;
+			public var refFunction:Function;
+			public  var userGroupName:String;
+			public var userGroupId:String;
+			public var application:String;
+			public var userName:String;
+			public var universityName:String;
+			public var userId:String;
+			public var universityId:String;
+			var url:String=""
+			// on click of continue button
+			//Changes Done By Mandeep on 10-6-2012
+			public function onContinue():void
+			{
+				//refFunction(dataXml.loginInfo.(userGroupName==roleCombo.selectedLabel).userGroupId.toString(),roleCombo.selectedLabel);
+				
+				userGroupId=dataXml.loginInfo.(userGroupName==roleCombo.selectedLabel).userGroupId.toString();
+				userGroupName=roleCombo.selectedLabel;
+			if(application=='UPM'){
+			   url=commonFunction.getConstants('navigateUrlUpm')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application
+			}
+			else if(application=='CMS'){
+		
+				url=commonFunction.getConstants('navigateUrlCms')+'#userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userName='+userName+'&application='+application+'&university='+universityName
+			}
+			else if(application=='ADM'){
+				url=commonFunction.getConstants('navigateUrlAdm')+'?userGroupId='+userGroupId+'&userGroupName='+userGroupName+'&userId='+userId+'&userName='+userName+'&urlHome='+commonFunction.getConstants('navigateHome')+'&universityId='+universityId+'&application='+application
+			}
+
+			else{
+				url=commonFunction.getConstants('navigateHome');
+			}
+
+			var urlRequest:URLRequest=new URLRequest(url);
+			
+			urlRequest.method=URLRequestMethod.POST;
+			navigateToURL(urlRequest,"_self");	
+			PopUpManager.removePopUp(this);
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Label x="22" y="33" fontWeight="bold" text="{commonFunction.getConstants('loginAs')}"/>
+	<mx:ComboBox id="roleCombo" toolTip="{roleCombo.text}" prompt="{commonFunction.getConstants('select')}" change="continueButton.enabled=true" x="89" y="31"></mx:ComboBox>
+	<mx:Button id="continueButton" enabled="false" x="257" y="31" label="{commonFunction.getConstants('continueButton')}" click="onContinue()"/>
+	
+</mx:Panel>

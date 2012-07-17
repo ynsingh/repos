@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ActivityMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="939" height="797" title="{commonFunction.getConstants('activityMasterPanelTitle')}" 
+	initialize="formIntializeHandler()" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="sessionDetailsHttpService" method="POST"
+		url="{urlPrefix+'getSessionDetails.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="sessionDetailsHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="programCourseHeaderListHttpService" method="POST"
+		url="{urlPrefix+'programCourseHeaderList.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="programCourseHeaderResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="activityMasterDetailsHttpService" method="POST"
+		url="{urlPrefix+'activityMasterDetails.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="activityMasterDetailsResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getEntityHttpService" method="POST"
+		url="{urlPrefix+'getEntity.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getEntityHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>								
+										
+	<mx:Script source="asFiles/globalscript.as"/>
+	<mx:Script source="asFiles/ActivityMaster.as" />
+	
+	<mx:Canvas id="gridCanvas" styleName="GridCanvas" width="877" height="305.75" visible="true"  x="21.5" y="60">
+		<mx:Label text="{commonFunction.getConstants('programCourseDetailsGridTitle')}:" fontSize="11" top="6" left="10"/>
+		<mx:LinkButton enabled="false" id="addRecordButton" x="740.95" y="5.35" label="{resourceManager.getString('Constants','addRecordButton')}" click="addRecordButtonClickHandler(event)"/>
+		<controls:MDataGrid id="programCourseGrid" allowMultipleSelection="true" x="10" y="36.35" width="857" height="214.4" 
+				visible="true" resizableColumns="false" sortableColumns="true" verticalScrollPolicy="on" 
+		 			   horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true">
+			<controls:columns>
+				<mx:DataGridColumn  rendererIsEditor="true" width="20" textAlign="center" editorDataField="selected" sortable="false" 
+					dataField="select" headerText="">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.select=event.currentTarget.selected; checkbox2ClickHandler(event,outerDocument.programCourseGrid); checkbox1ClickHandler(event, outerDocument.programCourseGrid)" change="commonFunction.editDeleteEnable(event,outerDocument.programCourseGrid,[outerDocument.addRecordButton],[new LinkButton])">
+							    <mx:Script>
+							    <![CDATA[
+									import common.commonFunction;
+									
+									import mx.collections.ArrayCollection;
+									import mx.containers.Grid;
+									import mx.controls.*;
+									import mx.graphics.IFill;
+									import mx.logging.errors.InvalidFilterError;
+									
+									protected var arrayCollection:ArrayCollection;
+									
+									public function checkbox2ClickHandler(event:Event,grid:DataGrid):void
+								    {
+										var gridrecords:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.programCourseGrid);
+										
+										if(gridrecords.length>1)
+										{
+					            	    	Alert.show("Select Only 1 Record","warning",0,null,null,outerDocument.errorIcon);
+					            	    }
+					            	}
+									
+								  	protected function checkbox1ClickHandler(event:Event, grid:DataGrid):void
+									{	
+										var currentIndex:int=grid.selectedIndex;
+										var parseIndex:int=0;
+										var j:int=0;
+										
+										arrayCollection=new ArrayCollection()
+											
+										for each(var obj:Object in grid.dataProvider)
+										{
+											if(obj.select==true)
+											{
+												var temp:Array=new Array;
+												for(var i:String in obj)
+												{
+													temp[i]=obj[i];
+												}
+												arrayCollection.addItem(temp);
+											}
+										}
+										
+										for each(var object:Object in grid.dataProvider)
+										{
+											var bool:Boolean=false;
+											bool=object.select;
+											if(parseIndex==currentIndex)
+											{
+												bool=event.currentTarget.selected;
+												object.select=false;
+											}
+											if(bool)
+											{
+												
+											}
+											parseIndex++;
+										}
+										
+										matchData();
+
+									}
+									
+									protected function matchData():void{
+										var filteredData:ArrayCollection=new ArrayCollection();
+										if(arrayCollection.length>0){
+											for each(var obj:Object in outerDocument.activityMasterDetials_ArrCol){
+												if(obj.programName==arrayCollection.getItemAt(0).programName &&
+													obj.branchName==arrayCollection.getItemAt(0).branchName &&
+													obj.specializationName==arrayCollection.getItemAt(0).specializationName &&	obj.semesterName==arrayCollection.getItemAt(0).semesterName){
+												//  Alert.show("below: "+obj.programName+" arrCol:  "+arrayCollection.getItemAt(0).programName);
+													filteredData.addItem(obj);
+												}
+											}
+											outerDocument.activityMasterGrid.dataProvider=filteredData;
+										}
+										else{
+											outerDocument.activityMasterGrid.dataProvider=outerDocument.activityMasterDetials_ArrCol;
+										}
+										
+									}
+
+							    ]]>
+							    </mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specialization')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" showDataTips="true"/>
+			</controls:columns>
+		</controls:MDataGrid>
+		<mx:HBox width="100%"  x="10" y="251">
+		       <mx:LinkButton id="viewAllLinkBtn" visible="false"
+		       			   label="View All" 
+		       			   click="programCourseGrid.dataProvider = orgData;"/>
+		       <mx:VRule height="20"/>
+		       <mx:Label id="viewingAlertsLabel1" text=""/>
+		       <mx:Label id="viewingAlertsLabel2" text=""/>
+		   </mx:HBox>
+		<mx:HBox width="100%" x="10" y="273.75">
+			<mx:LinkBar id="pageNav" 
+			itemClick="navigatePage(event)" 
+			dataProvider="{nav}"
+			horizontalGap="1" 
+			width="100%"/>
+		</mx:HBox>			
+	</mx:Canvas>
+	<mx:Canvas id="gridCanvas1" styleName="GridCanvas" width="867" height="311" visible="true" x="31.5" y="385">
+		<mx:Label text="{commonFunction.getConstants('activityMasterGridTitle')}" fontWeight="bold" top="10" left="10"/>
+		<controls:MDataGrid id="activityMasterGrid" dataProvider="{activityMasterDetials_ArrCol}" allowMultipleSelection="true" x="10" y="37" width="847" height="214.4" 
+				visible="true" resizableColumns="true" sortableColumns="true" verticalScrollPolicy="on" 
+		 			   horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true">
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specialization')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="semesterStartDate" headerText="{commonFunction.getConstants('semesterStartDate')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="semesterEndDate" headerText="{commonFunction.getConstants('semesterEndDate')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="processName" headerText="{commonFunction.getConstants('process')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="activityName" headerText="{commonFunction.getConstants('activity')}" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="50" dataField="activitySequence" headerText="{commonFunction.getConstants('activitySequence')}"/>
+				<dataGridClasses:MDataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" 
+					filterEditor="common.Components.com.iwobanas.controls.dataGridClasses.filterEditors.MultipleChoiceFilterEditor"/>
+			</controls:columns>
+		</controls:MDataGrid>
+		<mx:HBox width="100%"  x="10" y="251">
+            <mx:LinkButton id="viewAllLinkBtn2" visible="false"
+            			   label="View All" 
+            			   click="activityMasterGrid.dataProvider = orgData;"/>
+            <mx:VRule height="20"/>
+            <mx:Label id="viewingAlertsLabel12" text=""/>
+            <mx:Label id="viewingAlertsLabel22" text=""/>
+        </mx:HBox>
+		<mx:HBox width="100%" x="10" y="273.75">
+			<mx:LinkBar id="pageNav2" 
+			itemClick="navigatePage(event)" 
+			dataProvider="{nav}"
+			horizontalGap="1" 
+			width="100%"/>
+		</mx:HBox>	
+	</mx:Canvas>
+	<mx:Button x="823.5" y="721" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	<mx:Label x="31.5" y="22" text="{commonFunction.getConstants('entity')}:"/>
+	<mx:ComboBox x="95" y="20" id="entityCB" toolTip="{entityCB.selectedItem.entityName}" selectedIndex="-1" width="170" prompt="{commonFunction.getConstants('select')}" change="entityCBChangeHandler()"/>
+	
+	
+</mx:Panel>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CourseWisePanelOfExaminers.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="onLoad()" width="504" height="274" title="{commonFunction.getConstants('CourseWisePanelOfExaminers')}">
+	
+	<mx:HTTPService id="getcoursesList" method="post"
+					url="{commonFunction.getConstants('url')}/externalExaminerCourse/getCourseDetails.htm"
+					resultFormat="e4x"
+					result="onCoursesSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+		<mx:HTTPService id="courseWisePanelOfExaminerPdf" method="post"
+					url="{commonFunction.getConstants('url')}/courseWiseExaminerPdf/courseWisePanelOfExaminerPdf.htm"
+					resultFormat="e4x"
+					result="onPdfSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>	
+			<mx:HTTPService id="getUniversitySessions" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getUniversitySession.htm"
+				resultFormat="e4x" 
+				result="getUniversitySessionList(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>							
+	<mx:Script>
+		<![CDATA[
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/warning.png")]private var warningIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import mx.collections.*;
+		import mx.controls.*;
+		import mx.core.UIComponent;
+		import mx.events.*;
+		import common.Mask;
+		import common.commonFunction;		
+	        public var object:Object = new Object;
+			public var CoursesDetails: XML;
+		    public var infoObject:Object={};
+		    public var CoursesDetailsList:ArrayCollection;
+		    
+			public function onLoad():void{
+					infoObject["userId"]=new Date();
+					Mask.show(commonFunction.getMessages('pleaseWait'));		
+					getcoursesList.send(infoObject);
+
+			}
+			public function onCoursesSuccess(event:ResultEvent):void{
+
+				CoursesDetails=event.result as XML;	
+				if(CoursesDetails.sessionConfirm == true)
+            	 {
+         		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+				 var url:String="";
+				url=commonFunction.getConstants('navigateHome');
+				var urlRequest:URLRequest=new URLRequest(url);
+				urlRequest.method=URLRequestMethod.POST;
+				navigateToURL(urlRequest,"_self");
+           	 }	
+	
+	CoursesDetailsList =new ArrayCollection();
+	
+	
+	for each (var o:Object in CoursesDetails.Details){
+		
+		CoursesDetailsList.addItem({id:o.component_id, description:o.component_description,
+		sessionStartDate:o.employee_id, sessionEndDate:o.application});
+	}
+	courseCodeCombo.dataProvider = CoursesDetailsList;
+	Mask.close();	
+	}
+	
+	public function onComboChange():void{
+		pdfButton.enabled=true;
+		object["date"] = new Date;									
+		getUniversitySessions.send(object);
+	}
+	public function onFailure(event:FaultEvent):void{
+	
+	Alert.show(commonFunction.getMessages('requestFailed'),commonFunction.getMessages('failure'),0,null,null,errorIcon);	
+	Mask.close();
+	}
+	
+   public function onPdfGeneration():void{
+	var param:Object={};
+	param["courseCode"]=courseCodeCombo.selectedItem.id;
+	param["sessionStartDate"] = sessionXML.role.(id.toString().substr(0,4)==fromYear.selectedLabel).id;
+	param["sessionEndDate"] = sessionXML.role.(description.toString().substr(0,4)==toYear.text).description;
+	courseWisePanelOfExaminerPdf.send(param);
+   }
+			public function onPdfSuccess(event:ResultEvent):void{
+				var result:XML=event.result as XML;
+				if(result.info=="success"){
+				Alert.show(commonFunction.getMessages('pdfSuccess'),commonFunction.getMessages('success'),0,null,null,successIcon);
+				}
+				else if(result.info=="failure"){
+				Alert.show(commonFunction.getMessages('failToGenerate'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+				}
+				else if(result.info==0){
+					Alert.show(commonFunction.getMessages('noExaminerAttached'),commonFunction.getMessages('error'),0,null,null,warningIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('failToGenerate'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+				}
+				
+			}	
+		public var sessionXML:XML;
+		public var sessionList:ArrayCollection;	
+	public function getUniversitySessionList(event:ResultEvent):void{
+	sessionXML = event.result as XML;
+
+	if(sessionXML.sessionConfirm == true){
+       	Alert.show(resourceManager.getString('Messages','sessionInactive'));
+      	var url:String="";
+ 		url=commonFunction.getConstants('navigateHome');
+ 		var urlRequest:URLRequest=new URLRequest(url);
+ 		urlRequest.method=URLRequestMethod.POST;
+ 		navigateToURL(urlRequest,"_self");
+    }	
+	sessionList = new ArrayCollection();	
+	for each(var obj:Object in sessionXML.role){		
+		var sessionStartDate:String = obj.id.toString();
+		var year:String = sessionStartDate.substr(0,4);		
+		var sessionEndDate:String = obj.description.toString();
+		var endYear:String = sessionEndDate.substr(0,4);		
+		sessionList.addItem({select:false,id:year,description:endYear});		
+	}	
+	fromYear.dataProvider = sessionList;
+	fromYear.labelField = "id";	
+}
+
+public function onYearChange():void{
+	for each(var obj:Object in sessionList){		
+		if(fromYear.selectedLabel == obj.id){			
+			toYear.text = obj.description;			
+		}		
+	}
+}				
+		]]>
+	</mx:Script>				
+	
+	<mx:ComboBox x="158" y="50" id="courseCodeCombo" selectedIndex="-1" width="160" prompt="{commonFunction.getConstants('select')}"
+			 labelField="id" enabled="true" toolTip="{courseCodeCombo.text}" change="onComboChange()"></mx:ComboBox>
+	<mx:Label x="52" y="53" text="{commonFunction.getConstants('courseCode')}*"/>
+	<mx:Button id="pdfButton" enabled="false" click="onPdfGeneration()" x="158" y="141" label="{commonFunction.getConstants('generateReport')}"/>
+	<mx:Button x="328" y="141" label="{commonFunction.getConstants('cancelButton')}"/>
+	<mx:ComboBox id="fromYear" change="onYearChange()" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" x="158" y="100" width="88"></mx:ComboBox>
+	<mx:Label x="52" y="103" text="Session"/>
+	<mx:Label x="259" y="103" text="To" width="30"/>
+	<mx:Label x="303" y="102" id="toYear"/>
+</mx:Panel>

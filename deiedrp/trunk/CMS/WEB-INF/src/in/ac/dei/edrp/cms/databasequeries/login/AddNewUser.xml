@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================= -->
+<!--@author Deepak Pandey mailto:deepak2rok@gmail.com        -->
+<!-- ================================================================= -->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SpringDemo1">
+ 
+ 	<resultMap id="getUserResult" class="in.ac.dei.edrp.cms.domain.logindomain.UserBean">
+		<result property="userId" column="user_id"/>
+		<result property="userName" column="user_name"/>
+		<result property="city" column="university_code"/>
+		<result property="qualification" column="status"/>
+	</resultMap>
+    <select id="getUserList" resultMap="getUserResult">
+     select user_name,user_id,university_code,case when status='ACT' then 'ACTIVE' else 'INACTIVE' end as status  
+     from user_info;
+    </select>
+  
+  	<resultMap id="getLockOnUserResult" class="in.ac.dei.edrp.cms.domain.logindomain.UserBean">
+		<result property="userName" column="user_name"/>
+	</resultMap>
+    <select id="getLockOnUser" resultMap="getLockOnUserResult">
+     select user_name from user_info where user_Id=#userId# FOR UPDATE;
+    </select>
+	
+	<update id="updateCity" parameterClass="in.ac.dei.edrp.cms.domain.logindomain.UserBean">
+	update user_info set modified_timestamp=now() where user_id=#userId#;
+	</update>
+	
+	<resultMap id="getProcessIdResult" class="in.ac.dei.edrp.cms.domain.registration.prestaging.ProcessList">
+		<result property="processId" column="user_id"/>
+		<result property="processName" column="user_name"/>
+	</resultMap>
+    <select id="getProcessId" resultMap="getProcessIdResult">
+     select user_id,user_name from user_info;
+    </select>
+</sqlMap>

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+ * @(#) PreProcessForResult.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+-->
+
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="preprocess">
+ <typeAlias alias="preprocessresultbean" type="in.ac.dei.edrp.cms.domain.resultprocessing.PreProcessForResultBean"/>
+ <typeAlias alias="preprocesscoursebean" type="in.ac.dei.edrp.cms.domain.resultprocessing.PreProcessCourseList"/>
+ 
+    
+    <!-- This query returns status of process for program course key -->
+   <resultMap id="listOfStudentToProcessResult" class="preprocessresultbean">
+		<result property="rollNumber" column="srsh.roll_number" />
+		<result property="enrollmentNumber" column="sp.enrollment_number" />
+		<result property="attemptNumber" column="srsh.attempt_number" />
+		<result property="registeredCredit" column="srsh.registered_credit" />
+		<result property="registeredTheoryCreditExcludingAudit" column="srsh.registered_theory_credit_excluding_audit" />
+		<result property="registeredPracticalCreditExcludingAudit" column="srsh.registered_practical_credit_excluding_audit" />
+		<result property="semesterStatus" column="srsh.status" />
+	</resultMap>
+	<select id="listOfStudentToProcess" resultMap="listOfStudentToProcessResult">
+		select srsh.roll_number,sp.enrollment_number,srsh.attempt_number,
+srsh.registered_credit,srsh.registered_theory_credit_excluding_audit,srsh.registered_practical_credit_excluding_audit,
+srsh.registration_credit_excluding_audit,srsh.status from
+student_program sp,student_registration_semester_header srsh
+where sp.entity_id=#entityId# and srsh.entity_id=sp.entity_id
+and sp.program_id=#programId# and sp.branch_id=#branchId# and sp.specialization_id=#specializationId#
+and sp.current_semester=#semesterCode# and sp.program_status='ACT'
+and srsh.program_course_key=#programCourseKey# and srsh.session_start_date=#semesterStartDate# and
+srsh.session_end_date=#semesterEndDate# and srsh.status IN (#semesterStatus#,'INC','UFM')
+and srsh.roll_number=sp.roll_number
+    </select>
+    
+    
+     <resultMap id="getListOfCourseForPREResult" class="preprocesscoursebean">
+		<result property="courseCode" column="sm.course_code" />
+		<result property="totalMarks" column="totalmarks" />
+		<result property="courseClassification" column="cm.course_classification" />
+		<result property="courseType" column="pcd.course_category" />
+		<result property="credits" column="credits" />
+		<result property="resultSystem" column="cm.result_system" />
+		<result property="obtainedMarks" column="studenttotalmarks" />
+		<result property="obtainedGrade" column="studentgrade" /> 
+		<result property="earnedCredits" column="earnedCredits" />
+	</resultMap>
+	<select id="getListOfCourseForPRE" resultMap="getListOfCourseForPREResult">
+	SELECT sm.course_code,COALESCE(cm.marks_total,0,null) as totalmarks ,cm.course_classification,pcd.course_category,
+		COALESCE(cm.credits,0,null) as credits ,cm.result_system,
+COALESCE(sm.total_marks,0,null) as studenttotalmarks,COALESCE(sm.final_grade_point,0,null) as studentgrade,
+COALESCE(sm.earned_credits,0,null) as earnedCredits
+FROM course_master cm,student_course sc,student_marks_summary sm, program_course_header pch, program_course_detail pcd
+WHERE pch.program_id=#programId# and pch.branch_id=#branchId# and pch.specialization_id=#specializationId# and pch.semester_code=#semesterCode# and
+pch.program_course_key=pcd.program_course_key and pcd.program_course_key=sm.program_course_key and pcd.program_course_key=sc.program_course_key and 
+sm.semester_start_date=#semesterStartDate# and sm.semester_end_date=#semesterEndDate# and sm.roll_number=#rollNumber# and
+pcd.course_code=cm.course_code and sm.course_code=pcd.course_code and sm.course_code=pcd.course_code and sm.semester_start_date=sc.semester_start_date and
+sm.semester_end_date=sc.semester_end_date and sm.roll_number=sc.roll_number and sc.student_status IN (#studentStatus#,'ABS','REM') 
+and sm.course_code=sc.course_code and sc.entity_id = #entityId# and sm.entity_id = #entityId# 
+
+
+
+	</select>
+
+<insert id="insertStudentAggregate">  
+<!--  insert into student_aggregate (university_code,roll_number,semester_start_date,semester_end_date,
+theory_weighted_percentage,practical_weighted_percentage,earned_theory_credit,earned_practical_credit,program_course_key,
+remarks,point_secured_theory_sgpa,point_secured_practical_sgpa,point_secured_theory_cgpa,point_secured_practical_cgpa,
+earned_theory_credit_cgpa,earned_practical_credit_cgpa,earned_theory_aud_credit,earned_practical_aud_credit,
+theory_sgpa,practical_sgpa,sgpa,weighted_percentage ,entity_id,cgpa,theorycgpa,practicalcgpa) values 
+(#universityId#,#rollNumber#,#semesterStartDate#,#semesterEndDate#,
+#aggregateTheory#,#aggregatePractical#,#theoryCredit#,
+#practicalCredit#,#programCourseKey#,
+#remarks#,#sgpaTheoryPointSecured#,#sgpaPracticalPointSecured#,#cgpaTheoryPointSecured#,#cgpaPracticalPointSecured#,
+#earnedTheorycgpaCredit#,#earnedPracticalcgpaCredit#,
+#earnedTheoryAudCredit#,#earnedPracticalAudCredit#,
+(#sgpaTheoryPointSecured#/#registeredTheoryCreditExcludingAudit#),(#sgpaPracticalPointSecured#/#registeredPracticalCreditExcludingAudit#),
+((#sgpaTheoryPointSecured#+#sgpaPracticalPointSecured#)/(#registeredTheoryCreditExcludingAudit#+#registeredPracticalCreditExcludingAudit#)),
+((#aggregateTheory#+#aggregatePractical#)/(#registeredTheoryCreditExcludingAudit#+#registeredPracticalCreditExcludingAudit#)),#entityId#
+,#cgpa#,#theorycgpa#,#practicalcgpa# 
+) -->
+
+insert into student_aggregate (university_code,roll_number,semester_start_date,semester_end_date,
+theory_weighted_percentage,practical_weighted_percentage,earned_theory_credit,earned_practical_credit,program_course_key,
+remarks,point_secured_theory_sgpa,point_secured_practical_sgpa,point_secured_theory_cgpa,point_secured_practical_cgpa,
+earned_theory_credit_cgpa,earned_practical_credit_cgpa,earned_theory_aud_credit,earned_practical_aud_credit,
+theory_sgpa,practical_sgpa,sgpa,weighted_percentage ,entity_id,cgpa,theorycgpa,practicalcgpa) values 
+(#universityId#,#rollNumber#,#semesterStartDate#,#semesterEndDate#,
+#aggregateTheory#,#aggregatePractical#,#theoryCredit#,
+#practicalCredit#,#programCourseKey#,
+#remarks#,#sgpaTheoryPointSecured#,#sgpaPracticalPointSecured#,#cgpaTheoryPointSecured#,#cgpaPracticalPointSecured#,
+#earnedTheorycgpaCredit#,#earnedPracticalcgpaCredit#,
+#earnedTheoryAudCredit#,#earnedPracticalAudCredit#,
+CEIL((#sgpaTheoryPointSecured#/#registeredTheoryCreditExcludingAudit#)*100)/100,
+CEIL((#sgpaPracticalPointSecured#/#registeredPracticalCreditExcludingAudit#)*100)/100,
+CEIL(((#sgpaTheoryPointSecured#+#sgpaPracticalPointSecured#)/(#registeredTheoryCreditExcludingAudit#+#registeredPracticalCreditExcludingAudit#))*100)/100,
+((#aggregateTheory#+#aggregatePractical#)/(#registeredTheoryCreditExcludingAudit#+#registeredPracticalCreditExcludingAudit#)),#entityId#
+,CEIL(#cgpa#*100)/100,CEIL(#theorycgpa#*100)/100,CEIL(#practicalcgpa#*100)/100 
+)
+</insert>
+
+<update id="updateStudentMarksSummary">  
+update student_marks_summary set total_marks=(total_internal+total_external),modifier_id=#userId#,modification_time=now() where
+roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select cm.internal_external_active from course_master cm
+where cm.course_code=student_marks_summary.course_code)=true and entity_id = #entityId#
+</update>
+
+<update id="updateStudentMarksSummaryForInternal">  
+update student_marks_summary set total_marks=(total_internal),modifier_id=#userId#,modification_time=now() where 
+roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# 
+and semester_end_date=#semesterEndDate# and (select cm.internal_external_active from course_master cm 
+where cm.course_code=student_marks_summary.course_code)=false and entity_id = #entityId#
+</update>
+
+<update id="updateStudentMarksSummaryGradePoint">  
+update student_marks_summary set final_grade_point=(select sy.component_description*(.75) from system_table_two sy where
+sy.component_code=student_marks_summary.internal_grade and sy.group_code='GRADEP' and sy.university_code=#universityId#)+
+(select sy1.component_description*(.25) from system_table_two sy1 where sy1.component_code=external_grade and 
+sy1.group_code='GRADEP' and sy1.university_code=#universityId#)
+, modifier_id=#userId#,modification_time=now() 
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select cm.internal_external_active from course_master cm
+where cm.course_code=student_marks_summary.course_code)=true and (select pcd.course_category from program_course_detail pcd 
+where pcd.program_course_key=#programCourseKey# and pcd.course_code=student_marks_summary.course_code)='REG' 
+and entity_id = #entityId#
+</update>
+
+<update id="updateStudentMarksSummaryGradePointForInternal">  
+update student_marks_summary set final_grade_point=(select ((sy.component_description))
+from system_table_two sy where sy.component_code=student_marks_summary.internal_grade and sy.group_code='GRADEP' and sy.university_code=#universityId#)
+,modifier_id=#userId#,modification_time=now()
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select cm.internal_external_active from course_master cm
+where cm.course_code=student_marks_summary.course_code)=false and (select pcd.course_category from program_course_detail pcd 
+where pcd.program_course_key=#programCourseKey# and pcd.course_code=student_marks_summary.course_code)='REG'
+and entity_id = #entityId#
+</update>
+
+<update id="updateEarnedCredits">  
+update student_marks_summary set earned_credits=(select case when final_grade_point>=#minPassGrade# then 
+(select cm.credits from course_master cm where cm.course_code=student_marks_summary.course_code) else 0.0 end 
+from course_master cm1 where cm1.course_code=student_marks_summary.course_code)
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select pcd.course_category from program_course_detail pcd 
+where pcd.program_course_key=#programCourseKey# and pcd.course_code=student_marks_summary.course_code)='REG'
+and entity_id = #entityId#
+
+</update>
+
+<update id="updateEarnedCreditsForAudit">  
+update student_marks_summary set earned_credits=(select case when (student_marks_summary.internal_grade)  IN 
+((select sy1.component_code from system_table_two sy1 where sy1.component_description>= #minPassGrade# and sy1.group_code='GRADEP' 
+and sy1.component_code=student_marks_summary.internal_grade and sy1.university_code=#universityId#),'NP','S') then (select cm.credits from course_master cm where
+cm.course_code=student_marks_summary.course_code) else 0.0 end from course_master cm1
+where cm1.course_code=student_marks_summary.course_code)
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select pcd.course_category from program_course_detail pcd 
+where pcd.program_course_key=#programCourseKey# and pcd.course_code=student_marks_summary.course_code)='AUD'
+and entity_id = #entityId# 
+</update>
+
+<update id="updateEarnedCreditsForMarksSystem">  
+update student_marks_summary set earned_credits=(select case when total_marks>=#minPassMarks# then (select cm.credits from course_master cm where
+cm.course_code=student_marks_summary.course_code) else 0.0 end from course_master cm1
+where cm1.course_code=student_marks_summary.course_code)
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and entity_id = #entityId#
+</update>
+
+
+<update id="updateCourseStatus">  
+update student_course set student_status=#studentStatus#,modifier_id=#userId#,modification_time=now() where
+roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and course_code=#courseCode#  and entity_id = #entityId#
+</update>
+   
+<resultMap id="getMinPassMarksResult" class="preprocessresultbean">
+		<result property="minPassMarks" column="value" />
+</resultMap>
+<select id="getMinPassMarks" resultMap="getMinPassMarksResult">
+select value from system_values where university_id=#universityId# and code=#code#;
+</select>
+
+<update id="updateSRSHResultStatus">  
+update student_registration_semester_header set status=#semesterStatus#,sgpa=CEIL(#sgpa#*100)/100,weighted_percentage=#weightedPercentage#,
+total_credit_earned=#theoryCredit#+#practicalCredit#,number_of_remedials=#numberOfRemedials#,student_process_status=#activityId#,
+modifier_id=#userId#,modification_time=now() 
+where 
+roll_number=#rollNumber# and entity_id=#entityId# and program_course_key=#programCourseKey# 
+and session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate#
+</update>
+
+<!--  Changes by Arush only status flag needs to be changed -->
+<update id="updateSRSHStatus" parameterClass="preprocessresultbean">  
+update student_registration_semester_header set status=#semesterStatus#,
+modifier_id=#userId#,modification_time=now() 
+where 
+roll_number=#rollNumber# and entity_id=#entityId# and program_course_key=#programCourseKey# 
+and session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate#;
+</update>
+
+
+
+
+<update id="updateStudentProgramStatus">  
+
+<![CDATA[
+
+update student_program set program_status=#programStatus#,cgpa=CEIL(#cgpa#*100)/100,theory_cgpa=CEIL((#cgpaTheoryPointSecured#/#earnedTheorycgpaCredit#)*100)/100,
+practical_cgpa=CEIL((#cgpaPracticalPointSecured#/#earnedPracticalcgpaCredit#)*100)/100,
+division=(SELECT division FROM cgpa_division where #cgpa#>=min_cgpa_value and #cgpa# < max_cgpa_value),
+theory_division=(SELECT division FROM cgpa_division where (#cgpaTheoryPointSecured#/#earnedTheorycgpaCredit#)>=min_cgpa_value and 
+(#cgpaTheoryPointSecured#/#earnedTheorycgpaCredit#) < max_cgpa_value) ,
+practical_division=(SELECT division 
+FROM cgpa_division 
+
+where (#cgpaPracticalPointSecured#/#earnedPracticalcgpaCredit#)>=min_cgpa_value 
+and (#cgpaPracticalPointSecured#/#earnedPracticalcgpaCredit#)< max_cgpa_value),
+modifier_id=#userId#,modification_time=now(),
+program_completion_date=#programCompletionDate#,out_semester=#outSemester#,
+passed_from_session=#sessionStartDate#,passed_to_session=#sessionEndDate# 
+where 
+roll_number=#rollNumber# and program_id=#programId# and branch_id=#branchId# 
+and specialization_id=#specializationId# and current_semester=#semesterCode#
+and entity_id = #entityId#
+
+]]>
+
+</update>
+
+<update id="updateProgramStatusonly">  
+update student_program set program_status=#programStatus#,
+modifier_id=#userId#,modification_time=now() where 
+roll_number=#rollNumber# and program_id=#programId# and branch_id=#branchId# 
+and specialization_id=#specializationId# and current_semester=#semesterCode#
+and entity_id = #entityId#
+</update>
+
+<update id="updateStudentProgramCGPA">  
+update student_program set cgpa=CEIL(#cgpa#*100)/100,theory_cgpa=CEIL(#theorycgpa#*100)/100,
+practical_cgpa=CEIL(#practicalcgpa#*100)/100,
+modifier_id=#userId#,modification_time=now() where 
+roll_number=#rollNumber# and program_id=#programId# and branch_id=#branchId# 
+and specialization_id=#specializationId# and current_semester=#semesterCode#
+and entity_id = #entityId#
+</update>
+
+ <!-- This query is commented out by arush not needed .
+<update id="updateStudentAggregateCGPA">  
+update student_aggregate set cgpa=#cgpa#,theory_cgpa=#theorycgpa#,
+practical_cgpa=#practicalcgpa# where 
+roll_number=#rollNumber# and entity_id=#entityId# and program_course_key=#programCourseKey# 
+and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#
+and entity_id = #entityId#
+</update>
+ -->
+
+<resultMap id="getFinalSemesterResult" class="preprocessresultbean">
+		<result property="semesterStatus" column="final_semester_code" />
+</resultMap>
+<select id="getFinalSemester" resultMap="getFinalSemesterResult">  
+select final_semester_code from program_term_details where program_id=#programId# and semester_code=#semesterCode#
+</select>
+
+
+<resultMap id="getResultSystemCountResult" class="preprocessresultbean">
+		<result property="count" column="count(result_system)" />
+</resultMap>
+<select id="getResultSystemCount" resultMap="getResultSystemCountResult">  
+select count(result_system) from course_master where course_code IN(
+select pcd.course_code from program_course_detail pcd,course_master cm where pcd.program_course_key=#programCourseKey# and
+pcd.course_code=cm.course_code and result_system=#resultSystem#)
+</select>
+
+<!-- Queries used in REMEDIAL process -->
+
+<update id="updateStudentAggregate">  
+UPDATE student_aggregate
+SET theory_weighted_percentage=#aggregateTheory#,
+practical_weighted_percentage=#aggregatePractical#,
+earned_theory_credit=#theoryCredit#,
+earned_practical_credit=#practicalCredit#,
+remarks=#remarks#,
+point_secured_theory_sgpa=#sgpaTheoryPointSecured#,
+point_secured_practical_sgpa=#sgpaPracticalPointSecured#,
+point_secured_theory_cgpa=#cgpaTheoryPointSecured#,
+point_secured_practical_cgpa=#cgpaPracticalPointSecured#,
+earned_theory_credit_cgpa=#earnedTheorycgpaCredit#,
+earned_practical_credit_cgpa=#earnedPracticalcgpaCredit#,
+earned_theory_aud_credit=#earnedTheoryAudCredit#,
+earned_practical_aud_credit=#earnedPracticalAudCredit#,
+theory_sgpa=CEIL((#sgpaTheoryPointSecured#/#registeredTheoryCreditExcludingAudit#)*100)/100,
+practical_sgpa=CEIL((#sgpaPracticalPointSecured#/#registeredPracticalCreditExcludingAudit#)*100)/100,
+sgpa=CEIL(#sgpa#*100)/100,cgpa = CEIL(#cgpa#*100)/100,theorycgpa=CEIL(#theorycgpa#*100)/100,practicalcgpa = CEIL(#practicalcgpa#*100)/100,
+weighted_percentage=((#aggregateTheory#+#aggregatePractical#)/(#registeredTheoryCreditExcludingAudit#+#registeredPracticalCreditExcludingAudit#)) 
+WHERE roll_number=#rollNumber# and program_course_key=#programCourseKey# 
+and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#
+and entity_id = #entityId# 
+</update>
+
+<update id="updateREMStudentMarksSummary">  
+update student_marks_summary set total_marks=(total_internal),modifier_id=#userId#,modification_time=now() where
+roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select course_code from student_course where roll_number=#rollNumber# 
+and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and student_status='REM')=student_marks_summary.course_code
+and entity_id = #entityId#
+</update>
+
+<update id="updateREMStudentMarksSummaryGrade" >  
+update student_marks_summary set final_grade_point=(select ((sy.component_description))
+from system_table_two sy where sy.component_code=student_marks_summary.internal_grade and sy.group_code='GRADEP'
+and sy.university_code=#universityId#),modifier_id=#userId#,modification_time=now()
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select course_code from student_course where roll_number=#rollNumber# 
+and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and student_status='REM')=student_marks_summary.course_code 
+and entity_id = #entityId#
+</update>
+
+<update id="updateREMEarnedCredits" >  
+update student_marks_summary set earned_credits=(select case when final_grade_point>=#minPassGrade# then 
+(select cm.credits from course_master cm where cm.course_code=student_marks_summary.course_code) else 0.0 end 
+from course_master cm1 where cm1.course_code=student_marks_summary.course_code)
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select pcd.course_category from program_course_detail pcd 
+where pcd.program_course_key=#programCourseKey# and pcd.course_code=student_marks_summary.course_code)='REG' and 
+(select course_code from student_course where roll_number=#rollNumber# 
+and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and student_status='REM')=student_marks_summary.course_code 
+and entity_id = #entityId#
+
+</update>
+
+<update id="updateREMEarnedCreditsForAudit">  
+update student_marks_summary set earned_credits=(select case when (student_marks_summary.internal_grade)  IN 
+((select sy1.component_code from system_table_two sy1 where sy1.component_description>= #minPassGrade# and sy1.group_code='GRADEP' 
+and sy1.component_code=student_marks_summary.internal_grade and sy1.university_code=#universityId#),'NP','S') then (select cm.credits from course_master cm where
+cm.course_code=student_marks_summary.course_code) else 0.0 end from course_master cm1
+where cm1.course_code=student_marks_summary.course_code)
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and (select pcd.course_category from program_course_detail pcd 
+where pcd.program_course_key=#programCourseKey# and pcd.course_code=student_marks_summary.course_code)='AUD' 
+and (select course_code from student_course where roll_number=#rollNumber# 
+and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and student_status='REM')=student_marks_summary.course_code
+
+and entity_id = #entityId#
+
+</update>
+
+<update id="updateREMEarnedCreditsForMarksSystem">  
+update student_marks_summary set earned_credits=(select case when total_marks>=#minPassMarks# then (select cm.credits from course_master cm where
+cm.course_code=student_marks_summary.course_code) else 0.0 end from course_master cm1
+where cm1.course_code=student_marks_summary.course_code)
+where roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate# and entity_id = #entityId# 
+</update>
+
+<update id="updateStudentStatusForREMCourses">  
+update student_course set student_status=
+case when (select sm.earned_credits from student_marks_summary sm where sm.program_course_key=#programCourseKey#
+and sm.semester_start_date=#semesterStartDate# and sm.semester_end_date=#semesterEndDate# and sm.roll_number=#rollNumber#
+and sm.course_code=student_course.course_code and status='REM')=
+(select cm.credits from course_master cm where cm.course_code=student_course.course_code) then 'PAS' else 'FAL' end
+where status='REM' and program_course_key=#programCourseKey#
+and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and roll_number=#rollNumber#
+and entity_id = #entityId#
+
+</update>
+
+</sqlMap>
+
+
+
+
+
+
+

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="770" creationComplete="initForm()" 
+	title="{resourceManager.getString('Constants','systemTable2PanelTitle')}" label="{resourceManager.getString('Constants','mainPanelTitle')}" cornerRadius="6" keyUp="if(event.keyCode==Keyboard.ESCAPE){Mask.close();}" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import common.Mask;
+		]]>
+	</mx:Script>
+	<mx:XML id="groupDB" format="e4x" source="xmlFiles/SysRecords.xml"/>
+	<mx:Script source="asFiles/SystemTableValidation.as"/>
+	<mx:Script source="asFiles/SystemTableTwoAction.as"/>
+	
+	<mx:HTTPService id="getComponentDetailsService" method="post"
+        url="{urlPrefix+'getComponentDetails.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="componentInfoResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="deleteComponentService" method="post"
+        url="{urlPrefix+'deleteComponentDetails.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="deleteComponentResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="setComponentDetailsService" method="post"
+        url="{urlPrefix+'setComponentDetails.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="setDetailsResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="duplicateCheckService" method="post"
+        url="{urlPrefix+'duplicateCheck.htm'}"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="duplicateCheckResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+       
+    <mx:Canvas id="gridCanvas" styleName="GridCanvas" width="700.30304" height="212" visible="true" x="23.1" y="{first.height+second.height+third.height+verification.height+260}">
+		<mx:Label x="10" y="9" text="{resourceManager.getString('Constants','systemTableTwoDetails')}:"/>
+		<mx:LinkButton enabled="false" id="editButton" x="537.3" y="5" label="{resourceManager.getString('Constants','editButton')}" click="editButtonClickHandler()" width="72"/>
+		<mx:LinkButton enabled="false" id="deleteButton" x="617.3" y="5" label="{resourceManager.getString('Constants','deleteButton')}" width="72" click="deleteButtonClickHandler()"/>
+		<mx:DataGrid editable="true" id="sysTab2Grid" textAlign="center" x="9.25" y="30.8" width="680.07574" height="169.95" >
+			<mx:columns>
+				<dataGridClasses:MDataGridColumn width="20" sortable="false" headerText="" dataField="select" rendererIsEditor="true" editorDataField="selected">
+					<dataGridClasses:headerRenderer>
+						<mx:Component>
+							<mx:CheckBox click="data.selected=!data.selected" selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.sysTab2Grid,[outerDocument.editButton],[outerDocument.deleteButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:headerRenderer>
+			    	<dataGridClasses:itemRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.sysTab2Grid,[outerDocument.editButton],[outerDocument.deleteButton])">
+			    				<mx:Script>
+			    					<![CDATA[
+			    						import common.commonFunction;
+			    						import mx.controls.LinkButton;
+			    					]]>
+			    				</mx:Script>
+			    			</mx:CheckBox>
+						</mx:Component>
+					</dataGridClasses:itemRenderer>
+				</dataGridClasses:MDataGridColumn>
+				<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','componentCode')}" dataField="componentCode" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','componentDescription')}" dataField="componentDescription" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" id="verificationColumn" headerText="{resourceManager.getString('Constants','verificationRequired')}" dataField="verificationRequired" visible="true" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" headerText="{resourceManager.getString('Constants','status')}" dataField="active" labelFunction="showStatus"  visible="true"/>
+				<mx:DataGridColumn editable="false" id="firstFlagDataGridColumn" headerText="" dataField="dummyFlag1" visible="false" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" id="secondFlagDataGridColumn" headerText="" dataField="dummyFlag2" visible="false" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" id="thirdFlagDataGridColumn" headerText="" dataField="dummyFlag3" visible="false" showDataTips="true"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	<mx:Label x="187" y="58" text="{resourceManager.getString('Constants','group')}:"/>
+	<mx:ComboBox toolTip="{groupCB.text}"  x="344" y="55" id="groupCB" prompt="{commonFunction.getConstants('select')}" 
+				 width="200" change="groupCBChangeHandler(event)"></mx:ComboBox>
+	<mx:Label x="187" y="87" text="{resourceManager.getString('Constants','componentCode')}:"/>
+	<mx:TextInput x="344" y="85" id="componentCodeTxtInput" restrict="-0-9a-zA-Z+^ " width="200"/>
+	<mx:Label x="187" y="115" text="{resourceManager.getString('Constants','componetDescription')}:"/>
+	<mx:TextArea x="344" y="115" id="componentDescriptionTxtArea" restrict="-0-9 a-z .+ , A-Z" width="200"/>
+	<mx:Label  text="{resourceManager.getString('Constants','status')}:" x="183" y="167"/>
+	<mx:RadioButtonGroup id="activeRGroup"/>
+	<mx:RadioButton x="344" y="165" value="1" selected="true" label="{resourceManager.getString('Constants','active')}" groupName="activeRGroup"/>
+	<mx:RadioButton x="424" y="165" value="0" label="{resourceManager.getString('Constants','inactive')}" groupName="activeRGroup"/>
+	<mx:Grid id="myGrid" x="183" y="194">
+	    <mx:GridRow id="verification" height="0">
+		    <mx:GridItem width="150" >
+	    	</mx:GridItem>
+	    	<mx:GridItem>
+		    	<mx:CheckBox selected="true" label="{resourceManager.getString('Constants','verificationRequired')}" id="verificationChBox"/>
+	    	</mx:GridItem>
+	    </mx:GridRow>
+	    
+	    <mx:GridRow id="first" height="0">
+		    <mx:GridItem width="150" >
+		    	<mx:Label id="firstFlagLab"/>
+	    	</mx:GridItem>
+	    	<mx:GridItem>
+	    		<mx:TextInput id="firstFlagTxtInput" width="160" restrict="0-9" maxChars="1"/>
+	    	</mx:GridItem>
+	    </mx:GridRow>
+
+    	<mx:GridRow id="second" height="0">
+	    	<mx:GridItem width="150">
+	    		<mx:Label id="secondFlagLab" textAlign="center"/>
+	    	</mx:GridItem>
+	    	<mx:GridItem>
+	    		<mx:TextInput id="secondFlagTxtInput" width="160"/>
+	    	</mx:GridItem>
+	    </mx:GridRow>
+
+	    <mx:GridRow id="third" height="0">
+	    	<mx:GridItem width="150">
+	    		<mx:Label id="thirdFlagLab" textAlign="center"/>
+	    	</mx:GridItem>
+	    	<mx:GridItem>
+	    		<mx:TextInput id="thirdFlagTxtInput" width="160"/>		
+	    	</mx:GridItem>
+    	</mx:GridRow>
+		
+	    <mx:GridRow id="button">
+	    	<mx:GridItem width="150">
+	    	</mx:GridItem>
+	    	<mx:GridItem>
+		    	<mx:Button label="{resourceManager.getString('Constants','saveButton')}" id="saveButton" enabled="false" click="saveButtonClickHandler()"/>
+		    	<mx:Spacer width="15" height="2"/>
+	    		<mx:Button label="{resourceManager.getString('Constants','cancelButton')}" id="cancelButton" click="cancelButtonClickHandler()"/>
+	    	</mx:GridItem>
+	    </mx:GridRow>
+    </mx:Grid>
+	
+</mx:Panel>

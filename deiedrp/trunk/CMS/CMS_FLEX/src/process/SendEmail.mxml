@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="438" height="238" creationComplete="onPageLoad()" title="Send Password In Email">
+	<mx:HTTPService id="sendEmailService" method="post"
+	    url="{urlPrefix+'sendEmail.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="sendEmailResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	    
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+	   		import common.commonFunction;
+	   		import common.Mask;
+	   		import mx.controls.Alert;
+	   		import mx.rpc.events.FaultEvent;
+	   		import mx.rpc.events.ResultEvent;
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Bindable]public var urlPrefix:String="";
+			
+			//on page load
+			public function onPageLoad():void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/sendPassword/";
+			}
+		    
+		    // send Email Result Handler
+			public function sendEmailResultHandler(event:ResultEvent):void
+			{
+				Mask.close();
+				var result:String=(event.result as XML)+"";
+				navigateToURL(new URLRequest(commonFunction.getConstants('url')+"/"+result.substring(result.lastIndexOf("|")+1,result.length)));
+				Alert.show(result.substr(0,result.indexOf("|")),commonFunction.getMessages('success'),0,null,null,successIcon);
+			}
+		    
+		    // fault handler
+			public function faultHandler(event:FaultEvent):void
+			{
+				Mask.close();
+				Alert.show(commonFunction.getMessages('error'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+			}
+		]]>
+	</mx:Script>
+	<mx:Button x="45" y="85" click="Mask.show();sendEmailService.send([new Date]);" label="Send Password In Email"/>
+	<mx:Button x="250" y="85" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="this.parentDocument.loaderCanvas.removeAllChildren()" />
+</mx:Panel>

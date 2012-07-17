@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!--
+* @(#) StudentMarksSummary.xml
+* @Author :Nupur Dixit
+* @Date :26/12/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+
+<sqlMap namespace="studentMarksSummary">
+	<typeAlias alias="studentMarksSummary"
+		type="in.ac.dei.edrp.cms.domain.studentmarkssummary.StudentMarksSummaryBean" />
+	<typeAlias alias="reportPath"
+		type="in.ac.dei.edrp.cms.utility.ReportPathBean" />
+
+<select id="selectRollNumber" resultClass="studentMarksSummary">
+SELECT sp.roll_number AS rollNumber,sp.entity_id as entityId,sp.program_id AS programId,pm.program_name AS programName,
+  sp.branch_id AS branchId, stt.component_description AS branchName,
+  sp.specialization_id AS specializationId,stt1.component_description AS specialization
+FROM student_program sp, program_master pm,system_table_two stt,system_table_two stt1
+WHERE sp.enrollment_number=(select enrollment_number from student_master where student_id=#userId#)
+  AND SUBSTRING(sp.entity_id,1,4)=#universityId#
+  AND sp.program_id=pm.program_id
+  AND stt.component_code = sp.branch_id
+  AND stt.university_code=#universityId#
+  AND stt1.component_code = sp.specialization_id
+  AND stt1.university_code=#universityId#
+  order by sp.register_date asc;
+</select>
+
+<select id="getCourseList" resultClass="studentMarksSummary">
+SELECT sc.course_code as courseCode,cm.course_name as courseName,sc.semester_start_date as semesterStartDate,
+sc.semester_end_date as semesterEndDate,sc.course_status as courseStatus,sc.student_status as studentStatus,
+sc.attempt_number as attemptNumber
+FROM student_course sc, course_master cm
+WHERE sc.roll_number=#rollNumber#
+and sc.program_course_key=#programCourseKey#
+and cm.course_code=sc.course_code
+and cm.university_code=#universityId#;
+</select>
+
+<select id="getFullMarks" resultClass="studentMarksSummary">
+<!--  Query of nupur mam changed by ashish mohan - SELECT
+sm.evaluation_id as evaluationId,ec.display_type as displayType,sm.marks,sm.status,sm.semester_start_date semesterStartDate,
+sm.semester_end_date as semesterEndDate, sms.total_internal as totalInternal,ifnull(sms.total_external,"Not Available") as totalExternal,
+sms.total_marks as totalMarks,sms.internal_grade as internalGrade,ifnull(sms.external_grade,"Not Available") as externalGrade,
+sms.final_grade_point as finalGradePoint,nn.status as approvalStatus
+FROM student_marks sm,student_marks_summary sms,evaluation_component ec,
+(select status ,display_type,semester_start_date,semester_end_date from course_marks_approval_status where approval_order=(
+select max(approval_order) from course_marks_approval
+where course_code=#courseCode# and program_course_key=#programCourseKey#)
+and program_course_key=#programCourseKey#
+and course_code=#courseCode#) as nn
+WHERE sm.university_code=#universityId#
+and sm.roll_number=#rollNumber#
+and sm.program_course_key=#programCourseKey#
+and sm.course_code=#courseCode#
+and sms.roll_number=sm.roll_number
+and sms.university_code = sm.university_code
+and sms.course_code=sm.course_code
+and sm.program_course_key=sms.program_course_key
+and ec.evaluation_id=sm.evaluation_id
+and ec.university_code=#universityId#
+and nn.display_type=ec.display_type
+and nn.semester_start_date=sm.semester_start_date
+and nn.semester_end_date=sm.semester_end_date -->
+
+Select set9.*,studentLeft from(select (totalStudent-student) as studentLeft,evaluation_id evaluationId from
+	(select count(*) as totalStudent from student_program sp,student_course sc,student_master sm
+	where sc.program_course_key=#programCourseKey# AND sc.semester_start_date=#semesterStartDate# AND
+	sc.semester_end_date=#semesterEndDate# AND sp.entity_id=#entityId# and sp.enrollment_number=sm.enrollment_number AND
+	sm.university_code=#universityId#  AND sc.course_code=#courseCode# AND sp.program_status='ACT' and sc.roll_number=sp.roll_number)r1
+	join
+	(SELECT count(*) student,evaluation_id  FROM student_marks where  university_code=#universityId# and  entity_id=#entityId#  and
+	 program_course_key=#programCourseKey# and course_code=#courseCode# group by evaluation_id)r2)set10
+join
+	(Select set1.*,concat(year(set1.semesterStartDate),'-',set2.date_from_display_marks) displayStartDate,
+	concat(year(set1.semesterStartDate),'-',set2.date_to_display_marks) displayEndDate from
+	(select setn.*,sett.markSavedDate from
+	(select * from(SELECT  evaluation_id,if(modification_time<![CDATA[<=>]]>null,insert_time,
+ 	if(datediff(insert_time,modification_time)>0 ,  insert_time,modification_time)) markSavedDate  FROM student_marks
+ 	where entity_id=#entityId# and university_code=#universityId# and  program_course_key=#programCourseKey# and course_code=#courseCode#
+ 	order by markSavedDate desc)latestSaved group by evaluation_id)sett
+	join
+	(SELECT sm.evaluation_id as evaluationId,ec.display_type as displayType,sm.marks,sm.status,sm.semester_start_date semesterStartDate,
+	sm.semester_end_date as semesterEndDate, sms.total_internal as totalInternal,ifnull(sms.total_external,"Not Available") as totalExternal,
+	sms.total_marks as totalMarks,sms.internal_grade as internalGrade,ifnull(sms.external_grade,"Not Available") as externalGrade,
+	sms.final_grade_point as finalGradePoint,nn.status as approvalStatus
+	FROM student_marks sm,student_marks_summary sms,evaluation_component ec,
+	(select status ,display_type,semester_start_date,semester_end_date from course_marks_approval_status where approval_order=(
+	select max(approval_order) from course_marks_approval
+	where course_code=#courseCode#  and entity_id=#entityId# and  program_course_key=#programCourseKey#)
+	and program_course_key=#programCourseKey#
+	and course_code=#courseCode#) as nn
+	WHERE sm.university_code=#universityId#
+	and sm.roll_number=#rollNumber#
+	and sm.program_course_key=#programCourseKey#
+	and sm.course_code=#courseCode#
+	and sms.roll_number=sm.roll_number
+	and sms.university_code = sm.university_code
+	and sms.course_code=sm.course_code
+	and sm.program_course_key=sms.program_course_key
+	and ec.evaluation_id=sm.evaluation_id
+	and ec.university_code=#universityId#
+	and nn.display_type=ec.display_type
+	and nn.semester_start_date=sm.semester_start_date
+	and nn.semester_end_date=sm.semester_end_date)setn
+	on setn.evaluationId=sett.evaluation_id)set1
+	join
+	(select evaluation_id,date_from_display_marks,date_to_display_marks from 
+	course_evaluation_component where  program_id=substr(#programCourseKey#,1,7) and course_code=#courseCode#)set2
+	on set1.evaluationId=set2.evaluation_id)set9
+using
+(evaluationId);
+
+<!--  
+SELECT stt.component_description as semesterName,
+sm.evaluation_id as evaluationId,sm.marks,sm.status,sm.semester_start_date semesterStartDate,
+sm.semester_end_date as semesterEndDate, sms.total_internal as totalInternal,sms.total_external as totalExternal,
+sms.total_marks as totalMarks,sms.internal_grade as internalGrade,sms.external_grade as externalGrade,
+sms.final_grade_point as finalGradePoint
+FROM student_marks sm,student_marks_summary sms,program_course_header pch,system_table_two stt
+WHERE sm.university_code=#universityId#
+and sm.roll_number=#rollNumber#
+and sm.course_code=#courseCode#
+and sms.roll_number=sm.roll_number
+and sms.university_code = sm.university_code
+and sms.course_code=sm.course_code
+and pch.program_course_key = sms.program_course_key
+and stt.component_code=pch.semester_code
+and stt.group_code='SEMCOD'
+and stt.university_code=sm.university_code;
+-->
+</select>
+
+<select id="getSemesterList" resultClass="studentMarksSummary">
+select srsh.program_course_key as programCourseKey,pch.semester_code as semesterCode,
+stt2.component_description as semesterName,srsh.session_start_date as semesterStartDate, srsh.session_end_date as
+semesterEndDate,
+(case when(ifnull(ptd.final_semester_code,"N")='N') then (case when (ptd.semester_sequence%2=0) then ('Result Card')
+ else ('Progress Card') end) else ('Final Result Card') end) as name
+from student_registration_semester_header srsh, program_course_header pch,system_table_two stt2,
+program_term_details ptd
+where srsh.roll_number=#rollNumber#
+and pch.program_course_key=srsh.program_course_key
+and stt2.component_code=pch.semester_code
+and stt2.group_code='SEMCOD'
+and stt2.university_code=#universityId#
+and srsh.status not in ('YTR')
+and pch.program_id=#programId#
+and pch.branch_id=#branchId#
+and pch.specialization_id=#specializationId#
+and ptd.program_id=pch.program_id
+and ptd.semester_code=pch.semester_code;
+</select>
+<select id="getSemesterSummary" resultClass="studentMarksSummary">
+SELECT semester_start_date AS semesterStartDate,
+semester_end_date AS semesterEndDate,ifnull(theory_sgpa,"Not Available") AS theorySgpa,
+ifnull(practical_sgpa,"Not Available")  AS practicalSgpa,ifnull(sgpa,"Not Available") AS sgpa,ifnull(theorycgpa,"Not Available")  AS theoryCgpa,
+ifnull(practicalcgpa,"Not Available")  AS practicalCgpa,ifnull(cgpa,"Not Available") AS cgpa
+FROM student_aggregate
+WHERE roll_number=#rollNumber#
+AND university_code=#universityId#
+AND program_course_key=#programCourseKey#
+</select> 
+
+<select id="getPathParameters" resultClass="studentMarksSummary">
+select entity_id as entityId,session_start_date as sessionStartDate,session_end_date as sessionEndDate
+from program_registration
+where program_course_key=#programCourseKey#
+and university_id=#universityId#
+and semester_start_date=#semesterStartDate#
+and semester_end_date=#semesterEndDate#;
+</select>
+
+<select id="getReportCode" resultClass="reportPath">
+select stt.component_code as reportCode,stt.component_description as report,stt.dummy_flag_three as reportType
+from system_table_two stt
+where stt.group_code = 'rports' and stt.university_code=#universityId#;
+</select>
+
+<select id="getEntityId" resultClass="java.lang.Object">
+select parent_entity from student_master where
+enrollment_number in (SELECT enrollment_number FROM student_program where roll_number=#rollNumber#) 
+and university_code=#universityId#;
+</select>
+
+<update id="setRequestForCorrection">
+update student_marks set requested_marks=#marks#,requester_remarks= concat(#rollNumber#,':','Correct Mark is ',#marks#,' and remarks is ',#status#,' at Time ',now()),issue_status='PEN'
+where university_code=#universityId# and entity_id=#entityId# and program_course_key=#programCourseKey# and course_code=#courseCode#
+and evaluation_id=#evaluationId# and roll_number=#rollNumber# and 
+semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+</update>
+
+</sqlMap>

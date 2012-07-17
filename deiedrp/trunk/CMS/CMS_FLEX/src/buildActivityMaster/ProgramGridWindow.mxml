@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramGridWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="712" height="484" 
+	styleName="PopUpTitleWindow" close="popUpWindowClose();" showCloseButton="true" creationComplete="formIntializeHandler()">
+	
+	<mx:HTTPService id="programCourseHeaderListHttpService" method="POST"
+		url="{urlPrefix+'programCourseHeaderList.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="programCourseHeaderResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="buildSelectedProgramsHttpService" method="POST"
+		url="{urlPrefix+'buildSelectedPrograms.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="buildSelectedProgramsHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>				
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.LinkButton;
+			import common.commonFunction;
+			import common.Mask;
+			import mx.managers.PopUpManager;
+			
+			[Bindable] protected var urlPrefix:String;
+			[Bindable] public var tempButton:LinkButton=new LinkButton();
+			protected var programCourseHeader_XmlResult:XML;
+			public var selectedEntityId:String;
+			public var programId:String;
+			public var branchId:String;
+			public var specializationId:String;
+			public var semesterCode:String;
+			public var sessionStartDate:String
+			public var sessionEndDate:String;
+			private var selectedRecordArrColl:ArrayCollection;
+			public var refreshFunction:Function;
+
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			/**
+		 * @protected
+		 * this method is called when a result come from the server. 
+		 * @param event a Result event object.
+		 */			
+		protected function programCourseHeaderResultHandler(event:ResultEvent):void{
+			Mask.close();
+			programCourseHeader_XmlResult = event.result as XML;
+			if(programCourseHeader_XmlResult.sessionConfirm == true){
+        			        		
+						Alert.show(resourceManager.getString('Messages','sessionInactive'));
+
+						var url:String="";
+						url=commonFunction.getConstants('navigateHome');
+						var urlRequest:URLRequest=new URLRequest(url);
+						urlRequest.method=URLRequestMethod.POST;
+						navigateToURL(urlRequest,"_self")
+ 
+        	}
+        	
+			var programCourseHeader_ArrCol:ArrayCollection= new ArrayCollection();
+			for each (var o:Object in programCourseHeader_XmlResult.programCourse)
+			{
+				programCourseHeader_ArrCol.addItem({select:false,programCourseKey:o.programCourseKey,
+				programName:o.programName, branchName:o.branchName, specializationName:o.specializationName,
+				 semesterCode:o.semesterCode, semesterName:o.semesterName});
+			}
+			
+			programSemesterGrid.dataProvider=programCourseHeader_ArrCol;
+			Mask.close();
+		}
+			
+			private function formIntializeHandler():void{
+				tempButton.enabled=false;
+				urlPrefix=commonFunction.getConstants('url')+"/buildactivitymaster/";
+				var param:Object=new Object();
+				param["time"]=new Date();
+				param["selectedEntityId"]=selectedEntityId;
+				param["programId"]=programId;
+				param["branchId"]=branchId;
+				param["specializationId"]=specializationId;
+				param["semesterCode"]=semesterCode;
+				programCourseHeaderListHttpService.send(param);
+			}
+			
+			private function popUpWindowClose():void
+        	{
+				refreshFunction.call();
+				PopUpManager.removePopUp(this);
+				Mask.close();
+        	}
+        	
+        	/**
+			 * @protected
+			 * this method is called when a fault occur from the server. 
+			 * @param event a Fault event object.
+			 */
+			protected function httpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+				Mask.close();
+			}
+			
+			private function buildButtonClickHandler():void{
+				Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, buildConfirm,questionIcon);
+			}
+			
+			private function buildConfirm(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					var gridData:ArrayCollection=commonFunction.getSelectedRowData(programSemesterGrid);
+					selectedRecordArrColl=new ArrayCollection();
+					
+					for each(var o:Object in gridData){
+						selectedRecordArrColl.addItem([o.programCourseKey]);
+					}
+					
+					var param:Object=new Object();
+					param["time"]=new Date();
+					param["selectedEntityId"]=selectedEntityId;
+					param["programId"]=programId;
+					param["branchId"]=branchId;
+					param["specializationId"]=specializationId;
+					param["semesterCode"]=semesterCode;
+					param["sessionStartDate"]=sessionStartDate;
+					param["sessionEndDate"]=sessionEndDate;
+					param["recordArrayColl"]=selectedRecordArrColl;
+					buildSelectedProgramsHttpService.send(param);	
+				}
+			}
+			
+			private function buildSelectedProgramsHttpServiceResultHandler(event:ResultEvent):void{
+				var resultData:XML=event.result as XML;
+				if(resultData.message=="duplicateData"){
+					Alert.show(commonFunction.getMessages('recordAlreadyExist'), commonFunction.getMessages('info'),4,null,null,infoIcon);	
+				}
+				else if(resultData.message=="semesterDatesMissing"){
+					Alert.show(commonFunction.getMessages('semesterStartEndDateMissing'), commonFunction.getMessages('error'),4,null,null,errorIcon);	
+				}
+				else if(resultData.message=="activityNotExist"){
+					Alert.show(commonFunction.getMessages('activityIsNotSet'), commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('recordBuildSuccess'), commonFunction.getMessages('success'),4,null,null,successIcon);
+					popUpWindowClose();
+				}					
+			}
+		]]>
+	</mx:Script>
+	<mx:DataGrid id="programSemesterGrid" allowMultipleSelection="true" x="24.5" y="33" width="643" height="326.4" 
+				visible="true" resizableColumns="true" sortableColumns="true" verticalScrollPolicy="on" 
+		 			   horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true" >
+			<mx:columns>
+				<mx:DataGridColumn rendererIsEditor="true" resizable="false" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" 
+								change="commonFunction.editDeleteEnable(event,outerDocument.programSemesterGrid,[],[outerDocument.tempButton])">
+							    <mx:Script>
+							    <![CDATA[
+							    import common.commonFunction;
+							    import mx.controls.LinkButton;
+							    ]]>
+							    </mx:Script>
+							</mx:CheckBox>
+						</mx:Component>	
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="programName" headerText="{commonFunction.getConstants('programName')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}"/>
+				<mx:DataGridColumn editable="false" showDataTips="true" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}"/>
+			</mx:columns>
+		</mx:DataGrid>
+	<mx:Button x="196" y="398" id="BuildButton" enabled="{tempButton.enabled}" label="Build" click="buildButtonClickHandler()"/>
+	<mx:Button x="391" y="398" label="{commonFunction.getConstants('cancelButton')}" click="popUpWindowClose()"/>
+</mx:TitleWindow>

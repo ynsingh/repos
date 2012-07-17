@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) employeeMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"  creationComplete="setFirstFocous(parententityCombo)" title="{resourceManager.getString('Constants','employeeMaster')}" layout="absolute" 
+	 xmlns:ns1="common.*" width="1202" height="920">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+
+<mx:Script source="asFiles/employeeMasterAction.as"/> 
+
+	
+	<mx:HTTPService id="getInputDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getParentEntityDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getDesignations" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getDesignationsDetails.htm"
+					resultFormat="e4x"
+					result="onDesignationsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setEmployeeProfile" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/setEmployeeProfile.htm"
+					resultFormat="e4x"
+					result="oninsertSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getgenderDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getGenderDetails.htm"
+					resultFormat="e4x"
+					result="onGenderDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCategoryDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getCategoryDetails.htm"
+					resultFormat="e4x"
+					result="onCategoryDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					<mx:HTTPService id="getMinorityDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getMinorityDetails.htm"
+					resultFormat="e4x"
+					result="onMinorityDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					<mx:HTTPService id="getPensionDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getPensionDetails.htm"
+					resultFormat="e4x"
+					result="onPensionDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+		
+		<mx:Label x="62" y="23" text="{commonFunction.getConstants('parentEntity')}*"/>
+		<mx:Label x="502" y="23" text="{commonFunction.getConstants('designation')}*"/>
+		<mx:Label x="62" y="57" text="{commonFunction.getConstants('dateOfJoining')}*"/>
+		<mx:ComboBox x="189" y="20" id="parententityCombo" selectedIndex="-1" toolTip="{parententityCombo.text}"  prompt="{commonFunction.getConstants('select')}" width="160"></mx:ComboBox>
+		<mx:ComboBox x="639" y="20" id="designationCombo" selectedIndex="-1" toolTip="{designationCombo.text}" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+	    <mx:DateField x="189" y="55" id="dateOfJoiningField" width="160" yearNavigationEnabled="true"/>
+	    <mx:Label x="502" y="57" text="Employee Code"/>
+		<mx:TextInput x="640" y="55" width="150" id="employeeCode" maxChars="6"/>
+		<mx:TitleWindow layout="absolute" styleName="DetailTitleWindow" title="{commonFunction.getConstants('personalDetails')}" width="1015" height="332" y="89" x="13">
+		<mx:Label x="168" y="10" text="{commonFunction.getConstants('firstName')}*"/>
+		<mx:Label text="{commonFunction.getConstants('middleName')}" x="382" y="10"/>
+		<mx:Label x="613" y="10" text="{commonFunction.getConstants('lastName')}*"/>
+		<mx:Label x="37" y="42" text="{commonFunction.getConstants('employee')}*"/>
+		<mx:TextInput x="168" y="38" width="150" id="studentfirstnametext" restrict="a-z A-Z"/>
+		<mx:TextInput x="382" y="39" width="150" id="studentmiddlenametext" />
+		<mx:TextInput x="613" y="40" width="160" id="studentlastnametext" restrict="a-z A-Z"/>
+		<mx:Label x="37" y="84" text="{commonFunction.getConstants('primaryEmailid')}*"/>
+		<mx:TextInput x="168" y="82" id="primarymailtext" width="150"/>
+		<mx:Label x="382" y="84" text="{commonFunction.getConstants('secondaryEmailid')}"/>
+		<mx:TextInput x="613" y="82" id="secondarymailtext" width="160"/>
+		<mx:Label x="37" y="124" text="{commonFunction.getConstants('dateOfBirth')}*"/>
+		<mx:DateField x="168" y="122" width="150" id="dateofBirthField" yearNavigationEnabled="true"/>
+		<mx:TextInput x="613" y="124" id="qualificationtext"/>
+		<mx:Label x="385" y="124" text="{commonFunction.getConstants('qualification')}*"/>
+		<mx:Label x="37" y="167" text="{commonFunction.getConstants('gender')}*"/>
+		<mx:ComboBox x="168" y="164" id="genderCombo" toolTip="{genderCombo.text}" prompt="{commonFunction.getConstants('select')}" width="150" selectedIndex="-1"></mx:ComboBox>
+		<mx:Label x="385" y="167" text="{commonFunction.getConstants('category')}*" />
+		<mx:ComboBox x="613" y="164" id="categoryCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{categoryCombo.text}" selectedIndex="-1" width="160" />
+		<mx:CheckBox x="37" y="196" label="{commonFunction.getConstants('minorityGroup')}" id="minorGroup" change="onChange()"/>
+		<mx:Label x="37" y="219" text="{commonFunction.getConstants('minority')}" visible="false" id="minorLabel"/>
+		<mx:ComboBox x="168" y="217" visible="false" id="minorityCombo" toolTip="{minorityCombo.text}" prompt="{commonFunction.getConstants('select')}" width="150" selectedIndex="-1"></mx:ComboBox>
+		<mx:Label x="385" y="198" text="{commonFunction.getConstants('pension')}"/>
+		<mx:ComboBox x="613" y="196" id="pensionCombo" toolTip="{pensionCombo.text}" prompt="{commonFunction.getConstants('select')}" width="160" selectedIndex="-1"></mx:ComboBox>
+        <mx:CheckBox x="37" y="247" label="{commonFunction.getConstants('handicapped')}" id="handicapped"/>
+		<mx:CheckBox x="385" y="247" label="{commonFunction.getConstants('netQualified')}" id="netQualified"/>
+		<mx:CheckBox x="613" y="247" label="{commonFunction.getConstants('postGrad')}" id="grad"/>
+				
+		</mx:TitleWindow>
+		   
+		<mx:TitleWindow layout="absolute" styleName="DetailTitleWindow" height="354" y="429" title="{commonFunction.getConstants('contactDetails')}" x="14" width="1014">
+		<ns1:AddressField x="10" y="0" btn="{savebutton}" id="permanentAddressField" width="980" title="{commonFunction.getConstants('permanentAddress')}*" creationComplete="permanentAddressField.pinValidator.required=true" validationRequired="false">
+		</ns1:AddressField>
+		<mx:CheckBox x="308" y="100" id="checkboxField" label="{commonFunction.getConstants('sameAsAbove')}" click="copyaddress()"/>
+
+		<ns1:AddressField x="10" y="138" id="corspondenceAddressField" width="980" title="{commonFunction.getConstants('correspondenceAddress')}" validationRequired="false">
+		</ns1:AddressField>
+		
+		<ns1:PhoneField x="-1" y="254" id="phones" width="991">
+		</ns1:PhoneField>
+			</mx:TitleWindow>	
+		<mx:Button x="169" y="808" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="saveForm()"/>
+		<mx:Button x="432" y="805" label="{commonFunction.getConstants('resetButton')}" id="resetbutton" click="resetForm()"/>
+		<mx:Button x="720" y="805" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelButtonAction()" />
+
+	
+
+<mx:DateValidator  id="joindate" property="text" required="true" inputFormat="mm/dd/yyyy" allowedFormatChars="/" />
+<mx:StringValidator  id="entityvalid" property="selectedItem" required="true"/>
+<mx:StringValidator  id="designationvalid" property="selectedItem" required="true"/>
+<mx:StringValidator  id="empcodevalid" property="text" required="true"/>
+<mx:StringValidator source="{studentfirstnametext}" id="employeeFirstname" property="text" required="true"/>
+<mx:StringValidator source="{studentlastnametext}" id="employeeLastname" property="text" required="true"/>
+<mx:EmailValidator source="{primarymailtext}" id="primaryemailVal" property="text" required="true"/>
+<mx:EmailValidator source="{secondarymailtext}" id="secondaryemailVal" property="text" required="false"/>
+<mx:DateValidator source="{dateofBirthField}" id="birthdate" property="text" required="true" inputFormat="mm/dd/yyyy" allowedFormatChars="/"/>
+<mx:StringValidator id="gendervalid" property="selectedItem" required="true"/>
+<mx:StringValidator source="{qualificationtext}" id="qualificationvalid" property="text" required="true"/>
+<mx:StringValidator id="categoryvalid" property="selectedItem" required="true"/>
+<mx:StringValidator source="{phones.officePhoneField}" id="oficephonevalid" minLength="10" maxLength="20" property="text" required="true"/>
+<mx:StringValidator source="{phones.homePhoneField}" id="homephonevalid" minLength="10" maxLength="20" property="text" required="false"/>
+<mx:StringValidator source="{phones.otherPhoneField}" id="otherphonavalid" minLength="10" maxLength="20" property="text" required="false"/>
+<mx:StringValidator source="{phones.faxPhoneField}" id="faxphonevalid" minLength="10" maxLength="20" property="text" required="false"/>
+<mx:Validator id="addressValidator" property="text" required="true"/>
+<mx:Validator id="stateValidator" property="selectedLabel" required="true"/>
+<mx:Validator id="cityValidator" property="selectedLabel" required="true"/>
+<mx:Validator id="coraddressValidator" property="text"/>
+<mx:Validator id="corstateValidator" property="selectedLabel"/>
+<mx:Validator id="corcityValidator" property="selectedLabel"/>
+<mx:Validator id="pensionValidator" property="selectedLabel" required="true"/>
+<mx:Validator id="minorValidator" property="selectedLabel"/>	
+</mx:Panel>
+
+
+

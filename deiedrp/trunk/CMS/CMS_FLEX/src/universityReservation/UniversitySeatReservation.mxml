@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+* @(#) UniversitySeatReservation.mxml
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this  list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/-->
+<mx:Panel width="654" height="454" layout="absolute" title="{commonFunction.getConstants('universitySeatReservation')}" xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="initForm()" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+    <mx:Script>
+    	<![CDATA[
+    		import common.commonFunction;
+    	]]>
+    </mx:Script>
+    <mx:HTTPService id="getCategoryService" method="post"
+        url="{urlPrefix+'getCategories.htm'}"
+        resultFormat="e4x"
+        showBusyCursor="true"
+        result="getCategoryResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="duplicateCheckService" method="post"
+        url="{urlPrefix+'checkDuplicateCategory.htm'}"
+        resultFormat="e4x"
+        showBusyCursor="true"
+        result="duplicateCheckResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="setReservationDetailsService" method="post"
+        url="{urlPrefix+'addReservation.htm'}"
+        resultFormat="e4x"
+        showBusyCursor="true"
+        result="setReservationDetailsResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="getReservationDetailsService" method="post"
+        url="{urlPrefix+'getReservationDetails.htm'}"
+        resultFormat="e4x"
+        showBusyCursor="true"
+        result="getReservationDetailsResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="deleteDetailsService" method="post"
+        url="{urlPrefix+'deleteReservation.htm'}"
+        resultFormat="e4x"
+        showBusyCursor="true"
+        result="deleteDetailsResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+    <mx:Script source="asFiles/UniversitySeatReservationAction.as"/>
+	<mx:Validator id="categoryValidator" required="true" source="{categoryCombo}" property="selectedItem" trigger="{submitButton}" triggerEvent="click"/>
+	<mx:NumberValidator id="percentageValidator" required="true" source="{percentageText}" property="text" minValue=".01" maxValue="100" allowNegative="false" domain="real" precision="2"  trigger="{submitButton}" triggerEvent="click"/>
+	<mx:Label x="167" y="38" text="{commonFunction.getConstants('category')}"/>
+	<mx:Label x="167" y="68" text="{commonFunction.getConstants('percentageOfSeats')}"/>
+	<mx:ComboBox toolTip="{categoryCombo.text}" id="categoryCombo" prompt="{commonFunction.getConstants('select')}" x="307" y="38" width="160"/>
+	<mx:TextInput id="percentageText" x="307" y="68" width="160"/>
+	<mx:Button x="167" y="111" label="{commonFunction.getConstants('submitButton')}" id="submitButton" click="submitForm()"/>
+	<mx:Button x="309" y="111" label="{commonFunction.getConstants('resetButton')}" id="resetButton" click="resetForm()"/>
+	<mx:Button x="388" y="111" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="this.parentDocument.loaderCanvas.removeAllChildren()" />
+	<mx:Canvas styleName="GridCanvas" height="170" width="374" x="130" y="191" >
+        <mx:Label text="{commonFunction.getConstants('seatReservationDetails')}" top="6" left="10"/>
+	    <mx:LinkButton x="249" label="{commonFunction.getConstants('editButton')}" id="editButton" click="editDetails()" y="4"/>
+		<mx:LinkButton x="299" label="{commonFunction.getConstants('deleteButton')}" id="deleteButton" click="deleteDetails()" y="4"/>
+		<controls:MDataGrid id="reservationDetailsGrid" creationComplete="commonFunction.showDataTips(reservationDetailsGrid)" draggableColumns="false" x="10.5" y="34" editable="true" height="125" >
+		    <controls:columns>
+			    <dataGridClasses:MDataGridColumn headerText="" width="20" dataField="select" rendererIsEditor="true" editorDataField="selected" sortable="false">
+			    	<dataGridClasses:headerRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" click="data.selected=!data.selected"  selected="{data.selected}" change="commonFunction.selectAll(event,outerDocument.reservationDetailsGrid,[outerDocument.editButton],[outerDocument.deleteButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:headerRenderer>
+			    	<dataGridClasses:itemRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="commonFunction.editDeleteEnable(event,outerDocument.reservationDetailsGrid,[outerDocument.editButton],[outerDocument.deleteButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:itemRenderer>
+			    </dataGridClasses:MDataGridColumn>
+			    <dataGridClasses:MDataGridColumn headerText="{commonFunction.getConstants('category')}" width="150" dataField="categoryName" editable="false"/>
+			    <dataGridClasses:MDataGridColumn headerText="{commonFunction.getConstants('percentageOfSeats')}" width="180" dataField="percentage" editable="false"/>
+		    </controls:columns>
+		</controls:MDataGrid>
+	</mx:Canvas>
+</mx:Panel>

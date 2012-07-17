@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) SettingPanel.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1134" creationComplete="onPageLoad()" height="500" title="Settings" xmlns:common="common.*">
+	<mx:StringValidator id="oldPasswordValid" required="true" property="text" source="{oldPassword}" minLength="4" maxLength="15" tooLongError="{commonFunction.getMessages('invalidLengthCourseCode')}"/>
+	<mx:StringValidator id="newPasswordValid" required="true" property="text" source="{newPassword}" minLength="4" maxLength="15" tooLongError="{commonFunction.getMessages('invalidLengthCourseCode')}"/>
+	<mx:StringValidator id="confirmPasswordValid" required="true" property="text" source="{confirmPassword}" minLength="4" maxLength="15" tooLongError="{commonFunction.getMessages('invalidLengthCourseCode')}"/>
+	
+	<mx:StringValidator source="{phone.officePhoneField}" minLength="10" maxLength="15" id="oficephonevalid" property="text" required="false"/>
+	<mx:StringValidator source="{phone.homePhoneField}" minLength="10" maxLength="15" id="homephonevalid" property="text" required="false"/>
+	<mx:StringValidator source="{phone.otherPhoneField}" minLength="10" maxLength="15" id="otherphonavalid" property="text" required="false"/> 
+	<mx:StringValidator source="{phone.faxPhoneField}" minLength="10" maxLength="15" id="faxphonevalid" property="text" required="false"/>
+	<mx:Validator id="addressValidator1" property="text" required="true"/>
+    <mx:Validator id="stateValidator1" property="selectedLabel" required="true"/>
+    <mx:Validator id="cityValidator1" property="selectedLabel" required="true"/>
+    <mx:Validator id="addressValidator2" property="text"/>
+    <mx:Validator id="stateValidator2" property="selectedLabel"/>
+    <mx:Validator id="cityValidator2" property="selectedLabel"/>
+    
+	<mx:Script source="SettingAction.as"/>
+	
+	<mx:HTTPService id="getAddressInfo" method="post"
+	    url="{urlPrefix+'getUserAddress.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="getAddressesResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	        
+	<mx:HTTPService id="updateAddressInfo" method="post"
+	    url="{urlPrefix+'changeUserAddress.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="updateAddressesResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	        
+	<mx:HTTPService id="updatePassword" method="post"
+	    url="{urlPrefix+'changePassword.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="updatePasswordResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	    
+	<mx:HTTPService id="getLoginInfoService" method="post"
+		url="{commonFunction.getConstants('url')+'/login/getLoginDetails.htm'}"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="loginInfoResultHandler(event)"
+		fault="faultHandler(event)"
+		useProxy="false"/>
+	        
+	<mx:TabNavigator width="100%" height="100%" childIndexChange="onPageLoad()">
+		<mx:Canvas label="{commonFunction.getConstants('password')}" width="100%" height="100%">
+			<mx:TitleWindow x="304" y="107" width="504" height="200" layout="absolute" color="#000000" borderStyle="solid" borderThickness="2" borderColor="#000000" title="{commonFunction.getConstants('updatePassword')}">
+				<mx:Label x="20" y="30" text="{commonFunction.getConstants('oldPassword')}"/>
+				<mx:Label x="20" y="60" text="{commonFunction.getConstants('newPassword')}"/>
+				<mx:Label x="20" y="90" text="{commonFunction.getConstants('confirmPassword')}"/>
+				<mx:TextInput id="oldPassword" displayAsPassword="true" x="150" y="30" width="300"/>
+				<mx:TextInput id="newPassword" displayAsPassword="true" x="150" y="60" width="300"/>
+				<mx:TextInput id="confirmPassword" displayAsPassword="true" x="150" y="90" width="300"/>
+				<mx:Button x="150" y="125" label="{commonFunction.getConstants('updateButton')}" click="changePassword()"/>
+				<mx:Button x="267" y="124" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+				<mx:Button x="381" y="125" label="{commonFunction.getConstants('resetButton')}" click="resetPassword()"/>
+			</mx:TitleWindow>
+		</mx:Canvas>
+		<mx:Canvas label="{commonFunction.getConstants('contactDetails')}" width="100%" height="100%">
+		<mx:TitleWindow borderStyle="solid" borderThickness="2" layout="absolute" borderColor="#000000" x="20" y="19" height="378" title="{commonFunction.getConstants('updateContactDetails')}" width="1066">
+			<common:AddressField title="{commonFunction.getConstants('permanentAddress')}" id="permanentAddress" creationComplete="permanentAddress.pinValidator.required=true" y="5" x="10"/>
+			<mx:CheckBox x="117" y="104" id="checkBoxField" label="{commonFunction.getConstants('sameAsAbove')}" click="copyToCorrespondenceAddress()"/>
+			<common:AddressField title="{commonFunction.getConstants('correspondenceAddress')}" id="correspondenceAddress" y="134" x="10"/>
+			<common:PhoneField id="phone" x="26" y="234"/>
+			<mx:Button x="117" y="274" label="{commonFunction.getConstants('updateButton')}" click="changeAddress()" />
+			<mx:Button x="212" y="274" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+			<mx:Button x="301" y="274" label="{commonFunction.getConstants('resetButton')}" click="resetAddress()"/>
+		</mx:TitleWindow>
+		
+		</mx:Canvas>
+	</mx:TabNavigator>
+	
+</mx:Panel>

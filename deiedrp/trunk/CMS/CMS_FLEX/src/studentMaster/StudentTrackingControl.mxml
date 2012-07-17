@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#) StudentTrackingControl.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="100%" height="100%" initialize="panel1InitializeHandler(event)" xmlns:common="common.*">
+	<mx:title>{resourceManager.getString('Constants','studentTracking')}</mx:title>
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			[Bindable]public var urlPrefix:String;
+			[Bindable]public var urlPrefixEmployee:String;
+			[Bindable]var userTypeXml:XML=<user>
+			
+			<id code="app" name="New Applicant"></id>
+			
+			
+			<id code="emp" name="Employee"></id>
+			
+			
+			<id code="stu" name="Student"></id>
+			
+			<id code="enr" name="Student(Enrollment Form)"></id>
+			
+			</user>;
+
+			protected function panel1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/studentMaster/";
+				urlPrefixEmployee=resourceManager.getString('Constants','url')+"/employeerole/";
+			}
+
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/StudentTrackingControl.as">
+	
+</mx:Script>
+	
+	<mx:Validator id="textvalidate" source="{empId}" required="true" trigger="{okButton}" triggerEvent="click" property="text">
+		
+	</mx:Validator>
+
+	
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	
+	
+					
+	<mx:HTTPService id="getApplicationUsers" method="post"
+					url="{urlPrefixEmployee+'getApplicationUserDetails.htm'}"
+					resultFormat="e4x"
+					result="onUsersSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Panel id="mainPanel" x="10" y="10" width="477" height="195" layout="absolute">
+		<mx:Label x="10" y="10" text="{resourceManager.getString('Constants','rollNumber')+'*'}" width="117" fontWeight="bold" id="usernameid"/>
+		<mx:TextInput x="135" y="8" id="empId" focusOut="ddd()" />
+		<mx:CheckBox x="135" y="38" label="forget username" change="checkBoxChange()" id="checkBoxId"/>
+		<!--<mx:Label x="10" y="68" text="User Type*" fontWeight="bold"/>
+		<mx:ComboBox x="135" y="63" id="userType" dataProvider="{userTypeXml.id.@name}" prompt="Select" selectedIndex="-1" change="onComboChange()" toolTip="{userType.text}"/>		-->
+		<mx:TitleWindow x="10" y="5" width="359" height="140" visible="false" id="detailsCanvas" title="Search Criteria" styleName="DetailTitleWindow" layout="absolute">
+			<mx:Label x="10" y="10" text="{commonFunction.getConstants('name')}" fontWeight="bold"/>
+			<mx:TextInput x="125" y="8" id="name1"/>
+			<mx:Label x="10" y="36" text="{commonFunction.getConstants('dateOfBirth')}" fontWeight="bold"/>
+			<mx:DateField x="125" y="34" width="160" id="dateofbirth" yearNavigationEnabled="true"/>
+			<mx:Label x="10" y="63" text="{commonFunction.getConstants('fatherName')}" fontWeight="bold"/>
+			<mx:TextInput x="125" y="59" id="fathername"/>
+		</mx:TitleWindow>
+		<mx:Button x="10" y="122" label="{resourceManager.getString('Constants','okButton')}" click="onCreationComplete()" id="okButton"/>
+		<mx:Button x="152" y="122" label="{resourceManager.getString('Constants','cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()" id="cancelButton"/>
+		<mx:Button x="291" y="122" label="{resourceManager.getString('Constants','resetButton')}" click="onReset()" id="resetButton"/>
+	</mx:Panel>
+		<mx:Canvas x="10" y="{mainPanel.height+20}" width="888" height="200" visible="false" id="empdetails" styleName="GridCanvas">		
+		<mx:DataGrid x="10" y="28" editable="true" width="852" height="140" id="empdetailsdislpay" >
+		<mx:columns>
+			<mx:DataGridColumn rendererIsEditor="true" width="20" editorDataField="selected" textAlign="center" dataField="select" headerText="">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.empdetailsdislpay,[outerDocument.linkbutton],[new LinkButton])">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;
+									import mx.controls.*;
+									
+								]]>
+							</mx:Script>
+						</mx:CheckBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','rollNumber')}" dataField="employeeId" width="80" editable="false" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','name')}" dataField="empname" width="150" editable="false" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','father')} {resourceManager.getString('Constants','name')}" dataField="email_id" width="100" editable="false" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','dob')}" dataField="dob" width="50" editable="false" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','category')}" dataField="category" width="80" editable="false" showDataTips="true"/>
+			<mx:DataGridColumn headerText="{resourceManager.getString('Constants','gender')}" dataField="gender" width="35" editable="false" showDataTips="true"/>			
+		</mx:columns>
+		</mx:DataGrid>
+		<mx:Label x="9" y="6" text="{resourceManager.getString('Constants','details')}" fontWeight="bold"/>
+		<mx:LinkButton x="806" y="4" label="{resourceManager.getString('Constants','viewRecord')}" click="getApplicationUserDetails()" id="linkbutton" enabled="false"/>
+	</mx:Canvas>
+
+</mx:Panel>

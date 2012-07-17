@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * @(#) StartActivity.xml
+* Author :Deepak Pandey
+
+* Date :21/5/2011
+
+* Version 1.0
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="startActivity">
+ <typeAlias alias="startActivityBean" type="in.ac.dei.edrp.cms.domain.activitymaster.StartActivityBean"/>
+ 
+    
+    <!-- This query returns status of process for program course key -->
+    <resultMap id="getProcessGridListResult" class="startActivityBean">
+		<result property="programId" column="p.program_id" />
+		<result property="programName" column="pm.program_name" />
+		<result property="branchId" column="p.branch_id" />
+		<result property="branchName" column="sy.component_description" />
+		<result property="specializationId" column="p.specialization_id" />
+		<result property="specializationName" column="sy1.component_description" />
+		<result property="semesterName" column="sy2.component_description" />
+		<result property="processStatus" column="s.status" />
+	</resultMap>
+	<select id="getProcessGridList" resultMap="getProcessGridListResult">
+		select p.program_id,pm.program_name,p.branch_id,sy.component_description,
+		p.specialization_id,sy1.component_description,sy2.component_description,s.status
+ 		from semester_processing_control s,
+		program_offered_by p,program_course_header pch,program_master pm,
+		system_table_two sy,system_table_two sy1, system_table_two sy2 where
+		s.entity_id=#entityId# and s.semester_start_date=#semesterStartDate# and 
+		s.semester_end_date=#semesterEndDate# and
+		s.process=#processId# and s.program_course_key=#programCourseKey# 
+		and s.entity_id=p.offered_by
+		and pch.program_course_key=s.program_course_key and pch.program_id=p.program_id and
+		pch.branch_id=p.branch_id and pch.specialization_id=p.specialization_id and
+		sy.component_code=p.branch_id and pm.program_id=p.program_id and sy1.component_code=pch.specialization_id
+		and sy2.component_code=pch.semester_code and sy2.component_code=pch.semester_code and sy.group_code='BRNCOD' and sy1.group_code='SPCLCD' and
+ sy2.group_code='SEMCOD' and sy.university_code=#universityId# and sy1.university_code=#universityId# and sy2.university_code=#universityId#;
+    </select>
+    
+       
+    <!-- This query returns list of code and description according to group code -->
+ 	<resultMap id="getProcessListResult" class="startActivityBean">
+		<result property="componentCode" column="component_code" />
+		<result property="componentDescription" column="component_description" />
+	</resultMap>
+	
+    <select id="getProcessList" resultMap="getProcessListResult">
+		select component_code,component_description from system_table_two where university_code=#universityId# and 
+		 group_code=#groupCode#
+    </select>
+   
+    <!-- This query returns list of program course key according to program and semester --> 
+   <resultMap id="getProgCoursekeyResult" class="startActivityBean">
+		<result property="programCourseKey" column="program_course_key" />
+	</resultMap>
+   <select id="getProgCoursekey" resultMap="getProgCoursekeyResult">
+		select program_course_key from program_course_header where program_id=#programId# and semester_code=#semesterCode#
+    </select>
+    
+     <!-- This query returns list of program course key according to program,branch and semester --> 
+    <resultMap id="getProgCoursekeyBranchResult" class="startActivityBean">
+		<result property="programCourseKey" column="program_course_key" />
+	</resultMap>
+	
+    <select id="getProgCoursekeyBranch" resultMap="getProgCoursekeyBranchResult">
+		select program_course_key from program_course_header where program_id=#programId# 
+		and branch_id=#branchId# and semester_code=#semesterCode#
+    </select>
+    
+     <!-- This query returns list of program course key according to program,branch,specialization and semester --> 
+    <resultMap id="getProgCoursekeySpecialiazationResult" class="startActivityBean">
+		<result property="programCourseKey" column="program_course_key" />
+	</resultMap>
+	
+    <select id="getProgCoursekeySpecialiazation" resultMap="getProgCoursekeySpecialiazationResult">
+		select program_course_key from program_course_header where program_id=#programId# 
+		and branch_id=#branchId# and specialization_id=#specializationId# and semester_code=#semesterCode#
+    </select>
+    
+     <!-- This query returns list of program course key according to program and semester --> 
+	<resultMap id="getActivityListResult" class="startActivityBean">
+		<result property="activityId" column="a.activity" />
+		<result property="componentDescription" column="sy.component_description" />
+		<result property="activitySequence" column="a.activity_sequence" />
+		<result property="activityStartDate" column="process_activity_start_date" />
+		<result property="activityEndDate" column="a.process_activity_end_date" />
+		<result property="processStatus" column="a.activity_status" />
+	</resultMap>
+	
+    <select id="getActivityList" resultMap="getActivityListResult">
+		select a.activity,sy.component_description,a.activity_sequence,a.process_activity_start_date,
+	a.process_activity_end_date,a.activity_status from activity_master a,system_table_two sy
+	where a.entity_id=#entityId# and
+	a.semester_start_date=#semesterStartDate# and a.semester_end_date=#semesterEndDate# and
+	a.process=#processId# and a.program_course_key=#programCourseKey# and 
+	a.session_start_date=#sessionStartDate# and a.session_end_date=#sessionEndDate# and a.status='ACT' and a.activity=sy.component_code and sy.university_code=#universityId#
+	and sy.group_code='ACTMST' order by activity_sequence asc;
+    </select>
+
+
+<!-- Necessary for Start Activity Screen: Class RegistrationFunction method: getProgramForKey -->
+		<resultMap id="getProgramIdValueResult" class="startActivityBean">
+			<result property="programId" column="program_id" />
+			<result property="branchId" column="branch_id" />
+			<result property="specializationId" column="specialization_id" />
+			<result property="semesterCode" column="semester_code" />
+		</resultMap>
+	
+    <select id="getProgramIdValue" resultMap="getProgramIdValueResult">
+		select program_id,branch_id,specialization_id,semester_code from program_course_header where
+		program_course_key=#programCourseKey#
+    </select>
+    
+    
+    	<resultMap id="getMaximumActivitySequenceResult" class="startActivityBean">
+			<result property="activitySequence" column="max(activity_sequence)" />
+		</resultMap>
+	
+    <select id="getMaximumActivitySequence" resultMap="getMaximumActivitySequenceResult">
+	select max(activity_sequence) from activity_master where entity_id=#entityId# and
+	semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+	process=#processId# and program_course_key=#programCourseKey# and
+	session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and status='ACT';
+    </select>
+
+	<resultMap id="getSessionDateResult" class="startActivityBean">
+		<result property="sessionStartDate" column="start_date" />
+		<result property="sessionEndDate" column="end_date" />
+	</resultMap>
+	
+    <select id="getSessionDate" resultMap="getSessionDateResult">
+	SELECT start_date,end_date FROM university_master where university_code=#universityId# 
+	and current_status='1'
+ 	</select>
+ 	
+ 	<resultMap id="getSemesterDateResult" class="startActivityBean">
+		<result property="semesterStartDate" column="semester_start_date" />
+		<result property="semesterEndDate" column="semester_end_date" />
+	</resultMap>
+	
+    <select id="getSemesterDate" resultMap="getSemesterDateResult">
+	SELECT semester_start_date,semester_end_date FROM program_registration where university_id=#universityId# 
+	and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and status='ACT' and 
+	program_course_key=#programCourseKey#;
+ 	</select>
+ 	
+
+	<update id="updateProcessStartDate" parameterClass="startActivityBean">
+	    UPDATE semester_processing_control SET process_start_date=now(),modification_time=now(),modifier_id=#userId# 
+	    where entity_id=#entityId# 
+	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
+	    semester_end_date=#semesterEndDate# and process=#processId#
+	</update>
+	
+	<update id="updateProcessEndDate" parameterClass="startActivityBean">
+	    UPDATE semester_processing_control SET process_end_date=now(),modification_time=now(),modifier_id=#userId#
+	     where entity_id=#entityId# 
+	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
+	    semester_end_date=#semesterEndDate# and process=#processId#
+	</update>
+	
+	<update id="updateActivityStartDate" parameterClass="startActivityBean">
+	    UPDATE activity_master SET process_activity_start_date=now(),modification_time=now(),modifier_id=#userId#
+	     where entity_id=#entityId# 
+	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
+	    semester_end_date=#semesterEndDate# and process=#processId# and activity=#activityId#
+	</update>
+	
+	<update id="updateActivityEndDate" parameterClass="startActivityBean">
+	    UPDATE activity_master SET process_activity_end_date=now(),modification_time=now(),modifier_id=#userId#
+	     where entity_id=#entityId# 
+	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
+	    semester_end_date=#semesterEndDate# and process=#processId# and activity=#activityId#
+	</update>
+	
+
+	<update id="updateProcessStatus" parameterClass="startActivityBean">
+	    UPDATE semester_processing_control SET status=#processStatus#,modification_time=now(),modifier_id=#userId#
+	     where entity_id=#entityId# 
+	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
+	    semester_end_date=#semesterEndDate# and process=#processId#
+	</update>
+	
+	<update id="updateActivitySatus" parameterClass="startActivityBean">
+	    UPDATE activity_master SET activity_status=#activityStatus#,modification_time=now(),modifier_id=#userId#
+	     where entity_id=#entityId# 
+	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
+	    semester_end_date=#semesterEndDate# and process=#processId# and activity=#activityId#
+	</update>
+
+  	<select id="getLockForActivity" resultClass="startActivityBean">
+	SELECT activity from activity_master where entity_id=#entityId# 
+	    and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# and 
+	    semester_end_date=#semesterEndDate# and process=#processId# and activity=#activityId# FOR UPDATE;
+ 	</select>
+</sqlMap>
+
+
+
+
+
+
+

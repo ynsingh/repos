@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+<sqlMap namespace="provisionalCertificate">
+	<typeAlias alias="provisionalCertificate"
+		type="in.ac.dei.edrp.cms.domain.reportgeneration.ProvisionalCertificateBean" />
+
+	<select id="getEntityList" resultClass="provisionalCertificate">
+		SELECT entity_id as entityId,entity_name as entityName from entity_master where university_id=#universityId#;
+	</select>
+	
+	<select id="getStudentDetail" resultClass="provisionalCertificate">
+		SELECT concat(if(sm.student_first_name is null,'',sm.student_first_name),' ',if(sm.student_middle_name is null,' ',sm.student_middle_name),'',if(sm.student_last_name is null,'',sm.student_last_name)) as studentName,
+		sp.roll_number as rollNo,sp.entity_id as entityId,pm.program_id as programId,pm.program_name as programName,sp.branch_id as bracnhId,sp.specialization_id as specializationId,pm.print_aggregate as printAggregate,
+		sp.cgpa as cumulative,sp.division as division,sp.theory_cgpa as theoryPercentage,sp.theory_division as theoryDivision,sp.practical_cgpa as practicalPercentage,sp.practical_division as practicalDivision,
+		SUBSTRING(sp.passed_from_session,1,4) as sesstionStartDate,SUBSTRING(sp.passed_to_session,3,2) as sessionEndDate,sp.program_status as status
+		FROM student_program sp,student_master sm,program_master pm where
+		sm.university_code=#universityId# and sm.parent_entity=sp.entity_id and sm.enrollment_number=sp.enrollment_number and
+		sp.roll_number=#rollNo# and sp.entity_id=#entityId# and
+		pm.program_id=sp.program_id;
+	</select>
+	
+	<select id="getDescription" resultClass="provisionalCertificate">
+		SELECT component_description as componentDescription from system_table_two where university_code=#universityId# and component_code=#code# and group_code=#groupCode#;
+	</select>
+</sqlMap>

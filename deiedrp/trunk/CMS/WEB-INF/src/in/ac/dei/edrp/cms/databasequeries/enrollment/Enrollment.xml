@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) Enrollment.xml
+* @Author :Mohd Amir
+* @Date :21/3/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="enrollment">
+
+	<typeAlias alias="enrollmentInfo"
+		type="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo" />
+
+	<select id="getPersonalInfo" resultClass="enrollmentInfo">
+		SELECT student_id as studentId, enrollment_number enrollmentNo,student_first_name studentFirstName,
+		student_middle_name studentMiddleName,student_last_name studentLastName,father_first_name fatherFirstName,
+		father_middle_name fatherMiddleName,father_last_name fatherLastName,mother_first_name motherFirstName,
+		mother_middle_name motherMiddleName,mother_last_name motherLastName,category_code categoryCode,
+		date_of_birth dob,primary_email_id primaryMail,secondary_email_id secondaryMail,
+		guardian_name guardianName, nationality,religion, epd.entity_id entityCode,
+		em.entity_name entity,epd.program_id programCode, pm.program_name program, branch_id branchCode,
+		stt2.component_description branch, specialization_id specializationCode,
+		stt3.component_description specialization,session_start_date sessionStartDate,
+        session_end_date sessionEndDate,status,faculty_reg_no facRegNo,gender,
+        registration_number as registrationNo,photo_path as photoPath, name_in_hindi as hindiName,
+        father_name_in_hindi as fatherHindiName,mother_name_in_hindi as motherHindiName
+		FROM enrollment_personal_details epd, system_table_two stt2,
+		system_table_two stt3,entity_master em, program_master pm
+		WHERE stt2.component_code=branch_id AND stt2.group_code='BRNCOD'
+		AND stt2.university_code=#universityId# AND stt3.university_code=stt2.university_code
+	    AND stt3.component_code=specialization_id AND stt3.group_code='SPCLCD'
+	    AND pm.program_id=epd.program_id AND em.entity_id=epd.entity_id
+	    AND registration_number like #registrationNo# AND status like #status#
+	    AND em.entity_id like #entityCode# AND pm.program_id like #programCode#
+	    AND branch_id like #branchCode# AND specialization_id like #specializationCode#
+	    AND session_start_date like #sessionStartDate# AND session_end_date like #sessionEndDate#
+	</select>
+    
+    <select id="getAcademicInfo" resultClass="enrollmentInfo">
+		SELECT examination exam, marks_obtained	marksObtained,total_marks totalMarks,
+		board_or_university board,college_name as college,passing_year year,cgpa as cgpa
+		FROM enrollment_academic_details
+		WHERE registration_number=#registrationNo#
+		ORDER BY year;
+	</select>
+	
+	<select id="getContactInfo" resultClass="enrollmentInfo">
+		SELECT address_key as
+		addressKey,address,city,state,pinCode,office_phone as officePhone, home_phone as
+		homePhone, other_phone as otherPhone,fax
+		FROM enrollment_addresses_master
+		WHERE user_id=#userId#
+	</select>
+	
+	<!-- Query Changed By Dheeraj For By-Passing The Logic of Enrollment Form -->
+	<insert id="setPersonalInfo">
+		INSERT into enrollment_personal_details
+		(registration_number,student_id,student_first_name,student_middle_name,student_last_name,
+		father_first_name,father_middle_name,father_last_name,mother_first_name,mother_middle_name,
+		mother_last_name,primary_email_id,secondary_email_id,guardian_name,date_of_birth,nationality,
+		religion,category_code,entity_id,program_id,branch_id,specialization_id,
+		status,session_start_date,session_end_date,faculty_reg_no,gender,insert_time,creator_id)
+		VALUES
+		(#registrationNo#,#studentId#,#studentFirstName#,#studentMiddleName#,#studentLastName#,
+		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,#motherFirstName#,#motherMiddleName#,
+		#motherLastName#,#primaryMail#,#secondaryMail#,#guardianName#,#dob#,#nationality#,
+		#religion#,#categoryCode#,#entityCode#,#programCode#,#branchCode#,#specializationCode#,
+		'SUB',#sessionStartDate#,#sessionEndDate#,#facRegNo#,#gender#,now(),#creatorId#)
+	</insert>
+	
+	<update id="updatePersonalInfo">
+		UPDATE enrollment_personal_details
+		SET student_id=#studentId#,student_first_name=#studentFirstName#,
+		student_middle_name=#studentMiddleName#,student_last_name=#studentLastName#,father_first_name=
+		#fatherFirstName#,father_middle_name=#fatherMiddleName#,father_last_name=#fatherLastName#,
+		mother_first_name=#motherFirstName#,mother_middle_name=#motherMiddleName#,mother_last_name=
+		#motherLastName#,primary_email_id=#primaryMail#,secondary_email_id=#secondaryMail#,
+		guardian_name=#guardianName#,date_of_birth=#dob#,nationality=#nationality#,religion=#religion#,
+		category_code=#categoryCode#,entity_id=#entityCode#,program_id=#programCode#,branch_id=#branchCode#,
+		specialization_id=#specializationCode#,status=#status#,session_start_date=#sessionStartDate#,
+        session_end_date=#sessionEndDate#,submit_date=#submitDate#,gender=#gender#,photo_path=#photoPath#,
+        name_in_hindi=#hindiName#,father_name_in_hindi=#fatherHindiName#,mother_name_in_hindi=#motherHindiName#,
+        modification_time=now(),modifier_id=#studentId#
+		WHERE registration_number=#registrationNo#
+	</update>
+	
+	<update id="updatePhotoPath">
+		UPDATE enrollment_personal_details
+		SET photo_path=#photoPath#
+		WHERE registration_number=#registrationNo#;
+	</update>
+	
+	<update id="updatePersonalStatus">
+		UPDATE enrollment_personal_details
+		SET status=#status#
+		WHERE registration_number=#registrationNo#;
+	</update>
+	
+	<update id="updateApplicantStatus">
+		UPDATE applicant_info
+		SET status=#status#,modified_timestamp=now()
+		WHERE student_id=#studentId# and user_name=#registrationNo#;
+	</update>
+
+	<insert id="setAcademicInfo">
+		INSERT into enrollment_academic_details
+		(registration_number,examination,passing_year,total_marks,marks_obtained,college_name,board_or_university,cgpa)
+		VALUES
+		(#registrationNo#,#examCode#,#year#,#totalMarks#,#marksObtained#,#college#,#boardCode#,#cgpa#);
+	</insert>
+	
+	<delete id="deleteAcademicInfo">
+		DELETE
+		FROM enrollment_academic_details
+		WHERE registration_number=#registrationNo# 
+	</delete>
+	
+	<insert id="setContactInfo">
+		INSERT into enrollment_addresses_master
+		(address_key, user_type, user_id, address, city, state, pincode,
+		office_phone, home_phone, other_phone, fax, insert_time, creator_id)
+		VALUES
+		(#addressKey#,#userType#,#studentId#,#address#,#city#,#state#,#pinCode#,
+		#officePhone#,#homePhone#,#otherPhone#,#fax#,now(),#studentId#)
+	</insert>
+	
+	<update id="updateContactInfo">
+		UPDATE enrollment_addresses_master
+		SET address=#address#, city=#city#, state=#state#, pincode=#pinCode#, office_phone=#officePhone#,
+		home_phone=#homePhone#, other_phone=#otherPhone#, fax=#fax#, modification_time=now(), modifier_id=#studentId#
+		WHERE  user_type=#userType# AND user_id=#studentId# AND address_key=#addressKey#
+	</update>
+	
+	<update id="updateSysValue">
+		UPDATE system_values
+		SET value=#seqNum#,modifier_id=#userType#,modification_time=now()
+		WHERE  code=#code# AND university_id=#universityId#
+	</update>
+	
+	<select id="getSysValue" resultClass="enrollmentInfo">
+		SELECT value as seqNum
+		FROM system_values
+		WHERE  code=#code# AND university_id=#universityId#
+	</select>
+	
+	<select id="getStudentFinalList" resultClass="enrollmentInfo">
+		SELECT srsh.roll_number AS rollNumber,CONCAT(sm.student_first_name,' ',student_middle_name,' ',student_last_name) AS studentName,name_in_hindi AS hindiName,sp.enrollment_number AS enrollmentNo,CONCAT(sm.father_first_name,' ',sm.father_middle_name,' ',sm.father_last_name)  AS fatherName ,father_name_in_hindi AS fatherHindiName, sm.gender AS gender,
+		student_first_name AS studentFirstName,student_middle_name AS studentMiddleName ,student_last_name AS studentLastName 
+		FROM student_master sm,program_course_header pch,student_registration_semester_header srsh ,student_program sp
+		WHERE pch.program_id=#program# AND pch.branch_id=#branch# AND pch.specialization_id=#specialization# AND pch.semester_code=#semesterCode# AND pch.semester_status='ACT'
+		ANd pch.program_course_key=srsh.program_course_key ANd srsh.session_start_date=#semesterStartDate# ANd srsh.session_end_date=#semesterEndDate# AND srsh.entity_id=#entity#
+		AND srsh.status != 'YTR' AND sp.roll_number=srsh.roll_number  ANd sp.program_status IN ('ACT','PAS','FAL')
+		AND sp.entity_id=srsh.entity_id ANd sp.program_id=pch.program_id ANd sp.branch_id=pch.branch_id ANd sp.specialization_id=pch.specialization_id AND sp.current_semester=pch.semester_code
+		AND sm.enrollment_number=sp.enrollment_number order by srsh.roll_number,CONCAT(sm.student_first_name),CONCAT(sm.student_first_name,' ',student_middle_name),CONCAT(sm.student_first_name,' ',student_middle_name,' ',student_last_name);
+	</select>
+	
+	<select id="getStudentListMatchSound" resultClass="enrollmentInfo">
+		SELECT Count(enrollment_number) AS count FROM student_master WHERE student_first_name SOUNDS LIKE #studentFirstName# AND student_middle_name SOUNDS LIKE #studentMiddleName# AND student_last_name SOUNDS LIKE #studentLastName# AND parent_entity=#entity# AND university_code=#universityId#;
+	</select>
+	
+	<!-- Query written by ashish mohan to get report data of modified marks -->
+	<select id="getListOfComponent" resultClass="enrollmentInfo">
+		SELECT (select entity_name from entity_master where entity_id in (sm.entity_id)) as entityCode,
+		(select concat(program_name,(SELECT if((branch_id='XX' and specialization_id='00'),'',concat('-',branch_id,'-',specialization_id))
+		FROM program_course_header where program_course_key=sm.program_course_key) )from program_master where
+		program_id in(select program_id from program_course_header where program_course_key=sm.program_course_key)) as program,
+		course_code as categoryCode,evaluation_id as code,if(marks=0,if(attendence='ABS','A',marks),marks) as city,if(old_marks=0 and marks=0 and attendence='P','A',old_marks) as state,
+		roll_number as rollNumber,modifier_id as facRegNo,modification_time as seqNum FROM student_marks sm where modifier_id in
+		(SELECT distinct employee_code FROM employee_master where parent_entity=#entity#) and old_marks is not null AND 
+		university_code=#universityId# and (semester_start_date between #sessionStartDate# and #sessionEndDate#) and
+		sm.program_course_key in(SELECT program_course_key FROM program_course_header where (right(semester_code,1)+#count#)%2=0);
+	</select>
+	<!-- Query Added By Dheeraj For By-Passing The Logic of Enrollment Form -->
+	<insert id="setAddress">
+		INSERT INTO enrollment_addresses_master
+		(user_type, address_key, address, city, state, pincode, home_phone, insert_time, creator_id, user_id)
+		VALUES
+		(#userType#,#addressKey#,#address#,#city#,#state#,#pinCode#,#homePhone#,now(),#creatorId#,#studentId#);
+	</insert>
+	
+	<!-- Query Added By Dheeraj For By-Passing The Logic of Enrollment Form -->
+	<insert id="setEmailTableData">
+		INSERT INTO email_table
+		(user_id,entity_id,program_id,branch_id,specialization_id,semester_code,
+		user_group_id,user_name,email_id,AIOrUI,is_ready,insert_time,creator_id)
+		VALUES
+		(#userId#,#entity#,#program#,#branch#,#specialization#,#semester#,
+		#userGroupId#,#userName#,#emailId#,#AIorUI#,#isReady#,now(),#creatorId#);
+	</insert>
+</sqlMap>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProvisionalCertificate.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="558" height="274" title="{commonFunction.getConstants('provisionalCertificate')}" creationComplete="panel1CreationCompleteHandler(event)" initialize="panel1_initializeHandler(event)">
+	<mx:HTTPService id="getEntityService" method="POST"
+					url="{urlPrefix+'getEntity.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="entityHttpServiceResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>
+	<mx:HTTPService id="generateProvisionalCertificate" method="POST"
+					url="{urlPrefix+'generateProvisional.htm'}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="generateProvisionalResultHandler(event)"
+					fault="HttpServiceFaultHandler(event)"
+					useProxy="false"/>				
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.FaultEvent;
+			import mx.collections.ArrayCollection;
+			import mx.rpc.events.ResultEvent;
+			import mx.events.FlexEvent;
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import mx.validators.Validator;
+			import common.commonFunction;
+			import entityMaster.asFiles.CommonEntityFunctions;
+			
+			[Bindable]protected var urlPrefix:String;
+			[Bindable]var entityXml:XML;
+			[Embed(source="/images/question.png")] var questionIcon:Class;
+			[Embed(source="/images/error.png")] var errorIcon:Class;
+			[Embed(source="/images/success.png")] var successIcon:Class;
+			[Embed(source="/images/infoIcon.png")] var infoIcon:Class;
+			
+			/**
+ 			 * Method to fire the Initialize event of Panel
+             * This Method set the url for httpServicess
+ 			 **/
+			protected function panel1_initializeHandler(event:FlexEvent):void{
+				urlPrefix=commonFunction.getConstants('url')+"/provisionalcertificate/";
+			}	
+			
+			/**
+ 			 * Method to fire the Creation Complete event of Panel
+             * This Method send the service for get entity
+ 			 **/
+			protected function panel1CreationCompleteHandler(event:FlexEvent):void
+			{
+				getEntityService.send(new Date());
+			}
+			/**
+ 			 * Method to fire the click event of the Submit Button
+             * This Method Validate fields and ask confirmation for generate Provisional Certificate
+ 			 **/
+			public function submitData():void{
+				if(Validator.validateAll([entityVal,rollVal]).length>0){
+					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),null,null,null,errorIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, generateConfirm,questionIcon);
+				}
+			}
+			
+			/**
+ 			 * Method to fire the click event of the Cancel Button
+ 			 **/
+			public function exit():void{
+				this.parentDocument.loaderCanvas.removeAllChildren();
+			}
+			
+			public function generateConfirm(event:CloseEvent):void{
+				var param:Object={};
+				param["rollNumber"]=rollNo.text;
+				param["entity"]=entity.selectedItem.entityId.toString();
+				param["date"]=new Date();	
+				generateProvisionalCertificate.send(param);
+			}
+			
+			/**
+			 * this method is called when a fault occur from the server. 
+			 * @param event a Fault event object.
+			 */
+			protected function HttpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+			}
+			
+			/**
+			 * ResultHandler of getEntity service
+			 * @param event a ResultEvent object.
+			 */
+			protected function entityHttpServiceResultHandler(event:ResultEvent):void{
+				try
+				{
+					if(event.result.sessionConfirm == true)
+					{
+	 					Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 					this.parentDocument.vStack.selectedIndex=0;
+	    				this.parentDocument.loaderCanvas.removeAllChildren();
+					}
+				}
+ 				catch(e:Error){}
+ 				entityXml=event.result as XML;
+ 				var arrCol:ArrayCollection=new ArrayCollection;
+ 				for each(var o:Object in entityXml.entity){
+ 					arrCol.addItem({entityId:o.entityId,entityName:o.entityName});
+ 				} 				
+ 				entity.dataProvider=arrCol;
+			}
+			
+			
+			/**
+			 * ResultHandler of generateProvisionalCertificate http service
+			 * @param event a ResultEvent object.
+			 */
+			protected function generateProvisionalResultHandler(event:ResultEvent):void{
+				try
+				{
+					if(event.result.sessionConfirm == true)
+					{
+	 					Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 					this.parentDocument.vStack.selectedIndex=0;
+	    				this.parentDocument.loaderCanvas.removeAllChildren();
+					}
+				}
+ 				catch(e:Error){}
+ 				var result=event.result as XML;
+ 				if(result.resultdata=="success"){
+ 					Alert.show(resourceManager.getString('Messages','provisionalSuccess'),commonFunction.getMessages('success'),0,null,null,successIcon);
+ 				}
+ 				else if(result.resultdata=="NotPass"){
+ 					Alert.show(resourceManager.getString('Messages','notPass'),commonFunction.getMessages('info'),0,null,null,infoIcon);
+ 				}
+ 				else if(result.resultdata=="NoRecord"){
+ 					Alert.show(resourceManager.getString('Messages','noStudent',[rollNo.text,entity.selectedItem.entityName.toString()]),commonFunction.getMessages('info'),0,null,null,infoIcon);
+ 				}
+ 				else{
+ 					Alert.show(commonFunction.getMessages('errorInProvisionalReport'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+ 				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas x="34" y="23" width="468" height="184" styleName="BorderCanvas">
+		<mx:Label x="81" y="34" text="{commonFunction.getConstants('rollNumber')}"/>
+		<mx:Label x="81" y="74" text="{commonFunction.getConstants('entityName')}"/>
+		<mx:TextInput x="191" y="32" id="rollNo" restrict="0-9" maxChars="10" width="160"/>
+		<mx:ComboBox x="191" y="71" id="entity" width="160" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="{entity.toolTip=entity.selectedLabel}" labelField="entityName"></mx:ComboBox>
+		<mx:Button x="112" y="128" label="{commonFunction.getConstants('generateReport')}" id="submit" click="submitData()"/>
+		<mx:Button x="261" y="128" label="{commonFunction.getConstants('cancelButton')}" click="exit()"/>
+	</mx:Canvas>
+	<mx:NumberValidator id="entityVal" source="{entity}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>
+	<mx:StringValidator id="rollVal" source="{rollNo}" property="text" required="true" trigger="{submit}" triggerEvent="click"/>
+</mx:Panel>

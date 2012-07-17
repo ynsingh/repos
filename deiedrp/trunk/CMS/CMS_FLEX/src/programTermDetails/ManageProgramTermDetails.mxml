@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ManageProgramTermDetails.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="889" height="743" 
+		  title="{commonFunction.getConstants('manageProgramTermDetailsTitle')}" horizontalAlign="left" 
+		  verticalAlign="top" xmlns:shared="shared.*" xmlns:Components="shared.Components.*" creationComplete="httpProgramList()" xmlns:common="common.*">
+	
+	<mx:Script source="asFiles/ManageProgramTermAction.as"/>  
+	
+	
+	 <mx:HTTPService id="httpProgList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/getProgListForManage.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_ProgList(event)"
+        fault="faultHandler_ProgList(event)"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpSemList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/getProgramSemList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_SemList(event)"
+        fault="faultHandler_SemList(event)"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpTermDetails" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/getTermDetailForManage.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Details(event)"
+        fault="faultHandler_Details(event)"
+        useProxy="false"/>
+     <mx:HTTPService id="httpUpdateTerm" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/updateTermDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_UpdateTerm(event)"
+        fault="faultHandler_UpdateTerm(event)"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpDeleteTerm" method="post"
+        url="{commonFunction.getConstants('url')+ '/programtermdetails/deleteTermDetails.htm'}"
+        resultFormat="e4x"
+         result="resultHandler_DeleteTerm(event)"
+        fault="faultHandler_DeleteTerm(event)"
+        useProxy="false"/>
+        
+        
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			
+			import flash.utils.getDefinitionByName;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.ListEvent;
+			
+		
+			
+
+			
+		
+			
+			/**
+			 * @protected
+			 * this method is called on delete button click event.
+			 * this method is called on the alertBox close event.
+			 * @param event alert box close event object.
+			 */
+			public function deleteForm(event:CloseEvent):void{
+				if(event.detail == Alert.YES)
+				{
+					Alert.show("Program Name: "+programCB.text+
+					"\n Semester: "+semesterCB.text);
+					programCB.selectedIndex=-1;
+					semesterCB.selectedIndex=-1;
+					
+				} else{
+				
+				}      
+				
+       		}
+			
+		
+			
+			
+
+		]]>
+	</mx:Script>
+	
+	<mx:NumberValidator id="minSCPAValid" source="{minSgpa}" required="true" allowNegative="false" maxValue="10.00" minValue=".50" property="text" domain="real" precision="2"/>
+	<mx:NumberValidator id="minCGPAValid" source="{minCgpa}" allowNegative="false" maxValue="10.00" minValue=".50" property="text" domain="real" precision="2"/>
+	
+	<mx:Canvas width="804.65" height="75" x="28.65" y="21" styleName="SimpleCanvas">
+		<mx:Label x="14.25" y="29" text="{commonFunction.getConstants('programName')}"/>
+		<mx:ComboBox id="programCB" toolTip="{programCB.text}" x="125.3" y="24" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" labelField="name"
+					  change="programCBChangeHandler(event)" width="160" height="28"/>
+		<mx:Label x="301" y="29" text="{commonFunction.getConstants('semester')}"/>
+		<mx:ComboBox id="semesterCB" toolTip="{semesterCB.text}" x="380" y="24" height="28" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" labelField="name"
+					 enabled="false" change="semesterCBChangeHandler(event)" width="160"/>
+		<mx:Button id="editButton" x="599" y="25" label="{commonFunction.getConstants('editButton')}" width="69" enabled="false" click="editButtonClickHandler(event)"/>
+		<mx:Button id="deleteButton" x="699" y="25" label="{commonFunction.getConstants('deleteButton')}" enabled="false" click="editButtonClickHandler(event)" />
+	</mx:Canvas>	
+		
+	<mx:TitleWindow id="detailsPanel" visible="false" width="804.65" height="548.5" x="28.65" y="117" layout="absolute" title="Edit Mode">
+	<mx:Label x="42.25" y="28.4" text="{commonFunction.getConstants('semesterStartDate')}"/>
+	<!--<mx:DateField id="semesterStartDate" x="188.25" y="26.4" yearNavigationEnabled="true" width="158" formatString="MM-DD" />-->
+	<common:DateMonthSelector id="semesterStartDate" x="188.25" y="26.4"/>
+	<mx:Label x="417.95" y="28.4" text="{commonFunction.getConstants('semesterEndDate')}"/>
+	<!--<mx:DateField id="semesterEndDate" x="553.95" y="26.4" yearNavigationEnabled="true" width="158" formatString="MM-DD"/>-->
+	<common:DateMonthSelector id="semesterEndDate" x="553.95" y="26.4"/>
+	
+	<mx:Label x="42.25" y="71.1" text="{commonFunction.getConstants('semesterSequence')}"/>
+	<mx:TextInput id="semesterSequence" x="186.25" y="69.1" restrict="0-9"/>
+	<mx:Label x="431.95" y="71.1" text="{commonFunction.getConstants('semesterGroup')}"/>
+	<mx:ComboBox id="semesterGroupCB" toolTip="{semesterGroupCB.text}" x="551.95" y="68.1" selectedIndex="-1"  width="160" labelField="name"></mx:ComboBox>
+	
+	<mx:Label x="71.25" y="107.1" text="{commonFunction.getConstants('finalSemester')}"/>
+	<mx:ComboBox id="finalSemesterCodeCB" toolTip="{finalSemesterCodeCB.text}" x="186.25" y="104.1" width="160.25" dataProvider="{['Yes','No']}" prompt="{commonFunction.getConstants('select')}"/>
+	
+	<mx:Label x="34.25" y="176.95" text="{commonFunction.getConstants('noOfTeachingDays')}"/>
+	<mx:TextInput id="noOfTeachingDay" x="185.25" y="175.95" restrict="0-9"/>
+	<mx:Label x="417.95" y="176.95" text="{commonFunction.getConstants('durationInWeeks')}"/>
+	<mx:TextInput id="durationInWeeks" x="551.95" y="174.95" restrict="0-9"/>
+	<mx:Label x="35.2" y="209.95" text="{commonFunction.getConstants('minSgpa')}"/>
+	<mx:TextInput id="minSgpa" x="185.25" y="207.95" restrict="0-9,."/>
+		<mx:Label x="417.95" y="209.95" text="{commonFunction.getConstants('minCgpa')}"/>
+	<mx:TextInput id="minCgpa" x="551.9" y="207.95" restrict="0-9,."/>
+	
+	<mx:Label x="94.25" y="278" text="{commonFunction.getConstants('maxCredits')}"/>
+	<mx:TextInput id="maxCredits" x="186.25" y="276" restrict="0-9,."/>
+	<mx:Label x="463.95" y="276" text="{commonFunction.getConstants('minCredits')}"/>
+	<mx:TextInput id="minCredits" x="551.95" y="274" restrict="0-9,."/>
+	<mx:HRule  x="0" y="154.95" width="51.6" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:Label x="44.2" y="350" text="{commonFunction.getConstants('maxLectureCredits')}"/>
+	<mx:TextInput id="maxLectureCredits" x="186.2" y="348" restrict="0-9,."/>
+	<mx:Label x="413.95" y="348" text="{commonFunction.getConstants('minLectureCredits')}"/>
+	<mx:TextInput id="minLectureCredits" x="551.95" y="346" restrict="0-9,."/>
+	<mx:Label x="18.65" y="396" text="{commonFunction.getConstants('maxCreditsSpecialCase')}"/>
+	<mx:TextInput id="maxCreditsSpecialCase" x="187.65" y="394" fontFamily="Verdana" fontSize="12" restrict="0-9"/>
+	<mx:Label x="367.95" y="396" text="{commonFunction.getConstants('maxSpecialLectureCourse')}"/>
+	<mx:TextInput id="maxSpecialLectureCourse" x="551.95" y="394" restrict="0-9"/>
+	
+	<mx:Label x="52.55" y="147.95" text="{commonFunction.getConstants('teachingDetailsLabel')}" color="#5A5959" fontWeight="bold" fontStyle="italic"/>
+	<mx:HRule x="181.55" y="154.95" width="573.10004" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:HRule x="0" y="253" width="51.6" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:Label x="52.55" y="246" text="{commonFunction.getConstants('creditsDetailsLabel')}" color="#5A5959" fontWeight="bold" fontStyle="italic"/>
+	<mx:HRule x="167.55" y="253" width="587.10004" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:HRule x="0" y="322" width="51.6" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	<mx:Label x="52.55" y="315" text="{commonFunction.getConstants('lectureDetailsLabel')}" color="#5A5959" fontWeight="bold" fontStyle="italic"/>
+	<mx:HRule x="167.55" y="322" width="587.10004" height="8" strokeWidth="1" strokeColor="#ABACAC"/>
+	
+	<mx:Button id="updateButton" x="249.45" y="460.8" label="{commonFunction.getConstants('updateButton')}" click="updateButtonClickHandler(event)"/>
+	<mx:Button id="cancelButton" x="473.1" y="460.8" label="{commonFunction.getConstants('cancelButton')}" click="cancelButtonClickHandler(event)"/>
+	
+	</mx:TitleWindow>
+</mx:Panel>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) UniversityMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="518" 
+		  height="522" title="{resourceManager.getString('Constants','universityMasterPanelTitle')}" 
+		  horizontalAlign="left" verticalAlign="top"   xmlns:shared="shared.*" 
+		  xmlns:Components="common.Components.*" initialize="panel1InitializeHandler(event)" creationComplete="CreationCompleteHandler(event)">
+	
+	<mx:Script source="asFiles/universityService.as"/>
+	<mx:Script source="asFiles/createUniversity.as"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import flash.utils.getDefinitionByName;
+			
+			import mx.events.FlexEvent;
+			[Bindable]public var urlPrefix:String;
+			public var infoObject:Object={};
+			
+			/**
+			 * @protected
+			 * on page enitialization.
+			 * @param event a Flex Event object.
+			 */
+			protected function panel1InitializeHandler(event:FlexEvent):void
+			{
+				urlPrefix=commonFunction.getConstants('url')+"/universityMaster/";
+			}
+			
+			
+			/**
+			 * @protected
+			 * to close the form.
+			 * @param event a mouse event object.
+			 */
+			protected function resetButtonClickHandler():void
+			{
+				
+				universityName.text="";
+				universityNickName.text="";
+				sessionStartDate.text="";
+				sessionEndDate.text="";
+				address.text="";
+				city.text="";
+				stateCB.text="";
+				pincode.text="";
+				phoneNumber.text="";
+				otherPhone.text="";
+				faxNumber.text="";
+				countryCB.text="";
+				
+				universityName.errorString="";
+				universityNickName.errorString="";
+				sessionStartDate.errorString="";
+				sessionEndDate.errorString="";
+				address.errorString="";
+				city.errorString="";
+				stateCB.errorString="";
+				pincode.errorString="";
+				phoneNumber.errorString="";
+				otherPhone.errorString="";
+				faxNumber.errorString="";
+				countryCB.errorString="";
+			}
+						
+
+
+			protected function CreationCompleteHandler(event:FlexEvent):void
+			{
+				var
+				infoObject:Object={};		
+		
+				infoObject["userId"] = new Date;
+				infoObject["flag"] = "one";
+				
+				universityName.setFocus();
+		
+				getUniversity.send(infoObject);
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="setUniversity" method="post"
+					url="{urlPrefix+'defineUniversity.htm'}"
+					resultFormat="e4x"
+					result="onsetUniversitySuccess(event)"
+					fault="onsetUniversityFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getUniversity" method="post"
+					url="{urlPrefix+'getUniversities.htm'}"
+					resultFormat="e4x"
+					result="ongetUniversitySuccess(event)"
+					fault="ongetUniversityFailure(event)"
+					useProxy="false"/>
+	
+	
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	
+	<mx:Label x="40" y="32" text="{resourceManager.getString('Constants','universityName')}:"/>
+	<mx:Label x="41" y="65" text="{resourceManager.getString('Constants','universityNickName')}:"/>
+	<mx:TextInput x="206" y="31" id="universityName" restrict="a-z () A-Z" />
+	<mx:TextInput x="206" y="63" id="universityNickName" maxChars="3" restrict="a-zA-Z" width="160"/>
+	<mx:Label x="41" y="97" text="{resourceManager.getString('Constants','sessionStartDate')}:"/>
+	<mx:DateField x="206" y="95" yearNavigationEnabled="true" width="158" id="sessionStartDate"/>
+	<mx:Label x="41" y="130" text="{resourceManager.getString('Constants','sessionEndDate')}:"/>
+	<mx:DateField x="206" y="128" yearNavigationEnabled="true" width="158" id="sessionEndDate"/>
+	
+	<mx:Label x="41" y="173" text="{resourceManager.getString('Constants','universityAddress')}:"/>
+	<mx:TextArea x="206" y="161" id="address" restrict="a-z, A-Z, 0-9,-,/,#"/>
+	<mx:Label x="41" y="215" text="{resourceManager.getString('Constants','universityCity')}:"/>
+	<mx:TextInput x="206" y="213" id="city" restrict="a-z A-Z"/>
+	<mx:TextInput x="206" y="246" id="stateCB" restrict="a-z A-Z"/>
+	<mx:TextInput x="206" y="276" id="countryCB" restrict="a-z A-Z"/>
+	<mx:Label x="41" y="248" text="{resourceManager.getString('Constants','universityState')}:"/>
+	<mx:Label x="41" y="322" text="{resourceManager.getString('Constants','universityPinCode')}:"/>
+	<mx:Label x="41" y="278" text="{resourceManager.getString('Constants','countryName')}:"/>
+	<mx:TextInput x="206" y="317" id="pincode" maxChars="6" fontFamily="Times New Roman" fontSize="15" restrict="0-9" height="23" width="160"/>
+	<mx:Label x="41" y="350" text="{resourceManager.getString('Constants','universityPhoneNumber')}:"/>
+	<mx:TextInput x="206" y="348" id="phoneNumber" restrict="0-9" maxChars="20"/>
+	<mx:Label x="41" y="384" text="{resourceManager.getString('Constants','otherPhone')}:"/>
+	<mx:TextInput x="206" y="378" id="otherPhone" restrict="0-9" maxChars="20"/>
+	<mx:Label x="41" y="410" text="{resourceManager.getString('Constants','faxNumber')}:"/>
+	<mx:TextInput x="206" y="408" id="faxNumber" restrict="0-9" maxChars="20"/>
+	<mx:Button x="76" y="436" label="{resourceManager.getString('Constants','saveButton')}" id="saveButton" click="createUniversity()" width="70"/>
+	<mx:Button x="239" y="436" label="{resourceManager.getString('Constants','resetButton')}" id="resetButton" click="resetButtonClickHandler()" width="70"/>
+	<mx:Button x="372" y="436" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();" width="70"/>
+	
+</mx:Panel>

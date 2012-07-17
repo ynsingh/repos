@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) EditCourseMarksApproval.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="668" height="308" creationComplete="onCreationComplete()" showCloseButton="true" close="closeMe(event)" title="{commonFunction.getConstants('editButton')}" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import mx.events.CloseEvent;
+			import common.commonFunction;
+			
+			[Embed(source="/images/error.png")] private var errorIcon:Class;
+			[Embed(source="/images/success.png")] private var successIcon:Class;
+			[Embed(source="/images/reset.png")] private var resetIcon:Class;
+			[Embed(source="/images/question.png")] private var questionIcon:Class;
+
+			public var refFunction:Function;
+			public var employeeId:String="";
+			public var programCourseKey:String="";
+			var ev:CloseEvent;
+			
+			[Bindable]public var infoObject:Object = {};
+            
+			public var employeeXml:XML;
+			
+			/** on creation of form **/
+			public function onCreationComplete():void
+			{
+				employeeCodeCombo.dataProvider=employeeXml.employeeInfo.employeeCode;
+				employeeCodeCombo.selectedItem=employeeId;
+			}
+	        
+	        /** on change of employee **/
+			public function onEmployeeChange():void
+			{
+				try
+				{
+					employeeNameField.text=employeeXml.employeeInfo.(employeeCode==employeeCodeCombo.selectedItem).employeeName;
+				}
+				catch(error:Error)
+				{
+					employeeNameField.text="";
+				}
+				updateButton.setFocus();
+			}
+	
+			/** closing form **/
+			public function closeMe(event:CloseEvent):void
+			{
+				PopUpManager.removePopUp(this);
+				refFunction();
+			}
+	
+			/** on click of update button **/
+			private function onUpdate():void
+			{
+				if(employeeNameField.text!="")
+				{
+					employeeCodeCombo.errorString="";
+					Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,updateOrNot,questionIcon);
+				}
+				else
+				{
+					employeeCodeCombo.errorString=commonFunction.getMessages('invalidEntry');
+					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),0,null,onOk,errorIcon);
+				}
+			}
+	
+			/** on click of update confirmation **/
+			public function updateOrNot(event:CloseEvent):void
+			{
+				if(event.detail==Alert.YES)
+				{
+					infoObject['programCourseKey']=programCourseKey;
+					infoObject['courseCode']=courseCodeField.text;
+					infoObject['approvalOrder']=approvalOrderField.text;
+					infoObject['employeeCode']=employeeCodeCombo.selectedLabel;
+					infoObject["time"]=new Date();
+
+					updateApprovalDetails.send(infoObject);
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+				}
+			}
+	
+			/** update details success handler**/
+			public function updateApprovalDetailsSuccess(event:ResultEvent):void
+			{
+				Mask.close();
+	try
+	{
+		if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	this.parentDocument.vStack.selectedIndex=0;
+	    	this.parentDocument.loaderCanvas.removeAllChildren();
+		}
+	}
+ 	catch(e:Error){}
+    if(int(event.result.count)>0)
+				{
+					Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),commonFunction.getMessages('success'),0,null,closeMe,successIcon);
+				}
+				else if(int(event.result.count)==0 && String(event.result.exception.exceptionstring).search("ErrorInUpdate")<0)
+	{
+		 Alert.show(resourceManager.getString('Messages','recordNotUpdate'),resourceManager.getString('Messages','error'),4,null,closeMe,errorIcon);
+    }
+    else if(String(event.result.exception.exceptionstring).search("ErrorInUpdate")>-1){
+		Alert.show(resourceManager.getString('Messages','cannotUpdate')+"\n"+String(event.result.exception.exceptionstring)  ,resourceManager.getString('Messages','error'),4,null,closeMe,errorIcon); }
+			}
+	
+			/** fault handler **/
+			public function onFailure(event:FaultEvent):void
+			{
+				Alert.show(commonFunction.getMessages('requestFailed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+			}
+			/** on click of OK**/
+			public function onOk(event:CloseEvent):void
+			{
+				employeeCodeCombo.setFocus();
+			}
+		]]>
+	</mx:Script>
+	<mx:HTTPService id="updateApprovalDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/marksApproval/updateApprovalDetails.htm"
+					resultFormat="e4x"
+					result="updateApprovalDetailsSuccess(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>
+					
+	<mx:Label x="30" y="60" text="{commonFunction.getConstants('program')}"/>
+	<mx:Label x="335" y="60" text="{commonFunction.getConstants('branch')}"/>
+	<mx:Label x="30" y="90" text="{commonFunction.getConstants('specialization')}"/>
+	<mx:Label x="335" y="90" text="{commonFunction.getConstants('semester')}"/>
+	<mx:Label x="30" y="120" text="{commonFunction.getConstants('courseCode')}"/>
+	<mx:Label x="335" y="120" text="{commonFunction.getConstants('courseName')}"/>
+	<mx:Label x="30" y="151" text="{commonFunction.getConstants('employeeCode')}"/>
+	<mx:Label x="335" y="150" text="{commonFunction.getConstants('employeeName')}"/>
+	<mx:Label x="30" y="180" text="{commonFunction.getConstants('approvalOrder')}"/>
+
+	<mx:TextInput editable="false" id="programField" fontWeight="bold" x="140" y="60" width="150"/>
+	<mx:TextInput editable="false" id="branchField" fontWeight="bold" x="460" y="60" width="150"/>
+	<mx:TextInput editable="false" id="specializationField" fontWeight="bold" x="140" y="90" width="150"/>
+	<mx:TextInput editable="false" id="semesterField" fontWeight="bold" x="460" y="90" width="150"/>
+    <mx:TextInput editable="false" id="courseCodeField" fontWeight="bold" x="140" y="120" width="150"/>
+	<mx:TextInput editable="false" id="courseNameField" fontWeight="bold" x="460" y="120" width="150"/>
+    <common:AutoCompleteCB id="employeeCodeCombo" focusOut="onEmployeeChange()" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="140" y="150" width="150"/>
+    <mx:TextInput editable="false" id="employeeNameField" x="460" y="150" width="150"/>
+	<mx:TextInput editable="false" id="approvalOrderField" x="140" y="180" width="150"/>
+    <mx:Button id="updateButton" click="onUpdate()" x="140" y="220" label="{commonFunction.getConstants('updateButton')}"/>
+    <mx:Button x="335" y="220" label="{commonFunction.getConstants('cancelButton')}" click="closeMe(ev)"/>
+</mx:TitleWindow>

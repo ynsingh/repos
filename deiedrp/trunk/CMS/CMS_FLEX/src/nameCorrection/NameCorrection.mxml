@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) NameCorrection.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" xmlns:ns1="common.*" title="{commonFunction.getConstants('postRegistrationNameCorrection')}" creationComplete="setDateRangeAndFocus()" width="912" height="511">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	
+        
+ 	<mx:HTTPService id="getProgramList" method="POST"
+					url="{urlPrefix2}getProgramList.htm"
+					resultFormat="e4x"
+					result="getProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	<mx:HTTPService id="getBranchList" method="POST"
+					url="{urlPrefix2}getBranchList.htm"
+					resultFormat="e4x"
+					result="getBranchSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+	<mx:HTTPService id="getspecializationList" method="POST"
+					url="{urlPrefix2}getspecializationList.htm"
+					resultFormat="e4x"
+					result="getSpecializationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+    <mx:HTTPService id="getErrorRecords" method="POST"
+					url="{urlPrefix2}getErrorRecords.htm"
+					resultFormat="e4x"
+					result="getErrorRecordsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>   
+
+<mx:Script source="asFiles/nameCorrectionAction.as"/>
+
+<mx:Validator property="selectedItem" required="true" id="programCombovalidator" />
+
+    	<mx:Canvas styleName="SimpleCanvas" x="68" y="28" width="762" height="204" scroll="false">
+		<mx:Label x="231.75" y="22" text="{commonFunction.getConstants('program')}*" />
+		<mx:Label x="231.75" y="61" text="{commonFunction.getConstants('branch')}" />
+		<mx:Label x="231.75" y="103" text="{commonFunction.getConstants('specialization')}" />
+		<mx:ComboBox x="370.25" y="20" width="160" id="programCombo" toolTip="{programCombo.text}" prompt="{commonFunction.getConstants('select')}" enabled="true" change="programChange(event)"
+		 selectedIndex="-1"></mx:ComboBox>
+		<mx:ComboBox x="370.25" y="61" width="160" id="branchCombo" toolTip="{branchCombo.text}" prompt="{commonFunction.getConstants('select')}" enabled="false"
+		 selectedIndex="-1" change="branchChange(event)"></mx:ComboBox>
+		<mx:ComboBox width="160" id="specializationCombo" toolTip="{specializationCombo.text}" prompt="{commonFunction.getConstants('select')}" enabled="false"
+		selectedIndex="-1" x="370.25" y="101" change="specizlizationChange(event)" ></mx:ComboBox>
+		<mx:Button label="{commonFunction.getConstants('okButton')}" x="284.75" y="151" width="60" id="okButton" click="validationforOk()"/>
+		<mx:Button x="370.25" y="151" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
+		<mx:Label x="138" y="61" text="{commonFunction.getConstants('searchBy')}"/>
+		<mx:Label x="138" y="103" text="{commonFunction.getConstants('searchBy')}"/>
+	</mx:Canvas>
+			
+	<mx:Canvas styleName="GridCanvas" id="processGridCanvas"  x="67" y="255" width="763" height="185" visible="true">
+		
+		<mx:LinkButton x="673" y="8" enabled="false" visible="true" label="{commonFunction.getConstants('editButton')}" height="25" id="getButton" click="openCorrectionWindow()" width="78"/>
+		<mx:DataGrid  x="19" y="35" id="errorRecordGrid" width="715" height="129" 
+			visible="true" sortableColumns="true"  resizableColumns="false" draggableColumns="false" editable="true" >
+		<mx:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" 
+						    editorDataField="selected" dataField="select" headerText=" ">
+		<mx:itemRenderer>
+   		<mx:Component>
+   		<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.errorRecordGrid,[outerDocument.getButton],[new LinkButton])">
+ 		<mx:Script>
+        <![CDATA[
+                 import common.commonFunction;
+                 import mx.controls.LinkButton;
+              ]]>
+       </mx:Script>
+       </mx:CheckBox>
+       </mx:Component>
+       </mx:itemRenderer>
+       </mx:DataGridColumn>
+	   <mx:DataGridColumn editable="false"  dataField="registrationNo" headerText="{commonFunction.getConstants('registraionNo')}" width="300" sortable="true" showDataTips="true"/>
+	   <mx:DataGridColumn editable="false" dataField="studentName" headerText="{commonFunction.getConstants('studentName')}" width="380" sortable="true" showDataTips="true"/>
+	   <mx:DataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="400" sortable="true" showDataTips="true"/>
+	   </mx:columns>
+	   </mx:DataGrid>
+		<mx:Label x="19" y="11" text="{commonFunction.getConstants('errorRecords')}"/>
+		<mx:Label x="141" y="11" id="gridLabel"/>
+	  </mx:Canvas>
+
+</mx:Panel>
+

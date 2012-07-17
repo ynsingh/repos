@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/*
+ * @(#) MasterTransfer.xml
+* Author :Deepak Pandey
+
+* Date :21/5/2011
+
+* Version 1.0
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="masterTransfer">
+ 
+ 	<typeAlias alias="masterTransferClass" type="in.ac.dei.edrp.cms.domain.registration.prestaging.MasterTransferBean"/>
+	<typeAlias alias="courseList" type="in.ac.dei.edrp.cms.domain.registration.prestaging.CourseList"/>
+	<typeAlias alias="personalDetail" type="in.ac.dei.edrp.cms.domain.registration.prestaging.PersonalDetailsBean"/>	
+	<typeAlias alias="addressDetail" type="in.ac.dei.edrp.cms.domain.registration.prestaging.AddressDetailBean"/>
+
+	<!-- List of student where admission_mode=NEW, NOR and SWT and registration status is M --> 
+ 	<resultMap id="getNormalStudentsWithSwitchResult" class="masterTransferClass">
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="registrationNumber" column="registration_number" />
+		<result property="studentId" column="student_id" />
+		<result property="registerDate" column="register_date" />
+		<result property="oldEntity" column="old_entity_id" />
+		<result property="oldProgram" column="old_program_id" />
+		<result property="oldBranch" column="old_branch_id" />
+		<result property="oldSpecialization" column="old_specialization_id" />
+		<result property="oldSemester" column="from_semester" />
+		<result property="sequenceNumber" column="sequence_number" />
+		<result property="statusInSemester" column="status_in_semester" />
+		<result property="registeredCredit" column="registered_credit" />
+		<result property="registeredCreditExcludingAudit" column="registered_credit_excluding_audit" />
+		<result property="registeredTheoryExcludingAudit" column="registered_theory_credit_excluding_audit" />
+		<result property="registeredPracticalExcludingAudit" column="registered_practical_credit_excluding_audit" />
+	</resultMap>
+    <select id="getListOfStudentWithAdmissionMode" resultMap="getNormalStudentsWithSwitchResult">
+      SELECT enrollment_number, roll_number, registration_number,student_id, register_date, 
+      old_entity_id, old_program_id, old_branch_id, old_specialization_id, from_semester,
+      sequence_number,status_in_semester,registered_credit,registered_credit_excluding_audit,
+      registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit
+       FROM temp_student_program tsp WHERE entity_id=#newEntity# and 
+      program_id=#newProgram# and branch_id=#newBranch# and specialization_id=#newSpecialization# and 
+      to_semester=#newSemester# and 
+      to_semester_start_date=#semesterStartDate# and to_semester_end_date=#semesterEndDate# and 
+      admission_mode=#admissionMode# and registration_status=#registrationStatus# 
+    </select>
+    
+    	<!-- List of courses for student according to their registration number, enrollment number, roll number 
+    	(student id can be taken in where condition --> 
+    	<!-- Course Name Added By Dheeraj on 03-03-2012 For Transferring Course Name IN student_course -->
+ 	<resultMap id="getListOfCourseResult" class="masterTransferClass">
+		<result property="courseCode" column="tc.course_code" />
+		<result property="options" column="tc.option" />
+		<result property="courseStatus" column="tc.status" />
+		<result property="courseGroup" column="tc.course_group" />
+		<result property="courseName" column="tc.course_name"/>
+	</resultMap>
+    <select id="getListOfCourse" resultMap="getListOfCourseResult">
+     SELECT tc.course_code,tc.course_name,tc.option,tc.status,tc.course_group FROM temp_student_courses tc WHERE tc.program_id=#newProgram# 
+     AND tc.branch_id=#newBranch# AND tc.specialization_id=#newSpecialization# AND tc.semester_code=#newSemester# 
+     AND tc.semester_start_date=#semesterStartDate# AND tc.semester_end_date=#semesterEndDate# AND tc.enrollment_number=#enrollmentNumber# 
+     AND tc.roll_number=#rollNumber# AND tc.registration_number=#registrationNumber#;
+    </select>
+ 		
+ 	<!-- Course Name Added By Dheeraj on 03-03-2012 For Transferring Course Name IN student_course -->	
+ 	<resultMap id="getListOfCourseForOldStudentResult" class="masterTransferClass">
+		<result property="courseCode" column="tc.course_code" />
+		<result property="options" column="tc.option" />
+		<result property="courseStatus" column="tc.status" />
+		<result property="courseGroup" column="tc.course_group" />
+		<result property="courseName" column="tc.course_name"/>
+	</resultMap>
+    <select id="getListOfCourseForOldStudent" resultMap="getListOfCourseForOldStudentResult">
+     SELECT tc.course_code,tc.course_name,tc.option,tc.status,tc.course_group FROM temp_student_courses tc WHERE tc.program_id=#newProgram# 
+     AND tc.branch_id=#newBranch# AND tc.specialization_id=#newSpecialization# AND tc.semester_code=#newSemester# 
+     AND tc.semester_start_date=#semesterStartDate# AND tc.semester_end_date=#semesterEndDate# AND tc.enrollment_number=#enrollmentNumber# 
+     AND tc.roll_number=#rollNumber#;
+    </select>
+ 		<!-- List of courses for student according to their registration number, enrollment number, roll number 
+    	(student id can be taken in where condition --> 
+ 	<resultMap id="getPersonalDetailsResult" class="personalDetail">
+ 		<result property="studentFirstName" column="tsm.first_name" />
+		<result property="studentMiddleName" column="tsm.middle_name" />
+		<result property="studentLastName" column="tsm.last_name" />
+		<result property="fatherFirstName" column="tsm.father_first_name" />
+		<result property="fatherMiddleName" column="tsm.father_middle_name" />
+		<result property="fatherLastName" column="tsm.father_last_name" />
+		<result property="motherFirstName" column="tsm.mother_first_name" />
+		<result property="motherMiddleName" column="tsm.mother_middle_name" />
+		<result property="motherLastName" column="tsm.mother_last_name" />
+		<result property="primaryEmailId" column="tsm.primary_email_id" />
+		<result property="secondaryEmailId" column="tsm.secondary_email_id" />
+		<result property="dateOfBirth" column="tsm.date_of_birth" />
+		<result property="categoryCode" column="tsm.category" />
+		<result property="gender" column="tsm.gender" />
+		<result property="permanentAddress" column="tsm.per_address" />
+		<result property="permanentCity" column="tsm.per_city" />
+		<result property="permanentState" column="tsm.per_state" />
+		<result property="permanentPinCode" column="tsm.per_pincode" />
+		<result property="correspondentAddress" column="tsm.cor_address" />
+		<result property="correspondentCity" column="tsm.cor_city" />
+		<result property="correspondentState" column="tsm.cor_state" />
+		<result property="correspondentPinCode" column="tsm.cor_pincode" />
+		<result property="homePhone" column="tsm.office_phone" />
+		<result property="extraPhone" column="tsm.extra_phone" />
+		<result property="otherPhone" column="tsm.other_phone" />
+		<result property="fax" column="tsm.fax" />
+		<result property="nameInHindi" column="epd.name_in_hindi" />
+		<result property="fatherNameInHindi" column="epd.father_name_in_hindi" />
+		<result property="motherNameInHindi" column="epd.mother_name_in_hindi" />
+		<result property="photoPath" column="epd.photo_path" />
+		<result property="nationality" column="epd.nationality" />
+		<result property="religion" column="epd.religion" />
+		<result property="guardianName" column="epd.guardian_name" />
+		<result property="sessionStartDate" column="epd.session_start_date" />
+		<result property="sessionEndDate" column="epd.session_end_date" />
+		
+	</resultMap>
+    <select id="getPersonalDetails" resultMap="getPersonalDetailsResult">
+     SELECT tsm.first_name,tsm.middle_name,tsm.last_name,tsm.father_first_name,tsm.father_middle_name,tsm.father_last_name,
+     tsm.mother_first_name,tsm.mother_middle_name,tsm.mother_last_name,tsm.primary_email_id,
+     tsm.secondary_email_id,tsm.date_of_birth,tsm.category,tsm.gender,
+     tsm.per_address, tsm.per_city, tsm.per_state,tsm.per_pincode,tsm.cor_address, tsm.cor_city, tsm.cor_state, tsm.cor_pincode,
+     tsm.office_phone,tsm.extra_phone,tsm.other_phone,tsm.fax,
+     epd.name_in_hindi,epd.father_name_in_hindi,epd.mother_name_in_hindi,epd.photo_path,epd.nationality,
+     epd.religion,epd.guardian_name,epd.session_start_date,epd.session_end_date 
+     FROM  temp_student_master tsm,enrollment_personal_details epd WHERE  
+     tsm.university_code=#universityId# and tsm.enrollment_number=#enrollmentNumber# and 
+     tsm.enrollment_number=epd.enrollment_number;
+    </select>
+   
+       
+     <resultMap id="enrollmentExistResult" class="personalDetail">
+ 		<result property="studentFirstName" column="student_first_name" />
+	</resultMap>
+    <select id="enrollmentExist" resultMap="enrollmentExistResult">
+     SELECT student_first_name FROM  student_master WHERE  
+     university_code=#universityId# and enrollment_number=#enrollmentNumber#;
+    </select>  
+        
+        <!-- insert student Personal Details ACT:Active: It Will work for student with NEW admission mode -->
+	<insert id="insertStudentPersonalDetails" parameterClass="personalDetail">
+		INSERT INTO student_master
+		(university_code,parent_entity,enrollment_number,student_first_name,student_middle_name,student_last_name,
+		primary_email_id,secondary_email_id,date_of_birth,category_code,
+		gender,father_first_name,father_middle_name,father_last_name,
+		mother_first_name,mother_middle_name,mother_last_name,
+		registered_in_session,status,insert_time,creator_id,student_id,
+		name_in_hindi,father_name_in_hindi,mother_name_in_hindi,guardian_name,photo_path,
+		nationality,religion,session_start_date,session_end_date)
+		VALUES(#universityId#,#entityId#,#enrollmentNumber#,#studentFirstName#,#studentMiddleName#,
+		#studentLastName#,#primaryEmailId#,#secondaryEmailId#,#dateOfBirth#,#categoryCode#,
+		#gender#,#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+		#motherFirstName#,#motherMiddleName#,#motherLastName#,
+		#registeredInSession#,'ACT',now(),#userId#,#studentId#,
+		#nameInHindi#,#fatherNameInHindi#,#motherNameInHindi#,#guardianName#,#photoPath#,
+		#nationality#,#religion#,#sessionStartDate#,#sessionEndDate#);
+	</insert>
+	
+	<!-- insert student into Address master. It Will work for student with NEW admission mode-->
+	<insert id="insertStudentAddressDetails" parameterClass="addressDetail">
+		INSERT INTO addresses_master
+		(user_type,address_key,address,city,state,pincode,office_phone,home_phone,other_phone,fax,
+		user_id,insert_time,creator_id)
+		VALUES(#userType#,#addressKey#,#address#,#city#,#state#,#pinCode#,#homePhone#,#officePhone#,#otherPhone#,#fax#,
+		#studentId#,now(),#userId#)
+	</insert>
+	
+	<!-- insert student into STUDENT_PROGRAM. It Will work for student with NEW admission mode-->
+	<!-- University Code is added by Dheeraj on 6/2/2012 -->
+	<insert id="insertStudentProgram" parameterClass="masterTransferClass">
+		INSERT INTO student_program
+		(enrollment_number,roll_number,register_date,current_semester,program_status,entity_id,
+		program_id,branch_id,specialization_id,switch_number,sequence_number,in_semester,mode_of_entry,
+		insert_time,creator_id,registered_from_session,registered_to_session,university_code)
+		VALUES(#enrollmentNumber#,#rollNumber#,now(),#newSemester#,'ACT',#newEntity#,
+		#newProgram#,#newBranch#,#newSpecialization#,#switchNumber#,#sequenceNumber#,#newSemester#,#modeOfEntry#,
+		now(),#userId#,#sessionStartDate#,#sessionEndDate#,#univeristyId#);
+	</insert>
+        
+        <!-- University Code is added by Dheeraj on 6/2/2012 -->
+        <insert id="insertNewStudentProgram" parameterClass="masterTransferClass">
+		INSERT INTO student_program
+		(enrollment_number,roll_number,register_date,current_semester,program_status,entity_id,
+		program_id,branch_id,specialization_id,in_semester,mode_of_entry,
+		insert_time,creator_id,registered_from_session,registered_to_session,university_code)
+		VALUES(#enrollmentNumber#,#rollNumber#,now(),#newSemester#,'ACT',#newEntity#,
+		#newProgram#,#newBranch#,#newSpecialization#,#newSemester#,#modeOfEntry#,
+		now(),#userId#,#sessionStartDate#,#sessionEndDate#,#univeristyId#);
+		</insert>
+	
+        <!-- insert student into student_registration_semester_header: It Will work for student with NEW admission mode -->
+    <insert id="insertIntoSRSH" parameterClass="masterTransferClass">
+	 INSERT into student_registration_semester_header  
+	 (register_date,number_of_remedials,status,roll_number,program_course_key,session_start_date,session_end_date,attempt_number,
+	 entity_id,insert_time,creator_id,registered_credit,registered_theory_credit_excluding_audit,
+	 registered_practical_credit_excluding_audit,registration_credit_excluding_audit) 
+	 VALUES 
+	 (now(),0,'REG',#rollNumber#,#programCourseKey#,#semesterStartDate#,#semesterEndDate#,1,
+	 #newEntity#,now(),#userId#,#registeredCredit#,#registeredTheoryExcludingAudit#,#registeredPracticalExcludingAudit#,
+	 #registeredCreditExcludingAudit#); 
+	</insert>
+	
+	 <!-- insert student into student_course: It Will work for student with NEW/NOR and SWT admission mode -->
+	 <!-- Course Name Added By Dheeraj on 03-03-2012 For Transferring Course Name IN student_course -->				
+    <insert id="insertIntoStudentCourse" parameterClass="courseList">
+	 INSERT into student_course 
+	 (roll_number,program_course_key,semester_start_date,semester_end_date,course_code,course_name,
+	 course_status,attempt_number,insert_time,creator_id,course_group,student_status,entity_id) 
+	 VALUES 
+	 (#rollNumber#,#programCourseKey#,#semesterStartDate#,#semesterEndDate#,#courseCode#,#courseName#,
+	 #courseStatus#,1,now(),#userId#,#courseGroup#,'REG',#entityId#); 
+	</insert>
+	
+	<!-- insert student into student_course: It Will work for student with NEW/NOR and SWT admission mode: M: Master Transfer Complete -->	
+	<update id="updateTempStudentProgram" parameterClass="masterTransferClass">
+		UPDATE temp_student_program
+		SET
+		registration_status='M' where
+		enrollment_number=#enrollmentNumber# and roll_number=#rollNumber# and entity_id=#newEntity# and 
+      program_id=#newProgram# and branch_id=#newBranch# and specialization_id=#newSpecialization# and 
+      to_semester=#newSemester# and 
+      to_semester_start_date=#semesterStartDate# and to_semester_end_date=#semesterEndDate# and 
+      admission_mode=#admissionMode# and registration_status='G';
+	</update>
+	
+	<!-- insert student into student_course: It Will work for student with NEW/NOR and SWT admission mode: M: Master Transfer Complete -->
+		
+	<update id="updateTempStudentCourse" parameterClass="masterTransferClass">
+		UPDATE temp_student_courses
+		SET
+		registration_status='M',modification_time=now(),modifier_id=#userId# where
+		enrollment_number=#enrollmentNumber# and roll_number=#rollNumber# and 
+      program_id=#newProgram# and branch_id=#newBranch# and specialization_id=#newSpecialization# and 
+      semester_code=#newSemester# and 
+      semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+	</update>
+	
+	<!-- Update student Program for NOR Mode -->
+	<update id="updateStudentProgram" parameterClass="masterTransferClass">
+		UPDATE student_program SET current_semester=#newSemester#,register_date=now(),modification_time=now(),modifier_id=#userId# 
+		where current_semester=#oldSemester# and enrollment_number=#enrollmentNumber# and roll_number=#rollNumber# and program_status='ACT' 
+		and program_id=#newProgram# and branch_id=#newBranch# and specialization_id=#newSpecialization# and entity_id=#newEntity#;
+	</update>
+	
+	<!-- Update student registration semester header: Status:REG i.e. Registered for NOR Mode -->
+	<update id="updateSRSHByREG" parameterClass="masterTransferClass">
+		UPDATE student_registration_semester_header set status='REG',register_date=now(),modification_time=now(),modifier_id=#userId#,
+		registered_credit=#registeredCredit#,
+		registered_theory_credit_excluding_audit=#registeredTheoryExcludingAudit#,
+	 registered_practical_credit_excluding_audit=#registeredPracticalExcludingAudit#,
+	 registration_credit_excluding_audit=#registeredCreditExcludingAudit# 
+	 where entity_id=#newEntity# and program_course_key=#programCourseKey# 
+		and session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate# and status='YTR' 
+		and roll_number=#rollNumber#;
+	</update>
+ 
+	<!-- Get old program details -->
+	<resultMap id="getOldProgramDetailResult" class="masterTransferClass">
+		<result property="status" column="program_status" />
+		<result property="modeOfEntry" column="mode_of_entry" />
+		<result property="switchNumber" column="switchNumber" />
+		<result property="sequenceNumber" column="sequenceNumber" />
+		<result property="oldRollNumber" column="roll_number" />
+	</resultMap>
+	<select id="getOldProgramDetail" resultMap="getOldProgramDetailResult">
+		SELECT program_status,mode_of_entry,case when switch_number is null then 0 else switch_number end as switchNumber,
+case when sequence_number is null then 0 else switch_number end as sequenceNumber,roll_number FROM student_program where 
+		enrollment_number=#enrollmentNumber# and 
+		entity_id=#oldEntity# and program_id=#oldProgram# and branch_id=#oldBranch# and specialization_id=#oldSpecialization# 
+		and current_semester=#oldSemester#
+	</select>
+
+<update id="updateSPForSameProgram" parameterClass="masterTransferClass">
+		UPDATE student_program SET program_status=#programStatus#,out_semester=#oldSemester#,switched_date=now(),switch_number=#switchNumber#,
+		sequence_number=#sequenceNumber#,modifier_id=#userId#,modification_time=now()  
+		where entity_id=#oldEntity# and program_id=#oldProgram# and branch_id=#oldBranch# and specialization_id=#oldSpecialization# 
+		and current_semester=#oldSemester# and enrollment_number=#enrollmentNumber# and roll_number=#oldRollNumber#;
+</update>
+
+<update id="updateSPForDiffProgram" parameterClass="masterTransferClass">
+		UPDATE student_program SET switched_date=now(),switch_number=#switchNumber#,sequence_number=#sequenceNumber#,
+		modifier_id=#userId#,modification_time=now()  
+		where entity_id=#oldEntity# and program_id=#oldProgram# and branch_id=#oldBranch# and specialization_id=#oldSpecialization# 
+		and current_semester=#oldSemester# and enrollment_number=#enrollmentNumber# and roll_number=#oldRollNumber#;
+</update>
+	
+	
+</sqlMap>

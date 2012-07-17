@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+<!--
+	/* * @(#) AwardBlankCorrection.xml * Copyright (c) 2011 EdRP, Dayalbagh
+	Educational Institute. * All Rights Reserved. * * Redistribution and
+	use in source and binary forms, with or * without modification, are
+	permitted provided that the following * conditions are met: * *
+	Redistributions of source code must retain the above copyright *
+	notice, this list of conditions and the following disclaimer. * *
+	Redistribution in binary form must reproducuce the above copyright *
+	notice, this list of conditions and the following disclaimer in * the
+	documentation and/or other materials provided with the * distribution.
+	* * * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES *
+	OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE *
+	DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR
+	ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR *
+	CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF
+	SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR *
+	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, *
+	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors:
+	Members of EdRP, Dayalbagh Educational Institute */
+-->
+
+
+<sqlMap namespace="AwardBlankCorrection">
+	<typeAlias alias="awardBlankCorrection"
+		type="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter"/>
+		
+	<select id="getCurrentDetails" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT sp.enrollment_number AS enrollmentNumber, CONCAT_WS(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) AS studentName,
+		sp.entity_id AS entityId, sp.program_id AS programId, sp.branch_id AS branchId, sp.specialization_id AS specializationId,
+		sp.current_semester AS semesterCode, pch.program_course_key AS programCourseKey, pr.semester_start_date AS semesterStartDate,
+		pr.semester_end_date AS semesterEndDate, cm.grade_limit_active AS gradelimit, cmas.status AS reason, srsh.status AS status
+		FROM student_program sp JOIN student_master sm ON sp.enrollment_number=sm.enrollment_number AND sp.program_status='ACT'
+		AND sp.entity_id=sm.parent_entity AND sm.university_code=#universityId#
+		JOIN program_course_header pch ON sp.program_id=pch.program_id AND sp.branch_id=pch.branch_id AND sp.specialization_id=pch.specialization_id
+		AND sp.current_semester=pch.semester_code AND pch.semester_status='ACT'
+		JOIN program_registration pr ON pch.program_course_key=pr.program_course_key AND sp.entity_id=pr.entity_id AND pr.status='ACT'
+		AND sm.university_code=pr.university_id
+		JOIN student_registration_semester_header srsh ON srsh.roll_number=sp.roll_number AND srsh.entity_id=sp.entity_id
+		AND srsh.program_course_key=pch.program_course_key AND srsh.session_start_date=pr.semester_start_date
+		AND srsh.session_end_date=pr.semester_end_date 
+		JOIN course_marks_approval_status cmas ON pch.program_course_key=cmas.program_course_key AND cmas.entity_id=sp.entity_id
+		AND cmas.semester_start_date=pr.semester_start_date AND cmas.semester_end_date=pr.semester_end_date
+		AND cmas.course_code=#courseCode# AND cmas.display_type=#displayType# AND cmas.approval_order=
+		(SELECT MAX(approval_order) FROM course_marks_approval_status WHERE program_course_key=pch.program_course_key
+		AND entity_id=sp.entity_id AND semester_start_date=pr.semester_start_date AND semester_end_date=pr.semester_end_date
+		AND course_code=#courseCode# AND display_type=#displayType#)
+		JOIN course_master cm ON cm.university_code=sm.university_code AND cm.course_code=cmas.course_code
+		AND pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate#
+		AND sp.roll_number=#rollNumber#;		
+	</select>
+	
+	<select id="getStudentMarks" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		select sm.roll_number AS rollNumber, sm.evaluation_id AS evaluationId, sm.attendence AS attendence,
+		sm.marks AS marks, sm.grades AS grades, sm.pass_fail AS passfail, sms.total_internal AS totalInternal,
+		sms.total_external AS totalExternal, sms.total_marks AS total, sms.internal_grade AS internalGrade,
+		sms.external_grade AS externalGrade from student_marks sm,student_marks_summary sms
+		where sm.course_code=#courseCode# and sm.course_code=sms.course_code and sm.university_code=#universityId# and
+		sm.semester_start_date=#semesterStartDate# and sm.semester_end_date=#semesterEndDate# and sm.entity_id=#entityId# and
+		sm.entity_id=sms.entity_id and sm.program_course_key=#programCourseKey# and sm.roll_number=sms.roll_number and
+		sm.evaluation_id IN (select cec.evaluation_id from evaluation_component ec, course_evaluation_component cec
+		where cec.program_id=#programId# and course_code=#courseCode# and ec.evaluation_id=cec.evaluation_id   and
+		ec.display_type=#displayType# and ec.university_code=#universityId#) AND sm.roll_number=#rollNumber#;
+	</select>
+	
+	<select id="employeeDetails" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT SUBSTRING(#employeeId#,2,8) AS entityId, employee_code AS employeeCode FROM employee_master WHERE employee_id=#employeeId#;
+	</select>
+	
+	<select id="getComponentMarks" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT sm.marks AS oldmarks, sm.attendence AS attendence FROM student_marks sm WHERE sm.roll_number=#rollNumber# AND sm.course_code=#courseCode# 
+		AND sm.program_course_key=#programCourseKey# AND sm.semester_start_date=#semesterStartDate# AND sm.semester_end_date=#semesterEndDate# 
+		AND sm.university_code=#universityId# AND sm.status='ACT' AND sm.evaluation_id=#evaluationId#;
+	</select>
+	
+	<update id="updateStudentMarks">
+		UPDATE student_marks SET
+		marks=#marks# ,attendence=#attendence#, grades=#grades#, modifier_id=#modifierId#, modification_time=now(), old_marks=#oldmarks# 
+		WHERE university_code=#universityId# AND roll_number=#rollNumber# AND program_course_key=#programCourseKey# AND evaluation_id=#evaluationId#
+		AND course_code=#courseCode# AND semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#;
+	</update>
+	
+	<update id="updateStudentMarksSummaryInternal">
+		UPDATE student_marks_summary SET 
+		total_internal=#totalInternal#, internal_grade=#internalGrade#, modifier_id=#modifierId#, modification_time=now() WHERE university_code=#universityId# 
+		AND program_course_key=#programCourseKey# AND roll_number=#rollNumber# AND course_code=#courseCode# AND semester_start_date=#semesterStartDate# AND 
+		semester_end_date=#semesterEndDate#;
+	</update>
+	
+	<update id="updateStudentMarksSummaryExternal">
+		UPDATE student_marks_summary SET 
+		total_external=#totalExternal#, external_grade=#externalGrade#, modifier_id=#modifierId#, modification_time=now() WHERE university_code=#universityId# 
+		AND program_course_key=#programCourseKey# AND roll_number=#rollNumber# AND course_code=#courseCode# AND semester_start_date=#semesterStartDate# AND 
+		semester_end_date=#semesterEndDate#;
+	</update>
+	
+	<select id="getCourses" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT pcd.course_code AS courseCode, cm.course_name AS courseName FROM program_course_detail pcd JOIN course_master cm ON pcd.course_code=cm.course_code
+		AND cm.university_code=#universityId# AND pcd.program_course_key=(SELECT program_course_key FROM program_course_header
+		WHERE program_id=#programId# AND branch_id=#branchId# AND specialization_id=#specializationId# AND semester_code=#semesterCode# AND semester_status='ACT');
+	</select>
+	
+	<select id="getSemesterDates" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT pr.semester_start_date AS semesterStartDate, pr.semester_end_date AS semesterEndDate, pr.program_course_key AS programCourseKey FROM program_registration pr
+		WHERE pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate# AND pr.entity_id=#entityId# 
+		AND pr.status='ACT' AND program_course_key=(SELECT program_course_key FROM program_course_header
+		WHERE program_id=#programId# AND branch_id=#branchId# AND specialization_id=#specializationId# AND semester_code=#semesterCode# AND semester_status='ACT');
+	</select>
+	
+	<select id="getEmployeeDetail" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT cma.employee_id AS employeeCode, CONCAT(' ',em.first_name,em.middle_name,em.last_name) AS employeeName
+		FROM course_marks_approval cma JOIN employee_master em ON cma.employee_id=em.employee_code
+		AND cma.program_course_key=#programCourseKey# AND cma.course_code=#courseCode#
+		AND cma.entity_id=#entityId# AND cma.approval_order='1';
+	</select>
+	
+	<select id="getStudentMarks1" resultClass="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter">
+		SELECT sm.roll_number AS rollNumber, CONCAT_WS(' ',sma.student_first_name,sma.student_middle_name,sma.student_last_name) AS studentName,
+		sm.evaluation_id AS evaluationId, sm.attendence AS attendence, sm.marks AS marks, sm.grades AS grades, sm.pass_fail AS passfail,
+		sms.total_internal AS totalInternal, sms.total_external AS totalExternal, sms.total_marks AS totalMarks, sms.internal_grade AS internalGrade,
+		sms.external_grade AS externalGrade
+		FROM student_marks sm JOIN student_marks_summary sms ON sm.roll_number=sms.roll_number
+		AND sm.course_code=#courseCode# AND sm.course_code=sms.course_code AND sm.university_code=#universityId# AND
+		sm.semester_start_date=#startDate# AND sm.semester_end_date=#endDate# AND sm.entity_id=#entityId# AND
+		sm.entity_id=sms.entity_id AND sm.program_course_key=#programCourseKey# AND
+		sm.evaluation_id IN (SELECT  cec.evaluation_id FROM evaluation_component ec, course_evaluation_component cec
+		WHERE cec.program_id=#programId# AND course_code=#courseCode# AND ec.evaluation_id=cec.evaluation_id
+		AND ec.display_type=#displayType# AND ec.university_code=#universityId#)
+		JOIN student_program sp ON sp.roll_number=sm.roll_number AND sp.roll_number=sms.roll_number
+		JOIN student_master sma ON sp.enrollment_number=sma.enrollment_number AND sma.university_code=sm.university_code
+		JOIN course_evaluation_component cec ON sp.program_id=cec.program_id AND sm.course_code=cec.course_code
+		ANd sm.evaluation_id=cec.evaluation_id ORDER BY sm.roll_number, cec.order_in_awardsheet;
+	</select>
+</sqlMap>

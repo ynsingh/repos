@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) cgpaDivision.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel creationPolicy="all" xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setFirstFocous(divisionCombo)" xmlns:ns1="common.*" title="{commonFunction.getConstants('cGPADivision')}" layout="absolute" width="660" height="539">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/cgpaDivisionAction.as"/>   
+
+
+      	 <mx:HTTPService id="getInputDetails" method="post"
+					url="{commonFunction.getConstants('url')}/cgpaDivision/getInputDetails.htm"
+					resultFormat="e4x"
+					result="onDivisionSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+      	 
+      	 <mx:HTTPService id="saveDetail" method="post"
+					url="{commonFunction.getConstants('url')}/cgpaDivision/setDivisionDetails.htm"
+					resultFormat="e4x"
+					result="onSetSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+      	 
+      	 <mx:HTTPService id="getSetData" method="post"
+					url="{commonFunction.getConstants('url')}/cgpaDivision/getSetData.htm"
+					resultFormat="e4x"
+					result="onSetGridSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="deleteDivisionRecords" method="post"
+					url="{commonFunction.getConstants('url')}/cgpaDivision/deleteRecords.htm"
+					resultFormat="e4x"
+					result="onDeleteSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>		
+      	 
+      	 
+      	    <mx:Canvas styleName="SimpleCanvas" x="22" y="20" width="577" height="258">
+		    <mx:Label text="{commonFunction.getConstants('division')}" x="124" y="28"/>
+			<mx:Label x="124" y="78" text="{commonFunction.getConstants('minimumCGPA')}"/>
+			<mx:Label x="124" y="124" text="{commonFunction.getConstants('maximumCGPA')}"/>
+			<mx:Button x="169" y="172" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="saveDetails()"/>
+			<mx:Button x="256" y="172" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancel()"/>	
+			<mx:ComboBox x="263" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" y="25" toolTip="{divisionCombo.selectedItem}" id="divisionCombo" width="160"></mx:ComboBox>
+			<mx:TextInput x="263" y="76" id="minCgpaField"/>
+			<mx:TextInput x="263" y="122" id="maxCgpaField"/>
+			
+	    </mx:Canvas>
+	    <mx:Canvas styleName="GridCanvas" x="22" y="289" width="577">
+	        <mx:LinkButton x="458" y="3" label="{commonFunction.getConstants('editButton')}" id="editbutton" enabled="false" click="openEditWindow()" />
+	        <mx:LinkButton x="497" y="3" label="{commonFunction.getConstants('deleteButton')}" id="deletebutton" enabled="false" click="deleteOrNot()"/>
+			<mx:DataGrid id="cgpaDivisionGrid" width="557" height="147" horizontalScrollPolicy="off" 
+	 		 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="26">
+			<mx:columns>
+			<mx:DataGridColumn  width="40" rendererIsEditor="true" textAlign="center" sortable="false" resizable="false" 
+						        editorDataField="selected" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+   			<mx:Component>
+   			<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.cgpaDivisionGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+ 			<mx:Script>
+             <![CDATA[
+                        import common.commonFunction;
+                        import mx.controls.LinkButton;
+               ]]>
+            </mx:Script>			
+				
+            </mx:CheckBox>
+            </mx:Component>
+            </mx:itemRenderer>
+            </mx:DataGridColumn>
+			<mx:DataGridColumn editable="false" showDataTips="true" dataField="division" headerText="{commonFunction.getConstants('division')}" textAlign="center" width="300" sortable="true"/>
+			<mx:DataGridColumn editable="false" showDataTips="true" dataField="mincgpa" headerText="{commonFunction.getConstants('minimumCGPA')}" width="200" textAlign="center" sortable="true"/>
+			<mx:DataGridColumn editable="false" showDataTips="true" dataField="maxcgpa" headerText="{commonFunction.getConstants('maximumCGPA')}" width="200" textAlign="center" sortable="true"/>
+			</mx:columns>
+			</mx:DataGrid>
+			</mx:Canvas>
+    <mx:Validator source="{divisionCombo}" id="divisionComboValidator" property="selectedItem" required="true" trigger="{savebutton}" triggerEvent="click"/>
+	<mx:NumberValidator source="{minCgpaField}" id="minCgpaFieldValidator" domain="real" precision="4" allowNegative="false" maxValue="10" property="text" required="true" trigger="{savebutton}" exceedsMaxError="{commonFunction.getMessages('maxValueCanBeEnteredIs10')}" triggerEvent="click" />
+   <mx:NumberValidator source="{maxCgpaField}" id="maxCgpaFieldValidator"  domain="real" precision="4" allowNegative="false" maxValue="10" property="text" required="true" trigger="{savebutton}" exceedsMaxError="{commonFunction.getMessages('maxValueCanBeEnteredIs10')}" triggerEvent="click"/> 
+</mx:Panel>

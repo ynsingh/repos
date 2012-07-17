@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) PrestagingDataUploadForAdmin.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="944" height="278" title="{commonFunction.getConstants('studentDataTransfer')}" creationComplete="OnCreatPage()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/PrestagingAdminAction.as"/>
+	<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix}getEntityList.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="setPrestagingData" method="POST"
+		url="{urlPrefix}setPrestagingData.htm"
+		resultFormat="e4x"
+		result="setPrestagingDataSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="setPrestagingDataForExisting" method="POST"
+		url="{commonFunction.getConstants('url')}/prestagingOldTransfer/transferEnrollmentToPrestaging.htm"
+		resultFormat="e4x"
+		result="setPrestagingDataForOldSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<!-- Change Done By Dheeraj For By-Passing The Logic of Enrollment Form -->
+	<!-- Starts -->
+	<mx:HTTPService id="transferInPrestaging" method="POST"
+		url="{commonFunction.getConstants('url')}/prestagingTransfer/transferEnrollmentToPrestaging.htm"
+		resultFormat="e4x"
+		result="transferInPrestagingResult(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	<!-- Ends -->
+	<mx:Label x="50" y="40" text="{commonFunction.getConstants('studentType')}" />
+	<mx:Label x="50" y="70" text="{commonFunction.getConstants('entity')}" />
+	<mx:Label x="465" y="70" text="{commonFunction.getConstants('program')}" />
+	<mx:Label x="54" y="100" text="{commonFunction.getConstants('branch')}" />
+	<mx:Label x="465" y="100" text="{commonFunction.getConstants('specialization')}"/>
+		
+	<mx:ComboBox x="190" y="40" selectedIndex="-1" id="uploadStudentType" toolTip="{uploadStudentType.text}" prompt="{commonFunction.getConstants('select')}" width="200" change="onUploadStudentTypeChange(event)" dataProvider="{['New','Existing']}"/>
+	<mx:ComboBox x="190" y="70" toolTip="{entityCombo.text}" width="200" id="entityCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onEntityChange(event)"/>
+	<mx:ComboBox x="600" y="70" toolTip="{programCombo.text}" id="programCombo" width="200" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onProgramChange(event)"/>
+	<mx:ComboBox x="190" y="100" toolTip="{branchCombo.text}" width="200" id="branchCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onBranchChange(event)"/>
+	<mx:ComboBox x="600" y="100" toolTip="{specilizationCombo.text}" width="200" id="specilizationCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onSpecializationChange(event)"/>
+		
+	<mx:Button id="downloadButton" enabled="false" x="190" y="144" label="{commonFunction.getConstants('downloadButton')}" click="downloadFile(event)"/>
+	<mx:Button id="submitButton" click="submitData(event)" enabled="false" x="298" y="144" label="{commonFunction.getConstants('submitButton')}"/>
+	<mx:Button x="600" y="144" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+</mx:Panel>

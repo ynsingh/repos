@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ *
+ * @(#) editPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ *
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" layout="absolute" keyDown="initializeForEsc(event)" title="{commonFunction.getConstants('changeCourseDetails')}" showCloseButton="true" close="closePopUp(event)" height="400" width="427">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.events.FlexEvent;
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="updateCourseGroupService" method="POST"
+					url="{commonFunction.getConstants('url')+'/courseGroup/updateGroupDetails.htm'}"
+					resultFormat="e4x"
+					result="updateCourseGroupResultHandler(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+			
+
+<mx:Script source="asFiles/editPopupAction.as"/>
+
+    <mx:NumberValidator id="minCreditsValidator1" minValue="1.00" maxValue="100.00" property="text" required="true" precision="2" precisionError="should contain upto 2 digit after decimal" domain="real" allowNegative="false"/>
+	<mx:NumberValidator id="maxCreditsValidator1" minValue="1.00" maxValue="100.00" property="text" required="true" precision="2" precisionError="should contain upto 2 digit after decimal" domain="real" allowNegative="false"/>
+	<mx:Label  text="{commonFunction.getConstants('program')}:" x="54" y="48"/>
+	<mx:Label  text="{commonFunction.getConstants('branch')}:" x="54" y="74"/>
+	<mx:Label  text="{commonFunction.getConstants('specialization')}:" x="54" y="100"/>
+	<mx:Label  text="{commonFunction.getConstants('semester')}:" x="54" y="126"/>
+	<mx:Label text="{commonFunction.getConstants('courseGroup')}" x="54" y="152"/>
+	<mx:Label text="{commonFunction.getConstants('elective')}" x="54" y="182"/>
+	<mx:Label text="{commonFunction.getConstants('minimumCredit')}" x="54" y="210"/>
+	<mx:Label text="{commonFunction.getConstants('maximumCredit')}" x="54" y="238"/>
+	<mx:RadioButtonGroup id="isElectiveGroup"/>
+		<mx:RadioButton x="188" y="178" label="Yes" value="1" groupName="isElectiveGroup"/>
+		<mx:RadioButton x="235" y="178" label="No" value="0" groupName="isElectiveGroup"/>
+	
+	<mx:Label id="programLabel" fontWeight="bold" x="187" y="48"/>
+	<mx:Label id="branchLabel" fontWeight="bold" x="187" y="74"/>
+	<mx:Label id="specilizationLabel" fontWeight="bold" x="187" y="100"/>
+	<mx:Label id="semesterLabel" fontWeight="bold" x="187" y="126"/>
+	<mx:Label id="courseGroupLabel" fontWeight="bold" x="187" y="152"/>
+	
+	<mx:Button label="{commonFunction.getConstants('updateButton')}" click="updateRecord()" id="updatebutton" x="187" y="308"/>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" click="var evt:CloseEvent;closePopUp(evt)" id="cancel" x="262" y="308"/>
+	<mx:TextInput id="minCreditField" x="185" y="205" width="84" restrict="0-9."/>
+    <mx:TextInput id="maxCreditField" x="185" y="236" width="84" restrict="0-9."/>
+    <mx:NumericStepper id="order" x="185" y="266" minimum="1" maximum="50"/>
+    <mx:Label  x="54" y="268" text="{commonFunction.getConstants('orderInMarksheet')}"/>
+	
+</mx:TitleWindow>

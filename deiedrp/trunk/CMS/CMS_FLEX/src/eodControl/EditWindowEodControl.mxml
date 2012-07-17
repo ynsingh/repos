@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) EditWindowEodControl.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="620" height="472" title="{commonFunction.getConstants('editDetails')}"
+	showCloseButton="true"	close="popUpWindowClose();" keyDown="initializeForEsc(event)" 
+	styleName="PopUpTitleWindow" creationComplete="popupWindowCreationCompleteHandler()" xmlns:ns1="common.*">
+	
+	<mx:HTTPService id="updateEodControlHttpService" method="POST"
+		url="{urlPrefix+'updateEodControl.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="updateEodControlHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:Script source="asFiles/EditWindowEodControlAS.as"/>
+	<mx:DateFormatter id="dateFormatter" formatString="YYYY-MM-DD"/>
+	
+	<mx:Label x="46" y="53" text="{commonFunction.getConstants('phase')}" fontWeight="bold"/>
+	<mx:Label x="102" y="53" width="38" id="phaseLabel"/>
+	<mx:Label x="274" y="51" text="{commonFunction.getConstants('dependentPhase')}" fontWeight="bold"/>
+	<mx:NumericStepper x="406" y="49" width="160" id="dependentPhaseNS"/>
+	<mx:Label x="47" y="106" text="{commonFunction.getConstants('step')}" fontWeight="bold"/>
+	
+	<mx:Label x="102" y="106" width="38" id="stepLabel"/>
+	<mx:Label x="277" y="104" text="{commonFunction.getConstants('stepFrequency')}" fontWeight="bold"/>
+	<mx:ComboBox x="406" y="102" id="stepFrequencyCB" width="160"/>
+	<mx:Label x="148.5" y="210" text="{commonFunction.getConstants('periodActiveFrom')}"/>
+	<mx:DateField x="291.5" y="208" width="160" id="periodActiveFromDF"/>
+	<mx:Label x="148.5" y="252" text="{commonFunction.getConstants('periodActiveTo')}"/>
+	<mx:DateField x="291.5" y="250" width="160" id="periodActiveToDF"/>
+	<mx:Label x="148.5" y="291" text="{commonFunction.getConstants('methodToRun')}"/>
+	<mx:Label x="291.5" y="291" width="160" id="methodToRunLabel"/>	
+	<mx:Label x="277" y="155" fontWeight="bold" id="buildTimeLabel"/>
+	<ns1:DateMonthSelector x="406" y="148" id="mmdd" visible="false"/>
+	<mx:ComboBox x="406" y="148" id="buildTimeCB" toolTip="{buildTimeCB.text}" prompt="select" width="160" visible="false"/>
+	<mx:Button x="176.5" y="364" label="{commonFunction.getConstants('updateButton')}" id="updateButton" click="updateButtonClickHandler()"/>
+	<mx:Button x="383.5" y="364" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="popUpWindowClose()"/>	
+</mx:TitleWindow>

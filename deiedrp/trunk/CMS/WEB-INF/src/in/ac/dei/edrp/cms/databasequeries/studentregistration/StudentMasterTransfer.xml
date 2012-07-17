@@ -1,0 +1,644 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+<sqlMap namespace="mastertransfer">
+	<typeAlias alias="mastertransfer"
+		type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter" />
+
+
+	<resultMap id="studentdetails" class="mastertransfer">
+
+		<result property="studentId" column="student_id" />
+		<result property="registrationNumber" column="registration_number" />
+		<result property="studentFirstName" column="first_name" />
+		<result property="studentMiddleName" column="middle_name" />
+		<result property="studentLastName" column="last_name" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="category" column="category" />
+		<result property="gender" column="gender" />
+		<result property="fatherName" column="father_name" />
+		<result property="motherName" column="mother_name" />
+		<result property="primaryEmailId" column="primary_email_id" />
+		<result property="secondaryEmailId" column="secondary_email_id" />
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="roll_number" />
+
+	</resultMap>
+
+	<select id="getregisteredstudentlist" resultMap="studentdetails">
+
+		select
+		tsm.student_id,tsp.registration_number,tsm.first_name,tsm.middle_name,tsm.last_name,
+		tsm.date_of_birth,tsm.father_name,tsm.mother_name,tsm.primary_email_id,
+		tsm.secondary_email_id,tsm.gender,tsm.category,tsm.enrollment_number,tsp.roll_number
+		from temp_student_master
+		tsm,temp_student_program tsp where
+		tsm.student_id=tsp.student_id AND
+		tsp.registration_status='G' AND
+		tsm.parent_entity IN(select entity_id
+		from entity_master where
+		entity_name=#entityId#) AND
+		tsp.program_id=#programId# AND
+		tsp.branch_code=#branchId# AND
+		tsp.specialization_id=#specializationId#;
+</select>
+
+	<resultMap id="enrollmentyes" class="mastertransfer">
+
+
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="admissionMode" column="admission_mode" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="fromSemester" column="from_semester" />
+		<result property="toSemester" column="to_semester" />
+		<result property="status" column="registration_status" />
+
+	</resultMap>
+
+	<select id="getlistwithgeneratednumbers" resultMap="enrollmentyes">
+
+		select
+		distinct
+		tsm.enrollment_number,tsp.admission_mode,tsp.roll_number,
+		tsp.from_semester,tsp.to_semester,tsp.registration_status
+		from
+		temp_student_master
+		tsm,temp_student_program tsp,temp_student_courses
+		tsc where
+		tsm.enrollment_number=tsp.enrollment_number AND
+		tsp.enrollment_number=tsc.enrollment_number
+		AND tsm.enrollment_number
+		IS NOT NULL AND tsp.entity_id=#entityId# AND
+		tsp.program_id=tsc.program_id AND
+		tsp.program_id=#programId# AND
+		tsc.branch_id=tsc.branch_id AND
+		tsp.branch_id=#branchId# AND
+		tsp.specialization_id=tsc.specialization_id AND
+		tsp.specialization_id=#specializationId#
+		AND
+		tsm.university_code=#universityId# AND
+		tsp.to_semester=tsc.semester_code AND
+		tsp.to_semester=#semesterCode#
+		AND
+		tsp.to_semester_start_date=tsc.semester_start_date
+		AND
+		tsp.to_semester_start_date=#semesterStartDate# AND
+		tsp.to_semester_end_date=tsc.semester_end_date
+		AND
+		tsp.to_semester_end_date=#semesterEndDate#
+		AND
+		tsp.registration_status='G';
+</select>
+
+	<insert id="inserttomaster">
+
+		insert into student_master
+		(university_code,parent_entity,enrollment_number,student_first_name,student_middle_name,student_last_name,primary_email_id,secondary_email_id,date_of_birth,category_code,
+		gender,father_first_name,mother_first_name,registered_in_session,status,insert_time,creator_id,student_id)
+		values(#universityId#,#entityId#,#enrollmentNumber#,#studentFirstName#,#studentMiddleName#,#studentLastName#,#primaryEmailId#,#secondaryEmailId#,#dateOfBirth#,#category#,
+		#gender#,#fatherName#,#motherName#,#registerDate#,#status#,#creationTime#,#creatorId#,#studentId#);
+
+</insert>
+
+	<insert id="insertintostudentprogrammaster">
+
+		insert into student_program
+		(enrollment_number,roll_number,register_date,current_semester,program_status,entity_id,program_id,branch_id,specialization_id,sequence_number,in_semester,mode_of_entry,insert_time,creator_id)
+		values(#enrollmentNumber#,#rollNumber#,#registerDate#,#currentSemester#,#status#,#entityId#,#programId#,#branchId#,#specializationId#,#sequenceNumber#,#inSemester#,#modeOfEntry#,#creationTime#,#creatorId#);
+</insert>
+
+	<!--	<update id="updatestudentmaster">-->
+<!---->
+	<!--		update student_master SET-->
+	<!--		student_id=#student_id#,status=#status_flag#,-->
+	<!--		creator_id=#creator_id#,insert_time=#insert_time# where-->
+	<!--		enrollment_number=#enrollment_number#;-->
+	<!--		-->
+	<!--		</update>-->
+
+	<!--	<update id="updatestudentprogram">-->
+<!---->
+	<!--		update STUDENT_PROGRAM SET-->
+	<!--		status=#status_flag#,-->
+	<!--		creator_id=#creator_id#,insert_time=#insert_time# where-->
+	<!--		enrollment_number=#enrollment_number#;-->
+	<!--		-->
+	<!--		</update>-->
+
+	<insert id="insertintobatchformastertransfer">
+
+		insert into batch_process_logs
+		(entity_id,program_id,branch_code,actual_records,process_flag,process_counter,process_start_time,specialization_code,semester_code,semester_start_date,semester_end_date)
+		values(#entityId#,#programId#,#branchCode#,#actualRecords#,#processFlag#,#processCounter#,now(),#specializationId#,#semesterCode#,#semesterStartDate#,#semesterEndDate#);
+
+</insert>
+
+	<update id="updatebatchformaster">
+
+		update batch_process_logs SET
+		records_processed=#recordsProcessed#,records_failed=0,process_end_time=now()
+		where
+		entity_id=#entityId# AND
+		program_id=#programId# AND
+		branch_code=#branchCode# AND
+		specialization_code=#specializationId# AND
+		semester_code=#semesterCode# AND
+		actual_records=#actualRecords# AND
+		process_counter=#processCounter#
+		AND process_flag=#processFlag#;
+		
+		</update>
+
+	<resultMap id="batchcounter" class="mastertransfer">
+
+
+		<result property="processCounter" column="process_counter" />
+
+	</resultMap>
+
+	<select id="getrecordsfromthebatch" resultMap="batchcounter">
+
+		select
+		process_counter from
+		batch_process_logs where entity_id=#entityId# AND
+		program_id=#programId# AND branch_code=#branchId# AND
+		specialization_code=#specializationId# AND
+		semester_code=#semesterCode#;
+</select>
+
+	<!--	<insert id="intempprogram2">-->
+<!---->
+	<!--		insert into TEMP_STUDENT_PROGRAM_2-->
+	<!--
+		(program_id,branch_code,enrollment_number,roll_number,offered_by,program_type,program_mode,register_date,program_completion_date,registration_status,registration_number,student_id)
+	-->
+	<!--		(select-->
+	<!--
+		program_id,branch_code,enrollment_number,roll_number,offered_by,program_type,program_mode,register_date,program_completion_date,registration_status,registration_number,student_id
+	-->
+	<!--		from-->
+	<!--
+		temp_student_program where enrollment_number=#enrollment_number#
+	-->
+	<!--		AND registration_status='G');-->
+<!---->
+	<!--</insert>-->
+
+	<update id="updatetemptables">
+
+		update temp_student_program
+		SET
+		registration_status='M' where
+		enrollment_number=#enrollmentNumber#;
+				
+		</update>
+
+	<resultMap id="studenterrorlog" class="mastertransfer">
+
+
+		<result property="studentId" column="student_id" />
+		<result property="studentFirstName" column="name" />
+
+
+	</resultMap>
+
+	<select id="getstudent4errorlog" resultMap="studenterrorlog">
+
+		select
+		student_id,COALESCE(first_name,middle_name,last_name)as name
+		from
+		temp_student_master
+		where enrollment_number=#enrollmentNumber#;
+</select>
+
+	<insert id="insertstudenterrorlog">
+
+		insert into student_error_logs
+		(entity_id,program_id,branch_code,student_id,enrollment_number,student_name,process_flag,process_counter,specialization_code,reason_code,reason_description,semester_code)
+		values(#entityId#,#programId#,#branchId#,#studentId#,#enrollmentNumber#,#studentFirstName#,#processFlag#,#processCounter#,#specializationId#,#reasonCode#,#reasonDescription#,#semesterCode#);
+
+</insert>
+
+	<update id="updatebatchlogonfailure">
+
+		update batch_process_logs
+		SET
+		records_failed=1,process_end_time=#modificationTime# where
+		program_id=#programId# AND entity_id=#entityId# AND
+		branch_code=#branchId# AND process_flag=#processFlag# AND
+		process_counter=#processCounter# AND
+		specialization_code=#specializationId# AND
+		semester_code=#semesterCode#;
+				
+		</update>
+
+	<update id="batchlogonsuccess">
+
+		update batch_process_logs
+		SET
+		records_failed=0,process_end_time=#modificationTime# where
+		program_id=#programId# AND entity_id=#entityId# AND
+		branch_code=#branchId# AND specialization_code=#specializationId#
+		AND
+		semester_code=#semesterCode#
+		AND process_flag=#processFlag# AND
+		process_counter=#processCounter#;
+				
+		</update>
+
+	<resultMap id="processcountermap" class="mastertransfer">
+		<result property="processCounter" column="process_counter" />
+	</resultMap>
+
+	<select id="getmaxcounter" resultMap="processcountermap">
+
+		select
+		max(process_counter)
+		process_counter
+		from batch_process_logs where program_id=#programId#
+		AND
+		entity_id=#entityId# AND
+		branch_code=#branchId# AND
+		process_flag=#processFlag# AND
+		specialization_code=#specializationId#
+		AND
+		semester_code=#semesterCode#;
+</select>
+
+	<update id="updatedetailsofoldprogramact">
+
+		update student_program sp,temp_student_program tsp
+		SET
+		sp.program_status=#status#,sp.out_semester=tsp.from_semester,sp.switched_date=#switchedDate#,
+		sp.modification_time=#modificationTime#,sp.modifier_id=#modifierId#
+		where
+		sp.enrollment_number=#enrollmentNumber# AND
+		sp.entity_id=#entityId#
+		AND
+		sp.program_id=#programId# AND
+		sp.branch_id=#branchId# AND
+		sp.specialization_id=#specializationId#;
+				
+		</update>
+
+	<update id="updatedetailsofoldprogrampass">
+
+		update student_program sp,temp_student_program tsp
+		SET
+		sp.switched_date=#switchedDate#,
+		sp.modification_time=#modificationTime#,sp.modifier_id=#modifierId#
+		where
+		sp.enrollment_number=#enrollmentNumber# AND
+		sp.entity_id=#entityId#
+		AND
+		sp.program_id=#programId# AND
+		sp.branch_id=#branchId# AND
+		sp.specialization_id=#specializationId#;
+				
+		</update>
+
+	<update id="updateswitchnumber">
+
+		update student_program sp
+		SET
+		sp.switch_number=#switchNumber#
+		where
+		sp.enrollment_number=#enrollmentNumber# AND
+		sp.entity_id=#oldEntityId#
+		AND sp.program_id=#oldProgramId# AND
+		sp.branch_id=#oldBranchId# AND
+		sp.specialization_id=#oldSpecializationId#;
+				
+		</update>
+
+	<resultMap id="masterstatus" class="mastertransfer">
+		<result property="status" column="program_status" />
+		<result property="modeOfEntry" column="mode_of_entry" />
+		<result property="switchNumber" column="switch_number" />
+	</resultMap>
+
+	<select id="getstatusformaster" resultMap="masterstatus">
+
+		select
+		program_status,mode_of_entry,switch_number from
+		student_program where
+		enrollment_number=#enrollmentNumber# AND
+		entity_id=#oldEntityId# AND
+		program_id=#oldProgramId# AND
+		branch_id=#oldBranchId# AND
+		specialization_id=#oldSpecializationId#;
+</select>
+
+	<resultMap id="newstudentdetails" class="mastertransfer">
+
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="entityId" column="entity_id" />
+		<result property="programId" column="program_id" />
+		<result property="branchId" column="branch_id" />
+		<result property="specializationId" column="specialization_id" />
+		<result property="admissionMode" column="admission_mode" />
+		<result property="fromSemester" column="from_semester" />
+		<result property="toSemester" column="to_semester" />
+
+
+
+	</resultMap>
+
+	<select id="studentnewprogramdetails" resultMap="newstudentdetails">
+
+		select
+		tsm.enrollment_number,tsm.roll_number,tsm.entity_id,tsm.program_id,tsm.branch_id,
+		tsm.specialization_id,tsm.admission_mode,tsm.from_semester,tsm.to_semester
+		from temp_student_program tsm where
+		tsm.entity_id =#entityId#
+		AND
+		tsm.program_id=#programId# AND
+		tsm.branch_id=#branchId# AND
+		tsm.specialization_id=#specializationId# AND
+		tsm.enrollment_number=#enrollmentNumber#;
+</select>
+
+	<insert id="insertnewprogramdetails">
+
+		insert into student_program
+		(enrollment_number,roll_number,register_date,current_semester,program_status,insert_time,creator_id,entity_id,program_id,branch_id,specialization_id,mode_of_entry,switch_number,in_semester,sequence_number)
+		values(#enrollmentNumber#,#rollNumber#,#registerDate#,#currentSemester#,#status#,#creationTime#,#creatorId#,#entityId#,#programId#,#branchId#,#specializationId#,#modeOfEntry#,#switchNumber#,#inSemester#,#sequenceNumber#);
+
+</insert>
+
+	<resultMap id="getolddetails" class="mastertransfer">
+		<result property="oldEntityId" column="old_entity_id" />
+		<result property="oldProgramId" column="old_program_id" />
+		<result property="oldBranchId" column="old_branch_id" />
+		<result property="oldSpecializationId" column="old_specialization_id" />
+		<result property="fromSemester" column="from_semester" />
+	</resultMap>
+
+	<select id="getoldprogramdetailsofstudent" resultMap="getolddetails">
+
+		select
+		old_entity_id,old_program_id,old_branch_id,old_specialization_id,from_semester
+		from
+		temp_student_program where
+		enrollment_number=#enrollmentNumber#
+		AND
+		roll_number=#rollNumber#;
+</select>
+
+	<resultMap id="newstudentcoursesdetails" class="mastertransfer">
+
+		<result property="rollNumber" column="roll_number" />
+		<result property="status" column="status" />
+		<result property="semesterStartDate" column="semester_start_date" />
+		<result property="semesterEndDate" column="semester_end_date" />
+		<!--
+			<result property="program_course_key" column="program_course_key" />
+		-->
+		<result property="courseCode" column="course_code" />
+
+
+	</resultMap>
+
+	<select id="studentnewcoursesdetails" resultMap="newstudentcoursesdetails">
+
+		select
+		tsm.roll_number,tsm.status,tsm.semester_start_date,tsm.semester_end_date,
+		tsm.course_code
+		from temp_student_courses
+		tsm where
+		tsm.enrollment_number=#enrollmentNumber#
+		AND
+		tsm.program_id=#programId#
+		AND
+		tsm.branch_id=#branchId# AND
+		tsm.specialization_id=#specializationId# AND
+		tsm.semester_code=#semesterCode# AND
+		tsm.semester_start_date=#semesterStartDate# AND
+		tsm.semester_end_date=#semesterEndDate#;
+</select>
+
+	<insert id="insertnewcoursesdetails">
+
+		insert into student_course
+		(roll_number,program_course_key,semester_start_date,semester_end_date,course_status,insert_time,creator_id,course_code)
+		values(#rollNumber#,#programCourseKey#,#semesterStartDate#,#semesterEndDate#,#status#,#creationTime#,#creatorId#,#courseCode#);
+
+</insert>
+
+	<resultMap id="newstudentregisdetails" class="mastertransfer">
+
+		<result property="rollNumber" column="roll_number" />
+		<result property="sessionStartDate" column="session_start_date" />
+		<result property="sessionEndDate" column="session_end_date" />
+		<result property="semesterCode" column="semester_code" />
+
+
+	</resultMap>
+
+	<!--
+		<select id="studentnewregisterationdetails"
+		resultMap="newstudentregisdetails">
+	-->
+<!---->
+	<!--		select-->
+	<!--
+		tsm.roll_number,tsm.session_start_date,tsm.session_end_date,tsm.semester_code
+	-->
+	<!--		from TEMP_STUDENT_REGISTRATION tsm where-->
+	<!--		tsm.enrollment_number=#enrollment_number#;-->
+	<!--</select>-->
+
+	<resultMap id="studentseqnumber" class="mastertransfer">
+
+		<result property="sequenceNumber" column="sequence_number" />
+
+	</resultMap>
+
+	<select id="getstudentsequencenumber" resultMap="studentseqnumber">
+
+		select
+		sequence_number
+		from student_program where
+		entity_id=#oldEntityId# AND
+		program_id=#oldProgramId# AND
+		branch_id=#oldBranchId# AND
+		specialization_id=#oldSpecializationId# AND
+		enrollment_number=#enrollmentNumber#;
+</select>
+
+	<insert id="insertnewregistrationdetails">
+
+		insert into student_registration_semester_header
+		(register_date,roll_number,attempt_number,program_course_key,session_start_date,session_end_date,entity_id,status,insert_time,creator_id)
+		values(#registerDate#,#rollNumber#,#attemptNumber#,#programCourseKey#,#sessionStartDate#,#sessionEndDate#,#entityId#,'REG',#creationTime#,#creatorId#);
+
+</insert>
+
+	<resultMap id="studentinfos" class="mastertransfer">
+
+		<result property="studentFirstName" column="first_name" />
+		<result property="studentMiddleName" column="middle_name" />
+		<result property="studentLastName" column="last_name" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="category" column="category" />
+		<result property="gender" column="gender" />
+		<result property="fatherName" column="father_name" />
+		<result property="motherName" column="mother_name" />
+		<result property="primaryEmailId" column="primary_email_id" />
+		<result property="secondaryEmailId" column="secondary_email_id" />
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<!--		<result property="entity_id" column="parent_entity" />-->
+
+	</resultMap>
+
+	<select id="getmasterinfoofstudent" resultMap="studentinfos">
+
+		select
+		tsm.first_name,tsm.middle_name,tsm.last_name,
+		tsm.date_of_birth,tsm.father_name,tsm.mother_name,tsm.primary_email_id,
+		tsm.secondary_email_id,tsm.gender,tsm.category,tsm.enrollment_number
+		from temp_student_master
+		tsm where
+		tsm.enrollment_number=#enrollmentNumber#;
+</select>
+
+	<resultMap id="studentprograminfo" class="mastertransfer">
+
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="entityId" column="entity_id" />
+		<result property="programId" column="program_id" />
+		<result property="branchId" column="branch_id" />
+		<result property="specializationId" column="specialization_id" />
+		<result property="toSemester" column="to_semester" />
+
+	</resultMap>
+
+	<select id="getprograminfoofstudent" resultMap="studentprograminfo">
+
+		select
+		tsm.enrollment_number,tsm.roll_number,tsm.entity_id,
+		tsm.program_id,tsm.branch_id,tsm.specialization_id,tsm.to_semester
+		from temp_student_program
+		tsm where
+		tsm.entity_id =#entityId#
+		AND
+		tsm.program_id=#programId# AND
+		tsm.branch_id=#branchId# AND
+		tsm.specialization_id=#specializationId# AND
+		tsm.enrollment_number=#enrollmentNumber#;
+</select>
+
+	<resultMap id="studentregistrationstatus" class="mastertransfer">
+
+		<result property="registrationStatus" column="status" />
+
+	</resultMap>
+
+	<select id="getregistrationstatusofoldprogram" resultMap="studentregistrationstatus">
+
+		select
+		srsh.status from student_registration_semester_header
+		srsh,program_course_header pch where
+		srsh.program_course_key=pch.program_course_key AND
+		pch.program_id=#oldProgramId# AND pch.branch_id=#oldBranchId# AND
+		pch.specialization_id=#oldSpecializationId# AND
+		pch.semester_code=#semesterCode# AND
+
+		srsh.session_start_date=#semesterStartDate# AND
+
+		srsh.session_end_date=#semesterEndDate# AND
+		srsh.entity_id=#oldEntityId# AND srsh.roll_number=#rollNumber#;
+	</select>
+
+	<update id="updatenormalprogramdetails">
+
+		update student_program sp
+		SET
+		sp.current_semester=#toSemester#,sp.modifier_id=#modifierId#,
+		sp.modification_time=#modificationTime#
+		where
+		sp.enrollment_number=#enrollmentNumber# AND
+		sp.entity_id=#entityId#
+		AND
+		sp.program_id=#programId# AND
+		sp.branch_id=#branchId# AND
+		sp.specialization_id=#specializationId#;
+				
+		</update>
+
+	<update id="updatenormalregistrationdetails">
+
+		update student_registration_semester_header sp
+		SET
+		sp.register_Date=now(),sp.modifier_id=#modifierId#,
+		sp.modification_time=#modificationTime#,sp.status='REG'
+		where
+		sp.roll_number=#rollNumber# AND
+		sp.entity_id=#entityId#
+		AND
+		sp.program_course_key=#programCourseKey# AND
+		sp.status='YTR';
+				
+		</update>
+
+</sqlMap>

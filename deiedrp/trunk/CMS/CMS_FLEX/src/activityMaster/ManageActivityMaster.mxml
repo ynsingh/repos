@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ManageActivityMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1217" height="587"
+		  title="{commonFunction.getConstants('manageActivityMasterPanelTitle')}" 
+		  initialize="formIntializeHandler()" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+	
+	<mx:HTTPService id="sessionDetailsHttpService" method="POST"
+		url="{urlPrefix+'getSessionDetails.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="sessionDetailsHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="activityMasterDetailsHttpService" method="POST"
+		url="{urlPrefix+'activityMasterDetails.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="activityMasterDetailsResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+	
+	<mx:HTTPService id="deleteActivityMasterDetailsHttpService" method="POST"
+		url="{urlPrefix+'deleteActivityMasterDetails.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="deleteActivityMasterDetailsResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+					
+	<mx:HTTPService id="changeActivityStatusHttpService" method="POST"
+		url="{urlPrefix+'ChangeActivityStatus.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="changeActivityStatusResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getEntityHttpService" method="POST"
+		url="{urlPrefix+'getEntity.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getEntityHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>									
+	
+	<mx:Script source="asFiles/ManageActivityMaster.as" />
+	
+	<mx:Canvas id="gridCanvas1" styleName="GridCanvas" width="1160.5" height="304" visible="true" x="16.5" y="164">
+		<mx:Label text="{commonFunction.getConstants('activityMasterGridTitle')}" fontWeight="bold" top="6" left="10"/>
+		<mx:LinkButton id="editButton" x="856" y="10" enabled="false" label="{commonFunction.getConstants('editButton')}" click="editButtonClickHandler(event)"/>
+		<mx:LinkButton id="statusButton" x="915" y="10" enabled="false" label="{commonFunction.getConstants('changeStatusButton')}" click="statusButtonClickHandler(event)"/>
+		<mx:LinkButton id="deleteButton" x="1038" y="10" enabled="false" label="{commonFunction.getConstants('deleteButton')}" click="deleteButtonClickHandler(event)"/>
+		<mx:DataGrid id="activityMasterDetailGrid" allowMultipleSelection="true" x="11" y="36.35" width="1138.5" height="214.4" 
+				visible="true" resizableColumns="true" sortableColumns="true" verticalScrollPolicy="on" 
+		 			   horizontalScrollPolicy="off"  rowCount="5" draggableColumns="false" editable="true" >
+			<mx:columns>
+					<mx:DataGridColumn rendererIsEditor="true" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" 
+								change="commonFunction.editDeleteEnable(event,outerDocument.activityMasterDetailGrid,[outerDocument.editButton],[outerDocument.deleteButton, outerDocument.statusButton])">
+							    <mx:Script>
+							    <![CDATA[
+							    import common.commonFunction;
+							    import mx.controls.LinkButton;
+							    ]]>
+							    </mx:Script>
+							</mx:CheckBox>
+						</mx:Component>	
+					</mx:itemRenderer>				
+				</mx:DataGridColumn>
+				<mx:DataGridColumn editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="semesterStartDate" headerText="{commonFunction.getConstants('semesterStartDate')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="semesterEndDate" headerText="{commonFunction.getConstants('semesterEndDate')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="processName" headerText="{commonFunction.getConstants('process')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="activityName" headerText="{commonFunction.getConstants('activity')}" showDataTips="true"/>
+				<mx:DataGridColumn editable="false" dataField="activitySequence" headerText="{commonFunction.getConstants('activitySequence')}" width="50"/>
+				<mx:DataGridColumn editable="false" dataField="status" headerText="{commonFunction.getConstants('status')}" width="60"/>
+			</mx:columns>
+		</mx:DataGrid>
+		<mx:HBox width="891"  x="10" y="251">
+		       <mx:LinkButton id="viewAllLinkBtn2" visible="false"
+		       			   label="View All" />
+		       			   
+		       <mx:VRule height="20"/>
+		       <mx:Label id="viewingAlertsLabel11" text=""/>
+		       <mx:Label id="viewingAlertsLabel21" text=""/>
+		   </mx:HBox>
+		<mx:HBox width="1139.5" x="10" y="273.75">
+			<mx:LinkBar id="pageNav2" 
+			
+			horizontalGap="1" 
+			width="893"/>
+		</mx:HBox>		    
+	</mx:Canvas>
+	<mx:Button x="943" y="495" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	<mx:Label x="31.5" y="32" text="{commonFunction.getConstants('entity')}:"/>
+	<mx:ComboBox x="95" y="30" id="entityCB" width="170" toolTip="{entityCB.selectedItem.entityName}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="entityCBChangeHandler()"/>
+	
+	<!--Add by Devendra For Search on Fields Program Name and Semester Name-->
+	<mx:Canvas x="31.5" y="60" width="582" height="88" styleName="SimpleCanvas">
+		<mx:Label x="10" y="14" text="{commonFunction.getConstants('searchBy')} :" fontWeight="bold"/>
+		<mx:Label x="10" y="37" text="{commonFunction.getConstants('prog_name')}"/>
+		<mx:Label x="290" y="37" text="{commonFunction.getConstants('semesterName')}"/>
+		<mx:TextInput x="402" y="35" enabled="false" id="semSearch" change="{commonFunction.searchForTwoFields(programSearch.text,'programName',semSearch.text,'semesterName',activityMasterDetailGrid.dataProvider as ArrayCollection)}"/>
+		<mx:TextInput x="116" y="35" enabled="false" id="programSearch" change="{commonFunction.searchForTwoFields(programSearch.text,'programName',semSearch.text,'semesterName',activityMasterDetailGrid.dataProvider as ArrayCollection)}"/>
+	</mx:Canvas>
+	<!--Devendra Ends-->
+</mx:Panel>

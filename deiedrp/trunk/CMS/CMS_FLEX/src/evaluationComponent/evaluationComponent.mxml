@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) evaluationComponent.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous(evaluationIdCombo)" title="{commonFunction.getConstants('evaluationComponent')}" layout="absolute" width="710" height="541">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+		
+	<mx:Script source="asFiles/evaluationComponentAction.as"/>
+	
+	<mx:HTTPService id="getInputDetails" method="post"
+					url="{commonFunction.getConstants('url')}/evaluationComponent/getInputDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setRecords" method="post"
+					url="{commonFunction.getConstants('url')}/evaluationComponent/setDetails.htm"
+					resultFormat="e4x"
+					result="onSetSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getsetRecords" method="post"
+					url="{commonFunction.getConstants('url')}/evaluationComponent/getSetDetails.htm"
+					resultFormat="e4x"
+					result="onGetRecordsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="deleteEvaluationRecords" method="post"
+					url="{commonFunction.getConstants('url')}/evaluationComponent/deleteRecords.htm"
+					resultFormat="e4x"
+					result="onSetSuccess1(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	    <mx:Canvas styleName="SimpleCanvas" x="19" y="16" width="639" height="239">
+		<mx:Label x="156" y="25" text="{commonFunction.getConstants('evaluationId')}" />
+		<mx:ComboBox width="150" x="289.5" id="evaluationIdCombo" prompt="{commonFunction.getConstants('select')}" change="evaluationIdChange(event)"
+					  selectedIndex="-1" y="22" toolTip="{evaluationIdCombo.text}"/>
+		<mx:TextInput x="447" y="23" id="evaluationIdDescription" editable="false"/>
+		<mx:Label x="169.5" y="65" text="{commonFunction.getConstants('idType')}" />
+		<mx:ComboBox x="289.5" y="62" width="150" id="idTypeCombo" prompt="{commonFunction.getConstants('select')}" change="idTypeChange(event)"
+					 selectedIndex="-1" toolTip="{idTypeCombo.text}"/>
+		<mx:Label x="156" y="108" text="{commonFunction.getConstants('displayType')}" />
+		<mx:ComboBox x="289.5" y="105" width="150" id="displayTypeCombo" prompt="{commonFunction.getConstants('select')}" 
+					  selectedIndex="-1" toolTip="{displayTypeCombo.text}"/>
+		<mx:Button x="194.5" y="181" label="{commonFunction.getConstants('saveButton')}" id="savebutton" click="checkValidations()" width="70.5"/>
+		<mx:Button x="296" y="182" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelFunction()" width="84"/>
+		
+	    </mx:Canvas>
+	
+	    <mx:Canvas styleName="GridCanvas" id="detail"  visible="true" width="639.5" height="187" x="20" y="268">
+		<mx:LinkButton label="{commonFunction.getConstants('editButton')}" width="72" height="25" click="openEditWindow()" enabled="false" id="editbutton" x="485"  y="2"/>
+		<mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" width="69" height="25" id="deletebutton" x="558" enabled="false" click="deleteOrNot()" y="2"/>
+		<mx:Label x="5" y="8" text="{commonFunction.getConstants('evaluationComponentDetails')}" height="16" width="229"/>
+		<mx:DataGrid id="evaluationComponentGrid" width="619.5" height="155" horizontalScrollPolicy="off" 
+					 sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="10" y="29">
+			<mx:columns>
+				<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false" resizable="false" 
+									editorDataField="selected" dataField="select" headerText=" ">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.evaluationComponentGrid,[outerDocument.editbutton],[outerDocument.deletebutton])">
+								<mx:Script>
+									<![CDATA[
+										import common.commonFunction;
+										import mx.controls.LinkButton;
+									]]>
+								</mx:Script>
+							</mx:CheckBox>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn showDataTips="true" editable="false" dataField="evaluationId" headerText="{commonFunction.getConstants('evaluationId')}" textAlign="center" width="230" sortable="true"/>
+				<mx:DataGridColumn showDataTips="true" editable="false" dataField="idDescription" headerText="{commonFunction.getConstants('idType')}" textAlign="center" width="290" sortable="true"/>
+				<mx:DataGridColumn showDataTips="true" editable="false" dataField="displayDescription" headerText="{commonFunction.getConstants('displayType')}" textAlign="center" width="290" sortable="true"/>
+			</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	<mx:Validator source="{evaluationIdCombo}" id="evaluationIdComboValidator" property="selectedItem" trigger="{savebutton}" triggerEvent="click"/>
+	<mx:Validator source="{idTypeCombo}" id="idTypeComboValidator" property="selectedItem" trigger="{savebutton}" triggerEvent="click"/>
+	<mx:Validator source="{displayTypeCombo}" id="displayTypeComboValidator" property="selectedItem" trigger="{savebutton}" triggerEvent="click"/>
+</mx:Panel>

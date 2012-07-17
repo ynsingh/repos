@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="{commonFunction.getConstants('activateRegistration')}" width="1078" height="638">
+	
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/WithdrawMarksTransfer.as"/>
+	
+	<mx:HTTPService id="getDetails" method="post"
+        url="{commonFunction.getConstants('url')}/withdrawMarksTransfer/getStudentDetails.htm"
+        resultFormat="e4x"
+        result="resultGetDetails(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="getRegisteringSession" method="post"
+        url="{commonFunction.getConstants('url')}/withdrawMarksTransfer/getRegisteringSession.htm"
+        resultFormat="e4x"
+        result="resultGetRegisteringSession(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="getDates" method="post"
+        url="{commonFunction.getConstants('url')}/withdrawMarksTransfer/getRegDates.htm"
+        resultFormat="e4x"
+        result="resultGetRegistrationDates(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="onSubmit" method="post"
+        url="{commonFunction.getConstants('url')}/withdrawMarksTransfer/enableRegistration.htm"
+        resultFormat="e4x"
+        result="resultOnSubmit(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:Canvas x="35.5" y="19" width="592" height="67" styleName="SimpleCanvas">
+		<mx:Label x="52" y="24" text="{commonFunction.getConstants('rollNumber')}" fontWeight="bold" fontFamily="Georgia"/>
+		<mx:TextInput x="175" y="22" id="rollText" fontWeight="bold"/>
+		<mx:Button x="383" y="22" label="{commonFunction.getConstants('okButton')}" click="getStudentDetails()"/>
+		<mx:Button x="458.5" y="22" label="{commonFunction.getConstants('cancel_button')}" click="parentDocument.loaderCanvas.removeAllChildren()"/>
+			
+	</mx:Canvas>
+	
+	<mx:Canvas width="100%" height="346" visible="false" id="detailsCanvas" y="94" verticalScrollPolicy="off">
+	
+		<mx:TitleWindow  width="987" layout="absolute" title="{resourceManager.getString('Constants','personalDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" x="35.5" y="104" height="212">
+			<mx:Label x="38" y="12" text="{commonFunction.getConstants('enrollmentNo')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="363" y="12" text="{commonFunction.getConstants('studentName')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="670" y="12" text="{commonFunction.getConstants('fatherName')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="39" y="52" text="{commonFunction.getConstants('dateOfBirth')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="363" y="52" text="{commonFunction.getConstants('gender')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="670" y="52" text="{commonFunction.getConstants('category')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:TextInput id="studentName" x="469" y="10" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:TextInput id="fatherName" x="775" y="10" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:TextInput id="dob" x="161" y="50" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:TextInput id="gender" x="469" y="50" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:TextInput id="category" x="775" y="50" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:TextInput id="enrollmentNumberText" x="161" y="10" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:Label x="39" y="92" text="{commonFunction.getConstants('belongsTo')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:TextInput id="entityText" x="161" y="90" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:Label x="363" y="92" text="{commonFunction.getConstants('program')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:TextInput id="programText" x="469" y="90" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:Label x="672" y="92" text="{commonFunction.getConstants('branch')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:TextInput id="branchText" x="775" y="90" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:TextInput id="specializationText" x="161" y="129" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+			<mx:Label x="39" y="131" text="{commonFunction.getConstants('specialization')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:Label x="364" y="131" text="{commonFunction.getConstants('attemptNo')}:" fontWeight="bold" fontFamily="Georgia"/>
+			<mx:TextInput id="attemptText" x="469" y="129" width="160" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF"/>
+		</mx:TitleWindow>
+		<mx:LinkButton x="899.5" y="323" label="CONTINUE &gt;&gt;" fontSize="13" fontFamily="Georgia" click="checkSessionDetails()"/>
+		<mx:TitleWindow width="987" layout="absolute" title="{commonFunction.getConstants('withdrawalDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" x="35.5" y="5" height="85" color="#CF1111">
+			<mx:Label x="25" y="8" text="{commonFunction.getConstants('session')}:" fontWeight="bold" fontFamily="Georgia" color="#CF1111"/>
+			<mx:Label x="92" y="8" id="withdrawalSession" fontWeight="bold" fontFamily="Verdana" color="#CF1111"/>
+			<mx:Label x="213" y="8" text="{commonFunction.getConstants('semesterStartDate')}:" fontWeight="bold" fontFamily="Georgia" color="#CF1111"/>
+			<mx:Label x="528" y="8" text="{commonFunction.getConstants('semesterEndDate')}:" fontWeight="bold" fontFamily="Georgia" color="#CF1111"/>
+			<mx:Label x="359" y="8" id="withdrawalStartDate" fontWeight="bold" fontFamily="Verdana" color="#CF1111"/>
+			<mx:Label x="667" y="8" id="withdrawalEndDate" fontWeight="bold" fontFamily="Verdana" color="#CF1111"/>
+			<mx:Label x="851" y="8" id="withdrawalSemester" fontWeight="bold" fontFamily="Verdana" color="#CF1111"/>
+		</mx:TitleWindow>
+	</mx:Canvas>
+	
+	<mx:Canvas x="0" y="441" width="1058" height="141" id="sessionCanvas" visible="false">
+		<mx:TitleWindow x="35" y="4" width="985" height="127" layout="absolute" title="{commonFunction.getConstants('sessionDetailsForRegistration')}" borderStyle="solid" borderThickness="2" borderColor="#000000" verticalScrollPolicy="off" color="#0D7216">
+			<mx:LinkButton x="861" y="49" label="SUBMIT" fontSize="13" fontFamily="Georgia" click="enableRegistration()"/>
+			<mx:Label x="325" y="3" text="{commonFunction.getConstants('session')}:" fontFamily="Georgia" fontSize="12" fontWeight="bold" color="#0D7216"/>
+			<mx:Label x="325" y="29" text="{commonFunction.getConstants('semesterStartDate')}:" fontFamily="Georgia" fontSize="12" fontWeight="bold" color="#0D7216"/>
+			<mx:Label x="325" y="56" text="{commonFunction.getConstants('semesterEndDate')}" fontFamily="Georgia" fontSize="12" fontWeight="bold" color="#0D7216"/>
+			
+			<mx:Label x="509" y="3" id="sessionLabel" fontFamily="Verdana" fontSize="12" fontWeight="bold" color="#0D7216"/>
+			<mx:Label x="509" y="29" id="startDateLabel" fontFamily="Verdana" fontSize="12" fontWeight="bold" color="#0D7216"/>
+			<mx:Label x="509" y="56" id="endDateLabel" fontFamily="Verdana" fontSize="12" fontWeight="bold" color="#0D7216"/>
+		</mx:TitleWindow>
+	
+	</mx:Canvas>
+</mx:Panel>

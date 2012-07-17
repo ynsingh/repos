@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="withdrawMarksTransfer">
+	<select id="getStudentDetails" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT sp.roll_number AS rollNumber, sp.enrollment_number AS enrollmentNumber, CONCAT_WS(' ', sm.student_first_name,sm.student_middle_name,sm.student_last_name) AS studentName,
+		CONCAT_WS(' ', sm.father_first_name, sm.father_middle_name, sm.father_last_name) AS fatherName, DATE_FORMAT(sm.date_of_birth,'%d-%M-%Y') AS dateOfBirth, sm.gender AS gender, sm.category_code AS category,
+		sp.entity_id AS entityId, em.entity_name AS entityName, sp.program_id AS programId, pm.program_name AS programName, sp.branch_id AS branchId,
+		stt1.component_description AS branchName, sp.specialization_id AS specializationId, stt2.component_description AS specializationName,
+		sp.current_semester AS semesterCode, stt3.component_description AS semesterName, srsh.status AS status, srsh.attempt_number AS attemptNumber,
+		pch.program_course_key AS programCourseKey, stt4.component_description AS genderName, stt5.component_description AS categoryName,
+		CONCAT_WS('-',SUBSTRING(pr.session_start_date,1,4),SUBSTRING(pr.session_end_date,1,4)) AS withdrawalSession, 
+		DATE_FORMAT(pr.semester_start_date,'%d-%M-%Y') AS withdrawalSemesterStartDate,
+    	DATE_FORMAT(pr.semester_end_date,'%d-%M-%Y') AS withdrawalSemesterEndDate
+		FROM student_program sp JOIN student_master sm JOIN student_registration_semester_header srsh JOIN program_course_header pch
+		JOIN system_table_two stt1 JOIN system_table_two stt2 JOIN system_table_two stt3 JOIN system_table_two stt4 JOIN entity_master em JOIN program_master pm
+		JOIN system_table_two stt5 JOIN program_registration pr
+		ON sp.roll_number=srsh.roll_number AND pch.program_course_key=srsh.program_course_key AND sm.enrollment_number=sp.enrollment_number
+		AND em.entity_id=sp.entity_id AND pm.program_id=sp.program_id AND stt1.component_code=sp.branch_id AND stt2.component_code=sp.specialization_id
+		AND stt3.component_code=sp.current_semester AND stt4.component_code=sm.gender AND stt5.component_code=sm.category_code AND pr.program_course_key=srsh.program_course_key
+		AND pr.semester_start_date=srsh.session_start_date AND pr.semester_end_date=srsh.session_end_date AND stt1.university_code=stt2.university_code
+    	AND stt1.university_code=stt3.university_code AND stt1.university_code=stt4.university_code AND stt1.university_code=stt5.university_code
+		WHERE pch.program_id=sp.program_id AND pch.branch_id=sp.branch_id AND pch.specialization_id=sp.specialization_id AND pch.semester_code=sp.current_semester
+		AND sp.roll_number=#rollNumber# AND srsh.status='WDR' AND stt1.group_code='BRNCOD' AND stt2.group_code='SPCLCD'
+		AND stt3.group_code='SEMCOD' AND stt4.group_code='GENDER' AND stt5.group_code='STDCTG' AND pr.status='ACT'
+    	AND stt1.university_code=#universityId# AND (srsh.student_process_status IS NULL OR srsh.student_process_status!='EWR');
+	</select>
+	
+	<select id="getRegisteringSession" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT DATE_FORMAT(semester_start_date,'%d-%M-%Y') AS semesterStartDate, DATE_FORMAT(semester_end_date,'%d-%M-%Y') AS semesterEndDate,
+		session_start_date AS sessionStartDate, session_end_date AS sessionEndDate, semester_start_date AS startDate, semester_end_date AS endDate,
+		CONCAT_WS('-',SUBSTRING(session_start_date,1,4),SUBSTRING(session_end_date,1,4)) AS registeringSession
+		FROM program_registration WHERE now() BETWEEN registration_start_date AND last_date
+		AND program_course_key=#programCourseKey# AND entity_id=#entityId# AND status='ACT';
+	</select>
+	
+	<select id="getFirstSemester" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT semester_code AS semesterCode FROM program_term_details WHERE semester_sequence='1' AND program_id=#programId#;
+	</select>
+	
+	<select id="getGroupedSemesters" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT semester_code AS semesterCode FROM program_term_details WHERE program_id=#programId#
+		AND semester_group IN (SELECT distinct semester_group FROM program_term_details WHERE program_id=#programId# and semester_code=#semesterCode#)
+		ORDER BY semester_sequence;
+	</select>
+	
+	<select id="getProbableDates" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT (pr.semester_start_date + INTERVAL 1 YEAR) AS probableStartDate, (pr.semester_end_date + INTERVAL 1 YEAR) AS probableEndDate
+		FROM program_registration pr JOIN program_course_header pch
+		ON pch.program_course_key=pr.program_course_key
+		WHERE pch.program_id=#programId# AND pch.branch_id=#branchId# AND pch.specialization_id=#specializationId# AND pch.semester_code=#semesterCode#
+		AND pr.entity_id=#entityId# AND pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate#;
+	</select>
+	
+	<select id="getPersonalInfo" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT sm.student_id AS studentId, sm.enrollment_number AS enrollmentNumber, sm.student_first_name AS studentFirstName, sm.student_middle_name AS studentMiddleName,
+		sm.student_last_name AS studentLastName, sm.father_first_name AS fatherFirstName, sm.father_middle_name AS fatherMiddleName, sm.father_last_name AS fatherLastName,
+		sm.mother_first_name AS motherFirstName, sm.mother_middle_name AS motherMiddleName, sm.mother_last_name AS motherLastName, sm.date_of_birth AS dateOfBirth,
+		sm.category_code AS category, sm.gender AS gender, sm.primary_email_id AS primaryMail FROM student_master sm JOIN student_program sp
+		ON sm.enrollment_number=sp.enrollment_number
+		WHERE sp.entity_id=#entityId# AND sp.program_id=#programId# AND sp.branch_id=#branchId# AND sp.specialization_id=#specializationId#
+		AND sp.current_semester=#semesterCode# AND sp.roll_number=#rollNumber#;
+	</select>
+	
+	<select id="getRegistrationDates" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT DATE_FORMAT(pr.registration_start_date, '%D %M') AS startDate, DATE_FORMAT(pr.last_date, '%D %M') AS endDate
+		FROM program_registration pr JOIN program_course_header pch JOIN university_master um
+		ON pch.program_course_key=pr.program_course_key AND pr.session_start_date=um.start_date AND pr.session_end_date=um.end_date
+		WHERE pch.program_id=#programId# AND pch.branch_id=#branchId# AND pch.specialization_id=#specializationId# AND pch.semester_code=#semesterCode#
+		AND pch.semester_status='ACT' AND pr.entity_id=#entityId# AND pr.status='ACT' AND um.university_code=#universityId# AND um.current_status='1';
+	</select>
+	
+	<select id="getDateForMarksTransfer" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT pr.semester_start_date AS startDate, pr.semester_end_date AS endDate
+		FROM program_registration pr JOIN program_course_header pch
+		ON pch.program_course_key=pr.program_course_key
+		WHERE pch.program_id=#programId# AND pch.branch_id=#branchId# AND pch.specialization_id=#specializationId# AND pch.semester_code=#semesterCode#
+		AND pr.entity_id=#entityId# AND pr.session_start_date=#sessionStartDate# AND pr.session_end_date=#sessionEndDate#;
+	</select>
+	
+	<select id="getPreviousKey" resultClass="in.ac.dei.edrp.cms.domain.withdrawmarkstransfer.WithdrawMarksTransferGetter">
+		SELECT program_course_key AS previousKey FROM program_course_header
+		WHERE program_id=#programId# AND branch_id=#branchId# AND specialization_id=#specializationId# AND semester_code=#semesterCode# AND semester_status='ACT';
+	</select>
+	
+	<insert id="setPrestaging">
+		INSERT INTO prestaging_table (student_id, registration_roll_number, enrollment_number, date_of_birth, student_category, gender,
+		student_first_name, student_middle_name, student_last_name, father_first_name, father_middle_name, father_last_name, mother_first_name,
+		mother_middle_name, mother_last_name, new_entity, new_program, new_branch, new_specialization, new_semester, attempt_number, admission_mode,
+		registration_due_date, semester_start_date, semester_end_date, primary_email_id, status_in_semester, insert_time, creator_id)
+		VALUES
+		(#studentId#,#rollNumber#,#enrollmentNumber#,#dateOfBirth#,#category#,#gender#,
+		#studentFirstName#,#studentMiddleName#,#studentLastName#,#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,#motherFirstName#,
+		#motherMiddleName#,#motherLastName#,#entityId#,#programId#,#branchId#,#specializationId#,#semesterCode#,#attemptNumber#,'NEW',
+		#semesterStartDate#,#semesterStartDate#,#semesterEndDate#,#primaryMail#,'REG',now(),#creatorId#);
+	</insert>
+	
+	<insert id="setPrestagingWithProbable">
+		INSERT INTO prestaging_table (student_id, registration_roll_number, enrollment_number, date_of_birth, student_category, gender,
+		student_first_name, student_middle_name, student_last_name, father_first_name, father_middle_name, father_last_name, mother_first_name,
+		mother_middle_name, mother_last_name, new_entity, new_program, new_branch, new_specialization, new_semester, attempt_number,
+		old_entity, old_program, old_branch, old_specialization, old_semester, admission_mode, old_roll_number, registration_due_date,
+		semester_start_date, semester_end_date, primary_email_id, probable_semester, probable_semester_start_date, probable_semester_end_date,
+		probable_attempt_number, probable_register_due_date, status_in_semester, insert_time, creator_id)
+		VALUES
+		(#studentId#,#rollNumber#,#enrollmentNumber#,#dateOfBirth#,#category#,#gender#,
+		#studentFirstName#,#studentMiddleName#,#studentLastName#,#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,#motherFirstName#,
+		#motherMiddleName#,#motherLastName#,#entityId#,#programId#,#branchId#,#specializationId#,#semesterCode#,#attemptNumber#,
+		#entityId#,#programId#,#branchId#,#specializationId#,#semesterCode#,'NOR',#rollNumber#,#semesterStartDate#,
+		#semesterStartDate#,#semesterEndDate#,#primaryMail#,#probableSemester#,#probableStartDate#,#probableEndDate#,
+		#attemptNumber#+1,#probableRegisterDate#,'REG',now(),#creatorId#);
+	</insert>
+	
+	<insert id="insertYTR">
+		INSERT INTO student_registration_semester_header (roll_number, status, session_start_date, session_end_date, attempt_number,
+		register_due_date, entity_id, program_course_key, insert_time, creator_id)
+		VALUES
+		(#rollNumber#,'YTR',#semesterStartDate#,#semesterEndDate#,#attemptNumber#,#semesterStartDate#,#entityId#,
+		#programCourseKey#,now(),#creatorId#);
+	</insert>
+	
+	<insert id="setStudentCourse">
+		INSERT INTO student_course
+		SELECT roll_number,program_course_key,#startDate#,#endDate#,course_code,course_name,orginal_course_code,course_status,
+		student_status,now(),null,#creatorId#,null,attempt_number,course_group,entity_id
+		FROM student_course WHERE roll_number=#rollNumber# AND program_course_key=#previousKey#;
+	</insert>
+	
+	<insert id="setStudentMarksSummary">
+		INSERT INTO student_marks_summary
+		SELECT university_code,entity_id,roll_number,program_course_key,#startDate#,#endDate#,total_internal,total_external,
+		total_marks,course_code,internal_grade,external_grade,final_grade_point,now(),null,#creatorId#,null,earned_credits
+		FROM student_marks_summary WHERE roll_number=#rollNumber# AND program_course_key=#previousKey#;
+	</insert>
+	
+	<insert id="setSRSH">
+		INSERT INTO student_registration_semester_header
+		SELECT register_Date, number_of_remedials, if(status='HLD','REM','PAS')status,now(),null,#creatorId#,null,roll_number,
+		#startDate#,#endDate#,attempt_number,total_credit_earned,sgpa,weighted_percentage,student_process_status,register_due_date,
+		entity_id,program_course_key,registered_credit,registered_theory_credit_excluding_audit,registered_practical_credit_excluding_audit,
+		registration_credit_excluding_audit,reason_description FROM student_registration_semester_header
+		WHERE roll_number=#rollNumber# AND program_course_key=#previousKey#;
+	</insert>
+	
+	<insert id="setStudentAggregate">
+		INSERT INTO student_aggregate
+		SELECT university_code,roll_number,#startDate#,#endDate#,theory_weighted_percentage,practical_weighted_percentage,'Details Forwarded By EWR Process',
+		earned_practical_credit,earned_theory_credit,program_course_key,point_secured_theory_sgpa,point_secured_practical_sgpa,point_secured_theory_cgpa,
+		point_secured_practical_cgpa,earned_theory_credit_cgpa,earned_practical_credit_cgpa,earned_theory_aud_credit,earned_practical_aud_credit,
+		theory_sgpa,practical_sgpa,sgpa,weighted_percentage,cgpa,theorycgpa,practicalcgpa,entity_id
+		FROM student_aggregate WHERE roll_number=#rollNumber# AND program_course_key=#previousKey#;
+	</insert>
+	
+	<update id="updateSRSH">
+		UPDATE student_registration_semester_header SET student_process_status='EWR'
+		WHERE roll_number=#rollNumber# AND program_course_key=#programCourseKey# AND entity_id=#entityId# AND status='WDR';
+	</update>
+	
+	<update id="updateStatusInStudentCourse">
+		UPDATE student_course SET student_status='CAN', modifier_id=#creatorId#, modification_time=now()
+		WHERE roll_number=#rollNumber# AND program_course_key=#previousKey#
+		AND semester_start_date!=#startDate# AND semester_end_date!=#endDate#;
+	</update>
+</sqlMap>    

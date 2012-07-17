@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) CourseMarksApproval.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="794" height="781" creationPolicy="all" creationComplete="setFirstFocous()" title="{commonFunction.getConstants('courseMarksApproval')}" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/CourseMarksApprovalAction.as"/>
+	
+	<mx:HTTPService id="getCourseList" method="POST"
+					url="{urlPrefix2}getCourseList.htm"
+					resultFormat="e4x"
+					result="getCourseSuccess(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getEmployeeList" method="POST"
+					url="{urlPrefix2}getEmployeeList.htm"
+					resultFormat="e4x"
+					result="getEmployeeSuccess(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="setApprovalDetails" method="POST"
+					url="{urlPrefix2}setMarksApprovalDetails.htm"
+					resultFormat="e4x"
+					result="setApprovalDetailsSuccess(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>
+							
+	<mx:HTTPService id="getProgramDetails" method="POST"
+					url="{urlPrefix2}getProgramDetails.htm"
+					resultFormat="e4x"
+					result="httpProgramDetailsSuccess(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>	
+	<mx:HTTPService id="getEntityList" method="POST"
+					url="{urlPrefix2}getEntity.htm"
+					resultFormat="e4x"
+					result="httpEntitySuccess(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>	
+	<mx:HTTPService id="getCourseEmployee" method="POST"
+					url="{urlPrefix2}getCourseEmployee.htm"
+					resultFormat="e4x"
+					result="httpEmployeeSuccessForCourse(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>	
+	<mx:HTTPService id="checkSequence" method="POST"
+					url="{urlPrefix2}checkSequence.htm"
+					resultFormat="e4x"
+					result="httpCheckSeqence(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>	
+	<mx:HTTPService id="getDisplayType" method="POST"
+					url="{urlPrefix2}getDisplayType.htm"
+					resultFormat="e4x"
+					result="httpGetDisplayTypeResult(event)"
+					fault="onFailure(event)"
+					showBusyCursor="true"
+					useProxy="false"/>																								
+	<mx:Validator id="courseCodeValidator" property="selectedLabel" trigger="{submitButton}" triggerEvent="click" required="true"/>
+	<mx:Label x="82" y="308" text="{commonFunction.getConstants('select')} {commonFunction.getConstants('courseCode')}"/>
+	<mx:Label x="414" y="308" text="{commonFunction.getConstants('courseName')}"/>
+	<mx:Label x="299" y="599" text="{commonFunction.getConstants('approvalOrder')}"/>
+	<mx:ComboBox id="courseCodeCombo" enabled="false" change="onCourseChange()" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" x="213" y="308" width="150"/>
+	<mx:TextInput editable="false" id="courseNameField" x="524" y="308" width="150"/>
+	<mx:NumericStepper id="approvalOrderField" x="404" y="599" width="75" />
+	<mx:Label x="497" y="599" text="{commonFunction.getConstants('alternateapprovalOrder')}"/>
+	<mx:Button id="submitButton" x="247" y="638" label="{commonFunction.getConstants('submitButton')}" click="submitForm()"/>
+	<mx:Button x="358" y="638" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	<mx:Label x="82" y="30" text="{commonFunction.getConstants('select')} {commonFunction.getConstants('entity')}"/>
+	<mx:ComboBox id="entityCombo" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}"  x="167" y="30" width="150" height="22" labelField="entityName" toolTip="{entityCombo.selectedLabel.toString()}" change="onEntityChange()"/>
+	<mx:Canvas x="32" y="65" width="712" height="221" styleName="GridCanvas">
+	<controls:MDataGrid id="ProgramDetailGrid" editable="true" verticalScrollPolicy="on" x="10" y="29" width="691" height="179">
+		<controls:columns>
+			<dataGridClasses:MDataGridColumn width="20" dataField="select" rendererIsEditor="true" editorDataField="selected" sortable="false">
+			    	<dataGridClasses:itemRenderer>
+			    		<mx:Component>
+			    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="{data.select=!data.select};outerDocument.onSelectProgram(event)">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+			    		</mx:Component>
+			    	</dataGridClasses:itemRenderer>
+			   </dataGridClasses:MDataGridColumn>
+			   <dataGridClasses:MDataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('entity')}" dataField="entityName" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('program')}" dataField="programName" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="130" headerText="{commonFunction.getConstants('branch')}" dataField="branchName" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="130" headerText="{commonFunction.getConstants('specialization')}" dataField="specializationName" showDataTips="true"/>
+				<dataGridClasses:MDataGridColumn editable="false" width="150" headerText="{commonFunction.getConstants('semester')}" dataField="semesterName" showDataTips="true"/>
+		</controls:columns>
+	</controls:MDataGrid>
+	<mx:Label x="23" y="7" text="{commonFunction.getConstants('selectProgram')}"/>
+	</mx:Canvas>
+	<mx:Canvas x="32" y="348" width="712" height="223" styleName="GridCanvas">
+		<controls:MDataGrid id="employeeGrid" editable="true" verticalScrollPolicy="on" x="10" y="31" width="691" height="179">
+			<controls:columns>
+				<dataGridClasses:MDataGridColumn width="15" dataField="select" rendererIsEditor="true" editorDataField="selected" sortable="false">
+				    	<dataGridClasses:itemRenderer>
+				    		<mx:Component>
+				    			<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="{data.select=!data.select};outerDocument.onSelectEmployee(event)">
+				    				<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+				    			</mx:CheckBox>
+				    		</mx:Component>
+				    	</dataGridClasses:itemRenderer>
+				   </dataGridClasses:MDataGridColumn>
+				   <dataGridClasses:MDataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('entity')}" dataField="entityName" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('employeeCode')}" dataField="employeeCode" showDataTips="true"/>
+					<dataGridClasses:MDataGridColumn editable="false" width="130" headerText="{commonFunction.getConstants('employeeName')}" dataField="employeeName" showDataTips="true"/>
+			</controls:columns>
+		</controls:MDataGrid>
+		<mx:Label x="23" y="7" text="{commonFunction.getConstants('selectEmployee')}"/>
+	</mx:Canvas>
+	<mx:ComboBox x="570" y="596" id="approverCB" labelField="approver" width="160" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onChangeApproverCB()"></mx:ComboBox>
+	<mx:Label x="46" y="599" text="{commonFunction.getConstants('displayType')}"/>
+	<mx:ComboBox x="131" y="596" width="160" enabled="false" selectedIndex="-1" id="dispCombo" prompt="{commonFunction.getConstants('select')}" toolTip="{dispCombo.selectedLabel}" labelField="displayType" change="{approverCB.selectedIndex=-1}"></mx:ComboBox>
+</mx:Panel>

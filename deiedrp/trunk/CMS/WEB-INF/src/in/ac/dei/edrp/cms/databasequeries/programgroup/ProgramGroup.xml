@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="programGroup">
+    
+    <select id="getProgramGroupList" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select pg.program_course_key as programCourseKey, stt.component_description as groupDescription, stt.component_code as groupCode,
+		pg.group_order as groupOrder, pg.minimum_selection as minimumSelection, pg.maximum_selection as maximumSelection,
+		stt1.component_description as subgroupDescription, stt1.component_code as subgroupCode,
+		(case when pg.conditional_group='y' then 'Yes' else 'No' end) as conditionalGroup,
+		IFNULL(pg.linked_group,'-') as linkedGroupCode, IFNULL(pg.linked_minimum_selection, '-') as linkedMinimumSelection,
+		IFNULL(pg.linked_maximum_selection,'-') as linkedMaximumSelection
+		from program_group pg, system_table_two stt, system_table_two stt1
+		where program_course_key=#programCourseKey# and 
+		stt.component_code=pg.group_code and stt.group_code='PROGRP' and stt.university_code=#universityId# and
+		stt1.component_code=pg.subgroup_code and stt1.group_code='CRSGRP' and stt1.university_code=#universityId#;
+    </select>
+    
+    <select id="getLinkedGroupDescription" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select component_description as linkedGroupDescription from system_table_two where group_code='LNKGRP' and 
+        component_code=#linkedGroupCode# and university_code=#universityId#;
+    </select>
+    
+    <select id="getProgramList" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select distinct pch.program_id as programId, pm.program_name as programName
+		from program_course_header pch, program_master pm
+		where pch.program_id=pm.program_id and pch.program_id like #universityId# ;
+    </select>
+    
+    <select id="getBranchList" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select distinct stt.component_code as branchId, stt.component_description as branchName
+		from program_course_header pch, system_table_two stt
+		where group_code='BRNCOD' and pch.branch_id=stt.component_code and program_id=#programId# and stt.university_code=#universityId#;
+    </select>
+    
+     <select id="getSpecializationList" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select distinct component_code as specializationId, component_description as specializationName
+		from system_table_two stt, program_course_header pch
+		where stt.group_code='SPCLCD' and stt.component_code=pch.specialization_id and stt.university_code=#universityId# and
+		program_id=#programId# and branch_id=#branchId#;
+    </select>
+    
+    <select id="getSemesterList" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select distinct component_description as semesterName, component_code as semesterCode
+		from system_table_two stt, program_course_header pch
+		where stt.component_code=pch.semester_code and stt.group_code='SEMCOD' and stt.university_code=#universityId# and
+		program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId#;
+    </select>
+    
+    <select id="getGroup" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select component_code as groupCode, component_description as groupDescription
+		from system_table_two
+		where group_code='PROGRP' and university_code=#universityId#;
+    </select>
+    
+    <select id="getSubgroup" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select distinct pcd.course_group as subgroupCode,stt.component_description as subgroupDescription
+		from program_course_detail pcd, system_table_two stt
+		where stt.component_code=pcd.course_group and stt.group_code='CRSGRP' and stt.university_code=#universityId# and
+		pcd.program_course_key IN (select program_course_key from program_course_header where program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and semester_code=#semesterCode# and semester_status='ACT') and 
+		pcd.course_group not in (select distinct subgroup_code from program_group where program_course_key=#programCourseKey# and group_code=#groupCode#);
+    </select>
+    
+    <select id="getProgramCourseKey" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select program_course_key as programCourseKey from program_course_header
+        where program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and 
+        semester_code=#semesterCode# and semester_status='ACT';
+    </select>
+    
+    <insert id="saveDetails" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        insert into program_group(program_course_key, group_code, minimum_selection, maximum_selection,
+        subgroup_code, conditional_group, insert_time, creator_id, group_order) 
+        values (#programCourseKey#, #groupCode#, #minimumSelection#, #maximumSelection#, #subgroupCode#, 
+        #conditionalGroup#,now(),#creatorId#, #groupOrder#)         
+    </insert>
+    
+    <delete id="deleteDetails" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        delete from program_group where program_course_key=#programCourseKey# and
+		group_code=#groupCode# and subgroup_code=#subgroupCode#         
+    </delete>
+    
+    <select id="linkedGroupList" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select component_code as linkedGroupCode, component_description as linkedGroupDescription
+		from system_table_two where group_code='LNKGRP' and university_code=#universityId#;
+    </select>
+    
+    <update id="updateLinkedGroup" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+		update program_group set linked_group=#linkedGroup#, linked_minimum_selection=#linkedMinimumSelection#, 
+        linked_maximum_selection=#linkedMaximumSelection#
+		where program_course_key=#programCourseKey# and group_code=#groupCode#;
+    </update>
+    
+    <update id="updateDetails" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        update program_group set group_order=#groupOrder#, minimum_selection=#minimumSelection#, 
+        maximum_selection=#maximumSelection#, conditional_group=#conditionalGroup#, modification_time=now(), modifier_id=#modifierId#
+		where program_course_key=#programCourseKey# and group_code=#groupCode#;
+    </update>
+    
+    <select id="existingGroupList" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select distinct pg.group_code as groupCode, stt.component_description as groupDescription
+		from program_group pg, system_table_two stt
+		where stt.component_code=pg.group_code and stt.group_code='PROGRP' and stt.university_code=#universityId# and 
+		pg.program_course_key=#programCourseKey#;
+    </select>
+    
+    <insert id="saveProgramGroupRule" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        insert into program_rule(program_course_key, group_code, subgroup_code, group_rule, insert_time, creator_id) 
+        values (#programCourseKey#, #groupCode#, #subgroupCode#, #groupRule#,now(),#creatorId#)         
+    </insert>
+    
+    <select id="groupRuleDetails" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select program_course_key as programCourseKey, pr.group_code as groupCode, stt.component_description as groupDescription,
+		subgroup_code as subgroupCode, stt1.component_description as subgroupDescription,
+    group_rule as groupRule, stt2.component_description as groupRuleName
+		from program_rule pr, system_table_two stt, system_table_two stt1, system_table_two stt2
+		where stt.component_code=pr.group_code and stt.group_code='CRSGRP' and stt.university_code=#universityId# and
+		stt1.component_code=pr.subgroup_code and stt1.group_code='CRSGRP' and stt1.university_code=#universityId# and 
+		stt2.component_code=pr.group_rule and stt2.group_code='GRPRUL' and stt2.university_code=#universityId# and 
+		program_course_key=(select program_course_key as programCourseKey from program_course_header
+		where program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and 
+		semester_code=#semesterCode# and semester_status='ACT');
+    </select>
+    
+     <delete id="deleteGroupRuleDetails" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        delete from program_rule where program_course_key=#programCourseKey# and
+		group_code=#groupCode# and subgroup_code=#subgroupCode#         
+    </delete>
+    
+    <update id="updateProgramRuleDetails" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        update program_rule set group_rule=#groupRule#, modification_time=now(), modifier_id=#modifierId#
+		where program_course_key=#programCourseKey# and group_code=#groupCode# and subgroup_code=#subgroupCode#;
+    </update>
+    
+     <select id="getRules" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+        select component_code as groupCode, component_description as groupDescription 
+        from system_table_two where group_code='GRPRUL' and university_code=#universityId#;
+    </select>
+    
+     <select id="getFirstGroup" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+    	select distinct pcd.course_group as subgroupCode,stt.component_description as subgroupDescription
+		from program_course_detail pcd, system_table_two stt
+		where stt.component_code=pcd.course_group and stt.group_code='CRSGRP' and stt.university_code=#universityId# and
+		pcd.program_course_key=(select program_course_key from program_course_header where program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and semester_code=#semesterCode# and semester_status='ACT'); 
+    </select>
+    
+    <select id="getGroupOrder" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+    	select distinct group_order as groupOrder from program_group where group_code=#groupCode# and 
+    	program_course_key=(select program_course_key from program_course_header where program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and semester_code=#semesterCode# and semester_status='ACT');
+    </select>
+    
+    <update id="unlinkLinkedGroup" parameterClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+       update program_group set linked_group=null, linked_maximum_selection=null, linked_minimum_selection=null
+		where program_course_key=#programCourseKey# and
+		group_code=#groupCode# and subgroup_code=#subgroupCode#; 
+    </update>
+    
+    <select id="getMaxConditionalGroupOrder" resultClass="in.ac.dei.edrp.cms.domain.programgroup.ProgramGroup">
+    	select max(group_order) as groupOrder from program_group where conditional_group=#conditionalGroup# and 
+    	program_course_key=(select program_course_key from program_course_header where program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and semester_code=#semesterCode# and semester_status='ACT');
+    </select>
+    
+</sqlMap>

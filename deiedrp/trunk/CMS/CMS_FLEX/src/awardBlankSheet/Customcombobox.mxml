@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) MKRenderer.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+
+
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="creationCompleteHandler(event)" xmlns:awardBlankSheet="awardBlankSheet.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.AdvancedDataGrid;
+			import mx.controls.ComboBox;
+			import mx.collections.ArrayCollection;
+			import mx.utils.ArrayUtil;
+			import mx.controls.dataGridClasses.DataGridListData;
+			//import mx.events.NumericStepperEvent;
+			
+			import mx.events.FlexEvent;
+			import mx.controls.Alert;
+			
+			[Bindable]public var mkValue:String;
+			[Bindable] public  var maximumValue:int;
+			[Bindable] public var datafield:String;
+			[Bindable] public var datatooltip:String; 
+			[Bindable] public var dataArray:ArrayCollection=new ArrayCollection();
+			 public var requestedmarks :Number=0;
+			 public var remarks :String="";
+			
+			public function creationCompleteHandler(event:Event):void{
+				// dataArray=new ArrayCollection();
+				dataArray.addItem({code:'A',text:'A'});
+				for(var i:int=0;i<=maximumValue;i++){
+					dataArray.addItem({code:i,text:i});
+				}
+				combo.dataProvider=dataArray;
+				mkValue=parentDocument.awardSheetGrid.selectedItem[datafield].toString();
+				combo.selectedIndex=getSelectedIndex(mkValue);
+				focusManager.setFocus(combo);
+				setlabel();
+				//combo.toolTip= "test";
+				
+				
+			}
+			
+			private function getSelectedIndex(item:String):int{
+				var i:int=0;
+				for each(var obj:Object in combo.dataProvider as ArrayCollection){
+					if(item==obj.code+""){
+						return i;
+					}
+					i++;
+				} 
+				return -1;
+			}
+			
+			public function setlabel():void{
+				 var marks:Number = parseFloat(data[datafield]) ;
+            var myarray:Array;
+            //var s1:String = parentDocument.awardSheetGrid.selectedItem[Correction].toString(); 
+            var s1:String = data.Correction;
+           myarray= s1.split("|");
+           if (myarray.length>2){
+           	for (var idx:int = 0 ;idx<myarray.length;idx++){
+           		if(myarray[idx]==datafield){
+           			requestedmarks=parseFloat(String(myarray[idx-1]));
+           			remarks =String(myarray[idx+1]);
+           			break;
+           		}
+           	}
+           }
+            if(requestedmarks>0 && (marks != requestedmarks)){
+            
+              combo.toolTip = remarks ;
+             
+            } 
+            
+			}
+			
+			public function updateCompleteHandler(event:FlexEvent):void{
+				mkValue=event.currentTarget.value;
+			}   
+		]]>
+	</mx:Script>
+	<!--<mx:ComboBox width="100%" height="100%" id="combo" labelField="text" change="mkValue=combo.selectedItem.code;" 
+		editable="false" >
+		
+	</mx:ComboBox>-->
+	<awardBlankSheet:ComboBox width="100%" height="100%" id="combo" labelField="text" change="mkValue=combo.selectedItem.code;"/>	
+</mx:HBox>

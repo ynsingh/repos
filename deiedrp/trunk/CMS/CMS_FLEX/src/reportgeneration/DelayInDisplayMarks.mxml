@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#)DelayInDisplayMarks.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="{commonFunction.getConstants('DelayInDispayMarks')}" initialize="initializeEntityData()"  width="678" height="398">
+
+<mx:HTTPService id="entity" 
+	method="post" 
+	url="{commonFunction.getConstants('url')}/progresscardinfo/returnEntityInfo.htm" 
+	showBusyCursor="true"
+	useProxy="false" 
+	resultFormat="e4x" 
+	result="onSuccess(event)" 
+	fault="onfailure(event)"
+	/>
+	
+<mx:HTTPService id="requestProgram" 
+	method="post"
+	url="{commonFunction.getConstants('url')}/progresscardinfo/returnProgramInfo.htm"
+	showBusyCursor="true"
+	useProxy="false" 
+	resultFormat="e4x" 
+	result="onProgramSuccess(event)" 
+	fault="onfailure(event)"
+	/>
+	
+<mx:HTTPService id="branchListHttpService" 
+	method="POST"
+	url="{commonFunction.getConstants('url')}/courseMaster/getProgramBranches.htm"
+	resultFormat="e4x"
+	showBusyCursor="true"
+	result="branchListHttpServiceResultHandler(event)"
+	fault="onfailure(event)"
+	useProxy="false"/>	
+		
+<mx:HTTPService id="specializationListHttpService"
+	method="POST"
+	url="{commonFunction.getConstants('url')}/courseMaster/getProgramSpecializations.htm"
+	resultFormat="e4x"
+	showBusyCursor="true"
+	result="specializationListHttpServiceResultHandler(event)"
+	fault="onfailure(event)"
+	useProxy="false"/>
+	
+
+<mx:HTTPService id="semesterListHttpService" method="POST"
+					url="{commonFunction.getConstants('url')}/reports/semesterList.htm"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="semesterListHttpServiceResultHandler(event)"
+					fault="onfailure(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getUniversitySessions" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getUniversitySession.htm"
+				resultFormat="e4x" 
+				result="getUniversitySessionList(event)" 
+				fault="onfailure(event)" 
+				useProxy="false"/>
+					
+<mx:HTTPService id="downloadRequest" method="post"
+				url="{commonFunction.getConstants('url')}/delayInDisplay/getReportPath.htm"
+				resultFormat="e4x" 
+				result="onDownloadRequestSuccess(event)"
+				fault="onfailure(event)" 
+				useProxy="false"/>	
+				
+<mx:HTTPService id="getPath" method="post"
+				url="{commonFunction.getConstants('url')}/delayInDisplay/getReportPath.htm"
+				resultFormat="e4x" 
+				result="onGetPathSuccess(event)"
+				fault="onfailure(event)" 
+				useProxy="false"/>									
+		
+<mx:HTTPService id="dataForGenerating" 
+	method="post"
+	url="{commonFunction.getConstants('url')}/delayInDisplay/delayInDisplayComponentMarksPdf.htm"
+	showBusyCursor="true"
+	useProxy="false" 
+	resultFormat="e4x" 
+	result="onGenerationSuccess(event)" 
+	fault="onGenerateFail(event)"/>		
+	
+<mx:HTTPService id="printReport" method="post"
+				url="{commonFunction.getConstants('url')}/printReport/printReport.htm"
+				resultFormat="e4x" 
+				result="onPrintReportSuccess(event)"
+				fault="onfailure(event)" 
+				useProxy="false"/>
+							
+	
+    <mx:Label x="80" y="27" text="{commonFunction.getConstants('entity')}:" width="160"/>		
+	<mx:ComboBox id="entityId" x="243.5" y="24" change="getProgram()" prompt="{commonFunction.getConstants('select')}" width="160"/>
+			
+	<mx:Label x="80" y="64" text="{commonFunction.getConstants('program')}:"/>
+	<mx:ComboBox id="programId" width="160" x="243.5" y="61" prompt="{commonFunction.getConstants('select')}" change="getBranch()" enabled="false"/>			
+	
+	<mx:Label x="80" y="104" text="{commonFunction.getConstants('branch')}:"/>
+	<mx:ComboBox id="branchId" width="160" change="getSpecialization()" prompt="{commonFunction.getConstants('select')}" x="243" y="101" enabled="false"></mx:ComboBox>
+	
+	<mx:Label x="80" y="137" text="{commonFunction.getConstants('specialization')}:"/>
+	<mx:ComboBox id="specializationId" width="160" prompt="{commonFunction.getConstants('select')}" change="getSemester()" x="243" y="134" enabled="false"></mx:ComboBox>
+	
+	<mx:Label x="80" y="176" text="{commonFunction.getConstants('semester')}:"/>
+	<mx:ComboBox id="semesterId" width="160" prompt="{commonFunction.getConstants('select')}" change="getSession()" x="243" y="173" enabled="false"></mx:ComboBox>
+	
+	<mx:Label x="80" y="214" text="{commonFunction.getConstants('session')}:"/>
+	<mx:ComboBox x="243" y="210" width="96.5" enabled="false" id="fromSessionId" change="onYearChange()" prompt="{commonFunction.getConstants('select')}"></mx:ComboBox>
+	
+	<mx:Label x="370" y="214" text="TO"/>
+	<mx:Label id="toSessionId" x="424.5" y="212" width="48"/>
+	
+	
+	
+	<mx:Button x="80" y="258" label="{commonFunction.getConstants('generateReport')}" id="generate" click="generateReport()" enabled="false"/>
+	<mx:Button x="238" y="300" label="{commonFunction.getConstants('resetButton')}" click="reset()"/>
+	<mx:Button x="375" y="300" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+    <mx:Button id="downloadId" click="downloadPdf()" x="239" y="258" label="{commonFunction.getConstants('downloadreport')}" enabled="false"/>
+	<mx:Button  id="printid" x="400" y="258" click="printPdf()" label="{commonFunction.getConstants('printReport')}" enabled="false"/>
+
+
+<mx:Script>
+	<![CDATA[
+	    import common.Mask;
+		import mx.utils.ArrayUtil;
+		import mx.rpc.xml.SimpleXMLDecoder;
+		import mx.events.CloseEvent;
+		import common.commonFunction;
+		import mx.rpc.Fault;
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.FaultEvent;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		public var obj : Object = {};
+		public var semesterSequence:int;
+		[Bindable]public var program:XML;
+		[Bindable]public var entityData : XML;
+		public var yearDataProvider:Array=new Array;
+		protected var branchList:XML;
+		protected var specializationList:XML;
+		public var report_session:String;
+		public var path:String;
+		public var sessionXML:XML;
+		public var sessionList:ArrayCollection;	
+		public var semesterList:XML;	
+		public var getpath:String;			
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/warning.png")]private var warningIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;	
+										
+	/**
+	 * This function runs on th creation complete of the Interface
+	 */ 	  
+		public function initializeEntityData() : void
+		{	
+			obj["time"] = new Date();
+			entity.send(obj);
+		}
+	/**
+	 * This is the success handler of the request
+	 * getting entity names
+	 */ 				
+		public function onSuccess(event:ResultEvent):void{							
+		entityData = event.result as XML;				
+		entityId.dataProvider = entityData.entity;
+		entityId.labelField="entityName";					
+		}
+	/**
+	 * This method runs on the failure of any 
+	 * Http request
+	 */ 		
+		public function onfailure(event:FaultEvent):void{			
+			Alert.show(commonFunction.getMessages('failureMessage'),commonFunction.getMessages('error'), 4, null,null,errorIcon);			
+		}
+
+	/**
+	 *  This function gets the names of the program
+	 */ 		
+		public function getProgram() : void
+		{		
+			obj["entityId"] = entityId.selectedItem.entityId;
+			requestProgram.send(obj);
+			programId.enabled=true;
+			entityId.enabled=false;
+		}
+		
+	/**
+	 * This is the success handler of the request
+	 * getting Program names
+	 */ 	
+		public function onProgramSuccess(event : ResultEvent):void
+		{			
+			 var programData:XML = event.result as XML;
+			 var noOfProgram:int=programData.program.length();
+			programId.dataProvider = programData.program;
+			programId.labelField = "programName";
+			if(noOfProgram==0)
+			{Alert.show(commonFunction.getMessages('noProgram'),commonFunction.getMessages('info'),4,null,null,infoIcon);
+			}
+					
+		}
+	/**
+	 *  This function gets the names of the Branches
+	 */ 		
+		protected function getBranch():void
+			{
+				
+				obj["programId"]=programId.selectedItem.programId;
+				branchListHttpService.send(obj);
+				
+				programId.enabled=false;
+				entityId.enabled=false;
+				
+			}
+	/**
+	 * This is the success handler of the request
+	 * getting Branch names
+	 */ 			
+		protected function branchListHttpServiceResultHandler(event:ResultEvent):void{
+				branchList = event.result as XML;
+				if(branchList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				branchId.dataProvider.refresh();
+				var arry:ArrayCollection=new ArrayCollection();
+				arry.addItem({name:"All"});
+				for each(var o:Object in branchList.Details){
+					arry.addItem({name:o.name});
+				}
+				branchId.labelField="name";
+				branchId.dataProvider=arry;
+				branchId.enabled=true;
+			}
+	/**
+	 *  This function gets the names of the Specialization
+	 */ 			
+		public function getSpecialization() : void
+		{
+			obj["programId"]=programId.selectedItem.programId;	
+			if(branchId.selectedLabel=="All"){
+				obj["branchId"] ="%";
+			}
+			obj["branchId"] = branchList.Details.(name==branchId.selectedLabel).id;
+			specializationListHttpService.send(obj);
+				
+				branchId.enabled=false;
+				programId.enabled=false;
+				entityId.enabled=false;
+		}
+				
+	/**
+	 * This is the success handler of the request
+	 * getting Specialization names
+	 */ 		
+		
+		protected function specializationListHttpServiceResultHandler(event:ResultEvent):void{
+				specializationList = event.result as XML;
+				if(specializationList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		var arry:ArrayCollection=new ArrayCollection();
+        		arry.addItem({name:"All"});
+        		for each(var o:Object in specializationList.Details){
+        			arry.addItem({name:o.name});
+        		}
+				specializationId.dataProvider.refresh();
+				specializationId.dataProvider=arry;
+				specializationId.labelField="name";
+				specializationId.enabled=true;
+				
+			}
+	/**
+	 *  This function gets the names of the Semester
+	 */ 			
+		
+	 public function getSemester():void{
+	 				obj["programId"]=programId.selectedItem.programId;	
+			if(branchId.selectedLabel=="All"){
+				obj["branchId"] ="%";
+			}
+			if(specializationId.selectedLabel=="All"){
+				obj["specializationId"] ="%";
+			}
+			obj["branchId"] = branchList.Details.(name==branchId.selectedLabel).id;
+			obj["specializationId"]=specializationList.Details.(name==specializationId.selectedLabel).id;
+			semesterListHttpService.send(obj);	
+				branchId.enabled=false;
+				programId.enabled=false;
+				entityId.enabled=false;
+				specializationId.enabled=false;
+	 }	
+	/**
+	 * This is the success handler of the request
+	 * getting Semester names
+	 */ 		
+	protected function semesterListHttpServiceResultHandler(event:ResultEvent):void{
+				semesterList = event.result as XML;
+				if(semesterList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		var arry:ArrayCollection=new ArrayCollection();
+        		arry.addItem({name:"All"});
+        		for each(var o:Object in semesterList.semester){
+        			arry.addItem({name:o.name});
+        		}
+				semesterId.dataProvider.refresh();
+				semesterId.dataProvider=arry;
+				semesterId.labelField="name";
+        		semesterId.enabled=true;
+			}
+	/**
+	 *  This function runs on the click of Generate Report Button
+	 * It generate the reports
+	 */ 			
+		public function generateReport():void
+		{	obj["branchId"] = branchList.Details.(name==branchId.selectedLabel).id;
+			if(branchId.selectedLabel=="All"){
+				obj["branchId"] ="%";
+			}
+			obj["specializationId"] = specializationList.Details.(name==specializationId.selectedLabel).id;	
+			if(specializationId.selectedLabel=="All"){
+				obj["specializationId"] ="%";
+			}
+			obj["semesterCode"]=semesterList.semester.(name==semesterId.selectedLabel).id;
+			if(semesterId.selectedLabel=="All"){
+				obj["semesterCode"] ="%";
+			}			
+			obj["semesterName"]=semesterId.selectedLabel;	
+			obj["programId"] = programId.selectedItem.programId;
+			obj["entityId"] = entityId.selectedItem.entityId;
+		    obj["fromSession"] = sessionXML.role.(id.toString().substr(0,4)==fromSessionId.selectedLabel).id;
+	        obj["toSession"] = sessionXML.role.(description.toString().substr(0,4)==toSessionId.text).description;
+			obj["branchName"] = branchId.selectedLabel;
+			obj["specializationName"] = specializationId.selectedLabel;		
+			obj["programName"] = programId.selectedLabel;
+		    obj["entityName"]=entityId.selectedLabel;
+		    obj["reportCode"]="22";
+		    obj["reportType"]="DMR";
+		    obj["reportDescription"]="DelayInDisplayComponentMarksReport";
+			dataForGenerating.send(obj);
+			report_session=fromSessionId.selectedLabel+"-"+(toSessionId.text).substr(2,2);
+						
+		}
+	/**
+	 * This is the success handler of the request
+	 * generating the report
+	 */
+		public function onGenerationSuccess(event : ResultEvent):void
+		{
+			var successDetails:XML=event.result as XML;
+				if(String(successDetails.info).search("true")>-1){
+					Alert.show(commonFunction.getMessages('pdfSuccess'),commonFunction.getMessages('success'),4,null,onOK,successIcon);	
+					 getpath=String(successDetails.info).slice(4,500);
+				}
+		else if(String(successDetails.info).search("false")>-1){
+				Alert.show(commonFunction.getMessages('failToGenerate'),commonFunction.getMessages('error'), 4, null,onOK,errorIcon);
+				}	
+		
+		else if(successDetails.info=="0"){
+				Alert.show(commonFunction.getMessages('noRecordFound'),commonFunction.getMessages('error'), 4, null,onOK,errorIcon);
+				}
+		}
+
+	/**
+	 * This function reset all the fields in the interface
+	 */	
+		public function onOK(event:CloseEvent):void{
+			reset();
+		}
+		
+
+	/**
+	 * This function runs on the click of the download Report Button
+	 * This function get path for downloading report
+	 */			
+		public function downloadPdf():void{
+			obj["branchId"] = branchList.Details.(name==branchId.selectedLabel).id;
+			if(branchId.selectedLabel=="All"){
+				obj["branchId"] ="%";
+			}
+			obj["specializationId"] = specializationList.Details.(name==specializationId.selectedLabel).id;	
+			if(specializationId.selectedLabel=="All"){
+				obj["specializationId"] ="%";
+			}
+			obj["semesterCode"]=semesterList.semester.(name==semesterId.selectedLabel).id;
+			if(semesterId.selectedLabel=="All"){
+				obj["semesterCode"] ="%";
+			}			
+			obj["semesterName"]=semesterId.selectedLabel;	
+			obj["programId"] = programId.selectedItem.programId;
+			obj["entityId"] = entityId.selectedItem.entityId;
+		    obj["fromSession"] = sessionXML.role.(id.toString().substr(0,4)==fromSessionId.selectedLabel).id;
+	        obj["toSession"] = sessionXML.role.(description.toString().substr(0,4)==toSessionId.text).description;
+			obj["branchName"] = branchId.selectedLabel;
+			obj["specializationName"] = specializationId.selectedLabel;		
+			obj["programName"] = programId.selectedLabel;
+		    obj["entityName"]=entityId.selectedLabel;
+		    obj["reportCode"]="22";
+		    obj["reportType"]="DMR";
+		    obj["reportDescription"]="DelayInDisplayComponentMarksReport";
+		   	downloadRequest.send(obj);					
+			} 
+			
+		public function downloadFile(event:CloseEvent):void{
+			   if(event.detail==Alert.YES){
+			
+					var file:FileReference=new FileReference;
+					file.download(new URLRequest(commonFunction.getConstants('url')+"/"+getpath+"DelayInDisplayComponentMarksReport"+".pdf"));
+					Alert.show(commonFunction.getMessages('downloadSuccess'),commonFunction.getMessages('success'),4,null,null,successIcon);
+					reset();
+			   }
+		}	
+		
+		/**
+ * The method is executed on success of the download report 
+ * request
+ **/ 		
+public function onDownloadRequestSuccess(event:ResultEvent):void{
+
+	if(event.result.sessionConfirm == true){
+   			Alert.show(resourceManager.getString('Messages','sessionInactive'));
+  			var url:String="";
+	 		url=commonFunction.getConstants('navigateHome');
+	 		var urlRequest:URLRequest=new URLRequest(url);
+	 		urlRequest.method=URLRequestMethod.POST;
+	 		navigateToURL(urlRequest,"_self");
+	}
+	var pathXML:XML = event.result as XML;		
+	    getpath= pathXML.info;		
+	if(String(pathXML.info).search("false")>-1){
+		Alert.show(getpath.substr(6,getpath.length-6),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	}
+	else{
+								Alert.show("Do You want to DownLoad the Report ?",
+				    commonFunction.getMessages('success'),(Alert.YES|Alert.NO),null,downloadFile,successIcon,1);
+	}
+}
+		
+	/**
+	 * This function runs on the click of the print Report Button
+	 * This function get path for printing report
+	 */	
+	 		
+		public function printPdf():void{
+					obj["branchId"] = branchList.Details.(name==branchId.selectedLabel).id;
+			if(branchId.selectedLabel=="All"){
+				obj["branchId"] ="%";
+			}
+			obj["specializationId"] = specializationList.Details.(name==specializationId.selectedLabel).id;	
+			if(specializationId.selectedLabel=="All"){
+				obj["specializationId"] ="%";
+			}
+			obj["semesterCode"]=semesterList.semester.(name==semesterId.selectedLabel).id;
+			if(semesterId.selectedLabel=="All"){
+				obj["semesterCode"] ="%";
+			}			
+			obj["semesterName"]=semesterId.selectedLabel;	
+			obj["programId"] = programId.selectedItem.programId;
+			obj["entityId"] = entityId.selectedItem.entityId;
+		    obj["fromSession"] = sessionXML.role.(id.toString().substr(0,4)==fromSessionId.selectedLabel).id;
+	        obj["toSession"] = sessionXML.role.(description.toString().substr(0,4)==toSessionId.text).description;
+			obj["branchName"] = branchId.selectedLabel;
+			obj["specializationName"] = specializationId.selectedLabel;		
+			obj["programName"] = programId.selectedLabel;
+		    obj["entityName"]=entityId.selectedLabel;
+		    obj["reportCode"]="22";
+		    obj["reportType"]="DMR";
+		    obj["reportDescription"]="DelayInDisplayComponentMarksReport";	
+		getPath.send(obj);		
+		}
+
+	/**
+	 * This function send the path of the report
+	 * to print the report
+	 */		
+		public function printFile(event:CloseEvent):void{
+	   if(event.detail==Alert.YES){
+		Mask.show();
+		obj["reportPath"] = getpath;
+		printReport.send(obj);
+//		navigateToURL(downloadUrl);		
+	}	
+ }
+ 	/**
+	 * This is the success handler of the request
+	 * getting path for printing report
+	 */
+ public function onGetPathSuccess(event:ResultEvent):void{
+ 		if(event.result.sessionConfirm == true){
+   			Alert.show(resourceManager.getString('Messages','sessionInactive'));
+  			var url:String="";
+	 		url=commonFunction.getConstants('navigateHome');
+	 		var urlRequest:URLRequest=new URLRequest(url);
+	 		urlRequest.method=URLRequestMethod.POST;
+	 		navigateToURL(urlRequest,"_self");
+	}
+	var pathXML:XML = event.result as XML;		
+	    getpath= pathXML.info;		
+	if(String(pathXML.info).search("false")>-1){
+		Alert.show(getpath.substr(6,getpath.length-6),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	}
+	else{
+								Alert.show("Do You want to Print the Report ?",
+				    commonFunction.getMessages('success'),(Alert.YES|Alert.NO),null,printFile,successIcon,1);
+	}
+}
+ /**
+ * The method is executed on success of the print report 
+ * request
+ **/ 		
+public function onPrintReportSuccess(event:ResultEvent):void{
+	Mask.close();
+	try{
+		if(event.result.sessionConfirm == true){
+ 			Alert.show(resourceManager.getString('Messages','sessionInactive'));
+	      	var url:String="";
+	 		url=commonFunction.getConstants('navigateHome');
+	 		var urlRequest:URLRequest=new URLRequest(url);
+	 		urlRequest.method=URLRequestMethod.POST;
+	 		navigateToURL(urlRequest,"_self");
+		}
+	}catch(e:Error){}
+   
+	 var status:String=(event.result.message+"");
+	 if(status.substr(0,4)=="true"){
+	 	if(status.length>4){
+	 		Alert.show(status.substr(5,status.length-5),commonFunction.getMessages('success'),0,null,null,successIcon);
+	 	}
+	 	else{
+			//Alert.show(commonFunction.getMessages('reportGenerated'),commonFunction.getMessages('success'),0,null,null,successIcon);
+	 	}
+	}
+	else{
+		if(status.length>5){
+	 		Alert.show(status.substr(6,status.length-6),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 	}
+	 	else{
+			Alert.show(commonFunction.getMessages('failToPrint'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	 	}		       
+	 }		
+}
+	
+	/**
+	 * This function is the fault handler of the 
+	 * Generate Report service
+	 */			
+		public function onGenerateFail(event : FaultEvent):void
+		{	
+			Alert.show(commonFunction.getMessages('failToGenerate'),commonFunction.getMessages('error'), 4, null,onOK,errorIcon);
+		}
+	
+	/**
+	 * This function get the session
+	 */			
+		public function getSession():void{
+		obj["date"] = new Date;									
+		getUniversitySessions.send(obj);
+		semesterId.enabled=false;
+		}
+	/**
+	 * This function is the success handler of the 
+	 * session service
+	 */			
+			public function getUniversitySessionList(event:ResultEvent):void{
+	sessionXML = event.result as XML;
+    fromSessionId.enabled=true;
+	if(sessionXML.sessionConfirm == true){
+       	Alert.show(resourceManager.getString('Messages','sessionInactive'));
+      	var url:String="";
+ 		url=commonFunction.getConstants('navigateHome');
+ 		var urlRequest:URLRequest=new URLRequest(url);
+ 		urlRequest.method=URLRequestMethod.POST;
+ 		navigateToURL(urlRequest,"_self");
+    }	
+	sessionList = new ArrayCollection();	
+	for each(var obj:Object in sessionXML.role){		
+		var sessionStartDate:String = obj.id.toString();
+		var year:String = sessionStartDate.substr(0,4);		
+		var sessionEndDate:String = obj.description.toString();
+		var endYear:String = sessionEndDate.substr(0,4);		
+		sessionList.addItem({select:false,id:year,description:endYear});		
+	}	
+	fromSessionId.dataProvider = sessionList;
+	fromSessionId.labelField = "id";	
+}
+
+/**
+ * This function runs on changing the session combo
+ */ 
+public function onYearChange():void{
+	for each(var obj:Object in sessionList){		
+		if(fromSessionId.selectedLabel == obj.id){			
+			toSessionId.text = obj.description;			
+		}		
+	}
+	fromSessionId.enabled=false;
+	generate.enabled=true;
+	printid.enabled=true;
+	downloadId.enabled=true;
+}	
+
+/**
+ *This function reset all the fields of the interface
+ */  
+		public function reset():void{
+			entityId.selectedIndex=-1;
+			programId.selectedIndex=-1;
+			branchId.selectedIndex=-1;
+			specializationId.selectedIndex=-1;
+			semesterId.selectedIndex=-1;
+			fromSessionId.selectedIndex=-1;
+			toSessionId.text="";
+			
+			generate.enabled=false;
+			printid.enabled=false;
+			downloadId.enabled=false;
+			entityId.enabled=true;
+			programId.enabled=false;
+			branchId.enabled=false;
+			specializationId.enabled=false;
+			semesterId.enabled=false;
+			fromSessionId.enabled=false;	
+		}
+			
+		
+		
+	]]>
+</mx:Script>
+
+</mx:Panel>

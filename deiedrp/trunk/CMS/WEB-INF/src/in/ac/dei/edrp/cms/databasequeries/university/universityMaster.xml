@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+
+
+
+<sqlMap namespace="universityMaster">
+	<typeAlias alias="universityMaster"
+		type="in.ac.dei.edrp.cms.domain.university.UniversityMasterInfoGetter" />
+
+
+	<resultMap id="maxcode" class="universityMaster">
+
+		<result property="universityCode" column="university_code" />
+
+	</resultMap>
+
+	<select id="getmaxuniversitycode" resultMap="maxcode">
+
+		select
+		max(university_code) as university_code from university_master;
+		
+		</select>
+
+	<resultMap id="universityDetails" class="universityMaster">
+
+		<result property="universityCode" column="university_code" />
+		<result property="universityName" column="university_name" />
+		<result property="sessionStartDate" column="start_date" />
+		<result property="sessionEndDate" column="end_date" />
+		<result property="currentStatus" column="current_status" />
+		<result property="universityAddress" column="university_address" />
+		<result property="universityCity" column="university_city" />
+		<result property="universityState" column="university_state" />
+		<result property="universityPincode" column="university_pincode" />
+		<result property="universityPhoneNumber" column="university_phone_number" />
+		<result property="universityOtherPhoneNumber" column="university_other_phone" />
+		<result property="universityFaxNumber" column="university_fax" />
+		<result property="nickName" column="nick_name" />
+		<result property="countryName" column="country" />
+
+
+	</resultMap>
+
+	<select id="getUniversityDetails" resultMap="universityDetails">
+
+		select
+		university_code,
+		start_date, end_date, current_status,
+		university_name,
+		university_address, university_city, university_state,
+		university_pincode, university_phone_number,
+		university_other_phone,
+		university_fax,nick_name,country from
+		university_master where
+		start_date=#sessionStartDate#
+		AND university_code=#universityCode#;
+
+			</select>
+
+	<insert id="createuniversity">
+
+		insert into university_master
+		(university_code,
+		start_date, end_date, current_status, university_name,
+		university_address, university_city, university_state,
+		university_pincode, university_phone_number,
+		university_other_phone,
+		university_fax, insert_time,
+		creator_id,nick_name,country)
+		values(#universityCode#,#sessionStartDate#,#sessionEndDate#,1,#universityName#,
+		#universityAddress#,#universityCity#,#universityState#,#universityPincode#,#universityPhoneNumber#,
+		#universityOtherPhoneNumber#,#universityFaxNumber#,now(),#universityCreatorID#,#nickName#,#countryName#);
+
+</insert>
+
+	<update id="updateUniversityDetails">
+
+		update university_master set
+		start_date=#sessionStartDate#, end_date=#sessionEndDate#,
+		university_name=#universityName#,
+		university_address=#universityAddress#,
+		university_city=#universityCity#, university_state=#universityState#,
+		university_pincode=#universityPincode#,
+		university_phone_number=#universityPhoneNumber#,
+		university_other_phone=#universityOtherPhoneNumber#,
+		university_fax=#universityFaxNumber#,modification_time=now(),
+		modifier_id=#modifierID#,nick_name=#nickName#,country=#countryName#
+		where
+		university_code=#universityCode# AND current_status=1;
+
+</update>
+
+	<update id="updateAllUniversityStatus">
+
+		update university_master set current_status=0 where
+		university_code=#universityCode#;
+
+</update>
+
+	<update id="updateUniversityStatus">
+
+		delete from university_master where
+		university_code=#universityCode#;
+
+
+</update>
+
+	<resultMap id="universitysession" class="universityMaster">
+
+
+		<result property="sessionStartDate" column="start_date" />
+		<!--		<result property="sessionEndDate" column="end_date" />-->
+
+
+
+	</resultMap>
+
+	<select id="getUniversitySession" resultMap="universitysession">
+
+		select
+		max(start_date) as start_date
+		from
+		university_master where
+		university_code=#universityCode#;
+
+			</select>
+
+	<resultMap id="universities" class="universityMaster">
+
+
+		<result property="componentId" column="university_code" />
+		<result property="componentDescription" column="university_name" />
+
+
+
+	</resultMap>
+
+	<select id="getUniversitys" resultMap="universities">
+
+		select
+		distinct
+		university_code,university_name from
+		university_master where
+		current_status=1 order by university_name;
+
+			</select>
+
+	<resultMap id="universitiesnickname" class="universityMaster">
+
+
+		<result property="componentId" column="nick_name" />
+		<result property="componentDescription" column="university_name" />
+
+
+
+	</resultMap>
+
+	<select id="getUniversityswithnicknames" resultMap="universitiesnickname">
+
+		select
+		distinct
+		university_name,nick_name from
+		university_master where
+		current_status=1;
+
+			</select>
+</sqlMap>

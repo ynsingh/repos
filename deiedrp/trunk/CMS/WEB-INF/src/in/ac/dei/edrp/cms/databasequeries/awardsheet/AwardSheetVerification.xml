@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<!-- @(#) AwardBlank.xml
+	Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. 
+	All Rights Reserved. Redistribution and use in source and binary forms, with 
+	or without modification, are permitted provided that the following conditions 
+	are met: Redistributions of source code must retain the above copyright notice, 
+	this list of conditions and the following disclaimer. Redistribution in binary 
+	form must reproducuce the above copyright notice, this list of conditions 
+	and the following disclaimer in the documentation and/or other materials 
+	provided with the distribution. THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY 
+	EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+	WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+	IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+	INCIDENTAL,SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+	LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+	OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+	LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+	OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. Contributors: Members of EdRP, 
+	Dayalbagh Educational Institute -->
+
+<sqlMap namespace="awardSheetVerification">
+	<typeAlias alias="awardBean"
+		type="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter" />
+
+	<select id="getCourseList" resultClass="awardBean">
+		SELECT distinct
+		sc.course_code as courseCode, cm.internal_external_active status
+		FROM
+		student_course sc,course_master cm,student_registration_semester_header srsh
+		WHERE cm.course_code=sc.course_code	AND sc.course_status='REG'
+		AND sc.student_status like #previousStatus# and sc.roll_number=srsh.roll_number
+		AND sc.program_course_key=srsh.program_course_key and srsh.status like #status#
+		AND sc.program_course_key in (
+		SELECT
+		program_course_key
+		FROM program_course_header
+		WHERE
+		program_id=#programId# AND branch_id=#branchId#
+		AND
+		specialization_id=#specializationId# AND
+		semester_code=#semesterCode#);
+	</select>
+
+	<select id="getAPRCount" resultClass="awardBean">
+		SELECT count(*) as total
+		FROM course_marks_approval_status cmas
+		WHERE cmas.status='APR' AND
+		cmas.entity_id=#entityId# AND cmas.display_type in (#displayType#,#idType#)
+		AND cmas.course_code=#courseCode# AND
+		cmas.program_course_key in (
+		SELECT program_course_key
+		FROM
+		program_course_header
+		WHERE program_id=#programId# AND
+		branch_id=#branchId#
+		AND specialization_id=#specializationId# AND
+		semester_code=#semesterCode#)
+		AND cmas.approval_order=(
+		SELECT
+		max(cma.approval_order)
+		FROM course_marks_approval cma
+		WHERE
+		cma.program_course_key=cmas.program_course_key AND
+		cma.entity_id=cmas.entity_id
+		AND cma.course_code=cmas.course_code);
+	</select>
+</sqlMap>

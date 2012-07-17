@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) EnrollmentLogin.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" x="372" y="153" width="380" height="178" title="{resourceManager.getString('Constants','login')}" layout="absolute">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			
+			
+			private function loadStudentLogOut():void
+			{
+				this.parentDocument.vStack.selectedIndex=0;
+				this.parentDocument.loaderCanvas2.removeAllChildren();
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Script source="asFiles/EnrollmentLogin.as"/>
+	
+	<mx:HTTPService id="httpLogin" method="post"
+        url="{commonFunction.getConstants('url')+'/studentlogin/getStudentLoginInfo.htm'}"
+        resultFormat="e4x"
+        result="resultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>	
+	
+	<mx:StringValidator id="userNameValidator" source="{userNameText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	<mx:StringValidator id="passwordValidator" source="{passwordText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	
+	<mx:Label  text="{resourceManager.getString('Constants','regNumber')}" x="30" y="30"/>
+	<mx:Label  text="{resourceManager.getString('Constants','password')}" x="30" y="60"/>
+	
+	<mx:TextInput id="userNameText" x="164" y="30"/>
+	<mx:TextInput id="passwordText" displayAsPassword="true" x="164" y="60"/>
+	
+	<mx:Button id="loginButton" label="{resourceManager.getString('Constants','login')}" click="Login()" x="164" y="90"/>
+	<mx:Button x="243" y="90" label="Cancel" width="81" id="cancelButton" click="loadStudentLogOut()"/>
+	
+</mx:TitleWindow>

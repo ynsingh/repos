@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) editPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow styleName="PopUpTitleWindow" xmlns:mx="http://www.adobe.com/2006/mxml" keyDown="initializeForEsc(event)" x="250" y="150" title="{commonFunction.getConstants('changeCourseDetails')}"
+layout="absolute" width="537" height="356"
+ showCloseButton="true" close="closePopup()" >
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+
+	
+	<mx:HTTPService id="updateSelectedRecord" method="post"
+					url="{commonFunction.getConstants('url')}/programCourseType/setProgramCoursetypeSummary.htm"
+					resultFormat="e4x"
+					result="onUpdateSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+<mx:Script source="asFiles/editPopupAction.as"/>
+
+<mx:Canvas width="473" height="259" y="26" x="16">
+	<mx:Button x="114" y="199" label="{commonFunction.getConstants('updateButton')}" click="updateRecord()" id="updatebutton"/>
+	<mx:Button x="207" y="199" label="{commonFunction.getConstants('cancelButton')}"  click="cancelpopup()" id="cancel"/>
+	<mx:Label x="122" y="78" text="{commonFunction.getConstants('courseType')}"/>
+	<mx:Label x="125" y="112" text="{commonFunction.getConstants('minimumCredit')}"/>
+	<mx:Label x="125" y="155" text="{commonFunction.getConstants('maximumCredit')}"/>
+	<mx:NumericStepper x="240" y="112" width="82" minimum="0" maximum="999" id="changemincombo"/>
+	<mx:NumericStepper x="240" y="155" width="82" minimum="0" maximum="999" id="changemaxcombo"/>
+	<mx:Label x="10" y="10" text="{commonFunction.getConstants('program')}:"/>
+	<mx:Label x="107" y="10" id="programLabel"/>
+	<mx:Label x="259" y="10" text="{commonFunction.getConstants('branch')}:"/>
+	<mx:Label x="341" y="10" id="branchLabel"/>
+	<mx:Label x="10" y="38" text="{commonFunction.getConstants('specialization')}:"/>
+	<mx:Label x="107" y="38" id="specilizationLabel"/>
+	<mx:Label x="259" y="38" text="{commonFunction.getConstants('semester')}:"/>
+	<mx:Label x="341" y="38" id="semesterLabel"/>
+	<mx:Label x="244" y="78" id="coursetypeLabel" width="76" />
+</mx:Canvas>
+</mx:TitleWindow>

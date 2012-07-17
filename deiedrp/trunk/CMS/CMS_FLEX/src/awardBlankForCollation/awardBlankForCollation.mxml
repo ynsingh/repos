@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) AwardBlankForCollation.mxml
+ * @author Ashish Mohan
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+<mx:Panel 	xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" 
+			xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*"  
+			xmlns:controls="common.Components.com.iwobanas.controls.*" 
+			title="{commonFunction.getConstants('awardBlankCollation')} ({session})"
+			width="1215" 
+			height="600"
+			creationComplete="onLoad()">
+			
+
+	<mx:Script source="asFiles/awardBlankForCollationAs.as"/>	
+	
+	<mx:HTTPService id="httpGetDisplayType" method="post"
+        url="{commonFunction.getConstants('url')}/coursegradelimit/getDisplayType.htm"
+        resultFormat="e4x"
+        result="resultGetDisplayType(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+    <mx:HTTPService id="httpGetGrades" method="post"
+		url="{commonFunction.getConstants('url')}/awardsheet/getGrades.htm"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="resultGetGrades(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+        
+     <mx:HTTPService id="httpGetCoursesDetails" method="post"
+        url="{commonFunction.getConstants('url')}/awardBlankRequestCorrection/getCourseList.htm"
+        resultFormat="e4x"
+        result="resultGetCourseDetails(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+     <mx:HTTPService id="httpGetComponentList" method="post"
+        url="{commonFunction.getConstants('url')}/awardsheet/getEvaluationComponents.htm"
+        resultFormat="e4x"
+        result="resultGetComponentList(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="httpStudentMarks" method="post"
+        url="{commonFunction.getConstants('url')}/awardBlankRequestCorrection/getStudentMarks.htm"
+        resultFormat="e4x"
+        result="resultGetStudentMarks(event)"
+        fault="onFailure(event)"
+        showBusyCursor="true"
+        useProxy="false"/>
+        
+	<mx:HTTPService id="httpGetGradeLimit" method="post"
+		url="{commonFunction.getConstants('url')}/awardsheet/getgradelimit.htm"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="resultGradeLimit(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="httpSaveSheet" method="post"
+		url="{commonFunction.getConstants('url')}/awardBlankRequestCorrection/saveStudentMarks.htm"
+		showBusyCursor="true"
+		resultFormat="e4x"
+		result="resultSaveSheet(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	 <mx:HTTPService id="httpStudentList" method="post"
+        url="{commonFunction.getConstants('url')}/awardsheet/getStudentList.htm"
+        showBusyCursor="true"
+        resultFormat="e4x"
+        result="resultHandlerStudent(event)"
+        fault="onFailure(event)"
+        useProxy="false"/>  
+
+	<mx:Canvas id="courselistCanvas" styleName="GridCanvas" width="1148" height="218" backgroundColor="#E2E2E2" x="23.5" y="63">
+		<mx:Label x="12" y="5" text="{commonFunction.getConstants('courseDetail')}" fontWeight="bold" fontSize="12" id="courselabel"/>
+		<controls:MDataGrid id="courseListGrid" width="1119.5" height="174" horizontalScrollPolicy="off" textAlign="center" 
+		sortableColumns="true"  resizableColumns="true" draggableColumns="false" editable="true" x="9" y="33">
+		<controls:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" width="55"  sortable="false" textAlign="center" editorDataField="selected" dataField="select" headerText=" ">
+			<mx:itemRenderer>
+	   			<mx:Component>
+	   				<mx:CheckBox click="data.select=event.currentTarget.selected; checkbox1ClickHandler(event, outerDocument.courseListGrid)">
+	 					<mx:Script>
+	                       <![CDATA[
+	                           import common.commonFunction;
+	                           import mx.controls.LinkButton;
+	                           import common.commonFunction;
+								
+								import mx.collections.ArrayCollection;
+								import mx.containers.Grid;
+								import mx.controls.*;
+								import mx.graphics.IFill;
+								import mx.logging.errors.InvalidFilterError;
+								
+								protected var arrayCollection:ArrayCollection;
+								[Embed(source="/images/warning.png")]private var warningIcon:Class;
+								
+							  	protected function checkbox1ClickHandler(event:Event, grid:DataGrid):void
+								{	
+									var currentIndex:int=grid.selectedIndex;
+									var parseIndex:int=0;
+									var j:int=0;
+									
+									var gridrecords:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.courseListGrid);
+									
+									if(gridrecords.length==0){
+										outerDocument.awardSheetCanvas.visible=false;
+										outerDocument.awardSheetGrid.dataProvider=null;
+										
+									}
+									else if(gridrecords.length>1)
+									{
+				            	    	Alert.show(commonFunction.getMessages('selectOneRecord'),commonFunction.getConstants('warning'),0,null,null,warningIcon);
+				            	    }
+				            	    else{
+										for each(var obj:Object in grid.dataProvider)
+										{
+											if(obj.select==true)
+											{
+												var gridData:ArrayCollection=commonFunction.getSelectedRowData(outerDocument.courseListGrid);
+												outerDocument.furtherExecution(gridData.getItemAt(0).entityId, gridData.getItemAt(0).programId, gridData.getItemAt(0).programName,
+													gridData.getItemAt(0).branchId, gridData.getItemAt(0).branchName, gridData.getItemAt(0).specializationId, gridData.getItemAt(0).specializationName,
+													gridData.getItemAt(0).semesterCode, gridData.getItemAt(0).semesterName, gridData.getItemAt(0).courseCode,
+													gridData.getItemAt(0).courseName, gridData.getItemAt(0).semesterStartDate, gridData.getItemAt(0).semesterEndDate,
+													gridData.getItemAt(0).programCourseKey, gridData.getItemAt(0).resultSystem, gridData.getItemAt(0).employeeCode, gridData.getItemAt(0).entityType,
+													gridData.getItemAt(0).entityName, gridData.getItemAt(0).startDate, gridData.getItemAt(0).endDate, gridData.getItemAt(0).employeeName,gridData.getItemAt(0).gradelimit); 
+												
+													outerDocument.courseCodeLabel.text="Course : "+gridData.getItemAt(0).courseCode;
+													
+											}
+										}
+									
+										for each(var object:Object in grid.dataProvider)
+										{
+											var bool:Boolean=false;
+											bool=object.select;
+											if(parseIndex==currentIndex)
+											{
+												bool=event.currentTarget.selected;
+												object.select=false;
+											}
+											if(bool)
+											{
+												
+											}
+											parseIndex++;
+										}
+				            	    }
+								}	
+	                       ]]>
+	                    </mx:Script>
+	                </mx:CheckBox>
+	            </mx:Component>
+	        </mx:itemRenderer>
+	    </mx:DataGridColumn>
+	    <dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="courseCode" headerText="{commonFunction.getConstants('courseCode')}" width="200" sortable="true" color="black"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="courseName" headerText="{commonFunction.getConstants('courseName')}" width="310" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="entityName" headerText="{commonFunction.getConstants('entityName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="programName" headerText="{commonFunction.getConstants('programName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="branchName" headerText="{commonFunction.getConstants('branchName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="specializationName" headerText="{commonFunction.getConstants('specializationName')}" width="290" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterName" headerText="{commonFunction.getConstants('semesterName')}" width="230" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterStartDate" headerText="{commonFunction.getConstants('semesterStartDate')}" width="230" sortable="true"/>
+		<dataGridClasses:MDataGridColumn showDataTips="true" editable="false" dataField="semesterEndDate" headerText="{commonFunction.getConstants('semesterEndDate')}" width="250" sortable="true"/>		
+		</controls:columns>
+		</controls:MDataGrid>
+    </mx:Canvas>		
+		
+	<mx:Canvas id="awardSheetCanvas" styleName="GridCanvas" width="1148" height="230" x="23.5" y="289" visible="false">
+		<mx:AdvancedDataGrid id="awardSheetGrid" editable="true" selectable="true" x="10" y="43" height="175"/>
+		<mx:Label x="10" y="10" text="" id="courseCodeLabel" fontWeight="bold"/>
+		<mx:Label x="80" y="10" text="" id="marksTypeLable" fontWeight="bold"/> 
+		<mx:LinkButton y="10" label="{commonFunction.getConstants('saveMarksButton')}" id="saveButton" right="5" click="saveConfirm()"/>
+	</mx:Canvas>
+	<mx:Label x="23.5" y="23" text="Exam Type:" width="88"/>
+	<mx:ComboBox x="102" id="examType" y="20" labelField="displayType" selectedIndex="-1" prompt="Select" change="getCourses()"></mx:ComboBox>
+	<mx:Button x="1090" y="20" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+</mx:Panel>
+

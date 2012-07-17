@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!--
+		=================================================================
+	-->
+	<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+	<!--
+		=================================================================
+	-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CreateProgramOfferedBy">
+	<typeAlias alias="EntityDetails"
+		type="in.ac.dei.edrp.cms.domain.programofferedby.EntityDetails" />
+
+	<select id="getEntityList" resultClass="EntityDetails">
+		select em.entity_id as
+		entityId,
+		em.entity_name as entityName,em1.entity_name as creatorId
+		from entity_master em,
+		entity_master em1 where
+		em.parent_entity_id=em1.entity_id AND
+		em1.university_id=em.university_id AND em.university_id=#value#;
+    </select>
+
+	<select id="getEntityListUniversity" resultClass="EntityDetails">
+		select
+		em.entity_id as entityId,em.entity_name as
+		entityName,em1.university_name as creatorId from entity_master em,
+		university_master em1 where em.parent_entity_id=#value# AND
+		em1.university_code=em.university_id AND em.university_id=#value#
+		AND em1.current_status=1;
+    </select>
+
+	<select id="getProgramBranchSpecializationList" resultClass="EntityDetails">
+		select s.programId as programId,
+		s.programName as programName,
+		s.branchId as branchId,
+		s.branchName as branchName,
+		s.specializationId
+		as specializationId,
+		s.specializationName as specializationName from
+		(select pm.program_id as programId,
+		pm.program_name as programName,
+		stt.component_code as branchId,
+		stt.component_description as
+		branchName,
+		stt1.component_code as specializationId,
+		stt1.component_description as specializationName
+		from program_master
+		pm,program_branch_specialization pbs,
+		system_table_two
+		stt,system_table_two stt1
+		where pbs.program_id=pm.program_id and
+		(stt.component_code=pbs.branch_id
+		and stt.group_code='BRNCOD') and
+		(stt1.component_code=pbs.specialization_id and
+		stt1.group_code='SPCLCD') and (stt.university_code=#universityId# and
+		stt.university_code=stt1.university_code) AND (pm.program_id LIKE
+		concat(#universityId#,'%'))
+		order by pm.program_id) as s
+		where
+		s.programId not in(select pob.program_id from program_offered_by pob
+		where s.branchId =pob.branch_id and s.specializationId
+		=pob.specialization_id and
+		pob.offered_by=#entityId#);
+    </select>
+	<select id="getProgramType" resultClass="EntityDetails">
+		SELECT
+		component_description AS programType,component_code AS
+		programTypeCode
+		FROM system_table_two
+		WHERE group_code='REGDIS' AND
+		university_code=#universityId#;
+    </select>
+
+	<select id="getEmployeeList" resultClass="EntityDetails">
+		select em.first_name as
+		firstName,
+		em.last_name as lastName,
+		em.employee_code as employeeCode
+		from employee_master em
+		where em.university_code=#universityId# and
+		em.employee_status='ACT';
+	</select>
+
+
+	<insert id="insertProgramOfferedBy" parameterClass="EntityDetails">
+		insert into
+		program_offered_by ( program_id, branch_id, specialization_id,
+		offered_by, mentor,reg_or_distance ,seats, insert_time,
+		modification_time, creator_id, modifier_id )
+		VALUES ( #programId#,
+		#branchId#, #specializationId#, #entityId#,
+		#employeeCode#,#programTypeCode#, #numberOfSeats#, Now(), null,
+		#creatorId#, #modifierId# )
+    </insert>
+
+	<select id="getExistingEntityDetails" resultClass="EntityDetails">
+		select
+		pm.program_name as programName,
+		stt.component_description as
+		branchName,
+		stt1.component_description as specializationName,
+		em.first_name as firstName,em.last_name as lastName,em.employee_code
+		as employeeCode,pob.reg_or_distance AS
+		programTypeCode,stt2.component_description AS programType,
+		pob.seats as
+		numberOfSeats
+		from program_master pm,program_offered_by
+		pob,system_table_two stt,
+		system_table_two stt1,system_table_two stt2 ,
+		employee_master em
+		where
+		pob.offered_by=#entityId#
+		AND
+		stt2.component_code = pob.reg_or_distance
+		AND stt2.group_code =
+		'REGDIS' AND stt2.university_code = #universityId#
+		AND
+		pob.program_id=pm.program_id and (stt.component_code=pob.branch_id
+		and
+		stt.group_code='BRNCOD') and
+		(stt1.component_code=pob.specialization_id and
+		stt1.group_code='SPCLCD') and (stt.university_code=#universityId# and
+		stt.university_code=stt1.university_code) and
+		em.employee_code=pob.mentor order by pob.seats;			
+	</select>
+
+</sqlMap>

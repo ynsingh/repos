@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) snewsswtpopUp.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" verticalPageScrollSize="5" close="closepopup()" verticalScrollPolicy="on" styleName="PopUpTitleWindow"  x="30" y="5" horizontalScrollPolicy="auto" width="915" layout="absolute" title="{commonFunction.getConstants('correctionWindow')}"  xmlns:ns1="common.*" showCloseButton="true" creationComplete="titlewindowInitializeHandler()" height="328">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/seqPopupAction.as"/>
+
+					
+	<mx:HTTPService id="updateSeqRecord" method="POST"
+		url="{urlPrefix2}updateSeqRecord.htm"
+		resultFormat="e4x"
+		result="onSeqUpdateSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+
+
+	
+ 		<mx:Label x="69" y="128" text="{commonFunction.getConstants('registrationRollNo')}"  height="17"/>
+		<mx:Label x="498" y="93" text="{commonFunction.getConstants('admissionMode')}"/>
+		<mx:TextInput x="656" y="165" id="seqNo" width="160"/>
+		<mx:Label x="67" y="25" text="{commonFunction.getConstants('entity')}"/>
+		<mx:Label x="67" y="54" text="{commonFunction.getConstants('branch')}"/>
+		<mx:Label x="498" y="25" text="{commonFunction.getConstants('program')}"/>
+		<mx:Label x="498" y="60" text="{commonFunction.getConstants('specialization')}"/>
+		<mx:Label x="66" y="93" text="{commonFunction.getConstants('semester')}"/>
+		<mx:Label x="498" y="167" text="{commonFunction.getConstants('sequenceNo')}"/>
+		<mx:Label x="498" y="128" text="{commonFunction.getConstants('reasonCode')}"/>
+		<mx:Label x="69" y="167" text="{commonFunction.getConstants('description')}"/>
+		<mx:Label x="200" y="25" id="entityLabel" width="160"/>
+		<mx:Label x="200" y="54" id="branchLabel" width="160"/>
+		<mx:Label x="200" y="93" id="semesterLabel" width="160"/>
+		<mx:Label x="200" y="128" id="regrolLabel" width="160"/>
+		<mx:Label x="200" y="167" id="descriptionLabel" width="160"/>
+		<mx:Label x="656" y="25" id="programLabel" width="160"/>
+		<mx:Label x="656" y="60" id="specilizationLabel" width="160"/>
+		<mx:Label x="656" y="93" id="admModeLabel" width="160"/>
+		<mx:Label x="656" y="128" id="reasoncodeLabel" width="160"/>
+		
+		<mx:Button x="182" y="220" label="{commonFunction.getConstants('okButton')}" id="okButton" click="updateValues()" />
+		<mx:Button x="498" y="220" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="closepopup()"/>
+		
+		
+	</mx:TitleWindow>
+
+
+
+

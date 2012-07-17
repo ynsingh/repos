@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) BuildActivityViaProgram.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" title="Session: {sessionStartDate} : {sessionEndDate}" layout="absolute" width="816" height="474" creationComplete="applicationCreationHandler()">
+	
+	<mx:HTTPService id="programListHttpService" method="POST"
+		url="{urlPrefix+'programList.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="programListHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+					
+	<mx:HTTPService id="branchListHttpService" method="POST"
+		url="{urlPrefix+'branchList.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="branchListHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>	
+
+	<mx:HTTPService id="specializationListHttpService" method="POST"
+		url="{urlPrefix+'specializationList.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="specializationListHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="semesterListHttpService" method="POST"
+		url="{urlPrefix+'semesterList.htm '}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="semesterListHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getEntityHttpService" method="POST"
+		url="{urlPrefix+'getEntity.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getEntityHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="buildAllProgramsHttpService" method="POST"
+		url="{urlPrefix+'buildAllPrograms.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="buildAllProgramsHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getCurrentSessionHttpService" method="POST"
+		url="{urlPrefix+'getCurrentSession.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getCurrentSessionHttpServiceResultHandler(event)"
+		fault="httpServiceFaultHandler(event)"
+		useProxy="false"/>								
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.ListEvent;
+			import mx.collections.ArrayCollection;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.ResultEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.controls.Alert;
+			import common.Mask;
+			import common.commonFunction;
+			
+			protected var programList:XML;
+			protected var branchList:XML;
+			protected var specializationList:XML;
+			protected var semesterList:XML;
+			[Bindable] protected var urlPrefix:String;
+			[Bindable] private var sessionStartDate:String="";
+			[Bindable] private var sessionEndDate:String="";
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			private var entityArrayColl:ArrayCollection;
+			private var selectedEntityId:String;
+			
+			/**
+			 * @protected
+			 * function will called on the popup window creation 
+			 */
+			protected function applicationCreationHandler():void{
+				urlPrefix=commonFunction.getConstants('url')+"/buildactivitymaster/";
+				var param:Object=new Object();
+                param["time"]=new Date();
+				getEntityHttpService.send(param);
+			}
+			
+			private function getCurrentSessionHttpServiceResultHandler(event:ResultEvent):void{
+				var resultData:XML = event.result as XML;
+				sessionStartDate=resultData.SessionStartDate;
+				sessionEndDate=resultData.SessionEndDate;
+			}
+			
+			private function getEntityHttpServiceResultHandler(event:ResultEvent):void{
+				var resultData:XML = event.result as XML;
+				entityArrayColl=new ArrayCollection();
+				for each(var obj:Object in resultData.entity){
+					entityArrayColl.addItem({entityId:obj.entityId, entityName:obj.entityName});
+				}
+				
+				entityCB.labelField="entityName";
+				entityCB.dataProvider=entityArrayColl;
+		 	}
+		 	
+		 	private function entityCBChangeHandler(event:ListEvent):void{
+		 		for each(var obj:Object in entityArrayColl){
+		 			if(obj.entityName==entityCB.selectedLabel){
+		 				selectedEntityId=obj.entityId;
+		 				break;
+		 			}
+		 		}
+		 		
+		 		programCB.selectedIndex=-1;
+		 		branchCB.selectedIndex=-1;
+		 		specializationCB.selectedIndex=-1;
+		 		semesterCB.selectedIndex=-1;
+		 		buildAllCheckBox.enabled=false;
+		 		buildSelectedCheckBox.enabled=false;
+		 		
+				var param:Object = new Object();
+				param["time"]=new Date();
+				param["selectedEntityId"]=selectedEntityId;
+				getCurrentSessionHttpService.send(param);
+				programListHttpService.send(param);
+			}
+			
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function programListHttpServiceResultHandler(event:ResultEvent):void{
+				programList = event.result as XML;
+				if(programList.sessionConfirm == true){
+	        		
+						Alert.show(resourceManager.getString('Messages','sessionInactive'));
+
+						var url:String="";
+						url=commonFunction.getConstants('navigateHome');
+						var urlRequest:URLRequest=new URLRequest(url);
+						urlRequest.method=URLRequestMethod.POST;
+						navigateToURL(urlRequest,"_self")
+        		}
+				
+				programCB.dataProvider=programList.program.programName;
+				Mask.close();
+			}
+			
+			
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function branchListHttpServiceResultHandler(event:ResultEvent):void{
+				branchList = event.result as XML;
+				if(branchList.sessionConfirm == true){
+	        			        		
+						Alert.show(resourceManager.getString('Messages','sessionInactive'));
+
+						var url:String="";
+						url=commonFunction.getConstants('navigateHome');
+						var urlRequest:URLRequest=new URLRequest(url);
+						urlRequest.method=URLRequestMethod.POST;
+						navigateToURL(urlRequest,"_self")
+ 
+        		}
+				
+				branchCB.dataProvider=branchList.branch.branchName;
+				Mask.close();
+			}
+			
+			
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function specializationListHttpServiceResultHandler(event:ResultEvent):void{
+				specializationList = event.result as XML;
+				if(specializationList.sessionConfirm == true){
+	        			        		
+						Alert.show(resourceManager.getString('Messages','sessionInactive'));
+
+						var url:String="";
+						url=commonFunction.getConstants('navigateHome');
+						var urlRequest:URLRequest=new URLRequest(url);
+						urlRequest.method=URLRequestMethod.POST;
+						navigateToURL(urlRequest,"_self")
+ 
+        		}
+				
+				specializationCB.dataProvider=specializationList.specialization.specializationName;
+				Mask.close();
+			}
+			
+			
+			/**
+			 * @protected
+			 * this method is called when a result come from the server. 
+			 * @param event a Result event object.
+			 */
+			protected function semesterListHttpServiceResultHandler(event:ResultEvent):void{
+				semesterList = event.result as XML;
+				if(semesterList.sessionConfirm == true){
+	        			        		
+						Alert.show(resourceManager.getString('Messages','sessionInactive'));
+
+						var url:String="";
+						url=commonFunction.getConstants('navigateHome');
+						var urlRequest:URLRequest=new URLRequest(url);
+						urlRequest.method=URLRequestMethod.POST;
+						navigateToURL(urlRequest,"_self")
+ 
+        		}
+				
+				semesterCB.dataProvider=semesterList.semester.semesterName;
+				Mask.close();
+			}
+			
+			
+			/**
+			 * @private
+			 * This function will called on program combobox change event. 
+			 * @return void 
+			 */
+			protected function programCBChangeHandler():void{
+				 branchCB.enabled=true;
+				 specializationCB.enabled=false;
+				 semesterCB.enabled=false;
+				 branchCB.selectedIndex=-1;
+				 specializationCB.selectedIndex=-1;
+				 semesterCB.selectedIndex=-1;
+				 buildAllCheckBox.enabled=false;
+		 		 buildSelectedCheckBox.enabled=false;
+			     var param:Object=new Object();
+				 param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				 param["selectedEntityId"]=selectedEntityId;
+				 Mask.show("Wait....");
+				 branchListHttpService.send(param);
+			}
+			
+			/**
+			 * @private
+			 * This function will called on branch combobox change event. 
+			 * @return void 
+			 */
+			protected function branchCBChangeHandler():void{
+				specializationCB.enabled=true;
+				semesterCB.enabled=false;
+				specializationCB.selectedIndex=-1;
+				semesterCB.selectedIndex=-1;
+				buildAllCheckBox.enabled=false;
+		 		buildSelectedCheckBox.enabled=false;
+			    var param:Object=new Object();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["selectedEntityId"]=selectedEntityId;
+				Mask.show("Wait....");
+			    specializationListHttpService.send(param);	        
+			}
+			
+			/**
+			 * @protected 
+			 * This function will called on specialization combobox change event. 
+			 * @param event a ListEvent object.
+			 */
+			protected function specializationCBChangeHandler():void{
+				semesterCB.enabled=true;
+				semesterCB.selectedIndex=-1;
+				buildAllCheckBox.enabled=false;
+		 		buildSelectedCheckBox.enabled=false;
+				var param:Object=new Object();
+				param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+				param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+				param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+				param["selectedEntityId"]=selectedEntityId;
+				Mask.show("Wait....");
+				semesterListHttpService.send(param);					
+			}
+			
+			/**
+			 * @protected 
+			 * This function will called on semester combobox item change event. 
+			 */
+			protected function semesterCBChangeHandler():void{
+				buildAllCheckBox.enabled=true;
+				buildSelectedCheckBox.enabled=true;
+			}
+			
+			private function buildAllCheckBoxClickHandller(event:Event):void{
+				buildSelectedCheckBox.selected=false;
+				
+//				secondCanvas.visible=false;
+				if(buildAllCheckBox.selected==true){
+					buildButton.enabled=true;	
+				}
+				else{
+					buildButton.enabled=false;
+				}
+			}
+			
+			private function buildSelectedCheckBoxClickHandler(event:Event):void{
+				buildAllCheckBox.selected=false;
+				if(buildSelectedCheckBox.selected==true){
+					buildButton.enabled=true;	
+				}
+				else{
+					buildButton.enabled=false;
+				}
+			}
+			
+			/**
+			 * @protected
+			 * this method is called when a fault occur from the server. 
+			 * @param event a Fault event object.
+			 */
+			protected function httpServiceFaultHandler(event:FaultEvent):void{
+				Alert.show(commonFunction.getMessages('problemInService'),(commonFunction.getMessages('error')),4,null,null,errorIcon);
+				Mask.close();
+			}
+			
+			private function buildButtonClickHandler():void{
+				if(buildSelectedCheckBox.selected==true){
+			  		var popUpWin:ProgramGridWindow = ProgramGridWindow(PopUpManager.createPopUp(this, ProgramGridWindow, true));
+					popUpWin.selectedEntityId=selectedEntityId;
+					popUpWin.programId = programList.program.(programName==programCB.selectedLabel).programId;
+					popUpWin.branchId = branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+					popUpWin.specializationId = specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+					popUpWin.semesterCode = semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+					popUpWin.sessionStartDate=sessionStartDate;
+					popUpWin.sessionEndDate=sessionEndDate;
+					popUpWin.refreshFunction=refresh;
+	    			PopUpManager.centerPopUp(popUpWin);	
+				}
+				else if(buildAllCheckBox.selected==true){
+					Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, buildConfirm,questionIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('selectCheckBox'), commonFunction.getMessages('info'),4,null,null,infoIcon);	
+				}
+			}
+			
+			private function buildConfirm(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					var param:Object=new Object();
+					param["time"]=new Date();
+					param["programId"]=programList.program.(programName==programCB.selectedLabel).programId;
+					param["branchId"]=branchList.branch.(branchName==branchCB.selectedLabel).branchId;
+					param["specializationId"]=specializationList.specialization.(specializationName==specializationCB.selectedLabel).specializationId;
+					param["semesterCode"]=semesterList.semester.(semesterName==semesterCB.selectedLabel).semesterCode;
+					param["selectedEntityId"]=selectedEntityId;
+					param["sessionStartDate"]=sessionStartDate;
+					param["sessionEndDate"]=sessionEndDate;
+					buildAllProgramsHttpService.send(param);
+	   			}	
+			}
+			
+			private function buildAllProgramsHttpServiceResultHandler(event:ResultEvent):void{
+				var resultData:XML=event.result as XML;
+				if(resultData.message=="duplicateData"){
+					Alert.show(commonFunction.getMessages('recordAlreadyExist'), commonFunction.getMessages('error'),4,null,null,errorIcon);	
+				}
+				else if(resultData.message=="semesterDatesMissing"){
+					Alert.show(commonFunction.getMessages('semesterStartEndDateMissing'), commonFunction.getMessages('error'),4,null,null,errorIcon);	
+				}
+				else if(resultData.message=="activityNotExist"){
+					Alert.show(commonFunction.getMessages('activityIsNotSet'), commonFunction.getMessages('error'),4,null,null,errorIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('recordBuildSuccess'), commonFunction.getMessages('success'),4,null,null,successIcon);
+				}
+				refresh();
+			}
+			
+			private function refresh():void{
+				buildAllCheckBox.selected=false;
+				buildSelectedCheckBox.selected=false;
+				buildButton.enabled=false;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas x="25.5" y="26" styleName="SimpleCanvas" width="753" height="137">
+		<mx:Label x="106" y="18" text="{commonFunction.getConstants('entity')}:"/>
+		<mx:ComboBox x="151" y="16" width="160" id="entityCB" selectedIndex="-1" toolTip="{entityCB.text}" prompt="{commonFunction.getConstants('select')}" change="entityCBChangeHandler(event)"/>
+		<mx:Label x="437" y="20" text="{commonFunction.getConstants('program')}:"/>
+		<mx:ComboBox x="502" y="18" width="160" id="programCB" selectedIndex="-1" toolTip="{programCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="programCBChangeHandler()"/>
+		<mx:Label x="86" y="63" text="{commonFunction.getConstants('branch')}:"/>
+		<mx:ComboBox x="151" y="61" width="160" id="branchCB" enabled="false" selectedIndex="-1" toolTip="{branchCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="branchCBChangeHandler()"/>
+		<mx:Label x="404" y="65" text="{commonFunction.getConstants('specialization')}:"/>
+		<mx:ComboBox x="502" y="63" width="160" id="specializationCB" enabled="false" selectedIndex="-1" toolTip="{specializationCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="specializationCBChangeHandler()"/>
+		<mx:Label x="75" y="103" text="{commonFunction.getConstants('semester')}:"/>
+		<mx:ComboBox x="151" y="101" width="160" id="semesterCB" enabled="false" selectedIndex="-1" toolTip="{semesterCB.selectedItem}" prompt="{commonFunction.getConstants('select')}" change="semesterCBChangeHandler()"/>
+	</mx:Canvas>
+	<mx:CheckBox x="185.5" y="224" id="buildAllCheckBox" enabled="false" label="Build  Activity for All Programs" click="buildAllCheckBoxClickHandller(event)"/>
+	<mx:CheckBox x="185.5" y="264" id="buildSelectedCheckBox" enabled="false" label="Build Activity for Selected Programs" click="buildSelectedCheckBoxClickHandler(event)"/>
+	<mx:Button x="255.5" y="367" id="buildButton" label="Build" enabled="false" click="buildButtonClickHandler()"/>
+	<mx:Button x="430.5" y="367" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>
+	
+</mx:Panel>

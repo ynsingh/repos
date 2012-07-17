@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+<sqlMap namespace="evaluation">
+	<typeAlias alias="evaluation"
+		type="in.ac.dei.edrp.cms.domain.evaluationcomponent.EvaluationComponentInfoGetter" />
+
+
+	<resultMap id="records" class="evaluation">
+
+		<result property="evaluationId" column="evaluation_id" />
+		<result property="idCode" column="id_code" />
+		<result property="idDescription" column="id_description" />
+		<result property="displayCode" column="disp_code" />
+		<result property="displayDescription" column="disp_description" />
+
+
+	</resultMap>
+
+	<select id="getRecordDetails" resultMap="records">
+
+		select
+		ecv.evaluation_id,sys.component_code as
+		id_code,sys.component_description as id_description
+		,sys1.component_code as disp_code,sys1.component_description as
+		disp_description from
+		evaluation_component ecv,system_table_two
+		sys,system_table_two sys1
+		where sys.component_code=ecv.id_type AND
+		sys.group_code='IDTYPE' AND
+		sys1.component_code=ecv.display_type AND
+		sys1.group_code='DISTYP'AND
+		ecv.university_code=sys.university_code
+		AND
+		sys.university_code=sys1.university_code AND
+		ecv.university_code=#universityCode#;
+</select>
+
+	<insert id="insertComponent">
+
+		insert into evaluation_component (university_code,
+		evaluation_id, id_type,
+		display_type, insert_time, creator_id)
+		values(#universityCode#,#evaluationId#,#typeId#,#displayId#,now(),#userId#);
+
+</insert>
+
+	<update id="updateComponent">
+
+		update evaluation_component set
+		id_type=#typeId#,display_type=#displayId#,modification_time=now(),modifier_id=#userId#
+		where evaluation_id=#evaluationId# AND
+		university_code=#universityCode#;
+
+</update>
+
+	<delete id="deleteEvaluationReocrd">
+
+		delete from evaluation_component where
+		evaluation_id=#evaluationId# AND university_code=#universityCode#;
+
+</delete>
+
+
+	<resultMap id="components" class="evaluation">
+
+		<result property="componentId" column="component_code" />
+		<result property="componentDescription" column="component_description" />
+
+
+	</resultMap>
+
+	<select id="getComponentsInfo" resultMap="components">
+
+		select
+		component_code,component_description from system_table_two where
+		component_code NOT IN
+		(select evaluation_id from evaluation_component
+		where university_code=#universityCode#)
+		AND group_code='EVLCOM' AND
+		active=1 AND university_code=#universityCode#;
+</select>
+
+
+</sqlMap>

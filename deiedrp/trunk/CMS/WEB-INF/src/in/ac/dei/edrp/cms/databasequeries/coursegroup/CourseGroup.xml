@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- * @(#) CourseGroup.xml * @Author :Mohd Amir * @Date :21/3/2011 * Version 
+	1.0 * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. * All Rights 
+	Reserved. * * Redistribution and use in source and binary forms, with or 
+	* without modification, are permitted provided that the following * conditions 
+	are met: * * Redistributions of source code must retain the above copyright 
+	* notice, this list of conditions and the following disclaimer. * * Redistribution 
+	in binary form must reproducuce the above copyright * notice, this list of 
+	conditions and the following disclaimer in * the documentation and/or other 
+	materials provided with the * distribution. * * * THIS SOFTWARE IS PROVIDED 
+	``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES, INCLUDING, BUT NOT LIMITED 
+	TO, THE IMPLIED WARRANTIES * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+	PURPOSE ARE * DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+	* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL 
+	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS 
+	OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION) HOWEVER 
+	CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT, STRICT LIABILITY, 
+	OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+	USE OF THIS SOFTWARE, * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+	* * Contributors: Members of EdRP, Dayalbagh Educational Institute */ -->
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="courseGroup">
+	<typeAlias alias="courseGroupInfo"
+		type="in.ac.dei.edrp.cms.domain.coursegroup.CourseGroupBean" />
+
+
+
+	<select id="getCourseGroupList" resultClass="courseGroupInfo">
+
+		SELECT distinct
+		pcd.course_group as courseGroupCode,stt.component_description as
+		courseGroupName
+		FROM program_course_detail pcd, system_table_two stt
+		WHERE pcd.program_course_key=#programCourseKey# and
+		stt.component_code=pcd.course_group and stt.group_code='CRSGRP' and
+		stt.university_code=#universityId#
+    </select>
+
+	<select id="getCourseGroupInfo" resultClass="courseGroupInfo">
+
+		SELECT
+		cg.program_course_key as programCourseKey,cg.course_group_code as
+		courseGroupCode,stt.component_description as
+		courseGroupName,cg.minimum_credit as minCredits,cg.elective as
+		elective,cg.maximum_credit as maxCredits,cg.order_in_marksheet as orderInMarksheet
+		FROM course_group cg,
+		system_table_two stt
+		WHERE cg.program_course_key=#programCourseKey# and
+		stt.component_code=cg.course_group_code and stt.group_code='CRSGRP'
+		and stt.university_code=#universityId# 
+    </select>
+
+	<select id="getDuplicateRecordCount" resultClass="courseGroupInfo">
+
+		SELECT count(*)
+		as count
+		FROM course_group
+		WHERE program_course_key=#programCourseKey#
+		and course_group_code=#courseGroupCode#
+    </select>
+
+	<insert id="setCourseGroupInfo">
+		INSERT into
+		course_group(program_course_key,course_group_code,elective,minimum_credit,maximum_credit,order_in_marksheet,insert_time,creator_id)
+		VALUES
+		(#programCourseKey#,#courseGroupCode#,#elective#,#minCredits#,#maxCredits#,#orderInMarksheet#,now(),#userId#)
+    </insert>
+
+	<delete id="deleteCourseGroupInfo">
+		DELETE
+		FROM course_group
+		WHERE
+		program_course_key=#programCourseKey# and
+		course_group_code=#courseGroupCode#
+    </delete>
+
+	<update id="updateCourseGroupInfo">
+		UPDATE course_group
+		SET
+		minimum_credit=#minCredits#,elective=#elective#,maximum_credit=#maxCredits#,order_in_marksheet=#orderInMarksheet#,modification_time=now(),modifier_id=#userId#
+		WHERE program_course_key=#programCourseKey# and
+		course_group_code=#courseGroupCode#
+    </update>
+
+</sqlMap>

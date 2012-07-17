@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>	
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" initialize="initializeEntityData()" >
+<mx:Script>
+	<![CDATA[
+		import common.commonFunction;
+		import mx.rpc.Fault;
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.FaultEvent;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		public var obj : Object = {};
+		public var semesterSequence:String;
+		[Bindable]public var program:XML;
+		[Bindable]public var entityData : XML;
+		public var yearDataProvider:Array=new Array;
+		public var urlPrefix:String;
+										
+		  
+		public function initializeEntityData() : void
+		{
+			urlPrefix = commonFunction.getConstants('url');			
+			obj["time"] = new Date();
+			entity.send(obj);
+		}
+				
+		public function onSuccess(event:ResultEvent):void{							
+		entityData = event.result as XML;				
+		entityId.dataProvider = entityData.entity;
+		entityId.labelField="entityName";					
+		}
+		
+		public function getEntityId() : void
+		{
+//			Alert.show(entityData.entity.(entityName == entityId.text+"").entityId+" ");			
+			obj["entityId"] = entityId.selectedItem.entityId;
+			requestProgram.send(obj);
+			programId.enabled=true;
+		}
+				
+		public function onfailure(event:FaultEvent):void{			
+			Alert.show("failure");			
+		}
+		public function onProgramSuccess(event : ResultEvent):void
+		{			
+			 var programData:XML = event.result as XML;
+			var programList:ArrayCollection=new ArrayCollection();
+			for each(var obj1:Object in programData.program){
+				programList.addItem({programId:obj1.programId,programName:obj1.programName});
+			}
+			programId.dataProvider = programList;	
+			programId.labelField = "programName";			
+		}
+		public function enableGenerate() : void
+		{
+			generate.enabled = true;
+		}
+		public function populateSemester() : void
+		{
+			var semester:String = programId.selectedItem.programId;
+			obj["programId"] = programId.selectedItem.programId;
+			
+			requestSemester.send(obj);
+			semesterId.enabled = true;			 
+		}
+		public function onProgramFail(event:FaultEvent):void
+		{
+			Alert.show("fail to get program");			
+		}
+		public function onSemesterSuccess(event : ResultEvent):void
+		{
+			var semesterList:XML = event.result as XML;			
+			semesterId.dataProvider = semesterList.semester;
+			semesterId.labelField = "semesterName";
+			fromSessionId.enabled = true;
+			semesterStartDate.text = "";
+			semesterEndDate.text = ""; 
+			populateSession();
+		}
+		public function onSemesterFail(event : FaultEvent):void
+		{
+			Alert.show("fail to get the semesters");
+		}
+		
+		public function populateSession() : void
+		{				
+			if(semesterId.selectedIndex != -1)
+			{				
+			var endMonth:Date=new Date();
+                var currentYear:int=int(endMonth.getFullYear());                
+                for(var year:int=currentYear; currentYear>=1950; currentYear--){
+                    yearDataProvider.push(year);
+                    year--;
+                }
+                fromSessionId.dataProvider = yearDataProvider;
+                semesterStartDate.text = "";
+				semesterEndDate.text = ""; 
+                changeToSession();
+   			}
+   			else
+   			{
+   				semesterStartDate.text = "";
+				semesterEndDate.text = "";
+   			}                                
+		}
+		
+		public function changeToSession() : void
+		{			
+			semesterStartDate.text = "";
+			semesterEndDate.text = ""; 
+			if(semesterId.selectedIndex == -1)
+			{
+				toSessionId.data = "";
+			}
+			else if(fromSessionId.selectedIndex != -1)
+			{
+			toSessionId.data = parseInt(fromSessionId.selectedLabel) + 1;
+			obj["programId"] = programId.selectedItem.programId;
+			obj["entityId"] = entityId.selectedItem.entityId;
+			obj["semesterId"] = semesterId.selectedItem.semesterId;
+			obj["sessionStartDate"] = fromSessionId.selectedLabel; 
+			obj["sessionEndDate"] = toSessionId.text;
+			semesterStartEndDate.send(obj);			
+			}			
+		}
+		public function changeSemester():void
+		{
+			semesterStartDate.text = "";
+			semesterEndDate.text = "";
+			populateSession();
+			changeToSession();
+		}
+		public function onDateSuccess(event:ResultEvent):void
+		{
+			var semesterDate:XML = event.result as XML;
+			semesterSequence = semesterDate.semesterSequence;
+			var finalSemesterCode = semesterDate.finalSemesterCode;	
+			semesterStartDate.text = semesterDate.semesterStartDate;
+			semesterEndDate.text = semesterDate.semesterEndDate;
+			generate.enabled = true;						 									
+		}
+		public function onDateFail(event : FaultEvent):void
+		{			
+			semesterStartDate.text = "";
+			semesterEndDate.text = ""; 
+		}
+		public function generateReport():void
+		{							
+			obj["programId"] = programId.selectedItem.programId;			
+			obj["programName"] = programId.selectedLabel;
+			obj["entityId"] = entityId.selectedItem.entityId;
+			obj["semesterId"] = semesterId.selectedItem.semesterId;
+			obj["semesterStartDate"] = semesterStartDate.text;
+			obj["semesterEndDate"] = semesterEndDate.text;
+			obj["semesterSequence"] = semesterSequence;
+			obj["sessionStart"] = fromSessionId.selectedLabel;
+		//	obj["report"] = "progress"; 
+			dataForGenerating.send(obj);			
+		}
+		public function onGenerationSuccess(event : ResultEvent) : void		
+		{
+			Alert.show("success in printing");		
+		}
+		public function onGenerateFail(event : FaultEvent):void
+		{
+			Alert.show("fail in printing");
+		}
+	]]>
+</mx:Script>
+
+
+<mx:HTTPService id="entity" method="post" 
+	url="{commonFunction.getConstants('url')}/progresscardinfo/returnEntityInfo.htm" 
+	showBusyCursor="true"
+	useProxy="false" resultFormat="e4x" result="onSuccess(event)" fault="onfailure(event)"
+	/>
+<mx:HTTPService id="requestProgram" method="post"
+	url="{commonFunction.getConstants('url')}/progresscardinfo/returnProgramInfo.htm"
+	showBusyCursor="true"
+	useProxy="false" resultFormat="e4x" result="onProgramSuccess(event)" fault="onProgramFail(event)"
+		/>
+<mx:HTTPService id="requestSemester" method="post"
+	url="{commonFunction.getConstants('url')}/progresscardinfo/returnSemesterList.htm"
+	showBusyCursor="true"
+	useProxy="false" resultFormat="e4x" result="onSemesterSuccess(event)" fault="onSemesterFail(event)"
+		/>
+<mx:HTTPService id="dataForGenerating" method="post"
+	url="{commonFunction.getConstants('url')}/progresscardprint/recursiveChild.htm"
+	showBusyCursor="true"
+	useProxy="false" resultFormat="e4x" result="onGenerationSuccess(event)" fault="onGenerateFail(event)"
+		/>		
+		
+<mx:HTTPService id="semesterStartEndDate" method="post"
+		url="{commonFunction.getConstants('url')}/progresscardinfo/returnSemesterDate.htm"
+	showBusyCursor="true"
+	useProxy="false" resultFormat="e4x" result="onDateSuccess(event)" fault="onDateFail(event)"
+		/>		
+							
+	<mx:Panel  width="675.5" layout="absolute" y="22" height="445" title="PRINT " x="125.5">
+			
+	<mx:ComboBox id="entityId" x="243.5" y="44" change="getEntityId()" prompt="SELECT ENTITY" width="223">		
+	</mx:ComboBox>
+	<mx:ComboBox id="programId" width="223" x="243.5" y="91" prompt="SELECT PROGRAM" change="populateSemester()" enabled="false">			
+	</mx:ComboBox>	
+	<mx:Label x="142" y="46" text="ENTITY" width="63"/>
+	<mx:Label x="134" y="95" text="PROGRAM"/>
+	<mx:ComboBox id="semesterId" x="243" y="143" width="223.5" enabled="false" prompt="SEMESTER" change="changeSemester()"></mx:ComboBox>
+	<mx:Label x="134" y="147" text="SEMESTER"/>
+	<mx:ComboBox x="243" y="191" width="96.5" enabled="false" id="fromSessionId" change="changeToSession()" prompt="Session"></mx:ComboBox>
+	<mx:Label x="142" y="193" text="SESSION"/>
+	<mx:Label id="toSessionId" x="437" y="195" width="48"/>
+	<mx:Label x="372" y="195" text="TO"/>
+	<mx:Label x="62" y="237" text="SEMESTER START DATE"/>
+	<mx:Label x="336.5" y="237" text="SEMESTER END DATE"/>
+	<mx:Label x="243" y="237" id="semesterStartDate"/>
+	<mx:Label x="463" y="237" id="semesterEndDate"/>
+	<mx:Button x="243" y="302" label="Print" id="generate" click="generateReport()" enabled="false" width="110"/>
+	</mx:Panel>
+</mx:Panel>

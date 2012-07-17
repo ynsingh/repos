@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) addStudentInMaster.xml
+* @Author :Mohd Amir
+* @Date :21/3/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="addStduentInMaster">
+
+	<typeAlias alias="addStudentInMaster" type="in.ac.dei.edrp.cms.domain.studentmaster.StudentMasterInfoBean" />
+	<typeAlias alias="enrollmentInfo" type="in.ac.dei.edrp.cms.domain.enrollment.EnrollmentInfo" />
+
+<insert id="insertstudentmaster" parameterClass="addStudentInMaster">
+	insert into
+	student_master 
+	(university_code,student_id,enrollment_number,student_first_name,student_middle_name,student_last_name,
+	primary_email_id,secondary_email_id,date_of_birth,category_code,gender,father_first_name,father_middle_name,
+	father_last_name,mother_first_name,mother_middle_name,mother_last_name,registered_in_session,status,
+	insert_time,creator_id,parent_entity,name_in_hindi,father_name_in_hindi,mother_name_in_hindi,
+	photo_path,nationality,religion,guardian_name,session_start_date,session_end_date) 
+	values 
+	(#universityId#,#studentId#,#enrollmentNumber#,#studentFirstName#,#studentMiddleName#,#studentLastName#,
+	#primaryEmailId#,#secondaryEmailId#,#dateOfBirth#,#categoryCode#,#gender#,#fatherFirstName#,
+	#fatherMiddleName#,#fatherLastName#,#motherFirstName#,#motherMiddleName#,#motherLastName#,
+	#registeredInSession#,#status#,now(),#userId#,#parentEntity#,#hindiName#,#fatherHindiName#,
+	#motherHindiName#,#path#,#nationality#,#religion#,#guardian#,#sessionStartDate#,#sessionEndDate#);
+</insert>
+
+<insert id="insertaddressmaster" parameterClass="addStudentInMaster">
+	insert into
+	addresses_master 
+	(user_type,user_id,address_key,address,city,state,pincode,office_phone,home_phone,
+	other_phone,fax,insert_time,creator_id) 
+	values 
+	(#userType#,#studentId#,#addressKey#,#addressLineOne#,#city#,#state#,#pinCode#,
+	#officePhone#,#homePhone#,#otherPhone#,#fax#,now(),#userId#); 
+</insert>
+
+<update id="updatestudentmaster" parameterClass="addStudentInMaster">
+	UPDATE student_master
+	SET student_first_name=#studentFirstName#,student_middle_name=#studentMiddleName#,student_last_name=#studentLastName#,name_in_hindi=#hindiName#,
+	father_first_name=#fatherFirstName#,father_middle_name=#fatherMiddleName#,father_last_name=#fatherLastName#,father_name_in_hindi=#fatherHindiName#,
+	mother_first_name=#motherFirstName#,mother_middle_name=#motherMiddleName#,mother_last_name=#motherLastName#,mother_name_in_hindi=#motherHindiName#,
+	primary_email_id=#primaryEmailId#,secondary_email_id=#secondaryEmailId#,
+	modification_time=now(),modifier_id=#userId#,status=#status#,photo_path=#path#,guardian_name=#guardian#,
+	session_start_date=#sessionStartDate#,session_end_date=#sessionEndDate#
+	WHERE student_id=#studentId# and university_code=#universityId#
+</update>
+
+<update id="updateaddressmaster" parameterClass="addStudentInMaster">
+	update addresses_master set 
+	address=#addressLineOne#,city=#city#,state=#state#,pincode=#pinCode#,
+	office_phone=#officePhone#,home_phone=#homePhone#,other_phone=#otherPhone#,fax=#fax#,
+	modification_time=now(),modifier_id=#userId# where user_id=#studentId# and address_key=#addressKey#; 
+</update>
+
+<resultMap id="getStudentIdresult" class="addStudentInMaster">
+<result property="count" column="count(student_id)"/>
+</resultMap>
+<select id="getStudentId" resultMap="getStudentIdresult">
+select count(student_id) from student_master where enrollment_number=#enrollmentNumber#;
+</select>
+
+<resultMap id="getStudentDetailresult" class="addStudentInMaster">
+<result property="studentId" column="sm.student_id"/>
+<result property="studentFirstName" column="sm.student_first_name"/>
+<result property="studentMiddleName" column="sm.student_middle_name"/>
+<result property="studentLastName" column="sm.student_last_name"/>
+<result property="fatherFirstName" column="sm.father_first_name"/>
+<result property="fatherMiddleName" column="sm.father_middle_name"/>
+<result property="fatherLastName" column="sm.father_last_name"/>
+<result property="motherFirstName" column="sm.mother_first_name"/>
+<result property="motherMiddleName" column="sm.mother_middle_name"/>
+<result property="motherLastName" column="sm.mother_last_name"/>
+<result property="primaryEmailId" column="sm.primary_email_id"/>
+<result property="secondaryEmailId" column="sm.secondary_email_id"/>
+<result property="registeredInSession" column="sm.registered_in_session"/>
+<result property="status" column="sm.status"/>
+<result property="dateOfBirth" column="sm.date_of_birth"/>
+<result property="categoryName" column="stt.component_description"/>
+<result property="gender" column="sm.gender"/>
+<result property="parentEntity" column="sm.parent_entity"/>
+<result property="path" column="sm.photo_path"/>
+<result property="hindiName" column="sm.name_in_hindi"/>
+<result property="fatherHindiName" column="sm.father_name_in_hindi"/>
+<result property="motherHindiName" column="sm.mother_name_in_hindi"/>
+<result property="nationality" column="sm.nationality"/>
+<result property="religion" column="sm.religion"/>
+<result property="guardian" column="sm.guardian_name"/>
+</resultMap>
+<select id="getStudentDetail" resultMap="getStudentDetailresult">
+	SELECT sm.student_id, sm.registered_in_session, sm.parent_entity,
+	sm.student_first_name, sm.student_middle_name, sm.student_last_name,
+	sm.father_first_name, sm.father_middle_name, sm.father_last_name,
+	sm.mother_first_name, sm.mother_middle_name, sm.mother_last_name,
+	sm.primary_email_id, sm.secondary_email_id, sm.date_of_birth,
+	stt.component_description, sm.gender, sm.status, sm.photo_path,
+	sm.name_in_hindi, sm.father_name_in_hindi, sm.mother_name_in_hindi,
+	sm.nationality, sm.religion, sm.guardian_name
+	FROM student_master sm, system_table_two stt 
+	WHERE sm.enrollment_number=#enrollmentNumber# AND stt.component_code=sm.category_code
+	AND stt.group_code='STDCTG' AND sm.university_code=stt.university_code
+	AND stt.university_code=#universityId#;
+</select>
+
+<resultMap id="getStudentAddressDetailresult" class="addStudentInMaster">
+<result property="userType" column="user_type"/>
+<result property="addressKey" column="address_key"/>
+<result property="addressLineOne" column="address"/>
+<result property="city" column="city"/>
+<result property="state" column="state"/>
+<result property="pinCode" column="pincode"/>
+<result property="officePhone" column="office_phone"/>
+<result property="otherPhone" column="other_phone"/>
+<result property="homePhone" column="home_phone"/>
+<result property="fax" column="fax"/>
+</resultMap>
+
+<select id="getStudentAddressDetail" resultMap="getStudentAddressDetailresult">
+	select user_type, address_key,address,city,state,pincode,office_phone,other_phone,home_phone,
+	fax from addresses_master where user_id=#studentId#;
+</select>
+
+<resultMap id="getStudentAddresskeyResult" class="addStudentInMaster">
+<result property="count" column="count(address_key)"/>
+
+</resultMap>
+<select id="getStudentAddresskey" resultMap="getStudentAddresskeyResult">
+	select count(address_key) from addresses_master where user_id=#studentId# and user_type=#userType# and address_key=#addressKey#;
+</select>
+
+<select id="getSequenceNumber" resultClass="addStudentInMaster">
+	SELECT value as sequenceNumber
+	FROM system_values
+	WHERE university_Id=#universityId# and code='FSTUID'
+</select>
+
+<update id="updateSequenceNumber">
+	UPDATE system_values
+	set value=#sequenceNumber#,modification_time=now(),modifier_id=#userId#
+	WHERE university_Id=#universityId# and code='FSTUID'
+</update>
+
+<select id="getOldStudentDetail" resultClass="enrollmentInfo">
+	SELECT enrollment_number enrollmentNo,student_id studentId,
+	student_first_name studentFirstName,student_middle_name studentMiddleName,student_last_name studentLastName,
+	father_first_name fatherFirstName,father_middle_name fatherMiddleName,father_last_name fatherLastName,
+	mother_first_name motherFirstName,mother_middle_name motherMiddleName,mother_last_name motherLastName,
+	primary_email_id primaryMail,secondary_email_id secondaryMail,date_of_birth dob,category_code categoryCode,gender
+	FROM student_master
+	WHERE enrollment_number=#enrollmentNo# AND student_first_name like #studentFirstName#
+	AND student_middle_name like #studentMiddleName# AND student_last_name like #studentLastName#
+	AND date_of_birth like #dob# AND gender like #gender#;
+</select>
+
+</sqlMap>

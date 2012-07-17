@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="852" height="32" backgroundColor="#ffffff" borderThickness="0" dropShadowEnabled="false">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import common.commonFunction;
+			
+			public function setSpecialization():void
+			{
+//				var noneStatus:String=commonFunction.getConstants('none');
+//				if(specializationCombo.selectedItem.branchCode==noneStatus)
+//				{
+//					ActiveSemCombo.selectedIndex=-1;
+//					ActiveSemCombo.enabled=false;
+//				}
+//				else
+//				{
+//					ActiveSemCombo.enabled=true;
+//					ActiveSemCombo.selectedIndex=0;
+//				}
+			}
+		]]>
+	</mx:Script>
+	  <mx:Script source="asFiles/BranchWithSpecAction.as"/> 
+	  
+	   <mx:HTTPService id="httpBranchList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodBranchList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Branch(event)"
+        fault="faultHandler_Branch(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpSpecList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodSpecList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Spec(event)"
+        fault="faultHandler_Spec(event)"
+        useProxy="false"/>
+        
+       <mx:HTTPService id="httpSemList" method="post"
+        url="{commonFunction.getConstants('url')+ '/programmaster/methodSemList.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Semester(event)"
+        fault="faultHandler_Semester(event)"
+        useProxy="false"/>
+
+    <mx:Label text="{commonFunction.getConstants('branch')}" height="20"  x="24"  y="6"/>
+    <mx:Label x="235" text="{commonFunction.getConstants('specialization')}"   y="6"/>
+    <mx:Label x="504" text="{commonFunction.getConstants('activeFrom')}"   y="6"/>
+	<mx:CheckBox id="checked" x="4" selected="true"  y="6"/>
+	<mx:ComboBox id="branchCombo" x="72" toolTip="{branchCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150" labelField="branchName"  y="4" creationComplete="httpBranch()"></mx:ComboBox>
+	<mx:ComboBox id="specializationCombo" x="327" toolTip="{specializationCombo.text}" labelField="branchName" prompt="{commonFunction.getConstants('select')}" change="setSpecialization()" dataProvider="{specXML.branch}" width="160" y="4"/>
+	<mx:ComboBox id="ActiveSemCombo" toolTip="{ActiveSemCombo.text}" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" x="678" labelField="branchName" width="150"  y="4"/>
+	<mx:HRule x="0" y="2" width="842"/>
+	<mx:HRule x="0" y="30" width="842"/>
+	<mx:VRule x="0" y="2" height="28"/>
+	<mx:VRule x="849" y="2" height="28"/>
+	<mx:VRule x="21" y="2" height="28"/>
+	<mx:Label id="err" visible="false" x="830" y="9" text="**" color="#B90D00"/>
+</mx:Canvas>

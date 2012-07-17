@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) gradeReportConsolidated.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous(entityCombo)" title="{commonFunction.getConstants('gradeReportConsolidated')}" layout="absolute" width="710" height="363">
+
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			
+			[Bindable]public var urlPrefix:String;
+			
+        ]]>
+	</mx:Script>
+
+		<mx:HTTPService id="getEntityList" method="POST"
+		url="{urlPrefix1}getEntityLists.htm"
+		resultFormat="e4x"
+		result="getEntitySuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+		url="{urlPrefix1}getProgramList.htm"
+		resultFormat="e4x"
+		result="getProgramSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+		url="{urlPrefix1}getBranchList.htm"
+		resultFormat="e4x"
+		result="getBranchSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+		url="{urlPrefix1}getSpecializationList.htm"
+		resultFormat="e4x"
+		result="getSpecializationSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	<mx:HTTPService id="getMarkSheets" method="POST"
+		url="{urlPrefix1}getConsolidatedMarkSheetData.htm"
+		resultFormat="e4x"
+		result="onMarkSheetSuccess(event)"
+		fault="onMarkSheetFailure(event)"
+		useProxy="false"/>
+	
+
+<mx:Script source="asFiles/gradeReportConsolidatedAction.as"/>
+
+	    <mx:Canvas styleName="SimpleCanvas" x="19" y="37" width="639" height="239">
+	    <mx:Label x="34.5" y="23" text="{commonFunction.getConstants('entity')}" />
+		<mx:ComboBox x="154.5" y="20" width="150" id="entityCombo" prompt="{commonFunction.getConstants('select')}"  change="entityChange()"
+		selectedIndex="-1" toolTip="{entityCombo.selectedItem}"></mx:ComboBox>
+		<mx:Label x="330" y="24" text="{commonFunction.getConstants('program')}" />
+		<mx:ComboBox width="150" x="463.5" id="programCombo" enabled="false" prompt="{commonFunction.getConstants('select')}"
+		selectedIndex="-1" change="programChange(event)" y="21" toolTip="{programCombo.selectedItem}"></mx:ComboBox>
+		<mx:Label x="34.5" y="61" text="{commonFunction.getConstants('branch')}" />
+		<mx:ComboBox x="154.5" y="58" width="150" id="branchCombo" prompt="{commonFunction.getConstants('select')}"
+		 selectedIndex="-1" enabled="false" change="branchChange(event)" toolTip="{branchCombo.selectedItem}"></mx:ComboBox>
+		<mx:Label x="330" y="58" text="{commonFunction.getConstants('specialization')}" />
+		<mx:ComboBox x="463.5" y="55" width="150" toolTip="{specilizationCombo.selectedItem}" id="specilizationCombo" prompt="{commonFunction.getConstants('select')}"
+		 selectedIndex="-1" enabled="false" change="specializationChange()"></mx:ComboBox>
+		<mx:Label x="34.5" y="101" text="{commonFunction.getConstants('session')}:"/>
+	<mx:ComboBox x="154.5" y="99" id="sessionStartDateCB" width="150" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="sessionStartCBChangeHandler()"/>	
+	<mx:Label x="330" y="99" text="{commonFunction.getConstants('to')}"/>
+	<mx:Label x="463.5" y="99" id="SessionEndLab" width="160"/>
+
+	<mx:Button x="154.5" y="166" label="{commonFunction.getConstants('generateGradeReport')}" click="getReoprt()" width="206.5"/>
+	<mx:Button x="369" y="166" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()" width="84"/>
+	</mx:Canvas>
+		
+	<mx:Validator id="entityValid" property="selectedLabel" required="true"/>
+	<mx:Validator id="programValid" property="selectedLabel" required="true"/>
+	<mx:Validator id="branchValid" property="selectedLabel" required="true"/>
+	<mx:Validator id="specializationValid" property="selectedLabel" required="true"/>
+	<mx:Validator id="sessionValid" property="selectedLabel" required="true"/>
+</mx:Panel>

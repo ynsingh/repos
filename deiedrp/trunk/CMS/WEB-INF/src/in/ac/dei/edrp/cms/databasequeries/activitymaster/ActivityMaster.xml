@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="activityMaster">
+ 
+   <select id="getProgramCourseHeaderList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select pch.program_course_key as programCourseKey, pm.program_name as programName, stt.component_description as branchName,
+			   stt1.component_description as specializationName, stt2.component_description as semesterName,
+         	   pch.semester_code as semesterCode, (case when pch.semester_status='ACT' then 'Active' else 'Inactive' end) as semesterStatus
+		from program_course_header pch,program_master pm,system_table_two stt,system_table_two stt1, system_table_two stt2, program_offered_by pob
+		where pm.program_id=pch.program_id and (pch.branch_id=stt.component_code and stt.group_code='BRNCOD' and stt.university_code=#universityId#) and
+			(pch.specialization_id=stt1.component_code and stt1.group_code='SPCLCD' and stt1.university_code=#universityId#) and
+      		(pch.semester_code=stt2.component_code and stt2.university_code=#universityId#  and stt2.group_code='SEMCOD') and pob.offered_by=#entityId# and 
+      		pob.program_id=pch.program_id and pob.branch_id=pch.branch_id and
+			pob.specialization_id=pch.specialization_id	order by pch.program_course_key;
+    </select>
+    
+    <select id="getProcessList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select component_code as processCode, component_description as processName 
+        from system_table_two where university_code=#universityId# and group_code='PRCMST' and active='1'
+    </select>
+    
+    <select id="getActivityList" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select stt.component_code as activityCode, stt.component_description as activityName 
+        from system_table_two stt 
+        where stt.university_code=#universityId# and stt.group_code='ACTMST' and stt.active='1' AND stt.component_code NOT IN(select activity 
+        from activity_master where process=#processCode# and entity_id=#entityId# and program_course_key=#programCourseKey# and
+        session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#)
+    </select>
+    
+    <select id="getSessionStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select start_date as sessionStartDate, end_date as sessionEndDate
+		from university_master
+		where university_code=#universityId# and current_status=1
+    </select>
+    
+    <select id="getSemesterStartEndDate" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate  
+        from program_registration
+        where university_id=#universityId# and program_course_key=#programCourseKey# and status='ACT' and
+        session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#       
+    </select>
+    
+    <select id="getActivityMasterDetails" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+       select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate, process as processCode,
+		activity as activityCode, activity_sequence as activitySequence, am.program_course_key as programCourseKey,
+        (case when am.status='ACT' then 'Active' else 'Inactive' end) as status,
+		stt3.component_description as processName, stt4.component_description as activityName, pm.program_name as programName,
+		stt.component_code branchCode, stt.component_description branchName, stt1.component_description specializationName,
+		stt2.component_description semesterName, stt2.component_code semesterCode
+		from activity_master am, program_master pm, system_table_two stt, system_table_two stt1, system_table_two stt2, system_table_two stt3,
+		system_table_two stt4, program_course_header pch
+		where am.program_course_key=pch.program_course_key and am.entity_id=#entityId# and 
+		am.session_start_date=#sessionStartDate# and am.session_end_date=#sessionEndDate# and
+		stt.component_code=pch.branch_id and stt.group_code='BRNCOD' and stt.university_code=#universityId# and
+		stt1.component_code=pch.specialization_id and stt1.group_code='SPCLCD' and stt1.university_code=#universityId# and
+		stt2.component_code=pch.semester_code and stt2.group_code='SEMCOD' and stt2.university_code=#universityId# and
+		stt3.component_code=am.process and stt3.group_code='PRCMST' and stt3.university_code=#universityId# and
+		stt4.component_code=am.activity and stt4.group_code='ACTMST' and stt4.university_code=#universityId# and
+		pm.program_id=pch.program_id order by activity_sequence;
+    </select>
+    
+    <insert id="setActivityMasterDetail" parameterClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        insert into activity_master (entity_id, semester_start_date, semester_end_date, process, activity, activity_sequence, 
+        program_course_key, creator_id, insert_time, status, session_start_date, session_end_date)
+        VALUES ( #entityId#, #semesterStartDate#, #semesterEndDate#, #processCode#,
+        #activityCode#, #activitySequence#, #programCourseKey#, #creatorId#, Now(), #status#, #sessionStartDate#, #sessionEndDate#)
+    </insert>
+    
+    
+    <update id="updateActivityMaster" parameterClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        update activity_master set activity_sequence=#activitySequence#, modifier_id=#modifierId#, modification_time=Now()
+        where entity_id=#entityId# and program_course_key=#programCourseKey# and process=#processCode# and 
+        activity=#activityCode# and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and
+        session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+    </update>
+    
+    <delete id="deleteActivityMaster" parameterClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        delete from activity_master 
+        where entity_id=#entityId# and program_course_key=#programCourseKey# and
+        process=#processCode# and activity=#activityCode# and semester_start_date=#semesterStartDate# and
+        semester_end_date=#semesterEndDate# and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+    </delete>
+    
+    <select id="getExistingActivitySequence" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select activity_sequence as activitySequence 
+        from activity_master 
+        where entity_id=#entityId# and program_course_key=#programCourseKey# and process=#processCode# and 
+        session_Start_Date=#sessionStartDate# and session_end_date=#sessionEndDate#
+    </select>
+    
+    <update id="updateActivityStatus" parameterClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+       update activity_master set status=(select case when status=(SELECT IF('Inactive'='Active','INA','ACT')) then 'INA' else 'ACT' end)
+        where entity_id=#entityId# and program_course_key=#programCourseKey# and
+        process=#processCode# and activity=#activityCode# and semester_start_date=#semesterStartDate# and
+        semester_end_date=#semesterEndDate# and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+    </update>
+    
+    
+    <select id="getActivityCount" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select count(component_code) as size 
+        from system_table_two 
+        where group_code='ACTMST' and university_code=#universityId# and active='1'
+    </select>
+    
+    <select id="getEntity" resultClass="in.ac.dei.edrp.cms.domain.activitymaster.ActivityMaster">
+        select entity_id as entityId, entity_name as entityName from entity_master where university_id=#universityId#;
+    </select>
+
+</sqlMap>

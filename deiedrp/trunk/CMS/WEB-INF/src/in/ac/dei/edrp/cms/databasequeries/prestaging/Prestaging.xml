@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* @(#) Prestaging.xml
+* @Author :Mohd Amir
+* @Date :21/3/2011
+* Version 1.0
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/
+-->
+<!DOCTYPE sqlMap     
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap namespace="prestagingData">
+
+	<typeAlias alias="prestagingBean"
+		type="in.ac.dei.edrp.cms.domain.registration.prestaging.TransferPSTRDYInSTBean" />
+	<typeAlias alias="cmBean"
+		type="in.ac.dei.edrp.cms.domain.coursemaster.CourseMasterBean" />
+	
+	<select id="getChildEntity" resultClass="cmBean">
+	    SELECT entity_id as componentId,entity_name as componentDescription
+	    FROM entity_master
+	    WHERE parent_entity_id like #parentEntity# and university_id=#universityId#
+	</select>
+	
+	<select id="getEntityProgram" resultClass="cmBean">
+	    SELECT distinct pob.program_id as componentId,pm.program_name as componentDescription
+	    FROM program_offered_by pob,program_master pm
+	    WHERE pob.offered_by=#entityId# and pob.program_id=pm.program_id
+	    ORDER By pm.program_name
+	</select>
+	
+	<select id="getEntityProgramBranch" resultClass="cmBean">
+	    SELECT distinct pob.branch_id as componentId,stt.component_description as componentDescription
+	    FROM program_offered_by pob,system_table_two stt
+	    WHERE pob.offered_by=#entityId# and pob.program_id=#programId#
+	    and pob.branch_id=stt.component_code and stt.group_code='BRNCOD'
+	    and stt.university_code=#universityId#
+	    ORDER By stt.component_description
+	</select>
+	
+	<select id="getEntityProgramBranchSpecialization" resultClass="cmBean">
+	    SELECT distinct pob.specialization_id as componentId,stt.component_description as componentDescription
+	    FROM program_offered_by pob,system_table_two stt
+	    WHERE pob.offered_by=#entityId# and pob.program_id=#programId#
+	    and pob.branch_id=#branchId# and stt.university_code=#universityId#
+	    and pob.specialization_id=stt.component_code and stt.group_code='SPCLCD'
+	    ORDER By stt.component_description
+	</select>
+	
+	<insert id="insertDataIntoPreStaging">
+		INSERT into prestaging_table(enrollment_number,student_id,registration_roll_number,
+		new_entity,new_program,new_branch,new_specialization,new_semester,
+		student_first_name,student_middle_name,student_last_name,
+		father_first_name,father_middle_name,father_last_name,
+		mother_first_name,mother_middle_name,mother_last_name,
+		student_category,gender,date_of_birth,
+		semester_start_date,semester_end_date,
+		admission_mode,attempt_number,primary_email_id,
+		insert_time,creator_id,per_address,per_city,per_state,per_pincode,
+		cor_address,cor_city,cor_state,cor_pincode,
+		office_phone,extra_phone,other_phone,fax,registration_due_date)
+		VALUES 
+		(#enrollmentNo#,#studentId#,#registrationNo#,
+		#entityId#,#programId#,#branchId#,#specializationId#,#semesterId#,
+		#studentFirstName#,#studentMiddleName#,#studentLastName#,
+		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+		#motherFirstName#,#motherMiddleName#,#motherLastName#,
+		#category#,#gender#,#dob#,
+		#semesterStartDate#,#semesterEndDate#,
+		#admissionMode#,#attemptNo#,#primaryEmail#,
+		now(),#userId#,#perAddress#,#perCity#,#perState#,#perPinCode#,
+		#corAddress#,#corCity#,#corState#,#corPinCode#,
+		#officePhone#,#homePhone#,#otherPhone#,#fax#,#registrationDueDate#);
+	</insert>
+	
+	<select id="getRegistrationDueDate" resultClass="in.ac.dei.edrp.cms.domain.prestaging.PrestagingInfoGetter">
+		SELECT registration_start_date as registrationDueDate,semester_start_date as semesterStartDate,
+		semester_end_date as semesterEndDate
+		FROM program_registration
+		WHERE session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#
+		and status='ACT' and program_course_key in
+		(
+		SELECT program_course_key
+		FROM program_course_header
+		WHERE program_id=#programCode# and branch_id=#branchCode#
+		and specialization_id=#specializationCode# and semester_code=#semesterCode#
+		)
+	</select>
+	
+</sqlMap>

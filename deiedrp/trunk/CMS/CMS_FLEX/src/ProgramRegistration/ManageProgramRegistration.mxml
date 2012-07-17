@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ManageProgramRegistration.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" width="742" height="550" 
+	title="{commonFunction.getConstants('manageProgramRegistrationTitle')}({sessionDate})" fontSize="12" layout="absolute" creationComplete="initManageScreen();">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/ManageProgramRegistrationAction.as"/>
+	
+	<mx:HTTPService id="httpLoadSession" method="post"
+        url="{urlLoadSession}" 
+        resultFormat="e4x"
+        result="resultLoadSessionHandler(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+	
+	<mx:HTTPService id="httpLoadProgramList" method="post"
+        url="{urlLoadProgramList}" 
+        resultFormat="e4x"
+        result="resultLoadProgramListHandler(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+        
+         <mx:HTTPService id="httpXmlBranchList" method="post"
+        url="{urlBranchList}"
+        resultFormat="e4x"
+        result="resultHandler_BranchList(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+        
+         <mx:HTTPService id="httpXmlSpecialList" method="post"
+        url="{urlSpecialList}"
+        resultFormat="e4x"
+        result="resultHandler_SpecialList(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpXmlSemList" method="post"
+        url="{urlSemList}"
+        resultFormat="e4x"
+        result="resultHandler_SemList(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpProgramDetails" method="post"
+        url="{urlProgramDetails}"
+        resultFormat="e4x"
+        result="resultHandler_ProgramDetails(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpUpdateProgramDetails" method="post"
+        url="{urlUpdateProgramDetails}"
+        resultFormat="e4x"
+        result="resultHandler_UpdateProgramDetails(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+        
+        <mx:HTTPService id="httpCheckStatus" method="post"
+        url="{urlCheckStatus}"
+        resultFormat="e4x"
+        result="resultHandler_CheckStatus(event)"
+        fault="faultLoadProgramListHandler(event)"
+        useProxy="false"/>
+		
+		<mx:HTTPService id="httpGetEntityList" method="post"
+        url="{urlGetEntityList}" 
+        resultFormat="e4x"
+        result="resultGetEntityHandler(event)"
+        fault="faultGetEntityHandler(event)"
+        useProxy="false"/>
+	
+	<mx:Canvas width="653.5" height="154" verticalCenter="-154" horizontalCenter="-1" styleName="SimpleCanvas">
+		<mx:Label x="39" y="19" text="{commonFunction.getConstants('entity')}" />
+		<mx:ComboBox x="150" y="16" id="entity_nameCB" toolTip="{entity_nameCB.text}" prompt="{commonFunction.getConstants('select')}" labelField="entityName"
+			change="getProgramList()" width="160"/>
+		<mx:Label x="39" y="59" text="{commonFunction.getConstants('programName')}" />
+		<mx:ComboBox x="150" y="56" id="program_nameCB" toolTip="{program_nameCB.text}" prompt="{commonFunction.getConstants('select')}" dataProvider="{xmlDataProgramList.item.@name}"
+			 change="get_branch()" width="160"/>
+		<mx:Label x="347" y="59" text="{commonFunction.getConstants('branch')}" />
+		<mx:ComboBox x="447" y="56" id="branch_nameCB" toolTip="{branch_nameCB.text}" prompt="{commonFunction.getConstants('select')}" enabled="false" width="160" 
+					 dataProvider="{xmldata_branchName.item.@name}" change="get_specialization()" />
+		<mx:Label x="36" y="102" text="{commonFunction.getConstants('specialization')}" />
+		<mx:ComboBox x="150" y="99" id="specializationCB"  toolTip="{specializationCB.text}" prompt="{commonFunction.getConstants('select')}" enabled="false" width="160"
+					 dataProvider="{xmldata_specialList.item.@name}" change="get_semester()" />
+		<mx:Label x="329" y="102" text="{commonFunction.getConstants('semester')}" />
+		<mx:ComboBox x="447" y="99" id="semester_nameCB" toolTip="{semester_nameCB.text}" prompt="{commonFunction.getConstants('select')}"  enabled="false" 
+					   change="semester_nameCB_changeHandler()" width="160"/>
+	</mx:Canvas>
+	
+	<mx:Canvas id="secondCanvas" visible="false" width="653.5" height="286" x="34" y="206" styleName="SimpleCanvas">
+		<mx:Label x="10" y="10" text="Edit Details:" color="#828383"/>
+		
+		<mx:Label text="{commonFunction.getConstants('regisStartDate')}" x="123.25" y="40"/>
+		<mx:DateField x="286.25" y="38" width="160" id="registration_start_date" toolTip="yyyy-mm-dd" formatString="YYYY-MM-DD"/>
+		<mx:Label text="{commonFunction.getConstants('regislastDate')}" x="127.25" y="72"/>
+		<mx:DateField x="286.25" y="70" width="160" id="registration_last_date" toolTip="yyyy-mm-dd" formatString="YYYY-MM-DD"/>
+		<mx:Label text="{commonFunction.getConstants('addDropPeriod')}" x="176.25" y="108"/>
+		<mx:TextInput x="286.25" y="106" id="addDrop_period" toolTip="in Dates" restrict="0-9"/>
+		<mx:Label text="{commonFunction.getConstants('semesterStartDate')}" x="139.25" y="141"/>
+		<mx:Label x="286.25" y="139" width="160" id="semester_start_date" toolTip="yyyy-mm-dd" />
+		<mx:Label text="{commonFunction.getConstants('semesterEndDate')}" x="146.25" y="169"/>
+		<mx:Label x="286.25" y="167" width="160" id="semester_end_date" toolTip="yyyy-mm-dd" />
+		<mx:CheckBox x="286" y="195" id="statusCheckBox" label="{commonFunction.getConstants('status')}"/>
+		<mx:Button x="216.25" y="228" id="saveButton" enabled="false" label="{commonFunction.getConstants('updateButton')}" width="72" click="saveButton_ClickHandler(event)"/>
+		<mx:Button x="388.25" y="228" id="cancelButton" label="{commonFunction.getConstants('cancelButton')}" click="cancelButton_ClickHandler(event)"/>
+	</mx:Canvas>
+	
+</mx:Panel>

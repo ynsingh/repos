@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+* @(#) REMOTE_LOGIN.mxml
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this  list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/-->
+
+
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" preinitialize="javaScriptFunc()" layout="absolute" 
+	backgroundImage="../assets/background.jpg" creationComplete="onCreationComplete()" horizontalAlign="center" verticalAlign="top">
+	
+	<mx:Style source="cssFiles/CommonStyle.css"/>
+		
+	<mx:HTTPService id="remoteAuthenticateService" method="POST"
+	url="{urlPrefix}/remoteLogin/returnAuthenticate.htm"
+	resultFormat="e4x"
+	result="remoteAuthenticateServiceSuccess(event)"
+	fault="onFailure(event)"
+	showBusyCursor="true"
+	useProxy="false"/>
+	
+	<!--
+	<mx:HTTPService id="getRoleService" method="POST"
+		url="{urlPrefix}/remoteLogin/getRole.htm"
+		resultFormat="e4x"
+		result="getRoleHttpServiceResultHandler(event)"
+		fault="onFailure(event)"
+		showBusyCursor="true"
+		useProxy="false"/>
+	-->	
+	<mx:HTTPService id="getApplicationService" method="POST"
+	url="{urlPrefix}/remoteLogin/getRole.htm"
+	resultFormat="e4x"
+	result="getApplicationHttpServiceResultHandler(event)"
+	fault="onFailure(event)"
+	showBusyCursor="true"
+	useProxy="false"/>
+	
+  <mx:DateFormatter id="dateFormatter" formatString="DD" />                  
+	<mx:Script>
+		<![CDATA[
+			import mx.binding.utils.BindingUtils;
+			import loginForm.remoteLoginSuccess;
+			import loginForm.remoteLogin;			
+			import mx.controls.Alert;
+			import common.commonFunction;		
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import common.Mask;
+			[Embed(source="/images/error.png")] var errorIcon:Class;
+			[Bindable]public var urlPrefix:String=commonFunction.getConstants('urlCms');
+			[Bindable] public var remoteLSucc :remoteLoginSuccess = new remoteLoginSuccess();    
+        	import mx.collections.ArrayCollection;   	  
+        	
+        	private var _queryString:String;
+			private var _all:String;
+			private var _params:Object;
+			private var params:Object = new Object();
+		           
+            public function javaScriptFunc():void{
+	       		ExternalInterface.call("noback");
+            }
+		
+			public function onCreationComplete():void{	
+				_params = {};
+				try {
+					_all =  ExternalInterface.call("window.location.href.toString");
+					_queryString = ExternalInterface.call("window.location.search.substring", 1);
+					if(_queryString){
+						_queryString = decodeURIComponent(_queryString);
+						var params:Array = _queryString.split('&');
+						var length:uint = params.length;					
+						for (var i:uint=0,index:int=-1; i<length; i++) {
+							var kvPair:String = params[i];
+							if((index = kvPair.indexOf("=")) > 0){
+								var key:String = kvPair.substring(0,index);
+								var value:String = kvPair.substring(index+1);
+								_params[key] = value;
+							}
+						}
+					}
+				}catch(e:Error) { trace("Some error occured. ExternalInterface doesn't work in Standalone player."); }
+				params["encd"] = _params["encd"];
+				params["rand"] = _params["rand"];
+				params["hash"] = _params["hash"];
+				params["msg"] = _params["msg"];
+				params["date"] = new Date();	
+	         	remoteAuthenticateService.send(params);      
+		}
+		
+		public function remoteAuthenticateServiceSuccess(event:ResultEvent):void{		
+			try{
+				if(event.result.msg!=null && event.result.msg!=''){
+					Alert.show("You are not a valid user!! Try again with right UserId & Password", commonFunction.getMessages('error'),0,null,null,errorIcon);
+					vStack.selectedIndex=1;
+					loaderCanvas2.removeAllChildren();
+					loaderCanvas2.addChild(new remoteLogin());		
+				}
+				else if(event.result.emailId!=null && event.result.emailId!=''){
+					params["emailId"] = event.result.emailId;
+					params["date"] = new Date();
+					getApplicationService.send(params);		
+					Mask.show("Please Wait....");
+//					getRoleService.send(params);					
+				}
+				else{
+					
+				}
+			}
+		 	catch(e:Error){}
+		}
+//[Bindable] public var universityId:String;
+//[Bindable] public var userId:String;
+//[Bindable] public var userGroupId:String;
+//[Bindable] public var userGroupName:String;
+//[Bindable] public var userName:String;
+//[Bindable] public var universityName:String;
+//[Bindable] public var startDate:String;
+//[Bindable] public var endDate:String;
+//[Bindable] public var application:String;
+//[Bindable] public var sessionId:String;
+[Bindable] public var userInfoXml:XML=new XML;
+
+			
+protected function getApplicationHttpServiceResultHandler(event:ResultEvent):void{
+	Mask.close();
+   	userInfoXml=event.result as XML;	
+	var appValues:ArrayCollection=new ArrayCollection();
+	for each(var obj:Object in userInfoXml.loginInfo){
+		appValues.addItem({application:obj.application});
+	}
+	vStack.selectedIndex=1;
+	loaderCanvas2.removeAllChildren();
+	loaderCanvas2.addChild(remoteLSucc);
+	remoteLSucc.userInfoXmlSuccess = userInfoXml;
+	for(var i:int=0;i<appValues.length;i++){
+		var application=appValues[i].application;
+		if(application=='UPM'){			   	
+		}
+		else if(application=='CMS'){	
+			remoteLSucc.CMS.enabled=true;						
+		}
+		else if(application=='ADM'){
+			remoteLSucc.ADM.enabled=true;					
+		}
+	}
+}
+/**
+		 * Failure Handler
+		 * @Param Event(FaultEvent)
+		 **/
+		public function onFailure(event:FaultEvent):void{
+			 Alert.show("Error in Remote Login Process: "+event);
+			 Mask.close();
+//		     rollNoTxt.text="";
+		}
+		]]>
+	</mx:Script>
+	<mx:Metadata>
+		[ResourceBundle("Messages")]
+		[ResourceBundle("Constants")]
+		[ResourceBundle("icons")]
+	</mx:Metadata>
+	
+	<mx:VDividedBox horizontalScrollPolicy="off" x="167" y="0" width="1070" height="180" horizontalAlign="center" verticalAlign="top" backgroundColor="#000000">
+		<mx:SWFLoader horizontalAlign="center" source="@Embed(source='common/assets/header1.swf')"/>
+	</mx:VDividedBox>
+
+	<mx:ViewStack id="vStack" width="1070" height="496" x="167" y="179" horizontalCenter="true">
+		<mx:Canvas label="View 1" width="100%" height="100%" horizontalCenter="true">																					
+			<mx:VDividedBox x="0" y="53" width="1070" height="431" backgroundColor="#FFFFFF" paddingLeft="10" paddingTop="10" verticalScrollPolicy="off" horizontalScrollPolicy="off" horizontalAlign="center">
+				<mx:Canvas width="1070" backgroundColor="#FFFFFF" verticalScrollPolicy="off" >						
+				</mx:Canvas>						
+			</mx:VDividedBox>
+		</mx:Canvas>
+		<mx:Canvas id="loaderCanvas2" horizontalScrollPolicy="off" width="100%" height="88%" y="70" borderColor="#FFFEFE" backgroundColor="#FFFEFE">
+			</mx:Canvas>
+	</mx:ViewStack>		
+	<mx:Label text="&#169; {commonFunction.getConstants('appFooter')}" height="28"  fontSize="11"  width="858" x="250" y="676"/>
+</mx:Application>

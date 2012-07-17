@@ -1,0 +1,319 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!--@author Nupur Dixit mailto:noopur.here@gmail.com        -->
+<!-- ================================================================= -->
+
+<project name="cms" default="init" basedir=".">
+<tstamp prefix="build-info">
+		<format property="current-date" pattern="d-MMMM-yyyy" locale="en" />
+		<format property="current-time" pattern="hh:mm:ss a z" locale="en" />
+	</tstamp>
+    
+  <property file="build.properties"/>
+
+  <!-- This value is currently set asn_CM a property because
+       the top level cms build.xml file runs the "init" target
+       as part of testing and texen doesn't obey the ${basedir}
+       property so we must pass in the full path to the
+       build.properties for use with the contextProperties attribute.
+  -->
+  <property name="build.properties" value="build.properties"/>
+
+  <path id="classpath">
+    <fileset dir="${cms.home}/webapps/${cms.project}/WEB-INF/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+	<fileset dir="${cms.home}/lib">
+	  <include name="**/servlet*.jar"/>
+	</fileset>
+  </path>
+
+
+  <!-- ================================================================ -->
+  <!-- S E T U P  T A R G E T                                           -->
+  <!-- ================================================================ -->
+  <!-- Check that properties are defined correctly.                     -->
+  <!-- ================================================================ -->
+
+  <target
+    name="setup"
+    unless="cms.home">
+    <echo>
+      ***
+      * ERROR : The 'cms.home' property is not defined or
+      * is pointing to an invalid directory.
+      *
+      * In your personal build.properties define cms.home to
+      * point to an absolute path where your cms is installed.
+      * Example: cms.home=${user.home}/CMS
+      ***
+    </echo>
+    <fail message="ERROR: cms.home not defined properly: ${cms.home}"/>
+  </target>
+
+<!--
+===============target for flex===========-->
+<!--<taskdef resource="flexTasks.tasks" classpath="${cms.home}/webapps/${cms.project}/WEB-INF/lib/flexTasks.jar" />-->
+<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+<taskdef name="mxmlc" classname="flex.ant.MxmlcTask" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+<taskdef name="html-wrapper" classname="flex.ant.HtmlWrapperTask" 
+classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
+    <target name="en_US">
+		<mxmlc>
+        <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/> 
+			<locale>en_US</locale>
+			<source-path>../../../../webapps/CMS/CMS_FLEX/locale/{locale}</source-path>
+			<include-resource-bundles>blank</include-resource-bundles>
+			<output>../../Flex/Resources_en_US.swf</output>
+            
+		</mxmlc>
+	</target>
+	<target name="en_CM">
+		<mxmlc>
+			<locale>en_CM</locale>
+			<source-path>../../../../webapps/CMS/CMS_FLEX/locale/{locale}</source-path>
+            <load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/> 
+			<compiler.library-path dir="${FLEX_HOME}/frameworks" append="false">
+				<include name="libs" />
+			</compiler.library-path>
+			<include-resource-bundles>Constants</include-resource-bundles>
+			<include-resource-bundles>icons</include-resource-bundles>
+			<include-resource-bundles>Messages</include-resource-bundles>
+			<output>../../Flex/Resources_en_CM.swf</output>
+		</mxmlc>
+	</target>
+    <!-- Compile Flex -->
+    <target name="compile-flex" depends="wrapper">
+    <mkdir dir="${flex.bin}"/>
+        <mxmlc
+                file="${flex.src}/CMS_FLEX.mxml"
+                output="${flex.bin}/${swf.name}.swf"
+                debug="false" 
+                fork="true" maxmemory="1024m"
+                keep-generated-actionscript="false">
+                        <source-path path-element="${FLEX_HOME}/frameworks"/>
+                        <source-path path-element="../../../../webapps/CMS/CMS_FLEX/locale/{locale}"/>
+
+        </mxmlc> 
+        <mxmlc
+                file="${flex.src}/MAIN_HOME.mxml"
+                output="${flex.bin}/${swf.name2}.swf"
+                debug="false" 
+                keep-generated-actionscript="false">
+                        <source-path path-element="${FLEX_HOME}/frameworks"/>
+                        <source-path path-element="../../../../webapps/CMS/CMS_FLEX/locale/{locale}"/>
+        </mxmlc> 
+        <mxmlc
+                file="${flex.src}/REMOTE_LOGIN.mxml"
+                output="${flex.bin}/${swf.name3}.swf"
+                debug="false" 
+                keep-generated-actionscript="false">
+                        <source-path path-element="${FLEX_HOME}/frameworks"/>
+                        <source-path path-element="../../../../webapps/CMS/CMS_FLEX/locale/{locale}"/>
+        </mxmlc> 		
+
+    </target>
+    <!-- HTML Wrapper -->
+    <target name="wrapper">
+        <html-wrapper title="Course Registration System"
+            file="CMS_FLEX.html"
+            height="100%" width="100%" bgcolor="#000000"
+            application="CMS_FLEX"
+            swf="CMS_FLEX"
+            version-major="10" version-minor="2" version-revision="0"
+            history="true"
+            template="express-installation" 
+            output="${flex.bin}"/>
+		
+		<html-wrapper title="Main Home"
+            file="MAIN_HOME.html"
+            height="100%" width="100%" bgcolor="#000000"
+            application="MAIN_HOME"
+            swf="MAIN_HOME"
+            version-major="10" version-minor="2" version-revision="0"
+            history="true"
+            template="express-installation" 
+            output="${flex.bin}"/>	    
+        <html-wrapper title="Remote Login"
+            file="REMOTE_LOGIN.html"
+            height="100%" width="100%" bgcolor="#000000"
+            application="REMOTE_LOGIN"
+            swf="REMOTE_LOGIN"
+            version-major="10" version-minor="2" version-revision="0"
+            history="true"
+            template="express-installation"
+            output="${flex.bin}"/>	
+      </target> 
+  <!-- ================================================================ -->
+  <!-- I N I T  T A R G E T                                             -->
+  <!-- ================================================================ -->
+  <!-- You will probably only run this target once. It will generate    -->
+  <!-- your sources for you and compile them.                           -->
+  <!-- ================================================================ -->
+
+  <target
+    name="init"
+    description="--> generates the full application">
+    <echo message="####### starting ###########"/>
+    <antcall target="en_US"></antcall>
+    <antcall target="en_CM"></antcall>
+    <antcall target="compile-flex"></antcall>
+    <antcall target="wrapper"></antcall>
+    <antcall target="compile"/>
+    <antcall target="copy-props"/>
+    <antcall target="javadoc"/>
+    <antcall target="createadminaccount"/>
+    
+  </target>
+
+
+  <!-- ============================================================================ -->
+  <!-- COPY  MESSAGE PROPERTIES, DATABASE SETTING PROPETIES AND DATABASE XML QUERIES-->
+  <!-- ============================================================================ -->
+
+  <target name="copy-props"
+	description="--> copy display and message properties file">
+         <copy todir="${build.dest}/in/ac/dei/edrp/cms/" overwrite="yes"
+           filtering="yes">
+            <fileset dir="${src.dir}/in/ac/dei/edrp/cms/" >
+            <patternset>
+                <include name="**/*.properties"/>               
+            </patternset>
+            </fileset>            
+        </copy>
+        
+        <copy todir="${build.dest}/in/ac/dei/edrp/cms/databasesetting" overwrite="yes"
+           filtering="yes">
+            <fileset dir="${src.dir}/in/ac/dei/edrp/cms/databasesetting" >
+            <patternset>              
+                <include name="**/*.*"/>               
+            </patternset>
+            </fileset>
+            
+        </copy>
+
+
+         <copy todir="${build.dest}/in/ac/dei/edrp/cms/databasequeries" overwrite="yes"
+           filtering="yes">
+            <fileset dir="${src.dir}/in/ac/dei/edrp/cms/databasequeries" >
+            </fileset>          
+        </copy>
+  </target>
+  
+  <!-- ====================================================================  -->
+  <!-- C R E A T E  D A T A B A S E  A D M I N A N D G U E S T A C C O U N T -->
+  <!-- ====================================================================  -->
+  <target name="createadminaccount">
+	<sql
+      		autocommit="true"
+      		driver="${database.driver}"
+            onerror="continue"
+      		password="${database.password}"
+      		src="../conf/cmstables.sql"
+      		url="${createDatabaseUrl}"
+      		userid="${database.username}">
+      		<classpath refid="classpath"/>
+	</sql>
+	<echo message="====================================================="/>
+	<echo message="The account to login is deepak and password is deepak"/>
+	<echo message="====================================================="/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- C R E A T E  D I R E C T O R I E S    				   -->
+  <!-- =================================================================== -->
+
+  <target name="create-Dir" >
+      <mkdir dir="${build.dest}"/>
+      <!--<mkdir dir="${build.dest}/in/ac/dei/edrp/cms/propertiesFile"/>-->
+      
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- J A V A D O C                                                       -->
+  <!-- =================================================================== -->
+	<target name="javadoc" description="javadoc documentation">
+                <javadoc destdir="${build.webappRoot}/javadoc" version="true" author="true" access="public"
+                         doctitle="Course Management System Api" windowtitle="Course Management System  Api"
+                         bottom="Copyright &#169; 2010-11 DEI Agra. All Right Reserved." useexternalfile="yes">
+                        <fileset dir="${src.dir}/in/" defaultexcludes="yes">
+                        </fileset>
+			<fileset dir="${src.dir}/in/" defaultexcludes="yes">
+          			<include name="*.java"/>
+		        </fileset>
+                        <package name=" "/>
+                </javadoc>
+        </target>
+
+  <!-- =================================================================== -->
+  <!-- C O M P I L E                                                       -->
+  <!-- =================================================================== -->
+
+  <target
+    name="compile"
+    description="--> compiles the source code">
+    <echo message="####### inside compile ########### ${build.webappRoot}"/>
+     <mkdir dir="${build.dest}"/>
+    <javac srcdir="${src.dir}\in"
+        destdir="${build.dest}"
+        debug="${debug}"
+        deprecation="${deprecation}"
+        optimize="${optimize}">
+        <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- C L E A N                                                           -->
+  <!-- =================================================================== -->
+
+  <target
+    name="clean"
+    description="--> cleans up the build directory">
+    <delete dir="${build.dest}"/>
+    <mkdir dir="${build.dest}"/>
+  </target>
+  
+ <!-- =================================================================== -->
+<!-- WAR                                                          -->
+<!-- =================================================================== -->
+    <target name="war" depends="">
+		<mkdir dir="${war.dir}" />
+		<delete file="${war.dir}/${war.name}" />
+		<war warfile="${war.dir}/${war.name}" webxml="${web-xml-file}">            
+			<classes dir="${build.dest}" />  
+            <zipfileset dir="${build.webappRoot}/fileUpload" prefix="fileUpload"/>
+            <zipfileset dir="${build.webappRoot}/Flex" prefix="Flex"/>
+			<zipfileset dir="${build.webappRoot}/images" prefix="images"/>
+           <zipfileset dir="${build.webappRoot}/PreStagingTemplate" prefix="PreStagingTemplate"/>
+           <!-- Need to exclude it since webxml is an attribute of the war tag above -->
+           
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="/conf/**/*.*">            
+           </webinf>            
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="/input/*">            
+           </webinf>             
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="/jsp/**/*.*">            
+           </webinf>                       
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="/lib/**/*.*">            
+           </webinf>            
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="/processed/*">            
+           </webinf>                      
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="*.xml">            
+           </webinf>              
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="*.tld">            
+           </webinf> 
+           <fileset dir="${build.webappRoot}" includes="*.jsp"></fileset>
+           <webinf dir="${build.webappRoot}/WEB-INF" includes="/build/*.*">        
+           </webinf> 
+           
+			<manifest>
+				<attribute name="Built-By" value="${builder}" />
+				<attribute name="Built-On" value="${build-info.current-date}" />
+				<attribute name="Built-At" value="${build-info.current-time}" />
+			</manifest>
+		</war>
+	</target>
+ 
+
+</project>

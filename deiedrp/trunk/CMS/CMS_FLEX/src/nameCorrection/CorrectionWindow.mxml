@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CorrectionWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow styleName="PopUpTitleWindow" creationComplete="setLabels()" layout="absolute" horizontalScrollPolicy="off" keyDown="initializeForEsc(event)" xmlns:mx="http://www.adobe.com/2006/mxml"  title="{commonFunction.getConstants('confirmationWindow')}" x="250" y="50" width="863" height="399" alpha="2"  showCloseButton="true" close="closeConfirmWindow()">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>  
+	</mx:Script>
+<mx:Script source="asFiles/correctionWindowAction.as"/>
+
+<mx:HTTPService id="updateNames" method="post"
+        url="{urlUpdate}"
+        resultFormat="e4x"
+        result="updateResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+   <mx:Canvas  width="754" height="316" x="44" y="15">
+	
+	<mx:Label x="10" y="129" fontWeight="bold" text="{commonFunction.getConstants('student')}"/>
+	<mx:Label x="10" y="170" fontWeight="bold" text="{commonFunction.getConstants('father')}"/>
+	<mx:Label x="10" y="214" fontWeight="bold" text="{commonFunction.getConstants('mother')}"/>
+	<mx:TextInput x="128" y="127" id="studentFirstName"/>
+	<mx:TextInput x="332" y="127" id="studentMiddleName"/>
+	<mx:TextInput x="540" y="127" id="studentLastName"/>
+	<mx:TextInput x="128" y="168" id="fatherFirstName"/>
+	<mx:TextInput x="332" y="168" id="fatherMiddleName"/>
+	<mx:TextInput x="540" y="168" id="fatherLastName"/>
+	<mx:TextInput x="128" y="212" id="motherFirstName"/>
+	<mx:TextInput x="332" y="212" id="motherMiddleName"/>
+	<mx:TextInput x="540" y="212" id="motherLastName"/>
+	<mx:Label x="128" y="94" fontWeight="bold" text="{commonFunction.getConstants('firstName')}"/>
+	<mx:Label x="330" y="94" fontWeight="bold" text="{commonFunction.getConstants('middleName')}"/>
+	<mx:Label x="540" y="94" fontWeight="bold" text="{commonFunction.getConstants('lastName')}"/>
+	<mx:Label x="10" y="20" fontWeight="bold"  text="{commonFunction.getConstants('registraionNo')}"/>
+	<mx:Label x="147" y="20" width="160" id="registrationLabel"/>
+	<mx:Button x="221" y="261" label="{commonFunction.getConstants('updateButton')}" id="updateButton" click="updateName()"/>
+	<mx:Button x="332" y="261" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="closeConfirmWindow()"/>
+	<mx:Label x="371" y="20" fontWeight="bold" text="{commonFunction.getConstants('program')}"/>
+	<mx:Label x="540" y="20" id="programLabel" width="160"/>
+	<mx:Label x="10" y="56" fontWeight="bold" id="br" text="{commonFunction.getConstants('branch')}"/>
+	<mx:Label x="147" y="56" id="branchLabel" width="160"/>
+	<mx:Label x="371" y="56" fontWeight="bold" id="sp" text="{commonFunction.getConstants('specialization')}"/>
+	<mx:Label x="540" y="56" id="specializationLabel" width="160"/>
+   </mx:Canvas>
+   <mx:Validator property="text" source="{studentFirstName}" id="sfNameValidator" required="true"/>
+   <mx:Validator property="text" source="{fatherFirstName}" id="ffNameValidator" required="true"/>
+   <mx:Validator property="text" source="{motherFirstName}" id="mfNameValidator" required="true"/>
+</mx:TitleWindow>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) CancelRegistration.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow backgroundColor="#ffffff"  creationPolicy="all" title="{resourceManager.getString('Constants','cancelRegistration')}" close="PopUpManager.removePopUp(this)" width="1074" layout="absolute" xmlns:mx="http://www.adobe.com/2006/mxml" height="638" xmlns:ns1="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/CancelRegistrationAction.as"/>
+	
+	
+	<mx:HTTPService id="httpStudentDetails" method="post"
+        url="{commonFunction.getConstants('url')+'/cancelregistration/getStudentDetails.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_StudentDetails(event)"
+        fault="faultHandler_StudentDetails(event)"
+        useProxy="false"/>
+	
+		<mx:HTTPService id="httpCancelStudentRegistration" method="post"
+        url="{commonFunction.getConstants('url')+'/cancelregistration/cancelStudentRegistration.htm'}"
+        resultFormat="e4x"
+        result="resultHandler_Cancel(event)"
+        fault="faultHandler_Cancel(event)"
+        useProxy="false"/>
+	
+	
+	<mx:Label x="78" y="34" text="{commonFunction.getConstants('registrationRollNo')}"/>
+	<mx:TextInput x="281" y="31" width="203" height="27" id="regRollText" restrict="0-9 a-z A-Z"/>
+		<mx:Button x="281" y="110" label="{commonFunction.getConstants('okButton')}"  id="okbutton" width="45" height="25" click="populateData()"/>
+	<mx:CheckBox x="281" y="77" label="{commonFunction.getConstants('reregistration')}" id="reregistrationCHBox"/>
+	<mx:Button id="cancelButton" x="415" y="111" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren();"/>	
+	
+	<mx:Validator id="regRollValidator" required="true" source="{regRollText}" property="text" />
+	<mx:Validator id="reasonValidator" required="true" source="{reasonText}" property="text" />
+	<mx:Canvas width="100%" height="100%" visible="false" id="detailsPanel">
+	
+		<mx:TitleWindow width="987" layout="absolute" title="{commonFunction.getConstants('academicDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" color="#000000" x="33.5" y="286" height="185">
+			<mx:Label x="28" y="12" text="{commonFunction.getConstants('registrationRollNo')}"/>
+			<mx:Label x="367" y="12" text="{commonFunction.getConstants('enrollmentNo')}"/>
+			<mx:TextInput id="rollNoText" enabled="false" x="163" y="12" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="enrollmentNoText" enabled="false" x="467" y="12" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:Label x="365" y="80" text="{commonFunction.getConstants('semester')}"/>
+			<mx:Label x="670" y="86" text="{commonFunction.getConstants('attemptNo')}"/>
+			<mx:TextInput id="semesterText" enabled="false" x="466" y="86" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="attemptNoText" enabled="false" x="770" y="86" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput x="163" y="84" id="specializationText" enabled="false" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:Label x="26" y="80" text="{commonFunction.getConstants('specialization')}"/>
+		</mx:TitleWindow>
+				
+		<mx:TitleWindow  width="987" layout="absolute" title="{resourceManager.getString('Constants','personalDetails')}" borderStyle="solid" borderThickness="2" borderColor="#000000" x="33.5" y="143" height="119">
+			<mx:Label x="30" y="10" text="{commonFunction.getConstants('studentName')}"/>
+			<mx:Label x="369" y="10" text="{commonFunction.getConstants('fatherName')}"/>
+			<mx:Label x="670" y="10" text="{commonFunction.getConstants('motherName')}"/>
+			<mx:Label x="30" y="40" text="{commonFunction.getConstants('dateOfBirth')}"/>
+			<mx:Label x="369" y="40" text="{commonFunction.getConstants('gender')}"/>
+			<mx:Label x="670" y="40" text="{commonFunction.getConstants('category')}"/>
+			<mx:TextInput id="studentName" enabled="false" x="165" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="fatherName" enabled="false" x="469" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="motherName" enabled="false" x="770" y="10" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="dob" enabled="false" x="165" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="gender" enabled="false" x="469" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+			<mx:TextInput id="category" enabled="false" x="770" y="40" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		</mx:TitleWindow>
+		<mx:Button x="882.5" y="514" label="{commonFunction.getConstants('cancelButton')}" click="detailsPanel.visible=false"/>
+		<mx:Label x="72.5" y="371" text="{commonFunction.getConstants('belongsTo')}"/>
+		<mx:Label x="411.5" y="371" text="{commonFunction.getConstants('programName')}"/>
+		<mx:Label x="713.5" y="371" text="{commonFunction.getConstants('branch')}"/>
+		<mx:TextInput id="belongsToText" enabled="false" x="207.5" y="371" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		<mx:TextInput id="programNameText" enabled="false" x="511.5" y="371" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		<mx:TextInput id="branchNameText" enabled="false" x="815.5" y="371" disabledColor="#000000" backgroundDisabledColor="#FFFFFF" width="160"/>
+		<mx:Button x="772.5" y="514" label="{commonFunction.getConstants('unregister')}" id="cancelRegistrationButton"  click="cancelRegistrationAlert()"   />
+		<mx:TextArea x="207.5" y="493" width="464.5" height="43" id="reasonText"/>
+		<mx:Label x="43.5" y="494" text="{commonFunction.getConstants('reasonOfCancelation')}:"/>
+		
+		</mx:Canvas>
+	</mx:TitleWindow>

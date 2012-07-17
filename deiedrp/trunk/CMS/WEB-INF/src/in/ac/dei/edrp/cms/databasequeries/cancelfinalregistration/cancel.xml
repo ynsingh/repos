@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<!-- /*
+ * @(#) Cancel.xml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+    	<!-- ================================================================= -->
+		<!-- cancel final registration from master tables                      -->
+		<!-- @author Ashish Mohan                                              -->
+		<!-- ================================================================= -->
+
+  <sqlMap namespace="cancel">  
+  
+  <typeAlias alias="studentInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter" />
+ 
+	<resultMap id="details" class="studentInfo">
+		<result property="enrollmentNumber" column="enrollment_number" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="entityName" column="entity_name" />
+		<result property="programName" column="program_name" />
+		<result property="branchName" column="branch" />
+		<result property="newSpecializationDescription" column="spcl" />
+		<result property="semester" column="sem" />
+		<result property="semesterCode" column="sem_code" />
+		<result property="attempt" column="attempt_number" />
+		<result property="sequenceNumber" column="status" />
+		<result property="studentName" column="name" />
+		<result property="fatherName" column="father_name" />
+		<result property="motherName" column="mother_name" />
+		<result property="category" column="category_code" />
+		<result property="categoryDescription" column="category_description" />
+		<result property="gender" column="gender" />
+		<result property="genderDescription" column="gender_description" />
+		<result property="dateOfBirth" column="date_of_birth" />
+		<result property="studentId" column="student_id" />
+		<result property="statusInSemester" column="program_status" />
+		<result property="entityId" column="entity_id" />
+		<result property="programId" column="program_id" />
+		<result property="branchCode" column="branch_id" />
+		<result property="newSpecialization" column="specialization_id" />
+		<result property="sessionStartDate" column="semester_start_date" />
+		<result property="sessionEndDate" column="semester_end_date" />		
+	</resultMap>
+  
+  
+	<select id="getDetails" resultMap="details">
+		select sp.enrollment_number,sp.roll_number,em.entity_name,pr.semester_start_date,pr.semester_end_date,
+		pm.program_name,bm.component_description branch,sm.component_description spcl,
+		sem.component_description sem,sem.component_code sem_code,srsh.status,srsh.attempt_number,
+		concat_ws(' ',stm.student_first_name,stm.student_middle_name,stm.student_last_name) name,
+		concat_ws(' ',stm.father_first_name,stm.father_middle_name,stm.father_last_name) father_name,
+		concat_ws(' ',stm.mother_first_name,stm.mother_middle_name,stm.mother_last_name) mother_name,
+		stm.date_of_birth,stm.gender,stm.category_code,cat.component_description category_description,
+		gen.component_description gender_description, stm.student_id,sp.program_status,
+		sp.program_id,sp.entity_id,sp.branch_id,sp.specialization_id
+		from student_program sp,student_master stm, entity_master em,
+		program_master pm, system_table_two bm, system_table_two sm, system_table_two sem,
+		system_table_two cat, system_table_two gen, university_master um, program_registration pr,student_registration_semester_header srsh
+		where  sp.roll_number=#input# and sp.enrollment_number=stm.enrollment_number and sp.roll_number=srsh.roll_number
+		and srsh.program_course_key=(select program_course_key from program_course_header where program_id=sp.program_id and branch_id=sp.branch_id
+		and specialization_id=sp.specialization_id and semester_code=sp.current_semester)
+		and sp.entity_id=em.entity_id and sp.program_id=pm.program_id and
+		sp.branch_id=bm.component_code and bm.group_code='BRNCOD' AND
+		bm.university_code=substring(sp.entity_id,1,4) and
+		sp.specialization_id=sm.component_code and sm.group_code='SPCLCD' AND
+		sm.university_code=substring(sp.entity_id,1,4) and
+		sp.current_semester=sem.component_code and sem.group_code='SEMCOD' AND
+		sem.university_code=substring(sp.entity_id,1,4) and
+		stm.category_code=cat.component_code and cat.group_code='STDCTG' AND
+		cat.university_code=substring(sp.entity_id,1,4) AND stm.gender=gen.component_code
+		and gen.group_code='GENDER' AND gen.university_code=substring(sp.entity_id,1,4) and
+      	pr.program_course_key=(select program_course_key from program_course_header where
+      	program_id=sp.program_id and branch_id=sp.branch_id and specialization_id=sp.specialization_id 
+      	and semester_code=sp.current_semester and semester_status='ACT') and
+     	pr.university_id=substring(sp.entity_id,1,4) and pr.status='ACT' and
+      	pr.session_start_date=um.start_date and um.university_code=substring(sp.entity_id,1,4) 
+      	and um.current_status='1' and sp.program_status!='SWT' and pr.entity_id=sp.entity_id ;
+
+	</select>
+    
+	<sql id="whereClause">
+		roll_number=#rollNumber# and entity_id=#entityId#  and 
+		program_course_key=(select program_course_key from program_course_header where
+		program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and semester_code=#semesterCode# ) ;
+	</sql>
+	
+	<update id="updateStdProg">
+		update student_program set
+		program_status='CAN', modification_time=now(), reason_description=#reason#, modifier_id=#modifierId# 
+		where roll_number=#rollNumber#  and enrollment_number=#enrollmentNumber# 
+		and entity_id=#entityId# and program_id=#programId# and branch_id=#branchCode# and 
+		specialization_id=#newSpecialization# and program_status!='CAN'; 
+	</update>
+			
+		
+	<update id="updateStdMaster">
+		update student_master set
+		status='CAN', modification_time=now(), modifier_id=#modifierId# 
+		where student_id=#studentId#  and enrollment_number=#enrollmentNumber# 
+		and parent_entity=#entityId# and university_code=substr(#modifierId#,2,4)and status!='CAN';
+	</update>
+
+	<update id="updateStdCourse">
+		update student_course set
+		student_status='CAN', modification_time=now(), modifier_id=#modifierId# 
+		where student_status!='CAN' and student_status='REG' and <include refid="whereClause"/>
+	</update>
+	  
+	<update id="updateSRSH">
+		update student_registration_semester_header set
+		status='CAN',modification_time=now(), modifier_id=#modifierId#,reason_description=#reason# 
+		where status!='CAN' and session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate#  
+		and <include refid="whereClause"/>
+	</update>
+	
+	
+	<!-- queries for termination of student -->
+	<update id="updateTerStdProg">
+		update student_program set
+		program_status='TRM', modification_time=now(), reason_description=#reason#, modifier_id=#modifierId# 
+		where roll_number=#rollNumber#  and enrollment_number=#enrollmentNumber# 
+		and entity_id=#entityId# and program_id=#programId# and branch_id=#branchCode# and 
+		specialization_id=#newSpecialization# and program_status not in('CAN','TRM'); 
+	</update>
+			
+		
+	<update id="updateTerStdMaster">
+		update student_master set
+		status='TRM', modification_time=now(), modifier_id=#modifierId# 
+		where student_id=#studentId#  and enrollment_number=#enrollmentNumber# 
+		and parent_entity=#entityId# and university_code=substr(#modifierId#,2,4)and status not in('CAN','TRM');
+	</update>
+
+	<update id="updateTerStdCourse">
+		update student_course set
+		student_status='TRM', modification_time=now(), modifier_id=#modifierId# 
+		where student_status not in('CAN','TRM') and student_status='REG' and <include refid="whereClause"/>
+	</update>
+	  
+	<update id="updateTerSRSH">
+		update student_registration_semester_header set
+		status='TRM',modification_time=now(), modifier_id=#modifierId#,reason_description=#reason# 
+		where status not in('CAN','TRM') and session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate# 
+		and  <include refid="whereClause"/>
+	</update>
+	
+	<!-- ******************************** -->
+	<!-- queries for withdraw of student  -->
+	<!-- ******************************** -->
+	
+	<update id="updateWthStdCourse">
+		update student_course set
+		student_status='WDR', modification_time=now(), modifier_id=#modifierId# 
+		where student_status='REG' and <include refid="whereClause"/>
+	</update>
+	  
+	<update id="updateWthSRSH">
+		update student_registration_semester_header set
+		status='WDR',modification_time=now(), modifier_id=#modifierId#,reason_description=#reason# 
+		where status='REG' and session_start_date=#semesterStartDate# and session_end_date=#semesterEndDate# 
+		and  <include refid="whereClause"/>
+	</update>
+	
+	<sql id="whereClauseForPreviousSem">
+		roll_number=#rollNumber# and entity_id=#entityId# and session_start_date=#semesterStartDate# and 
+		session_end_date=#semesterEndDate# and 
+		program_course_key in (select program_course_key from program_course_header where
+		program_id=#programId# and branch_id=#branchCode# and specialization_id=#newSpecialization# and 
+		semester_code in (select t.semester_code from program_term_details p,program_term_details t
+		where t.program_id=p.program_id and p.semester_code=#semesterCode# and p.program_id=#programId#
+		and t.semester_sequence<![CDATA[<]]>p.semester_sequence and t.semester_group=p.semester_group ));
+	</sql>
+	
+	<update id="updateWthSRSHPreviousRem">
+		update student_registration_semester_header set
+		status='HLD',modification_time=now(), modifier_id=#modifierId#,reason_description=#reason# 
+		where status='REM' and <include refid="whereClauseForPreviousSem"/>
+	</update>
+	
+	<update id="updateWthSRSHPreviousPass">
+		update student_registration_semester_header set
+		status='CAN',modification_time=now(), modifier_id=#modifierId#,reason_description=#reason# 
+		where status='PAS' and  <include refid="whereClauseForPreviousSem"/>
+	</update>
+	
+	<delete id="deleteFromAppInfo">
+		Delete from applicant_info where user_name=#rollNumber# and status='ACT';
+	</delete>
+	
+	<select id="getNextSem" resultClass="java.lang.Object">
+		select t.semester_code as semester from program_term_details p,program_term_details t
+		where t.program_id=p.program_id and p.semester_code=#semesterCode# and p.program_id=#programId#
+		and t.semester_sequence=(p.semester_sequence+1) and t.semester_group=p.semester_group;
+	</select>
+	
+	<delete id="deleteFromStaging">
+		Delete from staging_table where old_roll_number=#rollNumber# 
+		and old_entity_id=#entityId# and old_semester_code=#semesterCode# and new_semester_id=#semester#;
+	</delete>
+	
+	<insert id="prestagingBackUp">
+		insert into prestaging_table_history
+		select * FROM prestaging_table where new_semester=#semester# and
+		old_roll_number=#rollNumber# and old_semester=#semesterCode# and old_entity=#entityId#;
+	</insert>
+	
+	<delete id="deleteFromPrestaging">
+		Delete from prestaging_table where new_semester=#semester# and old_roll_number=#rollNumber# and 
+		old_semester=#semesterCode# and old_entity=#entityId#;
+	</delete>
+	
+	<insert id="tempCoursesBackUp">
+		Insert into temp_student_courses_history 
+		SELECT * FROM temp_student_courses where program_id=#programId# and branch_id=#branchCode# 
+		and specialization_id=#newSpecialization# and 
+		roll_number=#rollNumber# and semester_code=#semester#;
+	</insert>
+	
+	<insert id="tempMasterBackUp">
+		Insert into temp_student_master_history 
+		SELECT * FROM temp_student_master where 
+		enrollment_number in (SELECT distinct enrollment_number FROM temp_student_program where to_semester=#semester# and 
+		roll_number=#rollNumber# and old_entity_id=#entityId# and from_semester=#semesterCode#) and university_code=substring(#entityId#,1,4);
+	</insert>
+	
+	<insert id="tempProgramBackUp">
+		Insert into temp_student_program_history 
+		SELECT * FROM temp_student_program where to_semester=#semester# and 
+		roll_number=#rollNumber# and old_entity_id=#entityId# and from_semester=#semesterCode#;
+	</insert>
+	
+	<delete id="deleteFromTempCourses">
+		DELETE FROM temp_student_courses where program_id=#programId# and branch_id=#branchCode# 
+		and specialization_id=#newSpecialization# and 
+		roll_number=#rollNumber# and semester_code=#semester#;
+	</delete>
+	
+	<delete id="deleteFromTempMaster">
+		Delete FROM temp_student_master where 
+		enrollment_number in (SELECT distinct enrollment_number FROM temp_student_program where to_semester=#semester# and 
+		roll_number=#rollNumber# and old_entity_id=#entityId# and from_semester=#semesterCode#) and university_code=substring(#entityId#,1,4);
+	</delete>
+	
+	<delete id="deleteFromTempProgram">
+		Delete from temp_student_program where to_semester=#semester# and roll_number=#rollNumber# 
+		and from_semester=#semesterCode# and old_entity_id=#entityId#;
+	</delete>
+
+	
+ </sqlMap>

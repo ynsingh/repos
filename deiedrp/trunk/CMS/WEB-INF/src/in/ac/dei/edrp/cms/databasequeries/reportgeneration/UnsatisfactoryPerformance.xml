@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================= -->
+<!--@author Ashish Mohan                                         -->
+<!-- ================================================================= -->
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+    <sqlMap namespace="unsatisfactory">
+    	<typeAlias alias="studentTempInfo" type="in.ac.dei.edrp.cms.domain.studentregistration.StudentInfoGetter"/>
+    	<typeAlias alias="courseTempInfo" type="in.ac.dei.edrp.cms.domain.university.UniversityMasterInfoGetter"/>
+    	
+    	
+    	<select id = "getPersonalInfoForPerformance" resultClass="studentTempInfo">
+    	
+
+		select pm.program_name as programName,pm.program_code AS programCode,pm.program_id as programId,   sp.branch_id AS branchId,sp.roll_number AS rollNumber,
+ 		concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) AS studentName,
+ 		sp.enrollment_number AS enrollmentNumber,   srsh.attempt_number AS attemptNumber,sp.specialization_id AS specializationId,
+       	sp.entity_id AS oldEntityId,      current_semester AS currentSemester,
+        sm.student_id AS studentId,srsh.status AS status,srsh.number_of_remedials as recordsFailed,
+        ptd.semester_sequence AS semesterSequence,sm.university_code AS universityCode
+     	FROM student_program sp,student_master sm,
+   		program_term_details ptd,program_master pm,student_registration_semester_header srsh   WHERE sp.entity_id =#entityId#
+    	AND sp.program_id = #programId# AND sp.branch_id = #branchId#   AND sp.specialization_id = #specializationId# AND sp.current_semester =  #semesterCode#
+   		AND pm.program_id = sp.program_id
+        and srsh.status not in ('YTR','PAS') and srsh.student_process_status='PRE' and srsh.roll_number=sp.roll_number AND ptd.program_id =#programId# and sp.program_status='ACT'
+     	AND ptd.semester_code = #semesterCode# AND sm.enrollment_number = sp.enrollment_number AND ptd.semester_sequence=#sequenceNumber#  AND srsh.session_start_date = #semesterStartDate#
+		AND srsh.session_end_date = #semesterEndDate#  and sm.university_code=#universityId#;
+    	
+    	</select>
+    	
+    	<select id = "getRemedialCourses" resultClass="studentTempInfo">    	    
+		
+		select course_code AS courseCode FROM student_course WHERE
+		roll_number = (select roll_number FROM student_program WHERE enrollment_number = #enrollmentNumber#
+		AND entity_id = #oldEntityId# AND program_id = #programId# AND branch_id = #branchId# AND specialization_id = #specializationId#
+		AND current_semester = #currentSemester# group by (roll_number))AND student_status = 'REM';
+		
+   		</select>
+   		
+   		<select id = "getPersonalInfoForMeritCP" resultClass="studentTempInfo">
+    	select sp.cgpa as cosValue,sp.program_completion_date as status,pm.program_name as programName,pm.program_code AS programCode,pm.program_id as programId,
+		sp.branch_id AS branchId,sp.roll_number AS rollNumber,
+		concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name) AS studentName,
+		sp.enrollment_number AS enrollmentNumber,   sp.specialization_id AS specializationId,
+		sm.student_id AS studentId
+		FROM student_program sp,student_master sm,program_master pm  WHERE sp.entity_id =#entityId# AND sp.branch_id =  #branchId#
+		AND sp.program_id = #programId#  AND sp.specialization_id = #specializationId# and sp.program_status='PAS'
+		AND pm.program_id = sp.program_id and sm.enrollment_number = sp.enrollment_number and sm.university_code=#universityId# and
+ 		program_completion_date like concat(#sessionEndDate#,'%') order by  sp.cgpa desc;
+    	</select>
+    	
+	<select id = "getPersonalInfoForMeritGroup" resultClass="studentTempInfo">
+    select sum(set2.total) as switchNumber,set2.roll_number as rollNumber,set2.* from(sELECT sum(set1.total_marks) as total,set1.* from (select course_group,sc.course_code ,
+	sc.roll_number,sms.total_marks,srsh.status,concat_ws(' ',sm.student_first_name,sm.student_middle_name,sm.student_last_name)
+    AS studentName,ptd.semester_sequence AS semesterSequence,pm.program_name as programName,pm.program_code AS programCode,pm.program_id as programId,
+    sp.branch_id AS branchId,sp.specialization_id as specializationId FROM
+    student_course sc, student_marks_summary sms,student_registration_semester_header srsh,student_program sp,
+    student_master sm,program_term_details ptd,program_master pm where
+    sc.program_course_key=(select program_course_key FROM program_course_header
+	where program_id=#programId# and branch_id=#branchId# and
+	specialization_id=#specializationId# and semester_code=#semesterCode#) and  sc.roll_number=sms.roll_number
+ 	and sc.course_code=sms.course_code and srsh.program_course_key=sc.program_course_key and srsh.roll_number=sc.roll_number
+ 	and srsh.status='PAS' and pm.program_id = sp.program_id and ptd.program_id=pm.program_id and ptd.semester_code = #semesterCode#
+ 	and sp.roll_number=sc.roll_number and sm.enrollment_number=sp.enrollment_number and sm.university_code=#universityId#)set1
+ 	group by course_group,set1.roll_number order by set1.roll_number)set2 
+	<dynamic prepend="WHERE course_group IN">
+		<iterate property="courseCodeList" open="(" close=")" conjunction=",">
+			#courseCodeList[]#
+		</iterate>
+	</dynamic>
+	group by roll_number order by switchNumber desc;
+	</select>
+	
+
+   	<select id = "getGroup" resultClass="courseTempInfo">    	    
+		select distinct course_group as componentId,sys.component_description as componentDescription 
+		from student_course sc,system_table_two sys where sc.program_course_key=(select program_course_key FROM program_course_header
+		where program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and semester_code=#semesterCode#) and sc.semester_start_date= #semesterStartDate# 
+		and sys.group_code='CRSGRP' and sys.component_code=sc.course_group;
+	</select>
+   	
+   	
+   	<!-- query written by ashish to get unapproved award blank with delay days of whole university of selected session -->
+   	
+   	<select id = "getDataForInsert" resultClass="studentTempInfo">    	    
+		Select <!--  set2.entity_id--> rep.entityId,rep.programCourseKey,rep.courseCode,rep.verified,rep.componentCode,
+		rep.componentDescription,set2.semester_start_date semesterStartDate,set2.semester_end_date semesterEndDate 
+		from(select substring_index(combine,':',1) as entityId,substring_index(procou,':',-1) as programId ,
+		right(substring_index(combine,':',3),14) as programCourseKey,substring_index(procou,':',1) as courseCode,
+		substring_index(combine,':',-1) verified,employee_id as componentCode,delayDays as componentDescription from
+		(select * from (select main.*,substring(combine,10,14) as procou from(select t1.*,t2.semester_start_date,
+		t2.semester_end_date from(select com.* from(select max(approval_order) maxOrder,employee_id,
+		combine from(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,
+		employee_id,approval_order FROM course_marks_approval where substr(entity_id,1,4)=#universityCode#)as com
+		group by combine)a inner join (SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,
+		employee_id,approval_order FROM course_marks_approval where substr(entity_id,1,4)=#universityCode#)as com where
+		a.maxOrder=com.approval_order  and a.combine=com.combine)t1
+		left join
+		(select com.* from(select max(approval_order) maxOrder,request_getter,combine,semester_start_date,semester_end_date from
+		(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,request_getter,approval_order,
+		semester_start_date,semester_end_date FROM course_marks_approval_status where substr(entity_id,1,4)=#universityCode# and 
+		display_type='I' and status='APR')as com group by combine)a inner join 
+		(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,request_getter,approval_order,
+		semester_start_date,semester_end_date FROM course_marks_approval_status where substr(entity_id,1,4)=#universityCode# and display_type='I' 
+		and status='APR')as com where a.maxOrder=com.approval_order  and a.combine=com.combine)t2
+		on t1.combine=t2.combine and t1.employee_id=t2.request_getter and t1.approval_order=t2.approval_order
+		where t2.request_getter is null)main)final
+		left join
+		(select concat_ws(':',course_code,program_id) as procou,
+		max(concat(year(curdate()),'-',date_to_display_marks)) as mark_display_end_date,
+		datediff(curdate(),max(concat(year(curdate()),'-',date_to_display_marks))) as delayDays
+		FROM course_evaluation_component
+		where length(date_to_display_marks)>2 and evaluation_id not in('EXT','REM') group by (concat_ws(':',course_code,program_id)))set1
+		using (procou))report)rep left join
+		(SELECT entity_id,program_course_key,semester_start_date,semester_end_date FROM program_registration
+		where session_start_date=#sessionStartDate# and  session_end_date=#sessionEndDate# and length(entity_id)>0)set2
+		on set2.entity_id=rep.entityId and set2.program_course_key=rep. programCourseKey;
+	</select>
+	
+	<delete id = "deleteFromTable">    	    
+		delete from award_blank_status where university_code=#universityCode# and 
+		session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#;
+	</delete>
+   		
+   	<insert id = "insertInTable">    	    
+		insert into award_blank_status values(#universityCode#,#entityId#,#programCourseKey#,#courseCode#,#verified#,#componentCode#,#componentDescription#,
+		#semesterStartDate#,#semesterEndDate#,#sessionStartDate#,#sessionEndDate#,#userId#,now());
+	</insert>
+	
+	<select id="getUniqueEntity" resultClass="studentTempInfo">
+		SELECT distinct (select entity_name from entity_master where entity_id=ab.entity_id)
+		as entityName,entity_id as entityId
+		FROM award_blank_status ab
+		where university_code=#universityCode# and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate#;
+	</select>
+	
+	<select id="getUniqueProgram" resultClass="studentTempInfo">
+		select distinct (select concat(program_code,(SELECT concat('-',branch_id,'-',specialization_id)
+		FROM program_course_header where program_course_key=ab.program_course_key),'-',(select semester_code from program_course_header where program_course_key=ab.program_course_key) )from program_master where
+		program_id in(select program_id from program_course_header where program_course_key=ab.program_course_key)) as programName
+		FROM award_blank_status ab
+		where university_code=#universityCode# and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# and entity_id=#entityId#;
+	</select>
+	
+	<select id="getDataForReportEntityProgWise" resultClass="studentTempInfo">
+		select * from(SELECT (select entity_name from entity_master where entity_id=ab.entity_id) as entityName,
+		(select concat(program_code,(SELECT concat('-',branch_id,'-',specialization_id)
+		FROM program_course_header where program_course_key=ab.program_course_key),'-',(select semester_code from program_course_header where program_course_key=ab.program_course_key) )from program_master where
+		program_id in(select program_id from program_course_header where program_course_key=ab.program_course_key)) as programName,
+    	course_code courseCode,IFNull(subDate(curdate(),interval delay_days day),'Display Date Not Set') as verified,
+    	employee_id componentCode,IFNull(if(delay_days>=0,delay_days,concat(substring(delay_days,2,length(delay_days)),' Days Left')),'-') componentDescription FROM award_blank_status ab
+		where university_code=#universityCode# and session_start_date=#sessionStartDate# and session_end_date=#sessionEndDate# 
+		order by entityName,programName,courseCode,verified)set1 where entityName=#entityName# and programName=#programName#;
+	</select>
+	
+	<!-- query for getting data of collation differences -->
+	<select id="getCollationDifferences" resultClass="studentTempInfo">
+		SELECT smc.course_code as courseCode,smc.roll_number as rollNumber,
+		(select component_description from system_table_two where group_code='EVLCOM' and 
+		component_code=smc.evaluation_id and university_code=#universityId#) as componentDescription,
+		sm.marks as falg,ifnull(sm.modifier_id,sm.creator_id) as creatorId,smc.marks as falg1,
+		ifnull(smc.modifier_id,smc.creator_id) as modifierId
+		FROM student_marks_collation smc
+		INNER JOIN student_marks sm ON smc.marks!=sm.marks
+		and smc.university_code=sm.university_code and smc.entity_id=sm.entity_id
+		and smc.roll_number=sm.roll_number and smc.program_course_key=sm.program_course_key
+		and smc.course_code=sm.course_code
+		and smc.evaluation_id=sm.evaluation_id
+		and smc.entity_id=#entityId# and smc.university_code=#universityId# 
+		and smc.semester_start_date=#semesterStartDate# and smc.semester_end_date=#semesterEndDate# and 
+		smc.program_course_key=(SELECT program_course_key AS programCourseKey FROM program_course_header 
+								WHERE program_id = #programId# AND branch_id = #branchId# AND 
+								specialization_id =#specializationId# AND semester_code = #semesterCode#);
+	</select>	
+
+    	
+</sqlMap>

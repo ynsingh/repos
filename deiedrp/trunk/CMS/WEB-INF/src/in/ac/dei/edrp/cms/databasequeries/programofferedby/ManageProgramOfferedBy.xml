@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+	<!--
+		=================================================================
+	-->
+	<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+	<!--
+		=================================================================
+	-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ManageProgramOfferedBy">
+	<typeAlias alias="EntityDetails"
+		type="in.ac.dei.edrp.cms.domain.programofferedby.EntityDetails" />
+
+	<select id="manageEntityList" resultClass="EntityDetails">
+		select em.entity_id as
+		entityId,
+		em.entity_name as entityName,em1.entity_name as creatorId
+		from entity_master em,
+		entity_master em1
+		where
+		em.parent_entity_id=em1.entity_id AND
+		em1.university_id=em.university_id AND em.university_id=#value# and
+		em.entity_id in(
+		select pob.offered_by from program_offered_by pob);
+    </select>
+
+	<select id="manageEntityListUniversity" resultClass="EntityDetails">
+		select
+		em.entity_id as entityId,em.entity_name as
+		entityName,em1.university_name as creatorId from entity_master em,
+		university_master em1 where em.parent_entity_id=#value# AND
+		em1.university_code=em.university_id AND em.university_id=#value#
+		AND em1.current_status=1 AND em.entity_id IN(select pob.offered_by from
+		program_offered_by pob) order by em.entity_id;
+    </select>
+
+	<update id="updateProgramOfferedBy" parameterClass="EntityDetails">
+		update
+		program_offered_by set mentor=#employeeCode#,seats=#numberOfSeats#,
+		modifier_id=#modifierId#,modification_time=Now()
+		where
+		program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and offered_by=#entityId#
+
+	</update>
+	<delete id="deleteEntityDetails" parameterClass="EntityDetails">
+		delete from
+		program_offered_by where program_id=#programId# and
+		branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		offered_by=#entityId#
+	</delete>
+
+	<select id="getProgramList" resultClass="EntityDetails">
+		select pm.program_id as
+		entityId,
+		pm.program_name as entityName from program_master pm
+		where
+		pm.program_id in (select
+		pob.program_id from program_offered_by pob
+		where pob.offered_by=#value#);
+    </select>
+
+	<statement id="getProgramDetails_Entity" resultClass="EntityDetails">
+		select pm.program_id as programId,
+		pm.program_name as programName,
+		stt.component_code as branchId,
+		stt.component_description as
+		branchName,
+		stt1.component_code as specializationId,
+		stt1.component_description as specializationName,
+		em.first_name as
+		firstName,em.last_name as lastName,em.employee_code as employeeCode,
+		pob.seats as numberOfSeats
+		from program_master pm,program_offered_by
+		pob,system_table_two stt,
+		system_table_two stt1,employee_master em
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="entityId">
+				pob.offered_by=#entityId#
+		</isNotEmpty>
+			<isNotEmpty prepend="AND" property="programId">
+				pob.program_id=#programId#
+		</isNotEmpty>
+			and pob.program_id=pm.program_id and
+			(stt.component_code=pob.branch_id
+			and stt.group_code='BRNCOD') and
+			(stt1.component_code=pob.specialization_id and
+			stt1.group_code='SPCLCD') and (stt.university_code=#universityId# and
+			stt.university_code=stt1.university_code) and
+			em.employee_code=pob.mentor AND em.university_code=#universityId# order by pob.seats
+		</dynamic>
+	</statement>
+
+</sqlMap>

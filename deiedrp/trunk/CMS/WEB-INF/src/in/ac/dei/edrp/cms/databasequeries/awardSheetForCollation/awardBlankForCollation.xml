@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+
+<sqlMap namespace="AwardSheetForCollation">
+	<typeAlias alias="awardBlank" type="in.ac.dei.edrp.cms.domain.awardsheet.AwardSheetInfoGetter"/>
+	
+	
+<resultMap id="marksList" class="awardBlank">
+		<result property="evaluationId" column="evaluation_id" />
+		<result property="attendence" column="attendence" />
+		<result property="rollNumber" column="roll_number" />
+		<result property="marks" column="marks" />
+		<result property="grades" column="grades" />
+		<result property="passfail" column="pass_fail" />
+		<result property="totalInternal" column="total_internal" />
+		<result property="totalExternal" column="total_external" />
+		<result property="total" column="total_marks" />
+		<result property="internalGrade" column="internal_grade" />
+		<result property="externalGrade" column="external_grade" />	
+		<result property="inserttime" column="insert_time" />
+		<result property="modificationtime" column="modification_time" />	
+		<result property="requestedmarks" column="requested_marks" />
+		<result property="requesterremarks" column="requester_remarks" />		
+</resultMap>
+
+	
+<select id="getCourseListForRemedialAndExternal" resultClass="awardBlank">	
+		SELECT DISTINCT ic.entity_id AS entityId, cma.approval_order, pch.program_id AS programId, pch.branch_id AS branchId, pch.specialization_id AS specializationId,
+		pch.semester_code AS semesterCode, ic.semester_start_date AS semesterStartDate, ic.semester_end_date AS semesterEndDate,
+		cma.course_code AS courseCode, stt.component_description AS branchName, stt1.component_description AS semesterName,
+		stt2.component_description AS specializationName, pm.program_name AS programName, cm.course_name AS courseName,
+		cm.grade_limit_active AS gradelimit, cma.program_course_key AS programCourseKey, cm.result_system AS resultSystem,
+		em.employee_code AS employeeCode, concat_ws(' ', em.first_name, em.middle_name, em.last_name) AS employeeName,
+		enm.entity_type AS entityType, enm.entity_name AS entityName, um.start_date AS startDate, um.end_date AS endDate
+		FROM entity_master enm, course_master cm, program_master pm, system_table_two stt, system_table_two stt1,
+		system_table_two stt2, program_course_header pch, university_master um
+		JOIN program_registration pr JOIN instructor_course ic JOIN employee_master em JOIN course_marks_approval cma
+		WHERE um.university_code=#universityId# AND um.current_status='1' AND um.start_date=pr.session_start_date
+		AND pr.semester_start_date=ic.semester_start_date AND pr.semester_end_date=ic.semester_end_date
+		AND em.employee_code IN (SELECT cma1.employee_id FROM course_marks_approval cma1 WHERE cma1.course_code=cm.course_code
+		AND cma1.display_type=#displayType# AND cma1.approval_order=(SELECt MIN(cma2.approval_order) from course_marks_approval cma2 WHERE cma2.course_code=cm.course_code
+		AND cma2.display_type=#displayType# AND cma2.program_course_key=pch.program_course_key AND cma2.entity_id=ic.entity_id))
+		AND ic.status='ACT' AND ic.program_course_key=pch.program_course_key
+		AND ic.program_course_key=cma.program_course_key
+		AND stt.group_code='BRNCOD' AND stt.component_code=pch.branch_id AND stt.university_code=#universityId# AND stt1.group_code='SEMCOD'
+		AND stt1.component_code=pch.semester_code AND stt1.university_code=#universityId# AND stt2.group_code='SPCLCD' AND stt2.component_code=pch.specialization_id
+		AND stt2.university_code=#universityId# AND pm.program_id=pch.program_id
+		AND cm.university_code=#universityId# AND cm.course_code=cma.course_code AND cm.course_code=ic.course_code AND ic.entity_id=enm.entity_id
+		AND ic.entity_id=cma.entity_id AND cma.display_type=#displayType# GROUP BY cma.course_code, ic.entity_id, cma.program_course_key, cma.display_type;
+</select>
+		
+		
+		
+<select id="getStudentMarks" resultMap="marksList">
+	select sm.roll_number,sm.evaluation_id,sm.attendence,sm.marks,sm.grades, sm.pass_fail,sms.total_internal,sms.total_external,sms.total_marks,
+	sms.internal_grade, sms.external_grade ,sm.insert_time,sm.modification_time ,sm.requested_marks ,sm.requester_remarks	
+	from student_marks_collation sm,student_marks_summary_collation sms
+	where sm.course_code=#courseCode# and sm.course_code=sms.course_code and sm.university_code=#universityId# and 
+	sm.semester_start_date=#startdate# and 	sm.semester_end_date=#endDate# and sm.entity_id=#entityId# and	
+	sm.entity_id=sms.entity_id and sm.program_course_key=#programCourseKey# and sm.roll_number=sms.roll_number and 
+	sm.evaluation_id IN (select	cec.evaluation_id from evaluation_component ec, course_evaluation_component cec
+	where cec.program_id=#programId# and course_code=#courseCode# and ec.evaluation_id=cec.evaluation_id
+	and ec.display_type=#displayType# and ec.university_code=#universityId#);
+</select>
+
+
+<insert id="insertIntoStudentMarks">
+		insert into student_marks_collation
+		(university_code, entity_id,
+		roll_number, program_course_key, evaluation_id,attendence, marks, grades,
+		pass_fail, status,
+		course_code, semester_start_date, semester_end_date,
+		insert_time, creator_id, attempt_number )
+		values
+		(#universityId#, #entityId#,
+		#rollNumber#,#programCourseKey#,#evaluationId#,#attendence#,#marks#,#grades#,
+		#passfail#, 'ACT',
+		#courseCode#,#startDate#, #endDate#, now(),
+		#creatorId#, '1');
+</insert>
+
+<update id="updateStudentMarks">
+		update student_marks_collation set 
+		marks=#marks# ,attendence=#attendence#, grades=#grades#,pass_fail=#passfail#, modifier_id=#creatorId#,modification_time=now() 
+ 		,old_marks = #oldmarks#
+		where university_code=#universityId# and roll_number=#rollNumber# and program_course_key=#programCourseKey# and 
+		evaluation_id=#evaluationId# and course_code=#courseCode# and entity_id=#entityId# and 
+		semester_start_date=#startDate# and semester_end_date=#endDate# 
+</update>
+
+	
+<insert id="insertIntoStudentMarksSummaryExternal">
+		insert into student_marks_summary_collation
+		(university_code,entity_id,
+		roll_number, program_course_key, semester_start_date,
+		semester_end_date,
+		total_external,
+		course_code,insert_time,
+		creator_id,external_grade) values
+		(#universityId#,#entityId#,#rollNumber#,#programCourseKey#,
+		#startDate#, #endDate#,
+		#totalExternal#,
+		#courseCode#,now(),#creatorId#, #externalGrade#);
+</insert>
+
+<update id="updateStudentMarksSummaryExternal">
+		update student_marks_summary_collation set  
+		total_external=#totalExternal# , external_grade=#externalGrade#,
+		modifier_id=#creatorId#,modification_time=now() where 
+		university_code=#universityId# and program_course_key=#programCourseKey# and 
+		roll_number=#rollNumber# and course_code=#courseCode# and semester_start_date=#startDate# and 
+		semester_end_date=#endDate# and entity_id=#entityId#;
+</update>
+		
+<insert id="insertIntoStudentMarksSummaryRemedial">
+		insert into student_marks_summary_collation
+		(university_code, entity_id,
+		roll_number, program_course_key, semester_start_date,
+		semester_end_date, 
+		course_code,insert_time,
+		creator_id,total_internal,internal_grade) values
+		(#universityId#,#entityId#,#rollNumber#,#programCourseKey#,
+		#startDate#, #endDate#,
+		#courseCode#,now(),#creatorId#,#marks#,
+		#finalGrade#);
+</insert>
+
+	<update id="updateStudentMarksSummaryRemedial">
+		update student_marks_summary_collation set total_internal=#marks#, total_external=null,
+		internal_grade=#finalGrade#, external_grade=null,
+		modifier_id=#creatorId#,modification_time=now() where 
+		university_code=#universityId# and program_course_key=#programCourseKey# and 
+		roll_number=#rollNumber# and course_code=#courseCode# and semester_start_date=#startDate# and 
+		semester_end_date=#endDate# and entity_id=#entityId#;
+	</update>
+		
+</sqlMap>

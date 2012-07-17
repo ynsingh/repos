@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ *
+ * @(#) editPopupWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ *
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" showCloseButton="true" close="closePopUp(event)" layout="absolute" width="320" height="224" title="Send Request to Correct Marks">
+
+	<mx:HTTPService id="requestToCorrectMarks"
+					url="{commonFunction.getConstants('url')}/studentMarksSummary/setMarksCorrectionRequest.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+
+	<mx:Label x="10" y="22" text="Component        :" width="115"/>
+	<mx:Label x="133" y="22" id="component"/>
+	<mx:Label x="10" y="50" text="Correct Mark      :" height="19" width="115"/>
+	<mx:TextInput id="correctMarks" x="133" y="48" width="39" height="23" restrict="0-9" maxChars="3"/>
+	<mx:TextArea id="studentRemark" maxChars="200" x="133" y="76" width="140" height="53"/>
+	<mx:Label x="10" y="94" text="Student Remark :"/>
+	<mx:Button x="53" y="148" label="Submit" click="onSubmitClick()"/>
+	<mx:Button x="159" y="148" label="{commonFunction.getConstants('cancelButton')}" click="var evt:CloseEvent;closePopUp(evt)"/>
+	
+	<mx:Script>
+		<![CDATA[
+			
+		import common.Mask;
+		import common.commonFunction;
+		import mx.collections.*;
+		import mx.controls.Alert;
+		import mx.events.CloseEvent;
+		import mx.managers.PopUpManager;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/reset.png")]private var resetIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+		public var param:Object={};
+	
+		
+
+		
+		/** this method fires on click of close button and closes pop up
+ 		* */
+		public function closePopUp(event:CloseEvent):void
+		{
+			PopUpManager.removePopUp(this);
+		}
+
+		/**
+ 		* This fire on pressing down ESC key 
+ 		* and closes popup
+ 		* */
+		private function initializeForEsc(event:KeyboardEvent):void
+		{
+    		if (event.keyCode == Keyboard.ESCAPE)
+    		{
+				var evt:CloseEvent;
+				closePopUp(evt);
+    		}
+		}
+		
+		private function onSubmitClick():void{
+			if(correctMarks.text.length>0 && studentRemark.text.length>0){
+				Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,requestOrNot,questionIcon);
+			}
+			else{
+				Alert.show("Marks and Remark should be Filled",commonFunction.getMessages('info'),4,null,null,infoIcon);
+			}
+		}
+		
+		private function requestOrNot(event:CloseEvent):void{
+			if(event.detail==Alert.YES){
+				param['evaluationId']=component.text;
+				param['correctMarks']=correctMarks.text;
+				param['studentRemark']=studentRemark.text;
+				requestToCorrectMarks.send(param);
+			}
+		}
+		
+		private function onSuccess(event:ResultEvent):void{
+			if(event.result.message=="true"){
+				Alert.show("Your Request Successfully Submitted",commonFunction.getMessages('success'),4,null,closePopUp,successIcon);
+			}
+			else{
+				Alert.show("Some Error Occured \n\n"+event.result.message,commonFunction.getMessages('error'),4,null,closePopUp,errorIcon);
+			}
+		}
+		
+
+		
+		private function onFailure(event:FaultEvent):void{
+			Alert.show(event.fault+"",commonFunction.getMessages('error'),4,null,null,errorIcon);
+		}
+			
+		]]>
+	</mx:Script>
+	
+</mx:TitleWindow>

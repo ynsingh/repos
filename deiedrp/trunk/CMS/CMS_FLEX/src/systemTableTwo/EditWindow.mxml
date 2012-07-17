@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+				layout="absolute" title="{resourceManager.getString('Constants','editDetails')}:" showCloseButton="true" width="512"  height="434"
+				close="closeMe()" creationComplete="initPopupWindow()" keyDown="getKeyEvent(event)" >
+	<mx:XML id="groupDB" format="e4x" source="xmlFiles/SysRecords.xml"/>
+    <mx:Script source="asFiles/SystemTableValidation.as"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import common.Mask;
+			import common.commonFunction;
+			import common.validations.CommonValidations;
+			
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			import systemTableTwo.SystemTableTwo;
+			
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/reset.png")]private var resetIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			// variable which get value from program_Course.mxml
+			public var groupCode:String="";
+			public var groupDescription:String="";
+			public var verificationEnabled=false;
+			public var params:Object=new Object();
+			public var parentFunction:Function;
+			
+			protected var validate:CommonValidations=new CommonValidations();
+			
+			private function closeMe():void
+			{
+				PopUpManager.removePopUp(this);
+				parentFunction();
+			}
+			
+			protected function initPopupWindow():void
+			{				
+				groupLabValue.text=groupDescription;
+				
+				if(firstFlagLab.text!="")
+				{
+					first.height=24;
+				}
+				else
+				{
+					first.height=0;
+				}
+				
+				
+				if(secondFlagLab.text!="")
+				{
+					second.height=24;
+					
+				}
+				else
+				{
+					second.height=0;
+				}
+				
+				if(thirdFlagLab.text!="")
+				{
+					third.height=24;
+				}	
+				else
+				{
+					third.height=0;
+				}
+				
+				if(verificationEnabled)
+				{
+					verification.height=24;
+				}
+				else
+				{
+					verification.height=0;
+				}
+				
+				componentDescriptionTxtArea.setFocus();
+			}
+			
+			protected function updateButtonClickHandler():void
+			{
+				var check:int=0;
+				
+				if(!validateForm(groupDB,groupLabValue.text))
+				{	
+					check++;
+				}
+				
+				if(verification.height!=0)
+				{
+					var verificationRequired:int=0;
+					if(verificationChBox.selected)
+					{
+						verificationRequired=1
+					}
+					params["verificationRequired"]=verificationRequired;
+				}
+				
+				if(first.height!=0)
+				{
+					if(Validator.validateAll([firstFlagValid]).length>0)
+					{
+				        check++;
+				    }
+				    else
+				    {
+			    	     firstFlagTxtInput.errorString="";
+			    	}		
+				}
+				
+				if(second.height!=0)
+				{
+					if(Validator.validateAll([secondFlagValid]).length>0)
+					{
+				        check++;
+				    }
+				    else
+				    {
+				        secondFlagTxtInput.errorString="";
+				    }
+				}
+				
+				if(third.height!=0)
+				{
+					if(Validator.validateAll([thirdFlagValid]).length>0)
+					{
+				        check++;
+				    }
+				    else
+				    {
+				        thirdFlagTxtInput.errorString="";
+				    }
+				}
+				
+				if(check==0)
+				{
+					params["groupCode"]=groupCode;
+					params["componentCode"]=componentCodeTxtInput.text;
+					params["componentDescription"]=componentDescriptionTxtArea.text;
+					params["active"]=activeRGroup.selectedValue;
+					params["dummyFlag1"]=firstFlagTxtInput.text;
+					if((firstFlagTxtInput.text=="")||(firstFlagTxtInput.text==null))
+					{
+						params["dummyFlag1"]='0';
+					}
+					params["dummyFlag2"]=secondFlagTxtInput.text;
+					params["dummyFlag3"]=thirdFlagTxtInput.text;
+					
+					Alert.show(commonFunction.getMessages('conformForContinue'),commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,updateOrNot,questionIcon);
+				}
+				else
+				{
+					Alert.show(commonFunction.getMessages('pleasecheckEntriesinRed'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+				}
+			}
+			
+			protected function updateOrNot(event:CloseEvent):void
+			{
+				if(event.detail==1)
+				{
+					Mask.show(commonFunction.getMessages('pleaseWait'));
+					updateComponentDetailsService.send(params);
+				}
+			}
+			
+			protected function updateComponentResultHandler(event:ResultEvent):void
+			{
+				Mask.close();
+	try
+	{
+		if(event.result.sessionConfirm == true)
+		{
+	 		Alert.show(resourceManager.getString('Messages','sessionInactive'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+	    	this.parentDocument.vStack.selectedIndex=0;
+	    	this.parentDocument.loaderCanvas.removeAllChildren();
+		}
+	}
+ 	catch(e:Error){}
+ 	    
+				Alert.show(commonFunction.getMessages('recordUpdatedSuccessfully'),commonFunction.getMessages('success'),0,null,onSuccess,successIcon);
+			}
+			
+			protected function updateComponentFaultHandler(event:FaultEvent):void
+			{
+				Mask.close();
+				Alert.show(commonFunction.getMessages('requestFailed'));
+			}
+			
+			protected function onSuccess(event:CloseEvent):void
+			{
+				closeMe();
+			}
+			
+			protected function getKeyEvent(event:KeyboardEvent):void
+			{
+				if(event.keyCode==27)
+				{
+					closeMe();
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HTTPService id="updateComponentDetailsService" method="post"
+					url="{commonFunction.getConstants('url')+'/systemTableTwo/updateComponentDetails.htm'}"
+					showBusyCursor="true"
+					resultFormat="e4x"
+					result="updateComponentResultHandler(event)"
+					fault="updateComponentFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:Label x="80" y="30" id="groupLabel" text="{resourceManager.getString('Constants','group')}"/>
+	<mx:Label x="235" y="30" id="groupLabValue" width="160"/>
+	<mx:Label x="80" y="60" id="componentCodeLabel" text="{resourceManager.getString('Constants','componentCode')}"/>
+	<mx:TextInput x="235" y="60" id="componentCodeTxtInput" editable="false"/>
+	<mx:Label x="80" y="90" id="componentDescriptionLabel" text="{resourceManager.getString('Constants','componetDescription')}"/>
+	<mx:TextArea x="235" y="90" cornerRadius="5" restrict="0-9   . a-z A-Z" id="componentDescriptionTxtArea"/>
+	<mx:Label  text="Status:"  x="164.5" y="141"/>
+	<mx:RadioButtonGroup id="activeRGroup"/>
+	<mx:RadioButton id="activeRButton" value="1" x="235" y="141" label="Active" groupName="activeRGroup"/>
+	<mx:RadioButton id="inactiveRButton" value="0" x="307.75" y="141" label="Inactive" groupName="activeRGroup"/>
+	
+	
+	
+	<mx:Grid id="myGrid" x="80.75" y="171"  height="203">
+		<mx:GridRow id="verification" height="0">
+			<mx:GridItem width="122">
+			</mx:GridItem>
+			<mx:GridItem>
+				<mx:CheckBox label="Verification Required" id="verificationChBox"/>
+			</mx:GridItem>
+		</mx:GridRow>
+		
+		<mx:GridRow id="first" height="0">
+			<mx:GridItem width="122">
+				<mx:Label x="110" y="187" text="" id="firstFlagLab"/>
+			</mx:GridItem>
+			<mx:GridItem>
+				<mx:TextInput x="200" y="185" id="firstFlagTxtInput" text="0" restrict="0-9" width="158"/>
+			</mx:GridItem>
+		</mx:GridRow>
+		
+		<mx:GridRow id="second" height="0">
+			<mx:GridItem>
+				<mx:Label text="" id="secondFlagLab" textAlign="center"/>
+			</mx:GridItem>
+			<mx:GridItem>
+				<mx:TextInput  id="secondFlagTxtInput" width="158"/>
+			</mx:GridItem>
+		</mx:GridRow>
+		
+		<mx:GridRow id="third" width="312">
+			<mx:GridItem width="144">
+				<mx:Label text="" id="thirdFlagLab" textAlign="center"/>
+			</mx:GridItem>
+			<mx:GridItem>
+				<mx:TextInput  id="thirdFlagTxtInput" width="158"/>		
+			</mx:GridItem>
+		</mx:GridRow>
+		
+		<mx:GridRow id="button" width="312">
+			<mx:GridItem width="144">
+				
+			</mx:GridItem>
+			<mx:GridItem>
+				<mx:Button label="Update" id="updateButton" click="updateButtonClickHandler()"/>
+				<mx:Spacer width="3"/>
+				<mx:Button label="Cancel" id="cancelButton" click="closeMe()"/>		
+			</mx:GridItem>
+		</mx:GridRow>
+	</mx:Grid>
+	
+	
+</mx:TitleWindow>

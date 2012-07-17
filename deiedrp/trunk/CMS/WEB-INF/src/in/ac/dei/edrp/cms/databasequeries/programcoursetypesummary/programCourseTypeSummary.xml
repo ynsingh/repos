@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+
+<sqlMap namespace="programcoursetypesummary">
+	<typeAlias alias="coursetypesummary"
+		type="in.ac.dei.edrp.cms.domain.programcoursetypesummary.ProgramCourseTypeSummaryInfoGetter" />
+
+
+	<resultMap id="programcourseDetail" class="coursetypesummary">
+
+		<result property="courseTypeCode" column="course_type" />
+		<result property="courseTypeDescription" column="descripton" />
+		<result property="minCredits" column="minimum_credits" />
+		<result property="maxCredits" column="maximum_credits" />
+
+	</resultMap>
+
+	<select id="getrecordslist" resultMap="programcourseDetail">
+
+		select
+		sys1.component_code
+		as course_type,sys1.component_description
+		as
+		descripton,pcts.minimum_credits,pcts.maximum_credits from
+		program_course_header pch,program_course_type_summary
+		pcts,system_table_two sys1
+		where
+		pcts.program_course_key=pch.program_course_key AND
+		pch.program_id=#programId# AND
+		pch.branch_id=#branchId# AND
+		pch.specialization_id=#specializationId# AND
+		pch.semester_code=#semesterCode#
+		AND
+		pcts.course_type=sys1.component_code AND sys1.active=1 AND
+		sys1.group_code='CRSTYP' AND sys1.university_code=substr(pch.program_id,1,4);
+
+	</select>
+
+	<resultMap id="inputDetails" class="coursetypesummary">
+
+		<result property="componentId" column="component_id" />
+		<result property="componentDescription" column="component_description" />
+
+	</resultMap>
+
+	<select id="getprogramcoursetypedetails" resultMap="inputDetails">
+
+		select
+		distinct
+		pm.program_id as component_id,pm.program_name as
+		component_description from
+		program_master
+		pm,program_course_header
+		pch
+		where
+		pm.program_id=pch.program_id AND
+		pch.program_id LIKE #universityId#;
+
+	</select>
+
+	<select id="getprogrambranchdetails" resultMap="inputDetails">
+
+		select distinct
+		sys1.component_code as component_id,sys1.component_description as
+		component_description from program_course_header
+		pch,system_table_two
+		sys1 where
+		pch.branch_id=sys1.component_code AND
+		sys1.group_code='BRNCOD' AND sys1.active=1 AND
+		pch.program_id=#programId# AND  sys1.university_code=substr(pch.program_id,1,4);
+
+	</select>
+
+	<select id="getprogramspecializationdetails" resultMap="inputDetails">
+
+		select
+		distinct
+		sys1.component_code as component_id,sys1.component_description
+		as
+		component_description from program_course_header
+		pch,system_table_two
+		sys1 where
+		pch.specialization_id=sys1.component_code AND
+		sys1.group_code='SPCLCD'
+		AND sys1.active=1 AND
+		pch.program_id=#programId# AND
+		pch.branch_id=#branchId# AND sys1.university_code=substr(pch.program_id,1,4);
+
+	</select>
+
+	<select id="getprogramsemesterdetails" resultMap="inputDetails">
+
+		select
+		distinct
+		sys1.component_code as component_id,sys1.component_description
+		as
+		component_description from program_course_header
+		pch,system_table_two
+		sys1 where
+		pch.semester_code=sys1.component_code AND
+		sys1.group_code='SEMCOD' AND sys1.active=1 AND
+		pch.program_id=#programId# AND
+		pch.branch_id=#branchId# AND
+		pch.specialization_id=#specializationId# AND
+		pch.semester_status='ACT' AND sys1.university_code=substr(pch.program_id,1,4);
+
+	</select>
+
+	<select id="getprogramcoursetypesdetails" resultMap="inputDetails">
+
+		select
+		distinct
+		sys1.component_code as component_id,sys1.component_description
+		component_description from
+		program_course_header pch,course_master
+		cm,program_course_detail pcd,system_table_two sys1
+		where
+		pch.program_id=#programId# AND pch.branch_id=#branchId# AND
+		pch.specialization_id=#specializationId# AND
+		pch.semester_code=#semesterCode# AND pcd.course_code=cm.course_code
+		AND
+		cm.course_type=sys1.component_code AND
+		sys1.group_code='CRSTYP' AND
+		sys1.active=1 AND sys1.university_code=substr(pch.program_id,1,4) AND
+		sys1.component_code NOT IN(select course_type from
+		program_course_type_summary where program_course_key IN
+		(select
+		program_course_key from program_course_header where
+		program_id=#programId# AND branch_id=#branchId# AND
+		specialization_id=#specializationId# AND
+		semester_code=#semesterCode#));
+
+	</select>
+
+	<insert id="setprogramcoursetypesummary">
+
+		insert into program_course_type_summary (course_type,
+		program_course_key,
+		insert_time, creator_id, minimum_credits,
+		maximum_credits)
+		values(#courseTypeCode#,#programCourseKey#,now(),
+		#userId#,#minCredits#,#maxCredits#);
+	
+	</insert>
+
+	<update id="updateprogramcoursetypesummary">
+
+		update program_course_type_summary set
+		minimum_credits=#minCredits#,maximum_credits=#maxCredits#,
+		modification_time=now(),modifier_id=#userId#
+		where
+		program_course_key =
+		#programCourseKey# AND
+		course_type=#courseTypeCode#;
+	
+	</update>
+
+	<delete id="deleterecordslist">
+
+		delete from program_course_type_summary where
+		program_course_key IN(select program_course_key from
+		program_course_header
+		where program_id=#programId# AND
+		branch_id=#branchId# AND
+		specialization_id=#specializationId# AND
+		semester_code=#semesterCode#) AND course_type = #courseTypeCode#;
+	
+	</delete>
+
+</sqlMap>
+	

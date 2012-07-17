@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProgramMasterData>
+
+<programMaster>
+<programType>Part Time</programType>
+<programCode>pc1</programCode>
+<programName>B.Tech</programName>
+<programMode>Open</programMode>
+<terms>8</terms>
+<totalCredits>25</totalCredits>
+<creditsRequired>10</creditsRequired>
+<maxFailSubject>4</maxFailSubject>
+<maxRegSemester>3</maxRegSemester>
+<ugOrPg>UG</ugOrPg>
+<tenCodes>bt</tenCodes>
+<attemptAllowed>2</attemptAllowed>
+<printAggregate>TAP</printAggregate>
+<dgpa>25.363</dgpa>
+</programMaster>
+
+<programMaster>
+<programType>Full Time</programType>
+<programCode>pc2</programCode>
+<programName>B.E.</programName>
+<programMode>Dual</programMode>
+<terms>8</terms>
+<totalCredits>25</totalCredits>
+<creditsRequired>10</creditsRequired>
+<maxFailSubject>4</maxFailSubject>
+<maxRegSemester>2</maxRegSemester>
+<ugOrPg>UG</ugOrPg>
+<tenCodes>be</tenCodes>
+<attemptAllowed>4</attemptAllowed>
+<printAggregate>TOT</printAggregate>
+<dgpa>20.363</dgpa>
+</programMaster>
+
+</ProgramMasterData>

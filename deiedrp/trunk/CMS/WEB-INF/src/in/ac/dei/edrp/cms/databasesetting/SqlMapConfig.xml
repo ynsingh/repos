@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+      
+    <!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+  
+
+<sqlMapConfig>
+<settings useStatementNamespaces="true"/>  
+	
+<!--	<properties resource="in/ac/dei/edrp/server/SharedFiles/sqlMapConfig.properties"/>-->
+<!--   Configure a built-in transaction manager.  If you\'re using an -->
+<!--       app server, you probably want to use its transaction manager -->
+<!--       and a managed datasource -->
+<!--  <transactionManager type="JDBC" commitRequired="true">-->
+<!--    <dataSource type="SIMPLE">-->
+<!---->
+<!--      <property name="JDBC.Driver" value="com.mysql.jdbc.Driver"/>-->
+<!--      <property name="JDBC.ConnectionURL" value="${url}"/>-->
+<!--      <property name="JDBC.Username" value="${login}"/>-->
+<!--      <property name="JDBC.Password" value="${password}"/>-->
+<!---->
+<!--    </dataSource>-->
+<!--  </transactionManager>-->
+
+  <!-- List the SQL Map XML files. They can be loaded from the 
+       classpath, as they are here (com.domain.data...)--> 
+       <!-- Manpreet -->
+	
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programcoursesetup/CreateProgramCourseSetup.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programcoursesetup/ManageProgramCourseSetup.xml"/>
+    
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programofferedby/CreateProgramOfferedBy.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programofferedby/ManageProgramOfferedBy.xml"/>
+    
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programregistration/ProgramRegistration.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programregistration/ManageProgramRegistration.xml"/>
+     
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentregistration/StudentRegistration.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/entity/entityInfo.xml"/>
+        <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentregistration/StudentVerification.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programmaster/ProgramMaster.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programmaster/ProgramTermDetails.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentregistration/ProbableToActual.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/awardsheet/AwardSheet.xml" />
+<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/resultprocessing/PreprocessTwo.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentregistration/CancelRegistration.xml"/>
+
+
+		  <!-- Manpreet -->
+		
+		<!-- Ashish Code starts -->
+<!-- Ashish -->
+
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/university/UnivRoleSetup.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/employee/EmployeeRole.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/employee/EmployeeMaster.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/university/universityMaster.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/programcoursetypesummary/programCourseTypeSummary.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/advanceparentprogram/advanceParentProgram.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/switchrule/SwitchRule.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/evaluationcomponent/EvaluationComponent.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/externalexaminercourse/ExternalExaminerCourse.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/moucourses/MouCourses.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/programswitch/ProgramSwitch.xml" />
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/cgpadivision/CgpaDivision.xml" />
+
+	<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/studentregistration/StudentEnrollmentGeneration.xml" />
+		<sqlMap
+		resource="in/ac/dei/edrp/cms/databasequeries/degreelist/DegreeList.xml" />
+
+	<!-- Ashish Code ends -->
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/activitymaster/ActivityMaster.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/buildactivitymaster/BuildActivityMaster.xml"/>	
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentregistration/CheckDuplicateStudent.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/SubjectWiseMeritList.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/SubjectCategoryWiseStudentList.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/FinalSemesterResultStatistics.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/eodcontrol/EodControl.xml"/>
+	
+	<!-- By Aamir -->	
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/login/Login.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/universityreservation/Reservation.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/systemtabletwo/SystemTableTwo.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/coursegroup/CourseGroup.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/coursemaster/CourseMaster.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/enrollment/Enrollment.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/coursemarksapproval/MarksApproval.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentmaster/addStudentInMaster.xml" />
+
+<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/associateMOU/AssociateMOU.xml"/>
+      <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/courseEvaluationComponent/Cec.xml"/>
+      <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/prestaging/Prestaging.xml"/>
+      <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/sendpassword/SendPassword.xml"/>
+      <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/adddropcourse/AddDropCourse.xml"/>
+<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/consolidatedchart/ConsolidatedChart.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/awardsheet/AwardSheetVerification.xml" />
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/resultprocessing/RemedialProcessing.xml"/>
+<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/consolidatedchart/RegistrationStatistics.xml"/>
+<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/switchmarkstransfer/SwitchMarksTransfer.xml"/>
+
+	<!-- By Aamir -->
+	<!-- Deepak -->	
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/activitymaster/StartActivity.xml" />	
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/registration/prestagingquery/MakeStatusReadyProcess5.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/registration/prestagingquery/TransferNORinPST.xml"/>
+    
+    <!-- Process P5 and P2 XML ends-->
+    <!-- Process P1 XML starts-->
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/registration/prestagingquery/TransferPSTRDYInST.xml"/>
+    <!-- Process P1 XML ends-->
+    <!-- Process MST XML starts -->
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/registration/prestagingquery/MasterTransfer.xml"/>
+    <!-- Process MST XML ends -->
+	
+	<!-- Result processing -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/resultprocessing/PreProcessForResult.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/resultprocessing/CommonResultProcessQuery.xml"/>
+    <!-- Result processing ends -->
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/utility/StudentTrackingAndLogs.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/utility/SystemValue.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/utility/EmailTable.xml"/>
+
+	<!-- deeepak ends -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/programgroup/ProgramGroup.xml"/>
+		
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/associatecoursewithinstructor/AssociateCourseWithInstructor.xml" />
+		
+	<!-- Ashutosh Starts -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/progresscard.xml"/>
+<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentregistration/TempCoursePdf.xml"/>
+	<!-- Ashutosh ends -->
+	
+	<!--Rohit start -->	
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentremedial/StudentRemedial.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/updateprestaging/UpdatePrestaging.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/correctioninregistration/CorrectionInRegistration.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/namecorrection/NameCorrection.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/consolidatedchart/ConsolidatedMarkSheet.xml"/>
+<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentissue/StudentIssue.xml"/>
+	<!--rohit End -->	
+    
+     
+    <!-- nupur manual process -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/manualprocess/StudentUpload.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/manualprocess/ManualProcess.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/FinalSemesterResultStatisticsCategoryWise.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/Transcript.xml"/>
+    <sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentmarkssummary/StudentMarksSummary.xml" />
+	<!-- nupur end -->
+	
+	<!-- Devendra Starts -->
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/buildnextsession/BuildNextSession.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/buildinstructorcourse/InstructorCourseBuild.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/buildsemesterendprocess/BuildSemesterEndProcess.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/ProvisionalCertificate.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/cancelcoursegroup/CancelCourseGroup.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/withrawstudent/WithdrawStudent.xml"/>
+	<!-- Devendra Ends -->
+
+	<!-- ashish mohan starts -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/UnsatisfactoryPerformance.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/cancelfinalregistration/cancel.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/coursegradelimit/GradeLimit.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/correctionInAwardBlank/AwardBlankRequestResolved.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/awardSheetForCollation/awardBlankForCollation.xml"/>
+	<!-- ashish mohan ends -->
+	
+	<!-- Mandeep Sodhi starts -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/externalexaminercourse/ExternalExaminarDetail.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/reportgeneration/CourseWisePanelOfExaminer.xml" />
+	<!-- Mandeep Sodhi ends -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/report/ReportLog.xml" />
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/report/printMechanism.xml"/>
+	
+	<!-- Arush -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/studentprogramswitch/Studentprogramswitch.xml"/>
+	
+	<!-- Dheeraj -->
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/correctionInAwardBlank/AwardBlankCorrection.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/admissionIntegration/AdmissionIntegration.xml"/>
+	<sqlMap resource="in/ac/dei/edrp/cms/databasequeries/withdrawmarkstransfer/WithdrawMarksTranfer.xml"/>
+	
+</sqlMapConfig>

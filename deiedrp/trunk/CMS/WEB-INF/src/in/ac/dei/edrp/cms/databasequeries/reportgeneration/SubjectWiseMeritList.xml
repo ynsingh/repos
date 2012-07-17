@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="subjectWiseMeritList">
+ 	
+ 	<select id="entityList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select entity_id as entityId, entity_name as entityName 
+        from entity_master 
+        where university_id=#universityId#;
+    </select>
+    
+   <select id="getProgramList" resultClass="in.ac.dei.edrp.cms.domain.associatecoursewithinstructor.AssociateCourseWithInstructor">
+        select program_id as programId, program_name as programName, program_code as programCode 
+        from program_master
+		where program_id in (select program_id from program_offered_by where offered_by=#entityId#);
+    </select>
+   
+   <select id="getProgramCourseKey" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        select program_course_key as programCourseKey FROM program_course_header
+		where program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and semester_code=#semesterCode#;
+   </select>
+   
+   <select id="getStudentList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        SELECT sp.roll_number as rollNumber, concat_ws(' ',sm.student_first_name, sm.student_middle_name, sm.student_last_name) as name
+		FROM (student_program sp left join student_master sm on sp.enrollment_number=sm.enrollment_number)
+		where program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and entity_id=#entityId#;
+   </select>
+   
+   <select id="getSemesterList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        SELECT ptd.semester_code as semesterCode, stt.component_description as semesterName
+		FROM program_term_details ptd, system_table_two stt
+		where ptd.program_id=#programId# and stt.component_code=ptd.semester_code and stt.group_code='SEMCOD' and stt.university_code=#universityId#;
+   </select>
+       
+    <select id="getCourseGroupList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        Select distinct cm.subject_wise_group as courseGroup
+		from program_course_detail pcd join course_master cm ON
+		pcd.course_code=cm.course_code and pcd.program_course_key  IN (Select program_course_key from program_course_header
+		where program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and 
+		semester_code in (#semester1#, #semester2#, #semester3#, #semester4#, #semester5#, #semester6#, #semester7#, #semester8#, #semester9#, #semester10#)) and
+		cm.subject_wise_group!='';
+   </select>    
+    
+   <select id="getCourseList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+	    select sms.course_code, sms.roll_number, sms.program_course_key, sms.total_marks
+		from student_marks_summary sms, course_master cm
+		where sms.course_code=cm.course_code and cm.subject_wise_group=#courseGroup# and sms.program_course_key=#programCourseKey#;
+   </select>
+   
+      
+   <select id="getGroupWiseStudent" parameterClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList" 
+   resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+    select pm.program_code as programCode, sp.branch_id as branchId, cm.subject_wise_group as courseGroup, sms.roll_number as rollNumber, sm.gender as gender,
+	concat_ws(' ',sm.student_first_name, sm.student_middle_name, sm.student_last_name) AS name , sum(sms.total_marks) as marks
+	from  program_master pm, student_program sp  left join  student_marks_summary sms on   sms.roll_number =sp.roll_number
+	left join  course_master cm on sms.course_code=cm.course_code
+	left join student_master sm on sp.enrollment_number=sm.enrollment_number
+	where  cm.subject_wise_group=#courseGroup# and sms.program_course_key in (#programCourseKey1#, #programCourseKey2#, #programCourseKey3#, #programCourseKey4#, #programCourseKey5#, #programCourseKey6#, #programCourseKey7#, #programCourseKey8#,#programCourseKey9#, #programCourseKey10#) and
+	sp.program_id=#programId# and sp.branch_id=#branchId# and sp.specialization_id=#specializationId# and sp.entity_id=#entityId# and sp.program_id=pm.program_id and sms.university_code=#universityId# and cm.university_code=#universityId# and sm.university_code=#universityId#
+	group by cm.subject_wise_group, sms.roll_number ,name order by marks desc ;    
+
+<!--	select cm.course_group as courseGroup, sms.roll_number as rollNumber,-->
+<!--	concat_ws(' ',sm.student_first_name, sm.student_middle_name, sm.student_last_name) AS name , sum(sms.total_marks) as marks-->
+<!--	from  student_program sp  left join  student_marks_summary sms on   sms.roll_number =sp.roll_number-->
+<!--	left join  course_master cm on sms.course_code=cm.course_code-->
+<!--	left join student_master sm on sp.enrollment_number=sm.enrollment_number -->
+<!--	where  cm.course_group='ACL'  and-->
+<!--	program_id='0001001' sp.branch_id='SS' and sp.specialization_id='001' and sp.entity_id='00010001'-->
+<!--	group by cm.course_group, sms.roll_number ,name and and sms.program_course_key in <iterate open="(" close=")" property="programCourseKeyList" conjunction=",">#programCourseKeyList#</iterate>-->
+	
+<!--	-->
+<!--	select cm.course_group as courseGroup, sms.roll_number as rollNumber,-->
+<!--	concat_ws(' ',sm.student_first_name, sm.student_middle_name, sm.student_last_name) AS name , sum(sms.total_marks) as marks-->
+<!--	from  student_program sp  left join  student_marks_summary sms on   sms.roll_number =sp.roll_number-->
+<!--	left join  course_master cm on sms.course_code=cm.course_code-->
+<!--	left join student_master sm on sp.enrollment_number=sm.enrollment_number -->
+<!--	where  cm.course_group='ACL'  and-->
+<!--	program_id='0001001' sp.branch_id='SS' and sp.specialization_id='001' and sp.entity_id='00010001'-->
+<!--	group by cm.course_group, sms.roll_number ,name and and  -->
+<!--	<dynamic prepend="sms.program_course_key IN ">-->
+<!--	<iterate open="(" close=")" property="programCourseKeyList" conjunction=",">programCourseKeyList=#programCourseKeyList#</iterate>-->
+<!--	</dynamic>-->
+   </select>
+     
+</sqlMap>

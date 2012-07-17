@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ComboBox xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:dataProvider>
+		<mx:String>Andra Pradesh</mx:String>
+		<mx:String>Arunachal Pradesh</mx:String>
+		<mx:String>Assam</mx:String>
+		<mx:String>Bihar</mx:String>
+		<mx:String>Chhattisgarh</mx:String>
+		<mx:String>Delhi</mx:String>
+		<mx:String>Goa</mx:String>
+		<mx:String>Gujarat</mx:String>
+		<mx:String>Haryana</mx:String>
+		<mx:String>Himachal Pradesh</mx:String>
+		<mx:String>Jammu Kashmir</mx:String>
+		<mx:String>Jharkhand</mx:String>
+		<mx:String>Karnataka</mx:String>
+		<mx:String>Kerala</mx:String>
+		<mx:String>Madhya Pradesh</mx:String>
+		<mx:String>Maharashtra</mx:String>
+		<mx:String>Manipur</mx:String>
+		<mx:String>Meghalaya</mx:String>
+		<mx:String>Mizoram</mx:String>
+		<mx:String>Nagaland</mx:String>
+		<mx:String>Orissa</mx:String>
+		<mx:String>Punjab</mx:String>
+		<mx:String>Rajasthan</mx:String>
+		<mx:String>Sikkim</mx:String>
+		<mx:String>Tamil Nadu</mx:String>
+		<mx:String>Tripura</mx:String>
+		<mx:String>Uttar pradesh</mx:String>
+		<mx:String>Uttaranchal</mx:String>
+		<mx:String>West Bangal</mx:String>
+	</mx:dataProvider>
+</mx:ComboBox>
+		

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) ManageCourseMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" creationPolicy="all" layout="absolute" width="990" height="510" creationComplete="createForm()" title="{commonFunction.getConstants('manageCourseMaster')}" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/ManageCourseMasterAction.as"/>
+	<mx:HTTPService id="getEntityList" method="POST"
+					url="{urlPrefix}getEntities.htm"
+					resultFormat="e4x"
+					result="getEntitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getProgramList" method="POST"
+					url="{urlPrefix}getEntityPrograms.htm"
+					resultFormat="e4x"
+					result="getProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getBranchList" method="POST"
+					url="{urlPrefix}getProgramBranches.htm"
+					resultFormat="e4x"
+					result="getBranchSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getSpecializationList" method="POST"
+					url="{urlPrefix}getProgramSpecializations.htm"
+					resultFormat="e4x"
+					result="getSpecializationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getCourseDetails" method="POST"
+					url="{urlPrefix}getCourseDetails.htm"
+					resultFormat="e4x"
+					result="getCourseDetailsSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:Validator id="entityValidator" property="selectedItem" source="{ownerEntityComboBox}" trigger="{showButton}" triggerEvent="click"/>
+	<mx:Label x="335" y="22" text="{commonFunction.getConstants('ownerEntity')}" />
+	<mx:ComboBox change="onEntityChange()" x="435" y="21" width="200" id="ownerEntityComboBox" labelField="ownerEntity" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" toolTip="{ownerEntityComboBox.text}"/>
+	<mx:TitleWindow x="35" y="60" width="900" layout="absolute" height="120" title="{commonFunction.getConstants('searchBy')}" borderStyle="solid" borderThickness="1">
+		<mx:Label text="{commonFunction.getConstants('ownerProgram')}"  y="10" x="45"/>
+	    <mx:Label x="530" text="{commonFunction.getConstants('ownerBranch')}"  y="10"/>
+	    <mx:Label y="40" text="{commonFunction.getConstants('ownerSpecialization')}"  x="45"/>
+	    <mx:Label x="530" y="40" text="{commonFunction.getConstants('courseCode')}" />
+	    <mx:ComboBox x="185" width="200" id="ownerProgramComboBox" toolTip="{ownerProgramComboBox.text}" prompt="{commonFunction.getConstants('select')}" y="10" change="ownerBranchComboBox.enabled=true" updateComplete="onProgramChange()" enabled="false"/>
+	    <mx:ComboBox x="625" width="200" id="ownerBranchComboBox" toolTip="{ownerBranchComboBox.text}" enabled="false" prompt="{commonFunction.getConstants('select')}" y="10" change="ownerSpecializationComboBox.enabled=true" updateComplete="onBranchChange()"/>
+	    <mx:ComboBox x="185" y="40" width="200" id="ownerSpecializationComboBox" toolTip="{ownerSpecializationComboBox.text}" enabled="false" prompt="{commonFunction.getConstants('select')}"/>
+	    <mx:TextInput x="625" y="40" width="200" id="courseCodeTextInput" editable="false"/>
+	</mx:TitleWindow>
+	
+	<mx:Button id="showButton" x="671" y="189" click="showCourseDetails('')" label="{commonFunction.getConstants('showButton')}"/>
+	<mx:Button x="755" y="189" click="this.parentDocument.loaderCanvas.removeAllChildren()" label="{commonFunction.getConstants('cancelButton')}"/>
+	
+	<mx:Canvas styleName="GridCanvas" id="courseDetailPanel" x="35" y="237" visible="false" height="195" width="900">
+	    <mx:Label text="{commonFunction.getConstants('courseDetails')}" top="6" left="10" fontWeight="bold"  />
+	    <mx:LinkButton enabled="false" label="{commonFunction.getConstants('editButton')}" id="editButton" click="editOrDeleteCourseDetails(event)" x="757" y="4"/>
+		<mx:LinkButton enabled="false" label="{commonFunction.getConstants('deleteButton')}" id="deleteButton" click="editOrDeleteCourseDetails(event)" x="805" y="4"/>
+		<controls:MDataGrid resizableColumns="false" horizontalScrollPolicy="off" verticalScrollPolicy="on" id="courseDetailGrid" draggableColumns="false" y="35" x="10" editable="true" height="144">
+		    <controls:columns>
+			    <dataGridClasses:MDataGridColumn width="20" sortable="false" headerText="" dataField="select" editorDataField="selected" rendererIsEditor="true">
+			    	<dataGridClasses:headerRenderer>
+		    			<mx:Component>
+		    				<mx:Label/>
+		    			</mx:Component>
+		    		</dataGridClasses:headerRenderer>
+		    		<dataGridClasses:itemRenderer>
+		    			<mx:Component>
+		    				<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="commonFunction.editDeleteEnable(event,outerDocument.courseDetailGrid,[outerDocument.editButton,outerDocument.deleteButton],[])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+		    			</mx:Component>
+		    		</dataGridClasses:itemRenderer>
+			    </dataGridClasses:MDataGridColumn>
+			    <dataGridClasses:MDataGridColumn width="150" editable="false" headerText="{commonFunction.getConstants('ownerProgram')}" dataField="ownerProgramName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="130" editable="false" headerText="{commonFunction.getConstants('ownerBranch')}" dataField="ownerBranchName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="170" editable="false" headerText="{commonFunction.getConstants('ownerSpecialization')}" dataField="ownerSpecializationName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="120" editable="false" headerText="{commonFunction.getConstants('courseCode')}" dataField="courseCode" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="140" editable="false" headerText="{commonFunction.getConstants('courseName')}" dataField="courseName" showDataTips="true"/>
+			    <dataGridClasses:MDataGridColumn width="120" editable="false" headerText="{commonFunction.getConstants('courseType')}" dataField="courseTypeName" showDataTips="true"/>
+		    </controls:columns>
+	    </controls:MDataGrid>
+	</mx:Canvas>
+</mx:Panel>

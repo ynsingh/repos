@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ================================================================= -->
+<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+<!-- ================================================================= -->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ManageProgramCourseSetup">
+ <typeAlias alias="ProgramMaster" type="in.ac.dei.edrp.cms.domain.programcoursesetup.ProgramMaster"/>
+ <typeAlias alias="CourseDetails" type="in.ac.dei.edrp.cms.domain.programcoursesetup.CourseDetails"/>
+ 
+   <select id="getProgramCourseHeaderList" resultClass="ProgramMaster">
+        select pch.program_course_key as programCourseKey,
+        	   pm.program_name as programName,
+        	   stt.component_description as branchName,
+			   stt1.component_description as specializationName,
+			   pch.semester_code as semesterCode,
+			   (case when pch.semester_status='ACT' then 'Active' else 'Inactive' end) as semesterStatus
+		from program_course_header pch,program_master pm,system_table_two stt,system_table_two stt1
+		where pm.program_id=pch.program_id and pch.program_id LIKE concat(#string#,'%') AND 
+			(pch.branch_id=stt.component_code and stt.group_code='BRNCOD' AND stt.university_code=#string#) and 
+			(pch.specialization_id=stt1.component_code and stt1.group_code='SPCLCD' AND stt1.university_code=#string#)
+			order by pch.program_course_key
+    </select>
+    
+<!-- University Code also mapped in where clause from course_master table : Change done By Dheeraj on 6/2/2012 -->    
+    <select id="getProgramCourseDetails" parameterClass="String" resultClass="CourseDetails">
+    select pcd.program_course_key as programCourseKey,pcd.course_code as courseCode,
+    		cm.course_name as courseName,cm.course_type as courseType,
+			stt.component_description as courseCategory,
+			stt1.component_description as courseGroup,
+			(case when pcd.available='N' then 'No' else 'Yes' end) as courseAvailability
+ 	from program_course_detail pcd,course_master cm,
+			system_table_two stt,system_table_two stt1
+	where pcd.program_course_key=#value# and cm.course_code=pcd.course_code
+			and cm.university_code=substring(#value#,1,4)
+			and (stt.component_code=pcd.course_category and stt.group_code='CRSCTG' AND stt.university_code=substring(#value#,1,4))
+			and (stt1.component_code=pcd.course_group and stt1.group_code='CRSGRP' AND stt1.university_code=substring(#value#,1,4))
+    </select>
+    
+    <update id="updateCourseCtgGrpOpt" parameterClass="CourseDetails">
+		update program_course_detail set course_category=#courseCategory#,
+		course_group=#courseGroup#,available=#courseAvailability#,
+		modifier_id=#modifierId#,modification_time=Now() where
+		program_course_key=#programCourseKey# and course_code=#courseCode#
+	</update>
+	
+	<delete id="deleteProgramCourse" parameterClass="CourseDetails">
+		delete from program_course_detail where
+		program_course_key=#programCourseKey# and course_code=#courseCode#
+	</delete>
+	
+	<update id="changeStatusProgramCourseHeader" parameterClass="ProgramMaster">
+		update program_course_header set semester_status=
+		(case when semester_status='INA' then 'ACT' else 'INA' end),
+		modifier_id=#modifierId#,modification_time=Now()
+		where program_course_key=#programCourseKey#
+	</update>
+	
+</sqlMap>

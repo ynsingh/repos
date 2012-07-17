@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="888" height="518" title="{commonFunction.getConstants('reportAuthority')}" creationComplete="onCreationComplete()">
+<mx:Script source="asFiles/ReportAuthorityAction.as" />
+
+	<mx:HTTPService id="unirole" method="POST"
+	    url="{commonFunction.getConstants('url')}/universityrole/getRole.htm"
+	    resultFormat="e4x"
+	    result="onSuccess(event)"
+	    fault="onFailure(event)"
+	    useProxy="false"
+	    />
+	 <mx:HTTPService id="reportDetails" method="POST"
+	     url="{commonFunction.getConstants('url')}/printMechanism/getReportDetails.htm"
+	     resultFormat="e4x"
+	     result="onReportDetailsSuccess(event)"
+	     fault="onFailure(event)" 
+	     useProxy="false"
+	     />
+	  <mx:HTTPService id="setReportAuthority" method="POST"
+	       url="{commonFunction.getConstants('url')}/printMechanism/setReportAuthority.htm"
+	       resultFormat="e4x"
+	       result="onSetReportAuthoritySuccess(event)"
+	       fault="onFailure(event)"
+	       useProxy="false"
+	       />     
+	<mx:Canvas x="34" y="10" styleName="SimpleCanvas" width="346" height="125">
+		<mx:ComboBox id="roleCombo" x="138" y="35" toolTip="{roleCombo.text}" width="160" change="{gridCanvas.visible=false}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}"></mx:ComboBox>
+		<mx:Label x="24" y="38" text="{commonFunction.getConstants('selectRole')}"/>
+		<mx:Button x="138" y="84" label="{commonFunction.getConstants('okButton')}" click="onOk()"/>
+		<mx:Button x="229" y="84" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	</mx:Canvas>
+	<mx:Canvas x="34" y="168" width="754" height="294" visible="false" id="gridCanvas" styleName="GridCanvas">
+	
+	<mx:DataGrid id="reportGrid" x="25" y="38" width="690" height="245" resizableColumns="false" editable="true" draggableColumns="false">
+         <mx:columns>
+    	  <mx:DataGridColumn width="50" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('reportName')}" editable="false" dataField="reportName"/>
+    	  <mx:DataGridColumn editable="true" rendererIsEditor="true" resizable="false" textAlign="center" sortable="false" editorDataField="selected" width="20" headerText="{commonFunction.getConstants('generateAuhtority')}" dataField="genAuthority">
+  
+    	     <mx:itemRenderer>
+    		      <mx:Component>
+    			       <!--<mx:CheckBox change="commonFunction.authorityEnable(event,outerDocument.reportGrid,[outerDocument.linkbutton])">-->
+    			      <mx:CheckBox>
+    			       	
+    			       <mx:Script>
+    			       	<![CDATA[
+    			       		import common.commonFunction;
+    			       		import mx.controls.LinkButton;
+    
+    			       	]]>
+    			       </mx:Script>
+    			       </mx:CheckBox>
+    		      </mx:Component>
+    	    </mx:itemRenderer>
+    	  </mx:DataGridColumn>
+    	  <mx:DataGridColumn editable="true" rendererIsEditor="true" editorDataField="selected" resizable="false" textAlign="center" sortable="false" width="25" headerText="{commonFunction.getConstants('downloadAuthority')}" dataField="dwnAuthority">
+     	      <mx:itemRenderer>
+    		     <mx:Component>
+    			   <!--  <mx:CheckBox change="commonFunction.authorityEnable(event,outerDocument.reportGrid,[outerDocument.linkbutton])">-->
+    			      <mx:CheckBox>
+    			        <mx:Script>
+    			       	<![CDATA[
+    			       		import common.commonFunction;
+    			       		import mx.controls.LinkButton;
+    
+    			       	]]>
+    			       </mx:Script>	
+    			     </mx:CheckBox> 			
+    		     </mx:Component>
+    	       </mx:itemRenderer> 
+    	 </mx:DataGridColumn>
+       </mx:columns>
+    </mx:DataGrid>
+	<mx:Label x="25" y="10" text="{commonFunction.getConstants('defineRolesToReport')}" width="196"/>
+	<mx:LinkButton id="linkbutton" x="597" y="8" enabled="true" label="{commonFunction.getConstants('assignAuthorityButton')}" click="onAssignAuthority()"/>
+	</mx:Canvas>
+	
+</mx:Panel>

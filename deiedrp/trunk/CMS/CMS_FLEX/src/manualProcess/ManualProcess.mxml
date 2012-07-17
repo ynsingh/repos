@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  width="370" height="336" xmlns:net="flash.net.*" creationComplete="creationComplete()" borderStyle="solid" backgroundColor="#ffffff" borderColor="#000505" cornerRadius="20" fontSize="12" borderThickness="2" themeColor="#4B88EC">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+            public var Prefix:String;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/ManualProcessAs.as"/>
+
+<mx:HTTPService id="setManualEntry" method="POST"
+					url="{urlPrefix1+'/'+Prefix+'/uploadStudent.htm'}"
+					resultFormat="e4x"
+					result="setManualEntrySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getOwnerEntity" method="POST"
+					url="{urlPrefix+'getOwnerEntity.htm'}"
+					resultFormat="e4x"
+					result="getOwnerEntitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+<mx:HTTPService id="getProgramName" method="POST"
+					url="{urlPrefix+'getProgram.htm'}"
+					resultFormat="e4x"
+					result="getProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+<mx:HTTPService id="getBranch" method="POST"
+					url="{urlPrefix+'getBranch.htm'}"
+					resultFormat="e4x"
+					result="getBranchSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>		
+<mx:HTTPService id="getSpecialization" method="POST"
+					url="{urlPrefix+'getSpecialization.htm'}"
+					resultFormat="e4x"
+					result="getSpecializationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>	
+					
+<mx:HTTPService id="getSemester" method="POST"
+					url="{urlPrefix+'getSemester.htm'}"
+					resultFormat="e4x"
+					result="getSemesterSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>	
+					
+<mx:HTTPService id="getSession" method="POST"
+					url="{urlPrefix+'getSession.htm'}"
+					resultFormat="e4x"
+					result="getSessionSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>																								
+	<mx:Label x="41" y="32" text="File Name " fontWeight="normal" width="75" textAlign="left"/>	
+		<mx:TextArea x="171" y="28" height="22" width="160" wordWrap="false" editable="true" id="fileNameText" themeColor="#979C9F" focusOut="{if(fileNameText.text!=''){UIComponent(fileNameText).errorString=''}}"/>																						
+		<mx:Label x="41" y="59" text="Entity Name " fontWeight="normal" width="95" textAlign="left"/>
+		<mx:ComboBox x="171" y="56" width="160" enabled="true" id="entityName" toolTip="{entityName.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="programName.enabled=true,onEntityChange()"></mx:ComboBox>
+		<mx:Label x="41" y="90" text="Program Name " fontWeight="normal" width="116" textAlign="left"/>
+		<mx:ComboBox x="171" y="87" width="160" enabled="false" id="programName" toolTip="{programName.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="branch.enabled=true,onProgramChange()"></mx:ComboBox>
+		<mx:Label x="41" y="121" text="Branch " fontWeight="normal" width="63" textAlign="left"/>
+		<mx:ComboBox x="171" y="118" width="160" enabled="false" id="branch" toolTip="{branch.text}" prompt="Select" selectedIndex="-1" change="specialization.enabled=true,onBranchChange()" labelField="@name"></mx:ComboBox>
+		<mx:Label x="41" y="152" text="Specialization " fontWeight="normal" width="116" textAlign="left"/>
+		<mx:ComboBox x="171" y="149" width="160" enabled="false" id="specialization" toolTip="{specialization.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="semester.enabled=true,onSpecializationChange()"></mx:ComboBox>
+		<mx:Label x="41" y="183" text="Semester " fontWeight="normal" width="82" textAlign="left"/>
+		<mx:ComboBox x="171" y="180" width="160" enabled="false" id="semester" toolTip="{semester.text}" prompt="Select" selectedIndex="-1" labelField="@name" change="session.enabled=true,onSemesterChange()"></mx:ComboBox>
+		<mx:Label x="41" y="213" text="Start Session " fontWeight="normal" width="95" textAlign="left"/>
+		<mx:ComboBox x="171" y="210" width="160" enabled="false" id="session" toolTip="{session.text}" prompt="Select" selectedIndex="-1" change="{UIComponent(session).errorString=''}"></mx:ComboBox>
+		<mx:Label x="41" y="251" text="Roll No." width="116" id="rollNoLbl"/>
+		<mx:TextInput x="171" y="251" height="22" width="160" editable="true" id="rollNoTxt" themeColor="#979C9F" restrict="0-9"/>
+		<mx:Button x="103" y="289" label="Submit" click="submitData()" id="submit"/>
+		<mx:Button x="193" y="289" label="Cancel" click="exit()"/>
+	<mx:StringValidator id="fileNameVal" source="{fileNameText}" property="text" required="true" trigger="{submit}" triggerEvent="click"/>
+	<mx:NumberValidator id="entityNameVal" source="{entityName}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>
+	<mx:NumberValidator id="programNameVal" source="{programName}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>
+	<mx:NumberValidator id="branchVal" source="{branch}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>
+	<mx:NumberValidator id="specializationVal" source="{specialization}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>
+	<mx:NumberValidator id="semesterVal" source="{semester}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>
+	<mx:NumberValidator id="sessionVal" source="{session}" property="selectedIndex" minValue="0" lowerThanMinError="{commonFunction.getMessages('pleaseSelectOne')}" trigger="{submit}" triggerEvent="click"/>
+</mx:Canvas>

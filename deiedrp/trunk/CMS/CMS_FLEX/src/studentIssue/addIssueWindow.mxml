@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) editIssueWindow.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions  of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="getValues()" styleName="PopUpTitleWindow" keyDown="initializeForEsc(event)" layout="absolute" width="806" height="492" showCloseButton="true" close="closeScreen()" title="{commonFunction.getConstants('openIssue')}">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Script source="asFiles/addIssueAction.as"/>
+	
+	     	<mx:HTTPService id="getEntity" method="post"
+					url="{urlPrefix2}getEntity.htm"
+					resultFormat="e4x"
+					result="onEntitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					
+		<mx:HTTPService id="getPrograms" method="post"
+					url="{urlPrefix2}getPrograms.htm"
+					resultFormat="e4x"
+					result="onProgramSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					
+		<mx:HTTPService id="getBranch" method="post"
+					url="{urlPrefix2}getBranch.htm"
+					resultFormat="e4x"
+					result="onBranchSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="getSpecialization" method="post"
+					url="{urlPrefix2}getSpecialization.htm"
+					resultFormat="e4x"
+					result="onSpecializationSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="getSemester" method="post"
+					url="{urlPrefix2}getSemester.htm"
+					resultFormat="e4x"
+					result="onSemesterSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="getSemesterDates" method="post"
+					url="{urlPrefix2}getSemesterDates.htm"
+					resultFormat="e4x"
+					result="onSemesterDatesSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	
+		<mx:HTTPService id="getIssues" method="post"
+					url="{urlPrefix2}getIssues.htm"
+					resultFormat="e4x"
+					result="onIssuesSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+					
+	   <mx:HTTPService id="getPenalityCodes" method="post"
+					url="{urlPrefix2}getPenalityCodes.htm"
+					resultFormat="e4x"
+					result="ongetPenalitySuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+					
+		<mx:HTTPService id="getPenalityCourseCodes" method="post"
+					url="{urlPrefix2}getPenalityCourseCodes.htm"
+					resultFormat="e4x"
+					result="onPenalityCourseSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+					
+		<mx:HTTPService id="insertIssueDetails" method="post"
+					url="{urlPrefix2}insertIssueDetails.htm"
+					resultFormat="e4x"
+					result="oninsertIssueSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>	
+					
+		<mx:HTTPService id="updateIssues" method="post"
+					url="{urlPrefix2}updateIssues.htm"
+					resultFormat="e4x"
+					result="onUpdateSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	
+
+    
+	<mx:Label x="22" y="50" text="{commonFunction.getConstants('entity')}"/>
+	<mx:Label x="22" y="88" text="{commonFunction.getConstants('program')}" />
+	<mx:ComboBox width="150" x="176" id="programCombo" prompt="{commonFunction.getConstants('select')}"
+	selectedIndex="-1" labelField="@name"  change="programChange(event)" y="90" toolTip="{programCombo.text}"/>
+	<mx:Label x="366" y="88" text="{commonFunction.getConstants('branch')}" />
+	<mx:ComboBox x="530" y="87" width="150" id="branchCombo" prompt="{commonFunction.getConstants('select')}"
+		selectedIndex="-1" labelField="@name" enabled="false" change="branchChange(event)" toolTip="{branchCombo.text}"/>
+	<mx:Label x="22" y="127" text="{commonFunction.getConstants('specialization')}"  width="125.5"/>
+	<mx:ComboBox x="176" y="128" width="150" id="specilizationCombo" prompt="{commonFunction.getConstants('select')}" change="specializationChange(event)"
+		 selectedIndex="-1" labelField="@name" enabled="false" toolTip="{specilizationCombo.text}" />
+	<mx:Label x="366" y="131" text="{commonFunction.getConstants('semester')}"  height="23" width="125"/>
+	<mx:ComboBox x="530" y="126" width="150" id="semesterCombo" prompt="{commonFunction.getConstants('select')}" enabled="false" change="onSemesterChange()"
+		selectedIndex="-1" toolTip="{semesterCombo.text}"/>
+	<mx:Label x="25" y="206" text="{commonFunction.getConstants('issueCode')}"/>
+	<mx:ComboBox x="176" y="203" id="issueCodeCombo" enabled="false" change="issueCodeChange(event)" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" width="150" toolTip="{issueCodeCombo.text}"></mx:ComboBox>
+	<mx:Label x="369" y="208" text="{commonFunction.getConstants('penalityCode')}"/>
+	<mx:ComboBox x="532" y="208" id="penalityCodeCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" width="150" change="penalityCodeChange(event)" toolTip="{penalityCodeCombo.text}"></mx:ComboBox>
+	<mx:Label x="22" y="249" text="{commonFunction.getConstants('penalityCourseCode1')}" height="30"/>
+	<mx:ComboBox x="176" y="246" enabled="false" width="150" id="penalityCourse1Combo" change="setNextCourses1(event)" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" toolTip="{penalityCourse1Combo.text}"></mx:ComboBox>
+	<mx:Label x="369" y="249" text="{commonFunction.getConstants('penalityCourseCode2')}" height="34"/>
+	<mx:ComboBox x="532" y="246" enabled="false" id="penalityCourse2Combo" width="150" change="setNextCourses2(event)" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" toolTip="{penalityCourse2Combo.text}"></mx:ComboBox>
+	<mx:Label x="22" y="287" text="{commonFunction.getConstants('penalityCourseCode3')}" height="24"/>
+	<mx:ComboBox x="176" y="287" width="150" enabled="false" id="penalityCourse3Combo" change="setNextCourses3(event)" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" toolTip="{penalityCourse3Combo.text}"></mx:ComboBox>
+	<mx:Label x="369" y="291" text="{commonFunction.getConstants('penalityCourseCode4')}" height="34"/>
+	<mx:ComboBox x="532" y="286" width="150" enabled="false" id="penalityCourse4Combo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" toolTip="{penalityCourse4Combo.text}"></mx:ComboBox>
+	<mx:Label x="25" y="166" text="{commonFunction.getConstants('semesterStartDate')}"/>
+	<mx:Label x="369" y="169" text="{commonFunction.getConstants('semesterEndDate')}"/>
+	<mx:TextInput x="176" y="167" width="150" height="22" id="semesterStartDate" editable="false"/>
+	<mx:TextInput x="530" y="169" width="150" id="semesterEndDate" editable="false"/>
+	<mx:Label x="22" y="337" text="{commonFunction.getConstants('remarks')}"/>
+	<mx:TextArea x="176" id="remarks" y="333" width="506" height="32"/>
+	<mx:Button x="240.5" y="379" label="{commonFunction.getConstants('submitButton')}" id="submitbutton" click="saveDetails()" width="94.5"/>
+	<mx:Button x="384" y="378" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancelWindow()" width="84"/>
+	
+	<mx:Validator source="{programCombo}" id="programComboValidator" required="true" property="selectedItem" triggerEvent="click" trigger="{submitbutton}"/>
+	<mx:Validator source="{branchCombo}" id="branchComboValidator" required="true" property="selectedItem" triggerEvent="click" trigger="{submitbutton}"/>
+	<mx:Validator source="{specilizationCombo}" id="specilizationComboValidator" required="true" property="selectedItem" triggerEvent="click" trigger="{submitbutton}"/>
+	<mx:Validator source="{semesterCombo}" id="semesterComboValidator" required="true" property="selectedItem" triggerEvent="click" trigger="{submitbutton}"/>
+	<mx:Validator source="{issueCodeCombo}" id="issueCodeComboValidator" required="true" property="selectedItem" triggerEvent="click" trigger="{submitbutton}"/>
+   
+    
+	<mx:Label x="373" y="56" text="{commonFunction.getConstants('rollNumber')}" width="118"/>
+	<mx:Label x="530" y="50" id="rollNoLabel" width="150"/>
+	<mx:Label x="176" y="50" id="entityLabel" width="150"/>
+
+	
+	
+	</mx:TitleWindow>

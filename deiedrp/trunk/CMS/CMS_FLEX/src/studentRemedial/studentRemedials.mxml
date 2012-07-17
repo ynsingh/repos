@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) studentRemedials.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="setLabels()" width="1047" height="570" xmlns:controls="common.Components.com.iwobanas.controls.*" xmlns:dataGridClasses="common.Components.com.iwobanas.controls.dataGridClasses.*" xmlns:ns1="*" title="{commonFunction.getConstants('remedialDetails')}">
+	<mx:Script>
+		<![CDATA[
+			import mx.containers.Box;
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+		<mx:HTTPService id="getStudentDetails" method="post"
+					url="{urlPrefix}getStudentDetails.htm"
+					showBusyCursor="true"
+					resultFormat="e4x"
+					result="onDetailSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	  
+	    <mx:HTTPService id="getRemedialDetails" method="post"
+					url="{urlPrefix}getRemedialDetails.htm"
+					showBusyCursor="true"
+					resultFormat="e4x"
+					result="onRemedialSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	  
+	<mx:Script source="asFiles/studentRemedialAction.as"/>
+
+    <mx:Canvas styleName="SimpleCanvas"  width="965" height="156" x="20" y="9">
+    <mx:Label x="130" y="35" text="{commonFunction.getConstants('program')}" fontWeight="bold"/>
+    <mx:Label x="246" y="35" id="programLabel" width="142"/>
+    <mx:Label x="460" y="35" text="{commonFunction.getConstants('branch')}" fontWeight="bold"/>
+    <mx:Label x="552" y="35" id="branchLabel" width="153"/>
+    <mx:Label x="130" y="75" text="{commonFunction.getConstants('specialization')}" fontWeight="bold"/>
+    <mx:Label x="246" y="75" id="specialisationLabel" width="142"/>
+    <mx:Label x="460" y="75" text="{commonFunction.getConstants('semester')}" fontWeight="bold"/>
+    <mx:Label x="552" y="75" id="semesterLabel" width="153"/>
+    <mx:Label x="130" y="114" text="{commonFunction.getConstants('rollNo')}" fontWeight="bold"/>
+    <mx:Label x="246" y="114" id="rollNoLabel" width="142"/>
+    </mx:Canvas>
+    
+    <mx:Canvas styleName="GridCanvas" x="20" y="182" width="965" height="199">
+	<mx:Label text="{commonFunction.getConstants('remedialDetails')}" top="6" left="10" fontWeight="bold"  />
+	<mx:LinkButton label="{commonFunction.getConstants('applyButton')}" enabled="false" id="applyButton" x="854.5" y="4" width="106.5" click="openApplyWindow()"/>   
+		
+    <mx:DataGrid editable="true" id="remedialsGrid" draggableColumns="true" textAlign="center" sortableColumns="true" x="10" y="32" verticalScrollPolicy="on" width="934">
+	<mx:columns>
+	<mx:DataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
+	<mx:itemRenderer>
+	<mx:Component>
+	<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.remedialsGrid,[outerDocument.applyButton],[new LinkButton])">
+	<mx:Script>
+	<![CDATA[
+			import common.commonFunction;
+			import mx.controls.*
+	]]>
+	</mx:Script>
+	</mx:CheckBox>
+	</mx:Component>
+	</mx:itemRenderer>
+	</mx:DataGridColumn>
+	<mx:DataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('program')}" dataField="program" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('branch')}" dataField="branch" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="122" headerText="{commonFunction.getConstants('specialization')}" dataField="specialisation" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="100" headerText="{commonFunction.getConstants('semester')}" dataField="semester" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('courseCode')}" dataField="courseCode" showDataTips="true" />
+    <mx:DataGridColumn editable="false" width="172" headerText="{commonFunction.getConstants('semesterStartDate')}" dataField="semesterStartDate" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('semesterEndDate')}" dataField="semesterEndDate" showDataTips="true" />
+    <mx:DataGridColumn editable="false" width="119" headerText="{commonFunction.getConstants('attemptNo')}" dataField="attemptNumber" showDataTips="true"/>
+    <mx:DataGridColumn editable="false" width="123" headerText="{commonFunction.getConstants('courseStatus')}" dataField="courseStatus" showDataTips="true"/>
+    <mx:DataGridColumn editable="false" width="88" headerText="{commonFunction.getConstants('applied')}" dataField="applied" showDataTips="true" />
+    </mx:columns>
+	</mx:DataGrid>
+    </mx:Canvas>
+    <mx:Button x="402" y="443" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
+</mx:Panel>

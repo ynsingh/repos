@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--  ExternalExaminarDetail.xml  /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+	
+	<sqlMap namespace="examinerPdf">
+	<typeAlias alias="examinerPdf"
+		type="in.ac.dei.edrp.cms.domain.externalexaminercourse.ExternalExaminerCourseInfoGetter" />
+		
+		<select id="getCourseName" resultClass="examinerPdf">
+		select course_name as courseName from course_master where course_code=#courseCode#;
+		</select>
+		
+		<select id="getExaminerId" resultClass="examinerPdf">
+			select  eed.examinar_id as examinarId,
+			concat_ws(' ',eed.prefix,eed.first_name,eed.middle_name,eed.last_name) as fullName,
+			exa.address as address,
+			concat_ws(' ',exa.city,'-',exa.pincode) as cityPin,
+			concat_ws(' ',eed.designation,',',eed.department) as desgDept,
+			eed.college_name as collegeName,
+			concat('Ph.',exa.office_phone,'(O)',',',' ','(M)',exa.mobile_phone) as Phone,
+            concat_ws(' ',DATE_FORMAT(eec.first_exam_date, "%d-%e-%Y"),'/ ',eec.first_exam_time) as firstDate,
+            concat_ws(' ',DATE_FORMAT(eec.second_exam_date, "%d-%e-%Y"),'/ ',eec.second_exam_time) as secondDate,
+            concat_ws(' ',DATE_FORMAT(eec.third_exam_date, "%d-%e-%Y"),'/ ',eec.third_exam_time) as thirdDate
+			FROM external_examinar_detail eed,external_examinar_course eec,external_address exa
+			WHERE eed.examinar_id=eec.external_examinar and eed.examinar_id=exa.examinar_id and exa.address_key='PER'
+			and eec.course_code=#courseCode# and eec.session_start_date=#sessionStartDate# and eec.session_end_date=#sessionEndDate#;
+		</select>
+	
+	<select id="getCourseList" resultClass="examinerPdf">
+			select pcd.course_code as courseCode,cm.course_name as courseName,substr(pcd.program_course_key,1,7) as program
+			FROM program_course_detail pcd,course_master cm
+			where substr(pcd.program_course_key,1,7)=#programId#
+			and pcd.course_code=cm.course_code
+			and cm.course_classification='t' and substr(pcd.course_code,4,1)%2=0;
+	</select>
+	
+	<select id="getProgram" resultClass="examinerPdf">
+			SELECT distinct pob.program_id as programId,pm.program_code as programCode FROM program_offered_by pob,program_master pm where pob.offered_by='00010019'
+			and pob.program_id=pm.program_id;
+	</select>
+	
+	<select id="getCourseClass"	resultClass="examinerPdf">
+			select
+			concat(pm.program_code,pch.branch_id,substr(pch.semester_code,3,1)) as courseClass
+			from program_course_detail pcd ,program_master pm ,program_course_header pch 
+			 where pm.program_id=#programId# and
+			substr(pcd.program_course_key,1,7)=#programId# and course_code=#courseCode# and pcd.program_course_key=pch.program_course_key;
+	</select>
+	
+	<select id="getProgramCourseKey" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+	SELECT pch.program_course_key as programCourseKey,substring(pr.semester_start_date,1,4) as year,
+	pm.program_name as programName,
+	stt1.component_description as branchName,
+	stt2.component_description as specializationName,
+	stt3.component_description as semesterName
+	FROM program_offered_by pob,program_course_header pch,
+	program_registration pr,program_master pm,system_table_two stt1,system_table_two stt2,
+	system_table_two stt3
+	where offered_by=#entityId#
+	AND pob.program_id=pch.program_id
+	AND pob.branch_id=pch.branch_id
+	AND pr.session_start_date=#sessionStartDate#
+	AND pr.session_end_date=#sessionEndDate#
+	AND pob.specialization_id=pch.specialization_id
+	AND pch.program_course_key=pr.program_course_key
+	AND pch.semester_code like #semesterCode#
+	AND pob.program_id=#programId#
+	AND pob.program_id=pm.program_id
+	AND stt1.component_code=pob.branch_id
+	AND stt1.group_code='BRNCOD'
+	AND pob.specialization_id=stt2.component_code
+	AND stt2.group_code='SPCLCD'
+	AND pch.semester_code=stt3.component_code
+	AND stt3.group_code='SEMCOD'
+	AND pr.university_id=#universityId#	
+	AND pob.branch_id like #branchId#
+	AND pob.specialization_id like #specializationId#
+	</select>
+	
+    <select id="getDelayDetailList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+	SELECT IFNULL(sm.modifier_id,sm.creator_id) as teacherCode,
+	concat_ws(' ',em.first_name,em.middle_name,em.last_name)as teacher,	
+	sm.course_code as courseCode,
+	sm.roll_number as rollNumber,
+	stt.component_description as evaluationId,
+	@displayDate:=concat(#year#,'-',cec.date_from_display_marks) ,
+	@ActualDisplayDate:=IFNULL(sm.modification_time,sm.insert_time) ,
+	DATE_FORMAT(@displayDate,'%d-%m-%Y') as compDisplaydays,
+	DATE_FORMAT(@ActualDisplayDate,'%d-%m-%Y') as actualDisplayDates,
+	DATEDIFF(@ActualDisplayDate,@displayDate) as delayDays,	
+	pr.semester_start_date as semesterStartDate,
+	pr.semester_end_date as semesterEndDate
+	FROM student_marks sm ,program_registration pr,
+	course_evaluation_component cec,employee_master em,
+	system_table_two stt
+	WHERE  sm.program_course_key=#programCourseKey#
+	AND pr.program_course_key=sm.program_course_key
+	AND pr.entity_id=#entityId#	
+	AND pr.semester_start_date=sm.semester_start_date
+	AND pr.semester_end_date=sm.semester_end_date
+	AND pr.session_start_date=#sessionStartDate#
+	AND pr.session_end_date=#sessionEndDate#
+	AND pr.university_id=#universityId#
+	AND cec.course_code=sm.course_code
+	AND cec.evaluation_id=sm.evaluation_id
+	AND stt.component_code=sm.evaluation_id
+	AND em.parent_entity=sm.entity_id
+	AND em.employee_code=IFNULL(sm.modifier_id,sm.creator_id)
+	AND stt.group_code='EVLCOM'
+	AND IFNULL(sm.modification_time,sm.insert_time)<![CDATA[>]]>concat(#year#,'-',cec.date_from_display_marks)
+	ORDER BY delayDays desc;
+</select>
+
+	<select id="getProgramCourseKeyEntityWise" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+	SELECT pch.program_course_key as programCourseKey,substring(pr.semester_start_date,1,4) as year,
+	concat(pm.program_code,if ((pch.branch_id='XX' and pch.specialization_id='00'),'',concat('-',pch.branch_id,'-',pch.specialization_id))) as programName
+	FROM program_offered_by pob,program_course_header pch,
+	program_term_details ptd,program_registration pr,program_master pm
+	where pob.offered_by=#entityId#
+	AND pob.program_id=pch.program_id
+	AND pob.branch_id=pch.branch_id
+	AND pob.specialization_id=pch.specialization_id
+	AND pch.program_id=ptd.program_id
+	AND pch.semester_code=ptd.semester_code
+	AND pob.specialization_id=pch.specialization_id
+	AND pch.program_course_key=pr.program_course_key
+	AND pr.entity_id=#entityId#
+	AND pr.session_start_date=#sessionStartDate#
+	AND pr.session_end_date=#sessionEndDate#
+	AND pr.university_id=#universityId#	
+	AND pm.program_id=pch.program_id
+	AND (ptd.semester_sequence+#percent#)%2=0
+	
+	</select>
+
+    <select id="getDelayDetailEntityWise" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+	SELECT *,#programName# as programName,DATEDIFF(table1.act,table1.dis) as delayDays,
+	DATE_FORMAT(table1.act,'%d-%m-%Y') as compDisplaydays,
+	DATE_FORMAT(table1.dis,'%d-%m-%Y') as actualDisplayDates
+	FROM (SELECT IFNULL(sm.modifier_id,sm.creator_id) as teacherCode,
+	concat_ws(' ',em.first_name,em.middle_name,em.last_name)as teacher,
+	sm.course_code as courseCode,
+	stt.component_description as evaluationId,
+	max(sm.modification_time),max(sm.insert_time),
+	concat(#year#,'-',cec.date_from_display_marks) as dis ,
+	IF((max(sm.modification_time)>max(sm.insert_time)),
+   (max(sm.modification_time)),
+   (IF((max(sm.insert_time)>max(sm.modification_time))
+      ,max(sm.insert_time) ,
+      IF(max(sm.modification_time)<![CDATA[<=>]]>NULL,max(sm.insert_time),'')))) as act
+	FROM student_marks sm ,program_registration pr,
+	course_evaluation_component cec,employee_master em,
+	system_table_two stt
+	WHERE sm.program_course_key=#programCourseKey#
+	AND pr.program_course_key=sm.program_course_key
+	AND pr.entity_id=#entityId#
+	AND pr.semester_start_date=sm.semester_start_date
+	AND pr.semester_end_date=sm.semester_end_date
+	AND pr.session_start_date=#sessionStartDate#
+	AND pr.session_end_date=#sessionEndDate#
+	AND pr.university_id=#universityId#
+	AND cec.course_code=sm.course_code
+	AND cec.evaluation_id=sm.evaluation_id
+	AND stt.component_code=sm.evaluation_id
+	AND em.parent_entity=sm.entity_id
+	AND em.employee_code=IFNULL(sm.modifier_id,sm.creator_id)
+	AND stt.group_code='EVLCOM'
+	GROUP BY sm.evaluation_id) table1 where table1.act<![CDATA[>]]>table1.dis
+	order by delayDays desc ;
+    
+    </select>
+    
+    <select id="getCoursesMarksReleasedByDean" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+ <!--SELECT table1.entity as entityName,table1.program as programName,course_code as courseCode,request_getter as teacher,
+completion_date as year,if(display_type='E','External',(if (display_type='I','Internal',(if (display_type='R','Remedial',''))))) as remedial
+FROM (select pch.program_course_key as pck,pch.program_id as program_id,program_name as program,em.entity_name as entity
+FROM program_offered_by pob,program_course_header pch,
+program_term_details ptd,program_registration pr,program_master pm,entity_master em
+where pob.program_id=pch.program_id
+AND pob.branch_id=pch.branch_id
+AND pm.program_id=pch.program_id
+AND pob.specialization_id=pch.specialization_id
+AND pch.program_id=ptd.program_id
+AND pch.semester_code=ptd.semester_code
+AND pob.specialization_id=pch.specialization_id
+AND pch.program_course_key=pr.program_course_key
+AND pr.session_start_date='2011-07-01'
+AND pr.session_end_date='2012-06-30'
+AND pr.university_id='0001'
+AND em.entity_id=pob.offered_by
+AND ptd.semester_sequence%2!=0) table1,course_marks_approval_status
+where status='APR'
+and program_course_key in (table1.pck)
+AND approval_order=(select max(approval_order) from course_marks_approval_status)
+ORDER BY display_type,entityName,programName,course_code;-->   
+  
+			select com.*,#programCourseKey# as programCourseKey
+			from(select max(approval_order) maxOrder,request_getter,combine,semester_start_date,semester_end_date
+			from(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,request_getter,approval_order,
+			semester_start_date,semester_end_date FROM course_marks_approval_status where substr(entity_id,1,4)=#universityId# and status='APR')as com
+			group by combine)a inner join
+			(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,
+			(select entity_name from entity_master em where em.entity_id=cmas.entity_id) as entityName,
+			(select program_code from program_master where program_id=substring(program_course_key,1,7)) as programName,
+			course_code as courseCode,
+			completion_date as year ,
+			(select concat_ws(' ',first_name,middle_name,last_name) from employee_master where employee_code=request_getter) as teacher,
+			(select component_description from system_table_two where university_code=#universityId# and group_code='DISTYP' 
+			and component_code=display_type) as remedial,
+			approval_order,
+			semester_start_date as semStart,semester_end_date as semEnd,
+			@toDisplayDate:=concat(#year#,'-',(select max(date_to_display_marks) from course_evaluation_component where program_id=substring(program_course_key,1,7) and cmas.course_code=course_code and evaluation_id NOT IN('EXT','REM'))) as actualDisplayDates,
+			if(DateDiff(completion_date,@toDisplayDate)<![CDATA[<]]>0,'-',DateDiff(completion_date,@toDisplayDate)) as delayDays,
+			display_type as disp
+			FROM course_marks_approval_status cmas
+			where substr(entity_id,1,4)=#universityId#  and status='APR' and semester_start_date between #sessionStartDate# and #sessionEndDate#)as com
+			where com.disp='I' and
+			a.maxOrder=com.approval_order and a.combine=com.combine and com.entityName=#entityName# and com.programName=#programName#  and com.semStart=#semesterStartDate# and com.semEnd=#semesterEndDate#
+			order by com.courseCode,com.disp;    
+    
+    </select>    
+   
+    <select id="getEntityProgram" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+			select distinct com.entityName as entityName
+			from(select max(approval_order) maxOrder,request_getter,combine,semester_start_date,semester_end_date
+			from(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,request_getter,approval_order,
+			semester_start_date,semester_end_date FROM course_marks_approval_status where substr(entity_id,1,4)=#universityId# and status='APR')as com
+			group by combine)a inner join
+			(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,
+			(select entity_name from entity_master em where em.entity_id=cmas.entity_id) as entityName,
+			(select program_code from program_master where program_id=substring(program_course_key,1,7)) as programName,
+			course_code as courseCode,
+			completion_date as year ,
+			request_getter as teacher,
+			(select component_description from system_table_two where university_code=#universityId# and group_code='DISTYP' 
+			and component_code=display_type) as remedial,
+			approval_order,
+			display_type as disp
+			FROM course_marks_approval_status cmas
+			where substr(entity_id,1,4)=#universityId#  and status='APR' and semester_start_date between #sessionStartDate# and #sessionEndDate#)as com
+			where
+			a.maxOrder=com.approval_order and a.combine=com.combine order by com.entityName,com.programName,com.courseCode,com.disp; 
+    </select>
+    
+    <select id="getProgramForReport" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.FinalSemesterResultStatistics">
+        select distinct com.programName as programName,com.programCourseKey as programCourseKey,semester_start_date as semesterStartDate,semester_end_date as semesterEndDate,
+        substring(semester_start_date,1,4) as year
+		from(select max(approval_order) maxOrder,request_getter,combine,semester_start_date,semester_end_date
+		from(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,request_getter,approval_order,
+		semester_start_date,semester_end_date FROM course_marks_approval_status where substr(entity_id,1,4)=#universityId# and status='APR')as com
+		group by combine)a inner join
+		(SELECT concat_ws(':',entity_id,course_code,program_course_key,display_type) as combine,
+		(select entity_name from entity_master em where em.entity_id=cmas.entity_id) as entityName,
+		(select program_code from program_master where program_id=substring(program_course_key,1,7)) as programName,
+		(select concat(program_code,(SELECT if((branch_id='XX' and specialization_id='00'),'-XX-XX',concat('-',branch_id,'-',specialization_id))
+		FROM program_course_header where program_course_key=cmas.program_course_key),'-',(select semester_code from program_course_header where program_course_key=cmas.program_course_key) )from program_master where
+		program_id in(select program_id from program_course_header where program_course_key=cmas.program_course_key)) as programCourseKey,
+		course_code as courseCode,
+		completion_date as year ,
+		request_getter as teacher,
+		(select component_description from system_table_two where university_code=#universityId# and group_code='DISTYP' 
+		and component_code=display_type) as remedial,
+		(select substring(reverse(semester_code),1,1) from program_course_header
+    	where program_course_key=cmas.program_course_key) as semSeq,
+		approval_order,
+		display_type as disp
+		FROM course_marks_approval_status cmas
+		where substr(entity_id,1,4)=#universityId#  and status='APR' and semester_start_date between #sessionStartDate# and #sessionEndDate#)as com
+		where com.entityName=#entityName# and (com.semSeq+#percent#)%2=0 and
+		a.maxOrder=com.approval_order and a.combine=com.combine
+		order by programCourseKey;
+    </select> 
+    
+		</sqlMap>
+		

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<programSwitchData>
+
+<programSwitch>
+
+<switchRule>w</switchRule>
+<switchType>SOP</switchType>
+<newProgram>B.Tech</newProgram>
+<newBranch>IT</newBranch>
+<newSpecialization>None</newSpecialization>
+<newSemester>2nd Semester</newSemester>
+<oldProgram>B.Tech</oldProgram>
+<oldBranch>EE</oldBranch>
+<oldSpecialization>None</oldSpecialization>
+<oldSemester>1st Semester</oldSemester>
+
+</programSwitch>
+
+<programSwitch>
+
+<switchRule>r</switchRule>
+<switchType>SOP</switchType>
+<newProgram>B.Tech</newProgram>
+<newBranch>CS</newBranch>
+<newSpecialization>None</newSpecialization>
+<newSemester>2nd Semester</newSemester>
+<oldProgram>B.Tech</oldProgram>
+<oldBranch>IT</oldBranch>
+<oldSpecialization>None</oldSpecialization>
+<oldSemester>1st Semester</oldSemester>
+
+</programSwitch>
+
+</programSwitchData>

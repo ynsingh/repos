@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ManageEmployeeMaster.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="setFirstFocous()" layout="absolute" title="{commonFunction.getConstants('manageEmployeeMaster')}" xmlns:ns1="common.*" width="677" height="450">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/manageEmployeeMasterAction.as"/>
+
+	
+	<mx:HTTPService id="getEmpDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getEmployeeDetails.htm"
+					resultFormat="e4x"
+					result="onSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+	<mx:HTTPService id="getEmpAddressDetails" method="POST"
+					url="{commonFunction.getConstants('url')}/employeeMaster/getEmployeeAddressDetails.htm"
+					resultFormat="e4x"
+					result="onEditSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+	<mx:DateFormatter id="dateFormatter" formatString="MM-DD-YYYY"/>
+	
+	<mx:Label x="135" y="20" text="{commonFunction.getConstants('employeeCode')}"/>
+	<mx:TextInput x="274" y="18" id="enterEmployeeCode"/>
+	<mx:Label x="135" y="61" text="{commonFunction.getConstants('employeeName')}"/>
+	<mx:TextInput x="274" y="61" id="enterEmployeeName"/>
+	<mx:Button x="272" y="100" label="{commonFunction.getConstants('details')}" click="showdataingrid()"/>
+	<mx:Button x="365" y="100" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
+	<mx:Canvas styleName="GridCanvas" x="14" y="135" width="621" height="246">
+		<mx:LinkButton x="538" y="10" label="{commonFunction.getConstants('editButton')}" width="71" enabled="false" id="editButton" click="editEmployeeDetailPopup()"/>
+		<mx:Label x="10" y="12" text="{commonFunction.getConstants('detailsofEmployees')}" fontWeight="bold"/>
+        <mx:DataGrid allowMultipleSelection="false" sortableColumns="true" x="10" y="33" id="employeeDetailsgrid" width="600" 
+		 height="130" visible="true" editable="true" resizableColumns="false" draggableColumns="false"  >
+		<mx:columns>
+		<mx:DataGridColumn  rendererIsEditor="true" textAlign="center" sortable="false"  
+						            	editorDataField="selected" dataField="select" headerText=" ">
+						<mx:itemRenderer>
+   						 <mx:Component>
+   						 <mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.employeeDetailsgrid,[outerDocument.editButton],[new LinkButton])">
+ 					     <mx:Script>
+                         <![CDATA[
+                                   import common.commonFunction;
+                                   import mx.controls.LinkButton;
+                          ]]>
+                         </mx:Script>
+                         </mx:CheckBox>
+                         </mx:Component>
+                         </mx:itemRenderer>
+                         </mx:DataGridColumn>
+	    <mx:DataGridColumn editable="false" showDataTips="true" dataField="employeeCode" headerText="{commonFunction.getConstants('employeeCode')}" width="320" sortable="true"/>
+		<mx:DataGridColumn editable="false" showDataTips="true" dataTipField="employeeFirstName" labelFunction="EmployeeName" dataField="employeeFirstName" headerText="{commonFunction.getConstants('employeeName')}" width="300" sortable="true"/>
+		</mx:columns>
+		</mx:DataGrid>
+	</mx:Canvas>
+	
+	
+<mx:StringValidator source="{enterEmployeeName}" id="enterEnrollmentNumberValid" property="text" maxLength="15" tooLongError="{commonFunction.getConstants('maxLimit15Exeeds')}" required="false"/>
+<mx:StringValidator source="{enterEmployeeCode}" id="enterRollNumberValid" property="text" maxLength="10" tooLongError="{commonFunction.getConstants('maxLimit15Exeeds')}" required="false"/>
+	
+
+</mx:Panel>
+

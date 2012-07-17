@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ImageUpload.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" borderColor="#000000" borderStyle="solid" borderThickness="1" height="190" width="185">
+ 
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.binding.utils.BindingUtils;
+			import mx.core.UIComponent;
+ 
+			import flash.net.FileReference;
+			import flash.net.FileFilter;
+			import flash.events.IOErrorEvent;
+			import flash.events.Event;
+			import flash.utils.ByteArray;
+ 
+			public var loadFileRef:FileReference;
+			
+			public var hasImage:Boolean=false;
+			public var isOld:Boolean=false;
+ 
+			private static const FILE_TYPES:Array = [new FileFilter("Image Files(.Jpg,.Jpeg,.Gif,.Png)", "*.jpg;*.jpeg;*.gif;*.png;*.JPG;*.JPEG;*.GIF;*.PNG")];
+			private static const THUMB_WIDTH:uint = 150;
+			private static const THUMB_HEIGHT:uint = 150;
+ 			
+ 			//loading file in fileReference
+			private function loadFile():void {
+				loadFileRef = new FileReference();
+				loadFileRef.addEventListener(Event.SELECT, onFileSelect);
+				loadFileRef.browse(FILE_TYPES);
+			}
+ 
+ //on select of file
+			private function onFileSelect(e:Event):void {
+				loadFileRef.addEventListener(Event.COMPLETE, onFileLoadComplete);
+				loadFileRef.load();
+			}
+ 
+ //on file load complete
+			private function onFileLoadComplete(e:Event):void {
+			   	var loader:Loader = new Loader();
+			   	loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onDataLoadComplete);
+			   	loader.loadBytes(loadFileRef.data);
+			}
+ 
+ 			//On Data load complete
+			private function onDataLoadComplete(e:Event):void {
+				var bitmapData:BitmapData = Bitmap(e.target.content).bitmapData;
+                var matrix:Matrix = new Matrix();
+                matrix.scale(THUMB_WIDTH/bitmapData.width, THUMB_HEIGHT/bitmapData.height);
+				imageView.graphics.clear();
+				imageView.graphics.beginBitmapFill(bitmapData, matrix, false); 
+				imageView.graphics.drawRect(0, 0, THUMB_WIDTH, THUMB_HEIGHT);
+				imageView.graphics.endFill();
+			   	hasImage=true;
+			   	loadButton.enabled=false;
+				cancelButton.enabled=true;
+			}
+			
+			//on click of cancel button
+			private function onCancel():void
+			{
+				imageView.graphics.clear();
+				loadButton.enabled=true;
+				cancelButton.enabled=false;
+				hasImage=false;
+			}
+ 
+		]]>
+	</mx:Script>
+	<mx:Canvas id="imageView" width="150" height="150" borderThickness="1" borderColor="#CCCCCC" borderStyle="solid" y="6" x="16"/>
+	<mx:Button id="loadButton" label="{commonFunction.getConstants('loadImage')}" click="loadFile()" x="5" y="162"/>
+	<mx:Button id="cancelButton" x="114" y="162" enabled="false" label="{commonFunction.getConstants('resetButton')}" click="onCancel()"/>
+</mx:Canvas>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+ * @(#) degreeList.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */-->
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml"
+	 layout="absolute" width="736" height="282"
+	  creationComplete="onCreationComplete()"
+	   title="{commonFunction.getConstants('degreeListReport')}" fontWeight="bold">
+
+<mx:Script>
+	<![CDATA[
+		import flash.net.sendToURL;
+		import flash.net.navigateToURL;
+		import common.Mask;
+		import mx.validators.Validator;
+		import mx.events.CloseEvent;
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import common.commonFunction;		
+
+		public var columns:Array;
+		
+		public var flag:Boolean = false;
+		/**
+		 * The method validates the input fields
+		 * on the interface
+		 **/ 
+		public function validateInputFields():Boolean{
+			
+			entityValidate.source = entityCombo;
+			programValidate.source = programCombo;
+			sessionValidate.source = fromYearCombo;
+			
+			if(Validator.validateAll([entityValidate,programValidate,sessionValidate]).length!=0){
+				
+				flag = false;
+				
+			}else{
+				
+				flag = true;
+				
+			}
+			
+			return flag;
+			
+		}
+		
+		/**
+		 * The method sends a request to generate 
+		 * report for the selected
+		 * inputs
+		 **/ 
+		public function generate():void{
+			
+			if(validateInputFields()==false){
+				
+				Alert.show((commonFunction.getMessages('pleasecheckEntriesinRed')),
+				(commonFunction.getMessages('error')),0,null,null,errorIcon);
+				
+			}else{
+				
+				Alert.show(commonFunction.getMessages('areyousure'),
+				commonFunction.getMessages('confirm'),(Alert.YES|Alert.NO),null,onOK,questionIcon);			
+				
+			}		
+		}		
+		
+		
+		public function onOK(event:CloseEvent):void{
+			
+			if(event.detail==Alert.YES){				
+				
+				var fromSession:String;
+			
+				fromSession = sessionXML.role.(id==fromYearCombo.selectedLabel);
+		
+				infoObject["date"] = new Date;
+				infoObject["entityId"] = entityCombo.selectedItem.id;
+				infoObject["programId"] = programCombo.selectedItem.id;
+				infoObject["fromSession"] = sessionXML.role.(id.toString().substr(0,4)==fromYearCombo.selectedLabel).id;
+				infoObject["toSession"] = sessionXML.role.(description.toString().substr(0,4)==toYearCombo.text).description;
+				infoObject["programName"] = programCombo.selectedLabel;
+				infoObject["programCode"] = programCombo.selectedItem.programCode;
+				infoObject["printType"] = programCombo.selectedItem.printType;	
+		
+				getData.send(infoObject);
+				
+				Mask.show(commonFunction.getMessages('pleaseWait'));
+				
+			}
+			
+		}
+		
+		/**
+		 * The method is exexuted on failure of 
+		 * a request
+		 **/ 	
+		public function onFailure(event:FaultEvent):void{
+			
+			var em:String=String(event.message);
+			
+//			Alert.show(em + " alert ");
+//			if(em.search("ExceptionConverter: java.io.IOException: The document has no pages")>-1){
+//			Alert.show(commonFunction.getMessages('degreeListReportSuccess'),commonFunction.getMessages('success'),0,null,null,successIcon);
+//			}
+//			else{
+			Alert.show(commonFunction.getMessages('requestFailed'),
+			commonFunction.getMessages('failure'),0,null,null,errorIcon);	
+//			}	
+			Mask.close();	
+		}
+		
+		/**
+		 * The method is exexuted on failure of 
+		 * a request
+		 **/ 
+		 
+		 public var documentUrl:String;
+		 	
+		public function onSuccessful(event:ResultEvent):void{
+			
+			Mask.close();
+			
+			var em:XML = event.result as XML;
+			
+			documentUrl = commonFunction.getConstants('url')+"/"+em.message;
+			
+			Alert.show(commonFunction.getMessages('reportGenerated'),
+					commonFunction.getMessages('success'),0,null,null,successIcon);			
+				
+		}
+		
+		/*
+		* method temporarily removed
+		*/
+//		private function onGeneration(event:CloseEvent):void{			
+//			
+//			var fileRef:FileReference;
+//			
+//			if(event.detail==Alert.OK){
+//				
+//				fileRef = new FileReference();			
+//			
+//				fileRef.download(new URLRequest(documentUrl),"degreeListReport.doc");
+//			
+//			}		
+//			
+//			
+//		}
+//		
+		
+		
+	]]>
+</mx:Script>
+
+<mx:Script source="asFiles/degreeListAction.as"/> 
+
+<mx:HTTPService id="getData" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/generateDegreeList.htm"
+				resultFormat="e4x" 
+				result="onSuccessful(event)"
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+<mx:HTTPService id="getEntities" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getEntities.htm"
+				resultFormat="e4x" 
+				result="getEntityList(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+<mx:HTTPService id="getEntityPrograms" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getEntityProgram.htm"
+				resultFormat="e4x" 
+				result="getEntityProgramList(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+				
+<mx:HTTPService id="getUniversitySessions" method="post"
+				url="{commonFunction.getConstants('url')}/degreeList/getUniversitySession.htm"
+				resultFormat="e4x" 
+				result="getUniversitySessionList(event)" 
+				fault="onFailure(event)" 
+				useProxy="false"/>
+
+	<mx:StringValidator id="entityValidate" property="selectedItem" required="true"/>
+	<mx:StringValidator id="programValidate" property="selectedItem" required="true"/>
+	<mx:StringValidator id="sessionValidate" property="selectedItem" required="true"/> 
+	<mx:Label x="10" y="10" text="{commonFunction.getConstants('entity')} {commonFunction.getConstants('name')}"/>
+	<mx:ComboBox x="145" y="10" id="entityCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" change="onEntityChange()" width="160"></mx:ComboBox>
+	<mx:Label x="357" y="12" text="{commonFunction.getConstants('program')} {commonFunction.getConstants('name')}"/>
+	<mx:ComboBox x="483" y="10" id="programCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" enabled="false" change="onProgramChange()" width="160"></mx:ComboBox>
+	<mx:Label x="10" y="62" text="{commonFunction.getConstants('fromyear')}"/>
+	<mx:ComboBox x="145" y="60" id="fromYearCombo" prompt="{commonFunction.getConstants('select')}" selectedIndex="-1" enabled="false" change="onYearChange()" width="160"></mx:ComboBox>
+	<mx:Label x="357" y="62" text="{commonFunction.getConstants('toyear')}"/>
+	<mx:Label x="483" y="62" id="toYearCombo"></mx:Label>
+	<mx:Button label="{commonFunction.getConstants('generatePDF')}" click="generate()" verticalCenter="56" horizontalCenter="-285" id="button"/>
+	<mx:Button label="{commonFunction.getConstants('resetButton')}" verticalCenter="56" horizontalCenter="-117" id="resetButton" click="resetButtonClickHandler()"/>
+	<mx:Button label="{commonFunction.getConstants('cancelButton')}" verticalCenter="56" horizontalCenter="48" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+	
+	
+</mx:TitleWindow>

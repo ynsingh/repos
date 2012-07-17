@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/**
+* @(#) CMS_FLEX.mxml
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+* All Rights Reserved.
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
+* conditions are met:
+*
+* Redistributions of source code must retain the above copyright
+* notice, this  list of conditions and the following disclaimer.
+*
+* Redistribution in binary form must reproducuce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
+* distribution.
+*
+*
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+*/-->
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" horizontalScrollPolicy="off" verticalScrollPolicy="off" 
+				layout="absolute" height="100%" width="100%" backgroundColor="white" preinitialize="javaScriptFunc()" creationPolicy="all" initialize="init(event)"
+				>
+	<mx:Style source="cssFiles/CommonStyle.css"/>
+	<mx:Style source="common/Components/defaults.css" />
+	<mx:Script source="asFiles/cmsAction.as" />
+	<mx:Script source="asFiles/LoginForm.as"/>
+	
+	<mx:HTTPService id="menuHttpService" method="POST"
+					url="{commonFunction.getConstants('url')}/login/generateMenu.htm"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="menuHttpServiceResultHandler(event)"
+					fault="menuHttpServiceFaultHandler(event)"
+					useProxy="false"/>
+					<mx:Script>
+		<![CDATA[
+			import loginForm.EnrollmentLogin;
+			import loginForm.LoginForm;
+			import common.commonFunction;
+			
+			public function javaScriptFunc():void{
+	            ExternalInterface.call("noback");
+                }
+
+			private function loadStudentLogin():void{
+			vStack.selectedIndex=2;
+			loaderCanvas2.addChild(new LoginForm());
+		}
+private function loadStudentEnrollmentLogin():void{
+			vStack.selectedIndex=2;
+			loaderCanvas2.removeAllChildren();
+			loaderCanvas2.addChild(new EnrollmentLogin());
+		}
+
+		]]>
+	</mx:Script>
+	
+	<mx:Metadata>
+		[ResourceBundle("Messages")]
+		[ResourceBundle("Constants")]
+		[ResourceBundle("icons")]
+	</mx:Metadata>
+
+	
+	<mx:HTTPService id="setLogoutService" method="post"
+					url="{urlPrefix+'setLogout.htm'}"
+					showBusyCursor="true"
+					resultFormat="e4x"
+					result="logoutResultHandler(event)"
+					fault="logoutFaultHandler(event)"
+					useProxy="false"/>
+	
+	<mx:StringValidator id="userNameValidator" source="{userNameText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	<mx:StringValidator id="passwordValidator" source="{passwordText}" required="true" property="text" trigger="{loginButton}" triggerEvent="click"/>
+	
+	<mx:Canvas height="100%" width="100%" backgroundColor="#ffffff">
+		<mx:Canvas x="0" y="50" id="headerCanvas" width="100%" height="88" backgroundColor="#F2F3F3" horizontalScrollPolicy="off" horizontalCenter="0" top="1" borderColor="#EAEFF0">
+			<mx:Image left="10" y="10" source="@Embed(source='common/assets/dei_logo.png')" width="171" height="75"/>
+			<mx:Text id="universityNameText" text="{commonFunction.getMessages('appTitle')}" fontSize="30" color="#339900" fontFamily="Candara" textAlign="center" fontWeight="bold" horizontalCenter="0" top="6"/>
+			<mx:Text id="text3" text="{commonFunction.getMessages('appDesc')}"  horizontalCenter="0" color="#333333" fontSize="14" fontFamily="Verdana" top="61"/>
+			<mx:Text id="Text2" text="{commonFunction.getMessages('appTypeDesc')}" fontFamily="Verdana" color="#0099CC" fontSize="15" horizontalCenter="0" top="40"/>			
+			<mx:Label id="userNameLabel" text="Welcome: {userName}" right="10" y="60" color="#000000" visible="false" fontWeight="bold"/>			
+		</mx:Canvas>
+		
+		<mx:ViewStack id="vStack" selectedIndex="0" y="88" width="100%" height="100%" change="if(vStack.selectedIndex==0){userNameLabel.visible=false;}">
+			<mx:Canvas width="100%" height="100%">
+				<mx:TitleWindow  right="30" x="276" y="91" width="370" height="170" title="Login" layout="absolute">
+					<mx:Label  text="User Name" x="40" y="30"/>
+					<mx:Label  text="Password" x="40" y="60"/>
+					<mx:TextInput id="userNameText" x="138" y="30"/>
+					<mx:TextInput id="passwordText" displayAsPassword="true" x="138" y="60"/>
+					<mx:Button id="loginButton" label="Login"  x="139" y="95"/>
+				</mx:TitleWindow>
+
+				<mx:LinkButton x="20" y="25" label="Student Registration" click="loadStudentLogin()"/>
+				<mx:LinkButton x="20" y="60" label="Student Enrollment" click="loadStudentEnrollmentLogin()"/>
+			</mx:Canvas>
+			<mx:Canvas>
+				<mx:ApplicationControlBar id="applicationControlbar" dock="true" paddingLeft="0" paddingTop="0" horizontalAlign="left" verticalAlign="top" height="30" width="100%" clipContent="true" y="0" x="0" fillAlphas="[1.0, 1.0]" fillColors="[#E4E1E1, #E4E1E1]">
+					<mx:VBox width="100%" height="70" paddingLeft="0" paddingTop="0">						
+						<mx:Canvas width="100%" backgroundColor="#C7C2C2" height="30" paddingLeft="0" paddingTop="0">
+							<mx:Label text="{universityName}" right="160" y="6" fontWeight="bold"/>
+							<mx:LinkButton label="Settings" right="60" y="6" click="goToSettings()"/>
+							<mx:LinkButton label="Logout" right="0" y="6" click="setLogoutService.send(params)"/>
+							<mx:MenuBar cornerRadius="10" letterSpacing="0" backgroundAlpha="1" backgroundColor="#000000"
+								highlightAlphas="0,0" fillAlphas="0,0.4" fillColors="#A09C9C,#000000"
+								rollOverColor="#c0d6d1" selectionColor="#4e6f83" 
+								color="#000000" fontSize="12" textAlign="left" textIndent="0" labelField="@menuName" dataProvider="{menuData}" cachePolicy="auto"  itemClick="menuHandler(event)" height="35"/> 
+						</mx:Canvas>						
+					</mx:VBox>	
+				</mx:ApplicationControlBar>		
+				<mx:Canvas id="loaderCanvas" y="{applicationControlbar.height+10}" horizontalScrollPolicy="auto" width="100%" height="88%" />				
+			</mx:Canvas>
+			<mx:Canvas id="loaderCanvas2" horizontalScrollPolicy="auto" width="100%" height="88%" y="70" >  
+			</mx:Canvas>
+		</mx:ViewStack>
+		
+		<mx:Canvas bottom="0" width="100%" height="28" backgroundColor="#F2F3F3" horizontalScrollPolicy="off" horizontalCenter="0">
+			<mx:Text textAlign="center" text="&#169; {commonFunction.getMessages('appFooter')}" fontSize="12" horizontalCenter="0" verticalCenter="2"/>
+		</mx:Canvas>
+	</mx:Canvas>
+</mx:Application>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+<sqlMap namespace="studentRemedial">
+	<typeAlias alias="studentRemedial"
+		type="in.ac.dei.edrp.cms.domain.studentremedial.StudentRemedialInfoGetter" />
+
+
+	<resultMap id="getStudentDetails" class="studentRemedial">
+		<result property="programId" column="program_id" />
+		<result property="programName" column="program_name" />
+		<result property="branchId" column="branch_id" />
+		<result property="branchName" column="branch_name" />
+		<result property="specializationId" column="specialization_id" />
+		<result property="specializationName" column="specialization_name" />
+		<result property="semesterId" column="semester_id" />
+		<result property="semesterName" column="semester_name" />
+		<result property="rollNo" column="roll_number" />
+	</resultMap>
+
+	<select id="getRecords" resultMap="getStudentDetails">
+		SELECT sp.roll_number as
+		roll_number,pm.program_id as
+		program_id,pm.program_name as
+		program_name,
+		sys1.component_code as
+		branch_id,sys1.component_description as branch_name,
+		sys2.component_code as specialization_id,sys2.component_description as
+		specialization_name,
+		sys3.component_code as
+		semester_id,sys3.component_description as semester_name
+		from
+		program_master pm,system_table_two sys1,system_table_two sys2,
+		student_program sp,system_table_two sys3
+		where
+		sp.program_id=pm.program_id and
+		sp.branch_id=sys1.component_code and
+		sys1.group_code='BRNCOD'
+		and sp.specialization_id=sys2.component_code
+		and sys2.group_code='SPCLCD'
+		and
+		sp.current_semester=sys3.component_code and
+		sys3.group_code='SEMCOD'
+		and sys1.university_code=sys2.university_code AND
+		sys2.university_code=sys3.university_code and
+		sys3.university_code=#universityCode#
+		and sp.roll_number=#rollNo# and
+		sp.program_status='ACT';
+	</select>
+
+	<resultMap id="getprogramcourseKeys" class="studentRemedial">
+
+		<result property="programCourseKey" column="program_course_key" />
+		<result property="semesterStartDate" column="semester_start_date" />
+		<result property="semesterEndDate" column="session_end_date" />
+		<result property="rollNo" column="roll_number" />
+	</resultMap>
+
+	<select id="getProgramCourseKey" resultMap="getprogramcourseKeys">
+		SELECT
+		srsh.program_course_key as program_course_key,srsh.roll_number as
+		roll_number,
+		srsh.session_start_date as
+		semester_start_date,srsh.session_end_date as session_end_date
+		FROM
+		program_course_header pch,student_registration_semester_header srsh
+		where roll_number=#rollNo# AND srsh.status='REM' AND
+		pch.program_id=#programId#
+		and
+		pch.program_course_key=srsh.program_course_key
+		AND
+		srsh.session_start_date =(select max(session_start_date)
+		from
+		student_registration_semester_header srsh2 where
+		roll_number=#rollNo#
+		and srsh2.program_course_key=srsh.program_course_key);
+	</select>
+
+	<select id="getRemedialRecords" resultClass="studentRemedial">
+		SELECT
+		pch.program_id as programId,pm.program_name as programName,
+		pch.branch_id as branchId,pch.specialization_id as specializationId,
+		pch.semester_code as semesterId,stt1.component_description as
+		branchName,
+		stt2.component_description as
+		specializationName,stt3.component_description as semesterName,
+		sc.program_course_key as programCourseKey,sc.attempt_number as
+		attemptNumber,
+		sc.semester_start_date as
+		semesterStartDate,sc.semester_end_date as semesterEndDate,
+		sc.course_code as courseCode,sc.course_status as
+		courseStatus,cm.course_name as courseName
+		FROM student_course
+		sc,system_table_two stt1,system_table_two
+		stt2,system_table_two stt3,
+		program_master pm,program_course_header pch,course_master cm
+		WHERE
+		sc.roll_number=#rollNo# AND sc.program_course_key=#programCourseKey#
+		AND
+		sc.student_status='REM' AND
+		sc.program_course_key=pch.program_course_key
+		and
+		sc.semester_start_date=#semesterStartDate# AND
+		sc.semester_end_date=#semesterEndDate#
+		and
+		stt1.component_code=pch.branch_id and stt1.group_code='BRNCOD'
+		and
+		stt2.component_code=pch.specialization_id and
+		stt2.group_code='SPCLCD'
+		and stt3.component_code=pch.semester_code and stt3.group_code='SEMCOD'
+		and pm.program_id=pch.program_id
+		and cm.course_code=sc.course_code
+		and stt1.university_code=stt2.university_code
+		and stt1.university_code=stt3.university_code 
+		and stt1.university_code=substring(#programCourseKey#,1,4);
+	</select>
+
+	<select id="getApplied" resultClass="studentRemedial">
+		select count(*) as applied
+		from student_remedial_details
+		where
+		program_course_key=#programCourseKey# and roll_number=#rollNo#
+		AND course_code=#courseCode#
+		AND
+		attempt_number=#attemptNumber#+1;
+	</select>
+
+	<select id="getDates" resultClass="studentRemedial">
+		select
+		max(srsh.session_start_date) as
+		appliedStartDate,max(srsh.session_end_date) as appliedEndDate
+		from
+		student_registration_semester_header srsh,program_course_header pch
+		where srsh.program_course_key=pch.program_course_key
+		and
+		pch.program_id=#programId# and pch.branch_id=#branchId#
+		and
+		pch.specialization_id=#specializationId# and
+		pch.semester_code=#semesterId#
+		and srsh.roll_number=#rollNo#;
+	</select>
+
+	<insert id="insertRemedialRecords">
+		insert into student_remedial_details
+		(roll_number,program_course_key,course_code,semester_start_date,semester_end_date,
+		attempt_number,course_status,applied,insert_time,creator_id,applied_semester,
+		applied_semester_start_date,applied_semester_end_date)
+		values(#rollNo#,#programCourseKey#,#courseCode#,#semesterStartDate#,#semesterEndDate#,
+		#attemptNumber#,#courseStatus#,#applied#,now(),
+		#userId#,#appliedSemester#,#appliedStartDate#,#appliedEndDate#);
+    </insert>
+
+</sqlMap>

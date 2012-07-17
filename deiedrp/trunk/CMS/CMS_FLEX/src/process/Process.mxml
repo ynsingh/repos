@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="506" height="284" creationComplete="onPageLoad()" title="{commonFunction.getConstants('sendNewStudentsForRegistration')}">
+	<mx:HTTPService id="transferEnrollmentToPrestaging" method="post"
+	    url="{urlPrefix+'transferEnrollmentToPrestaging.htm'}"
+	    resultFormat="e4x"
+	    showBusyCursor="true"
+	    result="transferEnrollmentToPrestagingResultHandler(event)"
+	    fault="faultHandler(event)"
+	    useProxy="false"/>
+	<mx:Script>
+	   	<![CDATA[
+	   		import mx.collections.ArrayCollection;
+	   		import common.commonFunction;
+	   		import common.Mask;
+	   		import mx.controls.Alert;
+	   		import mx.rpc.events.FaultEvent;
+	   		import mx.rpc.events.ResultEvent;
+	   		import mx.managers.PopUpManager;
+	   		import prestagingDataUpload.SuccessAlert;
+[Embed(source="/images/error.png")]private var errorIcon:Class;
+[Embed(source="/images/success.png")]private var successIcon:Class;
+[Embed(source="/images/reset.png")]private var resetIcon:Class;
+[Embed(source="/images/question.png")]private var questionIcon:Class;
+[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+
+[Bindable]public var urlPrefix:String="";
+		//on page load
+public function onPageLoad():void
+{
+	urlPrefix=commonFunction.getConstants('url')+"/prestagingTransfer/";
+	
+}
+
+
+// transfer Enrollment To Prestaging Result Handler
+		public function transferEnrollmentToPrestagingResultHandler(event:ResultEvent):void
+		{
+			var studentList:XML=event.result as XML;
+			var arry:ArrayCollection=new ArrayCollection();
+			var count:int=studentList.children().length();
+			if(count==0){
+				Alert.show(commonFunction.getMessages('noRecordSendForRegistration'),commonFunction.getMessages('info'),0,null,null,infoIcon);
+			}
+			else{
+				var successList:SuccessAlert=SuccessAlert(PopUpManager.createPopUp(this,SuccessAlert,true));
+	successList.dataArray=event.result.student;
+	successList.total=count;
+	successList.flag='M';
+	PopUpManager.centerPopUp(successList);
+			}
+			Mask.close();
+			//Alert.show(commonFunction.getMessages('success'),commonFunction.getMessages('success'),0,null,null,successIcon);
+		}
+	    
+	    // fault handler
+		public function faultHandler(event:FaultEvent):void
+		{
+			Mask.close();
+			Alert.show(commonFunction.getMessages('error'),commonFunction.getMessages('error'),0,null,null,errorIcon);
+		}
+	    		
+	   	]]>
+	</mx:Script>
+	
+	<mx:Button x="47" y="152" click="Mask.show();transferEnrollmentToPrestaging.send([new Date]);" label="{commonFunction.getConstants('confirm')}"/>
+	<mx:Button x="244" y="152" label="{commonFunction.getConstants('cancelButton')}" id="cancelButton" click="this.parentDocument.loaderCanvas.removeAllChildren()" />
+
+</mx:Panel>

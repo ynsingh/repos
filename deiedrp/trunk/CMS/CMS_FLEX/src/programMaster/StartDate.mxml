@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="288" height="32" backgroundColor="#ffffff" borderThickness="0" dropShadowEnabled="false" xmlns:common="common.*">
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:Label x="15" y="5" text="{commonFunction.getConstants('startDayMonth')}" />
+	<common:DateMonthSelector id="startDateField" x="123" width="160" y="4"/>
+	<mx:HRule y="2" width="265" x="2"/>
+	<mx:HRule y="29" width="265" x="2"/>
+	<mx:VRule height="28" x="2" y="2"/>
+	<mx:VRule x="285" height="28" y="2"/>
+</mx:Canvas>

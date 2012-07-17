@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- * @(#) Cec.xml * @Author :Mohd Amir * @Date :21/3/2011 * Version 1.0 
+	* @Author :Ashish Mohan * @Date :23/1/2012 * Version 2.0 
+	* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute. * All Rights 
+	Reserved. * * Redistribution and use in source and binary forms, with or 
+	* without modification, are permitted provided that the following * conditions 
+	are met: * * Redistributions of source code must retain the above copyright 
+	* notice, this list of conditions and the following disclaimer. * * Redistribution 
+	in binary form must reproducuce the above copyright * notice, this list of 
+	conditions and the following disclaimer in * the documentation and/or other 
+	materials provided with the * distribution. * * * THIS SOFTWARE IS PROVIDED 
+	``AS IS'' AND ANY EXPRESSED OR IMPLIED * WARRANTIES, INCLUDING, BUT NOT LIMITED 
+	TO, THE IMPLIED WARRANTIES * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+	PURPOSE ARE * DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE 
+	* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR * CONSEQUENTIAL 
+	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF SUBSTITUTE GOODS 
+	OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR * BUSINESS INTERRUPTION) HOWEVER 
+	CAUSED AND ON ANY THEORY OF LIABILITY, * WHETHER IN CONTRACT, STRICT LIABILITY, 
+	OR TORT (INCLUDING NEGLIGENCE * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+	USE OF THIS SOFTWARE, * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+	* * Contributors: Members of EdRP, Dayalbagh Educational Institute */ -->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="CourseEvaluationComponent">
+
+	<select id="getProgramCourse" resultClass="in.ac.dei.edrp.cms.domain.courseEvaluationComponent.Cec">
+		SELECT distinct pch.program_id as programid ,pch.semester_code as
+		semestercode,stt.component_description as componentdescription,
+		pdt.course_code as coursecode, cm.course_name as coursename,
+		pm.program_name as programname,pm.program_code as programcode
+		FROM program_course_header pch, program_course_detail pdt,
+		program_master pm, course_master cm, system_table_two stt
+		WHERE pch.program_course_key = pdt.program_course_key AND pch.program_id = pm.program_id
+		AND pch.semester_code = stt.component_code AND pdt.course_code = cm.course_code
+		AND stt.group_code = 'SEMCOD' AND stt.university_code=#universityId#
+		AND stt.university_code = cm.university_code
+		ORDER BY pch.semester_code; 
+    </select>
+
+	<select id="getEvaluationIds"
+		resultClass="in.ac.dei.edrp.cms.domain.courseEvaluationComponent.Cec">
+
+		SELECT ec.evaluation_id as evaluationid, ec.id_type as
+		idtype,
+		stt.component_description as iddescription,
+		stt.component_description
+		as idtypedescription
+		FROM evaluation_component
+		ec , system_table_two stt
+		WHERE ec.evaluation_id =stt.component_code
+		and ec.university_code
+		=stt.university_code
+		AND stt.group_code =
+		'EVLCOM' and stt.university_code =#universityId# and
+		stt.active = '1';
+
+   </select>
+
+
+	<insert id="insertCecDetail"
+		parameterClass="in.ac.dei.edrp.cms.domain.courseEvaluationComponent.Cec">
+
+		insert into course_evaluation_component
+		(program_id
+		,exam_date,evaluation_id,group_id
+		,rule,order_in_awardsheet,Course_code,insert_time,creator_id,date_to_display_marks,date_from_display_marks,maximum_marks)
+		values (#programid#
+		,#examdate#,#evaluationid#,#evalgroupcode#,#rule#,#orderinmarksheet#,#coursecode#,now(),#creatorid#,#datetodisplay#,#datefromdisplay#,#maximummark#)
+
+    </insert>
+
+
+	<select id="getCecList"
+		resultClass="in.ac.dei.edrp.cms.domain.courseEvaluationComponent.Cec">
+		SELECT cce.exam_date as examdate
+		,cce.date_to_display_marks
+		as datetodisplay,cce.date_from_display_marks
+		as datefromdisplay,cce.evaluation_id
+		as
+		evaluationid,stt1.component_description as
+		iddescription,stt2.component_description as
+		groupName,stt3.component_description as ruleName
+		,cce.group_id as
+		groupid ,cce.rule ,cce.order_in_awardsheet as
+		orderinmarksheet,course_code as coursecode,
+		maximum_marks as
+		maximummark
+		FROM course_evaluation_component cce ,system_table_two stt1
+		,system_table_two stt2 ,system_table_two stt3
+		where cce.program_id = #programid# and cce.course_code = #coursecode#
+		and	stt1.group_code='EVLCOM' and stt1.component_code=cce.evaluation_id
+		and stt2.group_code='EVLGRP' and stt2.component_code=cce.group_id
+		and stt3.group_code='CERULE' and stt3.component_code=cce.rule
+		and stt1.university_code =#universityId# and stt2.university_code =stt1.university_code
+		and stt3.university_code =stt2.university_code
+    </select>
+
+	<select id="getDuplicateCount"
+		resultClass="in.ac.dei.edrp.cms.domain.courseEvaluationComponent.Cec">
+		SELECT count(*) count
+		FROM course_evaluation_component
+		WHERE course_code=#coursecode# and program_id=#programid# and
+		evaluation_id=#evaluationid# and group_id=#evalgroupcode#
+    </select>
+
+	<update id="updateCecDetails">
+		UPDATE course_evaluation_component
+		SET exam_date=#examdate#,
+		rule=#rule#,
+		order_in_awardsheet=#orderinmarksheet#,
+		date_to_display_marks=#datetodisplay#,
+		date_from_display_marks=#datefromdisplay#,
+		maximum_marks=#maximummark#,
+		modification_time=now(),
+		modifier_id=#creatorid#
+		WHERE
+		program_id=#programid# and group_id=#evalgroupcode#
+		and
+		course_code=#coursecode# and evaluation_id=#evaluationid#
+    </update>
+
+	<delete id="deleteCecDetails">
+		DELETE FROM course_evaluation_component
+		WHERE program_id=#programid# and
+		group_id=#evalgroupcode#
+		and course_code=#coursecode# and
+		evaluation_id=#evaluationid#
+    </delete>
+
+
+
+</sqlMap>

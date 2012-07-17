@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--    /*-->
+	<!-- *Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.-->
+	<!-- * All Rights Reserved.-->
+	<!-- *-->
+	<!-- * Redistribution and use in source and binary forms, with or-->
+	<!--
+		* without modification, are permitted provided that the following
+	-->
+	<!-- * conditions are met:-->
+	<!-- *-->
+	<!-- * Redistributions of source code must retain the above copyright-->
+	<!-- * notice, this  list of conditions and the following disclaimer.-->
+	<!-- *-->
+	<!--
+		* Redistribution in binary form must reproduce the above copyright
+	-->
+	<!--
+		* notice, this list of conditions and the following disclaimer in
+	-->
+	<!-- * the documentation and/or other materials provided with the-->
+	<!-- * distribution.-->
+	<!-- *-->
+	<!-- *-->
+	<!--
+		* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+	-->
+	<!--
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+	-->
+	<!-- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE-->
+	<!--
+		* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+	-->
+	<!-- * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR-->
+	<!--
+		* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+	-->
+	<!--
+		* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+	-->
+	<!--
+		* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+		LIABILITY,
+	-->
+	<!--
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+	-->
+	<!--
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+	-->
+	<!-- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.-->
+	<!-- *-->
+	<!-- * Contributors: Members of EdRP, Dayalbagh Educational Institute-->
+	<!-- */-->
+
+<sqlMap namespace="assignroletoemployee">
+	<typeAlias alias="assignroletoemployee"
+		type="in.ac.dei.edrp.cms.domain.employee.EmployeeRoleInfoGetter" />
+
+
+
+	<resultMap id="employeedetails" class="assignroletoemployee">
+
+		<result property="employeeId" column="employee_code" />
+		<result property="employeeFirstName" column="name" />
+		<result property="primaryEmailId" column="primary_email_id" />
+		<result property="gender" column="gender" />
+		<result property="category" column="category" />
+		<result property="dateOfBirth" column="dob" />
+
+	</resultMap>
+
+	<select id="getemployeedetails" resultMap="employeedetails">
+
+	select
+	concat_ws(' ',em.first_name,em.middle_name,em.last_name) as
+	name,em.employee_code,em.dob,em.primary_email_id,sys1.component_description
+	as gender,sys2.component_description as category from
+	employee_master
+	em,system_table_two sys1,system_table_two sys2 where
+	em.category_code=sys2.component_code AND
+	em.gender=sys1.component_code
+	AND sys1.university_code=sys2.university_code and
+	sys2.university_code=em.university_code and
+	sys1.group_code=#genderCode# AND sys2.group_code=#categoryCode#
+	AND
+	em.university_code=#universityCode# order by em.employee_code;
+<!--	AND em.employee_code!=#userName#;-->
+</select>
+
+	<select id="getselectedemployeedetails" resultMap="employeedetails">
+
+		select
+		distinct concat_ws(' ',em.first_name,em.middle_name,em.last_name) as
+		name,
+		em.employee_code,em.dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from employee_master
+		em,
+		system_table_two sys1,system_table_two sys2,user_info ui where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code=#genderCode# AND sys2.group_code=#categoryCode#
+		AND sys1.university_code = sys2.university_code AND 
+		sys2.university_code = em.university_code AND 
+		em.university_code=ui.university_code AND
+		em.employee_code=ui.user_name AND ui.user_name=#userName# AND
+		ui.university_code=#universityCode#;
+</select>
+
+	<select id="getselectedstudentdetails" resultMap="employeedetails">
+
+		select
+		distinct
+		concat_ws('	',em.student_first_name,em.student_middle_name,em.student_last_name)
+		as
+		name,
+		sp.roll_number as employee_code,em.date_of_birth as
+		dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from student_master
+		em,
+		system_table_two sys1,system_table_two sys2,student_program
+		sp,user_info ui where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code=#genderCode# AND
+		sys2.group_code=#categoryCode#
+		AND sys1.university_code = sys2.university_code AND 
+		sys2.university_code = em.university_code AND 
+		em.university_code=ui.university_code AND
+		em.enrollment_number=sp.enrollment_number AND
+		sp.roll_number=ui.user_name AND ui.user_name=#userName# AND
+		ui.university_code=#universityCode#;
+</select>
+
+<select id="getstustudentdetails" resultMap="employeedetails">
+
+		select
+		distinct
+		concat_ws('	',em.student_first_name,em.student_middle_name,em.student_last_name)
+		as
+		name,
+		sp.roll_number as employee_code,em.date_of_birth as
+		dob,concat_ws(' ',em.father_first_name,em.father_middle_name,em.father_last_name) as
+		primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from student_master
+		em,
+		system_table_two sys1,system_table_two sys2,student_program
+		sp where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code=#genderCode# AND
+		sys2.group_code=#categoryCode#
+		AND	sys1.university_code = sys2.university_code 
+		AND sys2.university_code = em.university_code 
+		AND em.enrollment_number=sp.enrollment_number AND
+		sp.roll_number=#userName# AND
+		em.university_code=#universityCode#;
+</select>
+
+	<select id="getselectedstudentenrdetails" resultMap="employeedetails">
+
+		select
+		distinct concat_ws(' ',em.student_first_name,em.student_middle_name,em.student_last_name)
+		as
+		name,
+		em.registration_number as employee_code,em.date_of_birth as
+		dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from enrollment_personal_details 
+		em,
+		system_table_two sys1,system_table_two sys2,applicant_info ui where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code=#genderCode# AND
+		sys2.group_code=#categoryCode#
+		AND sys1.university_code = sys2.university_code AND 
+		sys2.university_code = #universityCode# AND 
+		em.student_id=ui.student_id AND
+		em.registration_number=ui.user_name AND ui.user_name=#userName#;
+</select>
+
+	<select id="getselectedapplicantdetails" resultMap="employeedetails">
+
+		select
+		distinct concat_ws(' ',em.student_first_name,em.student_middle_name,em.student_last_name)
+		as
+		name,
+		em.registration_roll_number as employee_code,em.date_of_birth as
+		dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from staging_table
+		em,
+		system_table_two sys1,system_table_two sys2,applicant_info ui where
+		em.student_category=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code=#genderCode# AND
+		sys2.group_code=#categoryCode#
+		AND sys1.university_code=sys2.university_code
+		AND sys2.university_code = ui.university_code
+		AND ui.university_code=#universityCode# AND 
+		em.student_id=ui.student_id AND
+		em.registration_roll_number=ui.user_name AND ui.user_name=#userName#;
+</select>
+
+	<select id="getlikeapplicantdetails" resultMap="employeedetails">
+
+		select
+		distinct concat_ws(' ',em.student_first_name,em.student_middle_name,em.student_last_name) as
+		name,
+		em.registration_roll_number as employee_code,em.date_of_birth as dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from staging_table
+		em,
+		system_table_two sys1,system_table_two sys2,applicant_info ai where
+		em.student_category=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code='GENDER' AND sys2.group_code='STDCTG' AND sys1.university_code=sys2.university_code 
+		AND sys2.university_code=ai.university_code 
+		AND ai.university_code=#universityCode# AND ai.user_name=em.registration_roll_number 
+		AND em.student_first_name LIKE #employeeMiddleName# AND em.father_first_name LIKE #employeeLastName#
+     	AND em.date_of_birth LIKE #dateOfBirth#;
+</select>
+
+	<select id="getlikedemployeedetails" resultMap="employeedetails">
+
+		select
+		distinct
+		concat_ws(' ',em.first_name,em.middle_name,em.last_name) as
+		name,
+		em.employee_code,em.dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from employee_master
+		em,
+		system_table_two sys1,system_table_two sys2,user_info ui where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code AND ui.user_name=em.employee_code AND em.university_code=ui.university_code
+		AND sys1.group_code=#genderCode# AND sys2.group_code=#categoryCode#
+		AND sys1.university_code=sys2.university_code AND sys2.university_code=ui.university_code 
+		AND ui.university_code=em.university_code AND 
+		em.university_code=#universityCode# AND em.first_name LIKE #employeeMiddleName#
+		AND em.dob LIKE #dateOfBirth#;
+</select>
+
+	<select id="getlikestudentdetails" resultMap="employeedetails">
+
+		select
+		distinct concat_ws(' ',em.student_first_name,em.student_middle_name,em.student_last_name) as
+		name,
+		sp.roll_number as employee_code,em.date_of_birth as dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from student_master
+		em,
+		system_table_two sys1,system_table_two sys2,student_program sp,user_info ui where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code=#genderCode# AND sys2.group_code=#categoryCode# 
+		AND sys1.university_code=sys2.university_code AND sys2.university_code=ui.university_code 
+		AND ui.university_code=em.university_code 
+		AND em.enrollment_number=sp.enrollment_number AND ui.user_name=sp.roll_number AND em.university_code=ui.university_code
+     	AND em.student_first_name LIKE #employeeMiddleName# AND em.father_first_name LIKE #employeeLastName#
+    	AND em.date_of_birth LIKE #dateOfBirth# AND em.university_code=#universityCode#;
+</select>
+
+<select id="getlikestustudentdetails" resultMap="employeedetails">
+
+		select
+		distinct concat_ws(' ',em.student_first_name,em.student_middle_name,em.student_last_name) as
+		name,
+		sp.roll_number as employee_code,em.date_of_birth as dob,concat_ws(' ',em.father_first_name,em.father_middle_name,em.father_last_name) as
+		primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from student_master
+		em,
+		system_table_two sys1,system_table_two sys2,student_program sp where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code=#genderCode# AND sys2.group_code=#categoryCode#
+		AND sys1.university_code=sys2.university_code AND sys2.university_code=em.university_code 
+		AND em.enrollment_number=sp.enrollment_number 
+     	AND em.student_first_name LIKE #employeeMiddleName# AND em.father_first_name LIKE #employeeLastName#
+    	AND em.date_of_birth LIKE #dateOfBirth# AND em.university_code=#universityCode#;
+</select>
+
+<select id="getlikestudentenrdetails" resultMap="employeedetails">
+
+		select
+		distinct concat_ws(' ',em.student_first_name,em.student_middle_name,em.student_last_name) as
+		name,
+		em.registration_number as employee_code,em.date_of_birth as dob,em.primary_email_id,sys1.component_description
+		as gender,
+		sys2.component_description as category from enrollment_personal_details	em,
+		system_table_two sys1,system_table_two sys2,applicant_info ai where
+		em.category_code=sys2.component_code AND
+		em.gender=sys1.component_code
+		AND sys1.group_code='GENDER' AND sys2.group_code='STDCTG' 
+		AND sys1.university_code=sys2.university_code AND sys2.university_code=ai.university_code  
+		AND ai.user_name=em.registration_number
+		AND em.student_first_name LIKE #employeeMiddleName# AND em.father_first_name LIKE #employeeLastName#
+     	AND em.date_of_birth LIKE #dateOfBirth# AND ai.university_code=#universityCode#;
+</select>
+
+
+
+	<insert id="insertemployeerole">
+		insert into
+		user_info(user_id,user_group_id,user_name,password,registered_timestamp,university_code,status,creator_id,application)
+		values(#employeeId#,#roleId#,#employeeCode#,SHA1(#password#),now(),#universityCode#,#status#,#userId#,#designation#);
+
+</insert>
+
+	<insert id="insertemployeelogin">
+		insert into
+		user_info(user_id,user_group_id,user_name,password,registered_timestamp,university_code,status,creator_id,application)
+		values(#employeeId#,#roleId#,#employeeCode#,#password#,now(),#universityCode#,#status#,#userId#,#designation#);
+
+</insert>
+
+	<resultMap id="usermenus_list" class="assignroletoemployee">
+
+		<result property="menuItemId" column="menu_item_id" />
+		<result property="menuItemName" column="menu_item_name" />
+		<result property="roleId" column="role_id" />
+		<result property="roleDescription" column="role_name" />
+		<result property="employeeId" column="user_id" />
+
+	</resultMap>
+
+	<select id="getrolemenulist" resultMap="usermenus_list">
+
+		select
+		sys1.component_code as menu_item_id,sys1.component_description as
+		menu_item_name,
+		sys2.component_code as
+		role_id,sys2.component_description as role_name,ui.user_id from
+		system_table_two sys1,system_table_two sys2,user_group usrg,user_info
+		ui where sys1.component_code
+		=usrg.menu_item_id AND
+		sys1.group_code='MNUITM' AND usrg.user_group_id=
+		ui.user_group_id AND
+		ui.user_name=#employeeCode#
+		AND
+		ui.university_code=#universityCode# AND
+		usrg.authority=1
+		AND
+		sys2.component_code
+		=ui.user_group_id AND
+		sys2.group_code='UNROLE' AND
+		ui.user_name=#employeeCode#
+		AND
+		usrg.menu_item_id NOT
+		IN(select menu_item_id from
+		user_function_authority where
+		function_user_id=ui.user_id AND
+		ui.user_name=#employeeCode# AND
+		ui.university_code=#universityCode#);
+
+	</select>
+
+	<insert id="insertintofunctionauthority">
+
+		insert into user_function_authority
+		(function_user_id,menu_item_id,authority,creator_id,insert_time)
+		values(#employeeId#,#menuItemId#,#secondaryAuthority#,#userId#,now());
+	
+	</insert>
+
+	<resultMap id="usermenus_list" class="assignroletoemployee">
+
+		<result property="menuItemId" column="menu_item_id" />
+		<result property="menuItemName" column="menu_item_name" />
+		<result property="secondaryAuthority" column="authority" />
+		<result property="roleId" column="role_id" />
+		<result property="roleDescription" column="role_name" />
+		<result property="userId" column="user_id" />
+
+	</resultMap>
+
+	<select id="getusermenulist" resultMap="usermenus_list">
+
+		select
+		sys1.component_code as menu_item_id,sys1.component_description as
+		menu_item_name,
+		ufa.authority,sys2.component_code as
+		role_id,sys2.component_description as role_name,ui.user_id from
+		system_table_two
+		sys1,system_table_two sys2,user_function_authority
+		ufa,user_info ui
+		where
+		sys1.component_code=ufa.menu_item_id AND
+		sys1.group_code='MNUITM' AND
+		sys2.component_code=ui.user_group_id AND
+		sys2.group_code='UNROLE' AND
+		ufa.function_user_id=ui.user_id AND
+		ui.user_name=#employeeCode#
+		AND
+		ui.university_code=#universityCode#;
+
+	</select>
+
+	<update id="updateintofunctionauthority">
+
+		update user_function_authority
+		SET
+		authority=#secondaryAuthority#,modifier_id=#userId#,modification_time=now()
+		where menu_item_id=#menuItemId# AND
+		function_user_id=#employeeId#;
+	
+	</update>
+
+	<resultMap id="getpassword" class="assignroletoemployee">
+
+		<result property="password" column="password" />
+
+	</resultMap>
+
+	<select id="getpasswordforemployee" resultMap="getpassword">
+
+		select distinct password
+		from user_info where user_name=#employeeCode# 
+		AND university_code=#universityCode#;
+
+	</select>
+
+
+	<resultMap id="getusersfromuserinfo" class="assignroletoemployee">
+
+		<result property="componentId" column="component_id" />
+		<result property="componentDescription" column="component_description" />
+
+	</resultMap>
+
+	<select id="getUsers" resultMap="getusersfromuserinfo">
+
+		select user_id as
+		component_id,user_name as component_description from user_info where
+		university_code=#universityCode# AND user_name!=#employeeCode#;
+
+	</select>
+
+	<select id="getUsersForManage" resultMap="getusersfromuserinfo">
+
+		select distinct
+		ui.user_id as
+		component_id,ui.user_name as component_description
+		from
+		user_info ui,user_function_authority ufa where
+		ufa.function_user_id=ui.user_id AND ui.user_name!=#employeeCode# AND
+		ui.university_code=#universityCode#;
+
+	</select>
+
+	<select id="selectEmployeeId" resultClass="assignroletoemployee">
+
+		select employee_id as
+		employeeId from employee_master where
+		employee_code=#employeeCode# AND employee_id LIKE concat('E',#universityCode#,'%');
+	
+	</select>
+
+	<select id="getuserdetails" resultClass="assignroletoemployee">
+
+		select
+		ui.user_name as
+		employeeId,sys.component_code as componentId,sys.component_description
+		as componentDescription,ui.application as designation from
+		user_info ui,system_table_two sys where
+		ui.user_group_id=sys.component_code AND sys.group_code='UNROLE' AND
+		ui.user_id LIKE #universityCode# AND ui.user_name=#employeeCode#
+		AND sys.university_code=#userId#;
+	
+	</select>
+
+	<select id="getDistinctUsers" resultClass="assignroletoemployee">
+
+		select distinct
+		user_name as componentId,user_id as componentDescription from
+		user_info where user_id LIKE #universityCode# AND
+		user_name!=#employeeCode# order by user_name;
+	
+	</select>
+
+	<delete id="deleteRole">
+
+		delete from user_info where user_name=#employeeCode#
+		AND
+		user_group_id=#employeeRole# AND user_id LIKE #universityCode# 
+		AND application=#designation#;
+	
+	</delete>
+
+	<update id="resetpassword">
+
+		update user_info set password =SHA1(#password#),modified_timestamp=now(),modifier_id=#userId# where
+		user_name=#employeeCode# AND university_code=#universityCode#;
+
+	
+	</update>
+	
+	<update id="resetpasswordforapplicants">
+
+		update applicant_info set password =SHA1(#password#),modified_timestamp=now(),modifier_id=#userId# where
+		user_name=#employeeCode# AND university_code=#universityCode#;
+
+	
+	</update>
+
+</sqlMap>

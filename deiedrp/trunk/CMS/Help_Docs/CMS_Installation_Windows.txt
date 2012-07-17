@@ -1,0 +1,96 @@
+#############################################################################
+Copyright © 2009-2011 DEI Agra.
+Created by: - Nupur Dixit
+Created on 14 July 2011
+#############################################################################
+
+Instructions for installing CMS for Windows operating system
+
+Step 1: Download jdk-1_5_0_05-windows-i586-p.exe for windows from 
+	http://java.sun.com. 
+	Install jdk.
+
+Step 2: download mysql from http://dev.mysql.com/downloads/
+	MySQL-shared-5.1.54.0
+	MySQl-server-5.1.54.0
+	MySQL-client-5.1.54.0
+	Install mysql.
+
+Step 3: download apache tomcat from http://tomcat.apache.org/
+	apache-tomcat-6.0.20
+	install tomcat
+
+Step 4: Download apache-ant-1.8.2.zip
+	Unzip in c:
+Note: Kindly notice the version it must be more than 1.7
+
+Step 5: Configuration-
+	Set the environment variable in 'autoexec.bat' file.
+
+	SET PATH=%PATH%;C:\jdk-1.5.0_05\bin;C:\apache-ant-1.8.2\bin;C:\mysql\bin\
+	SET JAVA-HOME=C:\jdk-1.5.0_05
+	SET ANT-HOME =C:\apache-ant-1.8.2
+
+Step 6: Installing CMS 
+
+i)	Go into the webapps folder of apache-tomcat and make a folder named as CMS and checkout the latest version of CMS from thislocation into newly created folder
+	( https://cms-dei.googlecode.com/svn/trunk/)
+
+
+
+
+ii) Go into webapps\CMS\WEB-INF\build folder and modify these lines of build.properties file 
+according to your database setting-
+
+
+
+databaseUrl = jdbc:mysql://localhost/cms
+database.driver=com.mysql.jdbc.Driver
+database.url=jdbc:mysql://localhost:3306/cms
+database.username=root
+database.password=mysql
+
+
+iv) Now go into webapps\CMS\WEB-INF\build directory and type the command 
+ # ant 
+(if every thing is ok then message comes as Build successful..)
+
+
+
+
+v) Go into the bin directory of tomcat and execute this command for start the tomcat
+
+# ./startup.sh
+
+vi) Now open your browser and type this url into the address bar
+ 	http://localhost:8080/CMS
+  	Or 
+	http://IP address of your server: port number on which your tomcat is   
+  running/CMS
+
+Now login as amir or deepak and see the magic ;)
+   
+Note: mysql-connector.jar and jstl.jar should be inside lib folder of tomcat 
+
+KNOWN PROBLEMS--
+
+1> When running ant, if build failed and error shown is-
+	"Error:-Can't Connect to MySQL Server on 'localhost'(10061)"
+   Solution: - This problem comes when mysql server is not running.
+	       One of the solution of this problem is to start the mysql 
+	       Server using mysqld in c:\mysql\bin
+	       Alternatively you can start the mysqlserver by clicking
+	       'mysqladmin' exe file in the directory c:\mysql\bin 	  
+     
+2> When running ant ,if build failed and error shown is-
+	"Error:-Java.sql.SQLException: Invalid authorization specification: 
+	 Access denied for user: 'username'@ localhost (Using password yes)"
+   Solution:-This problem comes because of the gap between @ and localhost.
+	     For this kind of problems please check the build.properties/databasesetting file in sqlMapConfig.setting in src folder.
+             If there is any space left between databaseUser and
+	     databasePasword variables. Remove that space from file. It will
+	     Work fine.
+
+	
+
+

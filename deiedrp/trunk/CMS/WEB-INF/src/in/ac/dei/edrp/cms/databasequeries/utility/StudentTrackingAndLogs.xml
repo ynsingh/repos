@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="studentTrackingAndLogs">   
+
+  <typeAlias alias="errorLogs" type="in.ac.dei.edrp.cms.domain.utility.ErrorLogs" />
+  <typeAlias alias="studentTracking" type="in.ac.dei.edrp.cms.domain.utility.StudentTracking" />
+ 
+  
+  
+  <!-- Deepak Part starts-->
+  
+  
+  	<resultMap id="getStudentNameForErrorLogResult" class="errorLogs">
+		<result property="studentName" column="studentName" />
+	</resultMap>
+
+	<select id="getStudentNameForErrorLog" resultMap="getStudentNameForErrorLogResult">
+			SELECT COALESCE(first_name,middle_name,last_name)as studentName FROM temp_student_master 
+			WHERE enrollment_number=#enrollmentNumber# and student_id=#studentId#;
+	</select>
+	
+    <resultMap id="getBatchCounterResult" class="errorLogs">
+		<result property="processCounter" column="processCounter" />
+		
+	</resultMap>
+	<select id="getBatchCounter" resultMap="getBatchCounterResult">
+		select case when max(process_counter) is null then 0 else max(process_counter) end as processCounter from batch_process_logs where entity_id=#entityId# and 
+		program_id=#programId# and branch_code=#branchId#
+and specialization_code=#specializationId# and semester_code=#semesterCode# and 
+semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and process_id=#processId# and activity_id=#activityId#;
+  	</select>
+  	
+  	<select id="getBatchCounterForProgramActivity" resultMap="getBatchCounterResult">
+		select case when max(process_counter) is null then 0 else max(process_counter) end as processCounter from batch_process_logs where entity_id=#entityId# and 
+		program_id=#programId# and semester_code=#semesterCode# and 
+semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate# and process_id=#processId# and activity_id=#activityId#;
+  	</select>
+  
+  <insert id="insertBatchLogs" parameterClass="errorLogs">
+		INSERT INTO batch_process_logs
+		(entity_id,program_id,branch_code,specialization_code,process_start_time,
+		process_counter,semester_code,semester_start_date,semester_end_date,
+		process_id,activity_id,actual_records,records_processed,records_failed,process_flag,rejected_value,process_end_time)
+		VALUES(#entityId#,#programId#,#branchId#,#specializationId#,now(),
+		#processCounter#,#semesterCode#,#semesterStartDate#,#semesterEndDate#,
+		#processId#,#activityId#,#actualRecord#,#processRecord#,#failrecord#,#processFlag#,#rejectedValue#,now());
+	</insert>
+	
+	<!--  
+	<update id="updateBatchErrorLogs" parameterClass="errorLogs">
+		UPDATE batch_process_logs SET actual_records=#actualRecord#,
+		records_processed=#processRecord#,records_failed=#failrecord#,process_flag=#processFlag#,
+		rejected_value=#rejectedValue#,process_end_time=now() WHERE entity_id=#entityId# 
+		AND program_id=#programId# AND branch_code=#branchId# AND specialization_code=#specializationId# AND 
+		semester_code=#semesterCode# AND semester_start_date=#semesterStartDate#
+		AND semester_end_date=#semesterEndDate# AND process_counter=#processCounter# AND process_id=#processId# AND activity_id=#activityId#;
+	</update>
+	-->
+	  
+	  <insert id="insertStudentErrorLog" parameterClass="errorLogs">
+	insert into student_error_logs
+	(entity_id,program_id,branch_code,student_id,enrollment_number,student_name,process_flag,
+	process_counter,specialization_code,reason_code,reason_description,semester_code,semester_start_date,semester_end_date,
+	process_id,activity_id)
+	values(#entityId#,#programId#,#branchId#,#studentId#,#enrollmentNumber#,#studentName#,
+	#processFlag#,#processCounter#,#specializationId#,#reasonCode#,#description#,#semesterCode#,#semesterStartDate#,#semesterEndDate#,
+	#processId#,#activityId#);
+	</insert>
+	
+	<resultMap id="getCountInStudentTrackingResult" class="studentTracking">
+	 		<result property="sequenceNumber" column="count(roll_number)" />
+	</resultMap>
+	<select id="getCountInStudentTracking" resultMap="getCountInStudentTrackingResult">
+	     SELECT count(roll_number) FROM  student_tracking WHERE entity_id=#entityId# AND  
+	     program_course_key=#programCourseKey# AND roll_number=#rollNumber# AND 
+	     semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate#
+	</select> 
+    
+	<insert id="insertStudentTracking" parameterClass="studentTracking">
+		INSERT INTO student_tracking (entity_id,roll_number,program_course_key,sequence_number,student_semester_status,
+		student_program_status,semester_start_date,semester_end_date,session_start_date,session_end_date,
+		creator_id,insert_time,created_activity,process_id) VALUES 
+		(#entityId#,#rollNumber#,#programCourseKey#,#sequenceNumber#,#statusInSemester#,#programStatus#,
+		#semesterStartDate#,#semesterEndDate#,#sessionStartDate#,#sessionEndDate#,#userId#,now(),#activityId#,#processId#); 
+	</insert>
+  <!-- Deepak part ends -->
+  
+  
+  
+</sqlMap>

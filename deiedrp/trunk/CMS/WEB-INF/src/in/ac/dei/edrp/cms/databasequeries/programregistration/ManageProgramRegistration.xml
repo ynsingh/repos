@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<!--
+		=================================================================
+	-->
+	<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+	<!--
+		=================================================================
+	-->
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ManageProgramRegistration">
+	<typeAlias alias="ProgramRegistrationDetails"
+		type="in.ac.dei.edrp.cms.domain.programregistration.ProgramRegistrationDetails" />
+	<typeAlias alias="ProgramMaster"
+		type="in.ac.dei.edrp.cms.domain.programcoursesetup.ProgramMaster" />
+		
+	<select id="getEntityList" resultClass="ProgramRegistrationDetails">
+		select distinct pr.entity_id as entityId, em.entity_name as entityName from program_registration pr, entity_master em
+		where pr.entity_id=em.entity_id and pr.university_id=#universityId# and pr.university_id=em.university_id;
+	</select>
+
+	<select id="getProgramList" resultClass="ProgramMaster">
+		select distinct pm.program_id as programId,trim(pm.program_name) as
+		programName
+		from program_master pm,program_registration pr
+		where pm.program_id=substring(pr.program_course_key,1,7) AND pm.program_id
+		like concat(#universityId#,'%') AND
+		pr.session_start_date = #sessionStartDate# AND
+		pr.session_end_date=#sessionEndDate# and pr.entity_id=#entityId#;
+	</select>
+
+	<select id="getBranchList" resultClass="ProgramMaster">
+		select distinct s.branch_id as programId,sst.component_description as
+		programName
+		from program_master pm,system_table_two sst,(select
+		pch.program_id,pch.branch_id,pch.program_course_key
+		from program_course_header pch where
+		pch.program_course_key in(
+		select
+		pr.program_course_key from program_registration pr WHERE
+		pr.session_start_date = #sessionStartDate# AND
+		pr.session_end_date=#sessionEndDate# and pr.entity_id=#entityId#))
+		as s where s.program_id=pm.program_id and pm.program_id=#programId# and
+		sst.component_code=s.branch_id
+		and sst.group_code='BRNCOD' AND sst.university_code=#universityId#;
+	</select>
+
+	<select id="getSpecializationList" resultClass="ProgramMaster"
+		parameterClass="ProgramMaster">
+		select distinct s.specialization_id as programId,sst1.component_description
+		as programName
+		from program_master pm,system_table_two sst,system_table_two sst1,(
+		select pch.program_id,pch.branch_id,pch.specialization_id
+		from program_course_header pch where
+		pch.program_course_key in(
+		select
+		pr.program_course_key from program_registration pr WHERE
+		pr.session_start_date = #sessionStartDate# AND
+		pr.session_end_date=#sessionEndDate# and pr.entity_id=#entityId#))
+		as s where s.program_id=pm.program_id and
+		s.program_id=#programId# and s.branch_id=#branchId# and sst.component_code=s.branch_id
+		and sst.group_code='BRNCOD' and sst1.component_code=s.specialization_id
+		and sst1.group_code='SPCLCD' AND sst1.university_code=#universityId#;;
+	</select>
+
+	<select id="getSemesterList" resultClass="ProgramMaster"
+		parameterClass="ProgramMaster">
+
+		select distinct pch.semester_code as semesterCode,stt.component_description
+		As semesterName from program_course_header pch,system_table_two stt
+		where pch.program_id=#programId# and pch.branch_id=#branchId# and
+		pch.specialization_id=#specializationId# and pch.program_course_key in
+		(select pr.program_course_key from program_registration pr WHERE
+		pr.session_start_date = #sessionStartDate# AND
+		pr.session_end_date=#sessionEndDate# and pr.entity_id=#entityId#)AND group_code = 'SEMCOD' AND
+		stt.component_code = pch.semester_code AND stt.university_code=#universityId#;;
+	</select>
+
+	<select id="getProgramToChange" resultClass="ProgramRegistrationDetails"
+		parameterClass="ProgramMaster">
+		select pr.program_course_key as programCourseKey,
+		pr.registration_start_date as registrationStartDate,
+		pr.last_date as registrationLastDate,
+		pr.addordropperiod as addDropPeriod,
+		pr.semester_start_date as semesterStartDate,
+		pr.semester_end_date as semesterEndDate,
+		pr.status as status
+		from program_registration pr where pr.program_course_key in(
+		select
+		pch.program_course_key from program_course_header pch where
+		pch.program_id=#programId# and pch.branch_id=#branchId# and
+		pch.specialization_id=#specializationId# and
+		pch.semester_code=#semesterCode#)AND pr.session_start_date =
+		#sessionStartDate# AND pr.session_end_date=#sessionEndDate# and pr.entity_id=#entityId#;
+	</select>
+
+	<update id="updateProgramDetails" parameterClass="ProgramRegistrationDetails">
+		update
+		program_registration set registration_start_date=
+		#registrationStartDate#,last_date=#registrationLastDate#,
+		addordropperiod=#addDropPeriod#,status=#status#,
+		modifier_id=#modifierId#,modification_time=Now()
+		where
+		program_course_key=#programCourseKey# AND session_start_date =
+		#sessionStartDate# AND session_end_date=#sessionEndDate# and entity_id=#entityId#;
+	</update>
+
+
+	<select id="checkStatus" resultClass="ProgramRegistrationDetails">
+		select pch.semester_status as sessionDate
+		from program_course_header pch where
+		pch.program_course_key=#programCourseKey#;
+	</select>
+
+</sqlMap>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) PrestagingActivity.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="647" height="352" creationComplete="setFirstFocus(entityCombo)" title="Prestaging Activity">	
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+<mx:Script source="asFiles/prestagingActivityAction.as"/>
+
+<mx:HTTPService id="httpXmlEntityList" method="post"
+        url="{url_DNS}/associatecoursewithinstructor/entityList.htm"
+        resultFormat="e4x"
+        result="entityResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+<mx:HTTPService id="httpXmlActivityList" method="post"
+        url="{url_DNS}/prestaging/getProgramActivity.htm"
+        resultFormat="e4x"
+        result="activityResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+
+<mx:HTTPService id="httpXmlProgramList" method="post"
+        url="{url_DNS}/associatecoursewithinstructor/programList.htm"
+        resultFormat="e4x"
+        result="programResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+
+<mx:HTTPService id="httpXmlSemesterList" method="post"
+        url="{url_DNS}/startActivity/getSemesterList.htm"
+        resultFormat="e4x"
+        result="semesterResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+     
+
+        
+<mx:HTTPService id="httpXmlStartActivity" method="post"
+        url="{url_DNS}/prestaging/startActivity.htm"
+        resultFormat="e4x"
+        result="startActivityResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+	
+<mx:HTTPService id="httpXmlSetDate" method="post"
+        url="{url_DNS}/prestaging/getSemesterDate.htm"
+        resultFormat="e4x"
+        result="semesterDateResultHandler(event)"
+        fault="faultHandler(event)"
+        useProxy="false"/>
+        
+	<mx:Canvas x="19" y="23" width="589" height="279">
+		<mx:Label x="18" y="31" text="{commonFunction.getConstants('entity')}*"/>
+		<mx:ComboBox x="117" y="28" id="entityCombo" toolTip="{entityCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="entityChange()" width="150"></mx:ComboBox>
+		<mx:Label x="316" y="31" text="{commonFunction.getConstants('activity')}*"/>
+		<mx:ComboBox x="415" y="28" id="activityCombo" toolTip="{activityCombo.text}" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150"></mx:ComboBox>
+		<mx:Label x="15.5" y="70" text="{commonFunction.getConstants('program')}*"/>
+		<mx:ComboBox x="117" y="67" id="programCombo" toolTip="{programCombo.text}" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" change="programChange()" width="150"></mx:ComboBox>
+		<mx:Label x="316" y="70" text="{commonFunction.getConstants('semester')}*"/>
+		<mx:ComboBox x="415" y="67" id="semesterCombo" toolTip="{semesterCombo.text}" enabled="false" selectedIndex="-1" prompt="{commonFunction.getConstants('select')}" width="150" change="setDates()"></mx:ComboBox>
+		<mx:Label x="157" y="116" text="{commonFunction.getConstants('semesterStartDate')}"/>
+		<mx:TextInput x="314" y="114" editable="false" id="semesterStartDateField" width="150"/>
+		<mx:Label x="157" y="144" text="{commonFunction.getConstants('semesterEndDate')}"/>
+		<mx:TextInput x="314" y="146" editable="false" id="semesterEndDateField" width="150"/>
+		<mx:Button x="157" y="200" label="{commonFunction.getConstants('start')}" id="startButton" enabled="false" click="startActivity()"/>
+        <mx:Button x="308" y="200" label="{commonFunction.getConstants('cancelButton')}" click="cancelFunction()"/>
+	</mx:Canvas>
+	<mx:Validator source="{entityCombo}" id="entityComboValidator" trigger="{startButton}" triggerEvent="click" property="selectedItem" required="true"/>
+	<mx:Validator source="{activityCombo}" id="activityComboValidator" trigger="{startButton}" triggerEvent="click" property="selectedItem" required="true"/>
+	<mx:Validator source="{programCombo}" id="programComboValidator" trigger="{startButton}" triggerEvent="click" property="selectedItem" required="true"/>
+	<mx:Validator source="{semesterCombo}" id="semesterComboValidator" trigger="{startButton}" triggerEvent="click" property="selectedItem" required="true"/>
+ </mx:Panel>

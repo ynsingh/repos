@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) InstructorCourseBuild.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"  
+		  width="640" height="280" creationComplete="moduleCreationCompleteHandler()">	
+		  
+		  <mx:HTTPService id="getSessionHttpService" method="POST"
+				url="{urlPrefix+'getSession.htm '}"
+				resultFormat="e4x"
+				showBusyCursor="true"
+				result="getSessionHttpResultHandler(event)"
+				fault="HttpServiceFaultHandler(event)"
+				useProxy="false"/>
+		<mx:HTTPService id="BuildInstructorCourseHttpService" method="POST"
+				url="{urlPrefix+'BuildInstructorCourse.htm '}"
+				resultFormat="e4x"
+				showBusyCursor="true"
+				result="BuildInstructorCourseHttpResultHandler(event)"
+				fault="HttpServiceFaultHandler(event)"
+				useProxy="false"/>	
+		<mx:HTTPService id="checkStatus" method="POST"
+				url="{urlPrefix+'checkStatus.htm '}"
+				resultFormat="e4x"
+				showBusyCursor="true"
+				result="checkStatusResultHandler(event)"
+				fault="HttpServiceFaultHandler(event)"
+				useProxy="false"/>	
+		
+	<mx:Script>
+		<![CDATA[
+			import programMaster.StartDate;
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import common.commonFunction;
+			import entityMaster.asFiles.CommonEntityFunctions;
+			
+			[Bindable]protected var urlPrefix:String;
+			private var sessionDetail:XML;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			/**
+ 			 * Method to fire the creationComplete event of the panel
+			 * This Function send request for get session start date and session end date
+			 * @Param Event(FlexEvent)
+ 			**/
+			private function moduleCreationCompleteHandler():void{
+				urlPrefix=commonFunction.getConstants('url')+"/buildinstructorcourse/";
+				getSessionHttpService.send(new Date());
+			}
+			
+			/**
+ 			 * Failure Handler
+ 			 * @Param Event(FaultEvent)
+ 			**/
+			public function HttpServiceFaultHandler(event:FaultEvent):void{
+				 Alert.show(commonFunction.getMessages('problemGetStartEndDates'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			/**
+ 			 * Success Handler for getSessionHttpService  
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			private function getSessionHttpResultHandler(event:ResultEvent):void{
+				sessionDetail=event.result as XML;
+				
+				if(sessionDetail.sessionConfirm == true){
+					Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('info'), 4, null,null,infoIcon);
+					this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+				}
+				var startDate:String = String(sessionDetail.SessionStartDate).substring(0,4);
+				var endDate:String = String(sessionDetail.SessionEndDate).substring(0,4);
+				this.title=resourceManager.getString("Messages","buildInstructorTitle",[startDate,endDate]);
+				buildButton.label=resourceManager.getString("Messages","buildInstructorButtonLevel",[startDate,endDate]);
+			}
+			
+			/**
+ 			 * Method to fire the click event of Button
+			 * This Function ask the confirmation for Buil Next Session
+ 			**/
+			public function onButtonClick():void{
+				Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, buildConfirm,questionIcon);
+			}
+			
+			/**
+ 			 * Confirmation Method to send request for Build Next Session
+ 			**/
+			public function buildConfirm(event:CloseEvent){
+				if(event.detail==Alert.YES){
+					checkStatus.send(new Date());
+				}
+			}
+			
+			/**
+ 			 * Success Handler for BuildInstructorCourseHttpService
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			private function BuildInstructorCourseHttpResultHandler(event:ResultEvent):void{
+				var resultData:XML = event.result as XML;
+				var msg:String=resultData.result.message;
+				var msgArr:Array=msg.split("/");
+				if(resultData.sessionConfirm == true){
+					Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+				}
+				
+				if(msgArr[0]=="datamissing"){
+					Alert.show(commonFunction.getMessages('dataMissing'),commonFunction.getMessages('info'),0,null,null,infoIcon);
+				}
+				else if(msgArr[0]=="success"){
+					Alert.show(resourceManager.getString("Messages","buildInstructorCourseSuccess",[(sessionDetail.SessionStartDate).substring(0,4)+" "+(sessionDetail.SessionEndDate).substring(0,4),msgArr[1],msgArr[2],msgArr[3]]),commonFunction.getMessages('success'),0,null,null,successIcon);
+				}
+				else if(msgArr[0]=="error"){
+					Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('failure'),0,null,null,infoIcon);
+				}
+				else if(msgArr[0]=="noRecordFoundOfLastSession"){
+					Alert.show(commonFunction.getMessages('noRecordFoundInLastSession'),commonFunction.getMessages('info'),0,null,null,infoIcon);
+				}
+				else{
+					Alert.show(commonFunction.getMessages('problemInService')+resultData.result.message,commonFunction.getMessages('failure'),0,null,null,errorIcon);
+				}
+			}
+			
+			/**
+ 			 * Success Handler for checkStatus Service
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			private function checkStatusResultHandler(event:ResultEvent):void{
+				var data:XML=event.result as XML;
+				var message:String=data.resultdata;
+				 
+				 if(data.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+        		
+				if(message=="run"){
+					var param:Object= new Object();
+					param["time"]=new Date();
+					param["sessionStartDate"]=sessionDetail.SessionStartDate;
+					param["sessionEndDate"]=sessionDetail.SessionEndDate;
+					BuildInstructorCourseHttpService.send(param);
+				}
+				else if(message=="buildPrevious"){
+        			Alert.show(resourceManager.getString("Messages","firstBuild",["Build Activity Master"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="allreadyBuild"){
+        			Alert.show(resourceManager.getString("Messages","allreadyBuild",["Instructor Course",sessionDetail.SessionStartDate+" "+sessionDetail.SessionEndDate]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="noSequence"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["YEPCOD","3"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="NOProcessCode"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["YEPCOD","4"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else{
+        			Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+        		}
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas x="21" y="27" width="572" height="184" styleName="BorderCanvas">
+		<mx:Button x="109" y="78" id="buildButton" click="onButtonClick()"/>
+		<mx:Button x="332" y="77" label="{commonFunction.getConstants('cancelButton')}" click="{parent.removeChild(this)}"/>
+	</mx:Canvas>
+</mx:Panel>

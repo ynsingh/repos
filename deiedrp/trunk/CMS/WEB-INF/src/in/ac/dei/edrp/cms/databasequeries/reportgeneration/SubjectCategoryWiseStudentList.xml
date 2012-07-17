@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+        PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="subjectCategoryWiseStudentList">
+ 
+    <select id="getCurrentSession" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        select substring(start_date,1,4) as sessionStartDate, substring(end_date,1,4) as sessionEndDate
+		from university_master 
+		where university_code=#universityId# and current_status='1';
+   </select>
+   
+   <select id="getSemesterDates" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+       <!--  select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate
+		from program_registration
+		where substring(session_start_date,1,4)=#sessionStartDate# and 
+		substring(session_end_date, 1,4)=#sessionEndDate# and university_id=#universityId# and 
+		status='ACT' and program_course_key in (Select program_course_key from program_course_header
+		where program_id=#programId# and branch_id=#branchId# and 
+		specialization_id=#specializationId# and semester_code=#semesterCode# and semester_status='ACT');
+		-->
+		select semester_start_date as semesterStartDate, semester_end_date as semesterEndDate
+		from program_registration
+		where session_start_date=#sessionStartDate# and 
+		session_end_date=#sessionEndDate# and university_id=#universityId# and 
+		status='ACT' and program_course_key in (Select program_course_key from program_course_header
+		where program_id=#programId# and branch_id=#branchId# and 
+		specialization_id=#specializationId# and semester_code=#semesterCode# and semester_status='ACT');
+   </select>
+    
+    <select id="getCourseGroupList" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        Select distinct cm.subject_wise_group as courseGroup
+		from program_course_detail pcd join course_master cm ON
+		pcd.course_code=cm.course_code and pcd.program_course_key  IN (Select program_course_key from program_course_header
+		where program_id=#programId# and branch_id=#branchId# and specialization_id=#specializationId# and semester_code = #semesterCode#);
+   </select>
+   
+   <select id="getStudentListCategoryGenderWise" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        Select ct.gender as gender, IFNULL (ct.cat, 'Total') as category, count(sm.gender) As total from
+		 (select k.component_code as cat, sttf.component_code as gender from (select stt.component_code as component_code from
+		 system_table_two stt where group_code='STDCTG') k cross join
+		 (select stt.component_code as component_code from system_table_two stt where group_code='GENDER') sttf  ) ct left join
+		student_master sm ON sm.category_code= ct.cat AND sm.gender = ct.gender
+		AND sm.parent_entity=#entityId#  AND sm.status='ACT' AND  sm.enrollment_number in
+		 (select distinct sp.enrollment_number from student_program sp, student_course sc
+		  where sp.program_id =#programId# AND sp.branch_id =#branchId# AND sp.entity_id=#entityId# AND (substring(sc.course_code,1,3) LIKE #courseGroup#) AND
+		 semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# AND sp.roll_number=sc.roll_number)
+		  group by ct.gender, ct.cat with rollup having ct.gender in (select distinct component_code from system_table_two where group_code='GENDER');        
+   </select>
+   
+   <select id="getStudentListCategoryWise" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+        Select IFNULL (ct.cat, 'Total') as category, count(sm.category_code) As total from
+		 (select component_code as cat from
+		 system_table_two stt where group_code='STDCTG') ct left join
+		 student_master sm
+		 ON sm.category_code= ct.cat		
+		AND sm.parent_entity=#entityId#  AND sm.status='ACT' AND  sm.enrollment_number in
+		 (select distinct sp.enrollment_number from student_program sp, student_course sc
+		  where sp.program_id =#programId# AND sp.branch_id =#branchId# AND sp.entity_id=#entityId# AND (substring(sc.course_code,1,3) LIKE #courseGroup#) AND
+		 semester_start_date=#semesterStartDate# AND semester_end_date=#semesterEndDate# AND sp.roll_number=sc.roll_number)
+		  group by ct.cat with rollup ;                
+   </select>
+   
+   <select id="getEntityInfo" resultClass="in.ac.dei.edrp.cms.domain.reportgeneration.SubjectWiseMeritList">
+   		select entity_code as entityCode from entity_master where entity_id=#entityId#;
+   </select>   
+</sqlMap>

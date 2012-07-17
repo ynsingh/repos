@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="888" height="622" creationComplete="onCreationComplete()" title="Add or Drop Courses" fontFamily="Verdana" fontSize="12" color="#000000">
+	<mx:Script source="asFiles/AddDropCoursesAction.as"/>
+	
+	<mx:HTTPService id="getCourseDetails"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{urlP}getStudentCourseList.htm"
+		result="getStudentCourseSuccess(event)"
+		fault="fault(event)"/>
+	
+	<mx:HTTPService id="getStudentProgramDetails"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{urlP}getStudentDetailsList.htm"
+		result="getStudentDetailsSuccess(event)"
+		fault="fault(event)"/>
+	
+	<mx:HTTPService id="getAvailbaleCourse"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{urlP}getCourseAvailable.htm"
+		result="getAvailbaleCourseSuccess(event)"
+		fault="fault(event)"/>
+		
+	<mx:HTTPService id="addDropCourse"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		method="POST"
+		url="{urlP}addDropStudentCourse.htm"
+		result="addDropCourseSuccess(event)"
+		fault="fault(event)"/>
+	
+	<mx:HTTPService id="getCourseTypeSummary" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCourseTypeSummary.htm'}"
+        resultFormat="e4x"
+        result="typeSummarySuccess(event)"
+        fault="fault(event)"
+        useProxy="false"/>        
+        
+	<mx:HTTPService id="getTermDetailsSummary" method="post"
+        url="{commonFunction.getConstants('url')+'/registrationform/getCreditDetailsFromTermDetails.htm'}"
+        resultFormat="e4x"
+        result="termSummarySuccess(event)"
+        fault="fault(event)"
+        useProxy="false"/>
+	
+	<mx:Label x="154" y="21" text="Enter Roll No./Registration No."/>
+	<mx:TextInput id="regNoText" x="355" y="19" width="200"/>
+	<mx:Button x="563" y="19" label="Submit" id="regSubmitButton" click="onRegSubmit()"/>
+	<mx:Button x="644" y="19" label="Cancel" id="regCancelButton" click="onRegCancel(ce)" enabled="false"/>
+	
+	<mx:Canvas styleName="SimpleCanvas" id="dropCourseCanvas" visible="false" y="60" width="754" x="57" height="491">
+		    
+		<mx:Label x="47" y="10" text="Name"/>
+		<mx:Label x="142" y="10" id="nameLabel" fontWeight="bold"/>
+		<mx:Label x="47" y="40" text="Entity"/>
+		<mx:Label x="142" y="40" id="entityLabel" fontWeight="bold"/>
+		<mx:Label x="47" y="70" text="Program"/>
+		<mx:Label x="142" y="70" id="programLabel" fontWeight="bold"/>
+		<mx:Label x="435" y="70" text="Branch"/>
+		<mx:Label x="505" y="70" id="branchLabel" fontWeight="bold"/>
+		<mx:Label x="47" y="100" text="Specialization"/>
+		<mx:Label x="142" y="100" id="specializationLabel" fontWeight="bold"/>
+		<mx:Label x="435" y="100" text="Semester"/>
+		<mx:Label x="505" y="100" id="semesterLabel" fontWeight="bold"/>
+		
+		<mx:Label x="50" y="151" text="Select course you want to Drop"/>
+		<mx:ComboBox toolTip="{dropCourseCombo.text}" id="dropCourseCombo" prompt="{commonFunction.getConstants('select')}" change="onDropCourseSelect()" x="257" y="151" width="200" />
+		<!--<mx:Label x="463" y="151" text="{params['courseCode']}"/>
+		<mx:Label x="559" y="151" text="Course Credits"/>
+		<mx:Label x="662" y="151" text="{courseXML.Details.(courseName==dropCourseCombo.selectedLabel).credits+''}"/>-->
+		
+		<mx:Canvas styleName="GridCanvas" id="addCourseCanvas" visible="false" x="52" y="193" height="241" width="650">
+			<mx:LinkButton enabled="false" x="37" y="202" click="onAddDropSubmit()" id="addDropSubmitButton" label="Submit"/>
+			<mx:DataGrid id="addCourseGrid" x="15" y="39" height="150" resizableColumns="true"  horizontalScrollPolicy="off" textAlign="center" sortableColumns="true" draggableColumns="false" editable="true">
+				<mx:columns>
+				    <mx:DataGridColumn  rendererIsEditor="true" width="20" textAlign="center" editorDataField="selected" sortable="false" dataField="select" headerText="">
+				    	<mx:itemRenderer>
+					      	<mx:Component>
+					      		<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" change="commonFunction.editDeleteEnable(event,outerDocument.addCourseGrid,[],[outerDocument.addDropSubmitButton])">
+					      		<mx:Script>
+					      			<![CDATA[
+					      				import common.commonFunction;
+					      			]]>
+					      		</mx:Script>	
+					      		</mx:CheckBox>
+					      	</mx:Component>
+				    	</mx:itemRenderer>
+					</mx:DataGridColumn>
+					<mx:DataGridColumn editable="false" width="150" showDataTips="true" headerText="Course Code" dataField="courseCode"/>
+					<mx:DataGridColumn editable="false" width="200" showDataTips="true" headerText="Course Name" dataField="courseName"/>
+					<mx:DataGridColumn editable="false" width="150" showDataTips="true" headerText="Course Type" dataField="courseType"/>
+					<mx:DataGridColumn editable="false" width="100" showDataTips="true" headerText="Credits" dataField="credits"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:Label x="14" y="8" text="Course Group"/>
+			<mx:Label id="courseGroupLabel" x="115" y="8" toolTip="{courseGroupLabel.text}" width="243" fontWeight="bold" fontStyle="italic"/>
+			<mx:Label x="380" y="8" text="Min Credits"/>
+			<mx:Label id="minCreditLabel" x="464" y="8" fontWeight="bold" fontStyle="italic" width="30"/>
+			<mx:Label x="516" y="8" text="Max Credits"/>
+			<mx:Label id="maxCreditLabel" x="604" y="8" fontWeight="bold" fontStyle="italic" width="30"/>
+		</mx:Canvas>
+    </mx:Canvas>
+</mx:Panel>

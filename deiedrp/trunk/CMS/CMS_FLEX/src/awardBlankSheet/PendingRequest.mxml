@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) PendingRequest.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:TitleWindow layout="absolute" styleName="PopUpTitleWindow" xmlns:mx="http://www.adobe.com/2006/mxml" width="{pendingListGrid.width+50}" height="370" 
+	creationComplete="onCreationComplete()" title="{commonFunction.getConstants('pendingAwardBlank')}" showCloseButton="true" close="PopUpManager.removePopUp(this);">
+	    
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			import mx.managers.PopUpManager;
+			import mx.collections.ArrayCollection;
+			import common.commonFunction;
+			public var refFunc1:Function;
+			public var refFunc2:Function;
+			public var dataArray:ArrayCollection;
+			public var approveFunction:Function;
+			public var rejectFunction:Function;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			
+			public function onCreationComplete():void
+			{
+				pendingListGrid.dataProvider=dataArray;
+			}
+			
+			public function approveRequest():void{
+				Alert.show(commonFunction.getMessages('approveConfirm'), commonFunction.getMessages('confirm'), 3, this, approveConfirm,questionIcon);	
+			}
+			
+			public function approveConfirm(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					approveFunction.call();
+				}
+			}			
+						
+		]]>
+	</mx:Script>
+	<mx:AdvancedDataGrid id="pendingListGrid" x="10" y="17" height="240" allowMultipleSelection="true" editable="true">
+		<mx:columns>
+			<mx:AdvancedDataGridColumn  rendererIsEditor="true" width="20" textAlign="center" editorDataField="selected" sortable="false" dataField="select" headerText="">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox toolTip="{commonFunction.getConstants('select')}" 
+							change="AdvancedGridOperations.editDeleteEnable(event,outerDocument.pendingListGrid,[outerDocument.approveButton, outerDocument.rejectButton, outerDocument.showPendingButton],[new LinkButton])">
+							<mx:Script>
+								<![CDATA[
+									import common.commonFunction;
+									import mx.controls.LinkButton;									
+								
+								 ]]>
+						    </mx:Script>
+						</mx:CheckBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:AdvancedDataGridColumn>
+			<mx:AdvancedDataGridColumn showDataTips="true" headerText="{commonFunction.getConstants('courseCode')}" dataField="courseCode" width="100" editable="false" textAlign="center"/>
+			<mx:AdvancedDataGridColumn showDataTips="true" headerText="{commonFunction.getConstants('courseName')}" dataField="courseName" width="200" editable="false" textAlign="center"/>
+			<mx:AdvancedDataGridColumn showDataTips="true" headerText="{commonFunction.getConstants('awardBlankType')}" dataField="displayTypeDescription" width="140" editable="false" textAlign="center"/>
+			<mx:AdvancedDataGridColumn showDataTips="true" headerText="{commonFunction.getConstants('senderName')}" dataField="employeeName" width="200" editable="false" textAlign="center"/>
+		</mx:columns>		
+	</mx:AdvancedDataGrid>
+	<mx:LinkButton x="68" y="278" label="{commonFunction.getConstants('displayPDF')}" id="showPendingButton" enabled="false" click="refFunc1('PL');refFunc2();"/>
+	<mx:LinkButton x="205" y="278" label="{commonFunction.getConstants('approve')}" id="approveButton" enabled="false" click="approveRequest()"/>
+	<mx:LinkButton x="299" y="278" label="{commonFunction.getConstants('reject')}" id="rejectButton" enabled="false" click="rejectFunction()"/>
+	<mx:LinkButton x="374" y="278" label="{commonFunction.getConstants('cancelButton')}" id="cancelPendingButton" enabled="true" click="PopUpManager.removePopUp(this);"/>	
+</mx:TitleWindow>
+

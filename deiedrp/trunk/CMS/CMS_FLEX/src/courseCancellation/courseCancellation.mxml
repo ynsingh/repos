@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**
+ * @(#) courseCancellation.mxml
+ * Author :Mandeep Sodhi
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *	
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="1252" height="556" creationComplete="onCreationComplete()" xmlns:common="common.*">
+<mx:Script source="asFiles/courseCancellationAs.as"/>
+	  <mx:HTTPService id="getApprovedCourseCode" method="POST"
+	       url="{commonFunction.getConstants('url')}/coursegradelimit/getApprovedCourseCode.htm"
+	       resultFormat="e4x"
+	       result="onApprovedCourseCodeSuccess(event)"
+	       fault="onFailure(event)"
+	       useProxy="false"
+	       /> 
+	       
+	   <mx:HTTPService id="getApprovedCourseDetails" method="POST"
+	       url="{commonFunction.getConstants('url')}/coursegradelimit/getApprovedCourseCode.htm"
+	        resultFormat="e4x"
+	        result="onApprovedCourseDetailsSuccess(event)"
+	        fault="onFailure(event)"
+	        useProxy="false"
+	        />  
+	        
+	   	   <mx:HTTPService id="updateCourseDetails" method="POST"
+	       url="{commonFunction.getConstants('url')}/coursegradelimit/updateCourseDetails.htm"
+	        resultFormat="e4x"
+	        result="onChangingCourseStatusSuccess(event)"
+	        fault="onFailure(event)"
+	        useProxy="false"
+	        />        
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	<mx:StringValidator id="courseComboValidate" source="{courseCombo}" minLength="6" maxLength="8" property="text" trigger="{okButton}" triggerEvent="click"/>
+	<mx:Canvas styleName="GridCanvas" id="gridCanvas" visible="false" x="41" y="167" width="1123" height="324">
+	
+	<mx:DataGrid id="courseGridId" x="36.5" y="45" height="268" sortableColumns="true" editable="true" resizableColumns="true" width="1000">
+	<mx:columns>
+		<mx:DataGridColumn rendererIsEditor="true" resizable="false" sortable="false" width="20" textAlign="center" editorDataField="selected" dataField="select" headerText="">
+			<mx:itemRenderer>
+				<mx:Component>
+							<mx:CheckBox toolTip="{commonFunction.getConstants('select')}"  change="commonFunction.editDeleteEnable(event,outerDocument.courseGridId,[],[outerDocument.removeButton])">
+		    					<mx:Script>
+		    						<![CDATA[
+		    							import common.commonFunction;
+		    							import mx.controls.*;
+		    						]]>
+		    					</mx:Script>
+		    				</mx:CheckBox>
+				</mx:Component>
+			</mx:itemRenderer>
+		</mx:DataGridColumn>
+		
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('courseCode')}" editable="false" dataField="courseCode"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('entityName')}" editable="false" dataField="entityName"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('programName')}" editable="false" dataField="programName"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('branchName')}" editable="false" dataField="branchName"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('specialization')}" editable="false" dataField="SpecializationName"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('semester')}" editable="false" dataField="semester"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('semStartDate')}" editable="false" dataField="semStart"/>
+		 <mx:DataGridColumn width="110" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('semesterEndDate')}" editable="false" dataField="semEnd"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('approvedBy')}" editable="false" dataField="approvedBy"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('status')}" editable="false" dataField="status"/>
+		 <mx:DataGridColumn width="90" textAlign="left" sortable="false" showDataTips="true" headerText="{commonFunction.getConstants('displayType')}" editable="false" dataField="displayType"/>
+		           
+		
+	</mx:columns>	
+	</mx:DataGrid>
+	
+	<mx:LinkButton enabled="false" x="900.5" y="10" id="removeButton" click="onCancelApproval()" label="{commonFunction.getConstants('rejectApproval')}"/>
+	</mx:Canvas>
+	<mx:Canvas x="41" y="10" width="424" styleName="SimpleCanvas" height="149">
+		<mx:Button x="251" y="103" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+		<mx:Button x="161.5" y="103" label="{commonFunction.getConstants('okButton')}"  id="okButton" click="onOkClick()"/>
+		<mx:Label x="28" y="35.5" text="{commonFunction.getConstants('course_code')} :"/>
+		<common:AutoCompleteCB id="courseCombo" x="161.5" y="32.5" fontWeight="normal"/>
+		
+	</mx:Canvas>
+	
+</mx:Panel>

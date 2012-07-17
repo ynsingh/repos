@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+	<!--
+
+* @(#) StudentIssue.xml
+
+* @Author :Rohit
+
+* @Date :05/09/2011
+
+* Version 1.0
+
+* @Author :Ashish Mohan
+
+* @Date :04/02/2012
+
+* Version 2.0
+
+* Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+
+* All Rights Reserved.
+
+*
+
+* Redistribution and use in source and binary forms, with or
+
+* without modification, are permitted provided that the following
+
+* conditions are met:
+
+*
+
+* Redistributions of source code must retain the above copyright
+
+* notice, this list of conditions and the following disclaimer.
+
+*
+
+* Redistribution in binary form must reproducuce the above copyright
+
+* notice, this list of conditions and the following disclaimer in
+
+* the documentation and/or other materials provided with the
+
+* distribution.
+
+*
+
+*
+
+* THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+
+* OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+
+* DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+
+* FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+
+* CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+
+* OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+
+* BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+
+* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+
+* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+
+* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*
+
+* Contributors: Members of EdRP, Dayalbagh Educational Institute
+
+*/
+
+-->
+
+<sqlMap namespace="studentIssue">
+	<typeAlias alias="studentIssue"
+		type="in.ac.dei.edrp.cms.domain.studentissue.StudentIssueInfoGetter" />
+
+
+	<select id="getRollList" resultClass="studentIssue">
+		select distinct roll_number
+		as rollNo from student_program where program_id like #universityCode#;
+	
+	</select>
+
+	<select id="getIssueRecords" resultClass="studentIssue">
+		select em.entity_name
+		as entity,em.entity_id as entityId,si.roll_number as
+		rollNo,si.issue_id as
+		issueId,
+		sys5.component_code as
+		issueCode,sys5.component_description as issue,
+		si.program_course_key as
+		programCourseKey,
+		sys4.component_code as
+		penalityId,sys4.component_description as penalityCode,
+		sys4.dummy_flag_one as penalityFlag,
+		si.penality_course_code1 as
+		penalityCourse1,
+		si.penality_course_code2 as
+		penalityCourse2,si.penality_course_code3 as penalityCourse3,
+		si.penality_course_code4 as penalityCourse4,si.semester_start_date as
+		semesterStartDate,
+		si.semester_end_date as semesterEndDate,si.remarks
+		as remarks,
+		pm.program_name as programName,sys1.component_description
+		as branchName,
+		sys2.component_description as
+		specializationName,sys3.component_description as semesterName,
+		si.issue_status as issueStatus
+		from student_issue
+		si,program_course_header pch,program_master pm,
+		system_table_two
+		sys1,system_table_two sys2,system_table_two sys3,
+		system_table_two
+		sys4,system_table_two sys5,entity_master em
+		where
+		sys1.component_code=pch.branch_id and sys1.group_code="BRNCOD" and
+		sys2.component_code=pch.specialization_id and sys2.group_code="SPCLCD"
+		and
+		sys3.component_code=pch.semester_code and sys3.group_code="SEMCOD"
+		and
+		pm.program_id=pch.program_id and
+		pch.program_course_key=si.program_course_key and
+		case when
+		si.penality_code is not null
+		then (sys4.component_code=si.penality_code
+		and sys4.group_code='PENCOD')
+		else(sys4.group_code='PENCOD')end
+		AND
+		sys5.component_code=si.issue_code and
+		sys5.group_code='ISUCOD' and
+		sys1.university_code=sys2.university_code
+		and
+		sys2.university_code=sys3.university_code and
+		sys3.university_code=sys4.university_code
+		and
+		sys4.university_code=sys5.university_code and
+		sys5.university_code=#universityCode#
+		and si.entity_id=em.entity_id and
+		si.roll_number=#rollNo# group by si.roll_number,si.issue_id;
+	</select>
+
+
+	<delete id="deleteRecords">
+		delete from student_issue
+		where
+		roll_number=#rollNo#
+		and issue_id=#issueId#;
+	    </delete>
+
+	<select id="getIssueCodes" resultClass="studentIssue">
+		select distinct
+		component_code as issueCode,component_description as
+		issue
+		from
+		system_table_two
+		where
+		group_code=#groupCode# and active='1' and
+		university_code=#universityId#;
+		
+		</select>
+
+	<select id="getPenalityCodes" resultClass="studentIssue">
+
+		select distinct
+		component_code as penalityId,component_description as
+		penalityCode,
+		dummy_flag_one as penalityFlag
+		from system_table_two
+		where
+		group_code=#groupCode# and university_code=#universityCode# and
+		active='1';
+		</select>
+
+	<select id="getCourseList" resultClass="studentIssue">
+
+		select Distinct
+		course_code as courseCode
+		from student_course
+		where roll_number=#rollNo#
+		and program_course_key=#programCourseKey# and
+		course_status!='PAS';
+		</select>
+
+	<select id="getCourseLists" resultClass="studentIssue">
+
+		select Distinct
+		sc.course_code as courseCode
+		from student_course
+		sc,program_course_header pch
+		where sc.roll_number=#rollNo#
+		and
+		sc.program_course_key=pch.program_course_key
+		and
+		pch.program_id=#programId# and pch.branch_id=#branchId# and
+		pch.specialization_id=#specializationId#
+		and
+		pch.semester_code=#semesterId# and
+		sc.course_status!='PAS';		
+		</select>
+
+	<update id="updateRecord">
+		update student_issue
+		set
+		penality_code=#penalityCode#,penality_course_code1=#penalityCourse1#,penality_course_code2=#penalityCourse2#,
+		penality_course_code3
+		=#penalityCourse3#,penality_course_code4=#penalityCourse4#,
+		remarks=#remarks#
+		where
+		roll_number=#rollNo# and issue_id=#issueId#;
+	</update>
+
+
+	<select id="getDateList" resultClass="studentIssue">
+		Select
+		session_start_date as
+		sessionStartDate,session_end_date as sessionEndDate from
+		program_registration
+		where program_course_key=#programCourseKey# and
+		university_id=#universityCode# and
+		semester_start_date=#semesterStartDate#
+		and
+		semester_end_date=#semesterEndDate#;
+
+	</select>
+
+
+	<select id="getEntityName" resultClass="studentIssue">
+		select distinct
+		em.entity_name as entity,sp.entity_id as entityId from
+		entity_master
+		em,student_program sp
+		where sp.program_status='ACT' and
+		roll_number=#rollNo# and
+		sp.entity_id=em.entity_id;
+	</select>
+
+
+
+	<select id="getProgramList" resultClass="studentIssue">
+
+		select distinct
+		pm.program_name
+		as programName,pm.program_id as programId
+		from
+		program_master
+		pm,student_program sp
+		where roll_number=#rollNo# and
+		program_status='ACT' and
+		sp.program_id=pm.program_id;
+		</select>
+
+	<select id="getBranchList" resultClass="studentIssue">
+
+		select
+		distinct
+		sys.component_description as branchName,sys.component_code as
+		branchId
+		from system_table_two sys,student_program sp
+		where
+		sp.roll_number=#rollNo# and sp.program_id=#programId# and
+		sp.program_status='ACT'
+		and sp.branch_id=sys.component_code and
+		sys.group_code='BRNCOD';
+		</select>
+
+	<select id="getSpecializationList" resultClass="studentIssue">
+
+		select
+		distinct
+		sys.component_description as specializationName,sys.component_code as
+		specializationId
+		from system_table_two sys,student_program sp
+		where
+		sp.roll_number=#rollNo# and program_id=#programId# and
+		program_status='ACT'
+		and sp.specialization_id=sys.component_code and
+		sys.group_code='SPCLCD' and
+		sp.branch_id=#branchId#;
+		</select>
+
+	<select id="getSemesterList" resultClass="studentIssue">
+
+		select
+		distinct
+		sys.component_description as semesterName,sys.component_code as
+		semesterId
+		from system_table_two sys,program_course_header pch
+		where
+		sys.component_code=pch.semester_code and
+		pch.program_course_key in
+		(select distinct srsh.program_course_key from
+		student_registration_semester_header srsh
+		where
+		srsh.roll_number=#rollNo# and srsh.program_course_key in (select
+		program_course_key from program_course_header
+		where
+		program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId#));
+		</select>
+
+	<select id="getDates" resultClass="studentIssue">
+
+		SELECT srsh.session_start_date
+		as
+		semesterStartDate,srsh.session_end_date as
+		semesterEndDate
+		FROM
+		program_course_header
+		pch,student_registration_semester_header srsh
+		where
+		roll_number=#rollNo# AND
+		pch.program_id=#programId# AND
+		pch.branch_id=#branchId# AND pch.specialization_id=#specializationId#
+		And pch.semester_code=#semesterId#
+		and
+		pch.program_course_key=srsh.program_course_key
+		AND
+		srsh.session_start_date =(select max(session_start_date)
+		from
+		student_registration_semester_header srsh2 where
+		roll_number=#rollNo#
+		and
+		srsh2.program_course_key=srsh.program_course_key);
+		</select>
+
+	<insert id="insertIssueDetails">
+		insert into student_issue
+		(roll_number,program_course_key,entity_id,issue_id,issue_code,penality_code,
+		semester_start_date,semester_end_date,penality_course_code1,penality_course_code2,
+		penality_course_code3,penality_course_code4,remarks,issue_status,penality_session_start_date,penality_session_end_date,issue_open_date,insert_time,creator_id)
+		values(#rollNo#,#programCourseKey#,#entityId#,#issueId#,#issue#,
+		#penalityCode#,#semesterStartDate#,#semesterEndDate#,#penalityCourse1#,
+		#penalityCourse2#,#penalityCourse3#,#penalityCourse4#,#remarks#,'OPN',#sessionStartDate#,#sessionEndDate#,#issueOpenDate#,now(),#userId#);
+	    </insert>
+
+	<update id="updateSRSHStatus">
+		update student_registration_semester_header
+		set
+		status=#srshStatus#
+		where roll_number=#rollNo# and entity_id=#entityId#
+		and
+		session_start_date=#semesterStartDate# and
+		session_end_date=#semesterEndDate# and
+		program_course_key=#programCourseKey#;
+	    </update>
+
+	<insert id="insertInStudentTracking">
+		Insert into student_tracking
+		values(#entityId#,#rollNo#,#programCourseKey#,#sequenceNo#,#issue#,'ACT',#semesterStartDate#,#semesterEndDate#,#sessionStartDate#,
+		#sessionEndDate#,#userId#,now(),#forCreatorActivity#,#forCreatorActivity#);
+	    </insert>
+
+	<update id="updateIssueDetails">
+		update student_issue
+		set
+		issue_status=#issueStatus#,penality_code=#penalityId#,penality_course_code1=#penalityCourse1#,penality_course_code2=#penalityCourse2#,
+		penality_course_code3=#penalityCourse3#,
+		penality_course_code4=#penalityCourse4#
+		where issue_id=#issueId# and
+		roll_number=#rollNo#;
+	    </update>
+
+	<update id="updateFinalGrade">
+		update student_course
+		set
+		course_status=#penalityCode#
+		where roll_number=#rollNo# and
+		program_course_key=#programCourseKey#
+		and
+		semester_start_date=#semesterStartDate#
+		and
+		semester_end_date=#semesterEndDate# and
+		course_code=#courseCode#;
+	    </update>
+
+	<update id="updateSRSHforfail">
+		update student_registration_semester_header
+		set
+		status='FAL'
+		where roll_number=#rollNo# and program_course_key in
+		(select
+		program_course_key from program_course_header
+		where
+		program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId#
+		and semester_code in
+		(select
+		Semester_code from program_term_details
+		where semester_group=(select
+		semester_group from program_term_details
+		where program_id=#programId#
+		and semester_code=#semesterId#))and
+		program_id=#programId#) and
+		session_start_date=#semesterStartDate# and
+		session_end_date=#semesterEndDate#;
+	    </update>
+
+	<update id="updateStatusInStudentProgram">
+		update student_program
+		set program_status='TRM'
+		where
+		program_id=#programId# and branch_id=#branchId# and
+		specialization_id=#specializationId# and
+		entity_id=#entityId# and
+		roll_number=#rollNo#;
+	    </update>
+
+</sqlMap>

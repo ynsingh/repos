@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#)resetSystemValues.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="{commonFunction.getConstants('resetSystemValues')}" 
+		  width="634" height="286" initialize="panel1_initializeHandler(event)">	
+		  
+		<mx:HTTPService id="resetSystemValue" method="POST"
+					url="{urlPrefix+'systemValue.htm '}"
+					resultFormat="e4x"
+					showBusyCursor="true"
+					result="resultHandler(event)"
+					fault="faultHandler(event)"
+					useProxy="false"/>			
+		
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import common.commonFunction;
+			
+			[Bindable]protected var urlPrefix:String;
+			
+			[Embed(source="/images/error.png")]private var errorIcon:Class;
+			[Embed(source="/images/success.png")]private var successIcon:Class;
+			[Embed(source="/images/question.png")]private var questionIcon:Class;
+			[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;
+			
+			/**
+ 			 * Method to fire the initialize event of the panel
+			 * This Function set url
+			 *  @Param Event(FlexEvent)
+ 			**/
+			protected function panel1_initializeHandler(event:FlexEvent):void{
+				urlPrefix=commonFunction.getConstants('url')+"/systemvalue/";
+			}	
+			
+			/**
+ 			 * Failure Handler for resetSystemValue service
+ 			 * @Param Event(FaultEvent)
+ 			**/
+			public function faultHandler(event:FaultEvent):void{
+				 Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+			}
+			
+			/**
+ 			 * Method to fire the click event of Button
+			 * This Function ask the confirmation for reset system values
+			 * 
+ 			**/
+			public function onButtonClick():void{
+				Alert.show(commonFunction.getMessages('areyousure'), commonFunction.getMessages('confirm'), 3, this, resetConfirm,questionIcon);
+			}
+			
+			/**
+ 			 * Confirmation Method to send request for reset system values
+ 			**/
+			public function resetConfirm(event:CloseEvent){
+				if(event.detail==Alert.YES){
+					var params:Object = {};
+					params["date"]=new Date();
+					params["process"]="reset";
+					resetSystemValue.send(params);
+				}
+			}	
+			/**
+ 			 * Success Handler for resetSystemValue Service  
+ 			 * @Param Event(ResultEvent)
+ 			**/
+ 			public function resultHandler(event:ResultEvent):void{
+				 var data:XML=event.result as XML;
+				 var message:String=data.resultdata;
+				 if(data.sessionConfirm == true){
+	        		Alert.show(resourceManager.getString('Messages','sessionInactive'));
+					var url:String="";
+					url=commonFunction.getConstants('navigateHome');
+					var urlRequest:URLRequest=new URLRequest(url);
+					urlRequest.method=URLRequestMethod.POST;
+					navigateToURL(urlRequest,"_self");
+        		}
+        		if(message=="success"){
+        			Alert.show(commonFunction.getMessages('resetSystemValueSuccess'),commonFunction.getMessages('success'),4,null,null,successIcon);
+        		}
+        		else if(message=="buildPrevious"){
+        			Alert.show(resourceManager.getString("Messages","firstBuild",["Build Instructor Course"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="allreadyBuild"){
+        			Alert.show(commonFunction.getMessages('alreadyResetSystemValue'),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="noSequence"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["YEPCOD","4"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else if(message=="sqlError"){
+        			Alert.show(commonFunction.getMessages('sqlErrorCantReset'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+        		}
+        		else if(message=="NOProcessCode"){
+        			Alert.show(resourceManager.getString("Messages","NOProcessCode",["YEPCOD","5"]),commonFunction.getMessages('info'),4,null,null,infoIcon);
+        		}
+        		else{
+        			Alert.show(commonFunction.getMessages('problemInService'),commonFunction.getMessages('error'),4,null,null,errorIcon);
+        		}
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas x="21" y="27" width="572" height="184" styleName="BorderCanvas">
+		<mx:Button x="126" y="81" label="{commonFunction.getConstants('resetSystemValues')}" click="onButtonClick()"/>
+		<mx:Button x="304" y="81" label="{commonFunction.getConstants('cancelButton')}" click="{parent.removeChild(this)}"/>
+	</mx:Canvas>
+</mx:Panel>

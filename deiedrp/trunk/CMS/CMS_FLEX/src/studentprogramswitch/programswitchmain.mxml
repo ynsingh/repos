@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) ProgramSwitch.mxml
+ * Author : Arush
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+
+
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal" width="1152" height="520" 
+	creationComplete="applicationCreationHandler()" title="Student Program Switch"  >
+	
+		<mx:Script source="AsFiles/ProgramSwitch.as"/>
+
+
+			<mx:HTTPService id="getSwitches" method="POST"
+		url="{urlPrefix+'getSwitches.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="OngetSwitchesSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+					<mx:HTTPService id="getsemesterdate" method="POST"
+		url="{urlPrefix+'getsemesterdate.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getsemesterdateSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+			<mx:HTTPService id="getstudentlist" method="POST"
+		url="{urlPrefix+'getstudentlist.htm'}"
+		resultFormat="e4x"
+		showBusyCursor="true"
+		result="getstudentlistSuccess(event)"
+		fault="onFailure(event)"
+		useProxy="false"/>
+		
+	
+
+ <mx:Script>
+        <![CDATA[
+        	
+          		import common.commonFunction;
+            
+        ]]>
+    </mx:Script> 
+   
+	<mx:VBox height="100%" width="939">
+		<mx:Form width="313" height="104" verticalGap="10" verticalScrollPolicy="off">
+		<mx:FormHeading label="Search By"/>
+		<mx:FormItem label="Entity:"  >
+		<mx:TextInput id="entity" change="filter()" enabled="true" text="Search" focusIn="clearEntityInput()"/>		
+						
+		</mx:FormItem>
+		
+		<mx:FormItem label="Program:">
+			<mx:TextInput id="program" change="filter()" enabled="true" text="Search" focusIn="clearProgramInput()"/>
+		</mx:FormItem>
+		</mx:Form>
+		
+		<mx:Canvas width="925" height="339">
+			<mx:DataGrid x="10" y="30"  id="programSwitchGrid" horizontalScrollPolicy="off" editable="true"
+			 sortableColumns="true"  resizableColumns="true" draggableColumns="false" width="100%" height="254" >
+				<mx:columns>
+							<mx:DataGridColumn  rendererIsEditor="true" resizable="true" textAlign="center" sortable="false" 
+				editorDataField="selected" dataField="select" headerText="Select" width="100"  dataTipField="select" showDataTips="true">
+				<mx:itemRenderer>
+   	    			<mx:Component>  
+   						<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.programSwitchGrid,[outerDocument.submit],[new LinkButton])">
+ 						<mx:Script>
+        				<![CDATA[
+                    		import common.commonFunction;
+                            import mx.controls.LinkButton;
+                		]]>
+        				</mx:Script>
+        		</mx:CheckBox>
+	        </mx:Component>
+	        </mx:itemRenderer>
+	        </mx:DataGridColumn>
+					<mx:DataGridColumn editable="false"  headerText="Fm Entity" width="200"  dataField="fment" dataTipField="fment" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="Fm Program" width="300" dataField="fmpgm" dataTipField="fmpgm" showDataTips="true"/>
+					
+					<mx:DataGridColumn editable="false"  headerText="Fm Branch" width="200" dataField="fmbrn" dataTipField="fmbrn" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="Fm Spc" width="200" dataField="fmspc" dataTipField="fmspc" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="Fm Sem" width="200" dataField="fmsem" dataTipField="fmsem" showDataTips="true"/>
+					
+					<mx:DataGridColumn editable="false"  headerText="To Entity" width="200"  dataField="toent" dataTipField="toent" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="To Program" width="300" dataField="topgm" dataTipField="topgm" showDataTips="true"/>
+					
+					<mx:DataGridColumn editable="false" headerText="To Branch" width="200" dataField="tobrn" dataTipField="tobrn" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="To Spc" width="200" dataField="tospc"  dataTipField="tospc" showDataTips="true"/>
+					<mx:DataGridColumn editable="false" headerText="To Sem" width="200" dataField="tosem" dataTipField="tosem" showDataTips="true"/>
+				</mx:columns>
+			</mx:DataGrid>
+			<mx:LinkButton x="748" y="0" label="SUBMIT" height="22" click="LoadStudentforSwitch()" enabled="false" id="submit"/>
+		
+		
+			
+		</mx:Canvas>
+			
+		
+	</mx:VBox>
+	
+	
+	
+</mx:Panel>

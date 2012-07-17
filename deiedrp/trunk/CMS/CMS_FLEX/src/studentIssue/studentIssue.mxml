@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * @(#) studentIssue.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+ -->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:ns1="common.*" creationComplete="setFirstFocous()" title="{commonFunction.getConstants('studentIssue')}" layout="absolute" width="1064" height="392" >
+
+	<mx:Script>
+		<![CDATA[
+			import common.commonFunction;
+		]]>
+	</mx:Script>
+	
+		 <mx:HTTPService id="getRollNo" method="post"
+					url="{urlPrefix1}getRollNo.htm"
+					resultFormat="e4x"
+					result="getRollNoSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+	
+     	<mx:HTTPService id="getIssueDetails" method="post"
+					url="{commonFunction.getConstants('url')}/studentIssue/getIssueDetails.htm"
+					resultFormat="e4x"
+					result="onGridSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+		<mx:HTTPService id="deleteIssues" method="post"
+					url="{commonFunction.getConstants('url')}/studentIssue/deleteIssues.htm"
+					resultFormat="e4x"
+					result="onDeleteSuccess(event)"
+					fault="onFailure(event)"
+					useProxy="false"/>
+
+
+<mx:Script source="asFiles/studentIssueAction.as"/>
+
+
+	<mx:Label x="304" y="28" text="{commonFunction.getConstants('rollNumber')}"/>
+	<mx:Button x="304" y="71" label="{commonFunction.getConstants('submitButton')}" id="submitButton" click="showIssue()"/>
+	
+    <mx:Canvas styleName="GridCanvas" horizontalScrollPolicy="off" visible="false" id="manageCanvas" x="23" y="116" width="953" height="221">
+    <mx:Label text="{commonFunction.getConstants('manageIssues')}" top="6" left="17" fontWeight="bold"   height="27"/>
+    <mx:LinkButton label="{commonFunction.getConstants('openIssue')}" id="addButton" enabled="{!(deleteButton.enabled)}" x="722.5" y="12" width="106.5" click="openAddWindow()"/>
+    <mx:LinkButton label="{commonFunction.getConstants('closeIssue')}" enabled="false" id="editButton" x="827" y="12" width="106.5" click="openEditWindow()"/>   
+    <mx:LinkButton label="{commonFunction.getConstants('deleteButton')}" enabled="false" visible="false" id="deleteButton" x="841.5" y="12" width="97.5" click="deleteOrNot()"/>
+    <mx:DataGrid editable="true" id="studentIssueGrid" draggableColumns="false" textAlign="center" sortableColumns="true" x="18.5" y="41" verticalScrollPolicy="on" width="916" height="155">
+	<mx:columns>
+	<mx:DataGridColumn width="30" sortable="false" rendererIsEditor="true" textAlign="center" editorDataField="selected" headerText="" dataField="select">
+	<mx:itemRenderer>
+	<mx:Component>
+	<mx:CheckBox change="commonFunction.editDeleteEnable(event,outerDocument.studentIssueGrid,[outerDocument.editButton],[outerDocument.deleteButton])">
+	<mx:Script>
+	<![CDATA[
+			import common.commonFunction;
+			import mx.controls.*
+	]]>
+	</mx:Script>
+	</mx:CheckBox>
+	</mx:Component>
+	</mx:itemRenderer>
+	</mx:DataGridColumn>
+	<mx:DataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('program')}" dataField="program" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="105" headerText="{commonFunction.getConstants('branch')}" dataField="branch" showDataTips="true"/>
+	<mx:DataGridColumn editable="false" width="120" headerText="{commonFunction.getConstants('specialization')}" dataField="specialization" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="100" headerText="{commonFunction.getConstants('semester')}" dataField="semester" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="172" headerText="{commonFunction.getConstants('semesterStartDate')}" dataField="semesterStartDate" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="170" headerText="{commonFunction.getConstants('semesterEndDate')}" dataField="semesterEndDate" showDataTips="true" />
+	<mx:DataGridColumn editable="false" width="110" headerText="{commonFunction.getConstants('issueCode')}" dataField="issueCode" showDataTips="true"/>
+	<mx:DataGridColumn editable="false" width="100" headerText="{commonFunction.getConstants('issueStatus')}" dataField="issueStatus" showDataTips="true"/>
+    </mx:columns>
+	</mx:DataGrid>
+	</mx:Canvas>
+	
+	<mx:StringValidator maxLength="10" property="selectedLabel" id="rollNoValidator" source="{rollNoField}" required="true" trigger="{submitButton}" triggerEvent="click"/>
+	<ns1:AutoCompleteCB x="423" y="26" id="rollNoField" focusOut="checkValid()"/>
+	<mx:Button x="429" y="71" label="{commonFunction.getConstants('cancelButton')}" id="cancelbutton" click="cancel()"/>
+    </mx:Panel>

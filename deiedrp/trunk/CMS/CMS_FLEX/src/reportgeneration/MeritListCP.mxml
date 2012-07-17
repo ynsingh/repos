@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+/**
+ * @(#)MeritListCP.mxml
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproducuce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+-->
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" title="{commonFunction.getConstants('meritListCP')}" initialize="initializeEntityData()"  width="606" height="324">
+
+<mx:HTTPService id="entity" 
+	method="post" 
+	url="{commonFunction.getConstants('url')}/progresscardinfo/returnEntityInfo.htm" 
+	showBusyCursor="true"
+	useProxy="false" 
+	resultFormat="e4x" 
+	result="onSuccess(event)" 
+	fault="onfailure(event)"
+	/>
+	
+<mx:HTTPService id="requestProgram" 
+	method="post"
+	url="{commonFunction.getConstants('url')}/progresscardinfo/returnProgramInfo.htm"
+	showBusyCursor="true"
+	useProxy="false" 
+	resultFormat="e4x" 
+	result="onProgramSuccess(event)" 
+	fault="onfailure(event)"
+	/>
+	
+<mx:HTTPService id="branchListHttpService" 
+	method="POST"
+	url="{commonFunction.getConstants('url')}/courseMaster/getProgramBranches.htm"
+	resultFormat="e4x"
+	showBusyCursor="true"
+	result="branchListHttpServiceResultHandler(event)"
+	fault="onfailure(event)"
+	useProxy="false"/>	
+		
+<mx:HTTPService id="specializationListHttpService"
+	method="POST"
+	url="{commonFunction.getConstants('url')}/courseMaster/getProgramSpecializations.htm"
+	resultFormat="e4x"
+	showBusyCursor="true"
+	result="specializationListHttpServiceResultHandler(event)"
+	fault="onfailure(event)"
+	useProxy="false"/>
+	
+
+	
+
+	
+		
+<mx:HTTPService id="dataForGenerating" 
+	method="post"
+	url="{commonFunction.getConstants('url')}/performance/meritListBasedOnCP.htm"
+	showBusyCursor="true"
+	useProxy="false" 
+	resultFormat="e4x" 
+	result="onGenerationSuccess(event)" 
+	fault="onGenerateFail(event)"/>		
+							
+	
+	<mx:Label x="80" y="27" text="{commonFunction.getConstants('entity')}:" width="160"/>		
+	<mx:ComboBox id="entityId" x="243.5" y="24" change="getProgram()" prompt="{commonFunction.getConstants('select')}" width="160"/>
+			
+	<mx:Label x="80" y="64" text="{commonFunction.getConstants('program')}:"/>
+	<mx:ComboBox id="programId" width="160" x="243.5" y="61" prompt="{commonFunction.getConstants('select')}" change="getBranch()" enabled="false"/>			
+	
+	<mx:Label x="80" y="104" text="{commonFunction.getConstants('branch')}:"/>
+	<mx:ComboBox id="branchId" width="160" change="getSpecialization()" prompt="{commonFunction.getConstants('select')}" x="243" y="101" enabled="false"></mx:ComboBox>
+	
+	<mx:Label x="80" y="137" text="{commonFunction.getConstants('specialization')}:"/>
+	<mx:ComboBox id="specializationId" width="160" prompt="{commonFunction.getConstants('select')}" change="populateSession()" x="243" y="134" enabled="false"></mx:ComboBox>
+	
+	
+	<mx:Label x="80" y="174" text="{commonFunction.getConstants('session')}:"/>
+	<mx:ComboBox x="243" y="170" width="96.5" enabled="false" id="fromSessionId" change="changeToSession()" prompt="{commonFunction.getConstants('select')}"></mx:ComboBox>
+	
+	<mx:Label x="370" y="174" text="TO"/>
+	<mx:Label id="toSessionId" x="424.5" y="172" width="48"/>
+	
+	
+	
+	<mx:Button x="103" y="228" label="{commonFunction.getConstants('generateReport')}" id="generate" click="generateReport()" enabled="false"/>
+	<mx:Button x="283" y="228" label="{commonFunction.getConstants('resetButton')}" click="reset()"/>
+	<mx:Button x="424" y="228" label="{commonFunction.getConstants('cancelButton')}" click="this.parentDocument.loaderCanvas.removeAllChildren()"/>
+
+
+
+<mx:Script>
+	<![CDATA[
+		import mx.events.CloseEvent;
+		import common.commonFunction;
+		import mx.rpc.Fault;
+		import mx.collections.ArrayCollection;
+		import mx.rpc.events.FaultEvent;
+		import mx.controls.Alert;
+		import mx.rpc.events.ResultEvent;
+		public var obj : Object = {};
+		public var semesterSequence:int;
+		[Bindable]public var program:XML;
+		[Bindable]public var entityData : XML;
+		public var yearDataProvider:Array=new Array;
+		protected var branchList:XML;
+		protected var specializationList:XML;
+		public var report_session:String;
+		public var path:String;
+		[Embed(source="/images/error.png")]private var errorIcon:Class;
+		[Embed(source="/images/success.png")]private var successIcon:Class;
+		[Embed(source="/images/warning.png")]private var warningIcon:Class;
+		[Embed(source="/images/question.png")]private var questionIcon:Class;
+		[Embed(source="/images/infoIcon.png")]private var infoIcon:Class;	
+										
+		  
+		public function initializeEntityData() : void
+		{	
+			obj["time"] = new Date();
+			entity.send(obj);
+		}
+				
+		public function onSuccess(event:ResultEvent):void{							
+		entityData = event.result as XML;				
+		entityId.dataProvider = entityData.entity;
+		entityId.labelField="entityName";					
+		}
+		
+		public function onfailure(event:FaultEvent):void{			
+			Alert.show(commonFunction.getMessages('failureMessage'),commonFunction.getMessages('error'), 4, null,null,errorIcon);			
+		}
+		
+		public function getProgram() : void
+		{		
+			obj["entityId"] = entityId.selectedItem.entityId;
+			requestProgram.send(obj);
+			programId.enabled=true;
+			entityId.enabled=false;
+		}
+		
+		public function onProgramSuccess(event : ResultEvent):void
+		{			
+			 var programData:XML = event.result as XML;
+			 var noOfProgram:int=programData.program.length();
+			programId.dataProvider = programData.program;
+			programId.labelField = "programName";
+			if(noOfProgram==0)
+			{Alert.show(commonFunction.getMessages('noProgram'),commonFunction.getMessages('info'),4,null,null,infoIcon);
+			}
+					
+		}
+		
+		protected function getBranch():void
+			{
+				
+				obj["programId"]=programId.selectedItem.programId;
+				branchListHttpService.send(obj);
+				
+				programId.enabled=false;
+				entityId.enabled=false;
+				
+			}
+			
+		protected function branchListHttpServiceResultHandler(event:ResultEvent):void{
+				branchList = event.result as XML;
+				if(branchList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+				branchId.dataProvider.refresh();
+				branchId.dataProvider=branchList.Details.name;
+				branchId.enabled=true;
+			}
+			
+		public function getSpecialization() : void
+		{
+			obj["programId"]=programId.selectedItem.programId;	
+			obj["branchId"] = branchList.Details.(name==branchId.selectedLabel).id;
+			specializationListHttpService.send(obj);
+				
+				branchId.enabled=false;
+				programId.enabled=false;
+				entityId.enabled=false;
+		}
+				
+		
+		
+		protected function specializationListHttpServiceResultHandler(event:ResultEvent):void{
+				specializationList = event.result as XML;
+				if(specializationList.sessionConfirm == true){
+	        		Alert.show(commonFunction.getMessages('sessionInactive'),commonFunction.getMessages('error'), 4, null,null,errorIcon);
+	        		this.parentDocument.vStack.selectedIndex=0;
+					this.parentDocument.loaderCanvas.removeAllChildren();
+        		}
+        		
+				specializationId.dataProvider.refresh();
+				specializationId.dataProvider=specializationList.Details.name;
+				specializationId.enabled=true;
+				
+			}
+			
+		
+		
+		
+		
+		
+		public function populateSession():void
+		{		specializationId.enabled=false;
+				branchId.enabled=false;
+				programId.enabled=false;
+				entityId.enabled=false;				
+			
+				fromSessionId.enabled=true;		
+			var endMonth:Date=new Date();
+                var currentYear:int=int(endMonth.getFullYear());                
+                for(var year:int=currentYear; currentYear>=1950; currentYear--){
+                    yearDataProvider.push(year);
+                    year--;
+                }
+                fromSessionId.dataProvider = yearDataProvider;
+               
+               
+   			                               
+		}
+		
+		public function changeToSession():void{
+		generate.enabled=true;
+		toSessionId.text=(parseInt(fromSessionId.selectedLabel)+1).toString();
+		toSessionId.visible=true;
+		}
+		
+		
+	
+		
+		public function generateReport():void
+		{	obj["branchId"] = branchList.Details.(name==branchId.selectedLabel).id;
+			obj["specializationId"] = specializationList.Details.(name==specializationId.selectedLabel).id;		
+			obj["programId"] = programId.selectedItem.programId;
+			obj["entityId"] = entityId.selectedItem.entityId;
+			obj["session"]=toSessionId.text;
+			obj["branchName"] = branchId.selectedLabel;
+			obj["specializationName"] = specializationId.selectedLabel;		
+			obj["programName"] = programId.selectedLabel;
+			dataForGenerating.send(obj);
+		
+			report_session=fromSessionId.selectedLabel+"-"+(toSessionId.text).substr(2,2);
+			
+			path="/MeritListOnCPReport/"+programId.selectedLabel+ "-" +branchId.selectedLabel+ "-"
+				+specializationId.selectedLabel+"-"+toSessionId.text+".pdf"
+						
+		}
+		public function onGenerationSuccess(event : ResultEvent):void
+		{
+			Alert.show(commonFunction.getMessages('noRecordFound'),commonFunction.getMessages('info'),4,null,onOK,infoIcon);		
+		}
+		
+		public function onOK(event:CloseEvent):void{
+			reset();
+		}
+		
+		public function downloadPdf(event:CloseEvent):void{
+				if(event.detail==Alert.YES){
+					var file:FileReference=new FileReference;
+					file.download(new URLRequest(commonFunction.getConstants('url')+path));
+					Alert.show(commonFunction.getMessages('downloadSuccess'),commonFunction.getMessages('success'),4,null,null,successIcon);
+					
+				}
+			reset();
+					
+			} 
+		
+		public function onGenerateFail(event : FaultEvent):void
+		{	var check:XML=event.fault as XML;
+			if(check==null)
+			{
+			Alert.show(commonFunction.getMessages('generateDownload'),commonFunction.getMessages('success'),(Alert.YES|Alert.NO),null,downloadPdf,successIcon);
+			}
+			else
+			{Alert.show(commonFunction.getMessages('failToGenerate'),commonFunction.getMessages('error'), 4, null,onOK,errorIcon);}
+		}
+		
+		
+		public function reset():void{
+			entityId.selectedIndex=-1;
+			programId.selectedIndex=-1;
+			branchId.selectedIndex=-1;
+			specializationId.selectedIndex=-1;
+			
+			fromSessionId.selectedIndex=-1;
+			toSessionId.text="";
+			
+			generate.enabled=false;
+			entityId.enabled=true;
+			programId.enabled=false;
+			branchId.enabled=false;
+			specializationId.enabled=false;
+			
+			fromSessionId.enabled=false;	
+		}
+		
+		
+	]]>
+</mx:Script>
+	
+	
+
+
+</mx:Panel>

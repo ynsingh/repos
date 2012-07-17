@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+	<!--
+		/* * @(#) RemedialProcessing.xml * Copyright (c) 2011 EdRP, Dayalbagh
+		Educational Institute. * All Rights Reserved. * * Redistribution and
+		use in source and binary forms, with or * without modification, are
+		permitted provided that the following * conditions are met: * *
+		Redistributions of source code must retain the above copyright *
+		notice, this list of conditions and the following disclaimer. * *getStudentCourseList
+		Redistribution in binary form must reproduce the above copyright *
+		notice, this list of conditions and the following disclaimer in * the
+		documentation and/or other materials provided with the * distribution.
+		* * * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+		* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES *
+		OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE *
+		DISCLAIMED. IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE * FOR
+		ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR *
+		CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT * OF
+		SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR *
+		BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+		* WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+		* OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, *
+		EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. * * Contributors:
+		Members of EdRP, Dayalbagh Educational Institute */
+	-->
+<sqlMap namespace="remedialProcess">
+
+	<typeAlias alias="semesterBean" type="in.ac.dei.edrp.cms.domain.resultprocessing.PreProcessCourseList" />
+	<typeAlias alias="courseBean" type="in.ac.dei.edrp.cms.domain.resultprocessing.RemedialCourseBean" />
+	<typeAlias alias="remedialProcessBean" type="in.ac.dei.edrp.cms.domain.resultprocessing.PreProcessForResultBean" />
+	
+	<select id="getRemStudentList" resultClass="remedialProcessBean">
+		SELECT distinct srsh.roll_number rollNumber, srsh.attempt_number attemptNumber,
+		sp.enrollment_number enrollmentNumber
+		FROM student_registration_semester_header srsh,student_program sp
+		WHERE srsh.entity_id=#entityId# AND srsh.entity_id=sp.entity_id
+		AND sp.roll_number = srsh.roll_number AND sp.program_status='ACT'
+		AND srsh.program_course_key in (
+			SELECT program_course_key
+			FROM program_course_header pch
+			WHERE pch.program_id=#programId# AND pch.branch_id=#branchId#
+			AND pch.specialization_id=#specializationId# AND pch.semester_code in (
+				SELECT ptd1.semester_code semesterCode
+				FROM program_term_details ptd1
+				WHERE ptd1.program_id=pch.program_id AND ptd1.semester_group in (
+					SELECT DISTINCT semester_group
+					FROM program_term_details ptd2
+					WHERE ptd2.semester_code=#semesterCode# AND ptd1.program_id=ptd2.program_id
+				)
+			)
+			AND pch.semester_status='ACT' 
+		)
+		AND srsh.status IN (#semesterStatus#);
+    </select>
+    
+    <select id="getStudentDetails" resultClass="remedialProcessBean">
+		SELECT srsh.roll_number rollNumber,
+		srsh.attempt_number attemptNumber,srsh.registered_credit registeredCredit,
+		srsh.registered_theory_credit_excluding_audit registeredTheoryCreditExcludingAudit,
+		srsh.registered_practical_credit_excluding_audit registeredPracticalCreditExcludingAudit,
+		srsh.status semesterStatus
+		FROM student_program sp,student_registration_semester_header srsh
+		WHERE sp.entity_id=#entityId# and srsh.entity_id=sp.entity_id
+		and sp.program_id=#programId# and sp.branch_id=#branchId#
+		and sp.specialization_id=#specializationId# and sp.program_status='ACT'
+		and srsh.program_course_key=#programCourseKey# and srsh.session_start_date=#semesterStartDate# and
+		srsh.session_end_date=#semesterEndDate# and srsh.status IN (#semesterStatus#,'PAS')
+		and srsh.roll_number=sp.roll_number and srsh.roll_number=#rollNumber#
+    </select>
+    
+    <select id="getSemesterList" resultClass="semesterBean">
+		SELECT ptd1.semester_code semesterCode, pr.semester_start_date semesterStartDate,
+		pr.semester_end_date semesterEndDate
+		FROM program_term_details ptd1,program_registration pr
+		WHERE ptd1.program_id=#programId# AND ptd1.semester_group in (
+			SELECT DISTINCT semester_group
+			FROM program_term_details ptd2
+			WHERE ptd2.semester_code=#semesterCode# AND ptd1.program_id=ptd2.program_id
+		)
+		AND pr.status='ACT' AND pr.session_start_date=#sessionStartDate#
+		AND pr.session_end_date=#sessionEndDate# AND pr.program_course_key in (
+	        SELECT program_course_key
+	        FROM program_course_header pch
+	        WHERE pch.program_id=ptd1.program_id AND pch.branch_id=#branchId#
+	        AND pch.specialization_id=#specializationId# AND pch.semester_code=ptd1.semester_code
+	        AND pch.semester_status='ACT' 
+	    )
+		ORDER BY ptd1.semester_sequence
+	</select>
+	
+	<select id="getStudentCourseList" resultClass="courseBean">
+		SELECT sm.course_code courseCode,sc.student_status studentStatus,
+		cm.course_classification courseClassification,pcd.course_category courseType,
+		cm.credits credits,cm.result_system resultSystem,sm.earned_credits earnedCredits,
+		sm.total_marks totalMarks,sm.final_grade_point obtainedGrade
+		FROM course_master cm,student_course sc,student_marks_summary sm,
+		program_course_header pch, program_course_detail pcd
+		WHERE pch.program_id=#programId# AND pch.branch_id=#branchId#
+		AND pch.specialization_id=#specializationId# AND pch.semester_code=#semesterCode#
+		AND pch.program_course_key=pcd.program_course_key AND pcd.program_course_key=sm.program_course_key
+		AND pcd.program_course_key=sc.program_course_key AND sm.semester_start_date=#semesterStartDate#
+		AND sm.semester_end_date=#semesterEndDate# AND sm.roll_number=#rollNumber#
+		AND pcd.course_code=cm.course_code AND sm.course_code=pcd.course_code
+		AND sm.course_code=pcd.course_code AND sm.semester_start_date=sc.semester_start_date
+		AND sm.semester_end_date=sc.semester_end_date AND sm.roll_number=sc.roll_number
+		AND sm.course_code=sc.course_code
+		AND sc.entity_id = #entityId#
+	</select>
+
+	<update id="updateStudentMarksSummaryForRemedial">  
+		update student_marks_summary set total_marks=(total_internal),modifier_id=#userId#,modification_time=now() where 
+		roll_number=#rollNumber# and program_course_key=#programCourseKey# and semester_start_date=#semesterStartDate# 
+		and semester_end_date=#semesterEndDate# and course_code=#courseCode# 
+		and entity_id = #entityId#
+	</update>
+	
+	<update id="updateStudentMarksSummaryGradePointForRemedial">  
+		update student_marks_summary set final_grade_point=(select sy.component_description*1 from system_table_two sy where
+		sy.component_code=student_marks_summary.internal_grade and sy.group_code='GRADEP' and sy.university_code=#universityId#)
+		, modifier_id=#userId#,modification_time=now()
+		where roll_number=#rollNumber# and program_course_key=#programCourseKey#
+		and semester_start_date=#semesterStartDate# and semester_end_date=#semesterEndDate#
+		and course_code=#courseCode# and (select pcd.course_category from program_course_detail pcd 
+		where pcd.program_course_key=#programCourseKey# and pcd.course_code=student_marks_summary.course_code)='REG' 
+		and entity_id = #entityId#
+	</update>
+	
+	<select id="getCgpaPointDetailFromAggregate" resultClass="remedialProcessBean">
+		SELECT sum(point_secured_theory_cgpa) cgpaTheoryPointSecured, sum(point_secured_practical_cgpa) cgpaPracticalPointSecured,
+		sum(earned_theory_credit) earnedTheorycgpaCredit, sum(earned_practical_credit) earnedPracticalcgpaCredit,
+		(sum(point_secured_theory_cgpa)+sum(point_secured_practical_cgpa))/(sum(earned_theory_credit)+sum(earned_practical_credit)) cgpa
+		FROM student_aggregate
+		WHERE roll_number=#resultSystem# and university_code=#courseCode#
+		and entity_id = #entityId#
+	</select>
+	
+	<update id="updateSRSH">
+		UPDATE student_registration_semester_header
+		SET status=#status#, student_process_status=#programMode#,
+		modification_time=now(),modifier_id=#modifierId#
+		WHERE roll_number=#rollNumber# and program_course_key=#programCourseKey#
+		AND session_start_date=#startDate# AND session_end_date=#endDate#
+		and entity_id = #entityId#
+	</update>
+</sqlMap>
