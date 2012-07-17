@@ -56,24 +56,9 @@ public class Reflector {
 	 */
 	private void init(String str){
 		if(str.equals("startjnlp")) {	
-			System.out.println("Starting Reflector!");
-          		try{
-                		JFrame frame = new JFrame("Brihaspatisync Reflector");
-	                        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        	                button = new JButton("Ask!");
-                	        button.addActionListener(actionListener);
-                        	Container contentPane = frame.getContentPane();
-	                        contentPane.add(label1,BorderLayout.CENTER);
-        	                contentPane.add(button, BorderLayout.SOUTH);
-                	        frame.setSize(250, 120);
-                        	frame.setLocation(400, 500);
-	                        frame.setVisible(true);
-				frame.setDefaultCloseOperation(frame.DO_NOTHING_ON_CLOSE);
-
-        	      	}catch(Exception e){
-                		System.out.println("Error on starting reflector :"+e.getCause());
-              		}
+			startGUI();
 		}else if(str.equals("start")){
+			// start reflector via command line.
 			if(!flag) {
 				if(startReflector()){
 					RegisterToIndexServer.getController().connectToIndexServer();
@@ -86,6 +71,30 @@ public class Reflector {
 			}
 		}
 	}      	
+	
+	/**
+ 	 *startGU() - This function will start GUI Interface for start/stop reflector.
+ 	 */ 	
+	
+	private void startGUI(){
+		System.out.println("Starting Reflector!");
+                try{
+                	JFrame frame = new JFrame("Brihaspatisync Reflector");
+                        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                        button = new JButton("Ask!");
+                        button.addActionListener(actionListener);
+                        Container contentPane = frame.getContentPane();
+                        contentPane.add(label1,BorderLayout.CENTER);
+                        contentPane.add(button, BorderLayout.SOUTH);
+                        frame.setSize(250, 120);
+                        frame.setLocation(400, 500);
+                        frame.setVisible(true);
+                        frame.setDefaultCloseOperation(frame.DO_NOTHING_ON_CLOSE);
+		}catch(Exception e){
+                	System.out.println("Error on starting reflector :"+e.getCause());
+              	}
+	}	
+
 
 	/**
          * startReflector() - It calls RegisterToIndexServer() for registering this reflector 
@@ -143,9 +152,6 @@ public class Reflector {
 	 * Main Method to start reflector.
 	 */
 	public static void main(String args[]) throws Exception {
-		if(args[0].equals("startjnlp"))
-			Reflector.getController().init(args[0]);
-		if(args[0].equals("start"))	
-			Reflector.getController().init(args[0]);
+		Reflector.getController().init(args[0]);
 	}
 }
