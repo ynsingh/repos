@@ -31,6 +31,30 @@ class InvestigatorService {
 		 }
 		return invertigatrList
 	}
+	
+	public List getInvestigatorsWithPartyAndPIMap(def partyId , def params)
+	{	
+		def invertigatrList = []
+		def investigatorList=Investigator.findAll("from Investigator I where I.party.id="+partyId+"and I.activeYesNo='Y'")
+		for(int i=0;i<investigatorList.size();i++)
+    	{
+    		investigatorList=Investigator.findAll("from Investigator I where I.party.id="+partyId+"and I.activeYesNo='Y' and   I.id NOT IN (SELECT PM.investigator.id from ProjectsPIMap PM where PM.projects="+params.id+" and PM.role = 'PI' and PM.activeYesNo='Y')")
+		}
+    	for(investigator in investigatorList)
+		 {
+			if(investigator.userSurName == null)
+			{
+				investigator.fullName = investigator.name
+				invertigatrList.add(investigator)
+			}
+			else{
+				investigator.fullName = investigator.name+" "+investigator.userSurName
+				invertigatrList.add(investigator)
+			}
+		
+		 }
+		return invertigatrList
+	}
    
    /**
 	 * Function to get investigator by id.
@@ -89,6 +113,29 @@ class InvestigatorService {
  		{
  			projectsPIMapInstance.save()
 	        return projectsPIMapInstance
+ 		}
+ 	}
+ 	
+ 	 /*
+ 	 * Function to save CO-PI Map
+ 	 */
+ 	 public saveCOPIMap(def projectsCOPIMapInstance)
+ 	{
+ 		if(projectsCOPIMapInstance)
+ 		{
+ 			def projectCOPIMapInstanceSave = updatePIMap(projectsCOPIMapInstance)
+	        return projectCOPIMapInstanceSave
+ 		}
+ 	}
+ 	/*
+ 	 * Function to update CO-PI Map
+ 	 */
+ 	 public updateCOPIMap(def projectsCOPIMapInstance)
+ 	{
+ 		if(projectsCOPIMapInstance)
+ 		{
+ 			projectsCOPIMapInstance.save()
+	        return projectsCOPIMapInstance
  		}
  	}
  	/*

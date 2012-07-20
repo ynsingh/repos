@@ -141,7 +141,7 @@
 
 			<div class="buttons">
 				<span class="buttons"><input class="inputbutton" id="submit" type="submit"  onClick='return combineAlertAndRegister();' disableOnClick="true" value="${message(code: 'default.Create.button')}"/></span>
-				<span class="buttons"><input class="inputbutton" type="button" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}" /></span>
+				<span class="buttons"><input class="inputbutton" type="button" onClick="RedirectToLogin()"  value="${message(code: 'default.Cancel.button')}" /></span>
 			</div>
 
 		</g:form>

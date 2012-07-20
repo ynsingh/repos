@@ -28,7 +28,8 @@ class Projects {
 	double totAllAmount; 
 	Investigator investigator;
 	String status;
-	static transients = [ "saveMode","totAllAmount","investigator","status" ]
+	Investigator copi;
+	static transients = [ "saveMode","totAllAmount","investigator","status","copi" ]
 
 
 }
