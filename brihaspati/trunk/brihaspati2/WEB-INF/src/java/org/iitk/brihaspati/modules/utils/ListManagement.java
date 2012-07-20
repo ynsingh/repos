@@ -131,7 +131,7 @@ public class ListManagement
 			 * Add the detail of institute wise user in a vector
 			 * and put the same in context for use in template
 			 */
-			if(type.equals("User"))
+			if((type.equals("User"))||(type.equals("UserIns")))
 			{
 				for(int i=0;i<list.size();i++)
                                 {
@@ -139,7 +139,11 @@ public class ListManagement
                                         String loginName=(element.getUserName()).toString();
                                         //ErrorDumpUtil.ErrorLog("Login name after search=="+loginName);
                                         int uid = UserUtil.getUID(loginName);
-					Vector GrpList = UserGroupRoleUtil.getGID(uid,3);
+					Vector GrpList=new Vector();
+					if((type.equals("User")))
+						GrpList = UserGroupRoleUtil.getGID(uid,3);
+					if((type.equals("UserIns")))
+						GrpList = UserGroupRoleUtil.getGID(uid,2);
                                         //ErrorDumpUtil.ErrorLog("grplist return from util=="+GrpList);
                                         for(int j=0;j<GrpList.size();j++)
                                         {
