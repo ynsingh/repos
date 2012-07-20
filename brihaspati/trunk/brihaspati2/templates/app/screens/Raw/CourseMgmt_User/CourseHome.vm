@@ -283,8 +283,20 @@ $!data.getMessage()
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
 								<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
+							</td></tr></table>
+							<tr>
+							<td align=center>
+							<table>
+							<tr><td align=center>
+                                                         <a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>
+                                                <img border=0 src="$content.getURI("/images/rsz_1rsz_graph.jpg")"></a>
+                </td></tr>
+
+							<tr><td align=center>
+							<a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a><br>
+							</td></tr></table>
 							</td></tr>
-						</table>
+						
 					</td>
 					## tracking Report
 				</tr>
@@ -609,7 +621,7 @@ $news.getNews_Subject()
 			#if($user_role != "instructor")
 			 <div style="overflow:auto;  height:120px;">
 			#else
-			<div style="overflow:auto;  height:180px;">
+			<div style="overflow:auto;  height:280px;">
 			#end
                               <table  bgcolor="$ui.tableColor" width="98%"  align="left">
                            	    <tr>

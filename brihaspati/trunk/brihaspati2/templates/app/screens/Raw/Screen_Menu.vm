@@ -141,7 +141,14 @@
 
                         </td>
                 </tr>
+		 #if($data.getUser().getTemp("role") == "instructor")
+		 <tr bgcolor="$ui.tableColor">
+			<td>
+			<a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a>
 
+			</td>
+		 </tr>
+		 #end
 
 	#end
 ## --------------------

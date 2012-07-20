@@ -117,6 +117,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.GraphUtil;
 /**
  * This class is used for call the method in mylogin 
  * like Create index for Search, Clean the system 
@@ -223,6 +224,9 @@ public class CommonUtility{
                                // if(Expiry_Success=true){//3 if
 	                               // this code moved to upside
                                // }//end of if 3 loop
+				/*calculation for graph and data insert in XML file*/
+				GraphUtil.midnightcalculation();
+				GraphUtil.midnightModuleCalculation();
                                 String path = TurbineServlet.getRealPath("/");
 				boolean CI=CreateIndex(path+"Courses");
 				boolean CIndx=CreateIndex(path+"UserArea");
