@@ -112,7 +112,7 @@
 </tr>
 		
 	<tr bgcolor="$ui.menuColor">
-                <td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$brih_admin $brih_mgmt</a></td>
+                <td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$RemoteInstitute $brih_admin $brih_mgmt</a></td>
         </tr>
 
  

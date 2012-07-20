@@ -37,6 +37,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
  * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
+ * @modified date:18-07-2012(Rajeev)
  */
 
 import java.util.Vector;
@@ -67,6 +69,8 @@ public class InstStudentList extends SecureScreen_Institute_Admin
 	   */ 
 	public void doBuildTemplate(RunData data, Context context)	
 	{
+			String mode=data.getParameters().getString("mode","");
+	                context.put("mode",mode);
 		try{
 			/**
         	         * Getting the value of file from temporary variable
@@ -132,7 +136,10 @@ public class InstStudentList extends SecureScreen_Institute_Admin
 				Criteria crit=new Criteria();
 				crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
 				crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
-				crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+				if((mode.equals("sclist"))){
+				crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);}
+				if((mode.equals("instlist"))){
+				crit.add(TurbineUserGroupRolePeer.ROLE_ID,2);}
 				crit.setDistinct();
 				v=TurbineUserPeer.doSelect(crit);
 			}

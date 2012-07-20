@@ -9,6 +9,7 @@
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kuamr</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 07-01-2010, 22-04-2010, 26-07-2010, 13-Oct-2010
+ * @modified date: 15-05-2012 (Shaista)
  *#
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($role = $data.getUser().getTemp("role" ).toString())
@@ -86,12 +87,6 @@ $!data.getMessage()
 				<td bgcolor="#AFDCEC">
 			#end
 			<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","1").addPathInfo("countTemp","2") style=text-decoration:none>$Notice_NoticeContent_msg1</a></td>
-			#if($tdcolor!="2")
-				<td>
-			#elseif($tdcolor=="2")
-				<td bgcolor="#AFDCEC">
-			#end
-			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","2") style=text-decoration:none>$DiscussionBoard</td>
 		#end
 		#if($Uname != "guest")
 			#if($tdcolor!="1")

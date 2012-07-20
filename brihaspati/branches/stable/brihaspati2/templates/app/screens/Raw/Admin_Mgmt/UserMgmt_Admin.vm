@@ -46,7 +46,7 @@ $!data.getMessage()
                 #end
 		
 		#if($permission != "0")
-                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_reg1 $brih_sec $brih_admin #else $brih_reg1 $brih_sec $brih_admin #end </a>
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("Institute_Id",$Institute_Id).addPathInfo("Institute_Name",$Institute_Name).addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_reg1 $brih_sec $brih_admin #else $brih_reg1 $brih_sec $brih_admin #end </a>
 		#end
                 </td>
         </tr>
@@ -66,25 +66,26 @@ $!data.getMessage()
 
 #if(($mode =="")&&($permission != "0"))
 ##<table bgcolor="$ui.tableColor" width="100%">
-<form name=frm method="post" action="$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").setAction("Institute_RootAdmin")"> 
+<form name=frm method="post" action="$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").setAction("AdminList_Action")"> 
 
                 <tr bgcolor="$ui.menuColor">
                         <td>$RemoteInstitute $brih_name</td>
-                        <td><input type="text" name="institutename" value="$iname" readonly="readonly"></td>
-                </tr>
-		<tr>
-                        <td>$brih_ad #if($lang =="hindi")  #end $Inst_designation </td>
-                        <td> <input type="text" name="IADMINDESIGNATION" value="SECONDARY ADMIN" readonly="readonly"> </td>
+                        <td><input type="text" name="Institute_Name" value="$Institute_Name" readonly="readonly"></td>
                 </tr>
 
-                <tr bgcolor="$ui.menuColor">
+                <tr>
                         <td>$brih_ad #if($lang =="hindi")  #end $brih_first $brih_name <font color=red>*</font> </td>
                         <td> <input type="text" name="IADMINFNAME" value=""> </td>
                 </tr>
-                <tr>
+                <tr bgcolor="$ui.menuColor">
                       <td>$brih_ad #if($lang =="hindi")  #end $brih_last $brih_name <font color=red>*</font> </td>
                       <td> <input type="text" name="IADMINLNAME" value=""> </td>
                 </tr>
+		<tr>
+                        <td>$brih_ad #if($lang =="hindi")  #end $Inst_designation </td>
+                        <td> <input type="text" name="IADMINDESIGNATION" value=""> </td>
+                </tr>
+
                 <tr bgcolor="$ui.menuColor">
                         <td>$brih_ad #if($lang =="hindi")  #end $brih_email <font color=red>*</font> </td>
                         <td> <input type="text" name="IADMINEMAIL" value=""> </td>
@@ -93,8 +94,8 @@ $!data.getMessage()
                 <input type="hidden" name="actionName">
                <input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAdminMgmt(document.frm,this);"/>
                 <input type="Reset" name="Reset" Value="$brih_clear"/>
-                <input type="hidden" name="instituteid" Value="$institute_id">
-                <input type="hidden" name="iname" Value="$iname">
+                <input type="hidden" name="Institute_Id" Value="$Institute_Id">
+                <input type="hidden" name="Institute_Name" Value="$Institute_Name">
                 <input type="hidden" name="count" Value="$tdcolor">
                 </td> </tr>
 
@@ -105,9 +106,9 @@ $!data.getMessage()
 #if($mode=="instadminlist")
 <table  bgcolor="$ui.tableColor" width=100%>
 #if($permission !="0")
-#set($headings = ["$brih_ad $brih_first $brih_name","$brih_ad $brih_last $brih_name","$brih_ad $brih_email","$brih_ad $brih_availableAction","$brih_ad $brih_status"] )
+#set($headings = ["$brih_ad $brih_first $brih_name","$brih_ad $brih_last $brih_name","$brih_ad $brih_usrName","$brih_ad $brih_availableAction","$brih_ad $brih_status"] )
 #else
-#set($headings = ["$brih_ad $brih_first $brih_name","$brih_ad $brih_last $brih_name","$brih_ad $brih_email"] )
+#set($headings = ["$brih_ad $brih_first $brih_name","$brih_ad $brih_last $brih_name","$brih_ad $brih_usrName"] )
 #end
 <FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").setAction("AdminList_Action").addPathInfo("mode","instadminlist")">
 		<tr bgcolor="$ui.menuColor">
@@ -146,8 +147,8 @@ $!data.getMessage()
 			##<td>$admin_list.getAdminLname()</td>
 			<td>$admin_list.getInstituteLName()</td>
                                         
-			##<td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$admin_list.getAdminUname()</a></td>
-			<td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$admin_list.getInstituteEmail()</a></td>
+			##<td>$admin_list.getInstituteEmail()</td>
+			<td>$admin_list.getInstituteUserName()</td>
 			
 			 #if($permission != "0")
 			 <td>
@@ -156,26 +157,28 @@ $!data.getMessage()
                                 #if($count1 == $temp)
                                     #if($us!="1")       
                                         #if($us=="2")
-                                                #if($admin_list.getAdminUname() != $flag )
-					<a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("permission","0").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionsecondryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg8 $Repo_Perm</a> &nbsp; &nbsp;
-                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
+                                                #if($admin_list.getInstituteUserName() != $flag )
+					<a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("permission","0").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionsecondryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg8 $Repo_Perm</a> &nbsp; &nbsp;
+                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
                                                 #else
                                 	<a>$DisBoard_DBmsg7 $Repo_Perm</a>&nbsp; &nbsp; &nbsp;
 		                        <a>$brih_remove</a>
                                                 #end
                 			<td><a><font face="times, times new roman" size="4" color="green">$brih_prim $brih_admin</a></td>
                                         #else 
-					<a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("permission","2").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionprimaryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg7 $Repo_Perm</a> &nbsp; &nbsp;
+					<a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("permission","2").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionprimaryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg7 $Repo_Perm</a> &nbsp; &nbsp;
 
-                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
+                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
                 <td><a><font face="times, times new roman" size="4" color="red">$brih_sec $brih_admin</font></a></td>
                                         #end 
                                 #else
-			
-				 <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("permission","0").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionsecondryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg8 $Repo_Perm</a> &nbsp; &nbsp;
-                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
+						 #if($admin_list.getInstituteUserName() != $flag )               
+                                        <center> <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('Do you want to Delete This Admin !! ')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td></center>
+                                                #else
+                                                <center>$brih_remove</center>
+                                                #end
 
-                        	##<center><a><font foce="times, times new roman, serif" size="3">$brih_priv</a></center>
+			
                         	<td><a><font face="times, times new roman, serif" size="4">$brih_prim $brih_admin</font></a></td>
                                 #end
 			      #end    

@@ -40,7 +40,9 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
  * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date:28-12-2011(Richa)
+ * @modified date:18-07-2012(Rajeev)
  */
 
 import java.util.Vector;
@@ -94,6 +96,8 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			 * Get the user name from url and find the user id
 			 * @see UserUtil in utils
 			 */
+			String mode=data.getParameters().getString("mode","");
+			 context.put("mode",mode);
 			String uname=data.getParameters().getString("username");
 		        context.put("username",uname);
 			String counter=data.getParameters().getString("count","");
@@ -105,8 +109,12 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			 * @see UserGroupRoleUtil in utils
 			 * @see UserManagement in utils
 			 */
-			Vector gid=UserGroupRoleUtil.getGID(uid,3);
-			List student=UserManagement.getUserDetail(Integer.toString(uid));
+			 Vector gid=new Vector();
+                        if((mode.equals("sclist"))){
+                         gid=UserGroupRoleUtil.getGID(uid,3);}
+                        if((mode.equals("instlist"))){
+                         gid=UserGroupRoleUtil.getGID(uid,2);}
+                        List student=UserManagement.getUserDetail(Integer.toString(uid));
 			for(int j=0;j<gid.size();j++){
 	 			/**
 			 	  * Find all groupname according groupid
@@ -124,7 +132,8 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			  * @see ListManagement in utils
 			  */
 			//List courseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
-			Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId);  
+			Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId); 
+			//ErrorDumpUtil.ErrorLog("The mode value in CourseList"+courseList); 
 			if(g.size()!=0)
 			{
 				context.put("student",student);

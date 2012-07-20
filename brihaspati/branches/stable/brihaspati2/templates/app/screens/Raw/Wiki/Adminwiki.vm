@@ -82,7 +82,7 @@ $!data.getMessage()
                         	<tr width="100%" bgcolor="$ui.menuColor">
                                 	<td>
                                         	<p align ="center">
-                                                Page Name <SELECT  name="fname" >
+                                                $WikiCreatetxt2<SELECT  name="fname" >
 						#if($fname!="")
 							<OPTION >$fname</OPTION>
 						#end

@@ -131,7 +131,7 @@ public class ListManagement
 			 * Add the detail of institute wise user in a vector
 			 * and put the same in context for use in template
 			 */
-			if(type.equals("User"))
+			if((type.equals("User"))||(type.equals("UserIns")))
 			{
 				for(int i=0;i<list.size();i++)
                                 {
@@ -139,7 +139,11 @@ public class ListManagement
                                         String loginName=(element.getUserName()).toString();
                                         //ErrorDumpUtil.ErrorLog("Login name after search=="+loginName);
                                         int uid = UserUtil.getUID(loginName);
-					Vector GrpList = UserGroupRoleUtil.getGID(uid,3);
+					Vector GrpList=new Vector();
+					if((type.equals("User")))
+						GrpList = UserGroupRoleUtil.getGID(uid,3);
+					if((type.equals("UserIns")))
+						GrpList = UserGroupRoleUtil.getGID(uid,2);
                                         //ErrorDumpUtil.ErrorLog("grplist return from util=="+GrpList);
                                         for(int j=0;j<GrpList.size();j++)
                                         {
@@ -782,6 +786,31 @@ public class ListManagement
                 }
                         catch(Exception e){ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e);}
 			return UsDetail;
-	}
+		}
+		/**
+		 *List of users in a course
+		 */
+		 public static Vector getCourseUser(int userid,int gid)
+		{
+		 Vector userList=new Vector();
+			try{
+			        Criteria crit =new Criteria();
+                                crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+                                crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+                                crit.and(TurbineUserGroupRolePeer.GROUP_ID,gid);
+                                crit.setDistinct();
+                                List v=TurbineUserPeer.doSelect(crit);
+                                for(int i=0;i<v.size();i++)
+                                {
+                                        TurbineUser element=(TurbineUser)v.get(i);
+                                        String studentname=element.getUserName();
+                                        userList.addElement(studentname);
+                                }
+
+			}catch(Exception e){ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e); }
+			 return userList;
+			
+		}
+	//}
 }
 

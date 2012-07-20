@@ -87,7 +87,7 @@ $page.setBgColor("#ffffff")
                         		        	                        			$top.getStudentname()
 	                        	                        		       		</b></td>
 			                	                	                        <td width="7%" colspan="2">
-                			        	                	                	<a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none > <img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> $brih_edit </a>
+                			        	                	                	<a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none > <img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15">$brih_edit</a>
                         	        				                        </td>
                                 	                        			</tr>
 			                        	                        	<tr>
@@ -102,7 +102,7 @@ $page.setBgColor("#ffffff")
                                                                                                         $top.getStudentname()
                                                                                                 </b></td>
                                                                                                 <td width="7%" colspan="2">
-                                                                                                        <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none > <img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15"> Edit </a>
+                                                                                                        <a href="$link.setPage("call,Wiki,Editwiki.vm").addPathInfo("filename",$file.getName())" style=text-decoration:none > <img src="$content.getURI("/images/EDIT.JPG")" width="25" height="15">$brih_edit</a>
                                                                                                 </td>
                                                                                         </tr>
                                                                                         <tr>

@@ -7,7 +7,9 @@
  * @author <a href="mailto:richa.tandon1@gmail.com ">Richa Tandon</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date: 20-10-2010, 22-11-2010, 23-12-2010, 11-01-2011,05-08-2011,10-12-2011,12-01-2012,07-02-2012
+ * @modified date:18-07-2012(Rajeev)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -19,14 +21,18 @@ $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
-<tr bgcolor="$ui.menuColor"><td colspan=7>
+<tr bgcolor="$ui.menuColor"><td colspan=8>
      	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a> | 
 	#if($mode=="")
 	$brih_a_usr
-	#elseif($mode=="sclist")
-		$brih_student $brih_course $brih_list 
-		<td align=right>
+		#elseif(($mode=="sclist") || ($mode == "instlist"))
+                #if($mode=="sclist")
+                      $brih_student $brih_course $brih_list
+                #else
+                        $brih_Instructor $brih_course $brih_list
+                #end
+		##<td align=right>
 		#if($mode1=="list")
 			#if( $total_size!=0 )
 				  #if( $endIndex < $total_size )
@@ -44,7 +50,7 @@ $!data.getMessage()
                                #end
 			#end
 		#end
-		</td>		
+		##</td>		
 	#elseif($mode=="AddMUser")
 	$brih_add $brih_multiple1 $brih_usr | $brih_upload $brih_txt $brih_file
 	#elseif($mode=="USzip")
@@ -72,6 +78,13 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student #if($lang == "hindi") $brih_Of #end $brih_course $brih_list</a></td>
+	#if($tdcolor != "0")
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_course $brih_list </a></td>
+
         #if($tdcolor != "3")
         <td>
         #elseif($tdcolor == "3")
@@ -104,7 +117,7 @@ $!data.getMessage()
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserAttendence_Sheet.vm").addPathInfo("count","7") style=text-decoration:none>$brih_attendence</a></td>
 
 </tr>
-#if(($mode=="")&&($mode !="sclist")&&($mode !="AddMUser")&&($mode !="UPhoto")&&($mode !="USzip")&&(($mode !="userdelete")||($role=="instructor")||($role=="student"))) 
+#if(($mode=="")&&($mode !="instlist")&&($mode !="sclist")&&($mode !="AddMUser")&&($mode !="UPhoto")&&($mode !="USzip")&&(($mode !="userdelete")||($role=="instructor")||($role=="student"))) 
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("AddUser_Institute")">
 <table width=100% align=left bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor"><td colspan=7><b>$brih_entUsrDetail</b></td></tr>
@@ -175,7 +188,7 @@ $!data.getMessage()
 </table>
 </form>
 #end
-#if($mode == "sclist")
+#if(($mode == "sclist")||($mode == "instlist"))
  <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("status","ForallStudent")">
 <table width=100% cellpadding=1 align="left" bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor">
@@ -186,7 +199,7 @@ $!data.getMessage()
                 <option value="First Name">$brih_first $brih_name</option>
                 <option value="Last Name">$brih_last $brih_name</option>
                 <option value="Email">$brih_email</option>
-		<option value="RollNo">$brih_rollno </option>
+	#if($mode == "sclist")	<option value="RollNo">$brih_rollno </option>#end
                 </select></td>
         </tr>
         <tr>
@@ -204,7 +217,11 @@ $!data.getMessage()
 #if($total_size != 0)
 #if($mode1 == "list")
 <tr bgcolor="$ui.menuColor">
-#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email","$brih_rollno",""," ","",""] )
+#if($mode == "sclist") 
+	#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email","$brih_rollno","","","",""] )
+#elseif($mode == "instlist")
+#set ( $headings = ["$brih_login $brih_name","$brih_Instructor $brih_name","$brih_email","",""] )
+#end
 ##set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email",""," ",""] )
         #foreach ($heading in $headings)
                 <td><font size=3><b>$heading</b></font></td>
@@ -229,17 +246,23 @@ $!data.getMessage()
 	                #set($j = $j + 1)
                 #end
                 ## if no rollno exist
-                #if($i==2)
-        	        <td></td><td></td>
+                #if(($i==2) && ($mode == "sclist"))
+		<td></td><td></td>
                 #end
                 ## if one rollno exist
                 #if($i==1)
-                	<td></td>
+               	<td></td>
                 #end
+		#if($mode == "sclist")
 		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
+		#end
         	##<td colspan=5><a href=$link.setPage("call,UserMgmt_Admin,StudentCourselist.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
         	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp;
-        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
+		#if($mode == "sclist")
+        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2").addPathInfo("mode","sclist") style=text-decoration:none>$brih_course $brih_list</a></td>
+		#elseif($mode == "instlist")
+		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","0").addPathInfo("mode","instlist") style=text-decoration:none>$brih_course $brih_list</a></td>
+		#end
     		</tr>
         #end
 	<tr>

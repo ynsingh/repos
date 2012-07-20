@@ -92,9 +92,9 @@ $!data.getMessage()
                         	<input align=center type="text" name="valueString" value="">
 	                </td>
         	        <td>
-                	        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm1,this);">
+                	        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm1,this);">
                         	<input type="hidden" name="mode" value="$mode">
-                        	<input type="hidden" name="mod" value="Search">
+                        	<input type="hidden" name="mod" value="$brih_search">
 	                        <input type="hidden" name="count" value="2">
         	      </td>
 	        </tr>

@@ -6,6 +6,9 @@
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="mailto:kalpanagtm@gmail.com">Kalpana Gautam</a>
  * @author <a href="mailto;gaurav.soni992@gmail.com">Gaurav Verma</a>  ##For SubTask
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date 13-06-2012 (shaista)
+
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 <script type="text/javascript" src="$content.getURI("/scrpts/Task.js")"></script>
@@ -123,22 +126,22 @@ a.one:link,a.one:visited
 <table bgcolor="$ui.tableColor" width=100%>
 <tr>
         <td>
-                <b>*<font color="red">Red color </font></b> -> Task is over due &nbsp;&nbsp;&nbsp;
-                <b>*Black color </b> -> Task  is due &nbsp;&nbsp;&nbsp;
-                <b>*<font color="blue">Blue color </font></b> -> Task is currently doing <br>
+                <b>*<font color="red"> $brih_red $brih_color </font></b> -> $LocalMail_Task $brih_task2  &nbsp;&nbsp;&nbsp;
+                <b>*$brih_black $brih_color </b> -> $LocalMail_Task  $brih_task3 &nbsp;&nbsp;&nbsp;
+                <b>*<font color="blue">$brih_blue $brih_color </font></b> -> $LocalMail_Task $brih_task4 <br>
 
         </td>
 </tr>
 <tr>
         <td>
 		#if($lang!="english")
-                	<b>*<u>Delete </u></b> ->specific task Delete   &nbsp;&nbsp;&nbsp;
-	                <b>*<u>Edit </u></b> -> specific task Update  &nbsp;&nbsp;&nbsp;
-        	        <b>*<u>Move </u></b> -> Move task on index page under  "<b><u>TODAY'S TASK </u></b>" task on index page under
+                	<b>*<u>$brih_delete </u></b> -> $sp_task $brih_delete   &nbsp;&nbsp;&nbsp;
+	                <b>*<u>$brih_edit </u></b> -> $sp_task $brih_update  &nbsp;&nbsp;&nbsp;
+        	        <b>*<u>$brih_move </u></b> ->  $brih_task1  "<b><u>$brih_todayTask </u></b>" $brih_in $brih_move 
 		#else
-                	<b>*<u>Delete </u></b> -> Delete specific task  &nbsp;&nbsp;&nbsp;
-	                <b>*<u>Edit </u></b> -> Update specific task  &nbsp;&nbsp;&nbsp;
-         	       <b>*<u>Move </u></b> -> Move task on index page under  "<b><u>TODAY'S TASK </u></b>"
+                	<b>*<u>$brih_delete </u></b> -> $brih_delete $sp_task  &nbsp;&nbsp;&nbsp;
+	                <b>*<u>$brih_edit </u></b> -> $brih_update $sp_task  &nbsp;&nbsp;&nbsp;
+         	       <b>*<u>$brih_move </u></b> -> $brih_move $brih_task1  "<b><u>$brih_todayTask </u></b>"
 		#end
 
         </td>
@@ -164,12 +167,12 @@ a.one:link,a.one:visited
         #if($tlist.get($i).getStatus() >= 1)
         	<blink><font color="Green" size="5"><b>*</b></font>&nbsp;</blink>
 	#end
-</td>
+##</td>
 
 		
                 ##code for up the task which is in first row Up link is hide
 
-                 #if($tlist.get($i).getPSeq_No() != 1 )
+                 #if($hide !=1 && $tlist.get($i).getPSeq_No() != 1 )
          <td align="center">    <a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm").addPathInfo("ptid",$tlist.get($i).getParentTask_Id()).addPathInfo("id",$tlist.get($i).getTask_Id()).addPathInfo("seqno",$tlist.get($i).getSeqNumber()).addPathInfo("pseqno",$tlist.get($i).getPSeq_No()).addPathInfo("actionName","eventSubmit_doUp").addPathInfo("all","aa").setAction("Task_Action")>
                 <img border=0 src="$content.getURI("/images/up.jpg")" width="18" height="18" ></a>&nbsp;
 	</td>
@@ -357,7 +360,7 @@ a.one:link,a.one:visited
                                 <textarea name="title" cols=40 rows=5  wrap=physical align=left ></textarea>
                         </td></tr>
                         <tr><td>
-                        	<b>Start Date </b>
+                        	<b>$brih_start $brih_Da </b>
                             </td><td>
                                  <select name="Start_year"> #Y($cyear) </select>
                                                 &nbsp<b><font size=+1>-</font></b>&nbsp
@@ -366,7 +369,7 @@ a.one:link,a.one:visited
                                  <select name="Start_day"> #D($cday)    </select>
                         </td></tr>
                         <tr><td>
-                        	<b>End Date </b>
+                        	<b>$brih_end $brih_Da </b>
                             </td><td>
                                  <select name="End_year"> #Y($nyear) </select>
                                                 &nbsp<b><font size=+1>-</font></b>&nbsp
@@ -374,11 +377,11 @@ a.one:link,a.one:visited
                                                 &nbsp;<b><font size=+1>-</font></b>&nbsp;
                                  <select name="End_day"> #D($nday)    </select>
                         </td><tr>
-                                <td><b>Expiry Time(in days)<font color=RED> *</font></b></td>
+                                <td><b> $brih_expiry<font color=RED> *</font></b></td>
                                 <td><input type="text" size=3 name="et" value="7"></td>
                         </tr>
 			<tr><td align=center colspan=2 bgcolor="$ui.menuColor"><font face="$ui sanSerif fonts">
-                        	<input type=button name="eventSubmit_doInsert" value= Add  onClick="addtask(document.frm,this);"/>
+                        	<input type=button name="eventSubmit_doInsert" value= $brih_add  onClick="addtask(document.frm,this);"/>
 ##                 		<input type="button" name="Reset" value=Reset>
 				<input type="button" name="reset" value=Reset onClick="clearData(document.frm,this);" />    
                                 <input type="hidden" name="actionName">
@@ -403,12 +406,12 @@ a.one:link,a.one:visited
 	<form name=frm method="post" action="$link.setAction("Task_Action").setPage("call,Task_Mgmt,TaskDIUD.vm").addPathInfo("mode","update").addPathInfo("all","aa")">
 		<table align=center bgcolor="$ui.tableColor" width=100%>
                         <tr><td>
-                        	<b>Title <font color=RED size="5">*</font></b>
+                        	<b> $brih_title <font color=RED size="5">*</font></b>
                             </td><td>
                                 <textarea name="title" cols=40 rows=5  wrap=physical align=left >$ulist.get(0).getTitle() </textarea>
                         </td></tr>
                         <tr><td>
-                        	<b>Start Date </b>
+                        	<b>$brih_start $brih_Da </b>
                             </td><td>
                                 <select name="Start_year"> #Y($usdate.get(0)) </select>
                                                 &nbsp<b><font size=+1>-</font></b>&nbsp
@@ -417,7 +420,7 @@ a.one:link,a.one:visited
                                 <select name="Start_day"> #D($usdate.get(2))  </select>
                         </td></tr>
                         <tr><td>
-                        	<b>End Date </b>
+                        	<b>$brih_end $brih_Da </b>
                             </td><td>
                                 <select name="End_year"> #Y($uedate.get(0))   </select>
                                                 &nbsp<b><font size=+1>-</font></b>&nbsp
@@ -426,12 +429,12 @@ a.one:link,a.one:visited
                                 <select name="End_day"> #D($uedate.get(2))    </select>
                        </td></tr>
 			<tr>
-                                <td><b>Expiry Time(in days)<font color=RED> *</font></b></td>
+                                <td><b> $brih_expiry <font color=RED> *</font></b></td>
                                 <td><input type="text" size=3 name="et" value="$ulist.get(0).getExpiry()"></td>
                        </tr>
 			#if($ulist.get(0).getStatus()>=1)
                         <tr>
-                                <td><b>Task_Configuration (Range 0f Days 1-7)<font color=RED> </font></b></td>
+                                <td><b> $brih_tcf <font color=RED> </font></b></td>
                                 <td><input type="text" size=3 name="dday" value="$ulist.get(0).getDueDays()"></td>
                        </tr>
                         #end
@@ -440,12 +443,12 @@ a.one:link,a.one:visited
 
 		     <td align=center colspan=2 bgcolor="$ui.buttonBoxColor"><font face="$ui sanSerif fonts">
 			 #if($ulist.get(0).getStatus()>=1)
-			          <input type=button name="eventSubmit_doUpdate" value=Update onClick="checktask(document.frm,this);"/>
+			          <input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="checktask(document.frm,this);"/>
                         #else
-        	                  <input type=button name="eventSubmit_doUpdate" value=Update onClick="addtask(document.frm,this);"/>
+        	                  <input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="addtask(document.frm,this);"/>
                         #end
   ##                           	<input type=button name="reset" value=Reset>
-				<input type="button" name="reset" value=Reset onClick="clearData(document.frm,this);"/>  		
+				<input type="button" name="reset" value=$brih_reset onClick="clearData(document.frm,this);"/>  		
 	       	                <input type="hidden" name="actionName">
 				<input type="hidden" name="id" value="$id">
                              </font></td>

@@ -41,7 +41,9 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date:23-12-2010, 11-01-2011, 31-01-2012
+ * @modified date:18-07-2012(Rajeev)
  */
 import java.util.List;
 import java.util.Vector;
@@ -68,6 +70,7 @@ import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 
 /* This screen class is called when Institute admin add a user as Secondary Instructor,student and author.
 *View Student course list,delete Instructor/student,add multiple user's(Instructor/student)and upload photo. 
@@ -84,11 +87,16 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	 */
 	String mode=data.getParameters().getString("mode","");
 	String counter=data.getParameters().getString("count"," ");
+	//String stats=data.getParameters().getString("stats"," ");
 	String uname=data.getParameters().getString("username"," ");
 	context.put("tdcolor",counter);
 	context.put("username",uname);
 	context.put("mode",mode);
-	
+	//context.put("stats",stats);
+	//ParameterParser pp=data.getParameters();
+	//String role1=data.getParameters().getString("Role");
+	//context.put("role1",role1);
+	//ErrorDumpUtil.ErrorLog("Role====>>"+role1);
 	/**
 	  *get InstituteId and used in getting Institute Course List.
 	  *@see InstituteDetailsManagement util in utils. 	
@@ -141,7 +149,7 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	/**
 	 * Institute admin view the student course list by search string selecting query(First name ,last name username and email )  
 	 */
-	if(mode.equals("sclist")){
+	if((mode.equals("sclist"))||(mode.equals("instlist"))){
 		String stat=data.getParameters().getString("status");
                 context.put("stat",stat);
 		String mode1=data.getParameters().getString("mode1","");
@@ -176,7 +184,9 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         context.put("query",query);
                         context.put("value",valueString);
                         String str=null;
-			List rusrlist;
+			//List rusrlist;
+			List rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
+                        context.put("rollnolist",rusrlist);
 
 			/*set the feild as in TURBINE_USER table 
 			 *according to search string set by user.
@@ -199,15 +209,20 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                                 crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
                                 v=StudentRollnoPeer.doSelect(crit);
 				//ErrorDumpUtil.ErrorLog("List return from screen after search======"+v);
-				rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
-	                        context.put("rollnolist",rusrlist);
+				//rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
+	                        //context.put("rollnolist",rusrlist);
 			}
 			else
 			{
 				Criteria crit=new Criteria();
 	                        crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
 	                        crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
-	                        crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+				if((mode.equals("sclist"))){
+	                        	crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+				}
+				if((mode.equals("instlist"))){
+	                        	crit.add(TurbineUserGroupRolePeer.ROLE_ID,2);
+				}
 	                        crit.setDistinct();
 	                        //List v=null;
 	                        v=TurbineUserPeer.doSelect(crit);
@@ -223,10 +238,18 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         if(v.size()!=0)
                                 {
                                 //Vector userList=ListManagement.getDetails(v,"User");
-                                if(query.equals("RollNo"))
+                                if(query.equals("RollNo")){
 					userList=ListManagement.getInstituteUDetails(v,"RollNo",instituteId);
-				else
-	                                userList=ListManagement.getInstituteUDetails(v,"User",instituteId);
+				}
+				else{
+					if((mode.equals("sclist"))){
+	                             	   	userList=ListManagement.getInstituteUDetails(v,"User",instituteId);
+					}
+	                                if((mode.equals("instlist"))){
+	                             	   	userList=ListManagement.getInstituteUDetails(v,"UserIns",instituteId);
+					}
+				}
+				
 				/**
  				 * if vector size is zero this shows no user exist with match string in this institute
 				 * then show message. 

@@ -196,7 +196,7 @@ public class RemoteAccessData extends VelocityAction{
 			//get the roles
 			int uid=UserUtil.getUID(email);
 			Vector rid=UserGroupRoleUtil.getRID(uid);
-			//ErrorDumpUtil.ErrorLog("The value of vector size of role  are in get role method"+rid.size());
+//			ErrorDumpUtil.ErrorLog("The value of vector size of role  are in get role method"+rid.size());
 			if(rid.size()>0){
 				for ( int i = 0; i < rid.size(); ++i )
 				
@@ -204,9 +204,11 @@ public class RemoteAccessData extends VelocityAction{
 					int name = Integer.parseInt((rid.elementAt( i )).toString());
 					if(name!=6){
 						String rnm=UserGroupRoleUtil.getRoleName(name); 
-						boolean flage=v.contains(rnm);
+						boolean flage=false;
+                                                if(i>0)
+                                                        flage=v.contains(rnm);
 						if(!flage){
-	//		ErrorDumpUtil.ErrorLog("The value of vector size of role name  are in get role method"+rnm);
+//		ErrorDumpUtil.ErrorLog("The value of vector size of role name  are in get role method"+rnm);
 							if(i==0){
 								v=rnm;
 							}
