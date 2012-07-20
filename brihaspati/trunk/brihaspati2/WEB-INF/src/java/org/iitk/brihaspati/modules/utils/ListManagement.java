@@ -786,6 +786,31 @@ public class ListManagement
                 }
                         catch(Exception e){ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e);}
 			return UsDetail;
-	}
+		}
+		/**
+		 *List of users in a course
+		 */
+		 public static Vector getCourseUser(int userid,int gid)
+		{
+		 Vector userList=new Vector();
+			try{
+			        Criteria crit =new Criteria();
+                                crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+                                crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+                                crit.and(TurbineUserGroupRolePeer.GROUP_ID,gid);
+                                crit.setDistinct();
+                                List v=TurbineUserPeer.doSelect(crit);
+                                for(int i=0;i<v.size();i++)
+                                {
+                                        TurbineUser element=(TurbineUser)v.get(i);
+                                        String studentname=element.getUserName();
+                                        userList.addElement(studentname);
+                                }
+
+			}catch(Exception e){ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e); }
+			 return userList;
+			
+		}
+	//}
 }
 
