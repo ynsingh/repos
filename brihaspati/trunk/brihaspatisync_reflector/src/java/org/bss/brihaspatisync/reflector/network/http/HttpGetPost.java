@@ -13,8 +13,6 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 
-//import org.bss.brihaspatisync.reflector.network.tcp.TCPClient;
-
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 import org.bss.brihaspatisync.reflector.network.serverdata.HandraiseAction;
@@ -104,7 +102,9 @@ class MyPostGetHandler implements HttpHandler {
                                 if ((line = rd.readLine()) != null) {
 					req=line;
                                 }
-					
+				
+				System.out.println("client_ip    "+client_ip+"   data  "+req);
+						
 				/**
  				 ** split() is used to get lecture_id and the data from this request , 
 				 ** where data_value[0] contains lecture_id and data_value[1] contains data.
@@ -127,19 +127,24 @@ class MyPostGetHandler implements HttpHandler {
                                         MyHashTable temp_ht=runtimeObject.getMyHashTable();
                                         /** set All course id */
                                         runtimeObject.setCourseID(data_value[0]);
-                                        if(runtimeObject.getStatusCourseidIP(data_value[0]+"#"+client_ip)){
+                                        if(runtimeObject.getStatusCourseidIP(data_value[0]+"#"+client_ip)) {
                                                 /** set course id and ip */
                                                 runtimeObject.setCourseid_IP(data_value[0]+"#"+client_ip);
                                         }
+
                                         if(data_value[2].startsWith("parent")) {
-                                                data_value[2]=data_value[2].replace("parent","");
+						data_value[2]=data_value[2].replace("parent","");
+                                                if(!data_value[2].equals("")) {
+                                                        org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(data_value[0],data_value[2]);
+                                                }
                                         } 
+					 
 					if(!temp_ht.getStatus("ch_wb"+lecture_id)) {
 						BufferMgt buffer_mgt= new BufferMgt();
 						temp_ht.setValues("ch_wb"+lecture_id,buffer_mgt);
 						buffer_mgt.putByte(data_value[1],client_ip,"ch_wb"+lecture_id);
 						responseBody.close();
-                                        }else if(temp_ht.getStatus("ch_wb"+lecture_id)) {
+                                        } else if(temp_ht.getStatus("ch_wb"+lecture_id)) {
                                                 BufferMgt buffer_mgt=temp_ht.getValues("ch_wb"+lecture_id);
 						if(!data_value[1].equals("nodata"))
 							buffer_mgt.putByte(data_value[1],client_ip,"ch_wb"+lecture_id);

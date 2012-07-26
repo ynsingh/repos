@@ -32,10 +32,8 @@ import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopPostServer;
-import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopGetServer;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
 import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
-import org.bss.brihaspatisync.reflector.network.audio.GetAudioServer;
 import java.util.Timer;
 
 /**
@@ -251,17 +249,13 @@ public class RegisterToIndexServer {
 	protected String startThreads(){
 		try {
 			HttpGetPost.getController().start(); 	/** port 9999  */
-			DesktopGetServer.getController().start();
 			DesktopPostServer.getController().start();
 			org.bss.brihaspatisync.reflector.network.video_server.VideoPostServer.getController().start();//8091
-			org.bss.brihaspatisync.reflector.network.video_server.VideoGetServer.getController().start();//8092
 			
 			org.bss.brihaspatisync.reflector.network.video_server.StudentPostServer.getController().start();//8093
-                        org.bss.brihaspatisync.reflector.network.video_server.StudentVideoGetServer.getController().start();//8094
 
 			//Audio Thread
 			PostAudioServer.getController().startThread();
-			GetAudioServer.getController().startThread();
 			                                    
 
 			//TCPServer.getController().start(); 	/** port 8888  */

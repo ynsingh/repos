@@ -89,16 +89,23 @@ class MyHandler implements HttpHandler {
 			        byte[] bytes =org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody()); 
 			        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		              	try {
+					MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
+			                if(!temp_ht.getStatus("Desktop_Post"+lecture_id)){
+                        			BufferMgt buffer_mgt= new BufferMgt();
+			                        temp_ht.setValues("Desktop_Post"+lecture_id,buffer_mgt);
+                        		}
+					
+					BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post"+lecture_id);
 					if(image != null) {
-						MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
-			                        if(!temp_ht.getStatus("Desktop_Post"+lecture_id)){
-                        		                BufferMgt buffer_mgt= new BufferMgt();
-			                                temp_ht.setValues("Desktop_Post"+lecture_id,buffer_mgt);
-                        			}
-						BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post"+lecture_id);
-                                                buffer_mgt.putByte(image,client_ip,"Desktop_Post"+lecture_id);		
+					        buffer_mgt.putByte(image,client_ip,"Desktop_Post"+lecture_id);		
 						buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id);
 					}
+					
+					BufferedImage image_new=(BufferedImage)(buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id));
+                                        if(image_new != null){
+						ImageIO.write(image_new, "jpeg", responseBody);
+					}
+				
                 	     	} catch(Exception e){}
 				responseBody.flush();
 		        	responseBody.close();

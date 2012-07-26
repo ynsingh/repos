@@ -86,16 +86,22 @@ class MyPostHandler implements HttpHandler {
 				InputStream is=new ByteArrayInputStream(bytes);
 				AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
 				try {
+					MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+			                if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
+                        			BufferMgt buffer_mgt= new BufferMgt();
+			                        temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
+                                	}
+                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
                         		if(ais !=null) {
-						MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-			                        if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
-                        		                BufferMgt buffer_mgt= new BufferMgt();
-			                                temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
-                                		}
-                                                BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
                                                 buffer_mgt.putByte(ais,client_ip,"Audio_Post"+lecture_id);
                                                 buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id);
                                         }
+					String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
+                                        if(input!=null) {
+                                                AudioInputStream ais_new =AudioSystem.getAudioInputStream(new FileInputStream(lecture_id+"/"+input+".wav"));
+                                                AudioSystem.write(ais_new,AudioFileFormat.Type.WAVE,responseBody);
+                                        }
+
                               	}catch(Exception e){}
            			responseBody.flush();
 				responseBody.close();

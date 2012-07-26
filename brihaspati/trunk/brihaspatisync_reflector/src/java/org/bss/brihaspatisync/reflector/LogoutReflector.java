@@ -28,7 +28,6 @@ import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
-import org.bss.brihaspatisync.reflector.network.audio.GetAudioServer;
 
 
 /**
@@ -38,7 +37,6 @@ import org.bss.brihaspatisync.reflector.network.audio.GetAudioServer;
 public class LogoutReflector {
 
 	private static LogoutReflector logoutref=null;
-	//private MaintainLog log=MaintainLog.getController();
     	private RegisterToIndexServer riserver=RegisterToIndexServer.getController();
 	/**
 	 * Controller for this calss
@@ -81,7 +79,6 @@ public class LogoutReflector {
        	        		//TCPServer.getController().stop();      /** port 8888  */
        	        		//Audio Threads
        	        		PostAudioServer.getController().stopThread();
-                                GetAudioServer.getController().stopThread();
        	        		      	        		
 				PPTGetAndPostServer.getController().stopThread();
               			//log.stop();

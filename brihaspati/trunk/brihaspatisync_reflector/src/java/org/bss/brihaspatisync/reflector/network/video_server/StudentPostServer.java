@@ -88,21 +88,25 @@ class MyStudentPostVideoHandler implements HttpHandler {
                                 String lecture_id=responseHeader.get("session").toString();
 				OutputStream responseBody = exchange.getResponseBody();
 			        byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-				responseBody.flush();
-		                responseBody.close();
 			        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		              	try {
-					if(image!=null) {
 						MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
                                			if(!temp_ht.getStatus("stud_video"+lecture_id)){
 				                        BufferMgt buffer_mgt= new BufferMgt();
                         		                temp_ht.setValues("stud_video"+lecture_id,buffer_mgt);
                                 		}
 						BufferMgt buffer_mgt=temp_ht.getValues("stud_video"+lecture_id);
+					if(image!=null) {
                                                 buffer_mgt.putByte(image,client_ip,"stud_video"+lecture_id);	
 						buffer_mgt.sendData(client_ip,"stud_video"+lecture_id);
 					}
-                	        }catch(Exception e){}
+					BufferedImage image_new=(BufferedImage)(buffer_mgt.sendData(client_ip,"stud_video"+lecture_id));
+                                        if(image_new != null){
+                                               	ImageIO.write(image_new, "jpeg", responseBody);
+                                        }
+	               	        }catch(Exception e){}
+				responseBody.flush();
+			        responseBody.close();
     			}
 		}catch(Exception ex){}
 	}
