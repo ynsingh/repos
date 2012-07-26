@@ -19,7 +19,9 @@ import com.myapp.struts.hbm.PositionDAO;
 import com.myapp.struts.hbm.StaffDetail;
 import com.myapp.struts.hbm.StaffDetailId;
 import com.myapp.struts.hbm.VoterRegistration;
+import com.myapp.struts.utility.AppPath;
 import com.myapp.struts.utility.Email;
+import com.myapp.struts.utility.UserLog;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -192,40 +194,16 @@ String reason = lf.getReason();
 
 
  ob.setStatus("Rejected");
-CandidateRegistrationDAO.update(ob);
-String path = servlet.getServletContext().getRealPath("/");
- FileInputStream in = new FileInputStream(path+"/mail.properties");
-  			Properties	pro = new Properties();
-                                 pro.load(in);
-
-
-				Enumeration keys = pro.keys();
-                                int i=0;
-                                String mailbody="";
-				while (keys.hasMoreElements())
-				{
-                                       String key=(String)keys.nextElement();
-
-                                       if(key.equalsIgnoreCase(userid+"em")){
-                                       mailbody=(String)pro.get(key);
-                                       }
-
-
-
-
-                                   i++;
-				}
-				in.close();
-
-
-if(mailbody=="")
-mailbody="\nCandidature Request Rejected by Election Manager \n Reason:";
+                       CandidateRegistrationDAO.update(ob);
+                       String   mailbody=UserLog.readProperty("mail.properties", userid+"em");
+                  if(mailbody=="")
+                  mailbody="\nCandidature Request Rejected by Election Manager \n Reason:";
 
 
 
 
 
-          obj=new Email(path,ab.getEmail(),admin_password,"Candidature Request Rejected from EMS","Dear "+lf.getV_name()+"+mailbody+"+reason+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+          obj=new Email(ab.getEmail(),admin_password,"Candidature Request Rejected from EMS","Dear "+lf.getV_name()+"+mailbody+"+reason+".\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -236,7 +214,7 @@ mailbody="\nCandidature Request Rejected by Election Manager \n Reason:";
          }
           if(button.equals("Accept"))
          {
-System.out.println("Accept is working");
+              System.out.println("Accept is working");
              CandidateRegistrationDAO voterdao=new CandidateRegistrationDAO();
              
               System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+eid);
@@ -253,14 +231,14 @@ System.out.println("Accept is working");
 
 
 
-Candidate1 c1 = new Candidate1();
-Candidate1Id c1Id = new Candidate1Id();
-c1Id.setElectionId(ob.getId().getElectionId());
-c1Id.setInstituteId(ob.getId().getInstituteId());
-c1Id.setPositionId(Integer.valueOf(ob.getId().getPosition()));
-c1.setId(c1Id);
-c1.setCandidateName(ab.getVoterName());
-c1.setEnrollment(ob.getId().getEnrollment());
+                 Candidate1 c1 = new Candidate1();
+                 Candidate1Id c1Id = new Candidate1Id();
+                 c1Id.setElectionId(ob.getId().getElectionId());
+                 c1Id.setInstituteId(ob.getId().getInstituteId());
+                 c1Id.setPositionId(Integer.valueOf(ob.getId().getPosition()));
+                 c1.setId(c1Id);
+                 c1.setCandidateName(ab.getVoterName());
+                 c1.setEnrollment(ob.getId().getEnrollment());
 
 //userid=ob.getId().getEnrollment()+""+ob.getId().getInstituteId();
 
@@ -283,14 +261,14 @@ Position1 pos = positiondao.searchPosition(Integer.parseInt(ob.getId().getPositi
  ob.setStatus("REGISTERED");
  try{
 CandidateRegistrationDAO.updateCandidature(ob,c1);
-String path = servlet.getServletContext().getRealPath("/");
+
 request.setAttribute("msg", "Registration Accepted Successfully");
  
- obj=new Email(path,ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+ obj=new Email(ab.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
  String mailbody="";
  if(mailbody!=null)
     //mailbody="\n You are Registered as a Voter with given User Id=";
- obj=new Email(path,ab.getEmail(),admin_password,"+mailbody+","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+ obj=new Email(ab.getEmail(),admin_password,"+mailbody+","Mr. "+ c1.getCandidateName() +"\n"+ (ab.getPAddress()!=null?ab.getPAddress():(ab.getCAddress()!=null?ab.getCAddress():"Address"))+" \n Your request of candidature for the post of "+ pos.getPositionName() +" has been accepted.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -372,11 +350,11 @@ request.setAttribute("msg", "Registration Accepted Successfully");
               vr1.setCountry1(lf.getCountry1());
               vr1.setZipCode1(lf.getZipcode1());
           }
-             if (lf.getImg()!=null)
-            vr1.setImage(lf.getImg().getFileData());
-         else
-               if(iii!=null){vr1.setImage(iii);}
-               else{vr1.setImage(null);}
+            // if (lf.getImg()!=null)
+          //  vr1.setImage(lf.getImg().getFileData());
+       //  else
+             //  if(iii!=null){vr1.setImage(iii);}
+            //   else{vr1.setImage(null);}
 
 
           CandidateRegistrationDAO.update(vr,vr1);
@@ -402,44 +380,41 @@ request.setAttribute("msg", "Registration Accepted Successfully");
          {
               List list;
               ElectionManagerDAO dao= new ElectionManagerDAO();
+             JasperCompileManager.compileReportToFile(AppPath.getReportPath()+"CandidateReport.jrxml");
+             String enroll=lf.getEnrollment();
+             System.out.println(enroll);
+             list=dao.Report(enroll);
+             if(!list.isEmpty())
+             {
+                      System.out.println(list.get(0)+""+enroll);
+                      JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
 
-        String path = servlet.getServletContext().getRealPath("/");
-         JasperCompileManager.compileReportToFile(path+"/reports/CandidateReport.jrxml");
-String enroll=lf.getEnrollment();
- System.out.println(enroll);
-         list=dao.Report(enroll);
-if(!list.isEmpty()){
-         System.out.println(list.get(0)+""+enroll);
-         JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
-
-          OutputStream ouputStream = response.getOutputStream();
-           response.setContentType("application/pdf");
+                         OutputStream ouputStream = response.getOutputStream();
+                         response.setContentType("application/pdf");
          
-         HashMap hash= new HashMap();
+                         HashMap hash= new HashMap();
 //         hash.put("image",list.get(11));
 
 
-         JasperFillManager.fillReportToFile(path+"/reports/CandidateReport.jasper",hash,data);
+                    JasperFillManager.fillReportToFile(AppPath.getReportPath()+"CandidateReport.jasper",hash,data);
 
-         File file= new File(path+"/reports/CandidateReport.jrprint");
+                    File file= new File(AppPath.getReportPath()+"CandidateReport.jrprint");
 
-         JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
+                   JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
 
-         JRPdfExporter pdf=new JRPdfExporter();
+                   JRPdfExporter pdf=new JRPdfExporter();
 
-         pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
-         pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, path+"/reports/CandidateReport.pdf");
+                  pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
+                  pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, AppPath.getReportPath()+"CandidateReport.pdf");
 
-         pdf.exportReport();
-JRExporter exporter = null;
-                exporter = new JRHtmlExporter();
-JasperExportManager.exportReportToPdfStream(print, ouputStream);
-
-
+                   pdf.exportReport();
+                  JRExporter exporter = null;
+                  exporter = new JRHtmlExporter();
+                  JasperExportManager.exportReportToPdfStream(print, ouputStream);
          
 
 
- // path=path+"/src/java/com/myapp/struts/circulation/JasperReport";
+ 
          }
 
 

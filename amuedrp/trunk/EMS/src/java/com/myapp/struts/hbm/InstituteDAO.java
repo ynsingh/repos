@@ -333,6 +333,6 @@ public List getInstituteNameByStatus(String status){
         return tx;
 
 }
-
+ 
 
 }

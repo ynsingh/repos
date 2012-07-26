@@ -11,11 +11,14 @@
 
 <%
 byte[] image = (byte[])session.getAttribute("image");
-session.removeAttribute("image");
+//session.removeAttribute("image");
 response.reset();
 response.setContentType("image/jpeg");
 if (image!=null){
-response.getOutputStream().write(image);
+response.setContentType("image/jpeg");
+ServletOutputStream servletOutputStream =response.getOutputStream();
+servletOutputStream.write(image);
+servletOutputStream.flush();
 
 System.out.println("Image Length="+image.length);}
 %>

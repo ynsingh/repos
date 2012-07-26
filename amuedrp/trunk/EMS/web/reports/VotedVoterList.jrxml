@@ -6,7 +6,7 @@
 	<field name="v_voter_name" class="java.lang.String"/>
 	<field name="i_institute_name" class="java.lang.String"/>
 	<field name="v_email" class="java.lang.String"/>
-	<field name="image" class="java.awt.Image"/>
+	<!--<field name="image" class="java.awt.Image"/>-->
 	<field name="e_election_name" class="java.lang.String"/>
 	<field name="e_start" class="java.sql.Timestamp"/>
 	<field name="e_end" class="java.sql.Timestamp"/>

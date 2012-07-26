@@ -46,6 +46,15 @@ private String acceptedDate;
 private String proposedBy;
 private String secondedBy;
 private String positionAccepted;
+private String candidateid;
+
+    public String getCandidateid() {
+        return candidateid;
+    }
+
+    public void setCandidateid(String candidateid) {
+        this.candidateid = candidateid;
+    }
 
     public String getPositionAccepted() {
         return positionAccepted;

@@ -87,6 +87,18 @@ document.Form1.submit();
 window.setTimeout('winresize()', 100);
 }
 
+function mailsend()
+{
+
+
+
+document.Form1.action="<%=request.getContextPath()%>/election_manager/ViewMailBody.jsp?mail=sendmailtoall";
+document.Form1.method="post";
+document.Form1.submit();
+
+}
+
+
  function winresize()
 {
     //alert(document.width);
@@ -177,7 +189,9 @@ window.setTimeout('winresize()', 100);
 <option value="enrollment">Enrollment No<%--<%=resource.getString("managername")%>--%></option>
 <option value="department">Department<%--<%=resource.getString("managerid")%>--%></option>
 <option value="course">Course<%--<%=resource.getString("registrationid")%>--%></option>
-</select></td>
+</select></td><td>
+    <input type="button" name="button"  id="b1" onclick="mailsend();" value="Send Mail to All"/>
+</td>
                            </tr></table>
 
 

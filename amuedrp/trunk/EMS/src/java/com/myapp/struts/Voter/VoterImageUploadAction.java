@@ -107,7 +107,7 @@ public class VoterImageUploadAction extends org.apache.struts.action.Action {
             if (page1!=null && page1.equalsIgnoreCase("Submit")){
                 return mapping.findForward(SUCCESS);
         }
-            return mapping.findForward("failure");
+            return mapping.findForward("success1");
         }
     }
 }

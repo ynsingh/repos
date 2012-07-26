@@ -1,71 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResultReport" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ResultReport" pageWidth="842" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="40"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="systemdate" class="java.lang.String"/>
+	<parameter name="institute_name" class="java.lang.String"/>
+	<parameter name="path" class="java.lang.String"/>
 	<field name="election_name" class="java.lang.String"/>
 	<field name="position_name" class="java.lang.String"/>
 	<field name="number_of_choice" class="java.lang.String"/>
 	<field name="candidate_name" class="java.lang.String"/>
 	<field name="votes" class="java.lang.String"/>
+	<field name="offline_vote" class="java.lang.String"/>
+	<field name="agm" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="enrolment" class="java.lang.String"/>
 	<group name="position_name">
 		<groupExpression><![CDATA[$F{position_name}]]></groupExpression>
 		<groupHeader>
-			<band height="32">
+			<band height="55">
+				<rectangle radius="10">
+					<reportElement x="156" y="8" width="472" height="20"/>
+				</rectangle>
 				<textField>
-					<reportElement x="31" y="12" width="198" height="20"/>
+					<reportElement x="255" y="11" width="154" height="20"/>
 					<textElement/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{position_name}]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="512" y="35" width="70" height="20"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Times-Roman"/>
+					</textElement>
+					<text><![CDATA[No.of online Votes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="319" y="35" width="88" height="20"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Times-Roman"/>
+					</textElement>
+					<text><![CDATA[No. of Postal Votes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="414" y="35" width="75" height="20"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Times-Roman"/>
+					</textElement>
+					<text><![CDATA[No. of AGM Votes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="616" y="35" width="86" height="20"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Times-Roman"/>
+					</textElement>
+					<text><![CDATA[Total No.  of Votes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="169" y="9" width="119" height="20"/>
+					<textElement>
+						<font size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Position name:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="196" y="35" width="91" height="20"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Times-Roman"/>
+					</textElement>
+					<text><![CDATA[Candidate Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Transparent" x="389" y="10" width="100" height="20"/>
+					<textElement>
+						<font size="12" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[No. of Choice:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="473" y="11" width="152" height="20"/>
+					<textElement/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{number_of_choice}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="82" y="35" width="100" height="20"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Candidate Enrollment]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="32"/>
+			<band height="32">
+				<line>
+					<reportElement x="85" y="3" width="617" height="1"/>
+				</line>
+			</band>
 		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="34" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</title>
 	<pageHeader>
-		<band height="38" splitType="Stretch">
+		<band height="61" splitType="Stretch">
 			<textField>
-				<reportElement x="229" y="18" width="198" height="20"/>
+				<reportElement x="391" y="41" width="198" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{election_name}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="306" y="41" width="106" height="20"/>
+				<textElement>
+					<font pdfFontName="Times-Roman" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ Election Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="566" y="24" width="120" height="20"/>
+				<textElement>
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Report Generated on: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="682" y="24" width="120" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{systemdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="309" y="29" width="100" height="20"/>
+				<textElement>
+					<font pdfFontName="Times-Roman"/>
+				</textElement>
+				<text><![CDATA[Institute Name:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="391" y="29" width="141" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{institute_name}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="39" y="11" width="100" height="50"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{path}+"logo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="628" y="0" width="137" height="24"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{path}+"logo.bmp"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="27" splitType="Stretch">
-			<textField>
-				<reportElement x="268" y="7" width="198" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{number_of_choice}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="37" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="31" y="12" width="198" height="20"/>
-				<textElement/>
+				<reportElement x="199" y="3" width="144" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{candidate_name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="268" y="12" width="100" height="20"/>
-				<textElement/>
+				<reportElement x="515" y="3" width="100" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{votes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="85" y="1" width="100" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{enrolment}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="322" y="2" width="100" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{offline_vote}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="2" width="100" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{agm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="619" y="3" width="100" height="14"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="586" y="2" width="12" height="20"/>
+				<textElement/>
+				<text><![CDATA[of]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="544" y="2" width="32" height="20"/>
+				<textElement/>
+				<text><![CDATA[Page]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="571" y="3" width="15" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="598" y="2" width="18" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

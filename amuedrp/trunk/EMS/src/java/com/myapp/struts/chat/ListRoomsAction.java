@@ -7,6 +7,7 @@ package com.myapp.struts.chat;
 
 import chat.ChatRoom;
 import chat.ChatRoomList;
+import com.myapp.struts.utility.AppPath;
 import java.io.FileInputStream;
 import java.util.Enumeration;
 import java.util.Properties;
@@ -38,14 +39,16 @@ public class ListRoomsAction extends org.apache.struts.action.Action {
         HttpSession session=request.getSession();
 
         // HttpSession session=request.getSession();
-   String name =(String)session.getAttribute("user_id");
+//   String name =(String)session.getAttribute("user_id");
+   String name =(String)session.getAttribute("loginname");
    String pos=(String)session.getAttribute("login_role");
   ListRoomsActionForm  lraf =(ListRoomsActionForm)form;
 
  
 
  String t=(String)session.getAttribute("x");
- String path = servlet.getServletContext().getRealPath("/");
+ String path = AppPath.getPropertiesFilePath();
+// servlet.getServletContext().getRealPath("/");
 home=path;
 
 
@@ -63,9 +66,9 @@ if(name!=null && t==null){
   session.setAttribute("Position", pos);
   
   System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%");
- FileInputStream in = new FileInputStream(home+"/chat.properties");
+ FileInputStream in = new FileInputStream(home+"chat.properties");
   				pro = new Properties();
-                                 pro.load(in);
+                                pro.load(in);
 
                                  rooms=new ChatRoomList();
 				Enumeration keys = pro.keys();
@@ -74,12 +77,8 @@ if(name!=null && t==null){
 				{
                                         String roomName = (String)keys.nextElement();
 					String roomDescr = (String)pro.getProperty(roomName);
-
-
-
-
-					addNewRoom(rooms, roomName, roomDescr);
-                                   i++;
+                                        addNewRoom(rooms, roomName, roomDescr);
+                                         i++;
 				}
 				in.close();
                                 if(i>0)

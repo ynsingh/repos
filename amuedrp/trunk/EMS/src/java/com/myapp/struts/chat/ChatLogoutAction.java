@@ -9,6 +9,7 @@ import chat.ChatRoom;
 import chat.ChatRoomList;
 import chat.Chatter;
 import chat.Message;
+import com.myapp.struts.utility.AppPath;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -52,8 +53,8 @@ static int c=0;
     String Name =(String)session.getAttribute("user_id");
     String institute_id =(String)session.getAttribute("institute_id");
     String position=(String)session.getAttribute("login_role");
-     Properties pro = new Properties();
-     Properties pro1 = new Properties();
+    Properties pro = new Properties();
+    Properties pro1 = new Properties();
     String home;
 
 
@@ -61,7 +62,7 @@ static int c=0;
                 // Check User Login after Room Selection
 
 
-String path = servlet.getServletContext().getRealPath("/");
+String path = AppPath.getPropertiesFilePath();
 
   home=path;
 
@@ -85,27 +86,29 @@ String path = servlet.getServletContext().getRealPath("/");
 //                                 pro1.put(institute_id+"&"+position+"&"+Name,(String)session.getAttribute("electionname")+"&"+(String)session.getAttribute("positionname"));
 //
 
-                                 if(position.equalsIgnoreCase("candidate")){
+                                 if(position.equalsIgnoreCase("voter")){
 
 //remove from chat Room List
-                                in= new FileInputStream(home+"/chat.properties");
-  				pro = new Properties();
-                                 pro.load(in);
-//
-                                     OutputStream fos = new FileOutputStream(home+"/chat.properties");
-					fos = new FileOutputStream(home+"/chat.properties");
 
+                                     System.out.println("voterchatmsg"+(String)session.getAttribute("voterchatmsg"));
+                                      System.out.println("voterchatmsgh"+(String)session.getAttribute("voterchatmsg")+"&h");
+                                  in= new FileInputStream(home+"chat.properties");
+  				         pro = new Properties();
+                                         pro.load(in);
+                                        OutputStream fos = new FileOutputStream(home+"chat.properties");
+					fos = new FileOutputStream(home+"chat.properties");
                                         pro.remove((String)session.getAttribute("voterchatmsg"));
-  pro.remove((String)session.getAttribute("voterchatmsg")+"&h");
-
-  Enumeration keys = pro.keys();
+                                        pro.remove((String)session.getAttribute("voterchatmsg")+"&h");
+                                        
+                                Enumeration keys = pro.keys();
                                 int i=0;
 				while (keys.hasMoreElements())
 				{
-                                       String key=(String)keys.nextElement();
-if(key.endsWith(Name)){
-                pro.remove(key);
-}
+                                        String key=(String)keys.nextElement();
+                                        if(key.endsWith(Name))
+                                        {
+                                              pro.remove(key);
+                                        }
 
                                    i++;
 				}
@@ -116,11 +119,11 @@ if(key.endsWith(Name)){
 					fos.close();
 //remove from chatlog List
 
-                                        in= new FileInputStream(home+"/chatlog.properties");
+                                in= new FileInputStream(home+"chatlog.properties");
   				pro = new Properties();
-                                 pro.load(in);
+                                pro.load(in);
 
-                                     fos = new FileOutputStream(home+"/chatlog.properties");
+                                fos = new FileOutputStream(home+"chatlog.properties");
 					
 
 
@@ -132,7 +135,7 @@ if(key.endsWith(Name)){
                                     if(key.startsWith((String)(session.getAttribute("institute_id")+"&"+session.getAttribute("chatter")+"&"+session.getAttribute("user_id"))))
                                        pro.remove(key);
 
-                                   i++;
+                                       i++;
 				}
 				in.close();
 
@@ -140,19 +143,19 @@ if(key.endsWith(Name)){
 					fos.close();
 
 
- return mapping.findForward(SUCCESS);
+                              return mapping.findForward("success1");
                                  }
-                                 else if(position.equalsIgnoreCase("voter")){
-                                in= new FileInputStream(home+"/chat.properties");
-  				pro = new Properties();
-                                 pro.load(in);
+//                                 else if(position.equalsIgnoreCase("voter")){
+//                                in= new FileInputStream(home+"chat.properties");
+//  				pro = new Properties();
+//                                 pro.load(in);
+////
+//                                     OutputStream fos = new FileOutputStream(home+"chat.properties");
+//					fos = new FileOutputStream(home+"chat.properties");
 //
-                                     OutputStream fos = new FileOutputStream(home+"/chat.properties");
-					fos = new FileOutputStream(home+"/chat.properties");
-
-                                        pro.remove((String)session.getAttribute("voterchatmsg"));
-					pro.store(fos, "Current Chat Status");
-					fos.close();
+//                                        pro.remove((String)session.getAttribute("voterchatmsg"));
+//					pro.store(fos, "Current Chat Status");
+//					fos.close();
 //remove from chatlog List
 
                                   /*      in= new FileInputStream(home+"/chatlog.properties");
@@ -179,11 +182,11 @@ if(key.endsWith(Name)){
 					fos.close();
 
 */
- return mapping.findForward("success1");
-
-
-
-                                 }
+// return mapping.findForward("success1");
+//
+//
+//
+//                                 }
 
 
 return mapping.findForward(SUCCESS);

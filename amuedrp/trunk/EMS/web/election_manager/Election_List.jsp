@@ -203,8 +203,8 @@ String msg1=(String)request.getAttribute("msg1");
 
 
 
- <font color="blue" size="-1" dir="<%=rtl%>">
-               <%=resource.getString("voterreq")%>(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp"><%=resource.getString("voter")%> </a>
+ <font color="blue" size="-1" dir="<%=rtl%>"><br>
+  <%=resource.getString("voterreq")%>(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp"><%=resource.getString("voter")%> </a>
             </font>
 <br>
 <%if(tcount==0)
@@ -254,7 +254,7 @@ else
     </column>
     <column width="10%">
       <header value="" hAlign="left" styleClass="header"/>
-      <item   value="Results" hyperLink="${path}/Voter/result.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
+      <item   value="Results" hyperLink="${path}/Voter/finalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
     </column>
 <column width="10%">
 <header value="" hAlign="left" styleClass="header"/>
@@ -288,6 +288,10 @@ else
         <column width="100px">
       <header value="Vote Cast Till Date" hAlign="left" styleClass="header"/>
       <item   value="${doc.totalvoted}" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+    </column>
+      <column width="100px">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Voted Voter List" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 

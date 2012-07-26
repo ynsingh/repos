@@ -9,6 +9,7 @@ import com.myapp.struts.Candidate.CandidateRegistrationDAO;
 import com.myapp.struts.hbm.CandidateRegistration;
 import com.myapp.struts.hbm.CandidateRegistrationId;
 import com.myapp.struts.hbm.PositionDAO;
+import com.myapp.struts.utility.AppPath;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -65,8 +66,8 @@ public class ApplyCandidatureAction extends org.apache.struts.action.Action {
          List list;
               PositionDAO dao= new PositionDAO();
 
-         String path = servlet.getServletContext().getRealPath("/");
-         JasperCompileManager.compileReportToFile(path+"/reports/CandidatureSend.jrxml");
+       
+         JasperCompileManager.compileReportToFile(AppPath.getReportPath()+"CandidatureSend.jrxml");
         // String enroll=lf.getEnrollment();
  System.out.println("enroll");
         list=CandidateRegistrationDAO.searchCandidatedetail(enrollment,institute_id,position,election);
@@ -81,16 +82,16 @@ if(!list.isEmpty()){
 //         hash.put("image",list.get(11));
 
 
-         JasperFillManager.fillReportToFile(path+"/reports/CandidatureSend.jasper",hash,data);
+         JasperFillManager.fillReportToFile(AppPath.getReportPath()+"CandidatureSend.jasper",hash,data);
 
-         File file= new File(path+"/reports/CandidatureSend.jrprint");
+         File file= new File(AppPath.getReportPath()+"CandidatureSend.jrprint");
 
          JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
 
          JRPdfExporter pdf=new JRPdfExporter();
 
          pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
-         pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, path+"/reports/CandidatureSend.pdf");
+         pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, AppPath.getReportPath()+"CandidatureSend.pdf");
 
          pdf.exportReport();
          JRExporter exporter = null;

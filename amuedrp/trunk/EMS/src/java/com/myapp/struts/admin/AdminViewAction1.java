@@ -185,8 +185,8 @@ if(admin1.isEmpty()==false && admin1!=null)
 
 }
                       
-         String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password);
+         
+            obj=new Email(adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -213,8 +213,8 @@ System.out.println("button"+button);
 request.setAttribute("reject","Request for Institute Registration is rejected");
 request.setAttribute("msg","Request for Institute Registration is rejected");
 
-String path = servlet.getServletContext().getRealPath("/");
-      obj=new Email(path,admin.getAdmin_email(),admin_password,"Approval of Institute Registration Request","Dear "+admin.getAdmin_fname()+" "+admin.getAdmin_lname()+"\n Sorry, Your request for Institute registration had not been Approved."+" ,\nWith Regards\nWebAdmin\nEMS");
+
+      obj=new Email(admin.getAdmin_email(),admin_password,"Approval of Institute Registration Request","Dear "+admin.getAdmin_fname()+" "+admin.getAdmin_lname()+"\n Sorry, Your request for Institute registration had not been Approved."+" ,\nWith Regards\nWebAdmin\nEMS");
 //obj=new Email(path,adminReg.getAdminEmail(),"admin_password"," request for Institute Registration","Sorry, Your request for Institute registration had not been Approved .\n" ,"\n\nDear "+adminReg.getAdminFname()+" "+adminReg.getAdminLname()+",\n","With Regards\nWebAdmin\nEMS");
          executor.submit(new Runnable() {
 

@@ -205,6 +205,8 @@ if(session.getAttribute("username")==null)
     <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a></li>
 <li><a href="<%=contextPath%>/reset_password.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
     <b style="color:white" dir="<%=rtl%>">Reset Password </b></a></li>
+    <li><a href="<%=contextPath%>/admin/mailsetting.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+    <b style="color:white" dir="<%=rtl%>">SMTP Mail Setting </b></a></li>
 </ul>
 
 

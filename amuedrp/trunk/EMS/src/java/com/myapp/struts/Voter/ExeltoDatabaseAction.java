@@ -528,11 +528,11 @@ login.setStaffDetail(staffd);
 logindao.insert(login, userid);
 System.out.println(login.getUserId());
 
-  String path = servlet.getServletContext().getRealPath("/");
+ 
 
 
 
-           mail=new Email(path,x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for Election Management System (EMS) Login ="+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
+           mail=new Email(x.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+x.getVoterName()+"\n You are Registered as a Voter with given User Id="+userid +" , Password for Election Management System (EMS) Login ="+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
 
                     mail.send();
 			log.add( "\nMail has been send successfully to= "+userid);
@@ -562,9 +562,9 @@ System.out.println(login.getUserId());
     }
   
 
-  String path = servlet.getServletContext().getRealPath("/");
+  
 
-           mail=new Email(path,x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+           mail=new Email(x1.getAdminEmail(),"","Voter Registration Accepted Successfully from EMS","Dear "+x1.getAdminFname()+" "+x1.getAdminLname()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
                     mail.send();
            
@@ -595,9 +595,9 @@ else if(staff!=null){
     }
    logindao.update(temp);
 
-  String path = servlet.getServletContext().getRealPath("/");
+ 
 
-         mail=new Email(path,staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
+         mail=new Email(staff.getEmailId(),"","Voter Registration Accepted Successfully from EMS","Dear "+staff.getFirstName()+" "+staff.getLastName()+"\n You are Registered as a Voter in EMS.\nWith Regards\nElection Manager\n"+session.getAttribute("institute_name"));
 
 
                    mail.send();

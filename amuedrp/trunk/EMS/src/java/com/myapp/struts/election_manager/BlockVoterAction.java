@@ -56,7 +56,7 @@ public class BlockVoterAction extends org.apache.struts.action.Action {
 		List log=new ArrayList();
 
 		List obj= (List)session.getAttribute("resultset");
-
+               
 		for(int i=0;i<obj.size();i++){
        			VoterRegistration obj1=(VoterRegistration)obj.get(i);
     			SetVoter o=(SetVoter)VoterRegistrationDAO.searchVoterList(institute_id, election,obj1.getId().getEnrollment());
@@ -66,12 +66,15 @@ public class BlockVoterAction extends org.apache.struts.action.Action {
 				request.setAttribute("msg", log);
 				return mapping.findForward("success");
 			}
-			if(o.getStatus()!=null)
-			{
-				if(o.getStatus().equalsIgnoreCase("Blocked")){
-					log.add( "Sorry Voter "+obj1.getEmail()+" is already  Blocked for the Election "+e.getElectionName());
-				}
-			}else{
+//			if(o.getStatus()!=null)
+//			{
+//				if(o.getStatus().equalsIgnoreCase("Blocked")){
+//					log.add( "Sorry Voter "+obj1.getEmail()+" is already  Blocked for the Election "+e.getElectionName());
+//				}
+//			}
+
+                        else{
+                           
        				o.setStatus("blocked");
             			VoterRegistrationDAO.setVoter(o);
 				obj1.setStatus("block");
@@ -91,20 +94,22 @@ public class BlockVoterAction extends org.apache.struts.action.Action {
 
 		StringBuffer str = new StringBuffer();
                 String nameOfTextFile = "BlockVoterlog.txt";
-		String path1=(String)session.getAttribute("apppath");
-			//path1=path1.substring(0,path1.lastIndexOf("/"));
-			//path1=path1.substring(0,path1.lastIndexOf("/"));
-			//path1=path1.substring(0,path1.lastIndexOf("/"));
-		try {
-	    		PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
-			for(int ii=0;ii<log.size();ii++)
-		                str.append(log.get(ii)+"\n");
-      			        pw.println(str+"\n");
-                        //clean up
-                            	pw.close();
-                 } catch(IOException ex) {
-                        System.out.println(ex.getMessage());
-                 }
+                UserLog.ErrorListLog(log, nameOfTextFile);
+//
+//		String path1=(String)session.getAttribute("apppath");
+//			//path1=path1.substring(0,path1.lastIndexOf("/"));
+//			//path1=path1.substring(0,path1.lastIndexOf("/"));
+//			//path1=path1.substring(0,path1.lastIndexOf("/"));
+//		try {
+//	    		PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
+//			for(int ii=0;ii<log.size();ii++)
+//		                str.append(log.get(ii)+"\n");
+//      			        pw.println(str+"\n");
+//                        //clean up
+//                            	pw.close();
+//                 } catch(IOException ex) {
+//                        System.out.println(ex.getMessage());
+//                 }
 
 		request.setAttribute("msg", log);
 		return mapping.findForward("success");

@@ -2,7 +2,7 @@
 
 
 <%@page pageEncoding="UTF-8"%>
-<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*,com.myapp.struts.utility.AppPath"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -21,6 +21,9 @@
     String sessionId="";
     boolean page=true;
     String align="left";
+%>
+<%
+//out.println(AppPath.getProjectPath());
 %>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
@@ -275,7 +278,7 @@ if(str!=null)
                                 <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
                           
                
-                </td><td   > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="top" id="Image1" style="" height="100px" width="100%"><br/>
+                </td><td> <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="top" id="Image1" style="" height="100px" width="100%"><br/>
                                 
                             </td></tr>
             </table></td>
@@ -337,7 +340,7 @@ if(str!=null)
                     </td>
                     
 
-                    </tr><tr><td width="250px" colspan="2"> <!--<a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>-->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
+                    </tr><tr><td width="250px" colspan="2"> <a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
 
 
                     </table>
@@ -379,7 +382,7 @@ else{
 
 <%
 if(msg1!=null)
-    out.println(msg1);
+   // out.println(msg1);
 %>
      
 

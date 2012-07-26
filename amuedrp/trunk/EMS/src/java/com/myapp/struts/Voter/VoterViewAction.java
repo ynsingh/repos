@@ -46,14 +46,72 @@ private VoterRegistrationId elid=new VoterRegistrationId();
         VoterRegActionForm employeeform=(VoterRegActionForm)form;
          String button=employeeform.getButton();
 
-         System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD"+"gh"+button+"   "+employeeform.getEnrollment());
+         String btn=request.getParameter("btn");
+if(btn.equalsIgnoreCase("Update")){
+String rid=request.getParameter("id");
+String reid=(String)session.getAttribute("institute_id");
+VoterRegistration l=VoterRegistrationDAO.searchVoterRegistration(reid,rid);
+
+
+
+session.setAttribute("voter", l);
+            if(l!=null){
+            employeeform.setB_date(l.getBirthdate());
+             employeeform.setC_add(l.getCAddress());
+              employeeform.setCity(l.getCity());
+               employeeform.setCity1(l.getCity1());
+                employeeform.setCountry(l.getCountry());
+                employeeform.setCountry1(l.getCountry1());
+            employeeform.setCourse(l.getCourse());
+                 employeeform.setDuration(l.getCourseDuration());
+                 employeeform.setSession(l.getCurrentSession());
+
+
+            employeeform.setDepartment(l.getDepartment());
+             employeeform.setEmail(l.getEmail());
+              //employeeform.setFilename(l);
+               employeeform.setF_name(l.getFName());
+                employeeform.setGender(l.getGender());
+
+               //employeeform.setUploadedFile(l.getImage());
+            employeeform.setJ_date(l.getJoiningDate());
+                 employeeform.setM_name(l.getMName());
+                 employeeform.setM_number(l.getMobileNumber());
+
+                employeeform.setP_add(l.getPAddress());
+            employeeform.setState(l.getState());
+                 employeeform.setState1(l.getState1());
+               //  employeeform.setUploadedFile(l.);
+
+                employeeform.setV_name(l.getVoterName());
+            employeeform.setYear(l.getYear());
+                 employeeform.setZipcode(l.getZipCode());
+                 employeeform.setZipcode1(l.getZipCode1());
+                 //employeeform.setStatus(l.getStatus());
+
+             employeeform.setEnrollment(l.getId().getEnrollment());
+            employeeform.setInstitute_id(l.getId().getInstituteId());
+            }
+            session.setAttribute("button", btn);
+            return mapping.findForward("add");
+
+
+}
+
+
+
+
+        String  btn=request.getParameter("btn");
+         System.out.println("BBBBBBBBBBBB"+button+button);
+         
+         
           String id=employeeform.getEnrollment();
           String eid=employeeform.getInstitute_id();
          // String institute_id=(String)session.getAttribute("institute_id");
           System.out.println("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  "+id);
         VoterRegistration l=VoterRegistrationDAO.searchVoterRegistration(eid,id);
-        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+l+eid);
-        if(button.equals("Add"))
+
+          if(button.equals("Add"))
         {
             if(l!=null){
 
@@ -61,15 +119,17 @@ private VoterRegistrationId elid=new VoterRegistrationId();
             return mapping.findForward("duplicate");
                        }
             else{
+                 session.setAttribute("enrollment",id);
+                 session.setAttribute("button", button);
                 employeeform.setEnrollment(id);
-            request.setAttribute("button", button);
+                request.setAttribute("button", button);
 
 
         InstituteDAO insti= new InstituteDAO();
         String status="OK";
         List Institute = insti.getInstituteNameByStatus(status);
         System.out.println( "InstituteList"+""+Institute.size());
-session.setAttribute("Institute",Institute);
+        session.setAttribute("Institute",Institute);
             return mapping.findForward("add");
                 }
         }
@@ -103,7 +163,7 @@ session.setAttribute("Institute",Institute);
                  employeeform.setM_number(l.getMobileNumber());
 
                 employeeform.setP_add(l.getPAddress());
-            employeeform.setState(l.getState());
+           employeeform.setState(l.getState());
                  employeeform.setState1(l.getState1());
                //  employeeform.setUploadedFile(l.);
 

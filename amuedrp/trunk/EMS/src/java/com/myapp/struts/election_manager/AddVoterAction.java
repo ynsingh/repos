@@ -34,7 +34,8 @@ public class AddVoterAction extends org.apache.struts.action.Action {
         InstituteDAO dao = new InstituteDAO();
         List<Institute> lst = dao.getInstituteNameByStatus("OK");
         session.setAttribute("instituteList", lst);
-        request.setAttribute("button", Button); 
+        request.setAttribute("button", Button);
+        session.removeAttribute("image");
         return mapping.findForward(SUCCESS);
     }
 }

@@ -9,6 +9,9 @@ import chat.ChatRoom;
 import chat.ChatRoomList;
 import chat.Chatter;
 import chat.Message;
+import com.myapp.struts.hbm.*;
+import com.myapp.struts.hbm.Login;
+import com.myapp.struts.utility.AppPath;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -63,7 +66,7 @@ static int c=0;
   String date = formatter.format(currentDate.getTime());
 
             String sendmsg  =request.getParameter("msg");
-      String path = servlet.getServletContext().getRealPath("/");
+      String path = AppPath.getPropertiesFilePath();
        
 
             System.out.println(sendmsg+"....................");
@@ -73,11 +76,11 @@ if(sendmsg!=null){
 
  
          home=path;
-                       FileInputStream in1 = new FileInputStream(home+"/chat.properties");
+                       FileInputStream in1 = new FileInputStream(home+"chat.properties");
 
                
                  pro = new Properties();
-				pro.load(in1);
+	       	pro.load(in1);
 
               in1.close();
 
@@ -86,7 +89,7 @@ System.out.println(session.getAttribute("voterchatmsg")+".lllllllllllllllll");
 
 pro.setProperty((String)session.getAttribute("voterchatmsg"),sendmsg);
 
-        FileOutputStream propertiesOutput = new FileOutputStream(home+"/chat.properties");
+        FileOutputStream propertiesOutput = new FileOutputStream(home+"chat.properties");
        
         pro.store(propertiesOutput,"new changes");
 
@@ -104,11 +107,11 @@ pro.setProperty((String)session.getAttribute("voterchatmsg"),sendmsg);
         
 //        //temp chat log
 //
-             home=System.getProperty("user.home");
-            in1 = new FileInputStream(home+"/chatlog.properties");
+            home=AppPath.getPropertiesFilePath();
+            in1 = new FileInputStream(home+"chatlog.properties");
 
 
-                 pro = new Properties();
+                pro = new Properties();
         	pro.load(in1);
 //
               in1.close();
@@ -116,9 +119,10 @@ pro.setProperty((String)session.getAttribute("voterchatmsg"),sendmsg);
 //
 sendmsg=sendmsg.replace("'","");
 //
-pro.put(institute_id+"&"+session.getAttribute("chatter")+"&"+Name+"&"+String.valueOf(c++),Name+" : "+sendmsg);
+Login obj=(Login)LoginDAO.getLoginUserName(Name, institute_id);
+pro.put(institute_id+"&"+session.getAttribute("chatter")+"&"+Name+"&"+String.valueOf(c++),obj.getUserName()+" : "+sendmsg);
 
-        propertiesOutput = new FileOutputStream(home+"/chatlog.properties");
+        propertiesOutput = new FileOutputStream(home+"chatlog.properties");
 
         pro.store(propertiesOutput,"new changes");
 
@@ -140,7 +144,7 @@ else
 
 
 
-   FileInputStream in = new FileInputStream(home+"/chat.properties");
+   FileInputStream in = new FileInputStream(home+"chat.properties");
   				pro = new Properties();
                                  pro.load(in);
 
@@ -154,9 +158,9 @@ else
                                        //if voter already login and break...............
                                        if(key.equalsIgnoreCase(institute_id+"&"+position+"&"+Name+"&"+radio.substring(radio.lastIndexOf("&")+1,radio.length())))
                                        {
-System.out.println("kkkkkkkkkkkkkkkk");
+                                           System.out.println("kkkkkkkkkkkkkkkk");
                                            session.setAttribute("msg1","You are Already login in Chat");
-                                                   return mapping.findForward("success1");
+                                           return mapping.findForward("success1");
                                        }
 
                                        pro1.put(key, pro.get(key));
@@ -166,16 +170,16 @@ System.out.println("kkkkkkkkkkkkkkkk");
 				in.close();
 
                                  pro1.put(institute_id+"&"+position+"&"+Name+"&"+radio.substring(radio.lastIndexOf("&")+1,radio.length()),"Chat Start");
-                                OutputStream fos = new FileOutputStream(home+"/chat.properties");
+                                OutputStream fos = new FileOutputStream(home+"chat.properties");
 
 
 session.setAttribute("chatter",radio.substring(radio.lastIndexOf("&")+1,radio.length()));
- session.setAttribute("voterchatmsg",institute_id+"&"+position+"&"+Name+"&"+radio.substring(radio.lastIndexOf("&")+1,radio.length()));
+session.setAttribute("voterchatmsg",institute_id+"&"+position+"&"+Name+"&"+radio.substring(radio.lastIndexOf("&")+1,radio.length()));
   
 
 
 
-					fos = new FileOutputStream(home+"/chat.properties");
+					fos = new FileOutputStream(home+"chat.properties");
 					pro1.store(fos, "Current Chat Status");
 					fos.close();
 

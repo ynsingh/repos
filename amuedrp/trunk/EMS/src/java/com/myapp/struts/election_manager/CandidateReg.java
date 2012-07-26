@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
  */
 public class CandidateReg {
 private String e_election_id;
-private byte[] v_image;
+//private String v_image;
 private String e_description;
 private Timestamp e_nomistart;
 private Timestamp e_nomiend;
@@ -104,12 +104,6 @@ private String status;
     public void setE_withstart(Timestamp e_withstart) {
         this.e_withstart = e_withstart;
     }
-private Timestamp e_scrstart;
-private Timestamp e_scrend;
-private Timestamp e_withstart;
-private Timestamp e_withend;
-private Timestamp e_start;
-private Timestamp e_end;
 
     public String getE_description() {
         return e_description;
@@ -183,25 +177,25 @@ private Timestamp e_end;
 //        this.e_withstart = e_withstart;
 //    }
 
-private java.awt.image.BufferedImage image;
-
-    public BufferedImage getImage() {
-
-        if(v_image!=null)
-        { InputStream in = new ByteArrayInputStream(this.v_image);
-	try{
-        image = ImageIO.read(in);
-        }catch(Exception e){}
-
-        return image;
-    }else{
-    return null;
-    }
-    }
-
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
+//private java.awt.image.BufferedImage image;
+//
+//    public BufferedImage getImage() {
+//
+//        if(v_image!=null)
+//        { InputStream in = new ByteArrayInputStream(this.v_image);
+//	try{
+//        image = ImageIO.read(in);
+//        }catch(Exception e){}
+//
+//        return image;
+//    }else{
+//    return null;
+//    }
+//    }
+//
+//    public void setImage(BufferedImage image) {
+//        this.image = image;
+//    }
 private String e_election_name;
 private String p_position_name;
 private String i_institute_name;
@@ -213,34 +207,7 @@ private String i_institute_name;
     public void setI_institute_name(String i_institute_name) {
         this.i_institute_name = i_institute_name;
     }
-	private String v_voter_name;
-	private String v_gender;
-	private String v_birthdate;
-	private String v_mobile_number;
-	private String v_c_address;
-	private String v_city;
-	private String v_state;
-	private String v_email;
-	private String v_course;
-	private String v_department;
-	private String v_enrollment;
-	private String v_admisionDate;
-	private String v_duration;
-	private String v_year;
-	private String v_session;
-	private String c1_attendence;
-	private String c1_marks;
-	private String c1_back;
-	private String c1_criminal;
-	private String v_father;
-	private String v_mother;
-	private String v_country;
-	private String v_peradd;
-	private String v_city1;
-	private String v_state1;
-	private String v_zip1;
-	private String v_country1;
-	private String v_zip;
+
 
     public String getC1_attendence() {
         return c1_attendence;
@@ -490,13 +457,13 @@ private String i_institute_name;
         this.e_election_id = e_election_id;
     }
 
-    public byte[] getV_image() {
-        return v_image;
-    }
+//    public String getV_image() {
+//        return v_image;
+//    }
+//
+//    public void setV_image(String v_image) {
+//        this.v_image = v_image;
+////    }
 
-    public void setV_image(byte[] v_image) {
-        this.v_image = v_image;
-    }
 
-   
 }

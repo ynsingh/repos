@@ -59,7 +59,7 @@ public class VotersetAction extends org.apache.struts.action.Action {
 	 	if(action.equalsIgnoreCase("All")){
      			institute_id=(String)session.getAttribute("institute_id");
     			VoterRegistrationDAO voter=new VoterRegistrationDAO();
-     			List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetails(institute_id);
+     			List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetailsReg(institute_id);
 			for(int i=0;i<rst.size();i++){
 		    		VoterRegistration obj1=(VoterRegistration)rst.get(i);
 
@@ -81,13 +81,13 @@ public class VotersetAction extends org.apache.struts.action.Action {
  					o.setPassword(admin_password1);
 
             				VoterRegistrationDAO.setVoter(o);
-         				String path = servlet.getServletContext().getRealPath("/");
+         				
 		//			System.out.println(path+obj1.getEmail()+admin_password+"One time key for voting for  : "+e.getElectionName()+" election"+"Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
-            				x=new Email(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election is "+admin_password);
+            				x=new Email(obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election is "+admin_password);
                    			x.send();
                 			log.add( "\nOne time key has been send successfully to= "+obj1.getEmail()+"\n");
                                         if(obj1.getAlternateMail()!=null)
-                                        mailSend1(path,obj1.getAlternateMail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
+                                        mailSend1(obj1.getAlternateMail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
 
                                         log.add( "\nOne time key has been send successfully to Alternate Mail= "+obj1.getAlternateMail());
         
@@ -110,6 +110,7 @@ public class VotersetAction extends org.apache.struts.action.Action {
 	    				o.setId(oi);
 					/*Admin Password Generate*/
                  			admin_password= RandomPassword.getRandomString(10);
+                                       // admin_password="1";
 					//log.add( "\nOne time key is  "+admin_password);
                 			admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
 					//log.add( "\nOne time key MD5  "+admin_password1);//
@@ -117,10 +118,10 @@ public class VotersetAction extends org.apache.struts.action.Action {
 					//log.add( "\nOne time key MD5 MD5  "+admin_password2);//
             				o.setPassword(admin_password1);
             				VoterRegistrationDAO.setVoter(o);
-	         			String path = servlet.getServletContext().getRealPath("/");
-            				mailSend(path,obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
+	         			
+            				mailSend(obj1.getEmail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
                    			if(obj1.getAlternateMail()!=null)
-                                        mailSend1(path,obj1.getAlternateMail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
+                                        mailSend1(obj1.getAlternateMail(),admin_password,"One time key for voting for  : "+e.getElectionName()+" election","Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+admin_password+"\n");
 
 					log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
                                         log.add( "\nOne time key has been send successfully to Alternate Mail= "+obj1.getAlternateMail());
@@ -133,28 +134,29 @@ public class VotersetAction extends org.apache.struts.action.Action {
 		StringBuffer str = new StringBuffer();
 		//always give the path from root. This way it almost always works.
 		String nameOfTextFile = "OneTimeKeylog.txt";
-		String path1=(String)session.getAttribute("apppath");
-		try {
-			PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
-			for(int ii=0;ii<log.size();ii++)
-				str.append(log.get(ii)+"\n");
-		      	pw.println(str+"\n");
-                        //clean up
-                	pw.close();
-	        } catch(IOException ex) {
-       			System.out.println(ex.getMessage());
-        	}
+                UserLog.ErrorListLog(log, nameOfTextFile);
+//		String path1=(String)session.getAttribute("apppath");
+//		try {
+//			PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
+//			for(int ii=0;ii<log.size();ii++)
+//				str.append(log.get(ii)+"\n");
+//		      	pw.println(str+"\n");
+//                        //clean up
+//                	pw.close();
+//	        } catch(IOException ex) {
+//       			System.out.println(ex.getMessage());
+//        	}
 		request.setAttribute("msg", log);
 		return mapping.findForward("success");
     	}
-         public void mailSend(String path,String to,String admin_password,String subject,String body){
-            x=new Email(path,to,admin_password,subject,body);
+         public void mailSend(String to,String admin_password,String subject,String body){
+            x=new Email(to,admin_password,subject,body);
             x.send();
 
 
     }
-      public void mailSend1(String path,String to,String admin_password,String subject,String body){
-            x=new Email(path,to,admin_password,subject,body);
+      public void mailSend1(String to,String admin_password,String subject,String body){
+            x=new Email(to,admin_password,subject,body);
             x.sendAlternatemail();
 
 

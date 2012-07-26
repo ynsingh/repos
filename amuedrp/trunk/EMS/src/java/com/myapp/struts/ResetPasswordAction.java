@@ -7,7 +7,6 @@ package com.myapp.struts;
 
 import  com.myapp.struts.*;
 import com.myapp.struts.hbm.*;
-import com.myapp.struts.utility.PasswordEncruptionUtility;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -16,7 +15,6 @@ import org.apache.struts.action.ActionMapping;
 import java.sql.*;
 import java.util.*;
 import javax.servlet.http.HttpSession;
-import com.myapp.struts.utility.RandomPassword;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import com.myapp.struts.utility.*;
@@ -82,10 +80,10 @@ if(role.equalsIgnoreCase("Superadmin"))
         VoterRegistration voter=obj.getVoterDetails(rs.getStaffDetail().getId().getStaffId(),rs.getStaffDetail().getId().getInstituteId());
 
 
-        String path = servlet.getServletContext().getRealPath("/");
+        
        
 
-            obj1=new Email(path,voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
+            obj1=new Email(voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -105,8 +103,8 @@ if(role.equalsIgnoreCase("Superadmin"))
         StaffDetail staff=obj.getStaffDetails1(rs.getStaffDetail().getId().getStaffId(),rs.getStaffDetail().getId().getInstituteId());
 
  
-        String path = servlet.getServletContext().getRealPath("/");
-            obj1=new Email(path,staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
+        
+            obj1=new Email(staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -154,10 +152,10 @@ if(rs.getRole().equalsIgnoreCase("voter"))
         VoterRegistration voter=obj.getVoterDetails(rs.getStaffDetail().getId().getStaffId(),institute_id);
 
 
-        String path = servlet.getServletContext().getRealPath("/");
+    
 
 
-            obj1=new Email(path,voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
+            obj1=new Email(voter.getEmail(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {
@@ -205,8 +203,8 @@ if(rs.getRole().equalsIgnoreCase("Election Manager")|| rs.getRole().equalsIgnore
         StaffDetail staff=obj.getStaffDetails1(rs.getStaffDetail().getId().getStaffId(),rs.getStaffDetail().getId().getInstituteId());
 
 
-        String path = servlet.getServletContext().getRealPath("/");
-            obj1=new Email(path,staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
+       
+            obj1=new Email(staff.getEmailId(),password,"Renewal of Password From EMS","Your Password Successfully update with User Id "+rs.getUserId()+" Your Password for EMS Login is "+password);
          executor.submit(new Runnable() {
 
                 public void run() {

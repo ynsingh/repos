@@ -75,8 +75,7 @@ String onetimekey = request.getParameter("key");
 
 		}
                 System.out.println("Login Vote");
-                String path = servlet.getServletContext().getRealPath("/");
-        session.setAttribute("apppath", path);
+                
         session.setAttribute("election_id", obj.getId().getElectionId());
         session.setAttribute("user_id",l.getUserId());
         session.setAttribute("institute_id",l.getStaffDetail().getId().getInstituteId() );

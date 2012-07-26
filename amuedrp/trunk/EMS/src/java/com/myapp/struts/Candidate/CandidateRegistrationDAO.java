@@ -57,6 +57,45 @@ public static void insert(CandidateRegistration obj) {
 
 
 }
+public List<VoterCandidate> GetDetails1(String instituteId,String status,String enrollment)
+    {
+         Session session =null;
+
+    List<VoterCandidate> candi=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select a.*,b.* from  candidate_registration b, voter_registration a where a.enrollment=b.enrollment and a.institute_id=b.institute_id and b.institute_id=:institute_id and b.status1=:status and a.enrollment=:enrollment";
+
+
+
+
+          Query query =  session.createSQLQuery(sql)
+                    .addEntity(VoterRegistration.class)
+                    .addEntity(CandidateRegistration.class)
+
+                    .setResultTransformer(Transformers.aliasToBean(VoterCandidate.class));
+          query.setString("institute_id",instituteId );
+          query.setString("status", status);
+          query.setString("enrollment", enrollment);
+
+         candi= (List<VoterCandidate>)query.list();
+            session.getTransaction().commit();
+        }
+    catch(Exception e){
+    e.printStackTrace();
+    }
+    finally {
+            session.close();
+        }
+    return candi;
+}
+
+
+
 
 public static boolean update(CandidateRegistration obj,VoterRegistration obj1) {
         Session session = HibernateUtil.getSessionFactory().openSession();

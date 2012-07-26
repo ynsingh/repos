@@ -81,17 +81,17 @@ public class VotersetAction2 extends org.apache.struts.action.Action {
 		StringBuffer str = new StringBuffer();
 		//always give the path from root. This way it almost always works.
 		String nameOfTextFile = "AlternateMail.txt";
-		String path1=(String)session.getAttribute("apppath");
-		try {
-			PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
-			for(int ii=0;ii<log.size();ii++)
-				str.append(log.get(ii)+"\n");
-		      	pw.println(str+"\n");
-                        //clean up
-                	pw.close();
-	        } catch(IOException ex) {
-       			System.out.println(ex.getMessage());
-        	}
+		UserLog.ErrorListLog(log,nameOfTextFile);
+//		try {
+//			PrintWriter pw = new PrintWriter(new FileOutputStream(path1+"/EMSLOG/"+nameOfTextFile,true));
+//			for(int ii=0;ii<log.size();ii++)
+//				str.append(log.get(ii)+"\n");
+//		      	pw.println(str+"\n");
+//                        //clean up
+//                	pw.close();
+//	        } catch(IOException ex) {
+//       			System.out.println(ex.getMessage());
+//        	}
                 
 		request.setAttribute("msg", log);
 		return mapping.findForward("success");

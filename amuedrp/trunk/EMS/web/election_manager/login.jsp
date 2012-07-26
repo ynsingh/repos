@@ -1030,10 +1030,16 @@ document.write('</div></span>');
                     <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter</a>
                 </li>
                 <li>
+                            <a href="<%=contextPath%>/election_manager/block_voter_1.jsp?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block From Login</a>
+                 </li>
+                 <li>
+                    <a href="<%=request.getContextPath()%>/election_manager/search_voter1.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Update Voter Details</a>
+                </li>
+                <li>
                     <a href="<%=request.getContextPath()%>/election_manager/voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Voter List</a>
                 </li>
                      <li>
-                    <a href="<%=request.getContextPath()%>/election_manager/voter1.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Login Password & Key</a>
+                    <a href="<%=request.getContextPath()%>/election_manager/voter1.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Login Pass & Key</a>
                 </li>
 		<li>
                     <a href="<%=request.getContextPath()%>/election_manager/SetVoterMail.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Set Voter Alternate Mail</a>
@@ -1079,8 +1085,8 @@ document.write('</div></span>');
                 </li>--%>
                 <li>
                     <a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><%=resource.getString("generate_report")%></a>
-                  <%--  <ul>
-                         <li>
+                    <ul>
+                       <%--  <li>
                             <a href="<%=request.getContextPath()%>/PrintNomination.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("final_candi_list")%></a>
                         </li>
                         <li>
@@ -1091,8 +1097,8 @@ document.write('</div></span>');
                         </li>
                          <li>
                             <a href="<%=request.getContextPath()%>/AllCandiList.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("all_candi_list")%></a>
-                        </li>
-                    </ul>--%>
+                        </li>--%>
+                    </ul>
                 </li>
                  <li>
                             <a href="<%=request.getContextPath()%>/Candidate/cat_data_import_read.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Import Candidate Data</a>
@@ -1103,7 +1109,7 @@ document.write('</div></span>');
         </li>
           <li>
 
-          <a href="<%=request.getContextPath()%>/election_manager/SetMailBody.jsp" style="font-size: 13px;text-decoration: none;" > Set Mail Body</a>
+          <a href="<%=request.getContextPath()%>/election_manager/SetMailBody1.jsp" style="font-size: 13px;text-decoration: none;" > Set Mail Body</a>
 
         </li>
         <%--<li>

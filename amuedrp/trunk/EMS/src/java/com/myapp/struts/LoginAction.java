@@ -3,8 +3,6 @@
  * and open the template in the editor.
  */
 package com.myapp.struts;
-
-
 import com.myapp.struts.hbm.*;
 import javax.servlet.http.*;
 import org.apache.struts.action.ActionForm;
@@ -14,7 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.*;
 import javax.servlet.http.HttpSession;
-import com.myapp.struts.utility.PasswordEncruptionUtility;
+import com.myapp.struts.utility.*;
+import com.myapp.struts.Voter.VoterRegistrationDAO;
 
 
 
@@ -43,8 +42,7 @@ public class LoginAction extends org.apache.struts.action.Action {
             throws Exception {
 	System.gc();
         HttpSession session = request.getSession();
-          String path = servlet.getServletContext().getRealPath("/");
-        session.setAttribute("apppath", path);
+        
         if(session.isNew())
         {
             return mapping.findForward("out");
@@ -333,6 +331,12 @@ if(x!=null)
                     else if(login.getRole().equalsIgnoreCase("voter"))  {
 
                         Institute rs1 = institutedao.getInstituteDetails(institute_id);
+                        VoterRegistration voter=VoterRegistrationDAO.searchVoterRegistration(institute_id,login.getStaffDetail().getId().getStaffId());
+                        if(voter.getStatus().equalsIgnoreCase("Blocked")){
+
+                            request.setAttribute("msg1", "Sorry You are Blocked. Contact Election Manager");
+                 return mapping.findForward("failure");
+                        }
 
                         if (rs1!=null) {
 

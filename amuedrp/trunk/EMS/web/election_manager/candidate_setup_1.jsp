@@ -84,7 +84,8 @@ String Course=resource.getString("course");
 pageContext.setAttribute("Course",Course);
 String Edit=resource.getString("edit");
 pageContext.setAttribute("Edit",Edit);
-
+ String userid=(String)session.getAttribute("user_id");
+session.removeAttribute("mail");
 %>
 
         <%!
@@ -142,7 +143,7 @@ String status = "&status="+request.getParameter("status");
         Ob.setYear(voter1.getVoterRegistration().getYear());
         Ob.setStatus(voter1.getCandidateRegistration().getStatus());
       
-
+       
 
 
 
@@ -180,7 +181,7 @@ pageContext.setAttribute("path", path);
     loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/election_manager/candidate_setup_1.jsp";
 
 
-            loc = loc + "?pageSize="+x;
+    loc = loc + "?pageSize="+x;
     window.location = loc;
 
 
@@ -276,6 +277,11 @@ else
       <item   value="${doc.status}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}"  hAlign="left" styleClass="item"/>
     </column>
 
+       <column width="10%">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Send Mail" hyperLink="${path}/election_manager/ViewMailBody.jsp?id=${doc.enrollment}"  hAlign="left" styleClass="item"/>
+    </column>
+
 
 
  </columns>
@@ -331,10 +337,18 @@ if(msg!=null)
 
 
 <%
-String msg=(String)session.getAttribute("msg");
+String msg1=(String)request.getAttribute("msg1");
+if(msg1!=null){
+    out.println(msg1);
+}
 
-   if(msg!=null) out.println(msg);
-    session.removeAttribute("msg");
+List msg=(List)request.getAttribute("msg2");
+if(msg!=null){
+	if(msg.isEmpty()==false ){
+		for(int i=0;i<msg.size(); i++)
+	    		out.println(msg.get(i)+"\n");
+	}
+}
 
 %>
    

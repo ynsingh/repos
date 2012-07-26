@@ -39,14 +39,14 @@ public class VotersetAction3 extends org.apache.struts.action.Action {
     Email x;
     private String admin_password;
     private String admin_password1,onetimekey,onetimekey1;
-	private String bodymessRPOTKM1;
+    private String bodymessRPOTKM1;
 
 //	private String bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not casted your ballot in IIT Kanpur AA BoD election. Voting over web portal will close on 16 March 2012 2359hrs IST.\n\n For details of candidates please visit\n\nhttp://202.141.40.215/~brihaspati/final_list.shtml\n\nFor other details regarding election, you can visit election website at http://202.141.40.215/~brihaspati\n\n For casting your ballot on web portal, you can click on the following link\n\n"+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/voterlogin.do?email=";
 //	private String ur="you can click on the following link"+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/voterlogin.do?email="; 
 
-	private String bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS for voting. Your login is ";
-	private String bodymessRPOTKM3="\n\nYou are requested to use the latest mail for casting your ballot.\n\n\n\n\nYNSingh\n\nEO, IITKAA 2012";
-	private String subRPOTKM="Your credentials for voting in IITKAA Elections 2012";
+	private String bodymessRPOTKM2;
+	private String bodymessRPOTKM3;
+	private String subRPOTKM;
 /*
 Dear Sir/Madam,
 
@@ -71,7 +71,7 @@ EO, IITKAA 2012
 
 	bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not casted your ballot in IIT Kanpur AA BoD election. Voting over web portal will close on 16 March 2012 2359hrs IST.\n\n For details of candidates please visit\n\nhttp://202.141.40.215/~brihaspati/final_list.shtml\n\nFor other details regarding election, you can visit election website at http://202.141.40.215/~brihaspati\n\n For casting your ballot on web portal, you can click on the following link\n\n"+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/voterlogin.do?email=";
         HttpSession session = request.getSession();
-	String path=(String)session.getAttribute("apppath");
+	
         DepActionForm loginActionForm;
 	loginActionForm = (DepActionForm) form;
 
@@ -82,6 +82,18 @@ EO, IITKAA 2012
 	List obj= (List)session.getAttribute("resultset");
 
 	String institute_id=(String)session.getAttribute("institute_id");
+        String username=(String)session.getAttribute("username");
+
+         Election e1=ElectionDAO.searchElection(election, institute_id);
+
+        subRPOTKM="Your credentials for voting in"+e1.getElectionName();
+	bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not casted your ballot in . Voting over web portal will close "+e1.getEndDate()+" IST.\n\n For details of candidates , you can visit election website at http://202.141.40.218/EMS\n\n For casting your ballot on web portal, you can click on the following link\n\n"+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/voterlogin.do?email=";
+        bodymessRPOTKM2="\n\nYou can also cut and past the above link in a browser to cast your ballot.\n\nAlternatively, you can login into election management system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS for voting. Your login is ";
+        bodymessRPOTKM3="\n\nYou are requested to use the latest mail for casting your ballot.\n\n\n\n\n"+username+"\n\nEO,"+e1.getElectionName();
+
+
+
+
 
 	String action=loginActionForm.getAction();
 
@@ -127,14 +139,14 @@ if(action.equalsIgnoreCase("1"))//got Reset Password & One Time Key with Voting 
             				o.setPassword(onetimekey1);
             				VoterRegistrationDAO.setVoter(o);
 
-            				mailSend(path,obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+            				mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
   
                                         log.add( "\nReset Password & One time key link has been send successfully to= "+obj1.getEmail());
                                         if(obj1.getAlternateMail()!=null)
                                         {
 
                                           //mailSend1(path,obj1.getAlternateMail(),admin_password,bodymessRPOTKM1"For Casting Vote  for "+e.getElectionName()+" election","\n Your Login Id for EMS is"+obj2.getUserId()+" Password "+obj2.getPassword()+"\nClick  http://202.141.40.218:8080/EMS/voterlogin.do?email="+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+"\n");
-                                          mailSend1(path,obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                          mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
 
                                         log.add( "\nReset Password & One time key link has been send successfully to Alternate Mail"+obj1.getAlternateMail()+"\n");
                                         }
@@ -147,7 +159,7 @@ if(action.equalsIgnoreCase("1"))//got Reset Password & One Time Key with Voting 
 else if(action.equalsIgnoreCase("2")) //Reset Password and one time key for All Voter not cast there vote
 {
 VoterRegistrationDAO voter=new VoterRegistrationDAO();
- List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetails(institute_id);
+ List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetailsReg(institute_id);
 
         for(int i=0;i<rst.size();i++)
         {
@@ -188,14 +200,14 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
             				o.setPassword(onetimekey1);
             				VoterRegistrationDAO.setVoter(o);
 
-                                       mailSend(path,obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                       mailSend(obj1.getEmail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
                                        //mailSend(path,obj1.getEmail(),admin_password,bodymessRPOTKM1"For Casting Vote  for "+e.getElectionName()+" election","\n Your Login Id for EMS is"+obj2.getUserId()+" Password "+obj2.getPassword()+"\nClick  http://202.141.40.218:8080/EMS/voterlogin.do?email="+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+"\n");
 
                                         log.add( "\nReset Password & One time key link has been send successfully to= "+obj1.getEmail());
                                         if(obj1.getAlternateMail()!=null)
                                         {
 
-                                          mailSend1(path,obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
+                                          mailSend1(obj1.getAlternateMail(),admin_password,subRPOTKM,bodymessRPOTKM1+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+bodymessRPOTKM2+obj2.getUserId()+" and password is  "+admin_password+" and key is "+onetimekey+bodymessRPOTKM3);
                                          // mailSend1(path,obj1.getAlternateMail(),admin_password,bodymessRPOTKM1"For Casting Vote  for "+e.getElectionName()+" election","\n Your Login Id for EMS is"+obj2.getUserId()+" Password "+obj2.getPassword()+"\nClick  http://202.141.40.218:8080/EMS/voterlogin.do?email="+obj2.getUserId()+"&hash="+admin_password+"&eid="+election+"&key="+onetimekey+"\n");
                                           log.add( "\nReset Password & One time key link has been send successfully to Alternate Mail"+obj1.getAlternateMail()+"\n");
                                         }
@@ -210,7 +222,7 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
 
 }
 
-UserLog.ErrorListLog(log,(String)session.getAttribute("apppath")+"/EMSLOG/ResetPasswordOneTimeLink.txt");
+UserLog.ErrorListLog(log,"ResetPasswordOneTimeLink.txt");
 session.setAttribute("log",log);
 
 
@@ -219,14 +231,14 @@ session.setAttribute("log",log);
 request.setAttribute("msg", log);
 return mapping.findForward("success");
     }
-    public void mailSend(String path,String to,String admin_password,String subject,String body){
-            x=new Email(path,to,admin_password,subject,body);
+    public void mailSend(String to,String admin_password,String subject,String body){
+            x=new Email(to,admin_password,subject,body);
             x.send();
            
 
     }
-      public void mailSend1(String path,String to,String admin_password,String subject,String body){
-            x=new Email(path,to,admin_password,subject,body);
+      public void mailSend1(String to,String admin_password,String subject,String body){
+            x=new Email(to,admin_password,subject,body);
             x.sendAlternatemail();
 
 

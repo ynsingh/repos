@@ -23,6 +23,32 @@ import org.hibernate.criterion.Restrictions;
  * @author akhtar
  */
 public class VoterRegistrationDAO {
+
+    public static List<VoterRegistration> searchVoterMail1(String instituteid,String email) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(VoterRegistration.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("email", email))
+                    .add(Restrictions.eq("id.instituteId", instituteid)));
+
+            obj= (List<VoterRegistration>) criteria.list();
+            session.getTransaction().commit();
+
+
+
+
+        }
+        catch(RuntimeException e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+       return obj;
+    }
             public static VoterRegistration searchVoterEmail(String instituteid,String user_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         VoterRegistration obj=null;
@@ -187,9 +213,11 @@ public static boolean update(VoterRegistration obj) {
         try {
             tx = (Transaction) session.beginTransaction();
             session.update(obj);
+            System.out.println("update huaaaaaaaaaaaaaaaaaaaaa");
             tx.commit();
         } catch (RuntimeException e) {
             e.printStackTrace();
+             System.out.println("update hubbbbbbbbbbbbbbbbbb");
             tx.rollback();
             return false;
 

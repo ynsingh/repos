@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * TO PRINT ALL VOTER WHO ARLREADY CAST THERE VOTE
  */
 
 package PrintAction;
@@ -11,6 +10,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.ElectionManagerDAO;
+import com.myapp.struts.utility.AppPath;
+import com.myapp.struts.utility.LoggerUtils;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -33,8 +35,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
  */
 public class PrintVotedVoterList extends org.apache.struts.action.Action {
     
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+    private static Logger log4j=LoggerUtils.getLogger();
     
     /**
      * This is the action called from the Struts framework.
@@ -49,61 +50,35 @@ public class PrintVotedVoterList extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        HttpSession session = request.getSession();
-
-
-
-         ElectionManagerDAO dao=new ElectionManagerDAO();
-
-         String path = servlet.getServletContext().getRealPath("/");
-
-         JasperCompileManager.compileReportToFile(path+"/reports/VotedVoterList.jrxml");
-
-         String institute_id=(String)session.getAttribute("institute_id");
-         String election_id=request.getParameter("election");
-
-         String status="REGISTERED";
-
-         List     list=dao.VotedVoterList(institute_id,election_id);
-
-         System.out.println(list.size());
-System.out.println(election_id);
-
-         JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
-
-          ServletOutputStream ouputStream = response.getOutputStream();
-
-          response.setContentType("application/pdf");
-
-         HashMap hash= new HashMap();
-
-
-
-
-
-         JasperFillManager.fillReportToFile(path+"/reports/VotedVoterList.jasper",hash,data);
-
-         File file= new File(path+"/reports/VotedVoterList.jrprint");
-
-         JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
-
-         JRPdfExporter pdf=new JRPdfExporter();
-
-         pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
-
-         pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, path+"/reports/VotedVoterList.pdf");
-
-         pdf.exportReport();
-           JRExporter exporter = null;
-
-           exporter = new JRHtmlExporter();
-
-           JasperExportManager.exportReportToPdfStream(print, ouputStream);
-
-
-
-
-
-        return mapping.findForward(SUCCESS);
+       try
+        {
+            HttpSession session = request.getSession();
+            ElectionManagerDAO dao=new ElectionManagerDAO();
+            String path = AppPath.getReportPath();
+            JasperCompileManager.compileReportToFile(path+"VotedVoterList.jrxml");
+            String institute_id=(String)session.getAttribute("institute_id");
+            String election_id=request.getParameter("election");
+            List     list=dao.VotedVoterList(institute_id,election_id);
+            JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
+            ServletOutputStream ouputStream = response.getOutputStream();
+            response.setContentType("application/pdf");
+            HashMap hash= new HashMap();
+            JasperFillManager.fillReportToFile(path+"VotedVoterList.jasper",hash,data);
+            File file= new File(path+"VotedVoterList.jrprint");
+            JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
+            JRPdfExporter pdf=new JRPdfExporter();
+            pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
+            pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, path+"VotedVoterList.pdf");
+            pdf.exportReport();
+            JRExporter exporter = null;
+            exporter = new JRHtmlExporter();
+            JasperExportManager.exportReportToPdfStream(print, ouputStream);
+            return mapping.findForward("success");
+         }
+        catch(Exception e)
+        {
+        log4j.error(e.toString());
+        }
+        return null;
     }
 }

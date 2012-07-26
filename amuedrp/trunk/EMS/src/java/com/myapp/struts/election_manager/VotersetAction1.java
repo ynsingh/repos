@@ -42,7 +42,7 @@ public class VotersetAction1 extends org.apache.struts.action.Action {
 	private String bodymessRP1="Dear Mr/Ms. ";
 	private String bodymessRP2="\n\n There are two emails, one containing login and password and other containing onetime use key. If there are more than one of each type, please use latest ones.\nFor this check the time of the email.\n\n Your login is ";
 	private String bodymessRP3=" and  Password is ";
-	private String bodymessRP4=" \n\n Use this to login into the system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS .\n\n Click on 'cast vote'. Now enter the key sent in the email with subject \"One time key.... \", now choose the candidates for various posts and click on vote now.\n\n YOU NEED NOT TO DO ANYTHING ELSE. OTHER FUNCTIONALITIES ARE BEING DISABLED/USELESS AS OF NOW.\n\n Sorry for inconvenience. Your feedback can be sent on ynsingh@iitk.ac.in, brihspti@iitk.ac.in or alumni@iitk.ac.in \n\nynsingh \nEO, IITKAA Elections 2012\n";
+	private String bodymessRP4;
 
 
 /*
@@ -71,7 +71,7 @@ EO, IITKAA Elections 2012
 */
 	private String bodymessOTK1="Dear Sir/Madam.";
 	private String bodymessOTK2="\n\n Your one time use key to be used after clicking on 'cast vote' after login into EMS system is ";
-	private String bodymessOTK3="\n\n If you have lost your login and password, \nemail to ynsingh@iitk.ac.in or brihspti@iitk.ac.in\n\nynsingh\nEO, IITKAA Elections 2012\n";
+	private String bodymessOTK3;
 /*
 Dear Sir/Madam,
 
@@ -94,7 +94,7 @@ EO, IITKAA Elections 2012
 
 
         HttpSession session = request.getSession();
-	String path=(String)session.getAttribute("apppath");
+	
         DepActionForm loginActionForm;
 	loginActionForm = (DepActionForm) form;
 
@@ -105,12 +105,17 @@ EO, IITKAA Elections 2012
 	List obj= (List)session.getAttribute("resultset");
 
 	String institute_id=(String)session.getAttribute("institute_id");
+        String user_id=(String)session.getAttribute("user_id");
+        String username=(String)session.getAttribute("username");
+        Election e1=ElectionDAO.searchElection(election, institute_id);
+        bodymessRP4=" \n\n Use this to login into the system at http://202.141.40.218:8080/EMS or https://202.141.40.218:8443/EMS .\n\n Click on 'cast vote'. Now enter the key sent in the email with subject \"One time key.... \", now choose the candidates for various posts and click on vote now.\n\n YOU NEED NOT TO DO ANYTHING ELSE. OTHER FUNCTIONALITIES ARE BEING DISABLED/USELESS AS OF NOW.\n\n Sorry for inconvenience. Your feedback can be sent on "+user_id+"\n\n"+username+" \nEO, "+e1.getElectionName()+"\n";
+        bodymessOTK3="\n\n If you have lost your login and password, \nemail to "+user_id+"\n\n"+username+"\nEO, "+e1.getElectionName()+"\n";
 
 	String action=loginActionForm.getAction();
 if(action.equalsIgnoreCase("4"))//got Reset Password to ALL Voters
 {
      VoterRegistrationDAO voter=new VoterRegistrationDAO();
- List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetails(institute_id);
+ List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetailsReg(institute_id);
 
         for(int i=0;i<rst.size();i++)
         {
@@ -122,10 +127,10 @@ if(action.equalsIgnoreCase("4"))//got Reset Password to ALL Voters
                   obj2.setPassword(admin_password1);
                   LoginDAO.update1(obj2);
                   //mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id= "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                  mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend(obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                   log.add( "\nMail has been send successfully to= "+obj1.getEmail());
                   if(obj1.getAlternateMail()!=null){
-                  mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend1(obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                   //mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
                   log.add( "\nMail has been send successfully to= "+obj1.getAlternateMail());
                   }
@@ -144,13 +149,13 @@ else if(action.equalsIgnoreCase("1"))//got Reset Password to Current Page
             admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
             obj2.setPassword(admin_password1);
             LoginDAO.update1(obj2);
-                  mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend(obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
             //mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login  "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
             log.add( "\nMail has been send successfully to= "+obj1.getEmail());
              if(obj1.getAlternateMail()!=null)
              {
 	//	mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                  mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend1(obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                   log.add( "\nMail has been send successfully to Alternate Mail"+obj1.getAlternateMail());
              }
             }
@@ -158,7 +163,7 @@ else if(action.equalsIgnoreCase("1"))//got Reset Password to Current Page
 else if(action.equalsIgnoreCase("5")) //Reset Password and one time key for All
 {
 VoterRegistrationDAO voter=new VoterRegistrationDAO();
- List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetails(institute_id);
+ List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetailsReg(institute_id);
 
         for(int i=0;i<rst.size();i++)
         {
@@ -169,12 +174,12 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
                   admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
                   obj2.setPassword(admin_password1);
                   LoginDAO.update1(obj2);
-                  mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend(obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
           //         mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
                     log.add( "\nMail has been send successfully to= "+obj1.getEmail());
                  if(obj1.getAlternateMail()!=null)
                  { // mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                  mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend1(obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                  log.add( "\nMail has been send successfully to Alternate Email"+obj1.getAlternateMail());
                  }
                    
@@ -194,12 +199,12 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
             				o.setPassword(onetimekey1);
             				VoterRegistrationDAO.setVoter(o);
 	         			
-            				mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+            				mailSend(obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
             			//	mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
                                         log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
                    			if(obj1.getAlternateMail()!=null)
                                         {
-                                            mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+                                            mailSend1(obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
                                             //mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
                                         log.add( "\nOne time key has been send successfully to Alternate Mail "+obj1.getAlternateMail()+"\n");
                                         }
@@ -217,13 +222,13 @@ else if(action.equalsIgnoreCase("2")) //Reset Password and one time key for Curr
                   admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
                   obj2.setPassword(admin_password1);
                   LoginDAO.update1(obj2);
-                  mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend(obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
   //                   mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
                      log.add( "\nMail has been send successfully to= "+obj1.getEmail());
                     if(obj1.getAlternateMail()!=null)
                     { 
 //mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                  mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend1(obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                      log.add( "\nMail has been send successfully to Alternate Mail"+obj1.getAlternateMail());
                     }
 
@@ -244,13 +249,13 @@ else if(action.equalsIgnoreCase("2")) //Reset Password and one time key for Curr
             				o.setPassword(onetimekey1);
             				VoterRegistrationDAO.setVoter(o);
 
-            				mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+            				mailSend(obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
   //          				mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
                                         log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
                                         if(obj1.getAlternateMail()!=null)
                                         {
 //mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                                            mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+                                            mailSend1(obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
                                         log.add( "\nOne time key has been send successfully to Alternate Mail"+obj1.getAlternateMail()+"\n");
                                         }
          }
@@ -274,13 +279,13 @@ else if(action.equalsIgnoreCase("3")) //Reset Password and one time key for Curr
                                     admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
                                     obj2.setPassword(admin_password1);
                                     LoginDAO.update1(obj2);
-                  mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend(obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
   //                                  mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
                                     log.add( "\nMail has been send successfully to= "+obj1.getEmail());
                                    if(obj1.getAlternateMail()!=null)
                                    {  
 //mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                  mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend1(obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                                   log.add("\n Mail  has been send succesfully to  Alternate Mail ="+obj1.getAlternateMail());
                                    }
 					SetVoter o=new SetVoter();
@@ -297,12 +302,12 @@ else if(action.equalsIgnoreCase("3")) //Reset Password and one time key for Curr
             				VoterRegistrationDAO.setVoter(o);
 
             			//	mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-            				mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+            				mailSend(obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
                                         log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
                                         if(obj1.getAlternateMail()!=null)
                                         { 
 						//  mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                                            mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+                                            mailSend1(obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
 					log.add( "\nOne time key has been send successfully to Alternate Email"+obj1.getAlternateMail()+"\n");
                                         }
                                    }
@@ -315,7 +320,7 @@ else if(action.equalsIgnoreCase("3")) //Reset Password and one time key for Curr
 else if(action.equalsIgnoreCase("6")) //Reset Password and one time key for All Voter not cast there vote
 {
 VoterRegistrationDAO voter=new VoterRegistrationDAO();
- List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetails(institute_id);
+ List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetailsReg(institute_id);
 
         for(int i=0;i<rst.size();i++)
         {
@@ -333,12 +338,12 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
                                      obj2.setPassword(admin_password1);
                                      LoginDAO.update1(obj2);
                                     // mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                  mailSend(path,obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend(obj1.getEmail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                                      log.add( "\nMail has been send successfully to= "+obj1.getEmail());
                                     if(obj1.getAlternateMail()!=null)
                                     { 
 				 // mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS","Dear "+obj1.getVoterName()+"\n You are Registered as a Voter with given User Id "+obj1.getEmail() +" , Password for Election Management System (EMS) Login "+admin_password+"\n The URL of the EMS server is https://202.141.40.218:8443/EMS \nFor Voting you will receive separate one time password.\n\n\nWith Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                  mailSend1(path,obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
+                  mailSend1(obj1.getAlternateMail(),admin_password,"Registration Accepted Successfully from EMS",bodymessRP1+obj1.getVoterName()+bodymessRP2+obj1.getEmail() +bodymessRP3+admin_password+bodymessRP4+session.getAttribute("institute_name"));
                                     log.add( "\nMail has been send successfully to Alternate Mail"+obj1.getAlternateMail());
                                     }
 
@@ -355,11 +360,11 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
             				o.setPassword(onetimekey1);
             				VoterRegistrationDAO.setVoter(o);
 //                                        mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-            				mailSend(path,obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+            				mailSend(obj1.getEmail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
                                         	log.add( "\nOne time key has been send successfully to= "+obj1.getEmail());
                                         if(obj1.getAlternateMail()!=null)
                                         { //  mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election","Dear "+obj1.getVoterName()+"\n For Voting Your one time key for casting your ballot for "+e.getElectionName()+" Election Only is "+onetimekey+"\n"+"With Regards\nElection Officer\n"+session.getAttribute("institute_name"));
-                                            mailSend1(path,obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
+                                            mailSend1(obj1.getAlternateMail(),onetimekey,"One time key for voting for  : "+e.getElectionName()+" election",bodymessRP1+obj1.getVoterName()+bodymessOTK2+onetimekey+bodymessOTK3+session.getAttribute("institute_name"));
                                             log.add( "\nOne time key has been send successfully to Alternate Mail= "+obj1.getAlternateMail());
                                         }
             				
@@ -373,7 +378,7 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
 
 }
 
-UserLog.ErrorListLog(log,(String)session.getAttribute("apppath")+"/EMSLOG/ViewVoterLog.txt");
+UserLog.ErrorListLog(log,"ViewVoterLog.txt");
 session.setAttribute("log",log);
 
 
@@ -382,14 +387,14 @@ session.setAttribute("log",log);
 request.setAttribute("msg", log);
 return mapping.findForward("success");
     }
-    public void mailSend(String path,String to,String admin_password,String subject,String body){
-            x=new Email(path,to,admin_password,subject,body);
+    public void mailSend(String to,String admin_password,String subject,String body){
+            x=new Email(to,admin_password,subject,body);
             x.send();
            
 
     }
-      public void mailSend1(String path,String to,String admin_password,String subject,String body){
-            x=new Email(path,to,admin_password,subject,body);
+      public void mailSend1(String to,String admin_password,String subject,String body){
+            x=new Email(to,admin_password,subject,body);
             x.sendAlternatemail();
 
 

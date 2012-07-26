@@ -78,13 +78,31 @@ public class VotingAction extends org.apache.struts.action.Action {
             session.setAttribute("electionName", elec.getElectionName());
             System.out.println("electionid="+election+"institute_id="+institute_id);
             List result=votingdao.GetResult(institute_id, election);
+            Calendar currentDate = Calendar.getInstance();
+            SimpleDateFormat formatter=  new SimpleDateFormat("yyyy/MMM/dd HH:mm:ss");
+            String dateNow = formatter.format(currentDate.getTime());
+//compute total no of votes
+
+            Iterator it=result.iterator();
+            List finalResult=new ArrayList();
+            int i=0;
+            while(i<result.size()){
+                Result rs=(Result)result.get(i);
+                long r=Integer.parseInt(rs.getAgm())+Integer.parseInt(rs.getOffline_vote())+Integer.parseInt(rs.getVotes());
+                System.out.println("totalvotes######"+r);
+                rs.setTotal(String.valueOf(r));
+                finalResult.add(rs);
+            i++;
+            }
 
 
-         String path = servlet.getServletContext().getRealPath("/");
-         JasperCompileManager.compileReportToFile(path+"/reports/ResultReport.jrxml");
+
+
+        // String path = servlet.getServletContext().getRealPath("/");
+         JasperCompileManager.compileReportToFile(AppPath.getReportPath()+"ResultReport.jrxml");
         // String enroll=lf.getEnrollment();
  System.out.println("enroll");
-        list=result;
+        list=finalResult;
 if(!list.isEmpty()){
         // System.out.println(list.get(0)+""+enroll);
          JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
@@ -93,19 +111,21 @@ if(!list.isEmpty()){
            response.setContentType("application/pdf");
 
          HashMap hash= new HashMap();
-//         hash.put("image",list.get(11));
+         hash.put("systemdate",dateNow);
+         hash.put("institute_name",institute_name);
+          hash.put("path",path);
 
 
-         JasperFillManager.fillReportToFile(path+"/reports/ResultReport.jasper",hash,data);
+         JasperFillManager.fillReportToFile(AppPath.getReportPath()+"ResultReport.jasper",hash,data);
 
-         File file= new File(path+"/reports/ResultReport.jrprint");
+         File file= new File(AppPath.getReportPath()+"ResultReport.jrprint");
 
          JasperPrint print =(JasperPrint)JRLoader.loadObject(file);
 
          JRPdfExporter pdf=new JRPdfExporter();
 
          pdf.setParameter(JRExporterParameter.JASPER_PRINT, print);
-         pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, path+"/reports/ResultReport.pdf");
+         pdf.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, AppPath.getReportPath()+"ResultReport.pdf");
 
          pdf.exportReport();
          JRExporter exporter = null;
@@ -162,15 +182,19 @@ session.setAttribute("resultset", result);
                 {
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
                     m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
+                    m.get(rs.getPosition_name()).add(rs.getAgm());
                     m.get(rs.getPosition_name()).add(rs.getVotes());
                 }
                 else
                 {
-                    lsPos.add(rs.getPosition_name().toString());
+                     lsPos.add(rs.getPosition_name().toString());
                     lsPos.add(rs.getNumber_of_choice().toString());
                     m.put(rs.getPosition_name(),new ArrayList<String>());
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
                     m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
+                    m.get(rs.getPosition_name()).add(rs.getAgm());
                     m.get(rs.getPosition_name()).add(rs.getVotes());
                 }
             }
@@ -194,6 +218,8 @@ session.setAttribute("resultset", result);
                         positions+="<candidate>";
                         positions+="<candidateenroll>"+it.next().toString()+"</candidateenroll>";
                         positions+="<candidatename>"+it.next().toString()+"</candidatename>";
+                     positions+="<postalvotes>"+it.next().toString()+"</postalvotes>";
+                     positions+="<agmvotes>"+it.next().toString()+"</agmvotes>";
                         positions+="<votes>"+it.next().toString()+"</votes>";
                         positions+="</candidate>";
                     }

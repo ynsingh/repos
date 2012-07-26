@@ -284,6 +284,32 @@ public List getAdminInstituteDetails(){
         return obj;
 }
 
+public List<ElectionDetails> getElectionDetails(){
+  Session session =null;
+    List<ElectionDetails> obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createSQLQuery("select a.*,b.*,c.* from voter_registration a,election b,set_voter c where a.enrollment=c.enrollment and a.institute_id=c.institute_id and c.election_id=b.election_id and c.institute_id=b.institute_id and c.status='blocked'")
+                    .addEntity(VoterRegistration.class)
+                    .addEntity(Election.class)
+                    .addEntity(SetVoter.class)
+                    .setResultTransformer(Transformers.aliasToBean(ElectionDetails.class));
+            obj=(List<ElectionDetails>) query.list();
+
+            System.out.println("@@@@@@@@@@@@@@@@ OBJ"+obj);
+
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+        finally {
+            session.close();
+        }
+        return obj;
+}
+
 public List getAdminInstituteDetailsById(Integer registerationId){
   Session session =null;
     List obj=null;

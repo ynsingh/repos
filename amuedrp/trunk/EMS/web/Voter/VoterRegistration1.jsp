@@ -6,6 +6,83 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%! boolean read=false;%>
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery.ui.datepicker.min.js"></script>
+<style type="text/css">
+.ui-datepicker
+{
+   font-family: Arial;
+   font-size: 13px;
+}
+</style>
+<script>
+
+
+$(document).ready(function()
+{
+   var jQueryDatePicker1Opts =
+   {
+      dateFormat: 'yy-mm-dd',
+      changeMonth: false,
+      changeYear: false,
+      showButtonPanel: false,
+      showAnim: 'show'
+   };
+
+    $("#d").datepicker(jQueryDatePicker1Opts);
+     $("#j").datepicker(jQueryDatePicker1Opts);
+
+
+});
+
+    </script>
+<script type="text/javascript">
+
+    function validation()
+    {
+        
+        var dob=document.getElementById('d');
+        var do_joining=document.getElementById('j');
+        var str="Enter Valid Date";
+        if(dob.value!="" && do_joining.value!="")
+            {
+
+           
+              if(IsDateGreater(dob.value,do_joining.value)==true)
+                {
+                      str+="\n"+"BirthDate is Greater than JoiningDate";
+                      alert(str);
+                      document.getElementById('d').focus();
+                      return false;
+                }
+
+           }
+         return true;
+    }
+
+function IsDateGreater(DateValue1, DateValue2)
+{
+       
+     var DaysDiff;
+     Date1 = new Date(DateValue1);
+     Date2 = new Date(DateValue2);
+     DaysDiff = Math.floor((Date1.getTime() - Date2.getTime())/(1000*60*60*24));
+    if(DaysDiff > 0)
+        {
+
+               return true;
+        }
+     else
+      {
+
+                return false;
+      }
+  }
+</script>
 <%
 
 String res=(String)request.getAttribute("msgerr");
@@ -14,8 +91,13 @@ if(res!=null)
 <script>
     alert("<%=res%>");
 </script>
+
+
 <%
+
 }
+
+
 
 String btn=(String)request.getAttribute("button");
 if(btn.equals("AB")) btn="Block";
@@ -34,6 +116,8 @@ status = voter.getStatus();
 %>
 <script type="text/javascript">
 
+
+
     <%--function check2()
 {
     if(document.getElementById('enrollment').value=="")
@@ -46,6 +130,10 @@ status = voter.getStatus();
     }
 
   }--%>
+
+
+
+
   function submit()
     {
         //alert(document.getElementById("img").value);
@@ -58,9 +146,21 @@ status = voter.getStatus();
 function send()
 {
 
-        location.href = window.back()!=undefined?window.back():document.back()!=undefined?document.back():parent.location;
+       <%-- location.href = window.back()!=undefined?window.back():document.back()!=undefined?document.back():parent.location;--%>
+               location.href="/EMS/electionmanager.do";
 }
 </script>
+
+   <%
+        String msgerr1=(String)request.getAttribute("msgerr1");
+         if(msgerr1!=null){
+
+   %>
+   <script type="text/javascript">
+    alert("<%=msgerr1%>");
+   </script>
+<%}%>
+
 
     <head>
          <script type="text/javascript" src="<%=request.getContextPath()%>/js/helpdemo.js"></script>
@@ -113,6 +213,15 @@ String file=(String)request.getAttribute("filename");
 
 function check3()
 {
+       
+     if(document.getElementById('enrollment1').value=="")
+    {
+        alert("Enter Enrollment Number");
+
+        document.getElementById('enrollment1').focus();
+
+        return false;
+    }
     if(document.getElementById('ins1').options[document.getElementById('ins1').selectedIndex].value=="Select")
     {
         alert("Enter Institute Name");
@@ -155,11 +264,11 @@ function check3()
 
         return false;
     }
-     if(document.getElementById('3').value=="")
+     if(document.getElementById('d').value=="")
     {
         alert("Enter BirthDate");
 
-        document.getElementById('3').focus();
+        document.getElementById('d').focus();
 
         return false;
     }
@@ -203,7 +312,9 @@ function check3()
 
         return false;
     }--%>
-
+          
+   
+     return validation();
    return true;
 
   }
@@ -236,7 +347,7 @@ function check3()
   var sess1=document.getElementById("sess1");
   sess.value=sess1.value;
   var jdate=document.getElementById("jdate");
-  var jdate1=document.getElementById("1");
+  var jdate1=document.getElementById("j");
   jdate.value=jdate1.value;
   var vname=document.getElementById("vname");
   var vname1=document.getElementById("vname1");
@@ -245,7 +356,7 @@ function check3()
   var gen1=document.getElementById("gen1");
   gen.value=gen1.value;
    var bdate=document.getElementById("bdate");
-  var bdate1=document.getElementById("3");
+  var bdate1=document.getElementById("d");
   bdate.value=bdate1.value;
   var fname=document.getElementById("fname");
   var fname1=document.getElementById("fname1");
@@ -298,6 +409,85 @@ function check3()
   return true;
 
   }
+
+  function echeck() {
+<%-- window.status="Press F1 for Help";--%>
+        str = document.getElementById("email1").value;
+		var at="@"
+		var dot="."
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if (str.indexOf(at)==-1){
+                   <%-- availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                    alert("Please Enter Valid Email");
+                   document.getElementById('email1').value="";
+
+                    document.getElementById('email1').focus();
+		   return false
+		}
+
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+		    <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                       alert("Please Enter Valid Email");
+                    document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		   return false
+		}
+
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                          alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                      document.getElementById('email1').focus();
+		    return false
+		}
+
+		 if (str.indexOf(at,(lat+1))!=-1){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                          alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+		    <%-- availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                       alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+		 if (str.indexOf(dot,(lat+2))==-1){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                        alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+		 if (str.indexOf(" ")!=-1){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                          alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+ 		 return true
+	}
+
+     availableSelectList1.innerHTML="";
+    availableSelectList2.innerHTML="";
+    availableSelectList3.innerHTML="";
+
+
+
+
+
+
+
 </script>
 </head>
 
@@ -371,6 +561,7 @@ function check3()
   <%if(btn.equals("Add")==true || btn.equals("Submit")==true){%>
 
                             <%if(session.getAttribute("image")!=null){%>
+                           
                          <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="100" height="100"/>
                         <%}else{%>
 
@@ -439,8 +630,8 @@ function check3()
 <tr>
 <td align="left">Current Session:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="sess1" value="<%=sess%>" property="session" onfocus="statwords('Please enter current academic session')" onblur="return status()" /></td>
 </tr
-<tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" onfocus="statwords('Please enter Admission date')" onblur="return status()" />
-<a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td></tr>
+<tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="j" property="j_date" value="<%=jdate%>" onfocus="statwords('Please enter Admission date')" onblur="return status()" />
+<%--<a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%></td></tr>
  <tr>
                 <td align="left">Voter(student) Name*</td>
                 <td>
@@ -463,8 +654,8 @@ function check3()
 </html:select>
       </tr>
       <tr>
-      <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" onfocus="statwords('Please enter birth date')" onblur="return status()"/>
-<a href="javascript:NewCal('3','ddmmmyyyy')"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
+      <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="d" onfocus="statwords('Please enter birth date')" onblur="return status()"/>
+<%--<a href="javascript:NewCal('3','ddmmmyyyy')"><img src="<%=request.getContextPath()%>/images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%></td>
 </tr>
 <tr> <td>Father's Name</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="fname1"  value="<%=fname%>"  property="f_name" onfocus="statwords('Please enter father's name')" onblur="return status()"/></td></tr>
   <tr> <td>Mother's Name</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mname1" value="<%=mname%>" property="m_name" onfocus="statwords('Please enter mother's name')" onblur="return status()"/></td>
@@ -474,7 +665,7 @@ function check3()
 </tr>
 <tr><td></td></tr>
 <tr>
-    <td align="left">email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return status()"/></td>
+    <td align="left">Email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return echeck();"/></td>
 </tr>
 <tr>
     <td align="left">Alternate Email:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="alternateemail"  value="<%=zcode%>" styleId="alternateemail" /></td>

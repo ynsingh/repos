@@ -4,7 +4,7 @@
      
 --%>
 
- <%@page contentType="text/html" import="java.util.*,java.io.*,java.sql.*,com.myapp.struts.hbm.*"%>
+ <%@page contentType="text/html" import="java.util.*,java.io.*,java.sql.*,com.myapp.struts.hbm.*,com.myapp.struts.utility.*"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -14,12 +14,21 @@ VoterRegistration voter  =(VoterRegistration)session.getAttribute("voter");
 byte[] bytes=null;
 if(voter.getImage()!=null)
 {
-bytes = voter.getImage();
-System.out.println("Image Length1="+voter.getImage().length);
+    bytes=UserLog.getBytesFromFile(AppPath.getProjectImagePath()+voter.getImage());
+     /* try{
+          File file = new File(application.getRealPath("images")+"/"+voter.getImage());
+          FileInputStream fis = new FileInputStream(file);
+         int filesize =fis.available();
+         bytes = new byte[filesize];
+         fis.read(bytes);
+         }catch(Exception e){
+           e.printStackTrace();
+         }*/
 }
 else
 {
-    File file = new File(application.getRealPath("images")+"/no-image.jpg");
+      bytes=UserLog.getBytesFromFile(AppPath.getProjectImagePath()+"no-image.jpg");
+  /*  File file = new File(application.getRealPath("images")+"/no-image.jpg");
 
       
     try{
@@ -31,7 +40,7 @@ else
     
     }catch(IOException e){
             System.out.println("image view Error:"+e);
-      }
+      }*/
 }
 response.setContentType("image/jpeg");
 System.out.println("bytes11="+bytes.length);

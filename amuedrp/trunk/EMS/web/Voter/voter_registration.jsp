@@ -1,36 +1,105 @@
 
 <%@ page language="java" %>
-<jsp:include page="/header.jsp" flush="true" />
+<%--<jsp:include page="/header.jsp" flush="true" />--%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%! boolean read=false;%>
 <%
-String btn=(String)request.getAttribute("button");
+String btn=(String)session.getAttribute("button");
 
  if(btn.equals("View")||btn.equals("Delete"))
 read=true;
 else
   {
    read=false;
-}
+  }
+
 String msg1=(String) request.getAttribute("msg1");
+String msg2=(String) request.getAttribute("msg2");
+if(msg2!=null){
 %>
 <script type="text/javascript">
-
-    <%--function check2()
+    alert("<%=msg2%>");
+  </script>
+<%}%>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/cupertino/js/jquery.ui.datepicker.min.js"></script>
+<style type="text/css">
+.ui-datepicker
 {
-    if(document.getElementById('enrollment').value=="")
+   font-family: Arial;
+   font-size: 13px;
+}
+</style>
+<script>
+
+
+$(document).ready(function()
+{
+   var jQueryDatePicker1Opts =
+   {
+      dateFormat: 'yy-mm-dd',
+      changeMonth: false,
+      changeYear: false,
+      showButtonPanel: false,
+      showAnim: 'show'
+   };
+   
+    $("#d").datepicker(jQueryDatePicker1Opts);
+     $("#j").datepicker(jQueryDatePicker1Opts);
+
+
+});
+
+    </script>
+<script type="text/javascript">
+
+    function validation()
     {
-        alert("Enter Enrollment");
 
-        document.getElementById('enrollment').focus();
+        var dob=document.getElementById('d');
+        var do_joining=document.getElementById('j');
+        var str="Enter Valid Date";
+        if(dob.value!="" && do_joining.value!="")
+            {
 
-        return false;
+           // alert(dob.value + do_joining.value);
+        if(IsDateGreater(dob.value,do_joining.value)==true)
+        {
+                   str+="\n"+"BirthDate is Greater than JoiningDate";
+                   alert(str);
+                  document.getElementById('d').focus();
+                  return false;
+         }
+        
+            }
+         return true;
     }
 
-  }--%>
+function IsDateGreater(DateValue1, DateValue2)
+{
+
+     var DaysDiff;
+     Date1 = new Date(DateValue1);
+     Date2 = new Date(DateValue2);
+     DaysDiff = Math.floor((Date1.getTime() - Date2.getTime())/(1000*60*60*24));
+    if(DaysDiff > 0)
+        {
+
+               return true;
+        }
+     else
+      {
+
+                return false;
+      }
+   } 
+
   function submit()
     {
         //alert(document.getElementById("img").value);
@@ -62,8 +131,8 @@ function back()
 
  <%
 
-String enrollment=(String)request.getAttribute("enrollment");
-String instituteid=(String)request.getAttribute("instituteid");
+String enrollment=(String)session.getAttribute("enrollment");
+String instituteid=(String)session.getAttribute("instituteid");
 String dep=(String)request.getAttribute("dep");
 String cour=(String)request.getAttribute("cour");
 String dur=(String)request.getAttribute("dur");
@@ -103,6 +172,8 @@ String file=(String)request.getAttribute("filename");
 
 function check3()
 {
+    
+    
     if(document.getElementById('enrollment1').value=="")
     {
         alert("Enter Enrollment Number");
@@ -153,11 +224,11 @@ function check3()
 
         return false;
     }
-     if(document.getElementById('3').value=="")
+     if(document.getElementById('d').value=="")
     {
         alert("Enter BirthDate");
 
-        document.getElementById('3').focus();
+        document.getElementById('d').focus();
 
         return false;
     }
@@ -201,12 +272,17 @@ function check3()
 
         return false;
     }--%>
+    return  validation();
 
    return true;
 
   }
 
-
+function send1()
+{
+    window.history.back();
+    return false;
+}
 
 
 
@@ -233,7 +309,7 @@ function check3()
   var sess1=document.getElementById("sess1");
   sess.value=sess1.value;
   var jdate=document.getElementById("jdate");
-  var jdate1=document.getElementById("1");
+  var jdate1=document.getElementById("j");
   jdate.value=jdate1.value;
   var vname=document.getElementById("vname");
   var vname1=document.getElementById("vname1");
@@ -242,7 +318,7 @@ function check3()
   var gen1=document.getElementById("gen1");
   gen.value=gen1.value;
    var bdate=document.getElementById("bdate");
-  var bdate1=document.getElementById("3");
+  var bdate1=document.getElementById("d");
   bdate.value=bdate1.value;
   var fname=document.getElementById("fname");
   var fname1=document.getElementById("fname1");
@@ -295,6 +371,82 @@ function check3()
   button.value=button1.value;
 
   }
+
+
+  function echeck() {
+<%-- window.status="Press F1 for Help";--%>
+        str = document.getElementById("email1").value;
+		var at="@"
+		var dot="."
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if (str.indexOf(at)==-1){
+                   <%-- availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                    alert("Please Enter Valid Email");
+                   document.getElementById('email1').value="";
+
+                    document.getElementById('email1').focus();
+		   return false
+		}
+
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+		    <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                       alert("Please Enter Valid Email");
+                    document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		   return false
+		}
+
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                          alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                      document.getElementById('email1').focus();
+		    return false
+		}
+
+		 if (str.indexOf(at,(lat+1))!=-1){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                          alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+		    <%-- availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                       alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+		 if (str.indexOf(dot,(lat+2))==-1){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                        alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+		 if (str.indexOf(" ")!=-1){
+		     <%--availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";--%>
+                          alert("Please Enter Valid Email");
+                     document.getElementById('email1').value="";
+                     document.getElementById('email1').focus();
+		    return false
+		 }
+
+ 		 return true
+	}
+
+     availableSelectList1.innerHTML="";
+    availableSelectList2.innerHTML="";
+    availableSelectList3.innerHTML="";
+
+
+
 </script>
 </head>
 
@@ -448,8 +600,8 @@ function check3()
 <td align="left">City:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
 
 </tr>
-<tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="1" property="j_date" value="<%=jdate%>" />
-<a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
+<tr><td width="15%">Date of Joining<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="j" property="j_date" value="<%=jdate%>" />
+<%--<a href="javascript:NewCal('1','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%></td>
     <td align="left">Zip Code:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
 </tr>
 
@@ -482,8 +634,11 @@ function check3()
      <td align="left">Permanent Address</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="p_add" value="<%=padd%>" styleId="padd1"/></td>
       </tr>
       <tr>
-      <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" />
-<a href="javascript:NewCal('3','ddmmmyyyy')"><img src="/EMS/images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td>
+      <td>Date of Birth*<br>(DD-MM-YYYY)</td><td>
+          
+         
+          <html:text readonly="<%=read %>"  name="VoterRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="d" />
+<%--<a href="javascript:NewCal('3','ddmmmyyyy')"><img src="/EMS/images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%></td>
  <td align="left">City</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="city1" value="<%=city1%>"  styleId="city21"/></td>
       </tr>
 
@@ -506,12 +661,12 @@ function check3()
 
 <tr>
 
-    <td align="left" colspan="2">email*:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
+    <td align="left" colspan="2">Email*:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" onblur="return echeck();" property="email"/></td>
 
 </tr>
 <tr>
 
-    <td align="left" colspan="2">Alternate Email:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="alternateemail" property="alternateemail"/></td>
+    <td align="left" colspan="2">Alternate Email:<html:text readonly="<%=read%>" name="VoterRegActionForm"    styleId="alternateemail" property="alternateemail"/></td>
 
 </tr>
 
@@ -522,7 +677,7 @@ function check3()
 <td align="center" colspan="5">
      <%if(btn.equals("Update")){%>
     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
-    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send()"  class="txt1"/>
+    &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send1()"  class="txt1"/>
     <%}else if(btn.equals("Delete")){%>
     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
     &nbsp;&nbsp;&nbsp;<input name="button" type="submit" onclick="return send()"  value="Cancel" class="txt1"/>

@@ -162,6 +162,30 @@ catch (RuntimeException e) {
             session.close();
         }
     }
+public static Login getLoginUserName(String user_id,String institute_id){
+ Session session =null;
+    Login tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Login where id.userId = :userId and staffDetail.id.instituteId=:institute_id");
+             query.setString("userId",user_id );
+             query.setString("institute_id",institute_id);
+            
+            //tx= query.list();
+             tx= (Login)query.uniqueResult();
+            session.getTransaction().commit();
+        }
+    catch (RuntimeException e) {
+
+            e.printStackTrace();
+
+        }
+        finally {
+            session.close();
+        }
+        return tx;
+}
 
 public List getLoginDetails(String user_id,String password){
  Session session =null;
