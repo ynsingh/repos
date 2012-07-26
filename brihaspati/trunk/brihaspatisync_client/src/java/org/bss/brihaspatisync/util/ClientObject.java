@@ -218,6 +218,8 @@ public class ClientObject {
         }
 
         public void setLectureID(String value){
+		value=value.replace("[","");	
+		value=value.replace("]","");	
 		this.lect_id=value;
         }
 

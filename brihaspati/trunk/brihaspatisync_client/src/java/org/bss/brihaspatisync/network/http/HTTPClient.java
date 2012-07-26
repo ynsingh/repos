@@ -65,7 +65,6 @@ public class HTTPClient extends Thread {
                         h.setValue(this.lect_id);
 			while(ThreadController.getController().getThreadFlag()){
                         	try {
-				
 					String datastr="nodata";
 					try {
 						if(utilObject.getSendQueueSize() != 0) {
@@ -114,6 +113,7 @@ public class HTTPClient extends Thread {
                         		}
                         		method.releaseConnection();
 					org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");
+					
 					try {
 						this.sleep(500);
 						this.yield();
@@ -122,7 +122,7 @@ public class HTTPClient extends Thread {
 					}	
 	                  	}catch(Exception ex) { 
 					try {
-                                                this.sleep(500);
+						this.sleep(500);
                                                 this.yield();
                                         }catch(Exception ww){
                                                 org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");

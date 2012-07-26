@@ -109,8 +109,18 @@ public class UserListPanel {
 		ClassLoader clr= this.getClass().getClassLoader();
 		Object elements[][]=new Object[userlist.size()][5];
 		statusVector.clear();
-                for (int i=0;i<userlist.size();i++){
-                        String str=(String)userlist.elementAt(i);
+		Vector user_list=new Vector();
+		for (int i=0;i<userlist.size();i++) {
+			String str=(String)userlist.elementAt(i);
+			if(( str.indexOf("Allow") > 0 ) || (str.indexOf("Get")>0) || (str.indexOf("Share")>0) ){
+				user_list.add(0,str);
+			}else{
+				 user_list.add(str);
+			}
+		}	
+
+                for (int i=0;i<user_list.size();i++){
+                        String str=(String)user_list.elementAt(i);
                         StringTokenizer st=new StringTokenizer(str,"$");
                         while(st.hasMoreTokens()){
 				String user = (String)st.nextToken();

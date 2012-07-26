@@ -9,8 +9,7 @@ package org.bss.brihaspatisync.gui;
 
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
-import org.bss.brihaspatisync.network.desktop_sharing.GetSharedScreen;
-import org.bss.brihaspatisync.network.desktop_sharing.PostSharedScreen;
+import org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen;
 import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 import org.bss.brihaspatisync.tools.audio_video.AudioVideoPanel;
 import org.bss.brihaspatisync.tools.audio_video.transmitter.PresentationAudioTransmit;
@@ -58,7 +57,7 @@ public class HandRaiseThreadController implements Runnable{
         /**
          * Controller for the class
          */
-	public static HandRaiseThreadController getController(){
+	protected static HandRaiseThreadController getController(){
                 if(thread_controll==null){
                         thread_controll=new HandRaiseThreadController();
                 }
@@ -100,7 +99,7 @@ public class HandRaiseThreadController implements Runnable{
 					{	
 						VideoPanel.getController().addStudentPanel();
 					}
-					org.bss.brihaspatisync.network.video_capture.StudentGetVideo.getController().start();
+					org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
 					/*
 					try{
                                 	        AVTransmitReceiveHandler.getController().startReceiveHandraiseAudio();
@@ -113,7 +112,7 @@ public class HandRaiseThreadController implements Runnable{
 				//Stop audio handraise controll for student
 				if(stophraudioflag){
 					stophraudioflag=false;
-					org.bss.brihaspatisync.network.video_capture.StudentGetVideo.getController().stop();
+					org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
 					{
 						VideoPanel.getController().removeStudentPanel();
 					}
@@ -153,7 +152,7 @@ public class HandRaiseThreadController implements Runnable{
 					if(startgetscreeflag) {
 						startgetscreeflag=false;
                                        		try {
-                                                       	GetSharedScreen.getController().start();
+							Post_GetSharedScreen.getController().start(true);
                 	                        }catch(Exception sp) {System.out.println("Error in starting GetSharedScreen"+sp.getMessage());}
 
 					}
@@ -162,7 +161,7 @@ public class HandRaiseThreadController implements Runnable{
 					if(stopgetscreeflag) {
 						stopgetscreeflag=false;
                                                 try{
-                                                        GetSharedScreen.getController().stop();
+							Post_GetSharedScreen.getController().stop();
 							StatusPanel.getController().setdestopClient("no");
                                                 }catch(Exception sp){System.out.println("Error in stopping GetSharedScreen"+sp.getMessage());}
                                         }
@@ -170,8 +169,8 @@ public class HandRaiseThreadController implements Runnable{
 					// Start post share screen controll for student
 					if(startpostscreeflag) {	
 						try {
-                                                        PostSharedScreen.getController().start();
-                	                        } catch(Exception sp) {System.out.println("Error in starting PostSharedScreen"+sp.getMessage());}
+                                                        Post_GetSharedScreen.getController().start(false);
+                	                        } catch(Exception sp) {System.out.println("Error in starting Post_GetSharedScreen "+sp.getMessage());}
 
 						startpostscreeflag=false;
 					}
@@ -180,9 +179,9 @@ public class HandRaiseThreadController implements Runnable{
 					if(stoppostscreeflag) {          
 						stoppostscreeflag=false;
 						try{
-	                                	        PostSharedScreen.getController().stop();
+	                                	        Post_GetSharedScreen.getController().stop();
 							StatusPanel.getController().setdestopClient("no");
-	                                	}catch(Exception sp){System.out.println("Error in stopping PostSharedScreen"+sp.getMessage());}
+	                                	}catch(Exception sp){System.out.println("Error in stopping Post_GetSharedScreen"+sp.getMessage());}
 					}
 
 					//start post PPT Presentation controll for student
@@ -201,7 +200,7 @@ public class HandRaiseThreadController implements Runnable{
 					if(starthraudio){
 						starthraudio=false;
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
-						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start();
+						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(false);
 						/*
 						if(stud_audio==null){
 			                                stud_audio=new AudioFromStudent();
@@ -250,13 +249,13 @@ public class HandRaiseThreadController implements Runnable{
 					// Start post screen sharing controll for instructor.
 					if(startpostscreeflag) {
 						try{
-        	                                	PostSharedScreen.getController().start();
+        	                                	Post_GetSharedScreen.getController().start(false);
 							startpostscreeflag=false;
 						}catch(Exception sp){System.out.println("  Error in start post screen for instructor :"+sp.getMessage());}
 					}
 					//Stop post screen sharing controll for instructor
 					if(stoppostscreeflag) {
-						PostSharedScreen.getController().stop();
+						Post_GetSharedScreen.getController().stop();
 						stoppostscreeflag=false;
 						StatusPanel.getController().setdestopClient("no");	
 					}
@@ -265,14 +264,15 @@ public class HandRaiseThreadController implements Runnable{
 					if(startgetscreeflag) {
 						startgetscreeflag=false;
 						try{
-        	                                	GetSharedScreen.getController().start();
+							Post_GetSharedScreen.getController().start(true);
                                               	}catch(Exception sp){System.out.println("  Error in start get screen for instructor :"+sp.getMessage());}
 					}
 				
 					//Stop get screen sharing controll for instructor
 					if(stopgetscreeflag) {
 						stopgetscreeflag=false;
-                                        	GetSharedScreen.getController().stop();
+                                        	//GetSharedScreen.getController().stop();
+						Post_GetSharedScreen.getController().stop();
 						StatusPanel.getController().setdestopClient("no");
 					}
 					//Start post PPT Presentation controll for instructor.

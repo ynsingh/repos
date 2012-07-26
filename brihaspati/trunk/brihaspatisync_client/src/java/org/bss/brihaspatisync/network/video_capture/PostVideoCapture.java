@@ -59,9 +59,8 @@ public class PostVideoCapture implements Runnable {
 	private Thread runner=null;
 	
 	private boolean flag=false;
-
+	private boolean getflag=false;
 	private String reflectorIP ="";
-	private BufferedImage image=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static PostVideoCapture post_capture=null;
@@ -80,9 +79,13 @@ public class PostVideoCapture implements Runnable {
 	/**
  	 * Start Thread
  	 */  
-	public void start(){
+	public void start(boolean getscreen){
                 if (runner == null) {
 			flag=true;
+			
+			getflag=getscreen;
+			if(getflag)
+				org.bss.brihaspatisync.gui.JoinSessionPanel.getController().getAV_Panel().add(org.bss.brihaspatisync.gui.VideoPanel.getController().createGUI());
                         runner = new Thread(this);
                         runner.start();
 			System.out.println("Post Video Capture  start successfully !!");
@@ -96,6 +99,7 @@ public class PostVideoCapture implements Runnable {
 	public void stop() {
                 if (runner != null) {
 			flag=false;
+			getflag=false;
                         runner.stop();
                         runner = null;
 			System.out.println("Post Video Capture  stop successfully !!");
@@ -109,44 +113,50 @@ public class PostVideoCapture implements Runnable {
 		int port =runtime_object.client_inspostvedio_port();
 		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {
-				if(BufferImage.getController().bufferSize()>0) {
-					HttpClient client = new HttpClient();
-			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);//.8091");
-					client.setConnectionTimeout(800000);
+				HttpClient client = new HttpClient();
+			        PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
+				client.setConnectionTimeout(800000);
+				if(!getflag) {	
+					/***  send data to reflector ********/
+					if(BufferImage.getController().bufferSize()>0) {
+						BufferedImage bimg=BufferImage.getController().get(0);
+						BufferImage.getController().remove();
 						
-					BufferedImage bimg=BufferImage.getController().get(0);
-					BufferImage.getController().remove();
+						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+                                	        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
+                                       		JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
+	                                       	enParam.setQuality(0.25F, true);
+	        	                        jencoder.setJPEGEncodeParam(enParam);
+        	        	                jencoder.encode(bimg);
+        	        			postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
+					}
+				}
+               			postMethod.setRequestHeader(h);
 					
-					java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
-                                        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
-                                        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
-                                        enParam.setQuality(0.25F, true);
-                                        jencoder.setJPEGEncodeParam(enParam);
-                                        jencoder.encode(bimg);
-					
-        	               		postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
-               				postMethod.setRequestHeader(h);
-					
-					// Http Proxy Handler
-					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-        	                                HostConfiguration config = client.getHostConfiguration();
-                	                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-                        	                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                                	        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                                        	client.getState().setProxyCredentials(authScope, credentials);
-	                                }
+				// Http Proxy Handler
+				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+        	                	HostConfiguration config = client.getHostConfiguration();
+                	                config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+                        	        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                                	AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                                       	client.getState().setProxyCredentials(authScope, credentials);
+	                      	}
 	
-        	               		int statusCode1 = client.executeMethod(postMethod);
-                	       		postMethod.getStatusLine();
-                       			postMethod.releaseConnection();
-                       			try {
-	                               		runner.sleep(100);runner.yield();
-        	                       	}catch(Exception ex){}
-				}else {
-					try { runner.sleep(100);runner.yield();}catch(Exception ex){}
-				}	
+        	               	int statusCode1 = client.executeMethod(postMethod);
+				if(getflag) {
+                                	byte[] bytes1=postMethod.getResponseBody();
+                                        BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(bytes1));
+                                        try {
+                                        	if(image != null)
+                                                	org.bss.brihaspatisync.gui.VideoPanel.getController().runInstructorVidio(image);
+                                     	}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
+                              	}
+
+                	       	postMethod.getStatusLine();
+                       		postMethod.releaseConnection();
+                       		try { runner.sleep(20);runner.yield(); }catch(Exception ex){}
 			}catch(Exception e){	
-				try { runner.sleep(100);runner.yield();}catch(Exception ex){}
+				try { runner.sleep(1000);runner.yield();}catch(Exception ex){}
 				System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
 			}
 			System.gc();	

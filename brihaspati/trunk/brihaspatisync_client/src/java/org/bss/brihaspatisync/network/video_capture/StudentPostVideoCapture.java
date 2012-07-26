@@ -58,7 +58,7 @@ public class StudentPostVideoCapture implements Runnable {
 	private Thread runner=null;
 	
 	private boolean flag=false;
-
+	private boolean getflag=false;
 	private String reflectorIP ="";
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
@@ -78,9 +78,10 @@ public class StudentPostVideoCapture implements Runnable {
 	/**
  	 * Start Thread
  	 */  
-	public void start(){
+	public void start(boolean getscreen){
                 if (runner == null) {
 			flag=true;
+			getflag=getscreen;
                         runner = new Thread(this);
                         runner.start();
 			System.out.println("Student Post Video Capture  start successfully !!");
@@ -94,6 +95,7 @@ public class StudentPostVideoCapture implements Runnable {
 	public void stop() {
                 if (runner != null) {
 			flag=false;
+			getflag=false;
                         runner.stop();
                         runner = null;
 			System.out.println("Student Post Video Capture  stop successfully !!");
@@ -111,18 +113,19 @@ public class StudentPostVideoCapture implements Runnable {
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
 					client.setConnectionTimeout(8000);
+					if(!getflag) {	
+						BufferedImage bimg=BufferImage.getController().get(0);
+						BufferImage.getController().remove();
 						
-					BufferedImage bimg=BufferImage.getController().get(0);
-					BufferImage.getController().remove();
-					
-					java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
-                                        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
-                                        JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
-                                        enParam.setQuality(0.25F, true);
-                                        jencoder.setJPEGEncodeParam(enParam);
-                                        jencoder.encode(bimg);
-						
-        	               		postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
+						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+                                	        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
+                                        	JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
+	                                        enParam.setQuality(0.25F, true);
+        	                                jencoder.setJPEGEncodeParam(enParam);
+                	                        jencoder.encode(bimg);
+							
+        	               			postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
+					}
                				postMethod.setRequestHeader(h);
 					
 					// Http Proxy Handler
@@ -135,6 +138,15 @@ public class StudentPostVideoCapture implements Runnable {
 	                                }
 	
         	               		int statusCode1 = client.executeMethod(postMethod);
+					if(getflag) {
+	                                        byte[] bytes1=postMethod.getResponseBody();
+                                                BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(bytes1));
+                                                try {
+                                                        if(image!=null)
+                                                                org.bss.brihaspatisync.gui.VideoPanel.getController().runStudentVidio(image);
+                                                }catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
+                                        }
+
                 	       		postMethod.getStatusLine();
                        			postMethod.releaseConnection();
                        			try {

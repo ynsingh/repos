@@ -110,9 +110,11 @@ public class VideoPanel {
         }
 	public void runInstructorVidio(BufferedImage originalImage){
                 try {
-                        int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-                        originalImage=resizeImage(originalImage,type);
-                        selfimageDisplay.setIcon(new ImageIcon(originalImage));
+			if(originalImage != null){
+                        	int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+	                        originalImage=resizeImage(originalImage,type);
+        	                selfimageDisplay.setIcon(new ImageIcon(originalImage));
+			}
 		} catch(Exception e){ System.out.println("Error in VideoPanel.java 111!! "+e.getMessage());}
         }
 	

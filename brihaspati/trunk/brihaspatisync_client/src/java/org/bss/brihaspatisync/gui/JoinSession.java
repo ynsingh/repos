@@ -132,9 +132,9 @@ public class JoinSession {
 
                         if(a_status.equals("1")){
                                 if((client_obj.getUserRole()).equals("instructor")){
-                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread();
+                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(false);
                                 }else {
-                                        org.bss.brihaspatisync.tools.audio.GetAudioStream.getController().startThread();
+                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(true);
                                 }	
 			}
 			//AVTransmitReceiveHandler.getController();
@@ -143,13 +143,14 @@ public class JoinSession {
 		//start video thread
 		try {
 			String v_status=client_obj.getVideoStatus();
-			
+			if(v_status.equals("1")){	
 			if((client_obj.getUserRole()).equals("instructor")){
                         	org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
-				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start();
+				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(false);
 				ShareScreenAndPPT.getController().setEnable_Decable();
 			}else {
-				org.bss.brihaspatisync.network.video_capture.GetVideo.getController().start();
+				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(true);
+			}
 			}
 			
                 }catch(Exception e){}

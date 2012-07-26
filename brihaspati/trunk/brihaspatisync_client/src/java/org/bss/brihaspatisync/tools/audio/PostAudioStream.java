@@ -15,7 +15,8 @@ import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
 import java.io.File;
-
+import java.io.*;
+import javax.sound.sampled.*;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
@@ -30,6 +31,9 @@ public class PostAudioStream implements Runnable {
 
 	private Thread runner=null;
 	private boolean flag=false;
+	private boolean getflag=false;
+
+	private AudioFormat audioFormat;	
 	private static PostAudioStream post_audio=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
@@ -46,10 +50,14 @@ public class PostAudioStream implements Runnable {
 	/**
  	 * Start Thread
  	 */
-	public void startThread(){
+	public void startThread(boolean getscreen){
         	if (runner == null) {
-			AudioCapture.getController().start();
+			if(getscreen)
+				AudioPlayer.getController().startThread();
+			else
+				AudioCapture.getController().start();
 			flag=true;
+			getflag=getscreen;
             		runner = new Thread(this);
             		runner.start();
 			System.out.println("PostAudioStream start successfully !!");
@@ -61,10 +69,14 @@ public class PostAudioStream implements Runnable {
         */
 	public void stopThread() {
         	if (runner != null) {
+			if(getflag)
+				AudioPlayer.getController().stopThread();
+			else
+				AudioCapture.getController().stopCapture();
 			flag=false;
+			getflag=false;
             		runner.stop();
             		runner = null;
-			AudioCapture.getController().stopCapture();
 			System.out.println("PostAudioStream stop successfully !!");
       		}
    	}
@@ -80,22 +92,32 @@ public class PostAudioStream implements Runnable {
 			int port =runtime_object.getAudioPort();
 			while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
-					java.io.ByteArrayOutputStream os=AudioCapture.getController().startCapture();
+					java.io.ByteArrayOutputStream os=null;
+					if(!getflag) {
+						os=AudioCapture.getController().startCapture();
+					}	
 	                                HttpClient client = new HttpClient();
         	                        PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
                 	                client.setConnectionTimeout(20000);
                         	        if(os !=null ){
                                 	        postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
-						postMethod.setRequestHeader(h);
-						// Http Proxy Handler	
-						if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-                	                                HostConfiguration config = client.getHostConfiguration();
-                        	                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-                                	                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                                        	        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                                                	client.getState().setProxyCredentials(authScope, credentials);
-	                                        }
-        	                        	int statusCode1 = client.executeMethod(postMethod);
+					}
+					postMethod.setRequestHeader(h);
+					// Http Proxy Handler	
+					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+                	                	HostConfiguration config = client.getHostConfiguration();
+                        	                config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+                                	        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+                                        	AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                                                client.getState().setProxyCredentials(authScope, credentials);
+	                              	}
+        	                        int statusCode1 = client.executeMethod(postMethod);
+					if(getflag) {					
+						byte audioBytes[]=postMethod.getResponseBody();
+	                                        AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(audioBytes),audioFormat, audioBytes.length / getAudioFormat().getFrameSize());
+        	                                if((ais != null) && (audioBytes.length > 1600))
+                	                                AudioPlayer.getController().putAudioStream(ais);
+                        	                ais.close();
 					}
                         	        postMethod.getStatusLine();
                                 	postMethod.releaseConnection();
@@ -106,4 +128,13 @@ public class PostAudioStream implements Runnable {
                         }
 		}catch(Exception e){ System.out.println("Error in PostMethod of Audio sender : "+e.getMessage()); }
 	}
+	
+	private AudioFormat getAudioFormat(){
+                    float sampleRate = 8000;//8000,11025,16000,22050,44100
+                    int sampleSizeInBits = 16;  //8,16
+                    int channels = 1;   //1,2
+                    boolean signed = true; //true,false
+                    boolean bigEndian =true; //true,false
+                    return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
+        }
 }
