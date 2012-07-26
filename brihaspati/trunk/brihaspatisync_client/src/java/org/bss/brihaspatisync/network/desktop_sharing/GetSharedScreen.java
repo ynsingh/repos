@@ -26,7 +26,6 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
-
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
  * @author <a href="mailto: ashish.knp@gmail.com" > Ashish Yadav</a>
@@ -100,7 +99,7 @@ public class GetSharedScreen implements Runnable {
                                	method.releaseConnection();
 				try {
 					if(image!=null)
-                        			Desktop_Sharing.getController().runDesktopSharing(image);
+                        			Desktop_Sharing.getController().showImage(image);
 				}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
 				org.bss.brihaspatisync.gui.StatusPanel.getController().setdestopClient("yes");
 				try {	runner.sleep(100);runner.yield(); }catch(Exception ep){}

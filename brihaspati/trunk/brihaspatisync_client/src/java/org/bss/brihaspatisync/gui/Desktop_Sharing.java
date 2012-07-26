@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * Desktop_Sharing.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur.
+ * Copyright (c) 2012 ETRG, IIT Kanpur.
  */
 
 /**
@@ -28,7 +28,7 @@ import javax.swing.JOptionPane;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
 import java.awt.Dimension;
-
+import org.bss.brihaspatisync.util.ImageScaler;
 
 public class Desktop_Sharing {
 
@@ -71,22 +71,17 @@ public class Desktop_Sharing {
 		mainPanel.add(centerPanel,BorderLayout.SOUTH);
 		return mainPanel; 	
 	}
-	public void runDesktopSharing(BufferedImage originalImage){
-                try {
-			origanalimage=originalImage;
-                        int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
-                        BufferedImage resizeImageJpg = resizeImage(originalImage, type);
-                        imageDisplay.setIcon(new ImageIcon(resizeImageJpg));
-                } catch(Exception e){ System.out.println("Error in Desktop_Sharing.java !! ");}
-	}
 	
-	private BufferedImage resizeImage(BufferedImage originalImage, int type) {
-                BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
-                Graphics2D g = resizedImage.createGraphics();
-                g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
-                g.dispose();
-                return resizedImage;
-        }
+	/*This method uses ImageScaler class to resize and rescale image to show on player panel.
+ 	 *@author : Ashish Yadav 
+ 	 */
+	public void showImage(BufferedImage originalImage){
+		try{
+			BufferedImage scaledImage= ImageScaler.resize(originalImage, ImageScaler.Method.QUALITY, IMG_WIDTH, IMG_HEIGHT, ImageScaler.OP_ANTIALIAS);
+			imageDisplay.setIcon(new ImageIcon(scaledImage));
+			scaledImage.flush(); 
+		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!");}
+	}
 
 	public void setIMG_WIDTH(int value){
         	IMG_WIDTH=kk-value;

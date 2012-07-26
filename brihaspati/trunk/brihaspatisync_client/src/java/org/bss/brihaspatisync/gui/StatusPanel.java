@@ -3,10 +3,8 @@ package org.bss.brihaspatisync.gui;
 /**
  * StatusPanel.java
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
-
-
 import java.awt.Color;
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -14,6 +12,7 @@ import javax.swing.JPanel;
 import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import java.awt.BorderLayout;
+import org.bss.brihaspatisync.util.Language;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a>
