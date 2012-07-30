@@ -112,6 +112,7 @@ public class AdminRegistrationAction extends org.apache.struts.action.Action {
         catch(Exception e)
         {
                 request.setAttribute("msg1","Database Connectivity is Closed");
+                e.printStackTrace();
                 log4j.error(e);
                 return mapping.findForward("failure");
         }

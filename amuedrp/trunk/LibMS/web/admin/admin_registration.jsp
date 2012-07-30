@@ -128,7 +128,7 @@ else{
                 <tr><td valign="top" align="center" width="80%" >
                        
 
-                        <table   width="80%" align="center" >
+                        <table   width="80%" align="center"  >
                     
                          
                    
@@ -136,54 +136,66 @@ else{
                             <tr ><td align="left" width="40%"   class="admintxtStyle"><%=resource.getString("login.ems.institutename")%>*</td>
                                 <td ><html:text property="institute_name" name="AdminRegistrationActionForm" styleClass="txtTextBox"/>
              <span class="err"><html:messages id="err_name"  property="institute_name">
-           <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err1")%>
+            <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err1")%>--%>
                  </html:messages></span>
          </td>
          </tr>
-         <tr><td class="admintxtStyle"><%=resource.getString("login.viewpending.instituteabbrevation")%></td><td><html:text property="abbreviated_name" name="AdminRegistrationActionForm" styleClass="txtTextBox" />  </td>     </tr>
+         <tr><td class="admintxtStyle"><%=resource.getString("login.viewpending.instituteabbrevation")%></td><td><html:text property="abbreviated_name" name="AdminRegistrationActionForm" styleClass="txtTextBox" />
+               <span class="err"><html:messages id="err_name"  property="abbreviated_name">
+            <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err1")%>--%>
+                 </html:messages></span>
+
+             </td>     </tr>
              <tr><td class="admintxtStyle"><%=resource.getString("instituteAddress")%>*</td><td><html:text    property="institute_address" name="AdminRegistrationActionForm" styleClass="txtTextBox"/><span class="err">   <html:messages id="err_name" property="institute_address">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err2")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err2")%>--%>
 
 			</html:messages>
                      </span>    </td></tr>
              <tr><td class="admintxtStyle"><%=resource.getString("city")%>*</td><td><html:text  property="city" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="city">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err3")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err3")%>--%>
 
 			</html:messages>
                      </span></td></tr>
              <tr><td class="admintxtStyle"><%=resource.getString("state")%>*</td><td><html:text  property="state" styleClass="txtTextBox"/><span  class="err">    <html:messages id="err_name" property="state">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err4")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err4")%>--%>
 
 			</html:messages>
                                  </span>  </td></tr>
              <tr><td class="admintxtStyle"><%=resource.getString("country")%>*</td><td><html:text  property="country" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="country">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err5")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err5")%>--%>
 
 			</html:messages>
                      </span>   </td></tr>
-             <tr><td class="admintxtStyle"><%=resource.getString("pin")%></td><td><html:text  property="pin" styleClass="txtTextBox"/></td>
-
+             <tr><td class="admintxtStyle"><%=resource.getString("pin")%></td><td><html:text  property="pin" styleClass="txtTextBox"/>
+  <span class="err"><html:messages id="err_name"  property="pin">
+            <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err1")%>--%>
+                 </html:messages></span>
          </td></tr>
               <tr><td class="admintxtStyle"><%=resource.getString("courtesy")%></td><td>
                       <html:text property="courtesy" styleClass="txtTextBox"/>
- 
+   <span class="err"><html:messages id="err_name"  property="courtesy">
+            <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err1")%>--%>
+                 </html:messages></span>
 
                  </td></tr>
              <tr><td class="admintxtStyle"><%=resource.getString("circulation.cir_newmember.fname")%>*</td><td><html:text  property="admin_fname" styleClass="txtTextBox"/>
                      <span class="err">        <html:messages id="err_name" property="admin_fname">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err6")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err6")%>--%>
 
 			</html:messages>
                      </span></td></tr>
              <tr><td class="admintxtStyle"><%=resource.getString("circulation.cir_newmember.lname")%>*</td><td><html:text  property="admin_lname" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="admin_lname">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err7")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err7")%>--%>
 
 			</html:messages>
                      </span></td></tr>
@@ -213,15 +225,31 @@ else{
 
 			</html:messages>
                  </span></td></tr>
-             <tr><td class="admintxtStyle"><%=resource.getString("designation")%></td><td><html:text  property="admin_designation" styleClass="txtTextBox"/></td>
+             <tr><td class="admintxtStyle"><%=resource.getString("designation")%></td><td><html:text  property="admin_designation" styleClass="txtTextBox"/>
+               <span  class="err">    <html:messages id="err_name" property="admin_designation">
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err8")%>--%>
+
+			</html:messages>
+               </span>
+                 </td>
 
          </tr>
-             <tr><td class="admintxtStyle"><%=resource.getString("landlineno")%><br>(<%=resource.getString("admin.acq_registerstaff.contactformat")%>)</td><td><html:text  property="land_line_no" styleClass="txtTextBox"/></td>
+             <tr><td class="admintxtStyle"><%=resource.getString("landlineno")%><br>(<%=resource.getString("admin.acq_registerstaff.contactformat")%>)</td><td><html:text  property="land_line_no" styleClass="txtTextBox"/>
+                 <span  class="err">    <html:messages id="err_name" property="land_line_no">
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err8")%>--%>
+
+			</html:messages>
+               </span>
+
+                 </td>
 
          </tr>
-             <tr><td class="admintxtStyle"><%=resource.getString("admin.acq_registerstaff.mobile_no")%>*</td><td><html:text  property="mobile_no" styleClass="txtTextBox" /><span  class="err">    <html:messages id="err_name" property="mobile_no">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err9")%>
+             <tr><td class="admintxtStyle"><%=resource.getString("admin.acq_registerstaff.mobile_no")%></td><td><html:text  property="mobile_no" styleClass="txtTextBox" />
+                     <span  class="err">    <html:messages id="err_name" property="mobile_no">
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err9")%>--%>
 
 			</html:messages>
                                  </span> </td></tr>
@@ -232,8 +260,8 @@ else{
 			</html:messages>
          </td></tr>--%>
                 <tr><td class="admintxtStyle"><%=resource.getString("opac.newmemberentry.libraryname")%>*</td><td><html:text  property="library_name" styleClass="txtTextBox"/><span  class="err">   <html:messages id="err_name" property="library_name">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err11")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err11")%>--%>
 
 			</html:messages>
                         </span></td></tr>
@@ -247,7 +275,7 @@ else{
  <html:option value=""><%=resource.getString("select")%></html:option>
 
                     <html:option value="self_financed"><%=resource.getString("admin.admin_registration.selffin")%></html:option>
-                    <html:option value="semi_govt"><%=resource.getString("admin.admin_registration.semi-gov")%>Semi Govt</html:option>
+                    <html:option value="semi_govt"><%=resource.getString("admin.admin_registration.semi-gov")%></html:option>
                     <html:option value="govt"><%=resource.getString("admin.admin_registration.gov")%></html:option>
                     <html:option value="other"><%=resource.getString("admin.admin_registration.others")%></html:option>
 
@@ -258,7 +286,15 @@ else{
             
             
              <tr><td class="admintxtStyle"><%=resource.getString("websitename")%><br>
-                  (http://www.xyz.com)</td><td><html:text  property="institute_website" styleClass="txtTextBox"/></td>
+                  (http://www.xyz.com)</td><td><html:text  property="institute_website" styleClass="txtTextBox"/>
+                 <span  class="err">    <html:messages id="err_name" property="institute_website">
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err9")%>--%>
+
+			</html:messages>
+                                 </span>
+
+                 </td>
 
          </tr>
              <tr><td class="admintxtStyle"><%=resource.getString("emailid")%>*</td><td>
@@ -266,8 +302,8 @@ else{
                    
                  
                  <span  class="err"> <html:messages id="err_name" property="admin_email">
-				 <%-- <bean:write name="err_name" />--%>
-           <%=resource.getString("admin.admin_registration.err12")%>
+				  <bean:write name="err_name" />
+           <%--<%=resource.getString("admin.admin_registration.err12")%>--%>
 
 			</html:messages>
                  </span></td></tr>
@@ -278,10 +314,8 @@ else{
               
 
                         </table>
-                    </td></tr>
-            
-        </table>
-           
+                    </td></tr></table>
+                   
           
  </html:form>
 
