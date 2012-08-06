@@ -151,7 +151,7 @@ background-color: #d5e5ed;
 		  </td>
 </tr>
 <tr>
-		    <td height="30" width="109px" style="font-size:95%;">
+		    <td height="15" width="95px" style="font-size:90%;">
 		    <label for="language"><g:message code="default.language.label"/>:</label>
 		    </td>
 	       <td>
@@ -300,13 +300,13 @@ background-color: #d5e5ed;
 					<table id="innerTable" border="0" width="100%">
 						
 						<tr>
-							<td  height="30" width="40px" scope="col"><g:message code="default.OpenID.label" />:</td>
+							<td  height="30" width="109px" scope="col";><g:message code="default.OpenID.label" />:</td>
 							<td scope="col" style="width:159px;"><input type="text" name="${openidIdentifier}" class="openid-identifier" size="16"/></td>					</tr>
 						<tr>
 		      				<td height="30" width="109px" scope="row">&nbsp;</th>
 		      				
-		      				<td height="30" width="20px"><input type='submit' value='<g:message code="default.login.label"/>' /><input type="checkbox" id="toggle" onclick='toggleForms()'/>
-								<label for='toggle'>Use OpenID</label>
+		      				<td height="30" width="109px";><input type='submit' value='<g:message code="default.login.label"/>' /><input type="checkbox" id="toggle" onclick='toggleForms()'/>
+								<label for='toggle'><g:message code="default.UseOpenID.label"/></label>
 					        </td>
 	      			    </tr>
 					</table>
@@ -319,7 +319,7 @@ background-color: #d5e5ed;
 				<form action='${daoPostUrl}' method='POST' autocomplete='off'>
 						<table border="0" id="innerTableSec">
 							 <tr>
-							    <td height="30" width="109px" style="font-size:95%;">
+							    <td height="15" width="95px" style="font-size:95%;">
 							    	<label for="language"><g:message code="default.UserName.label"/>:</label>
 							    </td>
 								<td>
@@ -327,7 +327,7 @@ background-color: #d5e5ed;
 							    </td>
 						      </tr>
 						      <tr>
-						       <td height="30" width="109px" style="font-size:95%;">
+						       <td height="15" width="95px" style="font-size:95%;">
 							    	<label for="language"><g:message code="default.Password.label"/>:</label>
 							    </td>
 								<td>
@@ -339,7 +339,7 @@ background-color: #d5e5ed;
 							      <td><input type='submit' value='<g:message code="default.login.label"/>' />
 							     
 									<input type="checkbox" id="toggle" onclick='toggleForms()'/>
-									<label for='toggle'>Use OpenID</label>
+									<label for='toggle'><g:message code="default.UseOpenID.label"/></label>
 								  </td>
 							      
 						      </tr>
@@ -349,11 +349,11 @@ background-color: #d5e5ed;
 			</td>
 </tr>
 <tr>
-   	 	<td height="10">
-  	 	 <g:link style="font-size:95%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="newUserCreate"><g:message code="default.Register.label"/> </g:link>
+   	 	<td height="5">
+  	 	 <g:link style="font-size:83%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="newUserCreate"><g:message code="default.Register.label"/> </g:link>
       </td>
-      <td height="10">
-  	 	 <g:link style="font-size:95%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="forgotPassword"><g:message code="default.Forgotyourpassword.head"/> </g:link>
+      <td height="5">
+  	 	 <g:link style="font-size:83%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="forgotPassword"><g:message code="default.Forgotyourpassword.head"/> </g:link>
   	 	 
       </td>
       
@@ -364,10 +364,17 @@ background-color: #d5e5ed;
       </td>
       </tr>
       <tr>
-      <td colspan="2" height="10">
-      <g:link style="font-size:95%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="proposal" action="notificationList"><g:message code="default.UploadProposal.head"/> </g:link>
+      <td colspan="2" height="5">
+      <g:link style="font-size:83%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="proposal" action="notificationList"><g:message code="default.UploadProposal.head"/> </g:link>
       </td>
-      </tr>
+     </tr>
+     
+    <tr> 
+     <td colspan="2" height="45">
+      <g:link style="font-size:83%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="openId" action="brihaspatiLogin"><g:message code="default.LoginusingBrihaspatiRemoteAuthentication.head"/></g:link>
+      </td>
+    </tr> 
+     
     <tr>
       <th  scope="row">&nbsp;</th>
       <td align="right"><font size="1" face="Times">

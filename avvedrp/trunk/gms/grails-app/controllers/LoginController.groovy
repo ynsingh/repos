@@ -40,6 +40,8 @@ class LoginController {
 			 gh.putValue("UserId", userMap.user.id);
 			 def PartyID=userMap.party.id
 			 gh.putValue("Party", PartyID);
+                             gh.putValue("UserLogin",SCH.context.authentication.principal.username) 
+                             
 		     gh.putValue("Help","Project_List.htm")
 	         gh.putValue("PartyID","('"+ PartyID.toString()+"')");
 	         redirect uri:'/grantAllocation/gmsFrame'
@@ -56,6 +58,11 @@ class LoginController {
 	 * Show the login page.
 	 */
 	def auth = {
+
+                  println params.encd
+                  println params.rand
+                  println params.hash
+
 		GrailsHttpSession gh=getSession()
 		def config = SpringSecurityUtils.securityConfig
 		 println  "gh.getValue(ang):"+gh.getValue("lang")

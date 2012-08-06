@@ -53,7 +53,7 @@
 												</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;
 												
 												<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>
-									   			<b><sec:username/></b> (<g:link  controller='logout' target="_parent"><g:message code="default.Logout.label"/></g:link>)
+									   			<b>${session.UserLogin}</b> (<g:link  controller='logout' target="_parent"><g:message code="default.Logout.label"/></g:link>)
 								   			</span>
 										</div>
 									</div>

@@ -5,6 +5,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.savedrequest.DefaultSavedRequest
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import org.iitk.brihaspati.modules.utils.security.ReadNWriteInTxt
+import org.iitk.brihaspati.modules.utils.security.EncrptDecrpt
+import org.apache.commons.lang.StringUtils
+import org.iitk.brihaspati.modules.utils.security.RemoteAuth
+
 
 
 //import Authority
@@ -36,6 +41,46 @@ class OpenIdController {
 	 */
 	def auth = {
 
+            println params.encd
+                  println params.rand
+                  println params.hash
+                 if(params.rand!=null)
+                  {
+                  String hdir=System.getProperty("user.home");
+                  String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                  String line=ReadNWriteInTxt.readLin(path,"avv_gms");
+                  String skey=StringUtils.substringBetween(line,";",";");
+                  String serverurl=StringUtils.substringAfterLast(line,";");
+                   String enUrl=EncrptDecrpt.decrypt(params.encd, "avv_gms")
+		   println enUrl.split('&');
+                    def arr=enUrl.split('&');
+                   String UserID=arr[0];
+                  
+                    println UserID.substring(6,UserID.length())
+                    UserID=UserID.substring(6,UserID.length())
+                      
+                   GrailsHttpSession gh=getSession()
+                gh.putValue("UserLogin",UserID) 
+                 def user=Person.find("from Person U where U.username='"+UserID+"'");
+        if(user)
+           {
+                    def userMap=UserMap.find("from UserMap UM where UM.user.id="+user.id);
+			 gh.putValue("UserId", userMap.user.id);
+			 def PartyID=userMap.party.id
+			 gh.putValue("Party", PartyID);
+		     gh.putValue("Help","Project_List.htm")
+	         gh.putValue("PartyID","('"+ PartyID.toString()+"')");
+	         redirect uri:'/grantAllocation/gmsFrame'
+	         gh.putValue("LoggedIn",params.controller)   
+                   
+
+}
+                    
+                  
+                                       
+                          }
+ 
+                
 		def config = SpringSecurityUtils.securityConfig
 		GrailsHttpSession gh=getSession()
 		 if(params.lang!=null)
@@ -57,7 +102,7 @@ class OpenIdController {
 				 gh.putValue("lang","en")
 			 }
 		}
-		println"..session.main..."+gh.getValue("main")
+		println"..session.main..."+gh.getValue("lang")
 		if (springSecurityService.isLoggedIn()) {
 			redirect uri: config.successHandler.defaultTargetUrl
 			return
@@ -104,6 +149,33 @@ class OpenIdController {
 
 		authenticateAndRedirect command.username
 	}
+
+        
+
+   		def brihaspatiLogin =
+	{
+
+           
+	
+	}
+
+           	def register =
+	{
+
+           String Email=request.getParameter("email");
+            String server=request.getLocalAddr()
+            String port=request.getServerPort();
+
+System.out.print(Email);
+
+String returnurl=" http://"+server+":"+port+"/gms/login/auth";
+
+
+String resp=RemoteAuth.AuthR(Email,returnurl,"avv_gms");
+response.sendRedirect(resp);
+	
+	}
+
 
 	/**
 	 * The registration page has a link to this action so an existing user who successfully
@@ -226,6 +298,7 @@ class OpenIdController {
 			}
 		}
 	}
+	
 }
 
 class OpenIdRegisterCommand {
