@@ -12,91 +12,65 @@ $page.setBgColor("#ffffff")
 $!data.getMessage()
 <head>
 ##This Script use for Fck Editor in Textarea.
+<script charset="utf-8" type="text/javascript" src="$content.getURI("/scrpts/wiki2html.js")"> </script>
 <script type="text/javascript">
-        _editor_url = "$content.getURI("/scrpts/")";
-        _editor_lang = "en";
+        function dewiki() {
+                document.getElementById('debug').innerHTML = document.getElementById('wiki').value.wiki2html();
+        }
 </script>
-<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
-<script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ## sk
 </head>
-<body onload="initEditor()">
+<body>
 #set($lang=$data.getUser().getTemp("lang").toString())
 <style type="text/css">input{width:170px;}</style>
 <table bgcolor="$ui.tableColor" width=100%>
-<tr bgcolor="$ui.menuColor">
-<td>
-        <b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki</a>
-			#if($filename=="")
-				#if($lang == "hindi")
-                        		| $brih_Wiki $WikiPage $brih_Of1 $WikiCreate
-				#else
-        	                	| $WikiCreate $brih_Wiki $WikiPage
-				#end
-                        #else
-				#if($lang == "hindi")
-                        		| $brih_Wiki $WikiPage $brih_Of1 $brih_edit
-				#else
-        	                	| $brih_edit $brih_Wiki $WikiPage
-				#end
-                        #end
-
-
-        </b>
-</td>
-</tr>
-	<FORM  name=frm method="POST" 
-		#if($filename=="")
-			action="$link.setPage("call,Wiki,Wiki_Home.vm").setAction("Wikieditaction").addPathInfo("fName",$filename)">
-		#else
-			action="$link.setPage("call,Wiki,Wiki_Home.vm").setAction("Wikieditaction").addPathInfo("fName",$filename).addPathInfo("query",$query).addPathInfo("searchtype",$searchtype)">
-		#end
-		<table width="100%" align=left bgcolor="$ui.tableColor">
-        		<tr colspan="6">
-           			<td>
-			                <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home</a> &nbsp;|&nbsp;
-				        <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>
-					##if($userrole == "instructor")
-						&nbsp;|&nbsp;
-	                			<a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp; &nbsp;
-			        	        ##<a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none >Discussion Wiki</a>&nbsp;|&nbsp;
-					##end
-				                ##Search : <input type="text" name="search">
+	<tr bgcolor="$ui.menuColor">
+		<td>
+        		<b>
+		        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+		        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+		        <a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki</a>
+				#if($filename=="")
+					#if($lang == "hindi")
+                        			| $brih_Wiki $WikiPage $brih_Of1 $WikiCreate
+					#else	
+        		                	| $WikiCreate $brih_Wiki $WikiPage
+					#end
+                        	#else
+					#if($lang == "hindi")
+	                        		| $brih_Wiki $WikiPage $brih_Of1 $brih_edit
+					#else
+        		                	| $brih_edit $brih_Wiki $WikiPage
+					#end
+	                        #end
+			</b>
+		</td>
+	</tr>
+<FORM  name=frm method="POST" 
+	#if($filename=="")
+		action="$link.setPage("call,Wiki,Wiki_Home.vm").setAction("Wikieditaction").addPathInfo("fName",$filename)">
+	#else
+		action="$link.setPage("call,Wiki,Wiki_Home.vm").setAction("Wikieditaction").addPathInfo("fName",$filename).addPathInfo("query",$query).addPathInfo("filename",$searchtype)">
+	#end
+	<table width="100%" align=left bgcolor="$ui.tableColor">
+        	<tr colspan="6">
+        		<td>
+		                <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home</a> &nbsp;|&nbsp;
+			        <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>
+				##if($userrole == "instructor")
+					&nbsp;|&nbsp;
+                			<a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp; &nbsp;
+				##end
+			                ##Search : <input type="text" name="search">
 				</td>
 		        </tr>
 		</table>
 		<table width="100%" align=left bgcolor="$ui.tableColor">
-        		<tr bgcolor="$ui.menuColor">
-                		<td align="right" colspan=5>
-		                        <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $Notice_Read </a>&nbsp;
-                		        <a href=$link.setPage("call,Wiki,Editwiki.vm") style=text-decoration:none > $WikiCreate </a> &nbsp;
-		                       ## <a href=$link.setPage("call,Wiki,History.vm") style=text-decoration:none > $brih_view $WikiHistory </a>
-                		</td>
-		        </tr>
-        		<tr>
-					<td></td>
-				#if($filename == "")
-					<td align="left" colspan="2"> $WikiCreatetxt2 <INPUT type="text" name="createname" size="25">  </td>
-				#else
-					<td> <h3>$WikiCreatetxt2 => $filename </h3>   </td>
-				#end
-			</tr>
 			<tr>
-				<td width="10%" valign="top">
-			            	<table width="100%" bgcolor="$ui.tableColor">
-                				<tr><td><a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $WikiMain $WikiPage </a></td></tr>
-						<tr><td></td></tr>
-						<tr><td><a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("mode","mycontent") style=text-decoration:none >  $brih_My $brih_content </a></td></tr>
-						<tr><td></td></tr>
-			                        <tr><td><a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $Notice_All $brih_content </a></td></tr>
-						<tr><td></td></tr>
-			                        <tr><td><a href=javascript:popupWin("/brihaspati2/docs/Wikiusermanual.html","newWin"); style=text-decoration:none>$brih_help</a></td></tr>
-					</table>
-			     	</td>
+					<td> <h3>$WikiCreatetxt2 => $filename </h3>   </td>
+			</tr>
+        		<tr bgcolor="$ui.menuColor">
 			      	<td width="60%" colspan="3">
-<TEXTAREA id="ta"  name="text" rows="20"  cols="140">
+<TEXTAREA id="wiki" name="text" rows="20"  cols="140">
 #if($pad!="")
 $pad
 #end
@@ -105,32 +79,38 @@ $t
 #end
 </TEXTAREA>
 				</td>
-				<td width="30" align="center"></td>
-                        </tr>
-                   </table>
-                   <table width="100%">
-                        <tr width="100%">
-				<td bgcolor="$ui.tableColor" width="10%"></td>
-                                <td width="100%" align="left" bgcolor="$ui.menuColor" >
-                                        <input type="hidden" name="actionName" >		
-						#if($filename == "")
-							<input type="button" name="eventSubmit_doCreate" value="$WikiSave" onClick="checkFileName(document.frm,this);" />
+                   	</tr>
+             	</table>
+                <table width="100%">
+                	<tr width="100%">
+                        	<td width="100%" align="left" bgcolor="$ui.menuColor" >
+					#if($FileName == "newtab")
+						<input type="button" name="eventSubmit_doCreate" value="$WikiSave" onClick="checkFileName(document.frm,this);" />
+					#else
+						#if($traffic =="stop")
+							<input type="submit" disabled  name="eventSubmit_doEdit" value="$WikiSave" />
 						#else
-							#if($traffic =="stop")
-								<input type="submit" disabled  name="eventSubmit_doEdit" value="$WikiSave" />
-							#else
-								<input type="submit" name="eventSubmit_doEdit" value="$WikiSave" />
-							#end
+							<input type="submit" name="eventSubmit_doEdit" value="$WikiSave" />
 						#end
-	 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="reset" name="Clear" value="${brih_clear}" onClick="checkClear(document.frm,this);"/>
+					#end
+                                        <input type="hidden" name="actionName" >		
+					<input type="hidden" name="filename" value=$filename>
                                         <input type="hidden" name="mode" value=$mode>
-                                        </td>
+                                </td>
                         </tr>
                 </table>
+		<table width="100%" align=left bgcolor="$ui.menuColor" >
+                <tr>
+                        <td bgcolor="$ui.menuColor" >
+                        <div bgcolor="$ui.menuColor" id="debug"></div>
+                        </td>
+                </tr>
+        </table>
 </table>
-        </FORM>
+</FORM>
 <SCRIPT LANGUAGE="javascript">
+document.getElementById('wiki').onkeyup = dewiki;
+        dewiki();
         function popupWin(url,popupName)
         {
                 Win1=window.open(url,popupName,"scrollbars=1,height=400,width=400");
@@ -138,27 +118,9 @@ $t
 
  	function checkFileName(frm,field)
         {
-		editor.setMode("textmode")
-                j=frm.createname.value;
-                if((frm.createname.value!="") && (j.length<26) && (frm.text.value!=""))
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-                        if(j.length >26)
-                        {
-                                alert("Page name cannot have characters greater than 25 ");
-                        }
-                        else
-                        {
-                                alert("Please Fill Page name Field and  Page Content ");
-                        }
-                }
-		editor.setMode("wysiwyg")	
+        	frm.actionName.value=field.name;
+                frm.submit();
         }
-
 	function checkClear(frm,field)
         {
         	frm.text.value="";

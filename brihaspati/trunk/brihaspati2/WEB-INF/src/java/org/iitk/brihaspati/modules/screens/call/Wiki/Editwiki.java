@@ -48,7 +48,6 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
-
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
@@ -68,11 +67,22 @@ public class Editwiki extends SecureScreen
 		String userrole=(String)user.getTemp("role");
 		context.put("userrole",userrole);
     	    	String fName=pp.getString("filename","");
-    	    	String word=pp.getString("query","");
+		String FileName="";
+                String word=pp.getString("query","");
     	    	String search=pp.getString("searchtype","");
 		String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/");
+
+		if(!(new java.io.File(filePath+"/Wikifirst/"+fName).exists())) {
+                        FileName="newtab";
+                }
+
 		String filePathf=filePath + "/Wikilast/" + fName ;
 		String fpath=filePath + "/Wikilog/" + fName;
+		java.io.File f=new java.io.File(filePathf);
+                if(!f.exists()){
+                        f.createNewFile();
+                }
+
         	/**
 		* Check if filename is null or not
 		*/
@@ -115,18 +125,19 @@ public class Editwiki extends SecureScreen
 			br=null;
 			v=null;
 			ol=null;
+			context.put("FileName",FileName);
+                        context.put("filename",fName);
 		}//if ends
-	      else
+	      	else
 		{
 			context.put("filename",fName);
+			context.put("newfilename",FileName);
 		}//else ends
 		
-              }//try ends
+              	}//try ends
 		catch(Exception e)
 		{	
 			  data.setMessage("Error in screen call,Wiki,Editwiki.java is ========>  "+ e);
-
-			
 		}
 	}//function ends
 }//class ends

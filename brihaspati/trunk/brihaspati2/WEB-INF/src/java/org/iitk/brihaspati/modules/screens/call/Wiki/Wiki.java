@@ -49,13 +49,11 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
-
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  *
  */
-
                                                       
 public class Wiki extends SecureScreen{
 
@@ -81,19 +79,12 @@ public class Wiki extends SecureScreen{
 			 context.put("userrole",userrole);
 			 String mode=pp.getString("mode","");
 			 context.put("mode",mode);
-			 //ErrorDumpUtil.ErrorLog("\n mode===>>>"+mode);
 			
 			 /**
 			 * check if user is primary instructor
 			 * as he alone can access Adminwiki.vm
 			 */
-			/*
-			 boolean check_Primary=CourseManagement.IsPrimaryInstructor(cId,username);
-			 if(check_Primary)
-			 context.put("userrole","instructor");			
-			 else
-			 context.put("userrole","");
-			*/
+			 
 			 WikiUtil ol = new WikiUtil();
 			 int i=0;
 			 Vector all=new Vector();
@@ -124,17 +115,12 @@ public class Wiki extends SecureScreen{
 				*/
                                 flog=new File(filePathLog);
                                 fh=new File(filePathH +"/RCS");		
-		
 			 }
-
 			 ff.mkdirs();	
 			 fl.mkdirs();	
 			 flog.mkdirs();	
 			 fh.mkdirs();
-	
-
 			 File Ftr[]=flog.listFiles();
-	        
 			 Arrays.sort(Ftr);
 			 for(i=0;i<Ftr.length;i++)
 			 {	
