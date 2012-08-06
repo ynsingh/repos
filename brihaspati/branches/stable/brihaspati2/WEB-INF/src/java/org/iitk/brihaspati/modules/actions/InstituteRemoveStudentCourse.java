@@ -171,7 +171,7 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 		  * Replacing the String value from property file.
                   * @see MultilingualUtil in utils      
                   */  
-		
+		String mode=pp.getString("mode");	
 		LangFile=(String)data.getUser().getTemp("LangFile");
                 MultilingualUtil m_u=new MultilingualUtil(); 
 		try{
@@ -183,17 +183,26 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
                         String serverPort=Integer.toString(srvrPort);
 			String gName=pp.getString("group");
 			String uname=pp.getString("username");
-			String rollno = pp.getString("rollno","").trim();
-			/**
-	                  * check if rollno have any special character then return message
-	                  */
-			if(StringUtil.checkString(rollno) != -1)
-                        {
-                                data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
-                               return;
-                        }
-			String program = pp.getString("prg","");
-			String roleName="student";
+			String roleName=null;
+			String program="";
+			String rollno="";
+			if(mode.equals("instlist")){
+				roleName="instructor";
+			}
+			
+			if(mode.equals("sclist")){
+				rollno = pp.getString("rollno","").trim();
+				/**
+		                  * check if rollno have any special character then return message
+		                  */
+				if(StringUtil.checkString(rollno) != -1)
+                        	{
+                                	data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+	                               	return;
+        	                }
+				program = pp.getString("prg","");
+				roleName="student";
+			}
 			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program); // modified by Shikha
 				       data.setMessage(msg);
 		}

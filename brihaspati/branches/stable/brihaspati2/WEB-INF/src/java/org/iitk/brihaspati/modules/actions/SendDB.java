@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.actions;
 
 /*
- * Copyright (c) 2005-2007, 2010, 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2007, 2010, 2011, 2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -35,6 +35,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.BufferedInputStream;
 
 import java.util.List;
 import java.util.Vector;
@@ -99,8 +102,8 @@ import org.iitk.brihaspati.om.Faqmove;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
- * @ modified date: 13-Oct-2010 (Shaista)
  * @ modified date: 08-Aug-2011 (Sunil Kr)
+ * @ modified date: 13-Oct-2010, 05-Aug-2012 (Shaista)
  */
 public class SendDB extends SecureAction
 {
@@ -533,169 +536,271 @@ public class SendDB extends SecureAction
  	public void doDelete(RunData data, Context context) throws Exception
 	{
 		try{
-			context.put("count",data.getParameters().getString("count",""));
-			context.put("countTemp",data.getParameters().getString("countTemp",""));
  			ParameterParser pp=data.getParameters();
-			String UserName=data.getUser().getName();
-			int userid=UserUtil.getUID(UserName);
 			String DB_subject=pp.getString("DB_subject","");
-			context.put("contentTopic",DB_subject);
 			String msg_id=pp.getString("msg_id","");
                         context.put("msgid",msg_id);
  			String course_id=pp.getString("course_id","");
-			//use for general
-			String stats=data.getParameters().getString("stats","");
- 			context.put("stats",stats);
-			//use for instituteWise
-			String mode2=data.getParameters().getString("mode2","");
-                        context.put("mode2",mode2);
  			context.put("courseid",course_id);
- 		        context.put("userid",userid);
-                        Criteria crit=new Criteria();
- 			String mid_delete = pp.getString("deleteFileNames","");
-			String Deleteper = pp.getString("Deleteper","");
+			if(course_id.equals("movedFAQ")){
+				String mode = data.getParameters().getString("mode","");
+	                        context.put("mode",mode);
+			}
+			else {
+				context.put("count",data.getParameters().getString("count",""));
+				context.put("countTemp",data.getParameters().getString("countTemp",""));
+				String UserName=data.getUser().getName();
+				int userid=UserUtil.getUID(UserName);
+				context.put("contentTopic",DB_subject);
+				//use for general
+				String stats=data.getParameters().getString("stats","");
+	 			context.put("stats",stats);
+				//use for instituteWise
+				String mode2=data.getParameters().getString("mode2","");
+        	                context.put("mode2",mode2);
+	 		        context.put("userid",userid);
+ 				String mid_delete = pp.getString("deleteFileNames","");
+				String Deleteper = pp.getString("Deleteper","");
+				// Code to get message from DB_subject
+				String [] subjectarray = DB_subject.split("@@@@");
+                        	Criteria crit=new Criteria();
 			
-			// Code to get message from DB_subject
-			String [] subjectarray = DB_subject.split("@@@@");
-                       	if(!mid_delete.equals(""))
-		        { //outer 'if'
-                        	StringTokenizer st=new StringTokenizer(mid_delete,"^");
-		          	for(int j=0;st.hasMoreTokens();j++)
-		              	{ //first 'for' loop
-		                	String msg_idd=st.nextToken();
-			 		// get New subject	
-			 
-					DB_subject = subjectarray[j];
-					if(!Deleteper.equals("Archive_Deleted")){
-                                                /***  select the replyid in database  */
-						crit=new Criteria();
-	                                        crit.add(DbSendPeer.MSG_ID,msg_idd); //7
-        	                                List sendDetail=DbSendPeer.doSelect(crit);
-                	                        int Rep_id=0;
-                        	                for(int i=0;i<sendDetail.size();i++)
-                                	        {
-                                        	        DbSend element=(DbSend)sendDetail.get(i);
-                                                	Rep_id=element.getReplyId(); //4
-                                        	}
+	                       	if(!mid_delete.equals(""))
+			        { //outer 'if'
+                	        	StringTokenizer st=new StringTokenizer(mid_delete,"^");
+		        	  	for(int j=0;st.hasMoreTokens();j++)
+		              		{ //first 'for' loop
+			                	String msg_idd=st.nextToken();
+			 			// get New subject	
+				 
+						DB_subject = subjectarray[j];
+						if(!Deleteper.equals("Archive_Deleted")){
+                                	                /***  select the replyid in database  */
+							crit=new Criteria();
+	                                        	crit.add(DbSendPeer.MSG_ID,msg_idd); //7
+	        	                                List sendDetail=DbSendPeer.doSelect(crit);
+        	        	                        int Rep_id=0;
+                	        	                for(int i=0;i<sendDetail.size();i++)
+                        	        	        {
+                                	        	        DbSend element=(DbSend)sendDetail.get(i);
+                                        	        	Rep_id=element.getReplyId(); //4
+                                        		}
 
-	                                        sendDetail=null;
-        	                                crit=new Criteria();
-                	                        crit.add(DbSendPeer.REPLY_ID,Integer.parseInt(msg_idd));
-                        	                sendDetail=DbSendPeer.doSelect(crit);
-						
-                                	        for(int i=0;i<sendDetail.size();i++)
-                                        	{
-	                                                DbSend element=(DbSend)sendDetail.get(i);
-        	                                        int newid=element.getMsgId(); //4
-                	                                crit=new Criteria();
-                        	                        crit.add(DbSendPeer.MSG_ID,newid);
-                                	                crit.add(DbSendPeer.REPLY_ID,Rep_id);
-                                        	        DbSendPeer.doUpdate(crit);
-
-                                        	}	
-
-	                   			/*Delete message in database */
+		                                        sendDetail=null;
+        		                                crit=new Criteria();
+                		                        crit.add(DbSendPeer.REPLY_ID,Integer.parseInt(msg_idd));
+                        		                sendDetail=DbSendPeer.doSelect(crit);
+							
+                                		        for(int i=0;i<sendDetail.size();i++)
+                                        		{
+	                                                	DbSend element=(DbSend)sendDetail.get(i);
+        		                                        int newid=element.getMsgId(); //4
+	                	                                crit=new Criteria();
+                	        	                        crit.add(DbSendPeer.MSG_ID,newid);
+                        	        	                crit.add(DbSendPeer.REPLY_ID,Rep_id);
+                                	        	        DbSendPeer.doUpdate(crit);
 	
-			        		//crit.add(DbSendPeer.MSG_ID,msg_idd);
-			        		//DbSendPeer.doDelete(crit);
-                        			crit=new Criteria();
-			        		crit.add(DbSendPeer.MSG_ID,msg_idd);
-			        		DbSendPeer.doDelete(crit);
-		        			crit.add(DbReceivePeer.MSG_ID,msg_idd);
-						String LangFile=data.getUser().getTemp("LangFile").toString();
-			        		DbReceivePeer.doDelete(crit);
-						String msg8=MultilingualUtil.ConvertedString("db_msg7",LangFile);
-						data.setMessage(msg8);
-						
-						///delete from Course
-						//String courseRealPath=TurbineServlet.getRealPath("/Courses");
-						String courseRealPath=TurbineServlet.getRealPath("/Courses");
-			                        String filepath=(courseRealPath+"/"+course_id+"/"+"/DisBoard"+"/"+ DB_subject);
-                        			File AssDir=new File(filepath+"/"+msg_idd);
-			                        //ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
-                        			SystemIndependentUtil.deleteFile(AssDir);
-			                        //AssDir.delete();
-			                        data.setMessage("DiscussionBoard deleted successfully !!");
-						
-						if(stats.equals("fromIndex"))
-                        			{
-			                                course_id="general";
-			                        	context.put("stats",stats);
-                        			}
-			                        else{
-                        			        if(mode2.equals("instituteWise")){
-			                                	course_id="instituteWise";
-				                        	context.put("mode2",mode2);
-                        		        	}
-                        			}
-						String filePath=data.getServletContext().getRealPath("/Courses")+"/"+course_id+"/DisBoard"+"/"+ DB_subject;
-						//ErrorDumpUtil.ErrorLog("file Paht================Courses======>>>"+filePath);
-						CommonUtility.UpdateTxtFile(filePath,msg_idd,"",false);
+        	                                	}	
 	
- 						/* deleting attachment if any with the message */	
-	
-						String fPath1=data.getServletContext().getRealPath("/Courses")+"/"+course_id+"/DisBoard"+"/"+ DB_subject;
-	
-						String fPath= fPath1 +"/Attachment"+"/"+msg_idd;
-	     					File f11 = new File(fPath1);
-	    					File f1 = new File(fPath);
-					        if(f1.exists() && f1.isDirectory())
-						{
-							String flist[] = f1.list();
-							for(int z=0;z<flist.length;z++)
-							{
-								File f2 = new File(fPath+"/"+flist[z]);
-      	
-       							 	/* removing directory of attachment with message */
-	     							f2.delete();
-             						}
-	     						f1.delete();
-	  					}
-					} else {
-						if(stats.equals("fromIndex")) 
-						{
-                                                        course_id="general";
-                                                        context.put("stats",stats);
-                                                }
-						else
-						{
-							if(mode2.equals("instituteWise"))
-							{
-                                                        	course_id="instituteWise";
-	                                                        context.put("mode2",mode2);
-        	                                        }
-						}
-                                                String LangFile=data.getUser().getTemp("LangFile").toString();
-                                                String msg8=MultilingualUtil.ConvertedString("db_msg7",LangFile);
-                                                String APath1=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/Archive");
-						//ErrorDumpUtil.ErrorLog("===================690=======>>>>"+APath1);
-                                                String msgId=APath1 +"/"+msg_idd;
-                                                String message= msgId+"/"+DB_subject;
-                                                File fid=new File(msgId);
-                                                if(fid.exists())
-                                                {
-                                                        File f3 = new File(message);
-                                                        f3.delete();
-                                                        String amsgId=msgId+"/Attachment/";
-                                                        File afile=new File(amsgId);
-                                                        String flist[] = afile.list();
-                                                        for(int z=0;z<flist.length;z++)
-                                                        {
-                                                                File f2 = new File(afile+"/"+flist[z]);
-                                                                f2.delete();
-                                                        }
-                                                        afile.delete();
-                                                }
-                                                fid.delete();
-                                                data.setMessage(msg8);
-                                        }
-      				}//for
-			}//if		     
+		                   			/*Delete message in database */
 		
+				        		//crit.add(DbSendPeer.MSG_ID,msg_idd);
+				        		//DbSendPeer.doDelete(crit);
+                        				crit=new Criteria();
+			        			crit.add(DbSendPeer.MSG_ID,msg_idd);
+			        			DbSendPeer.doDelete(crit);
+			        			crit.add(DbReceivePeer.MSG_ID,msg_idd);
+							String LangFile=data.getUser().getTemp("LangFile").toString();
+				        		DbReceivePeer.doDelete(crit);
+							String msg8=MultilingualUtil.ConvertedString("db_msg7",LangFile);
+							data.setMessage(msg8);
+							
+							///delete from Course
+							//String courseRealPath=TurbineServlet.getRealPath("/Courses");
+							String courseRealPath=TurbineServlet.getRealPath("/Courses");
+				                        String filepath=(courseRealPath+"/"+course_id+"/"+"/DisBoard"+"/"+ DB_subject);
+                        				File AssDir=new File(filepath+"/"+msg_idd);
+			        	                //ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
+                        				SystemIndependentUtil.deleteFile(AssDir);
+			                        	//AssDir.delete();
+				                        data.setMessage("DiscussionBoard deleted successfully !!");
+						
+							if(stats.equals("fromIndex"))
+                	        			{
+				                                course_id="general";
+			        	                	context.put("stats",stats);
+                        				}
+			                        	else{
+                        			        	if(mode2.equals("instituteWise")){
+			                                		course_id="instituteWise";
+					                        	context.put("mode2",mode2);
+        	                		        	}
+                	        			}
+							String filePath=data.getServletContext().getRealPath("/Courses")+"/"+course_id+"/DisBoard"+"/"+ DB_subject;
+							//ErrorDumpUtil.ErrorLog("file Paht================Courses======>>>"+filePath);
+							CommonUtility.UpdateTxtFile(filePath,msg_idd,"",false);
+		
+ 							/* deleting attachment if any with the message */	
+		
+							String fPath1=data.getServletContext().getRealPath("/Courses")+"/"+course_id+"/DisBoard"+"/"+ DB_subject;
+		
+							String fPath= fPath1 +"/Attachment"+"/"+msg_idd;
+	     						File f11 = new File(fPath1);
+	    						File f1 = new File(fPath);
+						        if(f1.exists() && f1.isDirectory())
+							{
+								String flist[] = f1.list();
+								for(int z=0;z<flist.length;z++)
+								{
+									File f2 = new File(fPath+"/"+flist[z]);
+      		
+       								 	/* removing directory of attachment with message */
+	     								f2.delete();
+             							}
+	     							f1.delete();
+	  						}
+						} else {
+							if(stats.equals("fromIndex")) 
+							{
+                        	                                course_id="general";
+                                	                        context.put("stats",stats);
+                                        	        }
+							else
+							{
+								if(mode2.equals("instituteWise"))
+								{
+                        	                                	course_id="instituteWise";
+	                        	                                context.put("mode2",mode2);
+        	                        	                }
+							}
+	                                                String LangFile=data.getUser().getTemp("LangFile").toString();
+        	                                        String msg8=MultilingualUtil.ConvertedString("db_msg7",LangFile);
+                	                                String APath1=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/Archive");
+							//ErrorDumpUtil.ErrorLog("===================690=======>>>>"+APath1);
+                                	                String msgId=APath1 +"/"+msg_idd;
+                                        	        String message= msgId+"/"+DB_subject;
+                                                	File fid=new File(msgId);
+	                                                if(fid.exists())
+        	                                        {
+                	                                        File f3 = new File(message);
+                        	                                f3.delete();
+                                	                        String amsgId=msgId+"/Attachment/";
+                                        	                File afile=new File(amsgId);
+                                                	        String flist[] = afile.list();
+                                                        	for(int z=0;z<flist.length;z++)
+	                                                        {
+        	                                                        File f2 = new File(afile+"/"+flist[z]);
+                	                                                f2.delete();
+                        	                                }
+                                	                        afile.delete();
+                                        	        }
+                                                	fid.delete();
+                                                data.setMessage(msg8);
+	                                        }
+      					}//for
+				}//if		     
+			} //Main else
+			if(course_id.equals("movedFAQ")){
+	                        //context.put("contentTopic",DB_subject);
+				String destPath = data.getServletContext().getRealPath("/UserArea/fromFAQ/DisBoard/"+DB_subject);
+	                        File destFile = new File(destPath);
+			if(destFile.exists()){
+				String attachmentPath = destFile+"/Attachment/"+msg_id+"/";
+				File fid=new File(attachmentPath);
+	                        if(fid.exists())
+        	                {
+                                	String flist[] = fid.list();
+					for(int z=0;z<flist.length;z++)
+                	                {
+                        	        	File f2 = new File(attachmentPath+"/"+flist[z]);
+                                	        f2.delete();
+					}
+					fid.delete();
+					File fAtt = new File(destFile+"/Attachment/");
+					if(fAtt.exists())
+						fAtt.delete();
+					UpdateTxtFile(destPath+"/Msg.txt", msg_id);
+	                             	//destFile.delete();
+         	      		}
+				else
+					UpdateTxtFile(destPath+"/Msg.txt", msg_id);
+			}
+		}	
 		}//TRY	
 		catch(Exception e){data.setMessage("Some Error Occured in DeletingMessage !!!!" +e);}
 	}//do delete
+////////////////////////////
+	public static void UpdateTxtFile(String filePath, String msg_id)
+	{
+		String str[] = new String[1000];
+                int i =0;
+                int startd = 0;
+                int stopd = 0;
+		Criteria crit = null;
+		BufferedReader br = null;
+		boolean flag = false;
+		try{
+	                 /* deleting the message from the txt file  */
+        	        br=new BufferedReader(new FileReader (filePath));
+                	while ((str[i]=br.readLine()) != null)
+	                {
+        	                if (str[i].equals("<"+msg_id+">"))
+                	        {
+                        	        startd = i;
+	                        }
+        	                else if(str[i].equals("</"+msg_id+">"))
+                	        {
+                        	        stopd = i;
+	                        }
+        	                i= i +1;
+                	} //while
+	                br.close();
+		
+        	        FileWriter fw=new FileWriter(filePath);
+	       	        for(int x=0; x < startd - 1; x++)
+        	       	{
+                        	fw.write(str[x]+"\r\n");
+				flag = true;
+		        }
+        		for(int y=stopd + 1; y<i; y++)
+                	{
+                        	fw.write(str[y]+"\r\n");
+				flag = true;
+                        }
+			
+			if(!flag) {
+				String delFile = org.apache.commons.lang.StringUtils.substringBeforeLast(filePath,"/Msg.txt");
+				ErrorDumpUtil.ErrorLog("delFile=="+delFile);
+				//new File(filePath).delete(); // deleting Msg.txt file if it is empty.
+				File f = new File(delFile);
+				 String flist[] = f.list();
+                                        for(int z=0;z<flist.length;z++)
+                                        {
+						ErrorDumpUtil.ErrorLog("flist[z]==="+flist[z]);
+                                                File f2 = new File(delFile+"/"+flist[z]);
+                                                f2.delete();
+                                        }
+                                        //fid.delete();
+				f.delete(); // deleting topic directory too bcoz nothing is there in it.
+			}
 	
+       		        fw.close();	
+	                br.close();
+                	str=null;
+
+			crit = new Criteria();
+			crit.add(FaqmovePeer.MSG_ID, msg_id);
+			FaqmovePeer.doDelete(crit);
+			crit = new Criteria();
+			crit.add(DbSendPeer.MSG_ID,msg_id);
+                        crit.add(DbSendPeer.STATUS,0);
+                        DbSendPeer.doUpdate(crit);
+		}
+		catch(Exception e){	
+			 ErrorDumpUtil.ErrorLog("The error in UpdateTxtFile() - Send_DB class !!"+e);
+		}
+	}
+//////////////////////////	
         /**
          * This method is invoked when no button corresponding to
          * @param data RunData
@@ -856,22 +961,31 @@ public class SendDB extends SecureAction
  	*/
 	public void doMove(RunData data, Context context)
     	{
-			try
+		try
                 {
+			String str[] = new String[1000];
+	                int i =0;
+        	        int startd = 0;
+                	int stopd = 0;
+			BufferedReader br;
+
+                        String str1 ="", srcPath ="", destPath ="";
+			File srcFile, destFile;
+			boolean flag = false;	
 			context.put("count",data.getParameters().getString("count",""));
                         String LangFile=data.getUser().getTemp("LangFile").toString();
                         ParameterParser pp=data.getParameters();
 			//get username for make user directory
                         String UserName=data.getUser().getName();
-                        String DB_subject=pp.getString("DB_subject","");
-                        context.put("contentTopic",DB_subject);
-			//msg id
-                        String msg_id=pp.getString("msg_id","");
-                        context.put("msgid",msg_id);
+                        //String DB_subject=pp.getString("DB_subject","");
+                        //context.put("contentTopic",DB_subject);
+				//msg id
+                        //String msg_id=pp.getString("msg_id","");
+                        //context.put("msgid",msg_id);
                         String course_id=pp.getString("course_id","");
                         context.put("courseid",course_id);
                         String topiclist = pp.getString("deleteFileNames","");
-                        String [] topicarray = DB_subject.split("@@@@");
+                        //String [] topicarray = DB_subject.split("@@@@");
                         String stats=pp.getString("stats","");
                         context.put("stats",stats);
                         String mode2=pp.getString("mode2","");
@@ -881,19 +995,49 @@ public class SendDB extends SecureAction
 
 			if(!topiclist.equals(""))
                         { //outer 'if'
+				String username=data.getUser().getName();
+       				int uid=UserUtil.getUID(username);
+				instid=(String)user.getTemp("Institute_id");
 				/**  
 				* the division of text or string into a set of discrete parts or tokens,
 				* and token is a small piece of string.
 				*/
                                 StringTokenizer st=new StringTokenizer(topiclist,"^");
+				int token = st.countTokens();
                                 for(int j=0;st.hasMoreTokens();j++)
                                 { //first 'for' loop
                                         String msg_idd=st.nextToken();
+
+					/************for set status 1 when click move button ***********/
+        	                        String information="UPDATE DB_SEND SET STATUS=1  WHERE MSG_ID="+msg_idd;
+                	                DbSendPeer.executeStatement(information);
+/////////////////////////////////////
+
+					String DB_subject = "";
+					String senderName = "";
+					int permit = 0;
+					int status1 = 0;
+
+					Criteria crit = null;
+					crit = new Criteria();
+					crit.add(DbSendPeer.MSG_ID,msg_idd);
+		                        List dbList=DbSendPeer.doSelect(crit);
+					for(int count1=0;count1<dbList.size();count1++)
+                                	{//for2 
+                                        	DbSend element1=(DbSend)(dbList.get(count1));
+						DB_subject = element1.getMsgSubject();
+        	                                senderName = UserUtil.getLoginName(element1.getUserId());
+                	                        permit=element1.getPermission();
+                        	                status1 = element1.getStatus();
+					}
+			
+//////////////////////////////////////////
                                         // get New subject
                                         if(stats.equals("fromIndex"))
                                         {
                                                 course_id="general";
                                                 instid="general";
+						
                                         }else{
                                                 if(mode2.equals("instituteWise"))
                                                 {
@@ -901,83 +1045,151 @@ public class SendDB extends SecureAction
                                                         instid="instituteWise";
                                                 }
                                         }
-					/************for set status 1 when click move button ***********/
-					Criteria crit=new Criteria();
-	                                crit.add(DbSendPeer.MSG_ID,msg_id);
-        	                        List l=DbSendPeer.doSelect(crit);
-        	                        String information="UPDATE DB_SEND SET STATUS=1  WHERE MSG_ID="+msg_idd;
-                	                DbSendPeer.executeStatement(information);
-					/************************/
-					String username=data.getUser().getName();
-                                        int uid=UserUtil.getUID(username);
-					instid=(String)user.getTemp("Institute_id");
-					
-					Criteria crit1=new Criteria();
-                                        crit1.add(FaqmovePeer.USER_ID,uid);
-                                        crit1.add(FaqmovePeer.INST_ID,instid);
-                                        FaqmovePeer.doInsert(crit1);
 
 					/**  
 					* get the dbsubject and msg file.
 					*/
-					DB_subject = topicarray[j];
-                        	        String readMsg=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Msg.txt");
-                        		String writepath=data.getServletContext().getRealPath("/UserArea"+"/"+instid+"/"+msg_idd);
-                                        File f=new File(writepath);
-	                                if(f.exists()){
-						String strmess=MultilingualUtil.ConvertedString("faq_msg1",LangFile);
-                	                        data.setMessage(strmess);
-                        	                return;
-                                	}
-					/**  
-					* make a directory where we store dbsubject and message file.
-					*/
-	   	                                File topicDir = new File(writepath);
-                	                        if(!topicDir.exists()) //{
-                        	                        topicDir.mkdirs();
-							writepath = writepath+"/"+DB_subject+".txt";
-				                        //java.util.Date date=new java.util.Date();
-                				        FileWriter fw = new FileWriter(writepath,true);
-							String str[]=new String[10000];
-		                                        int i=0; int start = 0; int stop= 0;String string="";
-        						/**  
-						        * read the file of disscussion board messages.
-							*/
+					//DB_subject = topicarray[j];
+                        	        srcFile=new File(data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Msg.txt"));
+                        		//String writepath=data.getServletContext().getRealPath("/UserArea"+"/"+instid+"/"+msg_idd);
+					destPath = data.getServletContext().getRealPath("/UserArea/fromFAQ/DisBoard/"+DB_subject);
+                        		destFile = new File(destPath);
+					
 
-                		                        BufferedReader br=new BufferedReader(new FileReader (readMsg));
-		                                        while ((str[i]=br.readLine()) != null)
-                		                        {
-                                		                if (str[i].equals("<"+msg_idd+">"))
-                                                		{
-		                                                        start = i;
-                		                                }
-                                		                else if(str[i].equals("</"+msg_idd+">"))
-                                                		{
-		                                                        stop = i;
-                		                                }
-                                		                     i= i +1;
-		                                        }                        
-                		                        br.close();
-							for(int x=start;x<stop;x++)
-                                        		{
-		                                                string=string+str[x];
-                		                        }
-                                		      	stop=string.lastIndexOf("Send date");
-		                                        //stop=stop+21;
-                		                        String tempString="";
-                                		        for(int x=stop;x<string.length();x++)
-                                        		{
-		                                                tempString=tempString+string.charAt(x);
-                		                        }
-                				        fw.write("\n"+tempString+"\n");
-				                        fw.close();
-                        				String strmess=MultilingualUtil.ConvertedString("faq_msg2",LangFile);
-				                        data.setMessage(strmess);
+					if(destFile.exists()){
+						br = new BufferedReader(new FileReader(destPath+"/Msg.txt"));
+					/*
+						if(File exist) i.e topic exist
+			
+							if (msg is exist) in Msg.txt no need to write message n display already moved
+						else write the message in "existing topic"
+						if (file not exist) MSG.txt not exist then write message in it
+					*/
+                		                while ((str1=br.readLine())!=null) {
+							 if (str1.equals("<"+msg_idd+">"))
+	                                                {
+                	                                         flag = true;
+        	                                        }
+	                                                i = i +1;
+							if(flag)
+								break;
+		                                }
+                		                br.close();
+					}	
+					if((!flag) || !destFile.exists()){
+			                         /* reading the message from the txt file  */
+						if( !destFile.exists())
+							destFile.mkdirs();
+						i = 0;
+			                        br=new BufferedReader(new FileReader (srcFile));
+			                        while ((str[i]=br.readLine()) != null)
+			                        {		
+                       					if (str[i].equals("<"+msg_idd+">"))
+		                	                {
+			                               	        startd = i;
+                        			        }
+			        	                else if(str[i].equals("</"+msg_idd+">"))
+               	        				{
+                       				        	stopd = i;
+		        	                        }
+	              					        i= i +1;
+		                        	} //while
+
+                       				FileWriter fw=new FileWriter(destFile+"/Msg.txt", true);
+	                                        //for(int x=0; x <= startd - 1; x++)
+	                                        for(int x=startd; x <= stopd; x++)
+        		                        {
+               	                        		fw.write(str[x]+"\r\n");
+                	                        }
+        	               			fw.close();
+		                        	br.close();
+					}
+
+					/*
+						Now it will check attachment
+					*/
+					// From here starts the code for uploading the file 
+					if(!flag){
+		                        	try
+	                       			{
+			                                //This is use for general discussion group
+                	       			        if(stats.equals("fromIndex")){
+		        	                                srcFile= new File(TurbineServlet.getRealPath("/Courses/"+"general"+"/DisBoard/"+DB_subject+"/Attachment/"+msg_idd));
+		                	                //This is use for institutewise discussion group
+       			                	        }else if(mode2.equals("instituteWise")){
+               	        		        	        srcFile= new File(TurbineServlet.getRealPath("/Courses/"+"instituteWise"+"/DisBoard/"+DB_subject+"/Attachment/"+msg_idd));
+							
+			                                }else{	
+       				                                srcFile= new File(TurbineServlet.getRealPath("/Courses/"+course_id+"/DisBoard/"+DB_subject+"/Attachment/"+msg_idd));
+							}
+
+							if(srcFile.exists()) {
+								
+								File[] listOfFiles = srcFile.listFiles();
+								srcFile =  new File(srcFile+"/"+listOfFiles[0].getName());
+								destFile = new File(data.getServletContext().getRealPath("/UserArea/fromFAQ/DisBoard/"+DB_subject+"/Attachment/"+msg_idd));
+								if(!destFile.exists())
+									destFile.mkdirs();
+								destFile = new File(destFile+"/"+listOfFiles[0].getName());
+								copyFile(srcFile, destFile, data);
+							}
+               			        	}//try
+		                        	catch(Exception e){}
+	
+        	       				String strmess=MultilingualUtil.ConvertedString("faq_msg2",LangFile);
+				                data.setMessage(strmess);
+					} //if (!flag)			
+						
+						if((token == j + 1) && (flag)){
+	
+							String strmess=MultilingualUtil.ConvertedString("faq_msg1",LangFile);
+                		                        data.addMessage(strmess);
+                        		                return;
+						}
+						if(!flag){
+							crit=new Criteria();
+							crit.add(FaqmovePeer.MSG_ID, msg_idd);
+							crit.add(FaqmovePeer.SENDER_NAME, senderName);
+							crit.add(FaqmovePeer.MSG_SUBJECT, DB_subject);
+							crit.add(FaqmovePeer.PERMISSION, permit);
+							crit.add(FaqmovePeer.STATUS, status1);
+							FaqmovePeer.doInsert(crit);
+						}
  					}// for
 			   	//}
                         }// outer if
                 }//TRY
                 catch(Exception e){  data.addMessage("Some Error Occured in movemessages!!!!" +e);   }
+	}
+	public void copyFile(File srcFile, File destFile, RunData data){
+	
+		/**  
+		* make a directory where we store dbsubject and message file.
+		*/
+		try{
+			InputStream fInStream;
+			OutputStream fOutStream;
+                	  if(!destFile.exists()) {
+				destFile.createNewFile();
+			}
+			//ErrorDumpUtil.ErrorLog("START============");
+						
+			fInStream = new FileInputStream(srcFile);
+        	        fOutStream = new FileOutputStream(destFile);
+			// Transfer bytes from in to out
+	                byte[] oBytes = new byte[1024];
+        	        int nLength;
+                	BufferedInputStream oBuffInputStream = new BufferedInputStream( fInStream );
+
+	                while ((nLength = oBuffInputStream.read(oBytes)) > 0)
+        	        {
+                		fOutStream.write(oBytes, 0, nLength);
+			}
+			//ErrorDumpUtil.ErrorLog("END============");
+	                fInStream.close();
+        	        fOutStream.close();
+		}
+		catch(Exception e) {  data.addMessage("Some Error Occured in Send_DB class's copyFile method !!!!" +e);}
 	}
         public void doPerform(RunData data,Context context)
 	{

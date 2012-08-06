@@ -14,7 +14,8 @@ $page.setTitle("Admin Home | User Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
-<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/InstUserMgmt_Admin.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor" align="right">
@@ -48,7 +49,10 @@ $!data.getMessage()
 	#elseif($mode=="sclist")
 		$brih_student $brih_course $brih_list 
 	#elseif($mode=="AddMUser")
-		$brih_add $brih_multiple1 $brih_usr
+	##	$brih_add $brih_multiple1 $brih_usr
+		$brih_add $brih_multiple1 $brih_usr | $brih_upload $brih_txt $brih_file
+        #elseif($mode=="USzip")
+	       $brih_add $brih_multiple1 $brih_usr | $brih_upload $brih_zip $brih_file
 	#elseif($mode=="UPhoto")
 		$brih_upload $brih_photo	 
 	#else
@@ -72,12 +76,13 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
-        #if($tdcolor != "5")
+	 #if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none>$brih_multi_usr</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("mode","USzip").addPathInfo("count","5") style=text-decoration:none>$brih_multi_usr</a></td>
+
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
@@ -159,7 +164,7 @@ $!data.getMessage()
 	</td>
          </tr>
  	<tr bgcolor="$ui.menuColor" align="right">
-     	<td colspan="4">
+     	<td colspan="4" align="right">
 		<select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
         	  <option>
 	          <option value="instructor">$brih_Instructor
@@ -174,7 +179,7 @@ $!data.getMessage()
           </td>
         </tr>
 	<tr align="right">
-                <td colspan="4"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+                <td colspan="4" align="right"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
                         <option value="Select Program"> $brih_program $brih_select </option>
                         #foreach($progname in $PrgDetail)
                                 <option value="$progname.getPrgCode()">$progname.getPrgName() </option>
@@ -193,7 +198,7 @@ $!data.getMessage()
         <input type="hidden" name="actionName">
         <input type="hidden" name="group_author">
         <input type="hidden" name="role_author">
-        <input type="button" name="eventSubmit_doRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
+        <input type="button" name="eventSubmit_doRegister" value="$brih_reg1" onClick="checkFieldAddUser(document.frm,this);"/>
         <input type="Reset" name="Reset" Value="$brih_clear"/>
         <input type="hidden" name="count" Value="$tdcolor"/>
         </td>
@@ -270,7 +275,7 @@ $!data.getMessage()
         	<td align="right">$!list.getLoginName()</td>
     		</tr>
         #end
-	<tr>
+	<tr align="right">
         <td bgcolor="$ui.menuColor" colspan="10" align="right">
         #if($total_size<= $AdminConf)
 
@@ -333,10 +338,18 @@ face="$ui.sansSerifFonts">$type</font>
 #end
 #if($mode == "AddMUser")
 <table width="100%" bgcolor="$ui.tableColor" align="left">
-<tr><td align="left" colspan=7>
+<tr align="right"><td align="left" colspan=7>
 <b>
 <font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
 </td></tr>
+<tr  bgcolor="$ui.menuColor" align="right">
+<td bgcolor="#AFDCEC" width="25%"  align="right"> 
+	<img src="$content.getURI("/images/text.jpg")"> 
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none> $brih_txt $brih_file $brih_upload</a></td>
+<td  align="right"> 
+	<img src="$content.getURI("/images/zipfile.jpg")"> 
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none> $brih_zip $brih_file $brih_upload</a></td>
+</tr>
 <tr bgcolor="$ui.menuColor" align="right"><td colspan=7>
 <marquee scrollamount="3" direction="left" width="100%" behaviour="slide">
 <font size=4 color=red><b>$brih_upload_msg5</b></font>
@@ -349,7 +362,7 @@ face="$ui.sansSerifFonts">$type</font>
         <td colspan="4">
           ##<tableibgcolor="$ui.bgcolor">
           <table>
-            <tr bgcolor="$ui.menuColor">
+            <tr bgcolor="$ui.menuColor" align="right">
               <td>
                 <img src="$ui.image($ui.alertImage,$data)">
               </td>
@@ -417,7 +430,7 @@ face="$ui.sansSerifFonts">$type</font>
             shouldn't appear when inserting a new user.
           *#
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
+                <input type="button" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="mode" value="$mode"/>
                 <input type="hidden" name="count" value="$tdcolor"/>
@@ -441,6 +454,68 @@ face="$ui.sansSerifFonts">$type</font>
 </form>
 
 #end
+#### Upload multiple user in a single zip file as primary instructor and their student along with their speicfied courses #####
+
+#if($mode == "USzip")
+<table width="100%" bgcolor="$ui.tableColor" align="left">
+<tr bgcolor="$ui.menuColor" align="right">
+<td width="25%"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")"> $brih_txt $brih_file $brih_upload </a></td>
+<td bgcolor="#AFDCEC"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")"> $brih_zip $brih_file $brih_upload</a></td>
+</tr>
+<tr align="left"><td align="left" colspan=8>
+	<font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/ZipUploadHelp.html","newWin"); style=text-decoration:none>$brih_help</a></font>
+	<img src="$content.getURI("/images/Lefthand.gif")"><b>
+</td></tr>
+<tr bgcolor="$ui.menuColor" align="right"><td colspan=8>
+<font size=4 color=red><b>$brih_upload_msg4 $brih_upload_msg6</b></font>
+</td></tr>
+<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
+        #if ($errorTemplate)
+        <tr align="right">
+        <td colspan="4">
+        <table>
+        <tr bgcolor="$ui.menuColor">
+        <td><img src="$ui.image($ui.alertImage,$data)"></td>
+        <td>
+         #parse ($errorTemplate)   
+        </td>
+        </tr>
+        </table>
+        </td>
+        </tr>
+        #end
+        <tr bgcolor="$ui.tableColor" align="right">
+        <td colspan=2  align="left"><font size=4><b>$brih_upload_msg1</b></font></td>
+        </tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+        ##fileUpload ("Attach File <font color=RED>*</font>" "file")
+		
+        </tr>
+        <tr bgcolor="$ui.tableColor" align="right">
+        <td colspan=2 align="right">
+        <font face="$ui.sansSerifFonts">
+        <input type="button" name="eventSubmit_doUploadMultiUserZip" value="Upload" onClick="CheckFieldFile(document.frm,this);"/>
+        <input type="hidden" name="actionName" value=""/>
+        <input type="hidden" name="mode" value="$mode"/>
+        <input type="hidden" name="count" value="$tdcolor"/>
+        </font>
+        </td>
+        </tr>
+        <table width=100% bgcolor="$ui.menuColor" align=left>
+        #foreach( $e in $Msg )
+        <tr bgcolor="$ui.menuColor" align="right">
+        <td align=center>
+        <font face="$ui.sansSerifFonts">$brih_entry <font color="brown">"$e.getErr_User()"</font>
+        </font>
+        </td>
+        <td align=center>
+        <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
+        </td>
+        </tr>
+        #end
+        </table>
+        </form>
+#end
 #if($mode == "UPhoto")
 <table width=100% align=left bgcolor="$ui.tableColor">
 <tr bgcolor="$ui.menuColor"><td colspan=7>
@@ -461,7 +536,7 @@ face="$ui.sansSerifFonts">$type</font>
         <tr bgcolor="$ui.menuColor" align="right">
         <td colspan="2" align="right">
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadphoto" value="$brih_upload" onClick="TestField(document.frm,this);"/>
+                <input type="button" name="eventSubmit_doUploadphoto" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="mode" value="$mode"/>
                 <input type="hidden" name="count" value="$tdcolor"/>
@@ -633,7 +708,7 @@ face="$ui.sansSerifFonts">$type</font>
 
 ##</table>
 <SCRIPT LANGUAGE="javascript">
-	function ChangeRole(frm,field)
+        function ChangeRole(frm,field)
                 {
                         if(frm.group.value=="author")
                         {
@@ -667,7 +742,7 @@ face="$ui.sansSerifFonts">$type</font>
                                makeEnable_group();
                         }
                 }
-	  function makeDisable_group()
+          function makeDisable_group()
         {
         var x=document.getElementById("group_id")
         x.disabled=true
@@ -687,44 +762,7 @@ face="$ui.sansSerifFonts">$type</font>
         var x=document.getElementById("role_id")
         x.disabled=false
         }
-	function checkNull(frm,field){
-                if(frm.value.value!=""){
-                        frm.submit();
-                }
-                else{
-                        alert("The 'Match String' text box can not be NULL !");
-                }
-        }
-	function CheckFields(frm,field)
-        {
-                if((frm.GroupName.value!="") && (frm.role.value!="")  && (frm.file.value!=""))
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-                        alert("Please Fill All The Mandatory(*) Fields");
-                        ##alert(v);
-                }
-        }
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
-        }
-	function TestField(frm,field)
-        {
-                if(frm.file.value!="")
-                {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                }
-                else
-                {
-                        alert("Please Fill All The Mandatory(*) Fields");
-                }
-        }
-	  function addDeleteList(field,frm){
+          function addDeleteList(field,frm){
                 if(field.checked){
                 frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
                 }
@@ -739,7 +777,7 @@ face="$ui.sansSerifFonts">$type</font>
                 }
         }
 
-	function selectAll(field){
+        function selectAll(field){
                 if(field.checked){
                         var rmFile,index,actualString,pre=0,next=0;
                         actualString=document.frm.deleteFileNames.value="$counter";
@@ -760,12 +798,12 @@ face="$ui.sansSerifFonts">$type</font>
                         document.frm.deleteFileNames.value="";
                 }
         }
-	 function DeleteField(frm,field)
+         function DeleteField(frm,field)
         {
                                 frm.actionName.value=field.name;
                                 frm.submit();
         }
-	function checkpass(frm,field)
+        function checkpass(frm,field)
         {
                 if(frm.newpass.value!="")
                 {
@@ -783,3 +821,4 @@ face="$ui.sansSerifFonts">$type</font>
                 frm.newpass.value="";
         }
 </SCRIPT>
+

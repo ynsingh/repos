@@ -166,9 +166,8 @@ $page.setBgColor($ui.bgcolor)
 		#end
 ##</table>
 ##<table align=left width=100% bgcolor="$ui.menuColor"> 
-	#if($mode != "instlist")
 	<tr bgcolor="$ui.menuColor">
-		<td colspan=2>$brih_c_msg13</td><td> $brih_program $brih_name</td><td>$brih_rollno</td>
+		<td colspan=2><b> $brih_c_msg13 </b></td> #if($mode != "instlist") <td> <b>$brih_program $brih_name </b></td><td> <b>$brih_rollno </b></td> #else <td></td><td></td>  #end </b>
 	</tr>
 	<tr>
 		<td colspan=2><select name="group" size=1>
@@ -182,6 +181,7 @@ $page.setBgColor($ui.bgcolor)
 		</option>
 		</select>
 		</td>
+		#if($mode != "instlist")
 		<td> <select name="prg" size=1>
                         <option value="Select Program">$brih_select $brih_program</iption>
 			#foreach($instplist in $PrgDetail)
@@ -189,15 +189,21 @@ $page.setBgColor($ui.bgcolor)
 			#end
 			</select></td>
 		<td><input type="text" name="rollno" value=""></td>
+		#end
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 		<td colspan=7>
+			 #if($mode != "instlist")
 			<INPUT TYPE="button" NAME=eventSubmit_doRegister VALUE="$brih_reg1" onclick="ChkField(document.frm,this);">
+			#else
+			<INPUT TYPE="submit" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
+			#end
+		
 			<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
 			<INPUT TYPE="hidden" NAME="actionName" >
+			<INPUT TYPE="hidden" NAME="mode" VALUE=$mode >
 		</td>
 	</tr>
-	#end
 </table>
 
 <INPUT TYPE="hidden" NAME=deleteFileNames VALUE="">
