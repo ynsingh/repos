@@ -237,13 +237,15 @@ $!data.getMessage()
         	<td>$!list.getUserName()</td>
         	<td><a href=mailto:$!list.getEmail()>$!list.getEmail()</a></td>
 		#set ($i=2)
-                #set ($j=0)
-                #foreach ($urecord1 in $rollnolist)
-	                #if($!list.getLoginName()== $!rollnolist.get($j).getEmailId())
-        		        <td> $!rollnolist.get($j).getRollNo()</td>
-		                #set ($i = $i - 1)
+		#if($mode == "sclist")
+        	        #set ($j=0)
+	                #foreach ($urecord1 in $rollnolist)
+	        	        #if($!list.getLoginName()== $!rollnolist.get($j).getEmailId())
+        			        <td> $!rollnolist.get($j).getRollNo()</td>
+			                #set ($i = $i - 1)
+	                	#end
+	                	#set($j = $j + 1)
                 	#end
-	                #set($j = $j + 1)
                 #end
                 ## if no rollno exist
                 #if(($i==2) && ($mode == "sclist"))
