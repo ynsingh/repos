@@ -84,12 +84,14 @@ public class Wiki_Home extends SecureScreen{
 			ParameterParser pp=data.getParameters();
 			String mode=pp.getString("mode","");
 			String filenameforedit=pp.getString("filename","");
-                        String filename="brihaspati3";
+                        String cId=(String)user.getTemp("course_id");
+                        //String filename="brihaspati3";
+                        String filename=cId;
                         if(!filenameforedit.equals("")){
                                 filename=filenameforedit;
                         }
 
-                        String cId=(String)user.getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("cid===>>"+cId);
 			context.put("filename",filename);
                         context.put("mode",mode);
 			String username=user.getName();
@@ -120,7 +122,8 @@ public class Wiki_Home extends SecureScreen{
                         f=new File(filePathLog);
                         if(!f.exists())
                                 f.mkdir();
-                        String wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast/brihaspati3";
+                        //String wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast/brihaspati3";
+                        String wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast/"+filename;
                         wikipath="";
                         Vector FileViewId_tiopic1=new Vector();
                         String msg="";
