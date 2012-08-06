@@ -67,11 +67,26 @@ public class SubinstitutionmasterDAO extends BaseDAO {
         commitTransaction();
         return list;
     }
+
 public Subinstitutionmaster findInstBySIMShortName(String simShortName) {
         beginTransaction();
  List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
         commitTransaction();
         return simList.get(0);
+    }
+
+public List<Subinstitutionmaster> findSubInstByName(String simName) {
+        beginTransaction();
+ List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u where u.simName = :simName").setParameter("simName", simName).list();
+        commitTransaction();
+        return simList;
+    }
+
+public List<Subinstitutionmaster> findSubInstByShortName(String simShortName) {
+        beginTransaction();
+ List<Subinstitutionmaster> simList = getSession().createQuery("select distinct(u) from Subinstitutionmaster u where u.simShortName = :simShortName").setParameter("simShortName", simShortName).list();
+        commitTransaction();
+        return simList;
     }
 
 public List<Subinstitutionmaster> findSubInstForUser(Integer erpmuId,short ImId) {
@@ -88,6 +103,14 @@ public String findDefaultSubInsitute(Integer simId) {
         return imList.get(0).getSimName();
     }
 
+public List<Subinstitutionmaster> findAllSubInstForUser(Integer erpmuId) {
+        String SQL = "select distinct(u) from Subinstitutionmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.subinstitutionmaster.simId = u.simId";
+        beginTransaction();
+        List<Subinstitutionmaster> simList = getSession().createQuery(SQL).
+                                                          setParameter("erpmuId", erpmuId).list();
+        commitTransaction();
+        return simList;
+    }
 
 
 }

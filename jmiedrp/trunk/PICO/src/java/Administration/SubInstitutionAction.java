@@ -10,11 +10,11 @@ package Administration;
  * @author kazim
  */
 
+import java.io.*;
 import pojo.hibernate.Subinstitutionmaster;
 import pojo.hibernate.SubinstitutionmasterDAO;
 import pojo.hibernate.Departmentmaster;
-import pojo.hibernate.DepartmentmasterDAO;
-
+import java.io.InputStream;
 import pojo.hibernate.Statemaster;
 import pojo.hibernate.StatemasterDAO;
 
@@ -33,11 +33,15 @@ import utils.DevelopmentSupport;
 
 import pojo.hibernate.Committeemaster;
 import pojo.hibernate.CommitteemasterDAO;
-
-
-
+import net.sf.jasperreports.engine.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
+import java.sql.Connection;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.DriverManager;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.struts2.ServletActionContext;
 
 public class SubInstitutionAction extends DevelopmentSupport{
     private Institutionmaster im;
@@ -45,6 +49,7 @@ public class SubInstitutionAction extends DevelopmentSupport{
     private Departmentmaster dm;
     private Committeemaster cm;
     private ErpmGenMaster egm;
+  private InputStream inputStream;
 
 private Subinstitutionmaster sim;// = new Subinstitutionmaster();
     
@@ -61,9 +66,16 @@ private CountrymasterDAO cmDao = new CountrymasterDAO();
 private EmployeemasterDAO empDao = new EmployeemasterDAO();
 private List<Employeemaster> empList = new ArrayList<Employeemaster>();
 private CommitteemasterDAO comDAO = new CommitteemasterDAO();
-private ErpmGenMasterDao              GMDao     =           new ErpmGenMasterDao();
+private ErpmGenMasterDao GMDao = new ErpmGenMasterDao();
 private String message;
 private Integer SIMID;
+ public InputStream getInputStream() {
+        return inputStream;
+    }
+
+    public void setInputStream(InputStream inputStream) {
+        this.inputStream = inputStream;
+    }
 
     public void setegm(ErpmGenMaster egm) {
                  this.egm = egm;
@@ -285,5 +297,61 @@ public String Clear() throws Exception {
        }
 
     }
+
+@SkipValidation
+public String Print() throws Exception {
+    HashMap hm = new HashMap();
+
+    String fileName = getSession().getServletContext().getRealPath("pico\\Administration\\Reports\\SubInstitution.jasper");
+
+
+   String whereCondition;
+
+    try{
+         Connection conn =     DriverManager.getConnection("jdbc:mysql://localhost:3306/pico_basic", "root","root");
+
+        HttpServletResponse response = ServletActionContext.getResponse();
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Content-Disposition","attachment; filename=SubInstitutions.pdf");
+        response.setHeader("Expires" , "0");
+        response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
+        response.setHeader("Pragma", "public");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+
+        //Setup Where Condition Clause
+       if(sim.getSimName().toUpperCase().isEmpty())
+            whereCondition = " upper(subinstitutionmaster.sim_name) like '%'";
+        else
+            whereCondition = " upper(subinstitutionmaster.sim_name) like '%" + sim.getSimName().toUpperCase() + "%'";
+
+//        if (sim.getErpmGenMaster().getErpmgmEgmId() == null)
+//            whereCondition = whereCondition + " and subinstitutionmaster.sim_type <> 0 ";
+//        else
+//            whereCondition = whereCondition + " and subinstitutionmaster.sim_type = " + sim.getErpmGenMaster().getErpmgmEgmId() + "";
+
+        if(sim.getStatemaster().getStateId() == null)
+            whereCondition = whereCondition + " and subinstitutionmaster.sim_state_id <> 0 ";
+        else
+            whereCondition = whereCondition + " and subinstitutionmaster.sim_state_id = " + sim.getStatemaster().getStateId();
+   
+        hm.put("condition", whereCondition);
+
+        JasperPrint jp = JasperFillManager.fillReport(fileName, hm, conn);
+        JasperExportManager.exportReportToPdfStream(jp,baos);
+        response.setContentLength(baos.size());
+        ByteArrayInputStream bis=new ByteArrayInputStream(baos.toByteArray());
+        inputStream = bis;
+
+        return SUCCESS;
+    }
+    catch (JRException  e)
+    {
+        message = "Error is : " + e.getMessage() + e.getCause();
+        return ERROR;
+    }
+    }
+
 
 }

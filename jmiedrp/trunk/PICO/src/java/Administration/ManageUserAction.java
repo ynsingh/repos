@@ -14,6 +14,10 @@ import pojo.hibernate.Subinstitutionmaster;
 import pojo.hibernate.SubinstitutionmasterDAO;
 import pojo.hibernate.Institutionuserroles;
 import pojo.hibernate.InstitutionuserroleDAO;
+import pojo.hibernate.Institutionroleprivileges;
+import pojo.hibernate.Genericroleprivileges;
+import pojo.hibernate.GenericroleprivilegesDAO;
+import pojo.hibernate.InstitutionroleprivilegesDAO;
 import pojo.hibernate.Erpmuserrole;
 import pojo.hibernate.ErpmuserroleDAO;
 import pojo.hibernate.Statemaster;
@@ -31,6 +35,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import com.opensymphony.xwork2.ActionContext;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 
 
 /**
@@ -61,9 +66,12 @@ public class ManageUserAction extends DevelopmentSupport  {
     private InstitutionmasterDAO imDao = new InstitutionmasterDAO();
     private SubinstitutionmasterDAO simDao = new SubinstitutionmasterDAO();
     private DepartmentmasterDAO dmDao = new DepartmentmasterDAO();
-
-
+    private List<Institutionmaster> varimList = new ArrayList<Institutionmaster>();
+    private List<Subinstitutionmaster> varSimList = new ArrayList<Subinstitutionmaster>();
+    private List<Departmentmaster> varDmList = new ArrayList<Departmentmaster>();
+    private List<Erpmusers> varErpmUserList = new ArrayList<Erpmusers>();
     private List<Erpmuserrole> erpmurList = new ArrayList<Erpmuserrole>();
+
     private Institutionmaster im;
     private Subinstitutionmaster sim;
     private Departmentmaster dm;
@@ -223,6 +231,39 @@ public class ManageUserAction extends DevelopmentSupport  {
     }
 
 
+    public List<Departmentmaster> getVarDmList() {
+        return varDmList;
+    }
+
+    public void setVarDmList(List<Departmentmaster> varDmList) {
+        this.varDmList = varDmList;
+    }
+
+    public List<Erpmusers> getVarErpmUserList() {
+        return varErpmUserList;
+    }
+
+    public void setVarErpmUserList(List<Erpmusers> varErpmUserList) {
+        this.varErpmUserList = varErpmUserList;
+    }
+
+    public List<Subinstitutionmaster> getVarSimList() {
+        return varSimList;
+    }
+
+    public void setVarSimList(List<Subinstitutionmaster> varSimList) {
+        this.varSimList = varSimList;
+    }
+
+    public List<Institutionmaster> getVarimList() {
+        return varimList;
+    }
+
+    public void setVarimList(List<Institutionmaster> varimList) {
+        this.varimList = varimList;
+    }
+
+
     @Override
     public String execute() throws Exception {
         try {
@@ -324,6 +365,31 @@ public void validate() {
                 addFieldError("erpmusers.erpmuSecretAnswer", "Please answer to your secret question");
             }
 
+            varimList = imDao.findInstByIMName(im.getImName());
+            if (!varimList.isEmpty()) {
+                addFieldError("im.imName", "This Institute is already registard. Please create your user account from the login page.");
+            }
+
+            varimList = imDao.findInstByShortName(im.getImShortName());
+            if (!varimList.isEmpty()) {
+                addFieldError("im.imShortName", "This Institute Short Name already exists. Please change it and save again.");
+            }
+
+            varSimList = simDao.findSubInstByName(sim.getSimName());
+            if (!varSimList.isEmpty()) {
+                addFieldError("sim.simName", "This College/Faculty/School Name is already registard. Please create your user account from the login page.");
+            }
+
+            varSimList = simDao.findSubInstByShortName(sim.getSimShortName());
+            if (!varSimList.isEmpty()) {
+                addFieldError("sim.simShortName", "This College/Faculty/School Short Name already exists. Please change it and save again.");
+            }
+
+            varErpmUserList = erpmusersDao.findByErpmUserName(erpmusers.getErpmuName());
+            if (!varErpmUserList.isEmpty()) {
+                addFieldError("erpmusers.erpmuName", "This User Name is already registard. Please create a different user account or click on Forgot Password from the login page.");
+            }
+
         } catch (NullPointerException npe) {
         }
     }
@@ -394,7 +460,7 @@ public void validate() {
             while (!gurList.isEmpty()){
                 iur.setInstitutionmaster(im);
                 iur.setIurName(gurList.get(index).getGurRoleName());
-                iur.setIurRemarks(gurList.get(index).getGurDescription());
+                iur.setIurRemarks(gurList.get(index).getGurDescription());                
                 iurDao.save(iur);
                 gurList.remove(index);
             }
@@ -404,11 +470,15 @@ public void validate() {
             erpmur.setInstitutionuserroles(iur);
             erpmurDao.save(erpmur);
 
+
+            //Add InstitutionPrivileges for Administrator
+            AddInstituitionPrivilegesForAdmin();
+
             message = "Registration successful, Please Login";
             return SUCCESS;
            }
         catch (Exception e) {
-           if (e.getCause().toString().contains("U6nique_IM_Name"))
+           if (e.getCause().toString().contains("Unique_IM_Name"))
                message = "Your institute is already registered, please create your account from the link on the main page";
            else if(e.getCause().toString().contains("Unique_IM_Short_Name"))
                message = "Institution Short Name is already in use, Please choose a different Short Name.";
@@ -418,6 +488,7 @@ public void validate() {
                message = "SubInstitution Short Name is already in use, Please choose a different Short Name.";
            else
                message = "Error is : " + e.getMessage() + e.getCause();
+           ctList=cmDao.findAll();
            return ERROR;
         }
 }
@@ -427,14 +498,13 @@ public void validate() {
 
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in Edit method -> RegisterUserAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in Edit method -> ManageUserAxn" + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
 
     public String DeleteUserProfile() throws Exception {
         try {
-
             ErpmuserroleDAO erpmurDao = new ErpmuserroleDAO();
             erpmur = erpmurDao.findByErpmUserRole(geterpmurId());
             erpmuName = erpmur.getErpmusers().getErpmuName();
@@ -445,7 +515,7 @@ public void validate() {
             iurIdList=irDao.findAll();
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in Delete method -> DeleteUserProfileAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in DeleteUserProfileAxn method ManageUserAxn ->  " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -469,7 +539,7 @@ public String SaveUserProfile() throws Exception {
             if (e.getCause().toString().contains("UNIQUE_ERPMU_ID_ERPMUR_DM_ID_ERMUR_IUR_ID"))
                 message = "This profile is already assigned to you";
             else
-                message = "Exception in ManageUserAxn method -> SaveUserProfile " + e.getMessage() + " Reported Cause is: " + e.getCause();
+                message = "Exception in SaveUserProfile method -> ManageUserAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -486,7 +556,7 @@ public String SaveUserProfile() throws Exception {
             if (e.getCause().toString().contains("UNIQUE_ERPMU_ID_ERPMUR_DM_ID_ERMUR_IUR_ID"))
                 message = "This profile is already assigned to you";
             else
-                message = "Exception in ManageUserAxn method -> SaveUserProfile " + e.getMessage() + " Reported Cause is: " + e.getCause();
+                message = "Exception in ShowUserProfile method -> ManageUserAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -502,11 +572,10 @@ public String SaveUserProfile() throws Exception {
             getSession().setAttribute("dmshortname", erpmur.getDepartmentmaster().getDmShortName());
            return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in ManageUserAxn method -> ChooseUserProfile " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in ChooseUserProfile method -> ManageUserAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
-
 
     public String SetDefaultProfile() throws Exception {
         try {
@@ -525,7 +594,7 @@ public String SaveUserProfile() throws Exception {
             erpmurList = erpmurDao.findAllInactiveUsers();
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in Delete method -> DeleteUserProfileAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in SetDefaultProfile method ManageUserAction ->  " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -537,7 +606,7 @@ public String SaveUserProfile() throws Exception {
         return SUCCESS;
         }
         catch (Exception e) {
-            message = "Exception in ManageUserAxn method -> AuthorizeUsers " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in AuthorizeUsers, method -> ManageUserAction " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -557,7 +626,7 @@ public String SaveUserProfile() throws Exception {
             erpmurList = erpmurDao.findAllInactiveUsers();
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in Delete method -> DeleteUserProfileAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in ApproveUserProfile method ManageUserAction ->  " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -578,7 +647,7 @@ public String SaveUserProfile() throws Exception {
 
             return SUCCESS;
         } catch (Exception e) {
-            message = "Exception in Delete method -> DeleteUserProfileAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in sendmailToapprovedusers method -> ManageUserAction " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
@@ -644,20 +713,64 @@ public String RecoverPassword() throws Exception {
         return SUCCESS;
         }
         catch (Exception e) {
-            message = "Exception in ManageUserAxn method -> AuthorizeUsers " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            message = "Exception in AddProfile method -> ManageUserAxn " + e.getMessage() + " Reported Cause is: " + e.getCause();
             return ERROR;
         }
     }
 
+    public String AddInstituitionPrivilegesForAdmin() throws Exception {
+    try{
 
+        List<Genericroleprivileges> grpList = new ArrayList<Genericroleprivileges>();
+        GenericroleprivilegesDAO grpDao = new GenericroleprivilegesDAO();
+
+        Institutionroleprivileges iurp = new Institutionroleprivileges();
+        InstitutionroleprivilegesDAO iurpDao = new InstitutionroleprivilegesDAO();
+
+        //Find ID for "Administrator" from the GenericUserRole Table
+        GenericuserrolesDAO gurDao = new GenericuserrolesDAO();
+        Byte roleId = gurDao.RetrieveRoleId("Administrator");
+
+        //For the RoleID retrieved above; Prepare list of generic privileges
+        grpList = grpDao.RetrievePrivilegesForGenericRole(roleId);
+
+        //Go through the list and copy privileges to the "InstitutionRolePrivileges" table
+        int index = 0;
+
+            while (!grpList.isEmpty()){
+                iurp.setErpmmodule(grpList.get(index).getErpmmodule());
+                iurp.setErpmprogram(grpList.get(index).getErpmprogram());
+                iurp.setErpmsubmodule(grpList.get(index).getErpmsubmodule());
+                iurp.setInstitutionmaster(im);
+                iurp.setIupCanAdd(grpList.get(index).getGupCanAdd().contentEquals("0"));
+                iurp.setIupCanDelete(grpList.get(index).getGupCanDelete().contentEquals("0"));
+                iurp.setIupCanEdit(grpList.get(index).getGupCanEdit().contentEquals("0"));
+                iurp.setIupCanView(grpList.get(index).getGupCanView().contentEquals("0"));
+                iurp.setInstitutionuserroles(iur);
+
+                /*message = "Module Id " +
+                grpList.get(index).getErpmmodule().getErpmmName() + " Program " +
+                grpList.get(index).getErpmprogram().getErpmpId() + " Sub Module " +
+                grpList.get(index).getErpmsubmodule().getErpmSubModuleId() + " Inst " +
+                im.getImName() + "Can Add " +
+                grpList.get(index).getGupCanAdd().contentEquals("0") + " Can Delete " +
+                grpList.get(index).getGupCanDelete().contentEquals("0") + " Can Edit " +
+                grpList.get(index).getGupCanEdit().contentEquals("0") + " Can View " +
+                grpList.get(index).getGupCanView().contentEquals("0") + " User Role " +
+                iur.getIurName();
+*/
+
+                iurpDao.save(iurp);
+                grpList.remove(index);
+            }
+
+
+
+        return SUCCESS;
+    }
+    catch (Exception e) {
+         message = "Exception in ManageUserAxn method -> AddInstituitionPrivilegesForAdmin " + e.getMessage() + " Reported Cause is: " + e.getCause();
+            return ERROR;
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-

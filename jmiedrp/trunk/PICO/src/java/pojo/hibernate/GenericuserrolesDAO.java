@@ -12,6 +12,7 @@ package pojo.hibernate;
 
 import utils.BaseDAO;
 import java.util.List;
+//import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0;
 
 public class GenericuserrolesDAO extends BaseDAO {
 
@@ -64,5 +65,13 @@ public class GenericuserrolesDAO extends BaseDAO {
         commitTransaction();
         return list.get(0).getGurDescription();
     }
+
+    public Byte RetrieveRoleId(String role) {
+        beginTransaction();
+        String roleId = getSession().createQuery("select u.gurId from Genericuserroles u where u.gurRoleName = :role").setParameter("role", role).list().get(0).toString();
+        commitTransaction();
+        return  Byte.parseByte(roleId);
+    }
+
 
 }

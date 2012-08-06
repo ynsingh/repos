@@ -85,9 +85,11 @@ public List<UserMessage> findByUserMessage(Integer umId) {
         return umList;
    }
 
-
-
+public Integer countUserMessages(Integer umId) {
+        beginTransaction();
+        Integer messageCount  =  Integer.parseInt(getSession().createQuery("Select count(u) from UserMessage u where u.erpmusersByUmToErpmuId.erpmuId = :umId and u.erpmGenMaster.erpmgmEgmId is null")
+                                                  .setParameter("umId", umId).uniqueResult().toString());
+        commitTransaction();
+        return messageCount;
+   }
 }
-
-
-

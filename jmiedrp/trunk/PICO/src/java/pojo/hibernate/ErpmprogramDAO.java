@@ -40,11 +40,19 @@ public class ErpmprogramDAO extends BaseDAO {
             throw re;
         }
     }
-
-
-    public List<Erpmprogram> findByErpmmId(Integer erpmSubModuleId) {
+    public Erpmprogram findByErpmId(Short erpmId) {
         beginTransaction();
-        List<Erpmprogram> list = getSession().createQuery("select u from Erpmprogram u where u.erpmsubmodule.erpmSubModuleId = :erpmSubModuleId").setParameter("erpmSubModuleId", erpmSubModuleId).list();
+        Erpmprogram erpmp  =  new Erpmprogram();
+        erpmp  = (Erpmprogram) getSession().load(Erpmprogram.class , erpmId);
+        commitTransaction();
+        return erpmp;
+}
+
+
+    public List<Erpmprogram> findByErpmmId(Integer SubModuleId) {
+        beginTransaction();
+
+        List<Erpmprogram> list = getSession().createQuery("select u from Erpmprogram u where u.erpmsubmodule.erpmSubModuleId = :SubModuleId").setParameter("SubModuleId", SubModuleId).list();
         commitTransaction();
         return list;
     }
@@ -61,6 +69,16 @@ public class ErpmprogramDAO extends BaseDAO {
         commitTransaction();
         return list;
     }
+//
+//    //The following method prepares a list of programs which have not yet been assigned to a given Sub Module
+//    public List<Erpmprogram> findProgramBySubmoduleList(Integer SubModuleId) {
+//        beginTransaction();
+//        List<Erpmprogram> list = getSession().createQuery("select u from Erpmprogram u where u.erpmsubmodule.erpmSubModuleId = :SubModuleId ")
+//                                                    .setParameter("SubModuleId", SubModuleId)
+//                                                    .list();
+//        commitTransaction();
+//        return list;
+//    }
 
     public List<Erpmprogram> findFirstLevelItemsBySubModuleId(Integer erpmSubModuleId, Integer erpmuId) {
 
@@ -70,7 +88,7 @@ public class ErpmprogramDAO extends BaseDAO {
                         + "c.iurId = d.institutionuserroles.iurId and "
                         + "a.erpmsubmodule.erpmSubModuleId = :erpmSubModuleId and "
                         + "d.erpmusers.erpmuId = :erpmuId and "
-                        + "d.erpmurDefault = 't' and "
+                        + "(d.erpmurDefault = 't' or d.erpmurDefault = 'Y') and "
                         + "a.erpmprogram.erpmpId is null order by a.erpmpOrder";
 
 
@@ -89,6 +107,19 @@ public class ErpmprogramDAO extends BaseDAO {
         commitTransaction();
         return list;
     }
+    
+    public List<Erpmprogram> findItemsBySubModuleId(Integer erpmSubModuleId) {
+        beginTransaction();
+        List<Erpmprogram> list = getSession().createQuery("select u from Erpmprogram u where u.erpmsubmodule.erpmSubModuleId = :erpmSubModuleId ").
+                                 setParameter("erpmSubModuleId", erpmSubModuleId).list();
+        commitTransaction();
+        return list;
+    }
 
-
+ public List<Erpmprogram> findAll() {
+        beginTransaction();
+        List<Erpmprogram> list = getSession().createQuery("from Erpmprogram").list();
+        commitTransaction();
+        return list;
+    }
 }

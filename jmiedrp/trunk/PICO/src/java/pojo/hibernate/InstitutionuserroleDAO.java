@@ -86,7 +86,7 @@ public class InstitutionuserroleDAO  extends BaseDAO {
 
 public Institutionuserroles findInstitutionAdministrator(Short imId) {
         beginTransaction();
-        List<Institutionuserroles> iur  =  getSession().createQuery("select u from Institutionuserroles u where u.institutionmaster.imId = :imId and upper(u.iurName) = 'INSTITUTION ADMINISTRATOR'").
+        List<Institutionuserroles> iur  =  getSession().createQuery("select u from Institutionuserroles u where u.institutionmaster.imId = :imId and upper(u.iurName) = 'ADMINISTRATOR'").
                                                 setParameter("imId",imId).list();
         commitTransaction();
         return iur.get(0);

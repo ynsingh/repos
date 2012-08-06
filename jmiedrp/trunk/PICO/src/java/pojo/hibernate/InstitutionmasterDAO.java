@@ -85,11 +85,27 @@ public Institutionmaster findInstByIMShortName(String imShortName) {
         commitTransaction();
         return imList.get(0);
     }
+
 public Institutionmaster findInstByIMFullName(String imName) {
         beginTransaction();
  List<Institutionmaster> imList = getSession().createQuery("select distinct(u) from Institutionmaster u where u.imName = :imName").setParameter("imName",imName).list();
         commitTransaction();
         return imList.get(0);
+    }
+
+public List<Institutionmaster> findInstByIMName(String imName)
+    {
+        beginTransaction();
+        List<Institutionmaster> imList = getSession().createQuery("select distinct(u) from Institutionmaster u where u.imName = :imName").setParameter("imName",imName).list();
+        commitTransaction();
+        return imList;
+    }
+
+public List<Institutionmaster> findInstByShortName(String imShortName) {
+        beginTransaction();
+        List<Institutionmaster> imList = getSession().createQuery("select distinct(u) from Institutionmaster u where u.imShortName = :imShortName").setParameter("imShortName", imShortName).list();
+        commitTransaction();
+        return imList;
     }
 
 public String findDefaultInstByID(Short imId) {

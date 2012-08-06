@@ -145,6 +145,23 @@ public class ErpmusersDAO  extends BaseDAO {
         return erpmuserList.get(0);
     }
 
+    public List<Erpmusers> findByErpmUserName(String erpmuName) {
+        beginTransaction();
+        List <Erpmusers> erpmuserList  =  getSession().createQuery("select u from Erpmusers u where u.erpmuName=:erpmuName ").
+                                                      setParameter("erpmuName",erpmuName).list();
+        commitTransaction();
+        return erpmuserList;
+    }
+
+ public List<Erpmusers> findUserNamebyimid(Integer erpmuId,Short imId) {
+        beginTransaction();
+        List<Erpmusers> erpmuserList  =  getSession().createQuery("select distinct(u) from Erpmusers u,Erpmuserrole v,Institutionmaster r where v.erpmusers.erpmuId =:erpmuId and v.institutionmaster.imId=:imId").
+                                            setParameter("erpmuId",erpmuId).setParameter("imId",imId).list();
+        commitTransaction();
+
+
+        return erpmuserList;
+    }
 
   
 

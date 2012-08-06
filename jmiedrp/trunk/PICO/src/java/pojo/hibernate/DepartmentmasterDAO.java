@@ -67,6 +67,19 @@ public Departmentmaster findDeptByDMShortName(String dmShortName) {
         return dmList.get(0);
     }
 
+public List<Departmentmaster> findDeptByName(String dmName) {
+        beginTransaction();
+ List<Departmentmaster> dmList = getSession().createQuery("select distinct(u) from Departmentmaster u where u.dmName = :dmName").setParameter("dmName", dmName).list();
+        commitTransaction();
+        return dmList;
+    }
+
+public List<Departmentmaster> findDeptByShortName(String dmShortName) {
+        beginTransaction();
+ List<Departmentmaster> dmList = getSession().createQuery("select distinct(u) from Departmentmaster u where u.dmShortName = :dmShortName").setParameter("dmShortName", dmShortName).list();
+        commitTransaction();
+        return dmList;
+    }
 
 public List<Departmentmaster> findDepartmentForUser(Integer erpmuId,Integer simId) {
         beginTransaction();
@@ -81,5 +94,15 @@ public String findDefaultDepartment(Integer dmId) {
         commitTransaction();
         return dm.get(0).getDmName();
     }
+
+public List<Departmentmaster> findAllDepartmentsForUser(Integer erpmuId) {
+        String SQL = "select distinct(u) from Departmentmaster u, Erpmuserrole r where r.erpmusers.erpmuId = :erpmuId and r.departmentmaster.dmId = u.dmId";
+        beginTransaction();
+        List<Departmentmaster> simList = getSession().createQuery(SQL).
+                                                          setParameter("erpmuId", erpmuId).list();
+        commitTransaction();
+        return simList;
+    }
+
 
 }
