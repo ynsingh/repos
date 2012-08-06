@@ -228,7 +228,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                         	if(loginValue==false){
                                 	usernameText.setText("");
                                 	passwordField.setText("");
-					javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
+					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
+					//javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
 				}else {
 					client_obj.setUserName(usernameText.getText());
 					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
@@ -367,7 +368,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			if(loginValue==false){
                         	usernameText.setText("");
                         	passwordField.setText("");
-				javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
+				//javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
+				StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
 			}else {
 				client_obj.setUserName(usernameText.getText());
 				if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){

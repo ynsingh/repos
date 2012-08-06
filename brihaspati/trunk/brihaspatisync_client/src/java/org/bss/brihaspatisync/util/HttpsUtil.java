@@ -287,8 +287,11 @@ public class HttpsUtil{
                                 try{
 					if((str=in.readLine())!=null){
 	                                	if(!(str.equals(message))){
-        	                                	msgList.addElement(str);
-							System.out.println(msgList);
+							System.out.println("sffsf fsd fs dfs f"+msgList);
+							if(str.matches("(.*)loginfailed(.*)")){
+								org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));		
+							}else
+								msgList.addElement(str);
                         	                }
                                 	}
                                 }finally {
