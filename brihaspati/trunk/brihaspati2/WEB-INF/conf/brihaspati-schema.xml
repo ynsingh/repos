@@ -336,8 +336,11 @@
 </table>
 <table name="FAQMOVE" idMethod="idbroker">
         <column name="FAQ_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
-        <column name="USER_ID" type="INTEGER"/>
-	<column name="INST_ID" type="INTEGER"/>
+        <column name="MSG_ID" required="true" primaryKey="true" type="INTEGER"/>
+	<column name="SENDER_NAME" size="255" type="VARCHAR"/>
+	<column name="MSG_SUBJECT" size="255" type="VARCHAR"/>
+	<column name="PERMISSION" type="INTEGER" size="1"/>
+	<column name="STATUS" type="INTEGER" size="1"/>
 </table>
 
 <table name="FAQ_VOTE" idMethod="idbroker">

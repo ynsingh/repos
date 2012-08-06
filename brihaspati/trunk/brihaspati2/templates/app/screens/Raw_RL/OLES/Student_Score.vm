@@ -1,0 +1,151 @@
+#*
+ * @(#) Student_Score.vm
+ * Copyright (c) 2010 MHRD, DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+ * Contributors: Members of MHRD, DEI Agra.
+*#
+
+
+$page.setTitle("Quiz Score")
+$page.setBgColor("#ffffff")
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($cnm = $data.getUser().getTemp("course_name" ).toString())
+<font face="$ui.sansSerifFonts">
+
+$!data.getMessage()
+<table width=100%  bgcolor="$ui.menuColor">
+<tr><td>
+	<b>	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | 
+		#if($type=="gradeCard")
+			$brih_grade $brih_card
+		#else
+			$brih_score $brih_card
+		#end
+	</b>
+</td>
+## Creating the links for help regarding FAQ 
+<td align="right">
+<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+</td>
+</tr>
+</table>
+
+#if($type=="gradeCard")
+<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Report_Card.vm").setAction("OLES_AttemptQuiz")>
+#else
+<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Quiz_Score.vm").setAction("OLES_AttemptQuiz")>
+#end
+<table width=100% align="left">
+
+#if($futureQuizList.size()!=0)
+	#foreach($futureqid in $futureQuizList)
+		<tr>		
+			<td>$velocityCount .<td colspan="5">Quiz "$futureqid.getQuizName()" is scheduled but it will start at $futureqid.getExamDate() at $futureqid.getStartTime()</td>
+		</tr>
+	#end	        						
+#end	
+
+<tr  bgcolor="$ui.tableColor">
+	#if($user_role == "student")
+		#if($tdcolor != "1")
+    		<td width="25%">
+		#elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC" width="25%">
+		#end
+				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1")> #if($lang == "hindi") $brih_quiz $brih_attempt  #else $brih_attempt $brih_quiz #end </a>
+			</td>
+		#if($tdcolor != "2")
+			<td width="25%"> 
+		#elseif($tdcolor == "2")
+			<td bgcolor="#AFDCEC" width="25%">
+		#end
+				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice")>  $brih_Practice $brih_quiz  </a>
+			</td>
+			
+		#if($tdcolor != "3")
+			<td width="25%">
+		#elseif($tdcolor == "3")
+			<td bgcolor="#AFDCEC" width="25%">
+		#end	
+			<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_score $brih_card</a>
+			</td>
+		#if($tdcolor != "4")
+			<td width="25%">
+		#elseif($tdcolor == "4")
+			<td bgcolor="#AFDCEC" width="25%">
+		#end	
+        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")>$brih_grade $brih_card</a>
+        	</td>
+	#end		
+	
+   	</tr>
+	<tr>
+</tr>
+</table>
+	##Drop down list to select a quiz
+<table border=1 align="left" width="60%" bgcolor="$ui.tableColor" cellpadding="3">
+	<tr bgcolor="$ui.menuColor" colspan="4">
+		<td  align="left">
+	      		<b><font face="$ui.sansSerifFonts"> $brih_select  $brih_quiz</font></b>
+	   </td>
+	   	<td  align="left"  >
+	        	<font face="$ui.sansSerifFonts">
+	        	#if($isFile!="")
+	        		#if($quizList.size()!=0)
+	        			<select name=quizList>
+	        				#foreach($qid in $quizList)	
+	        					       				
+	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getQuestionNumber(),$qid.getMaxTime()">$qid.getQuizName()</option>
+	        				#end
+	        			</select> &nbsp;
+	        			#if($type=="gradeCard")
+	        				<input type="button" name="eventSubmit_showReportCard" value="$RemoteShow $brih_grade $brih_card" onClick="showScore(document.frm,this);">
+        				#else
+	        			<input type="button" name="eventSubmit_showScoreQuiz" value="$RemoteShow $brih_score $brih_card" onClick="showScore(document.frm,this);">
+					&nbsp;&nbsp;&nbsp;
+						#end
+				#else
+					$!data.getMessage() !!!!
+				#end	
+	        	#else
+	        		$!data.getMessage() !!!!
+	        	#end
+		</td>
+	</tr>
+</table>	
+##</tr>
+##</table>
+<input type="hidden" name="count" value="$tdcolor">
+<input type="hidden" name="type" value="$type">
+<input type="hidden" name="actionName">
+<input type="hidden" name="quizID">
+<input type="hidden" name="quizName">
+<input type="hidden" name="maxMarks">
+<input type="hidden" name="maxQuestion">
+<input type="hidden" name="maxTime">
+<input type="hidden" name="maxMarksQuestion">
+<input type="hidden" name="userID" value=$userID>
+</form>
+<SCRIPT LANGUAGE="javascript">
+ function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
+        
+function showScore(frm,field){
+	frm.actionName.value=field.name;
+	frm.maxMarksQuestion.value=frm.quizList.options[frm.quizList.selectedIndex].value;
+	var temp = new Array();
+	temp = ((frm.maxMarksQuestion.value).split(","));
+	frm.quizID.value = temp[0];	
+	frm.maxMarks.value = temp[1];
+	frm.maxQuestion.value = temp[2];
+	frm.maxTime.value = temp[3];
+	frm.quizName.value=frm.quizList.options[frm.quizList.selectedIndex].text;	
+	frm.submit();					
+}
+
+
+</SCRIPT>

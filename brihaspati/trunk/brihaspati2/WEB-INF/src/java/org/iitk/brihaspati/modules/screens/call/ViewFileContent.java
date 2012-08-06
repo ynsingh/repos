@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call;
 /*
  * @(#)ViewFileContent.java	
  *
- *  Copyright (c) 2005-2006, 2008, 2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2011, 2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -58,6 +58,8 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @ modified date: 05-Aug-2012 (Shaista)
  */
 
 public class ViewFileContent extends SecureScreen
@@ -262,6 +264,11 @@ public class ViewFileContent extends SecureScreen
                                 String docRoot=data.getServletContext().getRealPath("/Courses");
                                 String topic=pp.getString("topic","")+"/";
                                 filePath=docRoot +"/"+ dir +"/Content/"+ topic +"/Unpublished/"+fileID;
+			}else if(Type.equals("FAQ"))
+                        {
+				String topic=pp.getString("topic","");
+				String msg_id=pp.getString("msgid","");
+				filePath= data.getServletContext().getRealPath("/UserArea")+"/fromFAQ/DisBoard/"+topic+"/Attachment/"+msg_id+"/"+fileID;
                         }else{
 				String msg="Error in Raw Page for display contains !!";
                         	ErrorDumpUtil.ErrorLog(msg);
