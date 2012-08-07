@@ -140,12 +140,10 @@ public class ClientObject {
                 try {
                         int k=name_new.lastIndexOf("@");
                         name_new=name_new.substring(0,k);
-                        System.out.println(name_new);
                         if(name_new.length()>10){
                                 name_new=name_new.substring(0,12);
                                 name_new=name_new+"..";
                         }
-                        System.out.println(name_new);
                 }catch(Exception e){}
                 return name_new;
         }
@@ -191,6 +189,7 @@ public class ClientObject {
 		return commMgr.getServerDate();
 	}
 	*/
+	
 	/**
          * This method is used store all user status to change icons in userlist.
          */
@@ -263,5 +262,23 @@ public class ClientObject {
                 return a_status;
         } 
 	
+	private Vector LectureInfo=new Vector();
+	private int LectureInfoindex=-1;
+	
+	public void setLectureInfo(Vector LectureInfo){
+                this.LectureInfo=LectureInfo;
+        }
+	public void setLectureInfoIndex(int LectureInfoindex){
+                this.LectureInfoindex=LectureInfoindex;
+        }
+	
+	public Vector getLectureInfo(){
+                return LectureInfo;
+        }
+        public int getLectureInfoIndex(){
+                return LectureInfoindex;
+        }
+
+		
 }
 

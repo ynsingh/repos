@@ -229,7 +229,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 	usernameText.setText("");
                                 	passwordField.setText("");
 					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
-					//javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
 				}else {
 					client_obj.setUserName(usernameText.getText());
 					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){

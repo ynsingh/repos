@@ -44,6 +44,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 	private JMenu menu3;
 	private JMenuItem menuItem5;
 	private JMenuItem menuItem6;
+	private JMenuItem menuItem7;
 	private JPanel north_Panel =null;
 	private JPanel south_Panel =null;
 	private JPanel east_Panel =null;
@@ -126,6 +127,12 @@ public class MainWindow  extends JFrame implements ActionListener{
                 menuItem2.setEnabled(false);
                 menuItem2.addActionListener(this);
                 menu1.add(menuItem2);
+
+		menuItem7=new JMenuItem(Language.getController().getLangValue("InstructorCSPanel.LectureInfo"));
+                menuItem7.setActionCommand("LectureInfo");
+                menuItem7.setEnabled(false);
+                menuItem7.addActionListener(this);
+                menu1.add(menuItem7);
 
                 menuItem3=new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem3"));
                 menuItem3.setActionCommand("Exit");
@@ -227,9 +234,11 @@ public class MainWindow  extends JFrame implements ActionListener{
                         System.exit(0);
 		}else if(e.getActionCommand().equals("Start-Recorder")){
 			// Action code for start recorder.
-                }else{
+                } else if(e.getActionCommand().equals("LectureInfo")){
+		  	LectureInfo info=new LectureInfo(org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfoIndex(),org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfo());                      
+                }
+		else{
 			StatusPanel.getController().setStatus(Language.getController().getLangValue("MainWindow.MessageDialog1"));
-
 		}
         }
 
@@ -275,6 +284,9 @@ public class MainWindow  extends JFrame implements ActionListener{
                 return menuItem6;
         }
 	
+	protected JMenuItem getMenuItem7(){
+                return menuItem7;
+        }
 
         public  Container getContainer(){
                 return content;

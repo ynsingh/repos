@@ -110,6 +110,7 @@ public class JoinSession {
 		CourseSessionWindow.getController().setVisible(false);
                 MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
                 MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
+		MainWindow.getController().getMenuItem7().setEnabled(true);
 		MainWindow.getController().getContainer().validate();
 		MainWindow.getController().getContainer().repaint();
 
@@ -142,6 +143,7 @@ public class JoinSession {
 
 		//start video thread
 		try {
+			System.out.println("adadsadad a"+client_obj.getCourseForAnnounce());
 			String v_status=client_obj.getVideoStatus();
 			if(v_status.equals("1")){	
 			if((client_obj.getUserRole()).equals("instructor")){

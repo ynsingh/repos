@@ -123,9 +123,10 @@ public class LectureInfo extends JFrame implements MouseListener
 		frame=new JFrame();
 		frame.setTitle(Language.getController().getLangValue("LectureInfo.Title"));		/**Setting the title of the Frame*/
 		frame.getContentPane().add(mainPan);		/**Adding panel to the frame*/
+		java.awt.Dimension dim=java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setSize(450,350);				/**Setting the size of the frame*/
 		frame.setVisible(true);				/**Showing the frame*/
-            	frame.setLocation(550,8);
+            	frame.setLocation((((int)dim.getWidth()/2)-225),(((int)dim.getHeight()/2)-175));
 	} 
 	
 	//Modified by pratibha

@@ -324,9 +324,9 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		// Action for Join button 
 		// Modified for signalling
 		try{
+			/*********   arvind ************/
 			for(int i=0;i<join.length;i++){
 				if(e.getSource()==join[i]){
-					
 					String lect_id=courseid.get(i).toString();
 					// store this lect_id in client objects for later use by this client.
 					client_obj.setLectureID(lect_id);	
@@ -336,7 +336,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 					JoinSession.getController().goToLecture(lect_id);
 					MainWindow.getController().getMenuItem5().setEnabled(true);
 					MainWindow.getController().getMenuItem6().setEnabled(true);
-					
+					client_obj.setLectureInfo(lectinfoVector);
+					client_obj.setLectureInfoIndex(i);
 				}
 			}
 		}catch(Exception exc){System.out.println("Can't open GUI"+exc.getMessage());}
