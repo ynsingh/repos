@@ -101,6 +101,13 @@ public class UpdateTestSetupAction extends Action {
 			int testId=(Integer)session.getAttribute("testId");
 			int totalQuestion=manageForm.getTotalQuestion();
 			int totalSection=manageForm.getTotalSection();
+			String sheetFormat=(String)session.getAttribute("sheetFormat");
+			String groupFlag=request.getParameter("groupFlag");
+		
+			if(sheetFormat.equalsIgnoreCase("NGC")){
+				groupFlag="N";
+			}
+		
 			/*
 			 *  Test conduct date               
 			 *  

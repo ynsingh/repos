@@ -70,7 +70,10 @@ public class TestSetUpForm extends ValidatorForm {
 	private String sdate;
 	
 	private String testNo;
-private String test;
+	private String test;
+
+	private String sheet;
+	private String groupExists;
 	/*
 	 * Generated Methods
 	 */
@@ -210,5 +213,21 @@ public void setTest(String test) {
 
 	public void setExistTestName(String existTestName) {
 		this.existTestName = existTestName;
+	}
+
+	public void setSheet(String sheet) {
+		this.sheet = sheet;
+	}
+
+	public String getSheet() {
+		return sheet;
+	}
+
+	public void setGroupExists(String groupExists) {
+		this.groupExists = groupExists;
+	}
+
+	public String getGroupExists() {
+		return groupExists;
 	}
 }

@@ -61,7 +61,7 @@ public class LogEntry {
 	 * @param description 
 	 */
 	public static void insert_Log(int testid, String filename, String errCode, String description ){
-		
+		System.out.println("insert_Log");
 		Connection con = null;
 		try{
 			

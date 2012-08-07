@@ -92,7 +92,7 @@ public class EachCandidateInfo {
 	    	String candidateId="-1";
 	    	String testno ="-1";
 	    	try{
-			
+	    		
 			//System.out.println("roll : " +(rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5)+ rno.get(6)+rno.get(7)));
 			//System.out.println("tid : " +(tid.get(0)+ tid.get(1) + tid.get(2) + tid.get(3) + tid.get(4) + tid.get(5)));
 			if(tid.contains("NA") || tid.contains("error")){
@@ -129,4 +129,95 @@ public class EachCandidateInfo {
 
 		}
 		
+		/**
+	     * Get the Group for Correct Group Answer Sheet 
+	     * @return
+	     */
+	    public String getGroupCode()
+		{
+	    	String groupCodes =null;
+	    	try{
+	    			groupCodes = (rno.get(6)+ rno.get(7));
+	    			
+	    	} catch (Exception e) {
+	    		log.error("error in each cand info : " +e);
+			}
+	    	System.out.println("b4 return : " + groupCodes);
+	    	return groupCodes;
+		}
+	    
+	    /**
+	     * To get the groupCode of Correct No Group Answer Sheet 
+	     * @return
+	     *//*
+	    public String getCode()
+		{
+	    	String groupCodes =null;
+	    	try{
+	    			groupCodes = (tid.get(0)+tid.get(1));
+	    			System.out.println("without group "+tid.get(0)+tid.get(1));
+	    			System.out.println("with group "+rno.get(6)+rno.get(7));
+					
+	    	} catch (Exception e) {
+	    		log.error("error in each cand info : " +e);// 
+			}
+	    	System.out.println("b4 return : " + groupCodes);
+	    	return groupCodes;
+		}*/
+	    
+	    /**
+	     * Get the Roll number of the Candidates
+	     * @param fileName
+	     * @param testid
+	     * @param instructorTestNo
+	     * @return
+	     */
+	    public String getCandidateIdGroup(String fileName, int testid, String instructorTestNo)
+		{
+	    	Locale obj = new Locale("en", "US");
+			ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
+	    	String candidateId="-1";
+	    	try{
+	    		candidateId = (rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5));
+	    		System.out.println("candidateId "+candidateId);
+	    		if(candidateId.contains("NA") || candidateId.contains("error")){ 
+	    			LogEntry.insert_Log(testid, new File(fileName).getName(), message.getString("code.E106"), message.getString("msg.E106"));
+	    			log.info("error in roll no"+message.getString("msg.E106"));
+	    			candidateId="-1";
+	    		}
+	    	}
+	    	catch (Exception e) 
+	    	{
+	    		log.error("error in each cand info : " +e);
+			}
+	    	return candidateId;
+		}
+	    
+	    /**
+	     * To get the GroupId of the Candidates
+	     * @param fileName
+	     * @param testid
+	     * @param instructorTestNo
+	     * @return
+	     */
+	    public String getCandidateGroupCodes(String fileName, int testid, String instructorTestNo)
+		{
+	    	Locale obj = new Locale("en", "US");
+			ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
+	    	String candidateGroup="-1";
+	    	try{
+	    		candidateGroup = ( rno.get(6) + rno.get(7)+tid.get(0)+ tid.get(1) +tid.get(2) + tid.get(3) + tid.get(4) + tid.get(5));
+	    		System.out.println("candidateGroup "+candidateGroup);
+	    		if(candidateGroup.contains("NA") ||candidateGroup.contains("error")){ 
+	    			LogEntry.insert_Log(testid, new File(fileName).getName(), message.getString("code.E110"), message.getString("msg.E110"));
+	    			log.info("error in group"+message.getString("msg.E110"));
+	    			candidateGroup="-1";
+	    		}
+	    	} 
+	    	catch (Exception e) 	
+	    	{
+	    		log.error("error in group info : " +e);
+			}
+	    	return candidateGroup;
+		}
 	}

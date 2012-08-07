@@ -65,8 +65,8 @@ public class Connect {
 		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+message.getString("database")+"?user="+ message.getString("username")+"&password="+message.getString("password"));
 		//con.setAutoCommit(false);
 		return con;
-	}
-	*/
+	}*/
+	
 	
 	/**
 	 * The method getConnection is used for establishing  database Connection.

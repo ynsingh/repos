@@ -119,21 +119,28 @@ public class DowLoadSheetAction extends Action {
 			// read from the file; write to the ServletOutputStream
 			while ((readBytes = buf.read()) != -1)
 				myOut.write(readBytes);
+				throw new ServletException();
 
-		} catch (IOException ioe) {
-			log.error("Cannot download the file : " + ioe);
-			throw new ServletException(ioe.getMessage());
-
-		} finally {
-
-			// close the input/output streams
-			if (myOut != null)
-				myOut.close();
-			if (buf != null)
-				buf.close();
-
+		}catch(ServletException e){
+			System.out.println(e.getStackTrace());
 		}
-		return mapping.findForward("home");
+
+		 catch (IOException ioe) {
+			log.error("Cannot download the file : " + ioe);
+			
+		} finally {
+			try{
+				// close the input/output streams
+				if (myOut != null)
+					myOut.close();
+				if (buf != null)
+					buf.close();
+			}
+			catch(Exception exx){
+				System.out.println(exx.getStackTrace());
+			}
+		}
+		return null;
 
 	}
 }

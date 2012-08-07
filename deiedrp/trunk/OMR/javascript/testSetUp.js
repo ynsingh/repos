@@ -257,3 +257,80 @@ function display() {
       //  mytable.setAttribute("border", "2");
     }
 }
+function askGroup(){
+	var setObj = document.getElementById('sheetFormat'); 
+    var val = setObj.options[setObj.selectedIndex].value;
+    
+    var a=document.getElementById('groupExists');
+    var tbody = document.getElementById("secTable");
+    var sec = document.getElementById("section");
+    if(val.toString()=="GRC"){
+    	
+    	a.disabled=false;
+    	sec.selectedIndex=0;
+    	for(var i = tbody.rows.length - 1; i > 0; i--)
+		{
+    		tbody.deleteRow(i);
+		}
+    }
+    else {
+    	a.selectedIndex=0;
+    	sec.selectedIndex=0;
+    	
+    	a.disabled=true;
+    	
+    	var setObj1 = document.getElementById("section");
+    	for (i = setObj1.length - 1; i>=0; i--) {
+    		
+      			setObj1.remove(i);
+    		
+  		}
+    	option0=document.createElement("option");
+        option0.value="0";
+        option0.innerHTML="---Select---";
+        	
+		setObj1.appendChild(option0);
+		setObj1.options[1] = new Option('1', 1);
+        setObj1.options[2] = new Option('2', 2);
+        setObj1.options[3] = new Option('3', 3);
+        setObj1.options[4] = new Option('4', 4);
+    
+    }
+}
+
+function addGrp(){
+	var setObj = document.getElementById('groupExists'); 
+    var val = setObj.options[setObj.selectedIndex].value;
+	
+		var setObj1 = document.getElementById("section");
+		for (i = setObj1.length - 1; i>=0; i--) {
+    		
+      			setObj1.remove(i);
+    		
+  		}
+		option0=document.createElement("option");
+        option0.value="0";
+        option0.innerHTML="---Select---";
+        	
+		setObj1.appendChild(option0);
+        
+        switch(val)
+		{ 
+		case 'N':
+		
+		setObj1.options[1] =new Option('1',1);
+		
+		
+		break;
+		case 'Y':
+		
+        setObj1.options[1] = new Option('1', 1);
+        setObj1.options[2] = new Option('2', 2);
+        setObj1.options[3] = new Option('3', 3);
+        setObj1.options[4] = new Option('4', 4);
+		break;
+		
+		}
+                  
+	
+}

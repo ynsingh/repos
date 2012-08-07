@@ -75,7 +75,7 @@ public class Coordinates {
 	 */
    public static ArrayList<Coordinates> computeCorners(ij.process.ImageProcessor ip, int xstart, int xend){
          
-	  
+	   
      ArrayList<Coordinates> arr = new ArrayList<Coordinates>();
 	 int block_height = (int)((ip.getHeight()*1.5)/100);
 	  int x=0,y=0, x1=0,y1=0, i=0;

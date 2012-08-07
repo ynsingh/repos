@@ -41,6 +41,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -70,10 +71,12 @@ public class Response {
     	Locale obj = new Locale("en", "US");
 		ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
 		int[] responseCount=null;
+		System.out.println("insert_response");
     	File fileName = new File(filepath);
     	Connection con=null;
     	int ques=0, sec=0;
     	int qno=0;
+    	ArrayList<Integer> tempSec=new ArrayList<Integer>();
         try {
              con = Connect.prepareConnection();
             con.setAutoCommit(false);
@@ -101,6 +104,7 @@ public class Response {
 
             while(rs.next()){
             	sec = rs.getInt(1);
+            	tempSec.add(sec);
             	ques=rs.getInt(2);
             	
 
@@ -124,6 +128,24 @@ public class Response {
                        if(responseCount.length==attemptAns.length-1){
             	log.info("All responses inserted ");
             }
+            
+            /*PreparedStatement ps1  = con.prepareStatement(
+                       "insert into student_result_info(TestId, RollNo, SectionNumber, FileName,group_code,section_marks,total_marks) values (?,?,?,?,?,?,?)");
+            
+            for(int l=0;l<tempSec.size();l++){
+            	ps1.setInt(1, testid);
+                ps1.setInt(2, rno);
+                ps1.setInt(3, tempSec.get(l));
+                ps1.setString(4, fileName.getName());
+                ps1.setString(5, "00");
+                ps1.setFloat(6, 0.0f);
+                ps1.setFloat(7, 0.0f);
+                
+                ps1.executeUpdate();
+            }*/
+            
+            
+                       
             con.commit();
            // con.close();
 

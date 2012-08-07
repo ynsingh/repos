@@ -160,12 +160,51 @@
 				return false;
 				}
 		 	}
+		
+			function askGroup(){
+				var setObj = document.getElementById("sheetFormat"); 
+			    var val = setObj.options[setObj.selectedIndex].value;
+			    var a=document.getElementById("groupFlag");
+			    if(val.toString()=="GRC"){
+			    	a.disabled=false;
+			    }
+			    else {
+			    	a.selectedIndex=0;
+			    	a.disabled=true;
+			    	
+			    }
+			}
+		
+			function addGrp(){
+				var setObj = document.getElementById("groupFlag"); 
+			    var val = setObj.options[setObj.selectedIndex].value;
+				var setObj1 = document.getElementById("section");
+				for (i = setObj1.length - 1; i>=0; i--) {
+		      			setObj1.remove(i);
+		  		}
+				option0=document.createElement("option");
+		        option0.value="0";
+		        option0.innerHTML="---Select---";
+				setObj1.appendChild(option0);
+		        switch(val)
+				{ 
+					case 'N':
+					setObj1.options[1] =new Option('1',1);
+					break;
+					case 'Y':
+				    setObj1.options[1] = new Option('1', 1);
+			        setObj1.options[2] = new Option('2', 2);
+			        setObj1.options[3] = new Option('3', 3);
+			        setObj1.options[4] = new Option('4', 4);
+					break;
+				}
+			 }
 		</script>
 		
 
   </head>
   
-  <body>
+  <body onload=askGroup()>
   <table width="100%">
   <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
   <tr><td>	<hr width="100%"> </td></tr>
@@ -178,7 +217,8 @@
   		
   	   String testName;
   	    	   
-  	   	
+  	   String sheetFormat;
+  	   String groupFlag;
   	   int testId;
   	   int totalQuestion;
   	   boolean disable;
@@ -186,7 +226,11 @@
    %>
   <%
   	sec=(Integer)session.getAttribute("sec");
-     	 //getting no. of sections
+  	sheetFormat=(String)session.getAttribute("sheetFormat");
+  	if(sheetFormat.equalsIgnoreCase("NGC")){
+    	groupFlag="";
+    }else groupFlag=(String)session.getAttribute("groupFlag");
+     	//getting no. of sections
      	 
     	 testName=(String)session.getAttribute("testName");
     	 testId=(Integer)session.getAttribute("testId");
@@ -243,6 +287,8 @@
 							<font color="red" size="2">*</font>
 						</td>
 					</tr>
+					
+					
 
 					<tr>
 						<td>
@@ -257,9 +303,37 @@
 							<font color="red" size="2">*</font>
 						</td>
 					</tr>
+					
+					<tr>
+						<td>
+							<font face="Arial" color="#000040">	<bean:message key="label.SheetFormat"/> </font>
+						</td>
+						<td>
+							<html:select styleId="sheetFormat" property="sheetFormat"  value="<%=sheetFormat %>" disabled="true">
+								<html:option value="0">--Select--</html:option>
+								<html:option value="NGC">8 Digits Roll Number</html:option>
+								<html:option value="GRC">6 Digits Roll Number</html:option>
+							</html:select> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<font face="Arial" color="#000040">	<bean:message key="label.groupExists"/> </font>
+						</td>
+						<td>
+							<html:select styleId="groupFlag" property="groupFlag" disabled="true" onchange="addGrp();" value="<%=groupFlag %>" >
+								<html:option value="0">--Select--</html:option>
+								<html:option value="Y">Yes</html:option>
+								<html:option value="N">No</html:option>
+							</html:select> 
+						</td>
+					</tr>
+					
+					
 					<tr><td><font face="Arial" color="#000040"><bean:message key="label.totalSec"/></font> </td>
 	        <td>
-	        <html:select styleId="section" property="totalSection" indexed="totalSection" onchange="change();" disabled="<%=disable %>">
+	        <html:select styleId="section" property="totalSection"  onchange="change();" disabled="<%=disable %>" >
 			<html:option value="1">1</html:option>
 			<html:option value="2">2</html:option>
 			<html:option value="3">3</html:option>

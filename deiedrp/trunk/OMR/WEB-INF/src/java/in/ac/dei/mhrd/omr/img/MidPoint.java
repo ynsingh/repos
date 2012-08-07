@@ -74,7 +74,7 @@ public class MidPoint {
          */
         ArrayList<MidPoint> yobj = new ArrayList<MidPoint>();
         int block_height = (int)((ip.getHeight()*1.5)/100);
-        
+        System.out.println("compute_block_midPoint");
   try{
         for (int i = start; i <= end; i++) {
             MidPoint yc = new MidPoint();
@@ -88,21 +88,21 @@ public class MidPoint {
             } else if(i<10){
                yc.mp = obj1.y + ((int) ((obj2.y - obj1.y) * 1) / 2); //compute the y coordinate of mipoint of other blocks
                yc.xmp = obj1.x; 
-               /*
-               System.out.println("obj1.y : " + obj1.y);
-                System.out.println("obj2.y : " + obj2.y);
-                System.out.println("y  mp : y: " + yc.mp +" x: " + obj1.x);
-                */
+               
+             //  System.out.println("obj1.y : " + obj1.y);
+             //   System.out.println("obj2.y : " + obj2.y);
+             //   System.out.println("y  mp : y: " + yc.mp +" x: " + obj1.x);
+                
                 yc.xmp = obj1.x;
             }
             else{
             	 yc.mp = obj1.y + ((int) ((obj2.y - obj1.y) * 70) / 100); //compute the y coordinate of mipoint of other blocks
             	 yc.xmp = obj1.x;
-            	 /*
-            	 System.out.println("obj1.y : " + obj1.y);
-                 System.out.println("obj2.y : " + obj2.y);
-                 System.out.println("y  mp : y: " + yc.mp +" x: " + obj1.x);
-                 */
+            	 
+            //	 System.out.println("obj1.y1 : " + obj1.y);
+              //   System.out.println("obj2.y1 : " + obj2.y);
+              //   System.out.println("y  mp : y: " + yc.mp +" x: " + obj1.x);
+                 
             }
 
             //compute the ratio of the midpoint
@@ -134,7 +134,7 @@ public class MidPoint {
         double mp_percent = 50 / 100;
         int block_height = (int)((ip.getHeight()*1.5)/100);
         ArrayList<MidPoint> yobj = new ArrayList<MidPoint>();
-
+        System.out.println("compute_midPoint_basesheet_blocks");
         for (int i = start; i <= end; i++) {
             MidPoint yc = new MidPoint();
             Coordinates obj1 = RBlocks.get(i - 1);

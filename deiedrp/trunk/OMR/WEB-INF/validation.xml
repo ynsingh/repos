@@ -213,6 +213,11 @@
 	
 	</form>
 			
+		<form name="CorrectSheetGroup" >
+			<field property="correctPath" depends="required, sheet">
+				<arg position="0" key="label.corrrectSheet"/>
+			</field>
+		</form>	
 	</formset>
 </form-validation>
 

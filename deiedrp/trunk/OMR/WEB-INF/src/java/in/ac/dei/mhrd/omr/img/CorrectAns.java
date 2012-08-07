@@ -71,6 +71,7 @@ public class CorrectAns {
         int ques=0;
         int[] noOfCorrectAns=null;
         Connection con=null;
+        System.out.println("insertCorrectAns: " );
     	try {
             //establish connection with the database
             con = Connect.prepareConnection();
@@ -113,5 +114,64 @@ public class CorrectAns {
         	}
         
         return noOfCorrectAns.length;
+    }
+	
+	public static int insertCorrectGroupAns(byte[] correctAns, int testid,String group) {
+        int j=0;
+        int sec=0;
+        int qno=0;
+        int totalSec=0;
+        int totalQues=0;
+        int ques=0;
+        int[] noOfCorrectAnswer=null;
+        Connection con=null;
+        System.out.println("insertCorrectAns: " );
+    	try {
+            //establish connection with the database
+            con = Connect.prepareConnection();
+
+            con.setAutoCommit(false);
+            
+            PreparedStatement ps = con.prepareStatement(
+            "SELECT section_number,No_of_question FROM testsectiondetail where testId=? and section_number in (select section_no from testsectiongroups where testId=? and group_code=?)");
+            ps.setInt(1, testid);
+            ps.setInt(2, testid);
+            ps.setString(3, group);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+            	sec = rs.getInt(1);
+            	ques=rs.getInt(2);
+            	
+            	
+               	PreparedStatement ps1 = con.prepareStatement(
+                "insert into correctans(TestId, Ques_no, Answer, SectionNumber,group_code,create_user) values (?,?,?,?,?,?)");
+            	for (int i = 1; i <= ques; i++) {
+                	qno++;
+                	ps1.setInt(1, testid);
+                	ps1.setInt(2, i);
+                	ps1.setInt(3, correctAns[i]);
+                
+                	ps1.setInt(4, sec);
+                	ps1.setString(5, group);
+                	ps1.setString(6, "OMR");
+                	ps1.addBatch();
+             
+            	}//end for
+            	
+            	noOfCorrectAnswer= ps1.executeBatch();
+                log.info("total Rows inserted in correct : "+ noOfCorrectAnswer.length);
+           }    
+            
+           con.commit();
+      
+        log.info("rows inserted : "+ noOfCorrectAnswer.length);
+        } catch (Exception e) {
+            log.error("error while insert in correct Ans: " + e);
+        }
+        finally{
+        	Connect.freeConnection(con);
+        	}
+        
+        return noOfCorrectAnswer.length;
     }
 }

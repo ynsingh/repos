@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import in.ac.dei.mhrd.omr.SelectTestId;
 
 import org.apache.log4j.Logger;
 import in.ac.dei.mhrd.omr.dbConnection.Connect;
@@ -257,7 +258,8 @@ public ArrayList<String> populateWrongQuesName(String from, String to){
 		java.util.Date todate = sdf.parse(to); 
 		java.sql.Timestamp timeen = new java.sql.Timestamp(todate.getTime()); 
 		
-		System.out.println("Executing select statemt ");
+		testNameList.add(0, message.getString("msg.select"));
+		//System.out.println("Executing select statemt ");
          ps = con.prepareStatement(
                 "SELECT distinct Test_name FROM testheader where Test_status=? AND Conduct_date BETWEEN ? AND ? order by Test_name");
          ps.setString(1, message.getString("TestReady"));
@@ -312,9 +314,9 @@ try {
 	
 	java.util.Date todate = sdf.parse(to); 
 	java.sql.Timestamp timeen = new java.sql.Timestamp(todate.getTime()); 
-	
+	testNameList.add(0, message.getString("msg.select"));
      ps = con.prepareStatement(
-            "SELECT t.Test_name, t.TestId FROM testheader t where Test_status=? AND Conduct_date BETWEEN ? AND ? AND t.TestId Not IN (Select distinct TestId from correctans) order by Test_name");
+            "SELECT t.Test_name, t.TestId FROM testheader t where Test_status=? AND Conduct_date BETWEEN ? AND ? AND t.TestId Not IN (Select distinct TestId from correctans where group_code  not in (select distinct(group_code) from group_table)) order by Test_name");
      ps.setString(1, message.getString("TestReady"));
      ps.setTimestamp(2, timest);
      ps.setTimestamp(3, timeen);
@@ -331,7 +333,6 @@ try {
     	log.error("Error in retrieving testname for correct answer " + e);
     }
     finally{
-    	System.out.println("inside finl corect ans name");
     	Connect.freeConnection(con);
     }
     	return testNameList;
@@ -539,7 +540,7 @@ try {
     
      ps = con.prepareStatement(
             "select distinct Conduct_date from testheader t where t.Test_Status=?" +
-            "AND t.TestId NOT IN (Select distinct TestId from correctans) AND (t.Conduct_date + INTERVAL -3 DAY)<=now() order by t.Conduct_date");
+            "AND t.TestId NOT IN (Select distinct TestId from correctans where group_code  not in (select distinct(group_code) from group_table)) AND (t.Conduct_date + INTERVAL -3 DAY)<=now() order by t.Conduct_date");
      ps.setString(1, message.getString("TestReady"));
      System.out.println("");
      rs = ps.executeQuery();
@@ -758,4 +759,237 @@ try {
     
     	return testNameList;
  }
+
+/**
+ * This method returns the list of section numbers for "Link Groups to Section" interface for adding or deleting groups
+ * @author Dheeraj Singh
+ * @param testName, name of the test
+ * @return sectionList containing all section numbers of Test  
+ */
+
+public ArrayList<String> populateSection(String testName)
+{
+  Connection con = null;
+  SelectTestId selectTestId = new SelectTestId();
+
+  ArrayList<String> sectionList = new ArrayList<String>();
+  sectionList.add("--Select--");
+  try
+  {
+    con = Connect.prepareConnection();
+    con.setAutoCommit(false);
+
+    ResultSet rs = null;
+
+    PreparedStatement ps = null;
+    
+    ps = con.prepareStatement("select Section_number from testsectiondetail where TestId=?");
+    ps.setString(1, selectTestId.getTestId(testName) + "");
+    
+
+    rs = ps.executeQuery();
+
+    while (rs.next()) {
+      sectionList.add(rs.getString(1));
+    }
+    con.commit();
+  }
+  catch (Exception e) {
+    log.error("Error in retrieving section numbers from testSectionDetail table " + e);
+  }
+  finally {
+    Connect.freeConnection(con);
+  }
+  return sectionList;
+}
+
+/**
+ * This method returns the list of test name for "Link Groups to Section" interface
+ * Only those names will be retrieved for which test has been conducted but not yet processed
+ * @author Dheeraj Singh
+ * @param from i.e., from date
+ * @param to i.e., to date
+ * @return testNameList containing list of test names
+ */
+
+public ArrayList<String> populateSectionGroupsName(String from, String to){ 
+	Connection con=null;
+
+	ArrayList<String> testNameList=new ArrayList<String>();
+
+try {
+	
+    con = Connect.prepareConnection();
+    con.setAutoCommit(false);
+    
+    ResultSet rs=null;
+
+    PreparedStatement ps = null;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+	
+	java.util.Date fromdate = sdf.parse(from); 
+	java.sql.Timestamp timeobj1 = new java.sql.Timestamp(fromdate.getTime()); 
+	
+	java.util.Date todate = sdf.parse(to); 
+	java.sql.Timestamp timeobj2 = new java.sql.Timestamp(todate.getTime()); 
+	
+     ps = con.prepareStatement(
+                        "SELECT t.Test_name, t.TestId FROM testheader t where Test_status=? AND sheet_format=? AND Conduct_date BETWEEN ? AND ? AND t.TestId Not IN (Select distinct TestId from correctans where group_code  not in (select distinct(group_code) from group_table)) order by Test_name");
+     ps.setString(1, message.getString("TestReady"));
+     ps.setString(2, "GRC");
+     ps.setTimestamp(3, timeobj1);
+     ps.setTimestamp(4, timeobj2);
+   
+     rs = ps.executeQuery();
+     
+   	  while(rs.next()){
+   		  testNameList.add(rs.getString(1));
+     }
+     con.commit();
+   }
+    catch(Exception e){
+    	log.error("Error in retrieving testname for link groups to section " + e);
+    }
+    finally{
+    	Connect.freeConnection(con);
+    }
+    	return testNameList;
+}
+
+/**
+ * This method returns the list of test conduct date for the
+ * "Link Groups to Section" interface
+ * @author Dheeraj Singh
+ * @return testDateList containing conduct dates of unprocessed tests
+ */
+
+public ArrayList<String> selectDateGroupSection(){
+	Connection con=null;
+	ArrayList<String> testDateList=new ArrayList<String>();
+
+try {
+	
+    con = Connect.prepareConnection();
+    ResultSet rs=null;
+    con.setAutoCommit(false);
+    PreparedStatement ps = null;
+    
+    testDateList.add(0, message.getString("msg.select"));
+    
+     ps = con.prepareStatement(
+                		 "select distinct Conduct_date from testheader t where t.Test_Status=?" +
+             "AND sheet_format=? AND t.TestId NOT IN (Select distinct TestId from correctans where group_code  not in (select distinct(group_code) from group_table)) AND (t.Conduct_date + INTERVAL -3 DAY)<=now() order by t.Conduct_date");
+     ps.setString(1, message.getString("TestReady"));
+     ps.setString(2, "GRC");
+     rs = ps.executeQuery();
+     
+   	  while(rs.next()){
+   		  testDateList.add(rs.getString(1));
+     }
+     
+   	  con.commit();
+    }
+    catch(Exception e){
+    	log.error("error in group section date " + e);
+    }finally{
+    	Connect.freeConnection(con);
+    }
+    
+    	return testDateList;
+}
+/**
+ * This method returns the list of test conduct date for Group sheet test
+ *   
+ * @return
+ */
+public ArrayList<String> selectDateGroupSetup(){
+	Connection con=null;
+	ArrayList<String> testDateList = new ArrayList<String>();
+	 try {
+	
+     con = Connect.prepareConnection();
+    ResultSet rs=null;
+   con.setAutoCommit(false);
+    PreparedStatement ps = null;
+    //set first option as select
+    testDateList.add(0, message.getString("msg.select"));
+    
+     ps = con.prepareStatement(
+            "select distinct Conduct_date from testheader where Test_Status=? AND sheet_format=? order by Conduct_date");
+     ps.setString(1,message.getString("TestReady"));
+     ps.setString(2,"GRC");
+
+     rs = ps.executeQuery();
+     
+   	  while(rs.next()){
+   		  log.info("value in date for group test date "+rs.getString(1));
+   		  testDateList.add(rs.getString(1));
+     }
+     con.commit();
+    }
+    catch(Exception e){
+    	log.error("error in Group test date " + e);
+    }
+    finally{
+    	Connect.freeConnection(con);
+    }
+    return testDateList;
+}
+/**
+ * This method returns the list of test names for group format sheet
+ * interface. Only those names will be retrieved for which sheets has 
+ * not yet been processed
+ * @param from
+ * @param to
+ * @return
+ */	
+public ArrayList<String> populateNameGroupSetUp(String from, String to){
+	Connection con=null;
+		ArrayList<String> testNameList=new ArrayList<String>();
+	
+	try {
+		
+         con = Connect.prepareConnection();
+        con.setAutoCommit(false);
+        ResultSet rs;
+
+        PreparedStatement ps =null;
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		
+		java.util.Date fromdate = sdf.parse(from); 
+		java.sql.Timestamp timest = new java.sql.Timestamp(fromdate.getTime()); 
+		
+		java.util.Date todate = sdf.parse(to); 
+		java.sql.Timestamp timeen = new java.sql.Timestamp(todate.getTime()); 
+		
+		testNameList.add(0, message.getString("msg.select"));
+		System.out.println("Group Set up ");
+         ps = con.prepareStatement(
+                "SELECT distinct Test_name FROM testheader where Test_status=? AND sheet_format=? AND Conduct_date BETWEEN ? AND ? order by Test_name");
+         ps.setString(1, message.getString("TestReady"));
+         ps.setString(2, "GRC");
+         ps.setTimestamp(3, timest);
+         ps.setTimestamp(4, timeen);
+       
+         rs = ps.executeQuery();
+         
+       	  while(rs.next()){
+       		  log.info("Test name retrieved for Group Sheet" +rs.getString(1));
+       		  testNameList.add(rs.getString(1));
+         }
+         con.commit();
+       	  
+        
+        }
+        catch(Exception e){
+        	log.error("error in retrieving Test name for group Sheet " + e);
+        }
+        finally{
+        	Connect.freeConnection(con);
+        }
+        	return testNameList;
+  
+}
+
 }

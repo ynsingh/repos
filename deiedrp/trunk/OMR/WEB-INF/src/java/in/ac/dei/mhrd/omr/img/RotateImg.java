@@ -42,6 +42,7 @@ import ij.plugin.BMP_Writer;
 import in.ac.dei.mhrd.omr.dbConnection.Connect;
 import in.ac.dei.mhrd.omr.processSheet.ProcessSheetAction;
 import java.io.*;
+import in.ac.dei.mhrd.omr.resultProcess.ResultProcessAction;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -111,7 +112,7 @@ public class RotateImg {
         float xdiff;
         float ydiff;
         double angle;
-xstartL = (int) (ip.getWidth() * 0.8) / 100;
+        xstartL = (int) (ip.getWidth() * 0.8) / 100;
   //      xstartL = (int) (ip.getWidth() * 3) / 100; 
                                                     /*
 													 * starting point of
@@ -251,6 +252,9 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
          ip.erode();
          ip.erode();
          
+        // System.out.println("Height of image == "+ip.getHeight());
+       //  System.out.println("Width of image == "+ip.getWidth());
+         
          if(noOfQues<=30){
        	   xend=(int) (ip.getWidth()*29)/100;
           }else
@@ -374,7 +378,7 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
         String dir  = new File(imgPath).getParent();
   	  File source = new File(dir, fileName);
                try {
-        	
+            	   System.out.println("processSheet");
         	
             implus = new ImagePlus(imgPath);
 
@@ -404,8 +408,8 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
      	            message.getString("code.E109"), message.getString("msg.E109"));
      	  log.info(message.getString("msg.E109"));
 
- 	        boolean flag = source.renameTo(new File (ProcessSheetAction.RejectedFolderPath, fileName));
- 	        log.info("filer move to rejected folder in ext " + flag);
+ 	        boolean flag1 = source.renameTo(new File (ProcessSheetAction.RejectedFolderPath, fileName));
+ 	        log.info("filer move to rejected folder in ext " + flag1);
          flag=false;
             return;
 	    }
@@ -447,10 +451,11 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
          	   xend=(int) (ip.getWidth()*52)/100;
             }else
          	   if(noOfQues<=90){
-             	   xend=(int) (ip.getWidth()*52)/100;
-
-         	   }else{
              	   xend=(int) (ip.getWidth()*75)/100;
+
+         	   }else
+         	   		if(noOfQues<=120){
+             	   xend=(int) (ip.getWidth()*94)/100;
 
          	   }
             
@@ -464,7 +469,13 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
                 (int) (ip.getWidth() * 7) / 100,
                 (int) (ip.getWidth() * 93) / 100, imgPath, testid, instructorTestNo);
         
-       
+        if(rno=="-1"){
+             	boolean flag = source.renameTo(new File (ProcessSheetAction.RejectedFolderPath, fileName));
+             	log.info("filer move to rejected folder in ext " + flag);
+             	flag=false;
+             	return;
+            }
+        
         attemptAns = CirclePosition.getAns(ip, ansDetail_mpLeft,
                 ansDetail_mpRight, xyRtAvg[0], xyLeftAvg[0],
                 (int) (ip.getWidth() * 7) / 100, xend, noOfQues);
@@ -566,7 +577,7 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
    System.out.println("wrong Attempt : " + wrongAttempt);
    System.out.println("unattempt : " + (noOfQues- (correctAttempt + wrongAttempt)));*/
     
- System.out.println("1");
+// System.out.println("1");
  int secCount=1;
  while(sectionDetailRs.next()){
 	 
@@ -585,6 +596,20 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
                   ps.executeUpdate();
                   secCount++;
                  // sectionNumber++;
+                  
+                  PreparedStatement ps1  = con.prepareStatement(
+                  "insert into student_result_info(TestId, RollNo, SectionNumber, FileName,group_code,section_marks,total_marks) values (?,?,?,?,?,?,?)");
+       
+			       	ps1.setInt(1, testid);
+			           ps1.setInt(2, rno);
+			           ps1.setInt(3, sectionDetailRs.getInt(1));
+			           ps1.setString(4, fileName);
+			           ps1.setString(5, "00");
+			           ps1.setFloat(6, 0.0f);
+			           ps1.setFloat(7, 0.0f);
+			           
+			           ps1.executeUpdate();
+			       
    }
  con.commit();                 
           } catch (Exception e) {
@@ -627,5 +652,366 @@ xstartL = (int) (ip.getWidth() * 0.8) / 100;
         XYAvg[1] = ytotal / Blocks.size();
 
         // System.out.println("Avg" + XYAvg[1]);
+    }
+	
+	
+    /**
+     * To get Group for correct Answer Sheets 
+     * @param str
+     * @param testid
+     * @param countgroup
+     * @return
+     * @throws IOException
+     */
+    public synchronized String processSheetGroup(String str, int testid, int countgroup) throws IOException {
+    	String groups=null;
+    	implus = new ImagePlus(str);
+        ip = implus.getChannelProcessor(); // loads the image
+        ip.dilate(); // to fill the gaps in the marked circles
+        ip.dilate();  
+
+        rotateImg(ip);
+        if(!flag){
+        // "leftBlocks" contains the top and bottom coordinates of each block on
+		// the left side
+        // stores the mid point of the left & right side blocks in arraylist
+        	 ArrayList<MidPoint> studentDetail_mpLeft = MidPoint.compute_block_midPoint(leftBlocks,
+                     1, 10, ip); // other sheets
+             ArrayList<MidPoint> studentDetail_mpRight = MidPoint.compute_block_midPoint(RightBlocks,
+                     1, 10, ip); // other sheets
+             ip.erode();
+             ip.erode(); /* to erode the unfilled circles & othet text */
+             ip.erode();
+             ip.dilate(); // to make the marks visible
+             ip.erode();
+             ip.erode();
+             groups= CirclePosition.getGroupInfo(ip, studentDetail_mpLeft,
+                     studentDetail_mpRight, (double)xyRtAvg[0], (double)xyLeftAvg[0],
+                     (int) (ip.getWidth() * 7) / 100,
+                     (int) (ip.getWidth() * 93) / 100, countgroup);
+             }
+        return groups;
+    }
+    
+    /**
+     * Method to process Sheets
+     * @param imgPath
+     * @param testid
+     * @param noOfQues
+     * @param rejectedFolder
+     * @param instructorTestNo
+     * @param countGroup
+     */
+    public synchronized void processSheetDual(String imgPath, int testid, int noOfQues, String rejectedFolder, String instructorTestNo, int countGroup) 
+    {
+        String rno="-1"; // holds the roll no. obtained after processing the sheet
+        Locale obj = new Locale("en", "US");
+		ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
+		int xend=0;
+        attemptAns = new byte[noOfQues+1]; 
+        String fileName = new File(imgPath).getName();
+        String dir  = new File(imgPath).getParent();
+  	  	File source = new File(dir, fileName);
+               try {
+            	   implus = new ImagePlus(imgPath);
+            	   ip = implus.getChannelProcessor(); // load the image
+               } 
+               catch (Exception e) 
+               {
+            	   log.error("error in loading image");
+            	   LogEntry.insert_Log(testid, fileName,message.getString("code.E108"), message.getString("msg.E108"));
+            	   log.info(message.getString("msg.E108"));
+            	   boolean flag = source.renameTo(new File (ProcessSheetAction.RejectedFolderPath, fileName));
+            	   log.info("filer move to rejected folder in ext " + flag);
+                   return;
+               }
+               ip.dilate(); // to fill the gaps in the marked circles
+               ip.dilate();
+               //  ip.erode(); // to remove the extra boundary pixels add during dilation
+
+               rotateImg(ip); // rotate to correct the tilt
+               if(flag){
+            	   log.info(message.getString("msg.E109"));
+            	   boolean flag1 = source.renameTo(new File (ResultProcessAction.RejectedFolderPath, fileName));
+            	   LogEntry.insert_Log(testid, fileName,message.getString("code.E109"), message.getString("msg.E109"));
+            	   //	boolean flag = source.renameTo(new File (ProcessSheetAction.RejectedFolderPath, fileName));
+            	   log.info("filer move to rejected folder in ext " + flag1);
+            	   flag=false;
+            	   return;
+               }
+
+               /*
+                * stores the mid points of the blocks in the student info. part of the
+                * sheet(first 10 blocks)
+                */
+               ArrayList<MidPoint> studentDetail_mpLeft = MidPoint.compute_block_midPoint(leftBlocks,1, 10, ip); // other sheets
+               ArrayList<MidPoint> studentDetail_mpRight = MidPoint.compute_block_midPoint(RightBlocks,1, 10, ip); // other sheets
+
+               /*
+                * stores the coordinates of mid point of the blocks in left & right
+                * side of the sheet(last 13 blocks)
+                */
+               ArrayList<MidPoint> ansDetail_mpLeft = MidPoint.compute_block_midPoint(leftBlocks,11, leftBlocks.size() - 1, ip); // other sheets
+               ArrayList<MidPoint> ansDetail_mpRight = MidPoint.compute_block_midPoint(RightBlocks,11, RightBlocks.size() - 1, ip); // other sheets
+
+               ip.erode();
+               ip.erode(); /* to erode the unfilled circles & other text */
+               ip.erode();
+               ip.dilate(); // to make the marks visible
+               ip.erode();
+               ip.erode();
+               
+               RotateImg.infoFlag=true;
+               if(noOfQues<=30){
+            	   xend=(int) (ip.getWidth()*29)/100;
+               }
+               else if(noOfQues<=60){
+            	   xend=(int) (ip.getWidth()*52)/100;
+               }
+               else if(noOfQues<=90){
+        		   xend=(int) (ip.getWidth()*75)/100;
+               }
+               else if(noOfQues<=120){
+        		   xend=(int) (ip.getWidth()*94)/100;
+               }
+     
+               // This method returns the roll no of the candidate
+               rno= CirclePosition.getCandidateInfoGroup(ip, studentDetail_mpLeft,
+            		   studentDetail_mpRight, (double)xyRtAvg[0], (double)xyLeftAvg[0],
+            		   (int) (ip.getWidth() * 7) / 100,
+            		   (int) (ip.getWidth() * 93) / 100, imgPath, testid, instructorTestNo,countGroup);
+        
+               if(rno=="-1"){
+            	   boolean flag = source.renameTo(new File (ResultProcessAction.RejectedFolderPath, fileName));
+            	   log.info("file move to rejected folder in ext " + flag);
+            	   flag=false;
+            	   return;
+               }
+               attemptAns = CirclePosition.getAns(ip, ansDetail_mpLeft,
+            		   ansDetail_mpRight, xyRtAvg[0], xyLeftAvg[0],
+            		   (int) (ip.getWidth() * 7) / 100, xend, noOfQues);
+     
+               Response.insert_response(attemptAns, testid, Integer.parseInt(rno), noOfQues, imgPath);
+               
+               if(countGroup>0)
+               {
+            	   String	group= CirclePosition.getGroupCodes(ip, studentDetail_mpLeft,
+                   studentDetail_mpRight, (double)xyRtAvg[0], (double)xyLeftAvg[0],
+                   		(int) (ip.getWidth() * 7) / 100,
+                   		(int) (ip.getWidth() * 93) / 100, imgPath, testid, instructorTestNo,countGroup);
+            	   System.out.println("groupCodes  for rollnumber "+group+" "+rno);
+            	   if(group=="-1"){
+            		   boolean flag = source.renameTo(new File (ResultProcessAction.RejectedFolderPath, fileName));
+            		   log.info("filer move to rejected folder in ext " + flag);
+            		   flag=false;
+            		   return;
+            	   }
+            	   boolean chk=validateGroupSheet(Integer.parseInt(rno), testid, noOfQues, fileName,group);
+            	   if(chk){
+            		   boolean flag = source.renameTo(new File (ResultProcessAction.RejectedFolderPath, fileName));
+            		   log.info("filer move to rejected folder in ext " + flag);
+            		   flag=false;
+            		   return;
+            	   }
+            	   else evaluateGroupSheet(Integer.parseInt(rno), testid, noOfQues, fileName,group);
+            	   
+               }
+               else  evaluateSheet(Integer.parseInt(rno), testid, noOfQues, fileName);
+               implus.flush();
+    }
+
+    /**
+     * To evaluate the group Sheet
+     * @param rno
+     * @param testid
+     * @param noOfQues
+     * @param fileName
+     * @param group
+     */
+    private void evaluateGroupSheet(int rno, int testid, int noOfQues, String fileName, String group)
+    {
+    	int wrong=0;
+    	int correct=0;
+    	ResultSet sectionDetailRs=null;
+    	ArrayList<String> aa=new ArrayList<String>();
+    	ArrayList<String> bb=new ArrayList<String>();
+    	for(int countvalue=0;countvalue<noOfQues;countvalue++){
+    		bb.add(countvalue, "x");
+    	}
+    	ArrayList<Integer> misprint=new ArrayList<Integer>();
+    	Connection con =null;
+    	try {
+    		con = Connect.prepareConnection();
+            con.setAutoCommit(false);
+            int j=0;
+            int cnt=0;
+            int next=0;
+           
+            PreparedStatement ps = con.prepareStatement("select WrongQuestionNo from wrongquestion where TestId=?");
+            ps.setInt(1, testid);
+            ResultSet rset=ps.executeQuery();
+            while(rset.next()){
+        	  	misprint.add(rset.getInt(1));
+        	  	System.out.println("misprinted ques: "+misprint);
+            }
+            ps = con.prepareStatement("SELECT Section_number, No_of_question FROM testsectiondetail t where TestId=?");
+            ps.setInt(1, testid);
+            sectionDetailRs = ps.executeQuery();
+            
+            while(sectionDetailRs.next())
+            {
+            	  String grp=group.substring(j, j+2);
+            	  System.out.println("group "+group.substring(j, j+2));
+            	  System.out.println("section number "+sectionDetailRs.getInt(1)+" no of ques "+sectionDetailRs.getInt(2));
+            	  
+            	  ps = con.prepareStatement("SELECT ques_no,Answer FROM correctans where testid=? and sectionNumber=? and group_code=?");
+                  ps.setInt(1, testid);
+                  ps.setInt(2,sectionDetailRs.getInt(1) );
+                  ps.setString(3,grp );
+                  ResultSet rs=ps.executeQuery();
+
+                  while(rs.next()){
+                	  aa.add(rs.getString(2));
+                  }
+                  System.out.println("correct "+aa);
+                 // System.out.println("RESPONSES");
+                  ps = con.prepareStatement("SELECT ques_no,ans FROM response where testid=? and SectionNumber=? and Rollno=? and Filename=? ");
+                  ps.setInt(1, testid);
+                  ps.setInt(2,sectionDetailRs.getInt(1) );
+                  ps.setInt(3, rno);
+                  ps.setString(4, fileName);
+                  
+                  ResultSet rs1=ps.executeQuery();
+                  while(rs1.next()){
+                	  		bb.set((rs1.getInt(1)-1),rs1.getString(2));
+                  }
+                  next=next+sectionDetailRs.getInt(2);
+             	  if(misprint.size()>0){
+            		  for(int n=0;n<misprint.size();n++){
+                  			if(misprint.get(n)<aa.size())
+                  			{
+                  				bb.set(misprint.get(n)-1, "x");
+                  			}  
+            		  }
+                  }
+                
+            	  for(int m=cnt;m<next;m++){
+            		   if(!(bb.get(m).equals("x"))){             		
+            			  if(!(bb.get(m).equals(aa.get(m)))){
+            				  wrong++;
+              			  } 
+            			  else{
+            				  correct++;
+            			  }
+            	     }
+            	  }
+            	  ps = con.prepareStatement("insert into attempt_info(TestId, RollNo, Correct_attempt, Wrong_attempt, Unattempt, SectionNumber, FileName) values (?,?,?,?,?,?,?)");
+            	  ps.setInt(1, testid);
+            	  ps.setInt(2, rno);
+            	  ps.setInt(3, correct);
+            	  ps.setInt(4, wrong);
+            	  ps.setInt(5, (sectionDetailRs.getInt(2)-( correct + wrong)));
+            	  ps.setInt(6, sectionDetailRs.getInt(1));
+            	  ps.setString(7, fileName);
+            	  ps.executeUpdate();
+              
+            	  cnt=cnt+sectionDetailRs.getInt(2);
+                  correct=0;
+                  wrong=0;
+              
+                  /*-------------*/
+                  ps = con.prepareStatement("insert into student_result_info(TestId, RollNo, SectionNumber, FileName,group_code,section_marks,total_marks) values (?,?,?,?,?,?,?)");
+            	  ps.setInt(1, testid);
+            	  ps.setInt(2, rno);
+            	  ps.setInt(3, sectionDetailRs.getInt(1));
+            	  ps.setString(4, fileName);
+            	  ps.setString(5,grp );
+            	  ps.setFloat(6,0.0f );
+            	  ps.setFloat(7,0.0f );
+            	  ps.executeUpdate();
+                  
+                  j=j+2;
+             }
+             con.commit();                 
+    	} catch (Exception e) {
+             System.out.println("error while insert in attempt rotate img " + e);
+        }
+        finally{
+        	  Connect.freeConnection(con);
+        }
+    }
+    /**
+     * To validate that for each group code answer or inserted in CorrectAns table or not
+     * @param rno
+     * @param testid
+     * @param noOfQues
+     * @param fileName
+     * @param group
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+	private boolean validateGroupSheet(int rno, int testid, int noOfQues, String fileName, String group)
+    {
+    	Locale obj = new Locale("en", "US");
+		ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
+    	int countCorrectAnswer=0;
+    	int countResponse = 0;
+    	boolean a=true;
+    	ResultSet sectionDetailRs=null;
+    	Connection con =null;
+    	List<String> tempGroup=new ArrayList<String>();
+    	try {
+    		con = Connect.prepareConnection();
+            con.setAutoCommit(false);
+            int j=0;
+            PreparedStatement ps = con.prepareStatement("SELECT Total_question FROM testheader where TestId=? ");
+            ps.setInt(1, testid);
+            ResultSet rs1=ps.executeQuery();
+            rs1.next();
+            countResponse=rs1.getInt(1);
+            ps = con.prepareStatement("SELECT Section_number, No_of_question FROM testsectiondetail t where TestId=?");
+            ps.setInt(1, testid);
+            sectionDetailRs = ps.executeQuery();
+            while(sectionDetailRs.next())
+            {
+            	  String grp=group.substring(j, j+2);
+            	  tempGroup.add(grp);
+            	  ps = con.prepareStatement("SELECT count(*) FROM correctans where testid=? and sectionNumber=? and group_code=?");
+                  ps.setInt(1, testid);
+                  ps.setInt(2,sectionDetailRs.getInt(1) );
+                  ps.setString(3,grp );
+                  ResultSet rs=ps.executeQuery();
+                  rs.next();
+                  countCorrectAnswer =countCorrectAnswer+ rs.getInt(1);
+                  j=j+2;  
+            }
+            if(countCorrectAnswer==countResponse){
+          	  	
+            	//System.out.println("tempGroup "+tempGroup);
+	           	HashSet set = new HashSet();
+	          	for (int i = 0; i < tempGroup.size(); i++ ) 
+	          	{	
+	          		if(!set.add(tempGroup.get(i))){
+	          			a= true;
+	          			LogEntry.insert_Log(testid, fileName,message.getString("code.E111"), message.getString("msg.E111"));
+	          			break;
+	          		}
+	          		else a= false;
+	          		//System.out.println("here in for "+ a);
+	          	}
+          	}
+            else{
+            	LogEntry.insert_Log(testid, fileName,message.getString("code.E112"), message.getString("msg.E112"));
+          	  	a=true;
+          	}
+            con.commit();                 
+    	} 
+    	catch (Exception e) {
+             System.out.println("error while validate" + e);
+        }
+        finally{
+        	Connect.freeConnection(con);
+        }
+		return a;
     }
 }

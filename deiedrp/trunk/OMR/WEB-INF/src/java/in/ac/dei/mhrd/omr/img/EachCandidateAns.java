@@ -51,7 +51,7 @@ public class EachCandidateAns {
      */
     public EachCandidateAns(int no_of_ques) {
     	response = new byte[no_of_ques+1];
-
+    	System.out.println("EachCandidateAns");
         for (int i = 0; i < response.length; i++) {
             response[i] = 0;
         }
@@ -65,6 +65,7 @@ public class EachCandidateAns {
      */
     public void displayAns() {
        int total_attempt = 0;
+       System.out.println("displayAns");
              System.out.println();
        /* for (int i = 1; i < response.length; i++) {
             if (response[i] != 0) {

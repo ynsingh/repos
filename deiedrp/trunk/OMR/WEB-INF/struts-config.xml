@@ -9,7 +9,7 @@
     
     <form-bean name="processSheetForm" type="in.ac.dei.mhrd.omr.processSheet.ProcessSheetForm" />
     <form-bean name="processSheetForm123" type="in.ac.dei.mhrd.omr.processSheet.ProcessSheetForm" />
-<form-bean name="correctSheetBrowseForm123" type="in.ac.dei.mhrd.omr.correctAnswer.CorrectSheetBrowseForm" />
+    <form-bean name="correctSheetBrowseForm123" type="in.ac.dei.mhrd.omr.correctAnswer.CorrectSheetBrowseForm" />
     <form-bean name="resultForm" type="in.ac.dei.mhrd.omr.result.ResultForm" />
     <form-bean name="resultForm123" type="in.ac.dei.mhrd.omr.result.ResultForm" />
     
@@ -19,11 +19,18 @@
     <form-bean name="resultSchedule" type="in.ac.dei.mhrd.omr.result.ResultManageForm" /> 
     <form-bean name="manageWrongQues" type="in.ac.dei.mhrd.omr.misprintedQues.ManageWrongQuesForm" />
 	<form-bean name="logInterfaceForm" type="in.ac.dei.mhrd.omr.log.LogInterfaceForm" />
-	 <form-bean name="manageForm" type="in.ac.dei.mhrd.omr.testSetUp.ManageTestForm" />
+	<form-bean name="manageForm" type="in.ac.dei.mhrd.omr.testSetUp.ManageTestForm" />
     <form-bean name="delQues" type="in.ac.dei.mhrd.omr.misprintedQues.DelQuesForm" />
     <form-bean name="selectCorrectAns" type="in.ac.dei.mhrd.omr.correctAnswer.SelectCorrectAnsForm" />
     <form-bean name="answerForm" type="in.ac.dei.mhrd.omr.correctAnswer.AnswerForm" />
     
+    <form-bean name="GroupForm" type="in.ac.dei.mhrd.omr.group.GroupForm"/>
+    <form-bean name="groupCodeForm" type="in.ac.dei.mhrd.omr.groupCodeSetup.GroupCodeForm" />  
+    <form-bean name="CorrectSheetGroup" type="in.ac.dei.mhrd.omr.uploadCorrectGroup.CorrectSheetGroupForm"/>   
+    <form-bean name="confirmAnsGroup" type="in.ac.dei.mhrd.omr.uploadCorrectGroup.ConfirmAnsGroupForm" />    
+    <form-bean name="ResultProcess" type="in.ac.dei.mhrd.omr.resultProcess.ResultProcessForm" />
+	<form-bean name="loginForm" type="in.ac.dei.mhrd.omr.login.LoginForm" />
+   
    
       
 	
@@ -260,7 +267,95 @@
       scope="request"
       type="in.ac.dei.mhrd.omr.result.ExcelResultAction"
       cancellable="true" />
-  
+      
+    
+    <action 
+    	attribute="GroupForm" 
+    	input="/selectGroup.jsp" 
+    	name="GroupForm" 
+    	path="/selectGroup" 
+    	cancellable="true" 
+    	scope="session" 
+    	type="in.ac.dei.mhrd.omr.group.GroupAction">
+    	<forward name="groupCode" path="/linkGroups.jsp"/>
+    </action>
+    
+    <action 
+    	attribute="GroupForm" 
+    	input="/linkGroups.jsp" 
+    	name="GroupForm" 
+    	path="/cancel" 
+    	cancellable="true" 
+    	type="in.ac.dei.mhrd.omr.group.LinkCancelAction">
+    	<forward name="selectGroup" path="/selectGroup.jsp"/>
+    </action>
+
+	<action
+      attribute="groupCodeForm"
+      input="/groupCodeJsp.jsp"
+      name="groupCodeForm"
+      path="/groupCode"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.groupCodeSetup.GroupCodeAction"
+      cancellable="true">
+     <forward name="success" path="/SuccessUpdate.jsp" />
+    </action>
+	
+	    <action
+      attribute="CorrectSheetGroup"
+      input="/correctSheetGroup.jsp"
+      name="CorrectSheetGroup"
+      path="/selectCorrectGroup"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.uploadCorrectGroup.CorrectSheetGroupAction"
+      validate="true"
+      cancellable="true">
+      <forward name="confirmGroupAns" path="/confirmGroupAns.jsp" />
+      <forward name="confirmAnsMsg1" path="/ConfirmAnsMsg.jsp" />
+      <forward name="confirmAnswers" path="/ConfirmAnswer.jsp" />
+    </action>
+    
+    <action
+      attribute="confirmAnsGroup"
+      input="/confirmGroupAns.jsp"
+      name="confirmAnsGroup"
+      path="/confirmGroup"
+      cancellable="true"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.uploadCorrectGroup.ConfirmAnsGroupAction">
+      <forward name="confirmAnsMsg1" path="/ConfirmAnsMsg.jsp" />
+    </action>
+    
+    <action
+      attribute="ResultProcess"
+      input="/ResultProcess.jsp"
+      name="ResultProcess"
+      path="/ResultProcess"
+      cancellable="true"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.resultProcess.ResultProcessAction">
+      <forward name="index" path="/index.jsp" />
+      
+    </action>
+    
+    <action
+      input="/Menu.jsp"
+      path="/downLoadGroupSheet"
+      type="in.ac.dei.mhrd.omr.download.DownLoadSheetGroupAction">
+      <forward name="home" path="/Home.jsp" />
+    </action>
+	
+	 <action
+      attribute="loginForm"
+      input="/Login.jsp"
+      name="loginForm"
+      path="/LoginAction"    
+      scope="request"
+      type="in.ac.dei.mhrd.omr.login.LoginAction">
+      <forward name="home" path="/Home.jsp" /> 
+      <forward name="Login" path="/Login.jsp" />      
+    </action>
+      
 </action-mappings>
 	
   

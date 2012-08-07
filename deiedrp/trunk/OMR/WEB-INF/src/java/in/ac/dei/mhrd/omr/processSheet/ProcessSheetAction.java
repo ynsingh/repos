@@ -200,6 +200,8 @@ public class ProcessSheetAction extends Action {
 		int no_of_sheets = 0;
 		String pathFlag;
 		pathFlag = processSheetForm.getProcessSheetPath();
+		
+		System.out.println("path flag in processAction :" +pathFlag);
 
 		request.setAttribute("ProcessSheetMsg", " ");
 
@@ -262,6 +264,10 @@ public class ProcessSheetAction extends Action {
 
 			System.out.println("4");
 			File[] zippFile = testNameFolder.listFiles();
+			
+			for(int i = 0; i<zippFile.length;i++ ){
+				System.out.println("ZippFole :" +zippFile[i]);
+			}
 
 			/*
 			 * checking whether sheets from input folder has been extracted from
@@ -304,7 +310,7 @@ public class ProcessSheetAction extends Action {
 			for (String filepath : pathInfo) { // Each file is extracted &
 				// pass to the system for
 				// further processing
-				//System.out.println("Executing:" + filepath);
+				System.out.println("Executing:" + filepath);
 				no_of_sheets++;
 
 				RotateImg obj = new RotateImg();

@@ -64,7 +64,7 @@ public class ManageTestForm extends ActionForm {
 	private ArrayList<SectionDetail> sectionDetail;
 	private String fromDate;
 	private String toDate;
-	
+	private String sheetFormat;
 	/*
 	 * Generated Methods
 	 */
@@ -176,6 +176,14 @@ public class ManageTestForm extends ActionForm {
 
 	public void setSectionDetail(ArrayList<SectionDetail> sectionDetail) {
 		this.sectionDetail = sectionDetail;
+	}
+
+	public void setSheetFormat(String sheetFormat) {
+		this.sheetFormat = sheetFormat;
+	}
+
+	public String getSheetFormat() {
+		return sheetFormat;
 	}
 
 }

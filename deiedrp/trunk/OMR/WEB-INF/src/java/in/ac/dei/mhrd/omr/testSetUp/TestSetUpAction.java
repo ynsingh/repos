@@ -120,6 +120,16 @@ public class TestSetUpAction extends Action {
 		TestSetUpForm testSetUpForm = (TestSetUpForm) form;// TODO Auto-generated method stub
 		
 		String testDate= testSetUpForm.getSdate();
+		String sheetFormat=testSetUpForm.getSheet();
+		String groupFlag=testSetUpForm.getGroupExists();
+
+		if(groupFlag==null){
+			groupFlag="N";
+			
+		}
+		
+
+		
 		Connection con=null;
 
 		if(isCancelled(request)){
@@ -157,14 +167,15 @@ public class TestSetUpAction extends Action {
                 		
                 		
                      psTestDetail = con.prepareStatement(
-	                        "insert into testheader(TestId, Test_name, Total_question, TestNo, Conduct_date, Total_section) values(?,?,?,?,?,?)");
+	                        "insert into testheader(TestId, Test_name, Total_question, TestNo, Conduct_date, Total_section,sheet_format,group_flag) values(?,?,?,?,?,?,?,?)");
 	                psTestDetail.setInt(1, Integer.parseInt(newTestId));
 	                psTestDetail.setString(2,testSetUpForm.getTestName());
 	                psTestDetail.setInt(3, Integer.parseInt(testSetUpForm.getTotalQues()));
 	                psTestDetail.setString(4,testSetUpForm.getTestNo());
 	                psTestDetail.setDate(5, d);
 	                psTestDetail.setInt(6, totalSec);
-	                
+	                psTestDetail.setString(7, sheetFormat);
+	                psTestDetail.setString(8, groupFlag);
 	                int q = psTestDetail.executeUpdate();
 	               log.info("insert in test header: " + q);
 	               

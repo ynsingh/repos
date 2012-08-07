@@ -17,6 +17,16 @@
     <create creator="new" javascript="WrongQuesValidation">
       <param name="class" value="in.ac.dei.mhrd.omr.misprintedQues.WrongQuesValidation"/>
     </create>
+    <create creator="new" javascript="GroupSection">
+      <param name="class" value="in.ac.dei.mhrd.omr.GroupSection"/>
+    </create>
+    <create creator="new" javascript="ShowMessage">
+      <param name="class" value="in.ac.dei.mhrd.omr.MessageDisplay"/>
+    </create>
+    <create creator="new" javascript="GroupOP">
+      <param name="class" value="in.ac.dei.mhrd.omr.GroupOperation"/>
+    </create>
+    
     
   </allow>
 </dwr>

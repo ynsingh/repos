@@ -55,15 +55,14 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 		<link href="home-files/styles.css" type="text/css" rel="stylesheet"/>
-		<style type="text/css">A#vbUL_1g2j7a{display:none}</style>
-
+		<style type="text/css">A#vbUL_1g2j7a{display:none}</style>			
   </head>
   
   <body>
 <%--  0000CD--%>
     <div style="background-color:#003F87">	    
-<table id="buton" width="20%" cellpadding="0" cellspacing="0" border="0">
-	<tr><td style="padding-right:1px" title ="Evaluate" bgcolor="#003F87">
+<table id="buton" width="100%" cellpadding="0" cellspacing="0" border="0">
+	<tr><td style="padding-right:1px" title ="Evaluate" bgcolor="#003F87" width="85%">
 		<a onmouseover='xpe("1g2j7o");xpshow("1g2j7",0,this);xpsmover(this);' onmouseout='xpsmout(this);' onmousedown='xpe("1g2j7c");'>
 			<font size="4%" face="calibri" color="white"><bean:message key="link.evaluate"/></font>
 		</a>
@@ -75,10 +74,19 @@
 			<ul id="vbUL_cg2j7" class="vbUL1g2j7">
 				<li><html:link href="testSetUpjsp.jsp" title="NewTestSetUp"><font size="3" face="calibri"><bean:message key="link.newtestsetup"/></font></html:link></li>
 				<li><html:link href="manage.jsp" title="Manage Test SetUp"> <font size="3" face="calibri"><bean:message key="link.managetestsetup"/></font>  </html:link></li></ul></li>
-				
-				<li><html:link href="SelectCorrectAnsJsp.jsp" title="Upload Correct Answer"><font size="3" face="calibri"> <bean:message key="link.uploadcorrans"/> </font> </html:link></li>
+				<li><html:link href="groupCodeJsp.jsp" title="Group Code Set Up"> <font size="3" face="calibri"> <bean:message key="link.groupcodesetup"/> </font> </html:link></li>
+				<li><html:link href="selectGroup.jsp" title="Link Group Codes"><font size="3" face="calibri"><bean:message key="link.uploadgroups"/> </font></html:link></li>
+				<li>
+					<a title="Upload Correct Answer"><font size="3" face="calibri"><bean:message key="link.uploadcorrans"/> </font> </a>
+						<img class="menu" src="home-files/tri.jpg" alt="»" width="10px" height="10px" align="right"/>
+						<ul id="vbUL_cg2j7" class="vbUL1g2j7">
+							<li><html:link href="SelectCorrectAnsJsp.jsp" title="Upload Correct Answer"><font size="3" face="calibri"> <bean:message key="link.uploadcorrans"/> </font> </html:link></li>
+							<li><html:link href="correctSheetGroup.jsp" title="Correct Answer With Group"> <font size="3" face="calibri"> <bean:message key="link.UploadCorrectAnsGroup"/> </font> </html:link></li>
+						</ul>
+				</li>
 				<li><html:link href="uploadResponse.jsp" title="Upload Response Sheet"> <font size="3" face="calibri"> <bean:message key="link.upressheet"/> </font> </html:link></li>
-				<li><html:link href="ProcessSheet.jsp" title="Process Test"><font size="3" face="calibri"><bean:message key="link.processtest"/></font> </html:link></li>
+				<!--<li><html:link href="ProcessSheet.jsp" title="Process Test"><font size="3" face="calibri"><bean:message key="link.processtest"/></font> </html:link></li>Previous process-->
+				<li><html:link href="ResultProcess.jsp" title="Process Test"><font size="3" face="calibri"><bean:message key="link.processtest"/></font> </html:link></li>   
 				<li><a title="Result"><font size="3" face="calibri"><bean:message key="link.result"/></font>  </a>
 				<img src="home-files/tri.jpg" alt="»" width="10px" height="10px" align="right"/>
 			<ul id="vbUL_7g2j7" class="vbUL1g2j7">
@@ -91,7 +99,7 @@
 				<img src="home-files/tri.jpg" alt="»"  width="10px" height="10px" align="right"/>
 			<ul id="vbUL_qg2j7" class="vbUL1g2j7">
 				<li><html:link action="/downLoadSheet" title="Processed Folder"><font size="3" face="calibri"><bean:message key="log.profolder"/> </font> </html:link></li>
-				
+				<li><html:link action="/downLoadGroupSheet" title="Download Group Sheet"><font size="3" face="calibri"><bean:message key="link.downloadGroup"/> </font> </html:link></li>
 			</ul></li>
 			<li><a title="Mis Printed Questions"><font size="3" face="calibri"> <bean:message key="link.misprintedquestion"/> </font></a>
 				<img src="home-files/tri.jpg" alt="»" width="10px" height="10px" align="right"/>
@@ -100,14 +108,18 @@
 				<li><html:link href="manageWrongQues.jsp" title="Delete Question No."><font size="3" face="calibri"><bean:message key="link.delquesno"/></font></html:link></li>
 			</ul></li>
 </ul>
-</td></tr>
+	</td>
+	<td bgcolor="#003F87" align="center" width="15%"><html:link href="/OMR/Login.jsp" title="logout" style="text-decoration:none">
+			<font size="4%" face="calibri" color="white"><bean:message key="link.logout"/></font></html:link>
+	</td>
+	</tr>
 </table>
 </div>
 <script type="text/javascript"> var vbImgPath="home-files/"</script>
 <script type="text/javascript" src="home-files/styles.js"></script>
 
 <div align="right">
-<img alt="help" src="img/hand.gif"><a href="OmrHelp.htm">Help</a>
+<img alt="help" src="img/hand.gif"><a href="OmrHelp.htm" target="_blank">Help</a>
 </div>
   </body>
 </html:html>

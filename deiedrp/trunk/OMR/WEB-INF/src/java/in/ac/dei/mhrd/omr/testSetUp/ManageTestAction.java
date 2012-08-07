@@ -85,6 +85,7 @@ public class ManageTestAction extends Action {
 			HttpSession session = request.getSession(true);
 			Connection con=null;
 			String testName=null;
+			String sheetFormat=null;
 			ResultSet rs=null;
 			PreparedStatement ps=null;
 			ArrayList<SectionDetail> sectionDetail=new ArrayList<SectionDetail>();
@@ -103,21 +104,27 @@ public class ManageTestAction extends Action {
 			try{
 				con=Connect.prepareConnection();
 				con.setAutoCommit(false);
-				ps=con.prepareStatement("select Total_section,TestId,TestNo,Total_question,Conduct_date from testheader where Test_name=?");
+				ps=con.prepareStatement("select Total_section,TestId,TestNo,Total_question,Conduct_date,sheet_format,group_flag from testheader where Test_name=?");
 				ps.setString(1,testName);
 				rs=ps.executeQuery();
 				rs.next();
 				sec=rs.getInt(1);
 				testId=rs.getInt(2);
+				sheetFormat=rs.getString(6);
+				
 				session.setAttribute("sec", sec);
 				session.setAttribute("testName", testName);
 				session.setAttribute("testId", testId);
+				session.setAttribute("sheetFormat", sheetFormat);
+				session.setAttribute("groupFlag", rs.getString(7));
 				manageForm.setTestNo(rs.getString(3));
 				manageForm.setTestName(testName);
 				manageForm.setTestId(rs.getInt(2));
 				manageForm.setTotalQuestion(rs.getInt(4));
 				manageForm.setTotalSection(rs.getInt(1));
 				manageForm.setDate(rs.getDate(5));
+				manageForm.setSheetFormat(sheetFormat);
+				System.out.println(manageForm.getSheetFormat()+"sheet format");
 				ps=null;
 				ps=con.prepareStatement("select Section_number, No_of_question, Marks_each_question, Neg_Marks from testsectiondetail where TestId=?");
 				ps.setInt(1, testId);

@@ -94,7 +94,7 @@ public class DisplayResponseAction extends Action {
 		    ArrayList<String> corrAns=new ArrayList<String>();
 		    ArrayList<Integer> corrQues=new ArrayList<Integer>();
 		    ArrayList<Integer> responseQues=new ArrayList<Integer>();
-		   
+			int j=0;
 		    Connection con=null;
 		    testid = Integer.parseInt(request.getParameter("testid"));
 		    request.setAttribute("testid", testid);
@@ -113,23 +113,62 @@ public class DisplayResponseAction extends Action {
 		       rollno=rsResponse.getInt(1);
 		       }
 		       request.setAttribute("rollNo", rollno);
-
-		       ps=con.prepareStatement("select Ques_no,answer from correctans where TestId=? order by Ques_no");
+			
+			   ps=con.prepareStatement("select count(*),total_question from testheader where TestId=? and group_exists=? ");
 		       ps.setInt(1, testid);
-		       rsCorrectResponse=ps.executeQuery();
-		       rsCorrectResponse.last();
-		       row=rsCorrectResponse.getRow();
-		       rsCorrectResponse.beforeFirst();
-		       correctAnswer=new byte[row];
-		       while(rsCorrectResponse.next())
-	  			  	 {
-					correctAnswer[i]=(byte)rsCorrectResponse.getByte("answer");
-					corrQues.add(rsCorrectResponse.getInt("Ques_no"));
-					i++;
+		       ps.setString(2, "Y");
+		       ResultSet rsCount=ps.executeQuery();
+		       rsCount.next();
+		     
+		       int total_ques=rsCount.getInt(2);
+		       
+		       if(rsCount.getInt(1)==1){
+		    	   correctAnswer=new byte[total_ques];
+		    	   ps=con.prepareStatement("select sectionNumber, group_code from student_result_info where TestId=? and RollNo=? and FileName=? order by SectionNumber");
+		    	   ps.setInt(1, testid);
+		    	   ps.setInt(2, rollno);
+		    	   ps.setString(3, sheetName.getName());
+			       ResultSet rstset=ps.executeQuery();
+			       while(rstset.next()){
+			    	  
+			    	   ps=con.prepareStatement("select Ques_no,answer from correctans where TestId=? and SectionNumber=? and group_code=? order by Ques_no");
+				       ps.setInt(1, testid);
+				       ps.setInt(2, rstset.getInt(1));
+				       ps.setString(3, rstset.getString(2));
+				       ResultSet correctansrs=ps.executeQuery();
+				       row=correctansrs.getRow();
+				       
+				       
+				       while(correctansrs.next()){
+				    	   correctAnswer[j]=(byte)correctansrs.getByte("answer");
+				    	   corrQues.add(j+1);
+				    	   j++;
+				    	   
+				       }
+			       }
+			       
+		    	corrAns = ri.convertToString(correctAnswer);
+		    	 
+		       }
+		       
+		       else{
+					ps=con.prepareStatement("select Ques_no,answer from correctans where TestId=? order by Ques_no");
+					ps.setInt(1, testid);
+					rsCorrectResponse=ps.executeQuery();
+					rsCorrectResponse.last();
+					row=rsCorrectResponse.getRow();
+					rsCorrectResponse.beforeFirst();
+					correctAnswer=new byte[row];
+					while(rsCorrectResponse.next())
+					{
+						correctAnswer[i]=(byte)rsCorrectResponse.getByte("answer");
+						corrQues.add(rsCorrectResponse.getInt("Ques_no"));
+						i++;
 					}
-		    
-		       i=0;
-		   	corrAns=ri.convertToString(correctAnswer);
+				
+					i=0;
+					corrAns=ri.convertToString(correctAnswer);
+				}
 			request.setAttribute("corrAns", corrAns);
 			request.setAttribute("questionNo", corrQues);
 				rsCorrectResponse=null;
@@ -137,13 +176,10 @@ public class DisplayResponseAction extends Action {
 				ps.setInt(1, testid);
 				ps.setString(2, sheetName.getName());
 				rsCorrectResponse=ps.executeQuery();
-				System.out.println("Anshul 2");
 				rsCorrectResponse.last();
-				System.out.println("Anshul 2");
-
+				
 				row=rsCorrectResponse.getRow();
-				System.out.println("Anshul 2");
-
+				
 				responseAnswer=new byte[row];
 				rsCorrectResponse.beforeFirst();
 					while(rsCorrectResponse.next())

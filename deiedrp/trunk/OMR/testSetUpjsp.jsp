@@ -61,8 +61,11 @@
 		
 	</head>
 	
-	<body onload="setSection()">
+	<%--<body onload="setSection()">
 
+	 --%>
+	 <body>
+	 
 	 <table width="100%">
   <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
   <tr><td>	<hr width="100%"> </td></tr>
@@ -126,17 +129,41 @@
 							<html:errors property="sdate" />
 						</td></tr>
 						
-						
+					<tr>
+						<td>
+							<font face="Arial" color="#000040">	<bean:message key="label.SheetFormat"/> </font>
+						</td>
+						<td>
+							<html:select styleId="sheetFormat" property="sheet" onchange="askGroup();">
+								<html:option value="0">--Select--</html:option>
+								<html:option value="NGC">8 Digits Roll Number</html:option>
+								<html:option value="GRC">6 Digits Roll Number</html:option>
+							</html:select> 
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<font face="Arial" color="#000040">	<bean:message key="label.groupExists"/> </font>
+						</td>
+						<td>
+							<html:select styleId="groupExists" property="groupExists" disabled="true" onchange="addGrp();" >
+								<html:option value="0">--Select--</html:option>
+								<html:option value="Y">Yes</html:option>
+								<html:option value="N">No</html:option>
+							</html:select> 
+						</td>
+					</tr>	
 			
 			
 					<tr><td><font face="Arial" color="#000040">
 <bean:message key="label.section"/></font> </td><td><html:select styleId="section" property="totalSec" onchange="display();">
-					<html:option value="0">--select--</html:option>
+					<%--<html:option value="0">--select--</html:option>
 			<html:option value="1">1</html:option>
 			<html:option value="2">2</html:option>
 			<html:option value="3">3</html:option>
 			<html:option value="4">4</html:option>
-					</html:select>	<html:errors property="totalSec" /></td></tr>
+					--%></html:select>	<html:errors property="totalSec" /></td></tr>
 						
 					<tr><td colspan="2"><div id="divId">
 						

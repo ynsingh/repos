@@ -81,6 +81,7 @@ public class AnsDetail {
 		 * Execute only once for base answer sheet
 		 */
 		Connection con = null;
+		System.out.println("insertAnsCirclePosition");
 		try {
 			con = Connect.prepareConnection();
 			PreparedStatement ps = con
@@ -125,6 +126,7 @@ public class AnsDetail {
 
 		boolean b = false;
 		ResultSet rsXcomponent = null;
+		
 		Connection con = null;
 		try {
 			con = Connect.prepareConnection();

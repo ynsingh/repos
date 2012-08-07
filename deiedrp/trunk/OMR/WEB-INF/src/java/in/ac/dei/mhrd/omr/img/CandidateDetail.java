@@ -75,6 +75,7 @@ public class CandidateDetail {
 
 	public static void inserStudentInfo(ArrayList<CandidateDetail> detail) {
 		Connection con = null;
+	
 		try {
 			con = Connect.prepareConnection();
 			PreparedStatement ps = con
@@ -112,10 +113,15 @@ public class CandidateDetail {
 	 */
 
 	public static boolean matchCandidateInfo(double xpos, double ypos,
-			EachCandidateInfo obj, int y) {
+			EachCandidateInfo obj, int y ,int countgroup) {
 		boolean b = false;
 		Connection con = null;
+		String statusFlag;
 		try {
+			if(countgroup>0){
+				statusFlag="GRC";
+			}
+			else statusFlag="NGC";
 			con = Connect.prepareConnection();
 			/*
 			 * System.out.println("pos in match :" + xpos);
@@ -123,10 +129,10 @@ public class CandidateDetail {
 			 */
 			ResultSet rs;
 			PreparedStatement psXcomponent = con
-					.prepareStatement("select  field, value from student_info where (xstart <= ? And xend >=?)");
+					.prepareStatement("select  field, value from student_info where (xstart <= ? And xend >=?) and status_flag=?");
 			psXcomponent.setDouble(1, xpos);
 			psXcomponent.setDouble(2, xpos);
-
+			psXcomponent.setString(3, statusFlag);
 			ResultSet rsXcomponent = psXcomponent.executeQuery();
 
 			if (rsXcomponent.next()) {
@@ -136,11 +142,12 @@ public class CandidateDetail {
 				 */
 
 				PreparedStatement ps = con
-						.prepareStatement("select  field, value from student_info where (xstart <= ? And xend >= ?) And (y_ratio2 <= ? AND y_ratio1 >= ?)");
+						.prepareStatement("select  field, value from student_info where (xstart <= ? And xend >= ?) And (y_ratio2 <= ? AND y_ratio1 >= ?) and status_flag=?");
 				ps.setDouble(1, xpos);
 				ps.setDouble(2, xpos);
 				ps.setDouble(3, ypos);
 				ps.setDouble(4, ypos);
+				ps.setString(5, statusFlag);
 				rs = ps.executeQuery();
 
 				boolean val = rs.next();
@@ -170,11 +177,12 @@ public class CandidateDetail {
 							
 							
 							PreparedStatement psYComponent = con
-									.prepareStatement("select  field, value from student_info where (xstart <= ? And xend >= ?) And (y_ratio2 <= ? AND y_ratio1 >= ?)");
+									.prepareStatement("select  field, value from student_info where (xstart <= ? And xend >= ?) And (y_ratio2 <= ? AND y_ratio1 >= ?) and status_flag=?");
 							psYComponent.setDouble(1, xpos);
 							psYComponent.setDouble(2, xpos);
 							psYComponent.setDouble(3, ypos);
 							psYComponent.setDouble(4, ypos);
+							psYComponent.setString(5, statusFlag);
 							rs = psYComponent.executeQuery();
 							val = rs.next();
 

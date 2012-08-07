@@ -66,7 +66,7 @@ class BaseSheet {
 		int c = 0;
 		int total_circle = 0;
 		int circle_width = (int) (ip.getWidth() * 0.81) / 100;
-
+		System.out.println("computeInfoCirclePosition: " );
 		float posStartratio = 0; // ratio of starting position of the circle
 		float posEndratio = 0; // ratio of ending position of the circle
 		ArrayList<CandidateDetail> detail = new ArrayList<CandidateDetail>();
@@ -250,7 +250,7 @@ class BaseSheet {
 		int c = 0; // count no of circles
 		int circles_in_row = 0;
 		int counter = 0;
-
+		System.out.println("computeAnsCirclePosition: " );
 		// int xend = (ip.getWidth()*48)/100;
 		int ques = 1;
 		float posStartratio = 0; // xratio1
@@ -393,7 +393,7 @@ class BaseSheet {
 		int j = 1;
 		int pixel_group = 20;
 		boolean found = false;
-
+		System.out.println("checkPixelGroup: " );
 		while ((i <= 10) && (j <= 10)) {
 			j += 2;
 			i += 2;

@@ -61,6 +61,7 @@ public class OnlyBmpExt implements FilenameFilter {
     * @param testid
     */
 	public OnlyBmpExt(String ext, String rejcteFolderPath, int testid){
+		
 		this.ext = ext;
 		this.rejectedFolderPath = rejectedFolderPath;
 		this.testid = testid;
@@ -76,7 +77,7 @@ public class OnlyBmpExt implements FilenameFilter {
 		 boolean b = false;
 		 //check if file is in bitmap format
 	        b = (name.endsWith(ext)||name.endsWith(ext.toLowerCase()));
-
+	        System.out.println("accept");
 	        if (b == false) {
 	        	  File source = new File(dir, name);
 	        	  //if file is not a bitmap image, enter this 

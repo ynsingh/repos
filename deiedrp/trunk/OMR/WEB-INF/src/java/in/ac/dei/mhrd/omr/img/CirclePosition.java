@@ -72,7 +72,7 @@ public class CirclePosition {
         double xleftAvg, int xstart, int xend, String filename, int testid, String instructorTestNo) {
         int count = -1; //count the no. of rows
         int c = 0; // count the no. of circles
-
+        
         Double posStart;// ratio of the starting position of the circle
         int x1; //coordinates of midpoint of left block
         int y1; //coordinates of midpoint of left block
@@ -136,7 +136,7 @@ public class CirclePosition {
 
                                 //check whether posstart lies in the database or not
                                 boolean b = CandidateDetail.matchCandidateInfo((double) posStart,
-                                         ymidLeft.mp_ratio, Infoobj, y);
+                                         ymidLeft.mp_ratio, Infoobj, y, 0);
 
                                 if (b) {
                                     i = i + circle_width; // distance between two circles
@@ -183,7 +183,7 @@ public class CirclePosition {
         int count = -1;
         int c = 0;
         int circle_width = 50;
-
+        
         Double posStart = (double) 0.0;
         EachCandidateAns obj = new EachCandidateAns(no_of_ques);
         int x1; // x coordinates of midpoint of left block
@@ -284,7 +284,7 @@ public class CirclePosition {
         int j = 1;
         boolean found = false;
         int pixelGroup=(int)(ip.getWidth()*1.5)/100;
-        
+       // System.out.println("checkPixelGroup CPositions: " );
         while ((i <= 8) && (j <=8)) {
             j++;
             i++;
@@ -339,5 +339,255 @@ public class CirclePosition {
       
         return found;
     }
+	
+	/**
+     * To get the group of Correct Answer Sheet
+     * @param ip
+     * @param infoLeft
+     * @param infoRight
+     * @param xrtAvg
+     * @param xleftAvg
+     * @param xstart
+     * @param xend
+     * @param countgroup
+     * @return
+     */
+    public static String getGroupInfo(ij.process.ImageProcessor ip,
+            ArrayList<MidPoint> infoLeft, ArrayList<MidPoint> infoRight, double xrtAvg,
+            double xleftAvg, int xstart, int xend, int countgroup) {
+        int count = -1; //count the no. of rows
+        int c = 0; // count the no. of circles
+        Double posStart;// ratio of the starting position of the circle
+        int x1; //coordinates of midpoint of left block
+        int y1; //coordinates of midpoint of left block
+        int x2; //coordinates of midpoint of right block
+        int y2; //coordinates of midpoint of right block
+        int y; // y coordinate for each value of x
+        int circle_width = 50;
+        
+        EachCandidateInfo Infoobj = new EachCandidateInfo();
+        MidPoint ymidLeft;
+        MidPoint ymidRight;
+
+        for (int j = 0; j < infoLeft.size(); j++) {
+            ymidLeft = infoLeft.get(j);
+            ymidRight = infoRight.get(j);
+            /**
+             * variables for straight line equation bw mid points of left & rt side blocks.
+             */
+            x1 = ymidLeft.xmp;
+            y1 = ymidLeft.mp;
+            x2 = ymidRight.xmp;
+            y2 = ymidRight.mp;
+            count++;
+            for (int i = xstart; i < xend; i++) {
+                y = (((y2 - y1) * (i - x1)) / (x2 - x1)) + y1; // compute y for each value of x using straight line equation
+                ip.drawPixel(i, y);
+            	while(ip.getPixelValue(i, y) == 0) {
+            		if (checkPixelGroup(ip, i, y)) {
+            			int start_point = i;
+            			ip.drawPixel(i, y);    
+            			if (start_point > xrtAvg) {
+            				break;
+            			}
+            			ip.drawPixel(i, y);
+                        /*
+                         * if group of black pixel found, compute its ratio
+                         */
+                        posStart = ((start_point - xleftAvg) / (xrtAvg -start_point));
+                        if (posStart.isInfinite() || posStart.isNaN()) {
+                        	break;
+                        }
+                        boolean b;	
+                        //check whether posstart lies in the database or not
+                   		//if(countgroup>0){
+                            b = CandidateDetail.matchCandidateInfo((double) posStart,ymidLeft.mp_ratio, Infoobj, y, countgroup);
+                        //}
+                   		//else b = CandidateDetail.matchCandidateInfoNoGroup((double) posStart,ymidLeft.mp_ratio, Infoobj, y);
+                   		
+                   		if (b) {
+                   			i = i + circle_width; // distance between two circles
+                   			c++; // increment if circle found
+                   			break;
+                        }
+                   	}
+            		i++;
+            	}//while (ip.getPixelValue(i, y) == 0); //end while
+            }
+        }
+        String gCode;
+        //if(countgroup>0){
+        	gCode =  Infoobj.getGroupCode();
+        //}
+        /*else  gCode =  Infoobj.getCode();*/
+        return gCode;
+    }
+    
+    /**
+     * To Get The Candidate Id for group Sheet
+     * @param ip
+     * @param infoLeft
+     * @param infoRight
+     * @param xrtAvg
+     * @param xleftAvg
+     * @param xstart
+     * @param xend
+     * @param filename
+     * @param testid
+     * @param instructorTestNo
+     * @param countGroup
+     * @return
+     */
+	public static String getCandidateInfoGroup(ij.process.ImageProcessor ip,
+	        ArrayList<MidPoint> infoLeft, ArrayList<MidPoint> infoRight, double xrtAvg,
+	        double xleftAvg, int xstart, int xend, String filename, int testid, String instructorTestNo, int countGroup){
+		int count = -1; //count the no. of rows
+		int c = 0; // count the no. of circles
+		Double posStart;// ratio of the starting position of the circle
+		int x1; //coordinates of midpoint of left block
+		int y1; //coordinates of midpoint of left block
+		int x2; //coordinates of midpoint of right block
+		int y2; //coordinates of midpoint of right block
+		int y; // y coordinate for each value of x
+		int circle_width = 50;
+		String tno;
+		
+		EachCandidateInfo Infoobj = new EachCandidateInfo();
+		MidPoint ymidLeft;
+		MidPoint ymidRight;
+		for (int j = 0; j < infoLeft.size(); j++) {
+			ymidLeft = infoLeft.get(j);
+			ymidRight = infoRight.get(j);
+			/**
+			 * variables for straight line equation bw mid points of left & rt side blocks.
+			 */
+			x1 = ymidLeft.xmp;
+			y1 = ymidLeft.mp;
+			x2 = ymidRight.xmp;
+			y2 = ymidRight.mp;
+			count++;
+			
+			for (int i = xstart; i < xend; i++) 
+			{
+				y = (((y2 - y1) * (i - x1)) / (x2 - x1)) + y1; // compute y for each value of x using straight line equation
+				ip.drawPixel(i, y);
+				while(ip.getPixelValue(i, y) == 0) {
+					if (checkPixelGroup(ip, i, y)) {
+						int start_point = i;
+						ip.drawPixel(i, y);    
+						if (start_point > xrtAvg) {
+							break;
+						}
+						ip.drawPixel(i, y);
+						/*
+						 * if group of black pixel found, compute its ratio
+						 */
+						posStart = ((start_point - xleftAvg) / (xrtAvg -start_point));
+						if (posStart.isInfinite() || posStart.isNaN()) {
+							break;
+						}
+						boolean b;
+						
+						//check whether posstart lies in the database or not
+						//if(countGroup>0){
+							b = CandidateDetail.matchCandidateInfo((double) posStart,ymidLeft.mp_ratio, Infoobj, y,countGroup);
+						//}
+						//else b = CandidateDetail.matchCandidateInfo((double) posStart,ymidLeft.mp_ratio, Infoobj, y,"NGC");
+
+						if (b) {
+							i = i + circle_width; // distance between two circles
+							c++; // increment if circle found
+							break;
+						}
+					}
+					i++;
+				}
+			}
+		}
+		String roll;
+		if(countGroup>0){
+			roll =  Infoobj.getCandidateIdGroup(filename, testid, instructorTestNo);
+		}
+		else  roll = Infoobj.getCandidateId(filename, testid, instructorTestNo);
+		return roll;
+	}
+	
+	/**
+	 * To get Group Code of the Candidates
+	 * @param ip
+	 * @param infoLeft
+	 * @param infoRight
+	 * @param xrtAvg
+	 * @param xleftAvg
+	 * @param xstart
+	 * @param xend
+	 * @param filename
+	 * @param testid
+	 * @param instructorTestNo
+	 * @param countGroup
+	 * @return
+	 */
+	public static String getGroupCodes(ij.process.ImageProcessor ip,
+	        ArrayList<MidPoint> infoLeft, ArrayList<MidPoint> infoRight, double xrtAvg,
+	        double xleftAvg, int xstart, int xend, String filename, int testid, String instructorTestNo, int countGroup) {
+	        int count = -1; //count the no. of rows
+	        int c = 0; // count the no. of circles
+	        Double posStart;// ratio of the starting position of the circle
+	        int x1; //coordinates of midpoint of left block
+	        int y1; //coordinates of midpoint of left block
+	        int x2; //coordinates of midpoint of right block
+	        int y2; //coordinates of midpoint of right block
+	        int y; // y coordinate for each value of x
+	        int circle_width = 50;
+	        
+	        EachCandidateInfo Infoobj = new EachCandidateInfo();
+	        MidPoint ymidLeft;
+	        MidPoint ymidRight;
+
+	        for (int j = 0; j < infoLeft.size(); j++) {
+	            ymidLeft = infoLeft.get(j);
+	            ymidRight = infoRight.get(j);
+	            /**
+	             * variables for straight line equation bw mid points of left & rt side blocks.
+	             */
+	            x1 = ymidLeft.xmp;
+	            y1 = ymidLeft.mp;
+	            x2 = ymidRight.xmp;
+	            y2 = ymidRight.mp;
+	            count++;
+	            for (int i = xstart; i < xend; i++) {
+	                y = (((y2 - y1) * (i - x1)) / (x2 - x1)) + y1; // compute y for each value of x using straight line equation
+	                ip.drawPixel(i, y);
+
+	                while(ip.getPixelValue(i, y) == 0) {
+	                	if (checkPixelGroup(ip, i, y)) {
+	                		int start_point = i;
+	                		ip.drawPixel(i, y);    
+	                		if (start_point > xrtAvg) {
+	                			break;
+	                		}
+	                		ip.drawPixel(i, y);
+	                		/*
+	                		 * if group of black pixel found, compute its ratio
+	                		 */
+	                		posStart = ((start_point - xleftAvg) / (xrtAvg -start_point));
+	                		if (posStart.isInfinite() || posStart.isNaN()) {
+	                			break;
+	                		}
+	                		//check whether posstart lies in the database or not
+	                		boolean    b = CandidateDetail.matchCandidateInfo((double) posStart,ymidLeft.mp_ratio, Infoobj, y,countGroup);
+	                		if (b) {
+	                			i = i + circle_width; // distance between two circles
+	                			c++; // increment if circle found
+	                			break;
+	                		}
+	                	}
+	                	i++;
+	                }
+	            }
+	        }
+	        String group =  Infoobj.getCandidateGroupCodes(filename, testid, instructorTestNo);
+	        return group;
+	}
 }
    

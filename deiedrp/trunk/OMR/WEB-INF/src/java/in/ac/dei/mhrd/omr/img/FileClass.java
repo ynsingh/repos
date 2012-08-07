@@ -62,7 +62,7 @@ public class FileClass {
     public ArrayList<String> pathfunc(String filepath, int testid, String rejectedFolderPath) {
     	Locale obj = new Locale("en", "US");
 		ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
-
+		System.out.println("pathfunc");
         File f1 = new File(filepath);
 
         FilenameFilter only = new OnlyBmpExt("BMP", rejectedFolderPath, testid);

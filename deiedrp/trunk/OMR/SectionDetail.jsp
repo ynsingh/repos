@@ -105,6 +105,7 @@
         float marksEachQuestion=-1;
         float graceMarks=0;
         float sectionMarks=0;
+		
         float totalMarks=0;
         int rollNo;
        // HttpSession sessionbj = request.getSession();
@@ -127,7 +128,7 @@
   				//query for retrieving no. of questions per section
 				
 				String query4;
-				
+				String query5;
   				String fileName;
   				//for storing file name corresponding to roll no.
         
@@ -275,10 +276,10 @@
     			%>
     			</td><td><a href="displayResponse.do?filename=<%=Imgpath%>&testid=<%=testid %>"><%=rollNo%></a></td>
     	  <%
-    	  
+				ArrayList<Float> tempSectionMarks=new ArrayList<Float>();
     	     	   	for (j = 1; j <= totalSection; j++)
     	    	 {	
-    	    	 
+					
     	    			query3 = "select Correct_attempt,wrong_attempt,unattempt from attempt_info where TestId="+testid+" and SectionNumber="
     	    					+ j + " and RollNo="+rollNo+" and FileName='"+fileName+"'";
     	    					PreparedStatement psAttemptInfo=con.prepareStatement(query3);
@@ -319,15 +320,42 @@
     			<td>
     			<%
     			  out.print(sectionMarks);
+				  tempSectionMarks.add(sectionMarks);
+				  
     			  totalMarks=totalMarks+sectionMarks;	 
+				  
     			%>
     			</td>
     			
     			<%
     			  	}
+					
     			  	sectionMarks=0;
     			  	crs1.close();
     			  	}
+					
+					Float tempTotalMarks=0.0f;
+					for(int m=0;m<tempSectionMarks.size();m++){
+						tempTotalMarks=tempTotalMarks+tempSectionMarks.get(m);
+					}
+					
+					
+					for(int n=0;n<tempSectionMarks.size();n++){
+					try{
+						
+    	                 PreparedStatement updateMarks=con.prepareStatement("update student_result_info set section_marks=?, total_marks=? where testId=? and RollNo=? and sectionNumber=? and FileName=?" );
+						 updateMarks.setFloat(1,tempSectionMarks.get(n));
+						 updateMarks.setFloat(2,(tempTotalMarks+graceMarks));
+						 updateMarks.setInt(3,testid);
+						 updateMarks.setInt(4,rollNo);
+						 updateMarks.setInt(5,n+1);
+						 updateMarks.setString(6,fileName);
+						 updateMarks.executeUpdate();
+						 }
+						 catch(Exception ex){
+						 System.out.println("hii catch exception "+ex);
+						 }
+					}
     			  	rsAnswer.close();
 				%>
     			
@@ -337,6 +365,7 @@
     			</tr>
     	
     	       <%
+					
     	    		totalMarks=0;
     	    		}
     	    		i=1;
