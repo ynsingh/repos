@@ -1,89 +1,133 @@
 #*
-*#
-#parse("/WEB-INF/templates/velocity/DefaultTop.vm")
+ * @(#)directory.vm
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author<a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @modified date: 11-06-2012 (vipul kumar pal)
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+
 <head><title>Directory</title></head>
-<body onload="setValue(document.frm,this)">
-	<table  width="100%">
-        <tr width="100%"><td align="center" colspan="2"><p><font size="6" color="Brown">Telephone Directory</font></p></td></tr>
-	<tr><td><p><font color="red">$!{model1.ErrorMsg}</font><p></td></tr>
-	<tr><td>
-	<a href=${model1.url}>BACK</a>
-	</td>
+<link rel="stylesheet" type="text/css" href="css/profile_css.css" />
+
+<body>
+	<p><font color="red">$!{model.ErrorMsg}</font><p>
+	<form name="frm" method="post" action="http://${model.ip}:${model.port}/brihaspatiSpring/directory.vm?mode=${model.mod}&adminconf=${model.AdminConf}">
+	<table width="100%" bgcolor="#efe3b5" border="0" cellspacing="2" cellpadding="5">
+	<tr>
+		<td align="right" width="120px"><b><font size="4">Search By</font></b></td>
+		<td><select name="querylist" value="">
+			<option value="name">Name</option>
+			<option value="mailid">Mail ID</option>
+			<option value="address">Address</option>
+			<option value="department">Department</option>
+		</select></td>
+		<td align="right" width="150px"><b><font size="4">Match String</font></b></td>
+		<td width="70px"><input type="text" name="matchstring" value="">
+		</td><td><input title="Search" type="image" src="images/Search.png" width="30" height="30"name="Search" value="Search" onClick="checkNull(document.frm,this);"></td><td>
+		<input type="hidden" name="crt" value="Search">
+		<input type="hidden" name="instid" value="${model.instid}">
+		<input type="hidden" name="uid" value="${model.uid}">
+		</td>
+		<td><a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&instid=${model.instid}&uid=${model.uid}" ><image title="Show" src="images/Show.png"/> </a></td>
+        
+
+		<td width="150px" align="right">
+	#if( ${model.total_size}!=0 )
+        #if( ${model.endIndex} < ${model.total_size} )
+                #if( ${model.endIndex} < ${model.AdminConf} )
+                        [${model.k} - ${model.total_size}] of ${model.total_size} 
+                #else
+                        [${model.k} - ${model.endIndex}] of ${model.total_size} 
+                #end
+        #else
+                [${model.k} - ${model.total_size}] of ${model.total_size} 
+        #end
+        #end
+</td>
 	</tr>
 	</table>
-	<table>
-<form name="frm" method="post" action="">
-<table width="100%" bgcolor="#efe3b5" border="0" cellspacing="2" cellpadding="5">
-<tr><td align="right"><b><font size="4">Search By</font></b></td>
-<td><select name="querylist" value="">
-<option value="name">Name</option>
-<option value="mailid">Mail ID</option>
-<option value="address">Address</option>
-<option value="department">Department</option>
-</select></td>
-<td align="right"><b><font size="4">Match String</font></b></td>
-<td><input type="text" name="matchstring" value="$!{model1.match}">
-	<input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);">
-</td>
-<td align="right">
-	##<INPUT TYPE="BUTTON" VALUE="First" ONCLICK="first(document.frm,this);" style="height: 30px; width: 90px; color: blue;">
-	##<a href="" onClick="window.location.reload( true );">Show All</a>
-</td>
-</tr>
-</table>
-<table width="100%" bgcolor="#f7f3de" border="2" cellspacing="0" cellpadding="5" border-color="c6bfbf">
-  <tr bgcolor="#D2B48C">
-<b>
-  <td>ID</td><td>NAME</td><td>MAIL-ID</td><td>ADDRESS</td><td>OFFICE NO</td><td>MOBILE NO</td><td>HOME NO</td><td>OTHER NO</td><td>DEPARTMENT</td><td>DESIGNATION</td><td>STATE</td></b>
-  </tr>
-#foreach ($value in ${model1.dirList})
-  <tr>
-	<td> $!value.getId() </td> <td>$value.name</td> <td>$value.mailid</td> <td>$value.address</td>
-	<td>
-		${value.officeno}
-	</td>
-	<td>
-		${value.mobileno}
-	</td>
-	<td>
-		
-        	${value.homeno}
-	</td>
-	<td>
-		${value.otherno}
-	</td>
-	<td>${value.department}</td><td>${value.designation}</td><td>${value.state}</td></tr>
+	<table width="100%" bgcolor="#f7f3de" border="1" cellspacing="2" cellpadding="5" border-color="c6bfbf">
+	<tr bgcolor="#efe3b5" class="adv"><b>
+		<td>ID</td>
+		<td>NAME</td>
+		<td>MAIL-ID</td>
+		<td>ADDRESS</td>
+		<td>OFFICE NO</td>
+		<td>MOBILE NO</td>
+		<td>HOME NO</td>
+		<td>OTHER NO</td>
+		<td>DEPARTMENT</td>
+		<td>DESIGNATION</td>
+		<td>STATE</td></b>
+	</tr>
+#foreach ($value in ${model.dirList})
+	<tr title="On Contact Number 'x' Denote Absence of Country code, State Code or Number" class="ad">
+		<td>$!value.getId() </td> 
+		<td>$!value.getName()</td> 
+		<td>$!value.getMailId()</td> 
+		<td>$!value.getAddress()</td>
+		<td>$!{value.getOfficeNo()}</td>
+		<td>$!{value.getMobileNo()}</td>
+		<td>$!{value.getHomeNo()}</td>
+		<td>$!{value.getOtherNo()}</td>
+		<td>$!{value.getDepartment()}</td>
+		<td>$!{value.getDesignation()}</td>
+		<td>$!{value.getState()}</td>
+	</tr>
 #end
-</table>
-#if(${model1.total_size}<= ${model1.AdminConf})
-	<INPUT TYPE="BUTTON" VALUE="First" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Previous" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Next" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Last" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-#elseif(${model1.startIndex}== ${model1.AdminConf_str})
-	<INPUT TYPE="BUTTON" VALUE="First" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Previous" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-	<INPUT TYPE="BUTTON" VALUE="Next" ONCLICK="next(document.frm,this);" style="height: 30px; width: 90px; color: blue;">
-	<input type="hidden" name="startIndex" value=${model1.startIndex} /> &nbsp;
-	<INPUT TYPE="BUTTON" VALUE="Last" ONCLICK="last(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-#elseif(${model1.endIndex} == ${model1.total_size} || ${model1.endIndex} > ${model1.total_size})
-	<INPUT TYPE="BUTTON" VALUE="First" ONCLICK="first(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Previous" ONCLICK="previous(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Next" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Last" disabled="disabled" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-#else
-	<INPUT TYPE="BUTTON" VALUE="First" ONCLICK="first(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Previous" ONCLICK="next(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Next" ONCLICK="previous(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-        <INPUT TYPE="BUTTON" VALUE="Last" ONCLICK="last(document.frm,this);" style="height: 30px; width: 90px; color: blue;"> &nbsp;
-#end
-#parse("/WEB-INF/templates/velocity/DefaultBottom.vm")
-<input type="hidden" name="ms" value="${model1.ms}">
-<input type="hidden" name="ip" value="${model1.ip}">
-<input type="hidden" name="random" value="${model1.random}">
-<input type="hidden" name="mail" value="${model1.mail}">
-<input type="hidden" name="str" value="${model1.str}">
-<input type="hidden" name="url" value="${model1.url}">
+	</table>
+	<table width="100%"><tr><td bgcolor="#efe3b5">
+	#if(${model.crt}=="null")
+	#if(${model.total_size}<= ${model.AdminConf})
+        <img title="First" src="images/First_blank.png" width="35" height="25"> &nbsp;
+        <img title="Previous" src="images/Previous_blank.png" width="35" height="25"> &nbsp;
+        <img title="Next" src="images/Next_blank.png" width="35" height="25"> &nbsp;
+        <img title="Last" src="images/Last_blank.png" width="35" height="25"> &nbsp;
+        #elseif(${model.startIndex}== ${model.AdminConf_str})
+        <img title="First" src="images/First_blank.png" width="35" height="25"> &nbsp;
+        <img title="Previous" src="images/Previous_blank.png" width="35" height="25"> &nbsp;
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.startIndex}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Next" src="images/Next.png" width="35" height="25"></a> &nbsp;
+	<a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.check_last}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Last" src="images/Last.png" width="35" height="25"></a> &nbsp;
+        #elseif(${model.endIndex} == ${model.total_size} || ${model.endIndex} > ${model.total_size})
+	<a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.check_first}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="First" src="images/First.png" width="35" height="25"></a> &nbsp;
+	<a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.check_pre}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Previous" src="images/Previous.png" width="35" height="25"></a> &nbsp;
+        <img title="Next" src="images/Next_blank.png" width="35" height="25"> &nbsp;
+        <img title="Last" src="images/Last_blank.png" width="35" height="25"> &nbsp;
+         #else
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.check_first}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="First" src="images/First.png" width="35" height="25"></a> &nbsp;
+	<a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.check_pre}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Previous" src="images/Previous.png" width="35" height="25"></a> &nbsp;
+	<a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.startIndex}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Next" src="images/Next.png" width="35" height="25"></a> &nbsp;
+	<a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&adminconf=${model.AdminConf}&startIndex=${model.check_last}&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Last" src="images/Last.png" width="35" height="25"></a> &nbsp;
+	#end
+	#else
+	#if(${model.total_size}<= ${model.AdminConf})
+	<img title="First" src="images/First_blank.png" width="35" height="25"> &nbsp;
+        <img title="Next" src="images/Next_blank.png" width="35" height="25"> &nbsp;
+        <img title="Previous" src="images/Previous_blank.png" width="35" height="25"> &nbsp;
+        <img title="Last" src="images/Last_blank.png" width="35" height="25"> &nbsp;
+        #elseif(${model.startIndex}== ${model.AdminConf_str})
+	<img title="First" src="images/First_blank.png" width="35" height="25"> &nbsp;
+        <img title="Previous" src="images/Previous_blank.png" width="35" height="25"> &nbsp;
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.startIndex}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Next" src="images/Next.png" width="35" height="25"></a> &nbsp;
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.check_last}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Last" src="images/Last.png" width="35" height="25"></a> &nbsp;
+        #elseif(${model.endIndex} == ${model.total_size} || ${model.endIndex} > ${model.total_size})
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.check_first}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="First" src="images/First.png" width="35" height="25"></a> &nbsp;
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.check_pre}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Previous" src="images/Previous.png" width="35" height="25"></a> &nbsp;
+        <img title="Next" src="images/Next_blank.png" width="35" height="25"> &nbsp;
+        <img src="images/Last_blank.png" width="35" height="25"> &nbsp;
+         #else
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.check_first}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="First" src="images/First.png" width="35" height="25"></a> &nbsp;
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.check_pre}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Previous" src="images/Previous.png" width="35" height="25"></a> &nbsp;
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.startIndex}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Next" src="images/Next.png" width="35" height="25"></a> &nbsp;
+        <a href="#springUrl("/directory.vm")?mode=${model.mod}&ip=${model.ip}&startIndex=${model.check_last}&adminconf=${model.AdminConf}&querylist=${model.query}&matchstring=${model.match}&crt=Search&instid=${model.instid}&uid=${model.uid}" style="text-decoration:none"><img title="Last" src="images/Last.png" width="35" height="25"></a> &nbsp;
+
+     #end
+    #end
+
+</td></tr></table>
+<input type="hidden" name="ip" value="${model.ip}">
 
 </form>
 </body>
@@ -91,28 +135,21 @@
 <SCRIPT language="JavaScript">
         function checkNull(frm,field){
                 if(frm.matchstring.value!=""){
+			window.location.href='#springUrl("/directory.vm")?mode=${model.mod}&adminconf=${model.AdminConf}&ip=${model.ip}'
                         frm.submit();
                 }
                 else{
                         alert("The 'Match String' text box can not be NULL");
                 }
         }
-	function first(frm,field){
-                window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.check_first}'
-                frm.submit();
-        }
-	function previous(frm,field){
-                window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.check_pre}'
-                frm.submit();
-        }
-	function next(frm,field){
-                window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.startIndex}'
-                frm.submit();
-        }
-	function last(frm,field){
-		window.location.href='#springUrl("/directory.vm")?mode=${model1.mod}&startIndex=${model1.check_last}'
-		frm.submit();
-	}
+function MouseEvents(objRef, evt) {
+    if (evt.type == "mouseover") {
+        objRef.className = "tr";
+    } else {
+        objRef.className = "ad";
+    }
+}
+
 
 </SCRIPT>
 

@@ -3,10 +3,7 @@
 
 <beans>
 
-    <bean id="DirectoryController" class="org.iitk.brihaspati.controller.DirectoryController">
-    </bean>
-
-
+    <bean id="DirectoryController" class="org.iitk.brihaspati.controller.DirectoryController"> </bean>
 
     <bean id="DefaultController" class="org.iitk.brihaspati.controller.DefaultController"> </bean>
 

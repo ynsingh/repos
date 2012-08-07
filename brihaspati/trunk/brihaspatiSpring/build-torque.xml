@@ -19,13 +19,11 @@
    -->
   <property name="build.properties" value="build.properties"/>
   <property name="torque.contextProperties" value="${build.properties}"/>
+  <property name="torque.schema.dir" value="schema/"/> 
   <property file="${torque.contextProperties}"/>
-  <property name="lib.dir" value="lib"/>
+  <property name="lib.dir" value="WEB-INF/lib"/>
   <property name="torque.lib.dir" value="${lib.dir}"/>
   <property name="torque.jar" value="torque-3.1.jar"/>
-
-  <!-- do not time stamp our files.. makes it bad for cvs -->
-  <property name="torque.addTimeStamp" value="false"/>
 
   <!--
     Build the classpath. Specifically point to each file we're including to avoid
@@ -35,24 +33,25 @@
     do a general inclusion of the torque.lib.dir to catch any drivers.
   -->
   <path id="torque-classpath">
+    <pathelement location="torque.jar.fullpath"/>
     <fileset dir="${torque.lib.dir}">
-      <include name="**/commons-beanutils-1.4.1.jar"/>
-      <include name="**/commons-collections-2.0.jar"/>
-      <include name="**/commons-configuration-1.0-dev.jar"/>
-      <include name="**/commons-dbcp-1.0-dev-20020806.jar"/>
-      <include name="**/commons-lang-1.0.jar"/>
-      <include name="**/commons-logging-1.0.2.jar"/>
-      <include name="**/commons-pool-1.0.jar"/>
-      <include name="**/jcs-1.0-dev.jar"/>
+      <include name="**/commons-beanutils-1.6.1.jar"/>
+      <include name="**/commons-collections-2.1.jar"/>
+      <include name="**/commons-configuration-20030706.202021.jar"/>
+      <include name="**/commons-dbcp-20030825.184428.jar"/>
+      <include name="**/commons-lang-2.5.jar"/>
+      <include name="**/commons-logging-1.0.3.jar"/>
+      <include name="**/commons-pool-20030825.183949.jar"/>
+      <include name="**/jcs-20030822.182132.jar"/>
       <include name="**/jdbc-2.0.jar"/>
       <include name="**/jndi-1.2.1.jar"/>
-      <include name="**/log4j-1.2.6.jar"/>
+      <include name="**/log4j-1.2.8.jar"/>
       <include name="**/stratum-1.0-b3.jar"/>
       <include name="**/tomcat-naming-1.0.jar"/>
       <include name="**/${torque.jar}"/>
       <include name="**/torque-gen-3.1.jar"/>
-      <include name="**/velocity-1.3.jar"/>
-      <include name="**/village-2.0-dev-20021111.jar"/>
+      <include name="**/velocity-1.3.1.jar"/>
+      <include name="**/village-2.0-dev-20030825.jar"/>
       <include name="**/xercesImpl-2.0.2.jar"/>
       <include name="**/xmlParserAPIs-2.0.2.jar"/>
       <include name="**/*.jar"/>
@@ -313,8 +312,7 @@
   <!-- ================================================================ -->
 
   <target
-    name="insert-sql"
-    description="==> inserts the generated sql ">
+    name="insert-sql">
 
     <torque-sql-exec
       autocommit="true"
@@ -390,8 +388,7 @@
   <!-- ================================================================ -->
 
   <target
-    name="id-table-init-sql"
-    description="==> generates initialization sql for ID Broker">
+    name="id-table-init-sql">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>
@@ -404,7 +401,7 @@
       contextProperties="${torque.contextProperties}"
       controlTemplate="${torque.template.idTable}"
       outputDirectory="${torque.sql.dir}"
-      outputFile="report.idtable-init.sql.generation"
+      outputFile="${torque.database}-id-table-init.sql"
       sqldbmap="${torque.sql.dir}/sqldb.map"
       suffix="-idtable-init"
       targetDatabase="${torque.database}"
@@ -572,7 +569,7 @@
   <target
     name="om-zip"
     depends="check-om-zip"
-    description="==> moves source om files to separate jar and out of the source tree">
+    description="Moves source om files to separate jar and out of the source tree">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>
@@ -730,8 +727,7 @@
   <!-- =================================================================== -->
 
   <target
-    name="ojb-repository"
-    description="==> generates the repository for ojb (experimental)">
+    name="ojb-repository">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>
@@ -757,8 +753,7 @@
   </target>
 
   <target
-    name="ojb-model"
-    description="==> generates an object model for ojb (experimental)">
+    name="ojb-model">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>

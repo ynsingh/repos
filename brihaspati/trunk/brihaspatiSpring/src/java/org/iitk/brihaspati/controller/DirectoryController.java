@@ -41,37 +41,25 @@ package org.iitk.brihaspati.controller;
  */
 
 
-import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.HashMap;
-import bus.Directory;
-import java.sql.Connection;
-import java.sql.Statement;
-import db.DirectoryManagerDaoJdbc;
 import java.util.Vector;
 import java.util.List;
-import java.sql.ResultSet;
 import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 import org.iitk.brihaspati.utils.Pagination;
 import org.iitk.brihaspati.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.utils.MD5;
 import org.apache.torque.Torque; 
 import javax.servlet.ServletContext;
-import org.apache.torque.TorqueException;
 import org.apache.torque.util.Criteria;
 
 public class DirectoryController extends SimpleFormController {
@@ -79,165 +67,219 @@ public class DirectoryController extends SimpleFormController {
 	private Torque set=null;
         private ServletContext context=null;
 	public static String url;	
+	String match="";
+	String str="";
+	String query="";
+	String crtm=null;
     	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		Map myModel = new HashMap();
+		int user_id=Integer.parseInt(request.getParameter("uid"));
+		myModel.put("uid",user_id);
 		String mode=request.getParameter("mode");
 		myModel.put("mod",mode);
-		String pg=request.getParameter("pg");
-		myModel.put("page",pg);
-
-		String gp=request.getParameter("frm");
+		String instid=request.getParameter("instid");
+		myModel.put("instid",instid);
 		String ip=request.getParameter("ip");
-		String port=request.getParameter("port");
-		String random=request.getParameter("random");
-		String mail=request.getParameter("mail");
-		String str=request.getParameter("str");
-		url=request.getParameter("url");
 		myModel.put("ip",ip);
-		myModel.put("port",port);
-		myModel.put("random",random);
-		myModel.put("mail",mail);
-		myModel.put("str",str);
-		myModel.put("url",url);
-		String ms=null;
-
-                try{
-			ms=MD5.getMD5(ip+random+mail);
-		}catch (Exception exc) {}
+		int port=request.getServerPort();//request.getParameter("port");
+                myModel.put("port",port);
+		crtm = request.getParameter("crt");
+		if(crtm == null)
+		myModel.put("crt","null");
+		else
+		myModel.put("crt",crtm);
 		Vector l=new Vector();
-        	if(str.equals(ms)){
                 try {
 			set=new Torque();
                         String tempFileName = getServletContext().getRealPath("Torque.properties");
                         set.init(tempFileName);
 
+			Vector vect1 = new Vector();
+			Vector vect = new Vector();
 			List st=null;
-			String match=request.getParameter("matchstring");
+			List st1=null;
+			match=request.getParameter("matchstring");
 			myModel.put("match",match);
-
-			String role=null;
-                        String show=null;
-			if(mode.equals("prot")){
-				role="instructor";
-                                show="prot";
-			}else if(mode.equals("stud")){
-				role="student";
-                                show="stud";				
-			}
-			myModel.put("role",role);
-                        myModel.put("show",show);
-			
 				Criteria crit = new Criteria();
 				String table="TELEPHONE_DIRECTORY";
-			if( (match!=null) && (!match.equals("")) ) {
-				String query = request.getParameter("querylist");
-                                if(query.equals("name")){
-                                        str="NAME";
-				}
-                                else if(query.equals("mailid"))
-                                        str="MAIL_ID";
-                                else if(query.equals("address"))
-                                        str="ADDRESS";
-                                else if(query.equals("department"))
-                                        str="DEPARTMENT";
 
-                                crit=new Criteria();
-				crit.add(table,str,(Object)("%"+match+"%"),crit.LIKE);
-                                st=TelephoneDirectoryPeer.doSelect(crit);
-				}
+			if(instid.equals("")){
+				 if( (match!=null) && (!match.equals("")) ) {
+                                        query = request.getParameter("querylist");
+                                        if(query.equals("name")){
+                                                str="NAME";
+                                        }
+                                        else if(query.equals("mailid"))
+                                                str="MAIL_ID";
+                                        else if(query.equals("address"))
+                                                str="ADDRESS";
+                                        else if(query.equals("department"))
+                                                str="DEPARTMENT";
+
+                                        crit=new Criteria();
+                                        crit.add(table,str,(Object)("%"+match+"%"),crit.LIKE);
+                                        st1=TelephoneDirectoryPeer.doSelect(crit);
+                                        vect = new Vector(st1);
+                                        vect1.addAll(vect);
+                                }
 				else{
-                                	Criteria crit1=new Criteria();
-					crit1.addGroupByColumn(TelephoneDirectoryPeer.USER_ID);
-                                	st=TelephoneDirectoryPeer.doSelect(crit1);
+				Criteria crit1=new Criteria();
+				crit1.addGroupByColumn(TelephoneDirectoryPeer.USER_ID);
+				crit1.addAscendingOrderByColumn(TelephoneDirectoryPeer.ID);
+				//crit1.addOrderByColumn(TelephoneDirectoryPeer.ID);
+                                                st1=TelephoneDirectoryPeer.doSelect(crit1);
+                                                vect = new Vector(st1);
+                                                vect1.addAll(vect);
 				}
+
+			}
+			else{
+			String []temp1;
+			temp1 = instid.split("/");
+			for(int p =1; p < temp1.length ; p++){
+				String inst = temp1[p];
+
+				if( (match!=null) && (!match.equals("")) ) {
+					query = request.getParameter("querylist");
+                	                if(query.equals("name")){
+                        	                str="NAME";
+					}
+	                                else if(query.equals("mailid"))
+        	                                str="MAIL_ID";
+                	                else if(query.equals("address"))
+                        	                str="ADDRESS";
+                                	else if(query.equals("department"))
+	                                        str="DEPARTMENT";
+	
+        	                        crit=new Criteria();
+					String str44="INSTITUTE_ID";
+					crit.add(table,str,(Object)("%"+match+"%"),crit.LIKE);
+					crit.add(table,str44,(Object)("%"+inst+"%"),crit.LIKE);
+	                                st1=TelephoneDirectoryPeer.doSelect(crit);
+					vect = new Vector(st1);
+					vect1.addAll(vect);
+				}
+				else {
+                	               	Criteria crit1=new Criteria();
+						String str11="INSTITUTE_ID";
+						crit1.add(table,str11,(Object)("%"+inst+"%"),crit.LIKE);
+                        		       	st1=TelephoneDirectoryPeer.doSelect(crit1);
+						vect = new Vector(st1);
+						vect1.addAll(vect);
+				}
+			}
+			}
+			st = vect1;
+			myModel.put("query",query);
+
+
 			int size = 0;
 			for(int i=0;i<st.size();i++){
 				TelephoneDirectory element=(TelephoneDirectory)(st.get(i));
 				size++;
-				Directory dir = new Directory();
+				TelephoneDirectory dir = new TelephoneDirectory();
 				int id=element.getId();
 				dir.setId(id);
 				dir.setName(element.getName());
-				dir.setMailid(element.getMailId());
+				dir.setMailId(element.getMailId());
 				dir.setAddress(element.getAddress());
 
 				if(mode.equals("psnl")){
                                         String officeno=element.getOfficeNo();
                                         String []off = officeno.split("-");
-                                        if(officeno.startsWith("1") || officeno.startsWith("2") || officeno.startsWith("3"))
-                                                dir.setOfficeno(off[1]+off[2]+off[3]+off[4]);
-                                        else{   dir.setOfficeno("");    }
+                                        if(officeno.startsWith("1") || officeno.startsWith("2") )
+                                                dir.setOfficeNo(off[1]+off[2]+off[3]+off[4]);
+                                        else{   dir.setOfficeNo("");    }
 
                                         String mobileno=element.getMobileNo();
                                         String []temp = mobileno.split("-");
-                                        if(mobileno.startsWith("1") || mobileno.startsWith("2") || mobileno.startsWith("3"))
-                                                dir.setMobileno(temp[1]+temp[2]+temp[3]+temp[4]);
-                                        else{dir.setMobileno("");}
+                                        if(mobileno.startsWith("1") || mobileno.startsWith("2") )
+                                                dir.setMobileNo(temp[1]+temp[2]+temp[3]+temp[4]);
+                                        else{dir.setMobileNo("");}
 
                                         String homeno = element.getHomeNo();
                                         String []home = homeno.split("-");
-                                        if(homeno.startsWith("1") || homeno.startsWith("2") || homeno.startsWith("3"))
-                                                dir.setHomeno(home[1]+home[2]+home[3]+home[4]);
-                                        else{dir.setHomeno("");}
+                                        if(homeno.startsWith("1") || homeno.startsWith("2") )
+                                                dir.setHomeNo(home[1]+home[2]+home[3]+home[4]);
+                                        else{dir.setHomeNo("");}
 
                                         String otherno = element.getOtherNo();
                                         String []other = otherno.split("-");
-                                        if(otherno.startsWith("1") || otherno.startsWith("2") || otherno.startsWith("3"))
-                                                dir.setOtherno(other[1]+other[2]+other[3]+other[4]);
-                                        else{dir.setOtherno("");}
+                                        if(otherno.startsWith("1") || otherno.startsWith("2") )
+                                                dir.setOtherNo(other[1]+other[2]+other[3]+other[4]);
+                                        else{dir.setOtherNo("");}
                                 }
 				else if(mode.equals("prot")){
                                         String officeno=element.getOfficeNo();
                                         String []off = officeno.split("-");
                                         if(officeno.startsWith("1") || officeno.startsWith("2"))
-                                                dir.setOfficeno(off[1]+off[2]+off[3]+off[4]);
-                                        else{   dir.setOfficeno("");    }
+                                                dir.setOfficeNo(off[1]+off[2]+off[3]+off[4]);
+                                        else{   dir.setOfficeNo("");    }
 
                                         String mobileno=element.getMobileNo();
                                         String []temp = mobileno.split("-");
                                         if(mobileno.startsWith("1") || mobileno.startsWith("2"))
-                                                dir.setMobileno(temp[1]+temp[2]+temp[3]+temp[4]);
-                                        else{dir.setMobileno("");}
+                                                dir.setMobileNo(temp[1]+temp[2]+temp[3]+temp[4]);
+                                        else{dir.setMobileNo("");}
 
                                         String homeno = element.getHomeNo();
                                         String []home = homeno.split("-");
                                         if(homeno.startsWith("1") || homeno.startsWith("2"))
-                                                dir.setHomeno(home[1]+home[2]+home[3]+home[4]);
-                                        else{dir.setHomeno("");}
+                                                dir.setHomeNo(home[1]+home[2]+home[3]+home[4]);
+                                        else{dir.setHomeNo("");}
 
                                         String otherno = element.getOtherNo();
                                         String []other = otherno.split("-");
                                         if(otherno.startsWith("1") || otherno.startsWith("2"))
-                                                dir.setOtherno(other[1]+other[2]+other[3]+other[4]);
-                                        else{dir.setOtherno("");}
+                                                dir.setOtherNo(other[1]+other[2]+other[3]+other[4]);
+                                        else{dir.setOtherNo("");}
 
                                 }
 				else if(mode.equals("stud")){
+				if(user_id == element.getUserId()){
+					String officeno=element.getOfficeNo();
+					String []off = officeno.split("-");
+					dir.setOfficeNo(off[1]+off[2]+off[3]+off[4]);
+
+					String mobileno=element.getMobileNo();
+					String []temp = mobileno.split("-");
+					dir.setMobileNo(temp[1]+temp[2]+temp[3]+temp[4]);
+
+					String homeno = element.getHomeNo();
+					String []home = homeno.split("-");
+					dir.setHomeNo(home[1]+home[2]+home[3]+home[4]);
+
+					String otherno = element.getOtherNo();
+					String []other = otherno.split("-");
+					dir.setOtherNo(other[1]+other[2]+other[3]+other[4]);
+
+				}
+				else{
                                         String officeno=element.getOfficeNo();
                                         String []off = officeno.split("-");
                                         if(officeno.startsWith("1"))
-                                                dir.setOfficeno(off[1]+off[2]+off[3]+off[4]);
-                                        else{   dir.setOfficeno("");    }
+                                                dir.setOfficeNo(off[1]+off[2]+off[3]+off[4]);
+                                        else{   dir.setOfficeNo("");    }
 
                                         String mobileno=element.getMobileNo();
                                         String []temp = mobileno.split("-");
                                         if(mobileno.startsWith("1"))
-                                                dir.setMobileno(temp[1]+temp[2]+temp[3]+temp[4]);
-                                        else{dir.setMobileno("");}
+                                                dir.setMobileNo(temp[1]+temp[2]+temp[3]+temp[4]);
+                                        else{dir.setMobileNo("");}
 
                                         String homeno = element.getHomeNo();
                                         String []home = homeno.split("-");
                                         if(homeno.startsWith("1"))
-                                                dir.setHomeno(home[1]+home[2]+home[3]+home[4]);
-                                        else{dir.setHomeno("");}
+                                                dir.setHomeNo(home[1]+home[2]+home[3]+home[4]);
+                                        else{dir.setHomeNo("");}
 
                                         String otherno = element.getOtherNo();
                                         String []other = otherno.split("-");
                                         if(otherno.startsWith("1"))
-                                                dir.setOtherno(other[1]+other[2]+other[3]+other[4]);
-                                        else{dir.setOtherno("");}
-
+                                                dir.setOtherNo(other[1]+other[2]+other[3]+other[4]);
+                                        else{dir.setOtherNo("");}
+				}
                                 }
 
 				dir.setDepartment(element.getDepartment());
@@ -250,12 +292,13 @@ public class DirectoryController extends SimpleFormController {
                                         }
 
 			myModel.put("list",l);
-
-                        int AdminConf = 10;
+			String AdminConff = request.getParameter("adminconf");
+                        int AdminConf = Integer.parseInt(AdminConff);
                         myModel.put("AdminConf",new Integer(AdminConf));
                         myModel.put("AdminConf_str",Integer.toString(AdminConf));
                         String Index=request.getParameter("startIndex");
 			int startIndex;
+			myModel.put("AdminConf_str11",Index);
 			if(Index==null){
 				startIndex=0;
 			}else{
@@ -298,10 +341,7 @@ public class DirectoryController extends SimpleFormController {
 
 
 		}catch(Exception es){}
-		}else{
-			logger.info("U R NOT AUTHORIZED");
-		}
-		return new ModelAndView("directory", "model1", myModel);
+		return new ModelAndView("directory", "model", myModel);
 	}
 }
 

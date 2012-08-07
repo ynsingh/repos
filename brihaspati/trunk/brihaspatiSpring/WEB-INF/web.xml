@@ -18,13 +18,13 @@
 
   <servlet-mapping>
     <servlet-name>brihaspati</servlet-name>
-    <url-pattern>/Login.vm</url-pattern>
+    <url-pattern>/directory.vm</url-pattern>
   </servlet-mapping>
 
 
   <welcome-file-list>
     <welcome-file>
-      Login.vm
+      directory.vm
     </welcome-file>
   </welcome-file-list>
 
