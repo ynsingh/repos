@@ -50,7 +50,7 @@ import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
 import org.apache.torque.util.Criteria;
 import java.util.List;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
 /**
  * @author <a href="mailto:nksinghiitk@yahoo.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
@@ -116,10 +116,11 @@ public class changeAParam extends SecureAction{
                 String country=pp.getString("country","");
                 String department=pp.getString("department","");
                 String designation=pp.getString("designation","");
-                String officeno=pp.getString("Offprefix","")+"-"+pp.getString("Offccode","")+"-"+pp.getString("Offrcode","")+"-"+pp.getString("Offphnumber","");
-                String mobileno=pp.getString("Mobprefix","")+"-"+pp.getString("Mobccode","")+"-"+pp.getString("Mobrcode","")+"-"+pp.getString("Mobphnumber","");
-                String homeno=pp.getString("Homeprefix","")+"-"+pp.getString("Homeccode","")+"-"+pp.getString("Homercode","")+"-"+pp.getString("Homephnumber","");
-                String otherno=pp.getString("Othprefix","")+"-"+pp.getString("Othccode","")+"-"+pp.getString("Othrcode","")+"-"+pp.getString("Othphnumber","");
+		String port=pp.getString("port","8090");
+                String officeno=pp.getString("Offprefix","x")+"-"+pp.getString("Offccode","x")+"-"+pp.getString("Offrcode","x")+"-"+pp.getString("Offphnumber","x");
+                String mobileno=pp.getString("Mobprefix","x")+"-"+pp.getString("Mobccode","x")+"-"+pp.getString("Mobrcode","x")+"-"+pp.getString("Mobphnumber","x");
+                String homeno=pp.getString("Homeprefix","x")+"-"+pp.getString("Homeccode","x")+"-"+pp.getString("Homercode","x")+"-"+pp.getString("Homephnumber","x");
+                String otherno=pp.getString("Othprefix","x")+"-"+pp.getString("Othccode","x")+"-"+pp.getString("Othrcode","x")+"-"+pp.getString("Othphnumber","x");
                 String offdirectory=pp.getString("Offdirectory","");
                 String mobdirectory=pp.getString("Mobdirectory","");
                 String homedirectory=pp.getString("Homedirectory","");
@@ -230,6 +231,7 @@ public class changeAParam extends SecureAction{
 			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
+			AdminProperties.setValue(path,port,"brihaspati.spring.port");
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	
@@ -239,6 +241,10 @@ public class changeAParam extends SecureAction{
 		else
 			prof_update=m_u.ConvertedString("usr_prof1",LangFile);
 			data.setMessage(prof_update);
+			 // Maintain Log
+                                        java.util.Date date= new java.util.Date();
+                                        String LogfilePath=TurbineServlet.getRealPath("/logs")+"/Operation.txt";
+                                        ErrorDumpUtil.ErrorLog("User Name --> Admin| Operation --> Update Profile | Date --> "+date+ "| IP Address --> "+TurbineServlet.getServerName(),LogfilePath);
 	}	
 
 	/**

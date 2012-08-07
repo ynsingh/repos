@@ -498,6 +498,7 @@
         <column name="DEPARTMENT" Type="VARCHAR" size="255"/>
         <column name="STATE" Type="VARCHAR" size="255"/>
         <column name="COUNTRY" Type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_ID" Type="VARCHAR" size="255"/>
 </table>
 
 <!-- ===============================COURSETIME MANAGEMENT SCHEMA==================================== -->

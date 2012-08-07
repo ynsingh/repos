@@ -55,7 +55,7 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
 import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
@@ -65,17 +65,24 @@ import org.iitk.brihaspati.om.CalInformation;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.iitk.brihaspati.modules.utils.SessionUtil;
+import org.iitk.brihaspati.modules.utils.AeSimpleMD5;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.PasswordUtil;
+import org.iitk.brihaspati.modules.utils.EncryptionUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+
 /**
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  * @modified date: 26-07-2010, 06-08-2010, 09-11-2010, 22-02-2011, 18-07-2011
  */
 
@@ -104,6 +111,9 @@ public class IndexHome extends SecureScreen{
 		/**
 		 * Getting User Detail & user id
 		**/
+			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+	                int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
+        	        context.put("AdminConf",AdminConf);
 			User user=data.getUser();
 		        System.gc();	
 			String username=user.getName();
@@ -114,7 +124,6 @@ public class IndexHome extends SecureScreen{
                         context.put("lastname",lname);
 			
 			int u_id=UserUtil.getUID(username);
-			
 			String id=Integer.toString(u_id);
 			/**
                         * Get the current date
@@ -171,6 +180,12 @@ public class IndexHome extends SecureScreen{
 			else{
 				user.setTemp("confParam","10");
 			}
+///////////////////////////////////////////////////////////////////////////
+			String userNm=user.getName();
+			int uId=UserUtil.getUID(userNm);
+			String str=userNm+"_"+Integer.toString(uId);
+			user.setTemp("stuId",str);
+/////////////////////////////////////////////////////////////////////////////
 			// This is check for set temp variables
 			/**
 			 * @param course_name String, Default value should set as null

@@ -72,6 +72,9 @@ public class AdminParam extends SecureScreen{
 			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
+		int usedport = data.getServerPort();
+                context.put("usedport",usedport);
+
 		try{
 		/**
 		 * getting value of configuration parameter 	
@@ -102,6 +105,8 @@ public class AdminParam extends SecureScreen{
 		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
 		 context.put("uquota",uquota);
 		 String hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
+		 String port = AdminProperties.getValue(path,"brihaspati.spring.port");
+                 context.put("port",port);
 
 		// --------------------------------Telephone Directory------------------
 	Criteria crt=new Criteria();
@@ -112,7 +117,7 @@ public class AdminParam extends SecureScreen{
         for(int i=0;i<Telelist.size();i++)
         {
                 TelephoneDirectory td=(TelephoneDirectory)Telelist.get(i);
-                context.put("address",td.getAddress());
+		context.put("address",td.getAddress());
                 context.put("state",td.getState());
                 context.put("country",td.getCountry());
                 context.put("department",td.getDepartment());
