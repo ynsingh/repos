@@ -4,7 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <jsp:include page="/election_manager/login.jsp"/>
 <%@page import="java.util.*,java.io.*,com.myapp.struts.hbm.Election"%>
 

@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <jsp:include page="/election_manager/login.jsp"/>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.VoterRegistration,com.myapp.struts.hbm.CandidateRegistration"%>
 

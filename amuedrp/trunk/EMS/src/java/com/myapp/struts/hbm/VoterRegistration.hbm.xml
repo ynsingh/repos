@@ -78,8 +78,8 @@
          <property name="alternateMail" type="string">
             <column name="alternate_mail" />
         </property>
-        <property name="image" type="binary">
-            <column name="image" />
+        <property name="image" type="string">
+            <column name="image" length="50" />
         </property>
         <property name="status" type="string">
             <column name="status" length="50" />

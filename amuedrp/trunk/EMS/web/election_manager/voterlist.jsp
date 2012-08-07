@@ -5,7 +5,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@page import="java.sql.ResultSet"%>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <jsp:include page="/election_manager/login.jsp"/>
 <html><head>
 <title> </title>

@@ -15,6 +15,12 @@ session.setAttribute("first_name", first_name);
 session.setAttribute("last_name", last_name);
 String login_role=(String)session.getAttribute("login_role");
 %>
+
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <div
    style="  top:120px;
    left:15px;

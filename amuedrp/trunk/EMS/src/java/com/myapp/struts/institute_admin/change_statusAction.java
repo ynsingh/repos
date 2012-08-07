@@ -81,8 +81,10 @@ String instituteId = (String)session.getAttribute("institute_id");
             System.out.println(status);
 
  List<Election_Manager_StaffDetail> lstManager= (List<Election_Manager_StaffDetail>)managerdao.GetManagerDetails(manager_id,instituteId);
-                if(!lstManager.isEmpty()){ems = (Election_Manager_StaffDetail)lstManager.get(0);
-                admin_email=ems.getStaffDetail().getEmailId();
+                if(!lstManager.isEmpty())
+                {
+                    ems = (Election_Manager_StaffDetail)lstManager.get(0);
+                    admin_email=ems.getStaffDetail().getEmailId();
                 }
             ems.getElectionManager().setStatus(status);
             name=ems.getStaffDetail().getFirstName() + " "+ems.getStaffDetail().getLastName();
@@ -95,8 +97,8 @@ String instituteId = (String)session.getAttribute("institute_id");
         }
         catch(Exception e){
         }
- String path = servlet.getServletContext().getRealPath("/");
-           obj=new Email(path,admin_email,status,"Election Manager Status Changed by Institute Adnim in EMS","Dear"+name+",\n Your Working Status Modified to "+status+"\n With Regards,\nInstitute Admin\n"+session.getAttribute("institute_name")+"\nElectionMS");
+ 
+           obj=new Email(admin_email,status,"Election Manager Status Changed by Institute Adnim in EMS","Dear"+name+",\n Your Working Status Modified to "+status+"\n With Regards,\nInstitute Admin\n"+session.getAttribute("institute_name")+"\nElectionMS");
 
          executor.submit(new Runnable() {
 

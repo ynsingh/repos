@@ -4,7 +4,8 @@
     Author     : edrp01
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,chat.*"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,chat.*,com.myapp.struts.hbm.*,com.myapp.struts.hbm.LoginDAO.*"%>
+<%--<jsp:include page="/chat/chatlogin.jsp"/>--%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -15,18 +16,6 @@
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  
 <SCRIPT language="JavaScript">
-	 <!--
-	 if(window.top != window.self)
-	 {
-		 window.top.location = window.location;
-	 }
-	 //-->
-
-
-	
-      
-        
-
 
 function getSelectedRadioValue(buttonGroup) {
    // returns the value of the selected radio button or "" if no button is selected
@@ -51,41 +40,73 @@ function getSelectedRadioValue(buttonGroup) {
 
 </SCRIPT>
 </HEAD>
-
-
-<BODY  bgcolor="#FFFFFF">
-
-<div align="center">
-
-<center>
- <table bgcolor="yellow" width="100%" border="1">
-	<tr>
-            <td  width="100%" align="center" class="headerStyle">Welcome To Online Chatting</td>
-	</tr>
-<br>
-<%
-
-//System.out.println(msg+"Messageeeeeeeeeeeeeeeeeeeeeeeeeeee");
-
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String sessionId="";
+    boolean page=true;
+    String align="left";
 %>
-</table>
-</center>
-</div>
-<br>
-<TABLE width="80%" align="center">
-    <TR>
-		<TD width="100%">Select the Candidate you want to chat with
-		</TD>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+sessionId = session.getId().toString();
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+String user=(String)session.getAttribute("username");
+String instituteName=(String)session.getAttribute("institute_name");
+ String contextPath = request.getContextPath();
+ String role=(String)session.getAttribute("login_role");
+    %>
 
-	</TR>
+<BODY>
+    <div>
+
+
+
+         <table align="center" style="" dir="<%=rtl%>" width="100%">
+
+        <tr>
+            <td  valign="top" colspan="2" width="100%" align="<%=align%>">
+
+                <table  align="<%=align%>"  dir="<%=rtl%>" width="100%">
+            <tr><td valign="bottom"  align="<%=align%>">
+            <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
+            </td>
+            <td style="color: maroon;font-size: 12px"><%=instituteName%><br>&nbsp; Role[<%=role%>]</td>
+            <td align="right" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">Hi [<%=user%>]&nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;</a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             </td></tr>
+            </table><br>
+            </td>
+
+            </tr>
+
+        </table>
+    
+             <br>
+<TABLE width="80%" align="center">
+   
 	<tr>
-            <td class="normal">Welcome <span><%=session.getAttribute("Name")%></span>
-                <br>You are: <%=session.getAttribute("Position")%> 
+            <td class="normal" align="left"><b>Welcome:</b> <span style="font-size: 15px;color:red"><%=session.getAttribute("Name")%></span>
+                <br><b>You are:</b><span style="font-size: 15px;color:red"> <%=session.getAttribute("Position")%></span>
                 </td>
 
 	</tr>
                
-            
+         <TR>
+             <TD align="left" width="100%"><b>Select the Candidate you want to chat with</b>
+		</TD>
+
+         </TR>
 	
 	
 </TABLE>
@@ -96,57 +117,12 @@ function getSelectedRadioValue(buttonGroup) {
 	<form  action="/EMS/catchroom.do" name="kk" method="post">
 	<TABLE width="80%" border="0" cellspacing="1" cellpadding="1" align="center">
 	<TR>
-	<TD colspan="2" class="pagetitle"></TD>
+	<TD colspan="2" class="pagetitle">
+
+             </TD>
 	</TR>
-
-
-		<%--<TR>
+            <TR>
 		<TD width="50%">
-		<INPUT type=radio name="rn" value="Web_Designing"
-		<A>Web_Designing</A>
-		</TD>
-
-			<TD width="50%"><A href="<%=request.getContextPath()%>/listrooms.jsp?rn=Web_Designing&sd=y">View Description</A></TD>
-
-		</TR>
-
-		<TR>
-		<TD width="50%">
-
-		<INPUT type=radio name="rn" value="ASP"
-		<A>ASP</A>
-		</TD>
-
-			<TD width="50%"><A href="<%=request.getContextPath()%>/listrooms.jsp?rn=ASP&sd=y">View Description</A></TD>
-
-		</TR>
-
-		<TR>
-		<TD width="50%">
-		<INPUT type=radio name="rn" value="Jsp"
-		<A>Jsp</A>
-
-		</TD>
-
-			<TD width="50%"><A href="<%=request.getContextPath()%>/listrooms.jsp?rn=Jsp&sd=y">View Description</A></TD>
-
-		</TR>
-
-		<TR>
-		<TD width="50%">
-		<INPUT type=radio name="rn" value="Java"
-		<A>Java</A>
-		</TD>
-
-			<TD width="50%"><A href="<%=request.getContextPath()%>/listrooms.jsp?rn=Java&sd=y">View Description</A></TD>
-
-
-		</TR>
---%>
-<TR>
-		<TD width="50%">
-
-           
  <%
 
 
@@ -155,72 +131,65 @@ function getSelectedRadioValue(buttonGroup) {
             ChatRoom[] demo2=demo.getRoomListArray();
 
 
-try
-{
-
- //out.println(demo2.length);
-
-
-//obtain an Iterator for Collection
-
-int i=0;
-
-
-if(demo2.length>0){
+        try
+          {
+               int i=0;
+               if(demo2.length>0)
+                 {
 //iterate through HashMap values iterator
-%>
-Room List
-<select  id="chatroom" name="rn">
-<%
-while(i<demo2.length)
-{
-System.out.println((String)session.getAttribute("institute_id")+"&candidate&");
-if(demo2[i].getName().startsWith((String)session.getAttribute("institute_id")+"&candidate&") && demo2[i].getName().endsWith("&h")){
-%>
-<option value="<%=demo2[i].getName().substring(0,demo2[i].getName().length()-2)%>"><%
-String temp=demo2[i].getName().substring(0,((String)demo2[i].getName()).lastIndexOf("&"));
-
-temp=temp.substring(temp.lastIndexOf("&")+1,temp.length());
-
-%>
-<%=temp%>
-</option>
-                    
-<%}
-i++;
-}
-
-
-}
-else{%>
-
-<%}
-}catch(Exception e){}
-
-%>
-</select>
-<% if(demo!=null){%>
-<input type="submit" name="button" value="Start">
-<%}}%>
-
-
-<%
-
-if(demo==null){%>
-No Candidate is available for Chatting
-<%}
-%>
-<% String  msg= (String)session.getAttribute("msg1");
-
-
-if(msg!=null){
-      %>
-      <font color="red">     <%=msg%></font>
+ %>
+ <b> Online Candidates</b>
+         <select  id="chatroom" name="rn">
+         <%
+                      while(i<demo2.length)
+                      {
+                         System.out.println((String)session.getAttribute("institute_id")+"&candidate&");
+                         if(demo2[i].getName().startsWith((String)session.getAttribute("institute_id")+"&candidate&") && demo2[i].getName().endsWith("&h")){
+         %>
+                 <option value="<%=demo2[i].getName().substring(0,demo2[i].getName().length()-2)%>">
         <%
-        session.removeAttribute("msg1");
-}
+                 String temp=demo2[i].getName().substring(0,((String)demo2[i].getName()).lastIndexOf("&"));
+                temp=temp.substring(temp.lastIndexOf("&")+1,temp.length());
+                Login obj=(Login)LoginDAO.getLoginUserName(temp,(String)session.getAttribute("institute_id"));
+        %>
+                  <%=obj.getUserName()%>
+                </option>
+                    
+        <%}
+                  i++;
+               }
 
-%>		</TD>
+
+                }
+                   else{%>
+
+            <%}
+       }catch(Exception e){}
+
+         %>
+                 </select>
+                <% if(demo!=null){%>
+                <input type="submit" name="button" value="Start">
+        <%}}%>
+
+
+              <%
+
+                     if(demo==null){%>
+                     No Candidate is available for Chatting
+                     <%}
+                      %>
+                 <% String  msg= (String)session.getAttribute("msg1");
+
+
+                    if(msg!=null){
+                         %>
+                            <font color="red"><%=msg%></font>
+                       <%
+                             session.removeAttribute("msg1");
+                              }
+
+                       %>		</TD>
 
 		
 
@@ -235,7 +204,6 @@ if(msg!=null){
 </form>
 </CENTER>
 </DIV>
-
 <DIV align="center">
 <CENTER>
 
@@ -246,5 +214,6 @@ if(msg!=null){
 </TABLE>
 </CENTER>
 </DIV>
+    </div>
 </BODY>
 </HTML>

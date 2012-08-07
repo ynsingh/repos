@@ -5,6 +5,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
+<%
 String role=(String)session.getAttribute("login_role");
 if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,voter"))
    {
@@ -23,6 +28,17 @@ if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,vot
     String align="left";
     String status;
 %>
+
+<%--<%
+    String msg2=(String)session.getAttribute("msg1");
+    if(msg2!=null){%><%--
+    <script type="text/javascript" language="javascript">
+     alert("<%=msg2%>");
+     </script>
+   <% }
+
+%>--%>
+
 <%
 status = request.getParameter("status");
 try{

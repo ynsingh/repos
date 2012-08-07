@@ -18,13 +18,13 @@
             {
 <%
 
-if((String)session.getAttribute("candidate")==null)
+if((String)session.getAttribute("chatter")==null)
 {%>
 var x=confirm("Candidate Close Chat Room. You Need to logout from chat");
 if(x!=true)
-{location.href="/EMS/Voter/voter_home.jsp";
+{location.href="/EMS/chatlogout.do";
 }else{
-location.href="/EMS/Voter/voter_home.jsp";
+location.href="/EMS/chatlogout.do";
 }
 
 <%}%>
@@ -38,8 +38,19 @@ function logout1(){
    top.location.href="/EMS/chatlogout.do";
 
 return true;
+
 }
 
+  document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  atTop(f1.msg.value);
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
             </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
@@ -47,13 +58,13 @@ return true;
     <body>
       <form name="f1"  method="post">
           <hr>
-           <INPUT type=text name="msg" value="">  
+           <INPUT type=text name="msg" value="" >
            <input type="button" name="button" value="Send" onclick="return atTop(f1.msg.value);"><br>
               <input type="button"  value="Logout" onclick="return logout1();"/>
             <%-- <TR>
 		<TD width="100%" align="center"><a href="<%=request.getContextPath()%>/logout.do">Logout</a> </TD>
 	</TR>--%>
-        </form>
+    </form>
 
     </body>
 </html>

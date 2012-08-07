@@ -9,9 +9,16 @@
  <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
 <%
 String host = (String)request.getHeader("host");
+%>
 
-if(session.isNew()){System.out.println("session new");}
 
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
+
+<%
 String user_id = (String)session.getAttribute("staff_id");
 
 //loginTempDAO logintempdao = new loginTempDAO();

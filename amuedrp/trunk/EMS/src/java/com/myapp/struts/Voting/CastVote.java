@@ -21,7 +21,7 @@ import com.myapp.struts.utility.UserLog;
 
 /**
  *
- * @author faraz
+ * 
  */
 public class CastVote extends org.apache.struts.action.Action {
     
@@ -72,7 +72,7 @@ public class CastVote extends org.apache.struts.action.Action {
 
                     						if(cand!=null){
 
-                        						cand.setAgm(Integer.parseInt(votes));
+                        						cand.setAgm(String.valueOf(votes));
                         						casting1.add(cand);
                         						flag=1;
                     						}
@@ -119,7 +119,7 @@ public class CastVote extends org.apache.struts.action.Action {
                 					if(candidateName!=null && !candidateName.isEmpty()){
                     						Candidate1 cand = posDAO.getCandidateDetailById(candidateName,pos.getId().getPositionId(), electionId, instituteId);
                         					if(cand!=null){
-                                           				cand.setOfflineVote(Integer.parseInt(votes));
+                                           				cand.setOfflineVote(String.valueOf(votes));
                         						casting1.add(cand);
                         						flag=1;
                     						}
@@ -164,7 +164,7 @@ public class CastVote extends org.apache.struts.action.Action {
         		String vote = request.getParameter("cast");
 			if(vote.startsWith(";"))
    				vote=vote.substring(1,vote.length());
-				UserLog.ErrorLog("Voter IP Address"+ClientIPAdd+"\n"+vote,(String)session.getAttribute("apppath"));
+				UserLog.ErrorLog("Voter IP Address"+ClientIPAdd+"\n"+vote,"UserLog.txt");
         			String[] cast = vote.split(",;");
         			if(vp!=null)
         			{
@@ -203,7 +203,7 @@ public class CastVote extends org.apache.struts.action.Action {
             				String positionName = positions[0];
             				PositionDAO posDAO = new PositionDAO();
             			//	System.out.println("position Name="+positions[0]);
-					UserLog.ErrorLog(positions[0]+"||"+positions[1],(String)session.getAttribute("apppath"));
+					UserLog.ErrorLog(positions[0]+"||"+positions[1],"UserLog.txt");
             				Position1 pos = posDAO.getPositionByName(positionName.trim(), electionId, instituteId);
             				if(pos!=null){
             					for(int j=1;j<positions.length;j++){
@@ -226,8 +226,8 @@ public class CastVote extends org.apache.struts.action.Action {
         			System.out.println(casting.size());
         			String msg=new String();
         			if(!casting.isEmpty()|| casting!=null){
-					String rpath=(String)session.getAttribute("apppath");
-            				msg = (String)voterdao.InsertVote(casting,rpath);
+					
+            				msg = (String)voterdao.InsertVote(casting,"UserLog.txt");
             				request.setAttribute("msg", msg);
         			}
         			response.setContentType("application/xml");

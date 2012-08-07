@@ -112,10 +112,10 @@ private ElectionId elid=new ElectionId();
 
                  ere= (ElectionRuleEligiblity1)l.get(0);
              System.out.println(ere.getElection().getStatus());
-                if(ere.getElection().getStatus().equalsIgnoreCase("started")||ere.getElection().getStatus().equalsIgnoreCase("closed") )
-                {   request.setAttribute("msg2", "Sorry Cannot Update Election already started/closed");
-                    return mapping.findForward("duplicate");
-                }
+                //if(ere.getElection().getStatus().equalsIgnoreCase("started")||ere.getElection().getStatus().equalsIgnoreCase("closed") )
+              //  {   request.setAttribute("msg2", "Sorry Cannot Update Election already started/closed");
+                    //return mapping.findForward("duplicate");
+                //}
              employeeform.setCreatedby(ere.getElection().getCreatedBy());
               employeeform.setEnddate(ere.getElection().getEndDate());
                employeeform.setStartdate(ere.getElection().getStartDate());

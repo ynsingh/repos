@@ -28,6 +28,15 @@
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" type="text/javascript">
+
+    function send()
+        {
+
+        location.href="<%=request.getContextPath()%>/admin/remote?email="+document.getElementById('email2').value+"&context="+"<%=request.getScheme()%>"+"://"+"<%=request.getServerName()%>"+":"+"<%=request.getServerPort()%>"+"<%=request.getContextPath()%>";
+
+        }
+
+
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
 * doesn't support it
@@ -252,18 +261,28 @@ sessionId = session.getId().toString();
         <table align="center" style="width: 70%;background-color: white;border: solid #ECF1EF 10px;margin-top: 50px" dir="<%=rtl%>" >
              
             <tr><td>
+                    <%
+String m=(String)request.getParameter("m");
+if(m!=null)
+    out.println(m);
+%>
+
                      <%
 String col="blue";
-String str1=(String)request.getAttribute("msg");
-if(str1==null){col="red";str1=(String)request.getAttribute("msg1");}
+String str1=(String)session.getAttribute("msg5");
+if(str1==null){
+    col="red";
+    str1=(String)session.getAttribute("msg5");
+}
 if(str1!=null)
     {%>
     &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:12px;font-weight:bold;color:<%=col%>;" ><%=str1%></span>
 <%}%>
+   
 
             <%
 
-String str=(String)request.getAttribute("registration_msg");
+String str=(String)request.getAttribute("msg");
 if(str!=null)
     {%>
     &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:12px;font-weight:bold;color:blue; direction: <%=rtl%>" ><%=str%></span>
@@ -286,9 +305,9 @@ if(str!=null)
             <tr  height="5px" style="font-family: arial;color:#6495ED;font-weight: bold;font-size: 12px"><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("login.message.logo.under")%></td><td align="center"><%=resource.getString("login.message.selectlanguage")%><select name="locale" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select></td></tr>
             <tr><td width="90%" colspan="2" valign="top" align="center" dir="<%=rtl%>" >
 
-                    <table align="center" ><tr><td align="center" >
+                    <table align="center" ><tr><td align="center" valign="top">
                                 <table width="90%" dir="<%=rtl%>" style="color:#00008B;font-family: arial;font-size: 16px;text-align: justify;line-height: 30px">
-                                    <tr><td dir="<%=rtl%>">
+                                    <tr><td dir="<%=rtl%>" valign="top">
 
                                           <%=resource.getString("intro")%> 
 
@@ -326,6 +345,15 @@ if(str!=null)
                     </td>
                     </tr>
                     <tr><td width="250px" colspan="2">
+
+                            <p class="emailheadhome1" align="left">
+                        <%--<form  action="./admin/remote" method="post">--%>
+       Login with Open ID<br/>
+Please click your open Id provider:<input type="textbox" style="width:300px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;" name="email" value="http://202.141.40.216:8081/openid/username" id="email2"/>
+<br>     <input class="buttonhome" type="button" value="Log In" onclick="send()"/><br>Please replace username with your actual username.
+        <%--</form>--%>
+</p>
+
                             <a href="<%=request.getContextPath()%>/admin/admin_registration.jsp"> <%=resource.getString("join")%></a>
                         </td></tr>
                         </table>

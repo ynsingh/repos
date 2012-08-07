@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.VoterRegistration,com.myapp.struts.hbm.CandidateRegistration"%>
 
@@ -142,6 +147,7 @@ String status = "&status="+request.getParameter("status");
         Ob.setCourse(voter1.getVoterRegistration().getCourse());
         Ob.setYear(voter1.getVoterRegistration().getYear());
         Ob.setStatus(voter1.getCandidateRegistration().getStatus());
+        Ob.setElection_id(voter1.getCandidateRegistration().getId().getElectionId());
       
        
 
@@ -248,38 +254,38 @@ else
 
     <column width="10%">
       <header value="${Enrollment_No}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.enrollment}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.enrollment}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="10%">
       <header value="${Candidate_Name}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.voter_name}" hAlign="left" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}"  styleClass="item"/>
+      <item   value="${doc.voter_name}" hAlign="left" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  styleClass="item"/>
     </column>
     <column width="10%">
       <header value="${Department}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.department}" hAlign="left" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}"  styleClass="item"/>
+      <item   value="${doc.department}" hAlign="left" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  styleClass="item"/>
     </column>
 
     <column width="10%">
       <header value="${Course}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.course}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.course}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
 
        <column width="10%">
       <header value="${Year}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.year}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.year}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
 
       <column width="10%">
       <header value="${Status}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.status}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.status}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
        <column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Send Mail" hyperLink="${path}/election_manager/ViewMailBody.jsp?id=${doc.enrollment}"  hAlign="left" styleClass="item"/>
+      <item   value="Send Mail" hyperLink="${path}/election_manager/ViewMailBody.jsp?id=${doc.enrollment}${amp}eid=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
 

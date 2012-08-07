@@ -73,6 +73,35 @@ public Candidate1 getCandidateDetailById(String enroll,int positionId,String ele
           session.close();
         }
     }
+
+     public void insert1(Electionrule position){
+    Session session =null;
+    Transaction tx = null;
+   
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+        tx = session.beginTransaction();
+//        Criteria criteria = session.createCriteria(Position1.class)
+//                .setProjection(Projections.max("id.positionId"));
+//
+//            Integer maxPositionId = new Integer((Integer)criteria.uniqueResult()==null?0:(Integer)criteria.uniqueResult());
+//            maxPositionId++;
+//            System.out.println("Max Position Id="+maxPositionId);
+//            position.getId().setPositionId(maxPositionId);
+//
+            session.save(position);
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+            if(position != null)
+                tx.rollback();
+            e.printStackTrace();
+            throw e;
+        }
+        finally {
+          session.close();
+        }
+    }
      public void updatePosition(Position1 position) {
         Session session =null;
     Transaction tx = null;
@@ -174,6 +203,32 @@ public Position1 getPositionByName(String positionName,String electionId, String
              query.setString("instituteId", instituteId);
              query.setString("positionName", positionName);
          obj= (Position1)query.uniqueResult();
+         session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+          e.printStackTrace();
+          throw e;
+
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
+    }
+
+public Electionrule getRuleByName(String positionName,String electionId, String instituteId) {
+        Session session =null;
+
+    Electionrule obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Electionrule where id.electionId = :electionId and id.instituteId=:instituteId and criteria=:positionName");
+             query.setString("electionId",electionId );
+             query.setString("instituteId", instituteId);
+             query.setString("positionName", positionName);
+         obj= (Electionrule)query.uniqueResult();
          session.getTransaction().commit();
         }
         catch (RuntimeException e) {
@@ -407,6 +462,33 @@ Position1 obj=null;
                     .add(Restrictions.eq("id.positionId", PositionID)))
                     .add(Restrictions.eq("id.instituteId", instituteid));
         obj= (List<Candidate1>) criteria.list();
+
+
+        session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+
+          e.printStackTrace();
+          throw e;
+
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
+    }
+ public  List<Electionrule> getRules(String instituteid,String electionid) {
+        Session session = null;
+        List<Electionrule> obj=null;
+        try {
+            session=HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Electionrule.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.electionId", electionid)))
+                    .add(Restrictions.eq("id.instituteId", instituteid));
+        obj= (List<Electionrule>) criteria.list();
 
 
         session.getTransaction().commit();

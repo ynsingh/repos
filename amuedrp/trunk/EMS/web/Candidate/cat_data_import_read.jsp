@@ -1,5 +1,10 @@
 <%@page import="java.util.*,java.io.*,java.net.*"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <html>
     <head>
        

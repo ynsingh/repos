@@ -28,6 +28,15 @@ private String state;
 private String state1;
 private String country;
 private String country1;
+private String country22;
+
+    public String getCountry22() {
+        return country22;
+    }
+
+    public void setCountry22(String country22) {
+        this.country22 = country22;
+    }
 private String c_add;
 private String p_add;
 private String v_name;

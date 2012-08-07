@@ -79,7 +79,7 @@ public class VotersetAction extends org.apache.struts.action.Action {
               				//       System.out.println(admin_password);
                               		admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
  					o.setPassword(admin_password1);
-
+                                        
             				VoterRegistrationDAO.setVoter(o);
          				
 		//			System.out.println(path+obj1.getEmail()+admin_password+"One time key for voting for  : "+e.getElectionName()+" election"+"Your one time key for Voting Process for "+e.getElectionName()+" Election Only is= "+admin_password);
@@ -110,7 +110,7 @@ public class VotersetAction extends org.apache.struts.action.Action {
 	    				o.setId(oi);
 					/*Admin Password Generate*/
                  			admin_password= RandomPassword.getRandomString(10);
-                                       // admin_password="1";
+                                        //admin_password="1";
 					//log.add( "\nOne time key is  "+admin_password);
                 			admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
 					//log.add( "\nOne time key MD5  "+admin_password1);//

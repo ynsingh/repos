@@ -281,7 +281,7 @@ s_a[250]="Kosovo|Montenegro|Serbia|Vojvodina";
 s_a[251]="Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|Southern|Western";
 s_a[252]="Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands";
 
-function print_country(country_id){
+function print_country(country_id,data){
 	// given the id of the <select> tag as function argument, it inserts <option> tags
 	var option_str = document.getElementById(country_id);
 	option_str.length=0;
@@ -290,15 +290,40 @@ function print_country(country_id){
 	for (var i=0; i<country_arr.length; i++) {
 		option_str.options[option_str.length] = new Option(country_arr[i],country_arr[i]);
 	}
+        if(data!="Select")
+            option_str.value=data;
+
+      
+}
+
+function print_state(state_id, state_index,data){
+	var option_str = document.getElementById(state_id);
+	
+         if(data!="Select" )
+            option_str.value=data;
+
 }
 
 function print_state(state_id, state_index){
+  
+   var state_arr = s_a[state_index].split("|");
+   
+// document.write(state_index+" "+state_id+ state_arr);
 	var option_str = document.getElementById(state_id);
+    if(state_index!=undefined || state_index!=0)
+
 	option_str.length=0;	// Fixed by Julian Woods
+
+       
 	option_str.options[0] = new Option('Select State','');
-	option_str.selectedIndex = 0;
-	var state_arr = s_a[state_index].split("|");
+//	option_str.selectedIndex = 0;
+  
+	
+       
 	for (var i=0; i<state_arr.length; i++) {
 		option_str.options[option_str.length] = new Option(state_arr[i],state_arr[i]);
 	}
+       
+
 }
+

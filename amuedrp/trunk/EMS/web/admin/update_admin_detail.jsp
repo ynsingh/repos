@@ -48,6 +48,11 @@ rst = (List)admindao.getAdminInstituteDetailsById(id2);
     boolean page=true;
     String align="left";
 %>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 
 <%
 try{

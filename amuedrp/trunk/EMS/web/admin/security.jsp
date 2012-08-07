@@ -17,6 +17,11 @@ String user_name=(String)session.getAttribute("username");
 String library_id=(String)session.getAttribute("library_id");
 String lib_name=(String)session.getAttribute("library_name");
 %>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <div
    style="  top:120px;
    left:15px;

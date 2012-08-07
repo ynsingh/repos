@@ -18,6 +18,11 @@
     String regid="";
 %>
 <%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
+<%
 try{
 locale1=(String)session.getAttribute("locale");
 

@@ -7,6 +7,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="java.util.*,com.myapp.struts.hbm.Election,com.myapp.struts.hbm.*" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -886,7 +891,7 @@ document.write('</div></span>');
                         <a href="#" style="font-size: 13px;text-decoration: none;"  onclick="currentElections()"><%=resource.getString("currentelection")%></a>&nbsp;|&nbsp;
                         <%}
                         if(lstelection!=null && !lstelection.isEmpty()){%>
-                        <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();"><%=resource.getString("votingprocess")%></a>&nbsp;|&nbsp;
+                        <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();"><%--<%=resource.getString("votingprocess")%>--%></a>&nbsp;|&nbsp;
                         <%}
                         if(lstclosedelection!=null && !lstclosedelection.isEmpty()){%>
                         <a href="#" style="font-size: 13px;text-decoration: none;" onclick="electionsResults()"><%=resource.getString("electionresults")%></a>&nbsp;|&nbsp;

@@ -83,28 +83,73 @@ loginActionForm = (LoginActionForm) form;
         user_id = loginActionForm.getUsername();
         password = loginActionForm.getPassword();
         button = loginActionForm.getButton1();
-       
-        
 
 
+         String remote=(String)session.getAttribute("remoteauth");
+  System.out.println(user_id+"mmmmmmmmmmmmmmmmmmmmmmm"+remote);
+if(remote!=null)
+{
+                user_id=(String)session.getAttribute("email_id");
+}
+
+   if(button==null)
+           button="Log In";
 
 
     
 
         if (button.equals("Log In")) {
-           if((user_id!=null && password!=null) && !(user_id.equals("") || password.equals("")))
+           if((user_id!=null ) && !(user_id.equals("")))
         {
 
-            String password1 = PasswordEncruptionUtility.password_encrupt(password);
+           String password1=null;
+               if(password!=null)
+               password1 = PasswordEncruptionUtility.password_encrupt(password);
+
+
+
+
+
+
+
+
 
           
             LoginDAO dao = new LoginDAO();
            
             try{
           
-            rst = dao.getLoginDetails(user_id, password);
-          
-            rst1 = (List)dao.getLoginDetails(user_id, password1);
+         
+  System.out.println(user_id+"mmmmmmmmmmmmmmmmmmmmmmm"+remote);
+if(remote!=null)
+{
+                user_id=(String)session.getAttribute("email_id");
+              
+
+                rst = dao.getUser(user_id);
+                rst1 = (List)dao.getUser(user_id);
+ if(rst.size()==0 || rst1.size()==0)
+            {
+
+                session.removeAttribute("remoteauth");
+                request.setAttribute("msg", "Invalid User or Password");
+                return mapping.findForward("failure");
+                
+            }
+     
+              
+
+}
+else{
+               rst = dao.getLoginDetails(user_id, password);
+                rst1 = (List)dao.getLoginDetails(user_id, password1);
+
+
+
+
+
+}
+
             }catch(Exception e)
         {
              request.setAttribute("msg1", "Database Not Connected! Please Contact Web Admin");
@@ -112,7 +157,15 @@ loginActionForm = (LoginActionForm) form;
              return mapping.findForward("failure");
         }
 
+
+
+           
+            
             Login login=new Login();
+
+
+
+
             if (!rst.isEmpty()||!rst1.isEmpty()) //record found
             {
            
@@ -141,7 +194,7 @@ if(x!=null)
                 session.setAttribute("user_id", login.getUserId());
                 session.setAttribute("login_role", login.getRole());
                 session.setAttribute("password", login.getPassword());
-               
+                session.setAttribute("loginname", login.getUserName());
 
           
                 staff_id = login.getStaffDetail().getId().getStaffId();
@@ -332,10 +385,10 @@ if(x!=null)
 
                         Institute rs1 = institutedao.getInstituteDetails(institute_id);
                         VoterRegistration voter=VoterRegistrationDAO.searchVoterRegistration(institute_id,login.getStaffDetail().getId().getStaffId());
-                        if(voter.getStatus().equalsIgnoreCase("Blocked")){
+                        if(voter.getStatus().equalsIgnoreCase("Blockedfromlogin")){
 
-                            request.setAttribute("msg1", "Sorry You are Blocked. Contact Election Manager");
-                 return mapping.findForward("failure");
+                            session.setAttribute("msg5", "Sorry You are Blocked. Contact Election Manager");
+                            return mapping.findForward("failure");
                         }
 
                         if (rs1!=null) {
@@ -349,6 +402,33 @@ if(x!=null)
 
                             session.setAttribute("institute_name", rs1.getInstituteName());
                         }
+
+                       
+//
+//
+                           session.setAttribute("candidate_id",login.getStaffDetail().getId().getStaffId());
+//
+                         List<Candidate1> obj1=(List<Candidate1>) institutedao.getCandidatePosition(login.getStaffDetail().getId().getInstituteId(),login.getStaffDetail().getId().getStaffId());
+                        
+                        
+                         if(obj1.isEmpty()==false)
+                            {
+                           session.setAttribute("position_id",obj1.get(0).getId().getPositionId());
+                           
+                            session.setAttribute("institute_name", rs1.getInstituteName());
+                          session.setAttribute("user_name", login.getUserName());
+//
+                              Position1 pos=institutedao.getCandidatePositionName(login.getStaffDetail().getId().getInstituteId(),obj1.get(0).getId().getElectionId(),String.valueOf(obj1.get(0).getId().getPositionId()));
+                           session.setAttribute("positionname", pos.getPositionName());
+//
+                          Election elec=ElectionDAO.searchElection(pos.getId().getElectionId(), login.getStaffDetail().getId().getInstituteId());
+//
+                           session.setAttribute("electionname", elec.getElectionName());
+//
+//
+                            }
+                    
+
                      return mapping.findForward("voter");
                  }
 

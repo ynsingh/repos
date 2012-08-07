@@ -11,6 +11,7 @@ import com.myapp.struts.hbm.Candidate1;
 import com.myapp.struts.hbm.CandidateRegistration;
 import com.myapp.struts.hbm.CandidateRegistrationId;
 import com.myapp.struts.hbm.Election;
+import com.myapp.struts.hbm.ElectionCriteria;
 import com.myapp.struts.hbm.ElectionDAO;
 import com.myapp.struts.hbm.InstituteDAO;
 import com.myapp.struts.hbm.Position1;
@@ -56,7 +57,7 @@ session.setAttribute("Institute",Institute);
         CandidateRegActionForm employeeform=(CandidateRegActionForm)form;
          String button="add";
          String stat = request.getParameter("status");
-         
+         String eleid = request.getParameter("eid");
           String  id="id";
           id=request.getParameter(id);
           String position = request.getParameter("pos");
@@ -66,7 +67,10 @@ session.setAttribute("Institute",Institute);
 
         VoterRegistration r=CandidateRegistrationDAO.searchVoterRegistration(eid,id);
         CandidateRegistration c=CandidateRegistrationDAO.searchCandidateRegistration(eid,id,position);
-Candidate1 candi=new Candidate1();
+        List<ElectionCriteria> obj= (List<ElectionCriteria>)CandidateRegistrationDAO.GetRuleDetails(eid,id,eleid);
+       System.out.println("AAAAAAAAAAAAAAAAAAa"+obj.size());
+       session.setAttribute("rule",obj);
+        Candidate1 candi=new Candidate1();
 
         
         //Position1 p= p1.searchPosition(Integer.parseInt(c.getPosition()));

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 30, 2012 12:01:29 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.Ruleanswer" table="ruleanswer" catalog="emsiitk">
+        <composite-id name="id" class="com.myapp.struts.hbm.RuleanswerId">
+            <key-property name="electionId" type="string">
+                <column name="election_id" length="20" />
+            </key-property>
+            <key-property name="instituteId" type="string">
+                <column name="institute_id" length="20" />
+            </key-property>
+            <key-property name="ruleId" type="string">
+                <column name="rule_id" length="20" />
+            </key-property>
+            <key-property name="enrollment" type="string">
+                <column name="enrollment" length="30" />
+            </key-property>
+        </composite-id>
+        <property name="answer" type="string">
+            <column name="answer" length="500" />
+        </property>
+        <property name="enclosure" type="string">
+            <column name="enclosure" length="500" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -29,18 +29,14 @@ public class Email {
 	Session session ;
 	MimeMessage message;
 
-	public Email(String path,String to,String password,String subject,String body){
+	public Email(String to,String password,String subject,String body){
+
 		this.to = to; this.subject=subject;this.text=body;this.path=path;
 		try{
 			String os=(String)System.getProperty("os.name");
 			Properties libmspro = new Properties();
-			if(os.startsWith("Linux")){
-				path=System.getProperty("user.home");
-				libmspro.load(new FileInputStream(path+"/ems.properties"));
-   			}else{
-       				path="c:\\";
-        			libmspro.load(new FileInputStream(path+"\\ems.properties"));
-   			}
+			path=AppPath.getPropertiesFilePath();
+                        libmspro.load(new FileInputStream(path+"ems.properties"));
 			userid = libmspro.getProperty("webadmin");
         		buffer = libmspro.getProperty("webpass");
         		host = libmspro.getProperty("host");
@@ -59,6 +55,7 @@ public class Email {
 		}
 		catch (Exception ex) {
 	        	ex.printStackTrace();
+                        UserLog.ErrorLog(ex.getMessage(),"MailSendLog.txt");
            	}
 	}
 
@@ -70,7 +67,8 @@ public class Email {
 				fromAddress = new InternetAddress(frmAdd);
 				toAddress = new InternetAddress(to);
 			} catch (AddressException e) {
-				e.printStackTrace();
+
+                                 UserLog.ErrorLog(e.getMessage(),"MailSendLog.txt");
 			}
 			message.setFrom(fromAddress);
 			message.setRecipient(RecipientType.TO, toAddress);
@@ -82,8 +80,9 @@ public class Email {
 			transport.connect(host, userid, pass);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
+                        UserLog.ErrorLog("Mail Send "+toAddress,"MailSendLog.txt");
 		} catch (Exception e) {
-			e.printStackTrace();
+			 UserLog.ErrorLog(e.getMessage(),"MailSendLog.txt");
 		}
 	}
 
@@ -95,7 +94,7 @@ public class Email {
 				fromAddress = new InternetAddress(frmAdd);
 				toAddress =  InternetAddress.parse(to);
 			} catch (AddressException e) {
-				e.printStackTrace();
+				 UserLog.ErrorLog(e.getMessage(),"MailSendLog.txt");
 			}
 			message.setFrom(fromAddress);
  			message.setRecipients(Message.RecipientType.TO, toAddress);
@@ -107,8 +106,9 @@ public class Email {
 			transport.connect(host, userid, pass);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
+                        UserLog.ErrorLog("Mail Send "+toAddress,"MailSendLog.txt");
 		} catch (Exception e) {
-			e.printStackTrace();
+			 UserLog.ErrorLog(e.getMessage(),"MailSendLog.txt");
 		}
 	}
 

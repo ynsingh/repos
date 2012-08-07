@@ -4,7 +4,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%! boolean read=false;%>
 <%
 String btn=(String)request.getAttribute("button");
@@ -241,6 +245,9 @@ send();
    var gen=document.getElementById("gen");
   var gen1=document.getElementById("gen1");
   gen.value=gen1.value;
+  var alternateemail=document.getElementById("alternateemail");
+  var alternateemail1=document.getElementById("alternateemail1");
+  alternateemail.value=alternateemail1.value;
    var bdate=document.getElementById("bdate");
   var bdate1=document.getElementById("3");
   bdate.value=bdate1.value;
@@ -348,7 +355,7 @@ send();
           <html:hidden property="zipcode1" name="VoterRegActionForm" styleId="zcode2"/>
 
           <html:hidden property="country1" name="VoterRegActionForm" styleId="country2"/>
-
+           <html:hidden property="alternateemail" name="VoterRegActionForm" styleId="alternateemail"/>
          <html:hidden property="email" name="VoterRegActionForm" styleId="email"/>
            <html:hidden property="button" name="VoterRegActionForm" styleId="button"/>
            <html:hidden property="page" value="VoterRegistration" name="VoterRegActionForm" styleId="page"/>
@@ -477,7 +484,7 @@ send();
     <td align="left">email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return status()"/></td>
 </tr>
 <tr>
-    <td align="left">Alternate Email:</td><td><html:text  name="VoterRegActionForm"   styleId="alternateemail" property="alternateemail" readonly="<%=read%>" /></td>
+    <td align="left">Alternate Email:</td><td><html:text  name="VoterRegActionForm"   styleId="alternateemail1" property="alternateemail" readonly="<%=read%>" /></td>
 </tr>
                         </table>   </td>
                 <td>

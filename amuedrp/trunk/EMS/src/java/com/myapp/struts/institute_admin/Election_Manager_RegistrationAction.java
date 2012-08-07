@@ -270,37 +270,13 @@ String msg1=resource.getString("duplicate_user_id");
          electionmanagerdao.insert(electionmanager);
          String msg=resource.getString("record_inserted_successfully");
          request.setAttribute("msg",msg);
-       String path = servlet.getServletContext().getRealPath("/");
-
-       FileInputStream in = new FileInputStream(path+"/mail.properties");
-  			Properties	pro = new Properties();
-                                 pro.load(in);
-
-
-				Enumeration keys = pro.keys();
-                                int i=0;
-                                String mailbody="";
-				while (keys.hasMoreElements())
-				{
-                                       String key=(String)keys.nextElement();
-
-                                       if(key.equalsIgnoreCase(user_id+"em")){
-                                       mailbody=(String)pro.get(key);
-                                       }
-
-
-
-
-                                   i++;
-				}
-				in.close();
-
-
+         String mailbody=UserLog.readProperty("mail.properties", user_id+"em");
+         
 
        if(mailbody=="")
        mailbody="\n You are Registered as a Election Manager with given following details\n";
 
-         obj=new Email(path,email_id,admin_password,"Registration Accepted Successfully from EMS"," Dear "+login.getUserName()+mailbody+"user_id="+user_id +" , Password for EMS Login ="+admin_password+".\nWith Regards\nInstitute Admin\n"+session.getAttribute("institute_name")+"\nElectionMS");
+         obj=new Email(email_id,admin_password,"Registration Accepted Successfully from EMS"," Dear "+login.getUserName()+mailbody+"user_id="+user_id +" , Password for EMS Login ="+admin_password+".\nWith Regards\nInstitute Admin\n"+session.getAttribute("institute_name")+"\nElectionMS");
          System.out.println(email_id+institute_id+admin_password);
          executor.submit(new Runnable() {
 

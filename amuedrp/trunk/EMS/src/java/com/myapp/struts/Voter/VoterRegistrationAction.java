@@ -95,7 +95,7 @@ VoterRegistrationId empid=new VoterRegistrationId ();
              if (iii!=null)
              {
                  String ext=UserLog.returnextension(v.getFileName());
-                 UserLog.writeImage(id+eid+"."+ext, iii);
+                 UserLog.writeImage1(id+eid+"."+ext, iii);
                  ob.setImage(id+eid+"."+ext);
              }
 
@@ -113,7 +113,7 @@ VoterRegistrationId empid=new VoterRegistrationId ();
              ob.setAlternateMail(lf.getAlternateemail());
              ob.setId(empid);
              VoterRegistrationDAO.insert(ob);
-             request.setAttribute("msg", "request for registration has sent succsessfully");
+             request.setAttribute("msg", "Request for Registration has sent succsessfully");
            return mapping.findForward("add");
        }
 

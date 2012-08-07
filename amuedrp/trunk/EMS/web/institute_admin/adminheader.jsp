@@ -1,11 +1,9 @@
-<%-- 
-
-    Document   : institute_admin_home
-    Created on : Mar 11, 2011, 7:22:26 PM
-    Author     : Edrp-04
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html"%>
@@ -16,15 +14,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
-
-
  <!-- code for multilingual view -->
-
  <%!
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
 %>
 <%
 try{
@@ -38,20 +32,14 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";}
+    else{ rtl="RTL";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
-
-    %>
-
-
-     <%
-try{
-if(session.getAttribute("institute_id")!=null){
-System.out.println("institute_id"+session.getAttribute("institute_id"));
-}
-else{
+    try{
+        if(session.getAttribute("institute_id")!=null){
+        }
+    else{
     request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %>
     <script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
@@ -60,8 +48,8 @@ else{
     request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %>sessionout();<%
     }
-String user=(String)session.getAttribute("username");
- String contextPath = request.getContextPath();
+    String user=(String)session.getAttribute("username");
+    String contextPath = request.getContextPath();
 %>
 
 
@@ -73,64 +61,14 @@ String user=(String)session.getAttribute("username");
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Election Management System : Institute_Admin</title>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/chrometheme/chromestyle.css" />
-
-<script type="text/javascript" src="<%=request.getContextPath()%>/chromejs/chrome.js"/>
-<script type="text/javascript">
-
-
-
-        //Drop Down Menu Code
-
-<%--var urls1 = new buildArray(
-"<%=request.getContextPath()%>/admin/staffupdate.do",
-"<%=request.getContextPath()%>/admin/changeuserpassword");
-
-
-function buildArray()
-{
-  var a = buildArray.arguments;
-
-  for( var i=0; i<a.length; i++ )
-  {
-    this[i] = a[i];
-  }
-  this.length = a.length;
-}
-
-
-function go ( which, num, win )
-{
-  var n = which.selectedIndex;
-
-  if ( n != 0 )
-  {
-    var url = eval ( "urls" + num + "[n]" );
-    if ( win )
-    {
-      openWindow ( url );
-    }
-    else
-    {
-      location.href = url;
-
-
-    }
-  }
-}--%>
-
-function openWindow(url)
-{
-  popupWin = window.open(url,"remote","width=100;height=350;dependent=true;");
-}
-
-
-
-</script>
-<script type="text/javascript" language="javascript">
-function pageload(loc)
+        <script type="text/javascript" src="<%=request.getContextPath()%>/chromejs/chrome.js"/>
+        <script type="text/javascript">
+        function openWindow(url)
+        {
+        popupWin = window.open(url,"remote","width=100;height=350;dependent=true;");
+        }
+        function pageload(loc)
             {
-              // alert("hey");
-
                document.getElementById("page").innerHTML ="";
                var loc1="";
                if(loc==1) loc1="<%=request.getContextPath()%>/create_manager.do";
@@ -144,23 +82,14 @@ function pageload(loc)
                   document.getElementById("page").innerHTML = "<iframe name=\"page\" id=\"pagetab\" height=\"230px\" width=\"100%\" src=\"/"+loc1+"\"/>";
                return true;
             }
-function change(){
+        function change(){
 
-if(top.location=="http://<%=request.getHeader("host")%><%=request.getContextPath()%>/login.do")
-    {
+        if(top.location=="http://<%=request.getHeader("host")%><%=request.getContextPath()%>/login.do")
+        {
         //alert(top.location);
         top.location="http://<%=request.getHeader("host")%><%=request.getContextPath()%>/instituteadmin.do";
-    }
-    }
-</script>
-<style type="text/Stylesheet">
-    #ddmenu a{ text-decoration:none; }
-#ddmenu a:hover{ background-color:#FFFF95;
-
-    </style>
-
-
-<script type="text/javascript" language="javascript">
+        }
+        }
 var olddoc="";
 var olddoc1="";
 var loadcount;
@@ -192,13 +121,6 @@ if(text=="Voter Already voted for this election!"){
     else
 {windload();}
 }
-
-
-
-
-
-
-
 function checkElection()
 {
 
@@ -295,49 +217,6 @@ List<Election> lstcurelection = (List<Election>)session.getAttribute("currentele
 
 %>
 
-<%--function viewelections()
-            {
-
-                 <%if(lstelection.isEmpty()==true && lstelection==null){%>
-                         alert("No Election is in Process");
-                         return true;
-                         <%}%>
-
-                var divtag = document.createElement("div");
-                divtag.id = "overbody";
-                //netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserWrite");
-                windlow.scrollbars.visible = false;
-                divtag.style.width = "100%";
-                divtag.style.height = "100%";
-                divtag.style.top = "0px";
-                divtag.style.zIndex = "1500";
-                divtag.style.position = "absolute";
-                divtag.style.overflow = "hidden";
-                divtag.style.backgroundColor = "gray";
-                divtag.style.opacity = 0.97;
-
-                var divtag1 = document.createElement("div");
-                divtag1.id = "electionDetails";
-                divtag1.style.display = "block";
-                divtag1.style.border = "2px solid teal";
-                divtag1.style.backgroundColor = "white";
-                divtag1.style.height = "100px";
-                divtag1.style.width = "450px";
-                divtag1.style.marginLeft = "450px";
-                divtag1.style.position = "absolute";
-                divtag1.style.top = "40%";
-                var doc = document.getElementById("electionView1");
-                if(doc.innerHTML=="") doc.innerHTML = olddoc;
-                var divtag1 = document.createElement("div");
-                var htm = '';
-
-                divtag1.innerHTML = doc.innerHTML;
-                divtag.appendChild(divtag1);
-                document.getElementById("bod").appendChild(divtag);
-                olddoc = doc.innerHTML;
-                doc.innerHTML = "";
-
-            }--%>
             function elections()
             {
                 var divtag = document.createElement("div");
@@ -896,30 +775,17 @@ function createul(current)
     par.appendChild(dul);
     obj = dul;
 }
-<%
-String instituteName=(String)session.getAttribute("institute_name");
-
- String role=(String)session.getAttribute("login_role");
-
-%>
 </script>
-
-
-
+<style type="text/Stylesheet">
+#ddmenu a{ text-decoration:none; }
+#ddmenu a:hover{ background-color:#FFFF95;
+</style>
     </head>
-
-
-
     <body onload="change()"  id="bod" >
             <div>   <table border="0" width="100%" dir="<%=rtl%>" >
                               <tr>
-
                                   <td width="20%" valign="bottom" height="50px" dir="<%=rtl%>">
-
-
-
                                   <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
-
                                   </td>
                                   <td align="center"><span  dir="<%=rtl%>"><br>
                                           <%=session.getAttribute("institute_name")%><%=session.getAttribute("login_role")%><br/>
@@ -961,15 +827,11 @@ document.write('</div></span>');
 
 
 </script>
-
-
-
 </td><td align="left" valign="top" width="20%">
 | &nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>
 
 </td></tr>
 </table>
-
                      </td>
                               </tr>
                       </table>
@@ -1036,7 +898,7 @@ document.write('</div></span>');
                 </li>
                 <li>
 
-          <a href="<%=request.getContextPath()%>/election_manager/SetMailBody.jsp" style="font-size: 13px;text-decoration: none;" > Set Mail Body</a>
+          <a href="<%=request.getContextPath()%>/election_manager/SetMailBody1.jsp" style="font-size: 13px;text-decoration: none;">MailBody</a>
 
         </li>
                 <%--<li>

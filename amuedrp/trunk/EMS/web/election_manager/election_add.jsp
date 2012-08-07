@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.ElectionDAO"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
@@ -134,6 +139,28 @@ document.getElementById("position").appendChild(divtag);
     
 
 }
+var k=0;
+var l=0;
+function createcriteria()
+{
+k=0;
+l=l+1;
+var divtag = document.createElement("div");
+     divtag.id = "criteria"+l;
+     divtag.style.backgroundColor = "#E0F8F7";
+     divtag.style.border = "solid 5px #0B3B24";
+     divtag.style.borderTopLeftRadius = "10px";
+     divtag.style.width = "930px";
+     divtag.style.align = "center";
+     divtag.style.marginLeft = "0px";
+     divtag.innerHTML ='<table><tr><td>Criteria*&nbsp;&nbsp;<input type="text" Id="criteria_name'+k+''+l +'" size="25px"/></td>&nbsp;&nbsp;<td><%--<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/>--%></td><td><input type="button" id="but0'+ l +'" value="Save" onclick="search1('+ l +');"/>eg.i)Candidate should have 75% of Attendence<br> ii)No Criminal background should be allowed etc..</td></tr><tr><%--<td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td>--%></tr></table>';
+
+
+
+document.getElementById("criteria").appendChild(divtag);
+
+
+}
 
 
 function newXMLHttpRequest() {
@@ -251,6 +278,69 @@ alert("Please Enter Values in the Field");
 return false;
 }
 function update1(cartXML)
+{
+//alert("call");
+
+var em = cartXML.getElementsByTagName("email_ids")[0];
+var em1 = em.getElementsByTagName("message");
+//var em = cartXML.firstChild.value;
+for(i=0;i<em1.length;i++)
+    {
+alert(em1[i].firstChild.nodeValue);
+
+    }
+}
+
+function search1(current) {
+    //alert("index="+index+" current="+current);
+    var position = "criteria_name0"+current;
+     
+   // var posinstruct = "instruct0" + current;
+    //var numberofchoice = "numberofchoice0"+current;
+    var position_name = document.getElementById(position).value;
+    //var noofchoice = document.getElementById(numberofchoice).value;
+    //var instruct = document.getElementById(posinstruct).value;
+    //instruct="You can choose "+noofchoice+" Candidate for this Position";
+
+    var electionId = document.getElementById("electionId").value;
+    alert(position);
+    position_name = position_name.replace(/^\s*|\s*$/g,"");
+   // noofchoice = noofchoice.replace(/^\s*|\s*$/g,"");
+   // instruct = instruct.replace(/^\s*|\s*$/g,"");
+    var posid = "rule_id0"+current;
+    var PositionId="";
+    var butId = "but0"+current;
+    var buttonVal = document.getElementById(butId).value;
+    if(buttonVal=="Update")
+      {
+          PositionId = document.getElementById(posid).value;
+       }
+if (position_name.length >= 1)
+{
+if(position_name!="" && position_name!=null  && electionId!="" && electionId!=null)
+{
+    var req = newXMLHttpRequest();
+
+  
+req.onreadystatechange = getReadyStateHandler(req, update2);
+req.open("POST","<%=request.getContextPath()%>/AddRule.do?setRule="+position_name+"&setElectionId="+electionId, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+var idPos = "criteria"+current;
+
+document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
+ document.getElementById(idPos).style.border = "solid 5px #F2F5A9";
+
+return true;
+}
+alert("Please Enter Values in the Field");
+return false;
+}
+alert("Please Enter Values in the Field");
+return false;
+}
+function update2(cartXML)
 {
 //alert("call");
 
@@ -746,8 +836,17 @@ String id=(String)ElectionDAO.returnMaxElectionId(institute_id);
          </div></td></tr>
          <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white"><%=resource.getString("position")%></div>
                  <table dir="<%=rtl%>"><tr><td dir="<%=rtl%>"><div id="position" style="width: 950px;"></div></td></tr>
-                     <tr><td dir="<%=rtl%>"><div style="position: static"><%if(!button.equals("View")&& !button.equals("Block")){%><input type="button" id="add Position" name="add Position" style="margin-left: 0px;" value="<%=resource.getString("addnewposition")%>" size="50px" onclick="createposition();"><%}%></div></td></tr></table></td></tr>
-         <tr><td colspan="2" dir="<%=rtl%>">
+                     <tr><td dir="<%=rtl%>"><div style="position: static"><%if(!button.equals("View")&& !button.equals("Block")){%><input type="button" id="add Position" name="add Position" style="margin-left: 0px;" value="<%=resource.getString("addnewposition")%>" size="50px" onclick="createposition();"><%}%></div></td></tr></table></td>
+         </tr>
+          <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid blue"><div style="background-color: teal;width: 100%;color: white">Set Criteria Or Set Eligibility Criteria For Election</div>
+                 <table dir="<%=rtl%>"><tr><td dir="<%=rtl%>"><div id="criteria" style="width: 950px;"></div></td></tr>
+                     <tr><td dir="<%=rtl%>">
+                             <div style="position: static">
+                                 <%if(!button.equals("View")&& !button.equals("Block")){%>
+                                 <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria();"><%}%>
+                             </div></td></tr></table></td>
+         </tr>
+         <%--<tr><td colspan="2" dir="<%=rtl%>">
                  <div style="border: 2px solid teal">
                      <div style="background-color: teal;width: 100%;color: white"><%=resource.getString("setcritaria")%> </div>
                      <table dir="<%=rtl%>">
@@ -766,7 +865,7 @@ String id=(String)ElectionDAO.returnMaxElectionId(institute_id);
     <td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="indiscipline" value="yes"/><%=resource.getString("yes")%><html:radio name="DepActionForm" property="indiscipline" value="no"/><%=resource.getString("no")%></td></tr>
                      </table>
                  </div>
-                 </td></tr>
+                 </td></tr>--%>
                  <html:hidden name="DepActionForm" property="status" styleId="status"/>
 <%--
          <%if(request.getAttribute("button").equals("Block")){%>

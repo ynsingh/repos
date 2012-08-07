@@ -35,15 +35,12 @@ import org.apache.struts.action.ActionMapping;
  * @author Edrp-04
  */
 public class AllCandiList extends org.apache.struts.action.Action {
-    
-   
      private static Logger log4j=LoggerUtils.getLogger();
-  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-       try{
+        try{
             HttpSession session = request.getSession();
             CandidateRegistrationDAO candidatedao= new CandidateRegistrationDAO();
             ElectionManagerDAO dao=new ElectionManagerDAO();
@@ -51,6 +48,7 @@ public class AllCandiList extends org.apache.struts.action.Action {
             String institute_id=(String)session.getAttribute("institute_id");
             String election_id=request.getParameter("election");
             List list=dao.AllCandiReport(institute_id,election_id);
+            System.out.println("222222222222222222"+list.size());
             JRBeanCollectionDataSource data=new  JRBeanCollectionDataSource(list);
             ServletOutputStream ouputStream = response.getOutputStream();
             response.setContentType("application/pdf");
@@ -72,6 +70,6 @@ public class AllCandiList extends org.apache.struts.action.Action {
         log4j.error(e.toString());
         }
         return null;
-        
+
     }
 }

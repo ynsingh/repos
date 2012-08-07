@@ -4,7 +4,7 @@
     Author     : edrp01
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,chat.*,java.io.*"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,chat.*,java.io.*,com.myapp.struts.utility.*,com.myapp.struts.hbm.*,com.myapp.struts.hbm.LoginDAO.*"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <meta http-equiv="refresh" content="5">
@@ -14,20 +14,73 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
+    <%! String candidate="";%>
+    <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String sessionId="";
+    boolean page=true;
+    String align="left";
+%>
     <link rel="stylesheet" href="/EMS/css/page.css"/>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+sessionId = session.getId().toString();
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+String user=(String)session.getAttribute("username");
+String instituteName=(String)session.getAttribute("institute_name");
+ String contextPath = request.getContextPath();
+ String role=(String)session.getAttribute("login_role");
+    %>
+    <body style="margin:0px 0px 0px 0px">
+        <table  width="100%" class="table" style="margin:0px 0px 0px 0px;">
+            <tr><td colspan="2">
 
-    <body>
-        <table width="100%" class="table">
-            <tr><td width="80%" class="headerStyle" height="50px">
+                 <table align="center" style="" dir="<%=rtl%>" width="100%">
 
-            <%     String home=System.getProperty("user.home");
-                       FileInputStream in1 = new FileInputStream(home+"/chat.properties");
+        <tr>
+            <td  valign="top" colspan="2" width="100%" align="<%=align%>">
+
+                <table  align="<%=align%>"  dir="<%=rtl%>" width="100%">
+            <tr><td valign="bottom"  align="<%=align%>">
+            <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
+            </td>
+            <td style="color: maroon;font-size: 12px"><%=instituteName%><br>&nbsp; Role[<%=role%>]</td>
+            <td align="right" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">Hi [<%=user%>]&nbsp;<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;</a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             </td></tr>
+            </table><br>
+            </td>
+
+            </tr>
+
+        </table>
+
+
+
+
+                </td></tr>
+            <tr>
+                <td width="80%" class="headerStyle" height="50px">
+
+            <%     String home=AppPath.getPropertiesFilePath();
+                       FileInputStream in1 = new FileInputStream(home+"chat.properties");
 
                  Properties pro=new Properties();
                  pro = new Properties();
-				pro.load(in1);
+		 pro.load(in1);
 
-String d=null;               
+  String d=null;
   Enumeration em = pro.keys();
   while(em.hasMoreElements()){
   String str = (String)em.nextElement();
@@ -47,9 +100,9 @@ session.removeAttribute("candidate");
 <script>
 var x=confirm("Candidate Close Chat Room. You Need to logout from chat");
 if(x!=true)
-{top.location.href="/EMS/Voter/voter_home.jsp";
+{top.location.href="/EMS/chatlogout.do";
 }else{
-top.location.href="/EMS/Voter/voter_home.jsp";
+top.location.href="/EMS/chatlogout.do";
 }
 </script>
 <%}
@@ -74,7 +127,7 @@ String [] array=d.split("&");
 
 
 
-                </td><td class="headerStyle">Active Users
+                </td><td class="headerStyle">Online Voters
        
                 </td></tr>
 
@@ -89,19 +142,49 @@ String [] array=d.split("&");
                     <%
 
               
-                   in1 = new FileInputStream(home+"/chatlog.properties");
+                   in1 = new FileInputStream(home+"chatlog.properties");
 
-                pro=new Properties();
+                 pro=new Properties();
                  pro = new Properties();
-				pro.load(in1);
+		 pro.load(in1);
 
                 em = pro.keys();
   while(em.hasMoreElements()){
-  String str = (String)em.nextElement();
+ String  str = (String)em.nextElement();
 
-if(str.startsWith(session.getAttribute("institute_id")+"&"+session.getAttribute("chatter")))
-%><i class="txt"><%=pro.get(str)%></i><br><%
-  }
+if(str.startsWith(session.getAttribute("institute_id")+"&"+session.getAttribute("chatter")+"&"+session.getAttribute("chatter")))
+{%><%--<i class="txt"><%=pro.get(str)%></i><br>--%>
+
+<%System.out.println("first");
+
+     candidate=(String)session.getAttribute("chatter");
+
+
+     //read chatlog file & get all message of voter for specific current canidate
+
+           in1 = new FileInputStream(home+"chatlog.properties");
+           pro=new Properties();
+           pro = new Properties();
+           pro.load(in1);
+           em = pro.keys();
+         while(em.hasMoreElements())
+         {
+            str = (String)em.nextElement();
+            if(str.startsWith(session.getAttribute("institute_id")+"&"+candidate+"&"))
+            {
+%><i class="txt">
+    <%=pro.get(str)%>
+    </i><br><%
+            }
+        }
+           in1.close();
+           break;
+
+}
+
+ 
+ //System.out.println(str+candidate+"..............////////////////////"+session.getAttribute("chatter"));
+   }
                  in1.close();
 
 /*HashMap hm =(HashMap) session.getAttribute("ChatterList");
@@ -132,12 +215,12 @@ out.println(demo.getName()+"/"+demo.getPosition()+"/"+demo.getRoom());
 
 %>
                 </td>
-                <td valign="top"> <%             home=System.getProperty("user.home");
-                       in1 = new FileInputStream(home+"/chat.properties");
+                <td valign="top"> <%home=AppPath.getPropertiesFilePath();
+                  in1 = new FileInputStream(home+"chat.properties");
 
                   pro=new Properties();
-                 pro = new Properties();
-				pro.load(in1);
+                  pro = new Properties();
+		  pro.load(in1);
 
 d=null;
  em = pro.keys();
@@ -149,19 +232,29 @@ d=null;
 if(str.startsWith((String)session.getAttribute("institute_id")+"&candidate"))
     {
 //String temp=str.substring(0,str.lastIndexOf("&"));
-%><font color="red"><%=str.substring(str.lastIndexOf("&")+1,str.length())%></font><br>
+%><font color="red">
+    <%
+    String pro1=str.substring(str.lastIndexOf("&")+1,str.length());
+   
+Login obj=(Login)LoginDAO.getLoginUserName(pro1,(String)session.getAttribute("institute_id"));
+                 %>    
+
+    
+    <%=obj.getUserName()%></font><br>
 <%}
     else
       {
 String temp=str.substring(0,str.lastIndexOf("&"));
+String t1=temp.substring(temp.lastIndexOf("&")+1,temp.length());
+Login obj=(Login)LoginDAO.getLoginUserName(t1,(String)session.getAttribute("institute_id"));
 if(str.equalsIgnoreCase((String)session.getAttribute("user_id"))){
-%><font color="blue"><%=temp.substring(temp.lastIndexOf("&")+1,temp.length())%></font><br>
+%><font color="blue"><%=obj.getUserName()%></font><br>
 
     <%}else{%>
-    <font color="cyan"><%=temp.substring(temp.lastIndexOf("&")+1,temp.length())%></font><br>
+    <font color="cyan"><%=obj.getUserName()%></font><br>
     <%}}
  
-  
+ 
  
   }
 
@@ -225,7 +318,7 @@ if(room.equalsIgnoreCase(demo1.getRoom()))
 
 
      out.println("<tr>");
-    out.println("<td>" );
+     out.println("<td>");
    //  demo1.getChatterName()+ ": (" +demo1.getTimeStamp()
     //   + ")-> " + demo1.getMessage() + "</td> " );
     out.println("</tr>");

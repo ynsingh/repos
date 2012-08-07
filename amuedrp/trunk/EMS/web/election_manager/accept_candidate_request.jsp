@@ -4,7 +4,12 @@
     Author     : akhtar
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*,java.util.*;"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -652,7 +657,28 @@
                             <td align="left" colspan="2">email*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
 
                         </tr>
+                         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Candidature Eligibility Criteria </b></td></tr>
 
+                        <tr><td class="datagrid">
+                                <%
+List<ElectionCriteria> obj=(List<ElectionCriteria>)session.getAttribute("rule");
+if(obj!=null)
+    {
+       Iterator it=obj.iterator();
+       for(int i=0;i<obj.size();i++)
+       {
+           out.println("<h2> Rule :<font color='blue'>"+obj.get(i).getElectionrule().getCriteria()+"</font></h2>");
+           out.println("Ans:"+obj.get(i).getRuleanswer().getAnswer()+"<br/>");
+       }
+
+     }
+
+
+%>
+
+
+
+                            </td></tr>
                         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Candidature Request for: </b></td></tr>
                         <%--<tr><td align="">Enrolled IN*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                                 <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">

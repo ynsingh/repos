@@ -21,6 +21,7 @@
     boolean page=true;
     String align="left";
 %>
+
 <%
 try{
 locale1=(String)session.getAttribute("locale");

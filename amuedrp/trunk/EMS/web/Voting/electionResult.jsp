@@ -7,7 +7,11 @@
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="com.myapp.struts.Voting.Result,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Candidate1,java.sql.ResultSet"%>
 
     <%@ page import="java.util.*,java.lang.*"%>

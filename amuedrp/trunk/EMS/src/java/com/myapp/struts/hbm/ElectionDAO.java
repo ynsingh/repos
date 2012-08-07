@@ -14,6 +14,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -36,6 +37,40 @@ String id="";
             
            // LogicalExpression le = Restrictions.and(a, b);
             Integer maxbiblio = criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.electionId")).uniqueResult().toString());
+           System.out.println(maxbiblio);
+
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+
+           id=String.valueOf(maxbiblio);
+            session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally {
+            session.close();
+        }
+ return id;
+    }
+     public static String returnMaxElectionRuleId(String institute_id,String election_id) {
+
+
+String id="";
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(Electionrule.class);
+            Criterion a = Restrictions.eq("id.instituteId", institute_id);
+            Criterion b = Restrictions.eq("id.electionId", election_id);
+
+            LogicalExpression le = Restrictions.and(a, b);
+            Integer maxbiblio = criteria.add(le).setProjection(Projections.count("id.ruleId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.ruleId")).uniqueResult().toString());
            System.out.println(maxbiblio);
 
             if (maxbiblio == null) {
@@ -379,26 +414,26 @@ Session session =null;
         return obj;
 }
 
-    public static List <ElectionRuleEligiblity1> GetElectionDetails1(String institute_id,String managerid,int pageNumber)
+    public static List <Election> GetElectionDetails1(String institute_id,String managerid,int pageNumber)
     {
     Session session =null;
-    List <ElectionRuleEligiblity1> obj = null;
+    List <Election> obj = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
 
             String sql="";
 
-            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id and a.created_by=:created_by";
+            sql = "From Election  where id.instituteId=:institute_id and createdBy=:created_by";
 
 
             System.out.println(sql);
 
-          Query query =  session.createSQLQuery(sql)
-                    .addEntity(Election.class)
-                    .addEntity(Electionrule.class)
-                    .addEntity(Eligibility.class)
-                    .setResultTransformer(Transformers.aliasToBean(ElectionRuleEligiblity1.class));
+          Query query =  session.createQuery(sql);
+              //    .addEntity(Election.class)
+//                    .addEntity(Electionrule.class)
+//                    .addEntity(Eligibility.class)
+             //       .setResultTransformer(Transformers.aliasToBean(Election.class));
           query.setString("institute_id", institute_id);
           query.setString("created_by", managerid);
 
@@ -408,11 +443,11 @@ if(pageNumber==0){
 
             query = query.setFirstResult(0);
               query.setMaxResults(100);
-             obj= (List<ElectionRuleEligiblity1>) query.list();
+             obj= (List<Election>) query.list();
 }
 else{             PagingAction o=new PagingAction(query,pageNumber,100);
 
-obj= (List<ElectionRuleEligiblity1>) query.list();
+obj= (List<Election>) query.list();
 // System.out.println("Size of Record"+obj.size()+".........................."+pageNumber);
 }
 
@@ -431,17 +466,17 @@ obj= (List<ElectionRuleEligiblity1>) query.list();
 
 
 
-    public static List <ElectionRuleEligiblity1> GetElectionDetailsbyinstituteId(String institute_id,String field,String value,String field1)
+    public static List <Election> GetElectionDetailsbyinstituteId(String institute_id,String field,String value,String field1)
     {
-        if(field!=null)
-        field="a."+field;
-        if(field1!=null)
-        field1="a."+field1;
-
-        System.out.println(field+"   "+field1);
+//        if(field!=null)
+//        field="a."+field;
+//        if(field1!=null)
+//        field1="a."+field1;
+//
+//        System.out.println(field+"   "+field1);
       
     Session session =null;
-    List <ElectionRuleEligiblity1> obj = null;
+    List <Election> obj = null;
     try {
         session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -449,22 +484,24 @@ obj= (List<ElectionRuleEligiblity1>) query.list();
             String sql="";
 if(value!=null && value.isEmpty()==false)
 {
-            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and "+field+" like '"+value+"%' and a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id order by "+field1;
+//            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and "+field+" like '"+value+"%' and a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id order by "+field1;
+            sql = "From Election  where id.instituteId=:institute_id and "+field+" like '"+value+"%'  order by "+field1;
 }
 else
-            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and  a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id order by "+field1;
+//            sql = "select a.*,b.*,c.* from election a, electionrule b,eligibility c where a.election_id=b.election_id and  a.election_id=c.election_id and a.institute_id=c.institute_id  and  a.institute_id=b.institute_id and a.institute_id=:institute_id order by "+field1;
+            sql = "From Election  where id.instituteId=:institute_id  order by "+field1;
 
 
             System.out.println(sql);
 
-          Query query =  session.createSQLQuery(sql)
-                    .addEntity(Election.class)
-                    .addEntity(Electionrule.class)
-                    .addEntity(Eligibility.class)
-                    .setResultTransformer(Transformers.aliasToBean(ElectionRuleEligiblity1.class));
-          query.setString("institute_id", institute_id);
-         
-            obj= (List<ElectionRuleEligiblity1>) query.list();
+          Query query =  session.createQuery(sql);
+//                    .addEntity(Election.class)
+//                    .addEntity(Electionrule.class)
+//                    .addEntity(Eligibility.class)
+//                    .setResultTransformer(Transformers.aliasToBean(ElectionRuleEligiblity1.class));
+                   query.setString("institute_id", institute_id);
+                  
+            obj= (List<Election>) query.list();
             session.getTransaction().commit();
         }
     catch(RuntimeException e){

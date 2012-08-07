@@ -45,11 +45,11 @@ public class EmailSetupAction extends org.apache.struts.action.Action {
 //pass=PasswordEncruptionUtility.password_encrupt(password);
 
          EmailSetupDAO emailsetupdao=new EmailSetupDAO();
-         EmailSetup emailsetup= new EmailSetup();
+     //    EmailSetup emailsetup= new EmailSetup();
 
-         emailsetup.setEmailId(emailid);
-         emailsetup.setInstituteId(institute_id);
-         emailsetup.setPassword(password);
+    //     emailsetup.setEmailId(emailid);
+     //    emailsetup.setInstituteId(institute_id);
+     //    emailsetup.setPassword(password);
        
 
 System.out.println("hiiiiii");

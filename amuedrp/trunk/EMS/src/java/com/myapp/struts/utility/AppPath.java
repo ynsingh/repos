@@ -4,10 +4,14 @@
  */
 
 package com.myapp.struts.utility;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import javax.naming.*;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
@@ -32,7 +36,7 @@ public class AppPath
                 if(ctx==null)
                     throw new RuntimeException("JNDI");
 
-                    ds=(String)ctx.lookup("java:comp/env/path");
+                    ds=(String)ctx.lookup("java:comp/env/path1");
                     path=ds.toString();
                   System.out.println("Path"+ds);
                   }
@@ -104,6 +108,26 @@ String projectPath = getProject();
 
 
 }
+
+public static String getProjectPropertiesImagePath(){
+    String os=System.getProperty("os.name");
+String projectPath = getProject();
+
+
+    if(os.equalsIgnoreCase("linux"))
+    {
+        projectPath=projectPath+"/../EMSLOG/images/";
+    return projectPath;
+    }
+    else
+    {
+    projectPath=projectPath+"\\..\\EMSLOG\\images\\";
+    return projectPath;
+    }
+
+
+
+}
 public static String getPropertiesFilePath(){
     String os=System.getProperty("os.name");
   
@@ -124,6 +148,10 @@ String projectPath = getProject();
 
 
 }
+
+
+
+
 public static ResourceBundle MLI(String lang)
 {
 try {

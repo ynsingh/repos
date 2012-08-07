@@ -146,7 +146,7 @@ public class AddVoterRegistrationAction extends org.apache.struts.action.Action 
                if (iii!=null)
                {
                   String ext=UserLog.returnextension(v.getFileName());
-                  UserLog.writeImage(id+instituteid+"."+ext, iii);
+                  UserLog.writeImage1(id+instituteid+"."+ext, iii);
                   ob.setImage(id+instituteid+"."+ext);
                }
                 admin_password= RandomPassword.getRandomString(10);

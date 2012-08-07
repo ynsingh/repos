@@ -31,7 +31,7 @@ public class VoterRegistration  implements java.io.Serializable {
      private String zipCode1;
      private String country1;
      private String email;
-     private byte[] image;
+     private String image;
      private String status;
      private String FName;
      private String MName;
@@ -53,7 +53,7 @@ public class VoterRegistration  implements java.io.Serializable {
     public VoterRegistration(VoterRegistrationId id) {
         this.id = id;
     }
-    public VoterRegistration(VoterRegistrationId id, String department, String course, String year, String courseDuration, String currentSession, String joiningDate, String voterName, String gender, String birthdate, String mobileNumber, String CAddress, String city, String state, String zipCode, String country, String PAddress, String city1, String state1, String zipCode1, String country1, String email, byte[] image, String status, String FName, String MName, String setVoter) {
+    public VoterRegistration(VoterRegistrationId id, String department, String course, String year, String courseDuration, String currentSession, String joiningDate, String voterName, String gender, String birthdate, String mobileNumber, String CAddress, String city, String state, String zipCode, String country, String PAddress, String city1, String state1, String zipCode1, String country1, String email, String image, String status, String FName, String MName, String setVoter) {
        this.id = id;
        this.department = department;
        this.course = course;
@@ -237,11 +237,11 @@ public class VoterRegistration  implements java.io.Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    public byte[] getImage() {
+    public String getImage() {
         return this.image;
     }
     
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
     public String getStatus() {

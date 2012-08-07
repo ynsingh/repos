@@ -7,6 +7,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="java.util.*,com.myapp.struts.hbm.Election,com.myapp.struts.hbm.*" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -72,7 +77,7 @@ function updateCast(cartXML)
 var em1 = em.getElementsByTagName("message");
 var text=em1[0].firstChild.nodeValue;
 if(text=="Voter Already voted for this election!"){
-    alert(text);
+  //  alert(text);
 }
     else
 {windload();}
@@ -506,16 +511,25 @@ IFRAMEref = null;
 return heigh;
 }
 var p,e;
-function candiReq(pos,election) {
-    //alert("index="+index+" current="+current);
-   // alert(document.getElementById("position").style.display);
+function candiReq(pos,election,nor) {
+    var data="";
+   for(i=1;i<=nor;i++)
+     { if(document.getElementById('text'+i).value=="")
+      {
+          
+          alert("Please Specify Election Rules Ans before submit");
+          return false;  }else{
+          data+=document.getElementById('text'+i).value+"|";
+
+          }
+     }
 p=pos;
 e=election;
     var req = newXMLHttpRequest();
 
 req.onreadystatechange = getReadyStateHandler(req, responseRequest);
 
-req.open("POST","<%=request.getContextPath()%>/applyCandidature.do?position="+pos+"&election="+election, true);
+req.open("POST","<%=request.getContextPath()%>/applyCandidature.do?position="+pos+"&election="+election+"&rule="+data, true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send();
@@ -587,10 +601,12 @@ curElec.innerHTML="";
 var em = cartXML.getElementsByTagName("elections")[0];
 var em1 = em.getElementsByTagName("election");
 //var em = cartXML.firstChild.value;
+
 for(iii=0;iii<em1.length;iii++)
-    {
+    { 
         var electionId1 = em1[iii].getElementsByTagName("election_id");
-        var electionName1 = em1[iii].getElementsByTagName("electionname");
+     
+      var electionName1 = em1[iii].getElementsByTagName("electionname");
         var description1 = em1[iii].getElementsByTagName("description");
         var nstart1 = em1[iii].getElementsByTagName("Nstart");
         var nend1 = em1[iii].getElementsByTagName("Nend");
@@ -600,15 +616,22 @@ for(iii=0;iii<em1.length;iii++)
         var Wend1 = em1[iii].getElementsByTagName("Wend");
         var Estart1 = em1[iii].getElementsByTagName("Estart");
         var Eend1 = em1[iii].getElementsByTagName("Eend");
+
         var posts = em1[iii].getElementsByTagName("Posts")[0];
         var post = posts.getElementsByTagName("post");
+        var rules = em1[iii].getElementsByTagName("Rules")[0];
+        var rule = rules.getElementsByTagName("rule");
+   
         var electionId = electionId1[0].firstChild.nodeValue;
 
         var electionName = electionName1[0].firstChild.nodeValue;
+      //  alert("ff");
         var description = description1[0].firstChild.nodeValue;
+          
         var nstart = nstart1[0].firstChild.nodeValue;
         var nend = nend1[0].firstChild.nodeValue;
         var sstart = Sstart1[0].firstChild.nodeValue;
+        
         var send = Send1[0].firstChild.nodeValue;
         var wstart = Wstart1[0].firstChild.nodeValue;
         var wend = Wend1[0].firstChild.nodeValue;
@@ -619,7 +642,7 @@ for(iii=0;iii<em1.length;iii++)
        var id = "election"+iii;
        doc.id = id;
        doc.style.border = "2px solid teal";
-       
+        
        var doc1 = document.createElement("div");
        var elecId = "elecHeader"+iii;
        doc1.id = elecId;
@@ -632,6 +655,7 @@ for(iii=0;iii<em1.length;iii++)
        var blockId = "block"+iii;
        block1.id = blockId;
        block1.style.display = "none";
+         
        var innerhtm = '<table>';
        innerhtm = innerhtm + '<tr><td>Election Name:</td><td>'+ electionName +'</td></tr>';
        innerhtm = innerhtm + '<tr><td>Description:</td><td>'+ description +'</td></tr>';
@@ -643,8 +667,39 @@ for(iii=0;iii<em1.length;iii++)
        //innerhtm = innerhtm + '<tr><td>Nomination Withdrawal End Date:</td><td>'+ wend +'</td></tr>';
        innerhtm = innerhtm + '<tr><td>Election Date:</td><td>'+ estart +'&nbsp;&nbsp;&nbsp;&nbsp; to&nbsp;&nbsp;&nbsp;&nbsp; '+ eend +'</td></tr>';
        //innerhtm = innerhtm + '<tr><td>Election End Date:</td><td>'+ eend +'</td></tr>';
+
+        for(jj=0;jj<rule.length;jj++)
+           {
+               var positionId1 = rule[jj].getElementsByTagName("ruleId");
+               var positionId = positionId1[0].firstChild.nodeValue;
+               var position1 = rule[jj].getElementsByTagName("rulevalue");
+               var position = position1[0].firstChild.nodeValue;
+
+              <%-- <%
+               Calendar cal = Calendar.getInstance();
+               Date d = cal.getTime();
+               %>--%>
+                          innerhtm +='<tr><td>'+position+'</td>';
+                         <%-- if(Date.parse(nstart)<=Date.parse(<%=d%>) && Date.parse(nend)>Date.parse(<%=d%>))--%>
+                      // {
+
+                                  innerhtm +='<td><input type="textbox" id="text'+positionId+'" value=""/></td>';
+                                
+                      //}
+                       innerhtm +='</tr>';
+           }
+       innerhtm += '</table>';
+
+
+
+
+
        innerhtm += '<tr><td colspan=2>For the Post of:</td></tr>';
-       
+      // alert(post.length);
+
+
+
+
        for(jj=0;jj<post.length;jj++)
            {
                var positionId1 = post[jj].getElementsByTagName("positionId");
@@ -661,7 +716,7 @@ for(iii=0;iii<em1.length;iii++)
                          <%-- if(Date.parse(nstart)<=Date.parse(<%=d%>) && Date.parse(nend)>Date.parse(<%=d%>))--%>
                       // {
                       
-                                  innerhtm +='<td><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId.toString()+');"/></td>';
+    innerhtm +='<td><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId.toString()+','+rule.length.toString()+');"/></td>';
                     
                       //}
                        innerhtm +='</tr>';
@@ -670,9 +725,11 @@ for(iii=0;iii<em1.length;iii++)
        block1.innerHTML = innerhtm;
        doc.appendChild(block1);
        curElec.appendChild(doc);
+
     }
 var doc2 = document.getElementById("currentElections");
 doc2.style.display = "block";
+
 
 }
   function previewBallot() {

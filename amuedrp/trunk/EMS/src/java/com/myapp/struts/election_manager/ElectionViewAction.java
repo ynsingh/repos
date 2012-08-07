@@ -39,8 +39,8 @@ private ElectionId elid=new ElectionId();
          String button="Update";
         HttpSession session = request.getSession();
         DepActionForm employeeform=(DepActionForm)form;
-          ElectionRuleEligiblity1 ere=new ElectionRuleEligiblity1();
-        List<ElectionRuleEligiblity1> l;
+          Election ere=new Election();
+        Election l;
         // System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD"+button);
           String Eid=employeeform.getInstituteId();
           if (Eid==null) Eid = (String)session.getAttribute("institute_id");
@@ -56,42 +56,49 @@ private ElectionId elid=new ElectionId();
         if(req!=null && req1!=null){
 
  button="View";
- 
-       l=(List<ElectionRuleEligiblity1>)ElectionDAO.GetElectionDetails(Eid,req);
+    List<Electionrule> obj= (List<Electionrule>)CandidateRegistrationDAO.GetRuleDetails1(Eid,req);
+    session.setAttribute("elerule", obj);
+       l=ElectionDAO.searchElection(req,Eid);
           System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+l);
-             if(!l.isEmpty()){
+             if(l!=null){
 
-   ere= (ElectionRuleEligiblity1)l.get(0);
+   ere= (Election)l;
+
+             employeeform.setCreatedby(ere.getCreatedBy());
+              employeeform.setEnddate(ere.getEndDate());
+               employeeform.setStartdate(ere.getStartDate());
+               employeeform.setNominationStart(ere.getNstart());
+               employeeform.setNominationEnd(ere.getNend());
+               employeeform.setScrutnyDate(ere.getScrutnyDate());
+               employeeform.setScrutnyEndDate(ere.getScrutnyEndDate());
+               employeeform.setWithdrawlDate(ere.getWithdrawlDate());
+               employeeform.setWithdrawlEndDate(ere.getWithdrawlEndDate());
+               employeeform.setResultDeclarationDate(ere.getResultDeclarationDate());
+                employeeform.setElectionname(ere.getElectionName());
+                 employeeform.setStatus(ere.getStatus());
+                 employeeform.setDescription(ere.getDescription());
+            employeeform.setElectionId(ere.getId().getElectionId());
+            employeeform.setInstituteId(ere.getId().getInstituteId());
 
 
-             employeeform.setCreatedby(ere.getElection().getCreatedBy());
-              employeeform.setEnddate(ere.getElection().getEndDate());
-               employeeform.setStartdate(ere.getElection().getStartDate());
-               employeeform.setNominationStart(ere.getElection().getNstart());
-               employeeform.setNominationEnd(ere.getElection().getNend());
-               employeeform.setScrutnyDate(ere.getElection().getScrutnyDate());
-               employeeform.setScrutnyEndDate(ere.getElection().getScrutnyEndDate());
-               employeeform.setWithdrawlDate(ere.getElection().getWithdrawlDate());
-               employeeform.setWithdrawlEndDate(ere.getElection().getWithdrawlEndDate());
-               employeeform.setResultDeclarationDate(ere.getElection().getResultDeclarationDate());
-                employeeform.setElectionname(ere.getElection().getElectionName());
-                 employeeform.setStatus(ere.getElection().getStatus());
-                 employeeform.setDescription(ere.getElection().getDescription());
-            employeeform.setElectionId(ere.getElection().getId().getElectionId());
-            employeeform.setInstituteId(ere.getElection().getId().getInstituteId());
-
-
-            employeeform.setCritaria(ere.getElectionrule().getCriteria());
-            employeeform.setAttendence(ere.getEligibility().getAttendence());
-            employeeform.setBacklog(ere.getEligibility().getBacklog());
-            employeeform.setCriminal(ere.getEligibility().getCriminallog());
-            employeeform.setDeaprtment(ere.getEligibility().getDepartment());
-            employeeform.setMarks(ere.getEligibility().getMarks());
-            employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
+           // employeeform.setCritaria(ere.getElectionrule().getCriteria());
+           // employeeform.setAttendence(ere.getEligibility().getAttendence());
+           // employeeform.setBacklog(ere.getEligibility().getBacklog());
+           // employeeform.setCriminal(ere.getEligibility().getCriminallog());
+           // employeeform.setDeaprtment(ere.getEligibility().getDepartment());
+          //  employeeform.setMarks(ere.getEligibility().getMarks());
+           // employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
 
             request.setAttribute("button", button);
 
              }
+
+
+
+
+
+
+
           request.setAttribute("back", "back");
           return mapping.findForward("add");
 
@@ -103,7 +110,7 @@ private ElectionId elid=new ElectionId();
        // Election l=ElectionDAO.searchElection(id);
         
        //List<ElectionRuleEligiblity1> l;
-       l=(List<ElectionRuleEligiblity1>)ElectionDAO.GetElectionDetails(Eid,id);
+       l=ElectionDAO.searchElection(id,Eid);
           System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+l);
         if(button.equals("Add"))
         {
@@ -125,32 +132,32 @@ private ElectionId elid=new ElectionId();
         if(button.equals("Update"))
         {
            
-            if(!l.isEmpty()){
-                 ere= (ElectionRuleEligiblity1)l.get(0);
-             employeeform.setCreatedby(ere.getElection().getCreatedBy());
-              employeeform.setEnddate(ere.getElection().getEndDate());
-               employeeform.setStartdate(ere.getElection().getStartDate());
-               employeeform.setNominationStart(ere.getElection().getNstart());
-               employeeform.setNominationEnd(ere.getElection().getNend());
-               employeeform.setScrutnyDate(ere.getElection().getScrutnyDate());
-               employeeform.setScrutnyEndDate(ere.getElection().getScrutnyEndDate());
-               employeeform.setWithdrawlDate(ere.getElection().getWithdrawlDate());
-               employeeform.setWithdrawlEndDate(ere.getElection().getWithdrawlEndDate());
-               employeeform.setResultDeclarationDate(ere.getElection().getResultDeclarationDate());
-                employeeform.setElectionname(ere.getElection().getElectionName());
-                 employeeform.setStatus(ere.getElection().getStatus());
-                 employeeform.setDescription(ere.getElection().getDescription());
-            employeeform.setElectionId(ere.getElection().getId().getElectionId());
-            employeeform.setInstituteId(ere.getElection().getId().getInstituteId());
+            if(l!=null){
+                 ere= (Election)l;
+             employeeform.setCreatedby(ere.getCreatedBy());
+              employeeform.setEnddate(ere.getEndDate());
+               employeeform.setStartdate(ere.getStartDate());
+               employeeform.setNominationStart(ere.getNstart());
+               employeeform.setNominationEnd(ere.getNend());
+               employeeform.setScrutnyDate(ere.getScrutnyDate());
+               employeeform.setScrutnyEndDate(ere.getScrutnyEndDate());
+               employeeform.setWithdrawlDate(ere.getWithdrawlDate());
+               employeeform.setWithdrawlEndDate(ere.getWithdrawlEndDate());
+               employeeform.setResultDeclarationDate(ere.getResultDeclarationDate());
+                employeeform.setElectionname(ere.getElectionName());
+                 employeeform.setStatus(ere.getStatus());
+                 employeeform.setDescription(ere.getDescription());
+            employeeform.setElectionId(ere.getId().getElectionId());
+            employeeform.setInstituteId(ere.getId().getInstituteId());
 
 
-            employeeform.setCritaria(ere.getElectionrule().getCriteria());
-            employeeform.setAttendence(ere.getEligibility().getAttendence());
-            employeeform.setBacklog(ere.getEligibility().getBacklog());
-            employeeform.setCriminal(ere.getEligibility().getCriminallog());
-            employeeform.setDeaprtment(ere.getEligibility().getDepartment());
-            employeeform.setMarks(ere.getEligibility().getMarks());
-            employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
+           // employeeform.setCritaria(ere.getElectionrule().getCriteria());
+           // employeeform.setAttendence(ere.getEligibility().getAttendence());
+            //employeeform.setBacklog(ere.getEligibility().getBacklog());
+           // employeeform.setCriminal(ere.getEligibility().getCriminallog());
+           // employeeform.setDeaprtment(ere.getEligibility().getDepartment());
+          //  employeeform.setMarks(ere.getEligibility().getMarks());
+          //  employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
            
             request.setAttribute("button", button);
             return mapping.findForward("add");
@@ -165,35 +172,35 @@ private ElectionId elid=new ElectionId();
         {
             
 
-            if(!l.isEmpty()){
+            if(l!=null){
                
-   ere= (ElectionRuleEligiblity1)l.get(0);
+                ere= (Election)l;
     
 
-             employeeform.setCreatedby(ere.getElection().getCreatedBy());
-              employeeform.setEnddate(ere.getElection().getEndDate());
-               employeeform.setStartdate(ere.getElection().getStartDate());
-               employeeform.setNominationStart(ere.getElection().getNstart());
-               employeeform.setNominationEnd(ere.getElection().getNend());
-               employeeform.setScrutnyDate(ere.getElection().getScrutnyDate());
-               employeeform.setScrutnyEndDate(ere.getElection().getScrutnyEndDate());
-               employeeform.setWithdrawlDate(ere.getElection().getWithdrawlDate());
-               employeeform.setWithdrawlEndDate(ere.getElection().getWithdrawlEndDate());
-               employeeform.setResultDeclarationDate(ere.getElection().getResultDeclarationDate());
-                employeeform.setElectionname(ere.getElection().getElectionName());
-                 employeeform.setStatus(ere.getElection().getStatus());
-                 employeeform.setDescription(ere.getElection().getDescription());
-            employeeform.setElectionId(ere.getElection().getId().getElectionId());
-            employeeform.setInstituteId(ere.getElection().getId().getInstituteId());
+             employeeform.setCreatedby(ere.getCreatedBy());
+              employeeform.setEnddate(ere.getEndDate());
+               employeeform.setStartdate(ere.getStartDate());
+               employeeform.setNominationStart(ere.getNstart());
+               employeeform.setNominationEnd(ere.getNend());
+               employeeform.setScrutnyDate(ere.getScrutnyDate());
+               employeeform.setScrutnyEndDate(ere.getScrutnyEndDate());
+               employeeform.setWithdrawlDate(ere.getWithdrawlDate());
+               employeeform.setWithdrawlEndDate(ere.getWithdrawlEndDate());
+               employeeform.setResultDeclarationDate(ere.getResultDeclarationDate());
+                employeeform.setElectionname(ere.getElectionName());
+                 employeeform.setStatus(ere.getStatus());
+                 employeeform.setDescription(ere.getDescription());
+            employeeform.setElectionId(ere.getId().getElectionId());
+            employeeform.setInstituteId(ere.getId().getInstituteId());
 
 
-            employeeform.setCritaria(ere.getElectionrule().getCriteria());
-            employeeform.setAttendence(ere.getEligibility().getAttendence());
-            employeeform.setBacklog(ere.getEligibility().getBacklog());
-            employeeform.setCriminal(ere.getEligibility().getCriminallog());
-            employeeform.setDeaprtment(ere.getEligibility().getDepartment());
-            employeeform.setMarks(ere.getEligibility().getMarks());
-            employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
+           // employeeform.setCritaria(ere.getElectionrule().getCriteria());
+          //  employeeform.setAttendence(ere.getEligibility().getAttendence());
+            //employeeform.setBacklog(ere.getEligibility().getBacklog());
+            //employeeform.setCriminal(ere.getEligibility().getCriminallog());
+           // employeeform.setDeaprtment(ere.getEligibility().getDepartment());
+          //  employeeform.setMarks(ere.getEligibility().getMarks());
+          //  employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
 
             request.setAttribute("button", button);
             return mapping.findForward("add");

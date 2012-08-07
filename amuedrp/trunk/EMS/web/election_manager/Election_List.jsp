@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <jsp:include page="/election_manager/login.jsp"/>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election"%>
 
@@ -114,9 +119,9 @@ pageContext.setAttribute("Edit",Edit);
 
  <%
 
- List<ElectionRuleEligiblity1> rs = (List<ElectionRuleEligiblity1>)session.getAttribute("resultset1");
+ List rs =(List) session.getAttribute("resultset1");
 
-
+System.out.println(rs.size());
    requestList = new ArrayList();
 //requestList = (ArrayList)session.getAttribute("resultset");
    int tcount =0;
@@ -128,12 +133,10 @@ pageContext.setAttribute("Edit",Edit);
 if(rs!=null){
   Iterator it = rs.iterator();
 
-//requestList = (Login)rs.get(0);
-
    while (it.hasNext()) {
 
-	
-        election = (Election)rs.get(tcount).getElection();
+	election=(Election)rs.get(tcount);
+      
        // staffdetail = (StaffDetail)rs.get(tcount).getStaffDetail();
 
         Ob = new StaffDoc ();
@@ -141,7 +144,7 @@ if(rs!=null){
 
        // Ob.setmanager_id(electionmanager.getId().getManagerId());
         //Ob.setinstitute_id(electionmanager.getId().getInstituteId());
-        //Ob.setfirst_name(staffdetail.getFirstName());
+        //Ob.setfirst_ame(staffdetail.getFirstName());
         //Ob.setlast_name(staffdetail.getLastName());
         //Ob.setStaff_id(electionmanager.getStaffId());
         //Ob.setUser_id(electionmanager.getUserId());

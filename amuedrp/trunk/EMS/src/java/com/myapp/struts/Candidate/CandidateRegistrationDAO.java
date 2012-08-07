@@ -13,7 +13,10 @@ import com.myapp.struts.hbm.Login;
 import com.myapp.struts.hbm.VoterCandidate;
 import com.myapp.struts.hbm.VoterRegistration;
 import com.myapp.struts.hbm.Election;
+import com.myapp.struts.hbm.ElectionCriteria;
+import com.myapp.struts.hbm.Electionrule;
 import com.myapp.struts.hbm.Position1;
+import com.myapp.struts.hbm.Ruleanswer;
 import com.myapp.struts.hbm.SetVoter;
 import com.myapp.struts.hbm.VoterList;
 import java.util.List;
@@ -54,6 +57,31 @@ public static void insert(CandidateRegistration obj) {
             session.close();
         }
      
+
+
+}
+public static void insert1(Ruleanswer obj) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+
+        try {
+            tx = (Transaction) session.beginTransaction();
+
+            session.save(obj);
+            tx.commit();
+
+
+
+        } catch (Exception ex) {
+
+                tx.rollback();
+              ex.printStackTrace();
+
+        } finally {
+            session.close();
+        }
+
 
 
 }
@@ -650,6 +678,78 @@ public static List<SetVoter> getVoterDetails(String instituteid){
         }
     return candi;
 }
+ public static List<ElectionCriteria> GetRuleDetails(String instituteId,String enrollment,String eid)
+    {
+         Session session =null;
+
+    List<ElectionCriteria> candi=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select a.*,b.* from electionrule  b, ruleanswer a where a.rule_id=b.rule_id and a.institute_id=b.institute_id and a.election_id=b.election_id and a.institute_id=:institute_id and a.enrollment=:enrollment and a.election_id=:election_id";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createSQLQuery(sql)
+                    .addEntity(Ruleanswer.class)
+                    .addEntity(Electionrule.class)
+
+                    .setResultTransformer(Transformers.aliasToBean(ElectionCriteria.class));
+          query.setString("institute_id",instituteId );
+          query.setString("enrollment", enrollment);
+          query.setString("election_id", eid);
+
+         candi= (List<ElectionCriteria>)query.list();
+            session.getTransaction().commit();
+        }
+    catch(Exception e){
+    e.printStackTrace();
+    }
+    finally {
+            session.close();
+        }
+    return candi;
+}
+ public static List<Electionrule> GetRuleDetails1(String instituteId,String eid)
+    {
+         Session session =null;
+
+    List<Electionrule> candi=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "From Electionrule where id.instituteId=:institute_id and id.electionId=:election_id";
+
+
+            System.out.println(sql);
+
+          Query query =  session.createQuery(sql);
+//                    .addEntity(Ruleanswer.class)
+//                    .addEntity(Electionrule.class)
+//
+//                    .setResultTransformer(Transformers.aliasToBean(ElectionCriteria.class));
+          query.setString("institute_id",instituteId );
+          
+          query.setString("election_id", eid);
+
+         candi= (List<Electionrule>)query.list();
+            session.getTransaction().commit();
+        }
+    catch(Exception e){
+    e.printStackTrace();
+    }
+    finally {
+            session.close();
+        }
+    return candi;
+}
 
 
 
@@ -767,7 +867,7 @@ public static List<SetVoter> getVoterDetails(String instituteid){
 
 
 
-            Query query = session.createQuery("FROM VoterRegistration where   id.instituteId=:instituteId and setVoter is null");
+            Query query = session.createQuery("FROM VoterRegistration where   id.instituteId=:instituteId");
              
              query.setString("instituteId",instituteId );
 
@@ -784,6 +884,67 @@ public static List<SetVoter> getVoterDetails(String instituteid){
     return voter;
     
 }
+
+    public List<VoterRegistration> GetblockfromloginVoterList(String instituteId)
+    {
+
+           Session session =null;
+          List<VoterRegistration> voter=null;
+        try {
+            session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+//            voter=   session.createCriteria(VoterList.class)
+//                    .createAlias( "VoterRegistration","voterlist")
+//                    .createAlias("SetVoter","setlist")
+//                    .add( Restrictions.eqProperty("voterlist.instituteId", "setlist.instituteId") )
+//                    .add(Restrictions.neProperty("voterlist.enrollment", "setlist.enrollment"))
+//                    .add(Restrictions.eqProperty("voterlist.instituteId",instituteId))
+//                    .list();
+
+
+
+            Query query = session.createQuery("FROM VoterRegistration where   id.instituteId=:instituteId and status ='Blockedfromlogin'");
+
+             query.setString("instituteId",instituteId );
+
+            voter=(List<VoterRegistration>)query.list();
+               session.getTransaction().commit();
+                       System.out.println(voter.size()+"........bbbb............");
+        }
+    catch(Exception e){
+    e.printStackTrace();
+    }
+    finally {
+            session.close();
+        }
+    return voter;
+
+}
+   public  List <VoterRegistration> GetVoterList1(String instituteId,String Status) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+  List <VoterRegistration> voter=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(VoterRegistration.class)
+                    .add(Restrictions.conjunction()                   
+                   .add(Restrictions.eq("id.instituteId", instituteId))
+                    .add(Restrictions.eq("status", Status))
+                   );
+
+            voter=(List<VoterRegistration>)criteria.list();
+              session.getTransaction().commit();
+
+
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+
+        finally {
+            session.close();
+        }
+        return voter;
+    }
 
 
       public List<CandidateRegistration> getCandidateDetailsByStatus1(String instituteid,String electionId){

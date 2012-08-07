@@ -6,7 +6,11 @@ This Page is to Enter Staff ID
 -->
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <jsp:include page="/election_manager/login.jsp"/>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>

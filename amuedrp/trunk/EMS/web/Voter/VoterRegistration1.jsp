@@ -1,5 +1,10 @@
 
 <%@ page language="java" import="com.myapp.struts.hbm.VoterRegistration"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <jsp:include page="/election_manager/login.jsp"/>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -385,7 +390,7 @@ function check3()
   zcode.value=zcode1.value;
    var country=document.getElementById("country");
   var country1=document.getElementById("country1");
-  country.value=country1.value;
+  country1.value=country.value;
     var padd=document.getElementById("padd");
   var padd1=document.getElementById("padd1");
   padd.value=padd1.value;
@@ -401,6 +406,9 @@ function check3()
    var email=document.getElementById("email");
   var email1=document.getElementById("email1");
   email.value=email1.value;
+   var alternateemail=document.getElementById("alternateemail");
+  var alternateemail1=document.getElementById("alternateemail1");
+  alternateemail.value=alternateemail1.value;
   
   var button=document.getElementById("button");
   var button1=document.getElementById("button1");
@@ -532,7 +540,7 @@ function check3()
           <html:hidden property="city" name="VoterRegActionForm" styleId="city"/>
           <html:hidden property="state" name="VoterRegActionForm" styleId="state"/>
            <html:hidden property="zipcode" name="VoterRegActionForm" styleId="zcode"/>
-             <html:hidden property="country" name="VoterRegActionForm" styleId="country"/>
+             <html:hidden property="country" name="VoterRegActionForm" styleId="country1"/>
                 <html:hidden property="p_add" name="VoterRegActionForm" styleId="padd"/>
           <html:hidden property="city1" name="VoterRegActionForm" styleId="city2"/>
 
@@ -541,7 +549,7 @@ function check3()
           <html:hidden property="zipcode1" name="VoterRegActionForm" styleId="zcode2"/>
 
           <html:hidden property="country1" name="VoterRegActionForm" styleId="country2"/>
-
+            <html:hidden property="alternateemail" name="VoterRegActionForm" styleId="alternateemail"/>
          <html:hidden property="email" name="VoterRegActionForm" styleId="email"/>
            <html:hidden property="button" name="VoterRegActionForm" styleId="button"/>
            <html:hidden property="page" value="VoterRegistration" name="VoterRegActionForm" styleId="page"/>
@@ -574,12 +582,14 @@ function check3()
                             <%if (request.getAttribute("imagechange")!=null){%>
                         <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="120" height="120"/>
                         <%}else{%>
+                        
                         <html:img src="/EMS/Voter/viewimage.jsp" alt="no image selected" width="120" height="120" />
+                       
                         <%}%><br/>
-
+                          
 
                            <%}%>
-
+                  
  </div>
 
 
@@ -668,7 +678,7 @@ function check3()
     <td align="left">Email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return echeck();"/></td>
 </tr>
 <tr>
-    <td align="left">Alternate Email:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="alternateemail"  value="<%=zcode%>" styleId="alternateemail" /></td>
+    <td align="left">Alternate Email:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="alternateemail"  value="<%=zcode%>" styleId="alternateemail1" /></td>
 </tr>
                         </table>   </td>
                 <td>
@@ -677,12 +687,12 @@ function check3()
 </tr>
 
  <tr>
-     <td align="left">Country:</td><td><html:select name="VoterRegActionForm" onchange="print_state('state1',this.selectedIndex);" style="width:200px" styleId="country1" property="country"></html:select><%--<html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1" onfocus="statwords('Please enter country name')" onblur="return status()"/>--%></td>
-<script language="javascript">print_country("country1");</script>
+     <td align="left">Country:</td><td><html:select name="VoterRegActionForm" onchange="print_state('state1',this.selectedIndex);" style="width:200px" onblur="return status()" styleId="country"  property="country"></html:select><%--<html:text readonly="<%=read %>" name="VoterRegActionForm" property="country"  value="<%=country%>" styleId="country1" onfocus="statwords('Please enter country name')" onblur="return status()"/>--%></td>
+ <script language="javascript">print_country("country",document.getElementById('country1').value);print_state('state1',document.getElementById('country').selectedIndex);</script>
 
 </tr>
 <tr>
-    <td align="left">State:</td><td><html:select  name="VoterRegActionForm" property="state" value="<%=state%>" styleId="state1" style="width:200px">
+    <td align="left">State:</td><td><html:select  name="VoterRegActionForm"  property="state" value="<%=state%>" styleId="state1" onblur="return status()" style="width:200px">
         <html:option value="">Select</html:option>
         </html:select>
 

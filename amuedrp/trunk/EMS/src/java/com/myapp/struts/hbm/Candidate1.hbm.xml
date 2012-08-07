@@ -26,11 +26,11 @@
     <property name="menifesto" type="binary">
       <column name="menifesto"/>
     </property>
-    <property name="offlineVote" type="int">
-      <column name="offline_vote"/>
+    <property name="offlineVote" type="string">
+      <column length="255" name="offline_vote"/>
     </property>
-    <property name="agm" type="int">
-      <column name="agm"/>
+    <property name="agm" type="string">
+      <column length="255" name="agm"/>
     </property>
   </class>
 </hibernate-mapping>

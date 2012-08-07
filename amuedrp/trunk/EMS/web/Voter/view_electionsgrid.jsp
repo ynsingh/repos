@@ -1,10 +1,9 @@
-<%-- 
-    Document   : block_managergrid
-    Created on : Apr 11, 2011, 4:52:30 PM
-    Author     : Edrp-04
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.ElectionManager"%>
 
     <%@ page import="java.util.*,java.lang.*"%>
@@ -117,7 +116,7 @@ pageContext.setAttribute("Change_Status",Change_Status);
 
  <%
 
- List<ElectionRuleEligiblity1> rs = (List<ElectionRuleEligiblity1>)session.getAttribute("resultset");
+ List<Election> rs = (List<Election>)session.getAttribute("resultset");
 
 
    requestList = new ArrayList();
@@ -139,7 +138,7 @@ System.out.println("it="+(tcount));
    while (it.hasNext()) {
 
 	System.out.println("it="+(tcount));
-        election = (Election)rs.get(tcount).getElection();
+        election = (Election)rs.get(tcount);
         
 
         Ob = new StaffDoc ();

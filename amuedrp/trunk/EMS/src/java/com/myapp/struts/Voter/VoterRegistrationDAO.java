@@ -96,6 +96,29 @@ public class VoterRegistrationDAO {
         }
         return obj;
 }
+
+        public List<VoterRegistration> getVoterDetailsReg(String instituteid){
+  Session session =null;
+    List<VoterRegistration> obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+         session.beginTransaction();
+            Query query = session.createQuery("FROM VoterRegistration where id.instituteId=:instituteId and status='REGISTERED'");
+
+             query.setString("instituteId",instituteid );
+
+            obj= (List<VoterRegistration>) query.list();
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException s){
+    s.printStackTrace();
+    }
+
+        finally {
+            session.close();
+        }
+        return obj;
+}
     public static SetVoter searchVoterList(String instituteid,String electionId,String Enrollment,String password) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         SetVoter obj=null;

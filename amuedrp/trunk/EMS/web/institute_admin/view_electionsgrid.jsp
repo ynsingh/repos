@@ -117,7 +117,7 @@ pageContext.setAttribute("Change_Status",Change_Status);
 
  <%
 
- List<ElectionRuleEligiblity1> rs = (List<ElectionRuleEligiblity1>)session.getAttribute("resultset");
+ List rs = (List)session.getAttribute("resultset");
 
 
    requestList = new ArrayList();
@@ -133,41 +133,20 @@ pageContext.setAttribute("Change_Status",Change_Status);
    user name and password to connect to database.*/
 if(rs!=null){
   Iterator it = rs.iterator();
-System.out.println("it="+(tcount));
-//requestList = (Login)rs.get(0);
 
    while (it.hasNext()) {
-
-	System.out.println("it="+(tcount));
-        election = (Election)rs.get(tcount).getElection();
-        
-
+        election = (Election)rs.get(tcount);
         Ob = new StaffDoc ();
-        ems=new Election_Manager_StaffDetail();
-
         Ob.setElection_id(election.getId().getElectionId());
         Ob.setinstitute_id(election.getId().getInstituteId());
         Ob.setElection_name(election.getElectionName());
         Ob.setManager_id(election.getCreatedBy());
         Ob.setStatus(election.getStatus());
-        
-        //ems.getElectionManager().setStatus(ems.getElectionManager().getStatus());
-
-
-
-
-
-
-
-
-
-   requestList.add(Ob);
-   tcount++;
-it.next();
-   //System.out.println("tcount="+tcount);
+       requestList.add(Ob);
+        tcount++;
+        it.next();
 		     }
 
-System.out.println("tcount="+tcount);
 
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+perpage) >= requestList.size ())

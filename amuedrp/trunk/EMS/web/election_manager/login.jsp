@@ -2,7 +2,11 @@
 
 
 <%@page pageEncoding="UTF-8"%>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election"%>
 <%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
  <%@ page import="java.util.*,java.lang.*"%>
@@ -1019,15 +1023,19 @@ document.write('</div></span>');
                             <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=A"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%--<%=resource.getString("active")%>--%>Registered</a>
                         </li>
                         <li>
-                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("block")%></a>
+                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=B"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block From Election</a>
                         </li>
+                         <li>
+                            <a href="<%=contextPath%>/election_manager/search_voter.jsp?status=BL"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block From Login</a>
+                        </li>
+
                         <li>
                             <a href="<%=contextPath%>/election_manager/search_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"><%=resource.getString("viewall")%></a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter</a>
+                    <a href="<%=request.getContextPath()%>/election_manager/block_voter.jsp?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block Voter Frm Election</a>
                 </li>
                 <li>
                             <a href="<%=contextPath%>/election_manager/block_voter_1.jsp?status=A"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px">Block From Login</a>

@@ -8,12 +8,17 @@ package com.myapp.struts.Voter;
 import com.myapp.struts.Candidate.CandidateRegistrationDAO;
 import com.myapp.struts.hbm.CandidateRegistration;
 import com.myapp.struts.hbm.CandidateRegistrationId;
+import com.myapp.struts.hbm.Electionrule;
+import com.myapp.struts.hbm.ElectionruleId;
 import com.myapp.struts.hbm.PositionDAO;
+import com.myapp.struts.hbm.Ruleanswer;
+import com.myapp.struts.hbm.RuleanswerId;
 import com.myapp.struts.utility.AppPath;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -55,8 +60,9 @@ public class ApplyCandidatureAction extends org.apache.struts.action.Action {
         String report =   request.getParameter("report");
         String institute_id =(String)session.getAttribute("institute_id");
         String enrollment =(String)session.getAttribute("staff_id");
-        System.out.println(institute_id+" "+election+" "+enrollment+report);
-
+        String data1=(String)request.getParameter("rule");
+        StringTokenizer str=new StringTokenizer(data1,"|");
+        System.out.println(institute_id+" "+election+" "+enrollment+report+data1);
        
         if(report!=null){
 
@@ -137,15 +143,28 @@ if(!list.isEmpty()){
 
         CandidateRegistrationDAO.insert(ob);
 //        PositionDAO positiondao = new PositionDAO();
-request.setAttribute("report", "report");
-        response.setContentType("application/xml");
-        response.getWriter().write( "<messages><message>request for candidature has been sent succsessfully </message></messages>");
 
                // response.getWriter().write( "<messages><message>request for candidature has been sent succsessfully & PDF is generated please download it and submit to the Election Manager</message></messages>");
+int i=0;
+           while(str.hasMoreElements()){
 
-           
+           Ruleanswer obj=new Ruleanswer();
+           RuleanswerId objid=new RuleanswerId();
+           objid.setElectionId(election);
+           objid.setInstituteId(institute_id);
+           objid.setRuleId(String.valueOf(i+1));
+           objid.setEnrollment(enrollment);
+           obj.setAnswer(str.nextElement().toString());
+           obj.setId(objid);
+           CandidateRegistrationDAO.insert1(obj);
+i++;
+
+           }
 
 
+        request.setAttribute("report", "report");
+        response.setContentType("application/xml");
+        response.getWriter().write( "<messages><message>request for candidature has been sent succsessfully </message></messages>");
 
 
 

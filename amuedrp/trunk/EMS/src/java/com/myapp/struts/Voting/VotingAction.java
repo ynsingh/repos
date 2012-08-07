@@ -15,9 +15,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.Voting.Result;
 import com.myapp.struts.hbm.VotingDAO;
+import com.myapp.struts.utility.AppPath;
 import java.io.File;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +63,9 @@ public class VotingAction extends org.apache.struts.action.Action {
         String election =(String) request.getParameter("election");
         String report =(String) request.getParameter("report");
          String institute_id=(String)session.getAttribute("institute_id");
-
+         String institute_name =(String)session.getAttribute("institute_name");
+         String path = AppPath.getProjectImagePath();
+         System.out.println("pathImageeeeeeeeeeeee"+path);
           String postal =(String) request.getParameter("postal");
               String agm =(String) request.getParameter("agm");
 
@@ -88,7 +93,13 @@ public class VotingAction extends org.apache.struts.action.Action {
             int i=0;
             while(i<result.size()){
                 Result rs=(Result)result.get(i);
-                long r=Integer.parseInt(rs.getAgm())+Integer.parseInt(rs.getOffline_vote())+Integer.parseInt(rs.getVotes());
+                long r=0;
+                if(rs.getAgm()!=null)
+                   r+=Integer.parseInt(rs.getAgm());
+                if(rs.getOffline_vote()!=null)
+                   r+=Integer.parseInt(rs.getOffline_vote());
+                if(rs.getVotes()!=null)
+                   r+=Integer.parseInt(rs.getVotes());
                 System.out.println("totalvotes######"+r);
                 rs.setTotal(String.valueOf(r));
                 finalResult.add(rs);
@@ -113,7 +124,7 @@ if(!list.isEmpty()){
          HashMap hash= new HashMap();
          hash.put("systemdate",dateNow);
          hash.put("institute_name",institute_name);
-          hash.put("path",path);
+         hash.put("path",path);
 
 
          JasperFillManager.fillReportToFile(AppPath.getReportPath()+"ResultReport.jasper",hash,data);
@@ -157,17 +168,9 @@ if(!list.isEmpty()){
             System.out.println(postal+"................fghfghfghfg.");
 
             if(postal!=null)
-                result=result=votingdao.GetResultPostal(institute_id, election);
-            else if(agm!=null)
-                result=result=votingdao.GetResultAGM(institute_id, election);
-            else
-                 result=votingdao.GetResult(institute_id, election);
-
-            System.out.println(result);
-
-session.setAttribute("resultset", result);
-
-            if(result!=null)
+            {   result=result=votingdao.GetResultPostal(institute_id, election);
+            
+                 if(result!=null)
             {
                 positions+="<positions>";
                 positions+="<election>"+elec.getElectionName()+"</election>";
@@ -182,8 +185,8 @@ session.setAttribute("resultset", result);
                 {
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
                     m.get(rs.getPosition_name()).add(rs.getCandidate_name());
-                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
-                    m.get(rs.getPosition_name()).add(rs.getAgm());
+//                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
+//                    m.get(rs.getPosition_name()).add(rs.getAgm());
                     m.get(rs.getPosition_name()).add(rs.getVotes());
                 }
                 else
@@ -193,8 +196,8 @@ session.setAttribute("resultset", result);
                     m.put(rs.getPosition_name(),new ArrayList<String>());
                     m.get(rs.getPosition_name()).add(rs.getEnrolment());
                     m.get(rs.getPosition_name()).add(rs.getCandidate_name());
-                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
-                    m.get(rs.getPosition_name()).add(rs.getAgm());
+//                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
+//                    m.get(rs.getPosition_name()).add(rs.getAgm());
                     m.get(rs.getPosition_name()).add(rs.getVotes());
                 }
             }
@@ -218,8 +221,159 @@ session.setAttribute("resultset", result);
                         positions+="<candidate>";
                         positions+="<candidateenroll>"+it.next().toString()+"</candidateenroll>";
                         positions+="<candidatename>"+it.next().toString()+"</candidatename>";
-                     positions+="<postalvotes>"+it.next().toString()+"</postalvotes>";
-                     positions+="<agmvotes>"+it.next().toString()+"</agmvotes>";
+//                     positions+="<postalvotes>"+it.next().toString()+"</postalvotes>";
+//                     positions+="<agmvotes>"+it.next().toString()+"</agmvotes>";
+                        positions+="<votes>"+it.next().toString()+"</votes>";
+                        positions+="</candidate>";
+                    }
+                    positions+="</position>";
+                }
+                positions+="</positions>";
+
+            }
+            
+             System.out.println("XML ="+positions);
+                response.setContentType("application/xml");
+                response.getWriter().write(positions);
+                return null;
+            
+            }
+            else if(agm!=null)
+            {
+                result=result=votingdao.GetResultAGM(institute_id, election);
+
+                 if(result!=null)
+            {
+                positions+="<positions>";
+                positions+="<election>"+elec.getElectionName()+"</election>";
+                System.out.println("Position count="+result.size());
+            Iterator itpos = result.listIterator();
+            LinkedHashMap<String,ArrayList> m = new LinkedHashMap<String, ArrayList>();
+            ArrayList<String> lsPos = new ArrayList<String>();
+            while(itpos.hasNext())
+            {
+                Result rs = (Result)itpos.next();
+                if(m.containsKey(rs.getPosition_name()))
+                {
+                    m.get(rs.getPosition_name()).add(rs.getEnrolment());
+                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+//                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
+//                    m.get(rs.getPosition_name()).add(rs.getAgm());
+                    m.get(rs.getPosition_name()).add(rs.getVotes());
+                }
+                else
+                {
+                     lsPos.add(rs.getPosition_name().toString());
+                    lsPos.add(rs.getNumber_of_choice().toString());
+                    m.put(rs.getPosition_name(),new ArrayList<String>());
+                    m.get(rs.getPosition_name()).add(rs.getEnrolment());
+                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+//                      m.get(rs.getPosition_name()).add(rs.getOffline_vote());
+//                    m.get(rs.getPosition_name()).add(rs.getAgm());
+                    m.get(rs.getPosition_name()).add(rs.getVotes());
+                }
+            }
+
+
+
+
+            itpos = result.iterator();
+
+                for (int i=0;i<m.size();i++)
+                {
+                    List ls = (List)m.get((String)lsPos.get(2*i));
+                    positions+="<position>";
+        //            positions+="<positionId>"+lsPos.get(i)+"</positionId>";
+                    positions+="<positionname>"+lsPos.get(2*i)+"</positionname>";
+                    positions+="<noofchoice>"+lsPos.get(2*i+1)+"</noofchoice>";
+
+                    Iterator it = ls.iterator();
+                    while(it.hasNext())
+                    {
+                        positions+="<candidate>";
+                        positions+="<candidateenroll>"+it.next().toString()+"</candidateenroll>";
+                        positions+="<candidatename>"+it.next().toString()+"</candidatename>";
+//                     positions+="<postalvotes>"+it.next().toString()+"</postalvotes>";
+//                     positions+="<agmvotes>"+it.next().toString()+"</agmvotes>";
+                        positions+="<votes>"+it.next().toString()+"</votes>";
+                        positions+="</candidate>";
+                    }
+                    positions+="</position>";
+                }
+                positions+="</positions>";
+
+            }
+
+             System.out.println("XML ="+positions);
+                response.setContentType("application/xml");
+                response.getWriter().write(positions);
+                return null;
+
+
+
+
+
+            }
+            else
+                 result=votingdao.GetResult(institute_id, election);
+
+            System.out.println(result);
+
+session.setAttribute("resultset", result);
+
+            if(result!=null)
+            {
+                positions+="<positions>";
+                positions+="<election>"+elec.getElectionName()+"</election>";
+                System.out.println("Position count="+result.size());
+            Iterator itpos = result.listIterator();
+            LinkedHashMap<String,ArrayList> m = new LinkedHashMap<String, ArrayList>();
+            ArrayList<String> lsPos = new ArrayList<String>();
+            while(itpos.hasNext())
+            {
+                Result rs = (Result)itpos.next();
+                if(m.containsKey(rs.getPosition_name()))
+                {
+                    m.get(rs.getPosition_name()).add(rs.getEnrolment());
+                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    m.get(rs.getPosition_name()).add(rs.getOffline_vote()==null?0:rs.getOffline_vote());
+                    m.get(rs.getPosition_name()).add(rs.getAgm()==null?0:rs.getAgm());
+                    m.get(rs.getPosition_name()).add(rs.getVotes());
+                }
+                else
+                {
+                     lsPos.add(rs.getPosition_name().toString());
+                    lsPos.add(rs.getNumber_of_choice().toString());
+                    m.put(rs.getPosition_name(),new ArrayList<String>());
+                    m.get(rs.getPosition_name()).add(rs.getEnrolment());
+                    m.get(rs.getPosition_name()).add(rs.getCandidate_name());
+                    m.get(rs.getPosition_name()).add(rs.getOffline_vote()==null?0:rs.getOffline_vote());
+                    m.get(rs.getPosition_name()).add(rs.getAgm()==null?0:rs.getAgm());
+                    m.get(rs.getPosition_name()).add(rs.getVotes());
+                }
+            }
+
+
+
+
+            itpos = result.iterator();
+
+                for (int i=0;i<m.size();i++)
+                {
+                    List ls = (List)m.get((String)lsPos.get(2*i));
+                    positions+="<position>";
+        //            positions+="<positionId>"+lsPos.get(i)+"</positionId>";
+                    positions+="<positionname>"+lsPos.get(2*i)+"</positionname>";
+                    positions+="<noofchoice>"+lsPos.get(2*i+1)+"</noofchoice>";
+
+                    Iterator it = ls.iterator();
+                    while(it.hasNext())
+                    {
+                        positions+="<candidate>";
+                        positions+="<candidateenroll>"+it.next().toString()+"</candidateenroll>";
+                        positions+="<candidatename>"+it.next().toString()+"</candidatename>";
+                        positions+="<postalvotes>"+it.next().toString()+"</postalvotes>";
+                        positions+="<agmvotes>"+it.next().toString()+"</agmvotes>";
                         positions+="<votes>"+it.next().toString()+"</votes>";
                         positions+="</candidate>";
                     }

@@ -46,12 +46,12 @@ public class BlkVoterLoginAction extends org.apache.struts.action.Action {
         VoterRegistration voter=new VoterRegistration();
         VoterRegistrationDAO voterdao=new VoterRegistrationDAO();
         voter=voterdao.searchVoterRegistration(institute_id,id);
-        voter.setStatus("Blocked");
+        voter.setStatus("Blockedfromlogin");
         voterdao.update(voter);
         System.out.println("Blocke from Loginnnnnnnnnnnnnnn");
 
 
-        request.setAttribute("msg", "Voter Blocked Successfully");
+        request.setAttribute("msg", "Voter with Enrollment No:-"+id+" Blocked From Login Successfully");
         
         return mapping.findForward(SUCCESS);
     }

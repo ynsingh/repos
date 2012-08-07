@@ -50,6 +50,11 @@
         }
   }
     </script>
+        <%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
     </head>
     <body >
         <html:form  styleId="f1" action="/mailsetting" method="post" >

@@ -5,7 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.VoterRegistration"%>
 
     <%@ page import="java.util.*,java.lang.*"%>
@@ -382,11 +386,11 @@ out.println(msg1);}
 %>
 
   <%
-List msg=(List)request.getAttribute("msg");
+String msg=(String)request.getAttribute("msg");
 if(msg!=null){
 	if(msg.isEmpty()==false ){
-		for(int i=0;i<msg.size(); i++)
-	    		out.println(msg.get(i)+"\n");
+		//for(int i=0;i<msg.size(); i++)
+	    		//out.println(msg.get(i)+"\n");
 	}
 }
 

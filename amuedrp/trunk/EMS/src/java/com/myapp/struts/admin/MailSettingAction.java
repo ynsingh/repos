@@ -43,7 +43,11 @@ public class MailSettingAction extends org.apache.struts.action.Action {
         obj.put(key3, host);
         obj.put(key4, port);
         obj.put(key5, sname);
+        HashMap obj1=new HashMap();
         UserLog.writeProperty("ems.properties",obj);
+        UserLog.writeProperty("chat.properties",obj1);
+        UserLog.writeProperty("chatlog.properties",obj1);
+
         request.setAttribute("msg","SMTP MAIL IS PROPERLY SET");
         return mapping.findForward(SUCCESS);
       }

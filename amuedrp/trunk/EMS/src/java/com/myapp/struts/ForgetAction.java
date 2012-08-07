@@ -79,7 +79,7 @@ public class ForgetAction extends org.apache.struts.action.Action {
 
                 StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, institute_id);
 
-             obj=new Email(staffobj.getEmailId(),password,institute_id,"Forget Password :Password Reset Successfully from LibMS","User Id="+user_id+" Your Password for LibMS Login is="+password);
+             obj=new Email(staffobj.getEmailId(),password,"Forget Password :Password Reset Successfully from LibMS","User Id="+user_id+" Your Password for LibMS Login is="+password);
             executor.submit(new Runnable() {
 
                 public void run() {

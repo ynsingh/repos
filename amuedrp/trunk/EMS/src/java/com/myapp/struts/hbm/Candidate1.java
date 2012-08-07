@@ -13,22 +13,22 @@ public class Candidate1  implements java.io.Serializable {
      private String candidateName;
      private String enrollment;
      private byte[] menifesto;
-     private int offlineVote;
-     private int agm;
+     private String offlineVote;
+     private String agm;
 
-    public int getAgm() {
+    public String getAgm() {
         return agm;
     }
 
-    public void setAgm(int agm) {
+    public void setAgm(String agm) {
         this.agm = agm;
     }
 
-    public int getOfflineVote() {
+    public String getOfflineVote() {
         return offlineVote;
     }
 
-    public void setOfflineVote(int offlineVote) {
+    public void setOfflineVote(String offlineVote) {
         this.offlineVote = offlineVote;
     }
 

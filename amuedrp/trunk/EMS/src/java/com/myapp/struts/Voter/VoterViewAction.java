@@ -46,61 +46,6 @@ private VoterRegistrationId elid=new VoterRegistrationId();
         VoterRegActionForm employeeform=(VoterRegActionForm)form;
          String button=employeeform.getButton();
 
-         String btn=request.getParameter("btn");
-if(btn.equalsIgnoreCase("Update")){
-String rid=request.getParameter("id");
-String reid=(String)session.getAttribute("institute_id");
-VoterRegistration l=VoterRegistrationDAO.searchVoterRegistration(reid,rid);
-
-
-
-session.setAttribute("voter", l);
-            if(l!=null){
-            employeeform.setB_date(l.getBirthdate());
-             employeeform.setC_add(l.getCAddress());
-              employeeform.setCity(l.getCity());
-               employeeform.setCity1(l.getCity1());
-                employeeform.setCountry(l.getCountry());
-                employeeform.setCountry1(l.getCountry1());
-            employeeform.setCourse(l.getCourse());
-                 employeeform.setDuration(l.getCourseDuration());
-                 employeeform.setSession(l.getCurrentSession());
-
-
-            employeeform.setDepartment(l.getDepartment());
-             employeeform.setEmail(l.getEmail());
-              //employeeform.setFilename(l);
-               employeeform.setF_name(l.getFName());
-                employeeform.setGender(l.getGender());
-
-               //employeeform.setUploadedFile(l.getImage());
-            employeeform.setJ_date(l.getJoiningDate());
-                 employeeform.setM_name(l.getMName());
-                 employeeform.setM_number(l.getMobileNumber());
-
-                employeeform.setP_add(l.getPAddress());
-            employeeform.setState(l.getState());
-                 employeeform.setState1(l.getState1());
-               //  employeeform.setUploadedFile(l.);
-
-                employeeform.setV_name(l.getVoterName());
-            employeeform.setYear(l.getYear());
-                 employeeform.setZipcode(l.getZipCode());
-                 employeeform.setZipcode1(l.getZipCode1());
-                 //employeeform.setStatus(l.getStatus());
-
-             employeeform.setEnrollment(l.getId().getEnrollment());
-            employeeform.setInstitute_id(l.getId().getInstituteId());
-            }
-            session.setAttribute("button", btn);
-            return mapping.findForward("add");
-
-
-}
-
-
-
-
         String  btn=request.getParameter("btn");
          System.out.println("BBBBBBBBBBBB"+button+button);
          
@@ -123,7 +68,7 @@ session.setAttribute("voter", l);
                  session.setAttribute("button", button);
                 employeeform.setEnrollment(id);
                 request.setAttribute("button", button);
-
+         System.out.println("QQQQQQQQQQQQQQQQQQQ"+button);
 
         InstituteDAO insti= new InstituteDAO();
         String status="OK";
@@ -134,25 +79,84 @@ session.setAttribute("voter", l);
                 }
         }
 
-        if(button.equals("Update"))
+
+if(btn.equalsIgnoreCase("Update")){
+String rid=request.getParameter("id");
+String reid=(String)session.getAttribute("institute_id");
+VoterRegistration l1=VoterRegistrationDAO.searchVoterRegistration(reid,rid);
+//
+//
+//
+session.setAttribute("voter", l1);
+           if(l1!=null){
+          employeeform.setB_date(l1.getBirthdate());
+             employeeform.setC_add(l1.getCAddress());
+             employeeform.setCity(l1.getCity());
+              employeeform.setCity1(l1.getCity1());
+               employeeform.setCountry(l1.getCountry());
+               employeeform.setCountry1(l1.getCountry1());
+            employeeform.setCourse(l1.getCourse());
+                 employeeform.setDuration(l1.getCourseDuration());
+                employeeform.setSession(l1.getCurrentSession());
+//
+//
+           employeeform.setDepartment(l1.getDepartment());
+            employeeform.setEmail(l1.getEmail());
+//              //employeeform.setFilename(l);
+               employeeform.setF_name(l1.getFName());
+              employeeform.setGender(l1.getGender());
+//
+               //employeeform.setUploadedFile(l.getImage());
+           employeeform.setJ_date(l1.getJoiningDate());
+                 employeeform.setM_name(l1.getMName());
+                employeeform.setM_number(l1.getMobileNumber());
+//
+                employeeform.setP_add(l1.getPAddress());
+            employeeform.setState(l1.getState());
+                 employeeform.setState1(l1.getState1());
+//               //  employeeform.setUploadedFile(l.);
+//
+                employeeform.setV_name(l1.getVoterName());
+          employeeform.setYear(l1.getYear());
+               employeeform.setZipcode(l1.getZipCode());
+               employeeform.setZipcode1(l1.getZipCode1());
+//                 //employeeform.setStatus(l.getStatus());
+//
+            employeeform.setEnrollment(l1.getId().getEnrollment());
+          employeeform.setInstitute_id(l1.getId().getInstituteId());
+           }
+          //session.setAttribute("button", btn);
+           return mapping.findForward("add");
+//
+//
+}
+
+
+
+
+         System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD"+"gh"+button+"   "+employeeform.getEnrollment());
+         
+        System.out.println("GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG"+l+eid);
+       
+       if(button.equals("Update"))
         {
-            System.out.println("View Page");
-
-            session.setAttribute("voter", l);
-            if(l!=null){
-            employeeform.setB_date(l.getBirthdate());
-             employeeform.setC_add(l.getCAddress());
-              employeeform.setCity(l.getCity());
-               employeeform.setCity1(l.getCity1());
-                employeeform.setCountry(l.getCountry());
-                employeeform.setCountry1(l.getCountry1());
-            employeeform.setCourse(l.getCourse());
-                 employeeform.setDuration(l.getCourseDuration());
-                 employeeform.setSession(l.getCurrentSession());
-
-
-            employeeform.setDepartment(l.getDepartment());
-             employeeform.setEmail(l.getEmail());
+           System.out.println("View Page");
+//
+           session.setAttribute("voter", l);
+           if(l!=null){
+           employeeform.setB_date(l.getBirthdate());
+            employeeform.setC_add(l.getCAddress());
+             employeeform.setCity(l.getCity());
+              employeeform.setCity1(l.getCity1());
+               employeeform.setCountry(l.getCountry());
+               employeeform.setCountry1(l.getCountry1());
+           employeeform.setCourse(l.getCourse());
+                employeeform.setDuration(l.getCourseDuration());
+                employeeform.setSession(l.getCurrentSession());
+//
+//
+           employeeform.setDepartment(l.getDepartment());
+           employeeform.setEmail(l.getEmail());
               //employeeform.setFilename(l);
                employeeform.setF_name(l.getFName());
                 employeeform.setGender(l.getGender());

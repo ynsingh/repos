@@ -1,5 +1,10 @@
 
 <%@ page language="java" %>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%--<jsp:include page="/header.jsp" flush="true" />--%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -363,7 +368,9 @@ function send1()
    var email=document.getElementById("email");
   var email1=document.getElementById("email1");
   email.value=email1.value;
-
+var alternateemail=document.getElementById("alternateemail");
+  var alternateemail1=document.getElementById("alternateemail1");
+  alternateemail.value=alternateemail1.value;
   var button=document.getElementById("button");
 
   var button1=document.getElementById("button1");
@@ -522,7 +529,7 @@ function send1()
           <html:hidden property="zipcode1" name="VoterRegActionForm" styleId="zcode2"/>
 
           <html:hidden property="country1" name="VoterRegActionForm" styleId="country2"/>
-
+           <html:hidden property="alternateemail" name="VoterRegActionForm" styleId="alternateemail"/>
          <html:hidden property="email" name="VoterRegActionForm" styleId="email"/>
            <html:hidden property="button" name="VoterRegActionForm" styleId="button"/>
     </html:form>
@@ -666,7 +673,7 @@ function send1()
 </tr>
 <tr>
 
-    <td align="left" colspan="2">Alternate Email:<html:text readonly="<%=read%>" name="VoterRegActionForm"    styleId="alternateemail" property="alternateemail"/></td>
+    <td align="left" colspan="2">Alternate Email-:<html:text readonly="<%=read%>" name="VoterRegActionForm"    styleId="alternateemail1" property="alternateemail"/></td>
 
 </tr>
 

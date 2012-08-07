@@ -5,6 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -85,9 +90,10 @@
                 String zcode = (String) voter.getZipCode();
                 String zcode1 = (String) voter.getZipCode1();
                 String email = (String) voter.getEmail();
-                byte[] img = (byte[]) voter.getImage();
+               // byte[] img = (byte[]) voter.getImage();
+                 String img = (String) voter.getImage();
                 session.setAttribute("image",img);
-           session.setAttribute("voter",voter);
+                session.setAttribute("voter",voter);
                 //String file = (String) request.getAttribute("filename");
                 String position=(String)p.getPositionName();
                 String election=(String) e.getElectionName();

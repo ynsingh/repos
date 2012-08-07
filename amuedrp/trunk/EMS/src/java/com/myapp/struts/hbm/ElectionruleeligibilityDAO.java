@@ -23,7 +23,7 @@ public class ElectionruleeligibilityDAO {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.save(electionruleeligibility.getElection());
-            session.save(electionruleeligibility.getElectionrule());
+           // session.save(electionruleeligibility.getElectionrule());
             session.save(electionruleeligibility.getEligibility());
             session.save(electionruleeligibility.getBallot());
             tx.commit();
@@ -45,8 +45,8 @@ public class ElectionruleeligibilityDAO {
         session= HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.update(electionruleeligibility.getElection());
-            session.update(electionruleeligibility.getElectionrule());
-            session.update(electionruleeligibility.getEligibility());
+          //  session.update(electionruleeligibility.getElectionrule());
+          //  session.update(electionruleeligibility.getEligibility());
             session.update(electionruleeligibility.getBallot());
             tx.commit();
         }

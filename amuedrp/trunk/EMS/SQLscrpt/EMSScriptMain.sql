@@ -495,7 +495,7 @@ CREATE TABLE `voter_registration` (
   `zip_code1` varchar(20) DEFAULT NULL,
   `country1` varchar(20) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
-  `image` longblob,
+  `image` varchar(50) DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
   `f_name` varchar(200) DEFAULT NULL,
   `m_name` varchar(200) DEFAULT NULL,
@@ -586,6 +586,29 @@ LOCK TABLES `votingprocess` WRITE;
 /*!40000 ALTER TABLE `votingprocess` DISABLE KEYS */;
 /*!40000 ALTER TABLE `votingprocess` ENABLE KEYS */;
 UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `ruleanswer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ruleanswer` (
+  `rule_id` varchar(20) NOT NULL,
+  `election_id` varchar(20) NOT NULL,
+  `institute_id` varchar(20) NOT NULL,
+  `enrollment` varchar(30) NOT NULL,
+  `answer` varchar(500) DEFAULT NULL,
+  `enclosure` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`election_id`,`institute_id`,`rule_id`,`enrollment`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `votingprocess`
+--
+
+LOCK TABLES `ruleanswer` WRITE;
+UNLOCK TABLES;
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

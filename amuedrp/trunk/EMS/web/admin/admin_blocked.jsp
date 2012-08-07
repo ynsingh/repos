@@ -24,6 +24,7 @@
     String align="left";
     String regid="";
 %>
+
 <%
 try{
 locale1=(String)session.getAttribute("locale");

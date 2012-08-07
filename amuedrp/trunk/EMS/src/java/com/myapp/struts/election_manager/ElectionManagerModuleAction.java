@@ -6,6 +6,7 @@
 package com.myapp.struts.election_manager;
 
 import com.myapp.struts.Voter.VoterRegistrationDAO;
+import com.myapp.struts.hbm.Election;
 import com.myapp.struts.hbm.ElectionDAO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -49,8 +50,8 @@ public class ElectionManagerModuleAction extends org.apache.struts.action.Action
                     session.setAttribute("count", count);
 
 
-                    rst1= electiondao.GetElectionDetails1(institute_id,manager_id,pageno);
-                     session.setAttribute("resultset1", rst1);
+              List      rst2= electiondao.GetElectionDetails1(institute_id,manager_id,pageno);
+                     session.setAttribute("resultset1", rst2);
 
         return mapping.findForward(SUCCESS);
     }

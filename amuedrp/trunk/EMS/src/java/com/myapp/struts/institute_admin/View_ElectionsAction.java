@@ -38,7 +38,7 @@ public class View_ElectionsAction extends org.apache.struts.action.Action {
 
      HttpSession session = request.getSession();
     
-
+      String manager_id=(String)session.getAttribute("user_id");
      String instituteId = (String)session.getAttribute("institute_id");
 
       System.out.println("instituteId");
@@ -52,8 +52,8 @@ public class View_ElectionsAction extends org.apache.struts.action.Action {
 
         rst =electionmanagerdao.GetElectionDetailsbyinstituteId(instituteId,searchby,searchkeyword,sortby);
             session.setAttribute("resultset", rst);
-         System.out.println("resultset"+ rst);
-            System.out.println("rst+"+rst.size());
+         System.out.println("resultsetttttt"+ rst);
+         //   System.out.println("rst+"+rst.size());
 
         return mapping.findForward("success");
         

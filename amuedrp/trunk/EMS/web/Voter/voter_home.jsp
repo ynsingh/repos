@@ -11,7 +11,11 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 
 <%!
     Locale locale=null;
@@ -819,7 +823,7 @@ String instituteName=(String)session.getAttribute("institute_name");
 
                         
                       
-                      <script type="text/javascript" language="javascript">
+<script type="text/javascript" language="javascript">
 document.write("<span " );
 document.write('style="height:10px;border:0px solid black;font:bold 11px Verdana;"');
 document.write(' onclick="toggle_menu(1);');
@@ -894,7 +898,7 @@ document.write('</div></span>');
                         <a href="#" style="font-size: 13px;text-decoration: none;"  onclick="currentElections()"><%=resource.getString("currentelection")%></a>&nbsp;|&nbsp;
                         <%}
                         if(lstelection!=null && !lstelection.isEmpty()){%>
-                        <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();"><%=resource.getString("votingprocess")%></a>&nbsp;|&nbsp;
+                        <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();"><%--<%=resource.getString("votingprocess")%>--%></a>&nbsp;&nbsp;
                         <%}
                         if(lstclosedelection!=null && !lstclosedelection.isEmpty()){%>
                         <a href="#" style="font-size: 13px;text-decoration: none;" onclick="electionsResults()"><%=resource.getString("electionresults")%></a>&nbsp;|&nbsp;
@@ -906,8 +910,8 @@ document.write('</div></span>');
                         
                        <%-- <a href="#" style="font-size: 13px;text-decoration: none;" onclick="viewelections();"><%=resource.getString("view_elction")%></a>&nbsp;|&nbsp;--%>
 
-                   <%--<a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat</a>--%>
-                    </td>
+                   
+                    </td><td>
                             <%
                             Login login=(Login)session.getAttribute("login");
                             InstituteDAO institutedao=new InstituteDAO();
@@ -916,11 +920,12 @@ document.write('</div></span>');
 if(!obj1.isEmpty()){
 
 %>
-<td colspan="3">
 
 
+      
 
     <a href="<%=contextPath%>/nominationList1.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>Current Nomination&nbsp;List</b></a>|
+     <a href="<%=request.getContextPath()%>/catchroom1.do" style="font-size: 13px;text-decoration: none;" onclick="">Candidate Chat</a>
     <%--<a href="<%=contextPath%>/withdrawal.do" target="_self" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
       <b style="color:white" dir="<%=rtl%>">Send Withdrawal Request</b></a>|--%>
        <%-- <a href="<%=contextPath%>/finalnominationList.do"  onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
@@ -947,6 +952,8 @@ if(!obj1.isEmpty()){
 
 
                    
+<%}else{%>
+<a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat|</a>
 <%}%>
 
          </td>                    </tr>

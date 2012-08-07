@@ -145,14 +145,10 @@ document.Form1.submit();
           <table >
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
                       <select name="search_by" onChange="fun()" id="search_by" size="1">
-<%--<option value="firstName">First Name<%=resource.getString("managername")%></option>
-<option value="lastName">Last Name<%=resource.getString("managername")%></option>
---%>
-<option value="election_id">Election Id<%--<%=resource.getString("managerid")%>--%></option>
-<option value="election_name">Election Name<%--<%=resource.getString("managerid")%>--%></option>
+
+<option value="id.electionId">Election Id<%--<%=resource.getString("managerid")%>--%></option>
+<option value="electionName">Election Name<%--<%=resource.getString("managerid")%>--%></option>
 <option value="status">Election Status<%--<%=resource.getString("managerid")%>--%></option>
-<%--<option value="id.instituteId"><%=resource.getString("registrationid")%></option>--%>
-<%--<option value="city"><%=resource.getString("city")%></option>--%>
 
 
 </select>
@@ -166,8 +162,8 @@ document.Form1.submit();
        <td align="left" colspan="2">
            <table>
                            <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
-<option value="election_id">Election Id<%--<%=resource.getString("managerid")%>--%></option>
-<option value="election_name">Election Name<%--<%=resource.getString("managerid")%>--%></option>
+<option value="id.electionId">Election Id<%--<%=resource.getString("managerid")%>--%></option>
+<option value="electionName">Election Name<%--<%=resource.getString("managerid")%>--%></option>
 <option value="status">Election Status<%--<%=resource.getString("managerid")%>--%></option>
 </select></td>
                            </tr></table>

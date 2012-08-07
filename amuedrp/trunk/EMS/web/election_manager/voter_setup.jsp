@@ -5,7 +5,11 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.VoterRegistration"%>
 
     <%@ page import="java.util.*,java.lang.*"%>
@@ -61,6 +65,8 @@
     boolean page=true;
     String align="left";
 %>
+
+
 
 <%
 try{
@@ -368,6 +374,7 @@ else
       <item   value="Send Mail" hyperLink="${path}/election_manager/VoterMailBody.jsp?id=${doc.enrollment}"  hAlign="left" styleClass="item"/>
     </column>
 
+      
    
 
  </columns>

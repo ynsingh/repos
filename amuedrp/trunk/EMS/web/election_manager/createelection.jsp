@@ -4,7 +4,12 @@
     Author     : Client
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="com.myapp.struts.hbm.*,java.util.*"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
@@ -180,6 +185,71 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
+
+function search1(current) {
+    //alert("index="+index+" current="+current);
+    var position = "position_name0"+current;
+    var posinstruct = "instruct0" + current;
+    var numberofchoice = "numberofchoice0"+current;
+    var position_name = document.getElementById(position).value;
+    var noofchoice = document.getElementById(numberofchoice).value;
+    var instruct = document.getElementById(posinstruct).value;
+    instruct="You can choose "+noofchoice+" Candidate for this Position";
+    document.getElementById(posinstruct).value=instruct;
+
+    var electionId = document.getElementById("electionId").value;
+    position_name = position_name.replace(/^\s*|\s*$/g,"");
+    noofchoice = noofchoice.replace(/^\s*|\s*$/g,"");
+    instruct = instruct.replace(/^\s*|\s*$/g,"");
+    var posid = "position_id0"+current;
+    var PositionId="";
+    var butId = "but0"+current;
+    var buttonVal = document.getElementById(butId).value;
+    if(buttonVal=="Update")
+        {
+            PositionId = document.getElementById(posid).value;
+        }
+if (position_name.length >= 1)
+{
+if(position_name!="" && position_name!=null && noofchoice!="" && noofchoice!=null && electionId!="" && electionId!=null)
+{
+    var req = newXMLHttpRequest();
+
+
+req.onreadystatechange = getReadyStateHandler(req, update2);
+
+req.open("POST","<%=request.getContextPath()%>/AddPosition.do?setPosition="+position_name+"&setChoice="+noofchoice+"&setElectionId="+electionId+"&setposId="+PositionId+"&setposInstruction="+instruct, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+var idPos = "position"+current;
+
+document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
+ document.getElementById(idPos).style.border = "solid 5px #F2F5A9";
+
+return true;
+}
+alert("Please Enter Values in the Field");
+return false;
+}
+alert("Please Enter Values in the Field");
+return false;
+}
+function update2(cartXML)
+{
+//alert("call");
+
+var em = cartXML.getElementsByTagName("email_ids")[0];
+var em1 = em.getElementsByTagName("message");
+//var em = cartXML.firstChild.value;
+for(i=0;i<em1.length;i++)
+    {
+alert(em1[i].firstChild.nodeValue);
+
+    }
+}
+
+
 function search(current) {
     //alert("index="+index+" current="+current);
     var position = "position_name0"+current;
@@ -242,6 +312,21 @@ alert(em1[i].firstChild.nodeValue);
 
     }
 }
+function deleteRule(current) {
+
+    var req = newXMLHttpRequest();
+ var electionId = document.getElementById("electionId").value;
+ var posId = "position_id0"+current;
+ var PositionId = document.getElementById(posId).value;
+req.onreadystatechange = getReadyStateHandler(req, update1);
+
+req.open("POST","<%=request.getContextPath()%>/deletePosition.do?getElectionId="+electionId+"&positionId="+PositionId, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+return true;
+}
+
 function deletePosition(current) {
    
     var req = newXMLHttpRequest();
@@ -317,6 +402,71 @@ if(j<0)j=0;
 
 //alert(i+" "+j);
 }
+
+function searchCriteria() {
+   
+    var req = newXMLHttpRequest();
+ var electionId = document.getElementById("electionId").value;
+req.onreadystatechange = getReadyStateHandler(req, updateCriteria);
+
+req.open("POST","<%=request.getContextPath()%>/getRule1.do?getElectionId="+electionId, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+return true;
+}
+
+function updateCriteria(cartXML)
+{
+
+
+var em = cartXML.getElementsByTagName("positions")[0];
+var em1 = em.getElementsByTagName("position");
+//var em = cartXML.firstChild.value;
+for(iii=0;iii<em1.length;iii++)
+    {
+        //position block creation
+                var divtag = document.createElement("div");
+                divtag.id = "position"+iii;
+                divtag.style.backgroundColor = "#D8CEF6";
+                divtag.style.border = "solid 5px #F2F5A9";
+                divtag.style.borderTopLeftRadius = "10px";
+                divtag.style.width = "930px";
+                divtag.style.align = "left";
+
+                divtag.style.marginTop = "5px";
+                divtag.style.marginLeft = "3px";
+                <%if(!button.equals("View") && !button.equals("Block")){%>
+                            divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" Id="rule_name0'+iii +'" size="25px"/><input type="hidden" Id="rule_id0'+iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search1('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deleteRule('+ iii +');"/></td></tr></table>';<%}else{%>
+                           divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" Id="rule_name0'+iii +'" size="25px"/><input type="hidden" Id="rule_id0'+iii +'" size="25px"/></td></tr></table>';<%}%>
+                        document.getElementById("criteria").appendChild(divtag);
+        //end of block
+var positionname1 = em1[iii].getElementsByTagName("positionname");
+var positionname = positionname1[0].firstChild.nodeValue;
+//var noofchoice1 = em1[iii].getElementsByTagName("noofchoice");
+//var noofchoice = noofchoice1[0].firstChild.nodeValue;
+var positionId = em1[iii].getElementsByTagName("positionId");
+var positionid = positionId[0].firstChild.nodeValue;
+//var instruct = em1[iii].getElementsByTagName("instruction");
+//var instrucT = instruct[0].firstChild.nodeValue;
+var posiId = "rule_name0"+iii;
+//var nochoice = "numberofchoice0"+iii;
+var posid = "rule_id0"+iii;
+//var inst = "instruct0"+iii;
+document.getElementById(posiId).value = positionname;
+//document.getElementById(nochoice).value = noofchoice;
+document.getElementById(posid).value = positionid;
+//document.getElementById(inst).value = instrucT;
+}
+
+j=iii-1;
+if(j<0)j=0;
+
+//alert(i+" "+j);
+}
+
+
+
 
 function send()
 {
@@ -678,6 +828,88 @@ var send = document.getElementById("Scrend_date");
         }--%>
   
 }
+function search1(current) {
+   
+    var position = "rule_name0"+current;
+    var position_name = document.getElementById(position).value;
+
+    var electionId = document.getElementById("electionId").value;
+  
+    position_name = position_name.replace(/^\s*|\s*$/g,"");
+    var posid = "rule_id0"+current;
+    var PositionId="";
+    var butId = "but0"+current;
+    var buttonVal = document.getElementById(butId).value;
+    if(buttonVal=="Update")
+      {
+          PositionId = document.getElementById(posid).value;
+       }
+
+         alert(position_name+PositionId);
+if (position_name.length >= 1)
+{
+if(position_name!="" && position_name!=null  && electionId!="" && electionId!=null)
+{
+    var req = newXMLHttpRequest();
+
+
+req.onreadystatechange = getReadyStateHandler(req, update2);
+req.open("POST","<%=request.getContextPath()%>/UpdateRule.do?setRule="+position_name+"&setElectionId="+electionId, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+var idPos = "criteria"+current;
+
+document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
+ document.getElementById(idPos).style.border = "solid 5px #F2F5A9";
+
+return true;
+}
+alert("Please Enter Values in the Field");
+return false;
+}
+alert("Please Enter Values in the Field");
+return false;
+}
+function update2(cartXML)
+{
+//alert("call");
+
+var em = cartXML.getElementsByTagName("email_ids")[0];
+var em1 = em.getElementsByTagName("message");
+//var em = cartXML.firstChild.value;
+for(i=0;i<em1.length;i++)
+    {
+alert(em1[i].firstChild.nodeValue);
+
+    }
+}
+
+var k=0;
+var l=0;
+function createcriteria()
+{
+k=0;
+l=l+1;
+var divtag = document.createElement("div");
+     divtag.id = "criteria"+l;
+     divtag.style.backgroundColor = "#E0F8F7";
+     divtag.style.border = "solid 5px #0B3B24";
+     divtag.style.borderTopLeftRadius = "10px";
+     divtag.style.width = "930px";
+     divtag.style.align = "center";
+     divtag.style.marginLeft = "0px";
+     divtag.innerHTML ='<table><tr><td>Criteria*&nbsp;&nbsp;<input type="text" Id="criteria_name'+k+''+l +'" size="25px"/></td>&nbsp;&nbsp;<td><%--<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/>--%></td><td><input type="button" id="but0'+ l +'" value="Save" onclick="search1('+ l +');"/>eg.i)Candidate should have 75% of Attendence<br> ii)No Criminal background should be allowed etc..</td></tr><tr><%--<td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td>--%></tr></table>';
+
+
+
+document.getElementById("criteria").appendChild(divtag);
+
+
+}
+
+
+
 </script>
     <% String institute_id=(String)session.getAttribute("institute_id");%>
     <% String user_id=(String)session.getAttribute("user_id");%>
@@ -692,7 +924,8 @@ var send = document.getElementById("Scrend_date");
         <script language="javascript" type="text/javascript">
         function funconLoad()
         {
-            searchPositions();  
+            searchPositions();
+            searchCriteria();
         }
 
         </script>
@@ -748,22 +981,33 @@ var send = document.getElementById("Scrend_date");
                  <div style="border: 2px solid teal">
                      <div style="background-color: teal;width: 100%;color: white"><%=resource.getString("setcritaria")%> </div>
                      <table dir="<%=rtl%>">
-                         <tr><td dir="<%=rtl%>" colspan="2"><br><%=resource.getString("crinomi")%>:* <html:text readonly="<%=read %>" name="DepActionForm" property="critaria" size="50px" styleId="cri"/></td></tr></table>
-                 </div>
-                 </td></tr>
-         <tr><td colspan="2" dir="<%=rtl%>">
-                 <div style="border: 2px solid teal"><table dir="<%=rtl%>">
-         <tr><td dir="<%=rtl%>" colspan="3"><div style="font-family: Liberation Serif;font-size: 20px;background-color: teal;width: 100%;color: white"><%=resource.getString("seteligiblity")%> </div></td></tr>
-         <tr><td dir="<%=rtl%>" style="width: 250px"><%=resource.getString("department")%>* <html:text readonly="<%=read %>" name="DepActionForm" property="deaprtment" size="12px"/></td>
-             <td dir="<%=rtl%>" style="width: 350px">%<%=resource.getString("marks")%>* <html:text readonly="<%=read %>" name="DepActionForm" property="marks" size="18px"/></td>
-             <td dir="<%=rtl%>" style="width: 200px">%<%=resource.getString("attendence")%> <br> <html:text readonly="<%=read %>" name="DepActionForm" property="attendence" size="18px"/></td></tr>
-         <tr><td dir="<%=rtl%>" style="width: 250px"><%=resource.getString("backlog")%>*</td><td><%=resource.getString("criminal")%>*</td><td style="width: 550px"><%=resource.getString("indiscipline")%>*</td></tr>
-         <tr><td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="backlog" value="yes" /><%=resource.getString("yes")%><html:radio name="DepActionForm" property="backlog" value="no"/><%=resource.getString("no")%></td>
-             <td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="criminal" value="yes"/><%=resource.getString("yes")%><html:radio name="DepActionForm" property="criminal" value="no"/><%=resource.getString("no")%></td>
-    <td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="indiscipline" value="yes"/><%=resource.getString("yes")%><html:radio name="DepActionForm" property="indiscipline" value="no"/><%=resource.getString("no")%></td></tr>
+                        
+                       <tr><td dir="<%=rtl%>"><div id="criteria" style="width: 950px;"></div></td></tr>
+                       <tr><td>
+                               <%
+List<Electionrule> obj=(List<Electionrule>)session.getAttribute("elerule");
+if(obj!=null)
+    {
+     System.out.println("GBBBBBBBBBBBBBBBB"+obj.size());
+       for(int i=0;i<obj.size();i++)
+       {
+           out.println("<h6> Rule :<font color='blue'>"+obj.get(i).getCriteria()+"</font></h6>");
+          // out.println("Ans:"+obj.get(i).getRuleanswer().getAnswer()+"<br/>");
+       }
+
+     }
+
+
+%>
+                                     </td>
+                                     </tr>
+                                     <tr><td dir="<%=rtl%>"><div style="position: static"><%if(!button.equals("View")&& !button.equals("Block")){%><input type="button" id="criteria" name="add Criteria" style="margin-left: 0px;" value="New Rule" size="50px" onclick="createcriteria();"><%}%></div></td></tr></table></td></tr>
+
+                      <%-- }%>--%>
                      </table>
                  </div>
                  </td></tr>
+       
                  <html:hidden name="DepActionForm" property="status" styleId="status"/>
 
          <%if(request.getAttribute("button").equals("Block")){%>

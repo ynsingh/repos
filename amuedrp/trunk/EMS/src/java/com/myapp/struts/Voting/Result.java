@@ -24,6 +24,33 @@ public class Result implements  Serializable {
         private String institute_id;
         private String votes;
           private String enrolment;
+          private String offline_vote;
+          private String agm;
+          private String total;
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getAgm() {
+        return agm;
+    }
+
+    public void setAgm(String agm) {
+        this.agm = agm;
+    }
+
+    public String getOffline_vote() {
+        return offline_vote;
+    }
+
+    public void setOffline_vote(String offline_vote) {
+        this.offline_vote = offline_vote;
+    }
 
     public String getEnrolment() {
         return enrolment;

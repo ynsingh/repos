@@ -4,6 +4,11 @@
     Author     : faraz
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
@@ -211,7 +216,7 @@ var divtag1 = document.createElement("div");
                 divtag1.style.align = "center";
                 divtag1.style.marginTop = "5px";
                 divtag1.style.height = "20px";
-               var htm1 = '<span style="text-align:center">'+ elec +'</span><a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><input type="button" value="close" onclick="send()"/>';
+               var htm1 = '<span style="text-align:center">'+ elec +'</span><a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><%--<input type="button" value="close" onclick="send()"/>--%>';
                divtag1.innerHTML = htm1;
             document.getElementById("ballot").appendChild(divtag1);
 

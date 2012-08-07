@@ -69,7 +69,6 @@ EO, IITKAA 2012
             throws Exception {
 
 
-	bodymessRPOTKM1="Dear Sir/Madam,\n\nYou have still not casted your ballot in IIT Kanpur AA BoD election. Voting over web portal will close on 16 March 2012 2359hrs IST.\n\n For details of candidates please visit\n\nhttp://202.141.40.215/~brihaspati/final_list.shtml\n\nFor other details regarding election, you can visit election website at http://202.141.40.215/~brihaspati\n\n For casting your ballot on web portal, you can click on the following link\n\n"+request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/voterlogin.do?email=";
         HttpSession session = request.getSession();
 	
         DepActionForm loginActionForm;

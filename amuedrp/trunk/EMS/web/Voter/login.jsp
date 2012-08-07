@@ -2,7 +2,11 @@
 
 
 <%@page pageEncoding="UTF-8"%>
-
+<%
+if(session.isNew()){
+%>
+<script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
+<%}%>
 <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election"%>
 <%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
  <%@ page import="java.util.*,java.lang.*"%>
