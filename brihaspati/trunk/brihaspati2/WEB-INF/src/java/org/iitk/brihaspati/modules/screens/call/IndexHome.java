@@ -65,8 +65,6 @@ import org.iitk.brihaspati.om.CalInformation;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-import org.iitk.brihaspati.modules.utils.SessionUtil;
-import org.iitk.brihaspati.modules.utils.AeSimpleMD5;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
