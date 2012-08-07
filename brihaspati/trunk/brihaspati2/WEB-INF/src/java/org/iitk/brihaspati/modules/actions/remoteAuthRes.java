@@ -146,7 +146,7 @@ public class remoteAuthRes extends VelocityAction{
 					// generate keyed hash
 						String randm = RandPasswordUtil.randmPass();
 						String hdir=System.getProperty("user.home");
-						String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+						String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
 						String line=ReadNWriteInTxt.readLin(path,srcid);
 				                String skey=StringUtils.substringBetween(line,";",";");
 			        	//      url=StringUtils.substringAfterLast(line,";");

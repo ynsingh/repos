@@ -108,7 +108,7 @@ public class RemoteAccessData extends VelocityAction{
                 String hash=data.getParameters().getString("hash");
                 String sourceid=data.getParameters().getString("srcid");
 		//Getting the key from properties file		
-		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
 		//generate keyed hash
@@ -184,7 +184,7 @@ public class RemoteAccessData extends VelocityAction{
                 String sourceid=data.getParameters().getString("srcid");
 	//	ErrorDumpUtil.ErrorLog("The value of parameter are in get role method"+email + randomNo + sourceid + hash);
 		//Getting the key from properties file		
-		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
 		//generate keyed hash
@@ -272,7 +272,7 @@ public class RemoteAccessData extends VelocityAction{
                 String sourceid=data.getParameters().getString("srcid");
                 String insid=data.getParameters().getString("iid");
                 //Getting the key from properties file
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
                 //generate keyed hash
@@ -327,7 +327,7 @@ public class RemoteAccessData extends VelocityAction{
                 String sourceid=data.getParameters().getString("srcid");
                 String insid=data.getParameters().getString("iid");
                 //Getting the key from properties file
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
                 //generate keyed hash
@@ -382,7 +382,7 @@ public class RemoteAccessData extends VelocityAction{
                 String hash=data.getParameters().getString("hash");
                 String sourceid=data.getParameters().getString("srcid");
                 //Getting the key from properties file
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
                 //generate keyed hash
@@ -446,7 +446,7 @@ public class RemoteAccessData extends VelocityAction{
                 String hash=data.getParameters().getString("hash");
                 String sourceid=data.getParameters().getString("srcid");
                 //Getting the key from properties file
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
                 //generate keyed hash
@@ -509,7 +509,7 @@ public class RemoteAccessData extends VelocityAction{
                 String hash=data.getParameters().getString("hash");
                 String sourceid=data.getParameters().getString("srcid");
                 //Getting the key from properties file
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
                 //generate keyed hash
@@ -572,7 +572,7 @@ public class RemoteAccessData extends VelocityAction{
                 String hash=data.getParameters().getString("hash");
                 String sourceid=data.getParameters().getString("srcid");
                 //Getting the key from properties file
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
                 String line=ReadNWriteInTxt.readLin(path,sourceid);
                 String skey=StringUtils.substringBetween(line,";",";");
                 //generate keyed hash

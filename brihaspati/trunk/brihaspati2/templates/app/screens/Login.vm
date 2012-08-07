@@ -60,6 +60,11 @@ Click here  </a>
 <a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang","english") style=text-decoration:none>Registered Institute List </a>
 </td></tr>
 
+<tr><td colspan=2>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang","english") style=text-decoration:none> Authenticate from Brihaspati server </a>
+</td></tr>
+
 </table>
 <br>
 <br>

@@ -1,0 +1,40 @@
+$page.setTitle("Login Page | RemoteLogin")
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td>
+        RemoteLogin
+</td></tr>
+</table>
+
+<form name=frm method="post" action="$link.setPage("RemoteAuthenticate.vm").setAction("RemoteAction")">
+<table align=left bgcolor="$ui.tableColor" width="100%">
+        <tr>
+                <td width="15"><font size=4><b>Email</b></font></td>
+                <td width="40"><input type="text" size="30" name="email" value=""></td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+                <td colspan=2>
+                        <input type="button" name="eventSubmit_dochk" value="Submit" onClick="checkField(document.frm,this);"/>
+                        <input type="hidden" name="actionName">
+                </td>
+        </tr>
+</table>
+</form>
+
+<script language="javascript">
+function checkField(frm,field)
+{
+        if(frm.email.value!="")
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+        {
+                alert("Please enter EmailId");
+        }
+}
+</script>
+

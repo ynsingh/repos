@@ -78,7 +78,7 @@ public class remPass extends VelocityScreen
 		String srcid=null;
 		String remoteUrl=null;
 		String hdir=System.getProperty("user.home");
-		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
 
 // get url and source id form db
 		Criteria crit=new Criteria();
@@ -133,7 +133,7 @@ public class remPass extends VelocityScreen
 	}
         catch(Exception e)
 	{
-		data.setMessage("The Error in Login Page !!"+e);
+		data.setMessage("The Error in Global remote password Page !!"+e);
 	}
 
     }

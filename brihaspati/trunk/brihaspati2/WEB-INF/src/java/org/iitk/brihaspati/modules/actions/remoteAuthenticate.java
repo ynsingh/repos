@@ -78,7 +78,7 @@ public class remoteAuthenticate extends VelocityAction{
 		String skey=""; 
 		String url="";
 	
-		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String path=hdir+"/remote_auth/brihaspati3-remote-server.properties";
 		String line=ReadNWriteInTxt.readLin(path,sourceid);
 		skey=StringUtils.substringBetween(line,";",";");
 		url=StringUtils.substringAfterLast(line,";");
@@ -149,7 +149,7 @@ public class remoteAuthenticate extends VelocityAction{
 				data.getResponse().sendRedirect(remoteUrl);
 			}
                         catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The hash is not matched "+ex);
+				ErrorDumpUtil.ErrorLog("The hash is not matched in remote authenticate action "+ex);
                         }
 			
 		}
@@ -196,97 +196,5 @@ public class remoteAuthenticate extends VelocityAction{
 				ErrorDumpUtil.ErrorLog("The error in redirection url 1  in remote authenticate in action  dot equal null value  "+ex);
 			}
 		}
-		else{
-		
-	//Getting value
-		String email=data.getParameters().getString("email");
-		String randomNo=data.getParameters().getString("rand") ;
-		String hash=data.getParameters().getString("hash");
-		String remoteUrl=data.getParameters().getString("url");
-		String sourceid=data.getParameters().getString("srcid");
-		ErrorDumpUtil.ErrorLog("The getting value from parameter"+remoteUrl +" "+email+" "+sourceid);
-		String hdir=System.getProperty("user.home");
-	// get return url from client	and source id
-		String skey=""; 
-		String url="";
-	
-		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
-		String line=ReadNWriteInTxt.readLin(path,sourceid);
-		skey=StringUtils.substringBetween(line,";",";");
-		url=StringUtils.substringAfterLast(line,";");
-//this get from retrun url
-		
-//		ErrorDumpUtil.ErrorLog("I am here remote email action in action file=="+remoteUrl);
-		String genHash=EncrptDecrpt.keyedHash(email,randomNo,skey);
-	//	boolean match=match hash;
-		if (hash.equals(genHash)){
-			//check user exist or not
-			//boolean exist=UserManagement.checkUserExist(email);
-			//ErrorDumpUtil.ErrorLog("The value of user exist is "+exist);
-			//if(exist==false){
-			//generate random number;
-			String randno=RandPasswordUtil.randmPass();
-			//remove the value if previously exist
-			List us=null;
-			Criteria crit=new Criteria();
-			crit.add(RemoteUsersPeer.USERID,email);
-			try{
-                                us=RemoteUsersPeer.doSelect(crit);
-                        }
-                        catch (Exception ex){
-                        ErrorDumpUtil.ErrorLog("The error in select value from db in remote authenticate action "+ex);
-                        }
-			if(us.size()>0){
-				try{
-					RemoteUsersPeer.doDelete(crit);
-				}
-				catch (Exception ex){
-					ErrorDumpUtil.ErrorLog("The error in deleting record from remote user in remote authenticat action "+ex);
-				}
-			}
-//			ErrorDumpUtil.ErrorLog("Here I am before wrting value in db in remote authenticate action ");
-			//store in db;
-			crit=new Criteria();
-                        crit.add(RemoteUsersPeer.USERID,email);
-                        crit.add(RemoteUsersPeer.RANDOMKEY,randno);
-                        crit.add(RemoteUsersPeer.APPLICATION,remoteUrl);//return url comming from web client
-                        crit.add(RemoteUsersPeer.SOURCEID,sourceid);//return url comming from web client
-			try{
-                	        RemoteUsersPeer.doInsert(crit);
-			}
-			catch (Exception ex){
-			ErrorDumpUtil.ErrorLog("The error in insert value from db in remote authenticate action ");
-			}
-//this url lift from server conf file
-			String url1="email="+email+"&sess="+randno+"&url="+url;
-			// ErrorDumpUtil.ErrorLog("Here I am before writing the responce  in remote authenticate in action "+url1);
-			try{
-				url1=EncrptDecrpt.encrypt(url1,sourceid);
-				String genHashN=EncrptDecrpt.keyedHash(email,randno,skey);
-				url1=url1+"&hash="+genHashN;
-				//add keyed hash
-				ErrorDumpUtil.ErrorLog("The value of responce  in remote authenticate in action "+url1);
-				ServletOutputStream out=data.getResponse().getOutputStream();
-				byte[] buf=url1.getBytes();
-                                out.write(buf);
-				out.close();
-			}
-			catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The error in redirection url 1 in remote authenticate in action "+ex);
-			}
-		}
-		else{
-			remoteUrl=remoteUrl+"?msg=You are not coming from authentic server";
-			try{
-				data.getResponse().sendRedirect(remoteUrl);
-			}
-                        catch (Exception ex){
-				ErrorDumpUtil.ErrorLog("The hash is not matched "+ex);
-                        }
-			
-		}
-
-		}
-
 	}
 }
