@@ -336,7 +336,7 @@
 </table>
 <table name="FAQMOVE" idMethod="idbroker">
         <column name="FAQ_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
-        <column name="MSG_ID" required="true" primaryKey="true" type="INTEGER"/>
+        <column name="MSG_ID" required="true" type="INTEGER"/>
 	<column name="SENDER_NAME" size="255" type="VARCHAR"/>
 	<column name="MSG_SUBJECT" size="255" type="VARCHAR"/>
 	<column name="PERMISSION" type="INTEGER" size="1"/>
@@ -498,6 +498,7 @@
         <column name="DEPARTMENT" Type="VARCHAR" size="255"/>
         <column name="STATE" Type="VARCHAR" size="255"/>
         <column name="COUNTRY" Type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_ID" Type="VARCHAR" size="255"/>
 </table>
 
 <!-- ===============================COURSETIME MANAGEMENT SCHEMA==================================== -->

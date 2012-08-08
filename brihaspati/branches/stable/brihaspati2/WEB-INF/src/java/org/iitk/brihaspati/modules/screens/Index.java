@@ -60,6 +60,8 @@ import org.apache.turbine.services.session.TurbineSession;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.GraphUtil;
 //import org.apache.turbine.services.session.SessionTool;
 
 /**
@@ -253,10 +255,6 @@ public class Index extends SecureScreen{
                         String LangFile=(String)data.getUser().getTemp("LangFile");
                         String Mssg = CommonUtility.CheckData(username,LangFile);
                         context.put("message",Mssg);
-
-			/*
-			 *check for Course_time table update
-			 */
 			try{
 				Date date=new Date();
         	                /*entry id fron USAGE_DETAILS*/
@@ -265,14 +263,8 @@ public class Index extends SecureScreen{
                 	        int eid2=CourseTimeUtil.getentryid(uid);
 				if(eid1==eid2)
                        		 {
-                                       		 CourseTimeUtil.getCalculation(uid);
-						Date CreTime=CourseTimeUtil.getDatetime(uid);
-						Date mreTime=ModuleTimeUtil.getMrecenttime(uid);
-						if(mreTime!=null)
-							if(CreTime.getTime()<mreTime.getTime())
-								ModuleTimeUtil.getModuleCalculation(uid);
-								 CourseTimeUtil.getchangeStatus(eid2);
-                        	}
+					MailNotificationThread.getController().CourseTimeSystem(uid,eid2);			
+                               	}
 		
 			} catch(Exception e){ ErrorDumpUtil.ErrorLog("The error is :- "+e); }
 		}

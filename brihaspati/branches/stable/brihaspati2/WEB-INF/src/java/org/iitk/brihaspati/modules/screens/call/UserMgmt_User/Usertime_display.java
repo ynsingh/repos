@@ -66,8 +66,7 @@ public class Usertime_display extends SecureScreen_Instructor
                 context.put("course",course_name);
 		String Username=data.getParameters().getString("username");
                 int uid=UserUtil.getUID(Username);
-		String Role = (String)data.getUser()
-.getTemp("role");
+		String Role = (String)data.getUser().getTemp("role");
 		/**
                  *Time calculaion for how long user use this page.
                  */
@@ -75,7 +74,8 @@ public class Usertime_display extends SecureScreen_Instructor
                  {
  	                //CourseTimeUtil.getCalculation(uid);
         	        // ModuleTimeUtil.getModuleCalculation(uid);
-			MailNotificationThread.getController().CourseTimeSystem(uid);
+			int eid=0;
+			MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                 }
 
                 Criteria crit=new Criteria();

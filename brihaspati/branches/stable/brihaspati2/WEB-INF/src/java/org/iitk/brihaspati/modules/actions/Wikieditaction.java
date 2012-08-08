@@ -31,7 +31,6 @@ package org.iitk.brihaspati.modules.actions;
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-//JDK
 import java.io.File;
 import java.util.Date;
 import java.util.Vector;
@@ -45,14 +44,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-//Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.WikiUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.util.parser.ParameterParser;    
-//Brihaspati
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
@@ -62,8 +59,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  */
 
-
-public class Wikieditaction extends SecureAction_User{
+public class Wikieditaction extends SecureAction{
  
 	/**
 	 * Place all the data object in the context for use in the template.
@@ -114,14 +110,11 @@ public  synchronized void  doEdit(RunData data,Context context){
         	Process p=null;
 		ParameterParser pp = data.getParameters();
 		String word=pp.getString("text","");
-//		String word1=pp.getString("query","");
 		/**
                   * Check for special characters
                   */
-                         String word1=StringUtil.replaceXmlSpecialCharacters(pp.getString("query",""));
-
+                String word1=StringUtil.replaceXmlSpecialCharacters(pp.getString("query",""));
 		String search=pp.getString("searchtype","");
-        
 		Buffer= new char[word.length()];
 
 		/**
@@ -132,6 +125,7 @@ public  synchronized void  doEdit(RunData data,Context context){
 		word.getChars(0,word.length(),Buffer,0);
 		String fId=pp.getString("fname","");
 		String fIc=pp.getString("createname","");
+
 		/**
                 * Check for special characters
                 */
@@ -257,8 +251,6 @@ public  synchronized void  doEdit(RunData data,Context context){
 
 }   //doEdit ends
 
-
-
 /**
 * doCreate does the versioning in RCS and 
 * creates files in Wikilog,Wikifirst Wikilast Wikihistory
@@ -267,7 +259,6 @@ public  synchronized void  doEdit(RunData data,Context context){
 */
  public void doCreate( RunData data, Context context ) 
 {
-
 			
 	String file,Page,not,Edited,Wikiaction5,Wikiaction6,Wikiaction7,Wikiaction8,Wikiaction3,usr_prof1;
         file=Page=not=Edited=Wikiaction5=Wikiaction6=Wikiaction7=Wikiaction8=Wikiaction3=usr_prof1=null;
@@ -287,10 +278,7 @@ public  synchronized void  doEdit(RunData data,Context context){
         {
                 data.setMessage("Language Exception in action Wikieditaction method doCreate is \n"+e1);
         }
-
-                                
 	try{			
-		
 		User user=data.getUser();
         	String cId=(String)user.getTemp("course_id");
 		Runtime rc=Runtime.getRuntime();
@@ -300,16 +288,20 @@ public  synchronized void  doEdit(RunData data,Context context){
                 String lastname=user.getLastName();
                 ParameterParser pp = data.getParameters();
                 String word=pp.getString("text","");
+
                 /**
 		* Convert the string to character array
 		* for use of write() method of Filewriter class
 		*/
+
                 Buffer= new char[word.length()];
                 word.getChars(0,word.length(),Buffer,0);
-                String fIdc=pp.getString("createname","");
+                String fIdc=pp.getString("filename","");
+
 		/**
                 * Check for special characters
                 */
+
                 if(StringUtil.checkString(fIdc) != -1)
                 {
                         data.addMessage(usr_prof1);
@@ -323,9 +315,11 @@ public  synchronized void  doEdit(RunData data,Context context){
                 String filePathlog=filePath + "/Wikilog/"+  fIdc;
                 String filePathlast=filePath + "/Wikilast/" ;
                 String filePathlast1=filePathlast + fIdc;
-		 /**
+
+		/**
                 * check if there is illegal symbol >>>>>>> in edited file
                 */
+
 		if(!((word.contains(">>>>>>>"))||(word.contains("<<<<<<<"))||(word.contains("======"))))
                 {//if illegal
 			/**
@@ -444,7 +438,6 @@ public  synchronized void  doEdit(RunData data,Context context){
                 	releasememory();
 
         	}//finally
-
 } //function  doCreate ends
 
 /**
@@ -452,41 +445,6 @@ public  synchronized void  doEdit(RunData data,Context context){
 * @param data RunData
 * @param context Context
 */
-
-///////////////////////////////////////////////////////////////////////////////
-/*
-public void ShowLog(RunData data,Context context)
-{
-	try{
-	User user=data.getUser();
-                String cId=(String)user.getTemp("course_id");
-                context.put("courseid",cId);
-                String userrole=(String)user.getTemp("role");
-                context.put("userrole",userrole);
-                context.put("course",(String)user.getTemp("course_name"));
-                String fName=data.getParameters().getString("filename","");
-                String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/"+ "/Wikilog/"+fName);
-                FileReader fr= new FileReader(filePath);
-                BufferedReader br=new BufferedReader(fr);
-                Vector v = new Vector();
-                String s2=null;
-                while((s2=br.readLine())!=null)
-                {
-                        v.addElement(s2);
-                }
-                context.put("first",v);
-                br.close();
-                fr.close();
-		context.put("filename",fName);
-		ErrorDumpUtil.ErrorLog("\n fName in action file=================>>"+fName);
-	}
-        catch(Exception e1)
-        {
-        	data.setMessage("Language Exception in action Wikieditaction method doShowOriginal is \n"+e1);
-        }
-}
-*/
-///////////////////////////////////////////////////////////////////////////////
 public void doShoworiginal(RunData data,Context context)
 {  //do show starts
 		String file,Wikibutton15,Wikibutton13,Wikibutton5;
@@ -502,7 +460,6 @@ public void doShoworiginal(RunData data,Context context)
                 	data.setMessage("Language Exception in action Wikieditaction method doShowOriginal is \n"+e1);
         	}
 
-		
                 try{  //try starts
 				
 			  User user=data.getUser();
@@ -524,11 +481,8 @@ public void doShoworiginal(RunData data,Context context)
                           String fIda=pp.getString("fname","");
                           String vIda=pp.getString("vname","");
 			  String fpath = filePathf +"/"+ fIda ;
-
 			  fr= new FileReader(fpath);
-
                        	  br=new BufferedReader(fr);
-
                           String s2=null;
 			  /**
 			  * Here we are reading contents of Wikifirst file
@@ -540,7 +494,6 @@ public void doShoworiginal(RunData data,Context context)
                           }
 			  br.close();	
                           fr.close();
-			  
                           context.put("fname",fIda);
                           context.put("first",v);
                           context.put("vname",vIda);
@@ -556,12 +509,7 @@ public void doShoworiginal(RunData data,Context context)
                         releasememory();
 
                   }//finally
-
-
 }       //doShoworiginal ends
-
-
-
 
 /**
 * shows content of Wikihistory file with RCS command ,
@@ -571,22 +519,19 @@ public void doShoworiginal(RunData data,Context context)
 */
 public void doShowhistory(RunData data,Context context)
 {  //do showhistory starts
-		
-		String file,Wikiaction10,Wikiaction11,Wikibutton1;
-        	file=Wikiaction10=Wikiaction11=Wikibutton1=null;
-        	try{
-                	file=data.getUser().getTemp("LangFile").toString();
-                	Wikiaction10=m_u.ConvertedString("Wikiaction10",file);
-                	Wikiaction11=m_u.ConvertedString("Wikiaction11",file);
-                	Wikibutton1=m_u.ConvertedString("Wikibutton1",file);
-        	}
-        	catch(Exception e1)
-        	{
-                	data.setMessage("Language Exception in action Wikieditaction method doShowHistory is \n"+e1);
-        	}
-
+	String file,Wikiaction10,Wikiaction11,Wikibutton1;
+        file=Wikiaction10=Wikiaction11=Wikibutton1=null;
+        try{
+               	file=data.getUser().getTemp("LangFile").toString();
+               	Wikiaction10=m_u.ConvertedString("Wikiaction10",file);
+               	Wikiaction11=m_u.ConvertedString("Wikiaction11",file);
+               	Wikibutton1=m_u.ConvertedString("Wikibutton1",file);
+        }
+        catch(Exception e1)
+        {
+               	data.setMessage("Language Exception in action Wikieditaction method doShowHistory is \n"+e1);
+        }
                 try{  //try starts
-				
 			  User user=data.getUser();
         		  String cId=(String)user.getTemp("course_id");
   			  ParameterParser pp = data.getParameters();
@@ -665,20 +610,19 @@ public void doShowhistory(RunData data,Context context)
 
 
 				}//if ends
-				 else
-                                 {
+				else
+                                {
                                         context.put("fname",fIda);
                                         context.put("vname",vIda);
                                         data.setMessage(Wikiaction10+"  ["+ myversion + ", " + historyversion+"]");
-                                 }
+                                }
                             }// if ends
                             else
-                              {
-                                        context.put("fname",fIda);
-                                        context.put("vname",vIda);
+                            {
+                                       	context.put("fname",fIda);
+                                       	context.put("vname",vIda);
 					data.setMessage(Wikiaction11);
-                                }
-     
+                            }
                    }//try ends
                         catch(Exception e)
                    { //catch starts
@@ -691,11 +635,7 @@ public void doShowhistory(RunData data,Context context)
                         releasememory();
 
                    }//finally
-
-
-
 }       //doShowhistory ends
-
 
 /**
 * work is to show all version differences of given file 
@@ -775,10 +715,7 @@ public void doDiff(RunData data,Context context)
                         releasememory();
 
                   }//finally
-
-
 }       //doDiff ends
-
 
 /**
 * this actually merges specific version to original file
@@ -899,12 +836,8 @@ public void doMergenow(RunData data,Context context)
                                                 fin1=null;
                                                 fout1=null;
 
-
-
                                 	}//if merge first end
-
 					{ //block merge next starts
-
 
 						/**
 						* command below merges the two file versions of same file
@@ -1132,9 +1065,6 @@ public void doStoptraffic(RunData data,Context context)
 
 }	//doStopTraffic ends	
 
-
-
-
 /**
 * content of  page is reflected to original file by this function
 * work here is to copy updated version to wikifirst ,(original page)
@@ -1182,8 +1112,6 @@ public void doRevert(RunData data,Context context)
 		*/
 		if(!(word.equals("")))
 		{//if blank
-
-		
                 	/**
                 	* choose if you want to save to Wikifirst(original) or Wikilast(new merged file)
 			* you will get null value because input type is button
@@ -1276,8 +1204,6 @@ public void doRevert(RunData data,Context context)
 
 }	//doRevert ends	
 
-
-
 /**
 * searches for give word and returns list of files having that word
 * @param data RunData
@@ -1304,7 +1230,6 @@ public void doFind(RunData data,Context context)
 			User user=data.getUser();
         		String cId=(String)user.getTemp("course_id");
 			ParameterParser pp = data.getParameters();
-        //                String word=pp.getString("query","");
 			/**
                        * Check for special characters
                        */
@@ -1713,8 +1638,6 @@ public void doDelversion(RunData data,Context context)
 			   f01.delete();
 			   f02.delete();
 
-
-				
 			   /**
 			   * below code copies the file from Wikifirst 
 			   * to wikilast,wikihistory and versions it
@@ -1769,12 +1692,7 @@ public void doDelversion(RunData data,Context context)
 
                    }//finally
 
-
-
 }//  function Delversion ends
-
-
-
 
 /**
 * work here is to remove all three files that is
@@ -1908,10 +1826,7 @@ public void doPerform(RunData data,Context context) throws Exception{
 		v=null;
 		fr=null;
         	br=null;
-
         } //  releasememory  ends
-
-
 }//class ends
 
 

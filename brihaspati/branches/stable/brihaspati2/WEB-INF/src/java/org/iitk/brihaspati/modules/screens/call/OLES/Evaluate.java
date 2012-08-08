@@ -91,7 +91,8 @@ public class Evaluate extends  SecureScreen{
                          {
                                 //CourseTimeUtil.getCalculation(userid);
                                 //ModuleTimeUtil.getModuleCalculation(userid);
-				MailNotificationThread.getController().CourseTimeSystem(userid);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
                          }
 			
 			String count = pp.getString("count","4");			

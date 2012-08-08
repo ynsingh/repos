@@ -236,7 +236,8 @@ public class Quiz_Score extends SecureScreen{
                          {
                                 //CourseTimeUtil.getCalculation(userid);
                                 //ModuleTimeUtil.getModuleCalculation(userid);
-				MailNotificationThread.getController().CourseTimeSystem(userid);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
                          }
 
 		}	

@@ -53,6 +53,7 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
  *   This class contains code for displaying list of all active quiz 
  *   (active quiz=quizes which are already created)
@@ -143,8 +144,11 @@ public class Quiz_Detail extends SecureScreen{
 			  //int userid=UserUtil.getUID(user.getName());
                           if((Role.equals("student")) || (Role.equals("instructor")))
                           {
-                                CourseTimeUtil.getCalculation(userid);
-                                ModuleTimeUtil.getModuleCalculation(userid);
+                                //CourseTimeUtil.getCalculation(userid);
+                                //ModuleTimeUtil.getModuleCalculation(userid);
+				int eid=0;
+                                MailNotificationThread.getController().CourseTimeSystem(userid,eid);
+
                            }
 
  

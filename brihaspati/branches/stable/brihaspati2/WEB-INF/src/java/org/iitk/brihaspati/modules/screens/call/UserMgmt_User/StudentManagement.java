@@ -93,7 +93,8 @@ public class StudentManagement extends SecureScreen_Instructor
                  {
                            //CourseTimeUtil.getCalculation(uid);
                            //ModuleTimeUtil.getModuleCalculation(uid);
-			   MailNotificationThread.getController().CourseTimeSystem(uid);
+			   int eid=0;
+			   MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                  }
 
 		if(((String)user.getTemp("role")).equals("")){

@@ -54,7 +54,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 /**
 * This class manages the creation of quiz in online examination system 
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
@@ -79,8 +79,11 @@ public class Create_Quiz extends SecureScreen{
                   int uid=UserUtil.getUID(uname);
                   if((Role.equals("student")) || (Role.equals("instructor")))
                   {
-                          CourseTimeUtil.getCalculation(uid);
-                          ModuleTimeUtil.getModuleCalculation(uid);
+                          //CourseTimeUtil.getCalculation(uid);
+                          //ModuleTimeUtil.getModuleCalculation(uid);
+			  int eid=0;
+                          MailNotificationThread.getController().CourseTimeSystem(uid,eid);
+			  
                   }
 
         	String mode =pp.getString("mode"," ");

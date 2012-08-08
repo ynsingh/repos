@@ -59,6 +59,7 @@ public class MailNotificationThread implements Runnable {
 	private static MailNotificationThread mailNotificationThread=null;
 	private static MultilingualUtil mu=new MultilingualUtil();
 	private int userid=0;
+	private int eid=0;
 
 	/**
 	 * Controller for this class to use as a singleton.
@@ -92,9 +93,16 @@ public class MailNotificationThread implements Runnable {
 		//"Message is in queue";
 	}
 
-	public void CourseTimeSystem(int userid){
+	/*public void CourseTimeSystem(int userid){
                 this.userid=userid;
+		//this.eid=eid;
 		flag1=true;	
+                start();
+        }*/
+	public void CourseTimeSystem(int userid,int eid){
+		this.userid=userid;
+                this.eid=eid;
+                flag1=true;
                 start();
         }
 
@@ -190,11 +198,12 @@ public class MailNotificationThread implements Runnable {
 						MailNotification.deletingAttachedFile(MailNotificationThread.attachedFile);
 				}
 				if(flag1){
-					CourseTimeUtil.getCalculation(userid);
-                                        ModuleTimeUtil.getModuleCalculation(userid);
+					 ModuleTimeUtil.AllCalculations(userid,eid);
+                                        flag1=false;
+                                }
+				
 
-					flag1=false;
-				}
+				
 			}catch(Exception es){}
 			stop();
 		}	

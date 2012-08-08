@@ -22,7 +22,7 @@ $!data.getMessage()
 	</td>
 </tr>
 </table>
-<form name="frm" method="Post" action="$link.setPage("ViewCourseList.vm")">
+<form name="frm" method="Post" action="$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang)">
 #set($listConf = ["10","20","30","40","50"] )
 <table align="left" width="100%" bgcolor="$ui.tableColor">
 <tr><td>
@@ -40,7 +40,13 @@ $!data.getMessage()
 #end
 </select>     
 </td>
-<td><b>$brih_searchBy $RemoteInstitute </b>&nbsp;&nbsp;
+<td>
+	#if($lang == "hindi")
+		<b> $brih_institute $brih_searchBy</b>&nbsp;&nbsp;
+        #else
+		<b>$brih_searchBy $RemoteInstitute </b>&nbsp;&nbsp;
+        #end
+
 <select name="InstId" onChange="ShowList(document.frm,this);"/>
 #if($InstName!="")
 	<option value="$Instid">$InstName</option>
@@ -58,13 +64,24 @@ $!data.getMessage()
 #end
 </select>
 </td>
-<td><b>$brih_searchBy $brih_course</b>&nbsp;&nbsp;
+<td>
+	#if($lang == "hindi")
+		<b>$brih_course $brih_searchBy</b>&nbsp;&nbsp;
+        #else
+		<b>$brih_searchBy $brih_course</b>&nbsp;&nbsp;
+        #end
                         <select name="queryList">
 				<option value="CourseId"> $brih_course #if($lang == "hindi") $brih_Of1  #end $brih_ID</option>
                                 <option value="Course Name"> $brih_course #if($lang == "hindi") $brih_Of1  #end $brih_name</option>
 			</select>
                 </td>
-<td><b>$brih_search $brih_courses</b>&nbsp;&nbsp;<input type="text" name="SearchKey" value="" onSelect="ShowList(document.frm,this);"/></td>
+<td>
+	#if($lang == "hindi")
+                <b>$brih_courses $brih_search</b>&nbsp;&nbsp;
+        #else   
+                <b>$brih_search $brih_courses</b>&nbsp;&nbsp;
+        #end
+		<input type="text" name="SearchKey" value="" onSelect="ShowList(document.frm,this);"/></td>
 <td align="right">
 #if( $total_size!=0 )
 	#if( $endIndex < $total_size )

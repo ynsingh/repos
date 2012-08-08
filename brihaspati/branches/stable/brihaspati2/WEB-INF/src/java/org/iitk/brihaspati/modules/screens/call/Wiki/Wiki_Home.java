@@ -36,7 +36,7 @@ package org.iitk.brihaspati.modules.screens.call.Wiki;
  * 
  */
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import  org.iitk.brihaspati.modules.screens.call.SecureScreen;    
+import org.iitk.brihaspati.modules.screens.call.SecureScreen;    
 import java.util.Vector;
 import java.util.Arrays;
 import java.io.File;
@@ -60,10 +60,11 @@ import org.iitk.brihaspati.modules.utils.AssignmentDetail;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 import org.apache.torque.util.Criteria;
+import java.io.*;
+import org.iitk.brihaspati.modules.utils.ListManagement;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
- *
  */
 
 public class Wiki_Home extends SecureScreen{
@@ -82,78 +83,71 @@ public class Wiki_Home extends SecureScreen{
 			LangFile =(String)user.getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
 			String mode=pp.getString("mode","");
+			String filenameforedit=pp.getString("filename","");
+                        String cId=(String)user.getTemp("course_id");
+                        //String filename="brihaspati3";
+                        String filename=cId;
+                        if(!filenameforedit.equals("")){
+                                filename=filenameforedit;
+                        }
+
+			ErrorDumpUtil.ErrorLog("cid===>>"+cId);
+			context.put("filename",filename);
                         context.put("mode",mode);
 			String username=user.getName();
 			String firstname=user.getFirstName();
                         String lastname=user.getLastName();
-			String cId=(String)user.getTemp("course_id");
 			context.put("courseid",cId);
 			context.put("course",(String)user.getTemp("course_name"));
-                        String userrole=(String)user.getTemp("role");
-			context.put("userrole",userrole);
-			// this is use for set Alias from Course table
-			Criteria crit=new Criteria();
-                        crit.add(CoursesPeer.GROUP_NAME,cId);
-                        List lst=CoursesPeer.doSelect(crit);
-			for(int i=0;i<lst.size();i++){
-				Courses element=(Courses)(lst.get(i));
-                                //String subject=(element.getGroupAlias());
-                                String subject=(element.getCname());
-		                context.put("subject",subject);
-			}
-
 			/**
 			* check if user is primary instructor
 			* as he alone can access Adminwiki.vm
 			*/
-			String name="";
-			boolean check_Primary=CourseManagement.IsPrimaryInstructor(cId,username);
-			if(check_Primary)
-			context.put("role","instructor");			
-			else
-			context.put("role","");
-			WikiUtil ol = new WikiUtil();
-			int i=0;
-			Vector all=new Vector();
+
 			String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/");
-			String filePathH=filePath + "/Wikihistory/" ;
-			String filePathF=filePath + "/Wikifirst/" ;
-			String filePathL=filePath + "/Wikilast/" ;
-			String filePathLog=filePath + "/Wikilog/";
-                       	String wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast";
-			File topicDir1=new File(wikipath);
-                        String ContentList[]=topicDir1.list();
-			wikipath="";
+                        String filePathH=filePath + "/Wikihistory/" ;
+                        String filePathF=filePath + "/Wikifirst/" ;
+                        String filePathL=filePath + "/Wikilast/" ;
+                        String filePathLog=filePath + "/Wikilog/";
+
+                        File f=new File(filePathH);
+                        if(!f.exists())
+                                f.mkdir();
+                        f=new File(filePathF);
+                        if(!f.exists())
+                                f.mkdir();
+                        f=new File(filePathL);
+                        if(!f.exists())
+                                f.mkdir();
+                        f=new File(filePathLog);
+                        if(!f.exists())
+                                f.mkdir();
+                        //String wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast/brihaspati3";
+                        String wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast/"+filename;
+                        wikipath="";
                         Vector FileViewId_tiopic1=new Vector();
-                        for(int s=0;s<ContentList.length;s++){
-				if(ContentList[s].lastIndexOf(",v")<0){
-					AssignmentDetail assignmentdetail=new AssignmentDetail();
-                       			wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast/"+ContentList[s];
-					BufferedReader br=new BufferedReader(new FileReader (wikipath));
-					String msg="";
-					String str;
-                        		while ((str=br.readLine()) != null) {
-		                                msg=msg+str;
-                		        }
-                                       	assignmentdetail.setStudentname(ContentList[s]);
-                        		assignmentdetail.setStudentfile(msg);
-                        		FileViewId_tiopic1.add(assignmentdetail);
-					wikipath="";
-				}
-			}
+                        String msg="";
+                        String topic_name_file_name="";
+                        Vector v = new Vector();
+                                try {
+                                        wikipath=data.getServletContext().getRealPath("/WIKI")+"/"+cId+"/Wikilast/"+filename;//+ContentList[s];
+                                        if(new java.io.File(wikipath).exists()) {
+                                                BufferedReader br=new BufferedReader(new FileReader(wikipath));
+                                                String s2=null;
+                                                while((s2=br.readLine())!=null)
+                                                {
+                                                        msg=msg+"wde"+s2;
+                                                }
+                                        }
+                                }catch(Exception e){}
+				//}
+			//}
 			File flog;
 			flog=new File(filePathLog);
 			context.put("topic",FileViewId_tiopic1);
-			File Ftr[]=flog.listFiles();
-
-                        Arrays.sort(Ftr);
-                        for(i=0;i<Ftr.length;i++)
-                        {
-                               all.addElement(Ftr[i]);
-                        }
-
-                        context.put("dirContent",all);
-			//ErrorDumpUtil.ErrorLog("\n alll===>>"+all);
+                        context.put("topic_wiki",msg);
+                        context.put("v",v);
+                        context.put("topic_name_file_name",filename);
 		}//try
 		catch(Exception e)
 		{

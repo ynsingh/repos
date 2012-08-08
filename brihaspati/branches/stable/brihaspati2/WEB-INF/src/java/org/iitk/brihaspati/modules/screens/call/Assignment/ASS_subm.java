@@ -114,7 +114,8 @@ public class  ASS_subm  extends  SecureScreen
 			 int uid=UserUtil.getUID(user.getName());
 			 if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-				MailNotificationThread.getController().CourseTimeSystem(uid);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
                          }

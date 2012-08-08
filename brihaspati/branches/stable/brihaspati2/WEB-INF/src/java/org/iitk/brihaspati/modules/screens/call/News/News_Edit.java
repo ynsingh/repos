@@ -142,7 +142,8 @@ public class News_Edit extends SecureScreen
                         {
                                 //CourseTimeUtil.getCalculation(userId);
                                 //ModuleTimeUtil.getModuleCalculation(userId);
-				MailNotificationThread.getController().CourseTimeSystem(userId);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(userId,eid);
                         }
 
                 }

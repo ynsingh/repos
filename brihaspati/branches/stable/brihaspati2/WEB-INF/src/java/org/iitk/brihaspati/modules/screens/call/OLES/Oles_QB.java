@@ -90,7 +90,8 @@ public class Oles_QB extends SecureScreen{
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
-				 MailNotificationThread.getController().CourseTimeSystem(uid);
+				int eid=0;
+				 MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			String instid=(String)user.getTemp("Institute_id");

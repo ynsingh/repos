@@ -93,16 +93,6 @@ a.one:link,a.one:visited
         <div class="bubble_bottom"></div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
 <body>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
@@ -183,7 +173,7 @@ $!data.getMessage()
 ##end of today's task
 	<td valign="top" align="center">
 		#if($inst.size() >1)
-			<div style="width:460px;  overflow: auto;">
+			<div style="overflow: auto;">
 		#end
 		<table width=100%>
 			<tr><td>
@@ -383,11 +373,43 @@ $!data.getMessage()
 					<tr>
 					#if($guest_login=="false")
         	                        <td align="center"><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none><b>$personal $area</b>
-					##<img src="$content.getURI("/images/$lang/personalarea.jpg")"border=0></a></td>
-                	                      <td align="center"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none><b>$personal $brih_calendar
-					##<img src="$content.getURI("/images/$lang/personalcalendar.jpg")"border=0></a></td>
+					##<img src="$content.getURI("/images/$lang/personalarea.jpg")" border=0>
+					</a></td>
+                	                      <td align="center"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none><b>$personal $brih_calendar</b>
+					##<img src="$content.getURI("/images/$lang/personalcalendar.jpg")" border=0>
+					</a></td>
 	
         	                        #end
+					<td>
+                                        #set($rs=$link.setPage("call").toString())
+                                        #set($count1 = 0)
+                                        #set($count2 = 1)
+                                        #foreach($a in $rs.split(":"))
+                                                #if($count1 == $count2)
+                                                #set($a=$a.substring(2))
+                                                        #if($guest_login=="false")
+                                                        #set($rs=$link.setPage("call").toString())
+                                                        #set($count1 = 0)
+                                                        #set($count2 = 1)
+                                                        #foreach($a in $rs.split(":"))
+                                                        #if($count1 == $count2)
+                                                        #set($a=$a.substring(2))
+                                                        	<td align="center">
+                                                                #if($user_role!="student")
+								<a href=$link.setPage("call,Directory.vm").addPathInfo("mode","prot") style=text-decoration:none><b>$brih_directory</b></a>
+                                                                #else
+								<a href=$link.setPage("call,Directory.vm").addPathInfo("mode","stud") style=text-decoration:none><b>$brih_directory</b></a>
+                                                                #end
+                                                                </td>
+                                                        #end
+                                                        #set($count1 = $count1 + 1)
+                                                        #end
+                                                        #end
+                                        #end
+                                        #set($count1 = $count1 + 1)
+                                        #end
+                                        </td>
+
                 	                </tr>
                         	</table>
                 	</td></tr>

@@ -115,7 +115,8 @@ public class Launchcontentnew extends SecureScreen
                         //frame.setLocation((((int)dim.getWidth()/2)-350),(((int)dim.getHeight()/2)-160));
  			 if((role.equals("student")) || (role.equals("instructor")))
                         {
-                                MailNotificationThread.getController().CourseTimeSystem(Integer.parseInt(userid));
+				int eid=0;
+                                MailNotificationThread.getController().CourseTimeSystem(Integer.parseInt(userid),eid);
                          }
 
 

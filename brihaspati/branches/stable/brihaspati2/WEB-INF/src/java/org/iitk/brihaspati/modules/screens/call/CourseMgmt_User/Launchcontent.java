@@ -60,8 +60,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
+//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 
 public class Launchcontent extends SecureScreen
 {
@@ -122,8 +123,10 @@ public class Launchcontent extends SecureScreen
  		int uid=UserUtil.getUID(uname);
                 if((role.equals("student")) || (role.equals("instructor")))
                 {
-                           CourseTimeUtil.getCalculation(uid);
-                           ModuleTimeUtil.getModuleCalculation(uid);
+                           //CourseTimeUtil.getCalculation(uid);
+                           //ModuleTimeUtil.getModuleCalculation(uid);
+			    int eid=0;
+			   MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                 }
 
 		}

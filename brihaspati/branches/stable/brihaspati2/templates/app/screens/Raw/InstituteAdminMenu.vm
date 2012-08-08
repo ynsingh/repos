@@ -114,6 +114,12 @@
 	<tr bgcolor="$ui.menuColor">
                 <td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none>$RemoteInstitute $brih_admin $brih_mgmt</a></td>
         </tr>
+<tr>
+        <td>
+                <a href=$link.setPage("call,Directory.vm").addPathInfo("mode","psnl") style=text-decoration:none>$brih_directory</a>
+        </td>
+</tr>
+
 
  
 </table>

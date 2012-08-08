@@ -35,44 +35,22 @@ package org.iitk.brihaspati.modules.actions;
  */
 
 import java.util.Date;
-import java.util.List;
-import java.util.Iterator;
-import java.security.NoSuchAlgorithmException;
-
-import com.workingdogs.village.Record;
 import org.apache.velocity.context.Context;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.TurbineSecurityException;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.modules.actions.VelocityAction;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.Turbine;
 import org.apache.torque.util.Criteria;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.iitk.brihaspati.om.TurbineUserPeer;
-import org.iitk.brihaspati.om.TurbineUser;
-import org.iitk.brihaspati.om.UsageDetailsPeer;
-import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-import org.iitk.brihaspati.modules.utils.EncryptionUtil;
-import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
-import org.iitk.brihaspati.modules.utils.ExpiryUtil;
-import org.apache.turbine.services.session.TurbineSession;
-import org.apache.turbine.services.session.TurbineSessionService;
-import javax.servlet.http.HttpSession ;
-import java.util.Collection;
-import java.util.Vector;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
 //import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
 
@@ -123,6 +101,11 @@ public class myLogin extends VelocityAction{
 			data.setScreenTemplate("BrihaspatiLogin.vm");
 		}
 		else{
+			/**
+			 * If you make any change below the code then make sure that 
+			 * make the same change in LoginFromBrihspti.java action
+			 */
+                                         
 			int uid=UserUtil.getUID(username);
 			if(uid != -1){
 				/** 

@@ -123,7 +123,8 @@ public class News_Add extends SecureScreen
                         {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
-				MailNotificationThread.getController().CourseTimeSystem(uid);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                         }
 
 
