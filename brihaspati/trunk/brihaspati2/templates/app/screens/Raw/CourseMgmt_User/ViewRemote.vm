@@ -11,7 +11,7 @@ $page.setTitle("Home | $course | Course Management | Remote Course |Remote Cours
 #set($lang=$data.getUser().getTemp("lang" ).toString())
 
 <table bgcolor="$ui.menuColor" width=100%>
-        <tr align ="right">
+        <tr>
 		<td>
 		<b><a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
@@ -27,22 +27,16 @@ $page.setTitle("Home | $course | Course Management | Remote Course |Remote Cours
 </table>
 
 <table width=100% bgcolor="$ui.menuColor">
- 		
-   <tr>
-	<td>
-                <a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin");>$brih_help</a>
-                <img src="$content.getURI("/images/Lefthand.gif")">
-	</td>
-         <td align="right"> 
-             #if($status==1)
-                                               
-           <a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","0").addPathInfo("count",$tdcolor) style=text-decoration:none> #if($lang=="hindi") $ReBuy #else $brih_view  $RemoteBUY $RemoteTag $brih_course #end </a>
-  		#else
-
+        <tr>
+		<td align=left>
+ 		#if($status==1)
+                        <a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","0").addPathInfo("count",$tdcolor) style=text-decoration:none> #if($lang=="hindi") $ReBuy #else $brih_view  $RemoteBUY $RemoteTag $brih_course #end </a>
+ 		#else
                         <h4><a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","1").addPathInfo("count",$tdcolor) style=text-decoration:none> #if($lang=="hindi") $ReSell #else $brih_view $RemoteSELL $RemoteTag $brih_course #end </a></h4>
 		#end
                 </td>
-		</tr>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a></td>
+	</tr>
 </table>
 <p align="center"><font size=3 color="red">$!data.getMessage()</font></p>
 <form name=frm method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,ViewRemote.vm").setAction("RemoteCoursesAction").addPathInfo("updatestartIndex",$startIndex)">
@@ -55,7 +49,7 @@ $page.setTitle("Home | $course | Course Management | Remote Course |Remote Cours
 							<I> <font color=blue>$course</font>
 							 $brih_topic $brih_Of $RemoteTag  $brih_course $brih_contentOf 
 						#else
-                                                 	<I> $RemoteTag  $brih_course $brih_contentOf  
+		     					<I> $RemoteTag  $brih_course $brih_contentOf  
 							<font color=blue>$course</font>$RemoteforTransaction 
 						#end
                                         <font color=red > 
@@ -207,8 +201,16 @@ $page.setTitle("Home | $course | Course Management | Remote Course |Remote Cours
       #end  ## if ends
 </table>
 </form>
-
 <SCRIPT language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+        }
+</SCRIPT>
+
+
+<SCRIPT LANGUAGE="javascript">
+
 function checkValue(frm,field)
 {
 	if(frm.deleteFileNames.value!="")
@@ -222,8 +224,8 @@ function checkValue(frm,field)
 		}
 }
 
-                  function addDeleteList(field,frm)
-	          {
+function addDeleteList(field,frm)
+	{
         	if(field.checked)
 		{
 	        	frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";

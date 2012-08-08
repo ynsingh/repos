@@ -11,75 +11,59 @@
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Home | $course | Course Management | Course Content | Publishing Module")
-
-<table bgcolor="$ui.tableColor" width=100%>
-<tr align="right">
-<td>
-        <font face="$ui.sansSerifFonts"><b>
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>
-                $brih_course $brih_Of $brih_content</a> |
-                $brih_publish $brih_content
-        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
-        </font>
-        </font>
-</td>
-</tr>
-
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width=100%>
+#set($lang = $data.getUser().getTemp("lang").toString())
+<tr><td>
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+ 	##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
+<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a>| $brih_content $brih_publish
+ #*if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
+	$brih_course $brih_Of $brih_content</a> | $brih_content $brih_publish
+ #else
+	$brih_course $brih_content</a> | $brih_publish $brih_content
+ #end*#     
+</b></td></tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
-
-#if($tdcolor != "7")
-         <td>
-         #elseif($tdcolor == "7")
-         <td bgcolor="#AFDCEC">
-         #end
-       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
-         </td>
-        #if($tdcolor != "6")
+	#if($tdcolor!="1")
         <td>
-        #elseif($tdcolor == "6")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")> $brih_scorm $brih_packager </a></td>
-        #if($tdcolor != "5")    
+	#elseif($tdcolor=="1")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_content #else $brih_course $brih_content #end </a></td>
+	#if($tdcolor!="2")
         <td>
-        #elseif($tdcolor == "5")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5")> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
-        #if($tdcolor != "4")    
+	#elseif($tdcolor=="2")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
+	#if($tdcolor!="3")
         <td>
-        #elseif($tdcolor == "4")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
-        #if($tdcolor != "3")    
+	#elseif($tdcolor=="3")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> $brih_course $RemoteConfiguration</a></td>
+	#if($tdcolor!="4")
         <td>
-#elseif($tdcolor == "3")
-        <td bgcolor="#AFDCEC">
-        #end
- <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")> $brih_course $RemoteConfiguration </a></td>
-        #if($tdcolor != "2")    
-         <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
- #if($tdcolor != "0")  
+	#elseif($tdcolor=="4")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of $brih_header $brih_upload  #else $brih_upload $brih_course $brih_header #end </a></td>
+	#if($tdcolor!="5")
         <td>
-        #elseif($tdcolor == "0")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user </a></td>
-        #if($tdcolor != "1")
+	#elseif($tdcolor==5)
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> #if($lang == "hindi") $brih_grade $RemoteConfiguration #else $RemoteConfiguration $brih_grade #end </a></td>
+	#if($tdcolor!="6")
         <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
-
+	#elseif($tdcolor=="6")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") style=text-decoration:none>$brih_scorm $brih_packager</a></td>
 </tr>
 </table>
 
@@ -108,22 +92,18 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
                 #foreach($File in $failedFiles)
                         $count.  $File <br>
                         #set($count=$count+1)
-               #end
-       
-
-</td>
+                #end
+                </td>
         #end
 </tr>
 </table>
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,PublishModule.vm").addPathInfo("topic",$topic).setAction("PublishAction")">
-<div style="background-color:$ui.tableColor;text-align:right">
+<div style="background-color:$ui.tableColor;text-align:left">
 <b>$topic</b>
 </div>
-	<div style="background-color:$ui.menuColor;text-align:right">
-##<b>$brih_topicDelete </b><input type="checkbox" name=delTopic>
-<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
-<b>$brih_topicDelete </b><input type="checkbox" name=delTopic>
-
+<div style="background-color:$ui.menuColor;text-align:left">
+<input type="checkbox" name=delTopic><b>$brih_topicDelete </b>
+	<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
 </div> 
 <table width=100%>
     <tr>
@@ -145,28 +125,27 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
       </tr>
       #end
       <tr>	
-<div style="background-color:$ui.tableColor;text-align:right">
+<div style="background-color:$ui.tableColor;text-align:left">
 	<b>$brih_attachment</b>
 </div>
 	#set ( $count=1 )
 	<table width=100% bgcolor="$ui.tableColor">
 	  <tr bgcolor="$ui.menuColor">
-  	  <th><br>$brih_delete<br></th>
-          <th><br>$brih_visible<br>$brih_access<br></th>
-          <th><br>$brih_access<br></th>
-          <th><br>$brih_unpublish<br></th>
-          <th><br>$brih_creation $brih_time<br></th>
-          <th><br>$brih_file<br></th>
-          <th><br>$brih_serialNo <br></th>
-         </tr>
-
+  	  <th><br>$brih_serialNo <br></th> 
+	  <th><br>$brih_file<br></th> 
+	  <th><br>$brih_creation $brih_time<br></th> 
+	  <th><br>$brih_unpublish<br></th> 
+	  <th><br>$brih_access<br></th> 
+	  <th><br>$brih_visible<br>$brih_access<br></th>
+	  <th><br>$brih_delete<br></th>
+	</tr>
   	<tr><td align="center" colspan=7><br><b>$brih_publishModule</b><br><br></td></tr>
-	<tr align="left" bgcolor="$ui.menuColor">
-                <td align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,0); ></td>
-                <td align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,1); ></td>
-                <td align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,2); checked></td>
-                <td align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,3); ></td>
+	<tr align="center" bgcolor="$ui.menuColor">
                 <td colspan=3><br></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,0); ></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,1); ></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,2); checked></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(2,3); ></td>
         </tr>
 	#set ( $visible = "")
 	#foreach($file in $visibleContent)
@@ -185,21 +164,21 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 		<td align="left">$file.PDate</td>
 
 		#set ( $visible = "$visible$file.CheckboxName^")
-		<td  align="right"><input type="radio" name="$file.CheckboxName" value=1 onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
-		<td  align="right"><input type="radio" name="$file.CheckboxName" value=2 onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
-		<td  align="right"><input type="radio" name="$file.CheckboxName" value=3  checked=true onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
-		<td  align="right"><input type="radio" name="$file.CheckboxName" value=4 onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
-</tr>
+		<td><input type="radio" name="$file.CheckboxName" value=1 onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
+		<td><input type="radio" name="$file.CheckboxName" value=2 onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
+		<td><input type="radio" name="$file.CheckboxName" value=3  checked=true onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
+		<td><input type="radio" name="$file.CheckboxName" value=4 onClick="addVisibleDeleteList(this,document.frm,this.value);"></td> 
+
 	</tr>
 	#set ( $count= $count+1)
 	#end
   	<tr><td align="center" colspan=7><br><b>$brih_access</b><br><br></td></tr>
-              <tr align="left" bgcolor="$ui.menuColor">
-              <td  align="right">$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,0); ></td>
-                <td  align="right">$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,1); checked></td>
-                <td  align="right">$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,2); ></td>
-                <td  align="right">$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,3); ></td>
-                 <td colspan=3><br></td>
+	<tr align="center" bgcolor="$ui.menuColor">
+                <td colspan=3><br></td>
+                <td>$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,0); ></td>
+                <td>$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,1); checked></td>
+                <td>$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,2); ></td>
+                <td>$brih_selAll<br><input type="radio" name="checkAll" onClick=selectAll(1,3); ></td>
         </tr>
 	#set ( $accessible = "" )
 	#set ( $count=1 )
@@ -217,10 +196,10 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 
 	     #set ( $accessible = "$accessible$file.CheckboxName^"  )
 
-	     <td  align="right"><input type="radio" name="$file.CheckboxName" value=1 onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
-	     <td  align="right"><input type="radio" name="$file.CheckboxName" value=2 checked=true onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
-	     <td  align="right"><input type="radio" name="$file.CheckboxName" value=3 onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
-	     <td  align="right"><input type="radio" name="$file.CheckboxName" value=4 onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
+	     <td><input type="radio" name="$file.CheckboxName" value=1 onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
+	     <td><input type="radio" name="$file.CheckboxName" value=2 checked=true onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
+	     <td><input type="radio" name="$file.CheckboxName" value=3 onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
+	     <td><input type="radio" name="$file.CheckboxName" value=4 onClick="addAccessibleDeleteList(this,document.frm,this.value);"></td> 
 
 	</tr>
 	#set ( $count= $count+1)
@@ -228,14 +207,13 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 	#end
   	<tr><td align="center" colspan=7><br><b>$brih_unpublish</b><br><br></td></tr>
 	<tr align="center" bgcolor="$ui.menuColor">
-                <tr align="left" bgcolor="$ui.menuColor">
-                <td  align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,0); ></td>
-                <td  align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,1); ></td>
-                <td  align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,2); ></td>
-                <td  align="right">$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,3);checked=true ></td>
-               <td colspan=3><br></td>
+                <td colspan=3><br></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,0); checked></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,1); ></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,2); ></td>
+                <td>$brih_selAll <br><input type="radio" name="checkAll" onClick=selectAll(0,3); ></td>
         </tr>
-	 #set ( $unpublished = "" )
+	#set ( $unpublished = "" )
 	#set ( $count=1 )
 	#foreach($file in $unpubContent)
 	#if($velocityCount%2==0)
@@ -243,35 +221,40 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 	#else
 	<tr align="center" bgcolor="$ui.tableColor">
 	#end		     	
-	     <td  align="right"><input type="radio" name="$file.CheckboxName" value=4 onClick="addUnpubDeleteList(this,document.frm,this.value);"></td> 
-		<td  align="right"><input type="radio" name="$file.CheckboxName" value=3 onClick="addUnpubDeleteList(this,document.frm,this.value);"></td>
- 
-		 <td  align="right"><input type="radio" name="$file.CheckboxName" value=2 onClick="addUnpubDeleteList(this,document.frm,this.value);"></td>
-		<td  align="right"><input type="radio" name="$file.CheckboxName" value=1 checked=true onClick="addUnpubDeleteList(this,document.frm,this.value);"></td>
-		 <td align="right">$file.PDate</td>
-		 <td align="right"><b>$file.Name&nbsp;&nbsp;</b>
-                #if($file.Name.endsWith(".zip") && $stat!="Repo" &&  $stat !="Remote")
-                        <a href=$link.setPage("call,CourseMgmt_User,ViewZipContent.vm").addQueryData("topic",$topic).addQueryData("filename",$file.Name) style=text-decoration:none> -- $brih_extract</a>
-                #end
-             </td>
-             <td>$count </td>
-	
-             #set ( $unpublished = "$unpublished$file.CheckboxName^" )
+	     <td>$count </td>
+
+	     <td align="left"><b>$file.Name&nbsp;&nbsp;</b>
+		#if($file.Name.endsWith(".zip") && $stat!="Repo" &&  $stat !="Remote")
+			<a href=$link.setPage("call,CourseMgmt_User,ViewZipContent.vm").addQueryData("topic",$topic).addQueryData("filename",$file.Name) style=text-decoration:none> -- $brih_extract</a>
+		#end
+  	     </td> 
+	     <td align="left">$file.PDate</td>
+	     #set ( $unpublished = "$unpublished$file.CheckboxName^" )
+	     <td><input type="radio" name="$file.CheckboxName" value=1 checked=true onClick="addUnpubDeleteList(this,document.frm,this.value);"></td>
+	     <td><input type="radio" name="$file.CheckboxName" value=2 onClick="addUnpubDeleteList(this,document.frm,this.value);"></td> 
+	     <td><input type="radio" name="$file.CheckboxName" value=3 onClick="addUnpubDeleteList(this,document.frm,this.value);"></td> 
+	     <td><input type="radio" name="$file.CheckboxName" value=4 onClick="addUnpubDeleteList(this,document.frm,this.value);"></td> 
 
 	</tr>
 	#set ( $count= $count+1)
 	#end
 	<tr>
-	<td colspan=7 align="right" bgcolor="$ui.menuColor">
-	<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel">
+	<td colspan=7 align=left bgcolor="$ui.menuColor">
 	<input type="button" name="eventSubmit_doPublish" value="$brih_submit" onClick="deleteConfirm(document.frm,this);">
-        </td>
+	<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel">
+	</td>
 	</tr>
-       </table>
+	</table>
+
+      </tr>
+      
+    </table>
 	<input type="hidden" name=actionName value="">
+
 	<input type="hidden" name=visibleList value="$visible">
 	<input type="hidden" name=accessibleList value="$accessible">
 	<input type="hidden" name=unpublishedList value="$unpublished">
+
 	<input type="hidden" name=deleteVisibleFileNames value="">
 	<input type="hidden" name=deleteAccessibleFileNames value="">
 	<input type="hidden" name=deleteUnpublishedFileNames value="">
@@ -281,10 +264,10 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 	<input type="hidden" name="uname" value="$username">
 	<input type="hidden" name="count" value="$tdcolor">
 
-
+    </tr>
+  </table>	
   </div>
 </form>
-
 
 <SCRIPT LANGUAGE="javascript">
 	function selectAll(originalAccessType,finalAccessType)
