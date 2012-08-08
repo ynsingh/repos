@@ -95,7 +95,8 @@ public class RemoveStudents extends SecureScreen_Instructor{
                          {
                                 //CourseTimeUtil.getCalculation(current_user_id);
                                 //ModuleTimeUtil.getModuleCalculation(current_user_id);
-				MailNotificationThread.getController().CourseTimeSystem(current_user_id);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(current_user_id,eid);
                          }
 
 			/**

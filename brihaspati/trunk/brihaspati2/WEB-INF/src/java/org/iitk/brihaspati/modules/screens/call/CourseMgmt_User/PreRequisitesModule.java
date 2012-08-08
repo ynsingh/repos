@@ -132,7 +132,8 @@ public class PreRequisitesModule extends SecureScreen  {
 			if((Role.equals("student")) || (Role.equals("instructor")))
                         {
                                //CourseTimeUtil.getCalculation(userid);
-                                MailNotificationThread.getController().CourseTimeSystem(Integer.parseInt(userid));
+				int eid=0;
+                                MailNotificationThread.getController().CourseTimeSystem(Integer.parseInt(userid),eid);
                          }
 
 		}//try

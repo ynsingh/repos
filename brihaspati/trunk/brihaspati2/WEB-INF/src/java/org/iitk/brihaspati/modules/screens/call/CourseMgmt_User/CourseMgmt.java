@@ -111,7 +111,8 @@ public class CourseMgmt extends SecureScreen {
                  {
                         //CourseTimeUtil.getCalculation(u_id);
                         //ModuleTimeUtil.getModuleCalculation(u_id);
-			MailNotificationThread.getController().CourseTimeSystem(u_id);
+			int eid=0;
+			MailNotificationThread.getController().CourseTimeSystem(u_id,eid);
                  }
 
 		/**

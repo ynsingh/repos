@@ -71,7 +71,8 @@ public class addStudent extends SecureScreen_Instructor
                 {
 	                //CourseTimeUtil.getCalculation(uid);
                         //ModuleTimeUtil.getModuleCalculation(uid);
-			MailNotificationThread.getController().CourseTimeSystem(uid);
+			int eid=0;
+			MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                 }
 
 	}catch(Exception ex){data.setMessage("The Exception in addStudent java"+ex);}	

@@ -145,7 +145,8 @@ public class LearnerProgressModule extends SecureScreen {
 			int userid=UserUtil.getUID(uname);
 			 if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-                               MailNotificationThread.getController().CourseTimeSystem(userid);
+				int eid=0;
+                               MailNotificationThread.getController().CourseTimeSystem(userid,eid);
                          }
 
 	

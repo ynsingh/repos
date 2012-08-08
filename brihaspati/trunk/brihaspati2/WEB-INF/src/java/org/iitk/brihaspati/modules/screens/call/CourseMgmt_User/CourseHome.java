@@ -292,18 +292,12 @@ public class CourseHome extends SecureScreen{
                          */
                         if((Role.equals("student")) || (Role.equals("instructor")))
                         {
-				 Date CreTime=CourseTimeUtil.getDatetime(userid);   
-				 Date mreTime=ModuleTimeUtil.getMrecenttime(userid);
-				              if(mreTime!=null){
-                                                        if((CreTime.getTime())==(mreTime.getTime())){
-								 ModuleTimeUtil.getModuleCalculation(userid);
-							}
-					}
-				CourseTimeUtil.getCalculation(userid);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
                          }
 			Vector weektime=ModuleTimeUtil.LastweekModuleTime(courseid,userid);
                         context.put("weektime",weektime);
-
+			
 			 /*
                         *method for how much time user spend in this page.
                         *These lines add by Smita

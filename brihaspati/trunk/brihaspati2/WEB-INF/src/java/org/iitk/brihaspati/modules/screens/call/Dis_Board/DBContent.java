@@ -278,7 +278,8 @@ public class DBContent extends SecureScreen
                 	        {
                         	        //CourseTimeUtil.getCalculation(user_id);
                             	        // ModuleTimeUtil.getModuleCalculation(user_id);
-					MailNotificationThread.getController().CourseTimeSystem(user_id);
+					int eid=0;
+					MailNotificationThread.getController().CourseTimeSystem(user_id,eid);
                       		}
 			}
 			

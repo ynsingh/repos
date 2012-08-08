@@ -94,7 +94,8 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
-				MailNotificationThread.getController().CourseTimeSystem(uid);
+				int eid=0;
+				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                          }
 
 			String Mode=new String();

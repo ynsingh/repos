@@ -118,7 +118,8 @@ public class Upload extends SecureScreen_Instructor {
                 {
                        //CourseTimeUtil.getCalculation(uid);
                        //ModuleTimeUtil.getModuleCalculation(uid);
-		       MailNotificationThread.getController().CourseTimeSystem(uid);
+			int eid=0;
+		       MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                 }
 
 		}catch(Exception ex){data.setMessage("the error in upload screens !!"+ex);}

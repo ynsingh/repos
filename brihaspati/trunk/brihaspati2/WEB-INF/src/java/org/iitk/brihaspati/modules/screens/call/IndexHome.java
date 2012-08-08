@@ -227,7 +227,6 @@ public class IndexHome extends SecureScreen{
 					 instname.addElement(Inst_name);
 					 context.put("Inst_name",InsDetail);
 				}
-					
 				Vector course_inst=StudentInstructorMAP.getIMAP(u_id);
                         	context.put("inst",course_inst);
 				// getting Unread Notices
@@ -330,16 +329,10 @@ public class IndexHome extends SecureScreen{
                         int eid1=UsageDetailsUtil.getentryId(u_id);
                         /*entry id from COURSE_TIME */
                         int eid2=CourseTimeUtil.getentryid(u_id);
-                        if(eid1==eid2)
-                        {
-                        		CourseTimeUtil.getCalculation(u_id);
-					Date CreTime=CourseTimeUtil.getDatetime(u_id);
-                                        Date mreTime=ModuleTimeUtil.getMrecenttime(u_id);
-					if(mreTime!=null)
-                                        	if(CreTime.getTime()<mreTime.getTime())
-                                                	ModuleTimeUtil.getModuleCalculation(u_id);
-					CourseTimeUtil.getchangeStatus(eid2);
+                        if(eid1==eid2){
+                        MailNotificationThread.getController().CourseTimeSystem(u_id,eid2);
 			}
+
 		}
 		catch(Exception e){data.setMessage("The error in IndexHome !!"+e);}
 	}

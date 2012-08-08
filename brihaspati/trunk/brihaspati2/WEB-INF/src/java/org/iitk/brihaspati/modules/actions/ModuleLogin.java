@@ -48,7 +48,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.om.ModuleTime;
 import org.iitk.brihaspati.om.ModuleTimePeer;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-
+import org.apache.commons.lang.StringUtils;
 public class ModuleLogin extends SecureAction
 {
     /**
@@ -70,11 +70,12 @@ public class ModuleLogin extends SecureAction
 	   /*get currentdate and convert dateformat.*/
             Date Todaydate = new Date();
            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	
             String de =sdf.format(Todaydate);
 	    Criteria crit=new Criteria();
 	    if((uid!=0) || (uid!=1)){
 	  	  String dateandmid=ModuleTimeUtil.getDate(uid,courseid,mname);
-	     	   if(dateandmid.equals("")){
+	     	   if(org.apache.commons.lang.StringUtils.isBlank(dateandmid)){
                    	 crit.add(ModuleTimePeer.USER_ID, uid);
                   	 crit.add(ModuleTimePeer.COURSE_ID, courseid);
                		 crit.add(ModuleTimePeer.MNAME, mname);

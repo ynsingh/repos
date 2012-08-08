@@ -382,13 +382,13 @@ public class FAQlist extends VelocityScreen
                                 	        topicDesc=topicDesc+ "\n"+str[j];
 	                                }
 
-						String Role = (String)user.getTemp("role");
+						/*String Role = (String)user.getTemp("role");
 						if((Role.equals("student")) || (Role.equals("instructor")))
                        	        		{
                                         	        //CourseTimeUtil.getCalculation(uid);
                                                 	//ModuleTimeUtil.getModuleCalculation(uid);
 	                                                MailNotificationThread.getController().CourseTimeSystem(uid);
-        	                                }
+        	                                }*/
 			         }
         	                catch(Exception e) {data.setMessage("The error in DBView Screens !!"+e);}
 				/**

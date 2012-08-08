@@ -199,7 +199,8 @@ public class Report_Card extends SecureScreen{
                          {
                                 //CourseTimeUtil.getCalculation(userid);
                                 //ModuleTimeUtil.getModuleCalculation(userid);
-				 MailNotificationThread.getController().CourseTimeSystem(userid);
+				int eid=0;
+				 MailNotificationThread.getController().CourseTimeSystem(userid,eid);
                          }
 							
 		}	

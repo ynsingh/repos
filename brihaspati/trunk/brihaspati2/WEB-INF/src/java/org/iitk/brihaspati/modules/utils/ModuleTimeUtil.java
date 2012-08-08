@@ -77,8 +77,7 @@ public class ModuleTimeUtil
                 String courseid=null;
                 try{
                         Vector vec=new Vector();
-                        Criteria crit=null;
-                        crit=new Criteria();
+                        Criteria crit=new Criteria();
                         crit.add(CourseTimePeer.ENTRY_ID,entryid);
                         List v=CourseTimePeer.doSelect(crit);
                         for(int p=0;p<v.size();p++){
@@ -95,7 +94,7 @@ public class ModuleTimeUtil
 	 public static String getDate(int userid,String cname,String mname)
         {
                 //Vector dates=new Vector();
-		  String dateAndmid="";
+		  String dateAndmid=null;
                 try{
 			Date de=new Date();
 			String de1=getDateformate(de);
@@ -110,9 +109,6 @@ public class ModuleTimeUtil
 				int mid=element.getMid();
 				dateAndmid=de1+"@"+mid;
 				}
-				else
-				dateAndmid="";
-                        //}
                 }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error ModuleTimeUtil in Method getDate----"+ex);}
                  return dateAndmid;
         }
@@ -128,8 +124,7 @@ public class ModuleTimeUtil
 		       Vector vec=new Vector();
 		  /*Take list of all values by USER_ID,
 			CNAME from ModuleTime table.*/
-		  Criteria crit=null;
-		  crit=new Criteria();
+		  Criteria crit=new Criteria();
 		  crit.add(ModuleTimePeer.USER_ID,userid);
 		  crit.add(ModuleTimePeer.COURSE_ID,courseid);
 		  crit.add("MODULE_TIME","MLOGIN_DATETIME",(Object) (date+"%"),crit.LIKE);
@@ -329,6 +324,30 @@ public class ModuleTimeUtil
 		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in ModuleTimeUtil in Method LastweekModuleTime---"+ex);}
 		return mTimeMname;
 	}
+	public static void AllCalculations(int uid,int eid)
+        {
+                try{
+                        Date CreTime=CourseTimeUtil.getDatetime(uid);
+                        Date mreTime=ModuleTimeUtil.getMrecenttime(uid);
+                        if(mreTime!=null){
+                        if((CreTime.getTime()<mreTime.getTime()) || (CreTime.getTime()==mreTime.getTime()))
+                        {
+                                CourseTimeUtil.getCalculation(uid);
+                                ModuleTimeUtil.getModuleCalculation(uid);
+                                if(eid!=0)
+                                CourseTimeUtil.getchangeStatus(eid);
+                        }
+                        else
+                        {
+                                CourseTimeUtil.getCalculation(uid);
+                                if(eid!=0)
+                                CourseTimeUtil.getchangeStatus(eid);
+                        }
+                        }
+
+                }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in ModuleTimeUtil in Method AllCalculations---"+ex);}
+
+        }
 
 }
 

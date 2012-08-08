@@ -55,7 +55,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-//import org.iitk.brihaspati.modules.utils.
+import org.iitk.brihaspati.modules.utils. MailNotificationThread;
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  **/
@@ -123,12 +123,7 @@ public class myLogout extends VelocityAction{
                                 	int eid2=CourseTimeUtil.getentryid(uid);
                                 	if(eid1==eid2)
                                 	{
-                                        	CourseTimeUtil.getCalculation(uid);
-    					 	Date CreTime=CourseTimeUtil.getDatetime(uid);                                      			      	 	     Date mreTime=ModuleTimeUtil.getMrecenttime(uid);
-   						if(mreTime!=null)
-                                  			if(CreTime.getTime()<mreTime.getTime())
-                                           		 	ModuleTimeUtil.getModuleCalculation(uid);
-	                               	CourseTimeUtil.getchangeStatus(eid2);
+						MailNotificationThread.getController().CourseTimeSystem(uid,eid2);
                         		}
 
                 		}

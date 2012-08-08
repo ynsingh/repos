@@ -86,12 +86,12 @@ public class UserMgmt_Instructor extends SecureScreen{
 		/**
                  *Time calculaion for how long user use this page.
                  */
-                 int userid=UserUtil.getUID(loginname);
+                 /*int userid=UserUtil.getUID(loginname);
                  if((Role.equals("student")) || (Role.equals("instructor")))
                  {
                          CourseTimeUtil.getCalculation(userid);
                          ModuleTimeUtil.getModuleCalculation(userid);
-                 }
+                 }*/
 
 		String CourseList="";
 		if(institudeName.equals("ListAll")){
