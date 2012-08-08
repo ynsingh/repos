@@ -14,128 +14,116 @@
  * @modified date: 04-04-2011 (Shaista)
 *#
 
+$page.setTitle("Home | $course | Course Management |  Course Configuration for Guest")
 $page.setBgColor($ui.bgcolor)
-$page.setTitle("Course Content")
-$!data.getMessage()
+#set ($lang=$data.getUser().getTemp("lang" ).toString())
 
-<table bgcolor="$ui.tableColor" width=100%>
-<tr align="right">
-<td colspan=2>
-        <font face="$ui.sansSerifFonts"><b>
-        #if($isAdmin=="true")
-                        $brih_course $brih_Of $brih_content
-                <a href=$link.setPage("call,Admin.vm")>$brih_home</a> | $course |
-        #elseif ($isInstructor=="true")
-                ## <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-                <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_course $brih_mgmt</a> |
-                        $brih_course $brih_Of $brih_content
-                | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
-        #else
-                        $brih_course $brih_Of $brih_content
-                 | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
-        #end
-        </font>
-</td>
-</tr>
+<table bgcolor="$ui.menuColor" width=100%>
+        <tr><td>
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+	##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> |  $brih_course  $RemoteConfiguration
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> |  $brih_course  $RemoteConfiguration
+	<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a></td>
+        </td></tr>
 </table>
 
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
+	#if($tdcolor != "1")
+	<td>
+	#elseif($tdcolor == "1")
+	<td bgcolor="#AFDCEC">
+	#end	
+	##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_upload $brih_course $brih_content</a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english" ) $brih_course $brih_content #else $brih_content #end </a></td>
+	#if($tdcolor != "0")  
+ <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td><td>
 
-#if($tdcolor != "7")
+	
+
+	#if($tdcolor != "2")
+	<td>
+	#elseif($tdcolor == "2")
+	<td bgcolor="#AFDCEC">
+	#end	
+        ##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_content</a></td>
+	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") > #if($lang == "english" ) $brih_upload $brih_course $brih_content #else  $brih_content $brih_upload #end </a></td>
+	#if($tdcolor != "3")
+	<td>
+	#elseif($tdcolor == "3")
+	<td bgcolor="#AFDCEC">
+	#end	
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") >$brih_course $RemoteConfiguration</a></td>
+	#if($tdcolor != "4")
+	<td>
+	#elseif($tdcolor == "4")
+	<td bgcolor="#AFDCEC">
+	#end	
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") > #if($lang == "english" ) $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
+	#if($tdcolor != "5")
+	<td>
+	#elseif($tdcolor == "5")
+	<td bgcolor="#AFDCEC">
+	#end	
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") > #if($lang == "english" ) $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
+	#if($tdcolor != "6")
+	<td>
+	#elseif($tdcolor == "6")
+	<td bgcolor="#AFDCEC">
+	#end	
+        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") >$brih_scorm $brih_packager</a></td>
+        #if($tdcolor != "7")
          <td>
          #elseif($tdcolor == "7")
          <td bgcolor="#AFDCEC">
          #end
-       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7") style=text-decoration:none> $brih_scorm $Repo_Player </a>
+         <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>$brih_scorm $Repo_Player</a>
          </td>
-        #if($tdcolor != "6")
-        <td>
-        #elseif($tdcolor == "6")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") style=text-decoration:none> $brih_scorm $brih_packager </a></td>
-        #if($tdcolor != "5")    
-        <td>
-        #elseif($tdcolor == "5")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
-        #if($tdcolor != "4")    
-        <td>
-        #elseif($tdcolor == "4")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
-        #if($tdcolor != "3")    
-        <td>
- #elseif($tdcolor == "3")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> $brih_course $RemoteConfiguration </a></td>
-        #if($tdcolor != "2")    
- <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
- #if($tdcolor != "0")  
-        <td>
-        #elseif($tdcolor == "0")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user </a></td><td>
-        #if($tdcolor != "1")
-        <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
 
 ##	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin");>$brih_help</a></td>
 </tr>
 </table>
 
-<table align="right" bgcolor="$ui.tableColor"> ##Main Table
+<table align="left" bgcolor="$ui.tableColor"> ##Main Table
 <form method="post" action="$link.setPage("call,CourseMgmt_User,Configuration.vm").setAction("Guest")">
-         <tr bgcolor="$ui.menuColor"><td align="right">
+         <tr bgcolor="$ui.menuColor"><td align="left">
                 <font size=4> <b>$brih_guestConfig </b></font>
          </td></tr>
          <tr><td bgcolor="$ui.tableColor" >
                 <table width=100%>
-                      <tr><td align="right">
-            	               <input type="submit"  value="$brih_yes">
-                               <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
+                        <tr><td align="left">
+            	    	#if($Guest == true)
+          	              <font color="Green"><b>$Guest_msg1</b></font>
+                	#else
+                	        <font color="Red"><b>$Guest_msg2</b></font>
+                	#end
+                        </td><td align="left">
+                                <input type="submit"  value="$brih_yes">
+                                <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
                                 <input type="hidden"  name="count" value="$tdcolor"> &nbsp;&nbsp;
-                              <td align="right">
-                           #if($Guest == true)
-                              <font color="Green"><b>$Guest_msg1</b></font>
-                        #else
-                                <font color="Red"><b>$Guest_msg2</b></font>
-                        #end
-                         </td>
-                               
                          </td></tr>
                 </table>
-         </tr>
-         <tr align ="right"><td  bgcolor="$ui.tableColor" align="right"> $brih_guestMsg1 </td></tr>
+         </td></tr>
+         <tr><td  bgcolor="$ui.tableColor" align="left"> $brih_guestMsg1 </td></tr>
 </form>
 </td></tr>
 ##For Online User
 <tr><td>
 <form method="post" action="$link.setPage("call,CourseMgmt_User,Configuration.vm").setAction("OnlineConfiguration")">
-         <tr bgcolor="$ui.menuColor"><td align="right">
+         <tr bgcolor="$ui.menuColor"><td align="left">
                 <font size=4> <b>$onlineconfiguration</b></font>
          </td></tr>
-         <tr align="right"><td align="right" bgcolor="$ui.tableColor" >
+         <tr><td bgcolor="$ui.tableColor" >
                 <table width=100%>
-                        <tr align="right">
-		            <td align="right"> 
-                                <input type="submit"  value="$brih_update">
-                                <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
-                                <input type="hidden"  name="count" value="$tdcolor"> &nbsp;&nbsp;
-				</td>
-				    <td align="right">
+                        <tr><td align="left">
+                              <font color="Green"><b>$onlineconf</b></font>
+                        </td>
+			<td align="left">
                                 #if($online_conf==1) 
                                 </select>
                                         <select name="onlineconf">
@@ -163,14 +151,16 @@ $!data.getMessage()
                                         </option>
                                 </select>
                                 #end
-                       		 </td>
-				 <td align="right">
-                              <font color="Green"><b>$onlineconf</b></font>
-                        </td>
-				</tr>
-			</table>
-         	</td></tr>
-                     <tr><td  align="right" bgcolor="$ui.tableColor" align="right"> $onlinecourse</td></tr>
+
+			</td>				
+			<td align="left">
+                                <input type="submit"  value="$brih_update">
+                                <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
+                                <input type="hidden"  name="count" value="$tdcolor"> &nbsp;&nbsp;
+                         </td></tr>
+                </table>
+         </td></tr>
+         <tr><td  bgcolor="$ui.tableColor" align="left"> $onlinecourse</td></tr>
 </form>
 </td></tr>
 
@@ -196,67 +186,59 @@ $!data.getMessage()
 <tr><td>
 <form name=frm method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,Configuration.vm").setAction("RemoteCoursesAction")">
 <table bgcolor ="$ui.tableColor" width=100% >
-	<tr bgcolor ="$ui.menuColor"><td  align="right">
+	<tr bgcolor ="$ui.menuColor"><td  align="left">
 		<font size=4> <b>$RemoteTag $brih_course $RemoteConfiguration</b></font>
 	</td></tr>
-	<tr><td  align="right">
+	<tr><td >
 		<font color=Red>* $Remotemandatory</font>
 	</td></tr>
 	<tr><td>
-
-<table align="left"width=100%>
-                    ## <br /> ## This space is for look and feel
-		<tr align="right" bgcolor ="$ui.menuColor">
-                	<td align="right"><input type="text" name="cid" value="" ></td>
-                        <td align="right"> $brih_course $brih_Of1 $brih_ID </td>
-		</tr>
-                <tr align="right">
-                	<td align="right"> <input type="text" name="riname" value=""> </td>
-                        <td align="right"> $brih_Instructor $brih_Of1 $brih_name </td>
-		</tr>
-                <tr bgcolor ="$ui.menuColor" align="right">
-			<td align="right"><input type="text" name="iip" value="" ></td>
-			<td align="right">$RemoteInstitute $brih_Of1 $RemoteIP $RemoteAddress</td>
-		</tr>
-		<tr align="right">
-                   	<td align="right"><input type="text" name="inm" value="" ></td>
-                        <td align="right">$RemoteInstitute $brih_Of1 $brih_name</td>
-                </tr>
-                      
-
-
-        <tr bgcolor="$ui.menuColor" align="right">
-        ##formPasswordCell ("$RemoteSecretKey" "sec_key" "")
-            <td align="right"><input type="password" name="sec_key" value="" ></td>
-                        <td align="right">$RemoteSecretKey</td>
-
-
-		</tr>
-
-
-
-                <tr align="right">
-                	<td align="right">
-             			<select name="order">
+		<table align="left"width=100%>
+			## <br /> ## This space is for look and feel
+			<tr bgcolor ="$ui.menuColor">
+    				##formCell("$brih_course $brih_ID" "cid" "$!c1")
+				<td> #if($lang == "english") $brih_course $brih_ID #else $brih_course $brih_Of1 $brih_ID #end </td>
+				<td> 
+					<input type="text" name="cid" value="" >
+				</td>
+			</tr>
+			<tr> 
+    				##formCell("$brih_Instructor $brih_name" "riname" "$!c2")
+				<td> $brih_Instructor #if($lang == "hindi") $brih_Of1 #end $brih_name </td>
+				<td> <input type="text" name="riname" value=""> </td>
+			</tr>
+			<tr bgcolor ="$ui.menuColor">
+				#formCell("$RemoteInstitute $RemoteIP $RemoteAddress" "iip" "$!c4")
+			</tr>    
+			<tr>
+    				#formCell("$RemoteInstitute $brih_name" "inm" "$!c5")
+			</tr>
+			<tr bgcolor ="$ui.menuColor">
+   				#formPasswordCell("$RemoteSecretKey" "sec_key" "$!sec_key")
+			</tr>
+			<tr>
+			<td>$RemoteTransaction</td>
+			<td>
+				<select name="order">
 						 #if($order!="")
 						 	#if($order =="Purchase")
 								##<option value="Purchase"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $RemoteBUY &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<option value="Purchase">$ReBuy 
+								<option value="Purchase">$RemoteBUY 
 							#else
-								<option value="Sell"> $ReSell 
+								<option value="Sell"> $RemoteSELL 
         	                                 	#end
         	                                 #end
 
-						<option value="Purchase"> $ReBuy 
-						<option value="Sell"> $ReSell
-				</select>
-			</td>
-			<td align="right">$RemoteTransaction</td>
-		</tr>
-		<tr  align="right"bgcolor="$ui.menuColor">
-               		<td align="right">
-                  		<select name="Start_year">
-                 		<option value="$cyear">$cyear
+						<option value="Purchase"> $RemoteBUY 
+						<option value="Sell"> $RemoteSELL 
+					</select>
+				</td>
+			</tr>
+			<tr bgcolor="$ui.menuColor">
+                	<td>$DisBoard_Expiry $brih_Da</td>
+                		<td>
+                  			<select name="Start_year">
+                  			<option value="$cyear">$cyear
                   			#foreach($year in $year_list)
                     				#if($cyear != $year)
                       					<option value="$year">$year
@@ -279,20 +261,19 @@ $!data.getMessage()
                     				#end
                   			#end
             				</select>
-                  	</td>
-                	<td align="right">$DisBoard_Expiry $brih_Da</td>
+                  		</td>
    			</tr>
 		</table>
 		## <br/>
 		##<table align="left" width=100% bgcolor="$ui.tableColor">
-			<tr><td align="right">
+			<tr><td>
 
-				<input type="reset" name="clear" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 				#if($serial !="")
 				<input type="submit"  name="eventSubmit_doInsert" value="$brih_update " onClick="return checkForm(document.frm,this);"/>
 				#else
 				<input type="submit"  name="eventSubmit_doInsert" value="$brih_submit" onClick="return checkForm(document.frm,this);"/>
 				#end
+				<input type="reset" name="clear" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 				<INPUT TYPE="hidden" NAME="updatestartIndex" value="$updatestartIndex">
 				<INPUT TYPE="hidden" NAME="serial" value="$serial">
 				<INPUT TYPE="hidden" NAME="count" value="$tdcolor">
@@ -315,13 +296,13 @@ $!data.getMessage()
 
  <br/>
 <br/> ## This space is for look and feel
-<table align="right" bgcolor="$ui.tableColor" cellspacing="5" width=100%>
-        <tr bgcolor="$ui.menuColor" align="right">
-	<td align="right" >
-                        <h4><a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","1").addPathInfo("count",$tdcolor) style=text-decoration:none> $brih_view $ReSell  $RemoteTag $brih_course </a></h4>
+<table align="left" bgcolor="$ui.tableColor" cellspacing="5" width=100%>
+        <tr bgcolor="$ui.menuColor">
+        <td align="left" width=30% >
+			<h4><a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","0").addPathInfo("count",$tdcolor) style=text-decoration:none> #if($lang=="hindi") $ReBuy #else $brih_view  $RemoteBUY $RemoteTag $brih_course #end</a></h4>
                 </td>
-        <td align="right" width=30%>
-			<h4><a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","0").addPathInfo("count",$tdcolor) style=text-decoration:none> $brih_view $ReBuy $RemoteTag $brih_course </a></h4>
+                <td>
+			<h4><a href=$link.setPage("call,CourseMgmt_User,ViewRemote.vm").addPathInfo("status","1").addPathInfo("count",$tdcolor) style=text-decoration:none> #if($lang=="hindi") $ReSell #else $brih_view $RemoteSELL $RemoteTag $brih_course #end</a></h4>
                 </td>
         </tr>
 </table>

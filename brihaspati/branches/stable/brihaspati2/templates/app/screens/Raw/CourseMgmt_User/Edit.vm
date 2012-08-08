@@ -9,75 +9,63 @@
  * @modified date: 30-03-2010
 *#
 
+
 $page.setBgColor($ui.bgcolor)
+#set($lang=$data.getUser().getTemp("lang").toString())
 $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $brih_content | $brih_edit $brih_content")
 
-<table bgcolor="$ui.tableColor" width=100%>
-<tr align="right">
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
 <td>
-        <font face="$ui.sansSerifFonts"><b>
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_mgmt $brih_course </a> | <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>
-
-        $brih_course  $brih_Of $brih_content</a> |
-        $brih_content $brih_Of $brih_edit
-        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
-        </font>
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
+ 	##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
+#if($lang =="hindi")
+	$brih_content </a> | $brih_content  $brih_edit
+#else	
+	$brih_course $brih_content </a> | $brih_edit $brih_content 
+#end
 </td>
 </tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
-#if($tdcolor != "7")
-         <td>
-         #elseif($tdcolor == "7")
-         <td bgcolor="#AFDCEC">
-         #end
-       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
-         </td>
-        #if($tdcolor != "6")
+	#if($tdcolor!="1")
         <td>
-        #elseif($tdcolor == "6")
+	#elseif($tdcolor=="1")
         <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")> $brih_scorm $brih_packager </a></td>
-        #if($tdcolor != "5")    
+	#end
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_content #else $brih_course $brih_content #end</a></td>
+	#if($tdcolor!="2")
         <td>
-        #elseif($tdcolor == "5")
+	#elseif($tdcolor=="2")
         <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5")> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
-        #if($tdcolor != "4")    
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end</a></td>
+	#if($tdcolor!="3")
         <td>
-        #elseif($tdcolor == "4")
+	#elseif($tdcolor=="3")
         <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
-        #if($tdcolor != "3")    
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> $brih_course $RemoteConfiguration</a></td>
+	#if($tdcolor!="4")
         <td>
-#elseif($tdcolor == "3")
+	#elseif($tdcolor=="4")
         <td bgcolor="#AFDCEC">
-        #end
-<a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")> $brih_course $RemoteConfiguration </a></td>
-        #if($tdcolor != "2")    
-         <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
- #if($tdcolor != "0")  
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of $brih_header $brih_upload  #else $brih_upload $brih_course $brih_header #end</a></td>
+	#if($tdcolor!="5")
         <td>
-        #elseif($tdcolor == "0")
+	#elseif($tdcolor=="5")
         <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user </a></td>
-        #if($tdcolor != "1")
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> $RemoteConfiguration $brih_grade </a></td>
+	#if($tdcolor!="6")
         <td>
-        #elseif($tdcolor == "1")
+	#elseif($tdcolor=="6")
         <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
-
+	#end
+        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") style=text-decoration:none>$brih_scorm $brih_packager</a></td>
 </tr>
 </table>
 
