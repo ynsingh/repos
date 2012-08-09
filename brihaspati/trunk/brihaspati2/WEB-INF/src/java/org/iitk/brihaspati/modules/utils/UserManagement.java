@@ -294,7 +294,6 @@ public class UserManagement
 							info_Opt = "newUser";
 						else
 							info_Opt = "newUserhttps";
-
                         			/**
 						 *  Added by shaista
                          			 * Check if the user already exists. If the user exists then 
@@ -354,9 +353,7 @@ public class UserManagement
         					* received all notices and Group Discussion Board messages by
         					* existing user
 						*/
-
 						InsertMessages(UName,GroupName,Role);
-						
 						message=Msg+" "+Msg2+" "+Rollno_msg +" "+Mail_msg;
 
 					}//role else part end
@@ -435,7 +432,7 @@ public class UserManagement
 			 			* Encrypt the password entered by the user
 			 			* @see EncryptionUtil in utils
 			 			*/
-						String encrPassword=EncryptionUtil.createDigest("MD5",Passwd);	
+						String encrPassword=EncryptionUtil.createDigest("MD5",Passwd);
 						/**
 				 		* Adds the new user using TurbineSecurity which throws
 				 		* EntityExistsException and DataBackendException
@@ -547,6 +544,7 @@ public class UserManagement
 						//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
                                                 messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name,"");
 	
+						//MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 						 MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid);
 						subject = ""; messageFormate =""; msgBrihAdmin="";
 						if(Role.equals("author") || Role.equals("institute_admin"))
@@ -620,7 +618,6 @@ public class UserManagement
 						}
 						message=Msg+" "+Rollno_msg+" "+Mail_msg;
 							
-						
 					}
 					catch(Exception e)
 					{
@@ -719,6 +716,75 @@ public class UserManagement
                 }
                 return Message;
         }
+	public static String DeleteInstructor(String Gname,String LangFile, int instId)
+	{
+		String Message="", messageFormate="", msgRegard="", msgInstAdmin="", instFirstLastName ="",  institutename="";
+		int Auid=0;
+ 		try
+ 		{
+			int gid=GroupUtil.getGID(Gname);
+			Criteria crit=new Criteria();
+                        crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+                        List lst=TurbineUserGroupRolePeer.doSelect(crit);
+                        int userId=((TurbineUserGroupRole)lst.get(0)).getUserId();
+			String uid=Integer.toString(userId);
+                        String server_name=TurbineServlet.getServerName();
+			String srvrPort=TurbineServlet.getServerPort();
+			String subject="", NewUser="";
+			 if(srvrPort.equals("8080")){
+				subject="deleteUser";
+				NewUser = "newUser";
+                        }
+                        else{
+                                subject="deleteUserhttps";
+                                NewUser = "newUserhttps";
+                        }
+			String email="";
+                        if(instId != 0)
+                        {
+                                institutename= InstituteIdUtil.getIstName(instId);
+                                try{
+                                        crit=new Criteria();
+                                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instId);
+                                        List inm=InstituteAdminUserPeer.doSelect(crit);
+                                        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+					Auid=UserUtil.getUID(element.getAdminUname());
+                                        instFirstLastName=UserUtil.getFullName(Auid);
+                                }
+                                catch(Exception ex){
+                                        ErrorDumpUtil.ErrorLog("The error in User Managemen Util class. See at line 655 to 662 !!"+ex);
+                                }
+			}
+			TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
+                        email=element.getEmail();
+                        String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                        String rmsg=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
+                        Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+                        String subj = MailNotification.subjectFormate(subject, "", pr );
+                        messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", pr);
+                        msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
+                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                        if(instId != 0)
+                        {
+                                messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,"");
+                                msgInstAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgInstAdmin");
+                                msgInstAdmin = MailNotification.getMessage_new(msgInstAdmin, "", "", instFirstLastName, "");
+                        }
+                        else
+                                msgInstAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+
+                        //String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
+                        String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, msgInstAdmin, email, subj, "", LangFile, Integer.toString(instId));
+                        Message=rmsg+" "+Mail_msg;
+
+                }
+                catch(Exception cx)
+                {
+                        ErrorDumpUtil.ErrorLog("The exception in DeleteInstructor method :--utils(UserManagement) "+cx);
+                }
+                return Message;
+	}
+
 	/**
 	 * In this method,Check existing user
 	 * @param uName String The user name of the user
@@ -1022,7 +1088,7 @@ public class UserManagement
                                 msg= profileOf+" "+userName+" "+update_msg+" "+rollmsg;
 
 
-			ErrorDumpUtil.ErrorLog(userName +" Profile has been changed");
+			//ErrorDumpUtil.ErrorLog(userName +" Profile has been changed");
 
 		}
 		catch(Exception ex)
@@ -1050,14 +1116,17 @@ public class UserManagement
                         * for the group and role specified in
                         * the parameters passed
                         */
+			//ErrorDumpUtil.ErrorLog("user in removeUserProfile userName= "+userName+"\t  group_name="+ group_name+"\tfile="+file);
                         User user=TurbineSecurity.getUser(userName);
                         Group user_group=TurbineSecurity.getGroupByName(group_name);
+			//ErrorDumpUtil.ErrorLog("\nUM class at line 1124 in removeUserProfileuser_group= "+user_group);
 			int uid=UserUtil.getUID(userName);
 			int gid=GroupUtil.getGID(group_name);
 			int role=getRoleinCourse(uid,gid);
 			String roleName=UserGroupRoleUtil.getRoleName(role);
                         Role user_role=TurbineSecurity.getRoleByName(roleName);
                         Criteria crit=new Criteria();
+			//ErrorDumpUtil.ErrorLog("user in removeUserProfile userName= "+userName+"\t  group_name="+ group_name);
 
 						/**
                                                 * Remove student membership from the Student Expiry 
@@ -1075,7 +1144,6 @@ public class UserManagement
                                 TurbineSecurity.revoke(user,user_group,user_role);
 				CourseProgramUtil.DeleteCoursePrg(userName,group_name);
 				this.flag=new Boolean(false);
-
                                 String usr_role=MultilingualUtil.ConvertedString("usr's_role",file);
                                 String remove=MultilingualUtil.ConvertedString("remove",file);
 				String msg1="";
@@ -1093,6 +1161,7 @@ public class UserManagement
                                 */
 				String msg2="";
 				int user_id=UserUtil.getUID(userName);
+				//ErrorDumpUtil.ErrorLog("...............................user_id."+user_id);
                                 if(user_id!=0 && user_id!=1){
 					int i[]={1,2};
                                        	crit.add(TurbineUserGroupRolePeer.USER_ID,user_id);
@@ -1549,12 +1618,52 @@ public class UserManagement
 	 * @param serverPort String Port Number of the server
 	 * @return String
 	**/
-        public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new, String mail_id,String instName,String courseId, String dept, String userPassword, String file, String serverName, String serverPort )
+        public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new1, String mail_id,String instName,String courseId, String dept, String userPassword, String file, String serverName, String serverPort )
 	{
-		String Msg ="", Mail_msg = "";
+		//String Msg ="", Mail_msg = "";
+		String Msg ="", Mail_msg = "", info_Opt="", msgRegard="", msgInstAdmin="", instAdminName="";
+		int instId=0, Auid=0;
 		try{
 			Msg=removeUserProfile(userName,group_name,langFile);
-		//////////////////////////////////////
+                        Properties pr =MailNotification.uploadingPropertiesFile(file);
+                        String info_new = org.apache.commons.lang.StringUtils.substringBeforeLast(info_new1, "$");
+                        info_Opt = org.apache.commons.lang.StringUtils.substringAfterLast(info_new1, "$");
+			//ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  info_new=="+info_new+"\t info_Opt ==="+info_Opt );
+                        if(! instName.equals("")){
+                                instId= InstituteIdUtil.getIst_Id(instName);
+                                Criteria crit=new Criteria();
+                                try{
+                                       crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instId);
+                                       List inm=InstituteAdminUserPeer.doSelect(crit);
+                                       for(int in=0; in <inm.size(); in++){
+                                                InstituteAdminUser element=(InstituteAdminUser)inm.get(in);
+                                                instAdminName= element.getAdminUname();
+                                                if(courseId.trim().equals(instAdminName.trim()))
+							Auid=UserUtil.getUID(element.getAdminUname());
+							instAdminName = UserUtil.getFullName(Auid);
+                                       }
+                               }
+                               catch(Exception ex){
+                                       ErrorDumpUtil.ErrorLog("The error in removeUserProfileWithMail() -User Management Util class !!"+ex);
+                               }
+                        }
+                        msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                       	msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                       	msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+                        msgInstAdmin = MailNotification.getMessage_new(msgInstAdmin,"","",instAdminName,"");
+                        String subject = MailNotification.subjectFormate(info_new, "", pr );
+                        String message = MailNotification.getMessage(info_new, group_name, "", "", "", pr);
+			if(message.length() >0)
+	                        message = MailNotification.getMessage_new(message,"","",instName,userName);
+                        //ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  message="+message+"      subject="+subject);
+                        //MailNotification.sendMail(message, mail_id, subject, "" ,langFile);
+                        if(instId == 0)
+                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile, "");
+                        else
+                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile, Integer.toString(instId));
+                }
+
+/*
 			Properties pr =MailNotification.uploadingPropertiesFile(file);
         	        String subject = MailNotification.subjectFormate(info_new, "", pr );
                 	String message = MailNotification.getMessage(info_new, group_name, "", "", "", serverName, serverPort,pr);
@@ -1562,9 +1671,8 @@ public class UserManagement
 		////////////////////////////////////////
 		//String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);
 			Mail_msg=MailNotification.sendMail(message, mail_id, subject, "" ,langFile);
-		}
+*/
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in removeUserProfileWithMail method in UserManagment util"+e);}
 		return Mail_msg+":"+Msg;
 	}
-
 }

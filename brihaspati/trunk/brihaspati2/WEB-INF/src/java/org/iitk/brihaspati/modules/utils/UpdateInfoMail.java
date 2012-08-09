@@ -241,7 +241,7 @@ public class UpdateInfoMail{
                                                 //Mail_msg=MailNotification.sendMail(Messagebackup,emailId1,"","Updation Mail","","","",server_name,srvrPort,"");
                                                 //Mail_msg=MailNotification.sendMail(Messagebackup, emailId1, "Updation Mail", "", "english");
 						// Shaista did Modification for mail Sending 
-						Mail_msg = MailNotificationThread.getController().set_Message(Messagebackup, "", "", " ", emailId1, "Updation Mail from brihaspati", "", "english", "");
+						Mail_msg = MailNotificationThread.getController().set_Message(Messagebackup, "", "", " ", emailId1, "Updation Mail from brihaspati", "", "BrihLang_en.properties", "");
 						////////////////////////////////////////////
                                         }
                                         else
@@ -252,7 +252,7 @@ public class UpdateInfoMail{
                                                 	//Mail_msg=MailNotification.sendMail(TitalMailMessage,emailId1,"","Updation Mail","","","",server_name,srvrPort,"english");
                                                 	//Mail_msg=MailNotification.sendMail(TitalMailMessage,  emailId1, "Updation Mail", "", "english");
 							// Shaista did Modification for mail Sending 
-							Mail_msg = MailNotificationThread.getController().set_Message(TitalMailMessage, "", "", " ", emailId1, "Updation Mail from brihaspati", "", "english", "");
+							Mail_msg = MailNotificationThread.getController().set_Message(TitalMailMessage, "", "", " ", emailId1, "Updation Mail from brihaspati", "", "BrihLang_en.properties", "");
                                                 }
                                         }
                                 } //if

@@ -314,11 +314,9 @@ $!data.getMessage()
 
 					#if($guest_login=="false")
                                         <td align="center">
-						<td align="center"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none><b>$personal $brih_calendar
-                                        </td>	
+						<td align="center"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none><b>$personal $brih_calendar </b></a></td>
 					<td align="center">
-						<td align="center"><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none><b>$personal $area</b>
-					</td>
+						<td align="center"><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none><b>$personal $area</b> </a> </td>
 					#end
 				</tr>
 			</table>

@@ -53,6 +53,8 @@ import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 
@@ -61,10 +63,9 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>23April2012
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
- * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
- * @modified date: 22-11-2010
+ * @modified date: 22-11-2010, 16-06-2011
  * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
- * @modified date: 22-11-2010
+ * @modified date: 22-11-2010, 08-08-2012(Shaista)
  */
 /**
 * class for registration of a new institute as well institute admin information
@@ -177,30 +178,39 @@ public class InstituteRegistration extends VelocitySecureAction
 					 */
                                         String server_name=TurbineServlet.getServerName();
                                         String srvrPort=TurbineServlet.getServerPort();
-                                        String subject="";
+                                        String subject="",  info_Opt="";
                                         Criteria criteria=new Criteria();
                                         criteria.add(TurbineUserPeer.USER_ID,1);
                                         List adminemail=TurbineUserPeer.doSelect(criteria);
                                         String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
                                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                                         pr=MailNotification.uploadingPropertiesFile(fileName);
-                                        if(srvrPort.equals("8080"))
+                                        if(srvrPort.equals("8080")){
                                                 subject="newInstituteRegister";
-                                        else
+						info_Opt = "newUser";
+                                        }
+                                        else {
                                                 subject="newInstituteRegisterhttps";
-                                        String subj = MailNotification.subjectFormate(subject, "", pr);
-					
-                                        String messageFormate = MailNotification.getMessage(subject,institutename, "", "", "", server_name, srvrPort, pr);
-                                        messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
-					// call method for sending mail
-                                        String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
+						 info_Opt = "newUserhttps";
+                                        }
+                                       	String subj = MailNotification.subjectFormate(subject, "", pr);
+					//messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort, pr);
+					String messageFormate = MailNotification.getMessage(subject, institutename, "", "", "", pr);
+					messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
+					String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+					//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subj +"\n messageFormate="+messageFormate+"\n msgRegard="+msgRegard);
 
+					String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, "", EMAIL, subj, "", Lang, "");
                                         rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
                                         //"Institute Registeration Successfull"
 				}//flag
 				else
                                 {
-                                        rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang));
+					if(Lang.endsWith("_hi.properties"))
+                                                rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+""+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_from", Lang));
+                                        else
+	                                        rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang));
                                 }
 			}//strif
 			else{

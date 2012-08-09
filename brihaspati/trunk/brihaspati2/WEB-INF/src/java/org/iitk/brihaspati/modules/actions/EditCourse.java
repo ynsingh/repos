@@ -49,6 +49,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * This class contains code for Updatecourse details
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 08-08-2012
  */
  
 public class EditCourse extends SecureAction_Admin
@@ -116,10 +118,15 @@ public class EditCourse extends SecureAction_Admin
 		  * Getting file Parameter by Temporary Variable
 		  * file Parameter having the property file according to selected language
 		  */
-		file=(String)data.getUser().getTemp("LangFile");
+		User user= data.getUser();
+		file=(String)user.getTemp("LangFile");
 		try{
 			String Gname=data.getParameters().getString("gName");
-			msg=UserManagement.DeleteInstructor(Gname,file);
+			if(user.getName().equals("admin"))
+				msg=UserManagement.DeleteInstructor(Gname,file);
+			else
+				msg=UserManagement.DeleteInstructor(Gname,file,Integer.parseInt((String)user.getTemp("Institute_id")));
+		
 			data.setMessage(msg);
 			//setTemplate(data,"call,CourseMgmt_Admin,EditCourse.vm");
 			setTemplate(data,"call,ListMgmt_Admin,List_Mgmt.vm");

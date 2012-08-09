@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UserManagement_RemoveUser.java	
  *
- *  Copyright (c) 2005,2008,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2008,2009,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.actions;
  * @author  <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 08-08-2012
  */
 
 import java.util.Vector;
@@ -58,6 +59,7 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 public class UserManagement_RemoveUser extends SecureAction_Admin{
 	/**
@@ -282,7 +284,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 		try{
 			MultilingualUtil m_u=new MultilingualUtil();
 			ParameterParser pp=data.getParameters();
-
+                	String loginName = data.getUser().getName();
 
 			/**
 	                 * Getting the value of file from temporary variable 		
@@ -355,7 +357,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 						 * Delete all student one by one
 						 */
 						
-						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","","",fileName,server_name,srvrPort);
+						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"",loginName,"","",fileName,server_name,srvrPort);
 						msg = message.split(":");
 			                	data.setMessage(msg[0]);
 	                                        CuDetail.setErr_User(postString);
@@ -404,7 +406,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 								//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 								element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 				email=element.getEmail();
-								message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","","",fileName,server_name,srvrPort);
+								message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email, "",loginName,"","",fileName,server_name,srvrPort);
 								msg = message.split(":");
 				                		data.setMessage(msg[0]);
  								if(umt.flag.booleanValue()==false)
@@ -443,7 +445,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 							//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 							element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 			email=element.getEmail();
-							message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","","",fileName,server_name,srvrPort);
+							message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email, "", loginName,"","",fileName,server_name,srvrPort);
 							msg = message.split(":");
 			                		data.setMessage(msg[0]);
                                                         if(umt.flag.booleanValue()==false)
@@ -489,16 +491,16 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 		if( (studGrp.size() > 1) )
                 {
                 	if(srvrPort.equals("8080"))
-                                 subject="deleteFromGroup";
+                                 subject="deleteFromGroup$newUser";
 			else
-				subject="deleteFromGrouphttps";
+				subject="deleteFromGrouphttps$newUserhttps";
 		}
                 else
 		{                 
                 	if(srvrPort.equals("8080"))
-                        	subject="deleteUser";
+                        	subject="deleteUser$newUser";
 			else
-                        	subject="deleteUserhttps";
+                        	subject="deleteUserhttps$newUserhttps";
 		}
 		return subject;
 	}
