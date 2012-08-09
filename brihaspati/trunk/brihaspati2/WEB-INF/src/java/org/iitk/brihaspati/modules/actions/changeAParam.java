@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)changeAParam.java	
  *
- *  Copyright (c) 2005-2006,2009-2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009-2010, 2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -62,7 +62,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  */
 
 //public class changeAParam extends SecureAction_Admin{
-public class changeAParam extends SecureAction{
+public class changeAParam extends SecureAction_Admin{
 
 	/**
 	 * This method updates the first, last name and configuration 
@@ -117,10 +117,12 @@ public class changeAParam extends SecureAction{
                 String department=pp.getString("department","");
                 String designation=pp.getString("designation","");
 		String port=pp.getString("port","8090");
+
                 String officeno=pp.getString("Offprefix","x")+"-"+pp.getString("Offccode","x")+"-"+pp.getString("Offrcode","x")+"-"+pp.getString("Offphnumber","x");
                 String mobileno=pp.getString("Mobprefix","x")+"-"+pp.getString("Mobccode","x")+"-"+pp.getString("Mobrcode","x")+"-"+pp.getString("Mobphnumber","x");
                 String homeno=pp.getString("Homeprefix","x")+"-"+pp.getString("Homeccode","x")+"-"+pp.getString("Homercode","x")+"-"+pp.getString("Homephnumber","x");
                 String otherno=pp.getString("Othprefix","x")+"-"+pp.getString("Othccode","x")+"-"+pp.getString("Othrcode","x")+"-"+pp.getString("Othphnumber","x");
+
                 String offdirectory=pp.getString("Offdirectory","");
                 String mobdirectory=pp.getString("Mobdirectory","");
                 String homedirectory=pp.getString("Homedirectory","");
