@@ -63,6 +63,35 @@ public class BibliographicDetailsLang  implements java.io.Serializable {
      private String series;
      private String typeOfDisc;
      private String fileType;
+public String getDigitalComment() {
+        return digitalComment;
+    }
+
+    public void setDigitalComment(String digitalComment) {
+        this.digitalComment = digitalComment;
+    }
+
+    public String getDigitalData() {
+        return digitalData;
+    }
+
+    public void setDigitalData(String digitalData) {
+        this.digitalData = digitalData;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+
+private String image;
+private String digitalData;
+private String digitalComment;
+
 
     public BibliographicDetailsLang() {
     }
@@ -72,7 +101,7 @@ public class BibliographicDetailsLang  implements java.io.Serializable {
         this.id = id;
         this.library = library;
     }
-    public BibliographicDetailsLang(BibliographicDetailsLangId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType) {
+    public BibliographicDetailsLang(BibliographicDetailsLangId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType,String image,String digital_data,String digital_comment) {
        this.id = id;
        this.library = library;
        this.documentType = documentType;
@@ -123,6 +152,9 @@ public class BibliographicDetailsLang  implements java.io.Serializable {
        this.series = series;
        this.typeOfDisc = typeOfDisc;
        this.fileType = fileType;
+       this.image=image;
+       this.digitalData=digital_data;
+       this.digitalComment=digital_comment;
     }
    
     public BibliographicDetailsLangId getId() {

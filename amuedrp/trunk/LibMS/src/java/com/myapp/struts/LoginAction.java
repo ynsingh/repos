@@ -90,8 +90,8 @@ time=String.valueOf(System.currentTimeMillis());
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
-    else{ rtl="RTL";align="right";}
+//    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+//    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
 
@@ -113,7 +113,13 @@ time=String.valueOf(System.currentTimeMillis());
             button=loginActionForm.getButton1();
 
 
+          if(password!=null)
             password=PasswordEncruptionUtility.password_encrupt(password);
+
+
+       if(button==null)
+           button="Log In";
+
 
 
        
@@ -126,13 +132,18 @@ try{
             if(button.equals("Log In"))
            {
 
+String remote=(String)session.getAttribute("remoteauth");
+Login tempobj;
+if(remote!=null)
+{
+    login_id=(String)session.getAttribute("email_id");
+    tempobj=(Login)logindao.searchLoginID(login_id);
+}
+else{
+    tempobj=(Login)logindao.searchUser(login_id,password);
+}
 
-
-              Login tempobj=(Login)logindao.searchUser(login_id,password);
-
-
-
-
+session.removeAttribute("remoteauth");
 
               /*  If the Entered User and Password in Valid */
               if(tempobj!=null)
@@ -157,7 +168,7 @@ try{
 
 
                          AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
-session.setAttribute("AdminDetail",admin);
+                          session.setAttribute("AdminDetail",admin);
 
                     String lib_id=tempobj.getId().getLibraryId();
                     String sublib_id=tempobj.getSublibraryId();

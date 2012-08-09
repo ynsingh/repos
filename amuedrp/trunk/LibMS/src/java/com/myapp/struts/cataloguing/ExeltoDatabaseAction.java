@@ -1,5 +1,6 @@
 //ACTION TO IMPORT DATA
 package com.myapp.struts.cataloguing;
+import com.myapp.struts.utility.UserLog;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
 import com.myapp.struts.cataloguingDAO.DAO;
 import com.myapp.struts.hbm.AccessionRegister;
@@ -25,6 +26,7 @@ import java.util.Iterator;
 import com.myapp.struts.hbm.TempExcellImport;
 import com.myapp.struts.utility.AppPath;
 import com.myapp.struts.utility.LoggerUtils;
+import com.myapp.struts.utility.StringRegEx;
 import com.myapp.struts.utility.UserLog;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +150,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                          }
                                         if (map_table[column_index].equals("book_type"))
                                         {
-                                            genericobj.setBookType(cellvalue.trim());
+                                            genericobj.setBookType(StringRegEx.titlecase(cellvalue.trim()));
                                              if(genericobj.getBookType().isEmpty()==true)
                                             {
                                             log.add("Mandatory fields  missing at record no"+(i+1));

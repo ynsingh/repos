@@ -35,7 +35,7 @@ public class AdminRegistration  implements java.io.Serializable {
      private String gender;
      private String staffId;
      private String workingStatus;
-     private byte[] instiLogo;
+     private String instiLogo;
 
     public AdminRegistration() {
     }
@@ -44,7 +44,7 @@ public class AdminRegistration  implements java.io.Serializable {
     public AdminRegistration(String workingStatus) {
         this.workingStatus = workingStatus;
     }
-    public AdminRegistration(String instituteName, String abbreviatedName, String instituteAddress, String city, String state, String country, String pin, String landLineNo, String mobileNo, String domain, String loginId, String typeOfInstitute, String website, String adminFname, String adminLname, String adminDesignation, String adminEmail, String adminPassword, String status, String libraryId, String libraryName, String courtesy, String gender, String staffId, String workingStatus, byte[] instiLogo) {
+    public AdminRegistration(String instituteName, String abbreviatedName, String instituteAddress, String city, String state, String country, String pin, String landLineNo, String mobileNo, String domain, String loginId, String typeOfInstitute, String website, String adminFname, String adminLname, String adminDesignation, String adminEmail, String adminPassword, String status, String libraryId, String libraryName, String courtesy, String gender, String staffId, String workingStatus, String instiLogo) {
        this.instituteName = instituteName;
        this.abbreviatedName = abbreviatedName;
        this.instituteAddress = instituteAddress;
@@ -255,11 +255,11 @@ public class AdminRegistration  implements java.io.Serializable {
     public void setWorkingStatus(String workingStatus) {
         this.workingStatus = workingStatus;
     }
-    public byte[] getInstiLogo() {
+    public String getInstiLogo() {
         return this.instiLogo;
     }
     
-    public void setInstiLogo(byte[] instiLogo) {
+    public void setInstiLogo(String instiLogo) {
         this.instiLogo = instiLogo;
     }
 

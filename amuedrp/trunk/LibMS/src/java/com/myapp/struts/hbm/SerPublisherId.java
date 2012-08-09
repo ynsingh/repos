@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated 16 Nov, 2011 3:36:58 PM by Hibernate Tools 3.2.1.GA
+// Generated Oct 20, 2012 11:20:56 AM by Hibernate Tools 3.2.1.GA
 
 
 

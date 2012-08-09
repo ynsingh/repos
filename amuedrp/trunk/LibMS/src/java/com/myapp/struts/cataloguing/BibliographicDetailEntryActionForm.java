@@ -3,6 +3,7 @@ package com.myapp.struts.cataloguing;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.upload.FormFile;
 /**
  * This Bean Form is used to get and set the bibliographic details of documents irrespective of the type of document.
  * All the document type fields are defined here.
@@ -112,6 +113,36 @@ public class BibliographicDetailEntryActionForm extends org.apache.struts.valida
     private String edition1;
    private String ser_note1;
    private String notes1;
+
+
+   private byte[] uploadedFile;
+   private FormFile img;
+   private String filename;
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public FormFile getImg() {
+        return img;
+    }
+
+    public void setImg(FormFile img) {
+        this.img = img;
+    }
+
+    public byte[] getUploadedFile() {
+        return uploadedFile;
+    }
+
+    public void setUploadedFile(byte[] uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
+
 
     public String getAdded_entry02() {
         return added_entry02;

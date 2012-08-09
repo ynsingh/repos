@@ -35,6 +35,24 @@ public class AcqBiblioActionForm extends org.apache.struts.action.ActionForm {
     private String unit_price;
     private String requested_date;
     private String requested_by;
+    private int demand_id;
+
+    public String getMem_id() {
+        return mem_id;
+    }
+
+    public void setMem_id(String mem_id) {
+        this.mem_id = mem_id;
+    }
+     private String mem_id;
+
+    public int getDemand_id() {
+        return demand_id;
+    }
+
+    public void setDemand_id(int demand_id) {
+        this.demand_id = demand_id;
+    }
 
     public String getExchange() {
         return exchange;

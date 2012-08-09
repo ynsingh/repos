@@ -38,6 +38,33 @@ public class OpacDoc {
         this.sublibrary_id = sublibrary_id;
     }
         protected int rowno;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+        private String image;
+
+    public String getDigitaldata() {
+        return digitaldata;
+    }
+
+    public void setDigitaldata(String digitaldata) {
+        this.digitaldata = digitaldata;
+    }
+        private String digitaldata;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+private String comment;
         protected String author;
 	protected String accessionno;
 	protected String callno;
@@ -54,6 +81,15 @@ public class OpacDoc {
 	protected String pub_yr;
         protected String library_id;
         protected String main_entry;
+
+    public String getEntry_lang() {
+        return entry_lang;
+    }
+
+    public void setEntry_lang(String entry_lang) {
+        this.entry_lang = entry_lang;
+    }
+        private String entry_lang;
 
     public String getMain_entry() {
         return main_entry;

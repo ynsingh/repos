@@ -1,6 +1,9 @@
 package com.myapp.struts.hbm;
 // Generated 8 Aug, 2011 11:27:34 AM by Hibernate Tools 3.2.1.GA
 
+import java.sql.Timestamp;
+
+
 
 
 /**
@@ -17,6 +20,32 @@ public class AcqRecievingDetails  implements java.io.Serializable {
      private String approvalType;
      private Integer controlNo;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public String getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(String vendorId) {
+        this.vendorId = vendorId;
+    }
+ private String vendorId;
+     private String status;
+     private Timestamp time;
     public AcqRecievingDetails() {
     }
 
@@ -24,7 +53,7 @@ public class AcqRecievingDetails  implements java.io.Serializable {
     public AcqRecievingDetails(AcqRecievingDetailsId id) {
         this.id = id;
     }
-    public AcqRecievingDetails(AcqRecievingDetailsId id, Integer titleId, String unitPrice, Integer recievedCopies, Integer pendingCopies, String approvalType, Integer controlNo) {
+    public AcqRecievingDetails(AcqRecievingDetailsId id, Integer titleId, String unitPrice, Integer recievedCopies, Integer pendingCopies, String approvalType, Integer controlNo,String vendor,String status,Timestamp time) {
        this.id = id;
        this.titleId = titleId;
        this.unitPrice = unitPrice;
@@ -32,6 +61,9 @@ public class AcqRecievingDetails  implements java.io.Serializable {
        this.pendingCopies = pendingCopies;
        this.approvalType = approvalType;
        this.controlNo = controlNo;
+       this.status=status;
+       this.vendorId=vendor;
+       this.time=time;
     }
    
     public AcqRecievingDetailsId getId() {

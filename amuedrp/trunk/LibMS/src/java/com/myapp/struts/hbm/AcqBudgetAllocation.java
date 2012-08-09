@@ -19,6 +19,15 @@ public class AcqBudgetAllocation  implements java.io.Serializable {
      private String remarks;
      private String reqdate;
 
+    public String getExpenseAmount() {
+        return expenseAmount;
+    }
+
+    public void setExpenseAmount(String expenseAmount) {
+        this.expenseAmount = expenseAmount;
+    }
+       private String expenseAmount;
+
     public AcqBudgetAllocation() {
     }
 
@@ -27,7 +36,7 @@ public class AcqBudgetAllocation  implements java.io.Serializable {
         this.id = id;
         this.budgetheadId = budgetheadId;
     }
-    public AcqBudgetAllocation(AcqBudgetAllocationId id, String budgetheadId, String openingBalance, String recievedAmount, String totalAmount, String financialYr1, String financialYr2, String remarks, String reqdate) {
+    public AcqBudgetAllocation(AcqBudgetAllocationId id, String budgetheadId, String openingBalance, String recievedAmount, String totalAmount, String financialYr1, String financialYr2, String remarks, String reqdate,String exp_amt) {
        this.id = id;
        this.budgetheadId = budgetheadId;
        this.openingBalance = openingBalance;
@@ -37,6 +46,7 @@ public class AcqBudgetAllocation  implements java.io.Serializable {
        this.financialYr2 = financialYr2;
        this.remarks = remarks;
        this.reqdate = reqdate;
+       this.expenseAmount=exp_amt;
     }
    
     public AcqBudgetAllocationId getId() {

@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated May 2, 2011 12:00:18 PM by Hibernate Tools 3.2.1.GA
+// Generated Jul 21, 2012 12:34:15 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -10,13 +10,11 @@ public class Demandlist  implements java.io.Serializable {
 
 
      private DemandlistId id;
-     private CirMemberAccount cirMemberAccount;
      private String category;
      private String author;
      private String publisher;
      private String publishYr;
      private String isbn;
-     private String noOfCopy;
      private String volume;
      private String edition;
      private String remark;
@@ -24,24 +22,30 @@ public class Demandlist  implements java.io.Serializable {
      private String language;
      private String issn;
      private String status;
+     private String memberType;
+     private String subMemberType;
+     private String memName;
+     private String subAuthor;
+     private String subAuthor0;
+     private String subAuthor1;
+     private String subAuthor2;
+     private String publicationPlace;
+     private String lccNo;
 
     public Demandlist() {
     }
 
 	
-    public Demandlist(DemandlistId id, CirMemberAccount cirMemberAccount) {
+    public Demandlist(DemandlistId id) {
         this.id = id;
-        this.cirMemberAccount = cirMemberAccount;
     }
-    public Demandlist(DemandlistId id, CirMemberAccount cirMemberAccount, String category, String author, String publisher, String publishYr, String isbn, String noOfCopy, String volume, String edition, String remark, String demandDate, String language, String issn, String status) {
+    public Demandlist(DemandlistId id, String category, String author, String publisher, String publishYr, String isbn, String volume, String edition, String remark, String demandDate, String language, String issn, String status, String memberType, String subMemberType, String memName, String subAuthor, String subAuthor0, String subAuthor1, String subAuthor2, String publicationPlace, String lccNo) {
        this.id = id;
-       this.cirMemberAccount = cirMemberAccount;
        this.category = category;
        this.author = author;
        this.publisher = publisher;
        this.publishYr = publishYr;
        this.isbn = isbn;
-       this.noOfCopy = noOfCopy;
        this.volume = volume;
        this.edition = edition;
        this.remark = remark;
@@ -49,6 +53,15 @@ public class Demandlist  implements java.io.Serializable {
        this.language = language;
        this.issn = issn;
        this.status = status;
+       this.memberType = memberType;
+       this.subMemberType = subMemberType;
+       this.memName = memName;
+       this.subAuthor = subAuthor;
+       this.subAuthor0 = subAuthor0;
+       this.subAuthor1 = subAuthor1;
+       this.subAuthor2 = subAuthor2;
+       this.publicationPlace = publicationPlace;
+       this.lccNo = lccNo;
     }
    
     public DemandlistId getId() {
@@ -57,13 +70,6 @@ public class Demandlist  implements java.io.Serializable {
     
     public void setId(DemandlistId id) {
         this.id = id;
-    }
-    public CirMemberAccount getCirMemberAccount() {
-        return this.cirMemberAccount;
-    }
-    
-    public void setCirMemberAccount(CirMemberAccount cirMemberAccount) {
-        this.cirMemberAccount = cirMemberAccount;
     }
     public String getCategory() {
         return this.category;
@@ -99,13 +105,6 @@ public class Demandlist  implements java.io.Serializable {
     
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-    public String getNoOfCopy() {
-        return this.noOfCopy;
-    }
-    
-    public void setNoOfCopy(String noOfCopy) {
-        this.noOfCopy = noOfCopy;
     }
     public String getVolume() {
         return this.volume;
@@ -155,6 +154,69 @@ public class Demandlist  implements java.io.Serializable {
     
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getMemberType() {
+        return this.memberType;
+    }
+    
+    public void setMemberType(String memberType) {
+        this.memberType = memberType;
+    }
+    public String getSubMemberType() {
+        return this.subMemberType;
+    }
+    
+    public void setSubMemberType(String subMemberType) {
+        this.subMemberType = subMemberType;
+    }
+    public String getMemName() {
+        return this.memName;
+    }
+    
+    public void setMemName(String memName) {
+        this.memName = memName;
+    }
+    public String getSubAuthor() {
+        return this.subAuthor;
+    }
+    
+    public void setSubAuthor(String subAuthor) {
+        this.subAuthor = subAuthor;
+    }
+    public String getSubAuthor0() {
+        return this.subAuthor0;
+    }
+    
+    public void setSubAuthor0(String subAuthor0) {
+        this.subAuthor0 = subAuthor0;
+    }
+    public String getSubAuthor1() {
+        return this.subAuthor1;
+    }
+    
+    public void setSubAuthor1(String subAuthor1) {
+        this.subAuthor1 = subAuthor1;
+    }
+    public String getSubAuthor2() {
+        return this.subAuthor2;
+    }
+    
+    public void setSubAuthor2(String subAuthor2) {
+        this.subAuthor2 = subAuthor2;
+    }
+    public String getPublicationPlace() {
+        return this.publicationPlace;
+    }
+    
+    public void setPublicationPlace(String publicationPlace) {
+        this.publicationPlace = publicationPlace;
+    }
+    public String getLccNo() {
+        return this.lccNo;
+    }
+    
+    public void setLccNo(String lccNo) {
+        this.lccNo = lccNo;
     }
 
 

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : ucatl4
-    Created on : Jul 14, 2011, 3:18:02 PM
-    Author     : zeeshan
---%>
-
 <%@page import="java.util.HashMap"%>
 <%@page import="com.myapp.struts.hbm.Biblio"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -72,7 +66,14 @@ description[5]='Part of the described materials to which the field applies.ex- <
 </script>
 
     </head>
-    <body>
+  <jsp:include page="/admin/header.jsp"></jsp:include>
+    <body><div
+   style="  top:15%;
+   left:10%;
+   right:10%;border: solid 1px black;
+      position: absolute;
+
+      visibility: show;">
        <layer name="nsviewer" bgcolor="#FDF5E6" style="border-width:thin;z-index:1"></layer>
 <script type="text/javascript">
 if (iens6){
@@ -101,23 +102,22 @@ function func2(t){
 }
 }
 </script>
-                                          <h2 align="center">MARC Based Bibliographic Cataloging</h2>
+                                         <h2 align="center"  class="headerStyle" style="height: 25px;">UPDATE MARC Based Bibliographic Cataloging</h2>
 
-<div id="ddtabs3" class="solidblockmenu">
-<ul>
-     <li><a href="<%=request.getContextPath()%>/cataloguing/updatecatlcontrol.jsp" onclick="func1(10)"  rel="sb10">Control Fields</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl3.jsp" onclick="func1(3)" rel="sb3">3 (3XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl4.jsp" onclick="func1(4)" rel="sb4">4 (4XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl5.jsp" onclick="func1(5)" rel="sb5">5 (5XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl6.jsp" onclick="func1(6)" rel="sb6">6 (6XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/ucatl9.jsp" onclick="func1(9)" rel="sb9">9 (9XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"  rel="home">HOME</a></li>
-</ul>
+<div id="ddtabs3" class="header1" style="background-color: cyan;line-height: 26px;font-size: 13px;vertical-align: bottom" >
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/updatecatlcontrol.jsp" onclick="func1(10)"  rel="sb10">Control Fields</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl3.jsp" onclick="func1(3)" rel="sb3">3 (3XX)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl4.jsp" onclick="func1(4)" rel="sb4">4 (4XX)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl5.jsp" onclick="func1(5)" rel="sb5">5 (5XX)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl6.jsp" onclick="func1(6)" rel="sb6">6 (6XX)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/ucatl9.jsp" onclick="func1(9)" rel="sb9">9</a><font color="blue">&nbsp;|&nbsp;</font>
+<a style="text-decoration:none" href="<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"  rel="home">Cancel</a>
+
 </div>
 
 <DIV class="tabcontainer ieclass">
@@ -195,8 +195,9 @@ Biblio marc490=new Biblio();
 
      %>
 
-<div style="position:absolute;left:5%;top:25%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
+<div>
  <html:form styleId="ucat4" action="/ucataction4.do" method="post">
+       <table height="400px"><tr><td valign="top" >&nbsp;&nbsp;&nbsp;
     <table width="100%" cellspacing="5" >
          <tr><input type="hidden" value="" name="zclick" id="zclick" /></tr>
     <tr>
@@ -220,7 +221,9 @@ Materials specified (NR) <input type="text" value="<%=marc490.get$3()==null?"":m
 </font></td></tr>
 
 
-    </table></html:form>
-</div>
+    </table>
+               </td></tr></table>
+               </html:form>
+</div></div>
     </body>
 </html>

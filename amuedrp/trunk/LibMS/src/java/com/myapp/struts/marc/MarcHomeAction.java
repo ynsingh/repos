@@ -48,7 +48,16 @@ public class MarcHomeAction extends org.apache.struts.action.Action {
          }
 
         System.out.println(session.getAttribute("hsmp")+".....................");
-
+session.removeAttribute("controltag");
+        session.removeAttribute("tag0");
+        session.removeAttribute("tag1");
+        session.removeAttribute("tag2");
+        session.removeAttribute("tag3");
+        session.removeAttribute("tag4");
+        session.removeAttribute("tag5");
+        session.removeAttribute("tag6");
+        session.removeAttribute("tag7");
+        session.removeAttribute("tag8");
 
 
         return mapping.findForward(SUCCESS);

@@ -20,9 +20,6 @@ public class OpacImageUploadActionForm extends org.apache.struts.action.ActionFo
    private FormFile img;
     private String filename;
 
-    /**
-     * @return
-     */
     public OpacImageUploadActionForm() {
         super();
         // TODO Auto-generated constructor stub
@@ -57,11 +54,6 @@ public class OpacImageUploadActionForm extends org.apache.struts.action.ActionFo
         this.filename = filename;
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-     * @return
-     */
+    
 
 }

@@ -522,12 +522,14 @@ System.out.println(sublibrary_id+"     "+library_id);
                 <td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.first_name")%>*</td>
                 <td  dir="<%=rtl%>" >
                                         <table  dir="<%=rtl%>" ><tr><td  dir="<%=rtl%>" >
-                                        <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right">
+                                        <input type="text" id="courtesy" style="width:100px;"  tabindex="3" name="courtesy" value="">
+
+                                        <%--            <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right">
                                     <option selected value="Select">Select</option>
                                     <option  value="mr">Mr.</option>
                                     <option value="mrs">Mrs.</option>
                                      <option  value="ms">Ms.</option>
-                                    </select></td>
+                                    </select>--%></td>
                                     <td  dir="<%=rtl%>" >&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="" onfocus="statwords('Please Enter First Name ');" onblur="loadHelp()" /></td>
                                         </table>
                  </td>

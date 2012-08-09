@@ -145,37 +145,6 @@ CREATE TABLE `customizedbiblio` (
   PRIMARY KEY (`library_id`,`bib_id`,`marctag`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-alter table acq_approval add column order_no varchar(20);
+
 alter table temp_excell_import add column status varchar(50);
-
-DROP TABLE IF EXISTS `logs`;
-CREATE TABLE `logs` 
-(
-  `sno` int(5) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(100) DEFAULT NULL,
-  `date` varchar(100) DEFAULT NULL,
-  `time` varchar(100) DEFAULT NULL,
-  `classname` varchar(100) DEFAULT NULL,
-  `url` varchar(100) DEFAULT NULL,
-  `action_message` varchar(100) DEFAULT NULL,
-  `action_result` varchar(100) DEFAULT NULL,
-  `library_id` varchar(20) DEFAULT NULL,
-  `sublibrary_id` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`sno`)
-);
-
-
-DROP TABLE IF EXISTS `logsetting`;
-CREATE TABLE `logsetting` 
-(  `sno` int(11) NOT NULL AUTO_INCREMENT,
-  `p1` varchar(100) DEFAULT NULL,
-  `p2` varchar(100) DEFAULT NULL,
-  `p3` varchar(100) DEFAULT NULL,
-  `p4` varchar(100) DEFAULT NULL,
-  `p5` varchar(100) DEFAULT NULL,
-  `p6` varchar(100) DEFAULT NULL,
-  `p7` varchar(100) DEFAULT NULL,
-  `p8` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`sno`)
-);
 

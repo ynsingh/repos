@@ -70,7 +70,7 @@ System.out.println(button+"  "+accessionno);
 
 DocumentDetails documentdetail  =osdao.accessionNoSearch2(accessionno, library_id,  sublibrary_id);
 
-  System.out.println("Obj"+documentdetail.getBiblioId());
+  
 if(documentdetail!=null){
   BibliographicDetails obj=(BibliographicDetails)osdao.DocumentSearch2(documentdetail.getBiblioId(), library_id,  sublibrary_id);
   //System.out.println("Obj"+obj+documentdetail.getBiblioId());
@@ -80,7 +80,7 @@ if(documentdetail!=null){
 
   String total=CirculationDAO.searchTotalCheckOut(documentdetail.getBiblioId(),library_id,sublibrary_id);
 
-System.out.println(total);
+
 
  session.setAttribute("noofchk",total );
                  session.setAttribute("statistics",obj );

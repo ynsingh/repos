@@ -26,6 +26,15 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
     private String question;
     private String ans;
 
+    public String getMem_id() {
+        return mem_id;
+    }
+
+    public void setMem_id(String mem_id) {
+        this.mem_id = mem_id;
+    }
+    private String mem_id;
+
    
 
     /**

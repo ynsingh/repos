@@ -27,7 +27,7 @@
        
         String memid=(String)request.getParameter("memid");
         String fname="";
-        
+        session.setAttribute("memid", memid);
         int i=cirrequestfromopac.size();
         for(int ii=0;ii<i;ii++)
             {
@@ -507,7 +507,8 @@ a:active
 
                 <tr><td dir="<%=rtl%>" width="150px">&nbsp;<%=resource.getString("circulation.cir_newmember.memberid")%></td><td dir="<%=rtl%>" class="table_textbox"><html:text    property="TXTMEMID" value="<%=opac.getMemId()%>" readonly="true" style="width:160px" /></td>
                     <td></td>  <td dir="<%=rtl%>" rowspan="3" class="table_textbox" valign="bottom">
-                        <%--<html:img src="./viewImagefromOpac.jsp" alt="No Image11 Selected" width="128" height="120" />--%>
+                        <img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opac.getImage()%>" alt="No Image Selected" width="128" height="120" />
+                       <html:text    property="logo" value="<%=opac.getImage() %>" style="width:160px" />
                     </td>
 
                    </tr>

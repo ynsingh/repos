@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated May 2, 2011 12:00:18 PM by Hibernate Tools 3.2.1.GA
+// Generated Jul 21, 2012 12:34:15 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -9,6 +9,7 @@ package com.myapp.struts.hbm;
 public class DemandlistId  implements java.io.Serializable {
 
 
+     private int demandId;
      private String libraryId;
      private String memId;
      private String sublibraryId;
@@ -17,13 +18,21 @@ public class DemandlistId  implements java.io.Serializable {
     public DemandlistId() {
     }
 
-    public DemandlistId(String libraryId, String memId, String sublibraryId, String title) {
+    public DemandlistId(int demandId, String libraryId, String memId, String sublibraryId, String title) {
+       this.demandId = demandId;
        this.libraryId = libraryId;
        this.memId = memId;
        this.sublibraryId = sublibraryId;
        this.title = title;
     }
    
+    public int getDemandId() {
+        return this.demandId;
+    }
+    
+    public void setDemandId(int demandId) {
+        this.demandId = demandId;
+    }
     public String getLibraryId() {
         return this.libraryId;
     }
@@ -60,7 +69,8 @@ public class DemandlistId  implements java.io.Serializable {
 		 if ( !(other instanceof DemandlistId) ) return false;
 		 DemandlistId castOther = ( DemandlistId ) other; 
          
-		 return ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
+		 return (this.getDemandId()==castOther.getDemandId())
+ && ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
  && ( (this.getMemId()==castOther.getMemId()) || ( this.getMemId()!=null && castOther.getMemId()!=null && this.getMemId().equals(castOther.getMemId()) ) )
  && ( (this.getSublibraryId()==castOther.getSublibraryId()) || ( this.getSublibraryId()!=null && castOther.getSublibraryId()!=null && this.getSublibraryId().equals(castOther.getSublibraryId()) ) )
  && ( (this.getTitle()==castOther.getTitle()) || ( this.getTitle()!=null && castOther.getTitle()!=null && this.getTitle().equals(castOther.getTitle()) ) );
@@ -69,6 +79,7 @@ public class DemandlistId  implements java.io.Serializable {
    public int hashCode() {
          int result = 17;
          
+         result = 37 * result + this.getDemandId();
          result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
          result = 37 * result + ( getMemId() == null ? 0 : this.getMemId().hashCode() );
          result = 37 * result + ( getSublibraryId() == null ? 0 : this.getSublibraryId().hashCode() );

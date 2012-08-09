@@ -30,12 +30,44 @@ public static boolean DeleteStaff(String staff_id,String library_id,String subli
         try
         {
             tx = (Transaction) session.beginTransaction();
-            Query query = session.createQuery("Delete From  StaffDetail where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            Query query = session.createQuery("Delete From  AcqPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
             query.setString("staff_id", staff_id);
             query.setString("library_id", library_id);
             query.setString("sublibrary_id", sublibrary_id);
 
+             Query query1 = session.createQuery("Delete From  CatPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query1.setString("staff_id", staff_id);
+            query1.setString("library_id", library_id);
+            query1.setString("sublibrary_id", sublibrary_id);
+
+            Query query2 = session.createQuery("Delete From  CirPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query2.setString("staff_id", staff_id);
+            query2.setString("library_id", library_id);
+            query2.setString("sublibrary_id", sublibrary_id);
+
+            Query query3 = session.createQuery("Delete From  SerPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query3.setString("staff_id", staff_id);
+            query3.setString("library_id", library_id);
+            query3.setString("sublibrary_id", sublibrary_id);
+
+            Query query4 = session.createQuery("Delete From  Privilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query4.setString("staff_id", staff_id);
+            query4.setString("library_id", library_id);
+            query4.setString("sublibrary_id", sublibrary_id);
+
+
+
+            Query query5 = session.createQuery("Delete From  StaffDetail where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query5.setString("staff_id", staff_id);
+            query5.setString("library_id", library_id);
+            query5.setString("sublibrary_id", sublibrary_id);
+
             query.executeUpdate();
+            query1.executeUpdate();
+            query2.executeUpdate();
+            query3.executeUpdate();
+            query4.executeUpdate();
+            query5.executeUpdate();
             tx.commit();
 
 

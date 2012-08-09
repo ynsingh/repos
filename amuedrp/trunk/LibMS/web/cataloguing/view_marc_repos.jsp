@@ -1,8 +1,3 @@
-<%--
-    Document   : cat_viewAll_biblio
-    Created on : Mar 15, 2011, 12:05:56 PM
-    Author     : EdRP-04
---%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -18,13 +13,12 @@
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <html>
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Faraz Hasan" content="MCA,AMU">
       <title></title>
-
+      <jsp:include page="/admin/header.jsp"/>`
 <script type="text/javascript">
 function send()
 {
-    top.location="<%= request.getContextPath() %>/cataloguing/cat_data_import_read.jsp";
+    top.location="<%= request.getContextPath() %>/admin/main.jsp";
     return false;
 }
 </script>
@@ -89,7 +83,8 @@ tcount = opacList.size();
    pageContext.setAttribute("tCount", tcount);
 %>
 
-<table  border="0"  style="position:absolute; left: 10%; top: 10%; font-size: 12px;" dir="<%=rtl %>">
+<table    style="position:absolute; left: 5%; top: 20%; font-size: 12px;" dir="<%=rtl %>">
+    <tr style="border: solid 1px" class="headerStyle" align="center" height="25px"><td>Data Captured from .MRC file Format (MARC Repository)</td></tr>
 <div>
 <%
 if(tcount==0)
@@ -99,7 +94,7 @@ if(tcount==0)
 <%}
 else
 {%>
-<tr><td>
+<tr style="border: solid 1px"><td>
 <ui:dataGrid items="${opacList}" var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid" >
 
   <columns>
@@ -113,6 +108,11 @@ else
       <item   value="${doc.title}"  hAlign="left"
 	      styleClass="item"/>
     </column>
+      <column width="200">
+      <header value="CallNo" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.callNo}"  hAlign="left"
+	      styleClass="item"/>
+    </column>
     <column width="150">
       <header value="${main_entry}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.mainEntry}"  hAlign="left"
@@ -120,8 +120,7 @@ else
     </column>
     <column width="100">
       <header value="${action}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${view}"  hAlign="left" hyperLink="${path}/cataloguing/showMarcDetails.do?id=${doc.id.biblioId}" hyperLinkTarget="fr"
-	      styleClass="item"/>
+      <item   value="${view}"  hAlign="left" hyperLink="${path}/cataloguing/showMarcDetails.do?id=${doc.id.biblioId}"    styleClass="item"/>
     </column>
   </columns>
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
@@ -160,14 +159,13 @@ else
 </tr>
 </table>
 </div>
-<tr><td height="20px;"></td></tr>
+
 <tr> <td align="center">
 <input type="button" onclick="return send()" name="button" value="<%=resource.getString("cataloguing.catoldtitle.back")%>" Class="txt1"/>
+<input type="button"  name="button" value="Merge to Library Catalog" />
                  </td></tr>
 
 </table>
-<div  style="position:absolute; left: 55%; top: 10%; font-size: 12px;" dir="<%=rtl %>">
-    <iframe id="fr" name="fr" src="#" width="500px" height="500px" scrolling="false" frameborder="0" />
-</div>
+
 </body>
 </html>

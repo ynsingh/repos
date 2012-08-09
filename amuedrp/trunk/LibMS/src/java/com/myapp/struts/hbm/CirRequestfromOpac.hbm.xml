@@ -122,8 +122,8 @@
         <property name="expDate" type="string">
             <column name="exp_date" length="20" />
         </property>
-          <property name="image" type="binary">
-            <column name="image" />
+          <property name="image" type="string">
+            <column name="image"  length="200"/>
         </property>
         <property name="courseYear" type="string">
             <column name="Course_Year" length="10" />

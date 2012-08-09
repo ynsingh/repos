@@ -5,6 +5,7 @@
  */
 
 package com.myapp.struts.opac;
+import com.myapp.struts.admin.ImageUploadActionForm;
 import com.myapp.struts.opacDAO.*;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.utility.UserLog;
@@ -175,23 +176,51 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
             cro.setRequestdate(date);
             cro.setSublibraryId(cmdf.getCmdSubLibrary());
 
-          //  System.out.println(cmdf.getImg()+v.getFileName());
+//          //  System.out.println(cmdf.getImg()+v.getFileName());
 //            if(v.getFileName()!=null)
 //            {
-//                iii=v.getFileData();
-//                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
-//                UserLog.writeImage(cmdf.getTXTMEMID()+"."+ext, iii);
-//                cro.setImage(cmdf.getTXTMEMID()+"."+ext);
+//                  cro.setImage(cmdf.getImg().getFileData());
 //            }
- // if (cmdf.getImg()!=null)
-   //         cro.setImage(cmdf.getImg().getFileData());
-     //    else
-      //         if(iii!=null){cro.setImage(iii);}
-       //        else{cro.setImage(null);}
+//                iii=v.getFileData();
+////                String ext=v.getFileName().substring(v.getFileName().indexOf(".")+1,v.getFileName().length());
+////                UserLog.writeImage(cmdf.getTXTMEMID()+"."+ext, iii);
+////                cro.setImage(cmdf.getTXTMEMID()+"."+ext);
+////            }
+// if (cmdf.getImg()!=null)
+//            cro.setImage(cmdf.getImg().getFileData());
+//         else
+//              if(iii!=null){cro.setImage(iii);}
+//              else{cro.setImage(null);}
 
 
+        OpacImageUploadActionForm form1 = (OpacImageUploadActionForm)session1.getAttribute("OpacImageUploadActionForm");
+        byte[] img;
 
-          boolean result= CirRequestfromOpacDAO.insert(cro);
+        //img = form1.getImg().getFileData();
+
+        img = cmdf.getImg().getFileData();
+
+
+ 
+       if(v!=null)iii=v.getFileData();
+        
+        if (img!=null)
+        {
+
+    String ext=null;
+    ext=UserLog.returnextension(v.getFileName());
+    ext=ext.toLowerCase();
+
+      
+
+
+                  UserLog.writeImage1(cmdf.getCMBLib()+cmdf.getCmdSubLibrary()+cmdf.getTXTMEMID()+"."+ext, iii);
+
+      
+
+       cro.setImage(cmdf.getCMBLib()+cmdf.getCmdSubLibrary()+cmdf.getTXTMEMID()+"."+ext);
+        }
+                 boolean result= CirRequestfromOpacDAO.insert(cro);
           if(result==true){
            //String msg="Request for Member Registration sent successfully to Circulation Division";
             String msg=resource.getString("circulation.opacnewmem.reqsendtocirdiv");
@@ -207,6 +236,7 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
               
 
             }
+               
     }
 }
     

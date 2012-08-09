@@ -20,9 +20,7 @@ public class staffsubLib {
         return staffDetail;
     }
 
-    /**
-     * @param staffdetail the staffdetail to set
-     */
+    
     public void setStaffDetail(StaffDetail staffDetail) {
         this.staffDetail = staffDetail;
     }

@@ -315,17 +315,19 @@ public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,Stri
 return obj;
      }
 
-public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date) {
+public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date,String title) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<CheckoutDeocumentDetails> obj=null;
         try {
             session.beginTransaction();
    session.flush();
           
-   String sql="select * from cir_checkout cc,document_details dd where cc.library_id=dd.library_id and cc.sublibrary_id=dd.sublibrary_id and cc.document_id=dd.document_id and  cc.status = 'issued' and cc.library_id=:libraryId and cc.sublibrary_id=:sublibrary_id";
+   String sql="select * from cir_checkout cc,document_details dd where cc.library_id=dd.library_id and cc.sublibrary_id=dd.sublibrary_id and cc.document_id=dd.document_id and  cc.status = 'issued' and cc.library_id=:libraryId and cc.sublibrary_id=:sublibrary_id ";
 
    if(memid!=null && !memid.isEmpty())
 sql+=" and cc.memid=:memId ";
+   if(title!=null && !title.isEmpty())
+sql+=" and dd.title=:title ";
 
    if(starting_date!=null && !starting_date.isEmpty())
        sql+=" and cc.issue_date>=:starting_date";
@@ -339,6 +341,10 @@ sql+=" and cc.memid=:memId ";
 
             if(memid!=null && !memid.isEmpty())
             query1.setParameter("memId", memid);
+
+            if(title!=null && !title.isEmpty())
+            query1.setParameter("title", title);
+
                     query1.setParameter("libraryId", library_id);
                     query1.setParameter("sublibrary_id", sublibrary_id);
                     if(starting_date!=null && !starting_date.isEmpty())

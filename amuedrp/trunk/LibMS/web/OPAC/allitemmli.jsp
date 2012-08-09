@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="com.myapp.struts.hbm.*,java.util.*,com.myapp.struts.systemsetupDAO.DocumentCategoryDAO" %>
+<%@ page import="com.myapp.struts.hbm.*,java.util.*,com.myapp.struts.systemsetupDAO.DocumentCategoryDAO,com.myapp.struts.CirDAO.*,com.myapp.struts.hbm.*" %>
 <%@page import="java.util.*"%>
     <%@page import="com.myapp.struts.hbm.*,java.util.*"%>
     <%@page import="java.util.ResourceBundle"%>
@@ -145,13 +145,14 @@ List<BibliographicDetailsLang> dd1 = (List<BibliographicDetailsLang>)session.get
 
 
 
-
+CirCheckout obj=null;
 String sublib_id1=null;
 dd = (List<DocumentDetails>)session.getAttribute("documentDetail");
         if(dd!=null){
             lib_id=(String)dd.get(0).getId().getLibraryId();
             sublib_id1 = (String)dd.get(0).getId().getSublibraryId();
             booktype=dd.get(0).getBookType();
+            obj=CirculationDAO.searchCheckOutDetails(lib_id, sublib_id1, String.valueOf(dd.get(0).getId().getDocumentId()));
 }
  DocumentCategory docc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(lib_id, sublib_id1, booktype);
             String issuetype ="";
@@ -202,7 +203,7 @@ if(c>pagesize)
  <%if(dd.get(t).getStatus().equalsIgnoreCase("available")&& issuetype.equals("Issuable")){%>
  <td align="center"><a href="<%=request.getContextPath()%>/OPAC/checkoutRequest.do?docId=<%= dd.get(t).getId().getDocumentId()%>&libId=<%= dd.get(t).getId().getLibraryId()%>&sublibId=<%= dd.get(t).getId().getSublibraryId() %>">Request for Check Out</a></td><%}
  else if(dd.get(t).getStatus().equalsIgnoreCase("available")==false && issuetype.equals("Issuable")){%>
- <td align="center">Issued</td>
+ <td align="center">Issued  Expected Arrival Date <%=obj.getDueDate()%><br>Request for Reservation</td>
  <%}%>
 
 </tr>

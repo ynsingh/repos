@@ -84,6 +84,12 @@ responseXmlHandler(req.responseXML);
 }
 }
 }
+function send()
+        {
+
+        location.href="<%=request.getContextPath()%>/admin/remote?email="+document.getElementById('email2').value+"&context="+"<%=request.getScheme()%>"+"://"+"<%=request.getServerName()%>"+":"+"<%=request.getServerPort()%>"+"<%=request.getContextPath()%>";;
+
+        }
 
 function search() {
     window.status="Press f1 for help";
@@ -171,11 +177,20 @@ $('#slide_after').cycle({
 });
 </script>
 </head>
+<style>
+    html
+{
+   overflow: hidden;
+}
 
+
+</style>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
+
+
 <noscript>
 <table cellpadding="0" cellspacing="0" border="0" width="550">
 <tr><td width="100%" valign="top" class="PPDesTxt"><b>Have you disabled JavaScript?</b></td></tr>
@@ -250,6 +265,24 @@ function search2()
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
+<style>
+  html, body {
+    height: 100%;
+  }
+  #tableContainer-1 {
+    height: 100%;
+    width: 100%;
+    display: table;
+  }
+  #tableContainer-2 {
+    vertical-align: middle;
+    display: table-cell;
+    height: 100%;
+  }
+  #myTable {
+    margin: 0 auto;
+  }
+</style>
 
 <%
 try{
@@ -268,24 +301,16 @@ sessionId = session.getId().toString();
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-    <body style="margin:0px 0px 0px 0px"  background="<%=request.getContextPath()%>/images/spaces_background-2560x1600.png"  onload="validateSession()">
-    <%--<body  style="margin:0px 0px 0px 0px; table-layout: auto;background-color: white; " onload="validateSession()" >--%>
-<%--<div id="slide1">
-  <div id="slide_after">
-    <img src="./images/bp.PNG" alt="one" />
-    <img src="./images/arrow.gif" alt="two" />
-    
-  </div>
-  <p id="caption"></p>
-</div>
---%>
+    <body  style="margin:0px 0px 0px 0px;background-repeat: y-repeat;"   background="<%=request.getContextPath()%>/images/bodyBackground.png"  onload="validateSession()">
+        
+
+
+
     <form method="post" action="login.do" name="form1" onsubmit="return search2();" >
-        <%--<table align="center"  width="100%"  style="background-color: white;border:solid 1px black"   dir="<%=rtl%>" >--%>
-   <table align="center" height="100%" style="width: 85%;background-color: white;border: solid #ECF1EF 0px;" dir="<%=rtl%>" >
-            <tr>
-                <td valign="middle" align="center" >
-                    <table width="100%"  >
-                        <tr>
+        <table align="center"  width="100%" id="tableContainer" background="<%=request.getContextPath()%>/images/bodyBackground.png"   dir="<%=rtl%>" >
+            
+            <tr><td><table align="center"  width="85%"  style="background-color: white;"   dir="<%=rtl%>" >
+   <tr>
                             <td height="2px" colspan="2px">
 
               <%
@@ -319,55 +344,42 @@ if(str!=null)
         
                             </td></tr>
 
-                        <tr  ><td  valign="bottom" height="10%"   >
-
-
+                         <tr  ><td  valign="bottom" height="10%"   >
+                                 <table width="100%">
+                                     <tr><td>
 
 
 
                                 <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:40px;width:150px;">
                                 <br>
-                            
+
 
                             </td>
                             <td align="right" >
                                 <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="height:70px;width:160px;">
-                </td>
-            
-            </tr>
-            <tr><td class="datagrid" valign="middle" align="left" > <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx">NME-ICT ERP Mission</a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/contactus.jsp">Contact Us</a>&nbsp;|&nbsp; <a  href="<%=request.getContextPath()%>/admin/admin_registration.jsp"><%= resource.getString("login.href.institute.registration") %></a>&nbsp;|&nbsp;&nbsp;<span class="mess">You are the Visitor, Number >>
-                    <%
-    Integer hitsCount =
-      (Integer)application.getAttribute("hitCounter");
-    if( hitsCount ==null || hitsCount == 0 ){
-       /* First visit */
-       
-       hitsCount = 1;
-    }else{
-       /* return visit */
-       
-       hitsCount += 1;
-    }
-    application.setAttribute("hitCounter", hitsCount);
-%>
-<%= hitsCount%>
+                            </td></tr></table>
+                            </td>
 
-                    </span>
-<td align="right" class="homepage" ><%=resource.getString("login.message.selectlanguage")%><select name="locale" class="selecthome" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select></td>
-                    </tr>
-            
-            <tr   style="background-color: #BFDBFF;height: 50px;  background-image: url('<%=request.getContextPath()%>/images/banner_bg.jpg'); border:  solid 1px black;margin: 0px 0px 0px 0px"><td colspan="2" style="font-style: italic;font-size: 20px;color:white;" valign="middle" align="center">
+            </tr>
+ <tr><td class="datagrid" valign="middle" align="left" > 
+         <table width="100%" >
+                                     <tr><td>
+
+
+         
+         <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx">NME-ICT ERP Mission</a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/contactus.jsp">Contact Us</a>&nbsp;|&nbsp; <a  href="<%=request.getContextPath()%>/admin/admin_registration.jsp"><%= resource.getString("login.href.institute.registration") %></a>
+                                         </td>
+<td align="right" class="homepage" ><%=resource.getString("login.message.selectlanguage")%><select name="locale" class="selecthome" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select>
+</td>
+                                     </tr></table>
+                                     </td> </tr>
+
+                        <tr   style="background-color: #BFDBFF;height: 50px;  background-image: url('<%=request.getContextPath()%>/images/banner_bg.jpg'); margin: 0px 0px 0px 0px"><td colspan="2" style="font-style: italic;font-size: 20px;color:white;" valign="middle" align="center">
            "<%=resource.getString("login.message.logo.under")%>"</td>
 
-             
-            </tr>
-                    </table>
-                </td></tr>
-   
-   </table>
-                
-   <table align="center"  width="85%"  style="background-color: white;"   dir="<%=rtl%>" >
 
+            </tr>
+         
             <tr>
                 <td valign="top" align="center" >
                     <table width="100%"  border="0px">
@@ -389,26 +401,26 @@ if(str!=null)
 
                                             <table cellpadding="5px" class="logintxtStyle" >
                         
-                                                <tr><td style="border-bottom:  dotted 1px aqua"  colspan="2" valign="top" ><b><a href="OPAC/OPACmain1.jsp"   target="_top"><%=resource.getString("login.image.opac")%></a></b><br><%=resource.getString("login.message.image.OPAC")%>
+                                                <tr><td width="20%" valign="top" align="center"><a style="font-family: PakType Tehreer;font-size: 25px;font-weight: bold;color:white" href="OPAC/OPACmain1.jsp"   target="_top"><img src="<%=request.getContextPath()%>/images/opac.JPG" height="35px" width="100px" ><%--<%=resource.getString("login.image.opac")%>--%></a></td><td style="border-bottom:  dotted 1px aqua" valign="top" ><%=resource.getString("login.message.image.OPAC")%>
                                                    
                                                     </td></tr>
 
                         
-                           <tr><td colspan="2" valign="top" style="border-bottom:  dotted 1px aqua"> <b><%=resource.getString("login.image.acquisition")%></b><br/><%=resource.getString("login.message.image.acquisition")%>
+                                                <tr><td valign="top"  align="center" ><span style="font-family:PakType Tehreer;font-size: 25px;font-weight: bold;color:white"><%--<%=resource.getString("login.image.acquisition")%>--%><img src="<%=request.getContextPath()%>/images/acq.JPG" height="35px" width="150px" ></span></td><td  valign="top" style="border-bottom:  dotted 1px aqua"> <%=resource.getString("login.message.image.acquisition")%>
                                    <%--Record purchases made  in  database, store item descriptions in catalogue and enter invoices and credit notes using common procedures for serials and non-serials.
 
 Manage vendors details, discounts and delivery options, from a central location/Library of Institute.--%></td></tr>
                        
-                        <tr><td colspan="2" valign="top" style="border-bottom:  dotted 1px aqua"><b><%=resource.getString("login.image.cataloging")%></b><br/><%=resource.getString("login.message.image.cataloging")%>
+                        <tr><td valign="top" align="center"><span style="font-family:PakType Tehreer;font-size: 25px;font-weight: bold;color:white"><img src="<%=request.getContextPath()%>/images/catalog.jpg" height="35px" width="130px"><%--<%=resource.getString("login.image.cataloging")%>--%></span></td><td valign="top" style="border-bottom:  dotted 1px aqua"><%=resource.getString("login.message.image.cataloging")%>
                                 <%--Having highly flexible database to manage a wide variety of physical and electronic materials.
 
 It also support the facility includes Import/Export Data in XLS or FLAT file.--%></td></tr>
                        
-                        <tr><td valign="top" colspan="2" style="border-bottom:  dotted 1px aqua"><b><%=resource.getString("login.image.circulation")%></b><br/><%=resource.getString("login.message.image.circulation")%>
+                        <tr><td valign="top" align="center"><span style="font-family:arial;font-size: 30px;font-weight: bold;color:black"><b><%=resource.getString("login.image.circulation")%></b><br/></span></td><td valign="top"  style="border-bottom:  dotted 1px aqua"><%=resource.getString("login.message.image.circulation")%>
                             <%--Allow registered users of library system to issue, self-renew and return items.  It supports bar code management  for  check-in/out of materials.--%>
                             </td></tr>
                        
-                        <tr><td valign="top" colspan="2" style="border-bottom:  dotted 1px aqua"><b><%=resource.getString("login.image.serial")%></b><br/><%=resource.getString("login.message.image.serial")%> 
+                        <tr><td valign="top" align="center" ><span style="font-family:PakType Tehreer;font-size: 25px;font-weight: bold;color:white"><img src="<%=request.getContextPath()%>/images/serial.GIF" height="35px" ><%--<%=resource.getString("login.image.serial")%>--%></span></td><td valign="top" style="border-bottom:  dotted 1px aqua"><%=resource.getString("login.message.image.serial")%>
                                 <%--this Module simplifies ordering, accounting and receipting of serials, which appear as a separate content type in Institute Library catalogue.--%>
 
  </td></tr>
@@ -460,6 +472,46 @@ It also support the facility includes Import/Export Data in XLS or FLAT file.--%
                         <input type="submit" name="button" class="buttonhome"  value="<%=resource.getString("login.button.sigin.login")%>" dir="<%=rtl%>"  onclick="return submitLogin();" />&nbsp;<input type="submit"  class="buttonhome" name="button" value="<%=resource.getString("login.button.sigin.forgetpassword")%>" onclick="return submitForget();" />
                         </td>
                     </tr>
+                    <tr><td colspan="2" height="100px">
+                            <input type="hidden" id="button1" name="button1" value=""/>
+
+<p class="emailheadhome1" align="left">
+                        <%--<form  action="./admin/remote" method="post">--%>
+       Login with Open ID<br/>
+Please click your open Id provider:<input type="textbox" style="width:300px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;" name="email" value="http://202.141.40.216:8081/openid/username" id="email2"/>
+<br>     <input class="buttonhome" type="button" value="Log In" onclick="send()"/><br>Please replace username with your actual username.
+        <%--</form>--%>
+</p>
+                   
+
+                        </td></tr>
+                    <tr>
+                        <td colspan="2" height="100px">
+        <div align="justify" style="border : solid 1px red;">
+    <marquee direction="up" scrollamount="2" scrolldelay="1" onmouseover="this.stop();" onmouseout="this.start();" style="padding:0px 5px; margin:0px; color:#6699FF;">
+
+            Workshop on ERP mission in IITK from 28-01 July 2012.
+           
+
+
+    </marquee>
+</div>
+ <a href="<%=request.getContextPath()%>/admin/view_instiapproved.jsp">View All Registered Institutes</a>
+        
+
+                        </td>
+                    </tr>
+                    <tr>
+    <td colspan="2">            <a href="relnotes.jsp">   Release Notes:LibMS</a>
+
+                        </td>
+                    </tr>
+
+                     <tr>
+                         <td colspan="2"> <a href="instantUserManual_LibMS-2012.pdf">LibMS Instant UserManual</a>
+
+                        </td>
+                    </tr>
 
                         </table>
 <input type="hidden" id="button1" name="button1" value=""/>
@@ -491,32 +543,56 @@ It also support the facility includes Import/Export Data in XLS or FLAT file.--%
      <img src="<%=request.getContextPath()%>/images/twitter.jpeg" height="16px" width="20px"/>
       <a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="16px" width="40px"/></a>
       
-            </td></tr>
-            <tr><td colspan="2" class="datagrid" align="right"><a href="<%=request.getContextPath()%>/mem.jsp">View Server Memory Status</a></td></tr>
+       Best Viewed with 1024 X 768 on Mozilla FireFox Browser </td></tr>
+            <tr><td class="datagrid" >For reporting bugs, suggestion, feature request, and maintainence support
+send Email to amuedrp@gmail.com<br><br><a href="<%=request.getContextPath()%>/mem.jsp">View Server Memory Status</a>&nbsp;|&nbsp;You are the Visitor, Number >>
+                    <%
+    Integer hitsCount =
+      (Integer)application.getAttribute("hitCounter");
+    if( hitsCount ==null || hitsCount == 0 ){
+       /* First visit */
+
+       hitsCount = 1;
+    }else{
+       /* return visit */
+
+       hitsCount += 1;
+    }
+    application.setAttribute("hitCounter", hitsCount);
+%>
+<%= hitsCount%>
+
+                </td></tr>
            
          
         </table>
-    
+                </td></tr></table>
                     
-                    <table>
-                        <tr><td align="left" valign="top" style="margin: 0px 0px 0px 0px;">
-                            <div style="height: 60px;" class="homepage">
-        <div id="divTestBox2" style="position: absolute;margin: 0px 0px 0px 0px;">
-    <table></table>
-
-
-
-</div>
-</div>
-                           </td></tr>
-                        
-                    </table>
+                    
 
 </form>
+
+  
 
 </body>
       <script>function validateSession()
 {
+
+    var height = 0;
+    var body = window.document.body;
+    if (window.innerHeight) {
+      height = window.innerHeight;
+    } else if (body.parentElement.clientHeight) {
+      height = body.parentElement.clientHeight;
+    } else if (body && body.clientHeight) {
+      height = body.clientHeight;
+      }
+      
+      document.getElementById("tableContainer").style.height = height+"px";
+
+
+
+
 var msg;
 <% msg1="";
 if (request.getAttribute("msg")==null){

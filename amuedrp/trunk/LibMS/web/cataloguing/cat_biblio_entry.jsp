@@ -96,6 +96,28 @@ function submitUpdate()
     document.getElementById("button1").setAttribute("value", buttonvalue);
     return true;
 }
+ function showdiv(){
+
+        var ele = document.getElementById("image1");
+
+
+	if(ele.style.display == "block") {
+    		ele.style.display = "none";
+
+  	}
+	else {
+		ele.style.display = "block";
+
+	}
+
+
+    }
+    function submit()
+    {
+
+        document.getElementsById("filename").value=document.getElementById("img").value;
+       // alert(document.getElementsById("filename").value);
+    }
 function submitDelete()
 {
     var buttonvalue="Delete";
@@ -827,6 +849,9 @@ function disablecheck()
     </div>
     </td>
   </tr>
+
+  
+
 </table>
 </td>
  
@@ -856,7 +881,8 @@ function disablecheck()
                     </table> 
       </html:form>
         </div>
-      
+         
+
     </body>
 </html>
 

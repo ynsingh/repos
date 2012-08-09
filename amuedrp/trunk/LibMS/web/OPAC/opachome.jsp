@@ -284,7 +284,7 @@ $(function()
     <tr>
     <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
 
-    	Most Viewed Books Section
+    	<a href="<%=request.getContextPath()%>/circulation/most_popular.jsp%>">Most Popular Books </a>
     </td>
 
     </tr>

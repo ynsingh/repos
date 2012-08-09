@@ -139,6 +139,10 @@ if(sublibrary_id==null)sublibrary_id="all";
             obj1.setPublisher(obj.getPublisherName());
             obj1.setPubplace(obj.getPublicationPlace());
             obj1.setPub_yr(String.valueOf(obj.getPublishingYear()));
+              obj1.setImage(obj.getImage());
+             obj1.setDigitaldata(obj.getDigitalData());
+            obj1.setComment(obj.getDigitalComment());
+
             j++;
             row++;
         opacList.add(obj1);    
@@ -172,7 +176,7 @@ if(sublibrary_id==null)sublibrary_id="all";
 if(tcount==0)
 {
 %>
-<i>    <%=resource.getString("opac.simplesearch.smpsearch")%> Results>><span class="err"> <%=tcount%> Record Found</span></i>
+<i>    <%=resource.getString("opac.simplesearch.smpsearch")%> Results>><span class="err"> <%=row%> Record Found</span></i>
 <%}
 else
 {%>
@@ -197,6 +201,8 @@ else
                          <i>Sno</i></td>
                      <td width="10%">
                          <i>Book Cover Page</i></td>
+                     <td width="10%">
+                         <i>E-Content</i></td>
                      <td width="10%" >
                          <i>Title</i></td>
               <td   >
@@ -223,7 +229,16 @@ else
         <tr class="alternaterows">
             <%}%>
             <td width="5px"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getRowno() %></a></td>
-            <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><img src="<%=request.getContextPath()%>/images/no-image.jpg" height="80px" width="80px"></a></td>
+             <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getImage() %>" height="80px" width="80px"></a>
+
+            </td>
+            <td width="10%"   style="border-top:dashed 1px cyan;">
+                <% if(opacList.get(i).getDigitaldata()!=null){%>
+                <a href="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getDigitaldata() %>" target="_blank"><img src="<%=request.getContextPath()%>/images/econtent.GIF" height="30px" width="100px"/> <br>Comment :<%=opacList.get(i).getComment() %></a>
+            <%}else{%>
+            Not-available
+                <%}%>
+            </td>
             <td align="left" width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getTitle() %></a>
             </td>
             <td width="20%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getMain_entry() %></a>
@@ -332,24 +347,29 @@ else
             from=(Integer)request.getAttribute("from");
         while(j<result1.size())
         {
-            SearchPOJO obj=(SearchPOJO)result1.get(j);
+            BibliographicDetailsLang obj=(BibliographicDetailsLang)result1.get(j);
             OpacDoc obj1=new OpacDoc();
-            obj1.setBiblioid(obj.getBibliographicDetailsLang().getId().getBiblioId());
-            obj1.setTitle(obj.getBibliographicDetailsLang().getTitle());
-            obj1.setCallno(obj.getBibliographicDetailsLang().getCallNo());
+            obj1.setBiblioid(obj.getId().getBiblioId());
+            obj1.setTitle(obj.getTitle());
+            obj1.setCallno(obj.getCallNo());
             obj1.setRowno(row+1);
-            obj1.setLibrary_id(obj.getBibliographicDetailsLang().getId().getLibraryId().toUpperCase());
-            obj1.setSublibrary_id(obj.getBibliographicDetailsLang().getId().getSublibraryId().toUpperCase());
-            obj1.setMain_entry(obj.getBibliographicDetailsLang().getMainEntry());
-            obj1.setPublisher(obj.getBibliographicDetailsLang().getPublisherName());
-            obj1.setPubplace(obj.getBibliographicDetailsLang().getPublicationPlace());
-              obj1.setPub_yr(obj.getBibliographicDetailsLang().getPublishingYear().toString());
+            obj1.setLibrary_id(obj.getId().getLibraryId().toUpperCase());
+            obj1.setSublibrary_id(obj.getId().getSublibraryId().toUpperCase());
+            obj1.setMain_entry(obj.getMainEntry());
+            obj1.setPublisher(obj.getPublisherName());
+            obj1.setPubplace(obj.getPublicationPlace());
+              obj1.setPub_yr(obj.getPublishingYear().toString());
+               obj1.setImage(obj.getImage());
+            obj1.setDigitaldata(obj.getDigitalData());
+            obj1.setComment(obj.getDigitalComment());
+
+
             j++;
             row++;
         opacList.add(obj1);
         }
             row=(Integer)request.getAttribute("to");
-
+System.out.println(opacList.size()+".....................");
         int tcount=0;
         tcount =(Integer)session.getAttribute("simple_search_nor");
 
@@ -398,6 +418,8 @@ else
                          <i>Sno</i></td>
                      <td width="10%">
                          <i>Book Cover Page</i></td>
+                     <td width="10%">
+                         <i>E-Content</i></td>
                      <td width="10%" >
                          <i>Title</i></td>
               <td   >
@@ -424,7 +446,16 @@ else
         <tr class="alternaterows">
             <%}%>
             <td width="5px"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>&h=t"><%=opacList.get(i).getRowno() %></a></td>
-            <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>&h=t"><img src="<%=request.getContextPath()%>/images/no-image.jpg" height="80px" width="80px"></a></td>
+            <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getImage() %>" height="80px" width="80px"></a>
+
+            </td>
+            <td width="10%"   style="border-top:dashed 1px cyan;">
+                <% if(opacList.get(i).getDigitaldata()!=null){%>
+               <a href="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getDigitaldata() %>" target="_blank"><img src="<%=request.getContextPath()%>/images/econtent.GIF" height="30px" width="100px"/> <br>Comment :<%=opacList.get(i).getComment() %></a>
+            <%}else{%>
+            Not-available
+                <%}%>
+            </td>
             <td align="left" width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>&h=t"><%=opacList.get(i).getTitle() %></a>
             </td>
             <td width="20%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>&h=t"><%=opacList.get(i).getMain_entry() %></a>

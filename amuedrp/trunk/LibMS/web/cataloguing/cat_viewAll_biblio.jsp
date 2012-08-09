@@ -116,6 +116,7 @@ int pagesize=100;
             obj1.setMain_entry(obj.getMainEntry());
             obj1.setPublisher(obj.getPublisherName());
             obj1.setPubplace(obj.getPublicationPlace());
+            obj1.setEntry_lang(obj.getEntryLanguage());
             j++;
             i++;
         opacList.add(obj1);
@@ -178,13 +179,26 @@ else
       <item  styleClass="item"  value="${doc.pubplace}"   hAlign="left"/>
 
     </column>
+      <column width="20%">
+      <header value="EntryLang" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.entry_lang}"   hAlign="left"/>
+
+    </column>
           <column width="10%">
       <header value="${action}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${view}"  hAlign="left" hyperLink="${path}/cataloguing/titleShow.do?id=${doc.biblioid}"
 	      styleClass="item"/>
     </column>
-      
-
+       <column width="10%">
+      <header value="${action}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="Upload Book Image"  hAlign="left" hyperLink="${path}/cataloguing/changelogo.jsp?id=${doc.biblioid}"
+	      styleClass="item"/>
+    </column>
+<column width="10%">
+      <header value="${action}" hAlign="left" styleClass="admingridheader"/>
+      <item   value="Upload Digital Resource"  hAlign="left" hyperLink="${path}/cataloguing/adddigitalcontent.jsp?id=${doc.biblioid}"
+	      styleClass="item"/>
+    </column>
 
   </columns>
  <footer        styleClass="footer" show="true"/>
@@ -198,6 +212,10 @@ else
 </ui:dataGrid>
 </td></tr>
 <tr><td>
+        <%
+String msg=(String)request.getAttribute("msg")        ;
+if(msg!=null) out.println(msg);
+%>
           <% if(pageNumber>0){
            %>
   <input type="button" onclick="previous()" value="previous" class="datagrid"/>

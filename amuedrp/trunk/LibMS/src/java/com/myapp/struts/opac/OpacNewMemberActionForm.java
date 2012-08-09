@@ -144,9 +144,6 @@ private Integer registrationId;
         return TXTFNAME;
     }
 
-    /**
-     * @param TXTFNAME the TXTFNAME to set
-     */
     public void setTXTFNAME(String TXTFNAME) {
         this.TXTFNAME = TXTFNAME;
     }
@@ -158,9 +155,7 @@ private Integer registrationId;
         return TXTLNAME;
     }
 
-    /**
-     * @param TXTLAME the TXTLAME to set
-     */
+    
     public void setTXTLNAME(String TXTLNAME) {
         this.TXTLNAME = TXTLNAME;
     }
@@ -172,9 +167,7 @@ private Integer registrationId;
         return TXTMNAME;
     }
 
-    /**
-     * @param TXTMNAME the TXTMNAME to set
-     */
+   
     public void setTXTMNAME(String TXTMNAME) {
         this.TXTMNAME = TXTMNAME;
     }

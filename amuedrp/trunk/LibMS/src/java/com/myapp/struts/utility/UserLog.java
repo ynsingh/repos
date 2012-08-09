@@ -34,6 +34,13 @@ import org.apache.log4j.Logger;
 
 public class UserLog {
 
+       public static String returnextension(String FileName){
+         String ext=FileName.substring(FileName.lastIndexOf(".")+1,FileName.length());
+         return ext;
+
+         }
+
+
     private static Logger log4j=LoggerUtils.getLogger();
  
     static String path=AppPath.getPropertiesFilePath();
@@ -335,8 +342,13 @@ public static String HibernatePrintErrorLog(String filename)
 
          try
          {
-            FileOutputStream fos = new FileOutputStream(AppPath.getProjectImagePath()+filename);
+           
+            FileOutputStream fos=null ;
+                     fos = new FileOutputStream(AppPath.getProjectImagePath()+filename,true);
+           
+            
 
+            
       /*
 #
        * To write byte array to a file, use
@@ -371,11 +383,77 @@ public static String HibernatePrintErrorLog(String filename)
      }
      catch(IOException ioe)
      {
-      //System.out.println("IOException : " + ioe);
+     ioe.printStackTrace();
       log4j.error(ioe.toString());
      }
 
          }
+  public static void writeImage1(String filename,byte[] data)
+         {
+
+         try
+         {
+String p=AppPath.getProjectPropertiesImagePath();
+            FileOutputStream fos=null ;
+
+             File file=new File(p);
+			boolean success=false;
+                        boolean exists = file.exists();
+            if (!exists) {
+               success = (new File(p)).mkdir();
+
+                               if(success==true){
+
+
+                     fos = new FileOutputStream(p+filename);
+
+                }
+            }
+            else{
+               fos = new FileOutputStream(p+filename);
+            }
+                        System.out.println(file.getAbsolutePath());
+      /*
+#
+       * To write byte array to a file, use
+#
+       * void write(byte[] bArray) method of Java FileOutputStream class.
+#
+       *
+#
+       * This method writes given byte array to a file.
+#
+       */
+
+        fos.write(data);
+
+      /*
+#
+       * Close FileOutputStream using,
+#
+       * void close() method of Java FileOutputStream class.
+#
+       *
+#
+       */
+
+       fos.close();
+
+     }
+     catch(FileNotFoundException ex)
+     {
+      System.out.println("FileNotFoundException : " + ex);
+      log4j.error(ex.toString());
+     }
+     catch(IOException ioe)
+     {
+     ioe.printStackTrace();
+      log4j.error(ioe.toString());
+     }
+
+         }
+
+       
          // Returns the contents of the file in a byte array.
 public static byte[] getBytesFromFile(String file1)  {
     byte[] bytes=null;

@@ -146,6 +146,8 @@ System.out.println(year+"-"+month+"-"+day);
                 <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
             <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
     |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
+  &nbsp;
+    |&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=changepassword"  style="text-decoration: none;"> Change Password</a>
 
             
 

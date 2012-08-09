@@ -111,7 +111,11 @@ function submitDelete()
   <html:select property="document_type" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" >
        <html:option value=""><%=resource.getString("cataloguing.catoldtitle.select")%></html:option>
             <html:option value="Book"><%=resource.getString("cataloguing.catoldtitle.book")%></html:option>
+            <html:option value="diss">Disseration</html:option>
+            <html:option value="thesis">Thesis</html:option>
+            <html:option value="journal">Journals</html:option>
             <html:option value="CD"><%=resource.getString("cataloguing.catoldtitle.cd")%></html:option>
+            <html:option value="DVD">DVD</html:option>
   </html:select>
             <br><span class="err">   <html:messages id="err_name" property="document_type">
         <%=resource.getString("cataloguing.catoldtitle.err1")%>

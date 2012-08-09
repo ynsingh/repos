@@ -582,7 +582,8 @@ else
                 <td><%=resource.getString("admin.acq_registerstaff.first_name")%>*</td>
                 <td>
                                         <table><tr><td>
-                                       <select name="courtesy" size="1" id="courtesy" tabindex="2" disabled >                                  <option value="Select">Select</option>
+                                        <input type="text" id="courtesy" style="width:100px;"  tabindex="3" name="courtesy" value="<%=title%>" readonly>
+                                       <%--<select name="courtesy" size="1" id="courtesy" tabindex="2" disabled >                                  <option value="Select">Select</option>
                                        <%if(title.equals("mr"))
                                        {%>
                                     <option selected value="mr">Mr.</option>
@@ -604,7 +605,7 @@ else
                                     <option  value="ms">Ms.</option>
 
                                     <%}%>
-                                    </select></td>
+                                    </select>--%></td>
                                     <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="<%=first_name%>" readonly></td>
                                         </table>
                  </td>
@@ -748,7 +749,8 @@ else
                 <td><%=resource.getString("admin.acq_registerstaff.first_name")%>*</td>
                 <td>
                                         <table><tr><td>
-                                       <select name="courtesy" size="1" id="courtesy" tabindex="2"  >                                  <option value="Select">Select</option>
+                                                    <input type="text" id="courtesy" style="width:100px;"  tabindex="3" name="courtesy" value="<%=title%>" >
+                                      <%-- <select name="courtesy" size="1" id="courtesy" tabindex="2"  >                                  <option value="Select">Select</option>
                                        <%if(title.equals("mr"))
                                        {%>
                                     <option selected value="mr">Mr.</option>
@@ -772,7 +774,7 @@ else
                                     <option value="ms">Ms.</option>
                                      <option selected  value="Select">Select</option>
                                     <%}%>
-                                    </select></td>
+                                    </select>--%></td>
                                     <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="<%=first_name%>"></td>
                                         </table>
                  </td>
@@ -900,7 +902,8 @@ else
                 <td><%=resource.getString("admin.acq_registerstaff.first_name")%>*</td>
                 <td>
                                         <table><tr><td>
-                                       <select name="courtesy" size="1" id="courtesy" tabindex="2" disabled >                                  <option value="Select">Select</option>
+                                                    <input type="text" id="courtesy" style="width:100px;"  tabindex="3" name="courtesy" value="<%=title%>" readonly>
+                                     <%--  <select name="courtesy" size="1" id="courtesy" tabindex="2" disabled >                                  <option value="Select">Select</option>
                                          <%if(title.equals("mr"))
                                        {%>
                                     <option selected value="mr">Mr.</option>
@@ -924,7 +927,7 @@ else
                                     <option value="ms">Ms.</option>
                                      <option selected  value="Select">Select</option>
                                     <%}%>
-                                    </select></td>
+                                    </select>--%></td>
                                     <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="<%=first_name%>" readonly></td>
                                         </table>
                  </td>

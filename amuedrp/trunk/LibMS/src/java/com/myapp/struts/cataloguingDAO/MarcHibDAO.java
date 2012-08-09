@@ -89,13 +89,36 @@ List<Integer> obj=null;
      }
         return obj;
        }
+       public List<Integer> searchdataBiblioTemp(String library_id, String sub_library_id)
+          {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            List<Integer> obj=null;
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("select distinct id.bibId from BiblioTemp where id.libraryId= :lib_id and sublibraryId = :sub_id");
+            query.setString("lib_id", library_id);
+            query.setString("sub_id", sub_library_id);
+            obj=(List<Integer>) query.list();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+
+
+     }
+        return obj;
+       }
         public List<Integer> searchDoc2(String library_id, String sub_library_id) 
           {
             Session session = HibernateUtil.getSessionFactory().openSession();
             List<Integer> obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("select distinct id.bibId from Biblio where id.libraryId= :lib_id and sublibraryId = :sub_id");
+            Query query = session.createQuery("select distinct id.bibId from Biblio  where id.libraryId= :lib_id and sublibraryId = :sub_id");
             query.setString("lib_id", library_id);
             query.setString("sub_id", sub_library_id);
             obj=(List<Integer>) query.list();
@@ -125,6 +148,31 @@ List<Integer> obj=null;
                     .add(Restrictions.eq("id.bibId", bib_id))
                     .add(Restrictions.eq("sublibraryId", sub_library_id))).addOrder(Order.asc("id.marctag"));
             obj= (List<Biblio>)criteria.list();
+            session.getTransaction().commit();
+        } catch (RuntimeException e) {
+
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+
+
+     }
+        return obj;
+       }
+                public List<BiblioTemp>  searchBiblioIdTemp(String library_id, String sub_library_id, int bib_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+         List<BiblioTemp> obj=null;
+
+        try {
+             session.beginTransaction();
+
+            Criteria criteria = session.createCriteria(BiblioTemp.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.bibId", bib_id))
+                    .add(Restrictions.eq("sublibraryId", sub_library_id))).addOrder(Order.asc("id.marctag"));
+            obj= (List<BiblioTemp>)criteria.list();
             session.getTransaction().commit();
         } catch (RuntimeException e) {
 
@@ -214,6 +262,105 @@ List<Integer> obj=null;
      }
         return obj;
        }
+        public List<BiblioTemp> isMarcDataExist2(String code,String controlfield,String subfield, String libid,String sublib){
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            List<BiblioTemp> x=null;
+            try{
+            session.beginTransaction();
+            Query query = session.createQuery("from BiblioTemp where $"+code+" =:controlfield and id.marctag=:tag and  library_id= :libid and sublibrary_id= :sublib");
+            query.setString("controlfield", controlfield);
+            query.setString("libid", libid);
+            query.setString("sublib", sublib);
+            query.setString("tag", subfield);
+            x=(List<BiblioTemp>)(query.list());
+             session.getTransaction().commit();
+        } catch (RuntimeException e) {
+
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+
+
+     }
+        return x;
+        }
+
+        public BiblioTemp isMarcDataExist1(String controlfield,String subfield, String libid,String sublib){
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            BiblioTemp x=null;
+            try{
+            session.beginTransaction();
+            Query query = session.createQuery("from BiblioTemp where $a=:controlfield and id.marctag=:tag and  library_id= :libid and sublibrary_id= :sublib");
+            query.setString("controlfield", controlfield);
+            query.setString("libid", libid);
+            query.setString("sublib", sublib);
+            query.setString("tag", subfield);
+            x=(BiblioTemp)(query.uniqueResult());
+             session.getTransaction().commit();
+        } catch (RuntimeException e) {
+
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+
+
+     }
+        return x;
+        }
+
+        public BiblioTemp DuplicateMarcDataExist(String call_no, String libid,String sublib){
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            BiblioTemp x=null;
+            try{
+            session.beginTransaction();
+            Query query = session.createQuery("from BiblioTemp where $a=:call_no and id.marctag='082' and library_id= :libid and sublibrary_id= :sublib");
+            query.setString("call_no", call_no);
+            query.setString("libid", libid);
+            query.setString("sublib", sublib);
+            
+            x=(BiblioTemp)(query.uniqueResult());
+             session.getTransaction().commit();
+        } catch (RuntimeException e) {
+
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+
+
+     }
+        return x;
+        }
+
+
+        public int isMarcDataExistTemp(String title, String libid,String sublib){
+            Session session = HibernateUtil.getSessionFactory().openSession();
+
+
+            session.beginTransaction();
+            Query query = session.createQuery("select count(*) from BiblioTemp where $a=:title and library_id= :libid and sublibrary_id= :sublib");
+            query.setString("title", title);
+            query.setString("libid", libid);
+            query.setString("sublib", sublib);
+//
+            System.out.println("I'm in isMarcDataExist in marchibdao.");
+            return Integer.parseInt(String.valueOf(query.uniqueResult()));
+        }
+        public int isMarcDataExist(String title, String libid,String sublib){
+            Session session = HibernateUtil.getSessionFactory().openSession();
+
+
+            session.beginTransaction();
+            Query query = session.createQuery("select count(*) from Biblio where $a=:title and library_id= :libid and sublibrary_id= :sublib");
+            query.setString("title", title);
+            query.setString("libid", libid);
+            query.setString("sublib", sublib);
+//
+            System.out.println("I'm in isMarcDataExist in marchibdao.");
+            return Integer.parseInt(String.valueOf(query.uniqueResult()));
+        }
        public void update(Biblio biblio) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

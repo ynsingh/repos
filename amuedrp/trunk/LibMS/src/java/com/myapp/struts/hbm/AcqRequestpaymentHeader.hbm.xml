@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 22, 2012 6:05:51 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqRequestpaymentHeader" table="acq_requestpayment_header">
+    <composite-id class="com.myapp.struts.hbm.AcqRequestpaymentHeaderId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="prn" type="string">
+        <column length="20" name="prn"/>
+      </key-property>
+      <!--<key-property name="orderNo" type="string">
+                <column name="order_no" length="20" />
+            </key-property>-->
+    </composite-id>
+    <property name="prnDate" type="string">
+      <column length="20" name="prn_date"/>
+    </property>
+    <property name="vendorId" type="string">
+      <column length="20" name="vendor_id"/>
+    </property>
+    <property name="status" type="string">
+      <column length="20" name="status"/>
+    </property>
+    <property name="totalAmount" type="string">
+      <column length="10" name="total_amount"/>
+    </property>
+    <property name="noOfInvoices" type="string">
+      <column length="10" name="no_of_invoices"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -376,7 +376,7 @@ font-weight:bold;
      .hiliterows    { background-color: white; color: black; font-weight: bold;height:30px; }
      .alternaterows { background-color: #efefef;height:30px; }
      .header        { 
-                     /*background-image: url("../images/body-bg.png");*/
+                     background-color: blue;
                      color: white;font-weight: bold;padding-left: 5px;height:30px;}
  .header1        {
 

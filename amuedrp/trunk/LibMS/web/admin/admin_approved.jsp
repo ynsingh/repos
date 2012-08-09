@@ -97,6 +97,7 @@ body
             <%if(rst!=null){%>
      <%
      String registration_id=String.valueOf(adminReg.getAdminRegistration().getRegistrationId());
+     String logo=adminReg.getAdminRegistration().getInstiLogo();
      String institute_name=adminReg.getAdminRegistration().getInstituteName();
      String abbreviated_name=adminReg.getAdminRegistration().getAbbreviatedName();
      String institute_address=adminReg.getAdminRegistration().getInstituteAddress();
@@ -172,7 +173,8 @@ body
      %>
             <tr><td>
             <table class="txtStyle" bgcolor="white" >
-            <tr><td width="15%" dir="<%=rtl%>"><%=resource.getString("institutename")%></td><td width="15%"><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td width="15%"><%=resource.getString("registrationid")%></td><td width="15%"><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_id%>" tabindex="18" readonly></td></tr>
+                <tr><td  dir="<%=rtl%>" colspan="3">Logo :<img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=logo %>" alt="no image selected" width="120" height="120" border="1" /></td></tr>
+                <tr><td width="15%" dir="<%=rtl%>"><%=resource.getString("institutename")%></td><td width="15%"><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td width="15%"><%=resource.getString("registrationid")%></td><td width="15%"><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_id%>" tabindex="18" readonly></td></tr>
 
             <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td><input type="text" id="Editbox2" dir="<%=rtl%>"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td>
                     <input type="text" id="courtesy" readonly name="courtesy" value="<%=courtesy%>"/>

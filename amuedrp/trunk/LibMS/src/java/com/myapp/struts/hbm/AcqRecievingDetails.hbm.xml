@@ -36,5 +36,14 @@
         <property name="controlNo" type="java.lang.Integer">
             <column name="control_no" />
         </property>
+         <property name="vendorId" type="string">
+      <column length="20" name="vendor_id"/>
+    </property>
+    <property name="status" type="string">
+      <column length="10" name="status"/>
+    </property>
+    <property name="time" type="timestamp">
+      <column name="time"/>
+      </property>
     </class>
 </hibernate-mapping>

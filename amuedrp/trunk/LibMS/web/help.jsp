@@ -6,7 +6,7 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 
 <%
-byte[] file=UserLog.getBytesFromFile(AppPath.getPropertiesFilePath()+"UserManual.pdf");
+byte[] file=UserLog.getBytesFromFile(AppPath.getPropertiesFilePath()+"opac.pdf");
 response.setContentType("application/pdf");
 response.setContentLength(file.length);
 response.getOutputStream().write(file, 0, file.length);

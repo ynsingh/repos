@@ -566,7 +566,7 @@ public boolean DeleteLogin(String staff_id,String library_id,String sublibrary_i
         catch (Exception ex)
         {
             tx.rollback();
-              System.out.println(ex.toString());
+          
              return false;
 
        

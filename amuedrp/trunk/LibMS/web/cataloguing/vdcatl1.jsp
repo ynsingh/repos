@@ -128,7 +128,14 @@ description[33]='ex- Revised Standard.'
 
 </script>
     </head>
-    <body>
+   <jsp:include page="/admin/header.jsp"></jsp:include>
+    <body ><div
+   style="  top:15%;
+   left:10%;
+   right:10%;border: solid 1px black;
+      position: absolute;
+
+      visibility: show;">
         <layer name="nsviewer" bgcolor="#FDF5E6" style="border-width:thin;z-index:1"></layer>
 <script type="text/javascript">
 if (iens6){
@@ -156,23 +163,25 @@ function func2(t){
 }
 }
 </script>
-                                          <h2 align="center">MARC Based Bibliographic Cataloging</h2>
+                                        <h2 align="center"  class="headerStyle" style="height: 25px;">Delete MARC Based Bibliographic Cataloging</h2>
 
-<div id="ddtabs3" class="solidblockmenu">
-<ul>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl3.jsp" onclick="func1(3)" rel="sb3">3 (3XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl4.jsp" onclick="func1(4)" rel="sb4">4 (4XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl5.jsp" onclick="func1(5)" rel="sb5">5 (5XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl6.jsp" onclick="func1(6)" rel="sb6">6 (6XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/vdcatl9.jsp" onclick="func1(9)" rel="sb9">9</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"  rel="home">HOME</a></li>
-</ul>
+<div id="ddtabs3" class="header1" style="background-color: cyan;line-height: 26px;font-size: 13px;vertical-align: bottom" >
+
+
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl0.jsp" style="text-decoration:none" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl1.jsp" style="text-decoration:none" onclick="func1(1)" rel="sb1">1 (1XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl2.jsp"  style="text-decoration:none" onclick="func1(2)" rel="sb2">2 (20X-28X)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl3.jsp"  style="text-decoration:none" onclick="func1(3)" rel="sb3">3 (3XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl4.jsp" style="text-decoration:none" onclick="func1(4)" rel="sb4">4 (4XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl5.jsp" style="text-decoration:none" onclick="func1(5)" rel="sb5">5 (5XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl6.jsp" style="text-decoration:none" onclick="func1(6)" rel="sb6">6 (6XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl7.jsp" style="text-decoration:none" onclick="func1(7)" rel="sb7">7 (70X-78X)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/vdcatl8.jsp" style="text-decoration:none" onclick="func1(8)" rel="sb8">8 (80X-88X)</a>&nbsp;|&nbsp;
+
+<a href="<%=request.getContextPath()%>/cataloguing/marchome.do" style="text-decoration:none" rel="home">Cancel</a>&nbsp;|&nbsp;
+
 </div>
+
 
 <DIV class="tabcontainer ieclass">
 <FONT color="#8B008B">
@@ -242,12 +251,13 @@ Go BACK to Manage MARC Bibliography.
              marc130=(Biblio)request.getAttribute("130");}
 
      %>
-<div style="position:absolute;left:5%;top:23%;width:90%;border:1px #C0C0C0 solid;background: #f5fffa;">
+<div>
     <html:form styleId="ucat1" action="/vdaction.do" method="post">
+          <table height="400px"><tr><td valign="top" >&nbsp;&nbsp;&nbsp;
 <table width="100%" cellspacing="5"  >
     <tr><input type="hidden"  name="zclick" id="zclick" /></tr>
     <tr>
-        <td>Main Entry : Personal Name(NR) (100) :<a href="javascript:animatedcollapse.toggle('100')">ind</a> <div id="100" style="width: 150px; display:none" >ind1<input type="text" name="in1001" readonly value="<%=marc100.getIndicator1()==null?"":marc100.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" readonly name="in1002" value="#" maxlength="1" size="1" onFocus="setObj(description[1],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+        <td>&nbsp;&nbsp;&nbsp;Main Entry : Personal Name(NR) (100) :<a href="javascript:animatedcollapse.toggle('100')">ind</a> <div id="100" style="width: 150px; display:none" >&nbsp;&nbsp;&nbsp;ind1<input type="text" name="in1001" readonly value="<%=marc100.getIndicator1()==null?"":marc100.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[0],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" readonly name="in1002" value="#" maxlength="1" size="1" onFocus="setObj(description[1],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
         <td>$a Personal name (NR)<input type="text" readonly value="<%=marc100.get$a()==null?"":marc100.get$a() %>" name="z100" onFocus="setObj(description[2],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" id="100" />
 <font size="2">
 <a href="javascript:animatedcollapse.toggle('100c')">$c </a>
@@ -285,7 +295,7 @@ Go BACK to Manage MARC Bibliography.
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 
 <tr>
-    <td>Main Entry-Corporate Name (NR) (110) :<a href="javascript:animatedcollapse.toggle('110')">ind</a> <div id="110" style="width: 150px; display:none" >ind1<input type="text" name="in1101" readonly value="<%=marc110.getIndicator1()==null?"":marc110.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[9],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in1102" readonly value="<%=marc110.getIndicator2()==null?"":marc110.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[10],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>&nbsp;&nbsp;&nbsp;Main Entry-Corporate Name (NR) (110) :<a href="javascript:animatedcollapse.toggle('110')">ind</a> <div id="110" style="width: 150px; display:none" >&nbsp;&nbsp;&nbsp;ind1<input type="text" name="in1101" readonly value="<%=marc110.getIndicator1()==null?"":marc110.getIndicator1() %>" maxlength="1" size="1" onFocus="setObj(description[9],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in1102" readonly value="<%=marc110.getIndicator2()==null?"":marc110.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[10],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
     $a Corporate name or jurisdiction name as entry element (NR)<input type="text" readonly value="<%=marc110.get$a()==null?"":marc110.get$a() %>" name="z110" id="110" onFocus="setObj(description[11],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
@@ -350,7 +360,7 @@ Go BACK to Manage MARC Bibliography.
 
 
 <tr>
-    <td>Main Entry-Uniform Title (NR)(130) :<a href="javascript:animatedcollapse.toggle('130')">ind</a> <div id="130" style="width: 150px; display:none" >ind1<input type="text" name="in1301" readonly value="<%=marc130.getIndicator1()==null?"":marc130.getIndicator1()  %>" maxlength="1" size="1" onFocus="setObj(description[22],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in1302" readonly value="<%=marc130.getIndicator2()==null?"":marc130.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[10],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>&nbsp;&nbsp;&nbsp;Main Entry-Uniform Title (NR)(130) :<a href="javascript:animatedcollapse.toggle('130')">ind</a> <div id="130" style="width: 150px; display:none" >&nbsp;&nbsp;&nbsp;ind1<input type="text" name="in1301" readonly value="<%=marc130.getIndicator1()==null?"":marc130.getIndicator1()  %>" maxlength="1" size="1" onFocus="setObj(description[22],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" name="in1302" readonly value="<%=marc130.getIndicator2()==null?"":marc130.getIndicator2() %>" maxlength="1" size="1" onFocus="setObj(description[10],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
     $a Uniform title (NR) <input type="text" readonly value="<%=marc130.get$a()==null?"":marc130.get$a() %>" name="z130" id="130" onFocus="setObj(description[23],'override',550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">
@@ -413,14 +423,19 @@ Go BACK to Manage MARC Bibliography.
 </div>
 
 </font>
-</td></tr></table></html:form>
-     <%
+</td></tr></table>
+                  <br/><br> &nbsp;&nbsp;&nbsp;You are on MARC Page : Tag 1
+    <br>&nbsp; <br> &nbsp;&nbsp;&nbsp;
+                   <%
 if(session.getAttribute("marcbutton").equals("Delete")){
     %>
-    <a href="/marcdelete.do"><input type="submit" value="Delete" /></a>
+    <a style="text-decoration: none;"  href="<%=request.getContextPath() %>/marcdelete.do"><input type="button" value="Delete" /></a>
     <% }
     %>
-</div>
+
+                  </td></tr></table></html:form>
+    
+</div></div>
     </body>
 </html>
 

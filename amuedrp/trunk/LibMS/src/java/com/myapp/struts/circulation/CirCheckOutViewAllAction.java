@@ -38,6 +38,7 @@ public class CirCheckOutViewAllAction extends org.apache.struts.action.Action {
         starting_date=ccvaaf.getStarting_date();
         end_date=ccvaaf.getEnd_date();
         memid=ccvaaf.getMemid();
+        String title=ccvaaf.getTitle();
         
         session.removeAttribute("cir_checkout_report");
         library_id=(String)session.getAttribute("library_id");
@@ -47,7 +48,7 @@ public class CirCheckOutViewAllAction extends org.apache.struts.action.Action {
 
 
 
-requestList = (List<CheckoutDeocumentDetails>)CirRequestfromOpacDAO.getCheckOuts(library_id, sublibrary_id, memid,starting_date,end_date);
+requestList = (List<CheckoutDeocumentDetails>)CirRequestfromOpacDAO.getCheckOuts(library_id, sublibrary_id, memid,starting_date,end_date,title);
 System.out.println("size="+requestList.size());
 
 session.setAttribute("membercheckoutDetail", requestList);

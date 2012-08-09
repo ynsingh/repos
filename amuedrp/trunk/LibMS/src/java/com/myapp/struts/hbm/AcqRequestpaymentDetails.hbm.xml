@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 22, 2012 6:05:51 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqRequestpaymentDetails" table="acq_requestpayment_details">
+    <composite-id class="com.myapp.struts.hbm.AcqRequestpaymentDetailsId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="prn" type="string">
+        <column length="20" name="prn"/>
+      </key-property>
+      <key-property name="recievingNo" type="string">
+        <column length="20" name="recieving_no"/>
+      </key-property>
+      <key-property name="invoiceNo" type="string">
+        <column length="20" name="invoice_no"/>
+      </key-property>
+    </composite-id>
+    <property name="vendorId" type="string">
+      <column length="20" name="vendor_id"/>
+    </property>
+    <property name="totalAmt" type="string">
+      <column length="10" name="total_amt"/>
+    </property>
+    <property name="status" type="string">
+      <column length="20" name="status"/>
+    </property>
+    <property name="orderNo" type="string">
+      <column length="20" name="order_no"/>
+    </property>
+    <property name="paymentUpdateDate" type="string">
+      <column length="20" name="payment_update_date"/>
+    </property>
+    <property name="accessionStatus" type="string">
+      <column length="20" name="accession_status"/>
+    </property>
+
+  </class>
+</hibernate-mapping>

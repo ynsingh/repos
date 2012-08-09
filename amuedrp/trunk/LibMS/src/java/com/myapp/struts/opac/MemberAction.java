@@ -70,6 +70,7 @@ public class MemberAction extends org.apache.struts.action.Action {
            }
 
             String  status=cirmem.getStatus();
+            String sub_member_type = cirmem.getSubMemberType();
 
             if(!status.equals("Active"))
             {
@@ -84,7 +85,7 @@ public class MemberAction extends org.apache.struts.action.Action {
         session.setAttribute("card_id",cirmem.getCardId());
         session.setAttribute("mem_id",cirmem.getId().getMemid());
         session.setAttribute("mem_type", cirmem.getMemType());
-        
+        session.setAttribute("sub_member_type",cirmem.getSubMemberType());
 
 
 

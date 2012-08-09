@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import com.myapp.struts.hbm.AdminRegistration;
 import com.myapp.struts.AdminDAO.AdminRegistrationDAO;
+import com.myapp.struts.utility.UserLog;
 
 
 public class InstiLogo extends org.apache.struts.action.Action {
@@ -24,6 +25,8 @@ public class InstiLogo extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session = request.getSession();
+        String library_id=(String)session.getAttribute("library_id");
+
      System.out.println("Image Update code");
         ImageUploadActionForm form1 = (ImageUploadActionForm)form;
         byte[] img;
@@ -44,18 +47,30 @@ public class InstiLogo extends org.apache.struts.action.Action {
 
 
        AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
-System.out.println(admin);
 
-         if (form1.getImg()!=null)
-            admin.setInstiLogo(form1.getImg().getFileData());
-         else
-               if(iii!=null){admin.setInstiLogo(iii);}
-               else{admin.setInstiLogo(null);}
+String ext=null;
+ ext=UserLog.returnextension(v.getFileName());
 
-            AdminRegistrationDAO admindao=new AdminRegistrationDAO();
-            admindao.update(admin);
-          admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
-session.setAttribute("AdminDetail",admin);
+
+ext=ext.toLowerCase();
+
+
+if (form1.getImg()!=null)
+         {
+                
+                 
+                  UserLog.writeImage1(admin.getLibraryId()+"."+ext, iii);
+              
+             }
+//         else  if(iii!=null)
+//         {
+//
+//                  UserLog.writeImage1(admin.getLibraryId()+admin.getLoginId()+"."+ext, iii);
+//         }
+
+       admin.setInstiLogo(admin.getLibraryId()+"."+ext);
+       AdminRegistrationDAO.update1(admin);
+
 
         return mapping.findForward(SUCCESS);
     }

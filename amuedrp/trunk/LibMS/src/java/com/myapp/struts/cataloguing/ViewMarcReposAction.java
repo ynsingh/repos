@@ -18,10 +18,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-/**
- *
- * @author EdRP-05
- */
 public class ViewMarcReposAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
@@ -32,15 +28,6 @@ public class ViewMarcReposAction extends org.apache.struts.action.Action {
     BibliographicDetailsId bibid;
     List<String> str=new ArrayList<String>();
     int bib_id=0;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -73,7 +60,12 @@ public class ViewMarcReposAction extends org.apache.struts.action.Action {
         {
          str.add(rst1.get(j).get$a());
         bib.setMainEntry(rst1.get(j).get$a());
-        }      
+        }
+         if(rst1.get(j).getId().getMarctag().equals("050")==true)
+        {
+         str.add(rst1.get(j).get$a());
+        bib.setCallNo(rst1.get(j).get$a());
+        }
         }     
      ls.add(bib);
       }

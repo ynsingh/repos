@@ -21,6 +21,7 @@ window.print();
 <body onload="parent.setIframeHeight();">
 <%! String title,author,doctype,publ_pl,pub_name,pub_yr,pages,index,callno,phy_width,loc,pubyr,copy,vol,ed,publ,place,isbn,accno,subtitle,subject,id,lib_id,status,location,booktype,lccno;
 int no_of_copy=0;
+String image;
 List<BibliographicDetails> dd=new ArrayList<BibliographicDetails>();
     
 %> 
@@ -56,7 +57,7 @@ pages=list.get(0).getNoOfPages();
 dd = (List<BibliographicDetails>)session.getAttribute("documentDetail1");
         if(dd!=null){
             
-           //booktype=dd.get(0).getBookType();
+           image=dd.get(0).getImage();
             title=dd.get(0).getTitle();
             subtitle=dd.get(0).getSubtitle();
             author=dd.get(0).getMainEntry();
@@ -130,7 +131,9 @@ if(head!=null){
 <%}%>
     <TABLE align="center" dir="<%=rtl%>"  style="text-align: justify;border-top: dashed 1px cyan;"  border='0' class="datagrid" cellspacing='0' cellpadding='0' valign="top" width="100%">
         <tr dir="<%=rtl%>"><td valign="top" align="center"  height="200px" width="200px">
-                <br><br>Book Cover Image<br><img src="<%=request.getContextPath()%>/images/no-image.jpg" style="border: dashed 1px cyan;margin-left: 20px;" height="180px" width="180px" style="margin:5px 5px 5px 5px;" ><br><br><u>View Book Index Content</u><br>
+                <br><br>Book Cover Image<br>
+                <img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=image %>" style="border: dashed 1px cyan;margin-left: 20px;" height="180px" width="180px" style="margin:5px 5px 5px 5px;" >
+                <br><br><u>View Book Index Content</u><br>
                 
             </td>
             <td valign="top" style="margin-left: 10px; font-family: arial; font-size: 13pt;

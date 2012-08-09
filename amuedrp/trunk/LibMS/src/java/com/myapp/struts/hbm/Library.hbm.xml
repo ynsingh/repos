@@ -12,7 +12,7 @@
             <column name="registration_id" />
         </property>
         <property name="libraryName" type="string">
-            <column name="library_name" length="50" />
+            <column name="library_name" length="100" />
         </property>
         <property name="staffId" type="string">
             <column name="staff_id" length="100" />

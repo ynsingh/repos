@@ -79,12 +79,12 @@ public class browseSearchAction extends org.apache.struts.action.Action {
             List<BibliographicDetails> browse_search_list1=new ArrayList();
             if(myform.getCheckbox().equals("Checked"))
             {
-                 if(sort.equalsIgnoreCase("mainEntry"))
-                sort="main_entry";
-            if(sort.equalsIgnoreCase("publisherName"))
-                sort="publisher_name";
-                  if(sort.equalsIgnoreCase("CallNo"))
-                sort="call_no";
+//                 if(sort.equalsIgnoreCase("mainEntry"))
+//                sort="main_entry";
+//            if(sort.equalsIgnoreCase("publisherName"))
+//                sort="publisher_name";
+//                  if(sort.equalsIgnoreCase("CallNo"))
+//                sort="call_no";
 
 
 

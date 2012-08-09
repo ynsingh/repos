@@ -20,9 +20,7 @@ public class AccountSubLibrary {
         return Login;
     }
 
-    /**
-     * @param staffdetail the staffdetail to set
-     */
+    
     public void setLogin(Login loginDetail) {
         this.Login = loginDetail;
     }

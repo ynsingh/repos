@@ -57,7 +57,7 @@
 
 
     <table class="table" style="border:5px solid cyan;" align="center" height="150px" width="500px">
-           <tr><td width="250px" laign="center">Select Image:
+           <tr><td width="250px" laign="center">Select Image(.jpg/.png file only):
  
 <html:file  property="img" name="ImageUploadActionForm" styleId="img"    />
       <input type="hidden" name="filename" tabindex="16" id="filename" />

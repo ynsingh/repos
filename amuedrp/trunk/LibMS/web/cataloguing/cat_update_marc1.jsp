@@ -1,8 +1,3 @@
-<%--
-    Document   : cat_viewAll_biblio
-    Created on : Mar 15, 2011, 12:05:56 PM
-    Author     : EdRP-04
---%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -18,8 +13,6 @@
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <html>
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Faraz Hasan" content="MCA,AMU">
-      <title></title>
 <jsp:include page="/admin/header.jsp"/>
 <script type="text/javascript">
 function send()
@@ -35,7 +28,6 @@ function send()
     <div
    style="  top:150px;
    left:100px;
-   right:5px;
       position: absolute;
 
       visibility: show;">
@@ -88,7 +80,6 @@ int tcount =0;
    int tpage=0;
 
  opacList=(ArrayList)session.getAttribute("opacList");
-System.out.println("opacList="+opacList.size());
 tcount = opacList.size();
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+4) >= opacList.size())
@@ -99,10 +90,10 @@ tcount = opacList.size();
    if(session.getAttribute("marcbutton").equals("Delete"))
        pageContext.setAttribute("delete", "delete");
    
-   System.out.println(session.getAttribute("marcbutton")+(String)pageContext.getAttribute("delete"));
 %>
 
-<table  border="0"  dir="<%=rtl %>">
+<table  border="0" align="center"  dir="<%=rtl %>">
+    <tr><td class="headerStyle" height="30px" align="center">View ALL Bibliographic Details (MARC-21)</td></tr>
 <div>
 <%
 if(tcount==0)
@@ -151,14 +142,10 @@ else
 </ui:dataGrid>
 </td></tr>
 <tr><td>
-<table width="750" style="font-family: arial; font-size: 10pt" border=0>
-<tr>
-<td align="left" width="33%">
+
 <c:if test="${previous != null}">
 <a href="<c:out value="${previous}"/>"><%=resource.getString("global.previous")%></a>
 </c:if>&nbsp;
-</td>
-<td align="center" width="33%">
 <c:forEach items="${pages}" var="page">
 <c:choose>
   <c:when test="${page.current}">
@@ -169,24 +156,24 @@ else
   </c:otherwise>
 </c:choose>
 </c:forEach>
-</td>
-<td align="right" width="33%">&nbsp;
+&nbsp;
 <c:if test="${next != null}">
 <a href="<c:out value="${next}"/>"><%=resource.getString("global.next")%></a>
 </c:if>
 <%}%>
+
+<br/><input type="button" onclick="return send()" name="button" value="<%=resource.getString("cataloguing.catoldtitle.back")%>" Class="txt1"/>
 </td>
 </tr>
 </table>
 </div>
-<tr><td height="20px;"></td></tr>
-<tr> <td align="center">
-<input type="button" onclick="return send()" name="button" value="<%=resource.getString("cataloguing.catoldtitle.back")%>" Class="txt1"/>
-                 </td></tr>
-</table>
+
+
+
+
 <div  style="position:absolute; left: 60%; top: 20%; font-size: 12px;" dir="<%=rtl %>">
     <iframe id="fr" name="fr" src="#" width="500px" height="500px" scrolling="false" frameborder="0" />
 </div>
-</div>
+
 </body>
 </html>

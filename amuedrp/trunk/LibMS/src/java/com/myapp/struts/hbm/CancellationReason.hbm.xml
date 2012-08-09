@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 1 Oct, 2011 2:10:20 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated Oct 20, 2012 11:20:58 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="com.myapp.struts.hbm.CancellationReason" table="cancellation_reason" catalog="libms">
         <composite-id name="id" class="com.myapp.struts.hbm.CancellationReasonId">

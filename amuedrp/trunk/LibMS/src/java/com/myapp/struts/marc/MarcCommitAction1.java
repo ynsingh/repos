@@ -26,10 +26,6 @@ import org.marc4j.marc.Leader;
     import com.myapp.struts.hbm.BibliographicDetails;
     import com.myapp.struts.hbm.BibliographicDetailsId;
 import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
-/**
- *
- * @author zeeshan
- */
 public class MarcCommitAction1 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
@@ -126,7 +122,10 @@ public class MarcCommitAction1 extends org.apache.struts.action.Action {
                 if(bib.getId().getMarctag().equals("260")){
                 bibd.setPublicationPlace(bib.get$a());
                 bibd.setPublisherName(bib.get$b());
+                if(bib.get$c()!=null)
                 bibd.setPublishingYear(Integer.parseInt(bib.get$c()));
+                else
+                    bibd.setPublishingYear(0);
                 }
                 if(bib.getId().getMarctag().equals("490")){
                 bibd.setSeries(bib.get$a());
@@ -405,6 +404,15 @@ while(high>0)
 //System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"+total_length[0]+total_length[1]+total_length[2]+total_length[3]+total_length[4]);
 Biblio bbn=(Biblio)hm1.get("Leader");
 String leader1=(String)bbn.get$a();
+//***********************************************Check of Control Field Entry**************************//
+if(leader1==null)
+{
+      request.setAttribute("msg1","Please Select Control Field Data");
+      boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
+      return mapping.findForward("controltag");
+}
+
+
 char leader[]=new char[24];
 for(int ii=0;ii<24;ii++){
 leader[ii]=leader1.charAt(ii);

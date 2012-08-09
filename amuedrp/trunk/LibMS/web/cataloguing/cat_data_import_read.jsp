@@ -38,7 +38,7 @@ Select a file to upload: <br />
 <input type="submit" value="Upload File" />
 </form>
                 </td></tr>--%>
-            <tr><td>
+          <%--  <tr><td>
 
 
     
@@ -54,7 +54,7 @@ Select a file to upload: <br />
                         %>
                     
             </td>
-        </tr>
+        </tr>--%>
    
 
 
@@ -62,25 +62,28 @@ Select a file to upload: <br />
 </html:form>
    
 
-           <html:form action="/uploadmarc" method="post"  enctype="multipart/form-data">
+        --%>   <html:form action="/uploadmarc" method="post"  enctype="multipart/form-data">
                <tr><td colspan="3" align="center" class="headerStyle">Upload .mrc File</td></tr>
            <tr>
                <td align="left" style="padding:10px ">
-                   Select MARC File : <br><html:file  property="excelFile" name="StrutsUploadForm"/><a href="<%= request.getContextPath() %>/viewMarcRepos.do">View Repository Record</a>
+                   Select MARC File : <br><html:file  property="excelFile" name="StrutsUploadForm"/><%--<a href="<%= request.getContextPath() %>/viewMarcRepos.do">View Repository Record</a>--%>
                     <br> <html:submit>Upload File</html:submit><br>
-                    <input type="checkbox"> Check if you want to overwrite previous same record.
+                    In Case of Duplicate records, records will be updated.
                 </td>            
             </tr>
-           </html:form>-->
-            <tr><td colspan="3">
-                  <p class="err">
+           </html:form>
+          
+
+                
+                    <tr><td>
+                         <p class="err">
                     <html:errors />
---%>
-                    <%--<h3 style="text-align: center; ">
+
+                    <h3 style="text-align: center; ">
                         <%if (request.getAttribute("msg1") != null) {
                                         out.println(request.getAttribute("msg1"));
                                     }
-                        %></h3>   
+                        %></h3>
 
                 <p class="mess">
 
@@ -90,22 +93,6 @@ Select a file to upload: <br />
                         %>
                 </p>
 
-
-                <p class="err">
-
-                        <%if (request.getAttribute("error") != null) {
-                                        out.println(request.getAttribute("error"));
-                                    }
-                        %>
-
-
-
-                        <%if (request.getAttribute("msg") != null) {
-                                        out.println(request.getAttribute("error"));
-                                    }
-                        %></p>--%>
-                    <tr><td>
-                         
                        
                         <%
                         List obj=(List)session.getAttribute("importlog");

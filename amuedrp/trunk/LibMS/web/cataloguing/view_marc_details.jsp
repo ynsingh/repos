@@ -4,20 +4,29 @@
     <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
     <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
     <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+       <jsp:include page="/admin/header.jsp"/>
     <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
         <title>LibMS</title>
+        <script type="text/javascript">
+function send()
+{
+    top.location="<%= request.getContextPath() %>/viewMarcRepos.do";
+    return false;
+}
+</script>
     </head>
     <body>
-        <table class="datagrid" style="border:solid 1px">
+
+        <table  style="position:absolute; left: 5%;height: 500px; top: 20%; font-size: 12px;">
 
             <tr><td colspan="4" class="headerStyle">BIBLIOGRAPHIC DETAILS IN MARC-21 FORMAT OF TITLE</td></tr>
             <logic:iterate id="BiblioTemp" name="opacList">
                 <tr>
-                    <td>
-                        <bean:write name="BiblioTemp" property="id.marctag"/>
+                    <td style="font-weight: bold;">
+                        <bean:write name="BiblioTemp" property="id.marctag"/>&nbsp;
                     </td>                       
                     <td>
                         <logic:present name="BiblioTemp" property="indicator1">
@@ -25,18 +34,18 @@
                         </logic:present>
                         <logic:notPresent name="BiblioTemp" property="indicator1">
                         #
-                        </logic:notPresent>
+                        </logic:notPresent>&nbsp;
                     </td>
                     <td>
-                        <logic:notPresent name="BiblioTemp" property="indicator2">
+                     &nbsp;   <logic:notPresent name="BiblioTemp" property="indicator2">
                         #
                         </logic:notPresent>
                         <logic:present name="BiblioTemp" property="indicator2">
                         <bean:write name="BiblioTemp" property="indicator2"/>
-                        </logic:present>                        
+                        </logic:present>       &nbsp;
                     </td>                       
                     <td style="text-align: justify">
-                        <logic:lessEqual value="010" name="BiblioTemp" property="id.marctag">
+                      &nbsp;  <logic:lessEqual value="010" name="BiblioTemp" property="id.marctag">
                         <bean:write name="BiblioTemp" property="$a"/>
                         </logic:lessEqual>
                         <logic:greaterEqual value="011" name="BiblioTemp" property="id.marctag">
@@ -120,6 +129,8 @@
                     </td>
                 </tr>
             </logic:iterate>
+                <tr><td> <input type="button" onclick="return send()" name="button" value="Back" Class="txt1"/></td></tr>
         </table>
+       
     </body>
 </html>

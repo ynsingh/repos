@@ -15,6 +15,15 @@ public class AcqBudgetTransaction  implements java.io.Serializable {
      private Double amount;
      private String transactionDate;
 
+    public String getExpenseAmount() {
+        return expenseAmount;
+    }
+
+    public void setExpenseAmount(String expenseAmount) {
+        this.expenseAmount = expenseAmount;
+    }
+     private String expenseAmount;
+
     public AcqBudgetTransaction() {
     }
 
@@ -22,12 +31,13 @@ public class AcqBudgetTransaction  implements java.io.Serializable {
     public AcqBudgetTransaction(AcqBudgetTransactionId id) {
         this.id = id;
     }
-    public AcqBudgetTransaction(AcqBudgetTransactionId id, String acqBudgetHeadId, String controlNo, Double amount, String transactionDate) {
+    public AcqBudgetTransaction(AcqBudgetTransactionId id, String acqBudgetHeadId, String controlNo, Double amount, String transactionDate,String exp_amt) {
        this.id = id;
        this.acqBudgetHeadId = acqBudgetHeadId;
        this.controlNo = controlNo;
        this.amount = amount;
        this.transactionDate = transactionDate;
+       this.expenseAmount=exp_amt;
     }
    
     public AcqBudgetTransactionId getId() {

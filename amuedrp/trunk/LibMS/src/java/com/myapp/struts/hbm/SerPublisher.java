@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated 16 Nov, 2011 3:36:58 PM by Hibernate Tools 3.2.1.GA
+// Generated Oct 20, 2012 11:20:56 AM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -10,7 +10,6 @@ public class SerPublisher  implements java.io.Serializable {
 
 
      private SerPublisherId id;
-     private Library library;
      private String pubName;
      private String pubAdd;
      private String city;
@@ -25,13 +24,11 @@ public class SerPublisher  implements java.io.Serializable {
     }
 
 	
-    public SerPublisher(SerPublisherId id, Library library) {
+    public SerPublisher(SerPublisherId id) {
         this.id = id;
-        this.library = library;
     }
-    public SerPublisher(SerPublisherId id, Library library, String pubName, String pubAdd, String city, String state, String country, String pubUrl, String pubPhone, String fax, String email) {
+    public SerPublisher(SerPublisherId id, String pubName, String pubAdd, String city, String state, String country, String pubUrl, String pubPhone, String fax, String email) {
        this.id = id;
-       this.library = library;
        this.pubName = pubName;
        this.pubAdd = pubAdd;
        this.city = city;
@@ -49,13 +46,6 @@ public class SerPublisher  implements java.io.Serializable {
     
     public void setId(SerPublisherId id) {
         this.id = id;
-    }
-    public Library getLibrary() {
-        return this.library;
-    }
-    
-    public void setLibrary(Library library) {
-        this.library = library;
     }
     public String getPubName() {
         return this.pubName;

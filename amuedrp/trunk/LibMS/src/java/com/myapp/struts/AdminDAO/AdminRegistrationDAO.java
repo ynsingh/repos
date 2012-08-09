@@ -45,7 +45,7 @@ public static  boolean insert1(AdminRegistration obj)
         catch (Exception ex)
         {
             tx.rollback();
-              System.out.println(ex.toString());
+             ex.printStackTrace();
              return false;
 
        

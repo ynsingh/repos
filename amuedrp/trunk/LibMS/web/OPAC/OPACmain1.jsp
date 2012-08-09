@@ -236,7 +236,7 @@ body
     <tr>
     <td style="border-bottom: dashed 1px cyan;line-height: 20px; "  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
 
-    	Most Viewed Books Section
+    	<%--<a href="<%=request.getContextPath()%>/OPAC/search_popular.jsp%>">--%>Most Popular Books 
     </td>
 
     </tr>
@@ -259,7 +259,7 @@ body
     </tr>
      <tr>
         <td style="border-bottom: dashed 1px cyan;line-height: 20px; "  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
-    	Print Search Data
+    	Self Renewal of Book, Request for Reservation
     </td>
     </tr>
                 </table>

@@ -7,7 +7,7 @@
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
      <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>
  
-    <mapping resource="com/myapp/struts/hbm/EmployeeType.hbm.xml"/>
+   <mapping resource="com/myapp/struts/hbm/EmployeeType.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/CirCheckin.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqPrivilege.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqFinalDemandList.hbm.xml"/>
@@ -53,8 +53,6 @@
     <mapping resource="com/myapp/struts/hbm/AcqCurrency.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/BaseCurrency.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqBudgetTransaction.hbm.xml"/>
-    <mapping resource="com/myapp/struts/hbm/Logs.hbm.xml"/>
-    <mapping resource="com/myapp/struts/hbm/Logsetting.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/BibliographicDetailsLang.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/TempExcellImport.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqRecievingHeader.hbm.xml"/>
@@ -63,5 +61,15 @@
     <mapping resource="com/myapp/struts/hbm/Biblio.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Customizedbiblio.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/BiblioTemp.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/FineDetails.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/AcqInvoiceHeader.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/AcqInvoiceDetail.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/AcqRequestpaymentDetails.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/AcqRequestpaymentHeader.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/DeliquencyReason.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/SerNewEntry.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/SerBiolioDetails.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CancellationReason.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/SerPublisher.hbm.xml"/>
      </session-factory>
 </hibernate-configuration>

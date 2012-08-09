@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16 Nov, 2011 3:38:39 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated Oct 20, 2012 11:20:58 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="com.myapp.struts.hbm.SerBiolioDetails" table="ser_biolio_details" catalog="libms">
         <composite-id name="id" class="com.myapp.struts.hbm.SerBiolioDetailsId">
@@ -15,11 +15,9 @@
                 <column name="library_id" length="20" />
             </key-property>
         </composite-id>
-        <many-to-one name="serNewEntry" class="com.myapp.struts.hbm.SerNewEntry" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="sublibrary_id" length="20" not-null="true" />
+        <property name="newSerialId" type="string">
             <column name="new_serial_id" length="10" not-null="true" />
-        </many-to-one>
+        </property>
         <property name="noOfCopies" type="java.lang.Integer">
             <column name="no_of_copies" />
         </property>

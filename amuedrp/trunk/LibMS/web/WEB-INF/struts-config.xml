@@ -35,6 +35,9 @@
         <form-bean name="CurrencyForm" type="com.myapp.struts.CurrencyForm"/>
         <form-bean name="AcqPurchaseOrderActionForm" type="com.myapp.struts.Acquisition.AcqPurchaseOrderActionForm"/>
 
+<form-bean name="AcqReceiveItemActionForm" type="com.myapp.struts.Acquisition.AcqReceiveItemActionForm"/>
+<form-bean name="AcqInvoiceItemActionForm" type="com.myapp.struts.Acquisition.AcqInvoiceItemActionForm"/>
+
   
         <!--System Setup Form Setting-->
         <form-bean name="FacultyActionForm" type="com.myapp.struts.systemsetup.FacultyActionForm"/>
@@ -144,6 +147,8 @@
         <form-bean name="BibliographicDetailEntryActionForm" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm"/>
         <form-bean name="BibliographicDetailEntryActionForm1" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm1"/>
         <form-bean name="StrutsUploadForm" type="com.myapp.struts.cataloguing.StrutsUploadForm"/>
+        <form-bean name="catImageUploadActionForm" type="com.myapp.struts.cataloguing.catImageUploadActionForm"/>
+
 
     <!-- Marc -->
         <form-bean name="CatControlActionForm" type="com.myapp.struts.marc.CatControlActionForm"/>
@@ -218,6 +223,113 @@
 
 
         <!--Acquisition Action Mapping-->
+
+
+
+<action path="/receive_item" input="/acquisition/acq_receive_item.jsp"  name="AcqReceiveItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqReceiveItemAction" >
+            <forward name="success" path="/acquisition/acq_receive_main.jsp"/>
+        </action>
+        <action path="/receive_item11" input="/acquisition/acq_receive_item.jsp"  name="AcqReceiveItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqReceiveItem11Action" >
+            <forward name="new" path="/acquisition/acq_receive_item.jsp"/>
+            <forward name="view" path="/acquisition/acq_receive_item_view.jsp"/>
+            <forward name="viewall" path="/acquisition/acq_receive_item_viewall.jsp"/>
+            <forward name="success" path="/acquisition/acq_receive_main.jsp"/>
+        </action>
+        <action path="/receive_item1" input="/acquisition/acq_receive_item.jsp"  name="AcqReceiveItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqReceiveItem1Action" >
+            <forward name="success" path="/acquisition/acq_receive_item1.jsp"/>
+        </action>
+        <action path="/receive_item2" input="/acquisition/acq_receive_item1.jsp"  name="AcqReceiveItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqReceiveItem2Action" >
+            <forward name="success" path="/acquisition/acq_receive_item2.jsp"/>
+        </action>
+        <action path="/receive_item3" input="/acquisition/acq_receive_item.jsp"  name="AcqReceiveItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqReceiveItem3Action" >
+            <forward name="success" path="/acquisition/acq_receive_item2.jsp"/>
+        </action>
+
+        <action path="/acquisition/invoice_item" input="/acquisition/acq_invoice_item_main.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqInvoiceItemAction" >
+            <forward name="success" path="/acquisition/acq_invoice_item.jsp"/>
+            <forward name="viewall" path="/acquisition/acq_invoice_item_viewall.jsp"/>
+            <forward name="view" path="/acquisition/acq_invoice_item_view.jsp"/>
+            <forward name="fail" path="/acquisition/acq_invoice_item_main.jsp"/>
+        </action>
+       <!-- <action path="/invoice_item" input="/acquisition/acq_invoice_item.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqInvoiceItemAction" >
+            <forward name="success" path="/acquisition/acq_invoice_item.jsp"/>
+        </action>-->
+        <action path="/invoice_item1" input="/acquisition/acq_invoice_item.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqInvoiceItem1Action" >
+            <forward name="success" path="/acquisition/acq_invoice_item1.jsp"/>
+        </action>
+        <action path="/invoice_item2" input="/acquisition/acq_invoice_item1.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqInvoiceItem2Action" >
+            <forward name="success" path="/acquisition/acq_invoice_item2.jsp"/>
+        </action>
+        <action path="/invoice_item3" input="/acquisition/acq_invoice_item.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqInvoiceItem3Action" >
+            <forward name="success" path="/acquisition/acq_invoice_item_main.jsp"/>
+        </action>
+        <action path="/acquisition/invoice_item4" input="/acquisition/acq_invoice_item2.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqInvoiceItem4Action" >
+           <!-- <forward name="success" path="/acquisition/acq_invoice_item2.jsp"/>-->
+            <forward name="success" path="/acquisition/acq_invoice_item2.jsp"/>
+        </action>
+
+
+       <action path="/acquisition/payment_request" input="/acquisition/acq_payment_request.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentRequestAction" >
+            <forward name="success" path="/acquisition/acq_payment_request1.jsp"/>
+            <forward name="fail" path="/acquisition/acq_payment_request.jsp"/>
+            <forward name="view" path="/acquisition/acq_payment_request_view.jsp"/>
+            <forward name="delete" path="/acquisition/acq_payment_request_delete.jsp"/>
+            <forward name="update" path="/acquisition/acq_payment_request_update.jsp"/>
+            <forward name="view_all_list" path="/acquisition/acq_payment_request_alllist.jsp"/>
+            <forward name="process" path="/acquisition/acq_payment_request_process.jsp"/>
+        </action>
+        <action path="/acquisition/payment_request1" input="/acquisition/acq_payment_request.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentRequest1Action" >
+            <forward name="success" path="/acquisition/acq_payment_request2.jsp"/>
+        </action>
+        <action path="/payment_request2" input="/acquisition/acq_payment_request1.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentRequest2Action" >
+            <forward name="success" path="/acquisition/acq_payment_request.jsp"/>
+            <forward name="fail" path="/acquisition/acq_payment_request2.jsp"/>
+        </action>
+        <action path="/acquisition/payment_request_delete" input="/acquisition/acq_payment_request_delete.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentRequestDeleteAction" >
+            <forward name="success" path="/acquisition/acq_payment_request.jsp"/>
+        </action>
+        <action path="/acquisition/payment_request_update" input="/acquisition/acq_payment_request_update.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentRequestUpdateAction" >
+            <forward name="success" path="/acquisition/acq_payment_request.jsp"/>
+        </action>
+        <action path="/acquisition/payment_request_process" input="/acquisition/acq_payment_request_process.jsp"  name="AcqInvoiceItemActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentRequestProcessAction" >
+            <forward name="success" path="/acquisition/acq_payment_request.jsp"/>
+        </action>
+
+        <action path="/invoice_payment_update" name="AcqInvoiceItemActionForm"  scope="request" type="com.myapp.struts.Acquisition.AcqPaymentUpdateAction" >
+            <forward name="success" path="/acquisition/acq_payment_update.jsp"/>
+        </action>
+
+        <action path="/invoice_payment_update1" name="AcqInvoiceItemActionForm" input="/acquisition/acq_payment_update.jsp" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentUpdate1Action" >
+            <forward name="processed" path="/acquisition/acq_payment_update1.jsp"/>
+            <forward name="processed list" path="/acquisition/acq_payment_update2.jsp"/>
+            <forward name="success" path="/acquisition/acq_payment_update.jsp"/>
+        </action>
+        <action path="/invoice_payment_update2" name="AcqInvoiceItemActionForm"  input="/acquisition/acq_payment_update1.jsp" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentUpdate2Action" >
+            <forward name="success" path="/acquisition/acq_payment_update.jsp"/>
+        </action>
+        <action path="/invoice_payment_update3" name="AcqInvoiceItemActionForm" input="/acquisition/acq_payment_update2.jsp" scope="request" type="com.myapp.struts.Acquisition.AcqPaymentUpdate3Action" >
+            <forward name="success" path="/acquisition/acq_payment_update.jsp"/>
+        </action>
+
+
+
+
+
+         <action path="/acquisition/acq_acquisition_of_opac" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_demand_opac.jsp" type="com.myapp.struts.Acquisition.AcqAcquisitionProcessOfOpacAction">
+                <forward name="success" path="/acquisition/acqAllBiblio3.do"/>
+                <forward name="fail" path="/acquisition/acq_update_titles.jsp"/>
+                </action>
+        <action  path="/acquisition/titleShow5" scope="request" name="AcqBiblioActionForm" input="/acquisition/acq_search_opac.jsp" type="com.myapp.struts.Acquisition.AcqAcquisitionOfopacAction">
+                      <forward name="success" path="/acquisition/acq_demand_opac.jsp" />
+                      <forward name="fail" path="/acquisition/acq_search_opac.jsp"/>
+                    </action>
+
+
+          <action  path="/acquisition/acqAllBiblio3" scope="request"  name="AcqBiblioActionForm"  type="com.myapp.struts.Acquisition.AcqViewSearchAction1">
+                      <forward name="search" path="/acquisition/acq_search_opac.jsp" />
+                    </action>
+
+
             <action  path="/print1" scope="request"   type="com.myapp.struts.Acquisition.ReportAction"/>
             <action path="/budget1" input="/acquisition/acq_add_budget_allocation.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetAllocationEntryAction">
                        <forward name="add" path="/acquisition/acq_add_budgetlocation.jsp"/>
@@ -585,7 +697,7 @@
      </action>
     <!-- SHOW MARC RECORD DETAILS FROM GRID-->
     <action   path="/cataloguing/showMarcDetails1" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
-         <forward name="success" path="/cataloguing/view_marc_details.jsp"/>
+         <forward name="success" path="/cataloguing/view_marc_detail1.jsp"/>
         
      </action>
     <action   path="/cataloguing/showMarcDetails2" scope="request"  type="com.myapp.struts.cataloguing.ShowMarcDetailsAction1">
@@ -607,6 +719,18 @@
             <forward name="update1" path="/cataloguing/cat_update_marc2.jsp"/>
             <forward name="duplicate" path="/cataloguing/cat_dup_marc.jsp"/>
     </action>
+<!-- FOR BOOK IMAGE CONTENT UPLOAD-->
+ <action path="/catimageupload" input="/cataloguing/cat_viewAll_biblio.jsp" name="catImageUploadActionForm" scope="session" type="com.myapp.struts.cataloguing.catImageUploadAction">
+    <forward name="success" path="/cataloguing/cat_viewAll_biblio.jsp"/>
+    
+</action>
+<!-- FOR dIGITAL CONTENT UPLOAD-->
+<action path="/catimageupload1" input="/cataloguing/cat_viewAll_biblio.jsp" name="catImageUploadActionForm" scope="session" type="com.myapp.struts.cataloguing.catImageUploadAction1">
+    <forward name="success" path="/cataloguing/cat_viewAll_biblio.jsp"/>
+
+</action>
+
+
     <action input="/cataloguing/cat_dup_marc.jsp" path="/cataloguing/duplicatemarc" name="BiblioActionForm" scope="session" type="com.myapp.struts.marc.DuplicateMarcAction" >
             <forward name="success" path="/cataloguing/catlcontrol.jsp"/>
     </action>
@@ -923,6 +1047,7 @@
                         <forward name="forward6" path="/cataloguing/ucatl6.jsp"/>
                         <forward name="forward7" path="/cataloguing/ucatl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/ucatl8.jsp"/>
+                        <forward name="controltag" path="/cataloguing/catlcontrol.jsp"/>
                     </action>
                     <action  path="/marccommit1" scope="session" type="com.myapp.struts.marc.MarcCommitAction1">
                         <forward name="success" path="/cataloguing/cat_new_MARC.jsp"/>
@@ -935,6 +1060,7 @@
                         <forward name="forward6" path="/cataloguing/catl6.jsp"/>
                         <forward name="forward7" path="/cataloguing/catl7.jsp"/>
                         <forward name="forward8" path="/cataloguing/catl8.jsp"/>
+                        <forward name="controltag" path="/cataloguing/catlcontrol.jsp"/>
                     </action>
 
 
@@ -1091,6 +1217,20 @@
 
 <!--Circulation Action Mapping-->
 <!--Circulation Action Mapping-->
+
+<action path="/PrintFineDetails" input="/circulation/cir_fine_detail.jsp" name="CirCheckInReportActionForm"   scope="request" type="com.myapp.struts.circulation.PrintFineDetailsAction" >
+  <forward name="success" path="/circulation/cir_fine_grid.jsp"/>
+  </action>
+
+
+<action path="/finedetails" input="/circulation/cir_fine_detail.jsp" name="CirCheckInReportActionForm"   scope="request" type="com.myapp.struts.circulation.FineDetailsAction" >
+  <forward name="success" path="/circulation/cir_fine_grid.jsp"/>
+  </action>
+
+   <action path="/insertfine_details" input="/circulation/cir_fine_grid.jsp" name="CirCheckInReportActionForm"   scope="request" type="com.myapp.struts.circulation.InsertFineDetailsAction" >
+  <forward name="success" path="/circulation/cir_fine_detail.jsp"/>
+  </action>
+
 
 <action input="/circulation/add_activity.jsp" name="ActivityActionForm" path="/addAct" scope="session" type="com.myapp.struts.circulation.ActivityAdd1Action" validate="false">
             <forward name="success" path="/circulation/add_activity.jsp"/>
@@ -1794,7 +1934,9 @@
                      <action input="/OPAC/browse.jsp" name="browseSearchActionForm" path="/OPAC/browse_search" scope="request" type="com.myapp.struts.opac.browseSearchAction">
                         <forward name="success"  path="/OPAC/browse1.jsp"/>
                      </action>
-                    
+                      <action input="/OPAC/search_popular.jsp" name="browseSearchActionForm" path="/OPAC/popular_search" scope="request" type="com.myapp.struts.opac.browseSearchAction">
+                        <forward name="success"  path="/OPAC/popular_grid.jsp"/>
+                     </action>
 
                      <action input="/OPAC/additional.jsp" name="AdditionalSearchActionForm" path="/OPAC/additional" scope="request" type="com.myapp.struts.opac.AdditionalSearchAction">
                         <forward name="success"  path="/OPAC/additional_search.jsp"/>
@@ -1891,12 +2033,20 @@
                         <forward name="myaccount"  path="/OPAC/member.jsp"/>
                         <forward name="feedback"  path="/OPAC/feedback.jsp"/>
                        <forward name="newmember"  path="/OPAC/opacnewmember.jsp"/>
+                       <forward name="changepassword"  path="/OPAC/changepassword.jsp"/>
                       
                        
                         <forward name="reservation"  path="/OPAC/reservationrequest1.jsp"/>
                         <forward name="demandlist"  path="/OPAC/newdemand2.jsp"/>
                         <forward name="failure"  path="/OPAC/opachome.jsp"/>
                      </action>
+
+
+     <action input="/OPAC/changepassword.jsp"  name="CreateAccountActionForm" path="/opac/changepassword2" scope="request" type="com.myapp.struts.opac.ChangePasswordAction" >
+       <forward name="success" path="/OPAC/accountdetails.jsp" />
+       </action>
+
+
     <!--MAIL REMINDER FOR CIRCULATION DIVISION-->
                 <action path="/circulation/reminder_member"  scope="request"  type="com.myapp.struts.circulation.ReminderListAction">
                        <forward name="success" path="/circulation/reminder_member.jsp"/>

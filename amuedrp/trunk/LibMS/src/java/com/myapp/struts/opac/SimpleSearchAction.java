@@ -116,14 +116,16 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
 
         if(simpleform.getCheckbox().equals("Checked"))
         {
-            if(sort.equalsIgnoreCase("mainEntry"))
-                sort="main_entry";
-            if(sort.equalsIgnoreCase("publisherName"))
-                sort="publisher_name";
+//            if(sort.equalsIgnoreCase("mainEntry"))
+//                sort="main_entry";
+//            if(sort.equalsIgnoreCase("publisherName"))
+//                sort="publisher_name";
 
 
              session.setAttribute("simpcheckbox", simpleform.getCheckbox());
              simple_search_list=simpleSearchDAO.simpleLangSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2,simpleform.getLanguage().toUpperCase(),pageno,cmbyr);
+
+             System.out.println(simple_search_list.size()+"IIIIIIIIIIIII");
              int size=simpleSearchDAO.getSize();
                      request.setAttribute("from", pageno*100);
                 if(simple_search_list1.size()<100)
@@ -148,6 +150,7 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
                 session.setAttribute("simple_search_list", simple_search_list1);
 
                     request.setAttribute("from", pageno*100);
+                    
                 if(simple_search_list1.size()<100)
                     request.setAttribute("to", (pageno*100)+simple_search_list1.size());
                 else

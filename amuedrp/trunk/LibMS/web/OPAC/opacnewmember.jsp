@@ -934,14 +934,14 @@ a:active
 <%}%>
                   </td><td rowspan="3" align="right" colspan="2" class="table_textbox" valign="bottom">
 
-                       <%--<%if(session.getAttribute("image")!=null){%>
+                       <%if(session.getAttribute("image")!=null){%>
                        <html:img src="<%=path%>"   alt="" width="100" height="100"/>
                         <%}else{%>
 
                         <html:img src="<%=image_path%>"  alt="" width="100" height="100"/>
                            <%}%>
 
-                           <br/> <a href="#" onclick="javascript:showdiv();"><%=resource.getString("circulation.cir_newmember.imageupload")%></a>--%></td>
+                           <br/> <a href="#" onclick="javascript:showdiv();"><%=resource.getString("circulation.cir_newmember.imageupload")%></a></td>
  
 </tr>
 <tr><td dir="<%=rtl%>" align="right"><%=resource.getString("opac.simplesearch.sublibrary")%>*</td><td  align="<%=align%>">

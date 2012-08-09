@@ -190,9 +190,7 @@ private String language;
         return CMBLib;
     }
 
-    /**
-     * @param CMBLib the CMBLib to set
-     */
+  
     public void setCMBLib(String CMBLib) {
         this.CMBLib = CMBLib;
     }
@@ -201,9 +199,7 @@ private String language;
         return CMBSUBLib;
     }
 
-    /**
-     * @param CMBLib the CMBLib to set
-     */
+   
     public void setCMBSUBLib(String CMBSUBLib) {
         this.CMBSUBLib = CMBSUBLib;
     }

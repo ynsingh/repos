@@ -800,7 +800,7 @@ session.getTransaction().commit();
       /**
  * This method is used while updating bibliographic detail.
  * It searches all the titles and checks duplicate entry of isbn-10.
-  * @param isbn
+
   * @param biblio_id
   * @param library_id
   * @param sub_library_id
@@ -1223,7 +1223,7 @@ AcqFinalDemandList obj=null;
      *
      * @param library_id
      * @param sub_library_id
-     * @param biblio_id
+ 
      * @return BibliographicDetails
      */
     public DocumentDetails getAccession(String library_id, String sub_library_id, String accession_id) {
@@ -1270,6 +1270,25 @@ AcqFinalDemandList obj=null;
         }
         return obj;
     }
+
+public BibliographicDetailsLang getBiblioLang(String library_id, String sub_library_id, int biblio_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+         BibliographicDetailsLang obj=null;
+
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(BibliographicDetailsLang.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("id.biblioId", biblio_id)));
+           obj= (BibliographicDetailsLang) criteria.uniqueResult();
+           session.getTransaction().commit();
+        }  catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+    }
+
 
 
     /**

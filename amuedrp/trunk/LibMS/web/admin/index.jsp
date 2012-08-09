@@ -25,6 +25,7 @@ if(institute_id!=null){
 %>
 <jsp:forward page="view.do">
     <jsp:param name="id" value="<%=id%>"/>
+    
 </jsp:forward>
 
 <%}else{

@@ -234,7 +234,8 @@ $(document).ready(function()
                 <tr><td dir="<%=rtl%>" valign="top" align="center">
                         <table width="90%">
                  <tr>
-                     <td dir="<%=rtl%>" align="left" valign="top" ><br/><%=resource.getString("circulation.cir_newmember.memberid")%>:</td><td><html:text property="memid" styleId="memid"  value=""  onchange="fun()" /> </td>
+                     <td dir="<%=rtl%>" align="left" valign="top" ><br/><%=resource.getString("circulation.cir_newmember.memberid")%>:</td><td><html:text property="memid" styleId="memid"  value=""  onchange="fun()" /> 
+                      Title Issued :&nbsp;<html:text property="title" styleId="title_id"  value=""  onchange="fun()" /> </td>
         </tr>
 
         <tr>

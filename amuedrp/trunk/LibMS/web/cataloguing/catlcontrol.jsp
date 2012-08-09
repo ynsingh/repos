@@ -4,12 +4,6 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="com.myapp.struts.hbm.Biblio"%>
-<%-- <%@page contentType="text/html" import="java.util.Calendar"%>
- <%
-Calendar now = Calendar.getInstance();
-        int month = now.get(Calendar.MONTH) + 1;
-       String bb= String.valueOf(now.get(Calendar.YEAR)) + String.valueOf(month) + String.valueOf(now.get(Calendar.DATE)) + String.valueOf(now.get(Calendar.HOUR_OF_DAY)) + String.valueOf(now.get(Calendar.MINUTE)) + String.valueOf(now.get(Calendar.SECOND)) + String.valueOf(now.get(Calendar.MILLISECOND));
-%>--%>
 <html>
     <head>
 <script language="javascript" type="text/javascript">
@@ -87,6 +81,7 @@ x += ndValue+"\n";
 document.getElementById("d_t_l_t").value=x;
 }
 </script>
+
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/ddtabmenufiles/ddtabmenu.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/jquery-1.4.2.min.js"></script>
@@ -107,6 +102,7 @@ eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=0,lo
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/interface.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.form.js"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ddtabmenufiles/solidblocksmenu.css" />
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/page.css" />
 <script type="text/javascript">
 ddtabmenu.definemenu("ddtabs3", 0) //initialize Tab Menu #3 with 1st tab selected
 </script>
@@ -166,7 +162,7 @@ function leader(){
       if(request.getParameter("zclick")!=null)
         session.setAttribute("data",(String)request.getParameter("catch"));
       
-      System.out.println(request.getParameter("zclick"));
+     // System.out.println(request.getParameter("zclick"));
    %>
        
    
@@ -409,24 +405,31 @@ System.out.println(hm1+"...........in jsp page");
 		});
 	</script>
     </head>
-    <body onload="search()">
- <h2 align="center">MARC Based Bibliographic Cataloging</h2>
+    <jsp:include page="/admin/header.jsp"></jsp:include>
+    <body onload="search()"><div
+   style="  top:15%;
+   left:10%;
+   right:10%;border: solid 1px black;
+      position: absolute;
 
-<div id="ddtabs3" class="solidblockmenu">
-<ul>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catlcontrol.jsp" onclick="func1(10)"  rel="sb10">Control Fields</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl0.jsp" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl1.jsp" onclick="func1(1)" rel="sb1">1 (1XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl2.jsp" onclick="func1(2)" rel="sb2">2 (20X-28X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl3.jsp" onclick="func1(3)" rel="sb3">3 (3XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl4.jsp" onclick="func1(4)" rel="sb4">4 (4XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl5.jsp" onclick="func1(5)" rel="sb5">5 (5XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl6.jsp" onclick="func1(6)" rel="sb6">6 (6XX)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl7.jsp" onclick="func1(7)" rel="sb7">7 (70X-78X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl8.jsp" onclick="func1(8)" rel="sb8">8 (80X-88X)</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/catl9.jsp" onclick="func1(9)" rel="sb9">9</a></li>
-<li><a href="<%=request.getContextPath()%>/cataloguing/marchome.do"  rel="home">HOME</a></li>
-</ul>
+      visibility: show;">
+ <h2 align="center"  class="headerStyle" style="height: 25px;">MARC Based Bibliographic Cataloging</h2>
+
+<div id="ddtabs3" class="header1" style="background-color: cyan;line-height: 26px;font-size: 13px;vertical-align: bottom" >
+    
+    <a href="<%=request.getContextPath()%>/cataloguing/catlcontrol.jsp" style="text-decoration:none" onclick="func1(10)"  rel="sb10">Control Fields</a><font color="blue">&nbsp;|&nbsp;</font>
+<a href="<%=request.getContextPath()%>/cataloguing/catl0.jsp" style="text-decoration:none" onclick="func1(0)"  rel="sb0">0 (01X-09X)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl1.jsp" style="text-decoration:none" onclick="func1(1)" rel="sb1">1 (1XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl2.jsp"  style="text-decoration:none" onclick="func1(2)" rel="sb2">2 (20X-28X)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl3.jsp"  style="text-decoration:none" onclick="func1(3)" rel="sb3">3 (3XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl4.jsp" style="text-decoration:none" onclick="func1(4)" rel="sb4">4 (4XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl5.jsp" style="text-decoration:none" onclick="func1(5)" rel="sb5">5 (5XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl6.jsp" style="text-decoration:none" onclick="func1(6)" rel="sb6">6 (6XX)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl7.jsp" style="text-decoration:none" onclick="func1(7)" rel="sb7">7 (70X-78X)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl8.jsp" style="text-decoration:none" onclick="func1(8)" rel="sb8">8 (80X-88X)</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/catl9.jsp" style="text-decoration:none" onclick="func1(9)" rel="sb9">9</a>&nbsp;|&nbsp;
+<a href="<%=request.getContextPath()%>/cataloguing/marchome.do" style="text-decoration:none" rel="home">Cancel</a>&nbsp;|&nbsp;
+
 </div>
 <DIV class="tabcontainer ieclass">
 <FONT color="#8B008B">
@@ -468,8 +471,8 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-<br>
-<html:form method="post" action="/catcontrolaction" styleId="catcontrol">
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<html:form method="post" action="/catcontrolaction" styleId="catcontrol" >
   
 <input type="hidden" value="" name="zclick" id="zclick" />
     <div id="content" style="position: absolute; left: 5%;top: 20%">
@@ -509,7 +512,11 @@ Control Field Entry
     <br>
   
 </html:form>
-    
+    <%
+String msg1=(String)request.getAttribute("msg1")    ;
+if(msg1!=null)
+out.println(msg1);
+%>
     <div id="layer1">
 		<div id="layer1_handle">
 			<a href="#" id="close">[ x ]</a>
@@ -794,5 +801,6 @@ Parking
 			</div>
 		</div>
 	</div>
+        </div>
 </body>
     </html>

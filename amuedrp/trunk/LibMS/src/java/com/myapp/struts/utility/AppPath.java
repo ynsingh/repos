@@ -104,6 +104,25 @@ String projectPath = getEnvPath();
 
 
 }
+public static String getProjectPropertiesImagePath(){
+    String os=System.getProperty("os.name");
+String projectPath = getEnvPath();
+
+
+    if(os.equalsIgnoreCase("linux"))
+    {
+        projectPath=projectPath+"/../LibMSLOG/images/";
+    return projectPath;
+    }
+    else
+    {
+    projectPath=projectPath+"\\..\\LibMSLOG\\images\\";
+    return projectPath;
+    }
+
+
+
+}
 public static String getPropertiesFilePath(){
     String os=System.getProperty("os.name");
 String projectPath = getEnvPath();

@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated 16 Nov, 2011 3:38:39 PM by Hibernate Tools 3.2.1.GA
+// Generated Oct 20, 2012 11:20:56 AM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -10,7 +10,7 @@ public class SerBiolioDetails  implements java.io.Serializable {
 
 
      private SerBiolioDetailsId id;
-     private SerNewEntry serNewEntry;
+     private String newSerialId;
      private Integer noOfCopies;
      private String issueNo;
      private String volumeNo;
@@ -31,13 +31,13 @@ public class SerBiolioDetails  implements java.io.Serializable {
     }
 
 	
-    public SerBiolioDetails(SerBiolioDetailsId id, SerNewEntry serNewEntry) {
+    public SerBiolioDetails(SerBiolioDetailsId id, String newSerialId) {
         this.id = id;
-        this.serNewEntry = serNewEntry;
+        this.newSerialId = newSerialId;
     }
-    public SerBiolioDetails(SerBiolioDetailsId id, SerNewEntry serNewEntry, Integer noOfCopies, String issueNo, String volumeNo, String periodicity, String issueYr, String issueMonth, String issueDetails, String subject, Integer unitPrice, String currency, String primaryBudget, String requestedBy, String requestedDate, String vendor, String status) {
+    public SerBiolioDetails(SerBiolioDetailsId id, String newSerialId, Integer noOfCopies, String issueNo, String volumeNo, String periodicity, String issueYr, String issueMonth, String issueDetails, String subject, Integer unitPrice, String currency, String primaryBudget, String requestedBy, String requestedDate, String vendor, String status) {
        this.id = id;
-       this.serNewEntry = serNewEntry;
+       this.newSerialId = newSerialId;
        this.noOfCopies = noOfCopies;
        this.issueNo = issueNo;
        this.volumeNo = volumeNo;
@@ -62,12 +62,12 @@ public class SerBiolioDetails  implements java.io.Serializable {
     public void setId(SerBiolioDetailsId id) {
         this.id = id;
     }
-    public SerNewEntry getSerNewEntry() {
-        return this.serNewEntry;
+    public String getNewSerialId() {
+        return this.newSerialId;
     }
     
-    public void setSerNewEntry(SerNewEntry serNewEntry) {
-        this.serNewEntry = serNewEntry;
+    public void setNewSerialId(String newSerialId) {
+        this.newSerialId = newSerialId;
     }
     public Integer getNoOfCopies() {
         return this.noOfCopies;

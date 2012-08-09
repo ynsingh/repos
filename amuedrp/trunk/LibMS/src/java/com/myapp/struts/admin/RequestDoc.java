@@ -20,6 +20,15 @@ public class RequestDoc {
      private String sublibrary_id;
      private String user_name;
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+     private String logo;
+
     public int getSno() {
         return sno;
     }

@@ -19,6 +19,16 @@ public class CirCheckOutViewAllActionForm extends org.apache.struts.action.Actio
     private String memid;
     private String starting_date;
     private String end_date;
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 
     public String getEnd_date() {
         return end_date;

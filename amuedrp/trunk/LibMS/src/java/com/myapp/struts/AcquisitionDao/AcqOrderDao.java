@@ -303,7 +303,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
     }
 
 
- public AcqOrderHeader search1Orderno(String order_no, String library_id, String sub_library_id) {
+ public static AcqOrderHeader search1Orderno(String order_no, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         AcqOrderHeader obj=null;
         try{

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 24, 2012 5:55:05 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqInvoiceDetail" table="acq_invoice_detail">
+    <composite-id class="com.myapp.struts.hbm.AcqInvoiceDetailId" name="id">
+      <key-property name="invoiceNo" type="string">
+        <column length="20" name="invoice_no"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="recievingNo" type="string">
+        <column length="20" name="recieving_no"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="orderNo" type="string">
+      <column length="20" name="order_no"/>
+    </property>
+    <property name="vendorId" type="string">
+      <column length="50" name="vendor_id"/>
+    </property>
+    <property name="orderDate" type="string">
+      <column length="20" name="order_date"/>
+    </property>
+    <property name="totalAmount" type="string">
+      <column length="20" name="total_amount"/>
+    </property>
+    <property name="discount" type="string">
+      <column length="20" name="discount"/>
+    </property>
+    <property name="netTotal" type="string">
+      <column length="20" name="net_total"/>
+    </property>
+    <property name="status" type="string">
+      <column length="10" name="status"/>
+    </property>
+    <property name="recievingItemId" type="int">
+      <column name="recieving_item_id"/>
+    </property>
+    <!-- <property name="overallDiscount" type="string">
+            <column name="overall_discount" length="20" />
+        </property>
+        <property name="totalNetAmount" type="string">
+            <column name="total_net_amount" length="20" />
+        </property>
+        <property name="miscCharges" type="string">
+            <column name="misc_charges" length="20" />
+        </property>
+        <property name="grandTotal" type="string">
+            <column name="grand_total" length="15" />
+        </property>-->
+  </class>
+</hibernate-mapping>

@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Oct 9, 2011 3:23:34 PM by Hibernate Tools 3.2.1.GA
+// Generated Oct 20, 2012 11:20:56 AM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -10,20 +10,17 @@ public class SerLanguage  implements java.io.Serializable {
 
 
      private SerLanguageId id;
-     private Library library;
      private String lanName;
 
     public SerLanguage() {
     }
 
 	
-    public SerLanguage(SerLanguageId id, Library library) {
+    public SerLanguage(SerLanguageId id) {
         this.id = id;
-        this.library = library;
     }
-    public SerLanguage(SerLanguageId id, Library library, String lanName) {
+    public SerLanguage(SerLanguageId id, String lanName) {
        this.id = id;
-       this.library = library;
        this.lanName = lanName;
     }
    
@@ -33,13 +30,6 @@ public class SerLanguage  implements java.io.Serializable {
     
     public void setId(SerLanguageId id) {
         this.id = id;
-    }
-    public Library getLibrary() {
-        return this.library;
-    }
-    
-    public void setLibrary(Library library) {
-        this.library = library;
     }
     public String getLanName() {
         return this.lanName;

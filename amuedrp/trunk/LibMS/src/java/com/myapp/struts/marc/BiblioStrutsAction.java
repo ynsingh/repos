@@ -32,15 +32,35 @@ public class BiblioStrutsAction extends org.apache.struts.action.Action
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
     {
+        HttpSession session = request.getSession();
+        session.removeAttribute("controltag");
+        session.removeAttribute("tag0");
+        session.removeAttribute("tag1");
+        session.removeAttribute("tag2");
+        session.removeAttribute("tag3");
+        session.removeAttribute("tag4");
+        session.removeAttribute("tag5");
+        session.removeAttribute("tag6");
+        session.removeAttribute("tag7");
+        session.removeAttribute("tag8");
+
         try
         {
         BiblioActionForm eaf=(BiblioActionForm)form;
         int bibid=0;
-        HttpSession session = request.getSession();
+
+
+
+
+
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String isbn,title,btn;
         HashMap t=(HashMap)session.getAttribute("hsmp");
+
+
+
+
         if(t!=null  && t.isEmpty()==false)
         {
           t.clear();
@@ -246,6 +266,6 @@ public class BiblioStrutsAction extends org.apache.struts.action.Action
         request.setAttribute("msg", "Insertion has error encourted"+e.getMessage());
         log4j.error(e.toString());
     }
-    return null;
+    return mapping.findForward("failure");
     }
 }

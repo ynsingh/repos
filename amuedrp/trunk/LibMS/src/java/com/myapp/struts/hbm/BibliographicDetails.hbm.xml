@@ -165,6 +165,15 @@
         <property name="fileType" type="string">
             <column name="file_type" length="20" />
         </property>
+        <property name="image" type="string">
+            <column name="image" length="200" />
+        </property>
+        <property name="digitalData" type="string">
+            <column name="digital_data" length="200" />
+        </property>
+        <property name="digitalComment" type="string">
+            <column name="digital_comment" length="300" />
+        </property>
         <set name="accessionRegisters" inverse="true">
             <key>
                 <column name="biblio_id" />

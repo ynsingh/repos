@@ -265,9 +265,7 @@ public class AdditionalSearchActionForm extends org.apache.struts.action.ActionF
         return CMBSUBLib;
     }
 
-    /**
-     * @param CMBYR the CMBSUBLib to set
-     */
+   
     public void setCMBSUBLib(String CMBSUBLib) {
         this.CMBSUBLib = CMBSUBLib;
     }

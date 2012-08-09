@@ -9,7 +9,7 @@
             <generator class="identity" />
         </id>
         <property name="instituteName" type="string">
-            <column name="institute_name" length="100" />
+            <column name="institute_name" length="200" />
         </property>
         <property name="abbreviatedName" type="string">
             <column name="abbreviated_name" length="20" />
@@ -83,8 +83,8 @@
         <property name="workingStatus" type="string">
             <column name="working_status" length="50" not-null="true" />
         </property>
-        <property name="instiLogo" type="binary">
-            <column name="insti_logo" />
+        <property name="instiLogo" type="string">
+            <column name="insti_logo"  length="200"/>
         </property>
     </class>
 </hibernate-mapping>

@@ -33,7 +33,7 @@ CREATE TABLE `admin_registration` (
   `gender` varchar(10) default NULL,
   `staff_id` varchar(100) default NULL,
   `working_status` varchar(50) NOT NULL default 'OK',
-  `insti_logo` longblob,
+  `insti_logo` varchar(200) NOT NULL,
   PRIMARY KEY  (`registration_id`),
   UNIQUE KEY `login_id` (`login_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
@@ -59,7 +59,7 @@ SET character_set_client = utf8;
 CREATE TABLE `library` (
   `registration_id` int(11) default NULL,
   `library_id` varchar(20) NOT NULL,
-  `library_name` varchar(50) default NULL,
+  `library_name` varchar(100) default NULL,
   `staff_id` varchar(100) default NULL,
   `working_status` varchar(50) NOT NULL default 'OK',
   PRIMARY KEY  (`library_id`)
@@ -785,6 +785,9 @@ CREATE TABLE `bibliographic_details` (
   `series` varchar(1000) default NULL,
   `type_of_disc` varchar(20) default NULL,
   `file_type` varchar(20) default NULL,
+  `image` varchar(200) default NULL,
+  `digital_data` varchar(200) default NULL,
+  `digital_comment` varchar(300) default NULL,
   PRIMARY KEY  (`biblio_id`,`library_id`,`sublibrary_id`),
   KEY `library_id` (`library_id`),
   KEY `FKC8EFDF54FFE0695A` (`library_id`),
@@ -828,7 +831,7 @@ CREATE TABLE `bibliographic_details_lang` (
   `added_entry3` varchar(200) collate utf8_bin default NULL,
   `publisher_name` varchar(200) collate utf8_bin default NULL,
   `publication_place` varchar(200) collate utf8_bin default NULL,
-  `publishing_year` varchar(200) collate utf8_bin default NULL,
+  `publishing_year` int collate utf8_bin default NULL,
   `call_no` varchar(30) collate utf8_bin default NULL,
   `parts_no` int(11) default NULL,
   `subject` varchar(200) collate utf8_bin default NULL,
@@ -861,6 +864,9 @@ CREATE TABLE `bibliographic_details_lang` (
   `series` varchar(1000) collate utf8_bin default NULL,
   `type_of_disc` varchar(20) collate utf8_bin default NULL,
   `file_type` varchar(20) collate utf8_bin default NULL,
+  `image` varchar(200) default NULL,
+  `digital_data` varchar(200) default NULL,
+  `digital_comment` varchar(300) default NULL,
   PRIMARY KEY  (`biblio_id`,`library_id`,`sublibrary_id`),
   KEY `library_id` (`library_id`),
   KEY `FK91E7DFF9FFE0695A` (`library_id`),
@@ -1134,6 +1140,7 @@ CREATE TABLE `acq_budget_allocation` (
   `financial_yr2` varchar(20) default NULL,
   `remarks` varchar(20) default NULL,
   `reqdate` varchar(10) default NULL,
+   `expense_amount` varchar(11) default NULL,
   PRIMARY KEY  (`library_id`,`transaction_id`),
   KEY `budgethead_id` (`budgethead_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -1162,6 +1169,7 @@ CREATE TABLE `acq_budget_transaction` (
   `control_no` varchar(20) default NULL,
   `amount` double default NULL,
   `transaction_date` varchar(20) default NULL,
+`expense_amount` varchar(11) default NULL,
   PRIMARY KEY  (`transaction_id`,`library_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
@@ -1489,6 +1497,9 @@ CREATE TABLE `acq_recieving_details` (
   `pending_copies` int(11) default NULL,
   `approval_type` varchar(20) default NULL,
   `control_no` int(11) default NULL,
+ `vendor_id` varchar(20) DEFAULT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY  (`library_id`,`sub_library_id`,`recieving_no`,`recieving_item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
@@ -1502,6 +1513,64 @@ LOCK TABLES `acq_recieving_details` WRITE;
 /*!40000 ALTER TABLE `acq_recieving_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
+CREATE TABLE `acq_invoice_header` (`library_id` VARCHAR(20) NOT NULL, `sublibrary_id` VARCHAR(20) NOT NULL, `invoice_no` VARCHAR(20) NOT NULL, `vendor_id` VARCHAR(20) NOT NULL, `order_no` VARCHAR(20) NOT NULL, `date` VARCHAR(20), `recieved_by` VARCHAR(20), `discount` VARCHAR(20), `net_total` VARCHAR(20), `status` VARCHAR(20), `overall_discount` VARCHAR(20), `total_net_amount` VARCHAR(20), `misc_charges` VARCHAR(20), `grand_total` VARCHAR(15), `invoice_date` VARCHAR(20), PRIMARY KEY (`invoice_no`, `library_id`, `order_no`, `sublibrary_id`, `vendor_id`));
+
+
+
+CREATE TABLE `acq_invoice_detail` (
+  `invoice_no` varchar(20) NOT NULL DEFAULT '',
+  `library_id` varchar(20) NOT NULL DEFAULT '',
+  `sub_library_id` varchar(20) NOT NULL DEFAULT '',
+  `recieving_no` varchar(20) NOT NULL DEFAULT '',
+  `order_no` varchar(20) DEFAULT NULL,
+  `vendor_id` varchar(50) DEFAULT NULL,
+  `order_date` varchar(20) DEFAULT NULL,
+  `total_amount` varchar(20) DEFAULT NULL,
+  `discount` varchar(20) DEFAULT NULL,
+  `net_total` varchar(20) DEFAULT NULL,
+  `status` varchar(10) DEFAULT NULL,
+  `recieving_item_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`invoice_no`,`library_id`,`sub_library_id`,`recieving_no`),
+  KEY `library_id` (`library_id`),
+  CONSTRAINT `acq_invoice_detail_ibfk_1` FOREIGN KEY (`library_id`) REFERENCES `library` (`library_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `acq_requestpayment_details` (
+  `library_id` varchar(20) NOT NULL DEFAULT '',
+  `sub_library_id` varchar(20) NOT NULL DEFAULT '',
+  `prn` varchar(20) NOT NULL DEFAULT '',
+  `invoice_no` varchar(20) NOT NULL DEFAULT '',
+  `recieving_no` varchar(20) NOT NULL DEFAULT '',
+  `vendor_id` varchar(20) DEFAULT NULL,
+  `total_amt` varchar(10) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  `order_no` varchar(20) DEFAULT NULL,
+  `payment_update_date` varchar(20) DEFAULT NULL,
+  `accession_status` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`library_id`,`sub_library_id`,`prn`,`recieving_no`,`invoice_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `acq_requestpayment_header`
+--
+
+DROP TABLE IF EXISTS `acq_requestpayment_header`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `acq_requestpayment_header` (
+  `library_id` varchar(20) NOT NULL DEFAULT '',
+  `sub_library_id` varchar(20) NOT NULL DEFAULT '',
+  `prn` varchar(20) NOT NULL DEFAULT '',
+  `prn_date` varchar(20) DEFAULT NULL,
+  `vendor_id` varchar(20) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  `total_amount` varchar(10) DEFAULT NULL,
+  `no_of_invoices` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`library_id`,`sub_library_id`,`prn`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 --
@@ -1913,7 +1982,7 @@ CREATE TABLE `cir_requestfrom_opac` (
   `password` varchar(15) default NULL,
   `reg_date` varchar(20) default NULL,
   `exp_date` varchar(20) default NULL,
-  `image` longblob,
+  `image` varchar(200) default NULL,
   `Course_Year` varchar(10) default NULL,
   `semester` varchar(10) default NULL,
   `office` varchar(100) default NULL,
@@ -2071,6 +2140,7 @@ CREATE TABLE `demandlist` (
   `sublibrary_id` varchar(20) NOT NULL,
   `memId` varchar(70) NOT NULL,
   `title` varchar(50) NOT NULL,
+  `demand_id` int NOT NULL,
   `category` varchar(50) default NULL,
   `author` varchar(50) default NULL,
   `publisher` varchar(50) default NULL,
@@ -2084,7 +2154,16 @@ CREATE TABLE `demandlist` (
   `language` varchar(20) default NULL,
   `issn` varchar(20) default NULL,
   `status` varchar(100) default NULL,
-  PRIMARY KEY  (`library_id`,`memId`,`sublibrary_id`,`title`),
+`member_type` varchar(100) default NULL,
+        `sub_member_type` varchar(100) default NULL,
+        `mem_name` varchar(100) default NULL,
+            `sub_author` varchar(50) default NULL,
+        `sub_author0`  varchar(50) default NULL,
+        `sub_author1`  varchar(50) default NULL,
+        `sub_author2`  varchar(50) default NULL,
+        `publication_place`  varchar(50) default NULL,
+        `lcc_no`  varchar(50) default NULL,
+  PRIMARY KEY  (`library_id`,`memId`,`sublibrary_id`,`title`,`demand_id`),
   KEY `library_id` (`library_id`,`sublibrary_id`,`memId`),
   KEY `FKF3357D69B2998975` (`library_id`,`sublibrary_id`,`memId`),
   CONSTRAINT `demandlist_ibfk_1` FOREIGN KEY (`library_id`, `sublibrary_id`, `memId`) REFERENCES `cir_member_account` (`library_id`, `sublibrary_id`, `memid`),
@@ -2339,96 +2418,6 @@ LOCK TABLES `location` WRITE;
 /*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
---
--- Table structure for table `logs`
---
-
-DROP TABLE IF EXISTS `logs`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `logs` (
-  `sno` int(5) NOT NULL auto_increment,
-  `user_id` varchar(100) default NULL,
-  `date` varchar(100) default NULL,
-  `time` varchar(100) default NULL,
-  `classname` varchar(100) default NULL,
-  `url` varchar(100) default NULL,
-  `action_message` varchar(100) default NULL,
-  `action_result` varchar(100) default NULL,
-  `library_id` varchar(20) default NULL,
-  `sublibrary_id` varchar(20) default NULL,
-  `username` varchar(200) default NULL,
-  `role` varchar(50) default NULL,
-  PRIMARY KEY  (`sno`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
-
---
--- Dumping data for table `logs`
---
-
-LOCK TABLES `logs` WRITE;
-/*!40000 ALTER TABLE `logs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `logs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `logsetting`
---
-
-DROP TABLE IF EXISTS `logsetting`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `logsetting` (
-  `sno` int(11) NOT NULL auto_increment,
-  `p1` varchar(100) default NULL,
-  `p2` varchar(100) default NULL,
-  `p3` varchar(100) default NULL,
-  `p4` varchar(100) default NULL,
-  `p5` varchar(100) default NULL,
-  `p6` varchar(100) default NULL,
-  `p7` varchar(100) default NULL,
-  `p8` varchar(100) default NULL,
-  PRIMARY KEY  (`sno`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
-
---
--- Dumping data for table `logsetting`
---
-
-LOCK TABLES `logsetting` WRITE;
-/*!40000 ALTER TABLE `logsetting` DISABLE KEYS */;
-/*!40000 ALTER TABLE `logsetting` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `notice`
---
-
-DROP TABLE IF EXISTS `notice`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
-CREATE TABLE `notice` (
-  `notice_id` int(11) NOT NULL default '0',
-  `library_id` varchar(20) NOT NULL default '',
-  `subject` varchar(59) default NULL,
-  `message` varchar(198) default NULL,
-  PRIMARY KEY  (`notice_id`,`library_id`),
-  KEY `library_id` (`library_id`),
-  CONSTRAINT `notice_ibfk_1` FOREIGN KEY (`library_id`) REFERENCES `library` (`library_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-SET character_set_client = @saved_cs_client;
-
---
--- Dumping data for table `notice`
---
-
-LOCK TABLES `notice` WRITE;
-/*!40000 ALTER TABLE `notice` DISABLE KEYS */;
-/*!40000 ALTER TABLE `notice` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `notices`
@@ -2810,3 +2799,23 @@ LOCK TABLES `temp_excell_import` WRITE;
 /*!40000 ALTER TABLE `temp_excell_import` DISABLE KEYS */;
 /*!40000 ALTER TABLE `temp_excell_import` ENABLE KEYS */;
 UNLOCK TABLES;
+CREATE TABLE `fine_details` (
+  `library_id` varchar(20) NOT NULL DEFAULT '',
+  `sublibrary_id` varchar(20) NOT NULL DEFAULT '',
+  `memid` varchar(70) NOT NULL DEFAULT '',
+  `slipno` varchar(255) NOT NULL DEFAULT '',
+  `tfine` double DEFAULT NULL,
+  `paid` double DEFAULT NULL,
+  `remaining` double DEFAULT NULL,
+  `paymod` varchar(50) DEFAULT NULL,
+  `cheque_dd_no` varchar(50) DEFAULT NULL,
+  `bankname` varchar(255) DEFAULT NULL,
+  `issuedate` varchar(50) DEFAULT NULL,
+  `paydate` varchar(50) DEFAULT NULL,
+  `paid1` double DEFAULT NULL,
+  `paid2` double DEFAULT NULL,
+  `paid3` double DEFAULT NULL,
+  `paid4` double DEFAULT NULL,
+  PRIMARY KEY (`library_id`,`sublibrary_id`,`memid`,`slipno`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+

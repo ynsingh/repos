@@ -48,7 +48,7 @@ public class CirRequestfromOpac  implements java.io.Serializable {
      private String password;
      private String regDate;
      private String expDate;
-     private byte[] image;
+     private String image;
      private String courseYear;
      private String semester;
      private String office;
@@ -63,7 +63,7 @@ public class CirRequestfromOpac  implements java.io.Serializable {
         this.libraryId = libraryId;
         this.memId = memId;
     }
-    public CirRequestfromOpac(String libraryId, String memId, String subMemberType, String fname, String mname, String lname, String address1, String address2, String city1, String state1, String pin1, String country1, String city2, String state2, String pin2, String country2, String email, String fax, String phone1, String phone2, String memGroup, String altGroup, String accessLevel, String supervisior, String manager, String remainder, String location, String memType, String requestdate, String facultyId, String deptId, String rollno, String category, String course, String status, String password, String regDate, String expDate, byte[] image, String courseYear, String semester, String office, String desg, String sublibraryId) {
+    public CirRequestfromOpac(String libraryId, String memId, String subMemberType, String fname, String mname, String lname, String address1, String address2, String city1, String state1, String pin1, String country1, String city2, String state2, String pin2, String country2, String email, String fax, String phone1, String phone2, String memGroup, String altGroup, String accessLevel, String supervisior, String manager, String remainder, String location, String memType, String requestdate, String facultyId, String deptId, String rollno, String category, String course, String status, String password, String regDate, String expDate, String image, String courseYear, String semester, String office, String desg, String sublibraryId) {
        this.libraryId = libraryId;
        this.memId = memId;
        this.subMemberType = subMemberType;
@@ -383,11 +383,11 @@ public class CirRequestfromOpac  implements java.io.Serializable {
     public void setExpDate(String expDate) {
         this.expDate = expDate;
     }
-    public byte[] getImage() {
+    public String getImage() {
         return this.image;
     }
     
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
     public String getCourseYear() {

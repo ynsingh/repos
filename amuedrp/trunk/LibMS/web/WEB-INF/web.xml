@@ -22,6 +22,26 @@
      </listener-class>
 
      </listener>
+     <servlet>
+    <servlet-name>remote</servlet-name>
+    <servlet-class>com.myapp.struts.RemoteAMU</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+   <servlet-name>remote</servlet-name>
+    <url-pattern>/admin/remote</url-pattern>
+  </servlet-mapping>
+
+<servlet>
+    <servlet-name>remote1</servlet-name>
+    <servlet-class>com.myapp.struts.RemoteAction</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+   <servlet-name>remote1</servlet-name>
+    <url-pattern>/admin/remote1</url-pattern>
+  </servlet-mapping>
+
  <servlet>
     <servlet-name>hello</servlet-name>
     <servlet-class>com.myapp.struts.cataloguing.TextUploadAction1</servlet-class>

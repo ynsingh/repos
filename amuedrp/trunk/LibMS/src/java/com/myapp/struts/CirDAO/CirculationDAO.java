@@ -34,6 +34,169 @@ public class CirculationDAO
 {
    static  Integer maxNewRegId;
    static Query query;
+
+   public static List<FineDetails> getfinedetailslist(String library_id,String sublibrary_id,String memid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+       List<FineDetails> obj=null;
+        try {
+            session.beginTransaction();
+            Query query=session.createQuery("FROM FineDetails WHERE id.libraryId= :library_id and id.sublibraryId= :sublibrary_id and id.memid= :memid ORDER BY paydate "  );
+                    query.setString("library_id",library_id);
+                    query.setString("sublibrary_id", sublibrary_id);
+                    query.setString("memid", memid);
+
+
+
+
+            obj= (List<FineDetails>) query.list();
+            session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally
+        {
+           session.close();
+        }
+        return obj;
+}
+
+
+
+ public static FineDetails getfinedetails(String library_id,String sublibrary_id,String memid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+       FineDetails obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(FineDetails.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
+                    .add(Restrictions.eq("id.memid", memid))
+                    );
+            obj= (FineDetails) criteria.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally
+        {
+           session.close();
+        }
+        return obj;
+}
+
+
+
+public void insert(FineDetails finedetails) {
+
+       Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(finedetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+
+            tx.rollback();
+           e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+
+
+  public void update(FineDetails finedetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.update(finedetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+
+            tx.rollback();
+           e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+
+
+
+public static CirMemberAccount cirMemdetail(String mem_id,String library_id,String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM  CirMemberAccount  where id.libraryId =:library_id and id.memid =:mem_id and id.sublibraryId=:sub_library_id");
+            query.setString("mem_id", mem_id);
+            query.setString("library_id", library_id);
+            query.setString("sub_library_id", sub_library_id);
+
+            return ( CirMemberAccount) query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+
+}
+public static  boolean update1(CirMemberAccount obj)
+{
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+
+            session.update(obj);
+            tx.commit();
+
+
+
+        }
+        catch (Exception ex)
+        {
+         System.out.println(ex.toString());
+             return false;
+
+
+
+        }
+        finally
+        {
+          //session.close();
+        }
+   return true;
+
+}
+   public static CirMemberDetail getCirMemdtail(String library_id,String memid) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM  CirMemberDetail  WHERE id.libraryId =:library_id and id.memId = :memid ");
+            query.setString("library_id", library_id);
+                       
+
+            query.setString("memid",memid);
+            return (CirMemberDetail) query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+
+}
+
+
    public List ReminderList(String library_id,String sublibrary_id,String date)
     {
     Session session =null;
@@ -198,6 +361,33 @@ List<CirMemberAccount> obj=null;
                     .add(Restrictions.eq("status", "Blocked"))
                     .add(Restrictions.eq("id.sublibraryId", sublibrary_id)));
             obj=(List<CirMemberAccount>) criteria.list();
+            session.getTransaction().commit();
+
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally
+        {
+           session.close();
+        }
+        return obj;
+}
+
+ public static  CirRequestfromOpac searchMemberfromOPAC(String library_id,String sublibrary_id,String mem_id)
+{
+        Session session = HibernateUtil.getSessionFactory().openSession();
+CirRequestfromOpac obj=null;
+        try
+        {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(CirRequestfromOpac.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("libraryId", library_id))
+                    .add(Restrictions.eq("memId", mem_id))
+                    .add(Restrictions.eq("sublibraryId", sublibrary_id)));
+            obj=(CirRequestfromOpac) criteria.uniqueResult();
             session.getTransaction().commit();
 
         }
@@ -438,12 +628,12 @@ public static List  CheckInReport1(String library_id,String sub_lib,String year1
 
  }
 
-sql+=" order by a.member_id)";
+sql+=" and b.sublibrary_id=ca.sublibrary_id and b.status='returned' order by a.member_id)";
 
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(CirculationList_1.class));
 
-          System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+          System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+sql);
             obj= (List<CirculationList_1>)query.list();
 session.getTransaction().commit();
         }
@@ -1087,7 +1277,9 @@ CirCheckout obj=null;
                     .add(Restrictions.conjunction()
                     .add(Restrictions.eq("id.libraryId", library_id))
                     .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("status", "issued"))
                     .add(Restrictions.eq("documentId", document_id)));
+
             obj= (CirCheckout) criteria.uniqueResult();
 session.getTransaction().commit();
 

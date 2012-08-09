@@ -5,18 +5,91 @@
 
 package com.myapp.struts.opac;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.ValidatorForm;
-/**
- *
- * @author Faraz
- */
 public class NewDemandActionForm extends ValidatorForm {
     
-    
+ int demand_id;
+        private String sub_author;
+    private String sub_author0;
+    private String sub_author1;
+    private String sub_author2;
+ private String mem_type;
+    private String sub_member_type;
+
+    public int getDemand_id() {
+        return demand_id;
+    }
+
+    public void setDemand_id(int demand_id) {
+        this.demand_id = demand_id;
+    }
+
+    public String getLcc_no() {
+        return lcc_no;
+    }
+
+    public void setLcc_no(String lcc_no) {
+        this.lcc_no = lcc_no;
+    }
+
+    public String getMem_type() {
+        return mem_type;
+    }
+
+    public void setMem_type(String mem_type) {
+        this.mem_type = mem_type;
+    }
+
+    public String getPublication_place() {
+        return publication_place;
+    }
+
+    public void setPublication_place(String publication_place) {
+        this.publication_place = publication_place;
+    }
+
+    public String getSub_author() {
+        return sub_author;
+    }
+
+    public void setSub_author(String sub_author) {
+        this.sub_author = sub_author;
+    }
+
+    public String getSub_author0() {
+        return sub_author0;
+    }
+
+    public void setSub_author0(String sub_author0) {
+        this.sub_author0 = sub_author0;
+    }
+
+    public String getSub_author1() {
+        return sub_author1;
+    }
+
+    public void setSub_author1(String sub_author1) {
+        this.sub_author1 = sub_author1;
+    }
+
+    public String getSub_author2() {
+        return sub_author2;
+    }
+
+    public void setSub_author2(String sub_author2) {
+        this.sub_author2 = sub_author2;
+    }
+
+    public String getSub_member_type() {
+        return sub_member_type;
+    }
+
+    public void setSub_member_type(String sub_member_type) {
+        this.sub_member_type = sub_member_type;
+    }
+
+
     private String TXTTITLE;
     private String CMBCAT;
     private String TXTAUTHOR;
@@ -32,7 +105,10 @@ public class NewDemandActionForm extends ValidatorForm {
     private String TXTEDITION;
     private String CMBLib;
 private String cmdSubLibary;
-    
+     private String publication_place;
+    private String lcc_no;
+
+
 
     /**
      *

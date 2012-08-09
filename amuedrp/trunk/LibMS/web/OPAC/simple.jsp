@@ -458,7 +458,7 @@ function update(cartXML)
         </td></tr>
         </table>
          </td><td> <i>Please Specify Publishing Year Criteria If Applicable</i></td></tr>
-        <tr><td colspan="3" class="header" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
+        <tr><td colspan="3" class="header1" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
         <tr><td><%=resource.getString("opac.simplesearch.field1")%></td><td><select class="selecthome" name="CMBSORT" size="1" dir="<%=rtl%>" id="CMBSORT">
                 <option  value="mainEntry" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
                 <option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>

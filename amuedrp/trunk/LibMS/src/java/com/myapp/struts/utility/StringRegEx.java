@@ -43,4 +43,16 @@ st.append(string.charAt(i++));
 
         return true;
     }
+   public static String titlecase(String string){
+        String result = "";
+        for (int i = 0; i < string.length(); i++){
+            String next = string.substring(i, i + 1);
+            if (i == 0){
+                result += next.toUpperCase();
+            } else {
+                result += next.toLowerCase();
+            }
+        }
+        return result;
+    }
 }

@@ -32,15 +32,15 @@ locale1=(String)session.getAttribute("locale");
     regid = resource.getString("registrationid");
     System.out.println("Reg id="+regid);
     %>
-    <body style="background-color:#e0e8f5;margin: 0px 0px 0px 0px;">
-       <%-- <table align="center" width="75%"   dir="<%=rtl%>" >
+    <body style="margin: 0px 0px 0px 0px;">
+       <table align="center" width="100%"   dir="<%=rtl%>" >
        <tr  ><td  valign="bottom" height="10%"   colspan="2" >
 
 
 
 
 
-               <font color="black" size="20px" face="arial"><b>Lib</b></font><font color="blue" size="20px" face="arial" size="20px"><b>MS</b></font><img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:50px;width:200px;">
+    <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:50px;width:200px;">
                                 <br>
 
 
@@ -50,6 +50,7 @@ locale1=(String)session.getAttribute("locale");
                 </td>
 
             </tr>
+            
+</table><hr>
 
-</table>--%>
     </body>

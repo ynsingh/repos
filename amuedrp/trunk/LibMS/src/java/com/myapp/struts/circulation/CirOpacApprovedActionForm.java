@@ -41,6 +41,15 @@ public class CirOpacApprovedActionForm  extends org.apache.struts.action.ActionF
     private String TXTSEM;
     private String TXTREQ_DATE;
 
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+    private String logo;
+
     public String getTXTREQ_DATE() {
         return TXTREQ_DATE;
     }

@@ -17,7 +17,6 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.apache.commons.lang.StringUtils;
@@ -109,7 +108,7 @@ public class OpacSearchDAO {
      // SIMPLE SEARCH IN OPAC IN ENGLISH LANG
       public List simpleSearch(String library_id,String sub_lib,String [] searching_word,String word_connector,String doc_type,String sortby,String searching_field,String year1,String year2,int pageNumber,String cmbyr)
      {
-        List obj=null;
+        List obj=new ArrayList();
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -128,11 +127,12 @@ public class OpacSearchDAO {
 
         if(!doc_type.equalsIgnoreCase("combined") && !library_id.equalsIgnoreCase("all"))
         {
-            query+=" where  a.docType='"+doc_type+"' and a.id.libraryId='"+library_id+"' ";
+            query+=" where  a.docType='"+doc_type+"' and a.id.libraryId='"+library_id+"' and a.entryLanguage='"+"'";
 
         }
         else if(doc_type.equalsIgnoreCase("combined")==true &&  !library_id.equalsIgnoreCase("all"))
-            query+=" where   a.id.libraryId='"+library_id+"' ";
+            query+=" where   a.id.libraryId='"+library_id+"' and a.entryLanguage='"+"'";
+       
 
              if(!sub_lib.equalsIgnoreCase("all"))
                    query+=" and a.id.sublibraryId='"+sub_lib+"' ";
@@ -239,9 +239,9 @@ public class OpacSearchDAO {
 //            }
 //            criteria.addOrder(Order.asc(sortby));
                  if(doc_type.equalsIgnoreCase("combined")==true &&  library_id.equalsIgnoreCase("all")==true)
-                    query+=" where  ";
+                    query+=" where a.entryLanguage='"+"' and ";
                   else
-                      query+=" and ";
+                      query+=" and a.entryLanguage='"+"' and ";
 
 
         /*
@@ -405,18 +405,18 @@ System.out.println(query);
         {
              hsession.beginTransaction();
 
-             String query="select * from bibliographic_details_lang a,document_details b where a.library_id=b.library_id and a.sublibrary_id=b.sublibrary_id and a.biblio_id=b.biblio_id ";
+             String query="select  a from BibliographicDetailsLang a where a.id.biblioId in ( select b.biblioId from DocumentDetails b where a.id.libraryId=b.id.libraryId and a.id.sublibraryId=b.id.sublibraryId and a.id.biblioId=b.biblioId) ";
 
                if(!library_id.equalsIgnoreCase("all"))
-                  query+=" and  a.library_id='"+library_id+"' ";
+                  query+=" and  a.id.libraryId='"+library_id+"' ";
 
              if(!sub_lib.equalsIgnoreCase("all"))
-                   query+=" and a.sublibrary_id='"+sub_lib+"' ";
+                   query+=" and a.id.sublibraryId='"+sub_lib+"' ";
 
              if(!doc_type.equalsIgnoreCase("combined"))
-                   query+=" and a.document_type='"+doc_type+"' ";
+                   query+=" and a.documentType='"+doc_type+"' ";
 
-             query+=" and a.entry_language='"+lang+"' ";
+             query+=" and a.entryLanguage='"+lang+"' ";
 
 
                /*
@@ -428,7 +428,7 @@ System.out.println(query);
                     {
                         for(int count=0;count<searching_word.length;count++)
                         {
-                            query+=" and (a.title like '%"+searching_word[count]+"%' or a.main_entry like '%"+searching_word[count]+"%' or a.publisher_name like '%"+searching_word[count]+"%') ";
+                            query+=" and (a.title like '%"+searching_word[count]+"%' or a.mainEntry like '%"+searching_word[count]+"%' or a.publisherName like '%"+searching_word[count]+"%') ";
                         }
                     }
                     /*
@@ -440,10 +440,10 @@ System.out.println(query);
                           if(searching_word.length>0&& !searching_word[0].isEmpty())
                           {
                               query+=" and (";
-                               query+=" (a.title like '%"+searching_word[0]+"%' or a.main_entry like '%"+searching_word[0]+"%' or a.publisher_name like '%"+searching_word[0]+"%') ";
+                               query+=" (a.title like '%"+searching_word[0]+"%' or a.mainEntry like '%"+searching_word[0]+"%' or a.publisherName like '%"+searching_word[0]+"%') ";
                                 for(int count=1;count<searching_word.length;count++)
                                 {
-                                    query+=" or (a.title like '%"+searching_word[count]+"%' or a.main_entry like '%"+searching_word[count]+"%' or a.publisher_name like '%"+searching_word[count]+"%') ";
+                                    query+=" or (a.title like '%"+searching_word[count]+"%' or a.mainEntry like '%"+searching_word[count]+"%' or a.publisherName like '%"+searching_word[count]+"%') ";
                                 }
                                query+=" ) ";
                           }
@@ -487,20 +487,20 @@ System.out.println(query);
                 if(year1!=null && year1.isEmpty()==false)
                 {
                     yr1 = String.valueOf(year1);
-                    query+=" and a.publishing_year>'"+yr1+"' ";
+                    query+=" and a.publishingYear>'"+yr1+"' ";
                 }
                 String yr2=null;
                 if(year2!=null && year2.isEmpty()==false)
                 {
                     yr2 = String.valueOf(year2);
-                      query+=" and a.publishing_year<'"+yr2+"' ";
+                      query+=" and a.publishingYear<'"+yr2+"' ";
                 }
             }
             if(cmbyr.equalsIgnoreCase("upto"))
             {
                 if(year1!=null && year1.isEmpty()==false)
                 {
-                     query+=" and a.publishing_year<='"+year1+"' ";
+                     query+=" and a.publishingYear<='"+year1+"' ";
                 }
 
             }
@@ -509,7 +509,7 @@ System.out.println(query);
                if(year1!=null && year1.isEmpty()==false)
                 {
                     yr1 = String.valueOf(year1);
-                     query+=" and a.publishing_year>'"+year1+"' ";
+                     query+=" and a.publishingYear>'"+year1+"' ";
                 }
 
             }
@@ -631,10 +631,13 @@ System.out.println(query);
                // criteria.addOrder(Order.asc("aliasOfTableA."+sortby));
 
              query+=" order by a."+sortby;
-             Query simple=hsession.createSQLQuery(query)
-                                .addEntity(BibliographicDetailsLang.class)
-                                .addEntity(DocumentDetails.class)
-                            .setResultTransformer(Transformers.aliasToBean(SearchPOJO.class));
+
+             System.out.println(query);
+                          Query simple=hsession.createQuery(query);
+//             Query simple=hsession.createSQLQuery(query)
+//                                .addEntity(BibliographicDetailsLang.class)
+//                                .addEntity(DocumentDetails.class)
+//                            .setResultTransformer(Transformers.aliasToBean(SearchPOJO.class));
 
 
              setSearchSize(simple.list());
@@ -669,7 +672,7 @@ System.out.println(query);
  // BROWSE SEARCH IN OPAC IN ENGLISH LANG
       public List<BibliographicDetails> browseSearch(String library_id,String sub_lib,String searching_word,String doc_type,String sortby,String searching_field,int pageNumber)
     {
-       List<BibliographicDetails> obj=null;
+       List<BibliographicDetails> obj=new ArrayList<BibliographicDetails>();
        //Criteria criteria=null,cri=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
@@ -847,13 +850,15 @@ System.out.println(query);
 
             query+=" where  l.title like '%"+searching_word+"%' or l.mainEntry like '%"+searching_word+"%' or l.publisherName like '%"+searching_word+"%' ";
                 if(!library_id.equalsIgnoreCase("all"))
-               {  query+=" and l.id.libraryId='"+library_id+"'";}
+               {  query+=" and l.id.libraryId='"+library_id+"'  and t.entryLanguage='"+"'";}
 
             if(!sub_lib.equalsIgnoreCase("all"))
                    query+=" and l.id.sublibraryId='"+sub_lib+"'";
 
              if(!doc_type.equalsIgnoreCase("combined"))
                    query+=" and l.documentType='"+doc_type+"'";
+
+          
 
 
          }
@@ -865,7 +870,7 @@ System.out.println(query);
          {
                query+=" where l."+searching_field+" like '%"+searching_word+"%'";
                       if(!library_id.equalsIgnoreCase("all"))
-               {  query+=" and l.id.libraryId='"+library_id+"'";}
+               {  query+=" and l.id.libraryId='"+library_id+"'  and t.entryLanguage='"+"'";}
 
                if(!sub_lib.equalsIgnoreCase("all"))
                    query+=" and l.id.sublibraryId='"+sub_lib+"'";
@@ -873,10 +878,12 @@ System.out.println(query);
              if(!doc_type.equalsIgnoreCase("combined"))
                    query+=" and l.documentType='"+doc_type+"'";
 
+            
+
          }
          else{
                              if(!library_id.equalsIgnoreCase("all"))
-               {  query+=" where l.id.libraryId='"+library_id+"'";}
+               {  query+=" where l.id.libraryId='"+library_id+"'  and t.entryLanguage='"+"'";}
 
                if(!sub_lib.equalsIgnoreCase("all"))
                    query+=" and l.id.sublibraryId='"+sub_lib+"'";
@@ -885,6 +892,8 @@ System.out.println(query);
                    query+=" and l.documentType='"+doc_type+"'";
              else if(!doc_type.equalsIgnoreCase("combined"))
                     query+=" where l.documentType='"+doc_type+"'";
+
+                          
          }
 
 
@@ -895,7 +904,7 @@ System.out.println(query);
 
 
 
-            query+="  order by l."+sortby;
+            query+="   order by l."+sortby;
 
 
 
@@ -984,7 +993,7 @@ System.out.println(query);
         }
         catch(Exception e)
         {
-           e.printStackTrace();
+         log4j.error(e);
 
         }
         finally
@@ -1003,18 +1012,18 @@ hsession.close();
         {
          hsession.beginTransaction();
 
-                     String query="select  * from bibliographic_details_lang a,document_details b where a.library_id=b.library_id and a.sublibrary_id=b.sublibrary_id and a.biblio_id=b.biblio_id ";
-
+                     //String query="select  * from bibliographic_details_lang a,document_details b where a.library_id=b.library_id and a.sublibrary_id=b.sublibrary_id and a.biblio_id=b.biblio_id ";
+String query="select  a from BibliographicDetailsLang a where a.id.biblioId in ( select b.biblioId from DocumentDetails b where a.id.libraryId=b.id.libraryId and a.id.sublibraryId=b.id.sublibraryId and a.id.biblioId=b.biblioId) ";
                if(!library_id.equalsIgnoreCase("all"))
-                  query+=" and  a.library_id='"+library_id+"' ";
+                  query+=" and  a.id.libraryId='"+library_id+"'  ";
 
              if(!sub_lib.equalsIgnoreCase("all"))
-                   query+=" and a.sublibrary_id='"+sub_lib+"' ";
+                   query+=" and a.id.sublibraryId='"+sub_lib+"'  ";
 
              if(!doc_type.equalsIgnoreCase("combined"))
-                   query+=" and a.document_type='"+doc_type+"' ";
+                   query+=" and a.documentType='"+doc_type+"'  ";
 
-           query+=" and a.entry_language='"+language+"' ";
+           query+=" and a.entryLanguage='"+language+"'  ";
 
            /*
           * Searching Criteria for searching words are connected as AND clause
@@ -1022,7 +1031,7 @@ hsession.close();
          if(searching_field.equalsIgnoreCase("any field"))
          {
 
-            query+=" and (a.title like '%"+searching_word+"%' or a.main_entry like '%"+searching_word+"%' or a.publisher_name like '%"+searching_word+"%') ";
+            query+=" and (a.title like '%"+searching_word+"%' or a.mainEntry like '%"+searching_word+"%' or a.publisherName like '%"+searching_word+"%') ";
          }
          /*
           * Searching criteria if searching is based of any specific field
@@ -1030,13 +1039,14 @@ hsession.close();
 
          else
          {
-               query+=" a."+searching_field+" like '%"+searching_word+"%' ";
+               query+=" and a."+searching_field+" like '%"+searching_word+"%' ";
          }
         query+=" order by a."+sortby;
-          Query simple=hsession.createSQLQuery(query)
-                                .addEntity(BibliographicDetailsLang.class)
-                                .addEntity(DocumentDetails.class)
-                            .setResultTransformer(Transformers.aliasToBean(SearchPOJO.class));
+         Query simple=hsession.createQuery(query);
+         // Query simple=hsession.createSQLQuery(query)
+           //                     .addEntity(BibliographicDetailsLang.class)
+             //                   .addEntity(DocumentDetails.class)
+               //             .setResultTransformer(Transformers.aliasToBean(BibliographicDetailsLang.class));
 
 
 

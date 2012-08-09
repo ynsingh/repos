@@ -87,6 +87,7 @@ public class AdminRegistrationAction extends org.apache.struts.action.Action {
                         adminobj.setGender(adminRegistrationActionForm.getGender());
                         adminobj.setLoginId(adminRegistrationActionForm.getAdmin_email());
                         adminobj.setWorkingStatus("OK");
+                        adminobj.setInstiLogo("");
                         adminobj.setStatus("NotRegistered");
                          result=AdminRegistrationDAO.insert1(adminobj);
                         if(result==false)
@@ -112,7 +113,6 @@ public class AdminRegistrationAction extends org.apache.struts.action.Action {
         catch(Exception e)
         {
                 request.setAttribute("msg1","Database Connectivity is Closed");
-                e.printStackTrace();
                 log4j.error(e);
                 return mapping.findForward("failure");
         }

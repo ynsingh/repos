@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.myapp.struts.marc;
 
 import com.myapp.struts.hbm.Biblio;
@@ -16,10 +11,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-/**
- *
- * @author EdRP-05
- */
 public class CatControlAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
@@ -48,15 +39,6 @@ public class CatControlAction extends org.apache.struts.action.Action {
 
     private Biblio biblio5=new Biblio();
     private BiblioId biblioid5= new BiblioId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -66,6 +48,8 @@ public class CatControlAction extends org.apache.struts.action.Action {
        if(!StringUtils.isBlank(caf8.getControl_no()))
         control_no=caf8.getControl_no();
         String t=caf8.getZclick();             // t is click value on jsp
+        System.out.println("************************************************  "+t);
+
         HttpSession session = request.getSession();
        int bibid = (Integer)session.getAttribute("biblio_id");
         System.out.println("************************************************  "+bibid);
@@ -199,6 +183,6 @@ if(hm1.containsKey("008")){
         {
         return mapping.findForward("forward10");
         }
-        return mapping.findForward("forward8");
+        return mapping.findForward("forward10");
 }
 }

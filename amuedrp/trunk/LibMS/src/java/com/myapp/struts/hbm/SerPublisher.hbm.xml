@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 16 Nov, 2011 3:36:59 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated Oct 20, 2012 11:20:58 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="com.myapp.struts.hbm.SerPublisher" table="ser_publisher" catalog="libms">
         <composite-id name="id" class="com.myapp.struts.hbm.SerPublisherId">
@@ -15,9 +15,6 @@
                 <column name="pub_id" length="20" />
             </key-property>
         </composite-id>
-        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-        </many-to-one>
         <property name="pubName" type="string">
             <column name="`pub-name`" length="15" />
         </property>

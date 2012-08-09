@@ -16,6 +16,8 @@ import javax.servlet.http.*;
 //import com.mysql.jdbc.ResultSet;
 import com.myapp.struts.CirDAO.CirculationDAO;
 import com.myapp.struts.systemsetupDAO.SubMemberDAO;
+import com.myapp.struts.utility.AppPath;
+import com.myapp.struts.utility.UserLog;
 
 /**
  *
@@ -81,17 +83,20 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
         //ImageUploadActionForm form1 = (ImageUploadActionForm)session1.getAttribute("ImageUploadActionForm");
         CirRequestfromOpac form1 = (CirRequestfromOpac)session1.getAttribute("opacimage");
 
+ library_id=(String)session1.getAttribute("library_id");
+       sublibrary_id=(String)session1.getAttribute("sublibrary_id");
+
+
 
         String  member_id = cmdf.getTXTMEMID();
+        CirRequestfromOpac obj=CirculationDAO.searchMemberfromOPAC(library_id, sublibrary_id,member_id);
+        System.out.println(obj+".................");
       String last_name=cmdf.getTXTLNAME();
       String mail_id=cmdf.getTXTEMAILID();
        String button=cmdf.getButton();
        String mem_name=cmdf.getTXTFNAME();
 
-       library_id=(String)session1.getAttribute("library_id");
-       sublibrary_id=(String)session1.getAttribute("sublibrary_id");
-
-
+        
             if(button!=null)
             if(button.equals("Approved"))
             {
@@ -125,13 +130,15 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
             cmd.setPin2(cmdf.getTXTPIN2());
             cmd.setFax(cmdf.getTXTFAX());
            
-         //   if (form1!=null)
-         //   cmd.setImage(form1.getImage());
-         //    else cmd.setImage(cmdf.getUploadedFile());
+            byte[]  iii=UserLog.getBytesFromFile(AppPath.getProjectPropertiesImagePath()+obj.getImage());
+
+            System.out.println("##############"+iii+"##################");
+
+            cmd.setImage(iii);
 
             CirculationDAO.insert(cmd);
-              CirMemberAccountId  cmai = new CirMemberAccountId();
-              CirMemberAccount cma = new CirMemberAccount();
+            CirMemberAccountId  cmai = new CirMemberAccountId();
+            CirMemberAccount cma = new CirMemberAccount();
             cmai.setLibraryId(library_id);
           
             cmai.setSublibraryId(sublibrary_id);

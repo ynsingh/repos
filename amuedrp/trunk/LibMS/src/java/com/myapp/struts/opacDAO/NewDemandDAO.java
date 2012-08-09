@@ -12,6 +12,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -20,6 +22,76 @@ import org.hibernate.criterion.Restrictions;
  */
 public class NewDemandDAO {
   Criterion criterion;
+
+  public Demandlist DemandId(String library_id,String sub_library_id,int demand_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+ Demandlist obj=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(Demandlist.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("id.demandId",demand_id )));
+            obj=(Demandlist) criteria.uniqueResult();
+            session.getTransaction().commit();
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally
+        {
+        session.close();
+        }
+        return obj;
+    }
+
+public void updateDemandStatus(Demandlist bibDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(bibDetails);
+            tx.commit();
+        } catch (Exception e)
+        {
+
+            tx.rollback();
+           e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+
+
+
+ public Integer returnMaxDemandId(String library_id, String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+       Integer maxbiblio=null;
+        try {
+              session.beginTransaction();
+            Criteria criteria = session.createCriteria(Demandlist.class);
+            Criterion a = Restrictions.eq("id.libraryId", library_id);
+            Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
+            LogicalExpression le = Restrictions.and(a, b);
+            maxbiblio = (Integer) criteria.add(le).setProjection(Projections.max("id.demandId")).uniqueResult();
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+session.getTransaction().commit();
+
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally
+        {
+        session.close();
+        }
+        return maxbiblio;
+    }
+
 
   public static Notices ViewNotice(String library_id,String sublibrary_id,String notice_id) {
         Session session =  HibernateUtil.getSessionFactory().openSession();

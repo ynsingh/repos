@@ -161,6 +161,16 @@
     <property name="fileType" type="string">
       <column length="20" name="file_type"/>
     </property>
+
+       <property name="image" type="string">
+            <column name="image" length="200" />
+        </property>
+        <property name="digitalData" type="string">
+            <column name="digital_data" length="200" />
+        </property>
+        <property name="digitalComment" type="string">
+            <column name="digital_comment" length="300" />
+        </property>
     
   </class>
 </hibernate-mapping>

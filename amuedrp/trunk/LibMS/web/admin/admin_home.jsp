@@ -52,18 +52,8 @@ locale1=(String)session.getAttribute("locale");
     %>
 <html>
 <head>
-
-  
-
-
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Home</title>
-
-
-
-
-
 <script>
     
     var loc2 = "http://<%=host%>"+"/LibMS/superadmin.do";
@@ -89,7 +79,7 @@ if(session.getAttribute("username")==null)
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/page.css">
 
 <div
-   style="top:85px;
+   style="top:90px;
    left:5px;
    right:5px;
       position: absolute;
@@ -97,9 +87,6 @@ if(session.getAttribute("username")==null)
       visibility: show;">
     
     <body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" dir="<%=rtl%>">
- 
-
-
 
 <table border=0 cellpadding=0 cellspacing=0 width="100%" dir="<%=rtl%>">
     <tr><td height="25px" width="600px" bgcolor="#7697BC" dir="<%=rtl%>">
@@ -119,7 +106,6 @@ document.write('overflow-y:scroll;visibility:hidden;">')
 additem("Approved List","<%=request.getContextPath()%>/admin/changeuserpassword.do");
 additem("Rejected List","<%=request.getContextPath()%>/admin/changeuserpassword.do");
 additem("View All","<%=request.getContextPath()%>/admin/changeuserpassword.do");
-
 
 
 document.onclick= function() {toggle_menu(0); }
@@ -157,6 +143,7 @@ document.write('</div></span>');
 <li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp"  target="f3"><%=resource.getString("login.changeworkingstatus")%></a></li>
 <li><a href="<%=contextPath%>/admin/mailsetting.jsp"  target="f3">Mail Setting</a></li>
 <li><a href="<%=contextPath%>/admin/change_pass.jsp"  target="f3">Change Login Password</a></li>
+<li><a href="<%=contextPath%>/changelogdb.jsp"  target="f3">Change Log</a></li>
 </ul>
 </div>
 
@@ -171,6 +158,8 @@ document.write('</div></span>');
 <a href="<%=contextPath%>/admin/view_approved.jsp" target="f3">Approved List</a>
 <a href="<%=contextPath%>/admin/rejectlibrary.jsp"  target="f3">Rejected List</a>
 <a href="<%=contextPath%>/admin/view_all.jsp" target="f3" >View All</a>
+<a href="" target="f3" >Delete Institute Request</a>
+<a href="" target="f3" >Change User Login</a>
 
 </div>
  

@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated Jul 21, 2012 12:34:18 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="com.myapp.struts.hbm.Demandlist" table="demandlist" catalog="libms">
         <composite-id name="id" class="com.myapp.struts.hbm.DemandlistId">
+            <key-property name="demandId" type="int">
+                <column name="demand_id" />
+            </key-property>
             <key-property name="libraryId" type="string">
                 <column name="library_id" length="20" />
             </key-property>
@@ -18,11 +21,6 @@
                 <column name="title" length="50" />
             </key-property>
         </composite-id>
-        <many-to-one name="cirMemberAccount" class="com.myapp.struts.hbm.CirMemberAccount" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="sublibrary_id" length="20" not-null="true" />
-            <column name="memId" length="70" not-null="true" />
-        </many-to-one>
         <property name="category" type="string">
             <column name="category" length="50" />
         </property>
@@ -37,9 +35,6 @@
         </property>
         <property name="isbn" type="string">
             <column name="isbn" length="50" />
-        </property>
-        <property name="noOfCopy" type="string">
-            <column name="no_of_copy" length="10" />
         </property>
         <property name="volume" type="string">
             <column name="volume" length="50" />
@@ -61,6 +56,33 @@
         </property>
         <property name="status" type="string">
             <column name="status" length="100" />
+        </property>
+        <property name="memberType" type="string">
+            <column name="member_type" length="100" />
+        </property>
+        <property name="subMemberType" type="string">
+            <column name="sub_member_type" length="100" />
+        </property>
+        <property name="memName" type="string">
+            <column name="mem_name" length="100" />
+        </property>
+        <property name="subAuthor" type="string">
+            <column name="sub_author" length="50" />
+        </property>
+        <property name="subAuthor0" type="string">
+            <column name="sub_author0" length="50" />
+        </property>
+        <property name="subAuthor1" type="string">
+            <column name="sub_author1" length="50" />
+        </property>
+        <property name="subAuthor2" type="string">
+            <column name="sub_author2" length="50" />
+        </property>
+        <property name="publicationPlace" type="string">
+            <column name="publication_place" length="50" />
+        </property>
+        <property name="lccNo" type="string">
+            <column name="lcc_no" length="50" />
         </property>
     </class>
 </hibernate-mapping>

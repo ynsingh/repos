@@ -14,6 +14,7 @@ import com.myapp.struts.cataloguingDAO.MarcHibDAO;
 import com.myapp.struts.hbm.BiblioTempId;
 import com.myapp.struts.hbm.BiblioTemp;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -36,15 +37,6 @@ public class MarcUploadAction extends org.apache.struts.action.Action {
    MarcHibDAO mhd=new MarcHibDAO();
    BiblioTemp bb=new BiblioTemp();
    BiblioTempId bbid=new BiblioTempId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -53,6 +45,9 @@ public class MarcUploadAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+      
+        int check=0;
+                                MarcHibDAO marchib=new MarcHibDAO();
 /*
  * Part1:::This Part is used to browse .mrc file and write the data to database
  */
@@ -61,6 +56,8 @@ public class MarcUploadAction extends org.apache.struts.action.Action {
          InputStream in= nsaf.getExcelFile().getInputStream();
         //  InputStream in = new FileInputStream("/home/Edrp-04/Desktop/record.mrc");
             MarcReader reader = new MarcStreamReader(in);
+
+
             while (reader.hasNext()) {
                  Record record = reader.next();
                  System.out.println(record.toString());
@@ -68,44 +65,57 @@ public class MarcUploadAction extends org.apache.struts.action.Action {
               List<ControlField> cfield=record.getControlFields();
               Integer biblio_id = mhd.returnMaxBiblioIdTemp(library_id, sub_library_id);
 //             Leader ld=record.getLeader();
-              for(int u=0;u<cfield.size();u++){
-              String tag=cfield.get(u).getTag();
-            bbid.setBibId(biblio_id);
-              bbid.setLibraryId(library_id);
-            bbid.setMarctag(tag);
-            bb.setId(bbid);
-            bb.setSublibraryId(sub_library_id);
-               bb.setIndicator1(null);
-               bb.setIndicator2(null);
-              String data=cfield.get(u).getData();
-              bb.set$a(data);
-             mhd.inserttemp(bb);
-//             bb=new BiblioTemp();
-//             bbid=new BiblioTempId();
-              }
-              for(int u=0;u<field.size();u++){
-              String tag=field.get(u).getTag();
-            bbid.setBibId(biblio_id);
-              bbid.setLibraryId(library_id);
-            bbid.setMarctag(tag);
-              char ind1 = field.get(u).getIndicator1();
-              char ind2 = field.get(u).getIndicator2();
-              if(!StringUtils.isBlank(String.valueOf(ind1))){
-               bb.setIndicator1(ind1);
-              }
-              if(!StringUtils.isBlank(String.valueOf(ind2))){
-               bb.setIndicator2(ind2);
-              }
-bb.setId(bbid);
-bb.setSublibraryId(sub_library_id);
-    System.out.println("Tag: " + tag + " Indicator 1: " + ind1 + " Indicator 2: " + ind2);
+              for(int u=0;u<cfield.size();u++)
+              {
+                        String tag=cfield.get(u).getTag();
+                        String     data=cfield.get(u).getData();
 
-    List subfields = field.get(u).getSubfields();
-    Iterator i = subfields.iterator();
-    while (i.hasNext()) {
-        Subfield subfield = (Subfield) i.next();
-	char code = subfield.getCode();
-	String data = subfield.getData();
+
+                        BiblioTemp x = (BiblioTemp)marchib.isMarcDataExist1(data,tag,library_id, sub_library_id);
+                     
+                        if(x!=null)
+                        {
+                        check=0;
+                        mhd.inserttemp(x);
+                        }
+                        else
+                        {check=1;
+                                bbid.setBibId(biblio_id);
+                                bbid.setLibraryId(library_id);
+                                bbid.setMarctag(tag);
+                                bb.setId(bbid);
+                                bb.setSublibraryId(sub_library_id);
+                                bb.set$a(data);
+                                bb.setIndicator1(null);
+                                bb.setIndicator2(null);
+                                mhd.inserttemp(bb);
+                        }
+              }
+              for(int u=0;u<field.size();u++)
+              {
+                    String tag=field.get(u).getTag();
+
+                 
+
+                    char ind1 = field.get(u).getIndicator1();
+                    char ind2 = field.get(u).getIndicator2();
+                    if(!StringUtils.isBlank(String.valueOf(ind1)))
+                    {
+                       bb.setIndicator1(ind1);
+                    }
+                    if(!StringUtils.isBlank(String.valueOf(ind2)))
+                    {
+                        bb.setIndicator2(ind2);
+                    }
+                   
+                    System.out.println("Tag: " + tag + " Indicator 1: " + ind1 + " Indicator 2: " + ind2);
+                    List subfields = field.get(u).getSubfields();
+                    Iterator i = subfields.iterator();
+                    while (i.hasNext())
+                    {
+                    Subfield subfield = (Subfield) i.next();
+                    char code = subfield.getCode();
+                    String data = subfield.getData();
                        switch(code)
                        {
                           case 'a':
@@ -221,13 +231,46 @@ bb.setSublibraryId(sub_library_id);
                        }
 
 	System.out.println("Subfield code: " + code + " Data element: " + data);
+String st=Character.toString(code);
+       
+        
+List<BiblioTemp> x = (List<BiblioTemp>)marchib.isMarcDataExist2(st,data,tag,library_id, sub_library_id);
+if(x!=null && x.isEmpty()==false && check==0)
+        bbid.setBibId(x.get(0).getId().getBibId());
+else if(check==1)
+     bbid.setBibId(biblio_id);
+
+
+//System.out.println(tag+"***************************************************"+data+"..........."+st.length()+x);
     }
-                     mhd.inserttemp(bb);
+
+    //if record found update existing record
+    
+        //    BiblioTemp obj=marchib.DuplicateMarcDataExist(call_no, library_id,sub_library_id);
+
+       //     BiblioTemp x = (BiblioTemp)marchib.isMarcDataExist1(data,tag,library_id, sub_library_id);
+
+              bbid.setMarctag(tag);
+              bbid.setLibraryId(library_id);
+             bb.setSublibraryId(sub_library_id);
+         //   if(obj!=null)
+         //   {
+         //           bbid.setBibId(obj.getId().getBibId());
+         //           bb.setId(bbid);
+         //           mhd.inserttemp(bb);
+         //   }
+        //    else
+        //    {
+                   
+                    bb.setId(bbid);
+                    mhd.inserttemp(bb);
+        //    }
              bb=new BiblioTemp();
              bbid=new BiblioTempId();
+
               }
             }
-
+request.setAttribute("msg1", "Import MARC File Process Completed");
         return mapping.findForward(SUCCESS);
     }
 }

@@ -83,11 +83,13 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action
             return mapping.findForward("newarrival");
         }
 
-         if (formname.equals("myaccount")){
+          if (formname.equals("myaccount")){
              String type = (String)request.getParameter("type");
              if(type!=null)session.setAttribute("type", type);
             return mapping.findForward("myaccount");}
-        
+        if(formname.equals("changepassword"))
+            return mapping.findForward("changepassword");
+
         if (formname.equals("feedback"))
          {
             List lib=opacDao.LibrarySearch(lib_id);

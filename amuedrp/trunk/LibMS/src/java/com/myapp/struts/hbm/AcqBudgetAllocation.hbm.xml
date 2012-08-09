@@ -36,5 +36,9 @@
         <property name="reqdate" type="string">
             <column name="reqdate" length="10" />
         </property>
+            <property name="expenseAmount" type="string">
+      <column length="11" name="expense_amount"/>
+    </property>
+
     </class>
 </hibernate-mapping>

@@ -152,7 +152,7 @@ locale1=(String)session.getAttribute("locale");
 
   <tr>
 
-    <td dir="<%=rtl%>" align="<%=align%>"><strong>Accession No<a class="star">*</a></strong>
+    <td dir="<%=rtl%>" align="<%=align%>"><strong>Accession No: <a class="star">*</a></strong>
 
     </td>
     <td dir="<%=rtl%>"><html:text property="accessionno" styleId="accessionno"  value="" styleClass="textBoxWidth"/>
@@ -205,6 +205,7 @@ int no_of_copy=0;
 
 
     DocumentDetails list=(DocumentDetails)session.getAttribute("TitleDetails");
+    session.removeAttribute("TitleDetails");
 dd=(BibliographicDetails)session.getAttribute("Title");
 int total=0;
 

@@ -1,9 +1,3 @@
-<%--
-    Document   : search
-    Created on : Mar 3, 2011, 3:16:02 PM
-    Author     : EdRP-04
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -39,7 +33,7 @@ document.Form1.submit();
 
 
 
-  <tr class="header"><td  width="100%"   align="center" colspan="2">
+  <tr class="headerStyle"><td  width="100%"   align="center" colspan="2">
 
 
 		Own Library Bibliographic Details
@@ -73,7 +67,7 @@ document.Form1.submit();
      </td>
 
               </tr></table></td></tr>
-  <tr class="header"><td align="left" colspan="2">Sort By</td></tr>
+  <tr class="headerStyle"><td align="left" colspan="2">Sort By</td></tr>
    <tr style="background-color:#e0e8f5;">
        <td align="left" colspan="2">
            <table>
