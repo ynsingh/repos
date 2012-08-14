@@ -1,13 +1,13 @@
 #*
  * @(#) Edit.vm
- * Copyright (c) 2005-2006, 2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009-2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date 27-04-2009
+ * @modified date: 30-03-2010
 *#
-
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $brih_content | $brih_edit $brih_content")
@@ -15,37 +15,110 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align="right">
 <td>
-	<font face="$ui.sansSerifFonts"><b>
- 	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_mgmt $brih_course </a> | <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>
+        <font face="$ui.sansSerifFonts"><b>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_mgmt $brih_course </a> | <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>
 
-	$brih_course  $brih_Of $brih_content</a> |
-	$brih_content $brih_Of $brih_edit
-	| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
-	</font>
+        $brih_course  $brih_Of $brih_content</a> |
+        $brih_content $brih_Of $brih_edit
+        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
+        </font>
 </td>
 </tr>
 </table>
+<table width=100% bgcolor="$ui.tableColor">
+<tr>
+#if($tdcolor != "7")
+         <td>
+         #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+         #end
+       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
+         </td>
+        #if($tdcolor != "6")
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")> $brih_scorm $brih_packager </a></td>
+        #if($tdcolor != "5")    
+        <td>
+        #elseif($tdcolor == "5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5")> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
+        #if($tdcolor != "4")    
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
+        #if($tdcolor != "3")    
+        <td>
+#elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+<a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")> $brih_course $RemoteConfiguration </a></td>
+        #if($tdcolor != "2")    
+         <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
+ #if($tdcolor != "0")  
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user </a></td>
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
+
+</tr>
+</table>
+
 #if($Mode=="NoBlank")
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setAction("EditContent_Action").setPage("call,CourseMgmt_User,Edit.vm").addPathInfo("topic",$topic)">
-	<div align="center">
-		<CENTER><H2 ><u>$topic</u></H2></CENTER>
-		<CENTER> <u><b>$brih_update $brih_desc</b> </u>
-       			<input type=checkbox name=modify>
-		</CENTER>
-	       		<textarea name=description rows=10 cols=90 onFocus="checkModify(document.frm);">$!topicDesc</textarea><br>
-		<CENTER>
-			<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
-			<b>$brih_topicDelete</b>
-			<input type="checkbox" name=delTopic>
-		</CENTER>
-		<CENTER>
-			<input type="button" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
-			<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
-			<input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
-			<input type="button" name=eventSubmit_doChangeAlias value="$brih_alias $brih_modify" onClick="changeAlias(document.frm,this);">
-			<input type="button" name=eventSubmit_doDelete value="$brih_selected $brih_file $brih_delete" onClick="deleteConfirm(document.frm,this);">
-		</CENTER>
+<table width=100% bgcolor="$ui.tableColor">
+	<tr>
+		<td><font size=3><b>$brih_topic #if($lang =="hindi") $brih_Of1 #end $brih_name: &nbsp;$topic</b></font></td>
+	</tr>
+        <tr bgcolor="$ui.menuColor">
+		<td>
+		<input type=checkbox name=modify>
+	#if($lang =="hindi") 
+		<b>$brih_desc $brih_modify</b></td>     
+	#else 
+		<b>$brih_modify $brih_desc</b></td>      
+	#end
+	</tr>
+       	<tr bgcolor="$ui.tableColor">
+		<td>
+		<textarea name=description rows=10 cols=90 onFocus="checkModify(document.frm);">$!topicDesc</textarea><br>
+		</td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td><input type="checkbox" name=delTopic><b>$brih_topicDelete</b><br></td>
+	</tr>
+	<tr bgcolor="$ui.tableColor">
+		<td>
+		<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
+		<input type="button" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
+		<input type="button" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
+			#if($lang =="hindi")
+		<input type="button" name=eventSubmit_doUpdate value=" $brih_desc $brih_update " onClick="Update(document.frm,this);">
+			#else
+		<input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
+			#end
+		<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
+		<input type="button" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
+		</td>
+	</tr>
+</table>
 		<input type="hidden" name="status" value="$status">
                 <input type="hidden" name="uname" value="$username">
                 <input type="hidden" name="cName" value="$cName">
@@ -56,104 +129,156 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 		<input type="hidden" name=topic value="$topic">
 		<input type="hidden" name=doSubmit value="false">
 		<input type="hidden" name=onFocusVal value="">
-  	<table>
-    	<tr>
-       		#if ($errorTemplate)
-       		<td>
-              		<img src="$ui.image($ui.alertImage,$data)">
-       		</td>
-    		<td>
-	      		#parse ($errorTemplate)
+		<input type="hidden" name="count" value="$tdcolor">
+  	<table width=100%>
+    	<tr><td>
+    		<table bgcolor="$ui.bgcolor" cellpadding="5">
+        
+      		#if ($errorTemplate)
+      		<tr>
+        	<td colspan="4">
+          		<table bgcolor="$ui.bgcolor">
+            		<tr>
+             		<td>
+                		<img src="$ui.image($ui.alertImage,$data)">
+              		</td>
+              		<td>
+                		#parse ($errorTemplate)
+              		</td>
+            		</tr>
+          		</table>
         	</td>
+      		</tr>
       		#end
-      	</tr>	
-	</table>
-	<H3><u>$brih_attachment</u></H3>
+      	</td><tr>
+	<div style="background-color:$ui.menuColor;text-align:left">	
+	<font size=3><b>$brih_attachment</b></font>
      	
 	#set ( $count=1 )
 	#set ( $seqno=1 )
-	#set ( $totalRows = $dirContent.size() )
-	<table bgcolor="$ui.tableColor" cellpadding=0 cellspacing=0>
+	<table bgcolor="$ui.tableColor" width=100%>
 	<tr>
 	<td>
-		<table bgcolor="$ui.tableColor" border=1 cellpadding=0 cellspacing=0>
-		<tr align="right">
-                	 #headerCell("$brih_sequence")
-        	       	 #headerCell("$brih_action") 
-		</tr>
-		<tr ="right">
-		<td>
-			#if( $totalRows>1)	
-				<select name="destinationSeqno">
-					<option selected value="-1"></option>
-					#foreach($index in [1..$totalRows])
-						#set ( $seqno= $index - 1 )
-						<option value=$seqno >$index</option>
-					#end
-				</select>
-			#end
-		</td>
-		<td>
-			#if( $totalRows>1)	
-				<select name="actionType">
-					<option selected value="-1"></option>
-					<option value=1>$brih_move</option>
-					<option value=2>$brih_update</option>
-				</select>
-			#end
-		</td>
-		</tr>
-		</table>
-	</td>
-	<td>
-		<table bgcolor="$ui.tableColor" border=1 cellpadding=0 cellspacing=0>
-		#set($headings = ["$brih_fileOrder ","$brih_delete","$brih_creation $brih_time","$brih_alias","$brih_file","$brih_serialNo"] )
+		<table bgcolor="$ui.tableColor" width="100%">
+                <tr>
+		#set ( $totalRows = $dirContent.size() )
+			#set($headings = ["$brih_serialNo","$brih_file","$brih_alias","$brih_creation $brih_time","$brih_delete","$brih_fileOrder"] )
+			
 		#foreach($heading in $headings)
                 	#headerCell($heading)
         	#end
+
 		#if($isInstructor)
 			#foreach($file in $dirContent)
-			<tr>		     	
+			#if($velocityCount%2==0)
+			<tr bgcolor="$ui.tableColor">
+			#else
+			<tr bgcolor="$ui.menuColor">
+			#end		     	
+		     		<td>$count </td>
+			 	<td><b>$file.Name&nbsp;&nbsp;</b></td> 
 				#set ( $seqno= $count - 1 )
 			
 				#set ( $aliasval ="$!file.Alias")
 				#if($aliasval.length()==0)				
-					#set ( $aliasval ="$file.Name")
+					#set ( $aliasval ="$file")
 				#end
+			 	<td><b><input type="text" name=$seqno value="$aliasval" size="$aliasval.length()" onChange="return validate(this);" onFocus="setOldVal(this);"></b></td>
+				<input type="hidden" name="$file.Name" value=$seqno>
+		         	<td>$file.PDate</td>
+	     	     	 	<td align="center"><input type="checkbox" name="$file.CheckboxName" onClick="addDeleteList(this,document.frm);"></td>
 	     	     	 	<td align="center">
 				#if($totalRows>1)
 					<input type="radio" name="orderRadio" value="$file.CheckboxName" onClick="changeOrder(this,document.frm,$seqno);">
 				#end
 				</td>
-	     	     	 	<td align="center"><input type="checkbox" name="$file.CheckboxName" onClick="addDeleteList(this,document.frm);"></td>
-		         	<td>$file.PDate</td>
-			 	<td><b><input type="text" name=$seqno value="$aliasval" size="$aliasval.length()" onChange="return validate(this);" onFocus="setOldVal(this);"></b></td>
-				<input type="hidden" name="$file.Name" value=$seqno>
-			## onBlur="getOldVal(this);
-			 	<td><b>$file.Name&nbsp;&nbsp;</b></td> 
-		     		<td>$count </td>
-			</tr>
-			#set ( $count= $count+1)
-			#end
+				#set ( $count= $count+1)
+	                 #end
 		#end
-		</table>
-	</td>
-	</tr>		
 	</table>
+	</td>
+	<td>
+	<table bgcolor="$ui.tableColor" width=100%>
+        <tr>
+                        #headerCell("$brih_action")
+                        #headerCell("$brih_sequence")
+        </tr>
+        <tr>
+        <td>
+                #if( $totalRows>1)
+                        <select name="actionType">
+                                <option selected value="-1"></option>
+                                <option value=1>$brih_move</option>
+                                <option value=2>$brih_exchange </option>
+                        </select>
+                #end
+        </td>
+        <td>
+                #if( $totalRows>1)
+                        <select name="destinationSeqno">
+                                <option selected value="-1"></option>
+                                #foreach($index in [1..$totalRows])
+                                        #set ( $seqno= $index - 1 )
+                                        <option value=$seqno >$index</option>
+                                #end
+                        </select>
+                #end
+        </td>
+        </tr>
+        </table>
 
-	<input type="button" name=eventSubmit_doDelete value="$brih_selected $brih_file $brih_delete" onClick="deleteConfirm(document.frm,this);">
-	<input type="button" name=eventSubmit_doChangeAlias value="$brih_alias $brih_modify" onClick="changeAlias(document.frm,this);">
+        	              	#*<td>
+				#if( $totalRows>1)
+		                        <select name="actionType">
+                		                <option selected value="-1"></option>
+                                		<option value=1>$brih_move</option>
+                                		<option value=2>$brih_exchange </option>
+                        		</select>
+                		#end
+        			</td>
+        			<td>
+                		#if( $totalRows>1)
+                        		<select name="destinationSeqno">
+                                		<option selected value="-1"></option>
+                                		#foreach($index in [1..$totalRows])
+                                        	#set ( $seqno= $index - 1 )
+                                        	<option value=$seqno >$index</option>
+                                		#end
+                        		</select>
+                		#end
+			*#	
+			</tr>
+                ##end
+
+	</table>
+	</td>
+	</table>
+      
+	<div style="background-color:$ui.menuColor;text-align:left">	
+	<input type="button" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
+	<input type="button" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
+	#if($lang == "hindi")
+	<input type="button" name=eventSubmit_doUpdate value="$brih_desc $brih_update" onClick="Update(document.frm,this);">
+	#else
 	<input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
+	#end
 	<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
 	<input type="button" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
-	
+	</div>
+    </td>
+    </tr>
+  </table>
   </div>
 </form>
 #else
 ##No Publish File in the $topic Topic of $course
- $brih_publishFileMsg $topic $brih_topic $brih_Of2 <b><font color="$ui.fontColorBlue">$course</font></b>
+#if($lang == "hindi")
+<b><font color="blue">$course</font>$brih_topicOf $topic $brih_publishFileMsg</b>
+#else
+$brih_publishFileMsg $topic $brih_topicOf <b><font color="blue">$course</font></b>
 #end
 
+#end
 <SCRIPT LANGUAGE="javascript">
 	function checkModify(frm)
 	{
@@ -271,10 +396,6 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 			}
 				
 		}
-		else
-		{
-			alert("Please Select check box for deletion !!");
-		}
 	}
 	
 	function Update(frm,field)
@@ -305,10 +426,6 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 				frm.submit();	
 			}
 				
-		}
-		else
-		{
-			alert("Please Select check box for update and delete !!");
 		}
 	
 	}
