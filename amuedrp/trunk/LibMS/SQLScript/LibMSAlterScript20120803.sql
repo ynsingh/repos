@@ -6,6 +6,8 @@ alter table cir_requestfrom_opac add image varchar(200);
 alter table bibliographic_details add column (image varchar(200),digital_data varchar(200),digital_comment varchar(300));
 alter table bibliographic_details_lang add column (image varchar(200),digital_data varchar(200),digital_comment varchar(300));
 drop table notice;
+drop table logs;
+drop table logsetting;
 alter table demandlist add demand_id int;
 ALTER TABLE demandlist DROP PRIMARY KEY;
 ALTER TABLE demandlist ADD PRIMARY KEY (demand_id,library_id,memId,sublibrary_id,title);
@@ -39,8 +41,8 @@ CREATE TABLE `fine_details` (
   PRIMARY KEY (`library_id`,`sublibrary_id`,`memid`,`slipno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-alter table acq_budget_allocation add column expense_amount varchar(11);
-alter table acq_budget_transaction add column expense_amount varchar(11);
+alter table acq_budget_allocation modify  expense_amount varchar(11);
+alter table acq_budget_transaction modify  expense_amount varchar(11);
 
 CREATE TABLE `acq_invoice_detail` (
   `invoice_no` varchar(20) NOT NULL DEFAULT '',
@@ -64,7 +66,6 @@ alter table acq_recieving_details add column(  `vendor_id` varchar(20) DEFAULT N
   `status` varchar(10) DEFAULT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
 
-CREATE TABLE acq_invoice_header (library_id VARCHAR(20) NOT NULL, sublibrary_id VARCHAR(20) NOT NULL, invoice_no VARCHAR(20) NOT NULL, vendor_id VARCHAR(20) NOT NULL, order_no VARCHAR(20) NOT NULL, `date` VARCHAR(20), recieved_by VARCHAR(20), discount VARCHAR(20), net_total VARCHAR(20), status VARCHAR(20), overall_discount VARCHAR(20), total_net_amount VARCHAR(20), misc_charges VARCHAR(20), grand_total VARCHAR(15), invoice_date VARCHAR(20), PRIMARY KEY (invoice_no, library_id, order_no, sublibrary_id, vendor_id));
 
 
 CREATE TABLE `acq_requestpayment_details` (
@@ -81,7 +82,7 @@ CREATE TABLE `acq_requestpayment_details` (
   `accession_status` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`library_id`,`sub_library_id`,`prn`,`recieving_no`,`invoice_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 
 --
@@ -102,7 +103,7 @@ CREATE TABLE `acq_requestpayment_header` (
   `no_of_invoices` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`library_id`,`sub_library_id`,`prn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Table structure for table `ser_biolio_details`
@@ -150,8 +151,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `ser_language`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `ser_language` (
   `library_id` varchar(20) NOT NULL,
   `language_id` varchar(10) NOT NULL,
@@ -159,24 +158,8 @@ CREATE TABLE `ser_language` (
   PRIMARY KEY  (`library_id`,`language_id`),
   KEY `FKA0F3F457FFE0695A` (`library_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Dumping data for table `ser_language`
---
-
-LOCK TABLES `ser_language` WRITE;
-/*!40000 ALTER TABLE `ser_language` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ser_language` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `ser_new_entry`
---
-
 DROP TABLE IF EXISTS `ser_new_entry`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
+
 CREATE TABLE `ser_new_entry` (
   `library_id` varchar(20) NOT NULL,
   `sublibrary_id` varchar(20) NOT NULL,
@@ -212,24 +195,7 @@ CREATE TABLE `ser_new_entry` (
   PRIMARY KEY  (`library_id`,`sublibrary_id`,`new_serial_id`),
   KEY `FK132E1BF4FFE0695A` (`library_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Dumping data for table `ser_new_entry`
---
-
-LOCK TABLES `ser_new_entry` WRITE;
-/*!40000 ALTER TABLE `ser_new_entry` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ser_new_entry` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `ser_publisher`
---
-
 DROP TABLE IF EXISTS `ser_publisher`;
-SET @saved_cs_client     = @@character_set_client;
-SET character_set_client = utf8;
 CREATE TABLE `ser_publisher` (
   `library_id` varchar(20) NOT NULL,
   `sublibrary_id` varchar(20) NOT NULL,
@@ -246,20 +212,5 @@ CREATE TABLE `ser_publisher` (
   PRIMARY KEY  (`library_id`,`sublibrary_id`,`pub_id`),
   KEY `FK795060DDFFE0695A` (`library_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-SET character_set_client = @saved_cs_client;
-
---
--- Dumping data for table `ser_publisher`
---
-
-LOCK TABLES `ser_publisher` WRITE;
-/*!40000 ALTER TABLE `ser_publisher` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ser_publisher` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-
-
-
 
 
