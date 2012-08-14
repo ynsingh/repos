@@ -561,7 +561,7 @@ Session session =null;
 }
 
 
-       public Election Electionname(String instituteId,String electionId)
+       public static Election Electionname(String instituteId,String electionId)
 {
 Session session =null;
     Election obj = null;

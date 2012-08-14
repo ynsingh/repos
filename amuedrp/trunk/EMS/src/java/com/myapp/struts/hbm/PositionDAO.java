@@ -291,6 +291,7 @@ public List<Position1> getPosition(String electionId, String instituteId) {
     }
         return obj;
     }
+
 public List<Candidate1> getCandidate(int positionId,String electionId, String instituteId) {
         Session session =null;
    List<Candidate1> cand=null;
@@ -423,7 +424,7 @@ Position1 obj=null;
 
   public  Position1 searchPosition1(Integer PositionID,String electionid,String instituteid) {
         Session session =null;
-Position1 obj=null;
+        Position1 obj=null;
         try {
             session= HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
@@ -505,6 +506,74 @@ Position1 obj=null;
     }
         return obj;
     }
+public  Electionrule getRulesbyId(String instituteId,String electionId,String ruleId) {
+        Session session = null;
+        Electionrule obj=null;
+        try {
+            session=HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+             Query query = session.createQuery("FROM Electionrule where id.instituteId=:instituteId and id.ruleId = :ruleId and id.electionId=:electionId");
+            query.setString("instituteId", instituteId);
+            query.setString("ruleId", ruleId);
+            query.setString("electionId",electionId);
+            
+             
+//            Criteria criteria = session.createCriteria(Electionrule.class)
+//                    .add(Restrictions.conjunction()
+//                    .add(Restrictions.eq("id.electionId", electionid)))
+//                    .add(Restrictions.eq("id.instituteId", instituteid))
+//                    .add(Restrictions.eq("id.ruleId", ruleid));
+     //   obj= (Electionrule) criteria.uniqueResult();
+         obj= (Electionrule) query.uniqueResult();
+        session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
 
+          e.printStackTrace();
+          throw e;
+
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
+    }
+public void updateRule(Electionrule rule) {
+        Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.update(rule);
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+          e.printStackTrace();
+                tx.rollback();
+            throw e;
+        }
+        finally {
+           session.close();
+        }
+    }
+public void deleteRule(Electionrule rule) {
+        Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            tx = session.beginTransaction();
+            session.delete(rule);
+            tx.commit();
+        }
+        catch (RuntimeException e) {
+          e.printStackTrace();
+                tx.rollback();
+            throw e;
+        }
+        finally {
+           session.close();
+        }
+    }
 
 }

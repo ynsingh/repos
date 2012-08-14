@@ -19,7 +19,7 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  *
- * @author faraz
+ * @author Iqubal Ahmad
  */
 public class deletePositionsBallotAction extends org.apache.struts.action.Action {
     
@@ -37,20 +37,23 @@ public class deletePositionsBallotAction extends org.apache.struts.action.Action
         String electionid = (String)request.getParameter("getElectionId");
         String instituteId = (String)session.getAttribute("institute_id");
         String positionId = (String)request.getParameter("positionId");
-
+        System.out.println("11111111electionid"+electionid+"positionid="+positionId);
         Position1 position = emailDAO.searchPosition1(Integer.parseInt(positionId), electionid, instituteId);
+        
         if(position!=null)
         {
             PositionDAO pos=new PositionDAO();
             List<Candidate1> obj=(List<Candidate1>)pos.getCandidate(position.getId().getPositionId(),position.getId().getElectionId(),instituteId);
-            if(obj.isEmpty()==false && obj!=null){
+          
+            if(obj.isEmpty()){
+            
             emailDAO.deletePosition(position);
             positions+="<email_ids><message>Position Deleted Successfully</message></email_ids>";
             response.setContentType("application/xml");
             response.getWriter().write(positions);
             return null;
             }else{
-            positions+="<email_ids><message>Sorry Position Cannot be Deleted because Candidature request are there in this position </message></email_ids>";
+            positions+="<email_ids><message>Sorry Position Cannot be Deleted because Candidature request is sent against this position </message></email_ids>";
             response.setContentType("application/xml");
             response.getWriter().write(positions);
             return null;

@@ -153,7 +153,7 @@ var divtag = document.createElement("div");
      divtag.style.width = "930px";
      divtag.style.align = "center";
      divtag.style.marginLeft = "0px";
-     divtag.innerHTML ='<table><tr><td>Criteria*&nbsp;&nbsp;<input type="text" Id="criteria_name'+k+''+l +'" size="25px"/></td>&nbsp;&nbsp;<td><%--<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/>--%></td><td><input type="button" id="but0'+ l +'" value="Save" onclick="search1('+ l +');"/>eg.i)Candidate should have 75% of Attendence<br> ii)No Criminal background should be allowed etc..</td></tr><tr><%--<td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td>--%></tr></table>';
+     divtag.innerHTML ='<table><tr><td>Criteria*&nbsp;&nbsp;<input type="text" Id="criteria_name'+k+''+l +'" size="25px"/></td>&nbsp;&nbsp;<td></td><td><input type="button" id="but0'+ l +'" value="Save" onclick="search1('+ l +');"/>eg.i)Candidate should have 75% of Attendence<br> ii)No Criminal background should be allowed etc..</td></tr><tr><%--<td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td>--%></tr></table>';
 
 
 
@@ -303,7 +303,7 @@ function search1(current) {
     //instruct="You can choose "+noofchoice+" Candidate for this Position";
 
     var electionId = document.getElementById("electionId").value;
-    alert(position);
+    //alert(position_name);
     position_name = position_name.replace(/^\s*|\s*$/g,"");
    // noofchoice = noofchoice.replace(/^\s*|\s*$/g,"");
    // instruct = instruct.replace(/^\s*|\s*$/g,"");
@@ -323,10 +323,10 @@ if(position_name!="" && position_name!=null  && electionId!="" && electionId!=nu
 
   
 req.onreadystatechange = getReadyStateHandler(req, update2);
-req.open("POST","<%=request.getContextPath()%>/AddRule.do?setRule="+position_name+"&setElectionId="+electionId, true);
+req.open("POST","<%=request.getContextPath()%>/AddRule.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send();
+req.send("setRule="+position_name+"&setElectionId="+electionId);
 var idPos = "criteria"+current;
 
 document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
@@ -355,7 +355,7 @@ alert(em1[i].firstChild.nodeValue);
 }
 function deletePosition(current) {
    
-    var req = newXMLHttpRequest();
+ var req = newXMLHttpRequest();
  var electionId = document.getElementById("electionId").value;
  var posId = "position_id0"+current;
  var PositionId = document.getElementById(posId).value;

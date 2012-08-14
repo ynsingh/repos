@@ -31,10 +31,10 @@ public class AddElectionRule extends org.apache.struts.action.Action {
             throws Exception {
         StringBuffer emails=new StringBuffer();
         PositionDAO emailDAO = new PositionDAO();
-        String positionText = request.getParameter("setRule");
+        String positionText = (String)request.getParameter("setRule");
       
-        String electionid = request.getParameter("setElectionId");
-        String posid = request.getParameter("setposId");
+        String electionid =(String) request.getParameter("setElectionId");
+   //     String posid =(String) request.getParameter("setposId");
       //  String instruct = request.getParameter("setposInstruction");
         HttpSession session = request.getSession();
        // String electionId = (String)session.getAttribute("electionid");
