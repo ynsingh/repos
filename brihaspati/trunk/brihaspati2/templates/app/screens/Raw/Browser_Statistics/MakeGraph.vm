@@ -31,6 +31,7 @@ $!data.getMessage()
 	      </tr>
 	</table>
 	<form name="frm" method="post">
+	#if($userList1.size()!=0)
 	<table width="100%">
 		<tr bgcolor="$ui.tableColor">
 			<td colspan="1">
@@ -99,7 +100,7 @@ $!data.getMessage()
                         #if($value!="")
                        		<option>$value </option>
                         #else
-                        	<option>  - DaysValue - </option>
+                        	<option>  - $brih_days$brih_value - </option>
                         #end
 			#if($value!="7")
                                 <option value="$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("type","sgraph").addPathInfo("usrname",$usrname).addPathInfo("value","7")">7 </option>
@@ -121,6 +122,7 @@ $!data.getMessage()
 			<tr bgcolor="$ui.menuColor"><td colspan="1"><div id="graphdiv2"></td></div></tr>
 		#end
 	</table>
+	#end
 		<input type="hidden" name="valdir">
 		<input type="hidden" name="mname" value="$mname">
 		<input type="hidden" name="valuestr" value="$valuestr">
