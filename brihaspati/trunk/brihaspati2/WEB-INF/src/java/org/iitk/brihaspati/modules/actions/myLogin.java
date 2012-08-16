@@ -34,6 +34,7 @@ package org.iitk.brihaspati.modules.actions;
  *  
  */
 
+import java.util.List;
 import java.util.Date;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -45,7 +46,8 @@ import org.apache.torque.util.Criteria;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.iitk.brihaspati.om.UserPrefPeer;
+import org.iitk.brihaspati.om.UserPref;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -69,6 +71,7 @@ import org.iitk.brihaspati.modules.utils.UpdateMailthread;
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  *  @author <a href="mailto:palseema30@gmail.com">Manorama pal</a>
  *  @author modified date 04 Oct 2011<a href="mailto:kishore.shukla@gmail.com">kishore shukla</a>
+ * @author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  */
 
 public class myLogin extends VelocityAction{
@@ -85,12 +88,14 @@ public class myLogin extends VelocityAction{
 		System.gc();
 		Criteria crit = null;
 		String userLanguage = "";
-		
+		String a_key = "";	
+	
+		List list = null;	
+
 		/** Getting Language according to Selection of Language in lang Variable
                  *  Getting Property file  according to Selection of Language
 		 */
-
-                String flag=data.getParameters().getString("flag");
+		String flag=data.getParameters().getString("flag");
                 //String LangFile =data.getParameters().getString("Langfile","");
                 String lang=data.getParameters().getString("lang","");
 
@@ -108,61 +113,108 @@ public class myLogin extends VelocityAction{
                                          
 			int uid=UserUtil.getUID(username);
 			if(uid != -1){
-				/** 
-				 *  Get the session if exist then remove and create new session
-				 **/
-				User user=null;
-				LoginUtils.CheckSession(username);
-				ErrorDumpUtil.ErrorLog("After checking the session");
-
-				// Provide a logger with the class name as category. This
-				// is recommended because you can split your log files
-				// by packages in the Log4j.properties. You can provide
-				// any other category name here, though.
-				log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
-
-				user = null;
-				lang=LoginUtils.SetUserData(username, password, flag, lang, data);
-				context.put("lang",lang);
-				ErrorDumpUtil.ErrorLog("After setting User data");
-
-				userLanguage = null;
-				crit = null;
-				LoginUtils.UpdateUsageData(uid);
-				ErrorDumpUtil.ErrorLog("After updating usage data");
-
-				//If there is an error redirect to login page with a message"Cannot Login"
+		// Following lines added by Priyanka
 				try{
-					AccessControlList acl = data.getACL();
-					if( acl == null ){
-						acl = TurbineSecurity.getACL( data.getUser() );
-						ErrorDumpUtil.ErrorLog("If ACL null");
-						data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
+					crit = new Criteria();
+					crit.add(UserPrefPeer.USER_ID,uid);
+					list = UserPrefPeer.doSelect(crit);
+				//	list_size = list.size();
+			//		ErrorDumpUtil.ErrorLog("LIST IS	"+list);		
+					a_key = ((UserPref)list.get(0)).getActivation(); 
+					//len = str.indexOf("Activation");
+					 
+					//ErrorDumpUtil.ErrorLog("I M HERE......"+a_key+" ACTIVATE");
+ 
+					if (a_key == null || a_key.equalsIgnoreCase("NULL"))
+					{
+						 try{
+                	                              data.setMessage("Your account has some problem, contact to administrator or re register.");
+                        	                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account has some problem, contact to administrator or re register.");
+                                 	         }
+	                                         catch (Exception ex){
+                	                                ErrorDumpUtil.ErrorLog("User's account activated not activated........... "+ex);
+         	                                 }
 					}
-					data.setACL(acl);
-					data.save();
-				}
-				catch(Exception ex){
-					ErrorDumpUtil.ErrorLog("Error in setting Access rules :- "+ex +" The account '' does not exist Or password is incorrect");
-					data.setMessage("The account does not exist Or password is incorrect");
-				}
-				ErrorDumpUtil.ErrorLog("After setting the ACL");
-			
-				/*calling UpdateMailThread Util*/
-				UpdateMailthread.getController().UpdateMailSystem();
-				Date date=new Date();
-				boolean AB=CommonUtility.IFLoginEntry(uid,date);
+					              
+					if (a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
+					{
+			//..........			
+						/** 
+				 		*  Get the session if exist then remove and create new session
+				 		**/
+						User user=null;
+						LoginUtils.CheckSession(username);
+						ErrorDumpUtil.ErrorLog("After checking the session");
 
-				/**
-        	                  *Check the user for hint question when login at the first time.
-                	          */
-				LoginUtils.SetHintQues(uid, data);
-				ErrorDumpUtil.ErrorLog("After checking hint question");
-				/**
-	 			* Called the method from utils for Insert record when user (Student) already exist
- 				* in Turbine User Table
- 				*/
-				System.gc();
+						// Provide a logger with the class name as category. This
+						// is recommended because you can split your log files
+						// by packages in the Log4j.properties. You can provide
+						// any other category name here, though.
+						log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
+
+						user = null;
+						lang=LoginUtils.SetUserData(username, password, flag, lang, data);
+						context.put("lang",lang);
+						ErrorDumpUtil.ErrorLog("After setting User data");
+
+						userLanguage = null;
+						crit = null;
+						LoginUtils.UpdateUsageData(uid);
+						ErrorDumpUtil.ErrorLog("After updating usage data");
+
+						//If there is an error redirect to login page with a message"Cannot Login"
+						try{
+							AccessControlList acl = data.getACL();
+							if( acl == null ){
+								acl = TurbineSecurity.getACL( data.getUser() );
+								ErrorDumpUtil.ErrorLog("If ACL null");
+								data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
+							}
+							data.setACL(acl);
+							data.save();
+						}
+						catch(Exception ex){
+							ErrorDumpUtil.ErrorLog("Error in setting Access rules :- "+ex +" The account '' does not exist Or password is incorrect");
+							data.setMessage("The account does not exist Or password is incorrect");
+						}
+						ErrorDumpUtil.ErrorLog("After setting the ACL");
+			
+						/*calling UpdateMailThread Util*/
+						UpdateMailthread.getController().UpdateMailSystem();
+						Date date=new Date();
+						boolean AB=CommonUtility.IFLoginEntry(uid,date);
+
+						/**
+        	                  		*Check the user for hint question when login at the first time.
+                	          		*/
+						LoginUtils.SetHintQues(uid, data);
+						ErrorDumpUtil.ErrorLog("After checking hint question");
+						/**
+	 					* Called the method from utils for Insert record when user (Student) already exist
+ 						* in Turbine User Table
+ 						*/
+						System.gc();
+					}
+			// Foolowing check added by Priyanka
+					else
+					{
+						try{
+                                                      data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
+                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account is not activated. For activation please check your mail. If you did not get the mail, please click on the Resend Activation link.");
+                                                 }
+                                                 catch (Exception ex){
+							String msg = "Error in login";
+                                                        ErrorDumpUtil.ErrorLog("User's account not activated........... "+ex);
+							 throw new RuntimeException(msg,ex);
+                                                 }
+
+					}
+				}
+				catch(Exception e){
+                	                String message = "Error in activation   ";
+        	                        throw new RuntimeException(message, e);
+	                        }
+		//..........
 			}//if for uid (-1)
 			else{
 				data.setMessage("User does not exist.");

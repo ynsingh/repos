@@ -49,6 +49,8 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 09-08-2012 (Priyanka)
  */
 public class RegisterICInstructor extends SecureAction_Institute_Admin
 {
@@ -115,7 +117,7 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
 	 			boolean check=QuotaUtil.CompareAllotedQuota(instId);
 				if(check){
-	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName); //modified by Shikha                   
+	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName,"act"); //modified by Shikha. Last parameter added by Priyanka                   
 		 		data.setMessage(msg);
 				}
 				else{
@@ -124,7 +126,9 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 				}
 		}
 		catch(Exception e)
-		{
+		{	
+			ErrorDumpUtil.ErrorLog("Error during course registration by Inst Admin"+e);
+			
 			 data.setMessage("The error"+e);	
                           
 		}

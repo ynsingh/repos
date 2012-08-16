@@ -137,7 +137,7 @@ public class AddUser extends SecureAction_Admin
 		 * Adds the new user in the database.
 		 * @see UserManagement in utils
 		 */
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gname,roleName,serverName,serverPort,LangFile,rollno,program);   //modified by Shikha
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"");   //modified by Shikha. Last parameter added by Priyanka.
 		//ErrorDumpUtil.ErrorLog("msg at line 131====="+msg);
 		data.setMessage(msg);
 		}

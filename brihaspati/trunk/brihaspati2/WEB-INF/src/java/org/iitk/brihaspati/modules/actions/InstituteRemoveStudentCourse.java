@@ -169,7 +169,7 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 				message = message.replaceAll("institute_admin",instName);	
 				//ErrorDumpUtil.ErrorLog("\n\n\n\n in RemoveStudentCourse message="+message+"      subject="+subject);
                                 //String Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
-				String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instId);
+				String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instId,"");//last parameter added by Priyanka
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 data.setMessage(Mail_msg);
 				String msg=umt.removeUserProfile(postString,preString,LangFile);
@@ -253,9 +253,9 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 				roleName="student";
 			}
 		if(!instId.equals(""))
-			msg=UserManagement.CreateUserProfile(uname,"","","",instName,"",gName,roleName,serverName,serverPort,LangFile,rollno,program); // modified by Shikha
+			msg=UserManagement.CreateUserProfile(uname,"","","",instName,"",gName,roleName,serverName,serverPort,LangFile,rollno,program, ""); // modified by Shikha
 		else
-			msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program); // modified by Shikha
+			msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program, ""); // modified by Shikha
 				       data.setMessage(msg);
 		}
 		catch(Exception e)

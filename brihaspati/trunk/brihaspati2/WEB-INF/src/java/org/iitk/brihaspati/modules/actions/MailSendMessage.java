@@ -427,7 +427,7 @@ public class MailSendMessage extends SecureAction
 	                		if( (fileItem.getSize() == 0) && (mailId != null && mailId != "") ){
 						// mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, LangFile);
 						//mailMsg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
-						mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, "");	
+						mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, "","");//last parameter added by Priyanka	
 					}
 	                		if((fileItem!=null) && (fileItem.getSize()!=0))
                                 	{
@@ -444,7 +444,7 @@ public class MailSendMessage extends SecureAction
 							fileItem.write(f1ForLM);
 							//mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", filePathForLM, serverName, serverPort, LangFile);
 							//mailMsg=MailNotification.sendMail(message, mailId, subject, filePathForLM, LangFile);
-							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, filePathForLM, LangFile, "");
+							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, filePathForLM, LangFile, "","");//last parameter added by Priyanka
 						} //if s3 end
 						else { //else s3 start
 	                                		String realPath = TurbineServlet.getRealPath("/UserArea");

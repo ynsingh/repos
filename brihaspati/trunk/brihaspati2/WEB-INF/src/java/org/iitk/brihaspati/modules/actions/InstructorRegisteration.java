@@ -50,6 +50,8 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *  @modified date: 20-10-2010, 23-12-2010, 08-09-2012
+ *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *  @modify date: 09-08-2012 (Priyanka)
  */
  
 
@@ -114,7 +116,7 @@ public class InstructorRegisteration extends SecureAction
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program, "act"); //modified by Shikha
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

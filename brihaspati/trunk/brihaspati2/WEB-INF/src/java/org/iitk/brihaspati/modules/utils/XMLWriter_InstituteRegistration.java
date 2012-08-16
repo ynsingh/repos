@@ -54,6 +54,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 /**
  * @author <a href="jaivirpal@gmail.com">Jaivir Singh</a>
  * @author <a href="palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 009-08-2012 (Priyanka)
  */
 
 /**class for hadling all the stuff of institute registration in xml file	
@@ -78,12 +80,15 @@ public class XMLWriter_InstituteRegistration {
 	 *@param expDate (String)
 	 *@param fname (String)
 	 *@param lname (String)
+	 *@param email (String)
 	 *@param designation (String)
 	 *@param username (String)
 	 *@param  password (String)
+	 *@param activation (String)
+	 *@param flag (String)
 	 *return String
 	 */
-	public static String  InstituteRegistrationListXml(String filePath,String name,String address,String city,String pincode,String state,String landlineno,String domain,String type,String affiliation,String website,String regDate,String expDate,String fname,String lname,String email,String designation,String username,String password ){
+	public static String  InstituteRegistrationListXml(String filePath,String name,String address,String city,String pincode,String state,String landlineno,String domain,String type,String affiliation,String website,String regDate,String expDate,String fname,String lname,String email,String designation,String username,String password,String activation,String flag){//last two parameters added by Priyanka
 		String message="UnSuccessfull";
                 try{
 			//Create instance of DocumentBuilderFactory
@@ -174,6 +179,17 @@ public class XMLWriter_InstituteRegistration {
 			Element instpassword = doc.createElement("Password");
                         Text passwordText = doc.createTextNode(password);
                         instpassword.appendChild(passwordText);
+
+		//For email confirmation
+			Element instactivation = doc.createElement("Activation");
+                        Text activationText = doc.createTextNode(activation);
+                        instactivation.appendChild(activationText);
+
+			Element instflag = doc.createElement("Flag");
+                        Text flagText = doc.createTextNode(flag);
+                        instflag.appendChild(flagText);			
+		// ..........
+
 			//inserting values in the tag or field.
        	                institute.appendChild(instname); 
        	                institute.appendChild(instaddress); 
@@ -192,7 +208,10 @@ public class XMLWriter_InstituteRegistration {
        	                institute.appendChild(instemail); 
        	                institute.appendChild(instdesignation); 
        	                institute.appendChild(instusername); 
-       	                institute.appendChild(instpassword); 
+       	                institute.appendChild(instpassword);
+			institute.appendChild(instactivation);
+			institute.appendChild(instflag);
+		 
 			//add in the root element
                	        root.appendChild(institute);
 			
@@ -352,6 +371,17 @@ public class XMLWriter_InstituteRegistration {
                                         Node nNode = nodeList.item(i);
                                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                                                eElement = (Element) nNode;
+				
+						/**
+                                                 * get flag value by passing Flag tag
+                                                 * if value is equal to "1"
+                                                 * then continue further                                                                                                                                        */
+						 String flag = getTagValue("Flag",eElement);
+                                		//following check added by Priyanka
+				                if(flag.equals("1"))
+                                                {
+
+
 						/** get the node value by passing element
 						 *set the value in InstituteFileEntry object
 						 *@see InstituteFileEntry in utils
@@ -395,6 +425,7 @@ public class XMLWriter_InstituteRegistration {
                                                 InstfileEntry.setInstitutePassword(passwd);
 						/*store all values in the vector*/
                                                 v.add(InstfileEntry);
+						}
                                         }
                                 }
                         }
@@ -421,53 +452,55 @@ public class XMLWriter_InstituteRegistration {
                                         Node nNode = nodeList.item(i);
                                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                                                eElement = (Element) nNode;
-						/** get domain value by passing Domain tag
-						 *if value match with domain
-						 * then get all tag values and set in InstituteFileEntry object
-						 **@see InstituteFileEntry in utils
-						 * store the values in vector
-						 */
-                                                String domain=getTagValue("Domain",eElement);
-						if(instdomain.equals(domain))
-						{
-                                                	InstituteFileEntry InstfileEntry=new InstituteFileEntry();
-                                                	String name=getTagValue("Name",eElement);
-                                                	String addr=getTagValue("Address",eElement);
-                                                	String city=getTagValue("City",eElement);
-                                                	String pcode=getTagValue("Pincode",eElement);
-                                                	String state=getTagValue("State",eElement);
-                                                	String llno=getTagValue("LandLineNo",eElement);
-                                                	String type=getTagValue("Type",eElement);
-                                                	String affil=getTagValue("Affiliation",eElement);
-                                                	String website=getTagValue("Website",eElement);
-                                                	String regdate=getTagValue("RegDate",eElement);
-                                                	String expdate=getTagValue("ExpDate",eElement);
-                                                	String fname=getTagValue("FName",eElement);
-                                                	String lname=getTagValue("LName",eElement);
-                                                	String email=getTagValue("Email",eElement);
-                                                	String degs=getTagValue("Designation",eElement);
-                                                	String Uname=getTagValue("UserName",eElement);
-                                                	String passwd=getTagValue("Password",eElement);
-                                                	InstfileEntry.setInstituteName(name);
-                                                	InstfileEntry.setInstituteAddress(addr);
-                                                	InstfileEntry.setInstituteCity(city);
-                                                	InstfileEntry.setInstitutePincode(pcode);
-                                                	InstfileEntry.setInstituteState(state);
-                                                	InstfileEntry.setInstituteLandLineNo(llno);
-                                                	InstfileEntry.setInstituteDomain(domain);
-                                                	InstfileEntry.setInstituteType(type);
-                                                	InstfileEntry.setInstituteAffiliation(affil);
-                                                	InstfileEntry.setInstituteWebsite(website);
-                                                	InstfileEntry.setInstituteRegDate(regdate);
-                                                	InstfileEntry.setInstituteExpDate(expdate);
-                                                	InstfileEntry.setInstituteFName(fname);
-                                                	InstfileEntry.setInstituteLName(lname);
-                                                	InstfileEntry.setInstituteEmail(email);
-                                                	InstfileEntry.setInstituteDesignation(degs);
-                                                	InstfileEntry.setInstituteUserName(Uname);
-                                                	InstfileEntry.setInstitutePassword(passwd);
-                                                	v.add(InstfileEntry);
-						}
+
+							/** get domain value by passing Domain tag
+						 	*if value match with domain
+						 	* then get all tag values and set in InstituteFileEntry object
+						 	**@see InstituteFileEntry in utils
+						 	* store the values in vector
+						 	*/
+                                                	String domain=getTagValue("Domain",eElement);
+							if(instdomain.equals(domain))
+							{							
+                                                		InstituteFileEntry InstfileEntry=new InstituteFileEntry();
+                                                		String name=getTagValue("Name",eElement);
+                                                		String addr=getTagValue("Address",eElement);
+                                                		String city=getTagValue("City",eElement);
+                                                		String pcode=getTagValue("Pincode",eElement);
+                                                		String state=getTagValue("State",eElement);
+                                                		String llno=getTagValue("LandLineNo",eElement);
+                                                		String type=getTagValue("Type",eElement);
+                                                		String affil=getTagValue("Affiliation",eElement);
+                                                		String website=getTagValue("Website",eElement);
+                                                		String regdate=getTagValue("RegDate",eElement);
+                                                		String expdate=getTagValue("ExpDate",eElement);
+                                                		String fname=getTagValue("FName",eElement);
+                                                		String lname=getTagValue("LName",eElement);
+                                                		String email=getTagValue("Email",eElement);
+                                                		String degs=getTagValue("Designation",eElement);
+                                                		String Uname=getTagValue("UserName",eElement);
+                                                		String passwd=getTagValue("Password",eElement);
+                                                		InstfileEntry.setInstituteName(name);
+                                                		InstfileEntry.setInstituteAddress(addr);
+                                                		InstfileEntry.setInstituteCity(city);
+                                                		InstfileEntry.setInstitutePincode(pcode);
+                                                		InstfileEntry.setInstituteState(state);
+                                                		InstfileEntry.setInstituteLandLineNo(llno);
+                                                		InstfileEntry.setInstituteDomain(domain);
+                                                		InstfileEntry.setInstituteType(type);
+                                                		InstfileEntry.setInstituteAffiliation(affil);
+                                                		InstfileEntry.setInstituteWebsite(website);
+                                                		InstfileEntry.setInstituteRegDate(regdate);
+                                                		InstfileEntry.setInstituteExpDate(expdate);
+                                                		InstfileEntry.setInstituteFName(fname);
+                                                		InstfileEntry.setInstituteLName(lname);
+                                                		InstfileEntry.setInstituteEmail(email);
+                                                		InstfileEntry.setInstituteDesignation(degs);
+                                                		InstfileEntry.setInstituteUserName(Uname);
+                                                		InstfileEntry.setInstitutePassword(passwd);
+                                                		v.add(InstfileEntry);
+							}
+
                                         }
                                 }
                         }
@@ -551,6 +584,13 @@ public class XMLWriter_InstituteRegistration {
 						/**if match domain then delete the entry from  source xml file
 						 *add in destination xml file
 						 */	
+						     // added by Priyanka
+						     // set value of Flag to "1"
+							NodeList exptag = doc.getElementsByTagName("Flag");
+                                                                Node node1 = exptag.item(i);
+                                                                node1.getFirstChild().setNodeValue("1");
+                                                    //......
+
                                                         doc.getDocumentElement().removeChild(element);
                                                                 saveXML(doc,filePathsrc);
                                                         Node dup = docdest.importNode(element, true);
@@ -644,4 +684,67 @@ public class XMLWriter_InstituteRegistration {
                 }
                 catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(RemoveElementRejectxml)"+e);}
         }
+
+//following method added by Priyanka
+	 /**method for setting Flag element in xml file
+ 	  *@param filePath (String)
+          *@param email (String)
+          *@param activation (String)
+	  *return boolean
+          */
+	
+	public static boolean SetFlag(String filePath, String email, String activation)
+	{
+		ErrorDumpUtil.ErrorLog("email from mail "+email);
+		boolean set=false;
+		//READ the file
+		Element eElement=null;
+                try {
+                        File f=new File(filePath);
+                        if(f.exists()) {
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder builder = factory.newDocumentBuilder();
+				Document doc = builder.parse(getFile(filePath));
+				doc.getDocumentElement().normalize();
+				 NodeList nodeList = doc.getElementsByTagName("Institute");
+                                 for( int i=0; i<nodeList.getLength(); i++ ) {
+                                        Node nNode = nodeList.item(i);
+                                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                eElement = (Element) nNode;
+ 					//	InstituteFileEntry InstfileEntry=new InstituteFileEntry();
+ 						 /**get tag value by passing tag(email)
+                                                  *@see getTagValue method
+                                                  */
+                                                String e_mail=getTagValue("Email",eElement);
+						ErrorDumpUtil.ErrorLog("email from xml "+e_mail);
+						if(email.equals(e_mail))
+						{
+							/**get tag value by passing tag(Activation)
+                                                          * @see getTagValue method
+                                                          */
+							String a_key=getTagValue("Activation",eElement);
+							if(activation.equals(a_key))
+							{
+								/**Find element with the name "Activation"
+ 								 * set node value (update xml)
+ 								 */
+								NodeList exptag = doc.getElementsByTagName("Flag");
+                                                        	Node node1 = exptag.item(i);
+                                                        	node1.getFirstChild().setNodeValue("1");
+                                                        	saveXML(doc,filePath);
+								set = true;
+							}
+						}
+                                        }
+					break;
+                                }
+                        }
+                }
+                catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(SetFlag)"+e);
+		}
+                return set;
+	}//method
+//...............................
 }

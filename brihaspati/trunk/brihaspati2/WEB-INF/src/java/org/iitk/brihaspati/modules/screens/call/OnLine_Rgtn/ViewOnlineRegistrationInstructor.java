@@ -56,7 +56,9 @@ import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
  * @author <a href="mailto:ynsingh@iitk.ac.in">Dr. Y. N. Singh </a>	
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 20-10-2010, 23-12-2010
+ * @modified date: 09-08-2012 (Priyanka)
  */
 
 
@@ -85,6 +87,7 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                 File xmlfile= new File(path+"/OnlineUser.xml");
                 if(xmlfile.exists())
                 {
+			//ErrorDumpUtil.ErrorLog("inside ViewOnline Registration 1");
                         TopicMetaDataXmlReader topicmetadata=null;
                        	Vector list=new Vector();
                        	topicmetadata=new TopicMetaDataXmlReader(path+"/OnlineUser.xml");
@@ -94,12 +97,18 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
 			context.put("courseID",courseid);
                        	if(list!=null)
                        	{
+				//ErrorDumpUtil.ErrorLog("inside ViewOnline Registration 3");
                                	for(int i=0;i<list.size();i++)
                                	{
-
-                               	       	String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
+				  //following check added by Priyanka
+				   String flag=((CourseUserDetail) list.elementAt(i)).getFlag();
+				   if(flag.equals("1"))
+				   {
+					String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
+					//ErrorDumpUtil.ErrorLog("gname "+gname);
                                	   	if(gname.equals(courseid))
 					{
+						ErrorDumpUtil.ErrorLog("inside ViewOnline Registration 7");
 						String uname=((CourseUserDetail) list.elementAt(i)).getLoginName();
                                	        	String passwd=((CourseUserDetail) list.elementAt(i)).getActive();
                                                 String fname=((CourseUserDetail) list.elementAt(i)).getInstructorName();
@@ -127,14 +136,16 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                                	        	entry.addElement(dbDetail);
 					}
 					
-                               	}
+                               	   }
+				}
                        	}
                     else {
-				
+				ErrorDumpUtil.ErrorLog("inside ViewOnline Registration 4");
                                	xmlfile.delete();
                        	}
                 }
  		else{
+			ErrorDumpUtil.ErrorLog("inside ViewOnline Registration 2");
 			 data.setMessage(MultilingualUtil.ConvertedString("online_msg8",user.getTemp("LangFile").toString()));
                        //	data.setMessage("Sorry, No User Registration till now !!");
                 }
@@ -150,7 +161,7 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                          ModuleTimeUtil.getModuleCalculation(uid);
                 }
 
-		
+		ErrorDumpUtil.ErrorLog("inside ViewOnline Registration 10");
 	}//try end
 	catch(Exception e) { 
 		ErrorDumpUtil.ErrorLog("The error in Online registartion reading file" +e);

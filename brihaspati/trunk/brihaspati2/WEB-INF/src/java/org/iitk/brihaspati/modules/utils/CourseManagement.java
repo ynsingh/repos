@@ -85,12 +85,13 @@ public class CourseManagement
 		 * @param fname String The user first name who has be registered in the new course
 		 * @param lname String The user last name who has be registered in the new course
 		 * @param email String The user email-id who has be registered in the new course
+		 * @param mode String Defines whether activation link shoulb sent in the mail or not
 		 * @return String
 		 * @see StringUtil In this utils check illegal characters
 		 * @see UserManagement In this utils manage all details of user
 		 * 
 		 */
-		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id,String iname) throws Exception
+		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id,String iname,String mode) throws Exception//last parameter added by Priyanka
 		{
 			String message=new String();
 			/**
@@ -181,7 +182,7 @@ public class CourseManagement
 				 		*/
 						String rollno="";
 						String program="";
-						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,iname,email,newcid,"instructor",serverName,serverPort,file,rollno,program);
+						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,iname,email,newcid,"instructor",serverName,serverPort,file,rollno,program,mode);//Last parameter added by Priyanka
 						/**********************modify by sunil***/
                                 		int GID=GroupUtil.getGID(newcid);
                                 		int uid=UserUtil.getUID(uname);

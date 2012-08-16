@@ -134,7 +134,7 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 				TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 				String email=element.getEmail();
 				String message = MailNotification.getMessage(info_new, preString, "", "", "", pr);
-                                String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, "");
+                                String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, "","");//last parameter added by Priyanka
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 data.setMessage(Mail_msg);
 				String msg=umt.removeUserProfile(postString,preString,LangFile);
@@ -204,7 +204,8 @@ public class RemoveStudentCourse extends SecureAction_Admin{
                         }
 			String program = pp.getString("prg","");
 			String roleName="student";
-			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program);  //modified by Shikha
+			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program,"");  //modified by Shikha. Last parameter added by Priyanka
+
 			data.setMessage(msg);
 		}
 		catch(Exception e)

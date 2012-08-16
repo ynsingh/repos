@@ -156,7 +156,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 							message = MailNotification.getMessage(info_new, gname, "", uname, "", pr);					
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Instructor.java RejectUser  message="+message);
 							//String Mail_msg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
-							String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Instructor of  "+instName+"<br>"+loginName, mailId, subject, "", LangFile, strInstId);
+							String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Instructor of  "+instName+"<br>"+loginName, mailId, subject, "", LangFile, strInstId,"");//last parameter added by Priyanka
 
 							indexList.add(i);
 							String str=MultilingualUtil.ConvertedString("online_msg3",LangFile);
@@ -257,7 +257,8 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 							if(uname!=null)
 							{
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program); //modified by Shikha
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"cnfrm_u"); //modified by Shikha. Last parameter added by Priyanka.
+									ErrorDumpUtil.ErrorLog("inside onlineRegtn_Instructor");
 									data.setMessage(msg);
 								}
 								catch(Exception e){
