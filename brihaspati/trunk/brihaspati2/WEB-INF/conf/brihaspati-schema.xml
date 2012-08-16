@@ -7,7 +7,7 @@
 <!--                                                                      -->
 <!-- ==================================================================== -->
 <!-- ==================================================================== -->
-<database name="brihaspati1" defaultIdMethod="idbroker">
+<database name="brihaspati" defaultIdMethod="idbroker">
   <table name="NOTE" idMethod="idbroker">
     <column name="NOTE_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="POSTED_BY" size="255" type="VARCHAR"/>
