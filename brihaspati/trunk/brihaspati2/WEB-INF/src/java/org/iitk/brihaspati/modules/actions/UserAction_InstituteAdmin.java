@@ -373,7 +373,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
 					message = MailNotification.getMessage(info_new, cName, "", "", "", pr);
                 			message = message.replaceAll("institute_admin",instName);
 					//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
-					Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId);
+					Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");//last parameter added by Priyanka
 					data.setMessage(Mail_msg);
 					String st1=mu.ConvertedString("delIns1",LangFile);
 					String st2=mu.ConvertedString("delIns2",LangFile);
@@ -398,7 +398,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
 			message = MailNotification.getMessage(info_new, groupName, "", "", "", pr);
        			message = message.replaceAll("institute_admin",instName);
 			//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
-			Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId);
+			Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");//last parameter added by Priyanka
 			Messages=UserManagement.RemoveUser(userName,LangFile);
 			context.put("error_Messages",Messages);
 			data.setMessage(Mail_msg);

@@ -347,9 +347,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 					//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
 					message = MailNotification.getMessage(info_new, cName, "", "", "", pr);
 					if(instId != 0) 
-						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId));
+						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
 					else
-						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "");
+						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
 					data.setMessage(Mail_msg);
 					String st1=mu.ConvertedString("delIns1",LangFile);
 					String st2=mu.ConvertedString("delIns2",LangFile);
@@ -376,9 +376,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 			//ErrorDumpUtil.ErrorLog("\n	in User_Action_Admin  message="+message+"      subject="+subject);	
 			//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
 			if(instId == 0) 
-				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "");
+				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
 			else
-				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId));
+				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
 
 			Messages=UserManagement.RemoveUser(userName,LangFile);
 			context.put("error_Messages",Messages);
