@@ -217,7 +217,7 @@ public class ForgotPassword extends VelocitySecureAction
 						String message = MailNotification.getMessage(info_new, "", "", "", password, serverName, Integer.toString(srvrPort), pr);
 						//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+message+"\nmsgRegard   "+msgRegard);
 						//msg1=MailNotification.sendMail(message, mailId, subject, "", LangFile); 
-						msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile, ""); 
+						msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile, "","");//last parameter added by Priyanka 
 						/////////////////////////////////////////////////
 						/**
 						* new Password encrypted by MD5 then modify database 
