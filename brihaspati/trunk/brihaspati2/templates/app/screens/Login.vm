@@ -62,7 +62,7 @@ Click here  </a>
 ##Add FAQ link in login page
 <tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")style=text-decoration:none>FAQ List </a>
+<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general") style=text-decoration:none>FAQ List </a>
 </td></tr>
 ##following link added by Priyanka
 <tr><td colspan=2>
