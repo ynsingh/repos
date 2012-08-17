@@ -58,6 +58,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private JPanel panel;
 	private JPanel titlePane;
 	private JPanel NorthPanel;
+	private JPanel NorthPanel1;
+	private JPanel NorthPanel_new;
 	private JPanel langPanel;
 	private JPanel CenterPanel;
 	private JPanel SouthPanel;	
@@ -89,6 +91,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
         private JPanel loginPanel1;
         private JLabel submitLabel;
         private JLabel cancelLabel;
+	private JLabel label1=null;
         private boolean loginFlag=false;
 	private boolean loginValue=false;
 
@@ -97,15 +100,24 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-	//private java.util.Vector languages = new java.util.Vector();
 	private ClassLoader clr= this.getClass().getClassLoader();
 	private String[] languages={"English","Hindi","Bhojpuri","Arabic","Greek","Persian","Russian","French","Spanish","Dutch","Nepali","German","Italian"}; //"Tamil","Telugu","Japanese","Korean","Bangala","Chinese"
+	private static LoginWindow login=null;
 
+	/**
+ 	 * Controller for class.
+ 	 **/
+        public static LoginWindow getController(){
+                if (login==null){
+                        login=new LoginWindow();
+                }
+                return login;
+        }
 	
 	/**
 	 * Constructor detail
 	 */
-	public LoginWindow(){
+	private LoginWindow(){
 		super(Language.getController().getLangValue("LoginWindow.Title"),true,false,true,true);
 		createGUI();
 		setFrameIcon(new ImageIcon(clr.getResource("resources/images/login.png")));
@@ -125,19 +137,26 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		titlePane.add(imageLabel);
 		titlePane.setSize(301,200);
 		titlePane.setBackground(Color.WHITE);
-		titlePane.setBorder(BorderFactory.createCompoundBorder(BorderFactory
-				.createBevelBorder(BevelBorder.LOWERED), BorderFactory
-				.createLineBorder(new Color(0, 150, 150), 1)));
+		//titlePane.setBorder(BorderFactory.createCompoundBorder(BorderFactory
+		//		.createBevelBorder(BevelBorder.LOWERED), BorderFactory
+		//		.createLineBorder(new Color(0, 150, 150), 1)));
     	
     		panel.add(titlePane,BorderLayout.NORTH);
     
         	mainPanel=new JPanel();
         	mainPanel.setLayout(new BorderLayout());
-    
+   		
+		{
+ 			NorthPanel_new =new JPanel();
+			NorthPanel_new.setLayout(new BorderLayout());
+ 			NorthPanel1 =new JPanel();
+			
+
+		}
     		NorthPanel =new JPanel();
     		NorthPanel.setLayout(new GridLayout(2,2,5,5));
     		titledBorder1 = BorderFactory.createTitledBorder(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
-    		NorthPanel.setBorder(titledBorder1);
+    		NorthPanel_new.setBorder(titledBorder1);
 		
                 chooseLanguageLabel=new JLabel(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
                 NorthPanel.add(chooseLanguageLabel);
@@ -153,8 +172,15 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
     		indexServerListCombo=new JComboBox(client_obj.getIndexServerList());
     		indexServerListCombo.addActionListener(this);
     		NorthPanel.add(indexServerListCombo);
+		
+		label1 = new JLabel();
+		NorthPanel1.add(label1);
+		
+		NorthPanel_new.add(NorthPanel,BorderLayout.CENTER);
+		NorthPanel_new.add(NorthPanel1,BorderLayout.SOUTH);
+				
 
-           	mainPanel.add(NorthPanel,BorderLayout.NORTH);
+           	mainPanel.add(NorthPanel_new,BorderLayout.NORTH);
 
         	mainPanel.add(createLoginPanel(),BorderLayout.CENTER);   	
    	
@@ -171,13 +197,17 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
     	
 		add(panel,BorderLayout.CENTER);
 		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((((int)dim.getWidth()/2)-185),(((int)dim.getHeight()/2)-220));
-    		setSize(355,450); 
+		setLocation((((int)dim.getWidth()/2)-175),(((int)dim.getHeight()/2)-240));
+    		setSize(355,470); 
     		setVisible(true);
 		//setResizable(false);
   	}
 
-	protected JPanel createLoginPanel(){
+	public void setMessage(String str){
+                label1.setText("<html><blink><Font size=3 color=red><b>"+str+"</b></font></blink></html>");
+	}
+
+	private JPanel createLoginPanel(){
 
 		mainLoginPanel=new JPanel();
                 mainLoginPanel.setLayout(new BorderLayout());
@@ -250,6 +280,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
                 buttonPanel=new JPanel();
                 buttonPanel.setLayout(new FlowLayout());
+		
                 /*submitButton=new JButton("Submit");
                 submitButton.setEnabled(false);
                 submitButton.addActionListener(this);
@@ -276,9 +307,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 forgetpass.setName("forgetpass.Action");
 
                 buttonPanel.add(forgetpass);
-                buttonPanel.add(submitLabel);//Button);
+                buttonPanel.add(submitLabel);
 
-                buttonPanel.add(cancelLabel);//Button);
+                buttonPanel.add(cancelLabel);;
                 CenterPanel.add(buttonPanel,BorderLayout.SOUTH);
 
                 mainLoginPanel.add(CenterPanel,BorderLayout.CENTER);

@@ -289,7 +289,8 @@ public class HttpsUtil{
 	                                	if(!(str.equals(message))){
 							System.out.println("sffsf fsd fs dfs f"+msgList);
 							if(str.matches("(.*)loginfailed(.*)")){
-								org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));		
+								org.bss.brihaspatisync.gui.LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+								org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));		
 							}else
 								msgList.addElement(str);
                         	                }
@@ -308,36 +309,39 @@ public class HttpsUtil{
 	/** get all the session in instruvtor or student ***/	
 
 	public synchronized Vector getSessionForCourse(Vector courseList, String indexServerName) {
-		Vector userlist=new Vector();
-                for(int i=0;i<courseList.size();i++){
-                        try{
-                                String courseName="cn="+java.net.URLEncoder.encode((String)courseList.get(i),"UTF-8");
-                                String indexServer=indexServerName+"/ProcessRequest?req=getSession&"+courseName;
-                        	URL indexurl = new URL(indexServer);
-	                        connection=createHTTPConnection(indexurl);	
-				if(connection==null){
-	                                System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
-        	                }else{
-                	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                        	        String str="";
-                                	try{
-                                        	if((str=in.readLine())!=null){
-                                                	if(!(str.equals("noLecture"))){
-								java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
-								while(str1.hasMoreTokens()) {
-									userlist.addElement(str1.nextElement().toString());
-								}
-                                                	}
-                                        	}
-                                	}finally {
-                                        	if(in != null) in.close();
-                                	}
+		if(courseList !=null) {
+			Vector userlist=new Vector();
+			for(int i=0;i<courseList.size();i++){
+                        	try{
+                                	String courseName="cn="+java.net.URLEncoder.encode((String)courseList.get(i),"UTF-8");
+	                                String indexServer=indexServerName+"/ProcessRequest?req=getSession&"+courseName;
+        	                	URL indexurl = new URL(indexServer);
+	        	                connection=createHTTPConnection(indexurl);	
+					if(connection==null){
+	                        	        System.out.println(Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
+	        	                }else{
+        	        	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                	        	        String str="";
+                        	        	try{
+                                	        	if((str=in.readLine())!=null){
+                                        	        	if(!(str.equals("noLecture"))){
+									java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
+									while(str1.hasMoreTokens()) {
+										userlist.addElement(str1.nextElement().toString());
+									}
+        	                                        	}
+                	                        	}
+                        	        	}finally {
+                                	        	if(in != null) in.close();
+                                		}
+	                        	}
+				}catch(Exception e){
+                	                System.out.println("Error at getSessionList()in HttpsConnection : "+e.getMessage());
                         	}
-			}catch(Exception e){
-                                System.out.println("Error at getSessionList()in HttpsConnection : "+e.getMessage());
-                        }
-                }
-                return userlist;
+			}
+                	return userlist;
+		}else
+			return null;
         }
     	
 	/**
