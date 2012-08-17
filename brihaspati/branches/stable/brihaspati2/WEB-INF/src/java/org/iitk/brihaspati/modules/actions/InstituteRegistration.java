@@ -49,22 +49,26 @@ import org.apache.velocity.context.Context;
 //import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.TurbineUserPeer;
-
+import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 
 /**
  * @author <a href="mailto:palseema@rediffmail.com">Seema Pal </a>23April2012
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>23April2012
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
- * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
- * @modified date: 22-11-2010
+ * @modified date: 22-11-2010, 16-06-2011
  * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
- * @modified date: 22-11-2010
+ * @modified date: 22-11-2010, 08-08-2012(Shaista)
+ *@author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  */
 /**
 * class for registration of a new institute as well institute admin information
@@ -78,6 +82,14 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 public class InstituteRegistration extends VelocitySecureAction
 {
 	private String institutename = "", instituteaddress = "", institutecity = "" ,institutepincode = "", institutestate = "", institutelandline = "", institutedomain = "", institutetype = "", instituteaffiliation = "", institutewebsite = "", instituteadminfname = "", instituteadminlname = "", instituteadminemail = "", instituteadmindesignation = "", instituteadminusername = "", instituteadminpassword = "", instituteregisterdate = "" ;
+	
+	 Properties pr ;
+         String fileName=new String();
+         String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", confirmationMail="";
+         String Mailmsg=new String();
+         String message=new String();
+	 String mode="";
+	
 
 	/** boolean return true because anybody can make request for registration*/
 
@@ -104,109 +116,233 @@ public class InstituteRegistration extends VelocitySecureAction
 	 */
 	
 	public void InstituteRegister(RunData rundata, Context context) 
-	{
-		
+	{	
+
 		try{
-			
-			MultilingualUtil mu = new MultilingualUtil();
-			String lang="";
-			StringUtil str=new StringUtil();
-			Properties pr = new Properties();
+			 ParameterParser parameterparser = rundata.getParameters();
+                         mode=rundata.getParameters().getString("mode");
+			 String serverName=rundata.getServerName();
+		         int srvrport=rundata.getServerPort();
+        		 String serverPort=Integer.toString(srvrport);
+			 MultilingualUtil mu = new MultilingualUtil();
+        		 String lang="";
+			 lang=parameterparser.getString("lang","english");
+                         String Lang=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 
-			/**get all the values of form filled by user
-			 *for registration of a new institute in the system.	
-			 */
-			ParameterParser parameterparser = rundata.getParameters();
-			institutename = parameterparser.getString("INAME");
-			instituteaddress = parameterparser.getString("IADDRESS");
-			institutecity = parameterparser.getString("ICITY");
-			//pincode must be 6 digit
-			institutepincode = parameterparser.getString("IPINCODE");
-		
-			institutestate = parameterparser.getString("ISTATE");
-			String ccode = parameterparser.getString("ccode");
-			String rcode = parameterparser.getString("rcode");
-			String phnum = parameterparser.getString("phnumber");
-
-			/**check for Indian institute */
-
-			if(ccode.equals("91")) 
-			institutelandline=rcode+phnum;
-			else
-			institutelandline=ccode+rcode+phnum;
-			institutedomain = parameterparser.getString("IDOMAIN");		
-			institutetype = parameterparser.getString("ITYPE");
-			instituteaffiliation = parameterparser.getString("IAFFILIATION");
-			institutewebsite = parameterparser.getString("IWEBSITE");	
-			
-			instituteadminfname = parameterparser.getString("IADMINFNAME");
-			instituteadminlname = parameterparser.getString("IADMINLNAME");
-			instituteadminemail = parameterparser.getString("IADMINEMAIL");
-			instituteadmindesignation = parameterparser.getString("IADMINDESIGNATION");
-			String adminusername = instituteadminemail;
-			String instpassword = parameterparser.getString("IADMINPASSWORD");
-	                lang=parameterparser.getString("lang","english");
-	                String Lang=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
-
-			/** getting current date using ExpiryUtil
-                         * @see ExpiryUtil in Utils
-                         */
-                        String curdate=ExpiryUtil.getCurrentDate("-");
-
-                        /** getting path for creating InstituteRegistration directory*/
-
-                        String filepath=TurbineServlet.getRealPath("/InstituteRegistration");
-                        File f=new File(filepath);
-                        if(!f.exists())
-                        f.mkdirs();
-                        /* Check for the illegal symbols*/
-			if(str.checkString(adminusername)==-1 && str.checkString(instituteadminfname)==-1 && str.checkString(instituteadminlname)==-1)
+		// Following checking added by Priyanka
+			if(mode == "cnfrm_i" || (mode.equalsIgnoreCase("cnfrm_i")))
 			{
-				filepath=filepath+"/InstituteRegistrationList.xml";
-                                /** check for existence of Institute
-                                 * @see XMLWriter_InstituteRegistration (method-DomainExist)in Utils
+				String flag1="0";
+				
+                                StringUtil str=new StringUtil();
+				pr = new Properties();
+                                /**get all the values of form filled by user
+                                  *for registration of a new institute in the system.
+                                  */
+			//	ParameterParser parameterparser = rundata.getParameters();
+                                institutename = parameterparser.getString("INAME");
+                                instituteaddress = parameterparser.getString("IADDRESS");
+                                institutecity = parameterparser.getString("ICITY");
+				//pincode must be 6 digit
+				institutepincode = parameterparser.getString("IPINCODE");
+
+                                institutestate = parameterparser.getString("ISTATE");
+                                String ccode = parameterparser.getString("ccode");
+                                String rcode = parameterparser.getString("rcode");
+                                String phnum = parameterparser.getString("phnumber");
+
+				/**check for Indian institute */
+				
+                                if(ccode.equals("91"))
+                                institutelandline=rcode+phnum;
+                                else
+                                institutelandline=ccode+rcode+phnum;
+                                institutedomain = parameterparser.getString("IDOMAIN");
+                                institutetype = parameterparser.getString("ITYPE");
+                                instituteaffiliation = parameterparser.getString("IAFFILIATION");
+                                institutewebsite = parameterparser.getString("IWEBSITE");
+
+                                instituteadminfname = parameterparser.getString("IADMINFNAME");
+                                instituteadminlname = parameterparser.getString("IADMINLNAME");
+                                instituteadminemail = parameterparser.getString("IADMINEMAIL");
+                                instituteadmindesignation = parameterparser.getString("IADMINDESIGNATION");
+                                String adminusername = instituteadminemail;
+                                String instpassword = parameterparser.getString("IADMINPASSWORD");
+				
+				/**
+                         	 * @see ExpiryUtil in Utils
+                         	 */
+                        	String curdate=ExpiryUtil.getCurrentDate("-");
+
+                        	/** getting path for creating InstituteRegistration directory*/
+
+                        	String filepath=TurbineServlet.getRealPath("/InstituteRegistration");
+                        	File f=new File(filepath);
+                        	if(!f.exists())
+                        	f.mkdirs();
+                        	/* Check for the illegal symbols*/
+				if(str.checkString(adminusername)==-1 && str.checkString(instituteadminfname)==-1 && str.checkString(instituteadminlname)==-1)
+				{
+					filepath=filepath+"/InstituteRegistrationList.xml";
+                                	/** check for existence of Institute
+                                 	* @see XMLWriter_InstituteRegistration (method-DomainExist)in Utils
+                                 	*/
+                                	boolean flag=XMLWriter_InstituteRegistration.DomainExist(filepath,institutedomain);
+                                	//ErrorDumpUtil.ErrorLog("flag====InstituteRegistrationaction="+flag+"\nfilepath====="+filepath+"\ninstitutedomain==="+institutedomain);
+					/**if institute is new write the information in xml file for approval or rejection.*/
+                                	if(flag==false)
+                                	{
+						//following lines added by Priyanka	
+						/**
+                                                 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+                                                 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+                                                 */	
+					
+						if(serverPort.equals("8080"))
+                                		      info_Opt = "newUser";
+                		                else
+		                                     info_Opt = "newUserhttps";
+						// CREATE MD5 HASH....................
+						
+						String randm_n = PasswordUtil.randmPass();
+                                		String str1=randm_n+instituteadminemail;
+                                		String a_key=EncryptionUtil.createDigest("MD5",str1);
+                                		fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                		pr =MailNotification.uploadingPropertiesFile(fileName);
+                                		msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                                		msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", instituteadminemail);
+                                		msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                		msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                                		subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
+                                		messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
+                                		confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                                		confirmationMail=MailNotification.getMessage(confirmationMail, instituteadminemail, a_key, mode);
+                                		confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
+                                		messageFormate = messageFormate+confirmationMail;
+                                		Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", instituteadminemail, subject, "", Lang, "", "");
+				
+						//...............
+						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,a_key,flag1);
+				// MMOVED FOLLWING IN ELSE PART
+                                        	/**Get email of Sysadmin for sending email
+					 	*regarding to the registration of a new Institute.
+					 	*/
+/*                                        	String server_name=TurbineServlet.getServerName();
+                                        	String srvrPort=TurbineServlet.getServerPort();
+                                        	String subject="";
+                                        	Criteria criteria=new Criteria();
+                                        	criteria.add(TurbineUserPeer.USER_ID,1);
+                                        	List adminemail=TurbineUserPeer.doSelect(criteria);
+                                        	String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
+                                        	String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                        	pr=MailNotification.uploadingPropertiesFile(fileName);
+                                        	if(srvrPort.equals("8080"))
+                                                	subject="newInstituteRegister";
+                                        	else
+                                                	subject="newInstituteRegisterhttps";
+                                        	String subj = MailNotification.subjectFormate(subject, "", pr);
+					
+                                        	String messageFormate = MailNotification.getMessage(subject,institutename, "", "", "", server_name, srvrPort, pr);
+                                        	messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
+						// call method for sending mail
+                                        	String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
+					//new
+                                        	rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
+                                        	//"Institute Registeration Successfull"
+*/
+                                        	rundata.setMessage(mu.ConvertedString("mail_confirm",Lang));
+
+					}//flag
+					else
+                                	{
+
+                                        //	rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang));
+						if(Lang.endsWith("_hi.properties"))
+                                                	rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+""+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_from", Lang));
+	                                        else
+        	                                        rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang));
+
+  
+    	                          	}
+				}//strif
+				else{
+					rundata.setMessage(mu.ConvertedString("brih_specialSymbol&char", Lang)+" "+mu.ConvertedString("Notallow", Lang)	);
+					//"Special symbol and character is not allowed"
+				}
+			
+			}//THIS IS A NEW IF...............
+		
+		//Following check added by Priyanka
+			if(mode == "act" || (mode.equalsIgnoreCase("act")))
+			{
+				// COPIED FOLLWING FROM IF PART
+				/**Get email of Sysadmin for sending email
+                                 *regarding to the registration of a new Institute.
                                  */
-                                boolean flag=XMLWriter_InstituteRegistration.DomainExist(filepath,institutedomain);
-                                //ErrorDumpUtil.ErrorLog("flag====InstituteRegistrationaction="+flag+"\nfilepath====="+filepath+"\ninstitutedomain==="+institutedomain);
-				/**if institute is new write the information in xml file for approval or rejection.*/
-                                if(flag==false)
-                                {
-                                        String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword);
+/*
+<<<<<<< .mine
+				ParameterParser parameterparser = rundata.getParameters();
+				String lang=parameterparser.getString("lang","english");
+                                 String Lang=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
+               			MultilingualUtil mu = new MultilingualUtil();					
+			         String server_name=TurbineServlet.getServerName();
+                                 String serverport=TurbineServlet.getServerPort();
+                                 String subject="";
+                                 Criteria criteria=new Criteria();
+                                 criteria.add(TurbineUserPeer.USER_ID,1);
+                                 List adminemail=TurbineUserPeer.doSelect(criteria);
+                                 String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
+                                 String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                 pr=MailNotification.uploadingPropertiesFile(fileName);
+                                 if(serverport.equals("8080"))
+                                     subject="newInstituteRegister";
+                                 else
+                                     subject="newInstituteRegisterhttps";
+                                 String subj = MailNotification.subjectFormate(subject, "", pr);
+                                        
+                                 String messageFormate = MailNotification.getMessage(subject,institutename, "", "", "", server_name, serverport, pr);
+                                 messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
+                                // call method for sending mail
+                                //  String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
+                                String Mail_msg=MailNotification.sendMail(messageFormate,EMAIL,subj,"",Lang);
+				rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
+                                                //"Institute Registeration Successfull"
+			}
+		//.........	
+=======
+*/
                                         /**Get email of Sysadmin for sending email
 					 *regarding to the registration of a new Institute.
 					 */
                                         String server_name=TurbineServlet.getServerName();
                                         String srvrPort=TurbineServlet.getServerPort();
-                                        String subject="";
+                                        String subject="",  info_Opt="";
                                         Criteria criteria=new Criteria();
                                         criteria.add(TurbineUserPeer.USER_ID,1);
                                         List adminemail=TurbineUserPeer.doSelect(criteria);
                                         String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
                                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                                         pr=MailNotification.uploadingPropertiesFile(fileName);
-                                        if(srvrPort.equals("8080"))
+                                        if(srvrPort.equals("8080")){
                                                 subject="newInstituteRegister";
-                                        else
+						info_Opt = "newUser";
+                                        }
+                                        else {
                                                 subject="newInstituteRegisterhttps";
-                                        String subj = MailNotification.subjectFormate(subject, "", pr);
-					
-                                        String messageFormate = MailNotification.getMessage(subject,institutename, "", "", "", server_name, srvrPort, pr);
-                                        messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
-					// call method for sending mail
-                                        String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
+						 info_Opt = "newUserhttps";
+                                        }
+                                       	String subj = MailNotification.subjectFormate(subject, "", pr);
+					//messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort, pr);
+					String messageFormate = MailNotification.getMessage(subject, institutename, "", "", "", pr);
+					messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
+					String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+					//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subj +"\n messageFormate="+messageFormate+"\n msgRegard="+msgRegard);
 
+					String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, "", EMAIL, subj, "", Lang, "","");//last parameter added by Priyanka
                                         rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
                                         //"Institute Registeration Successfull"
-				}//flag
-				else
-                                {
-                                        rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang));
-                                }
-			}//strif
-			else{
-				rundata.setMessage(mu.ConvertedString("brih_specialSymbol&char", Lang)+" "+mu.ConvertedString("Notallow", Lang)	);
-				//"Special symbol and character is not allowed"
-			}	
+				}// if mode act
 		}
 		catch (Exception e)
 		{

@@ -340,9 +340,9 @@ public class UploadMarksAction extends SecureAction_Instructor
 	                                        if(mailId != null && mailId != "")
 		                                                //mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
 							if(!instId.equals(""))
-								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, instId);
+								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, instId,"");//last parameter added by Priyanka
 							else						
-								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, "");
+								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, "","");//last parameter added by Priyanka
 					mailId = "";
 	                                }
 	
@@ -359,9 +359,9 @@ public class UploadMarksAction extends SecureAction_Instructor
 	                                                if(mailId != null && mailId != ""){
 	                                                //mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
 							if(!instId.equals(""))
-								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, instId);
+								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, instId,"");//last parameter added by Priyanka
 							else						
-								mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, "");
+								mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, "","");//last parameter added by Priyanka
 	                                                }
 	 	                                       }
 	                                               usDetail=null;

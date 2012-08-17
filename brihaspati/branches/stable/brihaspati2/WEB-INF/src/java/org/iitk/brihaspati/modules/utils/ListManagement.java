@@ -804,6 +804,7 @@ public class ListManagement
                                 {
                                         TurbineUser element=(TurbineUser)v.get(i);
                                         String studentname=element.getUserName();
+					if(!studentname.equals("guest"))
                                         userList.addElement(studentname);
                                 }
 

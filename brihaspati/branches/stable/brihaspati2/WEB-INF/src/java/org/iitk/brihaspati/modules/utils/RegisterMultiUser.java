@@ -61,6 +61,8 @@ import org.iitk.brihaspati.modules.utils.CourseUtil;
  *  @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a> 
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur Gurung</a> 
  *  @modified date: 20-10-2010, 23-12-2010, 26-07-2011,17-05-2012
+ *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *  @modify date: 09-08-2012 (Priyanka)
  */
 
 public class RegisterMultiUser
@@ -246,7 +248,7 @@ public class RegisterMultiUser
  							 */
 							String str="";
                                                         if(instName.length() >0){
-                                                                str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,instName,email,groupName,Role,serverName,serverPort,Langfile,rollno,program); //modified by Shikha Shukla
+                                                                str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,instName,email,groupName,Role,serverName,serverPort,Langfile,rollno,program,"act"); //modified by Shikha Shukla. Last parameter added by Priyanka
 							error=3;
 								if(Role.equals("student")){
 								errMsg=MultilingualUtil.ConvertedString("varStudent",Langfile)+" - "+str;
@@ -403,7 +405,7 @@ public class RegisterMultiUser
                                         							* @see CourseManagement Utils
                                         							*/
 												if(InstituteId==0){
-													String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0,"");
+													String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0,"","");//last parameter added by Priyanka
      													error=3;
                                         								errMsg=msg;
 												}
@@ -419,7 +421,7 @@ public class RegisterMultiUser
                                          									* @see UserManagement Util
                                          									**/
 
-                                        									String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName);
+                                        									String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName,"");//last parameter added by Priyanka
                                         									error=3;
                                         									errMsg=MultilingualUtil.ConvertedString("instructor",LangFile)+" - "+msg;
                                         								}

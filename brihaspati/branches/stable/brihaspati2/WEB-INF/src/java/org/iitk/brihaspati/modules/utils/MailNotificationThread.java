@@ -44,6 +44,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:meha1490@gmail.com">Meha Singh</a>Created on march-2011
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified Date: 18-08-2011 (Shaista)
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 09-08-2012 (Priyanka)
  */
 
 public class MailNotificationThread implements Runnable {
@@ -74,8 +76,9 @@ public class MailNotificationThread implements Runnable {
  	 * Add message to a vector which store in linkedlist.
 	 */
 	//public String set_Message(String message_text,String mailId,String sub,String filePathForLM,String LangFile, String portNum)
-	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile, String instId )
+	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile, String instId, String mode)//last parameter added by Priyanka
 	{
+		String strng="";
 		//ErrorDumpUtil.ErrorLog("Lang File in MailNotificationThread Class ="+LangFile);
 		v=new Vector();
 		v.add(mailId); //0   
@@ -89,8 +92,15 @@ public class MailNotificationThread implements Runnable {
                 v.add(msg_UserInfo);  //8 
 		mailnotification.add(0,v);
 		start();
-		return mu.ConvertedString("mail_msg", LangFile);
-		//"Message is in queue";
+	//following check added by priyanka
+		if(mode.equals("act") || mode.equals(""))
+			strng= mu.ConvertedString("mail_msg", LangFile);
+			//"Message is in queue";
+		if(mode.equals("cnfrm_i") || (mode.equals("cnfrm_u")) || (mode.equals("cnfrm_c")))
+			strng= mu.ConvertedString("mail_confirm", LangFile);
+			//"Please click on the Activation link to Activate your account."
+	//....................
+		return strng;
 	}
 
 	/*public void CourseTimeSystem(int userid){

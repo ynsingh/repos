@@ -1,8 +1,13 @@
 #*
  * @(#) UploadImage.vm
- * Copyright (c) 2006 BSS Kanpur.
+ * Copyright (c) 2006,2009-2010 BSS Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
+ * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @modified date: 30-03-2010
  * Contributors: Members of Brihaspati software solutions Kanpur
 *#
 
@@ -17,126 +22,150 @@ $!data.getMessage()
 <td>
         <font face="$ui.sansSerifFonts"><b>
         <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_mgmt $brih_course </a> |
-		#if($mode == "UploadImage")
-                	 $brih_upload
+                #if($mode == "UploadImage")
+                         $brih_upload
                 #else
-	                $brih_grade $RemoteConfiguration
+                        $brih_grade $RemoteConfiguration
                 #end
         | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> 
+        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
         </font>
 </td>
 </tr>
 </table>
-#if($mode == "UploadImage")
+##if($mode == "UploadImage")
 
-<table width=100%>
+<table width=100% bgcolor="$ui.tableColor">
 <tr>
-<td>
-	<a href=javascript:popupWin("/brihaspati2/docs/HeaderImage.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")"> 
+
+#if($tdcolor != "7")
+         <td>
+         #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+         #end
+       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7") style=text-decoration:none> $brih_scorm $Repo_Player </a>
+         </td>
+        #if($tdcolor != "6")
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") style=text-decoration:none> $brih_scorm $brih_packager </a></td>
+        #if($tdcolor != "5")    
+        <td>
+        #elseif($tdcolor == "5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
+        #if($tdcolor != "4")    
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
+        #if($tdcolor != "3")    
+        <td>
+ #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> $brih_course $RemoteConfiguration </a></td>
+        #if($tdcolor != "2")    
+ <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
+        #if($tdcolor != "0")  
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0") style=text-decoration:none> $brih_course $Profile_user </a></td><td>
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
+         
 </td>
-</tr>
+</td></tr>
 </table>
-#end
+##end
 #if($mode == "UploadImage")
-	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UserAction_Instructor")">
-<div align="left">
-<br>
-<br>
+	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode",$mode).setAction("UserAction_Instructor")">
+<table width=100% bgcolor="$ui.tableColor" cellpadding="2" align="right">
+        <tr align="right" bgcolor="$ui.menuColor"><td colspan=2><b>$brih_upload</b></td></tr>
+        <tr align="right">
+		<td><input type="file" size="40%" name="file" value=""> </td>
+                <td> <b> <font color="RED">*</font> $brih_at_file </b> </td>
 
-<table width=50% bgcolor="$ui.menuColor" cellpadding="2" align="center" border=1>
-        <tr>
-        <td colspan=2 bgcolor="$ui.menuColor"  align="center">
-                <font size=4><b>$brih_upload</b></font>
-        </td>
-        </tr>
-        <tr>
-
-                ###fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
-		<td> <input type="file" size="35" name="file"> </td>
-		<td> <font color=RED>*</font> $brih_at_file</td>
+   ##             #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
 
         </tr>
-        <tr>
-        <td colspan=2 align="center" bgcolor="$ui.buttonBoxColor">
-                <font face="$ui.sansSerifFonts">
+        <tr bgcolor="$ui.menuColor">
+        <td colspan=2 align="right">
        		<input type="button" name="eventSubmit_doUploadImage" value="$brih_upload" onClick="CheckField(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
+                <input type="hidden" name="count" value="$tdcolor"/>
 
-                </font>
         </td>
         </tr>
+
 </table>
-</div>
 </form>
 #else
-	
-	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UserAction_Instructor")">
-	<div align="left"> <br>
-	<br> <table width=50% cellpadding="2" bgcolor="$ui.tableColor"  align="center" border=1>
-	<tr bgcolor="$ui.menuColor" >
-		<td colspan=2 align="center" >
-                	<font size=4  >  $brih_grade $RemoteConfiguration </font>
-        	</td>
-	</tr>
+	##<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UserAction_Instructor")">
+	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode",$mode).setAction("UserAction_Instructor")">
+<table width=100% bgcolor="$ui.menuColor" align="right">
 	<tr>
-                <td align="center">
-                        <font size=2><b> $brih_percentage </b></font>
+	<td align="right"></td>
+         <td align="right"> <b>$brih_grade $RemoteConfiguration</b></td>
+	</tr>
+	<tr bgcolor="$ui.tableColor">
+                <td align="right">
+	 	<font size=2><b> $brih_percentage </b></font> 
                 </td>
-                <td align="center">
-	 		<font size=2><b> $brih_grade </b></font> 
+                <td align="right">
+                <font size=2><b> $brih_grade </b></font>                        
                 </td>
         </tr>
         <tr>
-		<td align="center">
-			<input type="text" name=A  size=10 value=$!percentage >
-		</td>
-	        <td align="center">
-			 <font size=2><b> $brih_a </b></font>
-        	</td>
+
+               <td  align="right"><input type="text" name=A  size=10 value=$!percentage ></td>
+	        <td align="right"> <font size=2><b> $brih_a </b></font></td>
+		
         </tr>
-        <tr>
-                <td align="center">
-			<input type="text" name=B  size=10 value=$!percentage1 >
-                </td>
-		<td align="center">
-			<font size=2><b> $brih_b </b></font>
-                </td>
+        <tr bgcolor="$ui.tableColor">
+		
+                    <td  align="right"><input type="text" name=B  size=10 value=$!percentage1 ></td>
+                    <td align="right"><font size=2><b> $brih_b </b></font></td>
+                
         </tr>
 	<tr>
-                <td align="center">	
-			<input type="text" name=C size=10 value=$!percentage2 >
-                </td>
-		<td align="center">
-                    <font size=2><b> $brih_c </b></font>
-                </td>
-	</tr>
+                <td  align="right"><input type="text" name=C size=10 value=$!percentage2 ></td>
+		<td align="right"><font size=2><b> $brih_c </b></font></td>
+                </tr>
+
+	<tr bgcolor="$ui.tableColor">
+                
+                   <td  align="right"><input type="text" name=D  size=10 value=$!percentage3 ></td>
+                   <td align="right"><font size=2><b> $brih_d </b></font></td>
+                 </tr>
 	<tr>
-                <td align="center">
-				<input type="text" name=D  size=10 value=$!percentage3 >
-                </td>
-                <td align="center">
-                    <font size=2><b> $brih_d </b></font>
-                </td>
-        </tr>
-	<tr>
-                <td align="center">
-			<input type="text" name=E  size=10 value=$!percentage4 >
-                </td>
-                <td align="center">
-                        <font size=2><b> $brih_e </b></font>
-                </td>
-        </tr>
-	<tr align="center" bgcolor="$ui.menuColor" >
-		<td colspan=2 align="center">
-                <font face="$ui.sansSerifFonts">
+                <td align="right"><input type="text" name=E  size=10 value=$!percentage4 ></td>
+                <td align="right"><font size=2><b> $brih_e </b></font></td>
+                </tr>
+
+ 	<tr bgcolor="$ui.tableColor">
+		<td colspan=2 align="right">
 			<input type="button" name="eventSubmit_doGradecard" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
         	        <input type="hidden" name="actionName" value=""/>
+        	        <input type="hidden" name="count" value="$tdcolor"/>
                 </font>
 	        </td>
         </tr>
 </table>
-</div>
 </form>
 #end
 <SCRIPT LANGUAGE="javascript">

@@ -57,7 +57,9 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 20-10-2010,23-12-2010
+ * @modified date: 09-08-2012 (Priyanka)
  */
 
 public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
@@ -97,6 +99,10 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                	{
                                        	for(int i=0;i<list.size();i++)
                                        	{
+					   String flag=((CourseUserDetail) list.elementAt(i)).getFlag();
+					   //following check added by Priyanka 
+					   if(flag.equals("1"))
+					   {
                                        	        String uname=((CourseUserDetail) list.elementAt(i)).getLoginName();
                                        	        String passwd=((CourseUserDetail) list.elementAt(i)).getActive();
                                        	        String email=((CourseUserDetail) list.elementAt(i)).getEmail();
@@ -126,6 +132,8 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                        	        entry.addElement(dbDetail);
 						//ErrorDumpUtil.ErrorLog("entry in screen file------>"+entry);
 						}
+					   }
+				
                                        	}
                                	}
 
@@ -159,15 +167,17 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                         	{
                         		for(int i=0;i<list.size();i++)
                                 	{
-						
+					   String flag=((CourseUserDetail) list.elementAt(i)).getFlag();
+					//following check added by Priyanka
+					   if(flag.equals("1"))
+					   {
 						int instid=((CourseUserDetail) list.elementAt(i)).getInstId();
 						String instituteId=Integer.toString(instid);
-
 						if(instituteId.equals(instituteid))
 						{
 						String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
 						if(!gname.isEmpty())
-							gname=gname.replace("&colon",":");
+						gname=gname.replace("&colon",":");
 						String cname=((CourseUserDetail) list.elementAt(i)).getCourseName();
 			              		String uname=((CourseUserDetail) list.elementAt(i)).getLoginName();
 						String orgtn=((CourseUserDetail) list.elementAt(i)).getDept();
@@ -184,6 +194,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                        	        dbDetail.setPermission(lname);
                                         	entry.addElement(dbDetail);
 						}
+					   }
 					}
 				}
 				else{

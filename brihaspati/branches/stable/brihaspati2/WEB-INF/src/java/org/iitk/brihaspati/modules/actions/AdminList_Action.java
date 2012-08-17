@@ -112,7 +112,7 @@ import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
                                                         *   CreateUserProfile. 
                                                         */
                                                         UserManagement usermanagement = new UserManagement();
-                                                        usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,"","");
+                                                        usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,"","","act");// Last parameter added by Priyanka
                                                         data.setMessage(usermgmt +" "+ mail_msg);
                                                 }//if
                                         }//charif

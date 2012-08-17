@@ -276,16 +276,8 @@ function checkValues(frm,field)
 		                        {
 						if(isNumberString(frm.AdminFaqExp.value))
 						{
-							if(document.getElementsByName('port')[0].value == $usedport)
-                                                        {
-                                                                alert("Port No has been Already Used");
-                                                        }
-                                                        else
-                                                        {
-                                                                frm.actionName.value=field.name;
-                                                                frm.submit();
-                                                        }
-
+                                                	frm.actionName.value=field.name;
+	                                                frm.submit();
 						}
                         		}
                         	}

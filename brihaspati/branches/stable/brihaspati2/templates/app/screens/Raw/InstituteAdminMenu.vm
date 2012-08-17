@@ -94,6 +94,7 @@
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
       </td>
 </tr>
+
 <tr>
       <td>
          <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1")>$brih_FAQ</a>
@@ -120,7 +121,11 @@
         </td>
 </tr>
 
+	<tr bgcolor="$ui.menuColor">
+	        <td>
+                        <a href=$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a>
 
- 
+               </td>
+       </tr>
 </table>
 

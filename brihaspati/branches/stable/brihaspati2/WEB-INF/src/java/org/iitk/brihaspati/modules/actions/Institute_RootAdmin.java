@@ -62,7 +62,7 @@ import org.iitk.brihaspati.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteQuotaPeer;
-
+import org.iitk.brihaspati.om.UserPrefPeer;
 //utils classes
 
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -72,7 +72,6 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
@@ -88,6 +87,8 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
  * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
  * @modified date:20101020, 20101120, 20110117, 20120316
  *@Code tested by: (Sharad Singh,kishore kumar shukla)
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 09-08-2012 (Priyanka)
  */
 
 /** class for accepting of a new institute as well institute admin in the brihaspati system
@@ -230,12 +231,20 @@ public class Institute_RootAdmin extends SecureAction_Admin
                 		               		return;
 		                        	}
 						String program = data.getParameters().getString("prg","");
+							
+					//THIS IS NEW
+					/*	 criteria = new Criteria();
+                                                 int uid=UserUtil.getUID(i_adminemail);
+                                                 criteria.add(UserPrefPeer.USER_ID,uid);
+                                                 criteria.add(UserPrefPeer.ACTIVATION,"ACTIVATE");
+                                                 UserPrefPeer.doUpdate(criteria);
+					*/
 						/** create user profile
 						* insert the institute admin details in database. 
 						*@see usermanagement in utils
                                                 */
-
-						String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_name,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
+						
+						String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_name,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program,"cnfrm_i");// last parameter added by Priyanka
 						data.setMessage(usermgmt);
 						
 						/**Read Quota value from the property file (Admin.properties).
@@ -437,7 +446,7 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                                          * @see usermanagement in utils
                                                          */
 							UserManagement usermanagement = new UserManagement();
-							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program);
+							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program,"");// last parameter added by Priyanka
 							data.setMessage(usermgmt +" "+ mail_msg);
 						}//if
 					}//charif

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)InstructorRegisteration.java	
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2010, 2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,6 +39,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 /**
  * This class is responsible for adding a secondary instructor to the system.
@@ -47,7 +48,10 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- *  @modified date: 20-10-2010, 23-12-2010
+ *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ *  @modified date: 20-10-2010, 23-12-2010, 08-09-2012
+ *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *  @modify date: 09-08-2012 (Priyanka)
  */
  
 
@@ -77,7 +81,7 @@ public class InstructorRegisteration extends SecureAction
 		/**
 		 * Retreiving details entered by the user
 		 */
-	
+		String instName="";	
 		String mod=pp.getString("mode");
 		context.put("mode",mod);
 		String gName=pp.getString("cName");
@@ -102,11 +106,17 @@ public class InstructorRegisteration extends SecureAction
 			String []starr=email.split("@");
                 	passwd =starr[0];
 		}
+		if(!gName.equals("")){
+			//String []arr=gName.split("_");
+			String arr = org.apache.commons.lang.StringUtils.substringAfterLast(gName, "_");
+			int instId = Integer.parseInt(arr);
+			instName= InstituteIdUtil.getIstName(instId);
+		}
 		String mail_msg="";
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gName,"instructor",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program, "act"); //modified by Shikha
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

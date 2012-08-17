@@ -171,7 +171,7 @@ public class PasswordUtil{
 					//String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, PasswordUtil.serverName, PasswordUtil.serverPort,pr);
 					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword,PasswordUtil.serverName, PasswordUtil.serverPort, pr);
 					//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+messageFormat+"\nmsgRegard	"+msgRegard);
-					msg1= MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, msgBrihAdmin, mailId, subject, "", file, "");
+					msg1= MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, msgBrihAdmin, mailId, subject, "", file, "","");//last parameter added by Priyanka
 					//MailNotification.sendMail(messageFormat, mailId, subject, "", file);
 					//ErrorDumpUtil.ErrorLog("\n msg1="+msg1);
 

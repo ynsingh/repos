@@ -54,6 +54,8 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.PasswordUtil;
+import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -63,12 +65,11 @@ import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
-import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
-import org.iitk.brihaspati.modules.utils.CourseManagement;
+//import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
@@ -90,7 +91,9 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>3May2012
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 20-10-2010,23-12-2010, 16-06-2011,20-04-2012
+ * @modified date: 09-08-2012 (Priyanka)
  */
 
 
@@ -111,6 +114,11 @@ public class OnlineRegistration extends VelocitySecureAction
         private String uname="", gname="", email="", fname="", lname="", passwd="", rollno="", program="";
 	private Properties pr;
 	private String subject="", message="", info_new = "", fileName, Mail_msg="";
+	private String u_mode="";
+        //String fileName=new String();
+        String info_Opt="", msgRegard="", msgDear="", messageFormate="", sbjct="", confirmationMail="";
+        String Mailmsg=new String();
+        String mssg=new String();
 
         protected boolean isAuthorized( RunData data ) throws Exception
         {
@@ -132,7 +140,12 @@ public class OnlineRegistration extends VelocitySecureAction
 		int group_id =0;
 			
 		ParameterParser pp=data.getParameters();
-		
+	//following check added by Priyanka
+		u_mode=pp.getString("mode");
+		if(u_mode.equals("cnfrm_u"))
+		{
+			String flag1="0";
+			
 		/**
                  * Retreiving details entered by the user
                  */
@@ -195,7 +208,7 @@ public class OnlineRegistration extends VelocitySecureAction
                 LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 
 		//for checking online configuration value for course added modified by sharad 
-		if(onlineconf==0){ 
+		if(onlineconf==0){
 	                path=data.getServletContext().getRealPath("/OnlineUsers");
         	        File filepath=new File(path);
                 if(!filepath.exists())
@@ -290,33 +303,96 @@ public class OnlineRegistration extends VelocitySecureAction
 	                                else  //else 4
         	                        {
 						server_name= TurbineServlet.getServerName();
+						ErrorDumpUtil.ErrorLog(server_name);
 	        	                	srvrPort= TurbineServlet.getServerPort();
 						MsgForExpireTime = "forUser "; 
 						indexList = sendMail_MoreThanSevenDays(userlist, MsgForExpireTime, uname, server_name, srvrPort, LangFile, instAdminName, instituteid);
 						xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 						if(program.equals("Select Program"))
                                                         program="";
-				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName);
+					//following lines added by Priyanka
+						/**
+		                                 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+                                                 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+                                                 */
+							if(srvrPort.equals("8080"))
+                                      				info_Opt = "newUser";
+                                			else
+                                      				info_Opt = "newUserhttps";
+							//GENERATE MD5 HASH
+							String randm_n = PasswordUtil.randmPass();
+			                                String str1=randm_n+email;
+                        			        String a_key=EncryptionUtil.createDigest("MD5",str1);
+                             				fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                              				pr =MailNotification.uploadingPropertiesFile(fileName);
+                            				msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+   				                        msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+  			                                msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                         			        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+          			                        sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
+        			                        messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
+   			                                confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+   			                                confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+      				                        confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
+                               			        messageFormate = messageFormate+confirmationMail;
+                        			        Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
+						//ADD HASH AND FLAG TO XML	
+					//.............
+				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);//last two parameters added by Priyanka
         				        xmlWriter.writeXmlFile();
-						if(gname.equals("author"))
+					//MOVED FOLLOWING TO ELSE PART, by Priyanka
+					/*	if(gname.equals("author"))
 							sendMailToApproval(gname,LangFile,uname,"","","",0);
 						else
 							sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
-					
+					*/
 			        	} //else 4
 				} //if 3
 
 				else //else 3
 				{
+					server_name= TurbineServlet.getServerName();
+                                        ErrorDumpUtil.ErrorLog(server_name);
+                                        srvrPort= TurbineServlet.getServerPort();
 					indexList.add(-1);
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 					if(program.equals("Select Program"))
                                                         program="";
-		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName);
+				//following lines added by Priyanka
+					/**
+                                         * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+                                         * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+                                         */
+					if(srvrPort.equals("8080"))
+                                                info_Opt = "newUser";
+                                        else
+                                        	info_Opt = "newUserhttps";
+                                        //GENERATE MD5 HASH
+                                            String randm_n = PasswordUtil.randmPass();
+                                             String str1=randm_n+email;
+                                             String a_key=EncryptionUtil.createDigest("MD5",str1);
+                                             fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                             pr =MailNotification.uploadingPropertiesFile(fileName);
+                                             msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                                             msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+                                             msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                             msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                                             sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
+                                             messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
+                                             confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                                             confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+                                             confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
+                                             messageFormate = messageFormate+confirmationMail;
+                                             Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
+                                                //ADD HASH AND FLAG TO XML      
+					//...........
+		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);
         		        	xmlWriter.writeXmlFile();
-					sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
+				//MOVED FOLLOWING TO ELSE PART, by Priyanka
+				/*	sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));*/
 				} //else 3
-				String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
+				String str=MultilingualUtil.ConvertedString("mail_confirm",LangFile);	
+	//		String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
         		        data.setMessage(str);
 			} // else 2
 		} //if 1
@@ -331,11 +407,49 @@ public class OnlineRegistration extends VelocitySecureAction
 			String serverName=data.getServerName();
                         int srvrPort=data.getServerPort();
                         String serverPort=Integer.toString(srvrPort);
-                        String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,orgtn,email,gname,"student",serverName,serverPort,LangFile,rollno,program); 
+                        String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,orgtn,email,gname,"student",serverName,serverPort,LangFile,rollno,program,"cnfrm_u");// last parameter added by Priyanka  
                         data.setMessage(msg);
 
 		}
-
+	}
+//following lines added by Priyanka
+	if(u_mode == "act")
+	{
+		String instituteId="0";
+		String e_mail = pp.getString("email");
+		String path = data.getServletContext().getRealPath("/OnlineUsers");
+                TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(path+"/OnlineUser.xml");
+		Vector userList = topicmetadata.getOnlineUserDetails();
+		LangFile=MultilingualUtil.LanguageSelectionForScreenMessage("english");			
+		if(userList != null) //if 3
+                {
+                         int i=0,j=0;
+                         for( i=0; i <userList.size(); i++)
+                         {
+				email = ((CourseUserDetail)userList.get(i)).getEmail();
+				if(email.equals(e_mail))
+				{
+					gname =((CourseUserDetail)userList.get(i)).getGroupName();
+	                                uname =((CourseUserDetail)userList.get(i)).getLoginName();
+					fname =((CourseUserDetail)userList.get(i)).getInstructorName();
+	                                lname =((CourseUserDetail)userList.get(i)).getUserName();
+					if(gname.equals("author"))
+					{
+                        			instituteId=org.apache.commons.lang.StringUtils.substringAfterLast(gname,"_");
+						sendMailToApproval(gname,LangFile,uname,"","","",0);
+					}
+               				else
+                        		{
+						sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteId)));
+					}
+				}
+				break;								
+			 }	
+		}
+		String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
+                data.setMessage(str);
+	}
+//......................
 	} //method
 
 	/**
@@ -348,7 +462,13 @@ public class OnlineRegistration extends VelocitySecureAction
 		String instAdminName ="";
 		//Vector vc = new Vector();
                 ParameterParser pp=data.getParameters();
-                /**
+        //following check added by Priyanka
+        	u_mode=pp.getString("mode");
+        	if(u_mode.equals("cnfrm_c"))
+                {
+		String flag2="0";
+        
+	        /**
                  * store details from the page where user has entered them
                  */
                 String instname=pp.getString("instName");
@@ -480,28 +600,138 @@ public class OnlineRegistration extends VelocitySecureAction
 				{
 					MsgForExpireTime = "forCourse";
 					server_name= TurbineServlet.getServerName();
+					ErrorDumpUtil.ErrorLog("server name "+server_name);
         	                	srvrPort= TurbineServlet.getServerPort();
+					ErrorDumpUtil.ErrorLog("server name "+srvrPort);
+
+				//following lines added by Priyanka
+					/**
+                                         * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+                                         * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+                                         */
+
+					 if(srvrPort.equals("8080"))
+                                                info_Opt = "newUser";
+                                         else
+                                                info_Opt = "newUserhttps";
+		
+					//Generate MD5 hash
+					String randm_n = PasswordUtil.randmPass();
+                                        String str1=randm_n+email;
+                                        String a_key=EncryptionUtil.createDigest("MD5",str1);
+                                        fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                        pr =MailNotification.uploadingPropertiesFile(fileName);
+                                        msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                                        msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+                                        msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                                        sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
+                                        messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
+                                        confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                                        confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+                                        confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
+                                        messageFormate = messageFormate+confirmationMail;
+                                        Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
+					
+				//...........................
 					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile, instAdminName, InstituteId);
-					xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-	        	        	//TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate, instname);
-	        	        	TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId);
-	        		        xmlWriter.writeXmlFile();
-					sendMailToApproval("fromCourse",LangFile,uname,fname,lname, cname,instituteid);
+                                        xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
+					//TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate, instname);
+					TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
+                                        xmlWriter.writeXmlFile();
+				//MOVED FOLLOWING TO ELSE PART, by Priyanka
+				/*
+					 sendMailToApproval("fromCourse",LangFile,uname,fname,lname, cname,instituteid);
+				*/
 				} //else inner
         		}
 			else
 			{
 				indexList.add(-1);
-                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-		                //TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,instname);
-		                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId);
-        		        xmlWriter.writeXmlFile();
+				server_name= TurbineServlet.getServerName();
+                                ErrorDumpUtil.ErrorLog("server name "+server_name);
+                                srvrPort= TurbineServlet.getServerPort();
+
+  			//following lines added by Priyanka
+				/**
+                                 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+                                 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+                                 */
+
+				if(srvrPort.equals("8080"))
+                                        info_Opt = "newUser";
+                                 else
+                                        info_Opt = "newUserhttps";
+
+				//Generate Md5 hash
+				 String randm_n = PasswordUtil.randmPass();
+                                 String str1=randm_n+email;
+                                 String a_key=EncryptionUtil.createDigest("MD5",str1);
+                                 fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                 pr =MailNotification.uploadingPropertiesFile(fileName);
+                                 msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                                 msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+                                 msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                 msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                                 sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
+                                 messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
+                                 confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                                 confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+                                 confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
+                                 messageFormate = messageFormate+confirmationMail;
+                                 Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
+
+                           //...........................
+                                xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
+                                //TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,instname);
+                                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
+                                xmlWriter.writeXmlFile();
+
+				//MOVED FOLLOWING TO ELSE PART, by Priyanka
+				/*
 				sendMailToApproval("fromCourse",LangFile,uname,fname,lname,cname,instituteid);
+				*/
 			}
 		}
                 context.put("lang",lang);
-                String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
+		String str=MultilingualUtil.ConvertedString("mail_confirm",LangFile);
+        //        String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
                 data.setMessage(str);
+		}//NEW IF 
+//following lines added by Priyanka
+		if(u_mode.equals("act"))
+		{
+			int instituteid;
+			String cname="";
+                	String e_mail = pp.getString("email");
+                	String path = data.getServletContext().getRealPath("/OnlineUsers");
+                	TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(path+"/courses.xml");
+                	Vector userList1 = topicmetadata.getOnlineCourseDetails();
+			LangFile=MultilingualUtil.LanguageSelectionForScreenMessage("english");
+                	if(userList1 != null) //if 3
+                	{
+                        	 int i=0,j=0;
+                        	 for( i=0; i <userList1.size(); i++)
+                         	 {
+                                	email = ((CourseUserDetail)userList1.get(i)).getEmail();
+                                	if(email.equals(e_mail))
+                                	{
+                                        	gname =((CourseUserDetail)userList1.get(i)).getGroupName();
+                                        	uname =((CourseUserDetail)userList1.get(i)).getLoginName();
+                                        	fname =((CourseUserDetail)userList1.get(i)).getInstructorName();
+                                        	lname =((CourseUserDetail)userList1.get(i)).getUserName();
+						cname =((CourseUserDetail)userList1.get(i)).getCourseName();
+						instituteid =((CourseUserDetail)userList1.get(i)).getInstId();
+                                        	sendMailToApproval("fromCourse",LangFile,uname,fname,lname,cname,instituteid);
+                                	}
+                                	break;
+                         	}
+                	}	
+			String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
+                        data.setMessage(str);
+
+		}
+//..................
         }
 	/**
 	* Method for get and send email.
@@ -559,7 +789,7 @@ public class OnlineRegistration extends VelocitySecureAction
 						{
 							emailId = element1.getEmail();
 							//Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
-							 String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, fname+" "+lname, emailId, subject, "", LangFile, "");
+							 String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, fname+" "+lname, emailId, subject, "", LangFile, "","");//last parameter added by Priyanka
 						}		
 					}
 				}// for
@@ -602,7 +832,7 @@ public class OnlineRegistration extends VelocitySecureAction
 				emailId=((InstituteAdminUser)iadetlist.get(0)).getAdminUname();
 				}
 				//Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
-				String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, emailId, subject, "", LangFile, Integer.toString(instituteId));
+				String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, emailId, subject, "", LangFile, Integer.toString(instituteId),"");//last parameter added by Priyanka
 			}
 		} //try close
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Erro in approvalOfonLineRegReqForStudent"+e);}
@@ -690,7 +920,7 @@ public class OnlineRegistration extends VelocitySecureAction
         				emailId = ((CourseUserDetail)listCrs_OR_Usr.get(i)).getEmail();
 	                		//Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
 					
-					Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, emailId, subject, "", LangFile, instId);
+					Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, emailId, subject, "", LangFile, instId,"");//last parameter added by Priyanka
 		                	indexList.add(i);
 				}
 			}

@@ -84,6 +84,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
  * @modified date: 26-02-2011, 27-07-2011, 05-08-2011, 19-04-2012
+ * @modified date: 08-08-2012
  */
 public class UserAction_Instructor extends SecureAction_Instructor
 {
@@ -150,7 +151,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-         		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,Instname,email,gName,"student",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
+         		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,Instname,email,gName,"student",serverName,serverPort,LangFile,rollno,program,"act"); //modified by Shikha. Last parameter added by Priyanka
 			data.setMessage(msg);
 		}
 		catch (Exception ex)
@@ -316,29 +317,10 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			//String file=(String)data.getUser().getTemp("LangFile");
 			User user1 = TurbineSecurity.getUser(userName);
                         String mailId=user1.getEmail();
-			
-			String info_new = "", info_Opt="";
-			if(serverPort.equals("8080")){
-				info_new = "newPassword";
-				info_Opt = "newUser";
-			}
-			else {
-				info_new = "newPasswordhttps";
-				info_Opt = "newUserhttps";
-			}
 			PasswordUtil.passwordFromUtil(serverName, serverPort);
 			String newPW=StringUtil.replaceXmlSpecialCharacters(Passwd);
 			String msg=PasswordUtil.doChangepassword(user1,"",newPW,LangFile);
-                        //data.setMessage(msg);
 
-			/*String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-			String subject = MailNotification.subjectFormate(info_new, "", pr );
-			String messageFormat = MailNotification.getMessage(info_new, "", "", "", Passwd, pr);
-			String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-			msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-			//String msg=MailNotification.sendMail(messageFormat, mailId, subject, "", LangFile);
-			String msg=  MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, "<br> Brihaspati Admin", mailId, subject, "", LangFile, "");*/
 			data.setMessage(msg);			
                 }
                 catch(Exception ex)
@@ -631,20 +613,20 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 if( (grpId.size() > 1) )
                 {
                         if(serverPort.equals("8080"))
-                                 subject="deleteFromGroup";
-                                 //subject="deleteFromGroup$newUser";
+                                 //subject="deleteFromGroup";
+                                 subject="deleteFromGroup$newUser";
                         else
-                                subject="deleteFromGrouphttps";
-                                //subject="deleteFromGrouphttps$newUserhttps";
+                                //subject="deleteFromGrouphttps";
+                                subject="deleteFromGrouphttps$newUserhttps";
                 }
-                else
+		 else
                 {
                         if(serverPort.equals("8080"))
-                                subject="deleteUser";
-                                //subject="deleteUser$newUser";
+                                //subject="deleteUser";
+                                subject="deleteUser$newUser";
                         else
-                                subject="deleteUserhttps";
-                                //subject="deleteUserhttps$newUserhttps";
+                                //subject="deleteUserhttps";
+                               subject="deleteUserhttps$newUserhttps";
                 }
                 return subject;
 	}

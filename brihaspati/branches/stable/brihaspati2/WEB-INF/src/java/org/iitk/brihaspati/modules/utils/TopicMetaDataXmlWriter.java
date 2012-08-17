@@ -59,12 +59,15 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 20-10-2010, 23-12-2010
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 09-08-2012 (Priyanka)
  */
 
 public class TopicMetaDataXmlWriter
 {
 	/**
-	* This method write xml file with tags
+	* nlineReqRootOnly
+	* This method write iml file with tags
 	* @param fileName String
 	*/
 	public static void writeWithRootOnly(String fileName) throws Exception
@@ -177,7 +180,7 @@ public class TopicMetaDataXmlWriter
 	* @param gname String
 	* @param roleName String
 	*/
-	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String orgtn,String email,String gname,String roleName, String registerationDate,String rollno,String program, String instAdminName)
+	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String orgtn,String email,String gname,String roleName, String registerationDate,String rollno,String program, String instAdminName, String actionKey, String flag)
 	      {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","uname","","",StringUtil.replaceXmlSpecialCharacters(uname));
@@ -192,7 +195,10 @@ public class TopicMetaDataXmlWriter
                 ats.addAttribute("","rollno","","",StringUtil.replaceXmlSpecialCharacters(rollno));
                 ats.addAttribute("","program","","",StringUtil.replaceXmlSpecialCharacters(program));
                 ats.addAttribute("","instAdminName","","",StringUtil.replaceXmlSpecialCharacters(instAdminName));
-                xmlWriter.appendElement("File",null,ats);
+		//For confirmation purpose
+		ats.addAttribute("","actionKey","","",StringUtil.replaceXmlSpecialCharacters(actionKey));
+		ats.addAttribute("","flag","","",StringUtil.replaceXmlSpecialCharacters(flag)); 
+               xmlWriter.appendElement("File",null,ats);
 
         }
 
@@ -200,14 +206,14 @@ public class TopicMetaDataXmlWriter
 	* This method append course registration information in existing on line course file
         * @param xmlWriter XmlWriter
         * @param gname String
-        * @param cname String
+i        * @param cname String
         * @param uname String
         * @param email String
         * @param fname String
         * @param lname String
         */
 
-        public static void appendOnlineCrsElement(XmlWriter xmlWriter,String gname,String cname,String uname,String orgtn,String email,String fname,String lname, String registerationDate,String instid )
+        public static void appendOnlineCrsElement(XmlWriter xmlWriter,String gname,String cname,String uname,String orgtn,String email,String fname,String lname, String registerationDate,String instid, String actionKey, String flag )
         {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","gname","","",StringUtil.replaceXmlSpecialCharacters(gname));
@@ -219,6 +225,9 @@ public class TopicMetaDataXmlWriter
                 ats.addAttribute("","lname","","",StringUtil.replaceXmlSpecialCharacters(lname));
 		ats.addAttribute("","registerationDate","","",StringUtil.replaceXmlSpecialCharacters(registerationDate));
 		ats.addAttribute("","instituteid","","",StringUtil.replaceXmlSpecialCharacters(instid));
+		//For confirmation purpose
+		ats.addAttribute("","actionKey","","",StringUtil.replaceXmlSpecialCharacters(actionKey));
+                ats.addAttribute("","flag","","",StringUtil.replaceXmlSpecialCharacters(flag));
                 xmlWriter.appendElement("File",null,ats);
 
         }
@@ -353,11 +362,13 @@ public class TopicMetaDataXmlWriter
 					String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
 					String rollno=((CourseUserDetail)v.get(i)).getRollNo();
 					String program=((CourseUserDetail)v.get(i)).getPrgCode();
-					String instAdminName=((CourseUserDetail)v.get(i)).getInstAdminName(); 
+					String instAdminName=((CourseUserDetail)v.get(i)).getInstAdminName();
+					String a_key=((CourseUserDetail)v.get(i)).getActivation();
+                                        String flag=((CourseUserDetail)v.get(i)).getFlag(); 
 					//ErrorDumpUtil.ErrorLog("roll no in write xml---------->\n"+rollno);
 					//ErrorDumpUtil.ErrorLog("program in write xml---------->\n"+program);
                                         //appendElement1(xmlWriter,uname,passwd,email,gname,roleName);
-                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName);
+                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,flag);
                                 }
                         }
                 }
@@ -370,6 +381,130 @@ public class TopicMetaDataXmlWriter
                 return xmlWriter;
        }
 
+//following method added by Priyanka
+/**
+ * This method read existing on line user xml file, sets value of flag and write new xml file with updated values
+ * @param filePath1 String
+ * @param xmlFile1 String
+ * @param mail String
+ * @param akey String
+ * @return set boolean
+ */
+
+public static boolean WriteXml_OnlineUser(String filePath1,String xmlFile1,String mail, String akey)
+        {
+		boolean set=false;
+                XmlWriter xmlWriter=null;
+                Vector v = new Vector();
+                File descFile=new File(filePath1+xmlFile1);
+                try{
+                        TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath1+xmlFile1);
+                        v=topicMetaData.getOnlineUserDetails();
+                        descFile.delete();
+                        WriteOnlineReqRootOnly(descFile.getAbsolutePath());
+                        xmlWriter=new XmlWriter(filePath1+xmlFile1);
+                        for(int i=0;i<v.size();i++)
+                        {
+                                        String uname=((CourseUserDetail)v.get(i)).getLoginName();
+                                        String passwd=((CourseUserDetail)v.get(i)).getActive();
+                                        String email=((CourseUserDetail)v.get(i)).getEmail();
+                                        String gname=((CourseUserDetail)v.get(i)).getGroupName();
+                                        String roleName=((CourseUserDetail)v.get(i)).getRoleName();
+                                        String fname=((CourseUserDetail)v.get(i)).getInstructorName();
+                                        String lname=((CourseUserDetail)v.get(i)).getUserName();
+                                        String orgtn=((CourseUserDetail)v.get(i)).getDept();
+                                        String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
+                                        String rollno=((CourseUserDetail)v.get(i)).getRollNo();
+                                        String program=((CourseUserDetail)v.get(i)).getPrgCode();
+                                        String instAdminName=((CourseUserDetail)v.get(i)).getInstAdminName();
+                                        String a_key=((CourseUserDetail)v.get(i)).getActivation();
+                                        String flag=((CourseUserDetail)v.get(i)).getFlag();
+	                                if(mail.equals(email))
+                                        {
+                                               if(a_key.equals(akey))
+                                                {
+							appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,"1");
+							set=true;
+						}
+        				else
+					{
+						appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,flag);
+                              		}
+					xmlWriter.writeXmlFile();
+                        		}
+                	}
+		}		
+                catch(Exception e) {
+                        ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil in On line user Method ::"+e);
+                        System.out.println("See Exception log  in log file:: ");
+                }
+
+                return set;
+}//method
+//...........
+
+//following method added by Priyanka
+/**
+ * This method read existing on line course xml file, sets value of flag and write new xml file with updated values
+ * @param filePath1 String
+ * @param xmlFile1 String
+ * @param mail String
+ * @param akey String
+ * @return set boolean
+ */
+
+public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,String mail, String akey)
+        {
+                boolean set=false;
+                XmlWriter xmlWriter=null;
+                Vector v = new Vector();
+                File descFile=new File(filePath1+xmlFile1);
+                try{
+                        TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath1+xmlFile1);
+			v=topicMetaData.getOnlineCourseDetails();
+                        descFile.delete();
+                        WriteOnlineReqRootOnly(descFile.getAbsolutePath());
+                        xmlWriter=new XmlWriter(filePath1+xmlFile1);
+                        for(int i=0;i<v.size();i++)
+                        {
+                                        String gname=((CourseUserDetail)v.get(i)).getGroupName();
+                                        String cname=((CourseUserDetail)v.get(i)).getCourseName();
+                                        String uname=((CourseUserDetail)v.get(i)).getLoginName();
+                                        String email=((CourseUserDetail)v.get(i)).getEmail();
+                                        String fname=((CourseUserDetail)v.get(i)).getInstructorName();
+                                        String lname=((CourseUserDetail)v.get(i)).getUserName();
+                                        String orgtn=((CourseUserDetail)v.get(i)).getDept();
+                                        String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
+                                        int instid=((CourseUserDetail)v.get(i)).getInstId();
+                                        String inst_id=Integer.toString(instid);
+                                        String a_key=((CourseUserDetail)v.get(i)).getActivation();
+                                         String flag=((CourseUserDetail)v.get(i)).getFlag();
+				
+					if(mail.equals(email))
+                                        {
+                                               if(a_key.equals(akey))
+                                                {
+		                                        appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,"1");
+					                 set=true;
+                                                }
+                                        	else
+                                        	{
+                                                	appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,flag);
+	                                 	}
+                                        	xmlWriter.writeXmlFile();
+                                        }
+                        }
+                }
+               catch(Exception e) {
+                        ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil in onlinecourse method ::"+e);
+                        System.out.println("See Exception log in log file:: ");
+                }
+
+                return set;
+       }
+
+//.............
+	
 
 	/**
 	* This method read existing on line course xml file and write new xml file with old values
@@ -385,15 +520,14 @@ public class TopicMetaDataXmlWriter
                 File descFile=new File(filePath1+xmlFile1);
                 try{
                         TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath1+xmlFile1);
-
-                        v=topicMetaData.getOnlineCourseDetails();
-
+			v=topicMetaData.getOnlineCourseDetails();
                         WriteOnlineReqRootOnly(descFile.getAbsolutePath());
                         xmlWriter=new XmlWriter(filePath1+xmlFile1);
                         for(int i=0;i<v.size();i++)
                         {
-                                if(!indexList.contains(i))
+                              if(!indexList.contains(i))
                                 {
+
                                         String gname=((CourseUserDetail)v.get(i)).getGroupName();
                                         String cname=((CourseUserDetail)v.get(i)).getCourseName();
                                         String uname=((CourseUserDetail)v.get(i)).getLoginName();
@@ -404,8 +538,10 @@ public class TopicMetaDataXmlWriter
 					String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
 					int instid=((CourseUserDetail)v.get(i)).getInstId();
                                         //appendElementC(xmlWriter,gname,cname,uname,email,fname,lname);
-					String inst_id=Integer.toString(instid);
-                                        appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id);
+                                        String inst_id=Integer.toString(instid);
+					String a_key=((CourseUserDetail)v.get(i)).getActivation();
+	                                 String flag=((CourseUserDetail)v.get(i)).getFlag();
+	                                appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,flag);
                                 }
 
 
@@ -756,7 +892,7 @@ public class TopicMetaDataXmlWriter
                 return xmlWriter;
         }
 
-	public static void appendBookmarks(XmlWriter xmlWriter,String Bookmarkname,String urllocation,String dirname,String type,String comment)
+ public static void appendBookmarks(XmlWriter xmlWriter,String Bookmarkname,String urllocation,String dirname,String type,String comment)
         {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","name","","",StringUtil.replaceXmlSpecialCharacters(Bookmarkname));
@@ -770,7 +906,7 @@ public class TopicMetaDataXmlWriter
         {
         	XmlWriter xmlWriter=null;
                 File descFile=new File(filePath+"/"+xmlfile);
-                try{
+  	              try{
 			 TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+xmlfile);
                          String Bookmarksdesc=topicMetaData.getTopicDescription();
                          Vector v=topicMetaData.getBookmarksDetails();

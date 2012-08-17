@@ -8,6 +8,7 @@
  * @modified date: 29-08-2010, 24-09-2010 (Shaista)
  * @author <a href="palseema30@gmail.com">ManoramaPal</a>
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
+ *@author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 07-12-2010
  * @modified date: 15-02-2011
 *#
@@ -338,6 +339,12 @@ $brih_openId4 <a href="http://openid.net/what/"> $brih_openId5 </a> & <a href="h
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_list </a>
 </b></td></tr>
+##Add ResendActivation link in login page
+<tr><td colspan=4>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english")><b>Resend Activation</b></a>
+</td></tr>
+##..........
 </table> ## 4
 </td></tr> ## 3, 2
 </table> ## 1

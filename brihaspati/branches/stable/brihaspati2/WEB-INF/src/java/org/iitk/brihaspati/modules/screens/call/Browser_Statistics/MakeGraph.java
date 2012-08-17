@@ -90,7 +90,7 @@ public class MakeGraph extends SecureScreen
 			String userrole=data.getUser().getTemp("role").toString();
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 			String usrname=pp.getString("usrname","");
-                	context.put("usrname",usrname);
+               		context.put("usrname",usrname);
 			String type=pp.getString("type","");
 			context.put("type",type);
 			String mname=pp.getString("mname","");
@@ -103,7 +103,15 @@ public class MakeGraph extends SecureScreen
 			if(userrole.equals("instructor"))
                 	{
                         	userList1=ListManagement.getCourseUser(userid,gid);
+				if(userList1.size()!=0){
                         	context.put("userList1",userList1);
+				}
+				else
+				{
+				context.put("userList1",userList1);
+				data.setMessage(MultilingualUtil.ConvertedString("stu_msgc",LangFile));
+				//data.setMessage(stu_msgc);
+				}
 				if(type.equals("sgraph")){
 					userList2=ModuleTimeUtil.getmName(courseid,uid);
 					context.put("userList2",userList2);

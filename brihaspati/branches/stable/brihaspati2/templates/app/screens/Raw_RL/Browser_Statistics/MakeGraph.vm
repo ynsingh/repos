@@ -33,52 +33,15 @@ $!data.getMessage()
 	<form name="frm" method="post">
 	<table width="100%">
 		<tr bgcolor="$ui.tableColor" align="right">
-			<td colspan="1">
-			<select name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
-			#if($usrname!="")
-                        	<option>$usrname </option>
-                        #else
-                        	<option>  - $brih_usrName - </option>
-                        #end
-			#if($data.getUser().getTemp("role")=="instructor")
-				#foreach($usrnamelist in $userList1)
-					#if($usrname!=$usrnamelist)
-			
-				<option value="$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("type","sgraph").addPathInfo("usrname",$usrnamelist)">$usrnamelist
-	                                #end
-                                </option>
-			  	#end
-			  #end
-			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	         	$brih_select $brih_usrName
 
-	#if($userList2.size()!=0)
-		#if(($type=="sgraph") && ($usrname!=""))
-			<select name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
-			#if($mname!="")
-                        	<option>$mname </option>
-                        #else
-                        	<option>  - $brih_module $brih_name - </option>
-                        #end
-
-                        #foreach($mnamelist in $userList2)
-				#if($mname!=$mnamelist)
-                        	<option value="$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("type","sgraph").addPathInfo("usrname",$usrname).addPathInfo("mname",$mnamelist)">$mnamelist
-				</option>
-				#end
-			#end
-			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			$brih_select $brih_module $brih_name
-		#end
-			
-	#end
 	#if($userList2.size()!=0)	
 		#if(($type=="sgraph") && ($mname!="") && ($usrname!=""))
+			<td>
                         <select name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                         	<option>$value </option>
                         #else
-                        	<option> - $brih_days$brih_value - </option>
+                        	<option> - $brih_days $brih_Of $brih_value - </option>
                         #end
 			#if($value!="7")
                                 <option value="$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("type","sgraph").addPathInfo("usrname",$usrname).addPathInfo("mname",$mname).addPathInfo("value","7")">7 </option>
@@ -91,9 +54,11 @@ $!data.getMessage()
 			#end
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			$brih_select $brih_days	
+			</td>
 		#end
-		#else
+	#else
 		#if(($type=="sgraph") && ($usrname!=""))
+			<td>
                         <select name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                        		<option>$value </option>
@@ -111,8 +76,50 @@ $!data.getMessage()
 			#end
                         </select>
                         $brih_select $brih_days
+			</td>
                 #end
 	#end
+	#if($userList2.size()!=0)
+		#if(($type=="sgraph") && ($usrname!=""))
+			<td>
+			<select name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
+			#if($mname!="")
+                        	<option>$mname </option>
+                        #else
+                        	<option>  - $brih_module $brih_Of1 $brih_name - </option>
+                        #end
+
+                        #foreach($mnamelist in $userList2)
+				#if($mname!=$mnamelist)
+                        	<option value="$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("type","sgraph").addPathInfo("usrname",$usrname).addPathInfo("mname",$mnamelist)">$mnamelist
+				</option>
+				#end
+			#end
+			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			$brih_select $brih_module $brih_Of1 $brih_name
+			</td>
+		#end
+			
+	#end
+	<td colspan="1">
+		<select name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
+		#if($usrname!="")
+                       	<option>$usrname </option>
+        	#else
+                	<option>  - $brih_usrName - </option>
+		#end
+		#if($data.getUser().getTemp("role")=="instructor")
+			#foreach($usrnamelist in $userList1)
+				#if($usrname!=$usrnamelist)
+		
+				<option value="$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("type","sgraph").addPathInfo("usrname",$usrnamelist)">$usrnamelist
+	        		#end
+                               </option>
+		  	#end
+		  #end
+			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	         	$brih_select $brih_usrName
+			</td>
               </tr>
        		#if($valuestr!="")
 			<tr bgcolor="$ui.menuColor"><td colspan="1"><div id="graphdiv1"></td></div></tr>

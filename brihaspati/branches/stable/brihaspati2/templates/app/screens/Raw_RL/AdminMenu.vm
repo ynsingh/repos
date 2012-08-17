@@ -20,7 +20,7 @@
 	<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_Institute</a>
       </td>
    </tr>
-<tr bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.menuColor" align="right">
       <td>
          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
                 ##<img src="$content.getURI("/images/$lang/registration.jpg")"border=0></a><br>

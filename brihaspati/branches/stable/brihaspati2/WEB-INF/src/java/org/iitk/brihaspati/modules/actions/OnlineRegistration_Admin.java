@@ -72,6 +72,8 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
  * @modify 20-03-09, 08-07-2010, 20-10-2010, 23-12-2010, 05-08-2011, 16-08-2011
  * @modify 20-04-12
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 09-08-2012 (Priyanka)
  */
 
 /**
@@ -176,7 +178,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Admin.java RejectUser  message="+message);
 							//Mail_msg=MailNotification.sendMail(message, mailid, subject, "",LangFile);
-							 Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, mailid, subject, "", LangFile, Integer.toString(instid));
+							 Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, mailid, subject, "", LangFile, Integer.toString(instid),"");//last parameter added by Priyanka
 							indexList.add(i);
                						data.setMessage(MultilingualUtil.ConvertedString("online_msg3",LangFile));
 						}
@@ -265,7 +267,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 							{
 								instName = ((CourseUserDetail)userlist.get(i)).getInstAdminName();
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"cnfrm_u");//last parameter added by Priyanka
+									ErrorDumpUtil.ErrorLog("inside onlireg_Admin");
 									data.setMessage(msg);
 								}
 								catch(Exception e){
@@ -374,7 +377,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Admin.java RejectCourse message="+message);
 							//Mail_msg=MailNotification.sendMail(message, mailid, subject, "", LangFile);
 							//Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile, Integer.toString(instid));
-							Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile, instituteId);
+							Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile, instituteId,"");//last parameter added by Priyanka
                                                         indexList.add(i);
 							LangFile=(String)data.getUser().getTemp("LangFile");
                                                         data.setMessage(MultilingualUtil.ConvertedString("online_msg4",LangFile));
@@ -451,7 +454,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 							//ErrorDumpUtil.ErrorLog(" instName =="+instName);
                                                        {
                                                                 try{
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName);
+                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");//last parameter added by Priyanka
 								/**
 									String subject="";
 									if(serverPort.equals("8080"))

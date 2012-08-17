@@ -42,7 +42,9 @@ package org.iitk.brihaspati.modules.utils;
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  *  @modified date: 20-10-2010,3-11-2010, 23-12-2010, 13-07-2011
+ *  @modified date: 09-08-2012 (Priyanka)
  */
 
 import java.util.Date;
@@ -83,6 +85,8 @@ public class CourseUserDetail
 	private String loginDate;
 	private String loginTime;
 	private int countLogins;
+	private String activate;
+	private String flag;
 	/**
 	 * Course details
 	 */ 
@@ -231,6 +235,25 @@ public class CourseUserDetail
 	{
 		return studsrlid;
 	}
+//For Activation, added by Priyanka
+	public void setActivation(String a_key)
+        {
+                this.activate=a_key;
+        }
+        public String getActivation()
+        {
+                return activate;
+        }
+	public void setFlag(String flag)
+        {
+                this.flag=flag;
+        }
+        public String getFlag()
+        {
+                return flag;
+        }
+//..........
+
 	// Massages for Removal Case
 	public void setErr_User(String Err_User)
 	{

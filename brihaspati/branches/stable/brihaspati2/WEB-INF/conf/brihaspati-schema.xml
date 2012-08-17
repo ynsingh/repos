@@ -557,6 +557,7 @@
 <table name="USER_PREF" idMethod="idbroker"  description="User preference information">
 	<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
 	<column name="USER_LANG" required="true" size="32" type="VARCHAR" default="english"/>
+	<column name="ACTIVATION" required="true" size="32" type="VARCHAR" default="NULL"/>
 	<unique>
         	<unique-column name="USER_ID"/>
 	</unique>

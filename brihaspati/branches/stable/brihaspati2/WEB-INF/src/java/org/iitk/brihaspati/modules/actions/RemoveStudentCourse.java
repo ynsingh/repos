@@ -39,7 +39,7 @@ package org.iitk.brihaspati.modules.actions;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
- * @modified date: 20-10-2010,23-12-2010
+ * @modified date: 20-10-2010,23-12-2010, 16-06-2011
  */
 
 import java.util.Vector;
@@ -47,11 +47,14 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -86,6 +89,24 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 		 */
 		String CourseList=data.getParameters().getString("deleteFileNames","");
 		if(!CourseList.equals("")){  
+			String info_new = "", subject = "", info_Opt="", msgRegard="", msgInstAdmin="" ;
+			String server_name=TurbineServlet.getServerName();
+                       	String srvrPort=TurbineServlet.getServerPort();
+			if(srvrPort.equals("8080")){
+	               		info_new = "deleteUser";
+				info_Opt = "newUser";
+			}
+               		else{
+                		info_new = "deleteUserhttps";	
+				 info_Opt = "newUserhttps";
+			}
+			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+			subject = MailNotification.subjectFormate(info_new, "", pr );
+			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+       	                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                        msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
 			StringTokenizer st=new StringTokenizer(CourseList,"^");
 			for(int i=0;st.hasMoreTokens();i++){ 
 				String s=st.nextToken();
@@ -108,25 +129,12 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 				 * Remove the users selected for removal
 				 * @see UserManagement in utils
 				 */
-				String server_name=TurbineServlet.getServerName();
-                        	String srvrPort=TurbineServlet.getServerPort();
-				String info_new = "", subject = "";
-				if(srvrPort.equals("8080"))
-	                		info_new = "deleteUser";
-                		else
-        	        		info_new = "deleteUserhttps";	
 				int uId=UserUtil.getUID(postString);
 		                String uid=Integer.toString(uId);
 				TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 				String email=element.getEmail();
-				String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-				subject = MailNotification.subjectFormate(info_new, "", pr );
-				String message = MailNotification.getMessage(info_new, preString, "", "", "", server_name, srvrPort,pr);	
-				//ErrorDumpUtil.ErrorLog("\n\n\n\n in RemoveStudentCourse message="+message+"      subject="+subject);
-                                //String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
-                                String Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
+				String message = MailNotification.getMessage(info_new, preString, "", "", "", pr);
+                                String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, "","");//last parameter added by Priyanka
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 data.setMessage(Mail_msg);
 				String msg=umt.removeUserProfile(postString,preString,LangFile);
@@ -136,11 +144,12 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 				} 
 				context.put("error_user",Err_user);
 				context.put("error_type",Err_type);
-		 	String varStudent=m_u.ConvertedString("varStudent",LangFile);
-			String remStudent=m_u.ConvertedString("remStudent",LangFile);
-			if(LangFile.endsWith("en.properties")){
-			data.setMessage(varStudent+" "+"'" +postString+"'"+" "+remStudent);}
-			data.setMessage(varStudent +" "+remStudent+"'" +postString+"'");
+			 	String varStudent=m_u.ConvertedString("varStudent",LangFile);
+				String remStudent=m_u.ConvertedString("remStudent",LangFile);
+				if(LangFile.endsWith("en.properties")){
+					data.setMessage(varStudent+" "+"'" +postString+"'"+" "+remStudent);}
+				else
+					data.setMessage(varStudent +" "+remStudent+"'" +postString+"'");
 			}
 		} 
 		/**
@@ -195,7 +204,8 @@ public class RemoveStudentCourse extends SecureAction_Admin{
                         }
 			String program = pp.getString("prg","");
 			String roleName="student";
-			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program);  //modified by Shikha
+			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program,"");  //modified by Shikha. Last parameter added by Priyanka
+
 			data.setMessage(msg);
 		}
 		catch(Exception e)

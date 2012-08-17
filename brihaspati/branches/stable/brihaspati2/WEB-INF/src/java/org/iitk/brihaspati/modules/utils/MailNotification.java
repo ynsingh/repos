@@ -63,9 +63,10 @@ import javax.mail.Transport;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified date: 31-08-2005, 20-03-2009, 29-12-2009, 17-02-2010, 08-07-2010;
  * @author <a href="mailto:shikha@gmail.com">Shikha Shukla</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 22-11-2010;
  * @modified date: 14-07-2011 (Shaista);
-
+ * @modified date: 09-08-2012 (Priyanka)
  */
 
 public class MailNotification{
@@ -141,6 +142,15 @@ public class MailNotification{
 		return replaceString("user_pass",uPassword);
 	}
 
+// Following method added by Priyanka
+	public static String getMessage(String info,String uName, String aKey, String mode) throws Exception{
+	
+		info=info.replaceAll("e_mail",uName);
+		info=info.replaceAll("activation_key",aKey);
+		info=info.replaceAll("u_mode",mode);
+		return info;
+	}
+	
 	 public static String replaceServerPort(String info,String serverName, String serverPort) throws Exception {
                if(serverName.length() >0)
                        info=info.replaceAll("server_name", serverName);

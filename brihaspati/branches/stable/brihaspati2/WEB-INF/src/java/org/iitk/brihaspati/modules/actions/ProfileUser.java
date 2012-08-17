@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)ProfileUser.java	
  *
- *  Copyright (c) 2006-2007 ,2010ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2007, 2010, 2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -62,6 +62,7 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.actions.SecureAction;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  
 /**
  *
@@ -115,10 +116,12 @@ public class ProfileUser extends SecureAction
 		String country=pp.getString("country");
 		String department=pp.getString("department");
 		String designation=pp.getString("designation");
-		String officeno=pp.getString("Offprefix")+"-"+pp.getString("Offccode")+"-"+pp.getString("Offrcode")+"-"+pp.getString("Offphnumber");
-                String mobileno=pp.getString("Mobprefix")+"-"+pp.getString("Mobccode")+"-"+pp.getString("Mobrcode")+"-"+pp.getString("Mobphnumber");
-                String homeno=pp.getString("Homeprefix")+"-"+pp.getString("Homeccode")+"-"+pp.getString("Homercode")+"-"+pp.getString("Homephnumber");
-                String otherno=pp.getString("Othprefix")+"-"+pp.getString("Othccode")+"-"+pp.getString("Othrcode")+"-"+pp.getString("Othphnumber");
+
+		String officeno=pp.getString("Offprefix","x")+"-"+pp.getString("Offccode","x")+"-"+pp.getString("Offrcode","x")+"-"+pp.getString("Offphnumber","x");
+                String mobileno=pp.getString("Mobprefix","x")+"-"+pp.getString("Mobccode","x")+"-"+pp.getString("Mobrcode","x")+"-"+pp.getString("Mobphnumber","x");
+                String homeno=pp.getString("Homeprefix","x")+"-"+pp.getString("Homeccode","x")+"-"+pp.getString("Homercode","x")+"-"+pp.getString("Homephnumber","x");
+                String otherno=pp.getString("Othprefix","x")+"-"+pp.getString("Othccode","x")+"-"+pp.getString("Othrcode","x")+"-"+pp.getString("Othphnumber","x");
+		
 		String offdirectory=pp.getString("Offdirectory");
 		String mobdirectory=pp.getString("Mobdirectory");
 		String homedirectory=pp.getString("Homedirectory");
@@ -151,8 +154,7 @@ public class ProfileUser extends SecureAction
 	  	}
           	String loginName=user.getName();
 	  	int uid=UserUtil.getUID(loginName);  	
-		ErrorDumpUtil.ErrorLog("id      =============  "+uid);
-	  StringUtil S=new StringUtil();
+	  	StringUtil S=new StringUtil();
 	  /**
             * Checking for the illegal characters in the data entered
             * If found then the error message is given
@@ -292,6 +294,20 @@ public class ProfileUser extends SecureAction
 		* Insert value in table "TELEPHONE_DIRECTORY" when corresponding data are not present
 		* and update value in table "TELEPHONE_DIRECTORY" when corresponding data are present
 		*/
+				Vector instid1=InstituteIdUtil.getAllInstId(uid);
+				String str11="";
+				String instid="";
+				String str33="";
+				try{
+					for(int j=0;j<=instid1.size();j++){
+						str11=instid1.elementAt(j).toString();
+						if(!str11.equals(str33)){
+							instid=instid+"/"+str11;
+						}
+					str33=str11;
+					}
+				}catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in getting institute Id in Profile User Action "+ex);};
+
 
 				List li=null;
 				Criteria tele = new Criteria();
@@ -313,6 +329,8 @@ public class ProfileUser extends SecureAction
                                 tele.add(TelephoneDirectoryPeer.COUNTRY, country);
                                 tele.add(TelephoneDirectoryPeer.DEPARTMENT, department);
                                 tele.add(TelephoneDirectoryPeer.DESIGNATION, designation);
+				tele.add(TelephoneDirectoryPeer.INSTITUTE_ID,instid);
+
                                 if(offdirectory.equals("Public")){
                                         String PubOffNo="1-"+officeno;
                                         tele.add(TelephoneDirectoryPeer.OFFICE_NO, PubOffNo);
@@ -434,7 +452,7 @@ public class ProfileUser extends SecureAction
 			doUpdate(data,context);
 		}
 		else{
-	        	data.setMessage("Can't find!");
+	        	data.setMessage("Can't find the method in Profile User Action!");
 		}
     	}
 }

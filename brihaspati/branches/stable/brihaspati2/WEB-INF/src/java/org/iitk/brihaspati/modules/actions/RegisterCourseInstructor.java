@@ -47,6 +47,8 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @author <a href="mailto:satyapalsingh@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @modified date: 04-08-2011 (Shaista)
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 09-08-2012 (Priyanka)
  */
 public class RegisterCourseInstructor extends SecureAction_Admin
 {
@@ -109,7 +111,7 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 		  		* @see CourseManagement Utils
 		  		*/
 		 		//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha
-		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName); //modified by Shaista passing institute id and institute name.
+		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,""); //modified by Shaista passing institute id and institute name. Last parameter added by Priyanka
 		 		data.setMessage(msg);
 		}
 		catch(Exception e)

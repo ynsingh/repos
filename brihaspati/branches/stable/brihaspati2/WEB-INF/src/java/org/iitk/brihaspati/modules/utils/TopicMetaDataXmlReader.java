@@ -36,10 +36,13 @@ package org.iitk.brihaspati.modules.utils;
  *
  */
 
+import java.io.File;
 import java.util.Vector;
 import org.xml.sax.Attributes;
 import org.iitk.brihaspati.modules.utils.XmlData;
 import org.iitk.brihaspati.modules.utils.XmlReader;
+import org.xml.sax.helpers.AttributesImpl;
+import org.iitk.brihaspati.modules.utils.XmlWriter;
 
 /**
  * This class Read Xml file with attributes and values
@@ -54,6 +57,8 @@ import org.iitk.brihaspati.modules.utils.XmlReader;
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modify 23-12-2010
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modify date: 09-08-2012 (Priyanka)
  */
 
 public class TopicMetaDataXmlReader
@@ -480,7 +485,7 @@ public class TopicMetaDataXmlReader
                 if(file!=null)
                 {
                         Attributes ats;
-                        String uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName;
+                        String uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,flag,activation;
                         for(int j=0;j<file.length;j++)
                         {
 
@@ -499,7 +504,9 @@ public class TopicMetaDataXmlReader
                                 rollno =ats.getValue("rollno");
 				program = ats.getValue("program");
 				instAdminName = ats.getValue("instAdminName");
-
+				//For Confirmation purpose
+				flag = ats.getValue("flag");
+				activation = ats.getValue("actionKey");
                                 fileEntry.setLoginName(uname);
                                 fileEntry.setActive(passwd);
 				fileEntry.setInstructorName(fname);
@@ -512,6 +519,8 @@ public class TopicMetaDataXmlReader
 				fileEntry.setRollNo(rollno);
 				fileEntry.setPrgCode(program);
 				fileEntry.setInstAdminName(instAdminName);
+				fileEntry.setFlag(flag);
+				fileEntry.setActivation(activation);
                                 v.addElement(fileEntry);
                         }
                         return v;
@@ -528,7 +537,7 @@ public class TopicMetaDataXmlReader
                 {
                         Vector v=new Vector();
                         Attributes ats;
-                        String gname,cname,uname,orgtn,email,fname,lname,registerationDate,instid;
+                        String gname,cname,uname,orgtn,email,fname,lname,registerationDate,instid,flag,activation;
                         for(int j=0;j<file.length;j++)
                         {
 
@@ -544,6 +553,10 @@ public class TopicMetaDataXmlReader
                                 lname=ats.getValue("lname");
                                 registerationDate=ats.getValue("registerationDate");
 				instid=ats.getValue("instituteid");
+				//For confirmation purpose
+				flag = ats.getValue("flag");
+                                activation = ats.getValue("actionKey");
+
 				int InstId=Integer.parseInt(instid);
                                 fileEntry.setGroupName(gname);
                                 fileEntry.setCourseName(cname);
@@ -555,6 +568,8 @@ public class TopicMetaDataXmlReader
 				fileEntry.setCreateDate(registerationDate);
 				fileEntry.setUserName(lname);
 				fileEntry.setInstId(InstId);
+				fileEntry.setFlag(flag);
+                                fileEntry.setActivation(activation);
                                 v.addElement(fileEntry);
                         }
                         return v;
@@ -562,6 +577,8 @@ public class TopicMetaDataXmlReader
                 }catch(Exception e){ return null ;}
         return null;
         }
+	
+
 	/**
 	* This method get all Details of UpdationDetails
         * @return Vector

@@ -374,7 +374,9 @@ public class Notice_Send_Delete extends SecureAction
                         crit.add(NoticeReceivePeer.GROUP_ID,group_id);
                         crit.add(NoticeReceivePeer.READ_FLAG,0);
                         NoticeReceivePeer.doInsert(crit);
-			String lang=data.getUser().getTemp("lang").toString();
+			//String lang=data.getUser().getTemp("lang").toString();
+			String lang=data.getUser().getTemp("LangFile").toString();
+			ErrorDumpUtil.ErrorLog("lang============"+lang);
 			String server_name=TurbineServlet.getServerName();
                         String srvrPort=TurbineServlet.getServerPort();
 			String groupName = GroupUtil.getGroupName(group_id);
@@ -402,7 +404,7 @@ public class Notice_Send_Delete extends SecureAction
                                 String eMail=element.getEmail();
 				if(!eMail.equals("")){
 					//String Mail_msg= MailNotification.sendMail(message+"<br><br>"+notice_message, eMail, noticeSubject, "", lang);
-					String Mail_msg= MailNotificationThread.getController().set_Message(message+"<br><br>"+notice_message, "", "", "", eMail, noticeSubject, "", lang, "");
+					String Mail_msg= MailNotificationThread.getController().set_Message(message+"<br><br>"+notice_message, "", "", "", eMail, noticeSubject, "", lang, "","");//last parameter added by Priyanka
 				}
 			}
 		}

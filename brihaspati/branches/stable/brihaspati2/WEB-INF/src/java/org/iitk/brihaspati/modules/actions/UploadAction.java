@@ -132,7 +132,7 @@ public class UploadAction extends SecureAction
 		LangFile=(String)user.getTemp("LangFile");
 		String courseHome=(String)user.getTemp("course_id","");
 		ParameterParser pp=data.getParameters();
-		String contentTopic=pp.getString("contentTopic","");
+		String contentTopic=pp.getString("contentTopic","").replaceAll("\\s+", "");
 		String location=pp.getString("course","");
 		String Pub=pp.getString("publish","");
 		context.put("pub",Pub);

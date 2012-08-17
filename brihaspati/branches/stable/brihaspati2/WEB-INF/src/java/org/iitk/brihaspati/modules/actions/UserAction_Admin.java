@@ -58,9 +58,10 @@ import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
-import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
@@ -75,6 +76,8 @@ import org.iitk.brihaspati.om.TurbineRole;
 import org.iitk.brihaspati.om.TurbineRolePeer;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 /** 
  * This class contains code for registration, updation profile and password or
  * removal of user in the system
@@ -219,6 +222,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 		 	* Update password entered by the admin for the user
 		 	* @see PasswordUtil in utils
 		 	*/
+			String serverName =TurbineServlet.getServerName();
+	                String serverPort =TurbineServlet.getServerPort();
+			PasswordUtil.passwordFromUtil(serverName, serverPort);
 			String msg=PasswordUtil.doChangepassword(user,"",newPW,LangFile);
 			data.setMessage(msg);
 		}
@@ -259,12 +265,36 @@ public class UserAction_Admin extends SecureAction_Admin{
 		//int gId=0;
 		String server_name=TurbineServlet.getServerName();
                 String srvrPort=TurbineServlet.getServerPort();
-		String subject="", info_new = "";
-		if(srvrPort.equals("8080"))
-                   info_new = "deleteUser";
-                else
-                   info_new = "deleteUserhttps";
-		String email="";
+		String subject="", info_new = "", info_Opt="", msgRegard="";
+		int instId=0, aUid = 0;
+		String instAdminName ="";
+		if(instId != 0) {
+			try{    crit=new Criteria();
+        	                crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instId);
+                	        List inm=InstituteAdminUserPeer.doSelect(crit);
+	                        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+				/****** shaista ***********
+				* Getting full name of user using UserUtil.
+				* @see UserUtil in utils
+				*/
+				aUid = UserUtil.getUID(element.getAdminUname());
+                                instAdminName=UserUtil.getFullName(aUid);
+        	                //instAdminName=element.getAdminFname() +" "+element.getAdminLname();
+
+	                }	
+
+        	        catch(Exception e){ErrorDumpUtil.ErrorLog("Error in UserAction_Admin class in action at line 245");}
+		}	
+
+		if(srvrPort.equals("8080")) {
+			info_new = "deleteUser";
+			info_Opt = "newUser";
+		}
+                else {
+			info_new = "deleteUserhttps";
+			info_Opt = "newUserhttps";
+                }
+		String email="", msgRoleInfo="";
 		String Mail_msg="", message ="";
 		boolean flag=false;
 
@@ -274,6 +304,15 @@ public class UserAction_Admin extends SecureAction_Admin{
 		////////////////////////////////////////////////////
 		Properties pr =MailNotification.uploadingPropertiesFile(fileName);
 		subject = MailNotification.subjectFormate(info_new, "", pr );
+		msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+
+		if(instId != 0) {
+			msgRoleInfo = pr.getProperty("brihaspati.MailNotification."+info_Opt+".msgInstAdmin");
+			if(msgRoleInfo.length() > 0)
+				msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
+		}
+
 		/**
 		if(grpInstructor.size()!=0)
 		{
@@ -304,9 +343,13 @@ public class UserAction_Admin extends SecureAction_Admin{
 				if(active.equals("0"))
 				{
 					String Message=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
-					message = MailNotification.getMessage(info_new, cName, "", "", "", server_name, srvrPort,pr);
-					//Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
-					Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
+					//message = MailNotification.getMessage(info_new, cName, "", "", "", server_name, srvrPort,pr);
+					//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
+					message = MailNotification.getMessage(info_new, cName, "", "", "", pr);
+					if(instId != 0) 
+						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
+					else
+						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
 					data.setMessage(Mail_msg);
 					String st1=mu.ConvertedString("delIns1",LangFile);
 					String st2=mu.ConvertedString("delIns2",LangFile);
@@ -328,10 +371,15 @@ public class UserAction_Admin extends SecureAction_Admin{
 			if(RoleName.equals("instructor"))
 				groupName = GroupUtil.getGroupName(userId,2);
 
-			message = MailNotification.getMessage(info_new, groupName, "", "", "", server_name, srvrPort,pr);
+			//message = MailNotification.getMessage(info_new, groupName, "", "", "", server_name, srvrPort,pr);
+			message = MailNotification.getMessage(info_new, groupName, "", "", "", pr);
 			//ErrorDumpUtil.ErrorLog("\n	in User_Action_Admin  message="+message+"      subject="+subject);	
-			//Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
-			Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
+			//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
+			if(instId == 0) 
+				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
+			else
+				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
+
 			Messages=UserManagement.RemoveUser(userName,LangFile);
 			context.put("error_Messages",Messages);
 			data.setMessage(Mail_msg);

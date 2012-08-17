@@ -475,7 +475,7 @@ face="$ui.sansSerifFonts">$type</font>
         <td colspan=2  align="left"><font size=4><b>$brih_upload_msg1</b></font></td>
         </tr>
         <tr bgcolor="$ui.menuColor">
-	#fileUpload ("Attach File <font color=RED>*</font>" "file")
+	#fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
 	</tr>
         <tr bgcolor="$ui.tableColor">
         <td colspan=2 align="left">

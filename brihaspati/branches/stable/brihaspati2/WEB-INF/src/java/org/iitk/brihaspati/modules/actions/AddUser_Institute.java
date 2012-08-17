@@ -148,7 +148,7 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		{
 			rollno = InstituteIdUtil.generateRollno(instid);
 		}
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"act");//last parameter added by Priyanka
 		data.setMessage(msg);
 		}
 		catch(Exception ex){
