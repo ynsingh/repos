@@ -736,7 +736,6 @@ public class XMLWriter_InstituteRegistration {
 							}
 						}
                                         }
-					break;
                                 }
                         }
                 }
