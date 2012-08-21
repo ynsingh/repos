@@ -161,7 +161,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 chooseLanguageLabel=new JLabel(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
                 NorthPanel.add(chooseLanguageLabel);
 
-		Arrays.sort(languages);
 		languageListCombo=new JComboBox(languages);
                 languageListCombo.setPreferredSize(new Dimension(160,25));
                 languageListCombo.addActionListener(this);
@@ -240,35 +239,25 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 passwordField.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
 				usernameText.setCursor(busyCursor);
-				passwordField.setCursor(busyCursor);
-				mainLoginPanel.setCursor(busyCursor);
-				panel.setCursor(busyCursor);
-				mainWindow.getController().setCursor(busyCursor);
-				loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());			
-				try{
-						Thread.sleep(1000);
-				}catch(InterruptedException ie){
-					usernameText.setCursor(defaultCursor);
-					mainWindow.getController().setCursor(defaultCursor);
-				}finally{
-					usernameText.setCursor(defaultCursor);
-			                mainWindow.getController().setCursor(defaultCursor);
-				}
-						
-                        	if(loginValue==false){
-                                	usernameText.setText("");
-                                	passwordField.setText("");
-					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
-				}else {
-					client_obj.setUserName(usernameText.getText());
-					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
-						mainWindow.getMenuItem4().setEnabled(true);
-	                                        mainWindow.getDesktop().add(CourseSessionWindow.getController());
-        	                                setVisible(false);
-                	                }
-					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
-                        	}
-                               	KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+				if( (!(usernameText.getText()).equals(""))) {	
+					loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
+					if(loginValue==false){
+						passwordField.setText("");
+						LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+		                                StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+						usernameText.setCursor(defaultCursor);
+					}else {
+						client_obj.setUserName(usernameText.getText());
+						if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
+							mainWindow.getMenuItem4().setEnabled(true);
+		                                        mainWindow.getDesktop().add(CourseSessionWindow.getController());
+        		                                setVisible(false);
+                		                }
+						StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
+                        		}
+					KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
+				}else
+					LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
                         }
                 });
 		loginPanel1.add(username);
@@ -323,41 +312,51 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
                 titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
                 setTitle(Language.getController().getLangValue("LoginWindow.Title"));
-                mainPanel.remove(1);
-                mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+		{
+			username.setText(Language.getController().getLangValue("LoginWindow.username"));
+			password.setText(Language.getController().getLangValue("LoginWindow.password"));				
+		}
+                //mainPanel.remove(1);
+                //mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
                 mainPanel.revalidate();
                 mainPanel.validate();
                 panel.repaint();
                 mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
                 mainWindow.setMenuText();
                 mainWindow.setMenuItemText();
-
+		Update_Enable_Decable();		
 	}
   	
+	private void Update_Enable_Decable(){
+		try {
+			if(!(indexServerName.equals("Select"))){
+                                username.setEnabled(true);
+                                usernameText.setEnabled(true);
+                                password.setEnabled(true);
+                                passwordField.setEnabled(true);
+                                submitLabel.setEnabled(true);
+                                cancelLabel.setEnabled(true);
+                                username.setFocusable(true);
+                        }
+                        if(indexServerName.equals("Select")){
+                                username.setEnabled(false);
+                                usernameText.setEnabled(false);
+                                password.setEnabled(false);
+                                passwordField.setEnabled(false);
+                                submitLabel.setEnabled(false);
+                                cancelLabel.setEnabled(false);
+                        }
+	
+		}catch(Exception e){}
+	}
   	public void actionPerformed(ActionEvent e) {
   	
   		if(e.getSource()==indexServerListCombo){
-      			JComboBox combo = (JComboBox)e.getSource();
+			JComboBox combo = (JComboBox)e.getSource();
         		indexServerName=(String)combo.getSelectedItem();
 			// set this indexServerName object to ClientObject for later use by this client.
 			client_obj.setIndexServerName(indexServerName);
-        		if(!(indexServerName.equals("Select"))){
-        			username.setEnabled(true);
-        			usernameText.setEnabled(true);
-        			password.setEnabled(true);
-        			passwordField.setEnabled(true);
-        			submitLabel.setEnabled(true);
-        			cancelLabel.setEnabled(true);
-        			username.setFocusable(true);
-           		}
-        		if(indexServerName.equals("Select")){
-        			username.setEnabled(false);
-        			usernameText.setEnabled(false);
-	        		password.setEnabled(false);
-        			passwordField.setEnabled(false);
-        			submitLabel.setEnabled(false);
-        			cancelLabel.setEnabled(false);
-	           	}
+			Update_Enable_Decable();
       		}else if(e.getSource()==languageListCombo) {
 			JComboBox combo = (JComboBox)e.getSource();
                         languageName=(String)combo.getSelectedItem();
@@ -386,29 +385,23 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			ForgetPass.getController();
 		}
                  else if(e.getComponent().getName().equals("submit.Action")){
-			submitLabel.setCursor(busyCursor);
-                        loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
-			try{
-				Thread.sleep(1000);
-			}catch(InterruptedException ie){
-				submitLabel.setCursor(defaultCursor);
-			}finally{
-				submitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			if(loginValue==false){
-                        	usernameText.setText("");
-                        	passwordField.setText("");
-				//javax.swing.JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", javax.swing.JOptionPane.ERROR_MESSAGE);
-				StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1"));
-			}else {
-				client_obj.setUserName(usernameText.getText());
-				if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
-					mainWindow.getMenuItem4().setEnabled(true);
-                                	mainWindow.getDesktop().add(CourseSessionWindow.getController());
-                                	setVisible(false);
+			if( (!(usernameText.getText()).equals(""))) {
+	                        loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
+				if(loginValue==false){
+                	        	passwordField.setText("");
+					LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+                                	StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
+				}else {
+					client_obj.setUserName(usernameText.getText());
+					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
+						mainWindow.getMenuItem4().setEnabled(true);
+                                		mainWindow.getDesktop().add(CourseSessionWindow.getController());
+                                		setVisible(false);
+					}
+					StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
 				}
-				StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog2"));
-			}
+			}else
+				LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog4"));
 			
                  }
                  else if(e.getComponent().getName().equals("cancle.Action")){

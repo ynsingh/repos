@@ -45,7 +45,7 @@ public class Client {
 
                 if(((ClientObject.getController().getIndexServerList()).size()) > 1){
 			MainWindow.getController().createGUI();
-                	MainWindow.getController().getDesktop().add(new LoginWindow());
+                	MainWindow.getController().getDesktop().add(LoginWindow.getController());
 		}else{
                 	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("Client.MessageDialog"));
               	}

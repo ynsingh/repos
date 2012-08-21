@@ -285,12 +285,11 @@ public class HttpsUtil{
                         	BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
                                 try{
-					if((str=in.readLine())!=null){
+					while((str=in.readLine())!=null){
 	                                	if(!(str.equals(message))){
 							System.out.println("sffsf fsd fs dfs f"+msgList);
 							if(str.matches("(.*)loginfailed(.*)")){
-								org.bss.brihaspatisync.gui.LoginWindow.getController().setMessage(Language.getController().getLangValue("LoginWindow.MessageDialog1") +"<br>  "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));
-								org.bss.brihaspatisync.gui.StatusPanel.getController().setStatus(Language.getController().getLangValue("LoginWindow.MessageDialog1")+" "+Language.getController().getLangValue("LoginWindow.MessageDialog3"));		
+								return null;
 							}else
 								msgList.addElement(str);
                         	                }
