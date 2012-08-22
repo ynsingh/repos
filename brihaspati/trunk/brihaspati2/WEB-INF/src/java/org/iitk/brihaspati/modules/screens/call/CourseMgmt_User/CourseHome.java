@@ -108,9 +108,12 @@ public class CourseHome extends SecureScreen{
 			/**
 			 * Retrieves the COURSE_ID of the course in which user has entered
 			 */
+			 String notf=pp.getString("notf","");
+                        ErrorDumpUtil.ErrorLog("-------------->>>>>>>>>>>>>>..  "+notf);
+                        String courseid=pp.getString("courseid","");
+                        String userInCourse=(String)user.getTemp("course_id");
+                        context.put("notf",notf);
 
-			String courseid=pp.getString("courseid","");
-			String userInCourse=(String)user.getTemp("course_id");
 			/** Check course id for null
 			*/
 			if( userInCourse!=null && !userInCourse.equals("") && courseid.equals(""))

@@ -318,7 +318,7 @@ $!data.getMessage()
 							<td align=center>
 							##if($studentstts.getStatus() == "ENABLE") 
 							##<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()) style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
-							<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("actionName","eventSubmit_doCourseInsert").setAction("CourseLogin") style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
+							<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("notf",$student.hasLastModifiedAfter($lastlogin)).addPathInfo("actionName","eventSubmit_doCourseInsert").setAction("CourseLogin") style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
 
 							##else
 							##<font color="red">* $student.getCAlias() - $student.getCourseName() - $brih_expired</font>

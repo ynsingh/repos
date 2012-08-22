@@ -57,6 +57,7 @@ import org.iitk.brihaspati.om.DbReceivePeer;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 /**
  *   This class contains code for all discussions in workgroup
  *   Compose a discussion and reply.
@@ -65,8 +66,10 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
  *   @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:dewanshu.sisaudiya17@gmail.com">Dewanshu Singh Sisaudiya</a>
  * @ modified date: 13-Oct-2010 (Shaista)
  * @ modified date: 24-Aug-2011 (Sunil Kumar)
+ * @ modified date: 30-jan-2012 (Dewanshu Singh Sisaudiya)
  */
 
 public class DB extends SecureScreen
@@ -176,13 +179,7 @@ public class DB extends SecureScreen
 				totalMsg=item.getValue("TOTAL").asString();
 			}
 			}
-		 	/*List totalmsg=DbReceivePeer.executeQuery(total_msg);
-			for(Iterator k=totalmsg.iterator(); k.hasNext();)
-			{
-				Record item=(Record)k.next();
-				totalMsg=item.getValue("TOTAL").asString();
-			}*/
-			//ErrorDumpUtil.ErrorLog("=======================>>>>>>>>>>>>>>>.   "+unreads);
+			//ErrorDumpUtil.ErrorLog("mailunread=======================>>>>>>>>>>>>>>>.   "+unreads);
 		   	//Adds the information to context
 			context.put("unread",unreads);
 			context.put("total",totalMsg);
@@ -201,6 +198,17 @@ public class DB extends SecureScreen
 					int eid=0;
 					MailNotificationThread.getController().CourseTimeSystem(user_id,eid);
                         	}
+				
+				///////////////////////////////////////////////
+				int role_id=0;
+                        if(Role.equals("instructor"))
+                                role_id=2;
+                        else if(Role.equals("student"))
+                                role_id=3;
+                        Vector unreadMsg=NoticeUnreadMsg.getUnreadNotice(user_id,role_id,dir);
+                        context.put("unreadMsg",unreadMsg);
+                        ErrorDumpUtil.ErrorLog("===============================unread"+unreadMsg);
+				/////////////////////////////////////////////////
 			}
 		}//try
 		catch(Exception e){data.setMessage("The error in DB screen"+e);}

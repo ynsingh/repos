@@ -40,11 +40,14 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 13-Oct-2010 (Shaista)
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @ modified date: 13-Oct-2010 (Shaista),01-feb-2012(Dewanshu Singh Sisaudiya)
  */
 
 import java.util.Vector;
 import java.util.List;
+import java.util.Iterator;
+
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -63,7 +66,10 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
-
+import com.workingdogs.village.Record;
+import org.iitk.brihaspati.om.DbReceivePeer;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.Notification;
 public class Notices extends SecureScreen
 {
 	/**
@@ -73,12 +79,13 @@ public class Notices extends SecureScreen
 	 * Loads the template screen
 	 */
 	public void doBuildTemplate( RunData data, Context context ) {
-		 try{
+		 try{  
                         /**
                          * Retreives the login name and user id of the user logged in
                          */
 
                         User user=data.getUser();
+			String user_name = user.getName();
                         String loginname=user.getName();
                         int user_id=UserUtil.getUID(loginname);
 			ParameterParser pp = data.getParameters();
@@ -94,10 +101,19 @@ public class Notices extends SecureScreen
                         String flag=pp.getString("nflag","");
 			
                         context.put("nflag",flag);
+			String dir=(String)user.getTemp("course_id");
                         //String counter=data.getParameters().getString("count","");
                         String counter=pp.getString("count","");
                         context.put("tdcolor",counter);
                         context.put("tdcolor1",pp.getString("countTemp",""));
+			//////////////////////////////////////////////////
+			String stats=data.getParameters().getString("stats","");
+                        String mode2=data.getParameters().getString("mode2","");
+                        String dev = Notification.DisBoardNf(user_name,dir,stats,mode2);
+                        context.put("unreadm",dev);
+
+			///////////////////////////////////
+
                         /**
                          * Retreives all courses for use of Admin and Institute Admin
                          */

@@ -15,6 +15,11 @@
 $page.setTitle("Course Home Page")
 $!data.getMessage()
 <body>
+#macro (BlinkingText $text)
+  <font face="$ui.sansSerifFonts" color="RED">
+      &nbsp;&nbsp;<blink><sup>$text</sup></blink>&nbsp;
+  </font>
+#end
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ## Representation of TOP BAR
 
@@ -372,6 +377,9 @@ $!data.getMessage()
 								<font face="$ui.sansSerifFonts">
 						##<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a><br>
 						 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursecontent").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a><br>
+						#if($notf=="true")                                                                                                                                              #BlinkingText("New")
+	                                #end
+
 							</td></tr>
 						</table>
 					</td>

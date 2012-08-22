@@ -33,7 +33,7 @@ package org.iitk.brihaspati.modules.screens.call.News;
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *
  */
-
+import org.apache.turbine.om.security.User;
 import java.util.List;
 import java.util.Vector;
 import org.apache.velocity.context.Context;
@@ -47,6 +47,12 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.om.DbReceivePeer;
+import java.util.Iterator;
+import com.workingdogs.village.Record;
+import org.iitk.brihaspati.modules.utils.Notification;
+import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
+
 /**
 * This class contain the code for newsdetails and removal of news
 * Grab all the records in a table using a Peer, and
@@ -54,6 +60,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 * where they can be displayed by a #foreach loop.
 * @author <a href="mailto:singh_jaivir@rediffmail.com ">jaivir singh</a>
 * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+* @author <a href="mailto:dewanshu.sisaudiya17@gmail.com">Dewanshu Singh Sisaudiya</a>
 */
 
 public class News_Edit extends SecureScreen
@@ -67,7 +74,7 @@ public class News_Edit extends SecureScreen
 	private List getNews(RunData data ,int category)
 	{
         	try
-                {
+                {	
 			Criteria criteria = new Criteria();
                     	criteria.add(NewsPeer.GROUP_ID,category);
                     	criteria.addAscendingOrderByColumn(NewsPeer.PUBLISH_DATE);
@@ -88,7 +95,8 @@ public class News_Edit extends SecureScreen
 	*/
         public void doBuildTemplate(RunData data,Context context)  
 	{
-		try{
+		try { 	
+
 			 /**get the status*/
                         String stat = data.getParameters().getString("status");
                         context.put("status",stat);
@@ -103,7 +111,9 @@ public class News_Edit extends SecureScreen
 			
 			String course_id=new String();
 			String course_name=new String();
-
+			User user=data.getUser();
+			String user_name = user.getName();
+			String dir=(String)user.getTemp("course_id");
 			if(stat.equals("fromIndex")){
 				course_id="global";
 			}
@@ -145,6 +155,19 @@ public class News_Edit extends SecureScreen
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(userId,eid);
                         }
+			////////////////////////////////////////////////////////////////////
+                                 String stats=data.getParameters().getString("stats","");
+                        String mode2=data.getParameters().getString("mode2","");
+                        String dev = Notification.DisBoardNf(user_name,dir,stats,mode2);
+                        context.put("unreadm",dev);
+			int role_id=0;
+                        if(Role.equals("instructor"))
+                                role_id=2;
+                        else if(Role.equals("student"))
+                                role_id=3;
+                        Vector unreadMsg=NoticeUnreadMsg.getUnreadNotice(userId,role_id,dir);
+                        context.put("unreadMsg",unreadMsg);
+                        ///////////////////////////////////////////////////////////////////
 
                 }
 		catch (Exception e)

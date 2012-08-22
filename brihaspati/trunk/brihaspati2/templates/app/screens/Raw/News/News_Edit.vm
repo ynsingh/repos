@@ -71,13 +71,23 @@ $!data.getMessage()
 	#elseif($tdcolor=="3")
 	<td bgcolor="#AFDCEC">
 	#end
-		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>		
+		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices
+		#foreach($msg in $unreadMsg)
+                        #if($msg!="0")
+                        #BlinkingText("New")
+                        #end
+                        #end
+		</td>		
 	#if($tdcolor != "4")
 	<td>
 	#elseif($tdcolor=="4")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none>$DiscussionBoard
+	 #if($unreadm!="0")
+                        #BlinkingText("New")
+                        #end
+	</td>
 	#if($tdcolor != "5")
 	<td>
 	#elseif($tdcolor=="5")
