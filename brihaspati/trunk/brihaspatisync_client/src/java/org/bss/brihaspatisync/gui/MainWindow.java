@@ -51,7 +51,8 @@ public class MainWindow  extends JFrame implements ActionListener{
 	private JPanel west_Panel =null;
 	private Container content=null;
 	private JMenuBar menuBar;	
-
+	private JLabel label=null;
+	
 	private static MainWindow fw=null;
 	private ClassLoader clr= this.getClass().getClassLoader();
 
@@ -168,9 +169,19 @@ public class MainWindow  extends JFrame implements ActionListener{
 		
 		JPanel share_pane = new JPanel();
                 share_pane.setLayout(new BorderLayout());
-		
+
+		JPanel courseidpanel= new JPanel();
+                courseidpanel.setLayout(new BorderLayout());
+                //courseidpanel.setBackground(new Color(24,116,205));
+
+                label = new JLabel("", JLabel.CENTER);
+                courseidpanel.add(label);
+                share_pane.add(courseidpanel,BorderLayout.CENTER);
+
 		share_pane.add(ShareScreenAndPPT.getController().createGUI(),BorderLayout.EAST);
 		
+		
+	
                 sub_EastPanel.add(menuBar,BorderLayout.WEST);
                	sub_EastPanel.add(share_pane,BorderLayout.CENTER);
 			
@@ -290,6 +301,12 @@ public class MainWindow  extends JFrame implements ActionListener{
 
         public  Container getContainer(){
                 return content;
+        }
+
+	public  void setCouseid(String courseid){
+		System.out.println(courseid);
+                label.setText("<html><blink><Font size=3 color=black><b>"+courseid+"</b></font></blink></html>");
+
         }
 }
 

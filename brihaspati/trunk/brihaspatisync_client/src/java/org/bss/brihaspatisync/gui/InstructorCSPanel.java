@@ -84,7 +84,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	private ClassLoader clr= this.getClass().getClassLoader();
-
+	
+	private String course_id="";
 
 	/**
 	 * Controller for the class.
@@ -200,9 +201,9 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		for(int i=0;i<y;i++){
                         java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
                         String lectid=str1.nextElement().toString();
-			
-			courseid.add(lectid);
-                        String lectCouseName=str1.nextElement().toString();
+		        String lectCouseName=str1.nextElement().toString();
+			String str=lectid+"-"+lectCouseName;
+			courseid.add(str);//lectid);
                         String lectUserName=str1.nextElement().toString();
                         String lectName=str1.nextElement().toString();
                         String lectInfo=str1.nextElement().toString();
@@ -315,8 +316,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 				announceLabel.addMouseListener(this);
 				Vector courseName=new Vector();
 				client_obj.setCourseForAnnounce((String)combo.getSelectedItem());
-				courseName.addElement((String)combo.getSelectedItem());
+				course_id=(String)combo.getSelectedItem();
+				courseName.addElement(course_id);
 				mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
+				MainWindow.getController().setCouseid(course_id);
 			}
                 	center_mainPanel.validate();
                        	mainPanel.revalidate();
@@ -328,6 +331,11 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			for(int i=0;i<join.length;i++){
 				if(e.getSource()==join[i]){
 					String lect_id=courseid.get(i).toString();
+					System.out.println(lect_id);
+					String str[]=lect_id.split("-");
+					lect_id=str[0];
+					System.out.println(lect_id);
+					MainWindow.getController().setCouseid(str[1]);
 					// store this lect_id in client objects for later use by this client.
 					client_obj.setLectureID(lect_id);	
 					// store role in client objects for later use by this client.
@@ -440,7 +448,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 	private void cancleLecture(int indexnumber){	
 		try {
-        	        String idCourse = "lectValue="+URLEncoder.encode(courseid.get(indexnumber).toString(),"UTF-8");
+			String lect_id=courseid.get(indexnumber).toString();
+                        String str[]=lect_id.split("-");
+			lect_id=str[0];
+        	        String idCourse = "lectValue="+URLEncoder.encode(lect_id,"UTF-8");
 			String indexServerName=client_obj.getIndexServerName();
 			String indexServer=indexServerName+"/ProcessRequest?req=cancleLecture&"+idCourse;
 			if(!(indexServerName.equals(""))) {
