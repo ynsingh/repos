@@ -406,7 +406,42 @@ public class ProcessRequest extends HttpServlet {
                                 out.close();
 				in.close();	
 			}catch(Exception e){ServerLog.getController().Log("error GetReflectorStatusXML ==> "+e.getMessage());}
-		}
+		}else if(reqType.equals("GetReflectorXML")){
+                        try {
+                                FileInputStream fstream = new FileInputStream(context.getRealPath("Reflector.xml"));
+                                DataInputStream in = new DataInputStream(fstream);
+                                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                                String message="";
+                                String strLine;
+                                while ((strLine = br.readLine()) != null)   {
+                                        message=message+strLine;
+                                }
+                                response.setContentLength(message.length());
+                                out.println(message);
+                                out.flush();
+                                out.close();
+                                in.close();
+                        }catch(Exception e){ServerLog.getController().Log("error GetReflectorXML ==> "+e.getMessage());}
+                }else if(reqType.equals("GetLectureXml")){
+                        try {
+				String lectID=request.getParameter("lectID");
+                                FileInputStream fstream = new FileInputStream(context.getRealPath(lectID+".xml"));
+                                DataInputStream in = new DataInputStream(fstream);
+                                BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                                String message="";
+                                String strLine;
+                                while ((strLine = br.readLine()) != null)   {
+                                        message=message+strLine;
+                                }
+                                response.setContentLength(message.length());
+                                out.println(message);
+                                out.flush();
+                                out.close();
+                                in.close();
+                        }catch(Exception e){ServerLog.getController().Log("error GetReflectorXML ==> "+e.getMessage());}
+                }
+
+
 
 
 	}//end of post method
