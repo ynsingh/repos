@@ -130,7 +130,7 @@ public class InstAdminviewall extends SecureScreen_Institute_Admin{
                         /**
                           * Check for special characters
                           */
-                           valueString =StringUtil.replaceXmlSpecialCharacters(pp.getString("valueString"));
+                           valueString =(StringUtil.replaceXmlSpecialCharacters(pp.getString("valueString"))).trim();
 
 		//			valueString=data.getParameters().getString("valueString");
                         	context.put("query",query);
