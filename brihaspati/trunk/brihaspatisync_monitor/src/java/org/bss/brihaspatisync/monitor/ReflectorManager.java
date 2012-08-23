@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
  * @date 05/12/2011
+ * Modified for getting courses dynamically 19/04/12	
  */
 
 public class ReflectorManager {
@@ -158,6 +159,7 @@ public class ReflectorManager {
                 Element element=null;
                 Node node=null;
 		String SessionId;
+		String status;
                 int j=0;
 		courses.clear();
 		System.gc();
@@ -176,10 +178,12 @@ public class ReflectorManager {
                                 node = ref_List.item(i);
                                 if( node.getNodeType() == node.ELEMENT_NODE ){
                                         element = (Element)node;
-                                        if(element.getAttribute("IP").equals(ip)){
+					status=element.getAttribute("Status");
+                                        if(element.getAttribute("IP").equals(ip) ){
+						if(status.equals("active")){
                                                 SessionId=element.getAttribute("SessionId");
                                           	if(!courses.contains(SessionId))
-						courses.add(SessionId);
+						courses.add(SessionId);}
                                         }else{courses.clear();}
                                 }
                         }
@@ -210,8 +214,9 @@ public class ReflectorManager {
                                 if( node.getNodeType() == node.ELEMENT_NODE ){
                                         element = (Element)node;
                                         String PrivateIP=element.getAttribute("PrivateIP");
-					if(!peerIP.contains(PrivateIP))
-					peerIP.add(PrivateIP);
+					String str[]=PrivateIP.split("/");
+					if(!peerIP.contains(str[1]))
+					peerIP.add(str[1]);
 
                                 }
                         }
@@ -219,22 +224,33 @@ public class ReflectorManager {
 		return peerIP;
         }
 
+	public static Vector removeDuplicates(Vector a, Vector b) {
+		int i = 0;
+    		int j = 0;
+    		boolean present = true;
+    		Vector v = new Vector();
+		for (i = 0; i < a.size(); i++) {
+      			present = false;
+      		for (j = 0; j < b.size(); j++) {
+        		if (a.elementAt(i).toString().equalsIgnoreCase(
+            			b.elementAt(j).toString())) {
+          			present = true;
+        		}
+      		}		
+      			if (!(present)) {
+        			v.addElement(a.elementAt(i));
+      			}
+    		}		
+
+    		return v;
+  	}
+
+
 	
 	/**
 	 * This method save reflector's information in XML file.
 	 */
 
-	/*private void saveXML(Document doc, File fileName){
-		try{
-             		OutputFormat format = new OutputFormat(doc);
-             		XMLSerializer output = new XMLSerializer(new FileOutputStream(fileName), format);
-             		output.serialize(doc);
-         	}catch(Exception e){e.printStackTrace();}
-	}
-	
-	/**
-         * This method is used to create a xml file if it is not exist.
-         */
 
         private File getFile(String reflector){
                 File existingFile=new File(reflector);

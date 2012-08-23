@@ -71,7 +71,7 @@ import  java.util.*;
  * @date 05/12/2012
  * Modified for showing courses running and reflector to reflector peering
  * @date 15/04/12
- *
+ * 
  */
 
 
@@ -111,7 +111,7 @@ public class TGPanel extends Panel {
 
     public Vector load;
     private Vector peerIP;
-
+    private Vector temp=new Vector();
     TGLensSet tgLensSet;  // Converts between a nodes visual position (drawx, drawy),
                           // and its absolute position (x,y).
     AdjustOriginLens adjustOriginLens;
@@ -255,11 +255,12 @@ public class TGPanel extends Panel {
 	    for(int i=0;i<sCourse.size();i++){
 	     	RegisterToIndexServer.getController().connectGetLectureXML(sCourse.elementAt(i).toString());	
 		peerIP=ReflectorManager.getController().getPeerValue(sCourse.elementAt(i).toString());
+		for(int k=0;k<peerIP.size();k++){ if(!temp.contains(peerIP.elementAt(k).toString()))temp.add(peerIP.elementAt(k).toString());}
 	    }
 	    ip.clear();  
 	    ip.add(refIP);
-	    for(int i=0;i<peerIP.size();i++)
-	    ip.add(peerIP.elementAt(i).toString());
+	    for(int i=0;i<temp.size();i++)
+	    ip.add(temp.elementAt(i).toString());
 	    return ip.elementAt(count).toString();
 	}
 	

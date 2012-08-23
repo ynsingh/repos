@@ -19,6 +19,11 @@ import java.io.InputStream;
 public class RuntimeDataObject {
 
         private Properties prop=null;
+	
+        private String proxy_host="";
+        private String proxy_port="";
+        private String proxy_user="";
+        private String proxy_pass="";
 
         private String indexServerAddr="";
 
@@ -83,6 +88,45 @@ public class RuntimeDataObject {
         public int getHttpPort(){
                 return Integer.parseInt(prop.getProperty("ref_http_port"));
         }
+	
+	public String getRefHttpPort(){
+                return prop.getProperty("client_http_port");
+        }
+	
+	 public void setProxyHost(String value){
+                proxy_host=value;
+        }
+
+        public String getProxyHost(){
+                return proxy_host;
+        }
+
+        public void setProxyPort(String value){
+                proxy_port=value;
+        }
+
+        public String getProxyPort(){
+                return proxy_port;
+        }
+
+	 public void setProxyUser(String value){
+                proxy_user=value;
+        }
+
+        public String getProxyUser(){
+                return proxy_user;
+        }
+
+	 public void setProxyPass(String value){
+                proxy_pass=value;
+        }
+
+        public String getProxyPass(){
+                return proxy_pass;
+        }
+
+
+
 
 	/**
  	 * Load Reflector TCP port to communicate with peer reflector

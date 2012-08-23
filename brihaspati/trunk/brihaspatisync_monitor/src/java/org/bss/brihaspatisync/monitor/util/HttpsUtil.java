@@ -21,12 +21,28 @@ import java.security.cert.Certificate;
 import javax.security.cert.X509Certificate;
 
 import java.net.URL;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.InetSocketAddress;
+import java.net.URI;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+
+import java.net.ProxySelector;
+import java.net.Proxy;
 
 import javax.swing.JOptionPane;
 import javax.net.ssl.SSLSession;
 import java.util.StringTokenizer;
+import java.util.List;
+import java.util.Properties;
+import java.util.Iterator;
+
+
+
+import org.bss.brihaspatisync.monitor.util.RuntimeDataObject;
+import org.bss.brihaspatisync.monitor.gui.ProxyAuthenticator;
+
 
 
 /**
@@ -45,8 +61,14 @@ public class HttpsUtil{
 	private String proxyport=null;
  	
 	private static HttpsUtil httpsUtil=null;
-	
+	private InetSocketAddress proxy_addr;
+	private Proxy proxy;
+        private List list;
+
+
 	private HttpsURLConnection connection=null;
+	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
+	
 
 	/**
 	 * Constructor for this class.
@@ -63,6 +85,34 @@ public class HttpsUtil{
    	 * The URL class is capable of handling http:// and https:// URLs
    	 */
    	public HttpsURLConnection createHTTPConnection(URL url) throws IOException {
+		 try {
+                        System.setProperty("java.net.useSystemProxies","true");
+                        list = ProxySelector.getDefault().select( new URI(url.toString()));
+                        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
+                                proxy = (Proxy) iter.next();
+                                proxy_addr = (InetSocketAddress)proxy.address();
+                        }
+
+                }catch (Exception e) { e.printStackTrace();}
+
+                if(proxy_addr != null) {
+                        runtime_object.setProxyHost(proxy_addr.getHostName());
+                        runtime_object.setProxyPort(Integer.toString(proxy_addr.getPort()));
+                        ProxyAuthenticator.getController().createGUI();
+
+                        if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+                                Properties sysProps = System.getProperties();
+                                sysProps.put( "proxySet", "true" );
+                                sysProps.put( "proxyHost", runtime_object.getProxyHost());
+                                sysProps.put( "proxyPort", runtime_object.getProxyPort());
+                                Authenticator authenticator = new Authenticator() {
+                                                                public PasswordAuthentication getPasswordAuthentication() {
+                                                                        return (new PasswordAuthentication(runtime_object.getProxyUser(),runtime_object.getProxyPass().toCharArray()));
+                                                                }};
+                                Authenticator.setDefault(authenticator);
+                        }
+                }
+
                	connection = (HttpsURLConnection) url.openConnection();
 		//SSL Certificate
       		connection.setHostnameVerifier(new HostnameVerifier() {

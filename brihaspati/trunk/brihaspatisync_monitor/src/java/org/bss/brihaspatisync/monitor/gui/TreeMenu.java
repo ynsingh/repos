@@ -6,7 +6,6 @@
  *  */
 
 
-
 /**
  *  @author <a href="mailto:shikhashuklaa.gmail.com">Shikha Shukla</a>
  *  @date 05/12/2011
@@ -40,6 +39,7 @@ import java.io.File;
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
+import java.awt.Font;
 import java.net.URL;
 import java.net.MalformedURLException;
 
@@ -51,11 +51,10 @@ import java.util.Calendar;
 import org.bss.brihaspatisync.monitor.graphlayout.TGPanel;
 import org.bss.brihaspatisync.monitor.util.ServerLog;
 
-
 public class TreeMenu implements TreeSelectionListener{
 	private JPanel mainPanel;
 	private JScrollPane scrollPane=null;
-	private JTree tree =null;
+	private static JTree tree =null;
 	
 	private static TreeMenu tree_menu=null;
 
@@ -74,6 +73,8 @@ public class TreeMenu implements TreeSelectionListener{
 		tree.expandPath(tree.getPathForRow(3));
 		tree.setCellRenderer(new MyTreeCellRenderer());
 		tree.addTreeSelectionListener(this);
+		boolean treeSelectionListenerEnabled = false;
+		treeSelectionListenerEnabled = true;
 		for (int i = 0; i < tree.getRowCount(); i++) {
          		tree.expandRow(i);
 		}			
@@ -131,7 +132,7 @@ public class TreeMenu implements TreeSelectionListener{
 					 }
 					else if(!str.equals("brihaspatisync")){
 						DefaultMutableTreeNode abc = new DefaultMutableTreeNode(brihaspati_v.get(i).toString());
-				        	brihaspatisync.add(abc);		
+						brihaspatisync.add(abc);		
 						brihaspatisync_v.add(brihaspati_v.get(i).toString());
 					}
 				}
@@ -139,7 +140,6 @@ public class TreeMenu implements TreeSelectionListener{
 				 DefaultMutableTreeNode abc = new DefaultMutableTreeNode(brihaspati_v.get(i).toString());
                                  reflector.add(abc);                
                                  brihaspatisync_v.add(brihaspati_v.get(i).toString());
-
 			 }
 		}
 		CheckStatusServer.getController().checkServer(brihaspatisync_v);	
@@ -156,12 +156,15 @@ public class TreeMenu implements TreeSelectionListener{
                        	temp=temp.substring(0,temp.indexOf("/"));
                         temp=temp.trim();
                         String str[]=temp.split(":");
-			TGPanel tgp=new TGPanel();
-                        tgp.getSelectedRef(str[0]);
-			MainWindow.getController().getSelectedRef(str[0]);
-			RefToRefPeering.getController().getSelectedRef(str[0]);
-             		MainWindow.getController().getrefPPanel().add(RefToRefPeering.getController().createGUI(),BorderLayout.CENTER);
-                        MainWindow.getController().getrefPPanel().revalidate();
+			if(str[1].equals("9999")){
+			 TGPanel tgp=new TGPanel();
+                         tgp.getSelectedRef(str[0]);
+			 MainWindow.getController().getSelectedRef(str[0]);
+			 RefToRefPeering.getController().getSelectedRef(str[0]);
+             		 MainWindow.getController().getrefPPanel().add(RefToRefPeering.getController().createGUI(),BorderLayout.CENTER);
+                         MainWindow.getController().getrefPPanel().revalidate();
+			}
+
 		}catch(Exception ex){System.out.println("======valueChanged===========>  "+ex.getMessage());}
 	}
 	private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {

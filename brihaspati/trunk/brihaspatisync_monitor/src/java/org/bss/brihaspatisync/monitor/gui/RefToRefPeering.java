@@ -10,7 +10,7 @@
 /**
  *  @author <a href="mailto:shikhashuklaa.gmail.com">Shikha Shukla</a>
  *  @date 15/04/2012
- *    
+ *  Modified 18/4/2012  
  *  */
 
 
@@ -48,7 +48,9 @@ import java.util.Calendar;
 
 import org.bss.brihaspatisync.monitor.graphlayout.TGPanel;
 import org.bss.brihaspatisync.monitor.util.ServerLog;
-
+import org.bss.brihaspatisync.monitor.network.ReguestMasterServerList;
+import org.bss.brihaspatisync.monitor.gui.MainWindow;
+import org.bss.brihaspatisync.monitor.gui.PacketRategraph;
 
 public class RefToRefPeering implements TreeSelectionListener{
 	private JPanel mainPanel;
@@ -133,7 +135,16 @@ public class RefToRefPeering implements TreeSelectionListener{
 			TGPanel tgp=new TGPanel();
                         tgp.getSelectedRef(str[0]);
 			MainWindow.getController().getSelectedRef(str[0]);
-                        MainWindow.getController().getdisplayPanel().add(MainWindow.getController().createCoursePanel(),BorderLayout.CENTER);
+			ReguestMasterServerList request=new ReguestMasterServerList();
+			request.getSelectedRef(str[0]);
+			org.bss.brihaspatisync.monitor.network.http.HTTPClient h=new org.bss.brihaspatisync.monitor.network.http.HTTPClient(str[0]);
+                        h.start();
+                        PacketRategraph demo = new PacketRategraph("Data Transfer Rate");
+                        MainWindow.getController().getpacketRatePanel().add(demo);
+                        MainWindow.getController().getpacketRatePanel().revalidate();
+                        demo.start();
+
+
 		}catch(Exception ex){System.out.println("======valueChanged===========>  "+ex.getMessage());}
 	}
 	private static class MyTreeCellRenderer extends DefaultTreeCellRenderer {

@@ -9,8 +9,7 @@ package org.bss.brihaspatisync.monitor;
 
 import java.util.Vector;
 import java.util.Properties;
-import java.util.*;
-import java.io.*;
+import java.io.FileWriter;
 import java.util.StringTokenizer;
 
 import java.io.InputStream;
@@ -24,7 +23,6 @@ import java.net.InetAddress;
 import javax.swing.JOptionPane;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.*;
 
 import org.bss.brihaspatisync.monitor.util.HttpsUtil;
 import org.bss.brihaspatisync.monitor.util.RuntimeDataObject;
@@ -33,6 +31,8 @@ import org.bss.brihaspatisync.monitor.util.RuntimeDataObject;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
  * @date 05/12/2011
+ * Modified
+ * @date 18/06/2012
  */
 
 public class RegisterToIndexServer {
@@ -42,6 +42,10 @@ public class RegisterToIndexServer {
 	private Vector indexServerList=null;
 	private Vector reg_result=null;
 	private String ServerIP="";
+        private Vector server_ip_vector=new Vector();
+	private Vector brihaspati=new Vector();
+
+
 		
 	/**
 	 * Controller for this class.
@@ -58,7 +62,6 @@ public class RegisterToIndexServer {
        	}
 	
 	public boolean connectToMasterServer() {
-		Vector brihaspati=new Vector();
                 try {
 			String m_url=RuntimeDataObject.getController().getMasterUrl().trim()+"req=getLEDList";
 			if(!(m_url.equals(""))){
@@ -89,7 +92,6 @@ public class RegisterToIndexServer {
 	}
 
 	public Vector connectToMasterServer1(){
-		Vector server_ip_vector=new Vector();
                 try {
                         String m_url=RuntimeDataObject.getController().getMasterUrl().trim()+"req=getISList";;
                         if(!(m_url.equals(""))){
