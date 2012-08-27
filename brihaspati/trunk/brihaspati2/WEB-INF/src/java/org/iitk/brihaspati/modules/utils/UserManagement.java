@@ -345,9 +345,7 @@ public class UserManagement
 						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
                                                 messageFormate=MailNotification.getMessage_new(messageFormate,"","",i_name,"");
               					//Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
-						ErrorDumpUtil.ErrorLog("to test----------------->if part1");
 						Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid,"");//last parameter added by Priyanka
-						ErrorDumpUtil.ErrorLog("to test----------------->if part2"+Mail_msg);
 						pr = null;
 						subject ="";
 						messageFormate = "";msgBrihAdmin =""; msgDear=""; msgRegard="";	
@@ -1066,13 +1064,14 @@ public class UserManagement
  				 * set flag inside catch block to get an error, if occured  
  				 */ 
 				try{
-				crit.add(StudentRollnoPeer.ID,StudSrid);
-	                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
-				crit.add(StudentRollnoPeer.PROGRAM,Program);
-				crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
-				StudentRollnoPeer.doUpdate(crit);
+					crit.add(StudentRollnoPeer.ID,StudSrid);
+		                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
+					crit.add(StudentRollnoPeer.PROGRAM,Program);
+					crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+					StudentRollnoPeer.doUpdate(crit);
 
 				List CrsList = CourseProgramUtil.getUserCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
+				//ErrorDumpUtil.ErrorLog("CrsList in util file---"+CrsList);
                                 if(CrsList.size()==0 && !CourseId.equals("Select Course")){
                                         CourseProgramUtil.InsertCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
                                 }
@@ -1232,10 +1231,10 @@ public class UserManagement
 						/**
                                                  * Remove the user rollno and Program from database  
                                                  */
+						CourseProgramUtil.DeleteCoursePrg(userName,"");
 						crit = new Criteria();
                                                 crit.add(StudentRollnoPeer.EMAIL_ID,userName);
                                                 StudentRollnoPeer.doDelete(crit);
-						CourseProgramUtil.DeleteCoursePrg(userName,group_name);
                                                	/**
                        				* Delete the repository from the server for
                        				* this User

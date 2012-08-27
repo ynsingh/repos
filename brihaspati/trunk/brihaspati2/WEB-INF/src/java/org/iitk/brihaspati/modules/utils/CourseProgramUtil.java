@@ -305,7 +305,7 @@ public class CourseProgramUtil
 		List v=null;
 		try
 		{
-			String qm ="select * from STUDENT_ROLLNO join COURSE_PROGRAM on STUDENT_ROLLNO.ID=COURSE_PROGRAM.STUDENT_ID where STUDENT_ROLLNO.ID="+stdid;
+			String qm ="select * from COURSE_PROGRAM join STUDENT_ROLLNO on STUDENT_ROLLNO.ID=COURSE_PROGRAM.STUDENT_ID where STUDENT_ROLLNO.ID="+stdid;
 			v = StudentRollnoPeer.executeQuery(qm);
 		}
 		catch(Exception ex)
@@ -395,10 +395,17 @@ public class CourseProgramUtil
 				int Id = ((StudentRollno)v.get(i)).getId();
 				String prg = ((StudentRollno)v.get(i)).getProgram();
 				crit = new Criteria();
-				crit.add(CourseProgramPeer.STUDENT_ID,Id);
-				crit.and(CourseProgramPeer.COURSE_ID,CourseId);
-				crit.and(CourseProgramPeer.PROGRAM,prg);
-				CourseProgramPeer.doDelete(crit);
+				if(!CourseId.equals("")){
+					crit.add(CourseProgramPeer.STUDENT_ID,Id);
+					crit.and(CourseProgramPeer.COURSE_ID,CourseId);
+					crit.and(CourseProgramPeer.PROGRAM,prg);
+					CourseProgramPeer.doDelete(crit);
+				}
+				else
+				{
+					crit.add(CourseProgramPeer.STUDENT_ID,Id);
+					CourseProgramPeer.doDelete(crit);
+				}
 			}
 		}
 		catch(Exception e)

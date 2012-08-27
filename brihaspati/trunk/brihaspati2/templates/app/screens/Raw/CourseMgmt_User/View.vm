@@ -193,6 +193,8 @@ $page.setBgColor($ui.bgcolor)
 ## if file is flv than set the path 
 							 #if($aliasval.toLowerCase().endsWith("flv"))
                                                         <td><a href=javascript:popupWin("$link.setPage("call,ViewFilePlayer.vm").addPathInfo("topic",$topic).addPathInfo("type","content").addPathInfo("filename",$file.Name)","newWin"); style=text-decoration:none>$aliasval</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							 #elseif($aliasval.toLowerCase().endsWith("pdf"))
+                                                        <td><a href=javascript:popupWin("$link.setPage("call,ViewDocumentViewer.vm").addPathInfo("topic",$topic).addPathInfo("type","content").addPathInfo("filename",$file.Name)","newWin"); style=text-decoration:none>$aliasval</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                                         <td><b><a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","Course_file").addPathInfo("name","$topic").addPathInfo("location",$file.Name) style=text-decoration:none>Bookmarks</a></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                                         #elseif($status == "Remote")
                                             <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("pDate",$file.PDate).addPathInfo("contents",$username).addPathInfo("cName",$cName).addPathInfo("TotalFiles",$topic).addPathInfo("type","Remote").addPathInfo("filename",$file.Name)","newWin"); style=text-decoration:none>$aliasval</a></td>
