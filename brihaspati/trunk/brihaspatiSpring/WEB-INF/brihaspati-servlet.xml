@@ -11,6 +11,7 @@
 
     <bean id="DefaultTopController" class="org.iitk.brihaspati.controller.DefaultTopController"></bean>
 
+    <bean id="ViewerController" class="org.iitk.brihaspati.controller.ViewerController"></bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename"><value>messages</value></property>
@@ -23,6 +24,7 @@
 		<prop key="/Default.vm">DefaultController</prop>
 		<prop key="/DefaultBottom.vm">DefaultBottomController</prop>
 		<prop key="/DefaultTop.vm">DefaultTopController</prop>
+		<prop key="/Viewer.vm">ViewerController</prop>
 	    </props>
         </property>
     </bean>

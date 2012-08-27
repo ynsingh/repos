@@ -1,0 +1,35 @@
+#*
+ * @(#)Viewer.vm
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author<a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+<html>
+<head>
+        <link rel="stylesheet" type="text/css" media="screen" href="documentviewer/static/styles/doPDF.css"></link>
+        <script src="documentviewer/static/js/jquery/jquery.min.js" type="text/javascript"></script>
+        <script src="documentviewer/static/js/doPDF.js" type="text/javascript"></script>
+</head>
+<body>
+<div class="viewer">
+        </div>
+<input type="hidden" id="hiddenpage" name="pdfpages" value="${model1.pdfpages}">
+<input type="hidden" id="hiddenid" name="pdfid" value="${model1.pdfid}">
+</body>
+<SCRIPT language="JavaScript">
+$(function() {
+                new PDFViewer({
+                    document: {
+                      id:$('#hiddenid').val(),
+                      numberOfPages:$('#hiddenpage').val()
+                    },
+                   urlParts: {
+                     contextRoot: "/brihaspatiSpring/",
+                     filterMapping: "documentviewer"
+                   }
+                }).show();
+            });
+</script>
+</html>

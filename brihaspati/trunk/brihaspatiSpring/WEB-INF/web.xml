@@ -32,7 +32,15 @@
     <taglib-uri>/spring</taglib-uri>
     <taglib-location>/WEB-INF/spring.tld</taglib-location>
   </taglib>-->
-
+ 
+    <filter>
+        <filter-name>jarBasedResourceFilter</filter-name>
+        <filter-class>org.dopdf.document.filter.JarBasedResourceFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>jarBasedResourceFilter</filter-name>
+       <url-pattern>/documentviewer/*</url-pattern>
+    </filter-mapping>
 
 </web-app>
 

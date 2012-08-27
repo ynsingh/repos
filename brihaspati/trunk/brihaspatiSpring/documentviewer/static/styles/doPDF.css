@@ -1,0 +1,137 @@
+/** The pdf styles start here */
+
+.viewer {
+    background-color: #f5f5f5;
+    height: 520px;
+    width: 900px;
+    margin-bottom:2em;
+    margin-top:1em;
+}
+
+.menu {
+    clear: both;
+    background: url(../images/menubackground.png) repeat-x;
+    font-family: Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    height: 30px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.pages {
+    height: 500px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: gray;
+    clear: both;
+    border:1px solid silver;
+}
+
+.page {
+    clear: both;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+.page .border {
+    border: 1px solid black;
+    color: black;
+}
+
+.grab {
+    cursor: -moz-grab;
+}
+
+.grabbing {
+    cursor: -moz-grabbing;
+}
+
+.page .small {
+    width: 392px;
+    height: 554px;
+    margin-left: 245px;
+}
+
+.page .medium {
+    width: 617px;
+    height: 873px;
+    margin-left: 134px;
+}
+
+.page .large {
+    width: 853px;
+    height: 1207px;
+    margin-left: 14px;
+}
+
+.hidden {
+    display: none;
+}
+
+.menuElements {
+    margin-top: 7px;
+}
+
+.zoomIn, .zoomOut, .seperator, .previous, .next, .download {
+    text-decoration:none;
+    float:left;
+    cursor:pointer;
+}
+
+.zoomIn {
+    background-image: url(../images/zoomIn.png);
+    width:24px;
+    height:24px;
+    margin-top:2px;
+}
+
+.zoomOut {
+    background-image:url(../images/zoomOut.png);
+    width:24px;
+    height:24px;
+    margin-top:2px;
+}
+
+.seperator {
+    background-image:url(../images/seperator.png);
+    float:left;
+    width:12px;
+    height:27px;
+    cursor:default;
+}
+
+.previous {
+    background-image:url(../images/previous.png);
+    width:26px;
+    height:26px;
+    margin-top: 2px;
+}
+
+.next {
+    background-image:url(../images/next.png);
+    width:26px;
+    height:26px;
+    margin-top: 2px;
+}
+
+.download {
+    margin-left:10px;
+    margin-top: 7px;
+    margin-right: 2px;
+    text-decoration:underline;
+    color:#648C1D;
+}
+
+.currentPageNumber {
+    float: left;
+    margin-top: 5px;
+    margin-left: 3px;
+    padding-left: 3px;
+}
+
+.totalPages {
+    float: left;
+    margin-top: 7px;
+    margin-left: 5px;
+}
+
