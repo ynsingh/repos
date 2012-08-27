@@ -1,0 +1,12 @@
+
+1. Copy dive.diff from Patch folder to StudentActivityVisualization folder 
+
+2. Copy two jar files(BrihRemoteAuth.jar, mail-1.4.jar) from Patch/jar files to StudentActivityVisualization/lib folder
+
+3. Execute the queries from sql file on DIVE databse
+
+5. Then execute the patch file
+
+6. Then execute grails clean
+
+7. Finally execute grails war

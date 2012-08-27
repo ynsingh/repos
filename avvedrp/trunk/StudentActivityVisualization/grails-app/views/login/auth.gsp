@@ -248,7 +248,11 @@ background-color: #d5e5ed;
 	  <br />&nbsp;	 	
 		<a href="${createLink(action:'index',controller:'forgotPassword')}" id="wp-submit"  class="button-primary"><g:message code="default.forgot.label"/></a>
       </td>
-      
+      </tr>
+      <tr>
+   	 <td height="30" colspan="2">  
+   	 		<a href="${createLink(action:'brihaspatiLogin',controller:'login')}" id="wp-submit"  class="button-primary"><g:message code="default.BrihaspatiRemoteAuthentication.label"/></a>
+      </td>
       </tr>
       
       <th  scope="row">&nbsp;</th>

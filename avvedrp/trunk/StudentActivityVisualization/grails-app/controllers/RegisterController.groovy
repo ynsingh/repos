@@ -330,9 +330,9 @@ class RegisterController {
                           {
                                        Authority.findByAuthority('ROLE_UNIVERSITY').addToPeople(person)								   
 								
-	//Sending Mail starts here
+/*-----------------------------------------------Sending Mail starts here--------------------------------------------*/
 	if(params.univ_username!='') {
-	def sql=new Sql(dataSource);
+	/*def sql=new Sql(dataSource);
 	def host = ""; def port = ""; def username = ""; def password = "";				
 				sql.eachRow("SELECT smtp_host as HOST,smtp_port as PORT,smtp_username as USERNAME,smtp_password as PASSWORD  FROM email_settings")
 				{ 
@@ -341,8 +341,11 @@ class RegisterController {
 	    		                port = row.PORT
 	    		                username = row.USERNAME
 								password = row.PASSWORD
-				}
+				}   */
 					
+	String from = "no-reply@dive.com";	
+	String subject = "New Registration at DIVE";
+	
 	String emailMessage = """
 	Hi,
 	Thanks for Registering in our site:-
@@ -353,12 +356,10 @@ class RegisterController {
 	Username: ${params.univ_username}
 	Password : ${params.univ_paswd}
 	"""
-	
-    def mailService =new MailService()
-	def status=mailService.sendMessage(host,port,username,password,params.univ_username,emailMessage)
+	def status=emailerService.sendEmails(params.univ_username,from,subject,emailMessage)
 						   
 						}
-						//Sending Mail ends here
+/*----------------------------------------Sending Mail ends here--------------------------------------------------*/
 
 										
 									   person.save(flush: true)
@@ -481,11 +482,12 @@ class RegisterController {
 								}
                                 Authority.findByAuthority('ROLE_INSTITUTE').addToPeople(person)
 									   
- //Sending Mail starts here
+/*--------------------------------------------------Sending Mail starts here------------------------------------------------*/
+    
     def univ = sql.firstRow("select univ_email as email,univ_name as university from university where id='"+params.inst_univ_id+"'")
     if(univ.email!='') {
 
-				def host = ""; def port = ""; def username = ""; def password = "";				
+		/*		def host = ""; def port = ""; def username = ""; def password = "";				
 				sql.eachRow("SELECT smtp_host as HOST,smtp_port as PORT,smtp_username as USERNAME,smtp_password as PASSWORD  FROM email_settings")
 				{ 
 				    row ->				
@@ -493,9 +495,10 @@ class RegisterController {
 	    		                port = row.PORT
 	    		                username = row.USERNAME
 								password = row.PASSWORD
-				}
+				}  */
 	
-	
+	String from = "no-reply@dive.com";	
+	String subject = "New Registration at DIVE";
 	
     String emailMessage = """
     Hi,
@@ -510,12 +513,11 @@ class RegisterController {
     Email-ID : ${params.inst_username}
     Address : ${params.inst_address}
     """   
- 
-    def mailService =new MailService()
-	def status=mailService.sendMessage(host,port,username,password,univ.email,emailMessage)
-
+     
+	def status=emailerService.sendEmails(univ.email,from,subject,emailMessage)
+     
     }
-//Sending Mail ends here		
+/*------------------------------------------------Sending Mail ends here------------------------------------------------*/		
 								 
 								 
 				       person.save(flush: true)
@@ -665,6 +667,9 @@ def ajaxGetInstitutes={
 				}
 	
   
+   String from = "no-reply@dive.com";	
+   String subject = "New Registration at DIVE";
+   
     String emailMessage = """
     Hi,
     A member of your institute has registered in our site:-
@@ -677,8 +682,7 @@ def ajaxGetInstitutes={
     Institute : ${inst.inst_name}
     """
 	
-	def mailService =new MailService()
-	def status=mailService.sendMessage(host,port,username,password,inst.inst_email,emailMessage)
+	def status=emailerService.sendEmails(inst.inst_email,from,subject,emailMessage)
 
     }
 //Sending Mail ends here

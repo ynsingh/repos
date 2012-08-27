@@ -42,15 +42,16 @@
 				<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN' || session.ROLE == 'ROLE_INSTITUTE'}"  >
 				<li><a class="datacapture"  href="${createLink(action:'mainMenu',controller:'institutionDetails')}"><g:message code="default.menuopt9.label"/></a></li>
 				</g:if>
-				
+				<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN' || session.ROLE == 'ROLE_INSTITUTE' || session.ROLE == 'ROLE_STAFF' || session.ROLE == 'ROLE_UNIVERSITY' || session.ROLE == 'ROLE_STUDENT'}"  >
 				<li><a href="../helpdoc/divehelp.html" class="help" target="_blank"><g:message code="default.menuopt8.label"/></a></li>
 				
 				<li><a href="${resource(dir:'/logout')}" class="logout"><g:message code="default.menuopt6.label"/></a></li>
+				</g:if>
 				</ul>
+				<g:if test="${session.UserId}"  >
+					<div  align="right"  style="padding:10px 10px 0px 0px; font-size:12px; font-family:Arial"><font color="#FFFFFF">Logged in as       <strong>${session.UserId}</strong></font></div>
+				</g:if>	
 				
-				<g:isLoggedIn>
-				<div  align="right"  style="padding:10px 10px 0px 0px; font-size:12px; font-family:Arial"><font color="#FFFFFF">Logged in as       <strong>${session.UserId}</strong></font></div>
-				</g:isLoggedIn>
     </div>
 </div>
 

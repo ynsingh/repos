@@ -416,7 +416,7 @@
 	
 	
 	<div id="tabs-2">
-			<form action="/StudentActivityVisualization/register/registerInstitute" method="post" name="inst_register" id="inst_register" >
+			<form action="../register/registerInstitute" method="post" name="inst_register" id="inst_register" >
 				<table width="360" height="201">
 				<tbody>
 				
@@ -503,7 +503,7 @@
 	
 	
 	<div id="tabs-3">
-				<form action="/StudentActivityVisualization/register/registerUser" method="post" name="usr_register" id="usr_register" >
+				<form action="../register/registerUser" method="post" name="usr_register" id="usr_register" >
 		<table width="397" height="201">
 		<tbody>
 		

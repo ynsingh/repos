@@ -26,19 +26,35 @@ class ForgotPasswordController {
 					  render encodedPassword;			
 					  
 
-						String emailMessage = """
+						String emailMessage="";
+			        emailMessage="Hi, \n ";
+			        emailMessage+="Below is your new account details:- \n ";
+			        emailMessage+="----------------------------------- \n";
+			        emailMessage+="Username : "+params.email+" \n";
+			        emailMessage+="Password : "+newPassword;
+			        
+
+
+
+					/*	String emailMessage = """
 						Hi,
 						Below is your new account details:-
-						--------------------------------------------------------
+						----------------------------------
 						Username :${params.email}
 						Password :${newPassword}
-						"""
+						"""  */
 						def email = [
 										to: [params.email],	
+										from: "no-reply@dive.com",
 										subject: "New Password for DIVE",
 										text: emailMessage // 'text' is the email body
 									]
-							emailerService.sendEmails([email])
+						String from = "no-reply@dive.com";	
+						String subject = "New Password for DIVE";	
+						
+						def status = emailerService.sendEmails(params.email,from,subject,emailMessage)
+					
+					
 					  flash.message ="<font color='#54692E'><strong>New Password send to your emailID</strong></font>'"
 					  redirect uri: '/forgotPassword/index'
 					//Sending Mail ends here
