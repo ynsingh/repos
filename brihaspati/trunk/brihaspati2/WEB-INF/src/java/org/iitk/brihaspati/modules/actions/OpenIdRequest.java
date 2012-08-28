@@ -103,11 +103,11 @@ public class OpenIdRequest extends VelocityAction
 /**
  * Set properties for proxy,
  * since system is behind the firewall.
- */
 	java.util.Properties props = System.getProperties();
 	props.put("proxySet", "true");
 	props.put("proxyHost", data.getServerName());
 	props.put("proxyPort", data.getServerPort());
+ */
 	//ErrorDumpUtil.ErrorLog("i'm here 2");
 
 
