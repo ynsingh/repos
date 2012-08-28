@@ -289,6 +289,33 @@ $!msg
 <tr><td colspan=4>$brih_guestMsg2</td></tr>
 </form>
 
+<tr><td colspan=4><b>
+<font face="$ui.sansSerifFonts">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR
+<br>Sign in with:
+</font>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google") shape="rect"><img src="$content.getURI("/images/google.jpeg")" border="0" height="50" width="100"></a>
+&nbsp;&nbsp;
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo") shape="circle"><img src="$content.getURI("/images/yahoo.jpeg")" border="0" height="50" width="100"></a>
+<br>
+</td></tr>
+
+<table bgcolor="#d8d9ec">
+<tr><td>
+<font face="$ui.sansSerifFonts">
+Why OpenID?<br>
+It is a single username and password that allows you to log in to any OpenID-enabled site.
+It works on thousands of websites.
+It is an open standard.
+</font>
+<br>
+<a href="http://openid.net/what/">learn more &raquo;</a><br>
+</td></tr>
+</table>
+
+<table>
 <tr><td colspan=4><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
