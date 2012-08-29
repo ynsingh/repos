@@ -45,6 +45,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import java.util.Vector;
+import java.util.LinkedHashSet;
 
 
 /**
@@ -74,6 +75,27 @@ public class Directory extends SecureScreen{
                         int u_id=UserUtil.getUID(username);
                         context.put("uid",u_id);
 			Vector instid1=InstituteIdUtil.getAllInstId(u_id);
+			ErrorDumpUtil.ErrorLog("====================>>>>>"+instid1);
+			Vector vAToBeRemoved=new Vector();
+			for (int k = 0 ; k < instid1.size(); k++)
+		            {                       
+                		Object a = instid1.elementAt(0);
+		                Object b = instid1.elementAt(k);
+                		if(a == b )
+		                {
+                			int duplicate = instid1.indexOf(b);
+			                vAToBeRemoved.add(b);
+					ErrorDumpUtil.ErrorLog("dddd====================>>>>>"+vAToBeRemoved);
+			                instid1.removeElementAt(duplicate);
+		                }
+		             }
+			instid1.removeAll(vAToBeRemoved);
+			instid1.addAll(vAToBeRemoved);
+			ErrorDumpUtil.ErrorLog("====================>>>>>"+instid1);
+			ErrorDumpUtil.ErrorLog("====================>>>>>"+instid1.size());
+
+
+
 			String str11="";
                         String instid="";
                         String str33="";
