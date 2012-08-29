@@ -1,4 +1,4 @@
-use brihaspati;
+use brihaspati1;
 
 insert into TURBINE_GROUP (GROUP_ID,GROUP_NAME) values (2,'author');
 insert into TURBINE_GROUP (GROUP_ID,GROUP_NAME) values (3,'institute_admin');
@@ -48,6 +48,7 @@ update TURBINE_USER set LOGIN_NAME='admin',PASSWORD_VALUE= MD5('admin') where US
 insert into TURBINE_USER(USER_ID,LOGIN_NAME,PASSWORD_VALUE,FIRST_NAME,LAST_NAME) values(0,'guest',MD5('guest'),'guest','');
 insert into PROGRAM (ID, PROGRAM_CODE, PROGRAM_NAME) values(0,'RWP', 'RegistrationWithoutProgram');
 INSERT INTO USER_PREF (USER_ID, USER_LANG) SELECT USER_ID, USER_LANG FROM TURBINE_USER;
+update USER_PREF set ACTIVATION='ACTIVATE' where ACTIVATION='null';
 #---------------------------------------------------------------------------
 # Hint questions for forget password module
 #---------------------------------------------------------------------------
