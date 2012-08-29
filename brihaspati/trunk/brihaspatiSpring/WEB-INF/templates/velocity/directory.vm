@@ -62,9 +62,10 @@
 		<td>DESIGNATION</td>
 		<td>STATE</td></b>
 	</tr>
+#set($coun=${model.count})
 #foreach ($value in ${model.dirList})
 	<tr title="On Contact Number 'x' Denote Absence of Country code, State Code or Number" class="ad">
-		<td>$!value.getId() </td> 
+		<td>$coun </td> 
 		<td>$!value.getName()</td> 
 		<td>$!value.getMailId()</td> 
 		<td>$!value.getAddress()</td>
@@ -76,6 +77,7 @@
 		<td>$!{value.getDesignation()}</td>
 		<td>$!{value.getState()}</td>
 	</tr>
+#set($coun=$coun+1)
 #end
 	</table>
 	<table width="100%"><tr><td bgcolor="#efe3b5">
@@ -142,13 +144,6 @@
                         alert("The 'Match String' text box can not be NULL");
                 }
         }
-function MouseEvents(objRef, evt) {
-    if (evt.type == "mouseover") {
-        objRef.className = "tr";
-    } else {
-        objRef.className = "ad";
-    }
-}
 
 
 </SCRIPT>

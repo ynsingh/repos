@@ -52,6 +52,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Collections;
 import java.util.Vector;
 import java.util.List;
 import org.iitk.brihaspati.om.TelephoneDirectory;
@@ -82,7 +84,7 @@ public class DirectoryController extends SimpleFormController {
 		myModel.put("instid",instid);
 		String ip=request.getParameter("ip");
 		myModel.put("ip",ip);
-		int port=request.getServerPort();//request.getParameter("port");
+		int port=request.getServerPort();
                 myModel.put("port",port);
 		crtm = request.getParameter("crt");
 		if(crtm == null)
@@ -127,7 +129,6 @@ public class DirectoryController extends SimpleFormController {
 				Criteria crit1=new Criteria();
 				crit1.addGroupByColumn(TelephoneDirectoryPeer.USER_ID);
 				crit1.addAscendingOrderByColumn(TelephoneDirectoryPeer.ID);
-				//crit1.addOrderByColumn(TelephoneDirectoryPeer.ID);
                                                 st1=TelephoneDirectoryPeer.doSelect(crit1);
                                                 vect = new Vector(st1);
                                                 vect1.addAll(vect);
@@ -171,6 +172,10 @@ public class DirectoryController extends SimpleFormController {
 			}
 			}
 			st = vect1;
+			HashSet set = new HashSet(st);
+	                st.clear();
+        	        st.addAll(set);
+
 			myModel.put("query",query);
 
 
@@ -289,7 +294,7 @@ public class DirectoryController extends SimpleFormController {
 			}
 			if(size==0){
                                         myModel.put("ErrorMsg","No Data find Respected Your search");
-                                        }
+                                   }
 
 			myModel.put("list",l);
 			String AdminConff = request.getParameter("adminconf");
@@ -302,8 +307,9 @@ public class DirectoryController extends SimpleFormController {
 			if(Index==null){
 				startIndex=0;
 			}else{
-				startIndex=Integer.parseInt(Index);;
+				startIndex=Integer.parseInt(Index);
 			}
+			myModel.put("count",startIndex+1);
                         String status=new String();
                         int t_size=size;
 			if(size!=0){
