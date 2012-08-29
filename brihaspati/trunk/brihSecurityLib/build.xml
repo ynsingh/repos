@@ -70,8 +70,7 @@
 	
 	
 	<target name="jar" depends="compile" description="**** Create executable JAR file">
-      		<!--<jar destfile="${jar.dir}/BrihRemoteAuth-${build.time}.jar"> -->
-      		<jar destfile="${jar.dir}/BrihRemoteAuth.jar">
+      		<jar destfile="${jar.dir}/BrihRemoteAuth-${build.time}.jar"> 
       			<fileset dir="${bin.dir}" includes="**/*"/>
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
