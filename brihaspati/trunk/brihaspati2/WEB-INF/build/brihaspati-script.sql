@@ -1,4 +1,4 @@
-use brihaspati1;
+use brihaspati;
 
 insert into TURBINE_GROUP (GROUP_ID,GROUP_NAME) values (2,'author');
 insert into TURBINE_GROUP (GROUP_ID,GROUP_NAME) values (3,'institute_admin');

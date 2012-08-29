@@ -245,6 +245,67 @@ public static Vector getInstAdminUid(String instId)
                         ErrorDumpUtil.ErrorLog("The error in getInstituteAdminUtil()"+e);
                 }
                 return(uid);
+}
+
+	/**
+         * This method return the Course Details like Course name,group name, group alias,instructor name for any group name.  
+         */
+  	public static Vector getGroupCourseDetails(Vector GroupName)
+        {
+                Vector Cdetails=new Vector();
+                try
+                {
+			for(int j=0;j<GroupName.size();j++)
+			{
+				String gname = (String)GroupName.elementAt(j);
+				Criteria crit=new Criteria();
+        	                crit.add(CoursesPeer.GROUP_NAME,gname);
+                	        List v=CoursesPeer.doSelect(crit);
+				for(int i=0;i<v.size();i++)
+                        	{
+					String courseName=((Courses)v.get(i)).getCname();
+	                                String dept=((Courses)v.get(i)).getDept();
+	                                String gAlias=((Courses)v.get(i)).getGroupAlias();
+	                                String GName=((Courses)v.get(i)).getGroupName();
+	                                String description=((Courses)v.get(i)).getDescription();
+	                                byte active=((Courses)v.get(i)).getActive();
+	                                String act=Byte.toString(active);
+	                                Date CDate=((Courses)v.get(i)).getCreationdate();
+	                                String CrDate=CDate.toString();
+	                                CourseUserDetail cuDetail=new CourseUserDetail();
+	                                String insId=org.apache.commons.lang.StringUtils.substringAfterLast(GName, "_");
+	                                String loginName=org.apache.commons.lang.StringUtils.substringBetween(GName, gAlias,"_"+insId);
+	                                int UId=UserUtil.getUID(loginName);
+	                                String uID=Integer.toString(UId);
+	                                List userDetails=UserManagement.getUserDetail(uID);
+	                                TurbineUser element=(TurbineUser)userDetails.get(0);
+	                                String firstName=element.getFirstName().toString();
+	                                String lastName=element.getLastName().toString();
+	                                String email=element.getEmail().toString();
+	                                String userName=firstName+lastName;
+	                                if(org.apache.commons.lang.StringUtils.isBlank(userName)){
+	                                	userName=loginName;
+	                         	}
+						cuDetail.setLoginName(loginName);
+		                                cuDetail.setUserName(userName);
+		                                cuDetail.setEmail(email);
+		                                cuDetail.setGroupName(GName);
+		                                cuDetail.setCourseName(courseName);
+		                                cuDetail.setCAlias(gAlias);
+		                                cuDetail.setDept(dept);
+		                                cuDetail.setActive(act);
+		                                cuDetail.setDescription(description);
+		                                cuDetail.setCreateDate(CrDate);
+		                                Cdetails.add(cuDetail);
+        		       }
+			}
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in getGroupCourseDetails()"+e);
+                }
+                return(Cdetails);
         }
 
-}
+
+}	
