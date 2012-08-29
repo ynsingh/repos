@@ -52,13 +52,23 @@ public class RemoteAuth{
 
 		String randompswd = RandPasswordUtil.randmPass();
 		String hdir=System.getProperty("user.home");
-		String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String osnme=System.getProperty("os.name");
+		String path="";
+		if (osnme.startsWith("Win")){
+			path=hdir+"\\remote_auth\\brihaspati3-remote-access.properties";
+		}
+		else{
+			path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		}
+		System.out.println("The Value of path on the basis of OS is   "+osnme +"=="+path);
 		String skey="";
                 String serverUrl="";
-						String kline=ReadNWriteInTxt.readLin(path,srcid);
-                                                skey=StringUtils.substringBetween(kline,";",";");
-                                                serverUrl=StringUtils.substringAfterLast(kline,";");
-		 System.out.println("The value of skey and Server URL is"+skey+" "+serverUrl);
+
+		String kline=ReadNWriteInTxt.readLin(path,srcid);
+                skey=StringUtils.substringBetween(kline,";",";");
+                serverUrl=StringUtils.substringAfterLast(kline,";");
+		System.out.println("The value of skey and Server URL is"+skey+" "+serverUrl);
+
               /*  try{
                         skey = RemoteAuthProperties.getValue(path,"security_key");
                         serverUrl=RemoteAuthProperties.getValue(path,"server_url");
@@ -78,11 +88,11 @@ public class RemoteAuth{
                         urlConnection.setDoOutput(true);
                         urlConnection.setRequestMethod("POST");
 			String params = "email="+email+"&srcid="+srcid+"&url="+returl+"&rand="+randompswd+"&hash="+hashcode+"&aname=remAuth";
-				System.out.println("The parameter pass to the connection connection  "+params);
+			System.out.println("The parameter pass to the connection connection  "+params);
                         urlConnection.connect();
                         OutputStream os = urlConnection.getOutputStream();
                         os.write(params.getBytes("UTF-8"));
-                        os.close();
+             //           os.close();
 
 			InputStream is = urlConnection.getInputStream();
                         BufferedReader rd = new BufferedReader(new InputStreamReader(is));

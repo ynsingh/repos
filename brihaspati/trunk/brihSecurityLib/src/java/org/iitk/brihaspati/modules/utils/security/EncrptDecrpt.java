@@ -59,10 +59,75 @@ public class EncrptDecrpt{
 	static SecretKey key;
 	/**
   	 * Method To Encrypt The String
+  	 * @param unencryptedString String
+  	 * @param srcid String
+  	 * @return String base 64 encoder encripted string
   	 */
 	public static String encrypt(String unencryptedString, String srcid) {
 		String hdir=System.getProperty("user.home");
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String osnme=System.getProperty("os.name");
+		String path="";
+                if (osnme.startsWith("Win")){
+                        path=hdir+"\\remote_auth\\brihaspati3-remote-access.properties";
+                }
+                else{
+                        path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                }
+
+                //String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		//String path=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
+                // write code for if path is null then it get from home
+		String line=ReadNWriteInTxt.readLin(path,srcid);
+                myEncryptionKey=StringUtils.substringBetween(line,";",";");
+/*
+                try{
+                        myEncryptionKey = RemoteAuthProperties.getValue(path,"security_key");
+                }
+                catch(Exception ex){
+                }
+*/
+		try{
+          //      ErrorDumpUtil.ErrorLog("The my cipher key is  "+ myEncryptionKey);
+		myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
+                keyAsBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
+        //        ErrorDumpUtil.ErrorLog("The key byte array is  "+ keyAsBytes);
+                myKeySpec = new DESedeKeySpec(keyAsBytes);
+      //          ErrorDumpUtil.ErrorLog("The cipher is 1  "+ myKeySpec);
+                mySecretKeyFactory = SecretKeyFactory.getInstance(myEncryptionScheme);
+    //            ErrorDumpUtil.ErrorLog("The cipher is  2"+ mySecretKeyFactory);
+                cipher = Cipher.getInstance(myEncryptionScheme);
+  //              ErrorDumpUtil.ErrorLog("The cipher is 3 "+ cipher);
+                key = mySecretKeyFactory.generateSecret(myKeySpec);
+//                ErrorDumpUtil.ErrorLog("The key byte array key is  "+ key);
+		}
+		catch(Exception ex){
+		System.out.println("The error in try block2 encript method"+ex);
+                }
+
+		String encryptedString = null;
+		try {
+	//		ErrorDumpUtil.ErrorLog("The key is "+ key);
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			byte[] plainText = unencryptedString.getBytes(UNICODE_FORMAT);
+			byte[] encryptedText = cipher.doFinal(plainText);
+			BASE64Encoder base64encoder = new BASE64Encoder();
+			encryptedString = base64encoder.encode(encryptedText);
+	//		ErrorDumpUtil.ErrorLog("The encrypted string is "+encryptedString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return encryptedString;
+	}
+	/**
+  	 * Method To Encrypt The String
+  	 * @param unencryptedString String
+  	 * @param srcid String
+  	 * @param path String absolute location where the propeties file stored
+  	 * @return String base 64 encoder encripted string
+  	 */
+	public static String encrypt(String unencryptedString, String srcid, String path) {
+//		String hdir=System.getProperty("user.home");
+  //              String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
 		//String path=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
                 // write code for if path is null then it get from home
 		String line=ReadNWriteInTxt.readLin(path,srcid);
@@ -108,10 +173,65 @@ public class EncrptDecrpt{
 	}
 	/**
   	 * Method To Decrypt An Ecrypted String
+  	 * @param encryptedString String
+  	 * @param srcid String
+  	 * @return String 
   	 */
 	public static String decrypt(String encryptedString, String srcid) {
 		String hdir=System.getProperty("user.home");
-                String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		String osnme=System.getProperty("os.name");
+                String path="";
+                if (osnme.startsWith("Win")){
+                        path=hdir+"\\remote_auth\\brihaspati3-remote-access.properties";
+                }
+                else{
+                        path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                }
+
+             //   String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+		//String path=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
+                // write code for if path is null then it get from home
+		String line=ReadNWriteInTxt.readLin(path,srcid);
+                myEncryptionKey=StringUtils.substringBetween(line,";",";");
+               /* try{
+                        myEncryptionKey = RemoteAuthProperties.getValue(path,"security_key");
+                }
+                catch(Exception ex){
+                }*/       
+		try{
+                myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
+                keyAsBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
+           //     ErrorDumpUtil.ErrorLog("The key byte array is  "+ keyAsBytes);
+                myKeySpec = new DESedeKeySpec(keyAsBytes);
+                mySecretKeyFactory = SecretKeyFactory.getInstance(myEncryptionScheme);
+                cipher = Cipher.getInstance(myEncryptionScheme);
+                key = mySecretKeyFactory.generateSecret(myKeySpec);
+		}
+		catch(Exception ex){
+                }
+	
+		String decryptedText=null;
+		try {
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			BASE64Decoder base64decoder = new BASE64Decoder();
+			byte[] encryptedText = base64decoder.decodeBuffer(encryptedString);
+			byte[] plainText = cipher.doFinal(encryptedText);
+			decryptedText= bytes2String(plainText);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return decryptedText;
+	}
+	/**
+  	 * Method To Decrypt An Ecrypted String
+  	 * @param encryptedString String
+  	 * @param srcid String
+  	 * @param path String absolute location where the propeties file stored
+  	 * @return String 
+  	 */
+	public static String decrypt(String encryptedString, String srcid, String path) {
+//		String hdir=System.getProperty("user.home");
+  //              String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
 		//String path=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati3-remote-access.properties");
                 // write code for if path is null then it get from home
 		String line=ReadNWriteInTxt.readLin(path,srcid);

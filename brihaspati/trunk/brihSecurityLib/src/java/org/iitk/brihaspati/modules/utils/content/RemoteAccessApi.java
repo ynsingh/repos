@@ -57,7 +57,17 @@ import org.iitk.brihaspati.modules.utils.security.RandPasswordUtil;
 
 public class RemoteAccessApi{
 	private static String hdir=System.getProperty("user.home");
-        private static String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+	private static String osnme=System.getProperty("os.name");
+   	private static String path="";
+	private RemoteAccessApi(){
+                if(osnme.startsWith("Win")){
+                        path=hdir+"\\remote_auth\\brihaspati3-remote-access.properties";
+                }
+                else{
+                        path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                }
+	}
+//        private static String path=hdir+"/remote_auth/brihaspati3-remote-access.properties";
 
 	/**
 	 *  Method To make connection and return data from Remote server
@@ -84,10 +94,11 @@ public class RemoteAccessApi{
                 	response = new StringBuffer();
 	                while((line = rd.readLine()) != null) {
 		                response.append(line);
-              		        response.append('\n');
+              		//        response.append('\n');
                 	}
 	                rd.close();
 			reslt=response.toString();
+			System.out.println("The value return by the method "+reslt);
 		}
 		catch (MalformedURLException ex) {
 			ex.printStackTrace();
