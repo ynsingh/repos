@@ -1,14 +1,10 @@
 package org.iitk.brihaspatisync;
 
-
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.File;
 import java.util.Properties;
 import java.util.Vector;
-import org.apache.commons.mail.SimpleEmail;
-import org.apache.commons.mail.Email;
 import org.apache.turbine.Turbine;
 import java.io.FileOutputStream;
 
@@ -26,7 +22,6 @@ import javax.activation.DataHandler;
 import javax.mail.Transport;
 
 import javax.servlet.ServletContext;
-
 
 import org.iitk.brihaspatisync.util.ServerLog;
 import java.sql.Date;
