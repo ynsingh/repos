@@ -52,6 +52,9 @@ import org.iitk.brihaspatisync.om.TurbineUserGroupRole;
 import org.iitk.brihaspatisync.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspatisync.om.TurbineUser;
 import org.iitk.brihaspatisync.om.TurbineUserPeer;
+
+import org.iitk.brihaspatisync.om.TurbineGroupPeer;
+//import org.iitk.brihaspatisync.om.TurbineGroupPeer;
 import java.sql.Date;
  /**
   * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
@@ -511,9 +514,11 @@ public class ProcessRequest extends HttpServlet {
 	}
 	
 	private String putLecture(String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard){ 
+		String subject="";
+		String message=" ";
+		Date date=Date.valueOf(lectDate);
 		if(lectGetParameter.equals("GetAnnounceValues")) {
 			try {
-				Date date=Date.valueOf(lectDate);
 				Criteria crit=new Criteria();
 				crit.add(LecturePeer.GROUP_NAME,lectCouseName);
 				crit.add(LecturePeer.LECTURENAME,lectName);
@@ -529,11 +534,10 @@ public class ProcessRequest extends HttpServlet {
 				crit.add(LecturePeer.REPEATLEC,"NO");
 				crit.add(LecturePeer.FORTIME,"NO");
 	        	        LecturePeer.doInsert(crit);
-				return "Successfull";
+				subject=lectCouseName +"  session name "+lectName+" has been Announced  " ;
 			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
 		}else if(lectGetParameter.equals("GetUpdateLectValues")) {
 			try {
-				Date date=Date.valueOf(lectDate);
 				Criteria crit=new Criteria();
         	                crit.add(LecturePeer.LECTUREID,Integer.parseInt(lect_id));
                 	        crit.add(LecturePeer.GROUP_NAME,lectCouseName);
@@ -550,10 +554,29 @@ public class ProcessRequest extends HttpServlet {
 	                        crit.add(LecturePeer.REPEATLEC,"NO");
         	                crit.add(LecturePeer.FORTIME,"NO");
                 	        LecturePeer.doUpdate(crit);
-				return "Successfull";
+				subject=lectCouseName +"  session name "+lectName+" has been updateed  " ;
 			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
+			
 		}
-		return "Error";	
+		
+		try {
+			Criteria crit=new Criteria();
+	                crit.add(TurbineGroupPeer.GROUP_NAME,lectCouseName);
+                	java.util.List v=TurbineGroupPeer.doSelect(crit);
+			int gid=0;
+                        for(int i=0;i<v.size();i++)
+                        {
+                               	TurbineGroup element=(TurbineGroup)v.get(i);
+	                        gid =element.getGroupId();
+			}
+			int size=lectCouseName.lastIndexOf("_");
+			Vector mail_id=AdminProperties.getUDetail(gid,3);
+			mail_id.addAll(AdminProperties.getUDetail(gid,2));
+			lectCouseName=lectCouseName.substring(0,size);	
+			ServerLog.getController().Log(gid+"  mail_id  "+mail_id);
+			MailNotification.getController().sendMail(context,subject,mail_id,date,lectTime,lectDuration,lectName,lectCouseName);
+		}catch(Exception e){}
+		return "Successfull";
 	}
 }//end of class
 
