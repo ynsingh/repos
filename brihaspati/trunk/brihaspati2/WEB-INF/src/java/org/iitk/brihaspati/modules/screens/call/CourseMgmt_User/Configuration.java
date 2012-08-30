@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)Configuration.java        
  *
- *  Copyright (c) 2006,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006,2011,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,7 +37,9 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
  */
 
 import java.util.List;
-import org.apache.torque.util.Criteria;
+import java.util.Vector;
+//import java.util.Arrays;
+import java.util.StringTokenizer;
 import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.util.RunData;
@@ -62,20 +64,23 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.RemoteCourseUtilClient;
 import org.iitk.brihaspati.modules.screens.call.News.News_Add;
 import  org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
-
+import org.apache.commons.lang.StringUtils;
 /**
  *
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>29August2012
  */
 
 public class Configuration extends SecureScreen_Instructor
 {
-        public void doBuildTemplate( RunData data, Context context ) 
-           {
-                try{
-                        User user=data.getUser();
+	public void doBuildTemplate( RunData data, Context context ){
+        	try{
+			MultilingualUtil m_u=new MultilingualUtil();
+			String file=data.getUser().getTemp("LangFile").toString();
+                	User user=data.getUser();
  	                context.put("course",(String)user.getTemp("course_name"));
 			ParameterParser pp = data.getParameters();
 			String serial = pp.getString("serial","");
@@ -101,7 +106,6 @@ public class Configuration extends SecureScreen_Instructor
                         String instituteId=(data.getUser().getTemp("Institute_id")).toString();
                         String Confpath=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                         String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
-			//String conf=(String)user.getTemp("confParam","10");
                         int list_conf=Integer.parseInt(conf);
 
 			//online registration configuration by sharad 01-01-2010
@@ -129,13 +133,12 @@ public class Configuration extends SecureScreen_Instructor
 				List l =  RemoteCoursesPeer.doSelect(crit);
 				rce =(org.iitk.brihaspati.om.RemoteCourses)l.get(0);
 				String course_id= rce.getRemoteCourseId() ;
-			        context.put("c1",course_id);
+			        context.put("cvalue",course_id);
                 		String inst_ip=rce.getInstituteIp();
-	                        context.put("c4",inst_ip);
-
+	                        context.put("url",inst_ip);
 
         	                String inst_name=rce.getInstituteName();
-                	        context.put("c5",inst_name);
+                	        context.put("ivalue",inst_name);
 
         	                String sec_key=rce.getSecretKey();
                 	        context.put("sec_key",sec_key);
@@ -154,30 +157,27 @@ public class Configuration extends SecureScreen_Instructor
                         		RemoteInstructor = rce.getCourseSeller();
                         	}
                     		context.put("order",order);
-              		        context.put("c2",RemoteInstructor);
+              		        context.put("cval",RemoteInstructor);
 			}//if serial
-				
-
 			/**
 			* Keep xmlrpc port Alive
 			*/
-
                         boolean bool= XmlRpc.getKeepAlive();
                         if(!bool)
 			{
                         	XmlRpc.setKeepAlive(true);
 			}//if
-/*			String activatemsg = "";
+			/*String activatemsg = "";
 			String Successmsg =   data.getServerName();
 			while(!activatemsg.equals(Successmsg))
 			{
 				activatemsg = RemoteCourseUtilClient.ActivateLocalXmlRpcPort();
-			}
-*/
+				 ErrorDumpUtil.ErrorLog("activatemsgactivatemsg========="+activatemsg);
+			}*/
+
 			/**
 			* call new add template
 			*/
-
 			News_Add na = new News_Add();
 			na.doBuildTemplate(data, context);
 			/**
@@ -196,12 +196,74 @@ public class Configuration extends SecureScreen_Instructor
 			* Call Guest 
 			*/
 			Guest(data,context);
-
-                     }//try
-                 catch(Exception e)
-  	         {        
-                        data.addMessage("Error in screen [call,CourseMgmt_User,RemoteCourses] is "+ e);
-                 }//catch
+			/**get Institute list from remote server */
+			if(serial.equals(""))
+			{
+				String url =pp.getString("iip","");
+				context.put("url",url);
+				String instname =pp.getString("inm","");
+				context.put("ivalue",instname);
+                        	String RemoteTurbineMsg = RemoteCourseUtilClient.ActivateRemoteXmlRpcPort(url);
+                        	if(RemoteTurbineMsg.equals("ERROR"))
+                        	{
+					String RemoteAction_msg2=m_u.ConvertedString("RemoteAction_msg2",file);
+                                	data.addMessage(RemoteAction_msg2);
+                        	}
+				if(!url.equals("")){
+                        		String serverURL =  "http://" + url + ":12345/" ;
+                        		Vector param=new Vector();
+                        		param.add(url);
+                        		String instlist = RemoteCourseUtilClient.getInstituteList(serverURL,param);
+					String str123=StringUtils.substringBetween(instlist,"[","]");
+					Vector vct=new Vector();
+					StringTokenizer st=new StringTokenizer(str123,",");
+                                	while(st.hasMoreTokens())
+                                	{
+						String token = st.nextElement().toString();
+						vct.add(token);
+                                	}
+					context.put("instlistname",vct);
+					if(!instname.equals("")){
+						String instvalue=instname.trim();
+						param=new Vector();
+						vct=new Vector();
+						Vector onlycrs=new Vector();
+                        			param.add(url);
+                        			param.add(instvalue);
+                        			String courselist = RemoteCourseUtilClient.getCourseList(serverURL,param);
+						String crslist=StringUtils.substringBetween(courselist,"[","]");
+						st=new StringTokenizer(crslist,",");
+                                		while(st.hasMoreTokens())
+                                		{
+                                        		String ctoken = st.nextElement().toString();
+                                        		vct.add(ctoken);
+                                		}
+                        			context.put("courselistname",vct);
+						for(int j=0;j<vct.size();j++)
+						{
+							String wname=vct.get(j).toString();
+							String onlycid=StringUtils.substringBeforeLast(wname,"^");
+							onlycrs.add(onlycid);
+						}
+                        			context.put("onlycrs",onlycrs);
+					}//if inst not empty
+					String crsname=pp.getString("cid","");
+					String invalue=pp.getString("ivalue","");
+					if(!instname.equals(invalue))
+					{
+						String crsid=StringUtils.substringBeforeLast(crsname,"^");
+						context.put("cvalue",crsid);
+						String cval=pp.getString("cval");
+						String lgname=StringUtils.substringAfterLast(cval,"^");
+						context.put("cval",lgname);
+					}
+				}//if url empty
+			}//if serial is empty
+                }//try
+                catch(Exception e)
+  	        {        
+                       data.addMessage("Error in screen [call,CourseMgmt_User,RemoteCourses] is "+ e);
+                }//catch
         }//function ends
 
     
@@ -224,6 +286,7 @@ public class Configuration extends SecureScreen_Instructor
 				context.put("Guest",false);
 			}
     }
-
+	
+/**--------------------------------------------------------------------------------------- */
 
 }//class ends

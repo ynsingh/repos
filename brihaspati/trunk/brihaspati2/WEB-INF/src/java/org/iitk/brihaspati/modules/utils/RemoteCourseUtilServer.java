@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  * @(#) RemoteCourseUtilServer.java 
- *  Copyright (c) 2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,15 +37,22 @@ import java.util.List;
 import java.util.Vector;
 import java.util.Date;
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import javax.mail.internet.MimeUtility;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.RemoteCourses;
 import org.iitk.brihaspati.om.RemoteCoursesPeer;
+import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 
 /**
 * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+* @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
+* @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>29August2012
 */
 
 
@@ -85,7 +92,6 @@ public class RemoteCourseUtilServer
                  */
                 
                 File targetLocation = new File(TurbineServlet.getRealPath(location));
-
                 if (!targetLocation.exists())
                 {
                                     /*
@@ -306,7 +312,7 @@ public class RemoteCourseUtilServer
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-            {        
+            {
                 
                 try{
 
@@ -511,9 +517,12 @@ public class RemoteCourseUtilServer
 			* Their status should be opposite  mine 
 			*/
 			if(status1 == 0)
+			{
 			status1 = 1;
-			else if(status1 == 1)
+			}
+			else if(status1 == 1){
 			status1 = 0;
+			}
                         crit.add(RemoteCoursesPeer.STATUS,status1);
 			List l =  RemoteCoursesPeer.doSelect(crit);
 			
@@ -547,7 +556,7 @@ public class RemoteCourseUtilServer
 			* See if registration is valid date wise 
 			*/
 			
-			 //Check if Date is Expired     
+			//Check if Date is Expired     
 			Date Expiry_date = rce.getExpiryDate();
 
 			rce = null;
@@ -562,11 +571,12 @@ public class RemoteCourseUtilServer
 		        */                                   
 			long Exptime = Expiry_date.getTime();
 			boolean isExpired = (currentdateobj.getTime() - Expiry_date.getTime()) > 0 ;
-			if(isExpired)
+			if(isExpired){
 			return 1 ;
-			else 
+			}
+			else{
 			return 3; 
-			
+			}
                 }
                 catch (Exception e)
                 {
@@ -601,5 +611,87 @@ public class RemoteCourseUtilServer
 			RemoteCourseUtilClient RCUC = new RemoteCourseUtilClient();
                         return RCUC.getRemoteFileList(cId);
 	     }//method
+	/**Method for getting Institute Name list of particular IP Address
+	 *@param serverURL (String)
+	 *return String
+	 */
+	public static String getInstituteList(String serverURL)
+        {
+        	String str=new String();
+		try
+		{
+                	Criteria crit=new Criteria();
+	       		Vector instlst=new Vector();
+			crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
+                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
+                        List lst=InstituteAdminRegistrationPeer.doSelect(crit);
+			for(int i=0;i<lst.size();i++)
+                        {
+                                InstituteAdminRegistration iar=(InstituteAdminRegistration)lst.get(i);
+                                String strname=iar.getInstituteName().trim();
+				instlst.addElement(strname.trim());
+			}
+                        str=instlst.toString();
+		}
+		catch (Exception e)
+                {
+                        log.error("[RemoteCourseUtilServer][getInstituteList]Error is:", e);
+                }
+		return str;
+        }
 
+	/**Method for getting Course list of particular Institute
+         *@param serverURL (String)
+         *@param instname (String)
+         *return String
+         */
+	public String getCourseList(String serverURL, String instname)
+        {
+		List v=null;
+                Vector vct=new Vector();
+                Vector fvct=new Vector();
+		String str=new String();
+                try{
+                	Criteria crit=new Criteria();
+                	/**
+                	*select all group name from TURBINE_GROUP table.
+                	*/
+                	crit=new Criteria();
+			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instname);
+                        List inname=InstituteAdminRegistrationPeer.doSelect(crit);
+                        InstituteAdminRegistration element=(InstituteAdminRegistration)inname.get(0);
+                        String instituteId=Integer.toString(element.getInstituteId());
+			
+			crit=new Criteria();
+                	crit.addGroupByColumn(org.iitk.brihaspati.om.TurbineGroupPeer.GROUP_NAME);
+                	v=org.iitk.brihaspati.om.TurbineGroupPeer.doSelect(crit);
+                	/**
+                	*get group name one by one.and store in a vector whose GName ends with InstituteId.
+                	*/
+                	for(int j=0;j<v.size();j++){
+                        	String GName=((org.iitk.brihaspati.om.TurbineGroup)v.get(j)).getGroupName();
+                                if(GName.endsWith(instituteId)){
+                                        vct.add(GName);
+                       		}
+			}
+			for(int k=0;k<vct.size();k++){
+				String val1=vct.get(k).toString();
+				crit=new Criteria();
+				crit.add(CoursesPeer.GROUP_NAME,val1);
+				List l=CoursesPeer.doSelect(crit);
+				Courses elmt=(Courses)l.get(0);
+				String alias=elmt.getGroupAlias();
+				String val=StringUtils.substringAfter(val1,alias);
+				String val2=StringUtils.substringBeforeLast(val,"_");
+				String finalvalue=val1+"^"+val2;
+				fvct.add(finalvalue);	
+			}
+			str=fvct.toString();	
+		}
+                catch (Exception e)
+                {
+                        log.error("[RemoteCourseUtilServer][getCourseList]Error is:", e);
+                }
+                return str;
+	}
 }//class

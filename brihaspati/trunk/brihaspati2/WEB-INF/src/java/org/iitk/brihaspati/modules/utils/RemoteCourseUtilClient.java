@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  * @(#) RemoteCourseUtilClient.java 
- *  Copyright (c) 2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -54,9 +54,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
 import java.io.IOException;
-
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 /**
 * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+* @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
+* @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>29August2012
 */
 
 public class RemoteCourseUtilClient
@@ -440,7 +442,6 @@ public class RemoteCourseUtilClient
 
         }//ActivateRemoteXmlRpcPort
 
-
 	  /**
           * This method sends checkRegisteration request to remote server
           * @param serverURL String
@@ -527,110 +528,106 @@ public class RemoteCourseUtilClient
 
 			long seconds = 86400000 ;					
 			int days = 1;
-			boolean isFresh = false;
-
-			if(!pDate.equals("----"))
-			{
-				isFresh = (currentdateobj.getTime() - pdateobj.getTime()) < (days * seconds) ;			      
-			}
-
-
 			/**
 			* If difference is greater than one day call get()
 			*/
 
 			String msg , url , source ,dest1 , destination;
 			msg = url =  source = dest1 = destination =null;
-			if(!isFresh)
+			url =  "http://" + autherNm + ":12345/" ;
+                       	source = "/Courses/"+ "/" + courseNm + "/Content/" + "/" + topcNm +"/";
+			dest1 = "/Courses"+ "/" + dir + "/Content" +  "/Remotecourse/" ;
+                       	destination = dest1 + "/"+autherNm+"/"+courseNm + "/" + topcNm  ;
+
+			String fullpath = TurbineServlet.getServletContext().getRealPath(destination);
+			String subtopic=topcNm;
+
+			/**
+                       	* Send information like local url ,remote url, local course ,remote course
+                       	* seperately in string array
+                       	*/
+
+                       	String  keyinfo[]={TurbineServlet.getServerName(),autherNm,dir,courseNm}; 
+                       	msg = get(keyinfo,url,TurbineServlet.getServerName(),source,fileID,destination,fileID);
+			keyinfo = null;
+			/**
+			* If subscription is expired delete all links
+			*/
+			if(msg.equals("RemoteServer_msg1"))
 			{
-				url =  "http://" + autherNm + ":12345/" ;
-                        	source = "/Courses/"+ "/" + courseNm + "/Content/" + "/" + topcNm +"/";
-				dest1 = "/Courses"+ "/" + dir + "/Content" +  "/Remotecourse/" ;
-                        	destination = dest1 + "/"+autherNm+"/"+courseNm + "/" + topcNm  ;
-
-				String fullpath = TurbineServlet.getServletContext().getRealPath(destination);
-				String subtopic=topcNm;
-
-				/**
-                        	* Send information like local url ,remote url, local course ,remote course
-                        	* seperately in string array
-                        	*/
-
-                        	String  keyinfo[]={TurbineServlet.getServerName(),autherNm,dir,courseNm}; 
-                        	msg = get(keyinfo,url,TurbineServlet.getServerName(),source,fileID,destination,fileID);
-				keyinfo = null;
-				/**
-				* If subscription is expired delete all links
-				*/
-				if(msg.equals("RemoteServer_msg1"))
-				{
-					EditContent_Action ECA = new EditContent_Action();
- 		                        ECA.RemoteDelTopic(dir,courseNm,topcNm,autherNm);
-				}
-				/**
-				* If file got succesfully Write code to change the date of innerxml file 
-				*/
-				if(msg.equals("RemoteClient_msg1"))
-				{
-					RemoteCoursesAction.innerxml(fullpath,subtopic,fileID,false);
-				}
-				
+				EditContent_Action ECA = new EditContent_Action();
+ 	                        ECA.RemoteDelTopic(dir,courseNm,topcNm,autherNm);
 			}
-
-                }//try
-                catch (Exception e)
-                {
-                        log.error("[RemoteCourseUtilClient][LocalCache]Error is:", e);
+			/**
+			* If file got succesfully Write code to change the date of innerxml file 
+			*/
+			if(msg.equals("RemoteClient_msg1"))
+			{
+				RemoteCoursesAction.innerxml(fullpath,subtopic,fileID,false);
+			}
+              	}//try
+              	catch (Exception e)
+              	{
+                	log.error("[RemoteCourseUtilClient][LocalCache]Error is:", e);
 
                 }
+        }// function   ends
 
-            }// function   ends
-
- 	  /**
+ 	 /**
           * This method sends Remote Course File List to client
           * @param cId  String
           * @return String
           */
-
-           public  String getRemoteFileList(String cId)
-          {
-                try
+        public  String getRemoteFileList(String cId)
+        {
+        	try
                 {
-                        String filePath = TurbineServlet.getRealPath("/Courses"+ "/" + cId + "/Content" );
+			String filePath = TurbineServlet.getRealPath("/Courses"+ "/" + cId + "/Content" );
                         File dirHandle = new File(filePath);
-                        String filter[]={"Permission","Remotecourse"};
-                        String filterxml[] =new String[2];
-                        filterxml[0]="Unpublished";
+                        String filter[]={"Permission","Remotecourse","coursecontent__des.xml"};
                         NotInclude exclude=new  NotInclude(filter);
                         File topiclist[]=dirHandle.listFiles(exclude);
-                        String intopiclist[]= null;
-                         /**
-                        * Create  File List in string buffer
-                        */
-
+                        File intopiclist[]= null;
+                        File inunpublist[]= null;
+                        boolean flag=false;
                         StringBuffer sw = new StringBuffer();
-
                         for(int i=0 ;i < topiclist.length ; i++)
                         {
                                 if(topiclist[i].isDirectory())
                                 {
                                         sw.append(topiclist[i].getName()).append("\n");
-                                        filterxml[1]= topiclist[i].getName() + "__des.xml";
+                                        String filterxml[]={topiclist[i].getName() + "__des.xml"};
                                         exclude = new NotInclude(filterxml);
-                                        intopiclist =topiclist[i].list(exclude);
-                                        sw.append(intopiclist.length).append("\n");
+                                        intopiclist =topiclist[i].listFiles(exclude);
                                         for(int j=0 ;j < intopiclist.length ; j++)
                                         {
-                                                sw.append(intopiclist[j]).append("\n");
-                                        }//for
+                                                if(intopiclist[j].isDirectory())
+                                                {
+                                                        inunpublist=intopiclist[j].listFiles();
+							int totalval=(intopiclist.length-1)+(inunpublist.length);
+                                                        sw.append(totalval).append("\n");
+                                                        if(inunpublist.length > 0)
+                                                        {
+                                                                for(int k=0 ;k < inunpublist.length ; k++)
+                                                                {
+                                                                        sw.append((inunpublist[k]+"^"+"unpub")).append("\n");
+                                                                }
+                                                        }
+						}
+                                                if(intopiclist[j].isFile())
+                                                {
+                                                        sw.append((intopiclist[j].getName()+"^"+"publish")).append("\n");
+                                                }
+                                        }///for
                                 }//if
                         }//for
-
                         /**
-                        * Release memory
-                        */
-			filter = filterxml =  intopiclist = null;
-			topiclist = null;
+                       	* Release memory
+                       	*/
+                        filter =null;
+                        intopiclist = null;
+                        topiclist = null;
+			inunpublist=null;
                         return sw.toString();
                 }
                 catch (Exception e)
@@ -638,6 +635,48 @@ public class RemoteCourseUtilClient
                         log.error("[RemoteCourseUtilClient][getRemoteFileList(String)]Error is:", e);
                         return "ERRORS";
                 }
-            }// function   ends
+         }// function   ends
 
+	/**
+         * This method sends InstituteList request to remote server
+         * @param serverURL String
+         * @param params Vector
+         * @return String
+         */
+	 public static String getInstituteList( String serverURL, Vector params)
+         {
+         	String response = "ERRORC";
+              	try
+                {
+                        response = (String) TurbineXmlRpc.executeRpc(new URL(serverURL),"remote1.getInstituteList", params);
+                }
+                catch (Exception e)
+                {
+                        log.error("[RemoteCourseUtilClient][getInstituteList]Error is:", e);
+
+                }
+                return response;
+        }// function   ends
+
+	/**
+        * This method sends CourseList request to remote server
+        * @param serverURL String
+        * @param params Vector
+        * @return String
+        */
+	public static String getCourseList( String serverURL, Vector params)
+        {
+        	String response = "ERRORC";
+              	try
+                {
+                        response = (String) TurbineXmlRpc.executeRpc(new URL(serverURL),"remote1.getCourseList", params);
+                }
+                catch (Exception e)
+                {
+                        log.error("[RemoteCourseUtilClient][getCourseList]Error is:", e);
+
+                }
+                return response;
+        }// function   ends
+	
 }//class

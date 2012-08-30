@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)ViewRemote.java        
  *
- *  Copyright (c) 2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,15 +36,11 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
  * 
  */
 
-
-import  org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.parser.ParameterParser;  
-import org.apache.turbine.om.security.User;
 import java.util.Vector;
 import java.util.List;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.om.security.User;
 import org.apache.velocity.context.Context;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.RemoteCourses;
 import org.iitk.brihaspati.om.RemoteCoursesPeer;
@@ -52,9 +48,14 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.screens.call.News.News_Add;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.turbine.util.parser.ParameterParser;  
+import  org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 /**
  * This class shows BUY/SELL Table 
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>29August2012
  */
 
 public class ViewRemote extends SecureScreen_Instructor
@@ -108,7 +109,7 @@ public class ViewRemote extends SecureScreen_Instructor
 		                News_Add na = new News_Add();
                 	        na.doBuildTemplate(data, context);
 
-				setTemplate(data,"call,CourseMgmt_User,Configuration.vm");
+				//setTemplate(data,"call,CourseMgmt_User,Configuration.vm");
 			}
 
                      }//try
