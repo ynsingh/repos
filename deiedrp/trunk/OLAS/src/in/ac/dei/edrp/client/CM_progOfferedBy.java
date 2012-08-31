@@ -1681,7 +1681,7 @@ public class CM_progOfferedBy {
 	 
 	 
 	 public void methodSetEntityTypeProp(ComboBox entityTypeCombo){
-		entityTypeCombo.setForceSelection(true);
+	 entityTypeCombo.setForceSelection(true);
      entityTypeCombo.setMinChars(1);
      entityTypeCombo.setDisplayField("entity_type");
      entityTypeCombo.setValueField("entity_type");

@@ -11,16 +11,20 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<typeAlias alias="callcutoff" type="in.ac.dei.edrp.client.CM_ProgramInfoGetter" />
 
 	<insert id="insertcutoffdetails">
-		insert into
-		CALL_CUT_OFF(program_id,branch_code,Offered_by,cos_value,cos_seats,number_of_times,number_of_times_active,cut_off_number,cut_off_number_active,cut_off_percentage,cut_off_percentage_active,settings,session_start_date,session_end_date,insert_time,creator_id)
-		values(#program_id#,#branch_code#,#entity_id#,#cos_value#,#no_of_seats#,#no_of_times#,#no_of_times_active#,#cut_off_number#,#cut_off_number_active#,#cut_off_percentage#,#cut_off_percentage_active#,#settings#,#session_start_date#,#session_end_date#,#insert_time#,#creator_id#)
-
-</insert>
+		insert into 
+		call_cut_off(program_id,branch_code,offered_by,specialization_code,cos_value,cos_seats,number_of_times,number_of_times_active,cut_off_number,cut_off_number_active,cut_off_percentage,cut_off_percentage_active,settings,session_start_date,session_end_date,insert_time,creator_id)
+		values(#program_id#,#branch_code#,#entity_id#,#specialization_id#,#cos_value#,#no_of_seats#,#no_of_times#,#no_of_times_active#,#cut_off_number#,#cut_off_number_active#,#cut_off_percentage#,#cut_off_percentage_active#,#settings#,#session_start_date#,#session_end_date#,#insert_time#,#creator_id#)
+	</insert>
 
 	<resultMap id="getcall" class="callcutoff">
 
+		<result property="program_id" column="program_id" />
 		<result property="program_name" column="program_name" />
+		<result property="entity_id" column="entity_id" />
+		<result property="branch_id" column="branch_id" />
 		<result property="branch_name" column="branch_name" />
+		<result property="specialization_id" column="specialization_id" />
+		<result property="specialization_name" column="specialization_name" />
 		<result property="cos_value" column="cos_value" />
 		<result property="no_of_times" column="number_of_times" />
 		<result property="no_of_seats" column="cos_seats" />
@@ -32,48 +36,79 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
 	<select id="callwithentityname" resultMap="getcall">
 		select distinct
-		epm.program_name,pbs.branch_name,cco.cos_value,cco.number_of_times,cco.cos_seats,cco.session_start_date,cco.session_end_date
-		from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,CALL_CUT_OFF
-		cco,PROGRAM_BRANCHES pbs,UNIVERSITY_ENTITY_TYPE uet,ENTITY_MASTER em
-		where pob.program_id=cco.program_id AND pob.branch=cco.branch_code AND
-		cco.branch_code=pbs.branch_code AND epm.program_id=pob.program_id AND
-		pob.offered_by=em.entity_id AND em.entity_type=uet.entity_type AND
-		em.university_id=uet.university_id AND
-		uet.university_id=pbs.university_id AND em.entity_name=#entity_name#
-		AND cco.settings=#settings# AND uet.university_id=#university_id#; 
+		epm.program_id,epm.program_name,em.entity_id,sys1.component_code as
+		branch_id,sys1.component_description branch_name,sys2.component_code
+		as specialization_id,sys2.component_description
+		specialization_name,cco.cos_value,cco.number_of_times,cco.cos_seats,cco.session_start_date,cco.session_end_date
+		from program_master epm,program_offered_by pob,call_cut_off
+		cco,system_table_two sys1,system_table_two sys2,entity_master em where
+		cco.program_id=pob.program_id AND pob.program_id=epm.program_id AND
+		pob.branch_id=cco.branch_code AND cco.branch_code=sys1.component_code
+		AND sys1.group_code='BRNCOD' AND
+		pob.specialization_id=cco.specialization_code
+		AND
+		pob.specialization_id=sys2.component_code AND
+		sys2.group_code='SPCLCD'
+		AND pob.offered_by=em.entity_id AND
+		pob.offered_by=cco.offered_by AND
+		cco.offered_by=#entity_id# AND
+		cco.settings=#settings# AND
+		em.university_id=sys1.university_code
+		AND
+		sys1.university_code=sys2.university_code AND
+		sys2.university_code='0001' order by pob.program_id;
 </select>
 
 
 
 	<select id="callwithentitytype" resultMap="getcall">
 		select distinct
-		epm.program_name,pbs.branch_name,cco.cos_value,cco.number_of_times,cco.cos_seats,cco.session_start_date,cco.session_end_date
-		from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,CALL_CUT_OFF
-		cco,PROGRAM_BRANCHES pbs,ENTITY_MASTER em,UNIVERSITY_ENTITY_TYPE uet
-		where pob.program_id=cco.program_id AND epm.program_id=pob.program_id
-		AND pob.branch=cco.branch_code AND cco.branch_code=pbs.branch_code AND
-		pob.offered_by=em.entity_id AND em.entity_type=uet.entity_type AND
-		em.university_id=uet.university_id AND
-		uet.university_id=pbs.university_id AND
-		uet.entity_description=#entity_type# AND cco.settings=#settings# AND
-		uet.university_id=#university_id# order by pob.program_id;
+		epm.program_id,epm.program_name,em.entity_id,sys1.component_code as
+		branch_id,sys1.component_description branch_name,sys2.component_code
+		as specialization_id,sys2.component_description
+		specialization_name,cco.cos_value,cco.number_of_times,cco.cos_seats,cco.session_start_date,cco.session_end_date
+		from program_master epm,program_offered_by pob,call_cut_off
+		cco,system_table_two sys1,system_table_two sys2,entity_master em where
+		cco.program_id=pob.program_id AND pob.program_id=epm.program_id AND
+		pob.branch_id=cco.branch_code AND cco.branch_code=sys1.component_code
+		AND sys1.group_code='BRNCOD' AND
+		pob.specialization_id=cco.specialization_code
+		AND
+		pob.specialization_id=sys2.component_code AND
+		sys2.group_code='SPCLCD'
+		AND pob.offered_by=em.entity_id AND
+		pob.offered_by=cco.offered_by AND
+		em.entity_type=#entity_type# AND
+		cco.settings=#settings# AND
+		em.university_id=sys1.university_code AND
+		sys1.university_code=sys2.university_code AND
+		sys2.university_code=#university_id# order by pob.program_id;
 </select>
 
 
 
 	<select id="callwithallvalues" resultMap="getcall">
 		select distinct
-		epm.program_name,pbs.branch_name,cco.cos_value,cco.number_of_times,cco.cos_seats,cco.session_start_date,cco.session_end_date
-		from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,CALL_CUT_OFF
-		cco,PROGRAM_BRANCHES pbs,UNIVERSITY_ENTITY_TYPE uet,ENTITY_MASTER em
-		where epm.program_id=cco.program_id AND cco.program_id=pob.program_id
-		AND pbs.branch_code=cco.branch_code AND cco.branch_code=pob.branch AND
-		pob.offered_by=em.entity_id AND em.entity_type=uet.entity_type AND
-		em.university_id=uet.university_id AND
-		uet.university_id=pbs.university_id AND
-		epm.program_name=#program_name# AND
+		epm.program_id,epm.program_name,em.entity_id,sys1.component_code as
+		branch_id,sys1.component_description branch_name,sys2.component_code
+		as specialization_id,sys2.component_description
+		specialization_name,cco.cos_value,cco.number_of_times,cco.cos_seats,cco.session_start_date,cco.session_end_date
+		from program_master epm,program_offered_by pob,call_cut_off
+		cco,system_table_two sys1,system_table_two sys2,entity_master em where
+		cco.program_id=pob.program_id AND pob.program_id=epm.program_id AND
+		pob.branch_id=cco.branch_code AND cco.branch_code=sys1.component_code
+		AND sys1.group_code='BRNCOD' AND
+		pob.specialization_id=cco.specialization_code
+		AND
+		pob.specialization_id=sys2.component_code AND
+		sys2.group_code='SPCLCD'
+		AND pob.offered_by=em.entity_id AND
+		pob.offered_by=cco.offered_by AND
 		cco.settings=#settings# AND
-		uet.university_id=#university_id#;
+		em.university_id=sys1.university_code AND
+		sys1.university_code=sys2.university_code AND
+		sys2.university_code=#university_id# AND
+		epm.program_name=#program_name#;
 </select>
 
 	<resultMap id="cosvaluegfgf" class="callcutoff">
@@ -85,77 +120,62 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getcosvalue" resultMap="cosvaluegfgf">
 
 		select cos_value from
-		CALL_CUT_OFF
+		call_cut_off
 		where program_id=#program_id# AND
 		branch_code=#branch_code# AND
-		Offered_by=#entity_id#; 
+		Offered_by=#entity_id# AND
+		specialization_code=#specialization_id#; 
 		
 </select>
 
 
 	<update id="updatewithentitytype">
-		update CALL_CUT_OFF cco,UNIVERSITY_ENTITY_TYPE
-		uet,PROGRAM_BRANCHES pbs SET
+		update call_cut_off cco SET
 		cco.cos_value=#cos_value#,cco.number_of_times=#no_of_times#,cco.cos_seats=#no_of_seats#,
 		cco.session_start_date=#session_start_date#,cco.session_end_date=#session_end_date#,
 		cco.modification_time=#modification_time#,cco.modifier_id=#modifier_id#
-		where
-		cco.program_id
-		IN(select
-		program_id from ENTITY_PROGRAM_MASTER
-		where
-		program_name=#program_name#) AND cco.branch_code=pbs.branch_code
-		AND pbs.branch_name=#branch_name# AND
-		cco.cos_value=#cos_value# AND
-		uet.university_id=pbs.university_id AND
-		uet.university_id=#university_id#;
+		where cco.program_id=#program_id# AND cco.branch_code=#branch_id# AND
+		cco.specialization_code=#specialization_id# AND
+		cco.cos_value=#cos_value# AND cco.settings=#settings#; 
 		
 </update>
 
 
 	<delete id="deleterecord">
 
-		delete cco from CALL_CUT_OFF AS
-		cco,ENTITY_PROGRAM_MASTER AS epm,PROGRAM_BRANCHES
-		pbs,UNIVERSITY_ENTITY_TYPE AS uet where
-		cco.program_id=epm.program_id
-		AND epm.program_name=#program_name#
-		AND
-		cco.cos_value=#cos_value# AND
-		cco.branch_code=pbs.branch_code AND
-		pbs.university_id=uet.university_id AND
-		pbs.branch_name=#branch_name#
-		AND
-		uet.university_id=#university_id#;
+		delete cco from call_cut_off AS cco where
+		cco.program_id=#program_id# AND cco.cos_value=#cos_value# AND
+		cco.branch_code=#branch_id# AND
+		cco.specialization_code=#specialization_id# AND
+		cco.settings=#settings#;
 
 </delete>
 
 	<resultMap id="getdefaultdetails" class="callcutoff">
 
 		<result property="defaultseats" column="seats" />
-		<result property="category" column="category_code" />
-		<result property="percentage_seats" column="percentage_seats" />
+		<result property="category" column="category" />
+		<result property="percentage_seats" column="percentage_seat" />
 
 	</resultMap>
 
 	<select id="defaultdetails" resultMap="getdefaultdetails">
 
-		select distinct
-		pob.seats,psr.category_code,psr.percentage_seats from
-		PROGRAM_OFFERED_BY
-		pob,PROGRAM_SEAT_RESERVATION psr where
-		pob.program_id=psr.program_id
-		AND pob.program_id=#program_id# AND
-		pob.offered_by=#entity_id# AND
-		pob.branch=#branch_code#;
+		select
+		usr.category,usr.percentage_seat,pob.seats from
+		university_seat_reservation usr,program_offered_by pob where
+		pob.offered_by=#entity_id# AND pob.program_id=#program_id# AND
+		pob.branch_id=#branch_code# AND
+		pob.specialization_id=#specialization_id# AND usr.
+		university_code=#university_id#;
 
 </select>
 
 	<insert id="insertdefaultdetails">
 
 		insert into
-		CALL_CUT_OFF(program_id,branch_code,Offered_by,cos_value,cos_seats,number_of_times,number_of_times_active,cut_off_number,cut_off_number_active,cut_off_percentage,cut_off_percentage_active,settings,session_start_date,session_end_date,insert_time,creator_id)
-		values(#program_id#,#branch_code#,#entity_id#,#cos_value#,#defaultseats#,#no_of_times#,#no_of_times_active#,#cut_off_number#,#cut_off_number_active#,#cut_off_percentage#,#cut_off_percentage_active#,#settings#,#session_start_date#,#session_end_date#,#insert_time#,#creator_id#)
+		call_cut_off(program_id,branch_code,specialization_code,offered_by,cos_value,cos_seats,number_of_times,number_of_times_active,cut_off_number,cut_off_number_active,cut_off_percentage,cut_off_percentage_active,settings,session_start_date,session_end_date,insert_time,creator_id)
+		values(#program_id#,#branch_code#,#specialization_id#,#entity_id#,#cos_value#,#defaultseats#,#no_of_times#,#no_of_times_active#,#cut_off_number#,#cut_off_number_active#,#cut_off_percentage#,#cut_off_percentage_active#,#settings#,#session_start_date#,#session_end_date#,#insert_time#,#creator_id#)
 
 
 </insert>
@@ -165,25 +185,17 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="program_id" column="program_id" />
 		<result property="program_name" column="program_name" />
 		<result property="entity_id" column="entity_id" />
-		<result property="branch_name" column="branch_name" />
-		<result property="branch" column="branch" />
-
+		<result property="entity_name" column="entity_name" />
 	</resultMap>
 
 	<select id="methodgetprograms" resultMap="getsections">
-
-		select distinct
-		epm.program_id,epm.program_name,em.entity_id,pob.branch,pbs.branch_name
-		from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,ENTITY_MASTER
-		em,PROGRAM_BRANCHES pbs,UNIVERSITY_ENTITY_TYPE uet where
+		SELECT DISTINCT epm.program_id,epm.program_name,em.entity_name,em.entity_id
+		FROM program_master epm,program_offered_by pob,entity_master em WHERE
 		epm.program_id=pob.program_id AND em.entity_id=pob.offered_by AND
-		pob.branch=pbs.branch_code AND pob.offered_by=em.entity_id AND
-		em.entity_type=uet.entity_type AND em.university_id=uet.university_id
-		AND uet.university_id=pbs.university_id AND
-		uet.entity_description=#entity_description# AND
-		uet.university_id=#university_id#;
-
-</select>
+		em.entity_type=#entity_description# AND
+		em.entity_id=#entity_name# AND
+		em.university_id=#university_id#;
+	</select>
 
 	<resultMap id="cosvalue" class="callcutoff">
 
@@ -194,8 +206,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getcos_codess" resultMap="cosvalue">
 
 		select cos_code from
-		PROGRAM_COS_CODE where program_id=#program_id# AND
-		branch_code=#branch_code#;
+		program_cos_code where program_id=#program_id# AND
+		branch_code=#branch_code# AND specialization_code=#specialization_id#;
 </select>
 
 	<resultMap id="cosvaluea" class="callcutoff">
@@ -207,8 +219,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="gettotalseats" resultMap="cosvaluea">
 
 		select seats from
-		PROGRAM_OFFERED_BY where program_id=#program_id# AND
-		branch=#branch_code# AND offered_by=#entity_description#;
+		program_offered_by where program_id=#program_id# AND
+		branch_id=#branch_code# AND offered_by=#entity_description# AND
+		specialization_id=#specialization_id#;
 </select>
 
 	<resultMap id="cosseats" class="callcutoff">
@@ -221,8 +234,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
 		select sum(cos_seats)
 		coss_seats from
-		CALL_CUT_OFF where program_id=#program_id# AND
-		branch_code=#branch_code# AND offered_by=#entity_description#;
+		call_cut_off where program_id=#program_id# AND
+		branch_code=#branch_code# AND offered_by=#entity_description# AND
+		specialization_code=#specialization_id#;
 </select>
 
 	<resultMap id="cosseats" class="callcutoff">
@@ -234,13 +248,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getseatsfromcco" resultMap="cosseats">
 
 		select sum(distinct
-		cos_seats)
-		coss_seats from CALL_CUT_OFF cco,UNIVERSITY_ENTITY_TYPE
-		uet,ENTITY_PROGRAM_MASTER epm,PROGRAM_BRANCHES pbs where
-		cco.program_id = epm.program_id AND epm.program_name=#program_name#
-		AND cco.branch_code = pbs.branch_code AND
-		pbs.branch_name=#branch_name# AND cco.cos_value!=#cos_value# AND
-		uet.university_id=#university_id#;
+		cos_seats) coss_seats from call_cut_off cco where
+		cco.program_id=#program_id# AND cco.branch_code=#branch_id# AND
+		cco.specialization_code=#specialization_id# AND
+		cco.cos_value!=#cos_value#;
 </select>
 
 	<resultMap id="cosseatss" class="callcutoff">
@@ -252,12 +263,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getseatsfrompob" resultMap="cosseatss">
 
 		select seats from
-		PROGRAM_OFFERED_BY pob,ENTITY_PROGRAM_MASTER epm,PROGRAM_BRANCHES pbs
-		where
-		pob.program_id=epm.program_id AND epm.program_name=#program_name#
-		AND
-		pob.branch=pbs.branch_code AND
-		pbs.branch_name=#branch_name#;
+		program_offered_by pob where pob.program_id=#program_id# AND
+		pob.branch_id=#branch_id# AND
+		pob.specialization_id=#specialization_id#;
 </select>
 
 
@@ -276,10 +284,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</resultMap>
 	<select id="fromprogrammaster" resultMap="programmaster">
 		select distinct
-		program_name,program_id from ENTITY_PROGRAM_MASTER
-		epm,UNIVERSITY_ENTITY_TYPE uet where epm.program_id !=#program_id# AND
-		substring(epm.program_id,1,4)=uet.university_id AND
-		uet.university_id=#university_id#;
+		program_name,program_id from program_master epm where epm.program_id
+		!=#program_id# AND program_id LIKE #university_id#;
     </select>
 
 
@@ -292,38 +298,23 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="description" resultMap="rule">
 		select
 		rule_number,description
-		from COMPONENT_RULES
+		from component_rules
     </select>
 
-	<!--
-		<resultMap id="getcomponentwithentitytype" class="callcutoff"> <result
-		property="program_id" column="program_id" /> <result
-		property="branch_code" column="branch_code" /> <result
-		property="entity_id" column="offered_by" /> <result
-		property="component" column="component_id" /> <result
-		property="weightage" column="component_weightage" /> <result
-		property="weightage_flag" column="weightage_flag" /> <result
-		property="eligibility_flag" column="component_criteria_flag" />
-		<result property="special_flag" column="special_weightage_flag" />
-		<result property="eligibility_flag" column="component_criteria_flag"
-		/> <result property="sequence" column="sequence_number" /> <result
-		property="board_flag" column="board_flag" /> <result
-		property="rule_no" column="rule_number" /> <result property="UGorPG"
-		column="ug_pg" /> <result property="insert_time" column="insert_time"
-		/> </resultMap>
-	-->
 	<insert id="insertcomponentdetails">
 
 		insert into
-		PROGRAM_COMPONENTS(program_id,branch_code,offered_by,component_id,type,component_weightage,weightage_flag,component_criteria_flag,special_weightage_flag,sequence_number,board_flag,rule_number,ug_pg,insert_time,creator_id)
-		values(#program_id#,#branch_code#,#entity_id#,#component#,#type#,#weightage#,#weightage_flag#,#eligibility_flag#,#special_flag#,#sequence#,#board_flag#,#rule_no#,#UGorPG#,#insert_time#,#creator_id#);
+		program_components(program_id,offered_by,component_id,type,component_weightage,weightage_flag,component_criteria_flag,special_weightage_flag,sequence_number,board_flag,rule_number,ug_pg,insert_time,creator_id)
+		values(#program_id#,#entity_id#,#component#,#type#,#weightage#,#weightage_flag#,#eligibility_flag#,#special_flag#,#sequence#,#board_flag#,#rule_no#,#UGorPG#,now(),#creator_id#);
 
 </insert>
 
 	<resultMap id="getcomponentwithentitytype" class="callcutoff">
 
+		<result property="program_id" column="program_id" />
 		<result property="program_name" column="program_name" />
-		<result property="branch_name" column="branch_name" />
+		
+		<result property="component_id" column="component_id" />
 		<result property="component" column="des" />
 		<result property="type" column="type" />
 		<result property="entity_id" column="component_weightage" />
@@ -334,6 +325,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="sequence" column="sequence_number" />
 		<result property="description" column="description" />
 		<result property="rule_no" column="rule_number" />
+		<result property="catTypeDescription" column="component_description" />
 
 
 	</resultMap>
@@ -341,118 +333,83 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="componentwithentitytype" resultMap="getcomponentwithentitytype">
 
 		select distinct
-		epm.program_name,pbs.branch_name,cd.description
-		des,pcs.type,pcs.component_weightage,pcs.board_flag,pcs.weightage_flag,pcs.special_weightage_flag,pcs.component_criteria_flag,pcs.sequence_number,cr.description,cr.rule_number
-		from ENTITY_PROGRAM_MASTER epm,PROGRAM_COMPONENTS pcs,COMPONENT_RULES
-		cr,PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES pbs,ENTITY_MASTER
-		em,COMPONENT_DESCRIPTION cd,UNIVERSITY_ENTITY_TYPE uet where
-		epm.program_id=pob.program_id AND epm.program_id=pcs.program_id AND
-		cr.rule_number=pcs.rule_number AND pob.branch=pcs.branch_code AND
-		pcs.branch_code=pbs.branch_code AND pcs.component_id=cd.component_id
-		AND pob.offered_by=em.entity_id AND em.entity_type=uet.entity_type AND
-		em.university_id=uet.university_id AND
-		uet.university_id=pbs.university_id AND
-		cd.university_id=uet.university_id AND
-		uet.entity_description=#entity_description#
-		AND
-		uet.university_id=#university_id# order by pob.program_id;
+			epm.program_id,epm.program_name,cd.description	des,
+			cd.component_id,pcs.type,pcs.component_weightage,pcs.board_flag,
+			pcs.weightage_flag,pcs.special_weightage_flag,
+			pcs.component_criteria_flag,pcs.sequence_number,cr.description,cr.rule_number,stt.component_description
+		from program_master epm,program_components pcs,component_rules cr,component_description cd,entity_master em,system_table_two stt
+		where
+			epm.program_id=pcs.program_id
+			AND cr.rule_number=pcs.rule_number
+			AND pcs.component_id=cd.component_id
+			AND pcs.offered_by=em.entity_id
+			AND em.entity_type=#entity_description#
+			AND em.university_id=cd.university_id
+			AND em.university_id=#university_id#
+      AND stt.university_code=em.university_id
+      AND pcs.type=stt.component_code
+      AND stt.group_code=#groupCode#
+		order by pcs.program_id
 
 </select>
 
 	<delete id="deletecomponents">
 
-		delete cco from PROGRAM_COMPONENTS AS
-		cco,ENTITY_PROGRAM_MASTER AS
-		epm,PROGRAM_BRANCHES AS
-		pbs,COMPONENT_DESCRIPTION AS cd,UNIVERSITY_ENTITY_TYPE AS uet where
-		cco.program_id=epm.program_id AND
-		cco.branch_code=pbs.branch_code AND
-		cco.component_id=cd.component_id
-		AND
-		pbs.university_id=uet.university_id AND
-		cd.university_id=uet.university_id AND
-		epm.program_name=#program_name#
-		AND
-		pbs.branch_name=#branch_name# AND
-		uet.university_id=#university_id#
-		AND
-		cd.description=#component#; 
+		delete cco from program_components AS cco where
+		cco.program_id=#program_id# AND 
+		cco.component_id=#component# 
 		
 </delete>
 
-	<!--
-		<resultMap id="getcomponentwithentityname" class="callcutoff"> <result
-		property="program_name" column="program_name" /> <result
-		property="branch_name" column="branch_name" /> <result
-		property="component" column="component_id" /> <result property="type"
-		column="type" /> <result property="weightage"
-		column="component_weightage" /> <result property="board_flag"
-		column="board_flag" /> <result property="weightage_flag"
-		column="weightage_flag" /> <result property="special_flag"
-		column="special_weightage_flag" /> <result property="eligibility_flag"
-		column="component_criteria_flag" /> <result property="sequence"
-		column="sequence_number" /> <result property="description"
-		column="description" /> </resultMap>
-	-->
+
 	<select id="componentwithentityname" resultMap="getcomponentwithentitytype">
 
 		select distinct
-		epm.program_name,pbs.branch_name,cd.description
-		des,pcs.type,pcs.component_weightage,pcs.board_flag,pcs.weightage_flag,pcs.special_weightage_flag,pcs.component_criteria_flag,pcs.sequence_number,cr.description,cr.rule_number
-		from ENTITY_PROGRAM_MASTER epm,PROGRAM_COMPONENTS pcs,COMPONENT_RULES
-		cr,PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES pbs,ENTITY_MASTER
-		em,COMPONENT_DESCRIPTION cd,UNIVERSITY_ENTITY_TYPE uet where
-		epm.program_id=pob.program_id AND epm.program_id=pcs.program_id AND
-		cr.rule_number=pcs.rule_number AND pob.branch=pcs.branch_code AND
-		pcs.branch_code=pbs.branch_code AND pcs.component_id=cd.component_id
-		AND pob.offered_by=em.entity_id AND em.entity_type=uet.entity_type AND
-		em.university_id=uet.university_id AND
-		cd.university_id=uet.university_id AND
-		uet.university_id=pbs.university_id AND em.entity_name=#entity_name#
-		AND uet.university_id=#university_id# order by pob.program_id; 
+				epm.program_id,epm.program_name,cd.description
+				des,cd.component_id,pcs.type,pcs.component_weightage,pcs.board_flag,
+				pcs.weightage_flag,pcs.special_weightage_flag,
+				pcs.component_criteria_flag,pcs.sequence_number,cr.description,cr.rule_number,stt.component_description
+		from program_master epm,program_components pcs,component_rules cr
+				,component_description cd,entity_master em,system_table_two stt
+		where
+				epm.program_id=pcs.program_id
+		AND cr.rule_number=pcs.rule_number
+		AND pcs.component_id=cd.component_id
+		AND pcs.offered_by=em.entity_id
+		AND em.entity_id=#entity_id#
+		AND em.university_id=cd.university_id
+		AND em.university_id=#university_id#
+		AND stt.university_code=em.university_id
+      AND pcs.type=stt.component_code
+      AND stt.group_code=#groupCode#
+		order by
+		pcs.program_id
 
 </select>
 
-	<!--
-		<resultMap id="getcomponentwithallvalues" class="callcutoff"> <result
-		property="program_name" column="program_name" /> <result
-		property="branch_name" column="branch_name" /> <result
-		property="component" column="component_id" /> <result property="type"
-		column="type" /> <result property="weightage"
-		column="component_weightage" /> <result property="board_flag"
-		column="board_flag" /> <result property="weightage_flag"
-		column="weightage_flag" /> <result property="special_flag"
-		column="special_weightage_flag" /> <result property="eligibility_flag"
-		column="component_criteria_flag" /> <result property="sequence"
-		column="sequence_number" /> <result property="description"
-		column="description" /> </resultMap>
-	-->
+
 	<select id="componentwithallvalues" resultMap="getcomponentwithentitytype">
 
 		select distinct
-		epm.program_name,pbs.branch_name,cd.description
-		des,pcs.type,pcs.component_weightage,pcs.board_flag,pcs.weightage_flag,pcs.special_weightage_flag,pcs.component_criteria_flag,
-		pcs.sequence_number,cr.description,cr.rule_number from
-		ENTITY_PROGRAM_MASTER epm,PROGRAM_COMPONENTS pcs,COMPONENT_RULES
-		cr,PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES pbs,COMPONENT_DESCRIPTION
-		cd,ENTITY_MASTER em,UNIVERSITY_ENTITY_TYPE
-		uet where
-		epm.program_id=pob.program_id AND
-		epm.program_id=pcs.program_id AND
-		cr.rule_number=pcs.rule_number AND
-		pob.branch=pcs.branch_code AND
-		pcs.branch_code=pbs.branch_code AND
-		pcs.component_id=cd.component_id
-		AND pob.offered_by=em.entity_id AND
-		em.entity_type=uet.entity_type AND
-		em.university_id=uet.university_id
-		AND
-		uet.university_id=pbs.university_id AND
-		cd.university_id=uet.university_id AND
-		epm.program_name=#program_name#
-		AND uet.university_id=#university_id#
+				epm.program_id,epm.program_name,cd.description
+				des,cd.component_id,pcs.type,pcs.component_weightage,pcs.board_flag,
+				pcs.weightage_flag,pcs.special_weightage_flag,
+				pcs.component_criteria_flag,pcs.sequence_number,cr.description,cr.rule_number,stt.component_description
+		from program_master epm,program_components pcs,component_rules cr
+				,component_description cd,entity_master em,system_table_two stt
+		where
+				epm.program_id=pcs.program_id
+		AND cr.rule_number=pcs.rule_number
+		AND pcs.component_id=cd.component_id
+		AND pcs.offered_by=em.entity_id
+		AND epm.program_name=#program_name#
+		AND em.university_id=cd.university_id
+		AND em.university_id=#university_id#
+		AND stt.university_code=em.university_id
+      	AND pcs.type=stt.component_code
+      	AND stt.group_code=#groupCode#
 		order by
-		pob.program_id;
+		pcs.program_id
 
 </select>
 
@@ -465,9 +422,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getcomponents" resultMap="component">
 		select component_id
 		from
-		PROGRAM_COMPONENTS where
-		program_id=#program_id# AND
-		branch_code=#branch_code#;
+		program_components where
+		program_id=#program_id#;
 </select>
 
 	<resultMap id="sequence" class="callcutoff">
@@ -477,13 +433,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</resultMap>
 
 	<select id="getsequencenumber" resultMap="sequence">
-		select
-		sequence_number
-		from PROGRAM_COMPONENTS where
-		program_id=#program_id#
-		AND
-		branch_code=#branch_code#;
-</select>
+		
+		SELECT DISTINCT
+				sequence_number
+		FROM program_components WHERE
+				program_id=#program_id#
+	</select>
 
 	<resultMap id="getcomponwent" class="callcutoff">
 
@@ -495,20 +450,18 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getcomponentdescription" resultMap="getcomponwent">
 
 		select
-		component_id,description from COMPONENT_DESCRIPTION where
+		component_id,description from component_description where
 		university_id=#String#;
 
 </select>
 
 	<update id="updateprogramcomponents">
-		update PROGRAM_COMPONENTS pcs,UNIVERSITY_ENTITY_TYPE
-		uet,PROGRAM_BRANCHES pbs SET
-		pcs.type=#type#,pcs.component_weightage=#weightage#,pcs.weightage_flag=#weightage_flag#,pcs.component_criteria_flag=#eligibility_flag#,pcs.special_weightage_flag=#special_flag#,pcs.board_flag=#board_flag#,pcs.rule_number=#rule_no#,pcs.modification_time=#modification_time#,pcs.modifier_id=#modifier_id#
-		where pcs.program_id IN(select program_id from ENTITY_PROGRAM_MASTER
-		where program_name=#program_name#) AND pcs.branch_code=pbs.branch_code
-		AND pbs.branch_name=#branch_name# AND pcs.sequence_number=#sequence#
-		AND uet.university_id=pbs.university_id AND
-		uet.university_id=#university_id#;;
+
+		update program_components pcs SET
+		pcs.type=#type#,pcs.component_weightage=#weightage#,pcs.weightage_flag=#weightage_flag#,pcs.component_criteria_flag=#eligibility_flag#,pcs.special_weightage_flag=#special_flag#,
+		pcs.board_flag=#board_flag#,pcs.rule_number=#rule_no#,pcs.modification_time=#modification_time#,pcs.modifier_id=#modifier_id#
+		where pcs.program_id=#program_id# AND
+		pcs.sequence_number=#sequence#
 		
 </update>
 
@@ -529,9 +482,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getrecordsfromfinalmerit" resultMap="maxi">
 		select
 		program_id from
-		FINAL_MERIT_COMPONENTS where
-		program_id=#program_id# AND
-		branch_code=#branch_code#;
+		final_merit_components where
+		program_id=#program_id#;
 </select>
 
 	<resultMap id="maxid" class="callcutoff">
@@ -542,15 +494,15 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getmaxfromfinalmerit" resultMap="maxid">
 		select
 		MAX(component_id) component_id from
-		FINAL_MERIT_COMPONENTS where
-		program_id=#program_id# AND branch_code=#branch_code#;
+		final_merit_components where
+		program_id=#program_id#;
 </select>
 
 	<insert id="insertfinalmerit">
 
 		insert into
-		FINAL_MERIT_COMPONENTS(program_id,branch_code,offered_by,component_id,attendance_flag,description,total_marks,insert_time,creator_id)
-		values(#program_id#,#branch_code#,#entity_id#,#component#,#eligibility_flag#,#description#,#total_marks#,#insert_time#,#creator_id#);
+		final_merit_components(program_id,offered_by,component_id,attendance_flag,description,total_marks,insert_time,creator_id)
+		values(#program_id#,#entity_id#,#component#,#eligibility_flag#,#description#,#total_marks#,#insert_time#,#creator_id#);
 
 </insert>
 
@@ -560,42 +512,31 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	</resultMap>
 
 	<select id="getdescription" resultMap="desc">
-		select
+		select distinct
 		description from
-		FINAL_MERIT_COMPONENTS where
-		program_id=#program_id# AND
-		branch_code=#branch_code#;
-</select>
+		final_merit_components where
+		program_id=#program_id#;
+	</select>
 
 
 
-
+<!-- Update by devendra 20 April -->
 	<delete id="deletefromfinalmerit">
-
-		delete cco from FINAL_MERIT_COMPONENTS AS
-		cco,PROGRAM_BRANCHES AS pbs,UNIVERSITY_ENTITY_TYPE AS
-		uet,ENTITY_PROGRAM_MASTER AS epm where cco.program_id=epm.program_id
-		AND cco.branch_code=pbs.branch_code AND
-		pbs.university_id=uet.university_id AND
-		epm.program_name=#program_name# AND pbs.branch_name=#branch_name# AND
-		cco.description=#component# AND
-		uet.university_id=#university_id#;
-		
-</delete>
-
+		delete cco from final_merit_components AS cco where
+		cco.program_id=#program_id# AND 
+		cco.description=#component# AND cco.offered_by=#entity_id#;
+	</delete>
+	
+<!-- Update by devendra 20 April -->
 	<update id="updatemeritcomponents">
-		update FINAL_MERIT_COMPONENTS
-		fmc,UNIVERSITY_ENTITY_TYPE uet,PROGRAM_BRANCHES pbs SET
+		update final_merit_components fmc SET
 		fmc.attendance_flag=#board_flag#,fmc.total_marks=#weightage#,
 		fmc.modification_time=#modification_time#,fmc.modifier_id=#modifier_id#
-		where fmc.program_id IN(select program_id from ENTITY_PROGRAM_MASTER
-		where program_name=#program_name#) AND fmc.branch_code=pbs.branch_code
-		AND pbs.branch_name=#branch_name# AND fmc.description=#component#;
-		
-</update>
+		where fmc.program_id=#program_id# AND fmc.offered_by=#entity_id# AND fmc.description=#component#;
+		</update>
 
 	<update id="updatefinalmerit">
-		update FINAL_MERIT_COMPONENTS SET
+		update final_merit_components SET
 		component_id=#component#,description=#description#,total_marks=#total_marks#,
 		modification_time=#modification_time#
 		where
@@ -603,69 +544,39 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		
 </update>
 
+<!-- Change by devendra 20 April -->
 	<resultMap id="finalmeritwithentitytype" class="callcutoff">
-
+		<result property="program_id" column="program_id" />
 		<result property="program_name" column="program_name" />
-		<result property="branch_name" column="branch_name" />
 		<result property="weightage" column="total_marks" />
 		<result property="board_flag" column="attendance_flag" />
 		<result property="description" column="description" />
-
-
+		<result property="entity_id" column="offered_by" />
+		<result property="entity_name" column="entity_name" />
 	</resultMap>
-
+<!-- Change by devendra 20 April -->
 	<select id="meritwithentitytype" resultMap="finalmeritwithentitytype">
-
-		select distinct
-		epm.program_name,pbs.branch_name,fmc.attendance_flag,fmc.description,fmc.total_marks
-		from ENTITY_PROGRAM_MASTER epm,FINAL_MERIT_COMPONENTS
-		fmc,PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES pbs,ENTITY_MASTER
-		em,UNIVERSITY_ENTITY_TYPE uet where epm.program_id=pob.program_id AND
-		epm.program_id=fmc.program_id AND pob.branch=fmc.branch_code AND
-		fmc.branch_code=pbs.branch_code AND pob.offered_by=em.entity_id AND
-		em.entity_type=uet.entity_type AND em.university_id=uet.university_id
-		AND uet.university_id=pbs.university_id AND
-		em.entity_type=uet.entity_type AND
-		entity_description=#entity_description# AND
-		uet.university_id=#university_id# order by pob.program_id;
-
-</select>
-
-
-
+	  	SELECT DISTINCT epm.program_id,epm.program_name,fmc.attendance_flag,fmc.description,fmc.total_marks,fmc.offered_by,em.entity_name
+		FROM program_master epm,final_merit_components fmc,entity_master em
+		WHERE epm.program_id=fmc.program_id  AND fmc.offered_by=em.entity_id AND em.entity_type=#entity_description#
+		AND em.university_id=#university_id# ORDER BY epm.program_id;
+	</select>
+<!-- Change by devendra 20 April -->
 	<select id="meritwithentityname" resultMap="finalmeritwithentitytype">
-
-		select distinct
-		epm.program_name,pbs.branch_name,fmc.attendance_flag,fmc.description,fmc.total_marks
-		from ENTITY_PROGRAM_MASTER epm,FINAL_MERIT_COMPONENTS
-		fmc,PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES pbs,ENTITY_MASTER
-		em,UNIVERSITY_ENTITY_TYPE uet where epm.program_id=pob.program_id AND
-		epm.program_id=fmc.program_id AND pob.branch=fmc.branch_code AND
-		fmc.branch_code=pbs.branch_code AND pob.offered_by =em.entity_id AND
-		em.entity_type=uet.entity_type AND em.university_id=uet.university_id
-		AND uet.university_id=pbs.university_id AND
-		em.entity_name=#entity_name#
-		AND uet.university_id=#university_id#
-		order by pob.program_id;
-
-</select>
-
-
+		SELECT DISTINCT epm.program_id,epm.program_name,fmc.attendance_flag,fmc.description,fmc.total_marks,fmc.offered_by,em.entity_name
+		FROM program_master epm,final_merit_components fmc,entity_master em
+		WHERE epm.program_id=fmc.program_id AND fmc.offered_by=em.entity_id AND em.entity_id=#entity_name# AND
+		em.university_id=#university_id# ORDER BY epm.program_id;
+	</select>
+<!-- Change by devendra 20 April -->
 	<select id="meritwithprogramname" resultMap="finalmeritwithentitytype">
-
-		select distinct
-		epm.program_name,pbs.branch_name,fmc.attendance_flag,fmc.description,fmc.total_marks
-		from ENTITY_PROGRAM_MASTER epm,FINAL_MERIT_COMPONENTS
-		fmc,PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES pbs,UNIVERSITY_ENTITY_TYPE
-		uet,ENTITY_MASTER em where epm.program_id=pob.program_id AND
-		epm.program_id=fmc.program_id AND pob.branch=fmc.branch_code AND
-		fmc.branch_code=pbs.branch_code AND pob.offered_by=em.entity_id AND
-		em.entity_type=uet.entity_type AND em.university_id=uet.university_id
-		AND uet.university_id=pbs.university_id AND
-		epm.program_name=#program_name# AND uet.university_id=#university_id#
-		order by pob.program_id;
-
-</select>
+		SELECT DISTINCT epm.program_id,epm.program_name,fmc.attendance_flag,fmc.description,fmc.total_marks,fmc.offered_by,em.entity_name
+		FROM program_master epm,final_merit_components fmc,entity_master em
+		WHERE epm.program_id=fmc.program_id AND
+    	fmc.offered_by=em.entity_id AND
+		epm.program_name=#program_name# AND em.entity_id=#entity_id# AND
+		em.university_id=#university_id# ORDER BY epm.program_id;
+	</select>
 
 	<resultMap id="getsectionss" class="callcutoff">
 
@@ -679,13 +590,12 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="methodgetprogramss" resultMap="getsectionss">
 
 		select distinct
-		epm.program_id,epm.program_name,em.entity_id from
-		ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,ENTITY_MASTER
-		em,UNIVERSITY_ENTITY_TYPE uet where epm.program_id=pob.program_id AND
-		em.entity_id=pob.offered_by AND em.university_id=uet.university_id AND
-		pob.offered_by=em.entity_id AND em.entity_type=uet.entity_type AND
-		uet.entity_description=#entity_description# AND
-		uet.university_id=#university_id#;
+		epm.program_id,epm.program_name,em.entity_id from program_master
+		epm,program_offered_by pob,entity_master em where
+		epm.program_id=pob.program_id AND em.entity_id=pob.offered_by AND
+		pob.offered_by=em.entity_id AND em.entity_type=#entity_description#
+		AND
+		em.entity_id=#entity_name# AND em.university_id=#university_id#;
 
 </select>
 
@@ -698,7 +608,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<insert id="insertfirstdegreecomponents">
 
 		insert into
-		PROGRAM_DEGREE(program_id,degree_code,insert_time,creator_id)
+		program_degree(program_id,degree_code,insert_time,creator_id)
 		values(#program_id#,#component#,#insert_time#,#creator_id#);
 
 </insert>
@@ -710,7 +620,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
 	<select id="getdegree" resultMap="getdegre">
 		select degree_code from
-		PROGRAM_DEGREE where
+		program_degree where
 		program_id=#program_id#;
 </select>
 
@@ -718,6 +628,8 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
 		<result property="program_name" column="program_name" />
 		<result property="component" column="component" />
+		<result property="program_id" column="program_id" />
+		<result property="component_id" column="component_id" />
 
 
 
@@ -726,15 +638,14 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="degreewithentitytype" resultMap="getdegrees">
 
 		select distinct
-		epm.program_name,epm1.program_name component from
-		ENTITY_PROGRAM_MASTER epm,ENTITY_PROGRAM_MASTER
-		epm1,PROGRAM_OFFERED_BY pob,PROGRAM_DEGREE pgd,UNIVERSITY_ENTITY_TYPE
-		uet,ENTITY_MASTER em where epm.program_id=pob.program_id AND
+		epm.program_name,epm.program_id,epm1.program_name as
+		component,epm1.program_id as component_id from program_master
+		epm,program_master epm1,program_offered_by pob,program_degree
+		pgd,entity_master em where epm.program_id=pob.program_id AND
 		epm.program_id=pgd.program_id AND epm1.program_id=pgd.degree_code AND
-		pob.offered_by=em.entity_id AND em.entity_type=uet.entity_type AND
-		em.university_id=uet.university_id AND
-		uet.entity_description=#entity_description# AND
-		uet.university_id=#university_id#;
+		pob.offered_by=em.entity_id AND em.entity_type=#entity_description#
+		AND
+		em.university_id=#university_id#;
 
 </select>
 
@@ -742,53 +653,34 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
 	<delete id="deletefrm1stdegree">
 
-		delete cco from PROGRAM_DEGREE AS
-		cco,ENTITY_PROGRAM_MASTER AS
-		epm,ENTITY_PROGRAM_MASTER
-		epm1,UNIVERSITY_ENTITY_TYPE AS uet where
-		cco.program_id=epm.program_id
-		AND
-		cco.degree_code=epm1.program_id AND
-		epm.program_name=#program_name#
-		AND
-		epm1.program_name=#component# AND
-		uet.university_id=#university_id#;
+		delete cco from program_degree AS cco where
+		cco.program_id=#program_id# AND cco.degree_code=#component_id# AND
+		cco.program_id LIKE
+		#university_id#;
 		
 </delete>
 
 	<select id="degreewithentityname" resultMap="getdegrees">
 
 		select distinct
-		epm.program_name,epm1.program_name component from
-		ENTITY_PROGRAM_MASTER
-		epm,ENTITY_PROGRAM_MASTER epm1,PROGRAM_OFFERED_BY
-		pob,PROGRAM_DEGREE
-		pgd,UNIVERSITY_ENTITY_TYPE
-		uet,ENTITY_MASTER em where
-		epm.program_id=pob.program_id AND
-		epm.program_id=pgd.program_id AND
-		epm1.program_id=pgd.degree_code AND
-		pob.offered_by=em.entity_id AND
-		em.entity_type=uet.entity_type AND
-		em.entity_name=#entity_name# AND
-		uet.university_id=#university_id#;
+		epm.program_name,epm.program_id,epm1.program_name as
+		component,epm1.program_id as component_id from program_master
+		epm,program_master epm1,program_offered_by pob,program_degree
+		pgd,entity_master em where epm.program_id=pob.program_id AND
+		epm.program_id=pgd.program_id AND epm1.program_id=pgd.degree_code AND
+		pob.offered_by=em.entity_id AND em.entity_id=#entity_name#; 
 
 </select>
 
 	<select id="degreewithallvalues" resultMap="getdegrees">
 
 		select distinct
-		epm.program_name,epm1.program_name component from
-		ENTITY_PROGRAM_MASTER epm,ENTITY_PROGRAM_MASTER
-		epm1,PROGRAM_OFFERED_BY pob,PROGRAM_DEGREE pgd,UNIVERSITY_ENTITY_TYPE
-		uet,ENTITY_MASTER em where
-		epm.program_id=pob.program_id AND
-		epm.program_id=pgd.program_id AND
-		epm1.program_id=pgd.degree_code AND
-		em.entity_type=uet.entity_type AND
-		epm.program_name=#program_name#
-		AND
-		uet.university_id=#university_id#;
+		epm.program_name,epm.program_id,epm1.program_name as
+		component,epm1.program_id as component_id from program_master
+		epm,program_master epm1,program_offered_by pob,program_degree pgd
+		where epm.program_id=pob.program_id AND epm.program_id=pgd.program_id
+		AND epm1.program_id=pgd.degree_code AND
+		epm.program_name=#program_name#;
 
 </select>
 
@@ -809,64 +701,36 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="cut_off_percentage_active" column="cut_off_percentage_active" />
 
 	</resultMap>
-
+	<!-- Updated By Devendra May 3rd -->
 	<select id="detailsofcos" resultMap="getit">
+		SELECT DISTINCT cos_value,number_of_times,number_of_times_active,cut_off_number,cut_off_number_active,cut_off_percentage,cut_off_percentage_active
+		FROM call_cut_off WHERE program_id=#program_id# AND offered_by=#entity_id#;
+	</select>
 
-		select distinct
-		cos_value,number_of_times,number_of_times_active,cut_off_number,cut_off_number_active,cut_off_percentage,cut_off_percentage_active
-		from
-		CALL_CUT_OFF where
-		program_id=#program_id#
-		AND
-		branch_code=#branch_code#;
-
-</select>
-
+	<!-- Updated by Devendra May 3rd -->
 	<resultMap id="getsection" class="callcutoff">
 
 		<result property="program_id" column="program_id" />
 		<result property="program_name" column="program_name" />
-		<result property="entity_id" column="entity_id" />
-		<result property="branch_name" column="branch_name" />
-		<result property="branch" column="branch" />
-
+		<result property="entity_id" column="entity_id" />		
 	</resultMap>
-
-
+	<!-- Updated by Devendra May 3rd -->
 	<select id="getcalledprograms" resultMap="getsection">
-
-		select distinct
-		epm.program_id,epm.program_name,em.entity_id,pbs.branch_name,pob.branch
-		from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,ENTITY_MASTER
-		em,PROGRAM_BRANCHES pbs,CALL_CUT_OFF cco,UNIVERSITY_ENTITY_TYPE uet
-		where epm.program_id=pob.program_id AND em.entity_id=pob.offered_by
-		AND pbs.branch_code=pob.branch AND cco.branch_code=pob.branch AND
-		cco.program_id=pob.program_id AND pob.offered_by=em.entity_id AND
-		em.entity_type=uet.entity_type AND em.university_id=uet.university_id
-		AND uet.university_id=pbs.university_id AND
-		entity_description=#entity_description# AND
-		uet.university_id=#university_id# order by
-		pob.program_id;
-
-</select>
-
-
-
+		SELECT DISTINCT epm.program_id,epm.program_name,em.entity_id
+		FROM program_master epm,program_offered_by pob,call_cut_off cco,entity_master em
+		WHERE cco.program_id=pob.program_id AND pob.program_id=epm.program_id
+		AND pob.offered_by=em.entity_id AND pob.offered_by=cco.offered_by AND em.entity_id=#entity_id# 
+		AND em.university_id=#university_id# order by pob.program_id;
+	</select>
+	<!-- Updated by Devendra May 3rd -->
 	<update id="updatecalldetails">
-
-
-		update CALL_CUT_OFF cco,UNIVERSITY_ENTITY_TYPE uet
+		update call_cut_off cco
 		SET
-		cco.number_of_times_active=#no_of_times_active#,cco.cut_off_number=#cut_off_number#,
-		cco.cut_off_number_active=#cut_off_number_active#,cco.cut_off_percentage=#cut_off_percentage#,
-		cco.cut_off_percentage_active=#cut_off_percentage_active#,cco.modification_time=#modification_time#,cco.modifier_id=#modifier_id#
-		where cco.program_id=#program_id# AND cco.branch_code=#branch_code#
-		AND
-		cco.cos_value=#cos_value#
-		AND cco.number_of_times=#no_of_times# AND
-		uet.university_id=#university_id#;
-		
-</update>
+		cco.number_of_times_active=#no_of_times_active#,cco.cut_off_number=#cut_off_number#,cco.cut_off_number_active=#cut_off_number_active#,
+		cco.cut_off_percentage=#cut_off_percentage#,cco.cut_off_percentage_active=#cut_off_percentage_active#,
+		cco.modification_time=#modification_time#,cco.modifier_id=#modifier_id#
+		where cco.program_id=#program_id# AND cco.cos_value=#cos_value# AND cco.offered_by=#entity_id#; 	
+	</update>
 
 	<!--
 		*********************************************queries for Special
@@ -883,8 +747,9 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="methodgetdescriptions" resultMap="methoddescriptions">
 
 		select
-		weightage_id,description from WEIGHTAGE_DESCRIPTION where
-		university_id=#uniid#;
+  component_code weightage_id,component_description description from system_table_two where
+  university_code=#uniid# and group_code='SPWCOD';
+
 
 </select>
 
@@ -899,7 +764,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 
 		select
 		weightage_id from
-		SPECIAL_WEIGHTAGE where
+		special_weightage where
 		university_id=#uniid#;
 
 </select>
@@ -907,7 +772,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<insert id="insertspecialweightagedetails">
 
 		insert into
-		SPECIAL_WEIGHTAGE(university_id,weightage_id,group_no,weightage_percentage,insert_time,creator_id)
+		special_weightage(university_id,weightage_id,group_no,weightage_percentage,insert_time,creator_id)
 		values(#university_id#,#component_id#,#branch_code#,#cut_off_number#,#insert_time#,#creator_id#);
 
 </insert>
@@ -925,38 +790,45 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	<select id="getspecialrecords" resultMap="specialrecords">
 
 		select distinct
-		sw.university_id,wd.description,sw.group_no,sw.weightage_percentage
-		from WEIGHTAGE_DESCRIPTION wd,SPECIAL_WEIGHTAGE
-		sw,UNIVERSITY_ENTITY_TYPE uet where sw.weightage_id=wd.weightage_id
-		AND wd.university_id=sw.university_id AND
-		sw.university_id=uet.university_id AND
-		wd.university_id=uet.university_id AND uet.university_id=#uniid#;
+  sw.university_id,stt.component_description description,sw.group_no,sw.weightage_percentage
+  from system_table_two stt,special_weightage sw where
+  sw.weightage_id=stt.component_code AND stt.university_code=sw.university_id
+  AND sw.university_id=stt.university_code AND stt.university_code=#user_id# AND stt.group_code='SPWCOD';
+
+
 
 </select>
 
 	<update id="updatespecialweightage">
 
 
-		update SPECIAL_WEIGHTAGE SET
-		group_no=#branch_code#,weightage_percentage=#cut_off_number#,
-		modification_time=#modification_time#,modifier_id=#modifier_id#
-		where
-		university_id=#university_id# AND weightage_id IN(select
-		weightage_id
-		from WEIGHTAGE_DESCRIPTION where description=#category#);
+		 update special_weightage SET
+  group_no=#branch_code#,weightage_percentage=#cut_off_number#,
+  modification_time=#modification_time#,modifier_id=#modifier_id#
+  where
+  university_id=#university_id# AND weightage_id IN(select
+  component_code
+  from system_table_two where component_description=#category# and group_code='SPWCOD');
 		
 </update>
 
 	<delete id="deletefromspecialweightage">
 
-		delete cco from SPECIAL_WEIGHTAGE AS
-		cco,WEIGHTAGE_DESCRIPTION AS
-		epm where
-		cco.university_id=#university_id# AND cco.weightage_id
-		=epm.weightage_id AND epm.description=#component#;
+		delete cco from special_weightage AS
+  cco,system_table_two AS
+  stt where
+  cco.university_id=#university_id# AND cco.weightage_id
+  =stt.component_code AND stt.component_description=#component# AND stt.group_code='SPWCOD';
+
 		
 </delete>
-
+	<select id="selectCategorizationTypeList" resultClass="callcutoff">
+		SELECT component_description AS catTypeDescription,component_code AS catTypeId
+		FROM system_table_two
+		WHERE group_code=#groupCode# AND university_code=#university_id#
+		ORDER BY component_code
+		
+	</select>
 
 
 

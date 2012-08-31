@@ -142,10 +142,8 @@ public class CM_managefirstdegree {
             FlexTable table = new FlexTable();
 
             Label label3 = new Label("Dayalbagh Educational Institute");
-            //            Label label4 = new Label("2010-11");
             label3.setStyleName("panelHeading");
 
-            //            label4.setStyleName("panelHeading");
             final Label entityCriteria = new Label(constants.entityName());
             final Label valueLabel = new Label(constants.label_programname());
             Label entityLabel = new Label(constants.label_entitytype());
@@ -258,8 +256,8 @@ public class CM_managefirstdegree {
                                             for (int i = 0; i < result.size();
                                                     i++) {
                                                 values[i] = result.get(i);
-                                                MessageBox.alert("authorities" +
-                                                    values[i]);
+//                                                MessageBox.alert("authorities" +
+//                                                    values[i]);
 
                                                 //                                                if (values[i].equalsIgnoreCase(
                                                 //                                                            "create")) {
@@ -391,24 +389,26 @@ public class CM_managefirstdegree {
                         entityList.addItem("Select");
 
                         for (int i = 0; i < result.length; i++) {
-                            String type = result[i].getComponent();
+                            String type = result[i].getComponentDescription();
+                            String id = result[i].getComponentId();
 
-                            entityList.addItem(type);
+                            entityList.addItem(type, id);
                         }
                     }
                 });
 
             entityList.addChangeHandler(new ChangeHandler() {
                     public void onChange(ChangeEvent arg0) {
-                        if (entityList.getValue(entityList.getSelectedIndex())
-                                          .equalsIgnoreCase("select")) {
+                        if (entityList.getItemText(
+                                    entityList.getSelectedIndex())
+                                          .equalsIgnoreCase("Select")) {
                             entityCriteriaList.clear();
                             okButton.setVisible(false);
                             ValueSuggest.setText("");
                             oracle.clear();
                             fullpage1.remove(gridPanel);
                         } else {
-                            String entitytype = entityList.getItemText(entityList.getSelectedIndex());
+                            String entitytype = entityList.getValue(entityList.getSelectedIndex());
                             ValueSuggest.setText("");
                             okButton.setVisible(true);
                             fullpage1.remove(gridPanel);
@@ -424,34 +424,20 @@ public class CM_managefirstdegree {
                                     public void onSuccess(
                                         CM_ProgramInfoGetter[] result) {
                                         String type1 = "";
+                                        String entity_name = "";
+
+                                        entityCriteriaList.clear();
+                                        entityCriteriaList.addItem("Select",
+                                            null);
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            type1 = result[i].getEntity_type();
+                                            type1 = result[i].getEntity_id();
+                                            entity_name = result[i].getEntity_name();
+
+                                            entityCriteriaList.addItem(entity_name,
+                                                type1);
                                         }
-
-                                        connectService.methodgetentity(type1,
-                                            university_id,
-                                            new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                                public void onFailure(
-                                                    Throwable arg0) {
-                                                }
-
-                                                public void onSuccess(
-                                                    CM_ProgramInfoGetter[] result) {
-                                                    entityCriteriaList.clear();
-                                                    entityCriteriaList.addItem(
-                                                        "Select");
-
-                                                    for (int i = 0;
-                                                            i < result.length;
-                                                            i++) {
-                                                        String name = result[i].getEntity_name();
-
-                                                        entityCriteriaList.addItem(name);
-                                                    }
-                                                }
-                                            });
                                     }
                                 });
 
@@ -463,6 +449,7 @@ public class CM_managefirstdegree {
 
                                     public void onSuccess(
                                         CM_ProgramInfoGetter[] result) {
+                                     
                                         oracle.clear();
 
                                         for (int i = 0; i < result.length;
@@ -479,7 +466,7 @@ public class CM_managefirstdegree {
 
             entityCriteriaList.addChangeHandler(new ChangeHandler() {
                     public void onChange(ChangeEvent arg0) {
-                        String entitytype = entityCriteriaList.getItemText(entityCriteriaList.getSelectedIndex());
+                        String entitytype = entityCriteriaList.getValue(entityCriteriaList.getSelectedIndex());
                         ValueSuggest.setText("");
 
                         int systemvalue = 0;
@@ -533,10 +520,12 @@ public class CM_managefirstdegree {
             okButton.addListener(new ButtonListenerAdapter() {
                     public void onClick(Button button, EventObject e) {
                         final String value = ValueSuggest.getText();
-                        final String entitytype = entityList.getItemText(entityList.getSelectedIndex());
-                        final String entityname = entityCriteriaList.getItemText(entityCriteriaList.getSelectedIndex());
+                        final String entitytype = entityList.getValue(entityList.getSelectedIndex());
+                        final String entityname = entityCriteriaList.getValue(entityCriteriaList.getSelectedIndex());
 
-                        if (entityname.equalsIgnoreCase("select") &&
+                        if (entityCriteriaList.getItemText(
+                                    entityCriteriaList.getSelectedIndex())
+                                                  .equalsIgnoreCase("Select") &&
                                 value.equals("")) {
                             connectService.degreewithentitytype(entitytype,
                                 university_id,
@@ -547,7 +536,7 @@ public class CM_managefirstdegree {
                                     public void onSuccess(
                                         CM_ProgramInfoGetter[] result) {
                                         final GridPanel grid = new GridPanel();
-                                        object1 = new Object[result.length][2];
+                                        object1 = new Object[result.length][4];
 
                                         if (result.length == 0) {
                                             MessageBox.show(new MessageBoxConfig() {
@@ -555,7 +544,8 @@ public class CM_managefirstdegree {
                                                     {
                                                         setTitle(msgs.alert());
                                                         setMsg(msgs.error_norecord(
-                                                                entitytype));
+                                                                entityList.getItemText(
+                                                                    entityList.getSelectedIndex())));
                                                         setIconCls(MessageBox.INFO);
                                                         setButtons(MessageBox.OK);
                                                         grid.setVisible(false);
@@ -581,18 +571,26 @@ public class CM_managefirstdegree {
                                         final RecordDef rDef = new RecordDef(new FieldDef[] {
                                                     new StringFieldDef("Programme Name"),
                                                     new StringFieldDef("Component Name"),
+                                                    new StringFieldDef("Programme Id"),
+                                                    new StringFieldDef("Component Id"),
                                                 });
 
                                         Object str = null;
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            for (int k = 0; k < 2; k++) {
+                                            for (int k = 0; k < 4; k++) {
                                                 try {
                                                     if (k == 0) {
                                                         str = result[i].getProgram_name();
                                                     } else if (k == 1) {
                                                         str = result[i].getComponent();
+                                                    }
+
+                                                    if (k == 2) {
+                                                        str = result[i].getProgram_id();
+                                                    } else if (k == 3) {
+                                                        str = result[i].getComponent_id();
                                                     }
                                                 } catch (Exception e) {
                                                     System.out.println("ex " +
@@ -685,9 +683,9 @@ public class CM_managefirstdegree {
                                                                                             new String[2];
 
                                                                                         Univ[0] = records[i].getAsString(
-                                                                                                "Programme Name");
+                                                                                                "Programme Id");
                                                                                         Univ[1] = records[i].getAsString(
-                                                                                                "Component Name");
+                                                                                                "Component Id");
 
                                                                                         connectService.methodDeletedegreerecord(Univ,
                                                                                             university_id,
@@ -727,7 +725,7 @@ public class CM_managefirstdegree {
 
                                         grid.setTopToolbar(topToolBar);
 
-                                        grid.addGridCellListener(new GridCellListener() {
+                                     /*   grid.addGridCellListener(new GridCellListener() {
                                                 public void onCellClick(
                                                     GridPanel grid,
                                                     int rowIndex, int colIndex,
@@ -747,7 +745,7 @@ public class CM_managefirstdegree {
                                                     int rowIndex, int colIndex,
                                                     EventObject e) {
                                                 }
-                                            });
+                                            });*/
 
                                         grid.setTitle(constants.heading_programdetails());
 
@@ -769,7 +767,7 @@ public class CM_managefirstdegree {
                                         final GridPanel grid = new GridPanel();
 
                                         try {
-                                            object1 = new Object[result.length][2];
+                                            object1 = new Object[result.length][4];
                                         } catch (Exception e) {
                                             System.out.println("ex11" + e);
                                         }
@@ -780,7 +778,8 @@ public class CM_managefirstdegree {
                                                     {
                                                         setTitle(msgs.alert());
                                                         setMsg(msgs.error_norecord(
-                                                                entitytype));
+                                                                entityCriteriaList.getItemText(
+                                                                    entityCriteriaList.getSelectedIndex())));
                                                         setIconCls(MessageBox.INFO);
                                                         setButtons(MessageBox.OK);
                                                         grid.setVisible(false);
@@ -806,17 +805,30 @@ public class CM_managefirstdegree {
                                         final RecordDef rDef = new RecordDef(new FieldDef[] {
                                                     new StringFieldDef("Programme Name"),
                                                     new StringFieldDef("Component Name"),
+                                                    new StringFieldDef("Programme Id"),
+                                                    new StringFieldDef("Component Id"),
                                                 });
 
                                         Object str = null;
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            for (int k = 0; k < 2; k++) {
-                                                if (k == 0) {
-                                                    str = result[i].getProgram_name();
-                                                } else if (k == 1) {
-                                                    str = result[i].getComponent();
+                                            for (int k = 0; k < 4; k++) {
+                                                try {
+                                                    if (k == 0) {
+                                                        str = result[i].getProgram_name();
+                                                    } else if (k == 1) {
+                                                        str = result[i].getComponent();
+                                                    }
+
+                                                    if (k == 2) {
+                                                        str = result[i].getProgram_id();
+                                                    } else if (k == 3) {
+                                                        str = result[i].getComponent_id();
+                                                    }
+                                                } catch (Exception e) {
+                                                    System.out.println("ex " +
+                                                        e);
                                                 }
 
                                                 object1[i][k] = str;
@@ -905,9 +917,9 @@ public class CM_managefirstdegree {
                                                                                             new String[2];
 
                                                                                         Univ[0] = records[i].getAsString(
-                                                                                                "Programme Name");
+                                                                                                "Programme Id");
                                                                                         Univ[1] = records[i].getAsString(
-                                                                                                "Component Name");
+                                                                                                "Component Id");
 
                                                                                         connectService.methodDeletedegreerecord(Univ,
                                                                                             university_id,
@@ -989,12 +1001,14 @@ public class CM_managefirstdegree {
                                         final RecordDef rDef = new RecordDef(new FieldDef[] {
                                                     new StringFieldDef("Programme Name"),
                                                     new StringFieldDef("Component Name"),
+                                                    new StringFieldDef("Programme Id"),
+                                                    new StringFieldDef("Component Id"),
                                                 });
 
                                         final GridPanel grid = new GridPanel();
 
                                         try {
-                                            object1 = new Object[result.length][2];
+                                            object1 = new Object[result.length][4];
                                         } catch (Exception e) {
                                             System.out.println("ex1 = " + e);
                                         }
@@ -1032,11 +1046,17 @@ public class CM_managefirstdegree {
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            for (int k = 0; k < 2; k++) {
+                                            for (int k = 0; k < 4; k++) {
                                                 if (k == 0) {
                                                     str = result[i].getProgram_name();
                                                 } else if (k == 1) {
                                                     str = result[i].getComponent();
+                                                }
+
+                                                if (k == 2) {
+                                                    str = result[i].getProgram_id();
+                                                } else if (k == 3) {
+                                                    str = result[i].getComponent_id();
                                                 }
 
                                                 object1[i][k] = str;
@@ -1125,9 +1145,9 @@ public class CM_managefirstdegree {
                                                                                             new String[2];
 
                                                                                         Univ[0] = records[i].getAsString(
-                                                                                                "Programme Name");
+                                                                                                "Programme Id");
                                                                                         Univ[1] = records[i].getAsString(
-                                                                                                "Component Name");
+                                                                                                "Component Id");
 
                                                                                         connectService.methodDeletedegreerecord(Univ,
                                                                                             university_id,

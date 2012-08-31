@@ -13,84 +13,129 @@
  **********************************************************************************/
 
 /*
-   Author Name :Ashish Yadav
+   Author Name :Arjun Singh
  */
 package in.ac.dei.edrp.client.ProgramSetup;
 
+
+
+import com.gwtext.client.core.EventObject;
+import com.gwtext.client.data.Record;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+
+
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
+
+
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
+
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ScrollPanel;
+
+
+
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import com.gwtext.client.util.Format;
+import com.gwtext.client.data.ArrayReader;
+import com.gwtext.client.data.FieldDef;
+import com.gwtext.client.data.MemoryProxy;
+import com.gwtext.client.data.RecordDef;
+import com.gwtext.client.data.SimpleStore;
+import com.gwtext.client.data.Store;
+import com.gwtext.client.data.StringFieldDef;
+import com.gwtext.client.widgets.Button;
 import com.gwtext.client.widgets.MessageBox;
-import com.gwtext.client.widgets.MessageBoxConfig;
+
+
+import com.gwtext.client.widgets.event.ButtonListenerAdapter;
+import com.gwtext.client.widgets.form.Checkbox;
+import com.gwtext.client.widgets.form.ComboBox;
 import com.gwtext.client.widgets.form.DateField;
 import com.gwtext.client.widgets.form.FormPanel;
 import com.gwtext.client.widgets.form.NumberField;
+import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
 
-import com.smartgwt.client.types.DateDisplayFormat;
-import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.DateItem;
+
+
 
 import in.ac.dei.edrp.client.CM_ProgramInfoGetter;
-import in.ac.dei.edrp.client.RPCFiles.CMconnectR;
-import in.ac.dei.edrp.client.RPCFiles.CMconnectRAsync;
+import in.ac.dei.edrp.client.SubjectCode;
+import in.ac.dei.edrp.client.SystemTableTwo;
+
+import in.ac.dei.edrp.client.RPCFiles.COS_DataService;
+import in.ac.dei.edrp.client.RPCFiles.COS_DataServiceAsync;
+
 import in.ac.dei.edrp.client.Shared.Validator;
 import in.ac.dei.edrp.client.Shared.constants;
 import in.ac.dei.edrp.client.Shared.messages;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
 public class CM_cutoffcall {
-    CMconnectRAsync connectService = (CMconnectRAsync) GWT.create(CMconnectR.class);
+	  
+
+	  
+   
+    COS_DataServiceAsync cos_service=(COS_DataServiceAsync)GWT.create(COS_DataService.class);
+    
     messages msgs = GWT.create(messages.class);
     constants constants = GWT.create(constants.class);
     public VerticalPanel vPanel = new VerticalPanel();
-    Label label3 = new Label("Dayalbagh Educational Institute");
-    Label label = new Label(constants.label_programName());
-    Label branchLabel = new Label(constants.label_branchname());
-    Label label1 = new Label(constants.category());
-    Label label2 = new Label(constants.label_xfactor());
-    Label label6 = new Label(constants.label_categoryseats());
-    Label startLabel = new Label(constants.label_sessionstartdate());
-    Label endLabel = new Label(constants.label_sessionenddate());
-    Label program_name = new Label(constants.label_programname());
-    Label genderLabel = new Label(constants.gender());
-    Label specLabel = new Label(constants.label_coscode());
-    Label program = new Label();
-    Label branch = new Label();
-    Label selectLabel = new Label(constants.select());
-    Hyperlink[] proHyperlink = new Hyperlink[550];
-    Label[] branchname = new Label[550];
-    CheckBox[] checkBox = new CheckBox[550];
-    String[] offeredby = new String[550];
-    String[] branches = new String[550];
+    
+    private int counter;
+    private int originalCounter;
+    private Label[] categoryName;
+    private String[] categoryCode;
+    private Label[] genderName;
+    private String[] genderCode;
+    private NumberField[] xFactorField;
+    private NumberField[] catSeatsField;
+    
+    private String eName;
+    private String pName;
+    private String sName;
+    private Date session_sdate;
+    private Date session_edate;
+    private Integer totalSeats;
+    Label EntityName=new Label(constants.EntityName());
+    Label ProgramName=new Label(constants.ProgramName());
+    Label SubjectName=new Label("Subject Name");
+    Label TotalSeats=new Label("Total Seats");
+    Label CategorySeats=new Label("Category Seats");
+    Label Gender=new Label("Gender");
+    Label Category=new Label("Category");
+    Label XFactor=new Label("X Factor");
+    Label programNameLabel = new Label(constants.label_programName());
+   
+    
+   
+    
+  
+   
+  
     String cosvalue = "";
     int j;
     int k = 0;
-    String speccode;
-    String[] programid = new String[550];
+   
+    
     Validator valid = new Validator();
     String cos_code;
     String university_id;
-
+    Integer temp_cos_seats;
+    Integer temp_total_seats;
+    String entityID=null;
+    String programID=null;
+    String categoryID=null;
+    String genderID=null;
+    String subjectCode=null;
+    String xFactor=null;
+    String categorySeats=null;
     // final DateField startField = new DateField();
     // final DateField endField = new DateField();
-    final DateItem startField = new DateItem();
-    final DateItem endField = new DateItem();
+    
 
     public CM_cutoffcall(String uniid) {
         this.university_id = uniid;
@@ -98,1130 +143,1031 @@ public class CM_cutoffcall {
 
     public void callcutoff() {
         vPanel.clear();
-
-        HorizontalPanel hPanel3 = new HorizontalPanel();
-        ScrollPanel scPanel = new ScrollPanel();
-        ScrollPanel scPanel1 = new ScrollPanel();
-        ScrollPanel scpanel2 = new ScrollPanel();
-        final FormPanel formPanel3 = new FormPanel();
-        final FormPanel fPanel = new FormPanel();
-        final FormPanel fPanel2 = new FormPanel();
-        final FormPanel fPanel1 = new FormPanel();
-        final FormPanel formPanel = new FormPanel();
-        final FlexTable regisTable = new FlexTable();
-        final FlexTable flexTable = new FlexTable();
-        final FlexTable detailsTable = new FlexTable();
-        final FlexTable defaultTable = new FlexTable();
-        final FlexTable sessionTable = new FlexTable();
-        final ListBox listBox = new ListBox();
-        HorizontalPanel hPanel2 = new HorizontalPanel();
-        HorizontalPanel hPanel = new HorizontalPanel();
-        VerticalPanel panel = new VerticalPanel();
-        VerticalPanel panel2 = new VerticalPanel();
-        VerticalPanel panel3 = new VerticalPanel();
-        HorizontalPanel hPanel4 = new HorizontalPanel();
-
-        final Button saveButton = new Button(constants.saveButton());
+        
+        final FormPanel firstForm=new FormPanel();
+        
+        EntityName.setStyleName("myLabelStyle");
+        ProgramName.setStyleName("myLabelStyle");
+        SubjectName.setStyleName("myLabelStyle");
+        TotalSeats.setStyleName("myLabelStyle");
+        Category.setStyleName("myLabelStyle");
+        Gender.setStyleName("myLabelStyle");
+        CategorySeats.setStyleName("myLabelStyle");
+        XFactor.setStyleName("myLabelStyle");
+     
+       
+        
+        
+        FlexTable flexTable2 = new FlexTable();
+     
+     
+        final DateField startField=new DateField();
+        startField.setAllowBlank(false);
+        final DateField endField=new DateField();
+        endField.setAllowBlank(false);
+        
+      
         final Button submitButton = new Button(constants.submit());
+        final Button closeButton = new Button("Close");
+        
+        final Button okButton = new Button(constants.okButton());
+        final Button closeButton2 = new Button("Close");
 
-        final Hyperlink defaultHyperlink = new Hyperlink(constants.heading_defaultprogramcossetup(),
-                null);
-        final Hyperlink indiHyperlink = new Hyperlink(constants.heading_indivisualprogramcossetup(),
-                null);
+       
 
-        startField.setValue(new Date());
-        endField.setValue(new Date());
+       
+       
+        Label entityTypeLabel = new Label(constants.EntityType());
+        final Label entityNameLabel = new Label(constants.EntityName());
 
-        // startField.setAllowBlank(false);
-        //endField.setAllowBlank(false);
-        final DynamicForm startdateFieldContainer = new DynamicForm();
-        startField.setTitle("");
-        startField.setDateFormatter(DateDisplayFormat.TOJAPANSHORTDATE);
-        startField.setUseTextField(true);
-        startField.setValidateOnChange(true);
-        startField.setRequired(true);
-        startField.setEnforceDate(true);
-        startField.setShowErrorIcon(true);
-        startdateFieldContainer.setItems(startField);
-
-        final DynamicForm enddateFieldContainer = new DynamicForm();
-        endField.setTitle("");
-        endField.setDateFormatter(DateDisplayFormat.TOJAPANSHORTDATE);
-        endField.setUseTextField(true);
-        endField.setValidateOnChange(true);
-        endField.setRequired(true);
-        endField.setEnforceDate(true);
-        endField.setShowErrorIcon(true);
-        enddateFieldContainer.setItems(endField);
-
-        Label label5 = new Label(constants.label_offeredby());
-
-        final NumberField box2 = new NumberField();
-        final NumberField box3 = new NumberField();
-        final ListBox categoryBox = new ListBox();
-        final ListBox genderBox = new ListBox();
-        final Label specField = new Label();
-
-        categoryBox.addItem("Select");
-        categoryBox.addItem("General", "GN");
-        categoryBox.addItem("Other Backward Caste", "BC");
-        categoryBox.addItem("Schedule Caste", "SC");
-        categoryBox.addItem("Schedule Tribe", "ST");
-
-        genderBox.addItem("Select");
-        genderBox.addItem("Male", "M");
-        genderBox.addItem("Female", "F");
-        genderBox.addItem("X-for no division", "X");
-
-        box2.setAllowDecimals(false);
-        box2.setAllowNegative(false);
-        box2.setAllowBlank(false);
-        box2.setMaxLength(2);
-        box2.setValue(1);
-        box2.setMinValue(1);
-
-        box3.setAllowDecimals(false);
-        box3.setAllowNegative(false);
-        box3.setAllowBlank(false);
-        box3.setValue(1);
-        box3.setMinValue(1);
-        box3.setMaxLength(3);
-
-        scPanel.setSize("100%", "160px");
-
-        scPanel1.setSize("100%", "160px");
-
-        scpanel2.setSize("100%", "210px");
-
-        selectLabel.setStyleName("jack");
-        branchLabel.setStyleName("jack");
-        label.setStyleName("jack");
-
-        formPanel3.setFrame(true);
-        formPanel3.setSize("1100px", "400px");
-        formPanel3.setTitle(constants.heading_cutofflist());
-
-        formPanel.setFrame(true);
-        formPanel.setSize("300px", "150px");
-        formPanel.setTitle(constants.heading_sessiondate());
-
-        fPanel.setFrame(true);
-        fPanel.setSize("400px", "170px");
-        fPanel.setTitle(constants.heading_listforindividualcos());
-
-        fPanel1.setFrame(true);
-        fPanel1.setSize("400px", "170px");
-        fPanel1.setTitle(constants.heading_defaultcos());
-
-        fPanel.setVisible(false);
-
-        fPanel1.setVisible(false);
-
-        fPanel2.setFrame(true);
-        fPanel2.setSize("600px", "220px");
-        fPanel2.setTitle(constants.heading_setdetails());
-        fPanel2.setClosable(true);
-
-        fPanel2.setVisible(false);
-
-        defaultHyperlink.setVisible(false);
-        indiHyperlink.setVisible(false);
-
-        connectService.methodentitypopulate(university_id,
-            new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                public void onFailure(Throwable arg0) {
-                }
-
-                public void onSuccess(CM_ProgramInfoGetter[] result) {
-                    listBox.addItem("Select");
-
-                    for (int i = 0; i < result.length; i++) {
-                        String type = result[i].getComponent();
-
-                        listBox.addItem(type);
-                    }
-                }
-            });
-
-        listBox.addChangeHandler(new ChangeHandler() {
-                public void onChange(ChangeEvent arg0) {
-                    final String entity = listBox.getItemText(listBox.getSelectedIndex());
-                    fPanel.setVisible(false);
-                    fPanel1.setVisible(false);
-                    fPanel2.setVisible(false);
-                    box2.setValue(1);
-                    box3.setValue(1);
-                    defaultHyperlink.setVisible(true);
-                    indiHyperlink.setVisible(true);
-
-                    defaultHyperlink.addClickHandler(new ClickHandler() {
-                            public void onClick(ClickEvent arg0) {
-                                connectService.getdistinctprograms(entity,
-                                    university_id,
-                                    new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                        public void onFailure(Throwable arg0) {
-                                        }
-
-                                        public void onSuccess(
-                                            final CM_ProgramInfoGetter[] result) {
-                                            defaultTable.clear();
-                                            fPanel1.setVisible(true);
-                                            fPanel.setVisible(false);
-                                            fPanel2.setVisible(false);
-
-                                            if (result.length == 0) {
-                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                        {
-                                                            setTitle(msgs.alert());
-                                                            setMsg(msgs.error_norecord(
-                                                                    entity));
-                                                            setIconCls(MessageBox.INFO);
-                                                            setButtons(MessageBox.OK);
-
-                                                            setCallback(new MessageBox.PromptCallback() {
-                                                                    public void execute(
-                                                                        String btnID,
-                                                                        String text) {
-                                                                        if (btnID.equals(
-                                                                                    "ok")) {
-                                                                            callcutoff();
-                                                                        }
-                                                                    }
-                                                                });
-                                                        }
-                                                    });
-                                            } else {
-                                                for (int i = 0;
-                                                        i < result.length;
-                                                        i++) {
-                                                    k = i;
-
-                                                    checkBox[i] = new CheckBox(
-                                                            " " +
-                                                            result[i].getProgram_name());
-
-                                                    programid[k] = result[i].getprogram_id();
-                                                    offeredby[k] = result[i].getEntity_id();
-                                                    branchname[k] = new Label();
-                                                    branchname[k].setText(result[i].getBranchName());
-                                                    branches[k] = result[i].getBranch();
-
-                                                    defaultTable.setBorderWidth(5);
-
-                                                    defaultTable.setWidget(0,
-                                                        0, selectLabel);
-                                                    defaultTable.setWidget(i +
-                                                        1, 0, checkBox[i]);
-                                                    defaultTable.setWidget(0,
-                                                        1, branchLabel);
-                                                    defaultTable.setWidget(i +
-                                                        1, 1, branchname[i]);
-
-                                                    sessionTable.setWidget(2,
-                                                        0, startLabel);
-                                                    sessionTable.setWidget(2,
-                                                        1,
-                                                        startdateFieldContainer);
-                                                    sessionTable.setWidget(4,
-                                                        0, endLabel);
-                                                    sessionTable.setWidget(4,
-                                                        1, enddateFieldContainer);
-                                                }
-
-                                                saveButton.addClickHandler(new ClickHandler() {
-                                                        @SuppressWarnings("deprecation")
-                                                        public void onClick(
-                                                            ClickEvent arg0) {
-                                                            int d = 0;
-                                                            int count = 0;
-                                                            int flag = 0;
-                                                            int a = 0;
-                                                            int b = 0;
-
-                                                            try {
-                                                                for (int i = 0;
-                                                                        i < result.length;
-                                                                        i++) {
-                                                                    if (checkBox[i].isChecked()) {
-                                                                        flag = 1;
-
-                                                                        count++;
-                                                                    }
-                                                                }
-                                                            } catch (Exception e) {
-                                                                System.out.println(
-                                                                    "Exception " +
-                                                                    e);
-                                                            }
-
-                                                            final String[][] arr =
-                                                                new String[count][3];
-
-                                                            try {
-                                                                for (int i = 0;
-                                                                        i < result.length;
-                                                                        i++) {
-                                                                    if (checkBox[i].isChecked()) {
-                                                                        arr[d][0] = programid[i];
-                                                                        arr[d][1] = branches[i];
-                                                                        arr[d][2] = offeredby[i];
-
-                                                                        d++;
-                                                                    }
-                                                                }
-                                                            } catch (Exception e1) {
-                                                                System.out.println(
-                                                                    "Exception e1 " +
-                                                                    e1);
-                                                            }
-
-                                                            try {
-                                                                if (checkDate() > 0) {
-                                                                    a = 1;
-                                                                }
-                                                            } catch (Exception e1) {
-                                                                a = 1;
-                                                            }
-
-                                                            try {
-                                                                if (checkDate() > 0) {
-                                                                    b = 1;
-                                                                }
-                                                            } catch (Exception e1) {
-                                                                b = 1;
-
-                                                                //MessageBox.alert("Enter a valid Date");
-                                                            }
-
-                                                            if (flag == 1) {
-                                                                final String dateSelected =
-                                                                    startField.getDisplayValue();
-                                                                final String dateSelected1 =
-                                                                    endField.getDisplayValue();
-
-                                                                if ((a == 1) ||
-                                                                        (b == 1)) {
-                                                                    MessageBox.show(new MessageBoxConfig() {
-
-                                                                            {
-                                                                                setTitle(msgs.error());
-                                                                                setMsg(msgs.checkFields());
-                                                                                setIconCls(MessageBox.ERROR);
-                                                                                setButtons(MessageBox.OK);
-                                                                                setCallback(new MessageBox.PromptCallback() {
-                                                                                        public void execute(
-                                                                                            String btnID,
-                                                                                            String text) {
-                                                                                        }
-                                                                                    });
-                                                                            }
-                                                                        });
-                                                                } else if (valid.datechecker1(
-                                                                            (Date) startField.getValue(),
-                                                                            (Date) endField.getValue())) {
-                                                                    MessageBox.show(new MessageBoxConfig() {
-
-                                                                            {
-                                                                                setTitle(msgs.error());
-                                                                                setMsg(msgs.error_sessiondate());
-                                                                                setIconCls(MessageBox.ERROR);
-                                                                                setButtons(MessageBox.OK);
-                                                                            }
-                                                                        });
-                                                                } else {
-                                                                    MessageBox.show(new MessageBoxConfig() {
-
-                                                                            {
-                                                                                setTitle(msgs.confirm());
-                                                                                setMsg(msgs.alert_confirmentries());
-                                                                                setIconCls(MessageBox.QUESTION);
-                                                                                setButtons(MessageBox.YESNO);
-                                                                                setCallback(new MessageBox.PromptCallback() {
-                                                                                        public void execute(
-                                                                                            String btnID,
-                                                                                            String text) {
-                                                                                            if (btnID.equals(
-                                                                                                        "yes")) {
-                                                                                                connectService.getdefaultdetails(arr,
-                                                                                                    new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                                                                                        public void onFailure(
-                                                                                                            Throwable result) {
-                                                                                                            MessageBox.alert(
-                                                                                                                "in failure" +
-                                                                                                                result.getMessage());
-                                                                                                        }
-
-                                                                                                        public void onSuccess(
-                                                                                                            CM_ProgramInfoGetter[] result) {
-                                                                                                            try {
-                                                                                                                if (result.length == 0) {
-                                                                                                                    MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                                            {
-                                                                                                                                setTitle(msgs.error());
-                                                                                                                                setMsg(msgs.error_record());
-                                                                                                                                setIconCls(MessageBox.ERROR);
-                                                                                                                                setButtons(MessageBox.OK);
-
-                                                                                                                                setCallback(new MessageBox.PromptCallback() {
-                                                                                                                                        public void execute(
-                                                                                                                                            String btnID,
-                                                                                                                                            String text) {
-                                                                                                                                            if (btnID.equals(
-                                                                                                                                                        "ok")) {
-                                                                                                                                                fPanel1.setVisible(false);
-                                                                                                                                            }
-                                                                                                                                        }
-                                                                                                                                    });
-                                                                                                                            }
-                                                                                                                        });
-                                                                                                                } else {
-                                                                                                                    for (int i =
-                                                                                                                            0;
-                                                                                                                            i < arr.length;
-                                                                                                                            i++) {
-                                                                                                                        for (int j =
-                                                                                                                                0;
-                                                                                                                                j < result.length;
-                                                                                                                                j++) {
-                                                                                                                            int seats =
-                                                                                                                                result[j].getDefaultseats();
-                                                                                                                            String category =
-                                                                                                                                result[j].getcategory();
-                                                                                                                            Float percentseats =
-                                                                                                                                result[j].getPercentage_seats();
-                                                                                                                            int actualseats =
-                                                                                                                                (int) ((percentseats / 100) * seats);
-
-                                                                                                                            connectService.methodinsertdefaultsettings(arr,
-                                                                                                                                category,
-                                                                                                                                actualseats,
-                                                                                                                                dateSelected,
-                                                                                                                                dateSelected1,
-                                                                                                                                university_id,
-                                                                                                                                new AsyncCallback<String>() {
-                                                                                                                                    public void onFailure(
-                                                                                                                                        Throwable arg0) {
-                                                                                                                                    }
-
-                                                                                                                                    public void onSuccess(
-                                                                                                                                        String arg0) {
-                                                                                                                                        MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                                                                {
-                                                                                                                                                    setTitle(msgs.alert());
-                                                                                                                                                    setMsg(msgs.alert_successfulentry());
-                                                                                                                                                    setIconCls(MessageBox.INFO);
-                                                                                                                                                    setButtons(MessageBox.OK);
-                                                                                                                                                    setCallback(new MessageBox.PromptCallback() {
-                                                                                                                                                            public void execute(
-                                                                                                                                                                String btnID,
-                                                                                                                                                                String text) {
-                                                                                                                                                                fPanel1.setVisible(false);
-                                                                                                                                                            }
-                                                                                                                                                        });
-                                                                                                                                                }
-                                                                                                                                            });
-                                                                                                                                    }
-                                                                                                                                });
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            } catch (Exception e) {
-                                                                                                                System.out.println(
-                                                                                                                    "client side ex " +
-                                                                                                                    e);
-                                                                                                            }
-                                                                                                        }
-                                                                                                    });
-                                                                                            } else if (btnID.equals(
-                                                                                                        "no")) {
-                                                                                            }
-                                                                                        }
-                                                                                    });
-                                                                            }
-                                                                        });
-                                                                }
-                                                            } else if (flag == 0) {
-                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                        {
-                                                                            setTitle(msgs.error());
-                                                                            setMsg(msgs.error_noprogram());
-                                                                            setIconCls(MessageBox.ERROR);
-                                                                            setButtons(MessageBox.OK);
-                                                                        }
-                                                                    });
-                                                            }
-                                                        }
-                                                    });
-                                            }
-                                        }
-                                    });
-                            }
-                        });
-
-                    indiHyperlink.addClickHandler(new ClickHandler() {
-                            public void onClick(ClickEvent arg0) {
-                                String settings = "D";
-                                connectService.getindivisualprograms(entity,
-                                    settings, university_id,
-                                    new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                        public void onFailure(Throwable arg0) {
-                                        }
-
-                                        public void onSuccess(
-                                            final CM_ProgramInfoGetter[] result) {
-                                            regisTable.clear();
-                                            fPanel.setVisible(true);
-
-                                            if (result.length == 0) {
-                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                        {
-                                                            setTitle(msgs.alert());
-                                                            setMsg(msgs.error_norecord(
-                                                                    entity));
-                                                            setIconCls(MessageBox.INFO);
-                                                            setButtons(MessageBox.OK);
-
-                                                            setCallback(new MessageBox.PromptCallback() {
-                                                                    public void execute(
-                                                                        String btnID,
-                                                                        String text) {
-                                                                        if (btnID.equals(
-                                                                                    "ok")) {
-                                                                            callcutoff();
-                                                                        }
-                                                                    }
-                                                                });
-                                                        }
-                                                    });
-                                            } else {
-                                                indiHyperlink.setVisible(true);
-                                                defaultHyperlink.setVisible(true);
-                                                fPanel.setVisible(true);
-                                                fPanel1.setVisible(false);
-
-                                                for (int i = 0;
-                                                        i < result.length;
-                                                        i++) {
-                                                    final int k = i;
-
-                                                    proHyperlink[i] = new Hyperlink(result[i].getProgram_name(),
-                                                            null);
-                                                    branchname[i] = new Label();
-                                                    branchname[i].setText(result[i].getBranchName());
-
-                                                    regisTable.setVisible(true);
-                                                    regisTable.setBorderWidth(5);
-
-                                                    regisTable.setWidget(0, 0,
-                                                        label);
-                                                    regisTable.setWidget(0, 1,
-                                                        branchLabel);
-                                                    regisTable.setWidget(i + 1,
-                                                        0, proHyperlink[i]);
-                                                    regisTable.setWidget(i + 1,
-                                                        1, branchname[i]);
-
-                                                    proHyperlink[i].addClickHandler(new ClickHandler() {
-                                                            public void onClick(
-                                                                ClickEvent arg0) {
-                                                                fPanel2.setVisible(true);
-
-                                                                program.setText(proHyperlink[k].getText());
-                                                                branch.setText(branchname[k].getText());
-
-                                                                final String programid =
-                                                                    result[k].getProgram_id();
-
-                                                                branches[k] = result[k].getBranch();
-
-                                                                final String branch_code =
-                                                                    branches[k];
-
-                                                                connectService.getcos_cosdes(programid,
-                                                                    branch_code,
-                                                                    new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                                                        public void onFailure(
-                                                                            Throwable arg0) {
-                                                                        }
-
-                                                                        public void onSuccess(
-                                                                            CM_ProgramInfoGetter[] cos) {
-                                                                            for (int i =
-                                                                                    0;
-                                                                                    i < cos.length;
-                                                                                    i++) {
-                                                                                cos_code = cos[i].getCos_value();
-
-                                                                                specField.setText(cos_code);
-                                                                            }
-                                                                        }
-                                                                    });
-
-                                                                flexTable.setWidget(0,
-                                                                    0,
-                                                                    program_name);
-                                                                flexTable.setWidget(0,
-                                                                    2, program);
-                                                                flexTable.setWidget(0,
-                                                                    4, branch);
-                                                                detailsTable.setWidget(2,
-                                                                    0, label1);
-                                                                detailsTable.setWidget(2,
-                                                                    2,
-                                                                    categoryBox);
-                                                                detailsTable.setWidget(2,
-                                                                    4,
-                                                                    genderLabel);
-                                                                detailsTable.setWidget(2,
-                                                                    6, genderBox);
-                                                                detailsTable.setWidget(4,
-                                                                    0, specLabel);
-                                                                detailsTable.setWidget(4,
-                                                                    2, specField);
-
-                                                                detailsTable.setWidget(4,
-                                                                    4, label2);
-                                                                detailsTable.setWidget(4,
-                                                                    6, box2);
-                                                                detailsTable.setWidget(6,
-                                                                    0, label6);
-                                                                detailsTable.setWidget(6,
-                                                                    2, box3);
-                                                                detailsTable.setWidget(8,
-                                                                    0,
-                                                                    startLabel);
-                                                                detailsTable.setWidget(8,
-                                                                    2,
-                                                                    startdateFieldContainer);
-                                                                detailsTable.setWidget(8,
-                                                                    4, endLabel);
-                                                                detailsTable.setWidget(8,
-                                                                    6,
-                                                                    enddateFieldContainer);
-                                                                detailsTable.setWidget(12,
-                                                                    0,
-                                                                    submitButton);
-
-                                                                submitButton.addClickHandler(new ClickHandler() {
-                                                                        public void onClick(
-                                                                            ClickEvent arg0) {
-                                                                            final String category =
-                                                                                categoryBox.getValue(categoryBox.getSelectedIndex());
-                                                                            String gender =
-                                                                                genderBox.getValue(genderBox.getSelectedIndex());
-                                                                            speccode = cos_code;
-                                                                            cosvalue = category +
-                                                                                gender +
-                                                                                speccode;
-
-                                                                            int x =
-                                                                                0;
-                                                                            int y =
-                                                                                0;
-
-                                                                            final String dateSelected =
-                                                                                startField.getDisplayValue();
-                                                                            final String dateSelected1 =
-                                                                                endField.getDisplayValue();
-                                                                            offeredby[k] = result[k].getEntity_id();
-
-                                                                            final String factor =
-                                                                                box2.getText();
-                                                                            final String seats =
-                                                                                box3.getText();
-                                                                            final String offered =
-                                                                                offeredby[k];
-
-                                                                            connectService.getcosvalue(programid,
-                                                                                branch_code,
-                                                                                offeredby[k],
-                                                                                new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                                                                    public void onFailure(
-                                                                                        Throwable arg0) {
-                                                                                    }
-
-                                                                                    public void onSuccess(
-                                                                                        CM_ProgramInfoGetter[] result) {
-                                                                                        String[] cos_values =
-                                                                                            new String[result.length];
-                                                                                        boolean flag =
-                                                                                            true;
-
-                                                                                        for (int i =
-                                                                                                0;
-                                                                                                i < result.length;
-                                                                                                i++) {
-                                                                                            cos_values[i] = result[i].getCos_value();
-
-                                                                                            if (cos_values[i].equals(
-                                                                                                        cosvalue)) {
-                                                                                                flag = false;
-
-                                                                                                break;
-                                                                                            }
-
-                                                                                            //cos value k liye condition yahan aani hai..
-                                                                                            if (((cos_values[i].equalsIgnoreCase(category +
-                                                                                                        'M' +
-                                                                                                        speccode)) ||
-                                                                                                    (cos_values[i].equalsIgnoreCase(category +
-                                                                                                        'F' +
-                                                                                                        speccode))) &&
-                                                                                                    (cosvalue.equalsIgnoreCase(category +
-                                                                                                        'X' +
-                                                                                                        speccode))) {
-                                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                        {
-                                                                                                            setTitle(msgs.error());
-                                                                                                            setMsg(msgs.error_nodivision());
-                                                                                                            setIconCls(MessageBox.ERROR);
-                                                                                                            setButtons(MessageBox.OK);
-                                                                                                            setCallback(new MessageBox.PromptCallback() {
-                                                                                                                    public void execute(
-                                                                                                                        String btnID,
-                                                                                                                        String text) {
-                                                                                                                        if (btnID.equals(
-                                                                                                                                    "ok")) {
-                                                                                                                            categoryBox.setSelectedIndex(0);
-                                                                                                                            genderBox.setSelectedIndex(0);
-                                                                                                                            startField.setValue(new Date());
-                                                                                                                            endField.setValue(new Date());
-                                                                                                                            box2.setValue(1);
-                                                                                                                            box3.setValue(1);
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                });
-                                                                                                        }
-                                                                                                    });
-                                                                                            }
-
-                                                                                            if ((cos_values[i].equalsIgnoreCase(category +
-                                                                                                        'X' +
-                                                                                                        speccode)) &&
-                                                                                                    ((cosvalue.equalsIgnoreCase(category +
-                                                                                                        'M' +
-                                                                                                        speccode)) ||
-                                                                                                    (cosvalue.equalsIgnoreCase(category +
-                                                                                                        'F' +
-                                                                                                        speccode)))) {
-                                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                        {
-                                                                                                            setTitle(msgs.error());
-                                                                                                            setMsg(msgs.error_gendercategory());
-                                                                                                            setIconCls(MessageBox.ERROR);
-                                                                                                            setButtons(MessageBox.OK);
-                                                                                                            setCallback(new MessageBox.PromptCallback() {
-                                                                                                                    public void execute(
-                                                                                                                        String btnID,
-                                                                                                                        String text) {
-                                                                                                                        if (btnID.equals(
-                                                                                                                                    "ok")) {
-                                                                                                                            categoryBox.setSelectedIndex(0);
-                                                                                                                            genderBox.setSelectedIndex(0);
-                                                                                                                            startField.setValue(new Date());
-                                                                                                                            endField.setValue(new Date());
-                                                                                                                            box2.setValue(1);
-                                                                                                                            box3.setValue(1);
-                                                                                                                        }
-                                                                                                                    }
-                                                                                                                });
-                                                                                                        }
-                                                                                                    });
-                                                                                            }
-                                                                                        }
-
-                                                                                        if (flag == false) {
-                                                                                            MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                    {
-                                                                                                        setMinWidth(180);
-                                                                                                        setMaxWidth(400);
-                                                                                                        setTitle(msgs.error());
-                                                                                                        setMsg(program +
-                                                                                                            " with " +
-                                                                                                            cosvalue +
-                                                                                                            " category value " +
-                                                                                                            " already exist ");
-                                                                                                        setIconCls(MessageBox.ERROR);
-                                                                                                        setButtons(MessageBox.OK);
-
-                                                                                                        setCallback(new MessageBox.PromptCallback() {
-                                                                                                                public void execute(
-                                                                                                                    String btnID,
-                                                                                                                    String text) {
-                                                                                                                    if (btnID.equals(
-                                                                                                                                "ok")) {
-                                                                                                                        categoryBox.setSelectedIndex(0);
-                                                                                                                        genderBox.setSelectedIndex(0);
-                                                                                                                        startField.setValue(new Date());
-                                                                                                                        endField.setValue(new Date());
-                                                                                                                        box2.setValue(1);
-                                                                                                                        box3.setValue(1);
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            });
-                                                                                                    }
-                                                                                                });
-                                                                                        }
-                                                                                    }
-                                                                                });
-
-                                                                            connectService.getCosSeats(programid,
-                                                                                branch_code,
-                                                                                offeredby[k],
-                                                                                new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                                                                    public void onFailure(
-                                                                                        Throwable arg0) {
-                                                                                    }
-
-                                                                                    public void onSuccess(
-                                                                                        CM_ProgramInfoGetter[] arg0) {
-                                                                                        String cosseats =
-                                                                                            null;
-
-                                                                                        final int total_seats;
-
-                                                                                        for (int i =
-                                                                                                0;
-                                                                                                i < arg0.length;
-                                                                                                i++) {
-                                                                                            if (arg0[i].getNo_of_seats() == (null)) {
-                                                                                                cosseats = "0";
-                                                                                            } else {
-                                                                                                cosseats = arg0[i].getNo_of_seats();
-                                                                                            }
-                                                                                        }
-
-                                                                                        total_seats = Integer.parseInt(cosseats) +
-                                                                                            Integer.parseInt(seats);
-
-                                                                                        connectService.gettotalseats(programid,
-                                                                                            branch_code,
-                                                                                            offeredby[k],
-                                                                                            new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                                                                                public void onFailure(
-                                                                                                    Throwable results) {
-                                                                                                }
-
-                                                                                                public void onSuccess(
-                                                                                                    CM_ProgramInfoGetter[] results) {
-                                                                                                    int totalseats =
-                                                                                                        0;
-
-                                                                                                    for (int i =
-                                                                                                            0;
-                                                                                                            i < results.length;
-                                                                                                            i++) {
-                                                                                                        totalseats = Integer.parseInt(results[i].getNo_of_seats());
-                                                                                                    }
-
-                                                                                                    if (total_seats > totalseats) {
-                                                                                                        MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                                {
-                                                                                                                    setTitle(msgs.error());
-                                                                                                                    setMsg(msgs.error_seatsexceed());
-                                                                                                                    setIconCls(MessageBox.ERROR);
-                                                                                                                    setButtons(MessageBox.OK);
-                                                                                                                    setCallback(new MessageBox.PromptCallback() {
-                                                                                                                            public void execute(
-                                                                                                                                String btnID,
-                                                                                                                                String text) {
-                                                                                                                                if (btnID.equals(
-                                                                                                                                            "ok")) {
-                                                                                                                                    box3.setValue(1);
-                                                                                                                                }
-                                                                                                                            }
-                                                                                                                        });
-                                                                                                                }
-                                                                                                            });
-                                                                                                    }
-                                                                                                }
-                                                                                            });
-                                                                                    }
-                                                                                });
-
-                                                                            int a =
-                                                                                0;
-                                                                            int b =
-                                                                                0;
-
-                                                                            try {
-                                                                                if (checkDate() > 0) {
-                                                                                    x = 1;
-                                                                                }
-                                                                            } catch (Exception e1) {
-                                                                                x = 1;
-                                                                                
-                                                                            }
-
-                                                                            try {
-                                                                                if (checkDate() > 0) {
-                                                                                    y = 1;
-                                                                                }
-                                                                            } catch (Exception e1) {
-                                                                                y = 1;
-                                                                            }
-
-                                                                            try {
-                                                                                box3.validate();
-                                                                            } catch (Exception e) {
-                                                                                a = 1;
-                                                                            }
-
-                                                                            try {
-                                                                                box2.validate();
-                                                                            } catch (Exception e) {
-                                                                                b = 1;
-                                                                            }
-
-                                                                            if ((a == 1) ||
-                                                                                    (b == 1)) {
-                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                        {
-                                                                                            setTitle(msgs.error());
-                                                                                            setMsg(msgs.checkFields());
-                                                                                            setIconCls(MessageBox.ERROR);
-                                                                                            setButtons(MessageBox.OK);
-                                                                                        }
-                                                                                    });
-                                                                            } else if ((valid.nullValidator(
-                                                                                        factor)) ||
-                                                                                    (valid.nullValidator(
-                                                                                        seats)) ||
-                                                                                    (valid.nullValidator(
-                                                                                        speccode)) ||
-                                                                                    (categoryBox.getSelectedIndex() == 0) ||
-                                                                                    (genderBox.getSelectedIndex() == 0)) {
-                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                        {
-                                                                                            setTitle(msgs.error());
-                                                                                            setMsg(msgs.error_mandatoryfields());
-                                                                                            setIconCls(MessageBox.ERROR);
-                                                                                            setButtons(MessageBox.OK);
-                                                                                        }
-                                                                                    });
-                                                                            } else if ((x == 1) ||
-                                                                                    (y == 1)) {
-                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                        {
-                                                                                            setTitle(msgs.error());
-                                                                                            setMsg(msgs.checkFields());
-                                                                                            setIconCls(MessageBox.ERROR);
-                                                                                            setButtons(MessageBox.OK);
-                                                                                        }
-                                                                                    });
-                                                                            } else if (valid.datechecker1(
-                                                                                        (Date) startField.getValue(),
-                                                                                        (Date) endField.getValue())) {
-                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                        {
-                                                                                            setTitle(msgs.error());
-                                                                                            setMsg(msgs.error_sessiondate());
-                                                                                            setIconCls(MessageBox.ERROR);
-                                                                                            setButtons(MessageBox.OK);
-                                                                                            setCallback(new MessageBox.PromptCallback() {
-                                                                                                    public void execute(
-                                                                                                        String btnID,
-                                                                                                        String text) {
-                                                                                                        startField.setValue(new Date());
-                                                                                                        endField.setValue(new Date());
-                                                                                                    }
-                                                                                                });
-                                                                                        }
-                                                                                    });
-                                                                            } else {
-                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                        {
-                                                                                            setTitle(msgs.confirm());
-                                                                                            setMsg(msgs.alert_confirmentries());
-                                                                                            setIconCls(MessageBox.QUESTION);
-                                                                                            setButtons(MessageBox.YESNO);
-                                                                                            setCallback(new MessageBox.PromptCallback() {
-                                                                                                    public void execute(
-                                                                                                        String btnID,
-                                                                                                        String text) {
-                                                                                                        if (btnID.equals(
-                                                                                                                    "yes")) {
-                                                                                                            connectService.methodinsertcutoffdetails(cosvalue,
-                                                                                                                factor,
-                                                                                                                seats,
-                                                                                                                programid,
-                                                                                                                offered,
-                                                                                                                branch_code,
-                                                                                                                dateSelected,
-                                                                                                                dateSelected1,
-                                                                                                                university_id,
-                                                                                                                new AsyncCallback<String>() {
-                                                                                                                    public void onFailure(
-                                                                                                                        Throwable arg0) {
-                                                                                                                    }
-
-                                                                                                                    public void onSuccess(
-                                                                                                                        String result) {
-                                                                                                                        MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                                                {
-                                                                                                                                    setTitle(msgs.alert());
-                                                                                                                                    setMsg(msgs.alert_successfulentry());
-                                                                                                                                    setIconCls(MessageBox.INFO);
-                                                                                                                                    setButtons(MessageBox.OK);
-                                                                                                                                    setCallback(new MessageBox.PromptCallback() {
-                                                                                                                                            public void execute(
-                                                                                                                                                String btnID,
-                                                                                                                                                String text) {
-                                                                                                                                                MessageBox.show(new MessageBoxConfig() {
-
-                                                                                                                                                        {
-                                                                                                                                                            setTitle(msgs.confirm());
-                                                                                                                                                            setMsg(msgs.alert_sameprogram());
-                                                                                                                                                            setIconCls(MessageBox.QUESTION);
-                                                                                                                                                            setButtons(MessageBox.YESNO);
-                                                                                                                                                            setCallback(new MessageBox.PromptCallback() {
-                                                                                                                                                                    public void execute(
-                                                                                                                                                                        String btnID,
-                                                                                                                                                                        String text) {
-                                                                                                                                                                        if (btnID.equals(
-                                                                                                                                                                                    "yes")) {
-                                                                                                                                                                            categoryBox.setSelectedIndex(0);
-                                                                                                                                                                            genderBox.setSelectedIndex(0);
-
-                                                                                                                                                                            startField.setValue(new Date());
-                                                                                                                                                                            endField.setValue(new Date());
-                                                                                                                                                                            box2.setValue(1);
-                                                                                                                                                                            box3.setValue(1);
-                                                                                                                                                                        } else if (btnID.equals(
-                                                                                                                                                                                    "no")) {
-                                                                                                                                                                            fPanel2.setVisible(false);
-
-                                                                                                                                                                            box2.setValue(1);
-                                                                                                                                                                            box3.setValue(1);
-                                                                                                                                                                            categoryBox.setSelectedIndex(0);
-                                                                                                                                                                            genderBox.setSelectedIndex(0);
-                                                                                                                                                                            startField.setValue(new Date());
-                                                                                                                                                                            endField.setValue(new Date());
-                                                                                                                                                                        }
-                                                                                                                                                                    }
-                                                                                                                                                                });
-                                                                                                                                                        }
-                                                                                                                                                    });
-                                                                                                                                            }
-                                                                                                                                        });
-                                                                                                                                }
-                                                                                                                            });
-                                                                                                                    }
-                                                                                                                });
-                                                                                                        } else if (btnID.equals(
-                                                                                                                    "no")) {
-                                                                                                            fPanel2.setVisible(false);
-
-                                                                                                            box2.setValue(1);
-                                                                                                            box3.setValue(1);
-                                                                                                            categoryBox.setSelectedIndex(0);
-                                                                                                            genderBox.setSelectedIndex(0);
-                                                                                                            startField.setValue(new Date());
-                                                                                                            endField.setValue(new Date());
-                                                                                                        }
-                                                                                                    }
-                                                                                                });
-                                                                                        }
-                                                                                    });
-                                                                            }
-                                                                        }
-                                                                    });
-                                                            }
-                                                        });
-                                                }
-                                            }
-                                        }
-                                    });
-                            }
-                        });
-                }
-            });
-
-        panel3.add(flexTable);
-        panel3.add(detailsTable);
-
-        scpanel2.add(panel3);
-
-        fPanel2.add(scpanel2);
-        hPanel.add(label5);
-        hPanel.setSpacing(20);
-        hPanel.add(listBox);
-
-        hPanel4.add(defaultHyperlink);
-        hPanel4.setSpacing(30);
-        hPanel4.add(indiHyperlink);
-
-        formPanel.add(sessionTable);
-
-        panel2.add(defaultTable);
-        panel2.setSpacing(10);
-        panel2.add(formPanel);
-        panel2.add(saveButton);
-        scPanel1.add(panel2);
-
-        fPanel1.add(scPanel1);
-
-        hPanel2.add(regisTable);
-        scPanel.add(hPanel2);
-        fPanel.add(scPanel);
-
-        panel.add(hPanel);
-        panel.add(hPanel4);
-        panel.add(fPanel);
-        panel.add(fPanel1);
-
-        hPanel3.add(panel);
-        hPanel3.add(fPanel2);
-
-        formPanel3.add(hPanel3);
-
-        //        label3.setStyleName("panelHeading");
-
-        //        vPanel.add(label3);
-        vPanel.add(formPanel3);
-    }
-
-    public int checkDate() throws Exception {
-        Date startDate = null;
-        Date endDate = null;
-        int check = 0;
-
-        try {
-            startDate = (Date) startField.getValue();
-            endDate = (Date) endField.getValue();
-            if(startField.getDisplayValue().length()>10){
-            	check++;
-            }
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
         
         
-        if (valid.nullValidator2(startField.getDisplayValue()) ||
-                valid.nullValidator2(endField.getDisplayValue())) {
-            try {
-                check++;
-                //dateofbirthDateField.markInvalid("");
-                startField.getInvalidDateStringMessage();
-            } catch (Exception e) {
-            }
-        }
-        System.out.println("check value: "+check);
-        return check;
+      
+       final FlexTable indiCOSTable=new FlexTable();
+       final FlexTable defCOSTable=new FlexTable();
+        
+       final FormPanel setDefaultCOSPanel=new FormPanel();
+       setDefaultCOSPanel.setTitle("Set Default COS Details");
+       setDefaultCOSPanel.setVisible(false);
+       setDefaultCOSPanel.setFrame(true);
+       
+        final FormPanel setIndividualCOSPanel=new FormPanel();
+        setIndividualCOSPanel.setTitle("Set Individual COS Details");
+        setIndividualCOSPanel.setVisible(false);
+        setIndividualCOSPanel.setFrame(true);
+
+       
+        
+        
+        
+	       
+        final ComboBox entityTypeBox=new ComboBox();
+        
+        
+        entityTypeBox.setDisplayField("comp_desc");   
+        entityTypeBox.setMode(ComboBox.LOCAL);   
+        entityTypeBox.setTriggerAction(ComboBox.ALL);   
+        entityTypeBox.setForceSelection(true);   
+        entityTypeBox.setValueField("comp_id");   
+        entityTypeBox.setReadOnly(true);  
+	     
+        final ComboBox entityNameBox=new ComboBox();   
+        entityNameBox.setForceSelection(true);
+        entityNameBox.setMinChars(1);
+        entityNameBox.setDisplayField("entityName");
+        entityNameBox.setValueField("entityID");
+        entityNameBox.setMode(ComboBox.LOCAL);
+        entityNameBox.setTriggerAction(ComboBox.ALL);
+        entityNameBox.setEmptyText("Select Entity Name");
+        entityNameBox.setLoadingText("Searching...");
+        entityNameBox.setTypeAhead(true);
+        entityNameBox.setSelectOnFocus(true);
+        entityNameBox.setHideTrigger(false);
+       
+        entityNameBox.setReadOnly(true);
+        
+        cos_service.getEntityTypes(university_id, new AsyncCallback<CM_ProgramInfoGetter[]>()
+        		{
+
+					
+					public void onFailure(Throwable arg0) {
+						
+						
+					}
+
+					
+					public void onSuccess(CM_ProgramInfoGetter[] result) {
+						Object[][] object=new Object[result.length][2];
+						for(int i=0;i<result.length;i++)
+						{
+							for(int j=0;j<2;j++)
+							{
+								if(j==0)
+								{
+									object[i][j]=result[i].getComponent_id();
+								}
+								else if(j==1)
+								{
+									object[i][j]=result[i].getComponentDescription();
+								}
+							}
+						}
+						Store entityTypeStore=new SimpleStore(new String[]{"comp_id","comp_desc"},object);
+						entityTypeStore.load();
+						entityTypeBox.setStore(entityTypeStore); 
+						
+					}
+        	
+        		});
+        	
+        
+	      
+	       
+	       
+	        final ComboBox programBox=new ComboBox();
+	        programBox.setForceSelection(true);
+	        programBox.setMinChars(1);
+	        programBox.setDisplayField("programName");
+	        programBox.setValueField("programID");
+	        programBox.setMode(ComboBox.LOCAL);
+	        programBox.setTriggerAction(ComboBox.ALL);
+	        programBox.setEmptyText("Select Program Name");
+	        programBox.setLoadingText("Searching...");
+	        programBox.setTypeAhead(true);
+	        programBox.setSelectOnFocus(true);
+	        programBox.setHideTrigger(false);
+	        programBox.setReadOnly(true);
+	     
+			       
+			       final ComboBox subjectCodeBox=new ComboBox();
+		           subjectCodeBox.setForceSelection(true);
+			       subjectCodeBox.setMinChars(1);
+			       subjectCodeBox.setDisplayField("subjectCodeDescription");
+			       subjectCodeBox.setValueField("subjectCode");
+			       subjectCodeBox.setMode(ComboBox.LOCAL);
+			       subjectCodeBox.setTriggerAction(ComboBox.ALL);
+			       subjectCodeBox.setEmptyText("Select Subject Code");
+			       subjectCodeBox.setLoadingText("Searching...");
+			       subjectCodeBox.setTypeAhead(true);
+			       subjectCodeBox.setSelectOnFocus(true);
+			       subjectCodeBox.setHideTrigger(false);
+			       subjectCodeBox.setReadOnly(true);
+			       
+			       final Checkbox genderImpactBox=new Checkbox();
+			       
+			       
+			       final NumberField xField=new NumberField();
+			        xField.setAllowBlank(false);
+			        xField.setAllowDecimals(false);
+			        xField.setAllowNegative(false);
+			       
+			        
+			        final NumberField seatsField=new NumberField();
+			        seatsField.setAllowBlank(false);
+			        seatsField.setAllowDecimals(false);
+			        seatsField.setAllowNegative(false);
+			       
+		
+			        entityTypeBox.addListener(new ComboBoxListenerAdapter()
+				       {
+				    	   public void onSelect(ComboBox comboBox, Record record, int index)
+				    	   {
+				    		 
+				    		   entityNameBox.clearValue();
+				    		   programBox.clearValue();
+				    		   subjectCodeBox.clearValue();
+				    		   
+				    		   
+				    		  cos_service.getEntityNames(university_id, entityTypeBox.getValue(), new AsyncCallback<CM_ProgramInfoGetter[]>()
+				    		  {
+
+								
+								public void onFailure(Throwable arg0) {
+									
+									
+								}
+
+								
+								public void onSuccess(CM_ProgramInfoGetter[] result) {
+									Object[][] object=new Object[result.length][2];
+									for(int i=0;i<result.length;i++)
+									{
+										for(int j=0;j<2;j++)
+										{
+											if(j==0)
+											{
+												object[i][j]=result[i].getEntity_name();
+											}
+											else if(j==1)
+											{
+												object[i][j]=result[i].getEntity_id();
+											}
+										}
+									}
+									Store entityNameStore=new SimpleStore(new String[]{"entityName","entityID"},object);
+									entityNameStore.load();
+									entityNameBox.setStore(entityNameStore); 
+								}
+				    			  
+				    		  });
+				    	   }
+				       });
+			        
+			       
+			       
+			        
+			        closeButton.addListener(new ButtonListenerAdapter()
+			        {
+			        	public void onClick(Button button, EventObject e)
+			        	{
+			        		vPanel.clear();
+			        	}
+			        });
+			        
+	  entityNameBox.addListener(new ComboBoxListenerAdapter()
+	  {
+		  public void onSelect(ComboBox comboBox, Record record, int index)
+		  {
+			  programBox.clearValue();
+   		   subjectCodeBox.clearValue();
+   		   
+			  String settings="D";
+			  cos_service.getPrograms(entityNameBox.getValue(), settings, university_id, new AsyncCallback<CM_ProgramInfoGetter[]>()
+			  {
+
+				
+				public void onFailure(Throwable arg0) {
+					
+					
+				}
+
+				
+				public void onSuccess(CM_ProgramInfoGetter[] result) {
+					Object[][] object=new Object[result.length][2];
+					for(int i=0;i<result.length;i++)
+					{
+						for(int j=0;j<2;j++)
+						{
+							if(j==0)
+							{
+								object[i][j]=result[i].getProgram_id();
+							}
+							else if(j==1)
+							{
+								object[i][j]=result[i].getProgram_name();
+							}
+						}
+					}
+					Store programStore=new SimpleStore(new String[]{"programID","programName"},object);
+					programStore.load();
+					programBox.setStore(programStore);
+					
+
+					
+					
+					
+				}
+				  
+			  });
+		  }
+	  });
+       
+        
+        
+       
+      
+
+        programBox.addListener(new ComboBoxListenerAdapter()
+        {
+        	 public void onSelect(ComboBox comboBox, Record record, int index)
+        	 {
+        		 subjectCodeBox.clearValue();
+         		   
+        		 cos_service.getSubjectCodes(university_id,programBox.getValue(),
+			               new AsyncCallback<SubjectCode[]>(){
+
+							
+							public void onFailure(Throwable caught) {
+								MessageBox.alert("Sql Exception", caught.getMessage());
+							}
+
+							
+							public void onSuccess(SubjectCode[] arg0) {
+							
+								  RecordDef recordDef = new RecordDef(new FieldDef[] {
+										  new StringFieldDef("subjectCodeDescription"),
+										  new StringFieldDef("subjectCode")
+			                          });
+
+								   Object[][] object1 = new String[arg0.length][2];
+
+			                  String str = null;
+
+			                  try {
+			                      for (int i = 0; i < arg0.length; i++) {
+			                          for (int k = 0; k < 2; k++) {
+			                              if (k == 0) {
+			                            	  str = arg0[i].getSubject_code_description();
+			                              } else if (k == 1) {
+			                                  str = arg0[i].getSubject_code();
+			                              }
+
+			                              object1[i][k] = str;
+			                          }
+			                      }
+			                  } catch (Exception e2) {
+			                      System.out.println("e2     " + e2);
+			                  }
+
+			                  Object[][] data = object1;
+
+			                  MemoryProxy proxy = new MemoryProxy(data);
+
+			                  ArrayReader reader = new ArrayReader(recordDef);
+			                  Store store = new Store(proxy, reader);
+			                  store.load();
+
+			                 subjectCodeBox.setStore(store);
+								
+							}
+			            	   
+			               });
+		        
+        		cos_service.getTotalSeats(programBox.getValue(), entityNameBox.getValue(), new AsyncCallback<Integer>()
+        		{
+
+					
+					public void onFailure(Throwable arg0) {
+						
+						
+					}
+
+				
+					public void onSuccess(Integer result) {
+						totalSeats=result;
+						
+					}
+        			
+        		}); 
+        		 
+        		 
+        	 }
+        });
+        
+        subjectCodeBox.addListener(new ComboBoxListenerAdapter()
+        {
+        	 public void onSelect(ComboBox comboBox, Record record, int index)
+        	 {
+        		 cos_service.getEntityName(university_id, entityNameBox.getValue(), new AsyncCallback<String>()
+        	  			  {
+
+        	  				
+        	  				public void onFailure(Throwable arg0) {
+        	  					// TODO Auto-generated method stub
+        	  					
+        	  				}
+
+        	  				
+        	  				public void onSuccess(String result) {
+        	  					eName=result;
+        	  					
+        	  				}
+        	  		  
+        	  			  });
+        		 cos_service.getProgramName(programBox.getValue(), new AsyncCallback<String>()
+        	  			  {
+
+        	  				
+        	  				public void onFailure(Throwable arg0) {
+        	  					// TODO Auto-generated method stub
+        	  					
+        	  				}
+
+        	  				
+        	  				public void onSuccess(String result) {
+        	  					pName=result;
+        	  					
+        	  				}
+        	  		  
+        	  			  });
+        		 
+        		 cos_service.getSubjectName(university_id,subjectCodeBox.getValue(), new AsyncCallback<String>()
+        	  			  {
+
+        	  				
+        	  				public void onFailure(Throwable arg0) {
+        	  					// TODO Auto-generated method stub
+        	  					
+        	  				}
+
+        	  				
+        	  				public void onSuccess(String result) {
+        	  					sName=result;
+        	  					
+        	  				}
+        	  		  
+        	  			  });
+        		 
+        	 }
+        });
+        
+        
+
+      okButton.addListener(new ButtonListenerAdapter()
+      {
+    	  public void onClick(Button button, EventObject e)
+    	  {
+    		  if(entityTypeBox.getValue()==null||entityNameBox.getValue()==null||programBox.getValue()==null||subjectCodeBox.getValue()==null)
+    		  {
+    			MessageBox.alert("Alert", "Please Insert Mandatory Fields");  
+    		  }
+    		  else
+    		  {
+    		  createInsertPanel(programBox.getValue(),entityNameBox.getValue(),subjectCodeBox.getValue(),genderImpactBox.getValue());
+    		  }
+    		  
+    		  
+    	  }
+      });  
+        
+      closeButton2.addListener(new ButtonListenerAdapter()
+      {
+    	  public void onClick(Button button, EventObject e)
+    	  {
+    		 vPanel.clear();
+    		 
+    		  
+    	  }
+      }); 
+       
+      	FlexTable table=new FlexTable();
+      	table.setCellPadding(6);
+      	table.setCellSpacing(6);
+        table.setWidget(0, 0, entityTypeLabel);
+        table.setWidget(0, 2, entityNameLabel);
+        table.setWidget(1, 0, programNameLabel);
+        table.setWidget(1, 2, new Label("Subject Name"));
+        table.setWidget(2, 0, new Label("Gender Impact"));
+        table.setWidget(0, 1, entityTypeBox);
+        table.setWidget(0, 3, entityNameBox);
+        table.setWidget(1, 1, programBox);
+        table.setWidget(1, 3, subjectCodeBox);
+        table.setWidget(2, 1, genderImpactBox);
+        table.setWidget(3, 0, okButton);
+        table.setWidget(3, 1, closeButton2);
+        
+        firstForm.setTitle("Program COS");
+        firstForm.setFrame(true);
+        firstForm.add(table);
+        vPanel.add(firstForm);
+        
+        
     }
+/*
+    public String getEntityName(String entityID)
+    {
+  	  cos_service.getEntityName(university_id, entityID, new AsyncCallback<String>()
+  			  {
+
+  				
+  				public void onFailure(Throwable arg0) {
+  					// TODO Auto-generated method stub
+  					
+  				}
+
+  				
+  				public void onSuccess(String result) {
+  					eName=result;
+  					
+  				}
+  		  
+  			  });
+  	  return eName;
+    }
+    
+    public String getProgramName(String programID)
+    {
+  	  cos_service.getProgramName(programID, new AsyncCallback<String>()
+  			  {
+
+  				
+  				public void onFailure(Throwable arg0) {
+  					// TODO Auto-generated method stub
+  					
+  				}
+
+  				
+  				public void onSuccess(String result) {
+  					pName=result;
+  					
+  				}
+  		  
+  			  });
+  	  return pName;  
+    }
+     
+    public String getSubjectName(String subjectCode)
+    {
+  	  cos_service.getSubjectName(university_id,subjectCode, new AsyncCallback<String>()
+  			  {
+
+  				
+  				public void onFailure(Throwable arg0) {
+  					// TODO Auto-generated method stub
+  					
+  				}
+
+  				
+  				public void onSuccess(String result) {
+  					sName=result;
+  					
+  				}
+  		  
+  			  });
+  	  return sName;   
+    }
+  */
+   
+   public void createInsertPanel(final String programID,final String entityID,final String subjectCode,boolean genderImpact)
+   {	//vPanel.clear();
+	   
+	   final Button submitButton=new Button("Submit");
+	   final Button submitButton2=new Button("Submit");
+	   final Button closeButton=new Button("Close");
+	   closeButton.addListener(new ButtonListenerAdapter()
+	   {
+		   public void onClick(Button button, EventObject e)
+		   {
+			callcutoff();   
+		   }
+	   });
+	   submitButton.addListener(new ButtonListenerAdapter()
+		{
+			public void onClick(Button button, EventObject e)
+			{
+				ArrayList<String> seatList=new ArrayList<String>();
+				ArrayList<String> xfList=new ArrayList<String>();
+				ArrayList<String> catCodeList=new ArrayList<String>();
+				ArrayList<String> genCodeList=new ArrayList<String>();
+				int seatsEntered=0;
+				int nullCounter=0;
+			for(int i=0;i<counter;i++)
+			{
+				
+			
+				 if(((xFactorField[i].getValue()==null)&&(catSeatsField[i].getValue()!=null))||((xFactorField[i].getValue()!=null)&&(catSeatsField[i].getValue()==null)))
+				{
+					MessageBox.alert("Alert", msgs.InsertFullDetailsCG(categoryName[i].getText(), genderName[i].getText()));
+					return;
+					
+				}
+				else if(((xFactorField[i].getValue()!=null)&&(catSeatsField[i].getValue()!=null)))
+				{
+					seatList.add(catSeatsField[i].getValue().toString());
+					xfList.add(xFactorField[i].getValue().toString());
+					catCodeList.add(categoryCode[i]);
+					genCodeList.add(genderCode[i]);
+				}
+				else
+				{ 
+				if(nullCounter==(counter-1))
+				{
+					MessageBox.alert(msgs.AlertTitle(),msgs.OneRecordToInsert());
+					return;
+				}
+				else
+				{
+					nullCounter++;
+				}
+				}
+			}
+
+			originalCounter=seatList.size();
+			final String[] xf=new String[originalCounter];
+			final String[] seat=new String[originalCounter];
+			final String[] category=new String[originalCounter];
+			final String[] gender=new String[originalCounter];
+			for(int i=0;i<originalCounter;i++)
+			{
+			seat[i]=seatList.get(i);
+			xf[i]=xfList.get(i);
+			category[i]=catCodeList.get(i);
+			gender[i]=genCodeList.get(i);
+			seatsEntered=Integer.parseInt(seat[i])+seatsEntered;
+			}
+		
+			if(seatsEntered>totalSeats)
+			{
+				MessageBox.alert("Message", "Entered Number of Seats exceed the Maximum Seats.");
+			}
+			else
+			{
+				MessageBox.confirm("Confirmation", "Do You want to insert the Record", new MessageBox.ConfirmCallback()
+				{
+
+					
+					public void execute(String btnID) {
+						if(btnID.matches("yes"))
+						{
+							cos_service.getSessionDates(university_id, new AsyncCallback<CM_ProgramInfoGetter[]>()
+									{
+
+										
+										public void onFailure(
+												Throwable arg0) {
+											
+											
+										}
+
+										
+										public void onSuccess(
+												CM_ProgramInfoGetter[] result) {
+											
+											session_sdate=result[0].getSession_sdate();
+											session_edate=result[0].getSession_edate();
+									cos_service.setCOS(category, gender, subjectCode, seat, xf, entityID, programID, university_id,session_sdate, session_edate,counter, new AsyncCallback()
+									{
+
+										
+										public void onFailure(Throwable arg0) {
+											
+											
+										}
+
+										
+										public void onSuccess(Object result)
+										{
+											vPanel.clear();
+											MessageBox.alert("Success", "Record Inserted Successfully");
+											callcutoff();
+											
+										}
+										
+									});
+												
+											
+											
+											
+										}
+								
+									});
+						}
+						
+					}
+					
+				});
+			}
+						
+							
+							
+												
+				
+		
+			
+	
+			}
+		});
+	   submitButton2.addListener(new ButtonListenerAdapter()
+		{
+			public void onClick(Button button, EventObject e)
+			{
+				
+				
+				ArrayList<String> seatList=new ArrayList<String>();
+				ArrayList<String> xfList=new ArrayList<String>();
+				ArrayList<String> catCodeList=new ArrayList<String>();
+				int seatsEntered=0;
+				int nullCounter=0;
+			for(int i=0;i<counter;i++)
+			{
+				if((i==counter)&&((xFactorField[i].getValue()==null)&&(catSeatsField[i].getValue()==null)))
+				{
+					MessageBox.alert("Alert", msgs.InsertMandatory());
+					return;
+				}
+				else if(((xFactorField[i].getValue()==null)&&(catSeatsField[i].getValue()!=null))||((xFactorField[i].getValue()!=null)&&(catSeatsField[i].getValue()==null)))
+				{
+					MessageBox.alert("Alert", msgs.InsertFullDetailsC(categoryName[i].getText()));
+					return;
+					
+				}
+				else if(((xFactorField[i].getValue()!=null)&&(catSeatsField[i].getValue()!=null)))
+				{
+					seatList.add(catSeatsField[i].getValue().toString());
+					xfList.add(xFactorField[i].getValue().toString());
+					catCodeList.add(categoryCode[i]);
+				}
+				else
+				{ 
+				if(nullCounter==(counter-1))
+				{
+					MessageBox.alert(msgs.AlertTitle(),msgs.OneRecordToInsert());
+					return;
+				}
+				else
+				{
+					nullCounter++;
+				}
+				}
+			}
+
+			originalCounter=seatList.size();
+			final String[] xf=new String[originalCounter];
+			final String[] seat=new String[originalCounter];
+			final String[] category=new String[originalCounter];
+			
+			for(int i=0;i<originalCounter;i++)
+			{
+			seat[i]=seatList.get(i);
+			xf[i]=xfList.get(i);
+			category[i]=catCodeList.get(i);
+			seatsEntered=Integer.parseInt(seat[i])+seatsEntered;
+			}
+					
+			if(seatsEntered>totalSeats)
+			{
+				MessageBox.alert("Message", "Entered Number of Seats exceed the Maximum Seats.");
+			}
+			else
+			{
+				MessageBox.confirm("Confirmation", "Do You want to insert the Record", new MessageBox.ConfirmCallback()
+				{
+
+					
+					public void execute(String btnID) {
+						if(btnID.matches("yes"))
+						{
+							cos_service.getSessionDates(university_id, new AsyncCallback<CM_ProgramInfoGetter[]>()
+									{
+
+										
+										public void onFailure(
+												Throwable arg0) {
+											
+											
+										}
+
+										
+										public void onSuccess(
+												CM_ProgramInfoGetter[] result) {
+											
+											session_sdate=result[0].getSession_sdate();
+											session_edate=result[0].getSession_edate();
+									cos_service.setCOS_WithoutGender(category,  subjectCode, seat, xf, entityID, programID, university_id,session_sdate, session_edate,originalCounter, new AsyncCallback()
+									{
+
+										
+										public void onFailure(Throwable arg0) {
+											
+											
+										}
+
+										
+										public void onSuccess(Object result) {
+											vPanel.clear();
+											MessageBox.alert("Success", "Record Inserted Successfully");
+											callcutoff();
+											
+										}
+										
+									});
+												
+											
+											
+											
+										}
+								
+									});
+						}
+						
+					}
+					
+				});	
+			}
+							
+							
+												
+				
+		
+			
+	
+			}
+		});
+	   if(genderImpact==true)
+	   {	
+		 cos_service.checkCOSWithoutGender(entityID, programID,subjectCode, new AsyncCallback<Integer>()
+				 {
+
+					
+					public void onFailure(Throwable caught) 
+					{
+						
+						
+					}
+
+					
+					public void onSuccess(Integer result) 
+					{
+						
+					if(result>0)
+					{
+						MessageBox.alert(msgs.AlertTitle(), "COS already set OR It is set using without Gender Impact");
+					}
+					else
+					{
+						
+						   cos_service.getCAT_GEN(university_id, programID, entityID, subjectCode, new AsyncCallback<CM_ProgramInfoGetter[]>()
+								   {
+
+									
+									public void onFailure(Throwable arg0) {
+										
+										
+									}
+
+									
+									public void onSuccess(CM_ProgramInfoGetter[] result) {
+										if(result.length>0)
+										{
+											 vPanel.clear();
+											counter=result.length;
+											categoryName=new Label[counter];
+											categoryCode=new String[counter];
+											genderName=new Label[counter];
+											genderCode=new String[counter];
+											xFactorField=new NumberField[counter];
+											catSeatsField=new NumberField[counter];
+											try {
+							                      for (int i = 0; i < result.length; i++) 
+							                      {
+							                    	  categoryCode[i]=new String(result[i].getComponentId());
+							                    	  categoryName[i] = new Label(result[i].getComponent());
+							                    	  genderCode[i]=new String(result[i].getComponent_id());
+							                    	  genderName[i]=new Label(result[i].getComponentDescription());
+							                    	  xFactorField[i]=new NumberField();
+							                    	  catSeatsField[i]=new NumberField();
+							                      }
+							                  } catch (Exception e2) {
+							                      System.out.println("e2     " + e2);
+							                  }
+											
+											 FlexTable table=new FlexTable();
+											   FlexTable table2=new FlexTable();
+											   table2.setCellPadding(6);
+											   table2.setCellSpacing(6);
+											   table.setCellPadding(6);
+											   table.setCellSpacing(6);
+											   table2.setStyleName("detailsTable");
+											   table2.setWidget(0, 0, EntityName);
+											   table2.setWidget(0, 2,ProgramName);
+											   table2.setWidget(1, 0, SubjectName);
+											   table2.setWidget(1, 2, TotalSeats);
+											   table2.setWidget(0, 1, new Label(eName));
+											   table2.setWidget(0, 3, new Label(pName));
+											   table2.setWidget(1, 1, new Label(sName));
+											   table2.setWidget(1, 3, new Label(totalSeats.toString()));
+											   table.setWidget(0, 0, Category);
+											   table.setWidget(0, 1, Gender);
+											   table.setWidget(0,2, CategorySeats);
+											   table.setWidget(0, 3, XFactor);
+											   for(int i=0;i<counter;i++)
+											   {
+												   if((i!=0)&&(!categoryCode[i].trim().equalsIgnoreCase(categoryCode[i-1])))
+												   {
+													   table.setWidget(i+1, 0, categoryName[i]);
+												   }
+												   else if(i==0)
+												   {
+													   table.setWidget(i+1, 0, categoryName[i]);  
+												   }
+												table.setWidget(i+1, 1, genderName[i]);   
+												table.setWidget(i+1, 2, catSeatsField[i]);   
+												table.setWidget(i+1, 3, xFactorField[i]);   
+											   }
+											   table.setWidget(counter+1, 0,submitButton);
+											   table.setWidget(counter+1, 1,closeButton);
+											   
+											   FormPanel fp=new FormPanel();
+											   fp.setTitle("Set Individual Program COS");
+											   fp.setStyleName("indiForm");
+											   fp.add(table2);
+											   fp.add(table);
+											   fp.setFrame(true);
+											   vPanel.add(fp);
+											
+										}
+										else
+										{
+											MessageBox.alert("Message", "COS already set for this Program");	
+										}
+
+										
+										
+									
+									}
+
+									
+							   
+								   });	
+					}
+					}
+			 
+				 });
+		  
+	   
+	  
+	   }
+	   else if(genderImpact==false)
+	   {
+		   cos_service.checkCOSWithGender(entityID, programID,subjectCode, new AsyncCallback<Integer>()
+				   {
+
+					
+					public void onFailure(Throwable caught)
+					{
+						
+						
+					}
+
+					
+					public void onSuccess(Integer result)
+					{
+						if(result>0)
+						{
+							MessageBox.alert(msgs.AlertTitle(), "COS already set OR It is set using with Gender Impact");
+						}	
+						else
+						{
+							  
+								cos_service.getCAT(university_id, programID, entityID, subjectCode, new AsyncCallback<CM_ProgramInfoGetter[]>()
+										{
+												
+											
+											public void onFailure(Throwable arg0) {
+												
+											}
+
+											
+											public void onSuccess(CM_ProgramInfoGetter[] result) {
+
+												if(result.length>0)
+												{
+													vPanel.clear();
+													counter=result.length;
+													categoryName=new Label[counter];
+													categoryCode=new String[counter];
+													xFactorField=new NumberField[counter];
+													catSeatsField=new NumberField[counter];
+													try {
+									                      for (int i = 0; i < result.length; i++) 
+									                      {
+									                    	  categoryCode[i]=new String(result[i].getComponent_id());
+									                    	  categoryName[i] = new Label(result[i].getComponentDescription());
+									                    	  xFactorField[i]=new NumberField();
+									                    	  catSeatsField[i]=new NumberField();
+									                      }
+									                  } catch (Exception e2) {
+									                      System.out.println("e2     " + e2);
+									                  }
+													
+													 FlexTable table=new FlexTable();
+													   FlexTable table2=new FlexTable();
+													   table2.setCellPadding(6);
+													   table2.setCellSpacing(6);
+													   table.setCellPadding(6);
+													   table.setCellSpacing(6);
+													   table2.setStyleName("detailsTable");
+													   table2.setWidget(0, 0, EntityName);
+													   table2.setWidget(0, 2,ProgramName);
+													   table2.setWidget(1, 0, SubjectName);
+													   table2.setWidget(1, 2, TotalSeats);
+													   table2.setWidget(0, 1, new Label(eName));
+													   table2.setWidget(0, 3, new Label(pName));
+													   table2.setWidget(1, 1, new Label(sName));
+													   table2.setWidget(1, 3, new Label(totalSeats.toString()));
+													   table.setWidget(0, 0, Category);
+													   table.setWidget(0,1, CategorySeats);
+													   table.setWidget(0, 2, XFactor);
+													   for(int i=0;i<counter;i++)
+													   {
+														   if((i!=0)&&(!categoryCode[i].trim().equalsIgnoreCase(categoryCode[i-1])))
+														   {
+															   table.setWidget(i+1, 0, categoryName[i]);
+														   }
+														   else if(i==0)
+														   {
+															   table.setWidget(i+1, 0, categoryName[i]);  
+														   }
+														  
+														table.setWidget(i+1, 1, catSeatsField[i]);   
+														table.setWidget(i+1, 2, xFactorField[i]);   
+													   }
+													   table.setWidget(counter+1, 0,submitButton2);
+													   table.setWidget(counter+1, 1,closeButton);
+													   
+													   FormPanel fp=new FormPanel();
+													   fp.setTitle("Set Individual Program COS");
+													   fp.setStyleName("indiForm");
+													   fp.add(table2);
+													   fp.add(table);
+													   fp.setFrame(true);
+													   vPanel.add(fp);	
+												}
+												else
+												{
+													MessageBox.alert("Message", "COS already set for this Program");	
+												}
+												
+											
+											}
+									
+										});
+						}
+					}
+			   
+				   });
+		    
+	   }
+   }
+    
 }

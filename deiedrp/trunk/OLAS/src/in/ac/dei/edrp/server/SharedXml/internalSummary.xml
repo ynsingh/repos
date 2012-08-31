@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="internalSummarySheet">
+
+	<typeAlias alias="internal" type="in.ac.dei.edrp.client.InternalSummarySheet.FormSearchInfoGetter" />
+	<typeAlias alias="summaryBean" type="in.ac.dei.edrp.client.summarysheet.SummarySheetBean" />
+
+	<select id="getUniversityFormsToSearch" resultClass="internal">
+		SELECT DISTINCT pf.form_number AS formNumber,pf.form_desc AS formName,pf.offered_by AS offeredBy,
+		em.entity_name AS entityOfferedBy,em.entity_code AS entityCode
+		FROM program_form pf, entity_master em
+		WHERE pf.university_id=#universityId#
+		AND pf.offered_by=em.entity_id
+    	AND pf.location_entity_id=#entityId#
+	</select>
+	
+	<select id="getUniversitySessionForm" resultClass="internal">
+     	SELECT DATE(SUBSTRING(sv.value,1,8)) AS sessionStartDate, DATE(SUBSTRING(sv.value,9,16)) AS sessionEndDate,um.nick_name AS uniNickName
+		FROM system_values sv,university_master um
+		WHERE university_id=#universityId# AND sv.code='ADMSSN' AND current_status=1 
+     </select>
+	
+	<select id="getFormProgramListInternal" resultClass="summaryBean">
+		
+		SELECT DISTINCT pf.program_id programId, pm.program_name programName,pf.offered_by entityId
+		FROM program_form pf, program_master pm
+		WHERE pm.program_id=pf.program_id AND pf.form_number=#docId#
+		AND pf.university_id=#universityId#
+		AND pf.location_entity_id=#entityId#
+	</select>
+
+	<insert id="setInternalStudentRegistration">
+		INSERT INTO student_registration
+		(student_id,registration_number,cos_value,start_date,end_date,insert_time,creator_id,program_id,form_number)
+		VALUES
+		(#studentId#,#registrationNumber#,#formNumber#,#sessionStartDate#,#sessionEndDate#,now(),#userId#,#programId#,#facRegNumber#)
+	</insert>
+	
+	<insert id="setInternalStudentPaper">
+		INSERT INTO student_paper
+		(program_id,registration_number,paper_code,
+		start_date,end_date,insert_time,creator_id,grouping,form_number)
+		VALUES
+		(#programId#,#registrationNumber#,#paperCode#,
+		#sessionStartDate#,#sessionEndDate#,now(),#userId#,#grouping#,#facRegNumber#);
+	</insert>
+	
+	<select id="getUnivEntity" resultClass="internal">
+		SELECT DISTINCT pf.location_entity_id entityId,em.entity_name entityName
+		FROM program_form pf, entity_master em
+		WHERE pf.university_id=#universityId#
+		AND pf.location_entity_id=em.entity_id
+	</select>
+
+</sqlMap>

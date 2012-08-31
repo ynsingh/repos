@@ -13,6 +13,12 @@ import in.ac.dei.edrp.server.SharedFiles.SqlMapManager;
 
 import java.util.List;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
@@ -26,7 +32,8 @@ public class CM_connectImpl extends RemoteServiceServlet implements CM_connect {
 //    Connection con;
     SqlMapClient client = SqlMapManager.getSqlMapClient();
     Log4JInitServlet logObj = new Log4JInitServlet();
-
+    
+    
 
     /**
      * Method to return current session of the institute
@@ -557,7 +564,6 @@ public CM_entityInfoGetter[] methodPopulateEntitySuggest(String user_id,String e
     		return entityInfo1;	
 		}else
 		{
-			System.out.println("Wrong criteria");
 			throw new Exception("Invalid criteria");
 		}
 		
@@ -605,7 +611,6 @@ public CM_entityInfoGetter[] methodPopulateEntity(String user_id,String entityTy
 	    		return entityInfo1;	
 			}else
 			{
-				System.out.println("Wrong criteria for manage");
 				throw new Exception("Invalid criteria for manage page");
 			}
 			}
@@ -629,7 +634,6 @@ public CM_entityInfoGetter[] methodPopulateEntity(String user_id,String entityTy
     		return entityInfo1;	
 		}else
 		{
-			System.out.println("Wrong criteria for manage");
 			throw new Exception("Invalid criteria for manage page");
 		}
 		}
@@ -682,7 +686,6 @@ public void methodUpdateEntity(String user_id,CM_entityInfoGetter entityInfo)thr
 		CM_entityInfoGetter[] entityInfo1;
 		String parentEntityName=entityInfo.getParent_entity_name();
 		
-		System.out.println(entityInfo.getEntity_type());
 		List<?> li1;
 		if(entityInfo.getEntity_type().equalsIgnoreCase("institute")){
 			li1=client.queryForList("selectParentUni",parentEntityName);
@@ -860,7 +863,6 @@ public void methodAddProgDetails(String user_id, CM_progMasterInfoGetter progInf
 //			System.out.println("coming upto here");
 		
 		String[] progLevelSpec=progInfo.getSpecialization_name();
-		System.out.println(progLevelSpec.length);
 		for(int i=0;i<progLevelSpec.length;i++){
 //			System.out.println("inserting specs "+i +"      "+progLevelSpec[i]);
 			progInfo.setBranchcode("000");
@@ -883,7 +885,6 @@ public void methodAddProgDetails(String user_id, CM_progMasterInfoGetter progInf
 		}
 		}
 	}catch (Exception ex) {
-		System.out.println("exception in methodAddProgDetails  "+ex);
 		logObj.logger.error("methodAddProgDetails  "+ex);
 		throw new Exception(ex);
 	}

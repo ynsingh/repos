@@ -15,16 +15,16 @@
   </resultMap>
 	
 	<select id="sysvalue" resultMap="progidGetter">
-	select value program_id from SYSTEM_VALUES where university_id=#university_id# AND code=#system_code#
+	select value program_id from system_values where university_id=#university_id# AND code=#system_code#
 	</select>
 	
 	<update id="updatesysvalue">
-	update SYSTEM_VALUES set value=#system_value# where university_id=#university_id# AND code=#system_code#
+	update system_values set value=#system_value# where university_id=#university_id# AND code=#system_code#
 	</update>
 	
 	
 <insert id="insertintoprogmaster">
-insert into ENTITY_PROGRAM_MASTER 
+insert into entity_program_master 
 		 (program_id,program_code,program_name,program_type,program_mode,branch,specialization,number_of_terms,
 		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes,
 		 insert_time,modification_time,creator_id,modifier_id)
@@ -43,7 +43,7 @@ insert into ENTITY_PROGRAM_MASTER
 </insert> -->
 	
 	<insert id="insertprogduration">
-	insert into PROGRAM_DURATION 
+	insert into program_duration 
 		  (program_id,minimum_duration,maximum_duration,start_day_month,insert_time,modification_time,creator_id,modifier_id)
 		   values 
 		  (#program_id#,#minimun_duration#,#maximum_duration#,#startdate#,
@@ -51,21 +51,21 @@ insert into ENTITY_PROGRAM_MASTER
 	</insert>
 	
 	<insert id="insertbranchdetail">
-	insert into ENTITY_PROGRAM_BRANCH_DETAIL 
+	insert into entity_program_branch_detail 
 		  (program_id,branch) 
 		  values 
 		  (#program_id#,#branchcode#)
 	</insert>
 	
 	<insert id="insertspecdetail">
-	insert into ENTITY_PROGRAM_SPECIALIZATION_DETAIL 
+	insert into entity_program_specialization_detail 
 		  (program_id,branch,specialization)
 		  values 
 		  (#program_id#,#branchcode#,#specialization_code#)
 	</insert>
 	
 	<insert id="insertseatreserve">
-	insert into PROGRAM_SEAT_RESERVATION 
+	insert into program_seat_reservation 
 		  (program_id,category_code,percentage_seats,insert_time,modification_time,creator_id,modifier_id) 
 		  values 
 		  (#program_id#,#category#,#percentage_seats#,#insert_time#,#modification_time#,#creator_id#,#modifier_id#)
@@ -82,7 +82,7 @@ insert into ENTITY_PROGRAM_MASTER
   </resultMap>
 	
 	<select id="selectProgList" resultMap="progListGetter">
-	select distinct program_id,program_code,program_name from ENTITY_PROGRAM_MASTER where program_id LIKE #university_id#
+	select distinct program_id,program_code,program_name from entity_program_master where program_id LIKE #university_id#
 	</select>
 	
 	 
@@ -107,12 +107,12 @@ insert into ENTITY_PROGRAM_MASTER
 	
 	<select id="progBasicDetail" resultMap="progMasterDetailGetter">
 select distinct program_id,program_code,program_name,program_type,program_mode,number_of_terms,
-		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes from ENTITY_PROGRAM_MASTER where program_id LIKE #program_id#
+		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes from entity_program_master where program_id LIKE #program_id#
 	</select>
 	
 	<select id="progBasicDetailFromCode" resultMap="progMasterDetailGetter">
 select distinct program_id,program_code,program_name,program_type,program_mode,number_of_terms,
-		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes from ENTITY_PROGRAM_MASTER where program_code LIKE #program_code#
+		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes from entity_program_master where program_code LIKE #program_code#
 	</select>
 	
 	
@@ -127,7 +127,7 @@ select distinct program_id,program_code,program_name,program_type,program_mode,n
 	</resultMap>
 	
 	<select id="progDurationDetail" resultMap="progDurationDetailGetter">
- select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,d.minimum_duration minimum_duration,d.maximum_duration maximum_duration,d.start_day_month startdate from PROGRAM_DURATION d, ENTITY_PROGRAM_MASTER m where d.program_id LIKE #program_id# AND m.program_id=d.program_id
+ select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,d.minimum_duration minimum_duration,d.maximum_duration maximum_duration,d.start_day_month startdate from program_duration d, entity_program_master m where d.program_id LIKE #program_id# AND m.program_id=d.program_id
 	</select>
 		
 	
@@ -146,7 +146,7 @@ select distinct program_id,program_code,program_name,program_type,program_mode,n
 	select m.program_name program_name,m.program_code program_code,bd.branch_name,sd.specialization_name from ENTITY_PROGRAM_BRANCH_DETAIL bd,ENTITY_PROGRAM_SPECIALIZATION_DETAIL sd , ENTITY_PROGRAM_MASTER m where bd.program_id LIKE #program_id# AND bd.branch=sd.branch AND m.program_id=sd.program_id
 	-->
 	
-select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,b.branch_name,b.branch_code from ENTITY_PROGRAM_BRANCH_DETAIL bd,ENTITY_PROGRAM_MASTER m,PROGRAM_BRANCHES b where bd.program_id LIKE #program_id# AND m.program_id=bd.program_id AND bd.branch NOT IN ('000') AND bd.branch=b.branch_code
+select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,b.branch_name,b.branch_code from entity_program_branch_detail bd,entity_program_master m,program_branches b where bd.program_id LIKE #program_id# AND m.program_id=bd.program_id AND bd.branch NOT IN ('000') AND bd.branch=b.branch_code
 	
 	</select>
 	
@@ -163,7 +163,7 @@ select distinct m.program_id program_id, m.program_name program_name,m.program_c
 	<!--  
 	select m.program_name program_name,m.program_code program_code,s.specialization_name from ENTITY_PROGRAM_SPECIALIZATION_DETAIL s  , ENTITY_PROGRAM_MASTER m where s.program_id LIKE #program_id# AND s.branch='000' AND m.program_id=s.program_id
 	-->
-	select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,ss.specialization_name,ss.specialization_code,bb.branch_name branch_name from PROGRAM_BRANCHES bb,ENTITY_PROGRAM_SPECIALIZATION_DETAIL s,PROGRAM_SPECIALIZATIONS ss  , ENTITY_PROGRAM_MASTER m,ENTITY_PROGRAM_BRANCH_DETAIL b where s.program_id LIKE #program_id# AND m.program_id=s.program_id AND s.branch=b.branch AND b.program_id=s.program_id AND s.specialization=ss.specialization_code AND bb.branch_code=b.branch
+	select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,ss.specialization_name,ss.specialization_code,bb.branch_name branch_name from program_branches bb,entity_program_specialization_detail s,program_specializations ss  , entity_program_master m,entity_program_branch_detail b where s.program_id LIKE #program_id# AND m.program_id=s.program_id AND s.branch=b.branch AND b.program_id=s.program_id AND s.specialization=ss.specialization_code AND bb.branch_code=b.branch
 	</select>
 	
 	<resultMap id="progreserveDetailGetter" class="programMasterInfo">
@@ -176,7 +176,7 @@ select distinct m.program_id program_id, m.program_name program_name,m.program_c
 	</resultMap>
 	
 	<select id="progReserveDetail" resultMap="progreserveDetailGetter">
-	select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,rr.category_name,r.percentage_seats,rr.category_code from  PROGRAM_SEAT_RESERVATION r ,SEAT_RESERVATION_CATEGORY rr, ENTITY_PROGRAM_MASTER m where r.program_id LIKE #program_id# AND m.program_id=r.program_id AND r.category_code=rr.category_code
+	select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,rr.category_name,r.percentage_seats,rr.category_code from  program_seat_reservation r ,seat_reservation_category rr, entity_program_master m where r.program_id LIKE #program_id# AND m.program_id=r.program_id AND r.category_code=rr.category_code
 	</select>
 	
 	
@@ -186,7 +186,7 @@ select distinct m.program_id program_id, m.program_name program_name,m.program_c
    	</resultMap>
 	
 	<select id="branchList" resultMap="branchListGetter">
-	select branch_code,branch_name from PROGRAM_BRANCHES where university_id=#university_id#
+	select branch_code,branch_name from program_branches where university_id=#university_id#
 	</select>
 	
 	
@@ -197,7 +197,7 @@ select distinct m.program_id program_id, m.program_name program_name,m.program_c
    	</resultMap>
 	
 	<select id="specList" resultMap="specListGetter">
-	select specialization_code,specialization_name from PROGRAM_SPECIALIZATIONS where university_id=#university_id#
+	select specialization_code,specialization_name from program_specializations where university_id=#university_id#
 	</select>
 	
 	
@@ -207,49 +207,49 @@ select distinct m.program_id program_id, m.program_name program_name,m.program_c
    	</resultMap>
 	
 	<select id="categoryList" resultMap="categoryListGetter">
-	select category_code,category_name from SEAT_RESERVATION_CATEGORY where university_id=#university_id#
+	select category_code,category_name from seat_reservation_category where university_id=#university_id#
 	</select>
 	
 	
 	<update id="updateProgBasicDetail">
 	
-update ENTITY_PROGRAM_MASTER set program_name=#program_name#, number_of_terms=#no_of_terms#,total_credits=#total_credits#,
+update entity_program_master set program_name=#program_name#, number_of_terms=#no_of_terms#,total_credits=#total_credits#,
 number_of_attempt_allowed=#number_of_attempt_allowed#,max_number_of_fail_subjects=#max_number_of_fail_subjects#,ug_pg=#UGorPG#,
 modification_time=#modification_time#,modifier_id=#modifier_id# where program_code=#program_code#
 	</update>
 	
 	<update id="updateProgDurationDetails1">
-	update PROGRAM_DURATION set minimum_duration=#minimun_duration# ,maximum_duration=#maximum_duration#,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# 
+	update program_duration set minimum_duration=#minimun_duration# ,maximum_duration=#maximum_duration#,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# 
 	</update>
 	
 	<update id="updateProgDurationDetails2">
-	update PROGRAM_DURATION set start_day_month=#startdate#,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# AND start_day_month=#oldstartdate#
+	update program_duration set start_day_month=#startdate#,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# AND start_day_month=#oldstartdate#
 	</update>
 	
 	<update id="updateSeatReserve">
-	update PROGRAM_SEAT_RESERVATION set percentage_seats=#percentage_seats# ,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# AND category_code LIKE #category_code#
+	update program_seat_reservation set percentage_seats=#percentage_seats# ,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# AND category_code LIKE #category_code#
 	</update>
 	
 	
 	<delete id="deleteProgBasicDetails">
-	delete from ENTITY_PROGRAM_MASTER where program_id=#program_id#
+	delete from entity_program_master where program_id=#program_id#
 	</delete>
 	
 	<delete id="deleteProgDurationDetails">
-	delete from PROGRAM_DURATION where program_id=#program_id# AND start_day_month LIKE #startdate#
+	delete from program_duration where program_id=#program_id# AND start_day_month LIKE #startdate#
 	</delete>
 	
 	<delete id="deleteProgBranchDetails">
-	delete from ENTITY_PROGRAM_BRANCH_DETAIL where program_id=#program_id# AND branch LIKE #branchcode#
+	delete from entity_program_branch_detail where program_id=#program_id# AND branch LIKE #branchcode#
 	</delete>
 	
 	<delete id="deleteProgSpecDetails">
 	<!-- complete query by adding branch code also-->
-	delete from ENTITY_PROGRAM_SPECIALIZATION_DETAIL where program_id=#program_id# AND specialization LIKE #specialization_code#
+	delete from entity_program_specialization_detail where program_id=#program_id# AND specialization LIKE #specialization_code#
 	</delete>
 	
 	<delete id="deleteProgReserveDetails">
-	delete from PROGRAM_SEAT_RESERVATION where program_id=#program_id# AND category_code LIKE #category_code#
+	delete from program_seat_reservation where program_id=#program_id# AND category_code LIKE #category_code#
 	</delete>
 	
 	
@@ -259,7 +259,7 @@ modification_time=#modification_time#,modifier_id=#modifier_id# where program_co
    	</resultMap>
 	
 	<select id="noOfTerms" resultMap="noOfTerms">
-	select number_of_terms from ENTITY_PROGRAM_MASTER where program_id=#program_id#
+	select number_of_terms from entity_program_master where program_id=#program_id#
 	</select>
 	
 	

@@ -25,13 +25,13 @@
 		<select id="termList" resultMap="termList">
 		select t.program_id,t.entity_program_term_id,p.program_name,t.minimum_sgpa,t.term_name,t.number_of_teaching_days,
 		t.duration_in_weeks,t.term_start_date,t.term_end_date,t.total_credits
-		from ENTITY_PROGRAM_TERM_DETAILS t,ENTITY_PROGRAM_MASTER p
+		from entity_program_term_details t,entity_program_master p
 		where t.program_id LIKE #program_id# AND t.entity_program_term_id LIKE #entity_program_term_id# AND t.program_id=p.program_id
 		</select>
 
 
 <insert id="insertTermDetails">
-insert into ENTITY_PROGRAM_TERM_DETAILS
+insert into entity_program_term_details
 (entity_program_term_id,program_id,minimum_sgpa,term_name,number_of_teaching_days,
 duration_in_weeks,term_start_date,term_end_date,total_credits ,insert_time,
 modification_time,creator_id,modifier_id)
@@ -43,7 +43,7 @@ values
 
 <update id="updateTermDetails">
 
-update ENTITY_PROGRAM_TERM_DETAILS set minimum_sgpa=#minimum_sgpa#,term_name=#term_name#,
+update entity_program_term_details set minimum_sgpa=#minimum_sgpa#,term_name=#term_name#,
 number_of_teaching_days=#number_of_teaching_days#,duration_in_weeks=#duration_in_weeks#,
 term_start_date=#term_start_date#,term_end_date=#term_end_date#,total_credits=#total_credits#,
 modification_time=#modification_time#,modifier_id=#modifier_id# 
@@ -54,7 +54,7 @@ where program_id = #program_id# AND entity_program_term_id = #entity_program_ter
 
 <delete id="deleteTermDetails">
 
-delete from ENTITY_PROGRAM_TERM_DETAILS 
+delete from entity_program_term_details 
 where program_id = #program_id# AND entity_program_term_id = #entity_program_term_id#
 
 </delete>

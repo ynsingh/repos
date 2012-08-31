@@ -24,15 +24,15 @@
 	<resultMap id="userInfoGetter" class="userInfo">
 		<result property="user_name" column="user_name" />
 		<result property="user_id" column="user_id" />
-		<result property="user_group_name" column="group_name" />
+		<result property="user_group_name" column="user_group_id" />
 
 	</resultMap>
 
 	<select id="selectAllUserInfo" resultMap="userInfoGetter">
 		select
-		user_id,group_name,user_name
-		from USER_INFO where user_name
-		=#user_name# AND password =SHA1(#password#)
+		user_id,user_group_id,user_name
+		from user_info where user_name
+		=#user_name# AND password =SHA1(#password#);
 		</select>
 
 
@@ -46,20 +46,42 @@
 
 	<select id="getmainpages" resultMap="primaryauthority">
 		select
-		ug.menu_item_id,ug.authority,menu.menu_item_name from USER_GROUP
-		ug,USER_INFO ui,MENU_ITEMS_LIST menu where
-		ug.menu_item_id=menu.menu_item_id AND ug.user_group_id=ui.group_name
+		ug.menu_item_id,ug.authority,menu.menu_item_name from user_group
+		ug,user_info ui,menu_items_list menu where
+		ug.menu_item_id=menu.menu_item_id AND ug.user_group_id=ui.user_group_id
 		AND ui.user_name=#user_id#;
+		</select>
+		
+		<select id="getMainPagesNew" resultMap="primaryauthority">
+		select
+		ug.menu_item_id,ug.authority,menu.menu_item_name from user_group
+		ug,user_info ui,menu_items_list menu where
+		ug.menu_item_id=menu.menu_item_id AND ug.user_group_id=ui.user_group_id
+		AND ui.user_name=#user_name#
+		and ui.university_code=#instituteID#
+		and ui.application=#application#;
 		</select>
 
 	<select id="getprimaryauthorities" resultMap="primaryauthority">
 		select
 		ufa.menu_item_id,ufa.authority,menu.menu_item_name from
-		USER_FUNCTION_AUTHORITY ufa,USER_GROUP ug,USER_INFO ui,MENU_ITEMS_LIST
+		user_function_authority ufa,user_group ug,user_info ui,menu_items_list
 		menu where ug.menu_item_id=ufa.menu_item_id AND
 		ufa.menu_item_id=menu.menu_item_id AND
-		ug.authority=1 AND ug.user_group_id=ui.group_name AND
+		ug.authority=1 AND ug.user_group_id=ui.user_group_id AND
 		ufa.function_user_id=ui.user_id AND ui.user_id=#user_id#;
+		</select>
+
+<select id="getprimaryauthoritiesNew" resultMap="primaryauthority">
+		select
+		ufa.menu_item_id,ufa.authority,menu.menu_item_name from
+		user_function_authority ufa,user_group ug,user_info ui,menu_items_list
+		menu where ug.menu_item_id=ufa.menu_item_id AND
+		ufa.menu_item_id=menu.menu_item_id AND
+		ug.authority=1 AND ug.user_group_id=ui.user_group_id AND
+		ufa.function_user_id=ui.user_id AND ui.user_id=#user_id#
+		and ui.university_code=#instituteID#
+		and ui.application=#application#;
 		</select>
 
 
@@ -69,7 +91,7 @@
 
 	<select id="getsecondryauthorities" resultMap="secondryauthority">
 		select
-		ufa.authority from USER_FUNCTION_AUTHORITY ufa,MENU_ITEMS_LIST menu
+		ufa.authority from user_function_authority ufa,menu_items_list menu
 		where ufa.menu_item_id=menu.menu_item_id AND
 		menu.menu_item_name=#page# AND
 		ufa.function_user_id=#user_id#;
@@ -77,11 +99,11 @@
 
 	<select id="getauthorityonpage" resultMap="secondryauthority">
 		select ug.authority
-		from USER_GROUP ug,MENU_ITEMS_LIST menu,USER_INFO ui
+		from user_group ug,menu_items_list menu,user_info ui
 		where
 		ug.menu_item_id=menu.menu_item_id AND menu.menu_item_name=#page#
 		AND
-		ug.user_group_id=ui.group_name AND ui.user_id=#user_id#;
+		ug.user_group_id=ui.user_group_id AND ui.user_id=#user_id#;
 
 		</select>
 
@@ -97,6 +119,6 @@
 
 	<select id="selectPasswordPolicy" resultMap="passwordPolicyGetter">
 		select
-		minimum_length,maximum_length,expiry_period from PASSWORD_POLICY
+		minimum_length,maximum_length,expiry_period from password_policy
   </select>
 </sqlMap>

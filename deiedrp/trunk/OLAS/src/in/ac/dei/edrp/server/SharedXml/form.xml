@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="form">
+
+	<typeAlias alias="formEDEI" type="in.ac.dei.edrp.client.applicantAccountEDEI.ApplicantAccountEDEIBean" />
+	
+	<select id="getLogInConfirmationEDEI" resultClass="formEDEI">
+		SELECT COUNT(*) count
+		FROM applicant_account_info
+		WHERE email_id=#email#
+		AND password=SHA1(#password#)
+	</select>
+	
+	<select id="getUserNameForAccountEDEI" resultClass="formEDEI">
+		SELECT first_name firstName, last_name lastName
+		FROM applicant_account_info
+		WHERE email_id=#email#
+	</select>	
+	
+	<select id="getUniversityDetailDEINewEDEI" resultClass="formEDEI">
+		SELECT university_code universityId,start_date sessionStartDate,end_date sessionEndDate
+		FROM university_master
+		WHERE nick_name=#DEI#
+		AND current_status=1
+	</select>
+	
+	<!-- Add By Devendra to Get Student Existing Program Details-->	
+	<select id="getExistingProgramDetails" resultClass="in.ac.dei.edrp.client.EdeiAdmission.EDEIStudentBean">
+		SELECT sm.program_course_key AS progCourseKey,sp.program_id AS programId,sp.entity_id AS entityId 
+		FROM student_module sm,edei_student_program sp 
+		WHERE sp.roll_number=sm.roll_number AND sp.enrollment_number=sm.enrollment_number 
+		AND sm.roll_number=#rollNumber# AND sm.enrollment_number=#enrollmentNumber# AND sp.program_status='ACT' GROUP BY sm.program_course_key;		
+	</select>
+	
+	<!-- Add By Devendra to Get Student's Available Modules-->	
+	<select id="getAvaiableModuleForExistingProgram" resultClass="in.ac.dei.edrp.client.EdeiAdmission.EDEIStudentBean">
+		SELECT cma.program_course_key AS progCourseKey,cma.module_start_date AS moduleStartDate,cma.module_end_date AS moduleEndDate,
+		cma.course_code AS coursesId,cma.module_code AS moduleId,cma.entity_id AS entityId,cma.sequence_number AS sequenceNo,cma.semester_start_date AS semesterStartDate,
+		cma.semester_end_date AS semesterEndDate,mm.module_name AS moduleName,cm.course_name AS coursesName,mm.credit credit
+		FROM course_module_available_new cma,module_master mm,course_master cm
+		WHERE cma.module_code NOT IN (SELECT module_code FROM student_module WHERE roll_number=#rollNumber# AND enrollment_number=#enrollmentNumber# AND program_course_key=#progCourseKey#) 
+		AND cma.module_code=mm.module_code AND cma.course_code=cm.course_code AND program_course_key=#progCourseKey# ORDER BY cma.course_code,cma.sequence_number;
+	</select>	
+	
+</sqlMap>

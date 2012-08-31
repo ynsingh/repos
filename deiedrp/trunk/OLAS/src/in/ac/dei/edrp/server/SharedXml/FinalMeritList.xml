@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="finalMeritList">
+<typeAlias alias="reportBeen"
+		type="in.ac.dei.edrp.client.ReportInfoGetter" />
+
+<select id="getRegisteredStudent" resultClass="reportBeen">
+	SELECT registration_number AS registration_number,test_number AS test_number,cos_value AS cos_value,sum_actual_computed_marks AS sum_actual_computed_marks 
+	FROM student_test_number 
+	WHERE program_id=#program_id# AND entity_id=#entity_id# AND called='y' AND status='Eligible' AND start_date=#university_start_date# AND end_date=#university_end_date#;
+</select>
+
+<select id="getComponentDetail" resultClass="reportBeen">
+	SELECT fmc.component_id AS component_id,fmc.description AS component_description,fmc.weightage_percentage AS component_Weightage ,sfm.marks AS marks
+	FROM final_merit_components fmc ,student_final_marks sfm
+	WHERE fmc.program_id=sfm.program_id AND fmc.component_id=sfm.evaluation_component
+	AND fmc.offered_by=sfm.entity_id AND  sfm.program_id=#program_id# AND sfm.entity_id=#entity_id# AND sfm.start_date=#university_start_date#
+	AND sfm.end_date=#university_end_date# AND sfm.registration_number=#registration_number#;
+</select>
+
+<select id="getDuplicateCount" resultClass="java.lang.String">
+	SELECT COUNT(*) FROM student_final_merit_list 
+	WHERE program_id=#program_id# AND entity_id=#entity_id# AND registration_number=#registration_number# AND test_number=#test_number# 
+	AND cos_value=#cos_value# AND start_date=#university_start_date# AND end_date=#university_end_date#;
+</select>
+
+<insert id="insertIntoFinalMeritList">
+	INSERT INTO student_final_merit_list(program_id,entity_id,registration_number,test_number,total_marks,cos_value,start_date,end_date,insert_time,creator_id,sum_actual_computed_marks,weighted_total_marks)
+	VALUES(#program_id#,#entity_id#,#registration_number#,#test_number#,#total_marks#,#cos_value#,#university_start_date#,#university_end_date#,now(),#user_id#,#sum_actual_computed_marks#,#computed_Marks#);
+</insert>
+
+<update id="updateFinalMeritList">
+	UPDATE student_final_merit_list set total_marks=#total_marks#,modification_time=now(),modifier_id=#user_id#,sum_actual_computed_marks=#sum_actual_computed_marks#,weighted_total_marks=#computed_Marks#
+	WHERE program_id=#program_id# AND entity_id=#entity_id# AND registration_number=#registration_number# AND test_number=#test_number#
+	AND cos_value=#cos_value# AND start_date=#university_start_date# AND end_date=#university_end_date#;
+</update>
+
+</sqlMap>

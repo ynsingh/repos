@@ -3,225 +3,553 @@
     PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
     "http://www.ibatis.com/dtd/sql-map-2.dtd">
 
-<sqlMap namespace="CourseInfo">  
+<sqlMap namespace="CourseInfo">
 	<typeAlias alias="e1" type="in.ac.dei.edrp.client.CM_entityInfoGetter" />
-	<typeAlias alias="p1" type="in.ac.dei.edrp.client.CM_progMasterInfoGetter" />
+	<typeAlias alias="p1"
+		type="in.ac.dei.edrp.client.CM_progMasterInfoGetter" />
 	<typeAlias alias="addMarks" type="in.ac.dei.edrp.client.CMaddMarksInfoGetter" />
-	
-	
+
+
 	<resultMap id="resultname" class="e1">
-	   <result property="entity_name" column="entity_name"/>
-	   <result property="entity_id" column="entity_id"/>
-</resultMap>
+		<result property="entity_name" column="entity_name" />
+		<result property="entity_id" column="entity_id" />
+	</resultMap>
 
-<select id="entityListmarks" resultMap="resultname">
-          select distinct em.entity_id,em.entity_name from ENTITY_MASTER em, 
-          STUDENT_FINAL_MARKS sfm, UNIVERSITY_ENTITY_TYPE uet where 
-          sfm.entity_id like #entity_id# AND uet.entity_description =#entity_type# AND
-           em.entity_type=uet.entity_type AND em.entity_id=sfm.entity_id
+	<!-- Query not in use -->
+	<select id="entityListmarks" resultMap="resultname">
+		select distinct
+		em.entity_id,em.entity_name from entity_master em,
+		student_final_marks
+		sfm, university_entity_type uet where
+		sfm.entity_id like #entity_id#
+		AND uet.entity_description
+		=#entity_type# AND
+		em.entity_type=uet.entity_type AND em.entity_id=sfm.entity_id
 </select>
 
-<resultMap id="resultprogram" class="p1">
-	   <result property="program_name" column="program_name"/>
-	   <result property="program_id" column="program_id"/>
-</resultMap>
+	<resultMap id="resultprogram" class="p1">
+		<result property="program_name" column="program_name" />
+		<result property="program_id" column="program_id" />
+	</resultMap>
 
-<select id="programListmarks" resultMap="resultprogram">
-          select distinct p.program_name,p.program_id from STUDENT_FINAL_MARKS pob,ENTITY_PROGRAM_MASTER p where pob.entity_id like #program_id# and pob.program_id=p.program_id;
+	<!-- Query unchanged -->
+	<select id="programListmarks" resultMap="resultprogram">
+		select distinct
+		p.program_name,p.program_id from student_final_marks
+		pob,program_master p where pob.entity_id like #program_id# and
+		pob.program_id=p.program_id;
 </select>
 
-<resultMap id="resultbranch" class="p1">
-	   <result property="branchname" column="branch_name"/>
-	      <result property="branchcode" column="branch_code"/>
-</resultMap>
+	<resultMap id="resultbranch" class="p1">
+		<result property="branchname" column="branch_name" />
+		<result property="branchcode" column="branch_code" />
+	</resultMap>
 
-<select id="branchListmarks" resultMap="resultbranch">
-          select distinct b.branch_name,b.branch_code from PROGRAM_BRANCHES b,STUDENT_FINAL_MARKS pob
-where b.branch_code=pob.branch_code and pob.program_id like #program_id# and pob.entity_id like #program_code#
-</select>
-
-
-
-<select id="branchListmarksforadd" resultMap="resultbranch">
-select distinct b.branch_name,b.branch_code from PROGRAM_BRANCHES b,PROGRAM_OFFERED_BY pob, FINAL_MERIT_COMPONENTS d
-where b.branch_code=pob.branch and pob.program_id like #program_id# and pob.offered_by like #program_code# 
-and pob.branch=d.branch_code
-</select>
-
-
-<select id="programListmarksforadd" resultMap="resultprogram">
-
-select distinct a.program_name,a.program_id from ENTITY_PROGRAM_MASTER a, PROGRAM_OFFERED_BY b, ENTITY_MASTER c ,FINAL_MERIT_COMPONENTS d
-	where c.entity_id = #program_id# AND a.program_id = b.program_id AND b.offered_by = c.entity_id
-	AND d.program_id=b.program_id
-</select>
-
-<resultMap id="getFlagStatus" class="addMarks">
-	   <result property="flag_status" column="flag_status"/>
-</resultMap>
-
-<select id="checkFlagStatus" resultMap="getFlagStatus">
-select flag_status from CONTROL_REPORT where program_id=#program_id# AND branch_code=#branch_id# AND entity_id=#entity_id#
+	<!-- Query updated -->
+	<select id="branchListmarks" resultMap="resultbranch">
+		select distinct
+		b.component_description as branch_name,b.component_code as
+		branch_code
+		from system_table_two
+		b,student_final_marks pob
+		where
+		b.component_code=pob.branch_code and b.group_code='BRNCOD' AND
+		b.university_code=#university_id# and
+		pob.program_id like
+		#program_id#
+		and
+		pob.entity_id like #program_code#
 </select>
 
 
-<resultMap id="getComponentCount" class="addMarks">
-	   <result property="description" column="description"/>
-</resultMap>
-
-<select id="countDescription" resultMap="getComponentCount">
-select count(description) description from FINAL_MERIT_COMPONENTS where program_id=#program_id# AND branch_code=#branch_id# AND offered_by=#entity_id#
+	<!-- Query updated -->
+	<select id="branchListmarksforadd" resultMap="resultbranch">
+		select distinct
+		sys.component_description as branch_name,sys.component_code as
+		branch_code from system_table_two sys,program_offered_by pob,
+		final_merit_components d where sys.component_code=pob.branch_id AND
+		sys.group_code='BRNCOD' AND sys.university_code=#university_id# and
+		pob.program_id like #program_id# and
+		pob.offered_by like #program_code#
+		and pob.branch_id=d.branch_code;
 </select>
 
-<resultMap id="getAllComponent" class="addMarks">
-	   <result property="description" column="description"/>
-	   <result property="total_marks" column="total_marks"/>
-</resultMap>
+	<!-- Query updated -->
+	<select id="programListmarksforadd" resultMap="resultprogram">
 
-<select id="getCompDescription" resultMap="getAllComponent">
-select description,total_marks from FINAL_MERIT_COMPONENTS where program_id=#program_id# AND branch_code=#branch_id# AND offered_by=#entity_id#
+		select distinct
+		a.program_name,a.program_id from program_master a,
+		program_offered_by
+		b, entity_master c ,final_merit_components d
+		where
+		c.entity_id =
+		#program_id# AND a.program_id = b.program_id AND
+		b.offered_by =
+		c.entity_id
+		AND d.program_id=b.program_id
 </select>
 
+	<resultMap id="getFlagStatus" class="addMarks">
+		<result property="flag_status" column="flag_status" />
+	</resultMap>
 
-<resultMap id="getStudentCallMeritMarks" class="addMarks">
-	   <result property="registration_number" column="registration_number"/>
-	   <result property="sum_actual_computed_marks" column="sum_actual_computed_marks"/>
-	   <result property="test_number" column="test_number"/>
-</resultMap>
-
-<select id="getAllStudentCallMeritMarks" resultMap="getStudentCallMeritMarks">
-select distinct registration_number,sum_actual_computed_marks,test_number from STUDENT_TEST_NUMBER
-where program_id=#program_id# AND branch_code=#branch_id# AND entity_id=#entity_id# and called='y' and 
-test_number IS NOT NULL order by registration_number asc
-</select>
-
-<resultMap id="getMarksAndAttandance" class="addMarks">
-	   <result property="attended" column="attended"/>
-	   <result property="marks" column="marks"/>
-</resultMap>
-
-<select id="getMarksAndAttandanceForEdit" resultMap="getMarksAndAttandance">
-select marks,attended from STUDENT_FINAL_MARKS 
-where program_id=#program_id# AND entity_id=#entity_id# and registration_number=#registration_number#
-</select> 
-
-
-<resultMap id="compId" class="addMarks">
-	   <result property="component_id" column="component_id"/>
-</resultMap>
-
-<select id="getCompId" resultMap="compId">
-select component_id from FINAL_MERIT_COMPONENTS where description=#description# 
-AND program_id=#program_id# AND branch_code=#branch_id# AND offered_by=#entity_id#
+	<!-- Query updated by Devendra May 3rd -->
+	<select id="checkFlagStatus" resultMap="getFlagStatus">
+		select distinct flag_status from
+		control_report where program_id=#program_id# AND entity_id=#entity_id#;
 </select>
 
 
+	<resultMap id="getComponentCount" class="addMarks">
+		<result property="description" column="description" />
+	</resultMap>
 
-<resultMap id="getSession" class="addMarks">
-	   <result property="start_date" column="start_date"/>
-	   <result property="end_date" column="end_date"/>
-</resultMap>
+	<!-- Query updated by devendra May 3rd -->
+	<select id="countDescription" resultMap="getComponentCount">
+		select
+		count(distinct description) description from final_merit_components where
+		program_id=#program_id# AND
+		offered_by=#entity_id#;
+</select>
+
+	<resultMap id="getAllComponent" class="addMarks">
+		<result property="description" column="description" />
+		<result property="total_marks" column="total_marks" />
+	</resultMap>
+
+	<!-- Query updated by Devendra May 3rd-->
+	<select id="getCompDescription" resultMap="getAllComponent">
+		select distinct
+		description,total_marks from final_merit_components
+		where program_id=#program_id# AND offered_by=#entity_id#;
+	</select>
 
 
-<select id="getSessionDates" resultMap="getSession">
-select start_date, end_date from UNIVERSITY where university_id=#university_id#
+	<resultMap id="getStudentCallMeritMarks" class="addMarks">
+		<result property="registration_number" column="registration_number" />
+		<result property="sum_actual_computed_marks" column="sum_actual_computed_marks" />
+		<result property="test_number" column="test_number" />
+	</resultMap>
+
+	<!-- Query updated by Devendra May 3rd-->
+	<select id="getAllStudentCallMeritMarks" resultMap="getStudentCallMeritMarks">
+		select distinct registration_number,sum_actual_computed_marks,test_number
+		from student_test_number
+		where program_id=#program_id# AND
+		entity_id=#entity_id# and called='y' and
+		test_number IS NOT NULL
+		order by registration_number asc;
+</select>
+
+	<resultMap id="getMarksAndAttandance" class="addMarks">
+		<result property="attended" column="attended" />
+		<result property="marks" column="marks" />
+	</resultMap>
+
+	<!-- Query unchanged -->
+	<select id="getMarksAndAttandanceForEdit" resultMap="getMarksAndAttandance">
+		select
+		marks,attended from student_final_marks
+		where program_id=#program_id#
+		AND entity_id=#entity_id# and
+		registration_number=#registration_number#
 </select>
 
 
-<insert id="insertStudentFinalMarks1">
+	<resultMap id="compId" class="addMarks">
+		<result property="component_id" column="component_id" />
+	</resultMap>
 
-insert into STUDENT_FINAL_MARKS 
-(program_id ,entity_id ,registration_number,evaluation_component,marks,branch_code,attended,
-insert_time,modification_time,creator_id,modifier_id,start_date,end_date)
-values(#program_id#,#entity_id#,#registration_number#,#component_id#,#marks#,#branch_id#,#attended#,
-#insert_time#,#modification_time#,#creator_id#,#modifier_id#,#start_date#,#end_date#)
+	<!-- Query updated by Devendra May 3rd-->
+	<select id="getCompId" resultMap="compId">
+		select component_id from
+		final_merit_components where
+		description=#description# AND
+		program_id=#program_id# AND offered_by=#entity_id#;
+	</select>
+
+
+
+	<resultMap id="getSession" class="addMarks">
+		<result property="start_date" column="start_date" />
+		<result property="end_date" column="end_date" />
+	</resultMap>
+
+	<!-- Query updated -->
+	<select id="getSessionDates" resultMap="getSession">
+		select start_date,
+		end_date from university_master where
+		university_code=#university_id# AND current_status=1;
+</select>
+
+	<!-- Query updated  by Devednra May 3rd-->
+	<insert id="insertStudentFinalMarks1">
+		insert into student_final_marks
+		(program_id ,entity_id,registration_number,evaluation_component,marks,attended,insert_time
+		,modification_time,creator_id,modifier_id,start_date,end_date)
+		values(#program_id#,#entity_id#,#registration_number#,#component_id#,#marks#,#attended#,
+		#insert_time#,#modification_time#,#creator_id#,#modifier_id#,#start_date#,#end_date#);
+	</insert>
+
+	<!-- Query updated by Devendra May 3rd-->
+	<insert id="insertStudentFinalMeritList1">
+		insert into student_final_merit_list (
+		program_id,entity_id,registration_number,test_number,total_marks,cos_value,
+		insert_time,creator_id,start_date,end_date)
+		values
+		(#program_id#,#entity_id#,#registration_number#,#test_number#,#final_marks#,#cos_value#,
+		now(),#creator_id#,#start_date#,#end_date#)
 </insert>
 
 
-<insert id="insertStudentFinalMeritList1">
-insert into STUDENT_FINAL_MERIT_LIST ( program_id,entity_id,branch_code,registration_number,test_number,total_marks,cos_value,
-insert_time,modification_time,creator_id,modifier_id,start_date,end_date) values 
-(#program_id#,#entity_id#,#branch_id#,#registration_number#,#test_number#,#final_marks#,#cos_value#,
-#insert_time#,#modification_time#,#creator_id#,#modifier_id#,#start_date#,#end_date#)
-</insert>
 
+	<resultMap id="finalMarksDetails" class="addMarks">
+		<result property="registration_number" column="s.registration_number" />
+		<result property="sum_actual_computed_marks" column="st.sum_actual_computed_marks" />
+		<result property="test_number" column="s.test_number" />
+		<result property="marks" column="s.total_marks" />
+	</resultMap>
 
-
-<resultMap id="finalMarksDetails" class="addMarks">
-	   <result property="registration_number" column="s.registration_number"/>
-	   <result property="sum_actual_computed_marks" column="st.sum_actual_computed_marks"/>
-	   <result property="test_number" column="s.test_number"/>
-	   <result property="marks" column="s.total_marks"/>
-</resultMap>
-
-
-<select id="finalMarksDetailsWithRegNo" resultMap="finalMarksDetails">
-select distinct s.registration_number,st.sum_actual_computed_marks,s.test_number,s.total_marks 
-from STUDENT_TEST_NUMBER st,STUDENT_FINAL_MERIT_LIST s where s.program_id=#program_id# 
-AND s.branch_code=#branch_id# AND s.entity_id=#entity_id# and s.registration_number like #registration_number#
-and s.registration_number=st.registration_number order by registration_number asc
+	<!-- Query updated  by Devendra May 3rd-->
+	<select id="finalMarksDetailsWithRegNo" resultMap="finalMarksDetails">
+		select
+		distinct
+		s.registration_number,st.sum_actual_computed_marks,s.test_number,s.total_marks
+		from student_test_number st,student_final_merit_list s where
+		s.program_id=#program_id# AND
+		s.entity_id=#entity_id#
+		and
+		s.registration_number like
+		#registration_number#
+		and
+		s.registration_number=st.registration_number
+		order by
+		registration_number asc
 </select>
 
-
-<select id="finalMarksDetailsWithTestNo" resultMap="finalMarksDetails">
-select distinct s.registration_number,st.sum_actual_computed_marks,s.test_number,s.total_marks 
-from STUDENT_TEST_NUMBER st,STUDENT_FINAL_MERIT_LIST s where s.program_id=#program_id# 
-AND s.branch_code=#branch_id# AND s.entity_id=#entity_id# and s.test_number like #test_number#
-and s.registration_number=st.registration_number order by registration_number asc
+	<!-- Query updated by Devendra May 3rd-->
+	<select id="finalMarksDetailsWithTestNo" resultMap="finalMarksDetails">
+		select
+		distinct
+		s.registration_number,st.sum_actual_computed_marks,s.test_number,s.total_marks
+		from student_test_number st,student_final_merit_list s where
+		s.program_id=#program_id# AND
+		s.entity_id=#entity_id# AND
+		s.test_number like #test_number#
+		and
+		s.registration_number=st.registration_number order by
+		registration_number asc
 </select>
 
-<update id="updateStudentFinalMarks1">
-update STUDENT_FINAL_MARKS set marks=#marks#, attended=#attended#, modifier_id=#modifier_id#, 
-modification_time=#modification_time# where program_id=#program_id# AND branch_code=#branch_id# 
-AND entity_id=#entity_id# AND registration_number=#registration_number# AND 
-evaluation_component=#component_id# 
+	<!-- Query updated by Devendra May 3rd-->
+	<update id="updateStudentFinalMarks1">
+		update student_final_marks set marks=#marks#,
+		attended=#attended#,
+		modifier_id=#modifier_id#,
+		modification_time=#modification_time# where program_id=#program_id# AND entity_id=#entity_id# AND
+		registration_number=#registration_number#
+		AND
+		evaluation_component=#component_id# 
 </update>
 
-<update id="updateStudentFinalMeritList1">
-update STUDENT_FINAL_MERIT_LIST set total_marks=#final_marks# , 
-modifier_id =#modifier_id#, modification_time=#modification_time# where program_id=#program_id# 
-AND entity_id=#entity_id# AND branch_code=#branch_id#  AND registration_number=#registration_number# 
-AND test_number=#test_number#
+	<!-- Query updated by Devendra May 3rd-->
+	<update id="updateStudentFinalMeritList1">
+		update student_final_merit_list set
+		total_marks=#final_marks# ,
+		modifier_id =#modifier_id#,
+		modification_time=#modification_time# where
+		program_id=#program_id# AND
+		entity_id=#entity_id# AND
+		registration_number=#registration_number#
+		AND test_number=#test_number#
 </update>
 
-<resultMap id="distinctRegOrTestNo" class="addMarks">
-	   <result property="registration_number" column="registration_number"/>
-</resultMap>
+	<resultMap id="distinctRegOrTestNo" class="addMarks">
+		<result property="registration_number" column="registration_number" />
+	</resultMap>
 
-<select id="distinctRegNo" resultMap="distinctRegOrTestNo">
-select distinct registration_number from STUDENT_FINAL_MARKS where program_id=#program_id# 
-AND entity_id=#entity_id# AND branch_code=#branch_id#
-</select>
+	<!-- Query updated By Devendra May 3rd-->
+	<select id="distinctRegNo" resultMap="distinctRegOrTestNo">
+		select distinct
+		registration_number from student_final_marks where
+		program_id=#program_id#
+		AND entity_id=#entity_id#;
+	</select>
 
-<select id="distinctTestNo" resultMap="distinctRegOrTestNo">
-select distinct test_number registration_number from STUDENT_FINAL_MERIT_LIST where program_id=#program_id# 
-AND entity_id=#entity_id# AND branch_code=#branch_id#
-</select>
-
-
-<resultMap id="regCount" class="addMarks">
-	   <result property="total_marks" column="total_marks"/>
-</resultMap>
-
-<select id="getRegCount" resultMap="regCount">
-select count(st.registration_number) total_marks from STUDENT_TEST_NUMBER s,STUDENT_FINAL_MARKS st 
-where s.program_id=#program_id# 
-AND s.entity_id=#entity_id# AND s.branch_code=#branch_id#  AND s.registration_number=#registration_number#
-and s.registration_number=st.registration_number
-</select>
-
-<resultMap id="cosForTestNo" class="addMarks">
-	   <result property="test_number" column="test_number"/>
-	    <result property="cos_value" column="cos_value"/>
-</resultMap>
-
-<select id="getCosForTestNo" resultMap="cosForTestNo">
-select test_number,cos_value from STUDENT_TEST_NUMBER s 
-where s.program_id=#program_id# 
-AND s.entity_id=#entity_id# AND s.branch_code=#branch_id#  AND s.registration_number=#registration_number#
+	<!-- Query updated -->
+	<select id="distinctTestNo" resultMap="distinctRegOrTestNo">
+		select distinct
+		test_number registration_number from
+		student_final_merit_list where
+		program_id=#program_id#
+		AND entity_id=#entity_id# AND
+		specialization_code=#specializationCode# AND
+		branch_code=#branch_id#;
 </select>
 
 
+	<resultMap id="regCount" class="addMarks">
+		<result property="total_marks" column="total_marks" />
+	</resultMap>
+
+
+	<!-- Query updated by devendra May 3rd-->
+	<select id="getRegCount" resultMap="regCount">
+		select
+		count( distinct st.registration_number) total_marks from student_test_number
+		s,student_final_marks st
+		where s.program_id=#program_id#
+		AND
+		s.entity_id=#entity_id# AND
+		s.registration_number=#registration_number#
+		and
+		s.registration_number=st.registration_number
+</select>
+
+	<resultMap id="cosForTestNo" class="addMarks">
+		<result property="test_number" column="test_number" />
+		<result property="cos_value" column="cos_value" />
+	</resultMap>
+
+
+	<!-- Query updated by Devendra May 3rd -->
+	<select id="getCosForTestNo" resultMap="cosForTestNo">
+		select distinct
+		test_number,cos_value from student_test_number s
+		where
+		s.program_id=#program_id#
+		AND s.entity_id=#entity_id# AND
+		s.registration_number=#registration_number#
+</select>
+
+	<resultMap id="Specializations" class="p1">
+		<result property="specializationName" column="specialization_name" />
+		<result property="specializationId" column="specialization_code" />
+	</resultMap>
+
+	<!-- Query updated -->
+	<select id="getspecializations" resultMap="Specializations">
+
+
+		select distinct
+		sys.component_description as
+		specialization_name,sys.component_code as
+		specialization_code from
+		system_table_two sys,program_offered_by pob,
+		final_merit_components d
+		where sys.component_code=pob.specialization_id AND
+		sys.group_code='SPCLCD' AND
+		sys.university_code=#university_id# and
+		pob.program_id like
+		#program_id# and
+		pob.offered_by like #entity_id# and
+		pob.branch_id=d.branch_code AND
+		pob.branch_id=#branchcode#;
+		
+		
+		</select>
+		
+		<select id="getSpecializationsDetails" resultMap="Specializations">
+
+
+		select distinct sys1.component_code as specialization_code,
+		sys1.component_description as specialization_name
+		 from system_table_two sys,system_table_two sys1,program_offered_by pob
+		  where pob.program_id=#program_id# AND pob.branch_id=sys.component_code AND
+		   sys.group_code='BRNCOD' AND pob.specialization_id=sys1.component_code AND
+		    sys1.group_code='SPCLCD' AND sys.university_code=sys1.university_code
+		     AND sys1.university_code=#university_id#;
+
+		
+		
+		</select>
+		
+		<resultMap id="ProgramDetails" class="p1">
+		<result property="program_name" column="program_name" />
+		<result property="program_id" column="program_id" />
+	</resultMap>
+
+	<!-- Query updated -->
+	<select id="getProgramsFromProgramMaster" resultMap="ProgramDetails">
+
+
+		select program_id,program_name from program_master where
+		 program_id IN(select program_id from program_offered_by
+		  where program_id LIKE #university_id#);
+		
+		
+		</select>
+		
+		<resultMap id="BranchDetails" class="p1">
+		<result property="branchname" column="component_description" />
+		<result property="branchcode" column="component_code" />
+	</resultMap>
+
+	<!-- Query updated -->
+	<select id="getBranchDetails" resultMap="BranchDetails">
+
+
+		 select sys.component_code,sys.component_description from system_table_two sys,program_offered_by pob
+		  where pob.program_id=#program_id# AND pob.branch_id=sys.component_code
+		   AND sys.group_code='BRNCOD' AND sys.university_code=#university_id#;		
+		
+		</select>
+		
+		
+		<resultMap id="ComponentsDetails" class="p1">
+		<result property="description" column="description" />
+		<result property="component_id" column="component_id" />
+	</resultMap>
+		
+		<!-- Query updated -->
+	<select id="getProgramComponentsDetails" resultMap="ComponentsDetails">
+
+
+		 select cd.component_id,cd.description from component_description cd,
+		  program_components pcs where cd.component_id=pcs.component_id AND
+		   pcs.program_id=#program_id# AND pcs.branch_code=#branchcode# AND pcs.specialization_code=#specialization_code#;
+
+
+		
+		
+		</select>
+		
+		<resultMap id="ApplicantInformation" class="p1">
+		<result property="aplicant_name" column="student_name" />
+		<result property="father_name" column="father_name" />
+		<result property="gender" column="gender" />
+		<result property="dateofbirth" column="date_of_birth" />
+		<result property="registration_number" column="registration_number" />
+		<result property="category" column="cos_value" />
+	</resultMap>
+		
+		<!-- Query updated by devendra May 3rd -->
+	<select id="getAllAplicants" resultMap="ApplicantInformation">
+		 select concat_ws(' ',es.first_name,es.middle_name,es.last_name) as student_name,
+		 concat_ws(' ',es.father_first_name,es.father_middle_name,es.father_last_name) as father_name ,
+		 es.gender,es.date_of_birth,sr.registration_number,es.cos_value
+		 from entity_student es,student_call_list scl,student_registration sr
+		 where es.student_id=sr.student_id AND sr.registration_number=scl.registration_number
+		 AND scl.program_id=#program_id#;		
+	</select>
+		
+		
+		<select id="getStudentMarksDetails" resultClass="p1">
+
+		select  scl.registration_number AS registration_number,scl.marks_percentage AS marksPercentage,scl.marks_obtained AS marksObtained,
+		scl.total_marks AS totalMarks,spl.weightage_id AS weightageId,cd.description AS description 
+		from student_call_list scl  LEFT JOIN student_special_weightage spl ON (spl.registration_number=scl.registration_number) 
+		LEFT JOIN  component_description cd ON (cd.component_id=spl.weightage_id) where scl.registration_number =#registration_number#;		
+		
+		</select>
+		<!-- Updated by devendra May 3rd -->
+		<select id="getRegistrations" resultClass="p1">
+			select distinct(registration_number) from student_call_list where program_id=#program_id#;		
+		</select>
+		
+		<!-- Updated by devendra May 3rd -->
+		<select id="getEntityIdforCombination" resultClass="p1">
+			select offered_by AS entity_id from program_offered_by where program_id=#program_id# group by offered_by;
+		</select>
+		
+		<select id="getStudentsforRegistration" resultClass="p1">
+
+		select distinct sr.form_number AS fac_form_number,concat_ws(' ',es.first_name,es.middle_name,es.last_name) as aplicant_name,
+		concat_ws(' ',es.father_first_name,es.father_middle_name,es.father_last_name) as father_name,es.gender,es.date_of_birth AS dateofbirth,sr.cos_value AS category
+		 from student_registration sr,entity_student es
+		 where sr.student_id=es.student_id AND sr.registration_number=#registration_number#;		
+		
+		</select>
+		
+		<select id="getComponentCombination" resultClass="p1">
+
+		select cd.component_id,cd.description,scl.marks_obtained AS marksObtained,scl.total_marks AS totalMarks 
+		from component_description cd,student_call_list scl where
+		 cd.component_id=scl.component_id AND scl.registration_number=#registration_number#;
+		
+		
+		</select>
+		
+		<select id="getSpecialWeightageComponents" resultClass="p1">
+
+		select weightage_id from student_special_weightage where
+		 weightage_id=#component_id# AND registration_number=#registration_number#;
+		
+		
+		</select>
+		
+		<select id="getPapersComponents" resultClass="p1">
+
+		select stt.component_code paper_code,stt.component_description paper_description from system_table_two stt,student_paper sp
+		 where stt.component_code=sp.paper_code AND sp.registration_number=#registration_number# and stt.group_code='PAPCOD';	
+		
+		</select>
+		
+		<!-- Updated by Devendra May 3rd -->
+		<select id="getSearchByName" resultClass="p1">
+			select distinct sr.form_number,sr.registration_number,concat_ws(' ',es.first_name,es.middle_name,es.last_name) 
+			as aplicant_name,concat_ws(' ',es.father_first_name,es.father_middle_name,es.father_last_name) 
+			as father_name,es.gender,es.date_of_birth AS dateofbirth,sr.cos_value AS category from entity_student es,student_registration sr,
+			student_call_list scl where es.student_id=sr.student_id AND sr.registration_number =scl.registration_number 
+			AND  scl.program_id=#program_id# AND es.first_name LIKE #student_name#;		
+		</select>
+		<!-- Updated By Devendra May 3rd -->
+		<select id="getSearchByfacregnumber" resultClass="p1">
+			select distinct sr.form_number,sr.registration_number,concat_ws(' ',es.first_name,es.middle_name,es.last_name) 
+			as aplicant_name,concat_ws(' ',es.father_first_name,es.father_middle_name,es.father_last_name) 
+			as father_name,es.gender,es.date_of_birth AS dateofbirth,sr.cos_value AS category from entity_student es,student_registration sr,
+			student_call_list scl where es.student_id=sr.student_id AND sr.registration_number =scl.registration_number 
+			AND  scl.program_id=#program_id# AND sr.form_number=#fac_form_number#;			
+		</select>
+		<!-- Updated by Devendra May 3rd -->
+		<select id="getSearchByfacregnumbername" resultClass="p1">
+			select distinct sr.form_number,sr.registration_number,concat_ws(' ',es.first_name,es.middle_name,es.last_name) 
+			as aplicant_name,concat_ws(' ',es.father_first_name,es.father_middle_name,es.father_last_name) 
+			as father_name,es.gender,es.date_of_birth AS dateofbirth,sr.cos_value AS category from entity_student es,student_registration sr,
+			student_call_list scl where es.student_id=sr.student_id AND sr.registration_number =scl.registration_number 
+			AND  scl.program_id=#program_id# AND es.first_name LIKE #student_name# AND sr.form_number=#fac_form_number#;	
+		</select>
+		
+		<select id="getexcelComponents" resultClass="p1">
+		
+		select component_code as component_id,component_description as description from system_table_two
+		 where group_code='EXLCOD' AND university_code=#university_id# AND component_code NOT IN(select code from excel_codes where program_id=#program_id#
+      	AND university_id=#university_id#);
+		
+		</select>
+		
+		<select id="getDefinedExcelComponents" resultClass="p1">
+		
+		select component_code as component_id,component_description as description from system_table_two
+		 where group_code='EXLCOD' AND university_code=#university_id# AND component_code IN(select code from excel_codes where program_id=#program_id#
+      	AND university_id=#university_id#);
+		
+		</select>
+		
+		<insert id="insertExcelComponents">
+		
+		insert into excel_codes (university_id, program_id, code) values(#university_id#,#program_id#,#component_id#);
+		
+		</insert>
+		
+		<delete id="deleteExcelComponents">
+		
+		delete from excel_codes where university_id=#university_id# AND program_id=#program_id# AND code=#component_id#;
+		
+		</delete>
+		
+		<select id="getDefinedPrograms" resultClass="p1">
+		
+		select program_id,program_name from program_master where program_id IN(select program_id from excel_codes where university_id=#university_id#);
+		
+		</select>
+		
+		
+<!-- Query Added by Devendra -->
+	<select id="getComponentList" resultClass="in.ac.dei.edrp.client.CM_ProgramInfoGetter">
+		SELECT component_id AS componentId,description AS componentDescription 
+		FROM final_merit_components WHERE program_id=#program_id# AND offered_by=#entity_id# AND academic_component='N' ORDER BY description;
+	</select>
 
 
 </sqlMap>

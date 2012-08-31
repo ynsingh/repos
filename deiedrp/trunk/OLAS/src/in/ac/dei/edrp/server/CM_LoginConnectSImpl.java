@@ -93,19 +93,7 @@ public class CM_LoginConnectSImpl extends RemoteServiceServlet
 
             if (CMUIG1.length > 0) {
                 // if ((CMUIG1[0].getActivated()).equals(true)) {
-                return (CM_userInfoGetter[]) list.toArray(new CM_userInfoGetter[list.size()]);
-
-                // } else {
-                //                
-                // CM_userInfoGetter[] CMUIG2 = new CM_userInfoGetter[2];
-                // CMUIG2[0] = new CM_userInfoGetter();
-                //            
-                // CMUIG2[0].setUser_name("Inactive");
-                //           
-                // CMUIG2[0].setpassword("Inactive");
-                //                  
-                // return CMUIG2;
-                // }
+                return (CM_userInfoGetter[]) list.toArray(new CM_userInfoGetter[list.size()]);               
             } else {
                 CM_userInfoGetter[] CMUIG3 = new CM_userInfoGetter[2];
 
@@ -126,7 +114,6 @@ public class CM_LoginConnectSImpl extends RemoteServiceServlet
     public CM_userInfoGetter[] getPageAuthority(String user_id) {
         CM_userInfoGetter cmg = new CM_userInfoGetter();
         cmg.setUser_id(user_id);
-        System.out.println("id in getpageauthority" + user_id);
 
         List l1;
 
@@ -135,7 +122,26 @@ public class CM_LoginConnectSImpl extends RemoteServiceServlet
 
             return (CM_userInfoGetter[]) l1.toArray(new CM_userInfoGetter[l1.size()]);
         } catch (Exception e) {
-            System.out.println("Exception in page authority" + e);
+        }
+
+        return null;
+    }
+
+    @SuppressWarnings("unchecked")
+    public CM_userInfoGetter[] getPageAuthorityNew(CM_userInfoGetter userInfo) {
+//        CM_userInfoGetter cmg = new CM_userInfoGetter();
+//        cmg.setUser_id(user_id);
+//System.out.println("hi inside impl of page  authority");
+        List l1;
+
+        try {
+//        	System.out.println("before calling the query"+userInfo.getApplication()+userInfo.getUser_name()+userInfo.getInstituteID());
+            l1 = client.queryForList("getMainPagesNew", userInfo);
+//            System.out.println("nupur page authority new "+l1.size());
+            return (CM_userInfoGetter[]) l1.toArray(new CM_userInfoGetter[l1.size()]);
+        } catch (Exception e) {
+        	System.out.println(e.getStackTrace());
+        	e.printStackTrace();
         }
 
         return null;
@@ -143,25 +149,37 @@ public class CM_LoginConnectSImpl extends RemoteServiceServlet
 
     @SuppressWarnings("unchecked")
     public CM_userInfoGetter[] getPrimaryAuthorities(String user_name) {
-        System.out.println("here " + user_name);
 
         CM_userInfoGetter cmp = new CM_userInfoGetter();
 
         cmp.setUser_id(user_name);
 
-        //        cmp.setUser_group_name(type);
         List l1;
 
         try {
             l1 = client.queryForList("getprimaryauthorities", cmp);
 
-            System.out.println("size of return primary" + l1.size());
 
             return (CM_userInfoGetter[]) l1.toArray(new CM_userInfoGetter[l1.size()]);
         } catch (Exception e) {
             System.out.println("Exception in primaryauthorities" + e);
         }
 
+        return null;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public CM_userInfoGetter[] getPrimaryAuthoritiesNew(CM_userInfoGetter userInfo) {
+//    	System.out.println("nupur promary authority new ");
+        List l1;
+        try {
+            l1 = client.queryForList("getprimaryauthoritiesNew", userInfo);
+//            System.out.println("nupur promary authority new "+l1.size());
+            return (CM_userInfoGetter[]) l1.toArray(new CM_userInfoGetter[l1.size()]);
+            
+        } catch (Exception e) {
+            System.out.println("Exception in primaryauthorities" + e);
+        }
         return null;
     }
 
@@ -186,7 +204,6 @@ public class CM_LoginConnectSImpl extends RemoteServiceServlet
 
     @SuppressWarnings("unchecked")
     public List<String> getsecondaryauthorities(String uni_id, String pagename) {
-        System.out.println("here " + uni_id + " " + pagename);
 
         List<String> retAuthority = new ArrayList<String>();
 
@@ -200,32 +217,26 @@ public class CM_LoginConnectSImpl extends RemoteServiceServlet
         try {
             l1 = client.queryForList("getsecondryauthorities", cmp);
 
-            System.out.println("size of return secondry" + l1.size());
 
             if (l1.size() > 0) {
                 retAuthority.clear();
 
                 String authority = l1.get(0).getAuthority();
-                System.out.println("user-authority=" + authority);
 
                 if (authority.charAt(0) == '1') {
                     retAuthority.add("create");
-                    System.out.println("create");
                 }
 
                 if (authority.charAt(1) == '1') {
                     retAuthority.add("delete");
-                    System.out.println("delete");
                 }
 
                 if (authority.charAt(2) == '1') {
                     retAuthority.add("update");
-                    System.out.println("update");
                 }
 
                 if (authority.charAt(3) == '1') {
                     retAuthority.add("view");
-                    System.out.println("view");
                 }
             }
 

@@ -46,4 +46,10 @@ public interface CM_LoginConnectSAsync {
 
     void getsecondaryauthorities(String university_id, String pagename,
         AsyncCallback<List<String>> asyncCallback);
+    
+    void getPageAuthorityNew(CM_userInfoGetter userInfo,
+            AsyncCallback<CM_userInfoGetter[]> asyncCallback);
+    
+    void getPrimaryAuthoritiesNew(CM_userInfoGetter userInfo,
+            AsyncCallback<CM_userInfoGetter[]> asyncCallback);
 }

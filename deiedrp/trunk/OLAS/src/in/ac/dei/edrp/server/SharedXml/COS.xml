@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="cos">
+<typeAlias alias="callcutoff" type="in.ac.dei.edrp.client.CM_ProgramInfoGetter" />
+<typeAlias alias="sytemTableTwo" type="in.ac.dei.edrp.client.SystemTableTwo"/>	
+<typeAlias alias="subjectCode" type="in.ac.dei.edrp.client.SubjectCode"/>
+<resultMap id="categoriesRecord" class="sytemTableTwo">
+		<result property="component_id" column="component_code" />
+		<result property="component_description" column="component_description" />
+		</resultMap>
+<select id="getEntityNames_COS" resultClass="callcutoff">
+SELECT entity_name ,entity_id FROM entity_master where entity_type=#entity_type#  and university_id=#university_id#;
+</select>
+<select id="getEntityType_COS" resultClass="callcutoff">
+SELECT component_code as component_id, component_description as componentDescription FROM system_table_two where group_code='ENTTYP' and university_code=#university_id#;
+</select>
+<select id="getProgram_COS" resultClass="callcutoff">
+		select distinct
+		epm.program_id as program_id,epm.program_name as program_name
+		from program_master epm,program_offered_by pob,entity_master
+		em where
+		epm.program_id=pob.program_id AND pob.offered_by=em.entity_id AND em.entity_id=#entity_id# AND
+		em.university_id=#university_id# AND
+		(pob.program_id)NOT IN(select
+		cco.program_id from
+		call_cut_off cco where cco.settings=#settings#) order by
+		pob.program_id;
+</select>
+<select id="getTotalSeats" resultClass="java.lang.Integer">
+SELECT sum(seats) FROM program_offered_by where program_id=#program_id# and offered_by=#entity_id#;
+</select>
+<select id="getCOS_Seats" resultClass="java.lang.Integer">
+select sum(cos_seats) from call_cut_off where program_id=#program_id# and offered_by=#entity_id#;
+</select>
+
+<select id="getSession_Dates" resultClass="callcutoff">
+SELECT start_date as session_sdate,end_date as session_edate FROM university_master where university_code=#university_id# and current_status='1';
+</select>
+
+<select id="getCOS_Records" resultClass="callcutoff">
+SELECT cos_value FROM call_cut_off where program_id=#program_id# and offered_by=#entity_id# and cos_value=#cos_value# ;
+</select>
+<select id="getCategories" resultMap="categoriesRecord">
+SELECT component_code, component_description FROM system_table_two where group_code='STDCTG' and university_code=#university_id#;
+</select>
+<select id="getGender" resultMap="categoriesRecord">
+SELECT component_code, component_description FROM system_table_two where group_code='GENDER' and university_code=#university_id#;
+</select>
+<insert id="insertCOS_Details">
+		insert into
+		call_cut_off(program_id,offered_by,cos_value,cos_seats,number_of_times,number_of_times_active,cut_off_number,cut_off_number_active,cut_off_percentage,cut_off_percentage_active,settings,session_start_date,session_end_date,insert_time,creator_id)
+		values(#program_id#,#entity_id#,#cos_value#,#no_of_seats#,#no_of_times#,#no_of_times_active#,#cut_off_number#,#cut_off_number_active#,#cut_off_percentage#,#cut_off_percentage_active#,#settings#,#session_start_date#,#session_end_date#,now(),#creator_id#)
+
+</insert>
+
+<select id="getSubjectCodes" resultClass="subjectCode">
+select stt.component_description as subject_code_description,stt.component_code as subject_code from system_table_two as stt
+where stt.group_code='SUBCOD' and component_code in (select cos_code from program_cos_code where program_id=#programID# and university_id=stt.university_code)
+and stt.university_code=#university_id#;
+</select>
+<select id="getSimpleProgramNames" resultClass="callcutoff">
+select pm.program_id as program_id ,pm.program_name as program_name from program_master as pm join program_offered_by as pob on pm.program_id=pob.program_id
+join entity_master as em on em.entity_id=pob.offered_by where
+pob.offered_by=#entity_id# and em.university_id=#university_id#;
+</select>
+<select id="getEntranceCenter" resultClass="sytemTableTwo">
+SELECT component_code as component_id,component_description as component_description FROM system_table_two where group_code='CENCOD'and university_code=#university_id#;
+</select>
+<insert id="insert_entrance">
+insert into  examination_center (entity_id,program_id,center_code,insert_time,creator_id)
+values(#entity_id#,#program_id#,#component_id#,now(),#creator_id#);
+</insert>
+<select id="getEntranceDetails" resultClass="callcutoff">
+SELECT pm.program_id as program_id,pm.program_name as program_name,stt.component_code as component_id ,stt.component_description as componentDescription FROM examination_center as ec join
+entity_master as em on em.entity_id=ec.entity_id join program_master as pm on pm.program_id=ec.program_id join 
+system_table_two as stt on stt.component_code=ec.center_code and stt.group_code='CENCOD' and stt.university_code=em.university_id
+  where ec.entity_id=#entity_id# and em.university_id=#university_id#;
+</select>
+
+<delete id="deleteCenter">
+delete from examination_center where program_id=#program_id# and center_code=#component_id#;
+</delete>
+<select id="getExaminationDetails" resultClass="callcutoff">
+SELECT program_id as program_id,center_code as component_id FROM examination_center where entity_id=#entity_id# and program_id=#program_id# and center_code=#component_id#;
+</select>
+<select id="getProgram_ID" resultClass="java.lang.String">
+select pm.program_id from program_master as pm join program_offered_by as pob on
+pm.program_id=pob.program_id join entity_master as em on em.entity_id=pob.offered_by
+where em.entity_id=#entity_id# and em.university_id=#university_id# and pm.program_name=#program_name#;
+</select>
+<select id="getComp_ID" resultClass="java.lang.String">
+select stt.component_code from system_table_two as stt join examination_center as ec on
+stt.component_code=ec.center_code join entity_master as em on em.entity_id=ec.entity_id  where em.entity_id=#entity_id#
+and stt.university_code=#university_id# and stt.component_description=#componentDescription#;
+</select>
+<!-- Queris For COS Starts -->
+<select id="getCOS_Manage_Details" resultClass="callcutoff">
+SELECT em.entity_id entity_id,em.entity_name entity_name,pm.program_id program_id,pm.program_name program_name
+,cco.cos_value cos_value ,cco.number_of_times x_factor,cco.cos_seats cos_seats,cco.session_start_date session_start_date,
+cco.session_end_date session_end_date FROM call_cut_off as cco
+join program_master as pm on pm.program_id=cco.program_id join entity_master as em on em.entity_id=cco.offered_by where
+em.university_id=#university_id#;
+</select>
+<delete id="deleteCOS">
+delete from call_cut_off where offered_by=#entity_id# and program_id=#program_id# and cos_value=#cos_value#;
+</delete>
+
+<select id="getCOS_Manage_Details_ET" resultClass="callcutoff">
+SELECT em.entity_id entity_id,em.entity_name entity_name,pm.program_id program_id,pm.program_name program_name
+,cco.cos_value cos_value ,cco.number_of_times x_factor,cco.cos_seats cos_seats,cco.session_start_date session_start_date,
+cco.session_end_date session_end_date FROM call_cut_off as cco
+join program_master as pm on pm.program_id=cco.program_id join entity_master as em on em.entity_id=cco.offered_by where
+em.university_id=#university_id# and em.entity_type=#entity_type#;
+</select>
+
+<select id="getCOS_Manage_Details_EN" resultClass="callcutoff">
+SELECT em.entity_id entity_id,em.entity_name entity_name,pm.program_id program_id,pm.program_name program_name
+,cco.cos_value cos_value ,cco.number_of_times x_factor,cco.cos_seats cos_seats,cco.session_start_date session_start_date,
+cco.session_end_date session_end_date FROM call_cut_off as cco
+join program_master as pm on pm.program_id=cco.program_id join entity_master as em on em.entity_id=cco.offered_by where
+em.university_id=#university_id# and em.entity_id=#entity_id#;
+</select>
+
+
+<select id="getEName" resultClass="java.lang.String">
+SELECT entity_name FROM entity_master where university_id=#university_id# and entity_id=#entity_id#;
+</select>
+<select id="getSName" resultClass="java.lang.String">
+select component_description componentDescription from system_table_two where group_code='SUBCOD' and component_code=#component_id# and university_code=#university_id#;
+</select>
+<select  id="getPName" resultClass="java.lang.String">
+SELECT program_name FROM program_master where program_id=#program_id#;
+</select>
+<select id="getCAT_GEN" resultClass="callcutoff">
+select  stt2.component_code componentId,stt2.component_description component,stt1.component_code component_id,stt1.component_description componentDescription from system_table_two stt1,system_table_two stt2
+where stt1.group_code='GENDER' and stt2.group_code='STDCTG' and concat(stt2.component_code,stt1.component_code) not in(
+SELECT concat(substring(cos_value,1,2),substring(cos_value,3,1)) FROM call_cut_off
+where offered_by=#entity_id# and program_id=#program_id# and substring(cos_value,4,1)=#subject_code#) and stt1.university_code=stt2.university_code
+and stt1.university_code=#university_id#  order by stt2.component_code ,stt1.component_code desc  ;
+</select>
+<select id="getCAT" resultClass="callcutoff">
+select distinct stt.component_code component_id ,stt.component_description componentDescription from system_table_two as stt
+where stt.group_code='STDCTG' and stt.university_code=#university_id# and stt.component_code not in (select distinct substring(cos_value,1,2) from call_cut_off where program_id=#program_id# and offered_by=#entity_id# and substring(cos_value,4,1)=#subject_code#);
+</select>
+<select id="COS_WithoutCG" resultClass="java.lang.Integer">
+select count(*) from call_cut_off where program_id=#program_id# and offered_by=#entity_id# and substring(cos_value,3,1)='X' and substring(cos_value,4,1)=#subject_code#;
+</select>
+<select id="COS_WithCG" resultClass="java.lang.Integer">
+select count(*) from call_cut_off where program_id=#program_id# and offered_by=#entity_id# and substring(cos_value,3,1)!='X' and substring(cos_value,4,1)=#subject_code#;
+</select>
+<!-- Queris For COS Ends -->
+</sqlMap>

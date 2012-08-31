@@ -1,10 +1,104 @@
 package in.ac.dei.edrp.client;
 
+import java.util.Date;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 
 public class CM_ProgramInfoGetter implements IsSerializable {
     private String university_code;
+    private Date session_sdate;
+    private Date session_edate;
+    private String cal_basis;
+    private String cal_basisDescription;
+    private String logic;
+    private String logicDescription;
+    private String userID;
+    private String userName;
+    private String formID;
+    private String formName;
+    
+    public String getUserID() {
+		return userID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getFormID() {
+		return formID;
+	}
+
+	public void setFormID(String formID) {
+		this.formID = formID;
+	}
+
+	public String getFormName() {
+		return formName;
+	}
+
+	public void setFormName(String formName) {
+		this.formName = formName;
+	}
+
+	public String getCal_basis() {
+		return cal_basis;
+ 	}
+ 
+	public void setCal_basis(String cal_basis) {
+		this.cal_basis = cal_basis;
+	}
+
+	public String getCal_basisDescription() {
+		return cal_basisDescription;
+	}
+
+	public void setCal_basisDescription(String cal_basisDescription) {
+		this.cal_basisDescription = cal_basisDescription;
+	}
+
+	public String getLogic() {
+		return logic;
+	}
+
+	public void setLogic(String logic) {
+		this.logic = logic;
+	}
+
+	public String getLogicDescription() {
+		return logicDescription;
+	}
+
+	public void setLogicDescription(String logicDescription) {
+		this.logicDescription = logicDescription;
+	}
+
+	public Date getSession_sdate() {
+		return session_sdate; 
+	}
+   
+	public void setSession_sdate(Date session_sdate) {
+		this.session_sdate = session_sdate;
+	}
+
+	public Date getSession_edate() {
+		return session_edate;
+	}
+
+	public void setSession_edate(Date session_edate) {
+		this.session_edate = session_edate;
+	}
+
+	
     private String entity_program_id;
     private String program_id;
     private String program_name;
@@ -29,12 +123,58 @@ public class CM_ProgramInfoGetter implements IsSerializable {
     private String branch;
     private String entity_name;
     private String entity_id;
-    private String cos_value;
+    private String cos_seats;
+    public String getCos_seats() {
+		return cos_seats;
+	}
+
+	public void setCos_seats(String cos_seats) {
+		this.cos_seats = cos_seats;
+	}
+
+	private String cos_value;
     private String age_limit;
     private String category;
     private String grouping;
+    private String group_code;
+    private String componentId;
+    private String componentDescription;
+    private String branchName;
+    private String subject_code;//Add by Devendra
+    private String subject_description;//Add by Devendra
+    private String catTypeDescription;
+    private String catTypeId;
+    private String groupCode;
+    
+    /**
+	 * @return the subject_code
+	 */
+	public String getSubject_code() {
+		return subject_code;
+	}
 
-    /*
+	/**
+	 * @param subject_code the subject_code to set
+	 */
+	public void setSubject_code(String subject_code) {
+		this.subject_code = subject_code;
+	}
+
+	/**
+	 * @return the subject_description
+	 */
+	public String getSubject_description() {
+		return subject_description;
+	}
+
+	/**
+	 * @param subject_description the subject_description to set
+	 */
+	public void setSubject_description(String subject_description) {
+		this.subject_description = subject_description;
+	}
+
+	/*
      * programInfoGetter
      */
     private String mode_name;
@@ -91,226 +231,75 @@ public class CM_ProgramInfoGetter implements IsSerializable {
     private String creator_id;
     private String modifier_id;
     private String value;
-   
+    private String specialization_id;
+    private String specialization_name;
+    private String branch_id;
+    private String university_name;
+    private String X_Factor;
+    private String academicImpact;
+    public String getAcademicImpact() {
+		return academicImpact;
+	}
 
-    public CM_ProgramInfoGetter() {
+	public void setAcademicImpact(String academicImpact) {
+		this.academicImpact = academicImpact;
+	}
+
+	public String getX_Factor() {
+		return X_Factor;
+	}
+
+	public void setX_Factor(String x_Factor) {
+		X_Factor = x_Factor;
+	}
+
+	public CM_ProgramInfoGetter() {
     }
 
-    public String getCreator_id() {
-        return creator_id;
+	public String getAttendanceImpact() {
+		return attendanceImpact;
+	}
+
+	public void setAttendanceImpact(String attendanceImpact) {
+		this.attendanceImpact = attendanceImpact;
+	}
+
+	public String getWeightagePercentage() {
+		return weightagePercentage;
+	}
+
+	public void setWeightagePercentage(String weightagePercentage) {
+		this.weightagePercentage = weightagePercentage;
+	}
+
+	private String attendanceImpact;
+	private String weightagePercentage;
+    /**
+         * @return the university_name
+         */
+    public String getUniversity_name() {
+        return university_name;
     }
 
-    public void setCreator_id(String creator_id) {
-        this.creator_id = creator_id;
+    /**
+     * @param university_name the university_name to set
+     */
+    public void setUniversity_name(String university_name) {
+        this.university_name = university_name;
     }
 
-    public String getModifier_id() {
-        return modifier_id;
-    }
-
-    public void setModifier_id(String modifier_id) {
-        this.modifier_id = modifier_id;
-    }
-
-    public String getuniversity_code() {
-        return university_code;
-    }
-
-    public String getComponent_id() {
-        return component_id;
-    }
-
-    public void setComponent_id(String component_id) {
-        this.component_id = component_id;
-    }
-
-    public void setuniversity_code(String university_code) {
-        this.university_code = university_code;
-    }
-
-    public String getentity_program_id() {
-        return entity_program_id;
-    }
-
-    public void setentity_program_id(String entity_program_id) {
-        this.entity_program_id = entity_program_id;
-    }
-
-    public String getprogram_id() {
-        return program_id;
-    }
-
-    public void setprogram_id(String program_id) {
-        this.program_id = program_id;
-    }
-
-    public String getprogram_name() {
-        return program_name;
-    }
-
-    public void setprogram_name(String program_name) {
-        this.program_name = program_name;
-    }
-
-    public String getEntity_program_TermId() {
-        return Entity_program_TermID;
-    }
-
-    public void setEntity_program_TermId(String Entity_program_TermID) {
-        this.Entity_program_TermID = Entity_program_TermID;
-    }
-
-    public String getcourseCode() {
-        return course_code;
-    }
-
-    public void setcourseCode(String course_code) {
-        this.course_code = course_code;
-    }
-
-    public String getFlag() {
-        return Flag;
-    }
-
-    public void setFlag(String Flag) {
-        this.Flag = Flag;
-    }
-
-    public String getAvailable() {
-        return Available;
-    }
-
-    public void setAvailable(String Available) {
-        this.Available = Available;
-    }
-
-    public String getOptional() {
-        return optional;
-    }
-
-    public void setcourseName(String Optional) {
-        this.optional = Optional;
-    }
-
-    public String getCourse_Type() {
-        return course_type;
-    }
-
-    public void setcourse_Type(String course_type) {
-        this.course_type = course_type;
-    }
-
-    public String getCredits() {
-        return credits;
-    }
-
-   
-    public void setCredits(String credits) {
-        this.credits = credits;
-    }
-
-    public String getlectures() {
-        return lectures;
-    }
-
-    public void setlectures(String lectures) {
-        this.lectures = lectures;
-    }
-
-    public String gettutorials() {
-        return tutorials;
-    }
-
-    public void settutorials(String tutorials) {
-        this.tutorials = tutorials;
-    }
-
-    public String getprac() {
-        return practicals;
-    }
-
-    public void setprac(String practicals) {
-        this.practicals = practicals;
-    }
-
-    public String getunits() {
-        return units;
-    }
-
-    public void setunits(String units) {
-        this.units = units;
-    }
-
-    public boolean getstatus() {
-        return status;
-    }
-
-    public void setstatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getTerm() {
-        return term;
-    }
-
-    public void setTerm(String term) {
-        this.term = term;
-    }
-
-    public String getPaperCode() {
-        return paper_code;
-    }
-
-    public void setPaperCode(String paper_code) {
-        this.paper_code = paper_code;
-    }
-
-    public String getFirstDegreeCode() {
-        return first_degree_code;
-    }
-
-    public void setFirstDegreeCode(String first_degree_code) {
-        this.first_degree_code = first_degree_code;
-    }
-
+    /**
+     * @return the branchName
+     */
     public String getBranchName() {
-        return branch_name;
+        return branchName;
     }
 
-    public void setBranchName(String branch_name) {
-        this.branch_name = branch_name;
-    }
-
-    public String getBranch() {
-        return branch;
-    }
-
-    public void setBranch(String branch) {
-        this.branch = branch;
-    }
-
-    public String getentity_name() {
-        return entity_name;
-    }
-
-    public void setentity_name(String entity_name) {
-        this.entity_name = entity_name;
-    }
-
-    public String getentity_id() {
-        return entity_id;
-    }
-
-    public void setentity_id(String entity_id) {
-        this.entity_id = entity_id;
-    }
-
-    public String getcos_value() {
-        return cos_value;
-    }
-
-    public void setcos_value(String cos_value) {
-        this.cos_value = cos_value;
+    /**
+     * @param branchName the branchName to set
+     */
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
     }
 
     public String getUniversity_code() {
@@ -361,6 +350,38 @@ public class CM_ProgramInfoGetter implements IsSerializable {
         this.course_code = course_code;
     }
 
+    public String getFlag() {
+        return Flag;
+    }
+
+    public void setFlag(String flag) {
+        Flag = flag;
+    }
+
+    public String getAvailable() {
+        return Available;
+    }
+
+    public void setAvailable(String available) {
+        Available = available;
+    }
+
+    public String getOptional() {
+        return optional;
+    }
+
+    public void setOptional(String optional) {
+        this.optional = optional;
+    }
+
+    public String getCredits() {
+        return credits;
+    }
+
+    public void setCredits(String credits) {
+        this.credits = credits;
+    }
+
     public String getLectures() {
         return lectures;
     }
@@ -409,12 +430,28 @@ public class CM_ProgramInfoGetter implements IsSerializable {
         this.status = status;
     }
 
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
     public String getPaper_code() {
         return paper_code;
     }
 
     public void setPaper_code(String paper_code) {
         this.paper_code = paper_code;
+    }
+
+    public String getPaper_description() {
+        return paper_description;
+    }
+
+    public void setPaper_description(String paper_description) {
+        this.paper_description = paper_description;
     }
 
     public String getFirst_degree_code() {
@@ -425,12 +462,28 @@ public class CM_ProgramInfoGetter implements IsSerializable {
         this.first_degree_code = first_degree_code;
     }
 
+    public String getComponent_id() {
+        return component_id;
+    }
+
+    public void setComponent_id(String component_id) {
+        this.component_id = component_id;
+    }
+
     public String getBranch_name() {
         return branch_name;
     }
 
     public void setBranch_name(String branch_name) {
         this.branch_name = branch_name;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
     }
 
     public String getEntity_name() {
@@ -455,6 +508,54 @@ public class CM_ProgramInfoGetter implements IsSerializable {
 
     public void setCos_value(String cos_value) {
         this.cos_value = cos_value;
+    }
+
+    public String getAge_limit() {
+        return age_limit;
+    }
+
+    public void setAge_limit(String age_limit) {
+        this.age_limit = age_limit;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getGrouping() {
+        return grouping;
+    }
+
+    public void setGrouping(String grouping) {
+        this.grouping = grouping;
+    }
+
+    public String getGroup_code() {
+        return group_code;
+    }
+
+    public void setGroup_code(String group_code) {
+        this.group_code = group_code;
+    }
+
+    public String getComponentId() {
+        return componentId;
+    }
+
+    public void setComponentId(String componentId) {
+        this.componentId = componentId;
+    }
+
+    public String getComponentDescription() {
+        return componentDescription;
+    }
+
+    public void setComponentDescription(String componentDescription) {
+        this.componentDescription = componentDescription;
     }
 
     public String getMode_name() {
@@ -785,26 +886,6 @@ public class CM_ProgramInfoGetter implements IsSerializable {
         this.cut_off_percentage = cut_off_percentage;
     }
 
-    public void setOptional(String optional) {
-        this.optional = optional;
-    }
-
-    public String getage_limit() {
-        return age_limit;
-    }
-
-    public void setage_limit(String age_limit) {
-        this.age_limit = age_limit;
-    }
-
-    public String getcategory() {
-        return category;
-    }
-
-    public void setcategory(String category) {
-        this.category = category;
-    }
-
     public float getPercentage_seats() {
         return percentage_seats;
     }
@@ -853,20 +934,20 @@ public class CM_ProgramInfoGetter implements IsSerializable {
         this.weightage_flag = weightage_flag;
     }
 
-    public void setPaper_description(String paper_description) {
-        this.paper_description = paper_description;
+    public String getCreator_id() {
+        return creator_id;
     }
 
-    public String getPaper_description() {
-        return paper_description;
+    public void setCreator_id(String creator_id) {
+        this.creator_id = creator_id;
     }
 
-    public String getGrouping() {
-        return grouping;
+    public String getModifier_id() {
+        return modifier_id;
     }
 
-    public void setGrouping(String grouping) {
-        this.grouping = grouping;
+    public void setModifier_id(String modifier_id) {
+        this.modifier_id = modifier_id;
     }
 
     public String getValue() {
@@ -876,4 +957,52 @@ public class CM_ProgramInfoGetter implements IsSerializable {
     public void setValue(String value) {
         this.value = value;
     }
+
+    public String getSpecialization_id() {
+        return specialization_id;
+    }
+
+    public void setSpecialization_id(String specialization_id) {
+        this.specialization_id = specialization_id;
+    }
+
+    public String getSpecialization_name() {
+        return specialization_name;
+    }
+
+    public void setSpecialization_name(String specialization_name) {
+        this.specialization_name = specialization_name;
+    }
+
+    public String getBranch_id() {
+        return branch_id;
+    }
+
+    public void setBranch_id(String branch_id) {
+        this.branch_id = branch_id;
+    }
+
+	public String getCatTypeDescription() {
+		return catTypeDescription;
+	}
+
+	public void setCatTypeDescription(String catTypeDescription) {
+		this.catTypeDescription = catTypeDescription;
+	}
+
+	public String getCatTypeId() {
+		return catTypeId;
+	}
+
+	public void setCatTypeId(String catTypeId) {
+		this.catTypeId = catTypeId;
+	}
+
+	public String getGroupCode() {
+		return groupCode;
+	}
+
+	public void setGroupCode(String groupCode) {
+		this.groupCode = groupCode;
+	}
 }

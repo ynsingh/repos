@@ -23,11 +23,24 @@ public class CMaddMarksInfoGetter {
 	private String modifier_id;
 	private String cos_value;
 	private float final_marks;
+	private String specializationCode;
 	
 	
 	
 	
 	
+	/**
+	 * @return the specializationCode
+	 */
+	public String getSpecializationCode() {
+		return specializationCode;
+	}
+	/**
+	 * @param specializationCode the specializationCode to set
+	 */
+	public void setSpecializationCode(String specializationCode) {
+		this.specializationCode = specializationCode;
+	}
 	public String getEntity_id() {
 		return entity_id;
 	}

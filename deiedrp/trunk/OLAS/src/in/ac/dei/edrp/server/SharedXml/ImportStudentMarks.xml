@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="ImportStudentMarksXml">   
+  
+  <typeAlias alias="import" type="in.ac.dei.edrp.client.ReportInfoGetter"/>
+  
+ <select id="getOmrTestId" resultClass="import">
+	SELECT Testid AS test_number,Test_name AS description,group_exists AS status,Conduct_date AS start_date 
+	FROM testheader WHERE Conduct_date=#start_date# AND Test_Status='P';
+ </select>
+
+ <select id="getOmrTestId1" resultClass="import">
+	SELECT Testid AS test_number,Test_name AS description,group_exists AS status,Conduct_date AS start_date 
+	FROM testheader WHERE Test_Status='P';
+  </select>
+
+  <select id="getuniversitySessionDate" resultClass="import">
+	  	SELECT DATE(SUBSTRING(value,1,8)) AS start_date, DATE(SUBSTRING(value,9,16)) AS end_date FROM system_values 
+	  	WHERE university_id=#university_id# AND code='ADMSSN';
+  </select>
+  
+  <select id="getComponent" resultClass="java.lang.String">
+	  	SELECT total_marks FROM final_merit_components 
+	  	WHERE program_id=#program_id# AND offered_by=#entity_id# AND component_id='ET';
+  </select>
+  
+  <select id="getStudents" resultClass="import">
+  		SELECT cos_value AS cos_value ,registration_number AS registration_number,test_number AS test_number,sum_actual_computed_marks AS marks  FROM student_test_number 
+  		WHERE program_id=#program_id# AND entity_id=#entity_id# AND called='y' AND status='Eligible' 
+  		AND start_date=#university_start_date# AND end_date=#university_end_date#;
+  </select>
+  
+   <select id="getOMRMarks" resultClass="import">
+  		SELECT RollNo AS registration_number,group_code AS groupCode,section_marks AS groupMarks,total_marks AS total_marks
+  		FROM student_result_info WHERE TestId=#test_number# 
+  		<dynamic prepend="AND RollNo IN ">
+			<iterate property="list" open="(" close=")" conjunction=",  ">
+     			#list[]#
+			</iterate>
+		</dynamic>
+  		ORDER BY RollNo;
+  </select>
+  
+  <select id="checkDuplicateInStudentMarks" resultClass="java.lang.String">
+	SELECT COUNT(*) FROM student_final_marks 
+	WHERE program_id=#program_id# AND entity_id=#entity_id# AND registration_number=#registration_number# AND evaluation_component=#component_id# 
+	AND start_date=#university_start_date# AND end_date=#university_end_date#;
+  </select>
+  
+  <insert id="insertStudentFinalMarksFromOMR">
+	INSERT INTO student_final_marks (program_id,entity_id,registration_number,evaluation_component,marks,attended,start_date,end_date,insert_time,creator_id)
+	VALUES (#program_id#,#entity_id#,#registration_number#,#component_id#,#total_marks#,#attendance#,#university_start_date#,#university_end_date#,now(),#user_id#);
+  </insert>
+
+ <update id="updateStudentFinalMarksFromOMR">
+	UPDATE student_final_marks
+	SET marks=#total_marks#,attended=#attendance#,modification_time=now(),modifier_id=#user_id#
+	WHERE registration_number=#registration_number# AND entity_id=#entity_id# AND program_id=#program_id#
+	AND evaluation_component=#component_id# AND start_date=#university_start_date# AND end_date=#university_end_date# ;
+ </update>
+  
+  <select id="checkDuplicateSubcomponents" resultClass="java.lang.Integer">
+  	SELECT COUNT(*) FROM student_final_subcomponent_marks 
+  	WHERE program_id=#program_id# AND entity_id=#entity_id# AND registration_number=#registration_number# 
+  	AND test_id=#test_number# AND evaluation_component=#component_id# AND sub_component=#groupCode#;
+  </select>
+  
+  <insert id="insertStudentSubcomponentMarks">
+  	INSERT INTO student_final_subcomponent_marks(program_id,entity_id,registration_number,test_id,evaluation_component,
+  	sub_component,marks,insert_time,creator_id,start_date,end_date)
+	VALUES(#program_id#,#entity_id#,#registration_number#,#test_number#,#component_id#,#groupCode#,#groupMarks#,
+	now(),#user_id#,#university_start_date#,#university_end_date#);
+  </insert>
+  
+  <update id="updateStudentSubcomponentMarks">
+	UPDATE student_final_subcomponent_marks
+	SET marks=#groupMarks#,modification_time=now(),modifier_id=#user_id#
+	WHERE registration_number=#registration_number# AND entity_id=#entity_id# AND program_id=#program_id# AND test_id=#test_number# 
+	AND evaluation_component=#component_id# AND sub_component=#groupCode# AND start_date=#university_start_date# AND end_date=#university_end_date# ;
+ </update>
+ 
+ <select id="getStudentAcademicComponent" resultClass="import">
+  	SELECT scl.component_id AS component_id,scl.marks_percentage AS marks,scl.registration_number AS registration_number 
+  	FROM student_call_list scl,student_test_number stn 
+  	WHERE stn.entity_id=scl.entity_id AND stn.program_id=scl.program_id AND stn.registration_number=scl.registration_number AND stn.start_date=scl.start_date 
+  	AND stn.end_date=scl.end_date AND scl.program_id=#program_id# AND scl.entity_id=#entity_id# AND scl.start_date=#university_start_date# AND scl.end_date=#university_end_date# 
+  	AND stn.status='Eligible' AND stn.called='y' ORDER BY scl.registration_number;
+ </select>
+ 
+</sqlMap>

@@ -20,7 +20,8 @@ public class CM_userInfoGetter implements IsSerializable {
     private String authority;
     private String menu_item_name;
     private String menu_item_id;
-
+    private String application;
+    
     public String getUID() {
         return uID;
     }
@@ -171,6 +172,14 @@ public class CM_userInfoGetter implements IsSerializable {
 
 	public void setMenu_item_id(String menu_item_id) {
 		this.menu_item_id = menu_item_id;
+	}
+
+	public void setApplication(String application) {
+		this.application = application;
+	}
+
+	public String getApplication() {
+		return application;
 	}
     
     

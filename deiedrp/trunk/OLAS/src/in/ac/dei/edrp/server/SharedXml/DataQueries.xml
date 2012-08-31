@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="dataservice">
+<typeAlias alias="callcutoff" type="in.ac.dei.edrp.client.CM_ProgramInfoGetter" />
+<select id="getEntityType_FMC" resultClass="callcutoff">
+select component_code  componentId, component_description componentDescription  from system_table_two where university_code=#university_id#
+and group_code='ENTTYP';
+</select>
+<select id="getEntityName_FMC" resultClass="callcutoff">
+select entity_id,entity_name from entity_master where university_id=#university_id# and entity_type=#entity_type#;
+</select>	
+<select id="getEntityProgram_FMC" resultClass="callcutoff">
+select distinct pm.program_id as program_id,pm.program_name as program_name from program_master as pm join program_offered_by as pob on
+pob.program_id=pm.program_id join entity_master as em on em.entity_id=pob.offered_by where em.university_id=#university_id#
+and em.entity_id=#entity_id#;
+</select>
+<select id="getComponent_FMC" resultClass="callcutoff">
+select component_code  componentId, component_description componentDescription  from system_table_two where university_code=#university_id#
+and group_code='MRTCOM' union select pc.component_id  component_id,cd.description componentDescription from program_components as pc join component_description as cd on pc.component_id=cd.component_id where  pc.program_id=#program_id#;
+</select>
+<insert id="insert_FMC">
+insert into final_merit_components (program_id,offered_by,component_id,attendance_flag,description,total_marks,insert_time,creator_id,weightage_percentage,academic_component)
+values(#program_id#,#entity_id#,#component_id#,#available#,#componentDescription#,#total_marks#,now(),#creator_id#,#weightage#,#academicImpact#);
+</insert>
+<select id="checkFMC" resultClass="java.lang.Integer">
+SELECT count(*) FROM final_merit_components where program_id=#program_id# and offered_by=#entity_id# and component_id=#component_id#;
+</select>
+<select id="getFMC_Details" resultClass="callcutoff">
+select em.entity_id entity_id ,em.entity_name entity_name ,pm.program_id  program_id,pm.program_name program_name,
+fmc.component_id component_id,(select component_description from system_table_two where group_code='MRTCOM' and
+university_code=em.university_id and component_code=fmc.component_id union select description from component_description as cd where cd.university_id=em.university_id
+and cd.component_id=fmc.component_id)  componentDescription, fmc.attendance_flag attendanceImpact,fmc.total_marks total_marks
+,fmc.weightage_percentage weightagePercentage,fmc.academic_component academicImpact from entity_master as em join final_merit_components as fmc
+on fmc.offered_by=em.entity_id join program_master as pm on pm.program_id=fmc.program_id where em.university_id=#university_id# and fmc.offered_by=#entity_id# ;
+</select>
+<delete id="deleteFMC">
+delete from final_merit_components where component_id=#component_id# and offered_by=#entity_id# and program_id=#program_id#;
+</delete>
+<select id="getFMC_DetailsWithoutET" resultClass="callcutoff">
+select em.entity_id entity_id ,em.entity_name entity_name ,pm.program_id  program_id,pm.program_name program_name,
+fmc.component_id component_id,(select component_description from system_table_two where group_code='MRTCOM' and
+university_code=em.university_id and component_code=fmc.component_id union select description from component_description as cd where cd.university_id=em.university_id
+and cd.component_id=fmc.component_id)  componentDescription, fmc.attendance_flag attendanceImpact,fmc.total_marks total_marks
+,fmc.weightage_percentage weightagePercentage,fmc.academic_component academicImpact from entity_master as em join final_merit_components as fmc
+on fmc.offered_by=em.entity_id join program_master as pm on pm.program_id=fmc.program_id where em.university_id=#university_id#;
+</select>
+<select id="getFMC_DetailsWithET" resultClass="callcutoff">
+select em.entity_id entity_id ,em.entity_name entity_name ,pm.program_id  program_id,pm.program_name program_name,
+fmc.component_id component_id,(select component_description from system_table_two where group_code='MRTCOM' and
+university_code=em.university_id and component_code=fmc.component_id union select description from component_description as cd where cd.university_id=em.university_id
+and cd.component_id=fmc.component_id)  componentDescription, fmc.attendance_flag attendanceImpact,fmc.total_marks total_marks
+,fmc.weightage_percentage weightagePercentage,fmc.academic_component academicImpact from entity_master as em join final_merit_components as fmc
+on fmc.offered_by=em.entity_id join program_master as pm on pm.program_id=fmc.program_id where em.university_id=#university_id# and em.entity_type=#entity_type#;
+</select>
+
+<select id="compareComponent" resultClass="java.lang.Integer">
+SELECT count(*) FROM system_table_two where group_code='MRTCOM' and university_code=#university_id# and component_code=#component_id#;
+</select>
+<update  id="updateFMC">
+update final_merit_components set attendance_flag=#attendanceImpact#,total_marks=#total_marks#,weightage_percentage=#weightage#
+where offered_by=#entity_id# and program_id=#program_id# and component_id=#component_id#;
+</update>
+
+<!-- Here Starts Queries For Tie Rule Interface -->
+<select id="getPrograms_TR" resultClass="callcutoff">
+SELECT pm.program_id program_id,pm.program_name program_name FROM program_components as pc join program_master as pm on
+pc.program_id=pm.program_id where substring(pm.program_id,1,4)=#university_id# group by pm.program_id;
+</select>
+<select id="getCalBase_TR" resultClass="callcutoff">
+SELECT component_code as component_id,component_description as componentDescription FROM system_table_two where group_code='CALBAS' and university_code=#university_id#;
+</select>
+<select id="getLogics_TR" resultClass="callcutoff">
+SELECT component_code as component_id,component_description as componentDescription FROM system_table_two where group_code='LOGCTR' and university_code=#university_id#;
+</select>
+<select id="getComponents_TR" resultClass="callcutoff">
+select pc.component_id  component_id,cd.description componentDescription from program_components as pc join component_description as cd on pc.component_id=cd.component_id where  pc.program_id=#program_id# union select stt.component_code,stt.component_description from system_table_two as stt where stt.group_code='MRTCOM' and stt.university_code=#university_id# ;
+</select>
+<select id="getMRTCOM_TR" resultClass="java.lang.Integer">
+select count(*) from system_table_two where group_code='MRTCOM' and component_code=#component_id# and university_code=#university_id#;
+</select>
+<select id="getSubComp_TR" resultClass="callcutoff">
+SELECT distinct pc.component_code component_id ,pc.component_description componentDescription FROM system_table_two as pc join program_paper_code as ppc on pc.component_code=ppc.paper_code
+where ppc.program_id=#program_id# and ppc.university_id=#university_id# and pc.group_code='PAPCOD' and pc.university_code=#university_id#;
+</select>
+<insert id="insert_TR">
+insert into tie_rule (university_id,program_id,component_id,sequence_number,paper_code,calculation_basis,logic,insert_time,creator_id)
+values(#university_id#,#program_id#,#component#,#sequence#,#paper_code#,#cal_basis#,#logic#,now(),#creator_id#);
+</insert>
+<select id="getTR" resultClass="java.lang.Integer">
+SELECT count(*) FROM tie_rule where university_id=#university_id# and program_id=#program_id# and component_id=#component# and
+paper_code=#paper_code# and calculation_basis=#cal_basis# ;
+</select>
+<select id="getTR_WithPC_Null" resultClass="java.lang.Integer">
+SELECT count(*) FROM tie_rule where university_id=#university_id# and program_id=#program_id# and component_id=#component# and
+paper_code is null and calculation_basis=#cal_basis# ;
+</select>
+<select id="checkSequence" resultClass="java.lang.Integer">
+SELECT count(*) FROM tie_rule where university_id=#university_id# and program_id=#program_id# and component_id=#component# and
+paper_code=#paper_code# and sequence_number=#sequence# ;
+</select>
+<select id="checkSequence_WithPC_Null" resultClass="java.lang.Integer">
+SELECT count(*) FROM tie_rule where university_id=#university_id# and program_id=#program_id# and component_id=#component# and
+paper_code is null and sequence_number=#sequence# ;
+</select>
+<select id="getTR_Details" resultClass="callcutoff">
+select pm.program_id program_id, pm.program_name program_name ,tr.sequence_number sequence,tr.component_id component_id,(select component_description from system_table_two where
+university_code=#university_id# and group_code='MRTCOM' and component_code=tr.component_id union select description from component_description where component_id=tr.component_id and university_id=#university_id#) componentDescription,tr.paper_code paper_code,(select component_description from system_table_two where component_code=tr.paper_code and group_code='PAPCOD' and university_code=#university_id#) paper_description,stt1.component_code cal_basis,stt1.component_description cal_basisDescription ,stt2.component_code logic,stt2.component_description logicDescription from program_master as pm ,tie_rule as tr,
+system_table_two as stt1,system_table_two as stt2
+where tr.program_id=pm.program_id  and stt1.component_code=tr.calculation_basis and
+stt1.group_code='CALBAS' and stt2.component_code=tr.logic and stt2.group_code='LOGCTR' and stt1.university_code=#university_id# and stt2.university_code=#university_id# and tr.university_id=#university_id#;
+</select>
+
+<select id="getTR_Details_With_Program" resultClass="callcutoff">
+select  pm.program_id program_id, pm.program_name program_name ,tr.sequence_number sequence,tr.component_id component_id,(select component_description from system_table_two where
+university_code=#university_id# and group_code='MRTCOM' and component_code=tr.component_id union select description from component_description where component_id=tr.component_id and university_id=#university_id#) componentDescription,tr.paper_code paper_code,(select component_description from system_table_two where component_code=tr.paper_code and group_code='PAPCOD' and university_code=#university_id#) paper_description,stt1.component_code cal_basis,stt1.component_description cal_basisDescription ,stt2.component_code logic,stt2.component_description logicDescription from program_master as pm ,tie_rule as tr,
+system_table_two as stt1,system_table_two as stt2
+where tr.program_id=pm.program_id  and stt1.component_code=tr.calculation_basis and
+stt1.group_code='CALBAS' and stt2.component_code=tr.logic and stt2.group_code='LOGCTR' and stt1.university_code=#university_id# and stt2.university_code=#university_id# and tr.university_id=#university_id# and tr.program_id=#program_id#;
+</select>
+
+
+<delete id="deleteTR">
+delete from tie_rule where university_id=#university_id# and component_id=#component_id# and paper_code=#paper_code# and calculation_basis=#cal_basis# and logic=#logic#;
+</delete>
+<delete id="deleteTR_WithPC_Null">
+delete from tie_rule where university_id=#university_id# and component_id=#component_id# and paper_code is null and calculation_basis=#cal_basis# and logic=#logic#;
+</delete>
+
+<select id="getPrograms_FromTR" resultClass="callcutoff">
+select distinct pm.program_id program_id,pm.program_name from program_master as pm join tie_rule as tr on tr.program_id=pm.program_id
+where tr.university_id=#university_id# order by pm.program_name asc;
+</select>
+<select id="getComponent_Name" resultClass="java.lang.String">
+select set1.componentDescription from ( select stt.component_code component_id,stt.component_description componentDescription from system_table_two as stt where stt.group_code='MRTCOM' and stt.university_code=#university_id# union
+select cd.component_id, cd.description from component_description as cd join program_components as pc on
+pc.component_id=cd.component_id
+where cd.university_id=#university_id# ) set1 where set1.component_id=#component_id#;
+</select>
+
+<select id="User_List" resultClass="callcutoff">
+SELECT user_id userID,user_name userName FROM user_info where status='ACT' and university_code=#university_id# and application='ADM';
+</select>
+<select  id="Form_List" resultClass="callcutoff">
+SELECT form_number formID, form_name formName FROM program_form where university_id=#university_id# and form_number not in(SELECT form_number FROM form_authority where user_id=#userID#);
+</select>
+<insert id="SetFRMAuthority">
+insert into form_authority values (#userID#,#formID#);
+</insert>
+<select id="FRMAuthorityDetails" resultClass="callcutoff">
+SELECT fa.user_id userID,ui.user_name userName,fa.form_number formID ,pf.form_name formName FROM form_authority as fa join user_info as ui
+on fa.user_id=ui.user_id join program_form as pf on pf.form_number=fa.form_number where ui.university_code=pf.university_id
+and ui.application='ADM' and ui.status='ACT' and ui.university_code=#university_id#;
+</select>
+<delete id="deleteFRMAuthority">
+delete from form_authority where user_id=#userID# and form_number=#formID#;
+</delete>
+
+
+</sqlMap>

@@ -1,5 +1,5 @@
 /*============================================================
-	"Enterprise" theme CSS styles
+	"BlackOps" theme CSS styles
 	Copyright 2001 and beyond, Isomorphic Software
 
 	:: Contents ::
@@ -43,6 +43,7 @@
     12) ToolStrip
     13) Tools
     14) TileGrid
+    15) Styles used in Printing
 	------------
 	internal/unused styles
 ============================================================*/
@@ -58,24 +59,25 @@
 ============================================================*/
 
 .pageBackground {
-    font-family:Verdana,sans-serif; font-size:11px;
-    color:#333333;
-    background:#FAFAFA;
+    font-family:Arial,sans-serif; font-size:11px;
+    color:#CCCCCC;
+    background:rgb(27,25,26) url(./images/Backgrounds/bkgd_blue_arc.jpg) no-repeat scroll;
 }
 
 /* default text */
-.normal {
-    font-family:Verdana,sans-serif; font-size:11px;
-    color:#333333;
+.normal, 
+.normalFocused{
+    font-family:Arial,sans-serif; font-size:11px;
+    color:#CCCCCC;
 }
 
 .defaultBorder {
-    border:1px solid #A7ABB4;
+    border: 1px solid #4d5258;
 }
 
 /* drag outline */
 .dragOutline {
-    border:1px dashed #0B70F9;
+    border:1px dashed #009999;
 }
 
 /* drop indicator */
@@ -88,16 +90,15 @@
 .canvasHover,
 .gridHover,
 .formHover {
-    font-family:Verdana,sans-serif; font-size:11px; color:black;
+    font-family:Arial,sans-serif; font-size:11px; color:black;
     background-color:#FFFFD0; border:1px solid #808080; padding:5px;
 }
-
 /* group label */
 .groupLabel {
-    font-family:Verdana,sans-serif; font-size:11px;
-    color:#333333;
-    padding-left:5px; padding-right:5px;
+    font-family:Arial,sans-serif; font-size:11px;
+    color:#CCCCCC; padding-left:5px; padding-right:5px;
 }
+
 /*============================================================
     2) Button
 		button.baseStyle
@@ -112,61 +113,26 @@
 .buttonFocusedOver,
 .buttonDown,
 .buttonFocusedDown,
+.buttonDisabled,
 .buttonSelected,
 .buttonSelectedFocused,
 .buttonSelectedDown,
 .buttonSelectedFocusedDown,
 .buttonSelectedOver,
 .buttonSelectedFocusedOver,
-.buttonDisabled,
 .buttonSelectedDisabled {
     padding:2px;
     font-weight:bold;
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px;
-    background:#DDDDDD url(./images/cssButton/button_stretch.png) repeat-x;
-	color:#4C4C4C;
-    border:1px solid #A6ABB4;
-}
-.buttonDisabled {
-    background:#E9E9E9 url(./images/cssButton/button_Disabled_stretch.png) repeat-x;
-	border-left:1px solid #A7ABB4;
-	border-right:1px solid #A6AAB3;
-	border-top:1px solid #BABDC4;
-	border-bottom:1px solid #B4B8C1;
-}
-.buttonDisabled,
-.buttonSelectedDisabled {
-	font-weight:normal;
-	color:#AAAAAA;
+    font-family:Arial,sans-serif; font-size:11px; color: #E6E6E6;
+    font-weight:bold;
+    border:1px solid #58595B;
 }
 
-.buttonFocused,
-.buttonFocusedOver,
-.buttonSelectedFocused,
-.buttonSelectedFocusedOver,
-.buttonSelectedFocusedDown {
-	border-left:1px solid #9BC8FF;
-	border-right:1px solid #9BC8FF;
-	border-top:1px solid #B2D3FC;
-	border-bottom:1px solid #AACBF6;
-}
-
+.button,
 .buttonOver,
-.buttonFocusedOver,
-.buttonSelectedFocused,
-.buttonSelectedFocusedOver {
-    background:#B2D7FF url(./images/cssButton/button_Over_stretch.png) repeat-x;
-}
-
-.buttonDown,
-.buttonFocusedDown,
-.buttonSelectedDown,
-.buttonSelectedFocusedDown {
-    background:#BEDDFF url(./images/cssButton/button_Down_stretch.png) repeat-x;
-	border-left:1px solid #88BFFF;
-	border-right:1px solid #88BFFF;
-	border-top:1px solid #87B6EC;
-	border-bottom:1px solid #75AEEC;
+.buttonFocused,
+.buttonFocusedOver {
+    background:black url(./images/cssButton/button_stretch.png) repeat-x;
 }
 
 .buttonSelected,
@@ -174,7 +140,46 @@
 .buttonSelectedOver,
 .buttonSelectedFocusedOver,
 .buttonSelectedDisabled {
-    background:#B2D7FF url(./images/cssButton/button_Over_stretch.png) repeat-x;
+    border-bottom:1px solid #1D3560;
+    color: #342F2C;
+    background:#8EBCFF url(./images/cssButton/button_Selected_stretch.png) repeat-x;
+}
+
+.buttonSelectedOver,
+.buttonSelectedFocusedOver {
+    color:black;
+}
+
+.buttonDisabled {
+    background:#222122 url(./images/cssButton/button_Disabled_stretch.png) repeat-x;
+}
+.buttonDisabled,
+.buttonSelectedDisabled {
+    color: #666666;
+    
+}
+
+
+.buttonDown,
+.buttonSelectedDown,
+.buttonFocusedDown,
+.buttonSelectedFocusedDown {
+    background:#8EBCFF url(./images/cssButton/button_Down_stretch.png) repeat-x;
+    color: #342F2C;
+}
+
+.buttonOver,
+.buttonFocusedOver {
+    color: #00B2FA;
+}
+
+.buttonFocused,
+.buttonFocusedOver,
+.buttonFocusedDown,
+.buttonSelectedFocused,
+.buttonSelectedFocusedDown,
+.buttonSelectedFocusedOver {
+    border:1px solid #1D3560;
 }
 
 /* ImgButton */
@@ -186,7 +191,7 @@
 .imgButtonDown,
 .imgButtonSelectedDown,
 .imgButtonDisabled {
-    font-family:Verdana,sans-serif; font-size:10px;
+    font-family:Arial,sans-serif; font-size:10px;
 }
 .imgButtonDisabled {
     color:#666666;
@@ -201,16 +206,14 @@
 .stretchImgButtonSelectedDown,
 .stretchImgButtonSelectedDisabled,
 .stretchImgButtonDisabled {
-    font-family:Verdana,sans-serif; font-size:10px;
+    font-family:Arial,sans-serif; font-size:10px;
 }
 .stretchImgButtonOver {
     font-weight:bold;
-	color:#4C4C4C;
 }
 .stretchImgButtonSelectedDisabled,
 .stretchImgButtonDisabled {
-	font-weight:normal;
-	color:#AAAAAA;
+    color:#666666;
 }
 
 /* Button Title */
@@ -228,14 +231,35 @@
 .buttonTitleSelectedFocusedDown,
 .buttonTitleDisabled,
 .buttonTitleSelectedDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px;
-	color:#4C4C4C;
+    font-family:Arial,sans-serif; font-size:11px; color: #E6E6E6;
     font-weight:bold;
 }
+.buttonTitleDown,
+.buttonTitleFocusedDown,
+.buttonTitleSelectedDown,
+.buttonTitleSelectedFocusedDown {
+    color: #342F2C;
+}
+
+
+.buttonTitleSelected,
+.buttonTitleSelectedFocused {
+    color: #342F2C;
+}
+
+.buttonTitleSelectedOver,
+.buttonTitleSelectedFocusedOver {
+    color:black;
+}
+
+.buttonTitleOver,
+.buttonTitleFocusedOver {
+    color: #00B2FA;
+}
+
 .buttonTitleDisabled,
 .buttonTitleSelectedDisabled {
-	font-weight:normal;
-	color:#AAAAAA;
+    color: #666666;
 }
 
 
@@ -245,72 +269,86 @@
   */
 
 .menuMain {
-    border: 1px solid #93A9C0;
-    background:#FFFFFF url(./images/Menu/menu_background.png) repeat-y scroll;
-}
-.treeMenuBody {
-    border: 1px solid #93A9C0;
-	background: #FFFFFF;
+    border-left:1px solid rgb(72,72,72);
+    border-right:1px solid rgb(72,72,72);
+    border-top:1px solid rgb(82,82,84);
+    border-bottom:1px solid rgb(89,89,91);
+    padding:4px;
+    background:#000000 url(./images/shared/background.gif) repeat-x bottom left scroll;
 }
 .menu,
 .menuSelected,
 .menuOver,
 .menuSelectedOver,
 .menuDisabled,
-.menuTitleField,
-.menuTitleFieldSelected,
-.menuTitleFieldOver,
-.menuTitleFieldSelectedOver,
-.menuTitleFieldDisabled,
-.menuIconField,
-.menuIconFieldOver,
-.menuIconFieldSelected,
-.menuIconFieldSelectedOver,
-.menuIconFieldDisabled,
 .treeMenuSelected,
-.treeMenuSelectedOver,
-.treeMenuSelectedSelected,
-.treeMenuSelectedSelectedOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px;
-    color:#333333;
+.treeMenuSelectedOver {
+	font-family:Arial,sans-serif; font-size:11px;
+	color:#C0C0C0;
     padding-top:2px; padding-bottom:2px;
 }
 .menu,
 .menuSelected {
 }
 .menuOver,
-.menuSelectedOver,
-.menuTitleFieldOver,
-.menuTitleFieldSelectedOver,
-.menuIconFieldOver,
-.menuIconFieldSelectedOver,
-.treeMenuSelected,
-.treeMenuSelectedOver,
-.treeMenuSelectedSelected,
-.treeMenuSelectedSelectedOver {
-    background:#FFFFFF url(./images/Menu/menu_rollover.png) repeat-x scroll 0px 1px;
-}
-
-.menuTitleField,
-.menuTitleFieldSelected,
-.menuTitleFieldOver,
-.menuTitleFieldSelectedOver,
-.menuTitleFieldDisabled {
-	padding-left:4px;
+.menuSelectedOver {
+    color:#EEEEEE;
+	background:rgb(44,88,147) url(./images/ListGrid/row_Selected.png) repeat scroll;
 }
 
 .menuIconField,
+.menuIconFieldDark,
 .menuIconFieldOver,
+.menuIconFieldOverDark,
 .menuIconFieldSelected,
+.menuIconFieldSelectedDark,
 .menuIconFieldSelectedOver,
-.menuIconFieldDisabled {
-	padding-left:4px; padding-right:4px;
+.menuIconFieldSelectedOverDark,
+.menuIconFieldDisabled,
+.menuIconFieldDisabledDark {
+    color:#D9D9D9;
+	background-color:#262626;
 }
-.menuDisabled ,
-.menuTitleFieldDisabled,
-.menuIconFieldDisabled {
-    color:#AAAAAA;
+.treeMenuSelected {
 }
+.treeMenuSelectedOver {
+}
+.menuDisabled {
+    color:#777777;
+}
+
+/* menu header buttons */
+.menuButton,
+.menuButtonOver,
+.menuButtonDown,
+.menuButtonDisabled,
+.menuButtonSelected,
+.menuButtonSelectedDown,
+.menuButtonSelectedOver,
+.menuButtonSelectedDisabled {
+    font-family:Arial,sans-serif; font-size:11px; 
+    font-weight:bold;
+    color: #D9D9D9;
+    background:#414141 url(./images/ListGrid/header_Selected.png) repeat-x scroll;
+    padding-left:4px; padding-right:4px;
+    border:1px solid #333333;
+}
+.menuButtonOver {
+    border:1px solid rgb(40,85,180);
+}
+.menuButtonDown,
+.menuButtonSelected,
+.menuButtonSelectedDown,
+.menuButtonSelectedOver {
+    background-color:#A9B6B9;
+    border:1px solid rgb(40,85,180);
+}
+.menuButtonDisabled,
+.menuButtonSelectedDisabled {
+    color: #909EA0;
+    border:1px solid #000000;
+}
+
 
 
 /*============================================================
@@ -335,7 +373,7 @@
 
 .windowBody,
 .dialogBody {
-    background-color:#FFFFFF;
+    background:#000000 url(./images/shared/background.gif) repeat-x bottom left scroll;
 }
 .promptBody {
 }
@@ -350,15 +388,17 @@
 
 .windowHeaderText,
 .dialogHeaderText {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px; color:#E6E6E6;
     font-weight:bold;
-	color:#4C4C4C;
-    padding-left:2px; padding-right:2px; padding-bottom:2px;
+    padding-left:2px; padding-right:2px;
 }
 .windowStatusBar {
-    font-family:Verdana,sans-serif; font-size:11px; color:black;
-    border-top: 1px solid #999999; border-left: 1px solid #999999;
-    border-right: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF;
+    font-family:Arial,sans-serif; font-size:11px; 
+    color:#CCCCCC;
+    border: 1px solid #4d5258;
+}
+.dialogHeaderText {
+    color:#EEEEEE;
 }
 .modalMask {
     background-color:black;
@@ -379,14 +419,7 @@
 	
 }
 .splitbarDown {
-    border:1px solid rgb(50,135,185);
-}
-
-.vSnapBar,
-.vSnapBarOver {
-}
-.hSnapBar,
-.hSnapBarOver {
+	border:1px solid #C0C0C0;
 }
 
 /*============================================================
@@ -394,17 +427,16 @@
 ============================================================*/
 
 .tabSetContainer {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Bitstream Vera Sans,Helvetica,Verdana,sans-serif; font-size:11px;
     color:#D9D9D9;
-    border: 1px solid #C0C3C7;
-    background-color:#FFFFFF
+    border: 1px solid #4d5258;
+    background:#000000 url(./images/shared/background.gif) repeat-x bottom left scroll;
 }
 
 .tabBar {
 }
 
 .tabBaseline {
-    border: 1px solid #C0C3C7;
 }
 
 .tab,
@@ -415,7 +447,7 @@
 .tabSelectedDown,
 .tabSelectedDisabled,
 .tabDisabled {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Bitstream Vera Sans,Helvetica,Verdana,sans-serif; font-size:11px;
 }
 
 .tabTitle,
@@ -434,8 +466,8 @@
 .vtabTitleSelectedDown,
 .vtabTitleDisabled,
 .vtabTitleSelectedDisabled {
-    color: #333333;
-    font-family:Verdana,sans-serif; font-size:11px; 
+    font-family:Arial,sans-serif; font-size:11px; 
+    color: #C0C0C0;
 }
 
 .tabTitleSelected, 
@@ -444,15 +476,25 @@
 .vtabTitleSelected,
 .vtabTitleSelectedOver,
 .vtabTitleSelectedDown {
-	color:#4C4C4C;
+    color: #D3D3D3;
     font-weight:bold;
+}
+.tabTitleOver,
+.tabTitleDown,
+.tabTitleSelectedOver,
+.tabTitleSelectedDown,
+.vtabTitleOver,
+.vtabTitleDown,
+.vtabTitleSelectedOver,
+.vtabTitleSelectedDown {
+    color: #00B2FA;
 }
 
 .tabTitleDisabled,
 .tabTitleSelectedDisabled,
 .vtabTitleDisabled,
 .vtabTitleSelectedDisabled {
-    color: #AAAAAA;
+    color: #666666;
 }
 
 
@@ -462,6 +504,7 @@
 ============================================================*/
 
 .sectionStack {
+    background:#000000 url(./images/shared/background.gif) repeat-x bottom left scroll;
 }
 
 /* SectionStack headers - image based */
@@ -474,8 +517,8 @@
 .imgSectionHeaderTitleopened,
 .imgSectionHeaderTitleOverclosed,
 .imgSectionHeaderTitleOveropened {
-    font-family:Verdana,sans-serif; font-size:11px; font-weight:bold;
-	color:#4C4C4C;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold;
+    color:#FFFFFF;
     border-left:5px;
 }
 /* 
@@ -483,27 +526,26 @@
 */
 .sectionHeaderTitleopened, 
 .sectionHeaderTitleclosed {
-    font-family:Verdana,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
+    background-color:transparent;
 }
 .sectionHeaderTitleDisabledopened, 
 .sectionHeaderTitleDisabledclosed {
-    font-family:Verdana,sans-serif; font-size:11px; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; color:#808080;
 }
 /* SectionStack headers - css based */
 .sectionHeaderopened, 
 .sectionHeaderclosed {
-    font-family:Verdana,sans-serif; font-size:11px; color:#333333;
+    font-family:Arial,sans-serif; font-size:11px; color:white; 
     padding:3px;
+    
 }
-
 .sectionHeaderopened {
     background:#404040 url(./images/SectionHeader/header_opened_stretch.png) repeat-x scroll;
 }
 .sectionHeaderclosed {
     background:#404040 url(./images/SectionHeader/header_closed_stretch.png) repeat-x scroll;
 }
-
-
 .cellopened {
     background-color:red;
 }
@@ -546,6 +588,7 @@
 .selectItemTextError,
 .selectItemTextDisabled,
 .selectItemTextFocused,
+.selectItemTextHint,
 .pickListCell,
 .pickListCellSelected,
 .pickListCellDisabled,
@@ -553,30 +596,28 @@
 .labelAnchorDisabled,
 .labelAnchorError,
 .labelAnchorFocused {
-    font-family:Verdana,sans-serif; font-size:11px;
-    color:#333333;
-}
-.formTitleDisabled {
-	color:#AAAAAA;
+    font-family:Arial,sans-serif; font-size:11px;
+    color:#D9D9D9;
 }
 .formCellError,
-.formTitleError { 
+.formTitleError,
+.labelAnchorError { 
     font-weight:bold; color:#204268; 
     background-color:#CFD9F2
 }
 .formHint {
-    color:#204268; padding:3px;
+    color:#C0C0C0; padding:3px;
 }
 
 /* headerItem */
 .headerItem,
 .headerItemDisabled,
 .headerItemError {
-    font-family:Arial,sans-serif; font-size:14px; font-weight:bold;
-	color:#4C4C4C;
+    font-size:14px; font-weight:bold;
+    color:#213D42;
 }	
 
-/* text-based items common props */
+/* text items & selectItem */
 .textItem,
 .textItemFocused,
 .textItemDisabled,
@@ -585,45 +626,41 @@
 .selectItemText,
 .selectItemTextError,
 .selectItemTextFocused,
+.textItemDisabled,
 .selectItemTextDisabled,
 .selectItemTextHint {
     padding:2px; 
-    border:1px solid #9CB0CE; 
-    background:#FFFFFF url(./images/controls/text_input.gif) repeat-x scroll;
-    color:#333333;
+    border:1px solid #595959;
+    background:#404040 url(./images/controls/text_input.gif) repeat-x scroll;
+    color:#DDDDDD;
 }
 
 .textItemDisabled,
 .selectItemTextDisabled {
-    color:#666666;
-    background-color:#FFFFFF;
-    border:1px solid #A6ABB4;
+    color:#888888;
+    background-color:#404040
+    border:1px solid #595959;
 }
 
 .textItemHint,
 .selectItemTextHint {
-    color:#204268;
+    color:#C0C0C0;
 }
-
 
 /* selectItem */
-
-.textItemFocused,
-.selectItemTextFocused {
-    /*background-color:rgb(170,195,210);*/
-    color:#333333;
-    -moz-outline-offset:-1;
-    border-left:1px solid #9BC8FF;
-	border-right:1px solid #9BC8FF;
-	border-top:1px solid #B2D3FC;
-	border-bottom:1px solid #AACBF6;  
-}
 
 .selectItemText,
 .selectItemTextError,
 .selectItemTextFocused,
 .selectItemTextDisabled {
-    border-right:0px none;
+    border-right:0px; none;
+}
+
+.textItemFocused,
+.selectItemTextFocused {
+    background-color:#595959;
+    color:E6E6E6;
+    -moz-outline-offset:-1;
 }
 
 .selectItemPickerIcon,
@@ -633,37 +670,40 @@
     padding:0px;
 }
 
-.pickListMenuBody {
-    border:1px solid #90A6BD; 
-    background-color:#FFFFFF;
+/* static text and blurb items */
+.staticTextItem,
+.staticTextItemDisabled,
+.staticTextItemError {  
+    color: #888888; 
 }
 
-.pickListCell {
-	color:#333333;
+.pickListMenuBody {
+    border:1px solid #333333; 
+    background:#000000 url(./images/shared/background.gif) repeat-x bottom left scroll;
 }
+.pickListCell {
+	color:#C0C0C0;
+}
+
 .pickListCellSelected {
-    color:#333333;
-    background:#FFFFFF url(./images/Menu/menu_rollover.png) repeat-x scroll;
+    color:#EEEEEE;
+	background:rgb(44,88,147) url(./images/ListGrid/row_Selected.png) repeat scroll;
 }
 .pickListCellDisabled {
 	color:#595959;
-	background-color:#C0C0C0;
+	background-color:#404040;
 }
 
 /* checkbox and radioButton */
 .labelAnchor,
 .labelAnchorDisabled,
-.labelAnchorError,
 .labelAnchorFocused  { 
-    font-family:Arial; color:333333; text-decoration:none;
-}
-.labelAnchorDisabled {
-	font-family:Arial; color:#AAAAAA;
+    color:#D9D9D9; text-decoration:none;
 }
 
 /* ColorChooser */
 .colorChooserCell,
-.colorChooserCellOver {
+.colorChooserCel*lOver {
     background-color:#EFEFEF;
     border-left:1px solid #EFEFEF; border-top:1px solid #EFEFEF;
     border-right:1px solid #EFEFEF; border-bottom:1px solid #EFEFEF;
@@ -675,9 +715,9 @@
 
 /* FilterBuilder */
 .bracketBorders {
-    border-left: 1px solid rgb(50,135,185);
-    border-top: 1px solid rgb(50,135,185);
-    border-bottom: 1px solid rgb(50,135,185);    
+    border-left: 1px solid #EFEFEF;
+    border-top: 1px solid #EFEFEF;
+    border-bottom: 1px solid #EFEFEF;    
 }
 /*============================================================
      DateChooser
@@ -697,8 +737,8 @@
 .dateChooserWeekendButtonDown,
 .dateChooserWeekendButtonDisabled,
 .dateChooserWeekendButtonSelected,
-.dateChooserWeekendButtonSelectedDown,
 .dateChooserWeekendButtonSelectedOver,
+.dateChooserWeekendButtonSelectedDown 
 .dateChooserWeekendButtonSelectedDisabled,
 .dateChooserBottomButton,
 .dateChooserBottomButtonOver,
@@ -726,9 +766,9 @@
 .dateChooserWeekendSelectedOver,
 .dateChooserWeekendSelectedDown,
 .dateChooserWeekendDisabled {
-    font-family:Verdana,sans-serif; font-size:11px; 
+    font-family:Arial,sans-serif; font-size:11px; 
     background-color:transparent;
-    color:#333333;
+    color:#E6E6E6; 
 }
 
 /* year/month buttons */
@@ -753,9 +793,11 @@
 .dateChooserWeekendButton,
 .dateChooserWeekendButtonOver,
 .dateChooserWeekendButtonDown,
+.dateChooserWeekendButtonDisabled,
 .dateChooserWeekendButtonSelected,
 .dateChooserWeekendButtonSelectedOver,
 .dateChooserWeekendButtonSelectedDown,
+.dateChooserWeekendButtonSelectedDisabled,
 .dateChooserNavButton,
 .dateChooserNavButtonOver,
 .dateChooserNavButtonDown,
@@ -763,39 +805,32 @@
 .dateChooserNavButtonSelectedOver,
 .dateChooserNavButtonSelectedDown {
     font-weight:bold;
-	color:#4C4C4C;
-}
-
-.dateChooserButtonOver,
-.dateChooserButtonDown {
-	cursor:pointer;
-	color:#467DCD;
 }
 
 .dateChooserWeekendButton,
 .dateChooserWeekendButtonOver,
 .dateChooserWeekendButtonDown,
+.dateChooserWeekendButtonDisabled,
 .dateChooserWeekendButtonSelected,
 .dateChooserWeekendButtonSelectedOver,
-.dateChooserWeekendButtonSelectedDown {
-    background-color:#D6E8FF;
-    border:2px solid #D6E8FF;
+.dateChooserWeekendButtonSelectedDown, 
+.dateChooserWeekendButtonSelectedDisabled {
+    background-color:#404040;
+    border:2px solid #404040;
 }
 
-
-.dateChooserNavButton,
-.dateChooserNavButtonOver,
-.dateChooserNavButtonDown,
-.dateChooserNavButtonSelected,
-.dateChooserNavButtonSelectedOver,
-.dateChooserNavButtonSelectedDown {
+.dateChooserButtonOver,
+.dateChooserButtonDown {
     cursor:pointer;
-    padding:2px;
+    background-color:rgb(142,187,226);
+    border:2px solid rgb(142,187,226);
+    color:#333333;
 }
 
 .dateChooserNavButtonOver,
 .dateChooserNavButtonDown {
-    color:#467DCD;
+    cursor:pointer;
+    color:rgb(142,187,226);
 }
 
 /* Today, Cancel buttons */
@@ -804,72 +839,64 @@
 .dateChooserBottomButtonDown {
     cursor:pointer;
     font-weight:bold;
-	color:#4C4C4C;
-    border-left:1px solid #ACB1B9;
-    border-top:1px solid #ACB1B9;
+    border-left:0px;border-right:0px;
+    padding-left:0px;padding-right:0px;
+    border-top: 1px solid #4C4C4C;
 }
 .dateChooserBottomButtonOver {
-    color:#467DCD;
+    color:rgb(142,187,226);
 }
 
 
 /* weekday and weekend cells */
-
 .dateChooserWeekday,
-.dateChooserWeekdayOver,
-.dateChooserWeekdayDown,
-.dateChooserWeekdaySelected,
-.dateChooserWeekdaySelectedOver,
-.dateChooserWeekdaySelectedDown,
-.dateChooserWeekdayDisabled,
-.dateChooserWeekend,
-.dateChooserWeekendOver,
-.dateChooserWeekendDown,
-.dateChooserWeekendSelected,
-.dateChooserWeekendSelectedOver,
-.dateChooserWeekendSelectedDown,
-.dateChooserWeekendDisabled {
+.dateChooserWeekdayDisabled {
+    border:2px solid black;
+    background-color:black;
+}
+
+
+.dateChooserWeekend {
     cursor:pointer;
-    color:#333333;
-    border:2px solid white;
-    background-color:white;
+    border:2px solid #404040;
+    background-color:#404040;
 }
-
-.dateChooserWeekdayDisabled,
-.dateChooserWeekendDisabled {
-	color:#C0C3CA;
-}
-
-.dateChooserWeekend,
-.dateChooserWeekendOver,
-.dateChooserWeekendSelected,
-.dateChooserWeekendDisabled {
-    border:2px solid #D6E8FF;
-    background-color:#D6E8FF;
-}
-
 .dateChooserWeekdayOver,
-.dateChooserWeekendOver {
-	border:2px solid #71B5FE;
+.dateChooserWeekendOver,
+.dateChooserWeekdaySelectedOver,
+.dateChooserWeekendSelectedOver {
+    cursor:pointer;
+    background-color:rgb(142,187,226);
+    border:2px solid rgb(142,187,226);
+    color:#333333;
 }
 
+.dateChooserWeekdayDisabled {
+    color:#999999;
+}
+
+.dateChooserWeekendDisabled {
+    background-color:#404040;
+    border:2px solid #404040;
+    color:#999999;
+}
+
+.dateChooserWeekdayDown,
 .dateChooserWeekdaySelected,
 .dateChooserWeekdaySelectedOver,
-.dateChooserWeekdayDown,
 .dateChooserWeekdaySelectedDown,
+.dateChooserWeekendDown,
 .dateChooserWeekendSelected,
 .dateChooserWeekendSelectedOver,
-.dateChooserWeekendDown,
 .dateChooserWeekendSelectedDown {
-	font-weight:bold;
-	color:#4C4C4C;
-    border:2px solid #96C7FF;
-    background-color:#D6E8FF;
+    cursor:pointer;
+    border:2px solid rgb(40,85,180);
+    color:rgb(0,166,239);
 }
 
-.dateChooserWeekdayDown,
-.dateChooserWeekendDown {
-	font-weight:normal;
+.dateChooserWeekdaySelectedOver,
+.dateChooserWeekendSelectedOver {
+    color:#333333;
 }
 
 /* year and month pop-up menus */
@@ -890,17 +917,17 @@
 .rangebarTitle,
 .rangebarRange,
 .rangebarValue {
-    color:#333333;
-    font-family:Verdana,sans-serif; font-size:10px;
+    color:#D9D9D9;
+    font-family:Arial,sans-serif; font-size:10px;
 }
 .sliderTitle,
 .rangebarTitle {
-	color:#4C4C4C;
+    color:#D9D9D9;
     font-weight:bold;
 }
 .sliderRange,
 .rangebarRange {
-    color:#333333;
+    color:#B0B0B0;
 }
 
 
@@ -910,30 +937,28 @@
 ============================================================*/
 
 .detailBlock {
-    border-left:1px solid #A7ABB4;
-    border-top:1px solid #A7ABB4;
+    border-left:1px solid #4d5258;
+    border-top:1px solid #4d5258;
 }
 
 .detail,
 .detailLabel,
 .detailHeader {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:white;
-    color:#333333;
-    border-right:1px solid #A7ABB4;
-    border-bottom:1px solid #A7ABB4;
+    border-right:1px solid #4d5258;
+    border-bottom:1px solid #4d5258;
+    font-family:Bitstream Vera Sans, sans-serif; font-size:11px;
+	color:#C0C0C0;
 }
 
 .detailLabel {
     font-weight:bold;
-	color:#4C4C4C;
-	background-color:#F6F7F9;
+	background-color:#262626;
     text-align:right;
 }
 
 .detailHeader {
-    font-family:Arial,sans-serif; font-size:14px; font-weight:bold;
-	color:#4C4C4C;
-    background-color:#BBDAFA;
+    font-size:14px; font-weight:bold;
+    background-color:#262626;
 }
 
 
@@ -950,39 +975,34 @@
 ============================================================*/
 
 .listGrid {
-    border: 1px solid #A7ABB4;
+    border-left:1px solid rgb(72,72,72);
+    border-right:1px solid rgb(72,72,72);
+    border-top:1px solid rgb(82,82,84);
+    border-bottom:1px solid rgb(89,89,91);
+    background:#000000 url(./images/shared/background.gif) repeat-x bottom left scroll;
 }
 .headerBar {
-    background:#FFFFFF url(./images/controls/text_input.gif) repeat-x scroll;
+    background:#404040 url(./images/controls/text_input.gif) repeat-x scroll;
 }
 .gridBody {
-    background-color:#FFFFFF;
-}
-.alternateGridBody {
-    background-color:#FFFFFF;
 }
 .loadingDataMessage,
 .emptyMessage {
-    font-family:Verdana,sans-serif; font-size:11px; padding:10px;
-    color:#333333;
+    font-family:Arial,sans-serif; font-size:11px; padding:10px;
 }
 .gridDragTracker {
-	font-family:Verdana,sans-serif; font-size:11px;
-	color:#FFFFFF;
-    background-color:rgb(65,160,210);
+	font-family:Arial,sans-serif; font-size:11px;
+    background-color:black;
     padding:1px;
     border:1px dotted white;
 }
 .dragLine {
-    background-color:#FADD0C
-    
+    background-color:rgb(72,72,72);
 }
-
-.listTable {
-}
+.listTable {}
 /* for filterEditor */
 .recordEditorCell {
-    font-family:Verdana,sans-serif; font-size:11px; color:black; background-color:#d0d0d0;
+    font-family:Arial,sans-serif; font-size:11px; color:black; background-color:#d0d0d0;
 }
 
 
@@ -1004,17 +1024,17 @@
 .headerButtonDown,
 .headerButtonSelectedOver,
 .headerButtonSelectedDown {
-    background-color:#FFFFFF;
-    
-    border-left:1px solid rgb(246,247,249);
-    border-right:1px solid rgb(200,204,207);
+    background-color:#000000;
+    border-left:1px solid rgb(53,53,53); 
+    border-right:1px solid rgb(10,10,10);
+    border-bottom:1px solid rgb(45,40,37);
 }
 .headerButtonOver,
 .headerButtonDown,
 .headerButtonSelectedOver,
 .headerButtonSelectedDown {
-    border-left:1px solid rgb(228,242,255);
-    border-right:1px solid rgb(200,204,208);
+    border-left:1px solid reg(103,103,105);
+    border-right:1px solid reg(18,18,18);
 }
 
 .sorterButton,
@@ -1025,14 +1045,14 @@
 .sorterButtonDown,
 .sorterButtonSelectedOver,
 .sorterButtonSelectedDown {
-    background-color:#FFFFFF;
-    border-left:1px solid rgb(246,247,249);
+    background-color:#000000;
+    border-left:1px solid rgb(53,53,53); 
 }
 .sorterButtonOver,
 .sorterButtonDown,
 .sorterButtonSelectedOver,
 .sorterButtonSelectedDown {
-    border-left:1px solid rgb(228,242,255);
+    border-left:1px solid reg(103,103,105);
 }
 
 /* ListGrid column header titles */
@@ -1044,20 +1064,20 @@
 .headerTitleSelectedDown,
 .headerTitleDisabled,
 .headerTitleSelectedDisabled {
-    font-family:Verdana, sans-serif; font-size:11px;
+    font-family:Arial, sans-serif; font-size:11px; font-weight:bold;
+    color: #D9D9D9;
     padding-left:4px; padding-right:4px;
-    color: #333333; 
 }
 .headerTitleDown,
 .headerTitleSelected,
 .headerTitleSelectedOver,
 .headerTitleSelectedDown,
 .headerTitleSelectedDisabled {
-    color:#333333;
+    color:#FFFFFF;
 }
 .headerTitleDisabled,
 .headerTitleSelectedDisabled {
-    color: #AAAAAA;
+    color: #666666;
 }
 
 
@@ -1079,16 +1099,6 @@
 .cellSelectedOverDark,
 .cellDisabled,
 .cellDisabledDark,
-.tallCell,
-.tallCellDark,
-.tallCellOver,
-.tallCellOverDark,
-.tallCellSelected,
-.tallCellSelectedDark,
-.tallCellSelectedOver,
-.tallCellSelectedOverDark,
-.tallCellDisabled,
-.tallCellDisabledDark,
 .gridSummaryCell,
 .gridSummaryCellDisabled,
 .recordSummaryCell,
@@ -1102,83 +1112,63 @@
 .recordSummaryCellDisabled,
 .recordSummaryCellDisabledDark,
 .groupNode {
-	font-family:Verdana,sans-serif; font-size:11px; text-overflow:ellipsis;
-	color:#333333;
-	border-right:1px solid #E1E1E1;
+	font-family:Arial,sans-serif; font-size:11px; text-overflow:ellipsis;
+	color:#C0C0C0;
 }
-.tallCell,
-.tallCellDark,
-.tallCellOver,
-.tallCellOverDark,
-.tallCellSelected,
-.tallCellSelectedDark,
-.tallCellSelectedOver,
-.tallCellSelectedOverDark,
-.tallCellDisabled,
-.tallCellDisabledDark {
- border-bottom:1px solid #E1E1E1;
- }
-.cellDark,
-.gridSummaryCell,
-.gridSummaryCellDisabled,
-.recordSummaryCell,
-.recordSummaryCellDark {
-    background:#FFFFFF url(./images/ListGrid/row.png) repeat-x bottom left scroll;
-}
-.tallCellDark {
-	background-color:#F6F7F9;
+.cellDark
+{
+    color:#D9D9D9;
+	background-color:#262626;
 }
 .cellOver,
 .cellOverDark,
 .recordSummaryCellOver,
 .recordSummaryCellOverDark {
-    background:#FFFFFF url(./images/ListGrid/row_Over.png) repeat-x bottom left scroll;
-}
-.tallCellOver,
-.tallCellOverDark {
-	background-color:#E5F6FF; border-bottom:1px solid #C4DEFF;
+    color:#111111;
+    background:url(./images/ListGrid/row.png) repeat scroll;
 }
 .cellSelected,
 .cellSelectedDark,
 .recordSummaryCellSelected,
 .recordSummaryCellSelectedDark {
-    background:#FFFFFF url(./images/ListGrid/row_Selected.png) repeat-x bottom left scroll;
-}
-.tallCellSelected,
-.tallCellSelectedDark {
-	background-color:#D4E8FF; border-bottom:1px solid #C4DEFF;
+    color:#EEEEEE;
+	background-color:rgb(44,88,147);
 }
 .cellSelectedOver,
 .cellSelectedOverDark,
 .recordSummaryCellSelectedOver,
 .recordSummaryCellSelectedOverDark {
-    background:#FFFFFF url(./images/ListGrid/row_Selected_Over.png) repeat-x bottom left scroll;
+    color:#DDDDDD;
+	background:rgb(44,88,147) url(./images/ListGrid/row_Selected.png) repeat scroll;
 }
-.tallCellSelectedOver,
-.tallCellSelectedOverDark {
-	background-color:#A2CBFF; border-bottom:1px solid #9BC8FF;
-}
-.gridSummaryCell,
-.gridSummaryCellDisabled {
-    font-weight:bold;
-}
-
 .cellDisabled,
 .cellDisabledDark,
-.tallCellDisabled,
-.tallCellDisabledDark,
 .gridSummaryCellDisabled,
 .recordSummaryCellDisabled,
 .recordSummaryCellDisabledDark {
-	color:#AAAAAA;
-	background-color:#FFFFFF;
+	color:#595959;
+	background-color:#404040;
 }
 
+.gridSummaryCell,
+.gridSummaryCellDisabled,
+.recordSummaryCell,
+.recordSummaryCellDark,
+.recordSummaryCellOver,
+.recordSummaryCellOverDark,
+.recordSummaryCellSelected,
+.recordSummaryCellSelectedDark,
+.recordSummaryCellSelectedOver,
+.recordSummaryCellSelectedOverDark,
+.recordSummaryCellDisabled,
+.recordSummaryCellDisabledDark {
+    font-weight:bold;
+}
+      
 /* for grouping */
 .groupNode {
     font-weight:bold;
-	color:#4C4C4C;
-    border-bottom: 1px solid #C0C0C0;
+    border-bottom: 1px solid #EFEFEF;
 }
 
 /* Field builders (Formula/Summary) */
@@ -1187,13 +1177,13 @@
     padding: 3px; 
 }
 
-
 /*============================================================
 	12) ToolStrip
 ============================================================*/
 .toolStrip {
-    border: 1px solid #A7ABB4;
-	background-color:#FFFFFF;
+    border-left: 1px solid #4d5258;
+    border-right: 1px solid #4d5258;
+	background:#262626 url(./images/shared/shadows/ds2_B.png) repeat-x scroll;
 }
 
 /*============================================================
@@ -1218,6 +1208,7 @@
 .tileValueOver,
 .tileValueSelectedOver,
 .tileValueSelectedDown {
+   color: white;
     font-size: 8pt; 
     text-overflow:ellipsis;   
 }
@@ -1260,6 +1251,103 @@
       border:1px solid #00B2FA;
 }
 
+
+/*============================================================
+   15) Printing Styles
+==============================================================*/
+
+/* Generic black text on white for common usage */
+.printText {
+    background-color:white;
+    color:black;
+    font-family:Arial,sans-serif; font-size:11px;
+}
+
+/* Generic printable header style - bold black text on white with a border */
+.printHeader {
+    font-family:Arial,sans-serif; font-size:11px;    
+    border:1px solid black;
+    color:black;
+    font-weight:bold;
+}
+
+/* ListGrid cell styles including selected / disabled / dark states */
+.printCell,
+.printCellDark,
+.printCellSelected,
+.printCellSelectedDark,
+.printCellDisabled,
+.printCellDisabledDark {
+	font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; text-overflow:ellipsis;
+	color:black;
+	border-bottom:1px solid #ffffff; border-top:1px solid #ffffff;
+	background-color:#ffffff;
+}
+.printCellDark {
+	border-bottom:1px solid #f0f0e8; border-top:1px solid #f0f0e8;
+	background-color:#f0f0f0;
+}
+
+.printCellSelected,
+.printCellSelectedDark {
+	border-bottom:1px solid #b8d0ff; border-top:1px solid #b8d0ff;
+	background-color:#b8d0ff;
+}
+
+.printCellDisabled,
+.printCellDisabledDark {
+	color:#808080;
+}
+.printCellDisabledDark {
+	border-bottom:1px solid #f0f0e8; border-top:1px solid #f0f0e8;
+	background-color:#f0f0e8;
+}
+
+/* Detail Viewer styles including cell borders */
+.printDetail,
+.printDetailLabel,
+.printDetailHeader {
+    border-right:1px solid #4d5258;
+    border-bottom:1px solid #4d5258;
+    font-family:Bitstream Vera Sans, sans-serif; font-size:11px;
+	color:black;
+}
+
+.printDetailLabel {
+    font-weight:bold;
+	background-color:white;
+    text-align:right;
+}
+
+.printDetailHeader {
+    font-size:14px; font-weight:bold;
+    background-color:white;
+}
+
+/* DynamicForm styles, including disabled and error states */
+.printFormTitle,
+.printFormTitleDisabled,
+.printFormTitleError,
+.printFormItem,
+.printFormItemDisabled,
+.printFormItemError,
+.printTextItem,
+.printTextItemDisabled,
+.printTextItemError {
+    font-family:Arial,sans-serif; font-size:11px;
+    color:black;
+}
+.printFormTitleError { 
+    font-weight:bold;
+}
+
+.printTextItem,
+.printTextItemDisabled,
+.printTextItemError {
+    padding:2px; 
+    border:1px solid #595959;
+}
+
 /*============================================================
     Unused? Review & Remove
 ============================================================*/
@@ -1267,18 +1355,14 @@
     background-color:darkblue; color:white;
 }
 .disabled {
-    font-family:Verdana,sans-serif; font-size:11px; color:#CCCCCC;
+    font-family:Arial,sans-serif; font-size:11px; color:#CCCCCC;
 }
 .pageHeader {
-    font-family:Verdana,sans-serif; font-size:12px; font-weight:bold; color:darkblue
+    font-family:Arial,sans-serif; font-size:12px; font-weight:bold; color:darkblue
 }
 .printPageHeader {
-    font-family:Verdana,sans-serif; font-size:14px; font-weight:bold; color:darkblue
+    font-family:Arial,sans-serif; font-size:14px; font-weight:bold; color:darkblue
 }
-.printCell {
-    font-family:Verdana,sans-serif; font-size:10px;
-}
-
 .cssdialogHeader {
     border-left: 1px solid #FFFF52; border-top: 1px solid #FFFF52;
     border-right: 1px solid #AD7B00; border-bottom: 1px solid #AD7B00;
@@ -1294,7 +1378,7 @@
     border-right: 1px solid #FFFFFF; border-bottom: 1px solid #FFFFFF;
 }
 .dialogStatusBarText {
-    font-family:Verdana,sans-serif; font-size:11px; color:black; font-weight:bold;
+    font-family:Arial,sans-serif; font-size:11px; color:black; font-weight:bold;
 }
 
 
@@ -1321,92 +1405,92 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 /* styles for simple css-styled tabs*/
 /* left */
 .tabButtonLeft {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#CCCCCC;
+    font-family:Arial,sans-serif; font-size:11px; background-color:#CCCCCC;
     border-left:1px solid white; border-top:1px solid white; border-bottom:1px solid #808080;
 }
 .tabButtonLeftOver,
 .tabButtonLeftSelected,
 .tabButtonLeftSelectedOver {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color:#D6D6D6; 
     border-left:1px solid white; border-top:1px solid white; border-bottom:1px solid #808080;
 }
 .tabButtonLeftDown,
 .tabButtonLeftSelectedDown {
-    font-family:Verdana,sans-serif; font-size:11px; background-color: #D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color: #D6D6D6; 
     border-left:1px solid #808080; border-top:1px solid #808080; border-bottom:1px solid white;
 }
 .tabButtonLeftSelectedDisabled,
 .tabButtonLeftDisabled {
-    font-family:Verdana,sans-serif; font-size:11px; color:#666666;
+    font-family:Arial,sans-serif; font-size:11px; color:#666666;
     background-color:#CCCCCC; 
     border-left:1px solid #CCCCCC; border-top:1px solid #CCCCCC; border-bottom:1px solid #CCCCCC;
 }
 /* right */                        
 .tabButtonRight {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#CCCCCC;
+    font-family:Arial,sans-serif; font-size:11px; background-color:#CCCCCC;
     border-top:1px solid white; border-bottom:1px solid #808080; border-right:1px solid #808080;
 }
 .tabButtonRightOver,
 .tabButtonRightSelected,
 .tabButtonRightSelectedOver {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color:#D6D6D6; 
     border-top:1px solid white; border-bottom:1px solid #808080; border-right:1px solid #808080;
 }
 .tabButtonRightDown,
 .tabButtonRightSelectedDown {
-    font-family:Verdana,sans-serif; font-size:11px; background-color: #D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color: #D6D6D6; 
     border-top:1px solid #808080; border-bottom:1px solid white; border-right:1px solid white;
 }
 
 .tabButtonRightSelectedDisabled,
 .tabButtonRightDisabled {
-    font-family:Verdana,sans-serif; font-size:11px; color:#666666;
+    font-family:Arial,sans-serif; font-size:11px; color:#666666;
     background-color:#CCCCCC; 
     border-top:1px solid #CCCCCC; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC;
 }
 
 /* top */                        
 .tabButtonTop {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#CCCCCC;
+    font-family:Arial,sans-serif; font-size:11px; background-color:#CCCCCC;
     border-left:1px solid white; border-top:1px solid white; border-right:1px solid #808080;
 }
 .tabButtonTopOver,
 .tabButtonTopSelected,
 .tabButtonTopSelectedOver {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color:#D6D6D6; 
     border-left:1px solid white; border-top:1px solid white; border-right:1px solid #808080;
 }
 .tabButtonTopDown,
 .tabButtonTopSelectedDown {
-    font-family:Verdana,sans-serif; font-size:11px; background-color: #D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color: #D6D6D6; 
     border-left:1px solid #808080; border-top:1px solid #808080; border-right:1px solid white;
 }
 .tabButtonTopSelectedDisabled,
 .tabButtonTopDisabled {
-    font-family:Verdana,sans-serif; font-size:11px; color:#666666; 
+    font-family:Arial,sans-serif; font-size:11px; color:#666666; 
     background-color:#CCCCCC; 
     border-left:1px solid #CCCCCC; border-top:1px solid #CCCCCC; border-right:1px solid #CCCCCC;
 }
 
 /* bottom */                        
 .tabButtonBottom {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#CCCCCC;
+    font-family:Arial,sans-serif; font-size:11px; background-color:#CCCCCC;
     border-left:1px solid white; border-bottom:1px solid #808080; border-right:1px solid #808080;
 }
 .tabButtonBottomOver,
 .tabButtonBottomSelected,
 .tabButtonBottomSelectedOver {
-    font-family:Verdana,sans-serif; font-size:11px; background-color:#D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color:#D6D6D6; 
     border-left:1px solid white; border-bottom:1px solid #808080; border-right:1px solid #808080;
 }
 .tabButtonBottomDown,
 .tabButtonBottomSelectedDown {
-    font-family:Verdana,sans-serif; font-size:11px; background-color: #D6D6D6; 
+    font-family:Arial,sans-serif; font-size:11px; background-color: #D6D6D6; 
     border-left:1px solid #808080; border-bottom:1px solid white; border-right:1px solid white;
 }
 .tabButtonBottomSelectedDisabled,
 .tabButtonBottomDisabled {
-    font-family:Verdana,sans-serif; font-size:11px; color:#666666;
+    font-family:Arial,sans-serif; font-size:11px; color:#666666;
     background-color:#CCCCCC; 
     border-left:1px solid #CCCCCC; border-bottom:1px solid #CCCCCC; border-right:1px solid #CCCCCC;
 }
@@ -1438,21 +1522,21 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 ============================================================*/
 .cubeGridBody {}
 .cubeCell {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:black; text-overflow:ellipsis;
+    font-family:Arial,sans-serif; font-size:11px; color:black; text-overflow:ellipsis;
     background-color:#FFFFFF;
     border-top:1px solid white; border-bottom:1px solid #AAAAAA; 
     border-left:1px solid white; border-right:1px solid #AAAAAA;
 }
 
 .cubeCellDark {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:black; text-overflow:ellipsis;
+    font-family:Arial,sans-serif; font-size:11px; color:black; text-overflow:ellipsis;
     background-color:#EEEEEE;
     border-top:1px solid #EEEEEE; border-bottom:1px solid #AAAAAA; 
     border-left:1px solid #EEEEEE; border-right:1px solid #AAAAAA;
 }
 
 .cubeCellDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:#666666; text-overflow:ellipsis;
+    font-family:Arial,sans-serif; font-size:11px; color:#666666; text-overflow:ellipsis;
     background-color:#FFFFFF; 
     border-top:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF; 
     border-left:1px solid #FFFFFF; border-right:1px solid #FFFFFF;
@@ -1479,35 +1563,35 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 /* row headers */
 .rowHeader {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#6682A0;
     border-left:1px solid #FFFFFF; border-top:1px solid #FFFFFF;
     border-right:1px solid #264260; border-bottom:1px solid #264260;
     background-image:url("images/CubeGrid/rowHeader.gif");
 }
 .rowHeaderOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#6682A0;
     border-left:1px solid #264260; border-top:1px solid #264260;
     border-right:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF;
     background-image:url("images/CubeGrid/rowHeaderOver.gif");
 }
 .rowHeaderDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#6682A0;
     border-left:1px solid #264260; border-top:1px solid #264260;
     border-right:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF;
     background-image:url("images/CubeGrid/rowHeaderOver.gif");
 }
 .rowHeaderDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; color:#808080;
     background-color:#6682A0;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
 }
 .rowHeaderSelected,
 .rowHeaderSelectedDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#3E74B3;
     border-left:1px solid #00008B; border-top:1px solid #00008B;
     border-right:1px solid #F0F8FF; border-bottom:1px solid #F0F8FF;
@@ -1515,14 +1599,14 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
     
 }
 .rowHeaderSelectedOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#3E74B3;
     border-top:1px solid white; border-bottom:1px solid white; 
     border-left:1px solid white; border-right:1px solid white;
     background-image:url("images/CubeGrid/rowHeaderSelectedOver.gif");
 }						
 .rowHeaderSelectedDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; color:#808080;
     background-color:#3E74B3;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
@@ -1530,49 +1614,49 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 /* row label */
 .rowHeaderLabel {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#204B7A;
     border-left:1px solid #FFFFFF; border-top:1px solid #FFFFFF;
     border-right:1px solid #000B3A; border-bottom:1px solid #000B3A;
     background-image:url("images/CubeGrid/rowHeaderLabel.gif");
 }
 .rowHeaderLabelOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#204B7A;
     border-left:1px solid #000B3A; border-top:1px solid #000B3A;
     border-right:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF;
     background-image:url("images/CubeGrid/rowHeaderLabel.gif");
 }
 .rowHeaderLabelDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#204B7A;
     border-left:1px solid #000B3A; border-top:1px solid #000B3A;
     border-right:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF;
     background-image:url("images/CubeGrid/rowHeaderLabelDown.gif");
 }
 .rowHeaderLabelDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#808080;
     background-color:#7D7D7D;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
 }
 .rowHeaderLabelSelected,
 .rowHeaderLabelSelectedDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-left:1px solid black; border-top:1px solid black;
     border-right:1px solid #555555; border-bottom:1px solid #555555;
     background-image:url("images/CubeGrid/rowHeaderDown.gif");
 }
 .rowHeaderLabelSelectedOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-top:1px solid white; border-bottom:1px solid white; 
     border-left:1px solid white; border-right:1px solid white;
     background-image:url("images/CubeGrid/rowHeaderDown.gif");
 }						
 .rowHeaderLabelSelectedDisabled	{
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#808080;
     background-color:#7D7D7D;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
@@ -1580,49 +1664,49 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 						
 /* column headers */
 .colHeader {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#6682A0;
     border-left:1px solid #FFFFFF; border-top:1px solid #FFFFFF;
     border-right:1px solid #264260; border-bottom:1px solid #264260;
     background-image:url("images/CubeGrid/colHeader.gif");
 }
 .colHeaderOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#6682A0;
     border-left:1px solid #264260; border-top:1px solid #264260;
     border-right:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF;
     background-image:url("images/CubeGrid/colHeaderOver.gif");
 }
 .colHeaderDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:white;
+    font-family:Arial,sans-serif; font-size:11px; color:white;
     background-color:#6682A0;
     border-left:1px solid #264260; border-top:1px solid #264260;
     border-right:1px solid #FFFFFF; border-bottom:1px solid #FFFFFF;
     background-image:url("images/CubeGrid/colHeader.gif");
 }
 .colHeaderDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; color:#808080;
     background-color:#6682A0;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
 }
 .colHeaderSelected,
 .colHeaderSelectedDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-left:1px solid #00008B; border-top:1px solid #00008B;
     border-right:1px solid #F0F8FF; border-bottom:1px solid #F0F8FF;
     background-image:url("images/CubeGrid/colHeaderSelected.gif");
 }
 .colHeaderSelectedOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-top:1px solid white; border-bottom:1px solid white; 
     border-left:1px solid white; border-right:1px solid white;
     background-image:url("images/CubeGrid/colHeaderSelectedOver.gif");
 }						
 .colHeaderSelectedDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#808080;
     background-color:#3E74B3;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
@@ -1630,7 +1714,7 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 /* column label */
 .colHeaderLabel {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#204B7A;
     border-left:1px solid #FFFFFF; border-top:1px solid #FFFFFF;
     border-right:1px solid #555555; border-bottom:1px solid #555555;
@@ -1638,35 +1722,35 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 }
 .colHeaderLabelOver,
 .colHeaderLabelDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#204B7A;
     border-left:1px solid #000B3A; border-top:1px solid #000B3A;
     border-right:1px solid #555555; border-bottom:1px solid #555555;
     background-image:url("images/CubeGrid/colHeaderLabelDown.gif");
 }
 .colHeaderLabelDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#808080;
     background-color:#7D7D7D;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
 }
 .colHeaderLabelSelected,
 .colHeaderLabelSelectedDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-left:1px solid black; border-top:1px solid black;
     border-right:1px solid #555555; border-bottom:1px solid #555555;
     background-image:url("images/CubeGrid/colHeaderLabelDown.gif");
 }
 .colHeaderLabelSelectedOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-top:1px solid white; border-bottom:1px solid white; 
     border-right:1px solid #555555; border-bottom:1px solid #555555;
     background-image:url("images/CubeGrid/colHeaderDown.gif");
 }						
 .colHeaderLabelSelectedDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:#808080;
     background-color:#7D7D7D;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
@@ -1674,49 +1758,49 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 /* inner header */
 .innerHeader {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:black;
+    font-family:Arial,sans-serif; font-size:11px; color:black;
     background-color:#CCCCCC;
     border-left:1px solid white; border-top:1px solid white;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
     background-image:url("images/CubeGrid/innerHeader.gif");
 }
 .innerHeaderOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:black;
+    font-family:Arial,sans-serif; font-size:11px; color:black;
     background-color:#CCCCCC;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid white; border-bottom:1px solid white;
     background-image:url("images/CubeGrid/innerHeader.gif");
 }
 .innerHeaderDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:black;
+    font-family:Arial,sans-serif; font-size:11px; color:black;
     background-color:#CCCCCC;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid white; border-bottom:1px solid white;
     background-image:url("images/CubeGrid/innerHeader.gif");
 }
 .innerHeaderDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; color:#808080;
     background-color:#CCCCCC;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
 }
 .innerHeaderSelected,
 .innerHeaderSelectedDown {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-left:1px solid #00008B; border-top:1px solid #00008B;
     border-right:1px solid #F0F8FF; border-bottom:1px solid #F0F8FF;
     background-image:url("images/CubeGrid/innerHeaderSelected.gif");
 }
 .innerHeaderSelectedOver {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; font-weight:bold; color:white;
+    font-family:Arial,sans-serif; font-size:11px; font-weight:bold; color:white;
     background-color:#3E74B3;
     border-top:1px solid white; border-bottom:1px solid white; 
     border-left:1px solid white; border-right:1px solid white;
     background-image:url("images/CubeGrid/innerHeaderSelectedOver.gif");
 }						
 .innerHeaderSelectedDisabled {
-    font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; color:#808080;
+    font-family:Arial,sans-serif; font-size:11px; color:#808080;
     background-color:#CCCCCC;
     border-left:1px solid #808080; border-top:1px solid #808080;
     border-right:1px solid #808080; border-bottom:1px solid #808080;
@@ -1737,25 +1821,25 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 }
 .chartTitle {
     color:black;
-    font-family: Verdana,sans-serif;;
+    font-family:Arial,sans-serif;
     font-size:14px;
     font-weight: bold;
     text-align:center
 }
 .chartAxisTitle {
     color:green;
-    font-family: Verdana,sans-serif;;
+    font-family:Arial,sans-serif;
     font-weight: bold;
     font-size:12px;
 }
 .chartValueTitle {
     color:black;
-    font-family: Verdana,sans-serif;;
+    font-family:Arial,sans-serif;
     font-size:10px;
 }
 .chartTotal {
     color:black;
-    font-family:Verdana,sans-serif;; 
+    font-family:Arial,sans-serif; 
     font-size:12px;
     background-color:linen;
 }
@@ -1780,18 +1864,6 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 
 /*============================================================
-	Printing
-        printHeader - general print style for header elements including:
-        - ListGrid header cells
-        - SectionStack headers
-============================================================*/
-.printHeader {
-    font-family:Verdana,sans-serif; font-size:11px;    
-    border:1px solid black;
-    font-weight:bold;
-}
-
-/*============================================================
 	Calendar
     
 ============================================================*/
@@ -1799,14 +1871,14 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 .calendarDisabled,
 .calendarWorkday,
 .calendarDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color:#ffffff;
 }
 
 .calendarDisabled {
-    background-color:#F6F7F9;    
+    background-color:gainsboro;    
 }
 
 .calendarWorkday {
@@ -1815,51 +1887,51 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 .calendarOver,
 .calendarOverDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color:#c0ffc0;
 }
 .calendarCellSelected {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color:#CCCCCC; 
 }
 .labelColumn {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
-    background-color:#F6F7F9;
+    background-color:gainsboro;
 }
 /* ----month---- */
 /* calMonthDayHeader and Body */
 
 .calMonthDayHeader,
 .calMonthDayHeaderDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
-    background-color:#F6F7F9;
+    background-color: gainsboro;
 }
 
 .calMonthDayHeaderOver,
 .calMonthDayHeaderOverDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color: #c0ffc0;
 }
 .calMonthDayBody,
 .calMonthDayBodyDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color:#ffffff;
 }
 .calMonthDayBodyOver,
 .calMonthDayBodyOverDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color:#c0ffc0;
@@ -1867,23 +1939,23 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 
 .calMonthDayBodyDisabled,
 .calMonthDayBodyDisabledOver {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
-    background-color:#F6F7F9;
+    background-color:#E6E6E6;
 }
 /* calMonthOtherDayHeader and Body */
 
 .calMonthOtherDayHeader,
 .calMonthOtherDayHeaderDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:#444444;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color: #aaaaaa;
 }
 .calMonthOtherDayHeaderOver,
 .calMonthOtherDayHeaderOverDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:#444444;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color: #c0ffc0;
@@ -1891,15 +1963,15 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 .calMonthOtherDayBody,
 .calMonthOtherDayBodyDark, 
 .calMonthOtherDayBodyDisabled, 
-.calMonthOtherDayBodyDisabledOver{
-    font-family:Verdana,sans-serif; font-size:11px;
+.calMonthOtherDayBodyDisabledOver {
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
-    background-color:#F6F7F9;
+    background-color:#E6E6E6;
 }
 .calMonthOtherDayBodyOver,
 .calMonthOtherDayBodyOverDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:black;
     border-bottom:1px solid #a0a0a0; border-right:1px solid #a0a0a0;
     background-color:#c0ffc0;
@@ -1910,9 +1982,9 @@ IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 .calMonthOtherDayBlankDark, 
 .calMonthOtherDayBlankOver,
 .calMonthOtherDayBlankOverDark {
-    font-family:Verdana,sans-serif; font-size:11px;
+    font-family:Arial,sans-serif; font-size:11px;
     color:#444444;
-    background-color: #F6F7F9;
+    background-color: #E6E6E6;
 }
 
 /* calMonthEventLink */
@@ -1926,24 +1998,24 @@ a.calMonthEventLink:active {color:blue; text-decoration:none}
 
 .eventWindow {
     font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 9px;
-    background-color:#EBF4FF;
-    border: 1px solid #A2CBFF;
+    background-color:#649ED8;
+    border: 1px solid #004D99;
 }
 
 .eventWindowHeader {
     font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 9px;
-    color:#4C4C4C;
-    background-color:#A2CBFF;
+    color:white;
+    background-color:#004D99;
 }
 
 .eventWindowBody {
     font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size: 9px;
-    color:#333333;
-    background-color:#EBF4FF;
+    color:black;
+    background-color: #649ED8;
     padding: 3px;
 }
 
-.eventWindowResizer {
+.eventWindowResizer{
     border-top:1px solid white;
     border-bottom: 1px solid white;
 }
@@ -1963,7 +2035,7 @@ a.calMonthEventLink:active {color:blue; text-decoration:none}
 .propSheetValue,
 .propSheetValueFocused,
 .propSheetDisabled {
-    font-family:Verdana,sans-serif;
+    font-family:Arial,sans-serif;
     font-size:11px;
     border-bottom:1px solid #AAAAAA;
     border-right:1px solid #AAAAAA;
@@ -1973,7 +2045,7 @@ a.calMonthEventLink:active {color:blue; text-decoration:none}
 .propSheetTitle,
 .propSheetTitleFocused,
 .propSheetTitleDisabled {
-    font-family:Verdana,sans-serif;
+    font-family:Arial,sans-serif;
     font-size:11px;
     border-bottom:1px solid #AAAAAA;
     border-right:1px solid #AAAAAA;
@@ -1983,13 +2055,13 @@ a.calMonthEventLink:active {color:blue; text-decoration:none}
 }
 .propSheetTitleError,
 .propSheetValueError {
-    font-family:Verdana,sans-serif; 
+    font-family:Arial,sans-serif; 
     font-size:11px; color:#204268; 
     background-color:#CFD9F2
 }
 .propSheetField,
 .propSheetFieldDisabled {
-    font-family:Verdana,sans-serif;
+    font-family:Arial,sans-serif;
     font-size:11px;
     background-color:#FFFFFF;
     border:0px;
@@ -2000,7 +2072,7 @@ a.calMonthEventLink:active {color:blue; text-decoration:none}
 }
 .propSheetHeading,
 .propSheetHeadingDisabled {
-    font-family:Verdana,sans-serif;
+    font-family:Arial,sans-serif;
     font-size:11px;
     font-weight:bold;
     color:black;

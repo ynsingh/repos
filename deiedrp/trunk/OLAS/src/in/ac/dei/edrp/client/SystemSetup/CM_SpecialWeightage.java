@@ -459,7 +459,7 @@ public class CM_SpecialWeightage {
                                 final String component = comboBox.getValue();
 
                                 for (int i = 0; i < result.length; i++) {
-                                    String code = result[i].getprogram_id();
+                                    String code = result[i].getProgram_id();
 
                                     if (code.equals(component)) {
                                         MessageBox.show(new MessageBoxConfig() {
@@ -625,6 +625,8 @@ public class CM_SpecialWeightage {
 
         manageButton.addListener(new ButtonListenerAdapter() {
                 public void onClick(Button button, EventObject e) {
+                	
+                	
                     connectService.getspecialrecords(uniid,
                         new AsyncCallback<CM_ProgramInfoGetter[]>() {
                             public void onFailure(Throwable arg0) {
@@ -674,11 +676,11 @@ public class CM_SpecialWeightage {
                                             }
 
                                             if (k == 1) {
-                                                str = result[i].getprogram_id();
+                                                str = result[i].getProgram_id();
                                             } else if (k == 2) {
-                                                str = result[i].getprogram_name();
+                                                str = result[i].getProgram_name();
                                             } else if (k == 3) {
-                                                str = result[i].getentity_id();
+                                                str = result[i].getEntity_id();
                                             }
                                         } catch (Exception e) {
                                             System.out.println("ex " + e);

@@ -5,12 +5,37 @@
 
 <web-app>
 
+
 <!--   Default page to serve -->
   <welcome-file-list>
-    <welcome-file>CourseManagement.html</welcome-file>
+    <welcome-file>AdmissionSystem.html</welcome-file>
   </welcome-file-list>
   
 <!--   Servlets -->
+<servlet>
+ <servlet-name>one</servlet-name>
+ <servlet-class>in.ac.dei.edrp.server.COS_DataServiceImpl</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ <servlet-name>one</servlet-name>
+ <url-pattern>/admissionsystem/cos_service</url-pattern>
+ </servlet-mapping>
+  <servlet>
+ <servlet-name>two</servlet-name>
+ <servlet-class>in.ac.dei.edrp.server.FinalMeritDataServiceImpl</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ <servlet-name>two</servlet-name>
+ <url-pattern>/admissionsystem/final-merit-data-service</url-pattern>
+ </servlet-mapping>
+<servlet>
+ <servlet-name>three</servlet-name>
+ <servlet-class>in.ac.dei.edrp.server.SetupTRDataServiceImpl</servlet-class>
+ </servlet>
+ <servlet-mapping>
+ <servlet-name>three</servlet-name>
+ <url-pattern>/admissionsystem/TRDataService</url-pattern>
+ </servlet-mapping>
 
      <servlet>
     <servlet-name>Log4JInitServlet</servlet-name>
@@ -25,7 +50,7 @@
    <!--
     <servlet-mapping>
     <servlet-name>Log4JInitServlet</servlet-name>
-    <url-pattern>/coursemanagement/log4jMap</url-pattern>
+    <url-pattern>/admissionsystem/log4jMap</url-pattern>
   </servlet-mapping>
    
        --> 
@@ -37,7 +62,7 @@
   
   <servlet-mapping>
     <servlet-name>connectServlet</servlet-name>
-    <url-pattern>/coursemanagement/hello1</url-pattern>
+    <url-pattern>/admissionsystem/hello1</url-pattern>
   </servlet-mapping>
   
  
@@ -48,7 +73,7 @@
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/coursemanagement/helloR</url-pattern>
+    <url-pattern>/admissionsystem/helloR</url-pattern>
   </servlet-mapping>
   
    <servlet>
@@ -58,7 +83,7 @@
   
   <servlet-mapping>
     <servlet-name>greetServletLogin</servlet-name>
-    <url-pattern>/coursemanagement/helloLogin</url-pattern>
+    <url-pattern>/admissionsystem/helloLogin</url-pattern>
   </servlet-mapping>
   
   
@@ -69,7 +94,7 @@
   
   <servlet-mapping>
     <servlet-name>superServlet</servlet-name>
-    <url-pattern>/coursemanagement/helloD</url-pattern>
+    <url-pattern>/admissionsystem/helloD</url-pattern>
   </servlet-mapping>
 
    <servlet>
@@ -79,7 +104,7 @@
   
   <servlet-mapping>
     <servlet-name>progOfferedByServlet</servlet-name>
-    <url-pattern>/coursemanagement/progOfferedBy</url-pattern>
+    <url-pattern>/admissionsystem/progOfferedBy</url-pattern>
   </servlet-mapping>
   
   <!-- For Deepak Project -->
@@ -90,7 +115,7 @@
   
   <servlet-mapping>
     <servlet-name>greet</servlet-name>
-    <url-pattern>/coursemanagement/greet</url-pattern>
+    <url-pattern>/admissionsystem/greet</url-pattern>
   </servlet-mapping>  
   
    <servlet>
@@ -100,7 +125,7 @@
   
   <servlet-mapping>
     <servlet-name>TempServlet</servlet-name>
-    <url-pattern>/coursemanagement/helloTemp</url-pattern>
+    <url-pattern>/admissionsystem/helloTemp</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -110,7 +135,7 @@
   
   <servlet-mapping>
     <servlet-name>boardServlet</servlet-name>
-    <url-pattern>/coursemanagement/board</url-pattern>
+    <url-pattern>/admissionsystem/board</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -120,7 +145,7 @@
   
   <servlet-mapping>
     <servlet-name>marksServlet</servlet-name>
-    <url-pattern>/coursemanagement/helloManage</url-pattern>
+    <url-pattern>/admissionsystem/helloManage</url-pattern>
   </servlet-mapping>
   <!-- Added by Deepak  -->
   <servlet>
@@ -130,7 +155,17 @@
   
   <servlet-mapping>
     <servlet-name>exportServlet</servlet-name>
-    <url-pattern>/coursemanagement/export</url-pattern>
+    <url-pattern>/admissionsystem/export</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>download</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.DowLoadSheetAction</servlet-class>
+  </servlet>
+  
+   <servlet-mapping>
+    <servlet-name>download</servlet-name>
+    <url-pattern>/admissionsystem/download</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -140,7 +175,7 @@
   
   <servlet-mapping>
     <servlet-name>exportServlet1</servlet-name>
-    <url-pattern>/coursemanagement/exportcall</url-pattern>
+    <url-pattern>/admissionsystem/exportcall</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -150,7 +185,7 @@
   
   <servlet-mapping>
     <servlet-name>exportServlet2</servlet-name>
-    <url-pattern>/coursemanagement/exportfinal</url-pattern>
+    <url-pattern>/admissionsystem/exportfinal</url-pattern>
   </servlet-mapping>
   
    <servlet>
@@ -160,7 +195,7 @@
   
   <servlet-mapping>
     <servlet-name>addmarksservice</servlet-name>
-    <url-pattern>/coursemanagement/addmarksservice</url-pattern>
+    <url-pattern>/admissionsystem/addmarksservice</url-pattern>
   </servlet-mapping>
   
   	<servlet>
@@ -169,7 +204,100 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UploadQuestionsServlet</servlet-name>
-		<url-pattern>/coursemanagement/addmarks</url-pattern>
+		<url-pattern>/admissionsystem/addmarks</url-pattern>
 	</servlet-mapping>
 	
+	
+	<servlet>
+		<servlet-name>newSummarySheet</servlet-name>
+		<servlet-class>in.ac.dei.edrp.server.summarysheet.SummarySheetImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>newSummarySheet</servlet-name>
+		<url-pattern>/admissionsystem/newSummarySheet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+	<servlet-name>uploadDocs</servlet-name>
+	<servlet-class>in.ac.dei.edrp.server.summarysheet.Upload</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	<servlet-name>uploadDocs</servlet-name>
+	<url-pattern>/admissionsystem/upload</url-pattern>
+	</servlet-mapping>
+	
+
+	  <!-- Servlets -->
+	  
+	   
+	  <servlet>
+    <servlet-name>SimpleCaptcha</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.servlet.ExtendedCaptchaServlet</servlet-class>
+    <init-param>
+        <param-name>width</param-name>
+        <param-value>200</param-value>
+    </init-param>
+    <init-param>
+        <param-name>height</param-name>
+        <param-value>50</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SimpleCaptcha</servlet-name>
+    <url-pattern>/SimpleCaptcha.jpg</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+    <servlet-name>ApplicantAccount</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.ApplicantAccountImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApplicantAccount</servlet-name>
+    <url-pattern>/admissionsystem/ApplicantAccount</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+		<servlet-name>finalMeritList</servlet-name>
+		<servlet-class>in.ac.dei.edrp.server.process.FinalMeritListProcessImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>finalMeritList</servlet-name>
+		<url-pattern>/admissionsystem/finalMeritList</url-pattern>
+	</servlet-mapping>
+	<servlet>
+    		<servlet-name>FormSearch</servlet-name>
+    		<servlet-class>in.ac.dei.edrp.server.InternalSummarySheet.FormSearchImpl</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+    		<servlet-name>FormSearch</servlet-name>
+    		<url-pattern>/admissionsystem/FormSearch</url-pattern>
+  	</servlet-mapping>
+  
+  	<servlet>
+		<servlet-name>internalSummarySheet</servlet-name>
+		<servlet-class>in.ac.dei.edrp.server.InternalSummarySheet.InternalSummaryImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>internalSummarySheet</servlet-name>
+		<url-pattern>/admissionsystem/internalSummarySheet</url-pattern>
+	</servlet-mapping>
+<servlet>
+    <servlet-name>AccountLoginEDEI</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.AccountLoginEDEIImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AccountLoginEDEI</servlet-name>
+    <url-pattern>/admissionsystem/AccountLoginEDEI</url-pattern>
+  </servlet-mapping>
+
+	<servlet>
+		<servlet-name>edeiSummarySheet</servlet-name>
+		<servlet-class>in.ac.dei.edrp.server.EDeiSummaryImpl</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>edeiSummarySheet</servlet-name>
+		<url-pattern>/admissionsystem/edeiSummarySheet</url-pattern>
+	</servlet-mapping>
 </web-app>

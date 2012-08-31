@@ -315,7 +315,7 @@ public class CM_SuperUniversity {
 
                                 {
                                     setTitle("Error");
-                                    setMsg("Check the entries in red");
+                                    setMsg("Kindly Fill All the mandatory fields");
                                     setIconCls(MessageBox.ERROR);
                                     setButtons(MessageBox.OK);
                                 }
@@ -497,7 +497,7 @@ public class CM_SuperUniversity {
 
                                 {
                                     setTitle("Error");
-                                    setMsg("Check the entries in red");
+                                    setMsg("Kindly Fill All the mandatory fields");
                                     setIconCls(MessageBox.ERROR);
                                     setButtons(MessageBox.OK);
                                 }

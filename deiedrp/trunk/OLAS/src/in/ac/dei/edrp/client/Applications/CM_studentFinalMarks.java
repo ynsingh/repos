@@ -51,8 +51,8 @@ import in.ac.dei.edrp.client.CM_userInfoGetter;
 import in.ac.dei.edrp.client.GridDataBean;
 import in.ac.dei.edrp.client.Login.CM_LoginConnectS;
 import in.ac.dei.edrp.client.Login.CM_LoginConnectSAsync;
-import in.ac.dei.edrp.client.RPCFiles.CM_connect;
-import in.ac.dei.edrp.client.RPCFiles.CM_connectAsync;
+import in.ac.dei.edrp.client.RPCFiles.CM_connectTemp;
+import in.ac.dei.edrp.client.RPCFiles.CM_connectTempAsync;
 import in.ac.dei.edrp.client.RPCFiles.CM_manageMarks;
 import in.ac.dei.edrp.client.RPCFiles.CM_manageMarksAsync;
 import in.ac.dei.edrp.client.Shared.Validator;
@@ -69,17 +69,18 @@ public class CM_studentFinalMarks {
     public String userid;
     String[][] object2;
     CM_progOfferedBy pob = new CM_progOfferedBy(userid);
-    private final CM_connectAsync connectService = GWT.create(CM_connect.class);
+    private final CM_connectTempAsync connectTemp = (CM_connectTempAsync) GWT.create(CM_connectTemp.class);
     private final CM_manageMarksAsync marksService = GWT.create(CM_manageMarks.class);
     CM_LoginConnectSAsync loginconnect = GWT.create(CM_LoginConnectS.class);
 
-    //First Outer Vertical Panel contains inner vertical panel with (all comboBox and buttons)
+    // First Outer Vertical Panel contains inner vertical panel with (all
+    // comboBox and buttons)
     final VerticalPanel vInPanel = new VerticalPanel();
 
-    //Inner Vertical panel which contains all comboBox and button
+    // Inner Vertical panel which contains all comboBox and button
     public final VerticalPanel vPanel = new VerticalPanel();
 
-    //Panel for containing grid
+    // Panel for containing grid
     HorizontalPanel gridPanel = new HorizontalPanel();
     String pagename = "Enter Admission Test Marks";
     String[] values;
@@ -108,6 +109,7 @@ public class CM_studentFinalMarks {
 
     /**
      * Constructor for setting the Value of User ID
+     *
      * @param Uid
      */
     public CM_studentFinalMarks(String Uid) {
@@ -125,35 +127,29 @@ public class CM_studentFinalMarks {
         final ComboBox entityTypeCBox = new ComboBox();
         final ComboBox entityNameCBox = new ComboBox();
         final ComboBox programNameCBox = new ComboBox();
-        final ComboBox branchNameCBox = new ComboBox();
         final ComboBox criteriaTypeCBox = new ComboBox();
-
-        //    	final TextField textValue=new TextField();
         final CheckboxSelectionModel cbSelectionModel = new CheckboxSelectionModel();
         final BorderLayoutData bd = new BorderLayoutData(RegionPosition.CENTER);
         bd.setMargins(6, 6, 6, 6);
 
         final SuggestBox textValue = new SuggestBox(oracle);
 
-        //Add Button for adding student marks to studentfinalmarks table and inserting these values to studentfinalmeritlist
+        // Add Button for adding student marks to studentfinalmarks table and
+        // inserting these values to studentfinalmeritlist
         final Button addMarksButton = new Button(consAddMarks);
 
-        //Edit Button, to edit records (marks for student) one by one. Table changes: Studenfinalmarks and Studentfinalmeritlist
+        // Edit Button, to edit records (marks for student) one by one. Table
+        // changes: Studenfinalmarks and Studentfinalmeritlist
         final Button editMarksButton = new Button(consEditMarks);
 
-        methodSetEntityNameProp(entityNameCBox);
-        pob.methodSetEntityTypeProp(entityTypeCBox);
-        pob.methodSetProgramProp(programNameCBox);
-        pob.methodSetBranchProp(branchNameCBox);
-
+        ComboBoxes(entityNameCBox);
+        ComboBoxes(entityTypeCBox);
+        ComboBoxes(programNameCBox);
         entityTypeCBox.setAllowBlank(false);
         programNameCBox.setAllowBlank(false);
-        branchNameCBox.setAllowBlank(false);
-
         entityTypeCBox.disable();
         entityNameCBox.disable();
         programNameCBox.disable();
-        branchNameCBox.disable();
         editMarksButton.disable();
         cbSelectionModel.lock();
         editButton.disable();
@@ -175,7 +171,6 @@ public class CM_studentFinalMarks {
                                         entityTypeCBox.enable();
                                         entityNameCBox.enable();
                                         programNameCBox.enable();
-                                        branchNameCBox.enable();
                                         editMarksButton.enable();
                                         cbSelectionModel.unlock();
                                         editButton.enable();
@@ -249,7 +244,6 @@ public class CM_studentFinalMarks {
                                                 entityTypeCBox.enable();
                                                 entityNameCBox.enable();
                                                 programNameCBox.enable();
-                                                branchNameCBox.enable();
                                                 editMarksButton.enable();
                                             }
 
@@ -258,7 +252,6 @@ public class CM_studentFinalMarks {
                                                 entityTypeCBox.enable();
                                                 entityNameCBox.enable();
                                                 programNameCBox.enable();
-                                                branchNameCBox.enable();
                                                 editMarksButton.enable();
                                                 cbSelectionModel.unlock();
                                                 editButton.enable();
@@ -314,24 +307,41 @@ public class CM_studentFinalMarks {
                 }
             });
 
-        connectService.methodEntityList(userid,
+        connectTemp.Entity_Description(userid,
             new AsyncCallback<CM_entityInfoGetter[]>() {
-                public void onFailure(Throwable arg0) {
-                    MessageBox.alert(errorMsg, arg0.getMessage());
+                public void onFailure(Throwable caught) {
+                    MessageBox.alert("Sql Exception", caught.getMessage());
                 }
 
                 public void onSuccess(CM_entityInfoGetter[] arg0) {
                     RecordDef recordDef = new RecordDef(new FieldDef[] {
-                                new StringFieldDef("entity_type")
+                                new StringFieldDef("Description"),
+                                new StringFieldDef("code")
                             });
 
-                    object2 = new String[arg0.length][1];
+                    String[][] object1;
 
-                    String[][] data = object2;
+                    object1 = new String[arg0.length][2];
 
-                    for (int i = 0; i < arg0.length; i++) {
-                        object2[i][0] = arg0[i].getEntity_name();
+                    String str = null;
+
+                    try {
+                        for (int i = 0; i < arg0.length; i++) {
+                            for (int k = 0; k < 2; k++) {
+                                if (k == 0) {
+                                    str = arg0[i].getEntity_description();
+                                } else if (k == 1) {
+                                    str = arg0[i].getEntity_type();
+                                }
+
+                                object1[i][k] = str;
+                            }
+                        }
+                    } catch (Exception e2) {
+                        System.out.println("e2     " + e2);
                     }
+
+                    Object[][] data = object1;
 
                     MemoryProxy proxy = new MemoryProxy(data);
 
@@ -352,27 +362,25 @@ public class CM_studentFinalMarks {
             mainPanel.setTitle(labels.labeleditTestMarks());
             heading = new Label(consEditMarks);
             heading.setStyleName("heading1");
-            mainPanel.setSize("300px", "275px");
+            mainPanel.setSize("350px", "250px");
         } else {
             mainPanel.setTitle(labels.labeladdTestMarks());
             heading = new Label(consAddMarks);
             heading.setStyleName("heading1");
-            mainPanel.setSize("300px", "200px");
+            mainPanel.setSize("350px", "150px");
         }
 
-        //        Label instiName = new Label("Dayalbagh Educational Institute");
-        //        Label session = new Label("Session: 2010-11");
+        // Label instiName = new Label("Dayalbagh Educational Institute");
+        // Label session = new Label("Session: 2010-11");
         FlexTable upperFlexTable = new FlexTable();
 
         Label entityTypeLabel = new Label(consEntityType);
         Label entityNameLabel = new Label(consEntityName);
         Label programNameLabel = new Label(consProgName);
-        final Label branchNameLabel = new Label(consBranchName);
 
         entityTypeCBox.setEmptyText(consEntityType);
         entityNameCBox.setEmptyText(consEntityName);
         programNameCBox.setEmptyText(consProgName);
-        branchNameCBox.setEmptyText(consBranchName);
 
         upperFlexTable.setWidget(0, 0, entityTypeLabel);
         upperFlexTable.setWidget(0, 1, entityTypeCBox);
@@ -380,9 +388,6 @@ public class CM_studentFinalMarks {
         upperFlexTable.setWidget(1, 1, entityNameCBox);
         upperFlexTable.setWidget(2, 0, programNameLabel);
         upperFlexTable.setWidget(2, 1, programNameCBox);
-        upperFlexTable.setWidget(3, 0, branchNameLabel);
-        upperFlexTable.setWidget(3, 1, branchNameCBox);
-
         if (function.equalsIgnoreCase("edit")) {
             methodCriteriaProp(criteriaTypeCBox);
 
@@ -412,9 +417,6 @@ public class CM_studentFinalMarks {
             upperFlexTable.setWidget(11, 0, criteriaNameLabel);
             upperFlexTable.setWidget(11, 1, textValue);
         }
-
-        //        mainPanel.add(instiName);
-        //        mainPanel.add(session);
         mainPanel.add(upperFlexTable);
 
         if (function.equalsIgnoreCase("add")) {
@@ -427,36 +429,43 @@ public class CM_studentFinalMarks {
             entityTypeCBox.addListener(new ComboBoxListenerAdapter() {
                     public void onSelect(ComboBox comboBox, Record record,
                         int index) {
-                        final String criteria = "name";
                         String entityType = comboBox.getValue();
-                        connectService.methodPopulateEntitySuggest(userid,
-                            entityType, criteria,
+                        connectTemp.Entity_Name(userid, entityType,
                             new AsyncCallback<CM_entityInfoGetter[]>() {
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(errorMsg, arg0.getMessage());
+                                public void onFailure(Throwable caught) {
+                                    MessageBox.alert(labels.dbError(),
+                                        caught.getMessage());
                                 }
 
                                 public void onSuccess(
                                     CM_entityInfoGetter[] arg0) {
                                     RecordDef recordDef = new RecordDef(new FieldDef[] {
-                                                new StringFieldDef("entity_name"),
-                                                new StringFieldDef("entity_id")
+                                                new StringFieldDef("Description"),
+                                                new StringFieldDef("code")
                                             });
+                                    final String[][] object2;
 
                                     object2 = new String[arg0.length][2];
 
-                                    String[][] data = object2;
+                                    String str = null;
 
-                                    for (int i = 0; i < arg0.length; i++) {
-                                        for (int k = 0; k < 2; k++) {
-                                            //                                        if (k == 0) {
-                                            object2[i][0] = arg0[i].getEntity_name();
-                                            //                                        } else {
-                                            object2[i][1] = arg0[i].getEntity_id();
+                                    try {
+                                        for (int i = 0; i < arg0.length; i++) {
+                                            for (int k = 0; k < 2; k++) {
+                                                if (k == 0) {
+                                                    str = arg0[i].getEntity_name();
+                                                } else if (k == 1) {
+                                                    str = arg0[i].getEntity_id();
+                                                }
 
-                                            //                                        }
+                                                object2[i][k] = str;
+                                            }
                                         }
+                                    } catch (Exception e2) {
+                                        System.out.println("e2     " + e2);
                                     }
+
+                                    Object[][] data = object2;
 
                                     MemoryProxy proxy = new MemoryProxy(data);
 
@@ -467,7 +476,6 @@ public class CM_studentFinalMarks {
                                     entityNameCBox.clearValue();
                                     programNameCBox.clearValue();
                                     entityNameCBox.setStore(store);
-                                    branchNameCBox.clearValue();
                                     vPanel.remove(gridPanel);
                                 }
                             });
@@ -478,32 +486,43 @@ public class CM_studentFinalMarks {
                     public void onSelect(ComboBox comboBox, Record record,
                         int index) {
                         String entityType = comboBox.getValue();
-                        marksService.methodEntityListEdit(userid, entityType,
+
+                        connectTemp.Entity_Name(userid, entityType,
                             new AsyncCallback<CM_entityInfoGetter[]>() {
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(errorMsg, arg0.getMessage());
+                                public void onFailure(Throwable caught) {
+                                    MessageBox.alert(labels.dbError(),
+                                        caught.getMessage());
                                 }
 
                                 public void onSuccess(
                                     CM_entityInfoGetter[] arg0) {
                                     RecordDef recordDef = new RecordDef(new FieldDef[] {
-                                                new StringFieldDef("entity_name"),
-                                                new StringFieldDef("entity_id")
+                                                new StringFieldDef("Description"),
+                                                new StringFieldDef("code")
                                             });
+                                    final String[][] object2;
 
                                     object2 = new String[arg0.length][2];
 
-                                    String[][] data = object2;
+                                    String str = null;
 
-                                    for (int i = 0; i < arg0.length; i++) {
-                                        for (int k = 0; k < 2; k++) {
-                                            if (k == 0) {
-                                                object2[i][0] = arg0[i].getEntity_name();
-                                            } else {
-                                                object2[i][1] = arg0[i].getEntity_id();
+                                    try {
+                                        for (int i = 0; i < arg0.length; i++) {
+                                            for (int k = 0; k < 2; k++) {
+                                                if (k == 0) {
+                                                    str = arg0[i].getEntity_name();
+                                                } else if (k == 1) {
+                                                    str = arg0[i].getEntity_id();
+                                                }
+
+                                                object2[i][k] = str;
                                             }
                                         }
+                                    } catch (Exception e2) {
+                                        System.out.println("e2     " + e2);
                                     }
+
+                                    Object[][] data = object2;
 
                                     MemoryProxy proxy = new MemoryProxy(data);
 
@@ -514,7 +533,6 @@ public class CM_studentFinalMarks {
                                     entityNameCBox.clearValue();
                                     programNameCBox.clearValue();
                                     entityNameCBox.setStore(store);
-                                    branchNameCBox.clearValue();
                                     vPanel.remove(gridPanel);
                                 }
                             });
@@ -539,8 +557,8 @@ public class CM_studentFinalMarks {
                                     final CM_progMasterInfoGetter[] result) {
                                     try {
                                         RecordDef recordDef = new RecordDef(new FieldDef[] {
-                                                    new StringFieldDef("program_name"),
-                                                    new StringFieldDef("program_id")
+                                                    new StringFieldDef("Description"),
+                                                    new StringFieldDef("code")
                                                 });
 
                                         String[][] object2 = new String[result.length][2];
@@ -579,8 +597,8 @@ public class CM_studentFinalMarks {
                                     final CM_progMasterInfoGetter[] result) {
                                     try {
                                         RecordDef recordDef = new RecordDef(new FieldDef[] {
-                                                    new StringFieldDef("program_name"),
-                                                    new StringFieldDef("program_id")
+                                                    new StringFieldDef("Description"),
+                                                    new StringFieldDef("code")
                                                 });
 
                                         String[][] object2 = new String[result.length][2];
@@ -610,7 +628,6 @@ public class CM_studentFinalMarks {
                     }
 
                     criteriaTypeCBox.clearValue();
-                    branchNameCBox.clearValue();
                     vPanel.remove(gridPanel);
                 }
             });
@@ -621,122 +638,11 @@ public class CM_studentFinalMarks {
 
                     if (function.equalsIgnoreCase("add")) {
                         object.setProgram_id(comboBox.getValue());
-                        object.setBranchcode("000");
-
-                        marksService.methodBranchListAdd(entityNameCBox.getValue(),
-                            comboBox.getValue(),
-                            new AsyncCallback<CM_progMasterInfoGetter[]>() {
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(failureLabel,
-                                        arg0.getMessage());
-                                }
-
-                                public void onSuccess(
-                                    CM_progMasterInfoGetter[] arg0) {
-                                    final RecordDef rDef = new RecordDef(new FieldDef[] {
-                                                new StringFieldDef("branchname"),
-                                                new StringFieldDef("branchcode")
-                                            });
-
-                                    Object[][] object1 = new Object[arg0.length][2];
-
-                                    String str = null;
-
-                                    try {
-                                        for (int i = 0; i < arg0.length; i++) {
-                                            for (int k = 0; k < 2; k++) {
-                                                if (k == 0) {
-                                                    str = arg0[i].getBranchname();
-                                                } else if (k == 1) {
-                                                    str = arg0[i].getBranchcode();
-                                                }
-
-                                                object1[i][k] = str;
-                                            }
-                                        }
-                                    } catch (Exception e2) {
-                                        System.out.println("e2     " + e2);
-                                    }
-
-                                    Object[][] data = object1;
-
-                                    MemoryProxy proxy = null;
-
-                                    proxy = new MemoryProxy(data);
-
-                                    ArrayReader reader = new ArrayReader(rDef);
-
-                                    Store branchStore = new Store(proxy, reader);
-
-                                    branchStore.load();
-                                    branchNameCBox.setStore(branchStore);
-                                }
-                            });
-                    } else {
-                        marksService.methodBranchListEdit(entityNameCBox.getValue(),
-                            programNameCBox.getValue(),
-                            new AsyncCallback<CM_progMasterInfoGetter[]>() {
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(failureLabel,
-                                        arg0.getMessage());
-                                }
-
-                                public void onSuccess(
-                                    CM_progMasterInfoGetter[] arg0) {
-                                    final RecordDef rDef = new RecordDef(new FieldDef[] {
-                                                new StringFieldDef("branchname"),
-                                                new StringFieldDef("branchcode")
-                                            });
-
-                                    Object[][] object1 = new Object[arg0.length][2];
-
-                                    String str = null;
-
-                                    try {
-                                        for (int i = 0; i < arg0.length; i++) {
-                                            for (int k = 0; k < 2; k++) {
-                                                if (k == 0) {
-                                                    str = arg0[i].getBranchname();
-                                                } else if (k == 1) {
-                                                    str = arg0[i].getBranchcode();
-                                                }
-
-                                                object1[i][k] = str;
-                                            }
-                                        }
-                                    } catch (Exception e2) {
-                                        System.out.println("e2     " + e2);
-                                    }
-
-                                    Object[][] data = object1;
-
-                                    MemoryProxy proxy = null;
-
-                                    proxy = new MemoryProxy(data);
-
-                                    ArrayReader reader = new ArrayReader(rDef);
-
-                                    Store branchStore = new Store(proxy, reader);
-
-                                    branchStore.load();
-                                    branchNameCBox.setStore(branchStore);
-                                }
-                            });
                     }
-
-                    branchNameCBox.clearValue();
                     criteriaTypeCBox.clearValue();
                     vPanel.remove(gridPanel);
                 }
             });
-
-        branchNameCBox.addListener(new ComboBoxListenerAdapter() {
-                public void onSelect(ComboBox comboBox, Record record, int index) {
-                    criteriaTypeCBox.clearValue();
-                    vPanel.remove(gridPanel);
-                }
-            });
-
         criteriaTypeCBox.addListener(new ComboBoxListenerAdapter() {
                 public void onSelect(ComboBox comboBox, Record record, int index) {
                     boolean flag = true;
@@ -757,19 +663,13 @@ public class CM_studentFinalMarks {
                         programNameCBox.validate();
                     } catch (Exception e1) {
                         flag = false;
-                    }
-
-                    try {
-                        branchNameCBox.validate();
-                    } catch (Exception e1) {
-                        flag = false;
-                    }
+                    }                 
 
                     if (flag == true) {
                         textValue.setValue("");
                         methodLoadOracle(comboBox.getValue(),
                             programNameCBox.getValue(),
-                            branchNameCBox.getValue(), entityNameCBox.getValue());
+                            entityNameCBox.getValue());
                     } else {
                         MessageBox.alert(errorMsg, correctEntriesMsg);
                     }
@@ -809,38 +709,35 @@ public class CM_studentFinalMarks {
                         flag = false;
                     }
 
-                    try {
-                        branchNameCBox.validate();
-                    } catch (Exception e1) {
-                        flag = false;
-                    }
-
                     if (flag == true) {
-                        //To get all studentlist which has been called for final merit
+                        /**
+                         * To get all student list which has been called for final
+                         * merit
+                         */
                         marksService.methodProgramList(userid,
                             entityTypeCBox.getValue(),
                             entityNameCBox.getValue(),
                             programNameCBox.getValue(),
-                            branchNameCBox.getValue(),
                             new AsyncCallback<List<GridDataBean>>() {
                                 public void onFailure(Throwable arg0) {
                                     String[] msg = arg0.getMessage().split(":");
                                     MessageBox.alert(errorMsg, msg[1]);
-                                } //onFailure
+                                } // onFailure
 
                                 public void onSuccess(List<GridDataBean> arg0) {
                                     if ((arg0.size() - 1) != 0) {
-                                        //Hold data for reader object or list data into double dimenssion array
+                                        // Hold data for reader object or list
+                                        // data into double dimenssion array
                                         final String[][] object2;
 
-                                        //Iterate list which returns from server
-                                        //Use of this iterator: To get Column Names
+                                        // Iterate list which returns from
+                                        // server
+                                        // Use of this iterator: To get Column
+                                        // Names
                                         Iterator<GridDataBean> itr1 = arg0.iterator();
                                         itr1.hasNext();
 
                                         GridDataBean gd1 = (GridDataBean) itr1.next();
-
-                                        //sdf[]: to hold column names 
                                         final String[] sdf = new String[4 +
                                             (gd1.getComp().length)];
                                         sdf[0] = new String(gd1.getRegnum());
@@ -854,27 +751,28 @@ public class CM_studentFinalMarks {
                                         final Integer[] max_marks = max_marks1;
 
                                         int count = 2;
-                                        ;
+                                        
 
                                         for (int k = 0; k < s1.length; k++) {
                                             sdf[k + 3] = new String(s1[k]);
 
                                             count++;
-                                        } //For Loop ends
+                                        } // For Loop ends
 
                                         sdf[count + 1] = new String(gd1.getTotal());
 
-                                        //get Column name first,create your bean with column name
-                                        //FieldDefinition
+                                        // get Column name first,create your
+                                        // bean with column name
+                                        // FieldDefinition
                                         FieldDef[] def = new FieldDef[sdf.length];
 
                                         for (int defl = 0; defl < def.length;
                                                 defl++) {
-                                            def[defl] = new StringFieldDef(sdf[defl]);
+                                            def[defl] = new StringFieldDef(sdf[defl]);                                            
                                         }
 
-                                        //RecordDefinition
-                                        final RecordDef recordDef = new RecordDef(def); //RecordDef
+                                        // RecordDefinition
+                                        final RecordDef recordDef = new RecordDef(def); // RecordDef
 
                                         object2 = new String[arg0.size() - 1][4 +
                                             sdf.length];
@@ -893,21 +791,21 @@ public class CM_studentFinalMarks {
                                             data[i][1] = gd.getTestNumber();
                                             data[i][2] = gd.getCall();
 
-                                            String[] s2 = gd.getComp();
-                                            count = 2;
-
-                                            for (int k = 0; k < s2.length;
+                                            String[] s2 = gd.getComp();     
+                                            
+                                            count = 2;     
+                                            final String[] ss = new String[(gd1.getComp().length)];
+                                            //updated by devendra                                          
+                                            for (int k = 0; k < max_marks.length;
                                                     k++) {
-                                                //		                	data[i][k+3]=s2[k];
-                                                data[i][k + 3] = s2[k];
-
+                                                data[i][k+3]=max_marks[k].toString();//s2[k];
                                                 count++;
-                                            } //For Loop ends
+                                            } // For Loop ends
 
                                             data[i][count + 1] = gd.getTotal();
                                             i++;
-                                        } //Iterator ends
-                                          //Final data in data[] array
+                                        } // Iterator ends
+                                          // Final data in data[] array
 
                                         MemoryProxy proxy = new MemoryProxy(data);
                                         ArrayReader reader = new ArrayReader(recordDef);
@@ -915,12 +813,14 @@ public class CM_studentFinalMarks {
                                                 reader, true);
                                         store.load();
 
-                                        //Here we have final data in store
-                                        //creating column config
+                                        // Here we have final data in store
+                                        // creating column config
                                         ColumnConfig[] commonCol = new ColumnConfig[sdf.length];
 
-                                        //		                 commonCol[0]=new CheckboxColumnConfig(cbSelectionModel);               
-                                        //setting editor for columns so that user can edit
+                                        // commonCol[0]=new
+                                        // CheckboxColumnConfig(cbSelectionModel);
+                                        // setting editor for columns so that
+                                        // user can edit
                                         for (int d = 0; d < commonCol.length;
                                                 d++) {
                                             commonCol[d] = new ColumnConfig(sdf[d],
@@ -928,17 +828,19 @@ public class CM_studentFinalMarks {
                                                     sdf[d]);
                                         }
 
-                                        //creating BaseColumnConfig
+                                        // creating BaseColumnConfig
                                         final BaseColumnConfig[] columns = commonCol;
 
-                                        //creating ColumnModel
+                                        // creating ColumnModel
                                         final ColumnModel columnModel = new ColumnModel(columns);
                                         columnModel.setDefaultSortable(true);
 
-                                        //Creating object of editorgridpanel
+                                        // Creating object of editorgridpanel
                                         final GridPanel grid = new GridPanel(store,
                                                 columnModel);
-                                        //setting title, clicks to edit,frame, size, StripeRows, TrackMouseOver and visible
+                                        // setting title, clicks to edit,frame,
+                                        // size, StripeRows, TrackMouseOver and
+                                        // visible
                                         grid.setTitle(consAddMarks);
                                         grid.setSelectionModel(cbSelectionModel);
                                         grid.setFrame(true);
@@ -949,8 +851,9 @@ public class CM_studentFinalMarks {
                                         grid.setTrackMouseOver(true);
                                         grid.setVisible(true);
 
-                                        //Adding toolbar with editorgridpanel
-                                        //			    ToolbarButton addButton=new ToolbarButton("Add");
+                                        // Adding toolbar with editorgridpanel
+                                        // ToolbarButton addButton=new
+                                        // ToolbarButton("Add");
                                         Toolbar topToolBar = new Toolbar();
                                         topToolBar.addFill();
 
@@ -1012,7 +915,7 @@ public class CM_studentFinalMarks {
                                                                     numberField[numberCount] = new NumberField();
                                                                     comboBox[numberCount] = new ComboBox();
                                                                     maxLabel[numberCount] = new Label();
-                                                                    //		    		        			 comboBox[numberCount].setId(""+numberCount);
+                                                                    // comboBox[numberCount].setId(""+numberCount);
                                                                     methodAttComboProp(
                                                                             comboBox[numberCount]);
                                                                     methodMarksFieldsProp(
@@ -1033,7 +936,6 @@ public class CM_studentFinalMarks {
                                                                             j,
                                                                             2,
                                                                             numberField[numberCount]);
-                                                                    //		    		        		numberField[numberCount].setValue(record.getAsString(sdf[i]));		    		        		
                                                                     editEntityProgramTable.setWidget(
                                                                             j,
                                                                             1,
@@ -1043,18 +945,7 @@ public class CM_studentFinalMarks {
                                                                             j,
                                                                             3,
                                                                             comboBox[numberCount]);
-
-                                                                    //		    		        		comboBox[numberCount].addListener(new ComboBoxListenerAdapter(){
-                                                                    //		    		        			
-                                                                    //		    		        			public void onSelect(ComboBox comboBox, Record record, int index) {
-                                                                    //		    		        					if(comboBox.getValueAsString().equalsIgnoreCase("A")){
-                                                                    //		    		        						numberField[Integer.parseInt(comboBox.getId())].setValue("0");
-                                                                    //		    		        						numberField[Integer.parseInt(comboBox.getId())].setReadOnly(true);
-                                                                    //		    		        					} else{		    		        					
-                                                                    //		    		        						numberField[Integer.parseInt(comboBox.getId())].setReadOnly(false);
-                                                                    //		    		        					}
-                                                                    //		    		        				}	 		 		        	 
-                                                                    //		    		         	         });
+                                                               
                                                                     numberCount++;
                                                                 } else {
                                                                     editEntityProgramTable.setWidget(
@@ -1078,7 +969,7 @@ public class CM_studentFinalMarks {
                                                         final Window window = new Window();
                                                         window.setTitle(
                                                                 consAddMarks);
-                                                        window.setWidth(550);
+                                                        window.setWidth(650);
                                                         window.setHeight(300);
                                                         window.setMinWidth(350);
                                                         window.setMinHeight(150);
@@ -1138,8 +1029,6 @@ public class CM_studentFinalMarks {
                                                                                     entityNameCBox.getValue();
                                                                             String prog_id =
                                                                                     programNameCBox.getValue();
-                                                                            String branch_id =
-                                                                                    branchNameCBox.getValue();
                                                                             String reg_no =
                                                                                     record.getAsString(
                                                                                         sdf[0]);
@@ -1183,7 +1072,6 @@ public class CM_studentFinalMarks {
                                                                                     userid,
                                                                                     entity_id,
                                                                                     prog_id,
-                                                                                    branch_id,
                                                                                     reg_no,
                                                                                     testnumber,
                                                                                     callMerit,
@@ -1259,9 +1147,9 @@ public class CM_studentFinalMarks {
                                                 }
                                             });
                                     }
-                                } //onsuccess ends
+                                } // onsuccess ends
                             }); //
-                    } else {
+                    } else {                    	
                         MessageBox.alert(errorMsg, correctEntriesMsg);
                     }
                 }
@@ -1292,24 +1180,9 @@ public class CM_studentFinalMarks {
                     }
 
                     try {
-                        branchNameCBox.validate();
-                    } catch (Exception e1) {
-                        flag = false;
-                    }
-
-                    try {
                         if (crieteria_value == null) {
-                            //            	   System.out.println("going in null validation");
                             crieteria_value = "no";
                         }
-
-                        //               else if(search_value.equalsIgnoreCase("")){
-                        //            	   try {
-                        //                       textValue.markInvalid("Invalid");
-                        //                   } catch (Exception e1) {
-                        //                       flag = false;
-                        //                   }
-                        //               }
                     } catch (Exception e1) {
                         System.out.println("here is the exception   " + e1);
                     }
@@ -1319,33 +1192,37 @@ public class CM_studentFinalMarks {
                         final BorderLayoutData bd = new BorderLayoutData(RegionPosition.CENTER);
                         bd.setMargins(6, 6, 6, 6);
 
-                        //To get all studentlist which has been called for final merit
+                        /**
+                         * To get all student list which has been called for final
+                         * merit
+                         */
                         marksService.methodEditGridDataList(userid.substring(
                                 1, 5), entityNameCBox.getValue(),
-                            programNameCBox.getValue(),
-                            branchNameCBox.getValue(), crieteria_value,
-                            search_value,
-                            new AsyncCallback<List<GridDataBean>>() {
+                            programNameCBox.getValue(), crieteria_value,
+                            search_value,new AsyncCallback<List<GridDataBean>>() {
                                 public void onFailure(Throwable arg0) {
                                     String[] msg = arg0.getMessage().split(":");
                                     MessageBox.alert(errorMsg, msg[1]);
 
-                                    //                        	MessageBox.alert("Failure",arg0.getMessage());
-                                } //onFailure
+                                    // MessageBox.alert("Failure",arg0.getMessage());
+                                } // onFailure
 
                                 public void onSuccess(List<GridDataBean> arg0) {
                                     if ((arg0.size() - 1) != 0) {
-                                        //Hold data for reader object or list data into double dimension array
+                                        // Hold data for reader object or list
+                                        // data into double dimension array
                                         final String[][][] object;
 
-                                        //Iterate list which returns from server
-                                        //Use of this iterator: To get Column Names
+                                        // Iterate list which returns from
+                                        // server
+                                        // Use of this iterator: To get Column
+                                        // Names
                                         Iterator<GridDataBean> itr1 = arg0.iterator();
                                         itr1.hasNext();
 
                                         final GridDataBean gd1 = (GridDataBean) itr1.next();
 
-                                        //sdf[]: to hold column names 
+                                        // sdf[]: to hold column names
                                         final String[] sdf = new String[4 +
                                             ((gd1.getComp().length) * 2)];
                                         sdf[0] = new String(gd1.getRegnum());
@@ -1370,12 +1247,13 @@ public class CM_studentFinalMarks {
                                             }
 
                                             count++;
-                                        } //For Loop ends
+                                        } // For Loop ends
 
                                         sdf[count + 1] = new String(gd1.getTotal());
 
-                                        //get Column name first,create your bean with column name
-                                        //FieldDefinition
+                                        // get Column name first,create your
+                                        // bean with column name
+                                        // FieldDefinition
                                         FieldDef[] def = new FieldDef[sdf.length];
 
                                         for (int defl = 0; defl < def.length;
@@ -1383,8 +1261,8 @@ public class CM_studentFinalMarks {
                                             def[defl] = new StringFieldDef(sdf[defl]);
                                         }
 
-                                        //RecordDefinition
-                                        final RecordDef recordDef = new RecordDef(def); //RecordDef
+                                        // RecordDefinition
+                                        final RecordDef recordDef = new RecordDef(def); // RecordDef
 
                                         object = new String[arg0.size() - 1][4 +
                                             sdf.length][sdf.length];
@@ -1405,25 +1283,24 @@ public class CM_studentFinalMarks {
 
                                             String[][] s2 = gd.getComp1();
                                             count = 2;
-
                                             for (int k = 0;
                                                     k < (s2.length * 2); k++) {
                                                 if (k < s2.length) {
-                                                    data[i][k + 3][0] = s2[k][0];
+                                                    data[i][k + 3][0] = s2[k][0];                                                    
                                                 } else {
                                                     data[i][k + 3][0] = s2[k -
-                                                        s2.length][1];
+                                                        s2.length][1];                                                    
                                                 }
 
                                                 count++;
-                                            } //For Loop ends
+                                            } // For Loop ends
 
                                             data[i][count + 1][0] = gd.getTotal();
                                             System.out.println("total is " +
                                                 gd.getTotal());
                                             i++;
-                                        } //Iterator ends
-                                          //Final data in data[] array
+                                        } // Iterator ends
+                                          // Final data in data[] array
 
                                         MemoryProxy proxy = new MemoryProxy(data);
                                         ArrayReader reader = new ArrayReader(recordDef);
@@ -1431,12 +1308,14 @@ public class CM_studentFinalMarks {
                                                 reader, true);
                                         store.load();
 
-                                        //Here we have final data in store
-                                        //creating column config
+                                        // Here we have final data in store
+                                        // creating column config
                                         ColumnConfig[] commonCol = new ColumnConfig[sdf.length];
 
-                                        //		                 commonCol[0]=new CheckboxColumnConfig(cbSelectionModel);               
-                                        //setting editor for columns so that user can edit
+                                        // commonCol[0]=new
+                                        // CheckboxColumnConfig(cbSelectionModel);
+                                        // setting editor for columns so that
+                                        // user can edit
                                         for (int d = 0; d < commonCol.length;
                                                 d++) {
                                             commonCol[d] = new ColumnConfig(sdf[d],
@@ -1444,17 +1323,19 @@ public class CM_studentFinalMarks {
                                                     sdf[d]);
                                         }
 
-                                        //creating BaseColumnConfig
+                                        // creating BaseColumnConfig
                                         final BaseColumnConfig[] columns = commonCol;
 
-                                        //creating ColumnModel
+                                        // creating ColumnModel
                                         final ColumnModel columnModel = new ColumnModel(columns);
                                         columnModel.setDefaultSortable(true);
 
-                                        //Creating object of editorgridpanel
+                                        // Creating object of editorgridpanel
                                         final GridPanel grid = new GridPanel(store,
                                                 columnModel);
-                                        //setting title, clicks to edit,frame, size, StripeRows, TrackMouseOver and visible
+                                        // setting title, clicks to edit,frame,
+                                        // size, StripeRows, TrackMouseOver and
+                                        // visible
                                         grid.setTitle(consEditMarks);
                                         grid.setSelectionModel(cbSelectionModel);
                                         grid.setFrame(true);
@@ -1465,7 +1346,7 @@ public class CM_studentFinalMarks {
                                         grid.setTrackMouseOver(true);
                                         grid.setVisible(true);
 
-                                        //Adding toolbar with editorgridpanel
+                                        // Adding toolbar with editorgridpanel
                                         Toolbar topToolBar = new Toolbar();
                                         topToolBar.addFill();
 
@@ -1513,7 +1394,7 @@ public class CM_studentFinalMarks {
                                                                     numberField[numberCount] = new NumberField();
                                                                     comboBox[numberCount] = new ComboBox();
                                                                     maxLabel[numberCount] = new Label();
-                                                                    //		    		        			 comboBox[numberCount].setId(""+numberCount);
+                                                                    // comboBox[numberCount].setId(""+numberCount);
                                                                     methodAttComboProp(comboBox[numberCount]);
                                                                     methodMarksFieldsProp(numberField[numberCount]);
 
@@ -1562,9 +1443,9 @@ public class CM_studentFinalMarks {
 
                                                         final Window window = new Window();
                                                         window.setTitle(consEditMarks);
-                                                        window.setWidth(550);
+                                                        window.setWidth(650);
                                                         window.setHeight(300);
-                                                        window.setMinWidth(350);
+                                                        window.setMinWidth(450);
                                                         window.setMinHeight(150);
                                                         window.setLayout(new FitLayout());
                                                         window.setPaddings(5);
@@ -1613,8 +1494,6 @@ public class CM_studentFinalMarks {
                                                                                 entityNameCBox.getValue();
                                                                             String prog_id =
                                                                                 programNameCBox.getValue();
-                                                                            String branch_id =
-                                                                                branchNameCBox.getValue();
                                                                             String reg_no =
                                                                                 record.getAsString(sdf[0]);
                                                                             String testnumber =
@@ -1654,7 +1533,6 @@ public class CM_studentFinalMarks {
                                                                             marksService.methodEditFinalMarks(userid,
                                                                                 entity_id,
                                                                                 prog_id,
-                                                                                branch_id,
                                                                                 reg_no,
                                                                                 testnumber,
                                                                                 callMerit,
@@ -1681,7 +1559,6 @@ public class CM_studentFinalMarks {
                                                                                                                 String btnID,
                                                                                                                 String text) {
                                                                                                                 window.close();
-                                                                                                                //                                                                                                    vPanel.remove(gridPanel);
                                                                                                                 editMarksButton.fireEvent(
                                                                                                                     "click");
                                                                                                             }
@@ -1690,54 +1567,7 @@ public class CM_studentFinalMarks {
                                                                                             });
                                                                                     }
                                                                                 });
-
-                                                                            //                                                                    marksService.methodAddFinalMarks(
-                                                                            //                                                                            entity_id,
-                                                                            //                                                                            prog_id,
-                                                                            //                                                                            branch_id,
-                                                                            //                                                                            reg_no,
-                                                                            //                                                                            testnumber,
-                                                                            //                                                                            callMerit,
-                                                                            //                                                                            evalComp,
-                                                                            //                                                                            markslist,
-                                                                            //                                                                            attList,
-                                                                            //                                                                            new AsyncCallback<String>() {
-                                                                            //                                                                            public void onFailure(final Throwable arg0) {
-                                                                            //                                                                                MessageBox.show(
-                                                                            //                                                                                        new MessageBoxConfig() {
-                                                                            //
-                                                                            //                                                                                        {
-                                                                            //                                                                                            setIconCls(
-                                                                            //                                                                                                    MessageBox.ERROR);
-                                                                            //                                                                                            setMsg("Failure in addFinalMarks " +
-                                                                            //                                                                                                    arg0.getMessage());
-                                                                            //                                                                                        }
-                                                                            //                                                                                    });
-                                                                            //                                                                            }
-                                                                            //
-                                                                            //                                                                            public void onSuccess(String arg0) {
-                                                                            //                                                                                MessageBox.show(
-                                                                            //                                                                                        new MessageBoxConfig() {
-                                                                            //
-                                                                            //                                                                                        {
-                                                                            //                                                                                            setIconCls(
-                                                                            //                                                                                                    MessageBox.ERROR);
-                                                                            //                                                                                            setMsg("Data Successfully added");
-                                                                            //                                                                                            setButtons(
-                                                                            //                                                                                                    MessageBox.OK);
-                                                                            //                                                                                            setCallback(
-                                                                            //                                                                                                    new MessageBox.PromptCallback() {
-                                                                            //                                                                                                    public void execute(String btnID,
-                                                                            //                                                                                                            String text) {
-                                                                            //                                                                                                        window.close();
-                                                                            //                                                                                                        addMarksButton.fireEvent(
-                                                                            //                                                                                                                "click");
-                                                                            //                                                                                                    }
-                                                                            //                                                                                                });
-                                                                            //                                                                                        }
-                                                                            //                                                                                    });
-                                                                            //                                                                            }
-                                                                            //                                                                        });
+                                                                          
                                                                         } catch (Exception e1) {
                                                                             System.out.println(
                                                                                 "exception in retreiving data   " +
@@ -1772,7 +1602,7 @@ public class CM_studentFinalMarks {
                                                 }
                                             });
                                     }
-                                } //onsuccess ends
+                                } // onsuccess ends
                             });
                     } else {
                         MessageBox.alert(errorMsg, correctEntriesMsg);
@@ -1788,8 +1618,6 @@ public class CM_studentFinalMarks {
         vInPanel.add(mainPanel);
 
         vPanel.add(vInPanel);
-
-        //        vPanel.add(gridPanel);
     }
 
     public void methodSetEntityNameProp(ComboBox collegeCenterSelect) {
@@ -1866,10 +1694,8 @@ public class CM_studentFinalMarks {
         criteriaTypeCBox.setHideTrigger(false);
     }
 
-    public void methodLoadOracle(String criteria, String program_id,
-        String branch_id, String entity_id) {
-        marksService.methodPopulateSuggestion(criteria, program_id, branch_id,
-            entity_id,
+    public void methodLoadOracle(String criteria, String program_id, String entity_id) {
+        marksService.methodPopulateSuggestion(criteria, program_id,entity_id,
             new AsyncCallback<String[]>() {
                 public void onFailure(Throwable arg0) {
                     MessageBox.alert(failureLabel, arg0.getMessage());
@@ -1883,5 +1709,20 @@ public class CM_studentFinalMarks {
                     }
                 }
             });
+    }
+
+    public void ComboBoxes(ComboBox comboBox) {
+        comboBox.setForceSelection(true);
+        comboBox.setMinChars(1);
+        comboBox.setDisplayField("Description");
+        comboBox.setValueField("code");
+        comboBox.setMode(ComboBox.LOCAL);
+        comboBox.setTriggerAction(ComboBox.ALL);
+        comboBox.setLoadingText("Searching...");
+        comboBox.setTypeAhead(true);
+        comboBox.setSelectOnFocus(true);
+        comboBox.setWidth(180);
+        comboBox.setHideTrigger(false);
+        comboBox.setReadOnly(true);
     }
 }

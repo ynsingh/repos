@@ -77,6 +77,7 @@ import in.ac.dei.edrp.client.Shared.Validator;
 import in.ac.dei.edrp.client.Shared.constants;
 import in.ac.dei.edrp.client.Shared.messages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -88,6 +89,7 @@ public class CM_manageprogramcomponent {
     final HorizontalPanel FacultyPanel = new HorizontalPanel();
     public final HorizontalPanel FacultyPanelRight = new HorizontalPanel();
     FlexTable facultyflexTable = new FlexTable();
+    List<CM_ProgramInfoGetter>typeList;
     Label sessionText = new Label();
     Label instituteText = new Label();
     Label programname = new Label(constants.label_programname());
@@ -98,7 +100,6 @@ public class CM_manageprogramcomponent {
     Label enddate = new Label();
     Label category = new Label(constants.label_categorizationtype());
     Label programBox = new Label();
-    Label branch = new Label();
     Label termBox = new Label();
     final VerticalPanel fullpage1 = new VerticalPanel();
     Object[][] object1;
@@ -116,13 +117,13 @@ public class CM_manageprogramcomponent {
     CheckBox eligibleBox = new CheckBox(constants.checkbox_eligibility());
     Validator valid = new Validator();
     HorizontalPanel gridPanel = new HorizontalPanel();
-    String pagename = "Program Components";
+    String pagename = constants.programComponent();
     String[] values;
-    ToolbarButton editButton = new ToolbarButton("Edit");
-    ToolbarButton deletebutton = new ToolbarButton("Delete");
-    
+    ToolbarButton editButton = new ToolbarButton(constants.edit());
+    ToolbarButton deletebutton = new ToolbarButton(constants.delete());
     CheckboxSelectionModel cbSelectionModel = new CheckboxSelectionModel();
-
+    String program_id;
+    String componentId;
 
     public CM_manageprogramcomponent(String user_id) {
         this.university_id = user_id;
@@ -153,9 +154,24 @@ public class CM_manageprogramcomponent {
         seats.setMinValue(1);
         seats.setAllowBlank(false);
 
-        types.addItem("Marks", "M");
-        types.addItem("Score", "S");
-        types.addItem("Percentage", "P");
+        //Added By Upasana
+        /**
+         * university_id
+         * return result List of CM_ProgramInfoGetter
+         */
+        connectService.getCategorizationType(university_id,new AsyncCallback<List<CM_ProgramInfoGetter>>() {
+			public void onFailure(Throwable arg0) {
+				MessageBox.alert(arg0.toString());
+			}
+			public void onSuccess(List<CM_ProgramInfoGetter> result) {
+				types.clear();
+				typeList=new ArrayList<CM_ProgramInfoGetter>();
+				typeList=result;
+				for (int i = 0; i < result.size(); i++) {
+                    types.addItem(result.get(i).getCatTypeDescription(), result.get(i).getCatTypeId());                    
+                }
+			}
+		});
 
         try {
             fullpage.setSize("100%", "100%");
@@ -165,20 +181,15 @@ public class CM_manageprogramcomponent {
             fPanel.setSize("300px", "100%");
             fPanel.setTitle(constants.heading_manageprogramcomponents());
 
-
             final Panel p1 = new Panel();
             final BorderLayoutData bd = new BorderLayoutData(RegionPosition.CENTER);
             bd.setMargins(6, 6, 6, 6);
 
             FlexTable table = new FlexTable();
 
-            Label label3 = new Label("Dayalbagh Educational Institute");
-
-            label3.setStyleName("panelHeading");
-
-            final Label entityCriteria = new Label(constants.entityType());
+            final Label entityCriteria = new Label(constants.entityName());
             final Label valueLabel = new Label(constants.label_programname());
-            Label entityLabel = new Label(constants.label_entitytype());
+            Label entityLabel = new Label(constants.entityType());
 
             final ListBox entityCriteriaList = new ListBox();
             final ListBox entityList = new ListBox();
@@ -229,7 +240,6 @@ public class CM_manageprogramcomponent {
                                                         RowSelectionModel sm,
                                                         int rowIndex,
                                                         Record record) {
-                                                    	
                                                         if ((sm.getCount() == 1)) {
                                                             editButton.setDisabled(false);
                                                             deletebutton.setDisabled(false);
@@ -290,8 +300,8 @@ public class CM_manageprogramcomponent {
                                             for (int i = 0; i < result.size();
                                                     i++) {
                                                 values[i] = result.get(i);
-                                                MessageBox.alert("authorities" +
-                                                    values[i]);
+//                                                MessageBox.alert("authorities" +
+//                                                    values[i]);
 
                                                 //                                                if (values[i].equalsIgnoreCase(
                                                 //                                                            "create")) {
@@ -321,7 +331,6 @@ public class CM_manageprogramcomponent {
                                                                 RowSelectionModel sm,
                                                                 int rowIndex,
                                                                 Record record) {
-                                                            	
                                                                 if ((sm.getCount() > 1) ||
                                                                         (sm.getCount() < 1)) {
                                                                     editButton.setDisabled(true);
@@ -421,8 +430,8 @@ public class CM_manageprogramcomponent {
             ruleBox.setValueField("rule_number");
             ruleBox.setMode(ComboBox.LOCAL);
             ruleBox.setTriggerAction(ComboBox.ALL);
-            ruleBox.setEmptyText("Select Rule");
-            ruleBox.setLoadingText("Searching...");
+            ruleBox.setEmptyText(constants.selectRules());
+            ruleBox.setLoadingText(constants.searching());
             ruleBox.setTypeAhead(true);
             ruleBox.setSelectOnFocus(true);
             ruleBox.setWidth(198);
@@ -477,27 +486,30 @@ public class CM_manageprogramcomponent {
 
                     public void onSuccess(CM_ProgramInfoGetter[] result) {
                         entityList.clear();
-                        entityList.addItem("Select");
+                        entityList.addItem(constants.select());
 
                         for (int i = 0; i < result.length; i++) {
-                            String type = result[i].getComponent();
+                            String type = result[i].getComponentDescription();
+                            String id = result[i].getComponentId();
 
-                            entityList.addItem(type);
+                            entityList.addItem(type, id);
                         }
                     }
                 });
 
             entityList.addChangeHandler(new ChangeHandler() {
                     public void onChange(ChangeEvent arg0) {
-                        if (entityList.getValue(entityList.getSelectedIndex())
-                                          .equalsIgnoreCase("select")) {
+                        if (entityList.getItemText(
+                                    entityList.getSelectedIndex())
+                                          .equalsIgnoreCase(constants.select())) {
                             entityCriteriaList.clear();
                             okButton.setVisible(false);
                             ValueSuggest.setText("");
                             fullpage1.remove(gridPanel);
                         } else {
                             int systemvalue = 0;
-                            String entitytype = entityList.getItemText(entityList.getSelectedIndex());
+                            String entitytype = entityList.getValue(entityList.getSelectedIndex());
+
                             ValueSuggest.setText("");
                             okButton.setVisible(true);
                             fullpage1.remove(gridPanel);
@@ -511,38 +523,46 @@ public class CM_manageprogramcomponent {
                                     public void onSuccess(
                                         CM_ProgramInfoGetter[] result) {
                                         String type1 = "";
+                                        String entity_name = "";
+
+                                        entityCriteriaList.clear();
+                                        entityCriteriaList.addItem(constants.select(),null);
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            type1 = result[i].getEntity_type();
+                                            type1 = result[i].getEntity_id();
+                                            entity_name = result[i].getEntity_name();
+
+                                            entityCriteriaList.addItem(entity_name,
+                                                type1);
                                         }
 
-                                        connectService.methodgetentity(type1,
-                                            university_id,
-                                            new AsyncCallback<CM_ProgramInfoGetter[]>() {
-                                                public void onFailure(
-                                                    Throwable arg0) {
-                                                }
-
-                                                public void onSuccess(
-                                                    CM_ProgramInfoGetter[] result) {
-                                                    entityCriteriaList.clear();
-                                                    entityCriteriaList.addItem("Select",
-                                                        null);
-
-                                                    for (int i = 0;
-                                                            i < result.length;
-                                                            i++) {
-                                                        String name = result[i].getEntity_name();
-
-                                                        entityCriteriaList.addItem(name);
-                                                    }
-                                                }
-                                            });
+                                        //                                        connectService.methodgetentity(type1,
+                                        //                                            university_id,
+                                        //                                            new AsyncCallback<CM_ProgramInfoGetter[]>() {
+                                        //                                                public void onFailure(
+                                        //                                                    Throwable arg0) {
+                                        //                                                }
+                                        //
+                                        //                                                public void onSuccess(
+                                        //                                                    CM_ProgramInfoGetter[] result) {
+                                        //                                                    entityCriteriaList.clear();
+                                        //                                                    entityCriteriaList.addItem("Select",
+                                        //                                                        null);
+                                        //
+                                        //                                                    for (int i = 0;
+                                        //                                                            i < result.length;
+                                        //                                                            i++) {
+                                        //                                                        String name = result[i].getEntity_name();
+                                        //
+                                        //                                                        entityCriteriaList.addItem(name);
+                                        //                                                    }
+                                        //                                                }
+                                        //                                            });
                                     }
                                 });
                             connectService.methodgetentitytypeforprogramcomponent(entitytype,
-                                systemvalue, university_id,
+                                systemvalue, university_id, null,
                                 new AsyncCallback<CM_ProgramInfoGetter[]>() {
                                     public void onFailure(Throwable arg0) {
                                     }
@@ -565,13 +585,14 @@ public class CM_manageprogramcomponent {
 
             entityCriteriaList.addChangeHandler(new ChangeHandler() {
                     public void onChange(ChangeEvent arg0) {
-                        String entitytype = entityCriteriaList.getItemText(entityCriteriaList.getSelectedIndex());
+                        String entitytype = entityCriteriaList.getValue(entityCriteriaList.getSelectedIndex());
+                        String type = entityList.getValue(entityList.getSelectedIndex());
                         ValueSuggest.setText("");
 
                         int systemvalue = 1;
 
                         connectService.methodgetentitytypeforprogramcomponent(entitytype,
-                            systemvalue, university_id,
+                            systemvalue, university_id, type,
                             new AsyncCallback<CM_ProgramInfoGetter[]>() {
                                 public void onFailure(Throwable arg0) {
                                 }
@@ -618,13 +639,12 @@ public class CM_manageprogramcomponent {
             okButton.addListener(new ButtonListenerAdapter() {
                     public void onClick(Button button, EventObject e) {
                         final String value = ValueSuggest.getText();
-                        final String entitytype = entityList.getItemText(entityList.getSelectedIndex());
-                        final String entityname = entityCriteriaList.getItemText(entityCriteriaList.getSelectedIndex());
+                        final String entitytype = entityList.getValue(entityList.getSelectedIndex());
+                        final String entityname = entityCriteriaList.getValue(entityCriteriaList.getSelectedIndex());
 
                         final GridPanel grid = new GridPanel();
 
-                        if (entityname.equalsIgnoreCase("select") &&
-                                value.equals("")) {
+                        if (entityCriteriaList.getItemText(entityCriteriaList.getSelectedIndex()).equalsIgnoreCase(constants.select()) && value.equals("")) {
                             connectService.componentwithentitytype(entitytype,
                                 university_id,
                                 new AsyncCallback<CM_ProgramInfoGetter[]>() {
@@ -634,7 +654,7 @@ public class CM_manageprogramcomponent {
 
                                     public void onSuccess(
                                         CM_ProgramInfoGetter[] result) {
-                                        object1 = new Object[result.length][12];
+                                        object1 = new Object[result.length][14];
 
                                         if (result.length == 0) {
                                             MessageBox.show(new MessageBoxConfig() {
@@ -642,7 +662,8 @@ public class CM_manageprogramcomponent {
                                                     {
                                                         setTitle(msgs.alert());
                                                         setMsg(msgs.error_norecord(
-                                                                entitytype));
+                                                                entityList.getItemText(
+                                                                    entityList.getSelectedIndex())));
                                                         setIconCls(MessageBox.INFO);
                                                         setButtons(MessageBox.OK);
                                                         grid.setVisible(false);
@@ -667,7 +688,12 @@ public class CM_manageprogramcomponent {
 
                                         final RecordDef rDef = new RecordDef(new FieldDef[] {
                                                     new StringFieldDef("Programme Name"),
+                                                    new StringFieldDef("Programme Id"),
+                                                    /*new StringFieldDef("Branch Id"),
                                                     new StringFieldDef("Branch Name"),
+                                                    new StringFieldDef("Specialization Id"),
+                                                    new StringFieldDef("Specialization Name"),*/
+                                                    new StringFieldDef("Component Id"),
                                                     new StringFieldDef("Component Name"),
                                                     new StringFieldDef("Type"),
                                                     new StringFieldDef("Component Weightage"),
@@ -678,39 +704,45 @@ public class CM_manageprogramcomponent {
                                                     new StringFieldDef("Sequence Number"),
                                                     new StringFieldDef("Rule used"),
                                                     new StringFieldDef("rule_no"),
+                                                    new StringFieldDef("catTypeDesc")
                                                 });
 
                                         Object str = null;
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            for (int k = 0; k < 12; k++) {
+                                            for (int k = 0; k < 14; k++) {
                                                 try {
                                                     if (k == 0) {
-                                                        str = result[i].getprogram_name();
+                                                        str = result[i].getProgram_name();
                                                     } else if (k == 1) {
-                                                        str = result[i].getBranch_name();
+                                                        str = result[i].getProgram_id();
                                                     } else if (k == 2) {
-                                                        str = result[i].getComponent();
+                                                        str = result[i].getComponent_id();
                                                     } else if (k == 3) {
-                                                        str = result[i].getType();
+                                                        str = result[i].getComponent();
                                                     } else if (k == 4) {
-                                                        str = result[i].getentity_id();
+                                                        str = result[i].getType();
                                                     } else if (k == 5) {
-                                                        str = result[i].getBoard_flag();
+                                                        str = result[i].getEntity_id();
                                                     } else if (k == 6) {
-                                                        str = result[i].getWeightage_flag();
+                                                        str = result[i].getBoard_flag();
                                                     } else if (k == 7) {
-                                                        str = result[i].getSpecial_flag();
+                                                        str = result[i].getWeightage_flag();
                                                     } else if (k == 8) {
-                                                        str = result[i].getEligibility_flag();
+                                                        str = result[i].getSpecial_flag();
                                                     } else if (k == 9) {
-                                                        str = result[i].getSequence();
+                                                        str = result[i].getEligibility_flag();
                                                     } else if (k == 10) {
-                                                        str = result[i].getDescription();
+                                                        str = result[i].getSequence();
                                                     } else if (k == 11) {
+                                                        str = result[i].getDescription();
+                                                    } else if (k == 12) {
                                                         str = result[i].getRule_no();
+                                                    }else if (k == 13) {
+                                                        str = result[i].getCatTypeDescription();
                                                     }
+                                                    
                                                 } catch (Exception e) {
                                                     System.out.println(
                                                         "exception " + e);
@@ -741,31 +773,28 @@ public class CM_manageprogramcomponent {
                                                 new CheckboxColumnConfig(cbSelectionModel),
                                                 
                                                 new ColumnConfig("Programme Name",
-                                                    "Programme Name", 140,
+                                                    "Programme Name", 120,
                                                     true, null, "entityType"),
-                                                new ColumnConfig("Branch Name",
-                                                    "Branch Name", 140, true,
-                                                    null, "BranchName"),
                                                 new ColumnConfig("Component Name",
                                                     "Component Name", 100,
                                                     true, null, "entityname"),
                                                 new ColumnConfig("Type",
-                                                    "Type", 60, true, null,
+                                                    "catTypeDesc", 50, true, null,
                                                     "entitycode"),
                                                 new ColumnConfig("Component Weightage",
                                                     "Component Weightage", 120,
                                                     true, null, "entityparent"),
-                                                new ColumnConfig("Weightage Flag Status",
+                                                new ColumnConfig("Weightage Flag",
                                                     "Weightage Flag Status",
-                                                    130, true, null, "criteria"),
-                                                new ColumnConfig("Board Flag Status",
-                                                    "Board Flag Status", 120,
+                                                    100, true, null, "criteria"),
+                                                new ColumnConfig("Board Flag",
+                                                    "Board Flag Status", 80,
                                                     true, null, "boardStatus"),
-                                                new ColumnConfig("Special Weightage Flag Status",
+                                                new ColumnConfig("Special Weightage Flag",
                                                     "Special Weightage Flag Status",
-                                                    120, true, null,
+                                                    130, true, null,
                                                     "specialWeightagetatus"),
-                                                new ColumnConfig("Eligibility Flag Status",
+                                                new ColumnConfig("Eligibility Flag",
                                                     "Eligibility Flag Status",
                                                     120, true, null,
                                                     "eligibilityWeightagetatus"),
@@ -789,23 +818,19 @@ public class CM_manageprogramcomponent {
                                         grid.setAutoExpandColumn("startdate");
                                         grid.setAutoExpandColumn("enddate");
                                         grid.setAutoExpandColumn("criteria");
-                                        grid.setAutoExpandColumn("BranchName");
                                         grid.setAutoExpandColumn("boardStatus");
-                                        grid.setAutoExpandColumn(
-                                            "specialWeightagetatus");
-                                        grid.setAutoExpandColumn(
-                                            "eligibilityWeightagetatus");
+                                        grid.setAutoExpandColumn("specialWeightagetatus");
+                                        grid.setAutoExpandColumn("eligibilityWeightagetatus");
 
                                         grid.setSelectionModel(cbSelectionModel);
                                         grid.setAutoWidth(true);
-                                        grid.setWidth(1200);
+                                        grid.setWidth(1210);
                                         grid.setHeight(280);
 
                                         Toolbar topToolBar = new Toolbar();
                                         topToolBar.addFill();
 
-                                        final ToolbarButton editButton1 = new ToolbarButton(
-                                                "Edit");
+                                        final ToolbarButton editButton1 = new ToolbarButton(constants.edit());
                                         editButton1.setDisabled(true);
 
                                         editButton = editButton1;
@@ -826,32 +851,34 @@ public class CM_manageprogramcomponent {
                                                             msg += record.getAsString(
                                                                 "University Name");
 
-                                                            String[] Univ = new String[12];
+                                                            String[] Univ = new String[13];
 
                                                             Univ[0] = record.getAsString(
                                                                     "Programme Name");
                                                             Univ[1] = record.getAsString(
-                                                                    "Branch Name");
-                                                            Univ[2] = record.getAsString(
                                                                     "Component Name");
-                                                            Univ[3] = record.getAsString(
+                                                            Univ[2] = record.getAsString(
                                                                     "Type");
-                                                            Univ[4] = record.getAsString(
+                                                            Univ[3] = record.getAsString(
                                                                     "Component Weightage");
-                                                            Univ[5] = record.getAsString(
+                                                            Univ[4] = record.getAsString(
                                                                     "Board Flag Status");
-                                                            Univ[6] = record.getAsString(
+                                                            Univ[5] = record.getAsString(
                                                                     "Weightage Flag Status");
-                                                            Univ[7] = record.getAsString(
+                                                            Univ[6] = record.getAsString(
                                                                     "Special Weightage Flag Status");
-                                                            Univ[8] = record.getAsString(
+                                                            Univ[7] = record.getAsString(
                                                                     "Eligibility Flag Status");
-                                                            Univ[9] = record.getAsString(
+                                                            Univ[8] = record.getAsString(
                                                                     "Sequence Number");
-                                                            Univ[10] = record.getAsString(
+                                                            Univ[9] = record.getAsString(
                                                                     "Rule used");
-                                                            Univ[11] = record.getAsString(
+                                                            Univ[10] = record.getAsString(
                                                                     "rule_no");
+                                                            Univ[11] = record.getAsString(
+                                                                    "Programme Id");
+                                                            Univ[12] = record.getAsString(
+                                                                    "Component Id");
 
                                                             FlexTable editInstiTable =
                                                                 new FlexTable();
@@ -860,27 +887,25 @@ public class CM_manageprogramcomponent {
                                                             editInstiTable.clear();
 
                                                             programBox.setText(Univ[0]);
-                                                            branch.setText(Univ[1]);
-                                                            termBox.setText(Univ[2]);
-                                                            type = Univ[3];
-                                                            seats.setValue(Univ[4]);
-                                                            weightageflag = Univ[6];
-                                                            boardflag = Univ[5];
-                                                            special = Univ[7];
-                                                            eligibleflag = Univ[8];
-                                                            enddate.setText(Univ[9]);
-                                                            ruleBox.setValue(Univ[11]);
+                                                            termBox.setText(Univ[1]);
+                                                            type = Univ[2];
+                                                            seats.setValue(Univ[3]);
+                                                            weightageflag = Univ[5];
+                                                            boardflag = Univ[4];
+                                                            special = Univ[6];
+                                                            eligibleflag = Univ[7];
+                                                            enddate.setText(Univ[8]);
+                                                            ruleBox.setValue(Univ[10]);
+                                                            program_id = Univ[11];
+                                                            componentId = Univ[12];
 
-                                                            if (type.equalsIgnoreCase(
-                                                                        "M")) {
-                                                                types.setSelectedIndex(0);
-                                                            } else if (type.equalsIgnoreCase(
-                                                                        "S")) {
-                                                                types.setSelectedIndex(1);
-                                                            } else {
-                                                                types.setSelectedIndex(2);
+                                                            for(int i=0;i<typeList.size();i++){
+                                                            	if (typeList.get(i).getCatTypeId().equalsIgnoreCase(type)) {
+                                                                    types.setSelectedIndex(i);
+                                                                    break;
+                                                                }
                                                             }
-
+//                                                          
                                                             if (boardflag.equalsIgnoreCase(
                                                                         "Y")) {
                                                                 boardButtonA.setChecked(true);
@@ -917,8 +942,6 @@ public class CM_manageprogramcomponent {
                                                                 0, programname);
                                                             flexTable.setWidget(0,
                                                                 2, programBox);
-                                                            flexTable.setWidget(0,
-                                                                4, branch);
                                                             flexTable.setWidget(2,
                                                                 0, termname);
                                                             flexTable.setWidget(2,
@@ -987,8 +1010,6 @@ public class CM_manageprogramcomponent {
 
                                                                         final String tag =
                                                                             types.getValue(types.getSelectedIndex());
-                                                                        final String rule =
-                                                                            ruleBox.getValue();
 
                                                                         if (weightBox.isChecked()) {
                                                                             weightageflag = "Y";
@@ -1048,6 +1069,10 @@ public class CM_manageprogramcomponent {
                                                                                         setButtons(MessageBox.OK);
                                                                                     }
                                                                                 });
+                                                                        } else if (ruleBox.getRawValue()
+                                                                                              .equalsIgnoreCase("")) {
+                                                                            ruleBox.markInvalid(
+                                                                                "not allowed");
                                                                         } else {
                                                                             MessageBox.show(new MessageBoxConfig() {
 
@@ -1062,8 +1087,8 @@ public class CM_manageprogramcomponent {
                                                                                                     String text) {
                                                                                                     if (btnID.equals(
                                                                                                                 "yes")) {
-                                                                                                        connectService.methodupdateprgcomponents(programBox.getText(),
-                                                                                                            branch.getText(),
+                                                                                                        connectService.methodupdateprgcomponents(program_id,
+                                                                                                            /*branch_id,*/
                                                                                                             termBox.getText(),
                                                                                                             enddate.getText(),
                                                                                                             tag,
@@ -1072,8 +1097,9 @@ public class CM_manageprogramcomponent {
                                                                                                             special,
                                                                                                             weightageflag,
                                                                                                             weightage,
-                                                                                                            rule,
+                                                                                                            ruleBox.getValue(),
                                                                                                             university_id,
+                                                                                                            /*specialization,*/
                                                                                                             new AsyncCallback<String>() {
                                                                                                                 public void onFailure(
                                                                                                                     Throwable arg0) {
@@ -1158,15 +1184,17 @@ public class CM_manageprogramcomponent {
                                                                                             i < records.length;
                                                                                             i++) {
                                                                                         final String[] Univ =
-                                                                                            new String[3];
+                                                                                            new String[2];
 
                                                                                         Univ[0] = records[i].getAsString(
-                                                                                                "Programme Name");
+                                                                                                "Programme Id");
                                                                                         Univ[1] = records[i].getAsString(
-                                                                                                "Component Name");
+                                                                                                "Component Id");
 
-                                                                                        Univ[2] = records[i].getAsString(
-                                                                                                "Branch Name");
+                                                                                        /*Univ[2] = records[i].getAsString(
+                                                                                                "Branch Id");
+                                                                                        Univ[3] = records[i].getAsString(
+                                                                                                "Specialization Id");*/
 
                                                                                         connectService.methodDeletecomponentrecord(Univ,
                                                                                             university_id,
@@ -1207,7 +1235,7 @@ public class CM_manageprogramcomponent {
 
                                         grid.setTopToolbar(topToolBar);
 
-                                        grid.addGridCellListener(new GridCellListener() {
+                                       /* grid.addGridCellListener(new GridCellListener() {
                                                 public void onCellClick(
                                                     GridPanel grid,
                                                     int rowIndex, int colIndex,
@@ -1228,7 +1256,7 @@ public class CM_manageprogramcomponent {
                                                     int rowIndex, int colIndex,
                                                     EventObject e) {
                                                 }
-                                            });
+                                            });*/
 
                                         grid.setTitle(constants.heading_programdetails());
 
@@ -1248,7 +1276,7 @@ public class CM_manageprogramcomponent {
                                     public void onSuccess(
                                         CM_ProgramInfoGetter[] result) {
                                         try {
-                                            object1 = new Object[result.length][12];
+                                            object1 = new Object[result.length][14];
                                         } catch (Exception e) {
                                             System.out.println("ex11" + e);
                                         }
@@ -1259,7 +1287,8 @@ public class CM_manageprogramcomponent {
                                                     {
                                                         setTitle(msgs.alert());
                                                         setMsg(msgs.error_norecord(
-                                                                entityname));
+                                                                entityCriteriaList.getItemText(
+                                                                    entityCriteriaList.getSelectedIndex())));
                                                         setIconCls(MessageBox.INFO);
                                                         setButtons(MessageBox.OK);
                                                         grid.setVisible(false);
@@ -1284,7 +1313,8 @@ public class CM_manageprogramcomponent {
 
                                         final RecordDef rDef = new RecordDef(new FieldDef[] {
                                                     new StringFieldDef("Programme Name"),
-                                                    new StringFieldDef("Branch Name"),
+                                                    new StringFieldDef("Programme Id"),
+                                                    new StringFieldDef("Component Id"),
                                                     new StringFieldDef("Component Name"),
                                                     new StringFieldDef("Type"),
                                                     new StringFieldDef("Component Weightage"),
@@ -1295,39 +1325,45 @@ public class CM_manageprogramcomponent {
                                                     new StringFieldDef("Sequence Number"),
                                                     new StringFieldDef("Rule used"),
                                                     new StringFieldDef("rule_no"),
+                                                    new StringFieldDef("catTypeDescription")
                                                 });
 
                                         Object str = null;
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            for (int k = 0; k < 12; k++) {
+                                            for (int k = 0; k < 14; k++) {
                                                 try {
                                                     if (k == 0) {
-                                                        str = result[i].getprogram_name();
+                                                        str = result[i].getProgram_name();
                                                     } else if (k == 1) {
-                                                        str = result[i].getBranch_name();
+                                                        str = result[i].getProgram_id();
                                                     } else if (k == 2) {
-                                                        str = result[i].getComponent();
+                                                        str = result[i].getComponent_id();
                                                     } else if (k == 3) {
-                                                        str = result[i].getType();
+                                                        str = result[i].getComponent();
                                                     } else if (k == 4) {
-                                                        str = result[i].getentity_id();
+                                                        str = result[i].getType();
                                                     } else if (k == 5) {
-                                                        str = result[i].getBoard_flag();
+                                                        str = result[i].getEntity_id();
                                                     } else if (k == 6) {
-                                                        str = result[i].getWeightage_flag();
+                                                        str = result[i].getBoard_flag();
                                                     } else if (k == 7) {
-                                                        str = result[i].getSpecial_flag();
+                                                        str = result[i].getWeightage_flag();
                                                     } else if (k == 8) {
-                                                        str = result[i].getEligibility_flag();
+                                                        str = result[i].getSpecial_flag();
                                                     } else if (k == 9) {
-                                                        str = result[i].getSequence();
+                                                        str = result[i].getEligibility_flag();
                                                     } else if (k == 10) {
-                                                        str = result[i].getDescription();
+                                                        str = result[i].getSequence();
                                                     } else if (k == 11) {
+                                                        str = result[i].getDescription();
+                                                    } else if (k == 12) {
                                                         str = result[i].getRule_no();
+                                                    }else if (k == 13) {
+                                                        str = result[i].getCatTypeDescription();
                                                     }
+                                                    
                                                 } catch (Exception e) {
                                                     System.out.println(
                                                         "exception " + e);
@@ -1358,31 +1394,28 @@ public class CM_manageprogramcomponent {
                                                 new CheckboxColumnConfig(cbSelectionModel),
                                                 
                                                 new ColumnConfig("Programme Name",
-                                                    "Programme Name", 140,
+                                                    "Programme Name", 120,
                                                     true, null, "entityType"),
-                                                new ColumnConfig("Branch Name",
-                                                    "Branch Name", 140, true,
-                                                    null, "BranchName"),
                                                 new ColumnConfig("Component Name",
                                                     "Component Name", 100,
                                                     true, null, "entityname"),
                                                 new ColumnConfig("Type",
-                                                    "Type", 60, true, null,
+                                                    "catTypeDescription", 50, true, null,
                                                     "entitycode"),
                                                 new ColumnConfig("Component Weightage",
                                                     "Component Weightage", 120,
                                                     true, null, "entityparent"),
-                                                new ColumnConfig("Weightage Flag Status",
+                                                new ColumnConfig("Weightage Flag",
                                                     "Weightage Flag Status",
-                                                    130, true, null, "criteria"),
-                                                new ColumnConfig("Board Flag Status",
-                                                    "Board Flag Status", 120,
+                                                    100, true, null, "criteria"),
+                                                new ColumnConfig("Board Flag",
+                                                    "Board Flag Status", 80,
                                                     true, null, "boardStatus"),
-                                                new ColumnConfig("Special Weightage Flag Status",
+                                                new ColumnConfig("Special Weightage Flag",
                                                     "Special Weightage Flag Status",
-                                                    120, true, null,
+                                                    130, true, null,
                                                     "specialWeightagetatus"),
-                                                new ColumnConfig("Eligibility Flag Status",
+                                                new ColumnConfig("Eligibility Flag",
                                                     "Eligibility Flag Status",
                                                     120, true, null,
                                                     "eligibilityWeightagetatus"),
@@ -1406,7 +1439,6 @@ public class CM_manageprogramcomponent {
                                         grid.setAutoExpandColumn("startdate");
                                         grid.setAutoExpandColumn("enddate");
                                         grid.setAutoExpandColumn("criteria");
-                                        grid.setAutoExpandColumn("BranchName");
                                         grid.setAutoExpandColumn("boardStatus");
                                         grid.setAutoExpandColumn(
                                             "specialWeightagetatus");
@@ -1415,7 +1447,7 @@ public class CM_manageprogramcomponent {
 
                                         grid.setSelectionModel(cbSelectionModel);
                                         grid.setAutoWidth(true);
-                                        grid.setWidth(1200);
+                                        grid.setWidth(1210);
                                         grid.setHeight(280);
 
                                         Toolbar topToolBar = new Toolbar();
@@ -1443,32 +1475,34 @@ public class CM_manageprogramcomponent {
                                                             msg += record.getAsString(
                                                                 "University Name");
 
-                                                            String[] Univ = new String[12];
+                                                            String[] Univ = new String[17];
 
                                                             Univ[0] = record.getAsString(
                                                                     "Programme Name");
                                                             Univ[1] = record.getAsString(
-                                                                    "Branch Name");
-                                                            Univ[2] = record.getAsString(
                                                                     "Component Name");
-                                                            Univ[3] = record.getAsString(
+                                                            Univ[2] = record.getAsString(
                                                                     "Type");
-                                                            Univ[4] = record.getAsString(
+                                                            Univ[3] = record.getAsString(
                                                                     "Component Weightage");
-                                                            Univ[5] = record.getAsString(
+                                                            Univ[4] = record.getAsString(
                                                                     "Board Flag Status");
-                                                            Univ[6] = record.getAsString(
+                                                            Univ[5] = record.getAsString(
                                                                     "Weightage Flag Status");
-                                                            Univ[7] = record.getAsString(
+                                                            Univ[6] = record.getAsString(
                                                                     "Special Weightage Flag Status");
-                                                            Univ[8] = record.getAsString(
+                                                            Univ[7] = record.getAsString(
                                                                     "Eligibility Flag Status");
-                                                            Univ[9] = record.getAsString(
+                                                            Univ[8] = record.getAsString(
                                                                     "Sequence Number");
-                                                            Univ[10] = record.getAsString(
+                                                            Univ[9] = record.getAsString(
                                                                     "Rule used");
-                                                            Univ[11] = record.getAsString(
+                                                            Univ[10] = record.getAsString(
                                                                     "rule_no");
+                                                            Univ[11] = record.getAsString(
+                                                                    "Programme Id");
+                                                            Univ[12] = record.getAsString(
+                                                                    "Component Id");
 
                                                             FlexTable editInstiTable =
                                                                 new FlexTable();
@@ -1477,25 +1511,24 @@ public class CM_manageprogramcomponent {
                                                             editInstiTable.clear();
 
                                                             programBox.setText(Univ[0]);
-                                                            branch.setText(Univ[1]);
-                                                            termBox.setText(Univ[2]);
-                                                            type = Univ[3];
-                                                            seats.setValue(Univ[4]);
-                                                            weightageflag = Univ[6];
-                                                            boardflag = Univ[5];
-                                                            special = Univ[7];
-                                                            eligibleflag = Univ[8];
-                                                            enddate.setText(Univ[9]);
-                                                            ruleBox.setValue(Univ[11]);
+                                                            termBox.setText(Univ[1]);
+                                                            type = Univ[2];
+                                                            seats.setValue(Univ[3]);
+                                                            weightageflag = Univ[5];
+                                                            boardflag = Univ[4];
+                                                            special = Univ[6];
+                                                            eligibleflag = Univ[7];
+                                                            enddate.setText(Univ[8]);
+                                                            ruleBox.setValue(Univ[10]);
+                                                            program_id = Univ[11];
+                                                            componentId = Univ[12];
 
-                                                            if (type.equalsIgnoreCase(
-                                                                        "M")) {
-                                                                types.setSelectedIndex(0);
-                                                            } else if (type.equalsIgnoreCase(
-                                                                        "S")) {
-                                                                types.setSelectedIndex(1);
-                                                            } else {
-                                                                types.setSelectedIndex(2);
+                                                            for(int i=0;i<typeList.size();i++){
+                                                            	System.out.println(typeList.get(i).getCatTypeDescription());
+                                                            	if (typeList.get(i).getCatTypeId().equalsIgnoreCase(type)) {
+                                                                    types.setSelectedIndex(i);
+                                                                    break;
+                                                                }
                                                             }
 
                                                             if (boardflag.equalsIgnoreCase(
@@ -1534,8 +1567,6 @@ public class CM_manageprogramcomponent {
                                                                 0, programname);
                                                             flexTable.setWidget(0,
                                                                 2, programBox);
-                                                            flexTable.setWidget(0,
-                                                                4, branch);
                                                             flexTable.setWidget(2,
                                                                 0, termname);
                                                             flexTable.setWidget(2,
@@ -1601,9 +1632,6 @@ public class CM_manageprogramcomponent {
                                                                         weightageflag = "N";
                                                                         weightage = "0";
 
-                                                                        final String rule =
-                                                                            ruleBox.getValue();
-
                                                                         final String tag =
                                                                             types.getValue(types.getSelectedIndex());
 
@@ -1665,6 +1693,10 @@ public class CM_manageprogramcomponent {
                                                                                         setButtons(MessageBox.OK);
                                                                                     }
                                                                                 });
+                                                                        } else if (ruleBox.getRawValue()
+                                                                                              .equalsIgnoreCase("")) {
+                                                                            ruleBox.markInvalid(
+                                                                                "not allowed");
                                                                         } else {
                                                                             MessageBox.show(new MessageBoxConfig() {
 
@@ -1679,8 +1711,7 @@ public class CM_manageprogramcomponent {
                                                                                                     String text) {
                                                                                                     if (btnID.equals(
                                                                                                                 "yes")) {
-                                                                                                        connectService.methodupdateprgcomponents(programBox.getText(),
-                                                                                                            branch.getText(),
+                                                                                                        connectService.methodupdateprgcomponents(program_id,
                                                                                                             termBox.getText(),
                                                                                                             enddate.getText(),
                                                                                                             tag,
@@ -1689,7 +1720,7 @@ public class CM_manageprogramcomponent {
                                                                                                             special,
                                                                                                             weightageflag,
                                                                                                             weightage,
-                                                                                                            rule,
+                                                                                                            ruleBox.getValue(),
                                                                                                             university_id,
                                                                                                             new AsyncCallback<String>() {
                                                                                                                 public void onFailure(
@@ -1775,15 +1806,13 @@ public class CM_manageprogramcomponent {
                                                                                             i < records.length;
                                                                                             i++) {
                                                                                         final String[] Univ =
-                                                                                            new String[3];
+                                                                                            new String[2];
 
                                                                                         Univ[0] = records[i].getAsString(
-                                                                                                "Programme Name");
+                                                                                                "Programme Id");
                                                                                         Univ[1] = records[i].getAsString(
-                                                                                                "Component Name");
+                                                                                                "Component Id");
 
-                                                                                        Univ[2] = records[i].getAsString(
-                                                                                                "Branch Name");
 
                                                                                         connectService.methodDeletecomponentrecord(Univ,
                                                                                             university_id,
@@ -1825,7 +1854,7 @@ public class CM_manageprogramcomponent {
 
                                         grid.setTopToolbar(topToolBar);
 
-                                        grid.addGridCellListener(new GridCellListener() {
+                                        /*grid.addGridCellListener(new GridCellListener() {
                                                 public void onCellClick(
                                                     GridPanel grid,
                                                     int rowIndex, int colIndex,
@@ -1846,7 +1875,7 @@ public class CM_manageprogramcomponent {
                                                     int rowIndex, int colIndex,
                                                     EventObject e) {
                                                 }
-                                            });
+                                            });*/
 
                                         grid.setTitle(constants.heading_programdetails());
 
@@ -1867,7 +1896,8 @@ public class CM_manageprogramcomponent {
                                         CM_ProgramInfoGetter[] result) {
                                         final RecordDef rDef = new RecordDef(new FieldDef[] {
                                                     new StringFieldDef("Programme Name"),
-                                                    new StringFieldDef("Branch Name"),
+                                                    new StringFieldDef("Programme Id"),
+                                                    new StringFieldDef("Component Id"),
                                                     new StringFieldDef("Component Name"),
                                                     new StringFieldDef("Type"),
                                                     new StringFieldDef("Component Weightage"),
@@ -1878,12 +1908,13 @@ public class CM_manageprogramcomponent {
                                                     new StringFieldDef("Sequence Number"),
                                                     new StringFieldDef("Rule used"),
                                                     new StringFieldDef("rule_no"),
+                                                    new StringFieldDef("catTypeDescription")
                                                 });
 
                                         final GridPanel grid = new GridPanel();
 
                                         try {
-                                            object1 = new Object[result.length][12];
+                                            object1 = new Object[result.length][14];
                                         } catch (Exception e) {
                                             System.out.println("ex1 =" + e);
                                         }
@@ -1921,32 +1952,36 @@ public class CM_manageprogramcomponent {
 
                                         for (int i = 0; i < result.length;
                                                 i++) {
-                                            for (int k = 0; k < 12; k++) {
+                                            for (int k = 0; k < 14; k++) {
                                                 try {
                                                     if (k == 0) {
-                                                        str = result[i].getprogram_name();
+                                                        str = result[i].getProgram_name();
                                                     } else if (k == 1) {
-                                                        str = result[i].getBranch_name();
-                                                    } else if (k == 2) {
-                                                        str = result[i].getComponent();
+                                                        str = result[i].getProgram_id();
+                                                    }  else if (k == 2) {
+                                                        str = result[i].getComponent_id();
                                                     } else if (k == 3) {
-                                                        str = result[i].getType();
+                                                        str = result[i].getComponent();
                                                     } else if (k == 4) {
-                                                        str = result[i].getentity_id();
+                                                        str = result[i].getType();
                                                     } else if (k == 5) {
-                                                        str = result[i].getBoard_flag();
+                                                        str = result[i].getEntity_id();
                                                     } else if (k == 6) {
-                                                        str = result[i].getWeightage_flag();
+                                                        str = result[i].getBoard_flag();
                                                     } else if (k == 7) {
-                                                        str = result[i].getSpecial_flag();
+                                                        str = result[i].getWeightage_flag();
                                                     } else if (k == 8) {
-                                                        str = result[i].getEligibility_flag();
+                                                        str = result[i].getSpecial_flag();
                                                     } else if (k == 9) {
-                                                        str = result[i].getSequence();
+                                                        str = result[i].getEligibility_flag();
                                                     } else if (k == 10) {
-                                                        str = result[i].getDescription();
+                                                        str = result[i].getSequence();
                                                     } else if (k == 11) {
+                                                        str = result[i].getDescription();
+                                                    } else if (k == 12) {
                                                         str = result[i].getRule_no();
+                                                    } else if (k == 13) {
+                                                        str = result[i].getCatTypeDescription();
                                                     }
                                                 } catch (Exception e) {
                                                     System.out.println(
@@ -1978,31 +2013,28 @@ public class CM_manageprogramcomponent {
                                                 new CheckboxColumnConfig(cbSelectionModel),
                                                 
                                                 new ColumnConfig("Programme Name",
-                                                    "Programme Name", 140,
+                                                    "Programme Name", 120,
                                                     true, null, "entityType"),
-                                                new ColumnConfig("Branch Name",
-                                                    "Branch Name", 140, true,
-                                                    null, "BranchName"),
                                                 new ColumnConfig("Component Name",
                                                     "Component Name", 100,
                                                     true, null, "entityname"),
                                                 new ColumnConfig("Type",
-                                                    "Type", 60, true, null,
+                                                    "catTypeDescription", 50, true, null,
                                                     "entitycode"),
                                                 new ColumnConfig("Component Weightage",
                                                     "Component Weightage", 120,
                                                     true, null, "entityparent"),
-                                                new ColumnConfig("Weightage Flag Status",
+                                                new ColumnConfig("Weightage Flag",
                                                     "Weightage Flag Status",
-                                                    130, true, null, "criteria"),
-                                                new ColumnConfig("Board Flag Status",
-                                                    "Board Flag Status", 120,
+                                                    100, true, null, "criteria"),
+                                                new ColumnConfig("Board Flag",
+                                                    "Board Flag Status", 80,
                                                     true, null, "boardStatus"),
-                                                new ColumnConfig("Special Weightage Flag Status",
+                                                new ColumnConfig("Special Weightage Flag",
                                                     "Special Weightage Flag Status",
-                                                    120, true, null,
+                                                    130, true, null,
                                                     "specialWeightagetatus"),
-                                                new ColumnConfig("Eligibility Flag Status",
+                                                new ColumnConfig("Eligibility Flag",
                                                     "Eligibility Flag Status",
                                                     120, true, null,
                                                     "eligibilityWeightagetatus"),
@@ -2026,7 +2058,6 @@ public class CM_manageprogramcomponent {
                                         grid.setAutoExpandColumn("startdate");
                                         grid.setAutoExpandColumn("enddate");
                                         grid.setAutoExpandColumn("criteria");
-                                        grid.setAutoExpandColumn("BranchName");
                                         grid.setAutoExpandColumn("boardStatus");
                                         grid.setAutoExpandColumn(
                                             "specialWeightagetatus");
@@ -2035,7 +2066,7 @@ public class CM_manageprogramcomponent {
 
                                         grid.setSelectionModel(cbSelectionModel);
                                         grid.setAutoWidth(true);
-                                        grid.setWidth(1200);
+                                        grid.setWidth(1210);
                                         grid.setHeight(280);
 
                                         Toolbar topToolBar = new Toolbar();
@@ -2063,32 +2094,34 @@ public class CM_manageprogramcomponent {
                                                             msg += record.getAsString(
                                                                 "University Name");
 
-                                                            String[] Univ = new String[12];
+                                                            String[] Univ = new String[17];
 
                                                             Univ[0] = record.getAsString(
                                                                     "Programme Name");
                                                             Univ[1] = record.getAsString(
-                                                                    "Branch Name");
-                                                            Univ[2] = record.getAsString(
                                                                     "Component Name");
-                                                            Univ[3] = record.getAsString(
+                                                            Univ[2] = record.getAsString(
                                                                     "Type");
-                                                            Univ[4] = record.getAsString(
+                                                            Univ[3] = record.getAsString(
                                                                     "Component Weightage");
-                                                            Univ[5] = record.getAsString(
+                                                            Univ[4] = record.getAsString(
                                                                     "Board Flag Status");
-                                                            Univ[6] = record.getAsString(
+                                                            Univ[5] = record.getAsString(
                                                                     "Weightage Flag Status");
-                                                            Univ[7] = record.getAsString(
+                                                            Univ[6] = record.getAsString(
                                                                     "Special Weightage Flag Status");
-                                                            Univ[8] = record.getAsString(
+                                                            Univ[7] = record.getAsString(
                                                                     "Eligibility Flag Status");
-                                                            Univ[9] = record.getAsString(
+                                                            Univ[8] = record.getAsString(
                                                                     "Sequence Number");
-                                                            Univ[10] = record.getAsString(
+                                                            Univ[9] = record.getAsString(
                                                                     "Rule used");
-                                                            Univ[11] = record.getAsString(
+                                                            Univ[10] = record.getAsString(
                                                                     "rule_no");
+                                                            Univ[11] = record.getAsString(
+                                                                    "Programme Id");
+                                                            Univ[12] = record.getAsString(
+                                                                    "Component Id");
 
                                                             FlexTable editInstiTable =
                                                                 new FlexTable();
@@ -2097,25 +2130,23 @@ public class CM_manageprogramcomponent {
                                                             editInstiTable.clear();
 
                                                             programBox.setText(Univ[0]);
-                                                            branch.setText(Univ[1]);
-                                                            termBox.setText(Univ[2]);
-                                                            type = Univ[3];
-                                                            seats.setValue(Univ[4]);
-                                                            weightageflag = Univ[6];
-                                                            boardflag = Univ[5];
-                                                            special = Univ[7];
-                                                            eligibleflag = Univ[8];
-                                                            enddate.setText(Univ[9]);
-                                                            ruleBox.setValue(Univ[11]);
+                                                            termBox.setText(Univ[1]);
+                                                            type = Univ[2];
+                                                            seats.setValue(Univ[3]);
+                                                            weightageflag = Univ[5];
+                                                            boardflag = Univ[4];
+                                                            special = Univ[6];
+                                                            eligibleflag = Univ[7];
+                                                            enddate.setText(Univ[8]);
+                                                            ruleBox.setValue(Univ[10]);
+                                                            program_id = Univ[11];
+                                                            componentId = Univ[12];
 
-                                                            if (type.equalsIgnoreCase(
-                                                                        "M")) {
-                                                                types.setSelectedIndex(0);
-                                                            } else if (type.equalsIgnoreCase(
-                                                                        "S")) {
-                                                                types.setSelectedIndex(1);
-                                                            } else {
-                                                                types.setSelectedIndex(2);
+                                                            for(int i=0;i<typeList.size();i++){
+                                                            	if (typeList.get(i).getCatTypeId().equalsIgnoreCase(type)) {
+                                                                    types.setSelectedIndex(i);
+                                                                    break;
+                                                                }
                                                             }
 
                                                             if (boardflag.equalsIgnoreCase(
@@ -2154,8 +2185,11 @@ public class CM_manageprogramcomponent {
                                                                 0, programname);
                                                             flexTable.setWidget(0,
                                                                 2, programBox);
-                                                            flexTable.setWidget(0,
+                                                            /*flexTable.setWidget(0,
                                                                 4, branch);
+                                                            flexTable.setWidget(0,
+                                                                6,
+                                                                specializationName);*/
                                                             flexTable.setWidget(2,
                                                                 0, termname);
                                                             flexTable.setWidget(2,
@@ -2191,7 +2225,7 @@ public class CM_manageprogramcomponent {
                                                             p1.add(editInstiTable);
 
                                                             Button b1 = new Button(
-                                                                    "Update");
+                                                                    constants.updateButton());
 
                                                             final Window window = new Window();
                                                             window.setTitle(constants.heading_updatedetails());
@@ -2224,9 +2258,6 @@ public class CM_manageprogramcomponent {
 
                                                                         final String tag =
                                                                             types.getValue(types.getSelectedIndex());
-
-                                                                        final String rule =
-                                                                            ruleBox.getValue();
 
                                                                         if (weightBox.isChecked()) {
                                                                             weightageflag = "Y";
@@ -2286,6 +2317,10 @@ public class CM_manageprogramcomponent {
                                                                                         setButtons(MessageBox.OK);
                                                                                     }
                                                                                 });
+                                                                        } else if (ruleBox.getRawValue()
+                                                                                              .equalsIgnoreCase("")) {
+                                                                            ruleBox.markInvalid(
+                                                                                "not allowed");
                                                                         } else {
                                                                             MessageBox.show(new MessageBoxConfig() {
 
@@ -2300,8 +2335,8 @@ public class CM_manageprogramcomponent {
                                                                                                     String text) {
                                                                                                     if (btnID.equals(
                                                                                                                 "yes")) {
-                                                                                                        connectService.methodupdateprgcomponents(programBox.getText(),
-                                                                                                            branch.getText(),
+                                                                                                        connectService.methodupdateprgcomponents(program_id,
+                                                                                                           /* branch_id,*/
                                                                                                             termBox.getText(),
                                                                                                             enddate.getText(),
                                                                                                             tag,
@@ -2310,8 +2345,9 @@ public class CM_manageprogramcomponent {
                                                                                                             special,
                                                                                                             weightageflag,
                                                                                                             weightage,
-                                                                                                            rule,
+                                                                                                            ruleBox.getValue(),
                                                                                                             university_id,
+                                                                                                            /*specialization,*/
                                                                                                             new AsyncCallback<String>() {
                                                                                                                 public void onFailure(
                                                                                                                     Throwable arg0) {
@@ -2396,15 +2432,14 @@ public class CM_manageprogramcomponent {
                                                                                             i < records.length;
                                                                                             i++) {
                                                                                         final String[] Univ =
-                                                                                            new String[3];
+                                                                                            new String[2];
 
                                                                                         Univ[0] = records[i].getAsString(
-                                                                                                "Programme Name");
+                                                                                                "Programme Id");
                                                                                         Univ[1] = records[i].getAsString(
-                                                                                                "Component Name");
+                                                                                                "Component Id");
 
-                                                                                        Univ[2] = records[i].getAsString(
-                                                                                                "Branch Name");
+
 
                                                                                         connectService.methodDeletecomponentrecord(Univ,
                                                                                             university_id,
@@ -2445,7 +2480,7 @@ public class CM_manageprogramcomponent {
 
                                         grid.setTopToolbar(topToolBar);
 
-                                        grid.addGridCellListener(new GridCellListener() {
+                                        /*grid.addGridCellListener(new GridCellListener() {
                                                 public void onCellClick(
                                                     GridPanel grid,
                                                     int rowIndex, int colIndex,
@@ -2466,7 +2501,7 @@ public class CM_manageprogramcomponent {
                                                     int rowIndex, int colIndex,
                                                     EventObject e) {
                                                 }
-                                            });
+                                            });*/
 
                                         grid.setTitle(constants.heading_programdetails());
 

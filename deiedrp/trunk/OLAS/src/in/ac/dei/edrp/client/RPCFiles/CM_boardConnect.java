@@ -14,13 +14,19 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("board")
 public interface CM_boardConnect extends RemoteService{
-	CM_entityInfoGetter[] methodGetProgOfferingEntityList(String user_id,String program_id) throws Exception;
-	CM_progMasterInfoGetter[] methodprogList(String user_id);
+	//update by devendra june 8
+	CM_entityInfoGetter[] methodGetProgOfferingEntityList() throws Exception;
+	//update by devendra june 8
+	CM_progMasterInfoGetter[] methodprogList(String user_id,String entityId);
 	CM_progMasterInfoGetter[] methodbranchList(String program_id,String entity_id);
-	CM_boardNormalizationGetter[] methodComponentList(String program_id,String entity_id,String branch_code);
+	CM_progMasterInfoGetter[] methodspecializationList(String program_id, String entity_id,
+			String branch_id);
+	//update by devendra
+	CM_boardNormalizationGetter[] methodComponentList(String program_id,String entity_id);
 	CM_boardNormalizationGetter[] methodBoardList();
 	 void methodAddBoardNormalizationFactor(CM_boardNormalizationGetter object) throws Exception;
-	 CM_progMasterInfoGetter[] methodprogListForManage(String user_id);
+	//update by devendra june 8
+	 CM_progMasterInfoGetter[] methodprogListForManage(String user_id,String entityID);
 	CM_boardNormalizationGetter[] methodboardListForManage(CM_boardNormalizationGetter object);
 	void methodNormalizationFactorDelete(CM_boardNormalizationGetter object);
 	void methodNormalizationFactorUpdate(CM_boardNormalizationGetter object);

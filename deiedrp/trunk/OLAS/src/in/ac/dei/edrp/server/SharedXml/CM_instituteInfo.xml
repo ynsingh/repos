@@ -15,11 +15,11 @@
   </resultMap>
  
   <select id="selectFromUserID" resultMap="InfoGetter"> 
- 	select instituteID from USERINFO where uID=#string#
+ 	select instituteID from userinfo where uID=#string#
   </select>
   
    <select id="selectFromInstiName" resultMap="InfoGetter"> 
- 	select instituteID from INSTITUTE where instituteName =#string#
+ 	select instituteID from institute where instituteName =#string#
   </select>
   
   
@@ -37,24 +37,24 @@
   </resultMap>
    
   <select id="selectAllInstituteDetails" resultMap="AllInfoGetter">
-  select * from INSTITUTE
+  select * from institute
   </select>
 
   
    <select id="selectAllInstituteDetailsWithInstiName" resultMap="AllInfoGetter">
-  select * from INSTITUTE where instituteName = #string#
+  select * from institute where instituteName = #string#
   </select>
   
    <select id="selectAllInstituteDetailsWithInstiID" resultMap="AllInfoGetter">
-  select * from INSTITUTE where instituteID = #string#
+  select * from institute where instituteID = #string#
   </select>
   
      <select id="selectAllInstituteDetailsWithInstiCity" resultMap="AllInfoGetter">
-  select * from INSTITUTE where instituteCity = #string#
+  select * from institute where instituteCity = #string#
   </select>
   
      <select id="selectAllInstituteDetailsWithInstiState" resultMap="AllInfoGetter">
-  select * from INSTITUTE where instituteState = #string#
+  select * from institute where instituteState = #string#
   </select> 
   
   
@@ -66,7 +66,7 @@
   </resultMap>
    
   <select id="selectInstituteNameId" resultMap="NameIdGetter">
-  select instituteName,instituteID from INSTITUTE where instituteID=#id#
+  select instituteName,instituteID from institute where instituteID=#id#
   </select>
   
   <resultMap id="NameGetter" class="instituteInfo">
@@ -74,7 +74,7 @@
   </resultMap>
   
   <select id="selectInstituteName" resultMap="NameGetter">
-  select instituteName from INSTITUTE where instituteID=#id#
+  select instituteName from institute where instituteID=#id#
   </select>
   
      
@@ -83,7 +83,7 @@
   </resultMap>
   
      <select id="selectSession" resultMap="SessionGetter"> 
- select newSession from INSTITUTESESSION where instituteID =#id# AND currentStatus=#status#
+ select newSession from institutesession where instituteID =#id# AND currentStatus=#status#
   </select>
   
 
@@ -96,7 +96,7 @@
 	</resultMap>
 
 	<select id="selectcurrentSession" resultMap="currentSession">
-		select newSession from INSTITUTESESSION where instituteID=#instituteID# AND
+		select newSession from institutesession where instituteID=#instituteID# AND
 		currentStatus=1	
   </select>
   
@@ -106,17 +106,17 @@
   </resultMap>
   
      <select id="getDesignation" resultMap="designationGetter"> 
- select designation_description from ENTITY_DESIGNATIONS
+ select designation_description from entity_designations
    </select>
   
  <insert id="newDesignation"> 
- insert into ENTITY_DESIGNATIONS values(null,#designationID#,#designation#,null,null,null,null);
+ insert into entity_designations values(null,#designationID#,#designation#,null,null,null,null);
   </insert>
   
   
    
   <delete id="deleteDesignation"> 
- delete from ENTITY_DESIGNATIONS where designation_description =#designation#
+ delete from entity_designations where designation_description =#designation#
   </delete>
   
 

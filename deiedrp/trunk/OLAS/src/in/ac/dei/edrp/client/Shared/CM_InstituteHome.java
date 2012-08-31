@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.ChangeListener;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Image;
@@ -34,7 +35,6 @@ import com.gwtext.client.widgets.Button;
 import com.gwtext.client.widgets.MessageBox;
 import com.gwtext.client.widgets.Panel;
 import com.gwtext.client.widgets.Tool;
-import com.gwtext.client.widgets.form.FormPanel;
 import com.gwtext.client.widgets.form.TextField;
 
 
@@ -68,7 +68,7 @@ public class CM_InstituteHome {
     DecoratorPanel docpanel = new DecoratorPanel();
     DecoratorPanel docFormpanel = new DecoratorPanel();
     Panel imgHorizontalPanel = new Panel();
-    FormPanel imgFormPanel = new FormPanel();
+//    FormPanel imgFormPanel = new FormPanel();
     Button changeImageButton = new Button("Change image");
     Button browseButton = new Button("Browse");
     TextField imgpath = new TextField();
@@ -99,7 +99,7 @@ public class CM_InstituteHome {
             });
 
         myPanel.setWidth(280);
-        myPanel.setHeight(200);
+        myPanel.setHeight(160);
         myPanel.setFrame(true);
         myPanel.setTitle("News");
         myPanel.setCollapsible(true);
@@ -186,12 +186,16 @@ public class CM_InstituteHome {
         //img.setSize("275px","270px");
         //        imgHorizontalPanel.setAutoHeight(true);
         //        imgHorizontalPanel.setAutoWidth(true);
-        imgHorizontalPanel.setSize(275, 270);
+        
+        
+        //updated by Devendra May 3rd
+        imgHorizontalPanel.setSize(275, 150);
+        imgHorizontalPanel.setMargins(10, 10, 10, 10);
         //imgHorizontalPanel.add(img);
         //imgFormPanel.add(imgHorizontalPanel);
         //imgFormPanel.add(fieldSet);
         //imgFormPanel.getForm().load("loginImage.xml", null, Connection.GET, "Loading...");
-        vimgpanel.add(imgHorizontalPanel);
+        vimgpanel.add(imgHorizontalPanel);        
         /*
          * Temporarily removed button
          */
@@ -202,11 +206,12 @@ public class CM_InstituteHome {
         //	execute();
 
         //	void com.gwtext.client.widgets.Panel.load(String url,Urlparam[] param,UrlLoadcallback callback,boolean loadscript)
+        
         imgHorizontalPanel.load("loginImage.xml", null, null, false);
 
-        mainHorizontalPanel.setSpacing(20);
+        mainHorizontalPanel.setSpacing(30);
         mainHorizontalPanel.add(docFormpanel);
-        mainHorizontalPanel.add(Text);
+//        mainHorizontalPanel.add(Text);
         mainHorizontalPanel.add(docpanel);
 
         //			    log.trace("Hello World!");  

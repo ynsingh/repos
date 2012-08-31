@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<program>
+	<programNameUG name="B.Com"></programNameUG>
+	<programNameUG name="B.Sc"></programNameUG>
+	<programNameUG name="BCA"></programNameUG>
+	<programNameUG name="B.Ed"></programNameUG>
+	<programNameUG name="Other"></programNameUG>
+	
+	<programNamePG name="M.Com"></programNamePG>
+	<programNamePG name="M.Sc"></programNamePG>
+	<programNamePG name="MCA"></programNamePG>
+	<programNamePG name="M.Ed"></programNamePG>
+	<programNamePG name="Other"></programNamePG>
+	
+	<programNameOT name="M.Phil"></programNameOT>
+	<programNameOT name="CA"></programNameOT>
+	<programNameOT name="Certification"></programNameOT>
+	<programNameOT name="PhD"></programNameOT>
+	<programNameOT name="Other"></programNameOT>
+	
+</program>

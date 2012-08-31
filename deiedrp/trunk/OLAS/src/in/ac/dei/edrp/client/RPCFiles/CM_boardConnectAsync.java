@@ -12,17 +12,22 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 
 public interface CM_boardConnectAsync {
-
-void methodGetProgOfferingEntityList(String user_id,String program_id,AsyncCallback<CM_entityInfoGetter[]> callback);
-void methodprogList(String user_id,AsyncCallback<CM_progMasterInfoGetter[]> callback);
+//update by devendra june 8
+void methodGetProgOfferingEntityList(AsyncCallback<CM_entityInfoGetter[]> callback);
+//update by devendra june 8
+void methodprogList(String user_id,String entityId,AsyncCallback<CM_progMasterInfoGetter[]> callback);
 void methodbranchList(String program_id,String entity_id,AsyncCallback<CM_progMasterInfoGetter[]> callback);
-void methodComponentList(String program_id,String entity_id,String branch_code,AsyncCallback<CM_boardNormalizationGetter[]> callback);
+//update by devendra 19 April
+void methodComponentList(String program_id,String entity_id,AsyncCallback<CM_boardNormalizationGetter[]> callback);
 void methodBoardList(AsyncCallback<CM_boardNormalizationGetter[]> callback);
 void methodAddBoardNormalizationFactor(CM_boardNormalizationGetter object,AsyncCallback<String> callback);
-void methodprogListForManage(String user_id,AsyncCallback<CM_progMasterInfoGetter[]> callback);
+//update by devendra june 8
+void methodprogListForManage(String user_id,String entityId,AsyncCallback<CM_progMasterInfoGetter[]> callback);
 void methodboardListForManage(CM_boardNormalizationGetter object,AsyncCallback<CM_boardNormalizationGetter[]> callback);
 void methodNormalizationFactorDelete(CM_boardNormalizationGetter object,AsyncCallback<String> callback);
 void methodNormalizationFactorUpdate(CM_boardNormalizationGetter object,AsyncCallback<String> callback);
+void methodspecializationList(String program_id, String entity_id,
+		String branch_id, AsyncCallback<CM_progMasterInfoGetter[]> asyncCallback);
 
 
 

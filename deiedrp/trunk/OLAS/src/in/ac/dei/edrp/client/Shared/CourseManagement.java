@@ -16,6 +16,12 @@ package in.ac.dei.edrp.client.Shared;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Window.ClosingEvent;
+import com.google.gwt.user.client.Window.ClosingHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -25,6 +31,8 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import com.smartgwt.client.widgets.events.ValueChangedEvent;
+import com.smartgwt.client.widgets.events.ValueChangedHandler;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuButton;
 import com.smartgwt.client.widgets.menu.MenuItem;
@@ -40,8 +48,9 @@ import in.ac.dei.edrp.client.Login.CM_LoginConnectSAsync;
 import in.ac.dei.edrp.client.Login.Login;
 
 
-public class CourseManagement {
+public class CourseManagement{
     private final CM_LoginConnectSAsync connectService = GWT.create(CM_LoginConnectS.class);
+    constants cons = GWT.create(constants.class);
     public String type;
     public String uID;
     final VerticalPanel mainVerticalPanel = new VerticalPanel();
@@ -55,22 +64,31 @@ public class CourseManagement {
     final VerticalPanel entryVerticalPanel = new VerticalPanel();
     final VerticalPanel entryVerticalPanel1 = new VerticalPanel();
     Label welcomeLabel = new Label("Welcome :");
-    final Label headerLabel = new Label(
-            "Educational Resource Planning: Course Management");
+    final Label headerLabel = new Label("Online Admission System");
+    final Label headerLabel1 = new Label(
+            "An Open Source Initiative of the Ministry of Human Resource & Development");
+    Label headerLabel2 = new Label(
+            "(Developed under the National Mission of Education through Information & Communication Technology)");
     final Label footerLabel = new Label(
-            "Dayalbagh Educational Institute, Agra-282005");
+            "Dayalbagh Educational Institute,Agra-282110");
+    Label footerLabel1 = new Label("Phone:+91-562-2801545,+91-562-2801226(fax)");
     final Hyperlink logOutTopHyperLink = new Hyperlink("Sign out", null);
     final Hyperlink HypBackTopHyperLink = new Hyperlink("Back to module selection ",
             null);
     final Hyperlink settings = new Hyperlink("Settings", null);
     CM_InstituteAdmin IA;
     public String user_name = "";
-
+    public String urlHome;
+    public String universityCode;
+    public String application;
+    public CM_userInfoGetter userInfo = new CM_userInfoGetter();
+    
     public CourseManagement(String uID) {
         this.uID = uID;
     }
 
     public void onModuleLoad() {
+    	
         init();
     }
 
@@ -94,8 +112,21 @@ public class CourseManagement {
         Menu prgtermsubmenu = new Menu();
         Menu prgagesubmenu = new Menu();
         Menu prgcomposubmenu = new Menu();
+        Menu excelsubmenu = new Menu();
+        Menu formsubmenu=new Menu();	//uk
+        
 
         // Main Menus
+        Menu formsetup=new Menu();	//uk
+        formsetup.setWidth(100);	//uk
+        
+        Menu prgdoc=new Menu();	//uk
+        prgdoc.setWidth(100);	//uk
+        
+        Menu prgSer=new Menu();	//uk
+        prgSer.setWidth(100);	//uk
+        
+        
         Menu prgsetup = new Menu();
         prgsetup.setWidth(100);
 
@@ -113,7 +144,48 @@ public class CourseManagement {
 
         Menu prgmenu = new Menu();
         prgmenu.setWidth(100);
-
+	
+	  Menu omrMenu=new Menu();		//omr menu
+        omrMenu.setWidth(100);
+		
+        Menu programCenterSubMenu=new Menu();//Arjun Code
+                		Menu tieRuleSubMenu=new Menu();//Arjun Code
+                 
+              
+                		final MenuItem createCenter=new MenuItem("Setup Examination Center");
+               		final MenuItem manageCenter=new MenuItem("Modify Examination Center");
+                		programCenterSubMenu.setItems(createCenter,manageCenter);
+               
+               		final MenuItem centerMenuItem=new MenuItem("Program Examination Center");//Arjun Code
+                      	centerMenuItem.setSubmenu(programCenterSubMenu);//Arjun Code
+               
+                     	final MenuItem tieRuleMenuItem=new MenuItem("Tie Rule Setup");//Arjun Code
+        
+		//Devendra May 18
+        Menu SubjectSubMenu=new Menu();
+        SubjectSubMenu.setWidth(110);     
+        //For set up Subject Menus By Devendra May 18
+        final MenuItem subjectMenu=new MenuItem("Program Subject");
+        final MenuItem setupSubject=new MenuItem("Subject Setup");
+        final MenuItem manageSubject=new MenuItem("Manage Subject");
+        SubjectSubMenu.setItems(setupSubject,manageSubject);
+        subjectMenu.setSubmenu(SubjectSubMenu);
+        
+		//Add by Devendra May 19
+        Menu manageSummarySheet=new Menu();
+        manageSummarySheet.setWidth(110);       
+        //For Manage Summary sheet menus By Devendra May 18
+        final MenuItem manageSummarySheetMenu=new MenuItem("Manage Summary Sheet");
+        final MenuItem editSummarySheetMenu=new MenuItem("Edit Summary Sheet");
+        final MenuItem deleteSummarySheetMenu=new MenuItem("Delete Summary Sheet");
+        manageSummarySheet.setItems(editSummarySheetMenu,deleteSummarySheetMenu);
+        manageSummarySheetMenu.setSubmenu(manageSummarySheet);
+		
+        // form Setup Menu Items
+        final MenuItem createform = new MenuItem("Set up Application Form"); //uk
+        final MenuItem manageform = new MenuItem("Modify Application Form");	//uk
+        formsubmenu.setItems(createform, manageform);		//uk
+        
         // Program Setup Menu Items
         MenuItem managedefcos = new MenuItem("Modify COS setup (Default)");
         MenuItem manageindicos = new MenuItem("Modify COS setup (Individual)");
@@ -126,35 +198,40 @@ public class CourseManagement {
         final MenuItem createprgbrd = new MenuItem("Set up Program Board");
         final MenuItem manageprgbrd = new MenuItem("Modify Program Board");
         prgbrdsubmenu.setItems(createprgbrd, manageprgbrd);
+        
+        final MenuItem createexcelmenu = new MenuItem("Define Excel Components");
+        final MenuItem manageexcelmenu = new MenuItem("Delete Excel Components");
+        excelsubmenu.setItems(createexcelmenu, manageexcelmenu);
 
-        final MenuItem createprgage = new MenuItem(
-                "Set up Program Age Eligibility");
-        final MenuItem manageprgage = new MenuItem(
-                "Modify Program Age Eligibility");
+        final MenuItem createprgage = new MenuItem("Set up Program Age Eligibility");
+        final MenuItem manageprgage = new MenuItem("Modify Program Age Eligibility");
         prgagesubmenu.setItems(createprgage, manageprgage);
 
-        final MenuItem createprgelig = new MenuItem(
-                "Set up Program Component Eligibility");
-        final MenuItem manageprgelig = new MenuItem(
-                "Modify Program Component Eligibility");
-        prgcomposubmenu.setItems(createprgelig, manageprgelig);
+        final MenuItem createprgelig = new MenuItem("Set up Program Component Eligibility");
+        final MenuItem manageprgelig = new MenuItem("Modify Program Component Eligibility");
+		prgcomposubmenu.setItems(createprgelig, manageprgelig);
 
-        final MenuItem createprgdegree = new MenuItem(
-                "Program Eligibility(UG&PG)");
-        final MenuItem manageprgdegree = new MenuItem(
-                "Modify Program Eligibility(UG&PG)");
+		final MenuItem createprgdegree = new MenuItem("Program Eligibility(UG&PG)");
+		final MenuItem manageprgdegree = new MenuItem("Modify Program Eligibility(UG&PG)");
         prgdegreesubmenu.setItems(createprgdegree, manageprgdegree);
 
         final MenuItem createprgcos = new MenuItem("Set up Program COS");
         final MenuItem manageprgcos = new MenuItem("Modify Program COS");
         prgcossubmenu.setItems(createprgcos, manageprgcos);
-        manageprgcos.setSubmenu(managecossubmenu);
+      //Commented By Arjun  manageprgcos.setSubmenu(managecossubmenu);
 
         final MenuItem prgcomp = new MenuItem("Program Components");
         prgcomp.setSubmenu(prgcompsubmenu);
-
-        final MenuItem prgdegree = new MenuItem(
-                "Program Pre Requiste Examinations(First Degree)");
+                
+        final MenuItem formcomp = new MenuItem("Application Form");	//uk
+        formcomp.setSubmenu(formsubmenu);								//uk
+        
+        final MenuItem prgDocList= new MenuItem("Program Document"); //uk
+        final MenuItem prgSerList= new MenuItem("Program Search"); //uk
+        final MenuItem internalSummarySheetList= new MenuItem("SummarySheet Internal"); //uk
+        
+		 final MenuItem omrList= new MenuItem("OMR"); 		//OMR MenuItem  
+        final MenuItem prgdegree = new MenuItem("Program Pre Requiste Examinations(First Degree)");
         prgdegree.setSubmenu(prgdegreesubmenu);
 
         final MenuItem prgcos = new MenuItem("Program COS");
@@ -168,21 +245,18 @@ public class CourseManagement {
         final MenuItem prgage = new MenuItem("Program Age Eligibility");
         prgage.setSubmenu(prgagesubmenu);
 
-        final MenuItem prgcomponentelig = new MenuItem(
-                "Program Component Eligibility");
+        final MenuItem prgcomponentelig = new MenuItem("Program Component Eligibility");
         prgcomponentelig.setSubmenu(prgcomposubmenu);
 
         // System Setup Menu Items
-        final MenuItem createmerit = new MenuItem(
-                "Set up Final Merit Components");
-        final MenuItem managemerit = new MenuItem(
-                "Modify Final Merit Components");
+        final MenuItem createmerit = new MenuItem("Set up Final Merit Components");
+        final MenuItem managemerit = new MenuItem("Modify Final Merit Components");
         meritsubmenu.setItems(createmerit, managemerit);
 
         final MenuItem splwt = new MenuItem("Special Weightage");
 
         final MenuItem resetcycle = new MenuItem("Reset Admission Cycle");
-
+        final MenuItem frmAuthority = new MenuItem("Form Authority Setup");
         final MenuItem meritmenu = new MenuItem("Final Merit Components");
         meritmenu.setSubmenu(meritsubmenu);
 
@@ -192,6 +266,8 @@ public class CourseManagement {
         final MenuItem manageapp = new MenuItem("Manage Summary Sheet");
         appsubmenu.setItems(createapp, manageapp);
         appmenu.setSubmenu(appsubmenu);
+        
+        final MenuItem progregmenu = new MenuItem("Program Application Details");
 
         final MenuItem computemenu = new MenuItem("Compute Application Marks");
 
@@ -201,14 +277,25 @@ public class CourseManagement {
         final MenuItem createmarks = new MenuItem("Set up Admission Test Marks");
         final MenuItem managemarks = new MenuItem("Modify Admission Test Marks");
         final MenuItem uploadfile = new MenuItem("upload/download file for adding Test Marks");
-        testmarkssubmenu.setItems(createmarks, managemarks, uploadfile);
+		
+		//Add by Devendra for upload component marks
+        final MenuItem uploadFileForAddMarksInFinalMarks = new MenuItem("Upload File for adding Component's Marks");
+		//Add by Devendra for upload component marks May 8th
+        final MenuItem finalMeritListProcess = new MenuItem("Final Merit List Process");
+		//Add by Devendra for upload component marks May 8th
+        final MenuItem importStudentMarks = new MenuItem("Import Students Marks");
+		
+		 //updated by debvendra
+        testmarkssubmenu.setItems(createmarks, managemarks, uploadfile,uploadFileForAddMarksInFinalMarks,finalMeritListProcess,importStudentMarks);
         testmarks.setSubmenu(testmarkssubmenu);
 
         final MenuItem testnumber = new MenuItem("Generate Test Number");
 
         // Reports Menu Items
-        final MenuItem calloutmenu = new MenuItem(
-                "Call List without Test Number");
+        final MenuItem excelcomponents = new MenuItem("Define Excel Components");
+        excelcomponents.setSubmenu(excelsubmenu);
+        
+        final MenuItem calloutmenu = new MenuItem("Call List without Test Number");
 
         final MenuItem callwithmenu = new MenuItem("Call List with Test Number");
 
@@ -233,8 +320,7 @@ public class CourseManagement {
         MenuItem addbranch = new MenuItem("Add another Branch");
         MenuItem addspec = new MenuItem("Add another Specialization");
         MenuItem addreser = new MenuItem("Add Reservation Category");
-        createprgsubmenu.setItems(newprg, addstdate, addbranch, addspec,
-            addreser);
+        createprgsubmenu.setItems(newprg, addstdate, addbranch, addspec,addreser);
         createprgmaster.setSubmenu(createprgsubmenu);
 
         MenuItem basicinfo = new MenuItem("Basic Information");
@@ -242,23 +328,18 @@ public class CourseManagement {
         MenuItem branchinfo = new MenuItem("Branch Information");
         MenuItem specinfo = new MenuItem("Specialization Information");
         MenuItem reserinfo = new MenuItem("Seat Reservation");
-        manageprgsubmenu.setItems(basicinfo, duration, branchinfo, specinfo,
-            reserinfo);
+        manageprgsubmenu.setItems(basicinfo, duration, branchinfo, specinfo,reserinfo);
         manageprgmaster.setSubmenu(manageprgsubmenu);
 
         final MenuItem entityprg = new MenuItem("Entity Programs");
-        final MenuItem createentityprg = new MenuItem(
-                "Assign Programs to Entities");
-        final MenuItem manageentityprg = new MenuItem(
-                "Modify Programs in Entities");
+        final MenuItem createentityprg = new MenuItem("Assign Programs to Entities");
+        final MenuItem manageentityprg = new MenuItem("Modify Programs in Entities");
         entityprgsubmenu.setItems(createentityprg, manageentityprg);
         entityprg.setSubmenu(entityprgsubmenu);
 
         final MenuItem prgterm = new MenuItem("Program Term Details");
-        final MenuItem createprgterm = new MenuItem(
-                "Setup Program Term Details");
-        final MenuItem manageprgterm = new MenuItem(
-                "Modify Program Term Details");
+        final MenuItem createprgterm = new MenuItem("Setup Program Term Details");
+        final MenuItem manageprgterm = new MenuItem("Modify Program Term Details");
         prgtermsubmenu.setItems(createprgterm, manageprgterm);
         prgterm.setSubmenu(prgtermsubmenu);
 
@@ -269,38 +350,45 @@ public class CourseManagement {
         final MenuButton admission = new MenuButton("Admission");
         admission.setWidth(80);
 
-        final MenuButton coursemenu = new MenuButton("Course Registration");
-        coursemenu.setWidth(140);
+//        final MenuButton coursemenu = new MenuButton("Course Registration");
+//        coursemenu.setWidth(140);
 
         // Admission Menu Items
         final MenuButton programmenu = new MenuButton("Program Setup", prgsetup);
         programmenu.setWidth(110);
-
+        
+        final MenuButton omrMenuButton = new MenuButton("OMR Setup", omrMenu);		//OMR MenuButton
+        omrMenuButton.setWidth(110);
+        
+        
+        
+        final MenuButton formmenu = new MenuButton("Application Form Setup", formsetup);		//uk
+        formmenu.setWidth(110);														//uk	
+              
         final MenuButton systemmenu = new MenuButton("System Setup", systemsetup);
         systemmenu.setWidth(100);
 
-        final MenuButton applicationmenu = new MenuButton("Application",
-                appsetup);
+        final MenuButton applicationmenu = new MenuButton("Application",appsetup);
 
         final MenuButton reportsmenu = new MenuButton("Reports", repsetup);
 
         // Course Registration Menu Items
-        final MenuButton universitymenu = new MenuButton("University Setup",
-                univmenu);
+        final MenuButton universitymenu = new MenuButton("University Setup",univmenu);
         universitymenu.setWidth(110);
 
         final MenuButton uniprgmenu = new MenuButton("Programs", prgmenu);
         uniprgmenu.setWidth(100);
 
-        prgsetup.setItems(prgcomp, prgdegree, prgcodes, prgcos, prgage,
-            prgcomponentelig, prgboard);
+        prgsetup.setItems(prgcomp, prgdegree, prgcodes, prgcos, prgage,centerMenuItem, formcomp ,prgDocList,internalSummarySheetList,prgcomponentelig, prgboard,subjectMenu); // added uk
+        
+        formsetup.setItems(formcomp);		//uk
 
-        systemsetup.setItems(meritmenu, splwt, resetcycle);
+        systemsetup.setItems(meritmenu,frmAuthority,tieRuleMenuItem, splwt, resetcycle);
 
-        appsetup.setItems(appmenu, computemenu, cutoffmenu, testmarks,
-            testnumber);
+        appsetup.setItems(appmenu,manageSummarySheetMenu, progregmenu,computemenu, cutoffmenu, testmarks,testnumber);
+		 omrMenu.setItems(omrList);	//OMR
 
-        repsetup.setItems(calloutmenu, callwithmenu, finalmenu);
+        repsetup.setItems(excelcomponents,calloutmenu, callwithmenu, finalmenu);
 
         univmenu.setItems(entitymaster);
 
@@ -308,18 +396,23 @@ public class CourseManagement {
 
         canvas.add(home);
         canvas.add(admission);
-        canvas.add(coursemenu);
+        //        canvas.add(coursemenu);
 
         // menu items disabled initially
         admission.setDisabled(true);
-        coursemenu.setDisabled(true);
+//        coursemenu.setDisabled(true);
         programmenu.setDisabled(true);
+        formmenu.setDisabled(true);			//uk
+        
         applicationmenu.setDisabled(true);
         systemmenu.setDisabled(true);
         reportsmenu.setDisabled(true);
         universitymenu.setDisabled(true);
         uniprgmenu.setDisabled(true);
         prgcomp.setEnabled(false);
+        
+        formcomp.setEnabled(false);			//uk
+        
         prgdegree.setEnabled(false);
         prgcos.setEnabled(false);
         prgboard.setEnabled(false);
@@ -330,10 +423,12 @@ public class CourseManagement {
         splwt.setEnabled(false);
         resetcycle.setEnabled(false);
         appmenu.setEnabled(false);
+        progregmenu.setEnabled(false);
         computemenu.setEnabled(false);
         cutoffmenu.setEnabled(false);
         testmarks.setEnabled(false);
         testnumber.setEnabled(false);
+        excelcomponents.setEnabled(false);
         calloutmenu.setEnabled(false);
         callwithmenu.setEnabled(false);
         finalmenu.setEnabled(false);
@@ -343,6 +438,9 @@ public class CourseManagement {
         prgterm.setEnabled(false);
 
         // sub menu items disabled initially
+        createform.setEnabled(false);	//uk
+        manageform.setEnabled(false);	//uk
+        
         createprg.setEnabled(false);
         manageprg.setEnabled(false);
         createprgdegree.setEnabled(false);
@@ -362,6 +460,9 @@ public class CourseManagement {
         createmarks.setEnabled(false);
         managemarks.setEnabled(false);
         uploadfile.setEnabled(false);
+		uploadFileForAddMarksInFinalMarks.setEnabled(false);//Add by Devendra
+		finalMeritListProcess.setEnabled(false);//Add by Devendra May 8th
+		importStudentMarks.setEnabled(false);//Add by Devendra May 10
         createentity.setEnabled(false);
         manageentity.setEnabled(false);
         createentityprg.setEnabled(false);
@@ -370,18 +471,33 @@ public class CourseManagement {
         manageprgmaster.setEnabled(false);
         createprgterm.setEnabled(false);
         manageprgterm.setEnabled(false);
-
+		subjectMenu.setEnabled(false);//Add by Devendra June 11 
+        manageSummarySheetMenu.setEnabled(false);//Add by Devendra June 11
+        centerMenuItem.setEnabled(false);//Added by Arjun
+        tieRuleMenuItem.setEnabled(false);//Added by Arjun
+        createCenter.setEnabled(false);//Added by Arjun
+        manageCenter.setEnabled(false);//Added by Arjun
+        frmAuthority.setEnabled(false);//Added by Arjun
+		prgDocList.setEnabled(false);//Added by Upasana
+		internalSummarySheetList.setEnabled(false);//Added by Upasana
+		omrList.setEnabled(false);//Added by Upasana
         // Menu Selections on the basis of authorities
-        connectService.getPageAuthority(user_name,
-            new AsyncCallback<CM_userInfoGetter[]>() {
-                public void onFailure(Throwable arg0) {
+        /*
+         * This method call has been commented by Nupur
+         * since queries have been changed
+         */
+        /*
+        connectService.getPageAuthority(user_name,new AsyncCallback<CM_userInfoGetter[]>() {
+                public void onFailure(Throwable arg0) 
+                {
                 }
 
                 public void onSuccess(CM_userInfoGetter[] result) {
+                	System.out.println("hi "+user_name+result.length);
                     for (int i = 0; i < result.length; i++) {
-                        if ((result[i].getMenu_item_name()
-                                          .equalsIgnoreCase("Program Components")) &&
-                                (result[i].getAuthority().equalsIgnoreCase("1"))) {
+                    	
+                        if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Components")) && (result[i].getAuthority().equalsIgnoreCase("1"))) 
+                        {
                             admission.setDisabled(false);
                             programmenu.setDisabled(false);
                             prgcomp.setEnabled(true);
@@ -411,6 +527,38 @@ public class CourseManagement {
                                                                   .charAt(2) == '0') &&
                                                     (result[i].getAuthority()
                                                                   .charAt(3) == '0'))) {
+                                                manageprg.setEnabled(false);
+                                            }
+                                        }
+                                    }
+                                });
+                        }
+                        
+                        if ((result[i].getMenu_item_name().equalsIgnoreCase("Application Form")) && (result[i].getAuthority().equalsIgnoreCase("1"))) 
+                        {
+                            admission.setDisabled(false);
+                            programmenu.setDisabled(false);
+                            formcomp.setEnabled(true);
+                            createform.setEnabled(true);
+                            manageform.setEnabled(true);
+                            connectService.getPrimaryAuthorities(uID,
+                                new AsyncCallback<CM_userInfoGetter[]>() {
+                                    public void onFailure(Throwable arg0) {
+                                    }
+
+                                    public void onSuccess(
+                                        CM_userInfoGetter[] result) {
+                                        for (int i = 0; i < result.length;
+                                                i++) {
+                                            if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Components")) &&
+                                                    (result[i].getAuthority().charAt(0) == '0')) {
+                                                createprg.setEnabled(false);
+                                            }
+
+                                            if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Components")) && 
+                                            		((result[i].getAuthority().charAt(1) == '0') &&
+                                            				(result[i].getAuthority().charAt(2) == '0') &&
+                                            					(result[i].getAuthority().charAt(3) == '0'))) {
                                                 manageprg.setEnabled(false);
                                             }
                                         }
@@ -715,6 +863,14 @@ public class CourseManagement {
                                     }
                                 });
                         }
+                        
+                        if ((result[i].getMenu_item_name()
+                                .equalsIgnoreCase("Program Application Details")) &&
+                      (result[i].getAuthority().equalsIgnoreCase("1"))) {
+                  admission.setDisabled(false);
+                  applicationmenu.setDisabled(false);
+                  progregmenu.setEnabled(true);
+              }
 
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Compute Application Marks")) &&
@@ -770,6 +926,45 @@ public class CourseManagement {
                                     }
                                 });
                         }
+                        
+                        if ((result[i].getMenu_item_name()
+                                .equalsIgnoreCase("Define Excel Components")) &&
+                      (result[i].getAuthority().equalsIgnoreCase("1"))) {
+                  admission.setDisabled(false);
+                  reportsmenu.setDisabled(false);
+                  excelcomponents.setEnabled(true);
+                  createexcelmenu.setEnabled(true);
+                  manageexcelmenu.setEnabled(true);
+                  connectService.getPrimaryAuthorities(uID,
+                      new AsyncCallback<CM_userInfoGetter[]>() {
+                          public void onFailure(Throwable arg0) {
+                          }
+
+                          public void onSuccess(
+                              CM_userInfoGetter[] result) {
+                              for (int i = 0; i < result.length;
+                                      i++) {
+                                  if ((result[i].getMenu_item_name()
+                                                    .equalsIgnoreCase("Define Excel Components")) &&
+                                          (result[i].getAuthority()
+                                                        .charAt(0) == '0')) {
+                                	  createexcelmenu.setEnabled(false);
+                                  }
+
+                                  if ((result[i].getMenu_item_name()
+                                                    .equalsIgnoreCase("Define Excel Components")) &&
+                                          ((result[i].getAuthority()
+                                                         .charAt(1) == '0') &&
+                                          (result[i].getAuthority()
+                                                        .charAt(2) == '0') &&
+                                          (result[i].getAuthority()
+                                                        .charAt(3) == '0'))) {
+                                	  manageexcelmenu.setEnabled(false);
+                                  }
+                              }
+                          }
+                      });
+              }
 
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Generate Test Numbers")) &&
@@ -778,7 +973,8 @@ public class CourseManagement {
                             applicationmenu.setDisabled(false);
                             testnumber.setEnabled(true);
                         }
-
+                        
+                        
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Call List without Test Number")) &&
                                 (result[i].getAuthority().equalsIgnoreCase("1"))) {
@@ -795,7 +991,33 @@ public class CourseManagement {
                             testmarks.setEnabled(true);
                             uploadfile.setEnabled(true);
                         }
-
+						 //Add by Devendra
+                        if ((result[i].getMenu_item_name()
+                                .equalsIgnoreCase("Upload File for adding Component's Marks")) &&
+		                      (result[i].getAuthority().equalsIgnoreCase("1"))) {
+		                  admission.setDisabled(false);
+		                  applicationmenu.setDisabled(false);
+		                  testmarks.setEnabled(true);
+		                  uploadFileForAddMarksInFinalMarks.setEnabled(true);
+		              }
+					   //Add by Devendra May 8th
+                       if ((result[i].getMenu_item_name()
+                                .equalsIgnoreCase("Final Merit List Process")) &&
+		                      (result[i].getAuthority().equalsIgnoreCase("1"))) {
+		                  admission.setDisabled(false);
+		                  applicationmenu.setDisabled(false);
+		                  testmarks.setEnabled(true);
+		                  finalMeritListProcess.setEnabled(true);
+		              }
+					   //Add by Devendra May 10th
+                       if ((result[i].getMenu_item_name()
+                                .equalsIgnoreCase("Import Students Marks")) &&
+		                      (result[i].getAuthority().equalsIgnoreCase("1"))) {
+		                  admission.setDisabled(false);
+		                  applicationmenu.setDisabled(false);
+		                  testmarks.setEnabled(true);
+		                  importStudentMarks.setEnabled(true);
+		              }
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Call List with Test Number")) &&
                                 (result[i].getAuthority().equalsIgnoreCase("1"))) {
@@ -815,7 +1037,7 @@ public class CourseManagement {
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Entity Master")) &&
                                 (result[i].getAuthority().equalsIgnoreCase("1"))) {
-                            coursemenu.setDisabled(false);
+//                            coursemenu.setDisabled(false);
                             universitymenu.setDisabled(false);
                             entitymaster.setEnabled(true);
                             createentity.setEnabled(true);
@@ -854,7 +1076,7 @@ public class CourseManagement {
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Program Master")) &&
                                 (result[i].getAuthority().equalsIgnoreCase("1"))) {
-                            coursemenu.setDisabled(false);
+//                            coursemenu.setDisabled(false);
                             uniprgmenu.setDisabled(false);
                             prgmaster.setEnabled(true);
                             createprgmaster.setEnabled(true);
@@ -893,7 +1115,7 @@ public class CourseManagement {
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Entity Programs")) &&
                                 (result[i].getAuthority().equalsIgnoreCase("1"))) {
-                            coursemenu.setDisabled(false);
+//                            coursemenu.setDisabled(false);
                             uniprgmenu.setDisabled(false);
                             entityprg.setEnabled(true);
                             createentityprg.setEnabled(true);
@@ -932,7 +1154,7 @@ public class CourseManagement {
                         if ((result[i].getMenu_item_name()
                                           .equalsIgnoreCase("Program Term Details")) &&
                                 (result[i].getAuthority().equalsIgnoreCase("1"))) {
-                            coursemenu.setDisabled(false);
+//                            coursemenu.setDisabled(false);
                             uniprgmenu.setDisabled(false);
                             prgterm.setEnabled(true);
                             createprgterm.setEnabled(true);
@@ -969,19 +1191,689 @@ public class CourseManagement {
                         }
                     }
                 }
-            });
+            });*/
+        
+        /**
+         * This new method written by Nupur Dixit
+         * to avoid code clatch from other classes
+         * older method is kept untouched and new method is 
+         * appended with the new word
+         * @author NUPUR
+         * @parameter variable of CM_userInfoGetter having userid,application and instituteId to do 
+         * validation in the user_info table
+         */
+        System.out.println("user info "+userInfo);
+        System.out.println(userInfo.getUser_id()+userInfo.getUser_name()+
+        		userInfo.getInstituteID()+userInfo.getApplication());
+        connectService.getPageAuthorityNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>(){
+        	public void onFailure(Throwable arg0) {
+        	}
+
+        	public void onSuccess(CM_userInfoGetter[] result) {
+        		System.out.println("hi "+result.length);
+        		for (int i = 0; i < result.length; i++) {                    	
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Components")) && (result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgcomp.setEnabled(true);
+        				createprg.setEnabled(true);
+        				manageprg.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Components")) &&(result[i].getAuthority().charAt(0) == '0')) {
+        								createprg.setEnabled(false);
+        							}
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Components")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageprg.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Application Form")) && (result[i].getAuthority().equalsIgnoreCase("1"))) 
+        			{
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+                            connectService.getPrimaryAuthorities(uID,
+                                new AsyncCallback<CM_userInfoGetter[]>() {
+                                    public void onFailure(Throwable arg0) {
+                                    }
+
+                                    public void onSuccess(
+                                        CM_userInfoGetter[] result) {
+                                        for (int i = 0; i < result.length;
+                                                i++) {
+                                            if ((result[i].getMenu_item_name().equalsIgnoreCase("Application Form")) &&
+                                                    (result[i].getAuthority().charAt(0) == '1')) {
+                                                /*createprg.setEnabled(false);*/
+        										formcomp.setEnabled(true);
+						        				createform.setEnabled(true);
+											}
+
+                                            if ((result[i].getMenu_item_name().equalsIgnoreCase("Application Form")) && 
+                                            		((result[i].getAuthority().charAt(1) == '1') &&
+                                            				(result[i].getAuthority().charAt(2) == '1') &&
+                                            					(result[i].getAuthority().charAt(3) == '1'))) {
+                                            	formcomp.setEnabled(true);
+						        				manageform.setEnabled(true);
+        									}
+										 }
+                                    }
+                                });
+                        }
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Pre Requiste Examinations(First Degree)")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgdegree.setEnabled(true);
+        				createprgdegree.setEnabled(true);
+        				manageprgdegree.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Pre Requiste Examinations(First Degree)")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createprgdegree.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Pre Requiste Examinations(First Degree)")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageprgdegree.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Paper Codes")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgcodes.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program COS")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgcos.setEnabled(true);
+        				createprgcos.setEnabled(true);
+        				manageprgcos.setEnabled(true);
+
+        				connectService.getPrimaryAuthoritiesNew(userInfo,
+        						new AsyncCallback<CM_userInfoGetter[]>() {
+        							public void onFailure(Throwable arg0) {
+        							}
+
+        							public void onSuccess(CM_userInfoGetter[] result) {
+        								for (int i = 0; i < result.length;i++) {
+        									if ((result[i].getMenu_item_name().equalsIgnoreCase("Program COS")) &&
+        											(result[i].getAuthority().charAt(0) == '0')) {
+        										createprgcos.setEnabled(false);
+        									}
+
+        									if ((result[i].getMenu_item_name().equalsIgnoreCase("Program COS")) &&
+        											((result[i].getAuthority().charAt(1) == '0') &&
+        													(result[i].getAuthority().charAt(2) == '0') &&
+        													(result[i].getAuthority().charAt(3) == '0'))) {
+        										manageprgcos.setEnabled(false);
+        									}
+        								}
+        							}
+        						});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Age Eligibility")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgage.setEnabled(true);
+        				createprgage.setEnabled(true);
+        				manageprgage.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Age Eligibility")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createprgage.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Age Eligibility")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageprgage.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Component Eligibility")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgcomponentelig.setEnabled(true);
+        				createprgelig.setEnabled(true);
+        				manageprgelig.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Component Eligibility")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createprgelig.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Component Eligibility")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageprgelig.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Board")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgboard.setEnabled(true);
+        				createprgbrd.setEnabled(true);
+        				manageprgbrd.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Board")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createprgbrd.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Board")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageprgbrd.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Final Merit Components")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				systemmenu.setDisabled(false);
+        				meritmenu.setEnabled(true);
+        				createmerit.setEnabled(true);
+        				managemerit.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Final Merit Components")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createmerit.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Final Merit Components")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								managemerit.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Special Weightage")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				systemmenu.setDisabled(false);
+        				splwt.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Reset Admission Cycle")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				systemmenu.setDisabled(false);
+        				resetcycle.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Apply for Admission")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				appmenu.setEnabled(true);
+        				createapp.setEnabled(true);
+        				manageapp.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Apply for Admission")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createapp.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Apply for Admission")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageapp.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Application Details")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				progregmenu.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Compute Application Marks")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				computemenu.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Cut off")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				cutoffmenu.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Enter Admission Test Marks")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				testmarks.setEnabled(true);
+        				createmarks.setEnabled(true);
+        				managemarks.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Enter Admission Test Marks")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createmarks.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Enter Admission Test Marks")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								managemarks.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Define Excel Components")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				reportsmenu.setDisabled(false);
+        				excelcomponents.setEnabled(true);
+        				createexcelmenu.setEnabled(true);
+        				manageexcelmenu.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Define Excel Components")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createexcelmenu.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Define Excel Components")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageexcelmenu.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Generate Test Numbers")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				testnumber.setEnabled(true);
+        			}
+
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Call List without Test Number")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				reportsmenu.setDisabled(false);
+        				calloutmenu.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("upload/download file for adding Test Marks")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				testmarks.setEnabled(true);
+        				uploadfile.setEnabled(true);
+        			}
+        			//Add by Devendra
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Upload File for adding Component's Marks")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				testmarks.setEnabled(true);
+        				uploadFileForAddMarksInFinalMarks.setEnabled(true);
+        			}
+        			//Add by Devendra May 8th
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Final Merit List Process")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				applicationmenu.setDisabled(false);
+        				testmarks.setEnabled(true);
+        				finalMeritListProcess.setEnabled(true);
+        			}
+					//Add by Devendra JUNE 11
+                       if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Subject")) && (result[i].getAuthority().equalsIgnoreCase("1"))) {                    	   
+                    	   admission.setDisabled(false);
+                    	   applicationmenu.setDisabled(false);
+                    	   subjectMenu.setEnabled(true);
+                    	   setupSubject.setEnabled(false);
+                    	   manageSubject.setEnabled(false);
+                    	   connectService.getPrimaryAuthorities(uID,
+		                         new AsyncCallback<CM_userInfoGetter[]>() {
+		                             public void onFailure(Throwable arg0) {
+		                             }
+		                             public void onSuccess(
+		                                 CM_userInfoGetter[] result) {
+		                                 for (int i = 0; i < result.length; i++) {
+		                                     if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Subject")) && (result[i].getAuthority().charAt(0) == '1')) {
+		                		                 setupSubject.setEnabled(true);
+		                                     }
+
+		                                      if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Subject")) &&		                                             
+		                                             (result[i].getAuthority().charAt(2) == '1') &&
+		                                             (result[i].getAuthority().charAt(3) == '1')) {
+													manageSubject.setEnabled(true);
+		                                     }
+		                                 }
+		                             }
+		                         });
+		              }  
+                       
+                       //Add by Devendra JUNE 11
+                       if ((result[i].getMenu_item_name().equalsIgnoreCase("Manage Summary Sheet")) && (result[i].getAuthority().equalsIgnoreCase("1"))) {                    	  
+                    	   admission.setDisabled(false);
+                    	   applicationmenu.setDisabled(false);
+                    	   manageSummarySheetMenu.setEnabled(true);
+                    	   editSummarySheetMenu.setEnabled(false);
+                    	   deleteSummarySheetMenu.setEnabled(false);
+                    	   connectService.getPrimaryAuthorities(uID,
+		                         new AsyncCallback<CM_userInfoGetter[]>() {
+		                             public void onFailure(Throwable arg0) {
+		                             }
+		                             public void onSuccess(
+		                                 CM_userInfoGetter[] result) {
+		                                 for (int i = 0; i < result.length; i++) {
+		                                     if ((result[i].getMenu_item_name().equalsIgnoreCase("Manage Summary Sheet")) && (result[i].getAuthority().charAt(2) == '1')) {
+		                                    	 editSummarySheetMenu.setEnabled(true);
+		                                     }
+
+		                                     if ((result[i].getMenu_item_name().equalsIgnoreCase("Manage Summary Sheet")) && ((result[i].getAuthority().charAt(3) == '1'))) {
+		                                    	 deleteSummarySheetMenu.setEnabled(true);
+		                                     }
+		                                 }
+		                             }
+		                         });
+		              }  
+					  
+					 //Add by Devendra May 10th
+                       if ((result[i].getMenu_item_name()
+                                .equalsIgnoreCase("Import Students Marks")) &&
+		                      (result[i].getAuthority().equalsIgnoreCase("1"))) {
+		                  admission.setDisabled(false);
+		                  applicationmenu.setDisabled(false);
+		                  testmarks.setEnabled(true);
+		                  importStudentMarks.setEnabled(true);
+		              }
+					
+                       if((result[i].getMenu_item_name().trim().equalsIgnoreCase("Tie Rule Setup"))&&(result[i].getAuthority().equalsIgnoreCase("1")))
+                       {
+                    	   admission.setDisabled(false);
+                    	   systemmenu.setDisabled(false);
+                    	   tieRuleMenuItem.setEnabled(true);
+                       }
+                       if((result[i].getMenu_item_name().trim().equalsIgnoreCase("Program Examination Center"))&&(result[i].getAuthority().equalsIgnoreCase("1")))
+                       {
+                    	   admission.setDisabled(false);
+                    	   programmenu.setDisabled(false);
+                    	   centerMenuItem.setEnabled(true);
+                       }
+                       if((result[i].getMenu_item_name().trim().equalsIgnoreCase("Setup Examination Center"))&&(result[i].getAuthority().equalsIgnoreCase("1")))
+                       {
+                    	   admission.setDisabled(false);
+                    	   programmenu.setDisabled(false);
+                    	   createCenter.setEnabled(true);
+                       }
+                       if((result[i].getMenu_item_name().trim().equalsIgnoreCase("Modify Examination Center"))&&(result[i].getAuthority().equalsIgnoreCase("1")))
+                       {
+                    	   admission.setDisabled(false);
+                    	   programmenu.setDisabled(false);
+                    	   manageCenter.setEnabled(true);
+                       }
+                       if((result[i].getMenu_item_name().trim().equalsIgnoreCase("Form Authority Setup"))&&(result[i].getAuthority().equalsIgnoreCase("1")))
+                       {
+                    	   admission.setDisabled(false);
+                    	   systemmenu.setDisabled(false);
+                    	   frmAuthority.setEnabled(true);
+                       }
+					   //Added by Upasana
+					   if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Document Setup")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				prgDocList.setEnabled(true);
+        				}
+						   //Added by Upasana
+					   if ((result[i].getMenu_item_name().equalsIgnoreCase("SummarySheet Internal")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				programmenu.setDisabled(false);
+        				internalSummarySheetList.setEnabled(true);
+        				}
+						//Added by Upasana
+					   if ((result[i].getMenu_item_name().equalsIgnoreCase("OMR Setup")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				omrMenuButton.setDisabled(false);
+        				omrList.setEnabled(true);
+        				}
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Call List with Test Number")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				reportsmenu.setDisabled(false);
+        				callwithmenu.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Final Merit List")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				admission.setDisabled(false);
+        				reportsmenu.setDisabled(false);
+        				finalmenu.setEnabled(true);
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Entity Master")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				//                            coursemenu.setDisabled(false);
+        				universitymenu.setDisabled(false);
+        				entitymaster.setEnabled(true);
+        				createentity.setEnabled(true);
+        				manageentity.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,
+        						new AsyncCallback<CM_userInfoGetter[]>() {
+        							public void onFailure(Throwable arg0) {
+        							}
+
+        							public void onSuccess(CM_userInfoGetter[] result) {
+        								for (int i = 0; i < result.length;i++) {
+        									if ((result[i].getMenu_item_name().equalsIgnoreCase("Entity Master")) &&
+        											(result[i].getAuthority().charAt(0) == '0')) {
+        										createentity.setEnabled(false);
+        									}
+
+        									if ((result[i].getMenu_item_name().equalsIgnoreCase("Entity Master")) &&
+        											((result[i].getAuthority().charAt(1) == '0') &&
+        													(result[i].getAuthority().charAt(2) == '0') &&
+        													(result[i].getAuthority().charAt(3) == '0'))) {
+        										manageentity.setEnabled(false);
+        									}
+        								}
+        							}
+        						});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Master")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				//                            coursemenu.setDisabled(false);
+        				uniprgmenu.setDisabled(false);
+        				prgmaster.setEnabled(true);
+        				createprgmaster.setEnabled(true);
+        				manageprgmaster.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Master")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createprgmaster.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Master")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageprgmaster.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Entity Programs")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				//                            coursemenu.setDisabled(false);
+        				uniprgmenu.setDisabled(false);
+        				entityprg.setEnabled(true);
+        				createentityprg.setEnabled(true);
+        				manageentityprg.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Entity Programs")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createentityprg.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Entity Programs")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageentityprg.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+
+        			if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Term Details")) &&
+        					(result[i].getAuthority().equalsIgnoreCase("1"))) {
+        				//                            coursemenu.setDisabled(false);
+        				uniprgmenu.setDisabled(false);
+        				prgterm.setEnabled(true);
+        				createprgterm.setEnabled(true);
+        				manageprgterm.setEnabled(true);
+        				connectService.getPrimaryAuthoritiesNew(userInfo,new AsyncCallback<CM_userInfoGetter[]>() {
+        					public void onFailure(Throwable arg0) {
+        					}
+
+        					public void onSuccess(CM_userInfoGetter[] result) {
+        						for (int i = 0; i < result.length;i++) {
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Term Details")) &&
+        									(result[i].getAuthority().charAt(0) == '0')) {
+        								createprgterm.setEnabled(false);
+        							}
+
+        							if ((result[i].getMenu_item_name().equalsIgnoreCase("Program Term Details")) &&
+        									((result[i].getAuthority().charAt(1) == '0') &&
+        											(result[i].getAuthority().charAt(2) == '0') &&
+        											(result[i].getAuthority().charAt(3) == '0'))) {
+        								manageprgterm.setEnabled(false);
+        							}
+        						}
+        					}
+        				});
+        			}
+        		}
+        	}
+        });
 
         // click handlers of menu items
         admission.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
                 public void onClick(
                     com.smartgwt.client.widgets.events.ClickEvent event) {
                     canvas.remove(admission);
-                    canvas.remove(coursemenu);
+//                    canvas.remove(coursemenu);
 
                     canvas.add(programmenu);
                     canvas.add(systemmenu);
                     canvas.add(applicationmenu);
                     canvas.add(reportsmenu);
+                    canvas.add(omrMenuButton);
                 }
             });
 
@@ -992,8 +1884,7 @@ public class CourseManagement {
 
                     canvas.add(home);
                     canvas.add(admission);
-                    canvas.add(coursemenu);
-
+                    //                    canvas.add(coursemenu);
                     bodyHorizontalPanel.clear();
                     IA.finalHorizontalPanel.clear();
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
@@ -1001,16 +1892,16 @@ public class CourseManagement {
                 }
             });
 
-        coursemenu.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
-                public void onClick(
-                    com.smartgwt.client.widgets.events.ClickEvent event) {
-                    canvas.remove(admission);
-                    canvas.remove(coursemenu);
-
-                    canvas.add(universitymenu);
-                    canvas.add(uniprgmenu);
-                }
-            });
+//        coursemenu.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+//                public void onClick(
+//                    com.smartgwt.client.widgets.events.ClickEvent event) {
+//                    canvas.remove(admission);
+//                    canvas.remove(coursemenu);
+//
+//                    canvas.add(universitymenu);
+//                    canvas.add(uniprgmenu);
+//                }
+//            });
 
         createprg.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
                 public void onClick(MenuItemClickEvent event) {
@@ -1022,6 +1913,89 @@ public class CourseManagement {
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
                 }
             });
+        
+        /*--------uk--------*/
+        createform.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.appform.panel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.appform.applicationForm();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+        
+        manageform.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.manageappform.verPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.manageappform.manageapplicationform();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+        
+        prgDocList.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.progDocumnet.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.progDocumnet.programDocument();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+        
+        prgSerList.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.progSearch.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.progSearch.searchProgramSetup();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+        
+        //OMR 
+        omrList.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler(){
+
+			@Override
+			public void onClick(MenuItemClickEvent event) {
+				//Window.Location.assign("http://localhost:8080/OMR/");
+				//Window.Location.assign(cons.omrUrl());
+				Window.open(cons.omrUrl(), "_blank", "");
+				
+			}
+        	
+        });
+        
+        /*accountApplicant.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.accountSetup.verticalPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.accountSetup.onModuleLoad();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });*/
+        
+        internalSummarySheetList.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.formSearch.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.formSearch.searchFormSetup();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+        
+        
+        /*--------uk--------*/
 
         manageprg.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
                 public void onClick(MenuItemClickEvent event) {
@@ -1078,7 +2052,7 @@ public class CourseManagement {
                 }
             });
 
-        manageindicos.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+        manageprgcos.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
                 public void onClick(MenuItemClickEvent event) {
                     bodyHorizontalPanel.clear();
                     IA.finalHorizontalPanel.clear();
@@ -1095,6 +2069,7 @@ public class CourseManagement {
                     IA.finalHorizontalPanel.clear();
                     IA.RightFlexTable.setWidget(0, 0, IA.PPC.vPanel);
                     IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                    IA.PPC.uniid=userInfo.getInstituteID();
                     IA.PPC.ProgramPaperCode();
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
                 }
@@ -1137,9 +2112,10 @@ public class CourseManagement {
 
         managemerit.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
                 public void onClick(MenuItemClickEvent event) {
+                	
                     bodyHorizontalPanel.clear();
                     IA.finalHorizontalPanel.clear();
-                    IA.RightFlexTable.setWidget(0, 0, IA.mfmc.FacultyPanelRight);
+                    IA.RightFlexTable.setWidget(0, 0, IA.mfmc.vPanel);
                     IA.finalHorizontalPanel.add(IA.RightFlexTable);
                     IA.mfmc.methodmanagefinalmerit();
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
@@ -1185,11 +2161,32 @@ public class CourseManagement {
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
                 }
             });
+        
+        /*
+         * added today
+         */
+        progregmenu.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler(){
+
+			public void onClick(MenuItemClickEvent event) {
+				
+				bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.pad.methodAddMarks("add");
+                IA.RightFlexTable.setWidget(0, 0, IA.pad.vPanel);
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+				
+				
+			}
+        	
+        });
+        
         computemenu.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
                 public void onClick(MenuItemClickEvent event) {
                     bodyHorizontalPanel.clear();
                     IA.finalHorizontalPanel.clear();
-                   
+
                     IA.finalHorizontalPanel.add(IA.RightFlexTable);
                     IA.gr.methodGenerateReport("computemarks");
                     IA.RightFlexTable.setWidget(0, 0, IA.gr.outerPanel);
@@ -1232,13 +2229,89 @@ public class CourseManagement {
                 public void onClick(MenuItemClickEvent event) {
                     bodyHorizontalPanel.clear();
                     IA.finalHorizontalPanel.clear();
-                    IA.RightFlexTable.setWidget(0, 0, IA.upload.vPanel);
+                    IA.RightFlexTable.setWidget(0, 0, IA.excel.vPanel);
                     IA.finalHorizontalPanel.add(IA.RightFlexTable);
-                    IA.upload.getPanel();
+                    IA.excel.getPanel();
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
                 }
             });
-
+		  //Add by Devendra
+        uploadFileForAddMarksInFinalMarks.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.uploadStudentMarks.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.uploadStudentMarks.onModuleLoad();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+		//Add by Devendra May 8th
+        finalMeritListProcess.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.finalMerilListProcess.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.finalMerilListProcess.onModuleLoad();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+		 //Add by Devendra May 10th
+        importStudentMarks.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.importOmrMarks.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.importOmrMarks.onModuleLoad();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+		//Add by Devendra 18 May
+        setupSubject.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.subjectCodeSetup.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.subjectCodeSetup.onModuleLoad("add");
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+      //Add by Devendra 18 May
+        manageSubject.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.subjectCodeSetup.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.subjectCodeSetup.onModuleLoad("manage");
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+		//Add by Devendra 19 May
+        editSummarySheetMenu.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.manageSummarySheetNew.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.manageSummarySheetNew.onModuleLoad("edit");
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+      //Add by Devendra 19 May
+        deleteSummarySheetMenu.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.manageSummarySheetNew.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.manageSummarySheetNew.onModuleLoad("delete");
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
         testnumber.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
                 public void onClick(MenuItemClickEvent event) {
                     bodyHorizontalPanel.clear();
@@ -1249,6 +2322,28 @@ public class CourseManagement {
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
                 }
             });
+        
+//        createexcelmenu.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+//            public void onClick(MenuItemClickEvent event) {
+//                bodyHorizontalPanel.clear();
+//                IA.finalHorizontalPanel.clear();
+//                IA.RightFlexTable.setWidget(0, 0, IA.excels.vPanel);
+//                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+//                IA.excels.defineExcelComponents();
+//                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+//            }
+//        });
+        
+//        manageexcelmenu.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+//            public void onClick(MenuItemClickEvent event) {
+//                bodyHorizontalPanel.clear();
+//                IA.finalHorizontalPanel.clear();
+//                IA.RightFlexTable.setWidget(0, 0, IA.manageExcelComponents.vPanel);
+//                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+//                IA.manageExcelComponents.defineExcelComponents();
+//                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+//            }
+//        });
 
         calloutmenu.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
                 public void onClick(MenuItemClickEvent event) {
@@ -1510,6 +2605,50 @@ public class CourseManagement {
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
                 }
             });
+        //Arjun Code Starts
+        createCenter.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.pec.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.pec.createCenter();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+        
+        manageCenter.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+            	 bodyHorizontalPanel.clear();
+                 IA.finalHorizontalPanel.clear();
+                 IA.RightFlexTable.setWidget(0, 0, IA.mec.vPanel);
+                 IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                 IA.mec.manageCenter();
+                 bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+               
+            }
+        });
+        
+        tieRuleMenuItem.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.STR.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.STR.setTieRule();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
+        frmAuthority.addClickHandler(new com.smartgwt.client.widgets.menu.events.ClickHandler() {
+            public void onClick(MenuItemClickEvent event) {
+                bodyHorizontalPanel.clear();
+                IA.finalHorizontalPanel.clear();
+                IA.RightFlexTable.setWidget(0, 0, IA.frmAuthority.vPanel);
+                IA.finalHorizontalPanel.add(IA.RightFlexTable);
+                IA.frmAuthority.setFormAuthority();
+                bodyHorizontalPanel.add(IA.finalHorizontalPanel);
+            }
+        });
 
         final Label userLabel = new Label(getName());
         // final Label timeLabel = new Label(getLastLogin());
@@ -1526,6 +2665,7 @@ public class CourseManagement {
 
         headerVerticalPanel.setWidth("100%");
         footerVerticalPanel.setWidth("100%");
+        
 
         HypMainHorizontalPanelTop.setWidth("100%");
 
@@ -1538,7 +2678,10 @@ public class CourseManagement {
         HypMainHorizontalPanelBottom.setStyleName("logOutPanel");
 
         headerLabel.setStyleName("MainHeading");
+        headerLabel1.setStyleName("heading1");
+        headerLabel2.setStyleName("heading1");
         footerLabel.setStyleName("heading1");
+        footerLabel1.setStyleName("heading1");
 
         labelVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
         entryVerticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -1549,7 +2692,7 @@ public class CourseManagement {
         labelVerticalPanel.setSpacing(5);
         entryVerticalPanel.setSpacing(5);
         headerVerticalPanel.setSpacing(5);
-        footerVerticalPanel.setSpacing(5);
+        
 
         HorizontalPanel linkPanel = new HorizontalPanel();
 
@@ -1579,6 +2722,8 @@ public class CourseManagement {
         HypMainHorizontalPanelTop.setCellHorizontalAlignment(panel,
             HasHorizontalAlignment.ALIGN_RIGHT);
         headerVerticalPanel.add(headerLabel);
+        headerVerticalPanel.add(headerLabel1);
+        headerVerticalPanel.add(headerLabel2);
         headerVerticalPanel.add(detailsHorizontalPanel);
         headerVerticalPanel.add(HypMainHorizontalPanelTop);
         headerVerticalPanel.add(entryVerticalPanel1);
@@ -1597,10 +2742,12 @@ public class CourseManagement {
             HasVerticalAlignment.ALIGN_MIDDLE);
 
         bodyHorizontalPanel.setHeight("475px");
-        footerVerticalPanel.setHeight("130px");
+        footerVerticalPanel.setHeight("80px");
 
+        footerVerticalPanel.setSpacing(5);
         footerVerticalPanel.add(HypMainHorizontalPanelBottom);
         footerVerticalPanel.add(footerLabel);
+        footerVerticalPanel.add(footerLabel1);        
 
         mainVerticalPanel.add(headerVerticalPanel);
         mainVerticalPanel.add(canvas);
@@ -1612,12 +2759,18 @@ public class CourseManagement {
 
         logOutTopHyperLink.addClickHandler(new ClickHandler() {
                 public void onClick(ClickEvent arg0) {
-                    RootPanel.get().clear();
+//                	Window.open(urlHome, "_self", ""); 
+//                	urlHome="http://www.google.com";
+                	History.newItem("logout");
+//                	redirect(urlHome);
+//                	Window.Location.replace(urlHome);
+
+                    /*RootPanel.get().clear();
                     bodyHorizontalPanel.clear();
 
                     Login login = new Login();
                     login.onModuleLoad();
-                    RootPanel.get().add(login.mainPanel);
+                    RootPanel.get().add(login.mainPanel);*/
                 }
             });
 
@@ -1627,14 +2780,21 @@ public class CourseManagement {
 
                     canvas.add(home);
                     canvas.add(admission);
-                    canvas.add(coursemenu);
-
+                    //canvas.add(coursemenu);
                     bodyHorizontalPanel.clear();
                     IA.finalHorizontalPanel.clear();
                     bodyHorizontalPanel.add(IA.finalHorizontalPanel);
                     IA.init();
                 }
             });
+        
+        /*Window.addWindowClosingHandler(new ClosingHandler() {
+            @Override
+             public void onWindowClosing(ClosingEvent event) {
+             event.setMessage("My program");
+             }
+           }); */
+
         RootPanel.get().add(mainVerticalPanel);
 
         return mainVerticalPanel;
@@ -1643,4 +2803,19 @@ public class CourseManagement {
     String getName() {
         return user_name;
     }
+    
+    /*
+     *   var Backlen=$wnd.history.length;  
+	    $wnd.alert(Backlen); 
+     <!--$wnd.history.go(-Backlen);
+     $wnd.history.forward(1);
+     	$wnd.alert($wnd.history.length); -->    
+     */
+    
+  //redirect the browser to the given url
+    public static native void redirect(String url)/*-{
+      	$wnd.location.href = url;
+      }-*/;
+      
+       
 }

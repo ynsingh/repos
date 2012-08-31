@@ -13,22 +13,22 @@
 	</resultMap>
 
 	<select id="selectMaxUniEntityID" resultMap="selectUniId">
-		select MAX(substr(entity_id,5,8)) entity_id from ENTITY_MASTER where
+		select MAX(substr(entity_id,5,8)) entity_id from entity_master where
 		entity_id LIKE #value#
   </select>
 
 
 	<select id="selectParentEntity" resultMap="selectUniId">
-		select entity_id from ENTITY_MASTER where entity_name=#parentEntityName#
+		select entity_id from entity_master where entity_name=#parentEntityName#
   </select>
 
 	<select id="selectParentUni" resultMap="selectUniId">
-		select university_id entity_id from UNIVERSITY where university_name=#parentEntityName#
+		select university_id entity_id from university where university_name=#parentEntityName#
   </select>
 
 
 	<insert id="insertNewEntity">
-		insert into ENTITY_MASTER
+		insert into entity_master
 		(university_id,entity_id,entity_type,entity_name,entity_address,
 		entity_city,entity_state,entity_phone,fax,user_id,parent_entity_id,level,insert_time,modification_time,creator_id,
 		modifier_id) values
@@ -45,7 +45,7 @@
 
 	</resultMap>
 	<select id="selectEntityType" resultMap="selectEntityType">
-		select entity_type,level from UNIVERSITY_ENTITY_TYPE where
+		select entity_type,level from university_entity_type where
 		entity_description=#entity_type# AND university_id=#university_id#
   </select>
 
@@ -60,13 +60,13 @@
 
 <select id="entityList" resultMap="selectentityList">
 
-select entity_description entity_name from UNIVERSITY_ENTITY_TYPE where university_id=#university_id# order by level;
+select entity_description entity_name from university_entity_type where university_id=#university_id# order by level;
 
 </select>
 
 <select id="parentList" resultMap="selectentityList">
- select entity_name from ENTITY_MASTER where university_id=#university_id# and
-  level NOT IN ( select level from ENTITY_MASTER where university_id=#university_id# AND level >= #level#)
+ select entity_name from entity_master where university_id=#university_id# and
+  level NOT IN ( select level from entity_master where university_id=#university_id# AND level >= #level#)
 
 </select>
 
@@ -77,13 +77,13 @@ select entity_description entity_name from UNIVERSITY_ENTITY_TYPE where universi
 
 <select id="entityCityList" resultMap="selectentityCityList">
 
-select entity_city from ENTITY_MASTER where university_id=#university_id# AND entity_type=#entity_type#
+select entity_city from entity_master where university_id=#university_id# AND entity_type=#entity_type#
 
 </select>
 
 <!--<select id="entityNameList" resultMap="selectentityList">-->
 <!---->
-<!--select entity_name from ENTITY_MASTER where university_id=#university_id# AND entity_type=#entity_type#-->
+<!--select entity_name from entity_master where university_id=#university_id# AND entity_type=#entity_type#-->
 <!---->
 <!--</select>-->
 
@@ -102,7 +102,7 @@ select entity_city from ENTITY_MASTER where university_id=#university_id# AND en
 select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,
 e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,
 e.fax fax,b.entity_name parent_entity_id from
-ENTITY_MASTER e, ENTITY_MASTER b where e.university_id=#university_id# AND e.entity_name LIKE #entity_name# 
+entity_master e, entity_master b where e.university_id=#university_id# AND e.entity_name LIKE #entity_name# 
 AND e.parent_entity_id = b.entity_id AND e.entity_type=#entity_type#
 
 </select>
@@ -111,7 +111,7 @@ AND e.parent_entity_id = b.entity_id AND e.entity_type=#entity_type#
 select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,
 e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,
 e.fax fax,b.entity_name parent_entity_id from
-ENTITY_MASTER e, ENTITY_MASTER b where e.university_id=#university_id# AND e.entity_city=#entity_city#
+entity_master e, entity_master b where e.university_id=#university_id# AND e.entity_city=#entity_city#
 AND e.parent_entity_id = b.entity_id AND e.entity_type=#entity_type#
 
 </select>
@@ -122,7 +122,7 @@ AND e.parent_entity_id = b.entity_id AND e.entity_type=#entity_type#
 select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,
 e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,
 e.fax fax,university_name parent_entity_id from
-ENTITY_MASTER e, UNIVERSITY b where e.university_id=#university_id# AND e.entity_name LIKE #entity_name# 
+entity_master e, university b where e.university_id=#university_id# AND e.entity_name LIKE #entity_name# 
 AND e.parent_entity_id = b.university_id AND e.entity_type=#entity_type#
 
 </select>
@@ -131,7 +131,7 @@ AND e.parent_entity_id = b.university_id AND e.entity_type=#entity_type#
 select e.entity_id entity_id,e.entity_name entity_name,e.entity_address entity_address,
 e.entity_city entity_city,e.entity_state entity_state,e.entity_phone entity_phone,
 e.fax fax,university_name parent_entity_id from
-ENTITY_MASTER e, UNIVERSITY b where e.university_id=#university_id# AND e.entity_city=#entity_city#
+entity_master e, university b where e.university_id=#university_id# AND e.entity_city=#entity_city#
 AND e.parent_entity_id = b.university_id AND e.entity_type=#entity_type#
 
 </select>
@@ -143,18 +143,18 @@ AND e.parent_entity_id = b.university_id AND e.entity_type=#entity_type#
 
 <select id="parentEntityName" resultMap="selectentityList">
 
-select entity_name from ENTITY_MASTER where entity_id=#entity_id#
+select entity_name from entity_master where entity_id=#entity_id#
 
 </select>
 
 <select id="universityName" resultMap="selectentityList">
 
-select university_name entity_name from UNIVERSITY where university_id=#uni_id#
+select university_name entity_name from university where university_id=#uni_id#
 
 </select>
 
 <update id="updateEntity">
-update ENTITY_MASTER set entity_name=#entity_name#, parent_entity_id=#parent_entity_id#,
+update entity_master set entity_name=#entity_name#, parent_entity_id=#parent_entity_id#,
 entity_address=#entity_address#,
 entity_city=#entity_city#, entity_state=#entity_state#, entity_phone=#entity_phone#, fax=#fax#,
 modification_time=#modification_time#,modifier_id=#modifier_id#
@@ -162,7 +162,7 @@ where entity_id=#entity_id#
 </update>
 
 <delete id="deleteEntity">
-delete from ENTITY_MASTER where entity_id=#entity_id#
+delete from entity_master where entity_id=#entity_id#
 </delete>
 
 
@@ -181,7 +181,7 @@ delete from ENTITY_MASTER where entity_id=#entity_id#
 </resultMap>
 
 <select id="entityNameList" resultMap="resultname">
-          select entity_id,entity_name from ENTITY_MASTER where entity_type=#entity_type# AND university_id=#university_id#;
+          select entity_id,entity_name from entity_master where entity_type=#entity_type# AND university_id=#university_id#;
 </select>
 
 <resultMap id="resultprogram" class="in.ac.dei.edrp.client.CM_entityInfoGetter">
@@ -189,7 +189,7 @@ delete from ENTITY_MASTER where entity_id=#entity_id#
 </resultMap>
 
 <select id="programNameList" resultMap="resultprogram">
-          select distinct p.program_name from PROGRAM_OFFERED_BY pob,ENTITY_PROGRAM_MASTER p where pob.offeredby=#offeredby# and pob.program_id=p.program_id;
+          select distinct p.program_name from program_offered_by pob,entity_program_master p where pob.offeredby=#offeredby# and pob.program_id=p.program_id;
 </select>
 
 <resultMap id="resultbranch" class="in.ac.dei.edrp.client.CM_entityInfoGetter">
@@ -197,7 +197,7 @@ delete from ENTITY_MASTER where entity_id=#entity_id#
 </resultMap>
 
 <select id="branchNameList" resultMap="resultbranch">
-          select distinct b.branch_name from PROGRAM_BRANCHES b,PROGRAM_OFFERED_BY pob
+          select distinct b.branch_name from program_branches b,program_offered_by pob
 where b.branch_code=pob.branch and pob.program_id=#program_id# and offeredby=#offeredby#;
 </select>
  

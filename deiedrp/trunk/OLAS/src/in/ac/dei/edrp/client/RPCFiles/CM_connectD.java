@@ -22,6 +22,7 @@ import in.ac.dei.edrp.client.CM_UniversityInfoGetter;
 
 import java.util.Date;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -124,5 +125,7 @@ public interface CM_connectD extends RemoteService {
 	void methodDeleteFromProgramPaperCode(
 			CM_BranchSpecializationInfoGetter deleteProgramPaperCode)
 			throws Exception;
+	
+	CM_UniversityInfoGetter[] methodGetUniversityDetail(String universityId);
 	
 }

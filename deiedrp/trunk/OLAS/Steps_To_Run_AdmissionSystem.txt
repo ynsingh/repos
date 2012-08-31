@@ -1,0 +1,47 @@
+1- checkout Admission System from the svn with the url-
+	https://online-admission-system-mhrd.googlecode.com/svn/trunk/
+
+2-for example checkout is done in d:/AdmissionSystem
+
+3- There is a file named build.properties modify the tomcat.dir
+   property to your tomcat's path
+	e.g. - C:/Program Files/Apache Software Foundation/Tomcat 6.0/
+
+   url property need to be changed if your server is running at some other port.
+    database setting is changed in build.properties file according to your d/b setting
+
+4-There is a file named database.properties in src folder, modify the
+	database settings in this to ensure connectivity with database
+
+5-Through command prompt Set path to ant and java
+
+6- In command prompt go to the directory d:/AdmissionSystem and type 
+     ant deploy
+   to deploy (before this make it sure that your server is stopped)
+   Now type
+     ant createadminaccount
+   to create database-schema named "admission_system", if it not already created.
+
+7-Now your project will be deployed to your tomcat server
+
+8- Start the server.
+
+9-Now browse the server's url and enjoy the Admission System .
+
+10- :)
+
+
+Note : Gwt compiler takes long to compile the files due to different permutation. but if you are 
+not interested to wait long then there is a solution. But this solution works if you are sure
+about the browser.
+go to the file --> src/in/ac/dei/edrp/Admissionsystem.gwt.xml
+append this line
+<set-property name="user.agent" value="gecko1_8"/> 
+
+after the line 
+
+<extend-property name="locale" values="dummy"/>
+
+The value gecko1_8 is for mozilla firefox
+for internet explorer-6 value will be ie6
+and for other browser surf the web ;)

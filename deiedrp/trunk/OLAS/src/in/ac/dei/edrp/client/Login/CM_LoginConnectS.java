@@ -39,8 +39,12 @@ public interface CM_LoginConnectS extends RemoteService {
         throws Exception;
 
     CM_userInfoGetter[] getPageAuthority(String user_id);
+    
+    CM_userInfoGetter[] getPageAuthorityNew(CM_userInfoGetter userInfo);
 
     CM_userInfoGetter[] getPrimaryAuthorities(String user_name);
+    
+    CM_userInfoGetter[] getPrimaryAuthoritiesNew(CM_userInfoGetter userInfo);
 
     List<String> getsecondaryauthorities(String uni_id, String pagename);
 

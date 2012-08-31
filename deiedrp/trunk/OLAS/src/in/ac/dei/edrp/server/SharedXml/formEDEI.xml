@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="form">
+
+	<typeAlias alias="formEDEI" type="in.ac.dei.edrp.client.applicantAccountEDEI.ApplicantAccountEDEIBean" />
+	
+	<select id="getLogInConfirmationEDEI" resultClass="formEDEI">
+		SELECT COUNT(*) count
+		FROM applicant_account_info
+		WHERE email_id=#email#
+		AND password=SHA1(#password#)
+	</select>
+	
+	<select id="getUserNameForAccountEDEI" resultClass="formEDEI">
+		SELECT first_name firstName, last_name lastName
+		FROM applicant_account_info
+		WHERE email_id=#email#
+	</select>	
+	
+	<select id="getUniversityDetailDEINewEDEI" resultClass="formEDEI">
+		SELECT university_code universityId,start_date sessionStartDate,end_date sessionEndDate
+		FROM university_master
+		WHERE nick_name=#DEI#
+		AND current_status=1
+	</select>
+	
+	
+</sqlMap>

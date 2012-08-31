@@ -1,25 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap 
 PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
-"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="CourseInfo">
 
+	<!--Commented by Devendra
 	<resultMap id="getuniversitydateResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="university_start_date" column="start_date" />
 		<result property="university_end_date" column="end_date" />
 	</resultMap>
-	<select id="getuniversitydate" resultMap="getuniversitydateResult">
-		select start_date,end_date from UNIVERSITY where
-		university_id=#university_id#
-</select>
+	-->
+	<!-- Query Updated by Devendra May 11 -->
+	<select id="getuniversitydate" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT DATE(SUBSTRING(value,1,8)) AS university_start_date, DATE(SUBSTRING(value,9,16)) AS university_end_date FROM system_values 
+	  	WHERE university_id=#university_id# AND code='ADMSSN';
+	</select>
 
 	<resultMap id="getentityDescriptionResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
-		<result property="entity_description" column="entity_description" />
+		<result property="entity_description" column="component_description" />
 	</resultMap>
+	<!-- Query Updated -->
 	<select id="getentityDescription" resultMap="getentityDescriptionResult">
-		select distinct entity_description from UNIVERSITY_ENTITY_TYPE where
-		entity_type=#entity_type#;
+		select
+		component_description from system_table_two where
+		component_code=#entity_type#
+		AND group_code='ENTTYP' AND
+		university_code=#university_id#;
 </select>
 
 	<resultMap id="result" class="in.ac.dei.edrp.client.ReportInfoGetter">
@@ -27,17 +34,23 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<!-- Added new -->
 		<result property="entity_type" column="entity_type" />
 	</resultMap>
+
+	<!-- Query Not in use -->
 	<select id="entityListReport" resultMap="result">
-		select distinct entity_type,entity_description from UNIVERSITY_ENTITY_TYPE
-		where university_id=#university_id#
+		select distinct
+		entity_type,entity_description from university_entity_type
+		where
+		university_id=#university_id#
 </select>
 
 	<resultMap id="getentityTypeResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="entity_type" column="entity_type" />
 	</resultMap>
+
+	<!-- Query Not in use -->
 	<select id="getentityTypeReport" resultMap="getentityTypeResult">
 		select entity_type
-		from UNIVERSITY_ENTITY_TYPE where
+		from university_entity_type where
 		entity_description=#entity_description#
 	</select>
 
@@ -45,9 +58,10 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="entity_name" column="entity_name" />
 		<result property="entity_id" column="entity_id" />
 	</resultMap>
+	<!-- Query Updated -->
 	<select id="entityNameListReport" resultMap="resultname">
 		select
-		entity_id,entity_name from ENTITY_MASTER where
+		entity_id,entity_name from entity_master where
 		entity_type=#entity_type# AND university_id=#university_id#;
 	</select>
 
@@ -56,9 +70,14 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="program_id" column="p.program_id" />
 	</resultMap>
 
+	<!-- Query Updated -->
 	<select id="programNameListReport" resultMap="resultprogram">
-		 select distinct p.program_name,p.program_id from PROGRAM_OFFERED_BY pob,ENTITY_PROGRAM_MASTER p 
-          where pob.offered_by=#offered_by# and pob.program_id=p.program_id;
+		select distinct
+		p.program_name,p.program_id from program_offered_by
+		pob,program_master
+		p
+		where pob.offered_by=#offered_by# and
+		pob.program_id=p.program_id;
 </select>
 
 	<resultMap id="resultbranch" class="in.ac.dei.edrp.client.ReportInfoGetter">
@@ -66,41 +85,97 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		<result property="branch_code" column="b.branch_code" />
 	</resultMap>
 
+	<!-- Query Not in use -->
 	<select id="branchNameListReport" resultMap="resultbranch">
-		 select distinct b.branch_name,b.branch_code from PROGRAM_BRANCHES b,PROGRAM_OFFERED_BY pob
-where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#offered_by#;
+		select distinct
+		b.branch_name,b.branch_code from program_branches
+		b,program_offered_by
+		pob
+		where b.branch_code=pob.branch and pob.program_id=#program_id# and
+		offered_by=#offered_by#;
 </select>
 
-	<!-- Query for computed marks starts here -->
+	<!--
+		######################################## Query for computed marks
+		starts here ############################################
+	-->
+
+
 	<!-- First query to get registration number ,component etc -->
 	<resultMap id="getBranchCountResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
-		<result property="count" column="count(distinct branch)" />
+		<result property="count" column="count(distinct branch_id)" />
 	</resultMap>
 
+	<!-- Query Updated -->
 	<select id="getBranchCount" resultMap="getBranchCountResult">
-		select count(distinct branch) from PROGRAM_OFFERED_BY where
+		select count(distinct
+		branch_id) from program_offered_by where
 		program_id=#program_id# and
 		offered_by=#offered_by#
 </select>
 
 	<resultMap id="getBranchListResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
-		<result property="branch_code" column="branch" />
+		<result property="branch_code" column="branch_id" />
 	</resultMap>
 
+	<!-- Query Updated -->
 	<select id="getBranchList" resultMap="getBranchListResult">
-		select distinct branch from
-		PROGRAM_OFFERED_BY where
+		select distinct branch_id
+		from
+		program_offered_by where
 		program_id=#program_id# and
 		offered_by=#offered_by#
+</select>
+
+	<!-- Query added -->
+	<select id="getSubjectListCount" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT count(distinct cos_code) as count FROM program_cos_code
+		 where university_id=#university_id# and program_id=#program_id#;
+	</select>
+
+	<!-- Query added -->
+	<select id="getSubjectList" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT distinct cos_code as subject_code FROM program_cos_code
+		 where university_id=#university_id# and program_id=#program_id#;
+	</select>
+
+
+	<resultMap id="getSpecCountResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="countSpecialization" column="count(distinct specialization_id)" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getSpecializationCount" resultMap="getSpecCountResult">
+		select
+		count(distinct specialization_id) from program_offered_by where
+		program_id=#program_id# and
+		offered_by=#offered_by# AND
+		branch_id=#branch_code#;
+</select>
+
+	<resultMap id="getSpecCodeResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="specializationCode" column="specialization_id" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getSpecializationList" resultMap="getSpecCodeResult">
+		select distinct
+		specialization_id
+		from program_offered_by where
+		program_id=#program_id#
+		and
+		offered_by=#offered_by# AND branch_id=#branch_code#;
 </select>
 
 	<resultMap id="getBranchCodeResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="branch_code" column="branch_code" />
 	</resultMap>
 
+
+	<!-- Query Not in use -->
 	<select id="getBranchCode" resultMap="getBranchCodeResult">
 		select distinct branch_code
-		from PROGRAM_BRANCHES where
+		from program_branches where
 		branch_name=#branch_name#;
 </select>
 
@@ -111,38 +186,46 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="board_id" column="s.board_id" />
 	</resultMap>
 
-	<select id="updateMarksList" resultMap="updatemarks">
+	<!-- Query Updated -->
+	<select id="updateMarksList" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		select distinct
 		s.registration_number as registration_number,s.component_id
 		as
 		component_id,s.marks_percentage as marks_percentage,
 		s.board_id as
 		board_id
-		from STUDENT_CALL_LIST s,PROGRAM_COMPONENTS p where
-		s.program_id=#program_id# and s.entity_id=#entity_id#
+		from student_call_list s,program_components p,student_registration sr where
+		s.program_id=#program_id# and s.entity_id=#entity_id# and
+		sr.registration_number=s.registration_number and
+		sr.cos_value like #subject_code#
 		and
-		s.branch_code=#branch_code# and p.type!=#type# and
+		p.type!=#type# and
+		s.program_id=sr.program_id and
 		s.component_id=p.component_id and
 		s.program_id=p.program_id and
-		s.branch_code=p.branch_code and s.entity_id=p.offered_by
+		s.entity_id=p.offered_by
 		and
-		start_date>=#start_date# and end_date>=start_date and
-		#end_date#>=end_date
-		order by registration_number;
+		s.start_date>=#start_date# and
+		s.end_date>=s.start_date and
+		#end_date#>=s.end_date
+		order by
+		s.registration_number,s.component_id;
 </select>
 
 
+	<!-- Query Updated -->
 	<!-- update Studentcalllist -->
 	<update id="updateCallList" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		update
-		STUDENT_CALL_LIST set computed_Marks=#computed_Marks#
+		student_call_list set computed_Marks=#computed_Marks#
 		,actual_computed_marks=#actual_computed_Marks#
 		where
-		program_id=#program_id# and branch_code=#branch_code# and
-		entity_id=#entity_id# and component_id=#component_id# and
+		program_id=#program_id# and
+		entity_id=#entity_id# AND
+		component_id=#component_id# and
 		registration_number=#registration_number# and
 		start_date>=#start_date#
-		and end_date>=start_date and #end_date#>=end_date; 
+		and end_date>=start_date and #end_date#>=end_date ; 
 </update>
 
 	<!-- get actualcomputed and computed marks -->
@@ -151,9 +234,10 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="component_Weightage" column="component_weightage" />
 	</resultMap>
 
+	<!-- Query Unchanged -->
 	<select id="getPercentageMarks" resultMap="getPercentage">
 		select
-		component_weightage from PROGRAM_COMPONENTS
+		component_weightage from program_components
 		where
 		program_id=#program_id# and component_id=#component_id# and
 		type!=#type#
@@ -164,9 +248,10 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="weightage_percentage" column="weightage_percentage" />
 	</resultMap>
 
+	<!-- Query Unchanged -->
 	<select id="getStaffPercentageMarks" resultMap="getStaffPercentage">
 		select
-		weightage_percentage from SPECIAL_WEIGHTAGE where
+		weightage_percentage from special_weightage where
 		weightage_id=#weightage_id#
 </select>
 
@@ -175,10 +260,11 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="weightage_percentage" column="s.weightage_percentage" />
 	</resultMap>
 
+	<!-- Query Unchanged -->
 	<select id="getExtraPercentageMarks" resultMap="getExtraPercentage">
 		select
-		s.weightage_percentage from SPECIAL_WEIGHTAGE
-		s,STUDENT_SPECIAL_WEIGHTAGE sw where
+		s.weightage_percentage from special_weightage
+		s,student_special_weightage sw where
 		s.weightage_id=sw.weightage_id and
 		sw.registration_number=#registration_number# and
 		sw.weightage_id=#weight_id#
@@ -192,9 +278,11 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="weightage_id" column="weightage_id" />
 	</resultMap>
 
+
+	<!-- Query Unchanged -->
 	<select id="getCheckStaffWard" resultMap="checkStaffWard">
 		select weightage_id
-		from STUDENT_SPECIAL_WEIGHTAGE where
+		from student_special_weightage where
 		registration_number=#registration_number#
 		and start_date>=#start_date#
 		and end_date>=start_date and
@@ -205,9 +293,11 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="weightage_id" column="weightage_id" />
 	</resultMap>
 
+
+	<!-- Query Unchanged -->
 	<select id="getCheckStaff" resultMap="checkStaff">
 		select weightage_id from
-		STUDENT_SPECIAL_WEIGHTAGE where
+		student_special_weightage where
 		registration_number=#registration_number#
 		and start_date>=#start_date#
 		and end_date>=start_date and
@@ -219,23 +309,23 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="special_weightage_flag" column="special_weightage_flag" />
 	</resultMap>
 
+	<!-- Query Updated -->
 	<select id="getCheckCompute" resultMap="checkComputeFlag">
-		Select
-		weightage_flag,special_weightage_flag FROM PROGRAM_COMPONENTS where
+		Select distinct
+		weightage_flag,special_weightage_flag FROM program_components where
 		program_id=#program_id# and offered_by=#offered_by#
-		and
-		branch_code=#branch_code# and component_id=#component_id#;
+		and component_id=#component_id#;
 </select>
 
 	<resultMap id="checkBoardFlag" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="board_flag" column="board_flag" />
 	</resultMap>
 
+	<!-- Query Updated -->
 	<select id="getcheckBoard" resultMap="checkBoardFlag">
-		SELECT board_flag FROM
-		PROGRAM_COMPONENTS where program_id=#program_id# and
-		offered_by=#offered_by#
-		and branch_code=#branch_code# and
+		SELECT distinct board_flag FROM
+		program_components where program_id=#program_id# and
+		offered_by=#offered_by# and 
 		component_id=#component_id#;
 </select>
 
@@ -243,11 +333,12 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="normalization_factor" column="normalization_factor" />
 	</resultMap>
 
+	<!-- Query Updated -->
 	<select id="getBoardPercentage" resultMap="getBoard">
 		select
-		normalization_factor from PROGRAM_BOARD where program_id=#program_id#
+		normalization_factor from program_board where program_id=#program_id#
 		and entity_id=#entity_id#
-		and branch_code=#branch_code# and
+		and
 		component_id=#component_id# and
 		board=#board_id#;
 </select>
@@ -256,21 +347,25 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<resultMap id="getEligibleResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_eligiblity" column="cut_off_percentage" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getEligible" resultMap="getEligibleResult">
-		select cut_off_percentage 
-		from PROGRAM_COMPONENT_ELIGIBILITY where
+		select distinct cut_off_percentage
+		from program_component_eligibility where
 		entity_Id=#entity_id# and
-		program_id=#program_id# and branch_code=#branch_code# and
+		program_id=#program_id#  and
 		category=#category# and
-		component_id=#component_id#;
+		component_id=#component_id# ;
 </select>
 
 	<resultMap id="getCategoryResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="cos_value" column="cos_value" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getCategoryList" resultMap="getCategoryResult">
 		select cos_value from
-		STUDENT_REGISTRATION where
+		student_registration where
 		registration_number=#registration_number#
 		and start_date>=#start_date# and end_date>=start_date and
 		#end_date#>=end_date;
@@ -279,32 +374,37 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<resultMap id="getEligibleFlagResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_criteria_flag" column="component_criteria_flag" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getEligibleFlag" resultMap="getEligibleFlagResult">
 		select
-		component_criteria_flag from PROGRAM_COMPONENTS where
+		component_criteria_flag from program_components where
 		program_id=#program_id# and offered_by=#offered_by#
-		and
-		branch_code=#branch_code# and component_id=#component_id#;
+		and component_id=#component_id#;
 </select>
 
 	<!-- for age -->
 	<resultMap id="getEligibleAgeResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="age_eligibility" column="age_limit" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getEligibleAge" resultMap="getEligibleAgeResult">
-		select age_limit
-		from PROGRAM_AGE_ELIGIBILITY where
+		select distinct age_limit
+		from
+		program_age_eligibility where
 		program_id=#program_id# and
-		entity_id=#entity_id# and branch_code=#branch_code# and
+		entity_id=#entity_id# AND
 		category=#category#;
 </select>
 
 
+	<!-- Query Unchanged -->
 	<select id="getEligibleDate" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		select
-		datediff(#compare_date#,date_of_birth) as diff from ENTITY_STUDENT
+		datediff(#compare_date#,date_of_birth) as diff from entity_student
 		where
-		student_id=(select student_id from STUDENT_REGISTRATION where
+		student_id=(select student_id from student_registration where
 		registration_number=#registration_number#
 		and start_date>=#start_date#
 		and end_date>=start_date and
@@ -317,36 +417,44 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="sum_computed_marks" column="sum(computed_marks)" />
 		<result property="sum_actual_computed_marks" column="sum(actual_computed_marks)" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getComputeMarks" resultMap="getComputeMarksResult">
 		select
 		sum(computed_Marks) ,sum(actual_computed_marks) from
-		STUDENT_CALL_LIST
+		student_call_list
 		where program_id=#program_id#
-		and entity_id=#entity_id# and
-		branch_code=#branch_code# and
+		and entity_id=#entity_id#
+		and
 		registration_number=#registration_number# and
 		start_date>=#start_date#
-		and end_date>=start_date and #end_date#>=end_date;
+		and end_date>=start_date and
+		#end_date#>=end_date;
 </select>
 
+
+	<!-- Query Updated -->
 	<update id="updateTestNumber" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		update
-		STUDENT_TEST_NUMBER set
-		sum_computed_marks=#sum_computed_marks#,sum_actual_computed_marks=#sum_actual_computed_marks#,reason_code=#reason_code#,status=#message#,cos_value=#cos_value#,called=#called#
-		where entity_id=#entity_id# and program_id=#program_id# and
-		branch_code=#branch_code# and
+		student_test_number set
+		sum_computed_marks=#sum_computed_marks#,sum_actual_computed_marks=#sum_actual_computed_marks#,
+		reason_code=#reason_code#,status=#message#,cos_value=#cos_value#,called=#called#
+		where entity_id=#entity_id# and program_id=#program_id#
+		and
 		registration_number=#registration_number#
-		and start_date>=#start_date#
+		and
+		start_date>=#start_date#
 		and end_date>=start_date and
 		#end_date#>=end_date;
 </update>
 
+	<!-- Query Updated -->
 	<insert id="insertTestNumber" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		insert into
-		STUDENT_TEST_NUMBER
-		(entity_id,program_id,branch_code,registration_number,cos_value,sum_computed_marks,sum_actual_computed_marks,reason_code,status,called,start_date,end_date)
+		student_test_number
+		(entity_id,program_id,registration_number,cos_value,sum_computed_marks,sum_actual_computed_marks,reason_code,status,called,start_date,end_date)
 		values
-		(#entity_id#,#program_id#,#branch_code#,#registration_number#,#cos_value#,#sum_computed_marks#,#sum_actual_computed_marks#,#reason_code#,#message#,#called#,#start_date#,#end_date#); 
+		(#entity_id#,#program_id#,#registration_number#,#cos_value#,#sum_computed_marks#,#sum_actual_computed_marks#,#reason_code#,#message#,#called#,#start_date#,#end_date#); 
            
 </insert>
 	<!-- Query for computed marks ends -->
@@ -357,32 +465,47 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<resultMap id="getResetFlagResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="flag_status" column="flag_status" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getResetFlag" resultMap="getResetFlagResult">
 		select flag_status from
-		CONTROL_REPORT where entity_id=#entity_id# and
+		control_report where entity_id=#entity_id# and
 		program_id=#program_id#
-		and branch_code=#branch_code#
-		and start_date>=#start_date# and
+		and start_date>=#start_date#
+		and
 		end_date>=start_date and
 		#end_date#>=end_date;
 </select>
 	<!-- query for reset flag ends -->
 
+
+	<!-- Query Updated -->
 	<update id="updateControlReport" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		update
-		CONTROL_REPORT set flag_status=#flag_status# where
-		entity_id=#entity_id# and program_id=#program_id# and
-		branch_code=#branch_code# and
+		control_report set flag_status=#flag_status# where
+		entity_id=#entity_id# and program_id=#program_id#
+		and
 		start_date>=#start_date# and
-		end_date>=start_date and #end_date#>=end_date;
+		end_date>=start_date and
+		#end_date#>=end_date;
+</update>
+<!-- For B.ed -->
+<update id="updateControlReportForProgram" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		update
+		control_report set flag_status=#flag_status# where
+		entity_id=#entity_id# and program_id=#program_id# and
+		start_date>=#start_date# and
+		end_date>=start_date and
+		#end_date#>=end_date;
 </update>
 
+	<!-- Query Updated -->
 	<insert id="insertControlReport" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		insert into
-		CONTROL_REPORT
-		(entity_id,program_id,branch_code,flag_status,user_id,start_date,end_date)
+		control_report
+		(entity_id,program_id,flag_status,user_id,start_date,end_date)
 		values
-		(#entity_id#,#program_id#,#branch_code#,#flag_status#,#user_id#,#start_date#,#end_date#);
+		(#entity_id#,#program_id#,#flag_status#,#user_id#,#start_date#,#end_date#);
            
 </insert>
 	<!-- update or insert value in control_report ends -->
@@ -390,18 +513,23 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<resultMap id="getReportEntityNameResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="entity_name" column="entity_name" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getReportEntityName" resultMap="getReportEntityNameResult">
-		select entity_name from ENTITY_MASTER where entity_id=#entity_id# AND
+		select entity_name
+		from entity_master where entity_id=#entity_id# AND
 		university_id=#university_id#;
 </select>
 
 	<resultMap id="getProgramNameResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="program_name" column="p.program_name" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getProgramName" resultMap="getProgramNameResult">
 		select distinct
-		p.program_name from PROGRAM_OFFERED_BY
-		pob,ENTITY_PROGRAM_MASTER p
+		p.program_name from program_offered_by
+		pob,program_master p
 		where
 		pob.offered_by=#offered_by# and pob.program_id=p.program_id and
 		p.program_id=#program_id#;
@@ -410,28 +538,37 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<resultMap id="getBranchNameResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="branch_name" column="branch_name" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getBranchName" resultMap="getBranchNameResult">
-		select branch_name from
-		PROGRAM_BRANCHES where branch_code=#branch_code# AND
-		university_id=#university_id#;
+		select
+		component_description as branch_name from
+		system_table_two where
+		component_code=#branch_code# AND
+		university_code=#university_id# AND
+		group_code='BRNCOD';
 </select>
 
 	<resultMap id="getEntityIdResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="entity_id" column="entity_id" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getEntityId" resultMap="getEntityIdResult">
 		select entity_id from
-		ENTITY_MASTER where entity_name=#entity_name# AND
+		entity_master where entity_name=#entity_name# AND
 		university_id=#university_id#;
 </select>
 
 	<resultMap id="getProgramIdResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="program_id" column="p.program_id" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getProgramId" resultMap="getProgramIdResult">
 		select distinct p.program_id
-		from PROGRAM_OFFERED_BY
-		pob,ENTITY_PROGRAM_MASTER p where
+		from program_offered_by
+		pob,program_master p where
 		pob.offered_by=#offered_by# and
 		pob.program_id=p.program_id and
 		p.program_name=#program_name#;
@@ -442,14 +579,18 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<resultMap id="getCityResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="city" column="city_name" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getCity" resultMap="getCityResult">
 		select city_name from
-		CITY_LOOK_UP where near_city=#maincity#;
+		city_look_up where near_city=#maincity#;
 </select>
 
 	<resultMap id="getMainCityResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="value" column="value" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getMainCity" resultMap="getMainCityResult">
 		select value from
 		system_values where code=#code# and
@@ -457,45 +598,65 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 </select>
 
 	<resultMap id="countCategoryResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
-		<result property="count" column="count(distinct substr(cos_value,1,2))" />
+		<result property="count" column="cos_values" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="countCategory" resultMap="countCategoryResult">
-		select count(distinct substr(cos_value,1,2)) from STUDENT_TEST_NUMBER where
-		program_id=#program_id# and entity_id=#entity_id# and
-		branch_code=#branch_code#;
-</select>
+		select count(distinct cos_value) as cos_values from student_test_number where
+		program_id=#program_id# and entity_id=#entity_id# and cos_value like #subject_code#
+		and start_date>=#start_date# and end_date>=start_date and
+		#end_date#>=end_date;
+	</select>
 
 	<resultMap id="getCategoryResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="category" column="substr(cos_value,1,2)" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getCategory" resultMap="getCategoryResult">
-		select distinct substr(cos_value,1,2) from STUDENT_TEST_NUMBER where
-		program_id=#program_id# and entity_id=#entity_id# and
-		branch_code=#branch_code#;
+		select distinct
+		substr(cos_value,1,2) from student_test_number where
+		program_id=#program_id# and entity_id=#entity_id# and cos_value like #subject_code#;
 </select>
+
+<!-- Query added -->
+	<select id="getCosValueForTestNumber" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		select distinct
+		cos_value as cos_value from student_test_number where
+		program_id=#program_id# and entity_id=#entity_id# and cos_value like #subject_code#
+		and start_date>=#start_date# and end_date>=start_date and
+		#end_date#>=end_date;
+	</select>
 
 	<resultMap id="getMaxNumberResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="max_test_number" column="max(substr(test_number,1,3))" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getMaxNumber" resultMap="getMaxNumberResult">
 		select distinct
-		max(substr(test_number,1,3)) from STUDENT_TEST_NUMBER
+		max(substr(test_number,1,3)) from student_test_number
 </select>
 
 	<resultMap id="getRegistrationTestNumberResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="registration_number" column="s.registration_number" />
 		<result property="city" column="sa.city" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getRegistrationTestNumber" resultMap="getRegistrationTestNumberResult">
 		select distinct
-		s.registration_number,s.program_id,s.branch_code,sa.city,sr.student_id,st.sum_computed_marks
-		from STUDENT_CALL_LIST s,ADDRESSES_MASTER sa,STUDENT_REGISTRATION
-		sr,ENTITY_STUDENT e,
-		STUDENT_TEST_NUMBER st where
-		s.program_id=#program_id# and s.branch_code=#branch_code#
-		and
-		s.entity_id=#entity_id# and e.category_code=#category# and
+		s.registration_number,s.program_id,sa.city,sr.student_id,st.sum_computed_marks
+		from student_call_list s,admission_addresses_master sa,student_registration
+		sr,entity_student e,
+		student_test_number st where
+		s.program_id=#program_id#
+		AND sr.cos_value like #cos_value# and
+		s.entity_id=#entity_id#
+		and e.category_code=#category# and		
 		st.called=#called# and
+		s.program_id=sr.program_id and
 		e.student_id=sa.user_id
 		and
 		e.student_id=sr.student_id and
@@ -503,60 +664,153 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		s.registration_number=st.registration_number
 		and
 		s.start_date>=#start_date# and s.end_date>=s.start_date and
-		#end_date#>=s.end_date;
+		#end_date#>=s.end_date
+		ORDER BY e.first_name,CONCAT(e.first_name,'',e.middle_name),CONCAT(e.first_name,'',e.middle_name,'',e.last_name);
 </select>
 
+	<!-- Query Updated -->
 	<update id="updateRegTestNumber" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		update
-		STUDENT_TEST_NUMBER s set s.test_number=#test_number# where
+		student_test_number s set s.test_number=#test_number# where
 		s.program_id=#program_id# and
-		s.branch_code=#branch_code# and
-		s.entity_id=#entity_id# and
+		s.cos_value like #cos_value# and
+		s.entity_id=#entity_id#
+		and
 		s.registration_number=#registration_number#
 		and
 		s.start_date>=#start_date# and s.end_date>=s.start_date and
 		#end_date#>=s.end_date;
 </update>
-	<!-- test number ends -->
+	<!--
+		########################## test number ends
+		##############################
+	-->
 
-	<!--First Excel starts here -->
+	<!--#################First Excel starts here ########################-->
+
+
 	<resultMap id="getCosCountResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
-		<result property="count" column="count(distinct cos_value)" />
+		<result property="count" column="cos_value" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getCosCount" resultMap="getCosCountResult">
-	select count(distinct cos_value) from STUDENT_TEST_NUMBER where
-	program_id=#program_id# and
-	entity_id=#entity_id# and
-	branch_code=#branch_code#
-	and
-	start_date>=#start_date# and end_date>=start_date and
-	#end_date#>=end_date;
-</select>
+		select count(distinct
+		cos_value) as cos_value from student_test_number where
+		program_id=#program_id# and
+		entity_id=#entity_id# and
+		start_date>=#start_date#
+		and end_date>=start_date and
+		#end_date#>=end_date and substring(cos_value,4,4)=#subject_code#;
+	</select>
 
 	<resultMap id="getCosValueResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="cos_value" column="cos_value" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getCosValue" resultMap="getCosValueResult">
 		select distinct cos_value
-		from STUDENT_TEST_NUMBER where
+		from student_test_number where
 		program_id=#program_id# and
 		entity_id=#entity_id# and
-		branch_code=#branch_code#
-		and
-		start_date>=#start_date# and end_date>=start_date and
+		start_date>=#start_date#
+		and end_date>=start_date and
+		#end_date#>=end_date and substring(cos_value,4,4)=#subject_code# ORDER BY substring(cos_value,3,1) DESC;
+	</select>
+
+<!-- Cos value for program ends -->
+<resultMap id="getCosCountForProgramResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="count" column="cos_value" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getCosCountForProgram" resultMap="getCosCountForProgramResult">
+	<!--
+		select count(distinct substr(cos_value,1,2)) as cos_value from student_test_number where
+		program_id=#program_id# and
+		entity_id=#entity_id# AND
+		start_date>=#start_date#
+		and end_date>=start_date and
+		#end_date#>=end_date;
+	-->
+	select count(distinct cos_value) as cos_value from student_test_number where
+		program_id=#program_id# and
+		entity_id=#entity_id# AND
+		start_date>=#start_date#
+		and end_date>=start_date and
+		#end_date#>=end_date;
+	</select>
+
+	<resultMap id="getCosValueForProgramResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="cos_value" column="cos_value" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getCosValueForProgram" resultMap="getCosValueForProgramResult">
+	<!--
+		select distinct substr(cos_value,1,2) as cos_value 
+		from student_test_number where
+		program_id=#program_id# and
+		entity_id=#entity_id# AND
+		start_date>=#start_date#
+		and end_date>=start_date and
+		#end_date#>=end_date;
+	-->
+	select distinct cos_value as cos_value 
+		from student_test_number where
+		program_id=#program_id# and
+		entity_id=#entity_id# AND
+		start_date>=#start_date#
+		and end_date>=start_date and
 		#end_date#>=end_date;
 </select>
 
+
+	<!-- Query Updated -->
+	<select id="getCosValueForAllSubject" resultMap="getCosValueForProgramResult">
+		select distinct cos_value as cos_value 
+		from student_test_number where
+		program_id=#program_id# and
+		entity_id=#entity_id# AND
+		start_date>=#start_date#
+		and end_date>=start_date and
+		#end_date#>=end_date;
+</select>
+
+<!-- Get Cos_value for Program ends -->
 	<resultMap id="getExcelRegistrationNumberResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="registration_number" column="st.registration_number" />
 		<result property="sum_computed_marks" column="st.sum_computed_marks" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getExcelRegistrationNumber" resultMap="getExcelRegistrationNumberResult">
 		select
 		distinct st.registration_number,st.sum_computed_marks from
-		STUDENT_TEST_NUMBER st where st.program_id=#program_id# AND
+		student_test_number st where st.program_id=#program_id# AND
+		st.entity_id=#entity_id# and
+		st.cos_value=#cos_value# and st.status=#status#
+		and
+		st.start_date>=#start_date# and st.end_date>=st.start_date and
+		#end_date#>=st.end_date
+		order by st.sum_computed_marks desc;
+</select>
+<!-- Adding form number:ForB.Ed faculty -->
+
+<resultMap id="getExcelFormRegistrationNumberResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="registration_number" column="st.registration_number" />
+		<result property="sum_computed_marks" column="st.sum_computed_marks" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getExcelFormRegistrationNumber" resultMap="getExcelFormRegistrationNumberResult">
+		select
+		distinct st.registration_number,st.sum_computed_marks from
+		student_test_number st where st.program_id=#program_id# AND
 		st.entity_id=#entity_id# and
 		st.branch_code=#branch_code# and
+		st.specialization_code=#specializationCode# and
 		st.cos_value=#cos_value# and st.status=#status#
 		and
 		st.start_date>=#start_date# and st.end_date>=st.start_date and
@@ -564,65 +818,136 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		order by st.sum_computed_marks desc;
 </select>
 
+<resultMap id="getRegistrationNumberForProgramResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="registration_number" column="st.registration_number" />
+		<result property="sum_computed_marks" column="st.sum_computed_marks" />
+		<result property="cos_value" column="st.cos_value" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getRegistrationNumberForProgram" resultMap="getRegistrationNumberForProgramResult">
+		select
+		distinct st.registration_number,st.sum_computed_marks,st.cos_value from
+		student_test_number st where st.program_id=#program_id# AND
+		st.entity_id=#entity_id# and
+		st.cos_value like #cos_value# and st.status=#status#
+		and
+		st.start_date>=#start_date# and st.end_date>=st.start_date and
+		#end_date#>=st.end_date
+		order by st.sum_computed_marks desc;
+	</select>
+<!-- Adding form number for B.Ed faculty closed -->
+
 	<resultMap id="getExcelComponentCountResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="count" column="count(distinct s.component_id)" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getExcelComponentCount" resultMap="getExcelComponentCountResult">
 		select
-		count(distinct s.component_id) from STUDENT_CALL_LIST
-		s,PROGRAM_COMPONENTS p
+		count(distinct s.component_id) from student_call_list
+		s,program_components p
 		where
 		s.registration_number=#registration_number# and
-		s.program_id=#program_id# and s.branch_code=#branch_code#
+		s.program_id=#program_id# 
+		AND
+		s.entity_id=#entity_id#
+		and p.type!=#flag# and
+		s.component_id=p.component_id and
+		s.program_id=p.program_id
 		and
-		entity_id=#entity_id# and p.type!=#flag# and
-		s.component_id=p.component_id and s.program_id=p.program_id
-		and
-		s.entity_id=p.offered_by and s.branch_code=p.branch_code
-		and
-		s.start_date>=#start_date# and s.end_date>=s.start_date and
+		s.entity_id=p.offered_by
+		AND
+		s.start_date>=#start_date# and
+		s.end_date>=s.start_date and
 		#end_date#>=s.end_date;
 </select>
 
-	<resultMap id="getExcelComponentMarksValueResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+
+<resultMap id="getExcelComponentMarksValueResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_id" column="s.component_id" />
 		<result property="marks_percentage" column="s.marks_percentage" />
 		<result property="computed_Marks" column="s.computed_marks" />
 		<result property="board_id" column="s.board_id" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getExcelComponentMarksValue" resultMap="getExcelComponentMarksValueResult">
 		select
 		s.component_id,s.marks_percentage,s.computed_marks,s.board_id from
-		STUDENT_CALL_LIST s,PROGRAM_COMPONENTS p
+		student_call_list s,program_components p
 		where
 		s.registration_number=#registration_number# and
-		s.program_id=#program_id# and s.branch_code=#branch_code#
+		s.program_id=#program_id# 
+		AND
+		s.entity_id=#entity_id#
+		and p.type!=#flag# and
+		s.component_id=p.component_id and
+		s.program_id=p.program_id
 		and
-		entity_id=#entity_id# and p.type!=#flag# and
-		s.component_id=p.component_id and s.program_id=p.program_id
-		and
-		s.entity_id=p.offered_by and s.branch_code=p.branch_code and
-		s.start_date>=#start_date# and s.end_date>=s.start_date and
+		s.entity_id=p.offered_by and
+		s.start_date>=#start_date# and
+		s.end_date>=s.start_date and
 		#end_date#>=s.end_date
-		order by s.component_id asc;
+		order by
+		s.component_id asc;
+</select>
+
+	<resultMap id="getFullExcelComponentMarksValueResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="component_id" column="s.component_id" />
+		<result property="marksObtained" column="s.marks_obtained" />
+		<result property="total_marks" column="s.total_marks" />
+		<result property="actual_computed_Marks" column="s.actual_computed_marks" />
+		<result property="marks_percentage" column="s.marks_percentage" />
+		<result property="computed_Marks" column="s.computed_marks" />
+		<result property="board_id" column="s.board_id" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getFullExcelComponentMarksValue" resultMap="getFullExcelComponentMarksValueResult">
+		select distinct
+		s.component_id,s.marks_percentage,s.computed_marks,
+		s.marks_obtained,s.total_marks,s.actual_computed_marks,s.board_id from
+		student_call_list s,program_components p
+		where
+		s.registration_number=#registration_number# and
+		s.program_id=#program_id# 
+		AND
+		s.entity_id=#entity_id#
+		and p.type!=#flag# and
+		s.component_id=p.component_id and
+		s.program_id=p.program_id
+		and
+		s.entity_id=p.offered_by 
+		AND
+		s.start_date>=#start_date# and
+		s.end_date>=s.start_date and
+		#end_date#>=s.end_date
+		order by
+		s.component_id asc;
 </select>
 
 	<resultMap id="getBoardDescriptionResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="description" column="board_name" />
 	</resultMap>
 	<select id="getBoardDescription" resultMap="getBoardDescriptionResult">
-		select board_name
-		from BOARD_MASTER where board_id=#board_id#;
+
+		select component_description board_name
+		from system_table_two where component_code=#board_id# and group_code='BOARDS';
 </select>
 
 
 	<resultMap id="getRegistrationStudentIdResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="student_id" column="student_id" />
+		<result property="formNumber" column="form_number" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getRegistrationStudentId" resultMap="getRegistrationStudentIdResult">
 		select
-		student_id from STUDENT_REGISTRATION where
-		registration_number=#registration_number#
+		student_id,form_number from student_registration where
+		registration_number=#registration_number# and
+		program_id=#program_id#
 		and start_date>=#start_date#
 		and end_date>=start_date and
 		#end_date#>=end_date;
@@ -637,38 +962,75 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="gender" column="s.gender" />
 		<result property="city" column="st.city" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getRegistrationDetails" resultMap="getRegistrationDetailsResult">
 		select
 		s.first_name,s.middle_name,s.last_name,s.date_of_birth,s.category_code,s.gender,st.city
-		from ENTITY_STUDENT s,ADDRESSES_MASTER st where
+		from entity_student s,admission_addresses_master st where
 		s.student_id=#student_id# and s.student_id=st.user_id;
 </select>
 
+
+<!--Added for father name and Dei Staff-->
+	<resultMap id="getPersonalDetailsResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="first_name" column="s.first_name" />
+		<result property="middle_name" column="s.middle_name" />
+		<result property="last_name" column="s.last_name" />
+		<result property="fatherFirstName" column="father_first_name" />
+		<result property="fatherMiddleName" column="father_middle_name" />
+		<result property="fatherLastName" column="father_last_name" />
+		<result property="date_of_birth" column="s.date_of_birth" />
+		<result property="category" column="s.category_code" />
+		<result property="gender" column="s.gender" />
+		<result property="city" column="st.city" />
+	</resultMap>
+
+	<!-- Query Unchanged -->
+	<select id="getPersonalDetails" resultMap="getPersonalDetailsResult">
+		select
+		s.first_name,s.middle_name,s.last_name,s.father_first_name,s.father_middle_name,
+		s.father_last_name,s.date_of_birth,s.category_code,s.gender,st.city
+		from entity_student s,admission_addresses_master st where
+		s.student_id=#student_id# and s.student_id=st.user_id;
+    </select>
+
+
+
 	<resultMap id="getCategoryDescriptionResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="description" column="category" />
+		<result property="categoryCode" column="categoryCode" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getCategoryDescription" resultMap="getCategoryDescriptionResult">
 		select
-		category from CATEGORY where code=#category#;
+		component_code as categoryCode,component_description as category from system_table_two where
+		component_code=#category# AND group_code='STDCTG';
+
 </select>
 
 	<resultMap id="getCallMeritResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="cut_off_number" column="cut_off_number" />
 	</resultMap>
+
+
+	<!-- Query Updated -->
 	<select id="getCallMerit" resultMap="getCallMeritResult">
 		select cut_off_number from
-		CALL_CUT_OFF where branch_code=#branch_code# and
+		call_cut_off where
 		program_id=#program_id#
 		and offered_by=#offered_by# and
 		cos_value=#cos_value#;
 </select>
 
+	<!-- Query Updated -->
 	<update id="updatecalledFlag" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		update
-		STUDENT_TEST_NUMBER s set s.called=#called# where
+		student_test_number s set s.called=#called# where
 		s.program_id=#program_id# and
-		s.branch_code=#branch_code# and
-		s.entity_id=#entity_id# and
+		s.entity_id=#entity_id#
+		and
 		s.registration_number=#registration_number#
 		and
 		s.start_date>=#start_date# and s.end_date>=s.start_date and
@@ -678,28 +1040,36 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<resultMap id="getugorpgResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_description" column="ug_pg" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getugorpg" resultMap="getugorpgResult">
+
 		SELECT ug_pg FROM
-		COMPONENT_DESCRIPTION where component_id=#component_id#;
+		component_description where component_id=#component_id#;
 </select>
 
 	<resultMap id="getComponentDescriptionResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_description" column="description" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getComponentDescription" resultMap="getComponentDescriptionResult">
+
 		SELECT
-		description FROM COMPONENT_DESCRIPTION where
+		description FROM component_description where
 		component_id=#component_id#;
 </select>
 
 	<resultMap id="getUGComponentDescriptionResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_description" column="p.program_name" />
 	</resultMap>
+
+	<!-- Query Unchanged -->
 	<select id="getUGComponentDescription" resultMap="getUGComponentDescriptionResult">
 		select
-		p.program_name from ENTITY_PROGRAM_MASTER p where
+		p.program_name from program_master p where
 		p.program_id=(select
-		first_degree_code from STUDENT_FIRST_DEGREE where
+		first_degree_code from student_first_degree where
 		registration_number=#registration_number# and
 		start_date>=#start_date#
 		and end_date>=start_date and #end_date#>=end_date);
@@ -710,40 +1080,55 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="registration_number" column="registration_number" />
 		<result property="test_number" column="test_number" />
 		<result property="sum_computed_marks" column="sum_computed_marks" />
+		<result property="cos_value" column="cos_value" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getStudentTestNumber" resultMap="getStudentTestNumberResult">
-		select
-		registration_number,test_number,sum_computed_marks from
-		STUDENT_TEST_NUMBER where program_id=#program_id# and
-		entity_id=#entity_id# and branch_code=#branch_code# and
-		called=#called# and cos_value=#cos_value#
-		and start_date>=#start_date#
-		and end_date>=start_date and
+		select distinct
+		registration_number,test_number,sum_computed_marks,cos_value from
+		student_test_number where program_id=#program_id# and
+		entity_id=#entity_id# and
+		called=#called# and
+		cos_value like #cos_value# and
+		start_date>=#start_date# and
+		end_date>=start_date and
 		#end_date#>=end_date order by
 		sum_computed_marks desc;
 </select>
-	<!-- Second excel ends here -->
-	<!-- Final Merit List generation -->
+	<!--
+		########################################## Second excel ends here
+		###################################################
+	-->
+
+
+	<!--
+		########################################## Final Merit List generation
+		##############################################
+	-->
 	<resultMap id="getCountComponentDescriptionResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="count" column="count(description)" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getCountComponentDescription" resultMap="getCountComponentDescriptionResult">
 		select
-		count(description) from FINAL_MERIT_COMPONENTS where
+		count(description) from final_merit_components where
 		program_id=#program_id#
-		and offered_by=#entity_id# and
-		branch_code=#branch_code#;
+		and offered_by=#entity_id#;
 </select>
 
 	<resultMap id="getComponentDescriptionValueResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_description" column="description" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getComponentDescriptionValue" resultMap="getComponentDescriptionValueResult">
 		select
-		component_id,description from FINAL_MERIT_COMPONENTS where
+		component_id,description from final_merit_components where
 		program_id=#program_id#
-		and offered_by=#entity_id# and
-		branch_code=#branch_code# order by
+		and offered_by=#entity_id#
+		order by
 		component_id asc;
 </select>
 
@@ -753,13 +1138,15 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="sum_actual_computed_marks" column="st.sum_actual_computed_marks" />
 		<result property="total_marks" column="sf.total_marks" />
 	</resultMap>
+
+	<!-- Query Not in Use -->
 	<select id="getFinalRegistrationNumber" resultMap="getFinalRegistrationNumberResult">
 		select
 		st.registration_number,st.test_number,st.sum_actual_computed_marks,sf.total_marks
-		from STUDENT_TEST_NUMBER st,
-		STUDENT_FINAL_MERIT_LIST sf where
+		from student_test_number st,
+		student_final_merit_list sf where
 		sf.program_id=#program_id# and sf.entity_id=#entity_id# and
-		sf.branch_code=#branch_code# and sf.cos_value=#cos_value# and
+		sf.cos_value=#cos_value# and
 		sf.registration_number=st.registration_number
 		and
 		sf.start_date>=#start_date# and sf.end_date>=sf.start_date and
@@ -771,45 +1158,52 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="component_id" column="evaluation_component" />
 		<result property="attendance" column="attended" />
 		<result property="marks" column="marks" />
+		<result property="component_Weightage" column="weightage_percentage" />
 	</resultMap>
+
+	<!-- Query Updated By Devendra June 2-->
 	<select id="getfinalmarks" resultMap="getfinalmarksResult">
-		select
-		evaluation_component,marks,attended from STUDENT_FINAL_MARKS where
-		registration_number=#registration_number# and entity_id=#entity_id#
-		and program_id=#program_id# and branch_code=#branch_code#
-		and
-		start_date>=#start_date# and end_date>=start_date and
-		#end_date#>=end_date
-		order by evaluation_component asc;
-</select>
+		SELECT fm.evaluation_component,fm.marks,fm.attended,fc.weightage_percentage 
+		FROM student_final_marks fm,final_merit_components fc
+   		WHERE fc.program_id=fm.program_id AND fc.offered_by=fm.entity_id AND fc.component_id=fm.evaluation_component 
+   		AND fm.registration_number=#registration_number# AND fm.entity_id=#entity_id# AND fm.program_id=#program_id# AND fm.start_date>=#start_date# 
+   		AND fm.end_date>=fm.start_date AND #end_date#>=fm.end_date ORDER BY fm.evaluation_component ASC;
+	</select>
 
 	<resultMap id="getattendanceflagResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="attendance_flag" column="attendance_flag" />
 		<result property="component_description" column="description" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getattendanceflag" resultMap="getattendanceflagResult">
 		select
-		attendance_flag,description from FINAL_MERIT_COMPONENTS where
-		component_id=#component_id#;
+		attendance_flag,description from final_merit_components where
+		component_id=#component_id# and offered_by=#entity_id#
+		and program_id=#program_id#;
 </select>
 
 	<resultMap id="getCosSeatsResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="cos_seat" column="cos_seats" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getCosSeats" resultMap="getCosSeatsResult">
 		Select cos_seats FROM
-		CALL_CUT_OFF c where offered_by=#offered_by# and
-		program_id=#program_id# and branch_code=#branch_code# and
+		call_cut_off c where offered_by=#offered_by# and
+		program_id=#program_id# and
 		cos_value=#cos_value#;
 </select>
 
+
+	<!-- Query Updated -->
 	<update id="updatestatusfinal" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
 		update
-		STUDENT_FINAL_MERIT_LIST s set
+		student_final_merit_list s set
 		s.reason_code=#reason_code#,s.status=#status# where
 		s.program_id=#program_id# and
-		s.branch_code=#branch_code# and
-		s.entity_id=#entity_id# and
+		s.entity_id=#entity_id#
+		and
 		s.registration_number=#registration_number#
 		and
 		s.start_date>=#start_date# and s.end_date>=s.start_date and
@@ -824,15 +1218,19 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="sum_actual_computed_marks" column="st.sum_actual_computed_marks" />
 		<result property="total_marks" column="sf.total_marks" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getFinalRegistrationNumberWithStatus" resultMap="getFinalRegistrationNumberWithStatusResult">
 		select
 		st.registration_number,st.test_number,st.sum_actual_computed_marks,sf.total_marks
-		from STUDENT_TEST_NUMBER st,
-		STUDENT_FINAL_MERIT_LIST sf where
+		from student_test_number st,
+		student_final_merit_list sf where
 		sf.program_id=#program_id# and sf.entity_id=#entity_id# and
-		sf.branch_code=#branch_code# and sf.cos_value=#cos_value# and
-		sf.status=#status# and sf.registration_number=st.registration_number
-		and sf.start_date>=#start_date# and sf.end_date>=sf.start_date and
+		sf.cos_value=#cos_value# and
+		sf.status=#status# and
+		sf.registration_number=st.registration_number
+		and
+		sf.start_date>=#start_date# and sf.end_date>=sf.start_date and
 		#end_date#>=sf.end_date
 		order by sf.total_marks desc;
 </select>
@@ -843,21 +1241,30 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="total_marks" column="sf.total_marks" />
 		<result property="category" column="sf.cos_value" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="exportfinalmeritwithMF" resultMap="exportfinalmeritwithMFResult">
-		select st.registration_number,st.test_number,st.sum_actual_computed_marks,sf.cos_value,sf.total_marks 
-		from STUDENT_TEST_NUMBER st,STUDENT_FINAL_MERIT_LIST sf where sf.program_id=#program_id# and sf.entity_id=#entity_id# and 
-		sf.branch_code=#branch_code# and sf.cos_value like #cos_value# and sf.registration_number=st.registration_number and 
-		sf.start_date>=#start_date# and sf.end_date>=sf.start_date and #end_date#>=sf.end_date 
+		select
+		st.registration_number,st.test_number,st.sum_actual_computed_marks,sf.cos_value,sf.total_marks
+		from student_test_number st,student_final_merit_list sf where
+		sf.program_id=#program_id# and sf.entity_id=#entity_id# and
+		sf.cos_value like #cos_value# and
+		sf.registration_number=st.registration_number and
+		sf.start_date>=#start_date# and sf.end_date>=sf.start_date and
+		#end_date#>=sf.end_date
 		order by sf.total_marks desc;
 </select>
 
 	<resultMap id="getCosSeats1Result" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="cos_seat" column="cos_seats" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getCosSeats1" resultMap="getCosSeats1Result">
 		select cos_seats from
-		CALL_CUT_OFF c where offered_by=#offered_by# and
-		program_id=#program_id# and branch_code=#branch_code# and cos_value like #cos_value#;
+		call_cut_off c where offered_by=#offered_by# and
+		program_id=#program_id# and cos_value
+		like #cos_value#;
 </select>
 	<!-- with caste -->
 	<!-- For UI grid while computing -->
@@ -867,24 +1274,33 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 		<result property="status" column="status" />
 		<result property="reason_code" column="reason_code" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getInEligibleStudentMarks" resultMap="getInEligibleStudentMarksResult">
-		select
+		select distinct
 		registration_number,sum_computed_marks,status,reason_code from
-		STUDENT_TEST_NUMBER where entity_id=#entity_id# and
-		program_id=#program_id# and branch_code=#branch_code# and
-		start_date>=#start_date# and
+		student_test_number where entity_id=#entity_id# and
+		program_id=#program_id# and
+		cos_value like #subject_code# and
+		start_date>=#start_date#
+		and
 		end_date>=start_date and
-		#end_date#>=end_date order by sum_computed_marks desc;
+		#end_date#>=end_date order by
+		sum_computed_marks desc;
 </select>
 	<resultMap id="getTotalCompLengthResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="count" column="count(distinct component_id)" />
 	</resultMap>
+
+	<!-- Query Updated -->
 	<select id="getTotalCompLength" resultMap="getTotalCompLengthResult">
 		select count(distinct
-		component_id) from PROGRAM_COMPONENTS p
+		component_id) from program_components p
 		where p.program_id=#program_id#
-		and p.branch_code=#branch_code#
-		and p.offered_by=#offered_by# and
+		and p.branch_code=#branch_code# AND
+		specialization_code=#specializationCode#
+		and p.offered_by=#offered_by#
+		and
 		p.type!=#flag# and
 		p.weightage_flag=#weightage_flag#;
 </select>
@@ -892,97 +1308,215 @@ where b.branch_code=pob.branch and pob.program_id=#program_id# and offered_by=#o
 	<!-- UI ends while computing -->
 
 	<!-- Starting excel upload starts -->
-	<resultMap id="checkDuplicacyOfRegInStduentFinalResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+	<resultMap id="checkDuplicacyOfRegInStduentFinalResult"
+		class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="count" column="count(*)" />
 	</resultMap>
+
+	<!-- Query Updated  by Devendra May 5th-->
 	<select id="checkDuplicacyOfRegInStduentFinal" resultMap="checkDuplicacyOfRegInStduentFinalResult">
-		SELECT count(*) FROM STUDENT_FINAL_MARKS where registration_number=#registration_number# and entity_id=#entity_id#
-and program_id=#program_id# and branch_code=#branch_code# and evaluation_component=#component_id# and start_date>=#university_start_date# and 
-end_date>=start_date and #university_end_date#>=end_date;
+		SELECT
+		count(*) FROM student_final_marks where
+		registration_number=#registration_number# and entity_id=#entity_id#
+		and program_id=#program_id#  AND
+		evaluation_component=#component_id# and
+		start_date>=#university_start_date# and
+		end_date>=start_date and
+		#university_end_date#>=end_date;
 	</select>
-	
-	
+
+
+
+	<!-- Query Updated by Devendra May 5th-->
 	<insert id="insertStudentFinalMarks" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
-		insert into STUDENT_FINAL_MARKS  
-		(program_id,entity_id,branch_code,registration_number,evaluation_component,
-		marks,attended,start_date,end_date) 
-		values 
-		(#program_id#,#entity_id#,#branch_code#,#registration_number#,#component_id#,
-		#marks_percentage#,#attendance#,#start_date#,#end_date#);
+		insert into
+		student_final_marks
+		(program_id,entity_id,registration_number,evaluation_component,
+		marks,attended,start_date,end_date,insert_time,creator_id)
+		values
+		(#program_id#,#entity_id#,#registration_number#,#component_id#,
+		#marks_percentage#,#attendance#,#start_date#,#end_date#,now(),#university_id#);
 	</insert>
-	
+
+
+	<!-- Query Updated by Devendra May 5th-->
 	<update id="updateStudentFinalMarks" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
-		update STUDENT_FINAL_MARKS  
-		set marks=#marks_percentage#,attended=#attendance# 
-		where registration_number=#registration_number# and entity_id=#entity_id#
-	and program_id=#program_id# and branch_code=#branch_code# and evaluation_component=#component_id# and start_date>=#university_start_date# and 
-	end_date>=start_date and #university_end_date#>=end_date;
+		update
+		student_final_marks
+		set marks=#marks_percentage#,attended=#attendance#,modification_time=now(),modifier_id=#university_id#
+		where registration_number=#registration_number# and
+		entity_id=#entity_id#
+		and program_id=#program_id# and
+		evaluation_component=#component_id# and
+		start_date>=#university_start_date# and
+		end_date>=start_date and
+		#university_end_date#>=end_date;
 	</update>
 
 	<resultMap id="getFinalMeritEvaluationIdResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="component_id" column="component_id" />
 		<result property="total_marks" column="total_marks" />
 	</resultMap>
-	<select id="getFinalMeritEvaluationId" resultMap="getFinalMeritEvaluationIdResult">
-		select component_id,total_marks from 
-		FINAL_MERIT_COMPONENTS where description=#component_description# and offered_by=#entity_id# 
-		and program_id=#program_id# and branch_code=#branch_code#;
-	</select>
-	
-<!--	<resultMap id="getStudentSessionDateResult" class="in.ac.dei.edrp.client.ReportInfoGetter">-->
-<!--		<result property="start_date" column="start_date" />-->
-<!--		<result property="end_date" column="end_date" />-->
-<!--	</resultMap>-->
-<!--	<select id="getStudentSessionDate" resultMap="getStudentSessionDateResult">-->
-<!--		select start_date,end_date,cos from -->
-<!--		STUDENT_TEST_NUMBER where called=#called# and registration_number=#registration_number# -->
-<!--		and test_number=#test_number# and entity_id=#entity_id# -->
-<!--		and program_id=#program_id# and branch_code=#branch_code# and start_date>=#university_start_date# and -->
-<!--	end_date>=start_date and #university_end_date#>=end_date;-->
-<!--	</select>-->
 
-<resultMap id="getStudentSessionDateResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
-        <result property="start_date" column="start_date" />
-        <result property="end_date" column="end_date" />
-        <result property="sum_actual_computed_marks" column="sum_actual_computed_marks" />
-        <result property="cos_value" column="cos_value" />
-    </resultMap>
-    <select id="getStudentSessionDate" resultMap="getStudentSessionDateResult">
-        select sum_actual_computed_marks,cos_value,start_date,end_date from
-        STUDENT_TEST_NUMBER where called=#called# and registration_number=#registration_number#
-        and test_number=#test_number# and entity_id=#entity_id#
-        and program_id=#program_id# and branch_code=#branch_code# and start_date>=#university_start_date# and
-    end_date>=start_date and #university_end_date#>=end_date;
+	<!-- Query Updated by Devendra May 5th -->
+	<select id="getFinalMeritEvaluationId" resultMap="getFinalMeritEvaluationIdResult">
+		select distinct
+		component_id,total_marks from
+		final_merit_components where
+		description=#component_description# and offered_by=#entity_id# and
+		program_id=#program_id#;
+	</select>
+
+
+	<resultMap id="getStudentSessionDateResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="start_date" column="start_date" />
+		<result property="end_date" column="end_date" />
+		<result property="sum_actual_computed_marks" column="sum_actual_computed_marks" />
+		<result property="cos_value" column="cos_value" />
+	</resultMap>
+
+	<!-- Query Updated by Devendra May 5th-->
+	<select id="getStudentSessionDate" resultMap="getStudentSessionDateResult">
+		select
+		sum_actual_computed_marks,cos_value,start_date,end_date from
+		student_test_number where called=#called# and
+		registration_number=#registration_number#
+		and test_number=#test_number#
+		and entity_id=#entity_id#
+		and program_id=#program_id# AND
+		start_date>=#university_start_date# and
+		end_date>=start_date and
+		#university_end_date#>=end_date;
   </select>
-	
+
 	<!-- Added for student final merit list ends -->
-		<insert id="insertStudentFinalMeritList" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
-		insert into STUDENT_FINAL_MERIT_LIST  
-		(program_id,entity_id,branch_code,registration_number,test_number,
-		total_marks,cos_value,start_date,end_date) 
-		values 
-		(#program_id#,#entity_id#,#branch_code#,#registration_number#,#test_number#,
-		#total_marks#,#cos_value#,#start_date#,#end_date#);
+
+	<!-- Query Updated by Devendra May 5th-->
+	<insert id="insertStudentFinalMeritList" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		insert
+		into student_final_merit_list
+		(program_id,entity_id,registration_number,test_number,
+		total_marks,cos_value,start_date,end_date,insert_time,creator_id)
+		values
+		(#program_id#,#entity_id#,#registration_number#,#test_number#,
+		#total_marks#,#cos_value#,#start_date#,#end_date#,now(),#university_id#);
 	</insert>
-	
+
+
+	<!-- Query Updated by Devendra May 5th-->
 	<update id="updateStudentFinalMeritList" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
-		update STUDENT_FINAL_MERIT_LIST  
-		set total_marks=#total_marks# 
-		where test_number=#test_number# and registration_number=#registration_number# and entity_id=#entity_id#
-	and program_id=#program_id# and branch_code=#branch_code# and start_date>=#university_start_date# and 
-	end_date>=start_date and #university_end_date#>=end_date;
+		update
+		student_final_merit_list
+		set total_marks=#total_marks#,modification_time=now(),modifier_id=#university_id#
+		where
+		test_number=#test_number# and
+		registration_number=#registration_number# and entity_id=#entity_id#
+		and program_id=#program_id# and 
+		start_date>=#university_start_date# and
+		end_date>=start_date and
+		#university_end_date#>=end_date;
 	</update>
-	
+
 	<resultMap id="getStudentinStudentFinalResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
 		<result property="count" column="count(registration_number)" />
 	</resultMap>
+
+	<!-- Query Updated by Devendra May 5th -->
 	<select id="getStudentinStudentFinal" resultMap="getStudentinStudentFinalResult">
-		select count(registration_number) from 
-		STUDENT_FINAL_MERIT_LIST where registration_number=#registration_number# 
-		and test_number=#test_number# and entity_id=#entity_id# 
-		and program_id=#program_id# and branch_code=#branch_code# and start_date>=#university_start_date# and 
-	end_date>=start_date and #university_end_date#>=end_date;
+		select
+		count(registration_number) from
+		student_final_merit_list where
+		registration_number=#registration_number#
+		and test_number=#test_number#
+		and entity_id=#entity_id#
+		and program_id=#program_id# AND
+		start_date>=#university_start_date# and
+		end_date>=start_date and
+		#university_end_date#>=end_date;
 	</select>
 	<!-- Added for student final merit list ends -->
 	<!-- excel upload ends -->
+	
+	<!-- Added for Paper Codes -->
+	<resultMap id="getPaperCodesResult" class="in.ac.dei.edrp.client.ReportInfoGetter">
+		<result property="value" column="s.paper_description" />
+	</resultMap>
+
+	<!-- Query Updated -->
+	<select id="getPaperCodes" resultMap="getPaperCodesResult">
+		SELECT s.component_description paper_description FROM student_paper p, system_table_two s where 
+		s.component_code=p.paper_code and p.registration_number=#registration_number# and
+		p.form_number=#formNumber# and s.group_code='PAPCOD';
+	</select>
+	
+	<!-- To delete Student test number -->
+	<!-- Query Added for reset -->
+	<delete id="deleteStudentTestNumber" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		delete FROM
+		student_test_number
+		where
+		entity_id=#entity_id#
+		and program_id=#program_id# and branch_code=#branch_code# and
+		specialization_code=#specializationCode# and
+		start_date>=#start_date# and
+		end_date>=start_date and
+		#end_date#>=end_date;
+	</delete>
+	
+	<delete id="deleteControlReport" parameterClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		delete FROM
+		control_report
+		where
+		entity_id=#entity_id#
+		and program_id=#program_id# and branch_code=#branch_code# and
+		specialization_code=#specializationCode# and
+		start_date>=#start_date# and
+		end_date>=start_date and
+		#end_date#>=end_date;
+	</delete>
+	
+	<!-- Add by Devendra May 29  -->
+	<select id="getTestNumber" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT gn_number AS gn_number,bc_number AS bc_number,sc_number AS  sc_number,st_number AS st_number FROM entrance_test_roll_number WHERE program_id=#program_id# AND start_date=#start_date# AND end_date=#end_date#;
+	</select>		
+		
+	<!-- Add by Devendra May 29  -->
+	<select id="getStartRollNumber" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT SUBSTRING(value,1,6) AS gn_number,SUBSTRING(value,7,6) AS bc_number,SUBSTRING(value,13,6) AS sc_number,SUBSTRING(value,19,6) AS st_number FROM system_values WHERE university_id=#university_id# AND code='TSTNUM';
+	</select>
+	
+	<!-- Add by Devendra May 29  -->
+	<insert id="insertEntranceRollNumber">
+		INSERT INTO entrance_test_roll_number(program_id,gn_number,bc_number,sc_number,st_number,start_date,end_date,creator_id,insert_time)
+		VALUES(#program_id#,#gn_number#,#bc_number#,#sc_number#,#st_number#,#start_date#,#end_date#,#user_id#,now());
+	</insert>
+	<!-- Add by Devendra May 29  -->
+	<update id="updateEntranceTestRollNumber">
+		UPDATE entrance_test_roll_number SET gn_number=#gn_number#,bc_number=#bc_number#,sc_number=#sc_number#,st_number=#st_number#,modifier_id=#user_id#,modification_time=now() 
+		WHERE program_id=#program_id# AND start_date=#start_date# AND end_date=#end_date#;
+	</update>
+	<!-- Add by Devendra June 2  -->
+	<select id="getFinalComponentDetail" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT Component_id AS component_id,description AS component_description, weightage_percentage AS component_Weightage FROM final_merit_components 
+		WHERE program_id=#program_id# AND offered_by=#entity_id# ORDER BY component_id ASC ;
+	</select>
+		<!-- Add by Devendra June 13  -->
+	<select id="checkDuplicateForComputeMarks" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM student_test_number 
+		WHERE program_id=#program_id# AND entity_id=#entity_id# AND registration_number=#registration_number#
+		AND cos_value=#cos_value# AND start_date=#start_date# ANd end_date=#end_date#;
+	</select>
+			<!-- Add by Devendra June 15  -->
+	<select id="getProgramGroup" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT ppc.grouping AS groupCode,stt.component_description AS description
+		FROM program_paper_code ppc,system_table_two stt 
+		WHERE ppc.program_id=#program_id# AND entity_id=#entity_id# AND stt.university_code=ppc.university_id AND stt.group_code='PAPGRP' 
+		AND stt.component_code=ppc.grouping GROUP BY ppc.grouping ORDER BY ppc.grouping ASC;
+	</select>
+	<!-- Add by Devendra June 15  -->
+	<select id="getProgramPaperDesc" resultClass="in.ac.dei.edrp.client.ReportInfoGetter">
+		SELECT sp.paper_code AS component_id,pc.paper_description AS description,sp.grouping AS groupCode
+		FROM student_paper sp,paper_codes pc 
+		WHERE pc.paper_code=sp.paper_code AND sp.program_id=#program_id# AND sp.registration_number=#registration_number# ORDER BY sp.grouping ASC;		
+	</select>
 </sqlMap>

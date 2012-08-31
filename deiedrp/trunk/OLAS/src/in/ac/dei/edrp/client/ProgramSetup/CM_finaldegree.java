@@ -17,21 +17,12 @@
  */
 package in.ac.dei.edrp.client.ProgramSetup;
 
-import in.ac.dei.edrp.client.CM_ProgramInfoGetter;
-import in.ac.dei.edrp.client.RPCFiles.CMconnectR;
-import in.ac.dei.edrp.client.RPCFiles.CMconnectRAsync;
-import in.ac.dei.edrp.client.Shared.Validator;
-import in.ac.dei.edrp.client.Shared.constants;
-import in.ac.dei.edrp.client.Shared.messages;
-
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
@@ -40,6 +31,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+import com.gwtext.client.core.EventObject;
 import com.gwtext.client.data.ArrayReader;
 import com.gwtext.client.data.FieldDef;
 import com.gwtext.client.data.MemoryProxy;
@@ -47,11 +39,20 @@ import com.gwtext.client.data.Record;
 import com.gwtext.client.data.RecordDef;
 import com.gwtext.client.data.Store;
 import com.gwtext.client.data.StringFieldDef;
+import com.gwtext.client.widgets.Button;
 import com.gwtext.client.widgets.MessageBox;
 import com.gwtext.client.widgets.MessageBoxConfig;
+import com.gwtext.client.widgets.event.ButtonListenerAdapter;
 import com.gwtext.client.widgets.form.ComboBox;
 import com.gwtext.client.widgets.form.FormPanel;
 import com.gwtext.client.widgets.form.event.ComboBoxListenerAdapter;
+
+import in.ac.dei.edrp.client.CM_ProgramInfoGetter;
+import in.ac.dei.edrp.client.RPCFiles.CMconnectR;
+import in.ac.dei.edrp.client.RPCFiles.CMconnectRAsync;
+import in.ac.dei.edrp.client.Shared.Validator;
+import in.ac.dei.edrp.client.Shared.constants;
+import in.ac.dei.edrp.client.Shared.messages;
 
 
 public class CM_finaldegree {
@@ -63,6 +64,7 @@ public class CM_finaldegree {
     Label label = new Label(constants.label_programName());
     Label label1 = new Label(constants.label_selectcomponent());
     Label program_name = new Label(constants.label_programname());
+    Label entityLabel = new Label("Offering Entity");
     Label program = new Label();
     Hyperlink[] proHyperlink = new Hyperlink[550];
     String[] offeredby = new String[550];
@@ -93,16 +95,21 @@ public class CM_finaldegree {
         final FlexTable detailsTable = new FlexTable();
         final FlexTable defaultTable = new FlexTable();
         final FlexTable sessionTable = new FlexTable();
+        FlexTable flexTable2 = new FlexTable();
         final ListBox listBox = new ListBox();
+        final ListBox listBox2 = new ListBox();
         HorizontalPanel hPanel2 = new HorizontalPanel();
-        HorizontalPanel hPanel = new HorizontalPanel();
         VerticalPanel panel = new VerticalPanel();
         VerticalPanel panel2 = new VerticalPanel();
         VerticalPanel hPanel4 = new VerticalPanel();
+        final VerticalPanel verticalPanel2 = new VerticalPanel();
+        final Label label10 = new Label(constants.entityName() + "*");
 
         Label label5 = new Label(constants.label_offeredby());
 
         final ComboBox componentBox = new ComboBox();
+
+        final Button button = new Button(constants.okButton());
 
         componentBox.setForceSelection(true);
         componentBox.setMinChars(1);
@@ -122,6 +129,9 @@ public class CM_finaldegree {
 
         scPanel1.setSize("100%", "150px");
         label.setStyleName("jack");
+        entityLabel.setStyleName("jack");
+
+        button.setVisible(false);
 
         formPanel3.setFrame(true);
         formPanel3.setSize("1000px", "400px");
@@ -149,20 +159,73 @@ public class CM_finaldegree {
                     listBox.addItem("Select");
 
                     for (int i = 0; i < result.length; i++) {
-                        String type = result[i].getComponent();
+                        String type = result[i].getComponentDescription();
+                        String id = result[i].getComponentId();
 
-                        listBox.addItem(type);
+                        listBox.addItem(type, id);
                     }
                 }
             });
 
         listBox.addChangeHandler(new ChangeHandler() {
                 public void onChange(ChangeEvent arg0) {
-                    final String entity = listBox.getItemText(listBox.getSelectedIndex());
+                    final String entity = listBox.getValue(listBox.getSelectedIndex());
+
+                    if (listBox.getValue(listBox.getSelectedIndex())
+                                   .equalsIgnoreCase("select")) {
+                        finaldegree();
+                    }
+
+                    button.setVisible(false);
+
                     fPanel.setVisible(false);
                     fPanel2.setVisible(false);
 
-                    connectService.methodgetprogramses(entity, university_id,
+                    connectService.methodgetentitytype(entity, university_id,
+                        new AsyncCallback<CM_ProgramInfoGetter[]>() {
+                            public void onFailure(Throwable arg0) {
+                            }
+
+                            public void onSuccess(CM_ProgramInfoGetter[] result) {
+                                String type1 = "";
+                                String entity_name = "";
+
+                                listBox2.clear();
+                                listBox2.addItem("Select", null);
+
+                                for (int i = 0; i < result.length; i++) {
+                                    type1 = result[i].getEntity_id();
+                                    entity_name = result[i].getEntity_name();
+
+                                    listBox2.addItem(entity_name, type1);
+                                }
+                            }
+                        });
+                }
+            });
+
+        listBox2.addChangeHandler(new ChangeHandler() {
+                public void onChange(ChangeEvent arg0) {
+                    if (listBox2.getSelectedIndex() == 0) {
+                        button.setVisible(false);
+                    } else {
+                        button.setVisible(true);
+                    }
+
+                    fPanel.setVisible(false);
+                    fPanel2.setVisible(false);
+                }
+            });
+
+        button.addListener(new ButtonListenerAdapter() {
+                public void onClick(Button button, EventObject e) {
+                    final String entitytype = listBox.getValue(listBox.getSelectedIndex());
+                    final String entityname = listBox2.getValue(listBox2.getSelectedIndex());
+                    fPanel.setVisible(false);
+                    fPanel2.setVisible(false);
+
+                    connectService.methodgetprogramses(entitytype,
+                        university_id, entityname,
                         new AsyncCallback<CM_ProgramInfoGetter[]>() {
                             public void onFailure(Throwable arg0) {
                             }
@@ -175,7 +238,8 @@ public class CM_finaldegree {
                                             {
                                                 setTitle(msgs.alert());
                                                 setMsg(msgs.error_norecord(
-                                                        entity));
+                                                        listBox2.getItemText(
+                                                            listBox2.getSelectedIndex())));
                                                 setIconCls(MessageBox.INFO);
                                                 setButtons(MessageBox.OK);
 
@@ -233,7 +297,7 @@ public class CM_finaldegree {
                                                     detailsTable.setWidget(6,
                                                         2, componentBox);
 
-                                                    detailsTable.setWidget(25,
+                                                    detailsTable.setWidget(10,
                                                         0, submitButton);
 
                                                     connectService.methodprogrammaster(programid,
@@ -289,7 +353,7 @@ public class CM_finaldegree {
                             public void onSelect(ComboBox comboBox,
                                 Record record, int index) {
                                 int x = 1;
-                                connectService.getcomponent(programid, x, null,
+                                connectService.getcomponent(programid, x,
                                     new AsyncCallback<CM_ProgramInfoGetter[]>() {
                                         public void onFailure(Throwable arg0) {
                                         }
@@ -326,11 +390,10 @@ public class CM_finaldegree {
                             }
                         });
 
-                    submitButton.addClickHandler(new ClickHandler() {
-                            public void onClick(ClickEvent arg0) {
+                    submitButton.addListener(new ButtonListenerAdapter() {
+                            public void onClick(Button button, EventObject e) {
                                 final String component = componentBox.getValue();
 
-                                System.out.println("compo" + component);
 
                                 if (component == null) {
                                     MessageBox.show(new MessageBoxConfig() {
@@ -429,9 +492,15 @@ public class CM_finaldegree {
 
         fPanel2.add(detailsTable);
 
-        hPanel.add(label5);
-        hPanel.setSpacing(20);
-        hPanel.add(listBox);
+        flexTable2.setWidget(0, 0, label5);
+        flexTable2.setWidget(0, 2, listBox);
+        flexTable2.setWidget(2, 0, label10);
+        flexTable2.setWidget(2, 2, listBox2);
+
+        //        hPanel.add(label5);
+        //        hPanel.setSpacing(20);
+        //        hPanel.add(listBox);
+        verticalPanel2.add(button);
 
         formPanel.add(sessionTable);
 
@@ -445,15 +514,17 @@ public class CM_finaldegree {
         scPanel.add(hPanel2);
         fPanel.add(scPanel);
 
-        panel.add(hPanel);
+        panel.add(flexTable2);
 
         hPanel3.add(fPanel);
         hPanel3.setSpacing(8);
         hPanel3.add(fPanel2);
 
+        verticalPanel2.add(hPanel3);
+
         hPanel4.add(panel);
 
-        hPanel4.add(hPanel3);
+        hPanel4.add(verticalPanel2);
 
         formPanel3.add(hPanel4);
 

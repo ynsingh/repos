@@ -1,11 +1,21 @@
 package in.ac.dei.edrp.client.ProgramSetup;
 
+import in.ac.dei.edrp.client.CM_BranchSpecializationInfoGetter;
+import in.ac.dei.edrp.client.CM_UniversityInfoGetter;
+import in.ac.dei.edrp.client.CM_userInfoGetter;
+import in.ac.dei.edrp.client.Login.CM_LoginConnectS;
+import in.ac.dei.edrp.client.Login.CM_LoginConnectSAsync;
+import in.ac.dei.edrp.client.RPCFiles.CM_connectD;
+import in.ac.dei.edrp.client.RPCFiles.CM_connectDAsync;
+import in.ac.dei.edrp.client.Shared.Validator;
+
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
-
 import com.gwtext.client.core.EventObject;
 import com.gwtext.client.core.RegionPosition;
 import com.gwtext.client.data.ArrayReader;
@@ -17,10 +27,10 @@ import com.gwtext.client.data.Store;
 import com.gwtext.client.data.StringFieldDef;
 import com.gwtext.client.widgets.Button;
 import com.gwtext.client.widgets.MessageBox;
-import com.gwtext.client.widgets.MessageBox.AlertCallback;
 import com.gwtext.client.widgets.MessageBoxConfig;
 import com.gwtext.client.widgets.Toolbar;
 import com.gwtext.client.widgets.ToolbarButton;
+import com.gwtext.client.widgets.MessageBox.AlertCallback;
 import com.gwtext.client.widgets.event.ButtonListenerAdapter;
 import com.gwtext.client.widgets.form.ComboBox;
 import com.gwtext.client.widgets.form.FormPanel;
@@ -38,33 +48,22 @@ import com.gwtext.client.widgets.grid.event.GridCellListener;
 import com.gwtext.client.widgets.grid.event.RowSelectionListener;
 import com.gwtext.client.widgets.layout.BorderLayoutData;
 
-import in.ac.dei.edrp.client.CM_BranchSpecializationInfoGetter;
-import in.ac.dei.edrp.client.CM_userInfoGetter;
-import in.ac.dei.edrp.client.Login.CM_LoginConnectS;
-import in.ac.dei.edrp.client.Login.CM_LoginConnectSAsync;
-import in.ac.dei.edrp.client.RPCFiles.CM_connectD;
-import in.ac.dei.edrp.client.RPCFiles.CM_connectDAsync;
-import in.ac.dei.edrp.client.Shared.Validator;
-
-/**
- * @author Dayal Sharan Sukhdhami
- */
-import java.util.List;
-
 
 public class CM_ProgramPaperCode {
     private final CM_connectDAsync connectDService = GWT.create(CM_connectD.class);
     CM_LoginConnectSAsync loginconnect = GWT.create(CM_LoginConnectS.class);
     public VerticalPanel vPanel = new VerticalPanel();
     public String userid;
-    Label label3 = new Label("Dayalbagh Educational Institute");
-    Label label4 = new Label("2010-11");
+    String universityName,session;
+    Label label3 = new Label("");
+    Label label4 = new Label("");
     Label componentLabel = new Label("Component Name *");
     Label marksLabel = new Label("Paper Code");
     Button saveButton = new Button("Save");
     Button manageButton = new Button("Manage");
     String componentid;
-    String uniid = "0001";
+    public String uniid;
+//    public String uniid = "0001";
     Object[][] object1;
     final VerticalPanel fullpage1 = new VerticalPanel();
     Validator validator = new Validator();
@@ -230,6 +229,7 @@ public class CM_ProgramPaperCode {
                                         cbSelectionModel.unlock();
                                         editButton.setDisabled(false);
                                         deletebutton.setDisabled(false);
+                                        manageButton.enable();
                                         cbSelectionModel.addListener(new RowSelectionListener() {
                                                 public boolean doBeforeRowSelect(
                                                     RowSelectionModel sm,
@@ -314,6 +314,7 @@ public class CM_ProgramPaperCode {
 
                                             if (values[i].equalsIgnoreCase(
                                                         "view")) {
+                                                manageButton.enable();
                                                 manageButton.fireEvent("Click");
                                             }
 
@@ -323,6 +324,7 @@ public class CM_ProgramPaperCode {
 
                                             if (values[i].equalsIgnoreCase(
                                                         "delete")) {
+                                                manageButton.enable();
                                                 manageButton.fireEvent("Click");
                                                 cbSelectionModel.unlock();
                                                 deletebutton.setDisabled(false);
@@ -376,9 +378,35 @@ public class CM_ProgramPaperCode {
                 }
             });
 
+       
+        
+        connectDService.methodGetUniversityDetail(uniid,new AsyncCallback<CM_UniversityInfoGetter[]>() {
+        	public void onFailure(Throwable arg0) {
+        		com.google.gwt.user.client.Window.alert( "Database Error: " + arg0);
+        	}                
+        	public void onSuccess(CM_UniversityInfoGetter[] result) {
+        		try{
+        			if(result==null){
+            			System.out.println("no record found in the database");
+            			throw new Exception();
+            		}
+            		for (int i = 0; i < result.length; i++) {
+            			universityName=result[i].getUniversityName();
+            			session=result[i].getSessionSDate()+"-"+result[i].getSessionEDate();    
+            			label3.setText(universityName);
+            			label4.setText(session);
+            		}   
+        		}
+        		catch(Exception e){
+        			System.out.println("exception in getUniversityDetail "+e.getStackTrace());
+        		}        		              
+        	}
+        });
+
+
         connectDService.methodProgramOfferedByPopulate(new AsyncCallback<CM_BranchSpecializationInfoGetter[]>() {
                 public void onFailure(Throwable arg0) {
-                    MessageBox.alert("Note", "Database Error: " + arg0);
+                    com.google.gwt.user.client.Window.alert( "Database Error: " + arg0);
                 }
 
                 public void onSuccess(
@@ -409,7 +437,7 @@ public class CM_ProgramPaperCode {
 
         connectDService.methodGroupsPopulate(new AsyncCallback<CM_BranchSpecializationInfoGetter[]>() {
                 public void onFailure(Throwable arg0) {
-                    MessageBox.alert("Note", "Database Error: " + arg0);
+                    com.google.gwt.user.client.Window.alert( "Database Error: " + arg0);
                 }
 
                 public void onSuccess(
@@ -437,7 +465,7 @@ public class CM_ProgramPaperCode {
 
         connectDService.methodPapersPopulate(new AsyncCallback<CM_BranchSpecializationInfoGetter[]>() {
                 public void onFailure(Throwable arg0) {
-                    MessageBox.alert("Note", "Database Error: " + arg0);
+                    com.google.gwt.user.client.Window.alert("Database Error: " + arg0);
                 }
 
                 public void onSuccess(
@@ -538,8 +566,10 @@ public class CM_ProgramPaperCode {
                                                                     String[] exception =
                                                                         arg0.getMessage()
                                                                             .split(":");
-                                                                    MessageBox.alert("Failure",
+                                                                    com.google.gwt.user.client.Window.alert("Failure : "+
                                                                         exception[1]);
+                                                                    manageButton.fireEvent(
+                                                                        "Click");
                                                                 }
 
                                                                 public void onSuccess(
@@ -594,8 +624,9 @@ public class CM_ProgramPaperCode {
                             System.out.println("Exception: " + e1);
                         }
                     } else {
-                        MessageBox.alert("Error",
-                            "Please check the entries in Red.");
+//                    	AddressField.alertWidget("Error", "Kindly Fill All the mandatory fields.").center();                 
+                    	com.google.gwt.user.client.Window.alert( "Kindly Fill All the mandatory fields.");
+//                        MessageBox.alert("Error", "Kindly Fill All the mandatory fields.");
                     }
                 }
             });
@@ -736,11 +767,9 @@ public class CM_ProgramPaperCode {
                                             Record record;
 
                                             if (records.length < 1) {
-                                                MessageBox.alert("Error",
-                                                    "Please select a record for deletion");
+                                                com.google.gwt.user.client.Window.alert("Please select a record for deletion");
                                             } else if (records.length > 1) {
-                                                MessageBox.alert("Error",
-                                                    "Please select only one record for deletion");
+                                            	com.google.gwt.user.client.Window.alert("Please select only one record for deletion");
                                             } else {
                                                 for (int i = 0;
                                                         i < records.length;
@@ -788,7 +817,7 @@ public class CM_ProgramPaperCode {
                                                                                     new AsyncCallback<String>() {
                                                                                         public void onFailure(
                                                                                             Throwable arg0) {
-                                                                                            MessageBox.alert("Failure",
+                                                                                        	com.google.gwt.user.client.Window.alert(
                                                                                                 arg0.getMessage());
                                                                                         }
 
@@ -875,7 +904,7 @@ public class CM_ProgramPaperCode {
         connectDService.methodManageProgramList(selectedProgramOfferedColumn,
             new AsyncCallback<CM_BranchSpecializationInfoGetter[]>() {
                 public void onFailure(Throwable arg0) {
-                    MessageBox.alert("DataBase Error : " + arg0.getMessage());
+                    com.google.gwt.user.client.Window.alert("DataBase Error : "+ arg0.getMessage());
                 }
 
                 public void onSuccess(

@@ -11,7 +11,7 @@
 
   
   	<insert id="insertNewUniversity">
-		insert into UNIVERSITY
+		insert into university
 		(university_id, start_date, end_date, current_status, university_name, 
 		university_address, university_city, university_state, university_pincode, phone_number, 
 		other_phone, fax, insert_time, creator_id)
@@ -30,7 +30,7 @@
   </resultMap>
   
   <select id = "selectMaxUniversityCode" resultMap="UniversityCode">
-  select MAX(university_id) from UNIVERSITY
+  select MAX(university_id) from university
   </select>
 
  <resultMap id="maxID" class="userInfo">
@@ -38,7 +38,7 @@
   </resultMap>
   
   <select id="selectMaxUserID" resultMap="maxID">
-  select max(substr(user_id, -6)) from USER_INFO where substr(user_id,2,4) = #user_id#
+  select max(substr(user_id, -6)) from user_info where substr(user_id,2,4) = #user_id#
   </select>
   
   
@@ -48,7 +48,7 @@
   </resultMap>
   
   <select id="selectUniversityName" resultMap="University">
-  select university_name from UNIVERSITY
+  select university_name from university
   </select>
   
   
@@ -57,13 +57,13 @@
   </resultMap>
   
   <select id="selectUniversityID" resultMap="UniversityCode">
-  select university_id from UNIVERSITY where university_name LIKE #universityName#
+  select university_id from university where university_name LIKE #universityName#
   </select>
   
 
   
-   <insert id="insertNewUser_info">
-		insert into USER_INFO
+   <insert id="insertNewuser_info">
+		insert into user_info
 		(user_id,group_name, user_name, password, registered_time, status)
 	    values(#user_id#, #user_group_name#, #user_name#, SHA1(#password#), #registered_timestamp#,
 		 #activated#)
@@ -83,15 +83,15 @@
   </resultMap>
    
   <select id="selectAllUniversityDetails" resultMap="AllUniversityInfo">
-  select * from UNIVERSITY
+  select * from university
   </select>
   
    <select id="selectAllUniversityDetailsWithUniversityName" resultMap="AllUniversityInfo">
-  select * from UNIVERSITY where university_name = #string#
+  select * from university where university_name = #string#
   </select>
   
    <select id="selectAllUniversityDetailsWithUniversityID" resultMap="AllUniversityInfo">
-  select * from UNIVERSITY where university_id = #string#
+  select * from university where university_id = #string#
   </select>
   
      <select id="selectAllUniversityDetailsWithUniversityCity" resultMap="AllUniversityInfo">
@@ -99,7 +99,7 @@
   </select>
   
      <select id="selectAllUniversityDetailsWithUniversityState" resultMap="AllUniversityInfo">
-  select * from UNIVERSITY where university_state = #string#
+  select * from university where university_state = #string#
   </select> 
   
   
@@ -112,7 +112,7 @@
 <!-- Queries for dumping data into control tables-->
   
 <insert id="dumpComponentDescription">
-  INSERT INTO `COMPONENT_DESCRIPTION` VALUES (#universityID#,'HS','High School','XX'),
+  INSERT INTO `component_description` VALUES (#universityID#,'HS','High School','XX'),
   (#universityID#,'IN','Intermediate','XX'),(#universityID#,'MA','MAT','XX'),
   (#universityID#,'GT','GATE','XX'),(#universityID#,'XT','XAT','XX'),
   (#universityID#,'CT','CAT','XX'),(#universityID#,'JE','IIT-JEE','XX'),
@@ -125,7 +125,7 @@
   (#universityID#,'PH','Physics','XX'),(#universityID#,'CH','CHEMISTRY','XX')
   </insert>
   <insert id="dumpProgramBranches">
-  INSERT INTO `PROGRAM_BRANCHES` VALUES (#universityID#,'000','None'),
+  INSERT INTO `program_branches` VALUES (#universityID#,'000','None'),
   (#universityID#,'001','Drawing And Painting'),(#universityID#,'002','English'),
   (#universityID#,'003','Hindi'),(#universityID#,'004','Home Science'),
   (#universityID#,'005','Music'),(#universityID#,'006','Sanskrit'),
@@ -143,7 +143,7 @@
   (#universityID#,'029','Modern Office Management and Secretarial Practice'),(#universityID#,'030','Garment Technology');
   </insert>
   <insert id="dumpCosCode">
-  INSERT INTO `PROGRAM_COS_CODE` VALUES (#universityID#,concat(#universityID#,'001'),'001','A'),
+  INSERT INTO `program_cos_code` VALUES (#universityID#,concat(#universityID#,'001'),'001','A'),
   (#universityID#,concat(#universityID#,'001'),'002','A'),(#universityID#,concat(#universityID#,'001'),'003','A'),
   (#universityID#,concat(#universityID#,'001'),'004','A'),(#universityID#,concat(#universityID#,'001'),'005','A'),
   (#universityID#,concat(#universityID#,'001'),'006','A'),(#universityID#,concat(#universityID#,'002'),'000','B'),
@@ -182,39 +182,47 @@
   
   </insert>
   <insert id="dumpProgramSpecialization">
-  INSERT INTO `PROGRAM_SPECIALIZATIONS` VALUES (#universityID#,'000','None'),
+  INSERT INTO `program_specializations` VALUES (#universityID#,'000','None'),
   (#universityID#,'001','Sitar'),(#universityID#,'002','Tabla'),(#universityID#,'003','Vocal Music'),
   (#universityID#,'004','International Business'),(#universityID#,'005','Human Development'),
   (#universityID#,'006','Computer Applications'),(#universityID#,'007','Electronics'),
   (#universityID#,'008','Computer Science');
   </insert>
   <insert id="dumpSeatReservationCategory">
-  INSERT INTO `SEAT_RESERVATION_CATEGORY` VALUES (#universityID#,'GN','General'),
+  INSERT INTO `seat_reservation_category` VALUES (#universityID#,'GN','General'),
   (#universityID#,'SC','SC'),(#universityID#,'ST','ST'),(#universityID#,'BC','OBC');
   </insert>
   <insert id="dumpSystemValues">
-  INSERT INTO `SYSTEM_VALUES` VALUES (#universityID#,'PRGMID','001'),
+  INSERT INTO `system_values` VALUES (#universityID#,'PRGMID','001'),
   (#universityID#,'ENTYID',#universityID#),(#universityID#,'WGHTID','00'),(#universityID#,'STUDID','000000000');
   </insert>
   <insert id="dumpEntityEmployee">
-  INSERT INTO `ENTITY_EMPLOYEE` VALUES (#user_id#,concat(#id#,'0001'),#user_name#,' ',' ',NULL,NULL,NULL,'001',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+  INSERT INTO `entity_employee` VALUES (#user_id#,concat(#id#,'0001'),#user_name#,' ',' ',NULL,NULL,NULL,'001',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
   </insert>
   <insert id="dumpUniversityEntityType">
-  INSERT INTO `UNIVERSITY_ENTITY_TYPE` VALUES (#universityID#,'DEP','Department',3,NULL,NULL,NULL,NULL),
+  INSERT INTO `university_entity_type` VALUES (#universityID#,'DEP','Department',3,NULL,NULL,NULL,NULL),
   (#universityID#,'FAC','Faculty',2,NULL,NULL,NULL,NULL),(#universityID#,'INS','Institute',1,NULL,NULL,NULL,NULL);
   </insert>
   <insert id="dumpUniversityProgramMode">
-  INSERT INTO `UNIVERSITY_PROGRAM_MODE` VALUES (#universityID#,'Open Mode','o'),(#universityID#,'Dual Mode','d'),(#universityID#,'Integrated Mode','i');
+  INSERT INTO `university_program_mode` VALUES (#universityID#,'Open Mode','o'),(#universityID#,'Dual Mode','d'),(#universityID#,'Integrated Mode','i');
   </insert>
   <insert id="dumpUniversityProgramType">
-  INSERT INTO `UNIVERSITY_PROGRAM_TYPE` VALUES (#universityID#,'Part Time','p'),(#universityID#,'Full Time','f');
+  INSERT INTO `university_program_type` VALUES (#universityID#,'Part Time','p'),(#universityID#,'Full Time','f');
   </insert>
   <insert id="dumpWeightageDescription">
- INSERT INTO `WEIGHTAGE_DESCRIPTION` VALUES (#universityID#,'HS','High School'),
+ INSERT INTO `weightage_description` VALUES (#universityID#,'HS','High School'),
  (#universityID#,'IN','Intermediate'),(#universityID#,'SW','Staff Ward'),
  (#universityID#,'UG','Under Graduate');
   </insert>
    
+  <select id = "selectUniversityDetail" resultClass="UniversityInfo">
+  select university_code as universityCode,substring(sv.value,1,4) as sessionSDate,substring(sv.value,9,4) as sessionEDate,
+university_name as universityName
+from university_master um,system_values sv
+where um.university_code=#universityId# and um.university_code=sv.university_id
+and sv.code='ADMSSN'
+and um.current_status=1;
+  </select>
   
   
   

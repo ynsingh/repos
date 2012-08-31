@@ -10,6 +10,8 @@ public class CM_UniversityInfoGetter implements IsSerializable{
 	private String universityMaxCode;
 	private Date sessionStartDate;
 	private Date sessionEndDate;
+	private String sessionSDate;
+	private String sessionEDate;
 	private String currentStatus;
 	private String universityName;
 	private String universityAddress;
@@ -161,6 +163,22 @@ public class CM_UniversityInfoGetter implements IsSerializable{
 
 	public String getUniversityMaxCode() {
 		return universityMaxCode;
+	}
+
+	public void setSessionSDate(String sessionSDate) {
+		this.sessionSDate = sessionSDate;
+	}
+
+	public String getSessionSDate() {
+		return sessionSDate;
+	}
+
+	public void setSessionEDate(String sessionEDate) {
+		this.sessionEDate = sessionEDate;
+	}
+
+	public String getSessionEDate() {
+		return sessionEDate;
 	}
 	
 	

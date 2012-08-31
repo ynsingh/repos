@@ -377,7 +377,7 @@ public class CM_progTermDetails {
                     	
                     }
 	    		    }else{
-	    		    	MessageBox.alert("Error","Check the entries in red");
+	    		    	MessageBox.alert("Error","Kindly Fill All the mandatory fields");
 	    		    }
         	 }
          });
@@ -948,7 +948,7 @@ public class CM_progTermDetails {
 			                                                	    		    }
 			                                                                        }else
 			                                                	    		    {
-			                                                	    		    	MessageBox.alert("Error","Check the entries in red");
+			                                                	    		    	MessageBox.alert("Error","Kindly Fill All the mandatory fields");
 			                                                	    		    }
 			                                                                    }
 			                                                                    

@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="summarySheet">
+	<typeAlias alias="summaryBean" type="in.ac.dei.edrp.client.summarysheet.SummarySheetBean" />
+	<typeAlias alias="applicantForm" type="in.ac.dei.edrp.client.applicantAccount.ApplicantAccountBean" />
+	
+	<select id="getFormProgramList" resultClass="summaryBean">
+		<!-- SELECT DISTINCT pf.program_id programId, pm.program_name programName,pob.offered_by entityId
+		FROM program_form pf, program_master pm,program_offered_by pob
+		WHERE pm.program_id=pf.program_id AND pf.form_number=#docId#
+		AND pob.program_id=pf.program_id
+		AND university_id=#universityId# -->
+		
+		SELECT DISTINCT pf.program_id programId, pm.program_name programName,pf.offered_by entityId
+		FROM program_form pf, program_master pm
+		WHERE pm.program_id=pf.program_id AND pf.form_number=#docId#
+		AND pf.university_id=#universityId#
+		AND pf.location_entity_id=#entityId#
+	</select>
+	
+	<select id="getProgramComponent" resultClass="summaryBean">
+		<!-- SELECT DISTINCT cd.component_id componentId, description componentDescription,
+		weightage_flag weightageFlag, component_weightage componentWeightage,
+		component_criteria_flag componentCriteriaFlag, type componentType,
+		special_weightage_flag specialWeightageFlag, board_flag boardFlag,
+		cd.ug_pg ugPg, rule_number ruleNumber, sequence_number sequenceNumber
+		FROM program_components pc, component_description cd
+		WHERE pc.offered_by=#entityId# AND cd.university_id=#universityId#
+		AND pc.component_id=cd.component_id
+		<dynamic prepend="AND pc.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+		ORDER BY sequenceNumber -->
+		SELECT DISTINCT cd.component_id componentId, description componentDescription,
+		weightage_flag weightageFlag, component_weightage componentWeightage,
+		component_criteria_flag componentCriteriaFlag, type componentType,
+		special_weightage_flag specialWeightageFlag, board_flag boardFlag,
+		cd.ug_pg ugPg, rule_number ruleNumber, sequence_number sequenceNumber
+		FROM program_components pc, component_description cd,program_master pm,program_offered_by pob
+		WHERE cd.university_id=#universityId#
+		AND pc.component_id=cd.component_id
+    	AND pc.program_id=pm.program_id
+    	AND pob.program_id=pm.program_id
+    	AND pob.program_id=pc.program_id
+    	<dynamic prepend="AND pc.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+		ORDER BY sequenceNumber
+		
+	</select>
+	
+	<select id="getGroupWisePaperCode" resultClass="summaryBean">
+		<!-- SELECT DISTINCT ppc.program_id programId,pm.program_name programName, pc.paper_code paperCode,
+		pc.paper_description paperDescription, ppc.grouping grouping 
+		FROM program_paper_code ppc, paper_codes pc, program_master pm
+		WHERE pc.paper_code=ppc.paper_code 
+		AND ppc.entity_id=#entityId# 
+		AND pm.program_id=ppc.program_id AND ppc.university_id=#universityId#
+		<dynamic prepend="AND ppc.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+		ORDER BY grouping,paperCode -->
+		
+		SELECT DISTINCT ppc.program_id programId,pm.program_name programName, pc.component_code paperCode,
+		pc.component_description paperDescription, ppc.grouping grouping 
+		FROM program_paper_code ppc, system_table_two pc, program_master pm
+		WHERE pc.component_code=ppc.paper_code and pc.group_code='PAPCOD' and pc.university_code=#universityId#
+		<dynamic prepend="AND ppc.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+		ORDER BY programId,grouping,paperCode
+	</select>
+	
+	<select id="getProgramDocumentList" resultClass="summaryBean">
+		SELECT DISTINCT doc_id docId, stt.component_description docName
+		FROM program_document_list pdl, system_table_two stt
+		WHERE stt.component_code=pdl.doc_id AND stt.university_code=pdl.university_id
+		AND stt.group_code='DOCLST' AND pdl.university_id=#universityId#
+		<dynamic prepend="AND pdl.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+	</select>
+	
+	<select id="getProgramFirstDegreeList" resultClass="summaryBean">
+		SELECT pd.degree_code componentId, pm2.program_name componentDescription,
+		pm1.program_id programId, pm1.program_name programName
+		FROM program_degree pd,program_master pm1,program_master pm2
+		WHERE pd.program_id=pm1.program_id AND pd.degree_code=pm2.program_id
+		<dynamic prepend="AND pd.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+	</select>
+	
+	<select id="getCosCodeDescription" resultClass="summaryBean">
+		SELECT DISTINCT pcc.program_id programId,pcc.cos_code cosCode,stt.component_description cosDescription 
+		FROM program_cos_code pcc,system_table_two stt
+		WHERE stt.component_code=pcc.cos_code
+		AND stt.university_code=pcc.university_id
+		AND pcc.university_id=#universityId#
+		AND stt.group_code='SUBCOD'
+		AND stt.active=1
+		<dynamic prepend="AND pcc.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+		ORDER BY pcc.program_id
+		
+		
+	</select>
+	
+	<select id="getSystemValues" resultClass="summaryBean">
+		SELECT value sequenceNumber
+		FROM system_values
+		WHERE university_id=#universityId# AND code=#ugPg#
+	</select>
+	
+	<update id="updateSystemValues">
+		UPDATE system_values
+		SET value=#sequenceNumber#
+		WHERE university_id=#universityId# AND code=#ugPg#
+	</update>
+
+	<select id ="getStudentId" resultClass="summaryBean">
+		SELECT DISTINCT student_id studentId
+		FROM entity_student
+		WHERE first_name = #firstName#
+		AND last_name = #lastName#
+	    AND father_first_name = #fatherFirstName#
+	    AND father_last_name = #fatherLastName#
+		AND mother_first_name = #motherFirstName#
+		AND mother_last_name = #motherLastName#
+	    AND category_code = #category#
+		AND date_of_birth = #dob#
+    	AND gender = #gender#
+    	AND primary_email_id=#primaryEmail#
+	</select>
+
+	<select id ="getCosCode" resultClass="summaryBean">
+		SELECT cos_value formNumber
+		FROM call_cut_off
+		WHERE program_id=#programId# AND offered_by=#entityId#
+		AND cos_value like CONCAT(#category#,'%',#cosCode#);
+	</select>
+	
+	<insert id="setStudentFee">
+		INSERT INTO student_fee
+		(registration_number,draft_number,bank,date,amount,creator_id,insert_time)
+		VALUES(#registrationNumber#,#ddNo#,#bankName#,#ddDate#,#ddAmount#,#userId#,now());
+	</insert>
+
+	<insert id="setStudentDocs">
+		INSERT INTO student_docs
+		(registration_number,doc_id,path,insert_time,creator_id)
+		VALUES
+		(#registrationNumber#,#docId#,#docPath#,now(),#userId#);
+	</insert>
+
+	<insert id="setEntityStudent">
+		INSERT INTO entity_student
+		(university_id,student_id,first_name,middle_name,last_name,
+		primary_email_id,secondary_email_id,date_of_birth,category_code,gender,
+		father_first_name,father_middle_name,father_last_name,
+		mother_first_name,mother_middle_name,mother_last_name,
+		registered_in_session,insert_time,creator_id,nationality,religion,guardian_name,minority,marital_status)
+		VALUES
+		(#universityId#,#studentId#,#firstName#,#middleName#,#lastName#,
+		#primaryEmail#,#secondaryEmail#,#dob#,#category#,#gender#,
+		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+		#motherFirstName#,#motherMiddleName#,#motherLastName#,
+		CONCAT(SUBSTR(#sessionStartDate#,1,4),'-',SUBSTR(#sessionEndDate#,3,2)),now(),#userId#,#nationality#,#religion#,#guardian#,#minority#,#maritalStatus#)
+	</insert>
+
+	<insert id="setStudentPaper">
+		INSERT INTO student_paper
+		(program_id,registration_number,paper_code,
+		start_date,end_date,insert_time,creator_id,grouping)
+		VALUES
+		(#programId#,#registrationNumber#,#paperCode#,
+		#sessionStartDate#,#sessionEndDate#,now(),#userId#,#grouping#);
+	</insert>
+
+	<insert id="setStudentFirstDegree">
+		INSERT INTO student_first_degree
+		(program_id,registration_number,first_degree_code,
+		insert_time,creator_id,start_date,end_date)
+		VALUES
+		(#programId#,#registrationNumber#,#componentId#,
+		now(),#userId#,#sessionStartDate#,#sessionEndDate#)
+	</insert>
+
+	<insert id="setStudentCallList">
+		INSERT INTO student_call_list
+		(program_id,registration_number,component_id,marks_percentage,marks_obtained,total_marks,
+		entity_id,score,board_id,start_date,end_date,insert_time,creator_id)
+		VALUES
+		(#programId#,#registrationNumber#,#componentId#,#percentage#,#marksObtained#,#totalMarks#,
+		#entityId#,#score#,#board#,#sessionStartDate#,#sessionEndDate#,now(),#userId#)
+	</insert>
+	
+	<insert id="setStudentSpecialWeightage">
+		INSERT INTO student_special_weightage
+		(university_id,program_id,registration_number,weightage_id,
+		start_date,end_date,insert_time,creator_id)
+		VALUES
+		(#universityId#,#programId#,#registrationNumber#,#componentId#,
+		#sessionStartDate#,#sessionEndDate#,now(),#userId#)
+	</insert>
+	
+	<insert id="setStudentRegistration">
+		INSERT INTO student_registration
+		(student_id,registration_number,cos_value,start_date,end_date,insert_time,creator_id,program_id)
+		VALUES
+		(#studentId#,#registrationNumber#,#formNumber#,#sessionStartDate#,#sessionEndDate#,now(),#userId#,#programId#)
+	</insert>
+	
+	<insert id="setStudentAddress">
+		INSERT INTO admission_addresses_master
+		(user_type,user_id,address_key,address_line1,address_line2,city,
+		state,pincode,home_phone,other_phone,insert_time,creator_id)
+		VALUES
+		('STD',#studentId#,'PER',#addressLine1#,#addressLine2#,#city#,
+		#state#,#pincode#,#phoneNumber#,#otherPhone#,now(),#userId#)
+	</insert>
+	
+	<insert id="setApplicantProgramRegistration">
+		INSERT INTO applicant_program_registration VALUES (#userEmailId#,#registrationNumber#,#programId#)
+	</insert>
+	
+	<select id="getApplicantsPrograms" resultClass="applicantForm">
+		SELECT program_name programName,program_id programId
+		FROM program_master
+		WHERE program_id
+		IN(
+		  SELECT program_id
+		  FROM student_registration
+		  WHERE registration_number
+		  IN(
+		    SELECT registration_number
+		    FROM applicant_program_registration
+		    WHERE user_name=#userEmail#
+		   )
+		   AND CURDATE() BETWEEN start_date AND end_date
+		)
+		ORDER BY program_id
+	</select>
+	
+	<select id="getApplicantDetails" resultClass="summaryBean">
+		SELECT first_name firstName,middle_name middleName,last_name lastName,email_id primaryEmail,
+		father_name fatherFirstName,mother_name motherFirstName,date_of_birth dob,category,gender,nationality,religion,
+		phone_number phoneNumber,state
+		FROM applicant_account_info
+		WHERE email_id=#primaryEmail#
+	</select>
+	
+	<select id="getCenterCodeDescription" resultClass="summaryBean">
+		SELECT DISTINCT pcc.program_id programId,pcc.center_code centerCode,stt.component_description centerDescription
+		FROM examination_center pcc,system_table_two stt
+		WHERE stt.component_code=pcc.center_code
+		AND stt.university_code=#universityId#
+		AND stt.group_code='CENCOD'
+		AND stt.active=1
+		<dynamic prepend="AND pcc.program_id IN">
+			<iterate property="programList" open="(" close=")" conjunction=",">
+				#programList[]#
+			</iterate>
+		</dynamic>
+    	<dynamic prepend="AND pcc.entity_id IN">
+			<iterate property="entityIdList" open="(" close=")" conjunction=",">
+				#entityIdList[]#
+			</iterate>
+		</dynamic>
+		ORDER BY pcc.program_id,pcc.center_code;
+	
+	</select>
+	
+	<update id="updateStudentRegistrationforCenter">
+		UPDATE student_registration SET exam_center_code=#centerCode#
+		WHERE student_id=#studentId# AND registration_number=#registrationNumber# AND start_date=#sessionStartDate#
+		AND end_date=#sessionEndDate# AND program_id=#programId#;
+	</update>
+	
+	<!-- Add By Devendra May 21 To get Student For manage -->
+	<select id="getStudentsForManage" resultClass="summaryBean">
+		SELECT DISTINCT sr.registration_number AS registrationNumber,sr.student_id AS studentId,sr.program_id AS programId,pm.program_name AS programName,
+		CONCAT(es.first_name,' ',es.middle_name,' ',es.last_name) AS firstName,CONCAT(es.father_first_name,' ',es.father_middle_name,' ',es.father_last_name) AS fatherFirstName,es.date_of_birth AS dob,
+		sr.insert_time AS ddDate,sr.start_date AS sessionStartDate,sr.end_date AS sessionEndDate,pob.offered_by AS entityId
+		FROM student_registration sr,program_master pm,entity_student es,program_offered_by pob
+		WHERE sr.registration_number like #registrationNumber# AND sr.program_id=pm.program_id AND pob.program_id=sr.program_id AND es.student_id=sr.student_id AND es.university_id=#universityId#
+		AND sr.start_date=#sessionStartDate# AND sr.end_date=#sessionEndDate#;	
+	</select>
+	
+	<!-- Add By Devendra May 21 To Delete Student Registration -->
+	<delete id="deleteStudentRegistration">
+		DELETE FROM student_registration 
+		WHERE student_id=#studentId# AND registration_number=#registrationNumber#  AND program_id=#programId#
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;
+	</delete>
+	
+	<!-- Add By Devendra May 22 To get Student Data for edit -->
+	<select id="getStudentDataForEdit" resultClass="summaryBean">
+		 SELECT stt.component_description AS componentDescription,SUBSTRING(sr.cos_value,4,4) AS componentId,es.first_name AS firstName,es.middle_name AS middleName
+		,es.last_name AS lastName,es.father_first_name AS fatherFirstName,es.father_middle_name AS fatherMiddleName,es.father_last_name AS fatherLastName
+		,es.mother_first_name AS motherFirstName,es.mother_middle_name AS motherMiddleName,es.mother_last_name AS motherLastName,es.primary_email_id AS primaryEmail
+		,es.secondary_email_id AS secondaryEmail ,es.date_of_birth AS dob,es.category_code AS category,es.gender AS gender,es.nationality AS nationality
+		,es.religion AS religion,es.guardian_name AS guardian,es.minority AS minority ,es.marital_status AS maritalStatus,aam.home_phone AS phoneNumber,aam.other_phone AS otherPhone,aam.address_line1 AS addressLine1
+		,aam.address_line2 AS addressLine2,aam.city AS city,aam.state AS state,aam.pincode AS pincode,sfd.first_degree_code AS docId,sf.draft_number AS ddNo,sf.bank AS bankName
+		,sf.date AS ddDate,sf.amount AS ddAmount,sr.exam_center_code AS centerCode
+    	FROM student_registration sr  LEFT JOIN student_first_degree sfd ON
+    	sfd.program_id=sr.program_id AND sfd.registration_number=sr.registration_number
+		AND sfd.start_date=sr.start_date AND sfd.end_date=sr.end_date
+    	JOIN system_table_two stt ON stt.component_code=SUBSTRING(sr.cos_value,4,4) AND stt.group_code='SUBCOD' AND stt.university_code= #universityId#
+    	JOIN entity_student es ON es.student_id=sr.student_id AND es.university_id=stt.university_code
+    	JOIN admission_addresses_master aam ON aam.user_id=sr.student_id
+    	LEFT JOIN student_fee sf ON sf.registration_number=sr.registration_number
+    	WHERE sr.registration_number=#registrationNumber# AND sr.program_id=#programId#
+		AND sr.student_id=#studentId# ;
+	</select>
+	
+	<!-- Add By Devendra May 22 To get Student Academic Detail -->
+	<select id="getStudentAcademicDetail" resultClass="summaryBean">
+		SELECT component_id AS componentId,marks_percentage AS percentage,marks_obtained AS marksObtained 
+		,total_marks AS totalMarks,score AS score,board_id AS board
+		FROM student_call_list
+		WHERE entity_id=#entityId# AND program_id=#programId# AND registration_number=#registrationNumber# 
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate# ORDER BY component_id;
+	</select>
+	
+	<!-- Add By Devendra May 22 To Check Special Weightage -->
+	<select id="checkSpecialWeightageOfStudent" resultClass="summaryBean">
+		SELECT weightage_id AS componentId FROM student_special_weightage 
+		WHERE program_id=#programId# AND registration_number=#registrationNumber# AND start_date=#sessionStartDate# 
+		AND end_date=#sessionEndDate# AND university_id=#universityId# ORDER BY weightage_id;
+	</select>
+	
+	<!-- Add By Devendra May 22 To get Entrance Test Option -->
+	<select id="getEntranceTestDetail" resultClass="summaryBean">
+		SELECT paper_code AS paperCode,grouping AS grouping FROM student_paper 
+		WHERE program_id=#programId# AND registration_number=#registrationNumber# AND start_date=#sessionStartDate# 
+		AND end_date=#sessionEndDate#;
+	</select>
+	
+	<!-- Add By Devendra May 23 To get Cos Value for Edit -->
+	<select id="getCosValueForEdit" resultClass="java.lang.String">
+		SELECT SUBSTRING(cos_value,1,3) FROM student_registration 
+		WHERE student_id=#studentId# AND registration_number=#registrationNumber# AND start_date=#sessionStartDate# 
+		AND end_date=#sessionEndDate# AND program_id=#programId#;
+	</select>
+	
+	<!-- Add By Devendra May 23 To update  Cos Value AND center code -->
+	<update id="updateStudentRegistration">
+		UPDATE student_registration SET cos_value=#cosCode#,modification_time=now(),modifier_id=#userId# ,exam_center_code=#centerCode# 
+		WHERE student_id=#studentId# AND registration_number=#registrationNumber# AND start_date=#sessionStartDate# 
+		AND end_date=#sessionEndDate# AND program_id=#programId#;
+	</update>
+	
+	<!-- Add By Devendra May 23 To update admission_addresses_master -->
+	<update id="updateAddressMaster">
+		UPDATE admission_addresses_master SET address_line1=#addressLine1#,address_line2=#addressLine2#,city=#city#
+		,state=#state#,pincode=#pincode#,home_phone=#phoneNumber#,other_phone=#otherPhone#,modification_time=now(),modifier_id=#userId# 
+		WHERE user_id=#studentId#;
+	</update>
+	
+	<!-- Add By Devendra May 23 To update Fee Detail -->
+	<update id="updateFeeDetail">
+		UPDATE student_fee SET draft_number=#ddNo#,bank=#bankName#,date=#ddDate#,amount=#ddAmount#,modification_time=now(),modifier_id=#userId# WHERE registration_number=#registrationNumber#;
+	</update>
+	
+	<!-- Add By Devendra May 23 To update Student First Degree -->
+	<update id="updateFirstDegree">
+		UPDATE student_first_degree SET first_degree_code=#componentId# ,modification_time=now(),modifier_id=#userId# WHERE program_id=#programId# AND registration_number=#registrationNumber#
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;
+	</update>
+	
+	<!-- Add By Devendra May 23 To update Paper Code Detail -->
+	<update id="updatePaperCodeDetail">
+		UPDATE student_paper SET paper_code=#paperCode#,modification_time=now(),modifier_id=#userId# WHERE program_id=#programId# AND registration_number=#registrationNumber# 
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate# AND grouping=#grouping#;
+	</update>
+	
+	<!-- Add By Devendra May 23 To update Student Call List -->
+	<update id="updateStudentCallList">
+		UPDATE student_call_list SET marks_percentage=#percentage#,marks_obtained=#marksObtained#,total_marks=#totalMarks#,score=#score#,board_id=#board#,modification_time=now(),modifier_id=#userId#
+		WHERE program_id=#programId# AND registration_number=#registrationNumber# AND component_id=#componentId# 
+		AND entity_id=#entityId# AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;
+	</update>
+	
+	<!-- Add By Devendra May 23 To update Entity Student -->
+	<update id="updateEntityStudent">
+		UPDATE entity_student SET secondary_email_id=#secondaryEmail#,modification_time=now(),modifier_id=#userId#,guardian_name=#guardian#,minority=#minority#,marital_status=#maritalStatus# WHERE student_id=#studentId# AND university_id=#universityId#;
+	</update>
+	
+	<!-- Add By Devendra May 23 To Get Duplicate Count for component in special weightage-->
+	<select id="CheckDuplicateCountForSpecialWeightage" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM student_special_weightage 
+		WHERE university_id=#universityId# AND program_id=#programId# AND registration_number=#registrationNumber#
+		AND weightage_id=#componentId# AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;
+	</select>
+	
+	<!-- Add By Devendra May 23 To Delete Special Weightage Detail -->
+	<delete id="deleteSpecialWeightageDetail">
+		DELETE FROM student_special_weightage 
+		WHERE university_id=#universityId# AND program_id=#programId# AND registration_number=#registrationNumber#
+		AND weightage_id=#componentId# AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;
+	</delete>
+	
+	<!-- Add By Devendra May 23 To Get Duplicate Count for Document-->
+	<select id="checkDuplicateDocument" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM student_docs WHERE registration_number=#registrationNumber# AND doc_id=#docId#;
+	</select>	
+	
+	
+	<update id="updateStudentAddress">
+		UPDATE admission_addresses_master
+		SET address_line1=#addressLine1#,
+		address_line2=#addressLine2#,
+		city=#city#,
+		state=#state#,
+		pincode=#pincode#,
+		home_phone=#phoneNumber#,
+		other_phone=#otherPhone#,
+		modifier_id=#userId#,
+		modification_time=now()
+		WHERE user_id=#studentId#
+		AND address_key='PER'
+		AND user_type='STD'
+	</update>
+
+	<!-- add By Devendra June 5 To Delete Student special weightage -->
+	<delete id="deleteStudentSpclWeightage">
+		DELETE FROM student_special_weightage 
+		WHERE university_id=#universityId# AND registration_number=#registrationNumber# AND program_id=#programId# 
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;	
+	</delete>
+	
+	<!-- add By Devendra June 5 To Delete Student special weightage -->
+	<delete id="deleteStudentCallList">
+		DELETE FROM student_call_list 
+		WHERE registration_number=#registrationNumber# AND program_id=#programId# AND entity_id=#entityId# 
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;	
+	</delete>
+	
+	<!-- add By Devendra June 5 To Delete Student special weightage -->
+	<delete id="deleteStudentPaper">
+		DELETE FROM student_paper 
+		WHERE registration_number=#registrationNumber# AND program_id=#programId# 
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;	
+	</delete>
+	
+	<!-- add By Devendra June 5 To Delete Student special weightage -->
+	<delete id="deleteStudentFirstDegree">
+		DELETE FROM student_first_degree 
+		WHERE registration_number=#registrationNumber# AND program_id=#programId# 
+		AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;	
+	</delete>
+	
+	<!-- Add By Devendra June 6 To Get Duplicate Count for Student first Degree-->
+	<select id="checkStudentFirstDegreeDuplicate" resultClass="java.lang.Integer">
+		SELECT COUNT(*) FROM student_first_degree WHERE program_id=#programId# AND registration_number=#registrationNumber# AND first_degree_code=#componentId# AND start_date=#sessionStartDate# AND end_date=#sessionEndDate#;
+	</select>	
+	
+</sqlMap>

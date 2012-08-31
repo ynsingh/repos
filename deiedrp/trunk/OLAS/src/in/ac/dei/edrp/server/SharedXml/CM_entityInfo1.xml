@@ -10,7 +10,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 </resultMap>
 
 <select id="entityList1" resultMap="result">
-          select entity_description from UNIVERSITY_ENTITY_TYPE where university_id=#university_id#
+          select entity_description from university_entity_type where university_id=#university_id#
 </select>
 
 <!-- To get Entity_NAME starts -->
@@ -19,7 +19,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 </resultMap>
 
 <select id="entityNameList1" resultMap="resultname">
-          select entity_id,entity_name from ENTITY_MASTER where entity_type=#entity_type# AND university_id=#university_id#;
+          select entity_id,entity_name from entity_master where entity_type=#entity_type# AND university_id=#university_id#;
 </select>
 
 <!-- To get Program_name starts -->
@@ -28,7 +28,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 </resultMap>
 
 <select id="programNameList1" resultMap="resultprogram">
-          select distinct p.program_name from PROGRAM_OFFERED_BY pob,ENTITY_PROGRAM_MASTER p where pob.offered_by=#offeredby# and pob.program_id=p.program_id;
+          select distinct p.program_name from program_offered_by pob,entity_program_master p where pob.offered_by=#offeredby# and pob.program_id=p.program_id;
 </select>
 
 <!-- To get Branch_name starts -->
@@ -37,7 +37,7 @@ PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 </resultMap>
 
 <select id="branchNameList1" resultMap="resultbranch">
-          select distinct b.branch_name from PROGRAM_BRANCHES b,PROGRAM_OFFERED_BY pob
+          select distinct b.branch_name from program_branches b,program_offered_by pob
 where b.branch_code=pob.branch and pob.program_id=#program_id# and pob.offered_by=#offeredby#;
 </select>
 

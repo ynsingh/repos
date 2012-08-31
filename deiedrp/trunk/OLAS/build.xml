@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<project name="CourseManagement" default="build" basedir=".">
+<project name="${project}" default="deploy" basedir=".">
+<property file="build.properties"/>
+
+  <!-- This value is currently set asn_CM a property because
+       the top level cms build.xml file runs the "init" target
+       as part of testing and texen doesn't obey the ${basedir}
+       property so we must pass in the full path to the
+       build.properties for use with the contextProperties attribute.
+  -->
+  <property name="build.properties" value="build.properties"/>
   <!-- Configure path to GWT SDK -->
 <!--  <property name="gwt.sdk" location="war/WEB-INF/lib/" /> -->
   <property name="gwt.sdk" location="lib/" />
@@ -12,6 +21,7 @@
   	<pathelement location="lib/smartgwt.jar" />
   	<pathelement location="lib/gwtextux.jar" />
     <fileset dir="${gwt.sdk}" includes="gwt-dev*.jar"/>
+    <fileset dir="${gwt.sdk}" includes="**/*.jar"/>
     <!-- Add any additional non-server libs (such as JUnit) -->
     <fileset dir="war/WEB-INF/lib" includes="**/*.jar"/>
   </path>
@@ -19,6 +29,7 @@
   <target name="libs" description="Copy libs to WEB-INF/lib">
     <mkdir dir="war/WEB-INF/lib" />
     <copy todir="war/WEB-INF/lib" file="${gwt.sdk}/gwt-servlet.jar" />
+    
     <!-- Add any additional server libs that need to be copied -->
   </target>
 
@@ -43,8 +54,9 @@
       </classpath>
       <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
       <jvmarg value="-Xmx512M"/>
+	  <jvmarg value="-Xss32M"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-      <arg value="in.ac.dei.edrp.CourseManagement"/>
+      <arg value="${package}.${project}"/>
     </java>
   </target>
 
@@ -56,21 +68,55 @@
       </classpath>
       <jvmarg value="-Xmx512M"/>
       <arg value="-startupUrl"/>
-      <arg value="CourseManagement.html"/>
+      <arg value="${project}.html"/>
       <!-- Additional arguments like -style PRETTY or -logLevel DEBUG -->
-      <arg value="in.ac.dei.edrp.CourseManagement"/>
+      <arg value="${package}.${project}"/>
     </java>
   </target>
 
   <target name="build" depends="gwtc" description="Build this project" />
 
   <target name="war" depends="build" description="Create a war file">
-    <zip destfile="coursemanagement1.3.war" basedir="war"/>
+    <zip destfile="${project}.war" basedir="war"/>
   </target>
-
+  
+   <target name="undeploy" description="undeploys the web app. from Tomcat">    
+    <delete dir="${tomcat.dir}/webapps/${project}"/>
+    <delete file="${tomcat.dir}/webapps/${project}.war"/>
+  </target>
+  
+ <target name="deploy" depends="war,undeploy,createadminaccount"
+    description="deploys the war file to Tomcat">
+    <copy file="${project}.war" todir="${tomcat.dir}/webapps"/>
+    <echo message="============================================================"/>
+    <echo message="=YOUR PROJECT IS SUCCESSFULLY BUILD AND NOW READY TO BROWSE :)==="/>
+    <echo message="============Browse the URL - ${tomcat.url}/${project}=============="/>
+    <echo message="========================================================="/>
+  </target>
+  
   <target name="clean" description="Cleans this project">
     <delete dir="war/WEB-INF/classes" failonerror="false" />
-    <delete dir="war/CourseManagement" failonerror="false" />
+    <delete dir="war/AdmissionSystem" failonerror="false" />
   </target>
 
+<!-- ====================================================================  -->
+  <!-- C R E A T E  D A T A B A S E  A D M I N A N D G U E S T A C C O U N T -->
+  <!-- ====================================================================  -->
+  <target name="createadminaccount">
+	<sql
+      		autocommit="true"
+      		driver="${database.driver}"
+            onerror="continue"
+      		password="${password}"
+      		src="Script/admission_system.sql"
+      		url="${url}"
+      		userid="${login}">
+      		<classpath refid="project.class.path"/>
+	</sql>
+	<echo message="====================================================="/>
+    <echo message="============Database Created Successfully============"/>
+	<echo message="The account to login is admin and password is admin"/>
+	<echo message="====================================================="/>
+  </target>
+  
 </project>

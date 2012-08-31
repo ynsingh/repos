@@ -37,7 +37,7 @@
   </resultMap>
  
   <select id="Getprogram_id" resultMap="program_idGetter"> 
-SELECT program_id FROM ENTITY_PROGRAM_MASTER where program_name=#program_name#
+SELECT program_id FROM program_master where program_name=#program_name#;
 					
   </select>
   
@@ -50,7 +50,7 @@ SELECT program_id FROM ENTITY_PROGRAM_MASTER where program_name=#program_name#
   </resultMap>
  
   <select id="Getprogram_name" resultMap="program_nameGetter"> 
-SELECT program_name FROM ENTITY_PROGRAM_MASTER
+SELECT program_name FROM program_master
 					
   </select>
   
@@ -62,7 +62,7 @@ SELECT program_name FROM ENTITY_PROGRAM_MASTER
   </resultMap>
  
   <select id="Getprogram_offid" resultMap="program_offid"> 
-SELECT program_id FROM  PROGRAM_OFFERED_BY  
+SELECT program_id FROM  program_offered_by  
 					
   </select>
   
@@ -75,26 +75,38 @@ SELECT program_id FROM  PROGRAM_OFFERED_BY
   </resultMap>
  
   <select id="GetprogramOff" resultMap="program_nameGetter1"> 
- SELECT program_name,program_id FROM ENTITY_PROGRAM_MASTER where  program_id IN ( SELECT program_id from  PROGRAM_OFFERED_BY  where offered_by IN(Select entity_id
- from ENTITY_MASTER where entity_name=#entity_name#))
+ SELECT distinct program_name,program_id FROM program_master where  program_id IN 
+ ( SELECT program_id from  program_offered_by  where program_id LIKE #entity_name#)
+					
+  </select>
+  
+   <select id="GetprogramOffered" resultMap="program_nameGetter1"> 
+ SELECT distinct program_name,program_id FROM program_master where  program_id IN 
+ ( SELECT program_id from  program_offered_by  where offered_by= #entity_name#)
+					
+  </select>
+  
+     <select id="GetprogramOfferedonManage" resultMap="program_nameGetter1"> 
+ SELECT distinct program_name,program_id FROM program_master where  program_id IN 
+ ( SELECT program_id from  program_offered_by  where offered_by= #entity_id#)
 					
   </select>
   
   
    <update id="editProg"> 
-  update ENTITY_PROGRAM_COURSE set credits =#credits# ,lectures=#lectures#,tutorials=#tutorials#,practicals=#practicals#,
+  update entity_program_course set credits =#credits# ,lectures=#lectures#,tutorials=#tutorials#,practicals=#practicals#,
   units=#units#,Available=#Available# where course_code =#course_code# and program_id=#program_id#
  
   </update>
   
   
   <update id="disableProg"> 
-  update ENTITY_PROGRAM_COURSE set status=#status# where course_code =#course_code# 
+  update entity_program_course set status=#status# where course_code =#course_code# 
  
   </update>
   
   <insert id="insertProg"> 
-  insert into ENTITY_PROGRAM_COURSE values
+  insert into entity_program_course values
   (			
   			#university_code#,		
 			#program_id#,	
@@ -132,7 +144,7 @@ SELECT program_id FROM  PROGRAM_OFFERED_BY
  
   <select id="checkProgram" resultMap="checkProgramGetter"> 
  	 
-SELECT Distinct course_code FROM ENTITY_PROGRAM_COURSE where university_code=#university_code# and program_id=#program_id#
+SELECT Distinct course_code FROM entity_program_course where university_code=#university_code# and program_id=#program_id#
 and Entity_program_TermID=#Entity_program_TermID# and  status=#status#
 		
   </select>
@@ -148,7 +160,7 @@ and Entity_program_TermID=#Entity_program_TermID# and  status=#status#
   </resultMap>
  
   <select id="getPaperCode" resultMap="PaperCodeGetter"> 
-  SELECT paper_code, paper_description from PAPER_CODES where paper_code IN(SELECT paper_code from PROGRAM_PAPER_CODE  where grouping=#grouping# and program_id =#program_id#)
+   SELECT component_code paper_code,component_description paper_description from system_table_two where group_code='PAPCOD' and  component_code IN(SELECT paper_code from program_paper_code  where grouping=#grouping# and program_id =#program_id#)
 		
   </select>
   
@@ -162,7 +174,7 @@ and Entity_program_TermID=#Entity_program_TermID# and  status=#status#
  
   <select id="getFirstDegreeCode" resultMap="FirstDegreeCodeGetter"> 
   	 
-SELECT program_name,program_id FROM ENTITY_PROGRAM_MASTER where program_id IN (SELECT 	degree_code from PROGRAM_DEGREE where program_id=#program_id#
+SELECT program_name,program_id FROM program_master where program_id IN (SELECT 	degree_code from program_degree where program_id=#program_id#
 and UG_PG=#UGorPG#)
 		
   </select>
@@ -175,9 +187,38 @@ and UG_PG=#UGorPG#)
   </resultMap>
  
   <select id="GetBranch" resultMap="branch_name"> 
+  
+  		select distinct 
+		sys1.component_code as
+		branch_code,sys1.component_description as
+		branch_name from
+		system_table_two sys1,program_offered_by pob where
+		pob.branch_id=sys1.component_code AND pob.program_id=#program_id# 
+		AND sys1.group_code='BRNCOD' AND
+		sys1.university_code=#university_id# AND sys1.active=1;
 	
-	select distinct pbs.branch_name,pbs.branch_code FROM PROGRAM_BRANCHES pbs,PROGRAM_OFFERED_BY pob
- where pob.branch=pbs.branch_code AND pob.program_id=#program_id# AND pob.offered_by=#entity_id#  AND pbs.university_id=#university_id#;
+	
+					
+  </select>
+  
+  <resultMap id="special_name" class="progInfo">
+
+    <result property="specialization_name" column="specialization_name"/>
+     <result property="specialization_id" column="specialization_id"/>
+
+  </resultMap>
+ 
+  <select id="Getspecialization" resultMap="special_name"> 
+  
+  		select distinct 
+		sys1.component_code as
+		specialization_id,sys1.component_description as
+		specialization_name from
+		system_table_two sys1,program_offered_by pob where
+		pob.branch_id=#branch_id# AND pob.specialization_id=sys1.component_code AND pob.program_id=#program_id# 
+		AND pob.offered_by=#entity_id# AND sys1.group_code='SPCLCD' AND
+		sys1.university_code=#university_id# AND sys1.active=1;
+	
 					
   </select>
   
@@ -191,7 +232,8 @@ and UG_PG=#UGorPG#)
  
   <select id="GetBranchID" resultMap="branch_id"> 
   
-  SELECT branch_code FROM PROGRAM_BRANCHES where branch_name=#branch_name#
+  SELECT component_code as branch_code FROM system_table_two where 
+  component_description=#branch_name# AND group_code='BRNCOD' AND university_code=#university_id#;
 	
 	<!--  SELECT branch_code FROM PROGRAM_BRANCHES where program_id=#program_id# and branch_name=#branch_name#-->
 	
@@ -207,8 +249,8 @@ and UG_PG=#UGorPG#)
  
   <select id="GetCOS_value" resultMap="getcos_value"> 
 	
-	SELECT cos_value FROM CALL_CUT_OFF where program_id=#program_id# and offered_by=#entity_id# and branch_code=#branch# and 
-	cos_value LIKE #cos_value#
+	SELECT cos_value FROM call_cut_off where program_id=#program_id# and offered_by=#entity_id#  and 
+	cos_value LIKE #cos_value#;
 					
   </select>
   
@@ -230,7 +272,7 @@ and UG_PG=#UGorPG#)
   </resultMap>
 
 <select id="uniMode" resultMap="uniModeGetter">
-select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#university_id#
+select mode_name,program_mode from university_program_mode where university_id=#university_id#
 </select>
 
 
@@ -243,7 +285,7 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
 
 
 	<select id="uniType" resultMap="uniTypeGetter">
-	select type_name,program_type from UNIVERSITY_PROGRAM_TYPE where university_id=#university_id#
+	select type_name,program_type from university_program_type where university_id=#university_id#
 	</select>
 
 
@@ -258,7 +300,7 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
  
   <select id="GetComponent_id" resultMap="component_idGetter"> 
 
-  SELECT component_id FROM COMPONENT_DESCRIPTION where description=#component#
+  SELECT component_id FROM component_description where description=#component#
 					
   </select>
    
@@ -267,6 +309,7 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
     <result property="entity_id" column="entity_id"/>
     <result property="program_id" column="program_id"/>
     <result property="branch_code" column="branch_code"/>  
+    <result property="specialization_id" column="specialization_code"/>
     <result property="category" column="category"/>
     <result property="age_limit" column="age_limit"/>
    
@@ -274,8 +317,15 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
   </resultMap>
  
   <select id="checkProgAgeElig" resultMap="CheckAgeElig"> 
-  SELECT *  FROM PROGRAM_AGE_ELIGIBILITY 
+  SELECT *  FROM program_age_eligibility 
 
+  </select>  
+  
+  <!-- Update by Devendra June 8 -->
+  <select id="getProgAgeElig" resultClass="in.ac.dei.edrp.client.CM_ProgramInfoGetter"> 
+ 	 SELECT pm.program_name AS program_name,pa.program_id AS program_id,pa.category AS category,pa.age_limit AS age_limit 
+ 	 FROM program_age_eligibility pa,program_master pm 
+ 	 WHERE pm.program_id=pa.program_id AND entity_id=#entity_id#;
   </select>  
   
   
@@ -283,7 +333,6 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
 
     <result property="entity_id" column="entity_id"/>
     <result property="program_id" column="program_id"/>
-    <result property="branch_code" column="branch_code"/>  
     <result property="category" column="category"/>
     <result property="component_id" column="component_id"/>
     <result property="cut_off_percentage" column="cut_off_percentage"/>
@@ -292,12 +341,12 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
   </resultMap>
  
   <select id="checkProgCompElig" resultMap="CheckCompAgeElig"> 
-  SELECT *  FROM PROGRAM_COMPONENT_ELIGIBILITY 
+  SELECT *  FROM program_component_eligibility 
 
   </select>  
   
    <select id="getProgCompElig" resultMap="CheckCompAgeElig"> 
-  SELECT *  FROM PROGRAM_COMPONENT_ELIGIBILITY where entity_id=#entity_id#
+  SELECT *  FROM program_component_eligibility where entity_id=#entity_id#;
 
   </select>  
   
@@ -305,12 +354,10 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
 
     <result property="entity_id" column="offered_by"/>
     <result property="program_id" column="program_id"/>
-    <result property="branch_code" column="branch_code"/>  
-     
      </resultMap> 
      
   <select id="checkComponents" resultMap="CheckComps"> 
-  select distinct(branch_code),program_id,offered_by  FROM PROGRAM_COMPONENTS
+  select distinct program_id,offered_by  FROM program_components
 
   </select>
   
@@ -325,7 +372,7 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
  
   <select id="GetComponent_name" resultMap="component_nameGetter"> 
 
-  SELECT description FROM COMPONENT_DESCRIPTION where component_id=#component_id#
+  SELECT description FROM component_description where component_id=#component_id#
 					
   </select>
   
@@ -338,99 +385,85 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
  
   <select id="GetprogramName" resultMap="program"> 
 
-	SELECT program_name FROM ENTITY_PROGRAM_MASTER where  program_id =#program_id#
+	SELECT program_name FROM program_master where  program_id =#program_id#
 					
   </select>
   
-   <resultMap id="branch_name" class="progInfo">
+   <resultMap id="nameofthebranch" class="progInfo">
 
     <result property="branch_name" column="branch_name"/>
     
 
   </resultMap>
  
-  <select id="Getbranch_name" resultMap="branch_name"> 
+  <select id="Getbranch_name" resultMap="nameofthebranch"> 
   
-  SELECT branch_name FROM PROGRAM_BRANCHES where branch_code=#branch#
+  SELECT component_description as branch_name FROM 
+  system_table_two where component_code=#branch# 
+  AND group_code='BRNCOD' AND active=1 
+  AND university_code=#university_id#;	
+					
+  </select>
+  
+  <resultMap id="specialization_name" class="progInfo">
+
+    <result property="specialization_name" column="specialization_name"/>
+    <result property="university_name" column="university_name"/>
+    
+
+  </resultMap>
+ 
+  <select id="Getspecialization_name" resultMap="specialization_name"> 
+  
+  SELECT sys.component_description as specialization_name,uni.university_name FROM 
+  system_table_two sys,university_master uni where 
+  sys.component_code=#specialization_id# AND sys.group_code='SPCLCD' AND 
+  active=1 AND sys.university_code=uni.university_code AND uni.university_code=#university_id#;
 	
 					
   </select>
   
+  <!-- Update by Devendra June 8 -->
    <update id="editProgAgeLimit"> 
-  update PROGRAM_AGE_ELIGIBILITY set
-  
-   age_limit =#age_limit#,
-   modification_time=#modification_time#,
-   modifier_id=#modifier_id#
-   
-    where  program_id=#program_id# and branch_code=#branch_code# and category=#category#
- 
+   		UPDATE program_age_eligibility SET age_limit =#age_limit#, modification_time=now(), modifier_id=#modifier_id# 
+   		WHERE entity_id=#entity_id# AND program_id=#program_id# AND category=#category#;
   </update>
   
   
-   <update id="editProgCompElig"> 
-  update PROGRAM_COMPONENT_ELIGIBILITY set 
-  
+   <update id="editProgCompElig">    
+  update program_component_eligibility set   
   cut_off_percentage =#cut_off_percentage#,
-  modification_time=#modification_time#,
+  modification_time=now(),
   modifier_id=#modifier_id#
-  
-    where  entity_id=#entity_id# and program_id=#program_id# and branch_code=#branch_code#
-  and component_id=#component_id# and category=#category#
+  where  entity_id=#entity_id# and program_id=#program_id#
+  and component_id=#component_id# and category=#category# ;
  
   </update>
   
-  
-   <delete id="deleteProgAgeLimit"> 
-  delete from PROGRAM_AGE_ELIGIBILITY  where  program_id=#program_id# and branch_code=#branch_code#
-  and category=#category#
- 
+   <!-- Update by Devendra June 8 -->
+   <delete id="deleteProgAgeLimit">    
+	  DELETE FROM program_age_eligibility  
+	  WHERE  entity_id=#entity_id# AND program_id=#program_id# AND category=#category#;
   </delete>
   
   
    <delete id="deleteProgCompElig"> 
-  delete from PROGRAM_COMPONENT_ELIGIBILITY where  entity_id=#entity_id# and program_id=#program_id# and branch_code=#branch_code#
-  and component_id=#component_id# and category=#category#
-  and category=#category#
- 
+	  delete from program_component_eligibility where  entity_id=#entity_id# and program_id=#program_id# 
+	  and component_id=#component_id# and category=#category#;
   </delete>
    
- <insert id="progEligibilityInfo"> 
- insert into PROGRAM_AGE_ELIGIBILITY values(
- 
- 								#entity_id#,
- 								#program_id#,
- 								#branch_code#,
- 								#category#,
- 								#age_limit#,
- 								#insert_time#,
- 								null,
- 								#creator_id#,
- 								null
- 					
- 								
- 								
- 								);
-  </insert>
+   <!-- Update By devendra June 8 -->
+ 	<insert id="progEligibilityInfo"> 
+	 	INSERT INTO program_age_eligibility (entity_id,program_id,category,age_limit,creator_id,insert_time) 
+	 	VALUES(#entity_id#,#program_id#,#category#,#age_limit#,#creator_id#,now());
+  	</insert>
   
   
    
  <insert id="CompAgeEligibility"> 
- insert into PROGRAM_COMPONENT_ELIGIBILITY values(
- 
- 								#entity_id#,
- 								#program_id#,
- 								#branch_code#,
- 								#component_id#,
- 								#category#,
- 								#cut_off_percentage#,
- 								#insert_time#,
- 								null,
- 								#creator_id#,
- 								null
- 					
- 								
- 								);
+ insert into program_component_eligibility (entity_id,program_id,
+ 	category,component_id,cut_off_percentage,creator_id,insert_time)values(#entity_id#,#program_id#,
+ 	#category#,#component_id#,#cut_off_percentage#,#creator_id#,now());
   </insert>
   
   
@@ -443,17 +476,10 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
  
   <select id="GetPCcount" resultMap="compCount"> 
   
-   SELECT component_id  FROM PROGRAM_COMPONENTS where  program_id=#program_id# and branch_code=#branch_code#
-	
+   SELECT distinct component_id  FROM program_components where  
+   program_id=#program_id# and offered_by=#entity_id#;
 					
   </select>
-  
-  
-  
-  
-  
-  
-  
   
   <resultMap id="progcomp" class="progInfo">
 
@@ -469,8 +495,8 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
  
   <select id="GetProgComponents" resultMap="progcomp"> 
   
-   SELECT component_id,type,sequence_number,board_flag,ug_pg,special_weightage_flag  FROM PROGRAM_COMPONENTS 
-   where program_id=#program_id# and branch_code=#branch_code# order by sequence_number
+   SELECT distinct component_id,type,sequence_number,board_flag,ug_pg,special_weightage_flag  FROM program_components 
+   where program_id=#program_id#  order by sequence_number;
 	
 					
   </select>
@@ -485,7 +511,7 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
  
   <select id="GetGrouping" resultMap="groupingGetter"> 
 
-  SELECT distinct grouping from PROGRAM_PAPER_CODE where program_id =#program_id# order by grouping			
+  SELECT distinct grouping from program_paper_code where program_id =#program_id# order by grouping			
   </select>
   
   
@@ -500,17 +526,71 @@ select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#
  
   <select id="GetProgRegValue" resultMap="RegvalueGetter"> 
 
-  SELECT value from PROGRAM_REGISTRATION_NUMBER  where university_id =#university_id# AND entity_id=#entity_id# AND program_id=#program_id# and branch_code=#branch_code# 			
+  SELECT distinct value from program_registration_number  where 
+  university_id =#university_id# AND entity_id=#entity_id# AND program_id=#program_id#;			
+  </select>
+  
+  <select id="GetProgRegValueforupdate" resultMap="RegvalueGetter"> 
+
+  SELECT distinct value from program_registration_number  where 
+  university_id =#university_id# AND entity_id=#entity_id# AND program_id=#program_id# FOR UPDATE;			
   </select>
   
   <insert id="insertIntialProgRegValue" > 
-      insert into PROGRAM_REGISTRATION_NUMBER (university_id, entity_id, program_id, branch_code, value) values (#university_id#, #entity_id#, #program_id#, #branch_code#, #value#); 			
+      insert into program_registration_number (university_id, entity_id, program_id, value) values (#university_id#, #entity_id#, #program_id#, #value#); 			
   </insert>
     
-   <update id="updateProgRegValue"> 
-   update PROGRAM_REGISTRATION_NUMBER set value=#value# where university_id =#university_id# AND entity_id=#entity_id# AND program_id=#program_id# and branch_code=#branch_code#
- 						
+    <!-- query updated -->
+   <update id="updateProgRegValue">
+	update program_registration_number set value=#value# where university_id
+	=#university_id# AND entity_id=#entity_id# AND program_id=#program_id#;					
   </update>
   
+  <resultMap id="checkSpecialization" class="progInfo">
+
+      <result property="specialization_id" column="specialization_id"/>
+
+  </resultMap>
+ 
+  <select id="checkFirstSemSpecialization" resultMap="checkSpecialization"> 
+	
+	SELECT specialization_id from program_branch_specialization where program_id=#program_id# AND branch_id=#branch_code# AND active_specialization_semester='SM1' 
+					
+  </select>
   
+  <resultMap id="specialization" class="progInfo">
+
+      <result property="specialization_name" column="specialization_name"/>
+      <result property="specialization_id" column="specialization_code"/>
+
+  </resultMap>
+ 
+  <select id="getSpecialization" resultMap="specialization"> 
+	
+	SELECT component_code as specialization_code, component_description as specialization_name  
+	from system_table_two where university_code=#university_id# AND component_code=#specialization_id# AND group_code='SPCLCD'; 
+					
+  </select>
+  
+  <select id="GetSubject" resultClass="progInfo"> 
+  		SELECT distinct p.cos_code AS subject_code,stt.component_description AS subject_description 
+  		FROM program_cos_code p JOIN system_table_two stt ON 
+  		p.cos_code=stt.component_code AND stt.group_code='SUBCOD' AND stt.university_code=#university_id# AND p.program_id=#program_id# AND p.university_id=#university_id#;				
+  </select>
+  
+  <insert id="setUpSubjectCode">
+  	INSERT INTO program_cos_code(university_id,program_id,cos_code)
+	VALUES(#university_id#,#program_id#,#subject_code#);
+  </insert>        
+  
+  <delete id="deleteSubjectCode">
+  	DELETE FROM program_cos_code
+  	WHERE program_id=#program_id# AND cos_code=#subject_code# AND university_id=#university_id#;
+  </delete>
+  
+  <select id="GetSubjectList" resultClass="progInfo"> 
+  	SELECT component_code AS subject_code,component_description AS subject_description
+  	FROM system_table_two WHERE university_code=#university_id# AND group_code='SUBCOD'
+  	AND component_code NOT IN(SELECT cos_code FROM program_cos_code WHERE university_id=#university_id# AND program_id=#program_id#);				
+  </select>     
 </sqlMap>

@@ -62,7 +62,9 @@ public class ReadXLSheet {
 		@SuppressWarnings("unused")
 		int columnCount = '0';
 		int totalSheet = 0;
+		@SuppressWarnings("unused")
 		String query = "";
+		@SuppressWarnings("unused")
 		String query1 = "";
 		DatabaseConnection DBConnection = new DatabaseConnection();
 		try {
@@ -154,6 +156,7 @@ public class ReadXLSheet {
 					String upb=rowData[13].getContents();
 					String rei=rowData[14].getContents();
 					String staff=rowData[15].getContents();
+					@SuppressWarnings("unused")
 					String sat=rowData[16].getContents();
 					
 					String student_id=rowData[22].getContents();
@@ -197,6 +200,7 @@ public class ReadXLSheet {
 					ps1.setString(5,category);
 					ps1.setString(6,"Male");
 					ps1.setString(7,father_name);
+					@SuppressWarnings("unused")
 					int x=ps1.executeUpdate();
 										
 					PreparedStatement ps2=con.prepareStatement("insert into ADDRESSES_MASTER (user_type,user_id,city) values " +

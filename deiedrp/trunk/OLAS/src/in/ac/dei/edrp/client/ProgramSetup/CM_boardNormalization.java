@@ -53,6 +53,7 @@ import in.ac.dei.edrp.client.RPCFiles.CM_boardConnectAsync;
 import in.ac.dei.edrp.client.Shared.Validator;
 import in.ac.dei.edrp.client.Shared.constants;
 import in.ac.dei.edrp.client.Shared.messages;
+import in.ac.dei.edrp.client.summarysheet.CommonValidation;
 
 import java.util.List;
 
@@ -78,7 +79,6 @@ public class CM_boardNormalization {
     String consEntityName = labels.entityName();
     String consEntityType = labels.entityType();
     String consProgName = labels.label_programname();
-    String consBranchName = labels.label_branchname();
     String msgAtleastOneRec = msg.atleastOneRecord();
     String msgOnlyOneRec = msg.onlyOneRecord();
     String consBoardName = labels.labelBoardName();
@@ -90,7 +90,6 @@ public class CM_boardNormalization {
     Validator validator = new Validator();
     Store progNameStore;
     Store boardStore;
-    Store branchStore;
     Store compStore;
     String pagename = "Program Board";
     String[] values;
@@ -110,12 +109,11 @@ public class CM_boardNormalization {
     /*
      * method to add normalization factor
      */
-    public void methodBoardNormalization(String action) {
-        FormPanel boardNormDetailsForm = new FormPanel();
+    public void methodBoardNormalization(final String action) {
+        final FormPanel boardNormDetailsForm = new FormPanel();
 
         final ComboBox programComboBox = new ComboBox();
         final ComboBox entityComboBox = new ComboBox();
-        final ComboBox branchComboBox = new ComboBox();
         final ComboBox compComboBox = new ComboBox();
         final ComboBox boardComboBox = new ComboBox();
         final NumberField factorField = new NumberField();
@@ -132,15 +130,14 @@ public class CM_boardNormalization {
         entityComboBox.disable();
         compComboBox.disable();
         programComboBox.disable();
-        branchComboBox.disable();
         okButton.disable();
         cbSelectionModel.lock();
         editButton.disable();
         deletebutton.disable();
 
         factorField.setAllowBlank(false);
-        factorField.setMaxLength(6);
-        factorField.setDecimalPrecision(4);
+        factorField.setMaxLength(3);
+        factorField.setDecimalPrecision(1);
         factorField.setReadOnly(false);
 
         CM_progTermDetails ptd = new CM_progTermDetails(userid);
@@ -157,11 +154,6 @@ public class CM_boardNormalization {
         /*
          * setting properties of branch name list combobox
          */
-        methodBranchComboSettings(branchComboBox);
-
-        /*
-         * setting properties of branch name list combobox
-         */
         methodComponentComboSettings(compComboBox);
 
         /*
@@ -169,51 +161,29 @@ public class CM_boardNormalization {
          */
         methodBoardComboSettings(boardComboBox);
 
-        /*
-         * populating values in <code>programComboBox</code>
-         */
-        if (action.equalsIgnoreCase("add")) {
-            boardNormDetailsForm.setSize("350px", "210px");
-
-            methodProgramPopulate(programComboBox);
-        } else {
-            boardNormDetailsForm.setSize("350px", "180px");
-            methodProgramPopulateManage(programComboBox);
-        }
-
+        methodEntityPopulate(entityComboBox);
+        
         programComboBox.addListener(new ComboBoxListenerAdapter() {
                 public void onSelect(ComboBox comboBox, Record record, int index) {
-                    methodEntityPopulate(entityComboBox, comboBox.getValue());
-                    entityComboBox.reset();
-                    branchComboBox.reset();
-                    compComboBox.reset();
-                    boardComboBox.reset();
+                	 methodCompList(programComboBox.getValue(), entityComboBox.getValue(),compComboBox);                	 
                 }
             });
 
         entityComboBox.addListener(new ComboBoxListenerAdapter() {
                 public void onSelect(ComboBox comboBox, Record record, int index) {
-                    methodBranchList(programComboBox.getValue(),
-                        comboBox.getValue(), branchComboBox);
-                    branchComboBox.reset();
-                    compComboBox.reset();
-                    boardComboBox.reset();
-                }
-            });
-
-        branchComboBox.addListener(new ComboBoxListenerAdapter() {
-                public void onSelect(ComboBox comboBox, Record record, int index) {
-                    methodCompList(programComboBox.getValue(),
-                        entityComboBox.getValue(), comboBox.getValue(),
-                        compComboBox);
-                    compComboBox.reset();
-                    boardComboBox.reset();
+                	 if (action.equalsIgnoreCase("add")) {
+                         boardNormDetailsForm.setSize("400px", "220px");
+                         methodProgramPopulate(entityComboBox.getValue(),programComboBox);
+                         
+                     } else {
+                         boardNormDetailsForm.setSize("350px", "200px");         
+                         methodProgramPopulateManage(entityComboBox.getValue(),programComboBox);
+                     }      
                 }
             });
         compComboBox.addListener(new ComboBoxListenerAdapter() {
                 public void onSelect(ComboBox comboBox, Record record, int index) {
                     methodboardList(boardComboBox);
-                    boardComboBox.reset();
                 }
             });
 
@@ -227,22 +197,19 @@ public class CM_boardNormalization {
         }
 
         tableFlexTable.clear();
-        tableFlexTable.setWidget(3, 0, new Label(consProgName));
-        tableFlexTable.setWidget(3, 1, programComboBox);
-        tableFlexTable.setWidget(4, 0, new Label(consEntityName));
-        tableFlexTable.setWidget(4, 1, entityComboBox);
-        tableFlexTable.setWidget(5, 0, new Label(consBranchName));
-        tableFlexTable.setWidget(5, 1, branchComboBox);
-        tableFlexTable.setWidget(6, 0,
-            new Label(labels.select() + " " + labels.component()));
-        tableFlexTable.setWidget(6, 1, compComboBox);
-        tableFlexTable.setWidget(7, 0, new Label(labels.chooseBoard()));
-        tableFlexTable.setWidget(7, 1, boardComboBox);
+        tableFlexTable.setWidget(3, 0, new Label(consEntityName));
+        tableFlexTable.setWidget(3, 1, entityComboBox);
+        tableFlexTable.setWidget(4, 0, new Label(consProgName));
+        tableFlexTable.setWidget(4, 1, programComboBox);
+        tableFlexTable.setWidget(5, 0,new Label(labels.select() + " " + labels.component()));
+        tableFlexTable.setWidget(5, 1, compComboBox);
+        tableFlexTable.setWidget(6, 0, new Label(labels.selectBoard()));
+        tableFlexTable.setWidget(6, 1, boardComboBox);
 
         if (action.equalsIgnoreCase("add")) {
-            tableFlexTable.setWidget(8, 0,
+            tableFlexTable.setWidget(7, 0,
                 new Label(labels.label_enterNormFactor()));
-            tableFlexTable.setWidget(8, 1, factorField);
+            tableFlexTable.setWidget(7, 1, factorField);
         }
 
         loginconnect.getAuthorityOnPage(pagename.trim(), userid,
@@ -262,11 +229,10 @@ public class CM_boardNormalization {
                                         entityComboBox.enable();
                                         compComboBox.enable();
                                         programComboBox.enable();
-                                        branchComboBox.enable();
                                         okButton.enable();
                                         cbSelectionModel.unlock();
-                                        editButton.setDisabled(false);
-                                        deletebutton.setDisabled(false);
+                                        editButton.setDisabled(true);
+                                        deletebutton.setDisabled(true);                                        
                                         cbSelectionModel.addListener(new RowSelectionListener() {
                                                 public boolean doBeforeRowSelect(
                                                     RowSelectionModel sm,
@@ -334,38 +300,29 @@ public class CM_boardNormalization {
                                             });
                                     } else {
                                         values = new String[result.size()];
-
-                                        for (int i = 0; i < result.size();
-                                                i++) {
+                                        for (int i = 0; i < result.size();i++) {
                                             values[i] = result.get(i);
-
-                                            if (values[i].equalsIgnoreCase(
-                                                        "create")) {
+                                            if (values[i].equalsIgnoreCase("create")) {
                                                 entityComboBox.enable();
                                                 compComboBox.enable();
                                                 programComboBox.enable();
-                                                branchComboBox.enable();
                                                 okButton.enable();
                                             }
 
-                                            if (values[i].equalsIgnoreCase(
-                                                        "view")) {
+                                            if (values[i].equalsIgnoreCase("view")) {
                                                 entityComboBox.enable();
                                                 compComboBox.enable();
                                                 programComboBox.enable();
-                                                branchComboBox.enable();
                                                 okButton.enable();
                                             }
 
-                                            if (values[i].equalsIgnoreCase(
-                                                        "update")) {
+                                            if (values[i].equalsIgnoreCase("update")) {
                                                 entityComboBox.enable();
                                                 compComboBox.enable();
                                                 programComboBox.enable();
-                                                branchComboBox.enable();
                                                 okButton.enable();
                                                 cbSelectionModel.unlock();
-                                                editButton.setDisabled(false);
+                                                editButton.setDisabled(false);                                            
                                                 cbSelectionModel.addListener(new RowSelectionListener() {
                                                         public boolean doBeforeRowSelect(
                                                             RowSelectionModel sm,
@@ -411,16 +368,13 @@ public class CM_boardNormalization {
                                                     });
                                             }
 
-                                            if (values[i].equalsIgnoreCase(
-                                                        "delete")) {
+                                            if (values[i].equalsIgnoreCase("delete")) {
                                                 entityComboBox.enable();
                                                 compComboBox.enable();
                                                 programComboBox.enable();
-                                                branchComboBox.enable();
                                                 okButton.enable();
                                                 cbSelectionModel.unlock();
-                                                deletebutton.setDisabled(false);
-
+                                                deletebutton.setDisabled(false);                                               
                                                 cbSelectionModel.addListener(new RowSelectionListener() {
                                                         public boolean doBeforeRowSelect(
                                                             RowSelectionModel sm,
@@ -475,104 +429,58 @@ public class CM_boardNormalization {
          */
         addButton.addListener(new ButtonListenerAdapter() {
                 public void onClick(Button button, EventObject e) {
-                    boolean flag = true;
-
-                    if (validator.nullValidator(programComboBox.getRawValue())) {
-                        try {
-                            programComboBox.markInvalid("");
-                        } catch (Exception e1) {
-                            flag = false;
-                        }
-
-                        flag = false;
-                    }
-
-                    if (validator.nullValidator(entityComboBox.getRawValue())) {
-                        try {
-                            entityComboBox.markInvalid("");
-                        } catch (Exception e1) {
-                            flag = false;
-                        }
-
-                        flag = false;
-                    }
-
-                    if (validator.nullValidator(branchComboBox.getRawValue())) {
-                        try {
-                            branchComboBox.markInvalid("");
-                        } catch (Exception e1) {
-                            flag = false;
-                        }
-
-                        flag = false;
-                    }
-
-                    if (validator.nullValidator(compComboBox.getRawValue())) {
-                        try {
-                            compComboBox.markInvalid("");
-                        } catch (Exception e1) {
-                            flag = false;
-                        }
-
-                        flag = false;
-                    }
-
-                    if (validator.nullValidator(boardComboBox.getRawValue())) {
-                        try {
-                            boardComboBox.markInvalid("");
-                        } catch (Exception e1) {
-                            flag = false;
-                        }
-
-                        flag = false;
-                    }
-
-                    try {
-                        factorField.validate();
-                    } catch (Exception e1) {
-                        flag = false;
-                    }
-
-                    if (flag == true) {
-                        CM_boardNormalizationGetter object = new CM_boardNormalizationGetter();
-                        object.setProgram_id(programComboBox.getValue());
-                        object.setEntity_id(entityComboBox.getValue());
-                        object.setComponent_id(compComboBox.getValue());
-                        object.setBranch_code(branchComboBox.getValue());
-                        object.setBoard_id(boardComboBox.getValue());
-                        object.setNormalization_factor(factorField.getValueAsString());
-
-                        connectBoardService.methodAddBoardNormalizationFactor(object,
-                            new AsyncCallback<String>() {
-                                public void onFailure(Throwable arg0) {
-                                    MessageBox.alert(failureLabel,
-                                        arg0.getMessage());
-                                }
-
-                                public void onSuccess(String arg0) {
-                                    MessageBox.alert(congratsLabel,
-                                        msg.alert_successfulentry(),
-                                        new AlertCallback() {
-                                            public void execute() {
-                                                programComboBox.reset();
-                                                entityComboBox.reset();
-                                                branchComboBox.reset();
-                                                compComboBox.reset();
-                                                boardComboBox.reset();
-
-                                                try {
-                                                    factorField.setValue("");
-                                                } catch (Exception e) {
-                                                }
-
-                                                factorField.clearInvalid();
-                                            }
-                                        });
-                                }
-                            });
-                    } else {
-                        MessageBox.alert(errorMsg, correctEntriesMsg);
-                    }
+                    if(CommonValidation.validate(entityComboBox)){                    	
+                    	if(CommonValidation.validate(programComboBox)){
+                    		if(CommonValidation.validate(compComboBox)){
+                    			if(CommonValidation.validate(boardComboBox)){
+                    				if(factorField.getValue()!=null || !(String.valueOf(factorField.getValue()).equals(""))){                    				                                      
+                    					if(CommonValidation.validate(factorField)){                    						
+	                    			         	MessageBox.confirm(msg.confirm(),	msg.wantToContinue(),new MessageBox.ConfirmCallback() {
+	                            					public void execute(String btnID) {
+	                            						if (btnID.matches(labels.yesButton())) {
+	                            							  CM_boardNormalizationGetter object = new CM_boardNormalizationGetter();
+	                            		                        object.setProgram_id(programComboBox.getValue());
+	                            		                        object.setEntity_id(entityComboBox.getValue());
+	                            		                        object.setComponent_id(compComboBox.getValue());
+	                            		                        object.setBoard_id(boardComboBox.getValue());
+	                            		                        object.setNormalization_factor(factorField.getValueAsString());
+	
+	                            		                        connectBoardService.methodAddBoardNormalizationFactor(object,
+	                            		                            new AsyncCallback<String>() {
+	                            		                                public void onFailure(Throwable arg0) {
+	                            		                                    MessageBox.alert(failureLabel,
+	                            		                                        arg0.getMessage());
+	                            		                                }
+	
+	                            		                                public void onSuccess(String arg0) {
+	                            		                                    MessageBox.alert(congratsLabel,
+	                            		                                        msg.alert_successfulentry(),
+	                            		                                        new AlertCallback() {
+	                            		                                            public void execute() {
+	                            		                                                programComboBox.reset();
+	                            		                                                entityComboBox.reset();
+	                            		                                                compComboBox.reset();
+	                            		                                                boardComboBox.reset();
+	
+	                            		                                                try {
+	                            		                                                    factorField.setValue("");
+	                            		                                                } catch (Exception e) {
+	                            		                                                }
+	
+	                            		                                                factorField.clearInvalid();
+	                            		                                            }
+	                            		                                        });
+	                            		                                }
+	                            		                            });
+	                            						}
+	                            					}
+	                            				});
+                    					}else MessageBox.alert(msg.normalizationDigitExceed());
+                    				}else MessageBox.alert(msg.selectNoarmalization());
+                    			}else MessageBox.alert(msg.selectBoard());
+                    		}else MessageBox.alert(msg.selectComponnt());
+                    	}else MessageBox.alert(msg.selectProgramName());
+                    }else MessageBox.alert(msg.selectEntityName());                                                                         
                 }
             });
 
@@ -593,14 +501,6 @@ public class CM_boardNormalization {
                         } else {
                             object.setEntity_id("%");
                         }
-
-                        if (!validator.nullValidator(
-                                    branchComboBox.getRawValue())) {
-                            object.setBranch_code(branchComboBox.getValue());
-                        } else {
-                            object.setBranch_code("%");
-                        }
-
                         if (!validator.nullValidator(compComboBox.getRawValue())) {
                             object.setComponent_id(compComboBox.getValue());
                         } else {
@@ -613,7 +513,6 @@ public class CM_boardNormalization {
                         } else {
                             object.setBoard_id("%");
                         }
-
                         connectBoardService.methodboardListForManage(object,
                             new AsyncCallback<CM_boardNormalizationGetter[]>() {
                                 public void onFailure(Throwable arg0) {
@@ -628,53 +527,49 @@ public class CM_boardNormalization {
                                     } else {
                                         grid.setTitle(labels.label_boardNormFactor());
                                     }
-
                                     final RecordDef rDef = new RecordDef(new FieldDef[] {
                                                 new StringFieldDef("program_name"),
-                                                new StringFieldDef("entity_name"),
-                                                new StringFieldDef("branch_name"),
+                                                new StringFieldDef("entity_name"),                                              
                                                 new StringFieldDef("description"),
                                                 new StringFieldDef("board_name"),
                                                 new StringFieldDef("normalization_factor"),
                                                 new StringFieldDef("program_id"),
                                                 new StringFieldDef("entity_id"),
-                                                new StringFieldDef("branch_code"),
                                                 new StringFieldDef("component_id"),
                                                 new StringFieldDef("board_id")
                                             });
 
-                                    Object[][] object1 = new Object[arg0.length][11];
+                                    Object[][] object1 = new Object[arg0.length][9];
 
                                     String str = null;
 
                                     try {
                                         for (int i = 0; i < arg0.length; i++) {
-                                            for (int k = 0; k < 11; k++) {
+                                            for (int k = 0; k < 9; k++) {
                                                 if (k == 0) {
-                                                    str = arg0[i].getProgram_name();
+                                                    str = arg0[i].getProgram_name();                                                   
                                                 } else if (k == 1) {
                                                     str = arg0[i].getEntity_name();
-                                                } else if (k == 2) {
-                                                    str = arg0[i].getBranch_name();
-                                                } else if (k == 3) {
+                                                } 
+                                                else if (k == 2) {
                                                     str = arg0[i].getDescription();
-                                                } else if (k == 4) {
+                                                } else if (k == 3) {
                                                     str = arg0[i].getBoard_name();
-                                                } else if (k == 5) {
+                                                } else if (k == 4) {
                                                     str = arg0[i].getNormalization_factor();
-                                                } else if (k == 6) {
+                                                } else if (k == 5) {
                                                     str = arg0[i].getProgram_id();
-                                                } else if (k == 7) {
+                                                } else if (k == 6) {
                                                     str = arg0[i].getEntity_id();
-                                                } else if (k == 8) {
-                                                    str = arg0[i].getBranch_code();
-                                                } else if (k == 9) {
-                                                    str = arg0[i].getComponent_id();
-                                                } else if (k == 10) {
+                                                }
+                                                else if (k == 7) {
+                                                    str = arg0[i].getComponent_id();                                                  
+                                                } else if (k == 8) {                                                	
                                                     str = arg0[i].getBoard_id();
                                                 }
 
                                                 object1[i][k] = str;
+                                                
                                             }
                                         }
                                     } catch (Exception e2) {
@@ -701,23 +596,20 @@ public class CM_boardNormalization {
                                         BaseColumnConfig[] columns = new BaseColumnConfig[] {
                                                 new CheckboxColumnConfig(cbSelectionModel),
                                                 new ColumnConfig(consProgName,
-                                                    "program_name", 300, true,
+                                                    "program_name", 150, true,
                                                     null, "program_name"),
                                                 new ColumnConfig(consEntityName,
-                                                    "entity_name", 200, true,
+                                                    "entity_name", 170, true,
                                                     null, "entity_name"),
-                                                new ColumnConfig(consBranchName,
-                                                    "branch_name", 200, true,
-                                                    null, "branch_name"),
                                                 new ColumnConfig(labels.component(),
-                                                    "description", 200, true,
+                                                    "description", 150, true,
                                                     null, "description"),
                                                 new ColumnConfig(consBoardName,
-                                                    "board_name", 200, true,
+                                                    "board_name", 150, true,
                                                     null, "board_name"),
                                                 new ColumnConfig(labels.label_boardNormFactor(),
                                                     "normalization_factor",
-                                                    200, true, null,
+                                                    150, true, null,
                                                     "normalization_factor")
                                             };
 
@@ -732,8 +624,8 @@ public class CM_boardNormalization {
 
                                     grid.setSelectionModel(cbSelectionModel);
                                     grid.setAutoWidth(true);
-                                    grid.setWidth(1200);
-                                    grid.setHeight(280);
+                                    grid.setWidth(807);
+                                    grid.setHeight(230);
 
                                     Toolbar topToolBar = new Toolbar();
                                     topToolBar.addFill();
@@ -776,48 +668,16 @@ public class CM_boardNormalization {
                                                                 "normalization_factor"));
 
                                                         editTable.clear();
-                                                        editTable.setWidget(3,
-                                                            0,
-                                                            new Label(labels.label_programname()));
-                                                        editTable.setWidget(3,
-                                                            1,
-                                                            new Label(record.getAsString(
-                                                                    "program_name")));
-                                                        editTable.setWidget(4,
-                                                            0,
-                                                            new Label(labels.entityName()));
-                                                        editTable.setWidget(4,
-                                                            1,
-                                                            new Label(record.getAsString(
-                                                                    "entity_name")));
-                                                        editTable.setWidget(5,
-                                                            0,
-                                                            new Label(labels.label_branchname()));
-                                                        editTable.setWidget(5,
-                                                            1,
-                                                            new Label(record.getAsString(
-                                                                    "branch_name")));
-                                                        editTable.setWidget(6,
-                                                            0,
-                                                            new Label(labels.component()));
-                                                        editTable.setWidget(6,
-                                                            1,
-                                                            new Label(record.getAsString(
-                                                                    "description")));
-                                                        editTable.setWidget(7,
-                                                            0,
-                                                            new Label(consBoardName +
-                                                                " : "));
-                                                        editTable.setWidget(7,
-                                                            1,
-                                                            new Label(record.getAsString(
-                                                                    "board_name")));
-                                                        editTable.setWidget(8,
-                                                            0,
-                                                            new Label(labels.label_boardNormFactor()));
-                                                        editTable.setWidget(8,
-                                                            1, factorField);
-
+                                                        editTable.setWidget(3,0,  new Label(labels.label_programname()));
+                                                        editTable.setWidget(3,1, new Label(record.getAsString( "program_name")));
+                                                        editTable.setWidget(4, 0, new Label(labels.entityName()));
+                                                        editTable.setWidget(4,1,new Label(record.getAsString("entity_name")));
+                                                        editTable.setWidget(5,0,new Label(labels.component()));
+                                                        editTable.setWidget(5,1,new Label(record.getAsString("description")));
+                                                        editTable.setWidget(6,0,new Label(consBoardName +" : "));
+                                                        editTable.setWidget(6,1,new Label(record.getAsString("board_name")));
+                                                        editTable.setWidget(7,0,new Label(labels.label_boardNormFactor()));
+                                                        editTable.setWidget(7,1, factorField);
                                                         p1.clear();
                                                         p1.add(editTable);
 
@@ -827,8 +687,8 @@ public class CM_boardNormalization {
                                                             new Button(labels.resetButton());
                                                         final Window window = new Window();
                                                         window.setTitle(labels.labelProgTermDetails());
-                                                        window.setWidth(700);
-                                                        window.setHeight(300);
+                                                        window.setWidth(550);
+                                                        window.setHeight(220);
                                                         window.setResizable(false);
                                                         window.setLayout(new BorderLayout());
                                                         window.setPaddings(5);
@@ -877,8 +737,6 @@ public class CM_boardNormalization {
                                                                                 "program_id"));
                                                                         object.setEntity_id(record.getAsString(
                                                                                 "entity_id"));
-                                                                        object.setBranch_code(record.getAsString(
-                                                                                "branch_code"));
                                                                         object.setComponent_id(record.getAsString(
                                                                                 "component_id"));
                                                                         object.setBoard_id(record.getAsString(
@@ -947,13 +805,10 @@ public class CM_boardNormalization {
                                                             "program_id"));
                                                     object.setEntity_id(record.getAsString(
                                                             "entity_id"));
-                                                    object.setBranch_code(record.getAsString(
-                                                            "branch_code"));
                                                     object.setComponent_id(record.getAsString(
                                                             "component_id"));
                                                     object.setBoard_id(record.getAsString(
                                                             "board_id"));
-
                                                     MessageBox.show(new MessageBoxConfig() {
 
                                                             {
@@ -1022,9 +877,9 @@ public class CM_boardNormalization {
         VertiPanel.clear();
 
         VertiPanel.add(heading);
-        VertiPanel.setSpacing(30);
+        VertiPanel.setSpacing(10);
         VertiPanel.add(boardNormDetailsForm);
-        VertiPanel.setSpacing(30);
+        VertiPanel.setSpacing(10);
 
         if (action.equalsIgnoreCase("add")) {
             heading.setText(labels.label_boardNormFactor());
@@ -1058,21 +913,6 @@ public class CM_boardNormalization {
         entityComboBox.setWidth(190);
         entityComboBox.setHideTrigger(false);
     }
-
-    public void methodBranchComboSettings(ComboBox branchComboBox) {
-        branchComboBox.setForceSelection(true);
-        branchComboBox.setDisplayField("branchname");
-        branchComboBox.setValueField("branchcode");
-        branchComboBox.setMode(ComboBox.LOCAL);
-        branchComboBox.setTriggerAction(ComboBox.ALL);
-        branchComboBox.setEmptyText(consBranchName);
-        branchComboBox.setLoadingText(searching);
-        branchComboBox.setTypeAhead(true);
-        branchComboBox.setSelectOnFocus(true);
-        branchComboBox.setWidth(190);
-        branchComboBox.setHideTrigger(false);
-    }
-
     public void methodComponentComboSettings(ComboBox componentBox) {
         componentBox.setForceSelection(true);
         componentBox.setMinChars(1);
@@ -1095,7 +935,7 @@ public class CM_boardNormalization {
         boardComboBox.setValueField("board_id");
         boardComboBox.setMode(ComboBox.LOCAL);
         boardComboBox.setTriggerAction(ComboBox.ALL);
-        boardComboBox.setEmptyText(labels.chooseBoard());
+        boardComboBox.setEmptyText(labels.selectBoard());
         boardComboBox.setLoadingText(searching);
         boardComboBox.setTypeAhead(true);
         boardComboBox.setSelectOnFocus(true);
@@ -1106,10 +946,8 @@ public class CM_boardNormalization {
     /*
      * Method to populate entity list
      */
-    public void methodEntityPopulate(final ComboBox entityComboBox,
-        String program_id) {
-        connectBoardService.methodGetProgOfferingEntityList(userid, program_id,
-            new AsyncCallback<CM_entityInfoGetter[]>() {
+    public void methodEntityPopulate(final ComboBox entityComboBox) {
+        connectBoardService.methodGetProgOfferingEntityList(new AsyncCallback<CM_entityInfoGetter[]>() {
                 public void onFailure(Throwable arg0) {
                     MessageBox.alert(failureLabel, arg0.getMessage());
                 }
@@ -1119,11 +957,8 @@ public class CM_boardNormalization {
                                 new StringFieldDef("entity_name"),
                                 new StringFieldDef("entity_id")
                             });
-
                     String[][] object2 = new String[arg0.length][2];
-
                     String[][] data = object2;
-
                     for (int i = 0; i < arg0.length; i++) {
                         for (int k = 0; k < 2; k++) {
                             if (k == 0) {
@@ -1133,13 +968,10 @@ public class CM_boardNormalization {
                             }
                         }
                     }
-
                     MemoryProxy proxy = new MemoryProxy(data);
-
                     ArrayReader reader = new ArrayReader(recordDef);
                     Store store = new Store(proxy, reader);
                     store.load();
-
                     entityComboBox.setStore(store);
                 }
             });
@@ -1148,13 +980,12 @@ public class CM_boardNormalization {
     /*
      * method for populating program list
      */
-    public void methodProgramPopulate(final ComboBox programComboBox) {
-        connectBoardService.methodprogList(userid,
+    public void methodProgramPopulate(String entityId,final ComboBox programComboBox) {
+        connectBoardService.methodprogList(userid,entityId,
             new AsyncCallback<CM_progMasterInfoGetter[]>() {
                 public void onFailure(Throwable arg0) {
                     MessageBox.alert(failureLabel, arg0.getMessage());
                 }
-
                 public void onSuccess(CM_progMasterInfoGetter[] result) {
                     if (result.length > 0) {
                         try {
@@ -1164,20 +995,15 @@ public class CM_boardNormalization {
                                     });
 
                             String[][] object2 = new String[result.length][2];
-
                             String[][] data = object2;
-
                             for (int i = 0; i < result.length; i++) {
                                 object2[i][0] = result[i].getProgram_name();
                                 object2[i][1] = result[i].getProgram_id();
                             }
-
                             MemoryProxy proxy = new MemoryProxy(data);
-
                             ArrayReader reader = new ArrayReader(recordDef);
                             progNameStore = new Store(proxy, reader);
                             progNameStore.load();
-
                             programComboBox.setStore(progNameStore);
                         } catch (Exception e) {
                             System.out.println("Exception in prog list " + e);
@@ -1193,8 +1019,8 @@ public class CM_boardNormalization {
     /*
      * method for populating program list for manage
      */
-    public void methodProgramPopulateManage(final ComboBox programComboBox) {
-        connectBoardService.methodprogListForManage(userid,
+    public void methodProgramPopulateManage(String entityId,final ComboBox programComboBox) {
+        connectBoardService.methodprogListForManage(userid,entityId,
             new AsyncCallback<CM_progMasterInfoGetter[]>() {
                 public void onFailure(Throwable arg0) {
                     MessageBox.alert(failureLabel, arg0.getMessage());
@@ -1208,20 +1034,16 @@ public class CM_boardNormalization {
                                 });
 
                         String[][] object2 = new String[result.length][2];
-
                         String[][] data = object2;
-
                         for (int i = 0; i < result.length; i++) {
                             object2[i][0] = result[i].getProgram_name();
                             object2[i][1] = result[i].getProgram_id();
                         }
 
                         MemoryProxy proxy = new MemoryProxy(data);
-
                         ArrayReader reader = new ArrayReader(recordDef);
                         progNameStore = new Store(proxy, reader);
                         progNameStore.load();
-
                         programComboBox.setStore(progNameStore);
                     } catch (Exception e) {
                         System.out.println("Exception in prog list " + e);
@@ -1231,64 +1053,10 @@ public class CM_boardNormalization {
     }
 
     /*
-     * method populating branch list
-     */
-    public void methodBranchList(String program_id, String entity_id,
-        final ComboBox branchComboBox) {
-        connectBoardService.methodbranchList(program_id, entity_id,
-            new AsyncCallback<CM_progMasterInfoGetter[]>() {
-                public void onFailure(Throwable arg0) {
-                    MessageBox.alert(failureLabel, arg0.getMessage());
-                }
-
-                public void onSuccess(CM_progMasterInfoGetter[] arg0) {
-                    final RecordDef rDef = new RecordDef(new FieldDef[] {
-                                new StringFieldDef("branchname"),
-                                new StringFieldDef("branchcode")
-                            });
-
-                    Object[][] object1 = new Object[arg0.length][2];
-
-                    String str = null;
-
-                    try {
-                        for (int i = 0; i < arg0.length; i++) {
-                            for (int k = 0; k < 2; k++) {
-                                if (k == 0) {
-                                    str = arg0[i].getBranchname();
-                                } else if (k == 1) {
-                                    str = arg0[i].getBranchcode();
-                                }
-
-                                object1[i][k] = str;
-                            }
-                        }
-                    } catch (Exception e2) {
-                        System.out.println("e2     " + e2);
-                    }
-
-                    Object[][] data = object1;
-
-                    MemoryProxy proxy = null;
-
-                    proxy = new MemoryProxy(data);
-
-                    ArrayReader reader = new ArrayReader(rDef);
-
-                    branchStore = new Store(proxy, reader);
-
-                    branchStore.load();
-                    branchComboBox.setStore(branchStore);
-                }
-            });
-    }
-
-    /*
      * method populating component list
      */
-    public void methodCompList(String program_id, String entity_id,
-        String branch, final ComboBox compComboBox) {
-        connectBoardService.methodComponentList(program_id, entity_id, branch,
+    public void methodCompList(String program_id, String entity_id, final ComboBox compComboBox) {
+        connectBoardService.methodComponentList(program_id, entity_id,
             new AsyncCallback<CM_boardNormalizationGetter[]>() {
                 public void onFailure(Throwable arg0) {
                     MessageBox.alert(failureLabel, arg0.getMessage());
@@ -1301,9 +1069,7 @@ public class CM_boardNormalization {
                             });
 
                     Object[][] object1 = new Object[arg0.length][2];
-
                     String str = null;
-
                     try {
                         for (int i = 0; i < arg0.length; i++) {
                             for (int k = 0; k < 2; k++) {
@@ -1319,17 +1085,11 @@ public class CM_boardNormalization {
                     } catch (Exception e2) {
                         System.out.println("e2     " + e2);
                     }
-
                     Object[][] data = object1;
-
                     MemoryProxy proxy = null;
-
                     proxy = new MemoryProxy(data);
-
                     ArrayReader reader = new ArrayReader(rDef);
-
                     compStore = new Store(proxy, reader);
-
                     compStore.load();
                     compComboBox.setStore(compStore);
                 }
@@ -1352,9 +1112,7 @@ public class CM_boardNormalization {
                             });
 
                     Object[][] object1 = new Object[arg0.length][2];
-
                     String str = null;
-
                     try {
                         for (int i = 0; i < arg0.length; i++) {
                             for (int k = 0; k < 2; k++) {
@@ -1370,17 +1128,11 @@ public class CM_boardNormalization {
                     } catch (Exception e2) {
                         System.out.println("e2     " + e2);
                     }
-
                     Object[][] data = object1;
-
                     MemoryProxy proxy = null;
-
                     proxy = new MemoryProxy(data);
-
                     ArrayReader reader = new ArrayReader(rDef);
-
                     boardStore = new Store(proxy, reader);
-
                     boardStore.load();
                     boardComboBox.setStore(boardStore);
                 }

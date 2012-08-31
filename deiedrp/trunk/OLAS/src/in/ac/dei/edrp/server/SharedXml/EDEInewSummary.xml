@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="newSummaryEDei">
+<typeAlias alias="EDEISummary" type="in.ac.dei.edrp.client.EdeiAdmission.EDEIStudentBean" />
+	
+	<select id="getUniversityCoursesEDEI" resultClass="EDEISummary">
+		SELECT DISTINCT cman.course_code coursesId,cm.course_name coursesName
+		FROM course_module_available_new cman,course_master cm,program_course_header pch
+		WHERE cm.university_code=#universityId#
+		AND cman.course_code=cm.course_code
+		AND cman.program_course_key=pch.program_course_key
+    	AND pch.program_id=#programId#
+		ORDER BY cman.course_code
+		<!-- LIKE CONCAT(#coursesName#,'%') DESC,SUBSTRING(cman.course_code,3) ASC -->
+	</select>
+	
+    <select id="getUniversityModulesEDEI" resultClass="EDEISummary">
+	    SELECT cman.course_code coursesId,cm.course_name coursesName,cman.module_code moduleId,mm.module_name moduleName,cman.module_start_date moduleStartDate,cman.module_end_date moduleEndDate,
+		cman.program_course_key progCourseKey,cman.entity_id entityId,mm.credit credit,
+		cman.semester_start_date semesterStartDate,
+        cman.semester_end_date semesterEndDate
+		FROM course_module_available_new cman,module_master mm,course_master cm,program_course_header pch
+		WHERE cman.module_code=mm.module_code
+    	AND cman.course_code=cm.course_code
+    	AND cman.program_course_key=pch.program_course_key
+    	AND pch.program_id=#programId#
+    	AND cm.university_code=#universityId#
+		ORDER BY cman.module_code 
+		<!-- like concat(#moduleId#,'%') desc,substring(cman.module_code,3) asc,module_start_date -->
+    </select>
+     
+    <select id="categoryEDEI" resultClass="EDEISummary">
+     	select
+		component_code as
+		categoryCode,component_description as
+		category from
+		system_table_two where
+		group_code='STDCTG' AND
+		university_code=#universityId# AND active=1;
+    </select>
+     
+    <select id="getCourseModuleList" resultClass="EDEISummary">
+	    SELECT cman.course_code coursesId,cm.course_name coursesName,cman.module_code moduleId,mm.module_name moduleName,
+	    cman.module_start_date moduleStartDate,cman.module_end_date moduleEndDate,cman.sequence_number sequence,
+	    cman.program_course_key progCourseKey,cman.entity_id entityId
+	    ,cman.semester_start_date semesterStartDate,
+        cman.semester_end_date semesterEndDate
+		FROM course_module_available_new cman,course_master cm,module_master mm,program_course_header pch
+		WHERE cman.course_code=cm.course_code
+		AND cman.module_code=mm.module_code
+		AND cm.university_code=#universityId#
+		AND cman.program_course_key=pch.program_course_key
+    	AND pch.program_id=#programId#
+		<dynamic prepend="AND cman.course_code IN">
+			<iterate property="courseCodeList" open="(" close=")" conjunction=",">
+				#courseCodeList[]#
+			</iterate>
+		</dynamic>
+		order by cman.course_code,cman.module_code, cman.sequence_number 
+	</select>
+	
+	<select id="getApplicantAccountDetailsEDEI" resultClass="EDEISummary">
+		SELECT first_name firstName,middle_name middleName,last_name lastName,email_id primaryEmail,
+		father_name fatherFirstName,mother_name motherFirstName,date_of_birth dob,category,gender,nationality,religion,
+		phone_number phoneNumber,state,city
+		FROM applicant_account_info
+		WHERE email_id=#studentId#
+	</select>
+	
+	<select id="getSystemValuesEDEI" resultClass="EDEISummary">
+		SELECT value sequence
+		FROM system_values
+		WHERE university_id=#universityId# AND code=#ugPg#
+	</select>
+	
+	<update id="updateSystemValuesEDEI">
+		UPDATE system_values
+		SET value=#sequence#
+		WHERE university_id=#universityId# AND code=#ugPg#
+	</update>
+	
+	<select id ="getStudentIdEDEI" resultClass="EDEISummary">
+		select student_id studentId
+		From entity_student
+		WHERE student_id=#studentId#
+		AND university_id=#universityId#
+	</select>
+	
+	<update id="updateEntityStudentEDEI">
+		UPDATE entity_student
+		SET guardian_name=#guardian#,
+		secondary_email_id=#secondaryEmail#,
+		minority=#minority#,
+		marital_status=#maritalStatus#
+		WHERE student_id=#studentId#
+		AND university_id=#universityId#
+	</update>
+	
+	<update id="updateStudentAddressEDEI">
+		UPDATE admission_addresses_master
+		SET address_line1=#addressLine1#,
+		address_line2=#addressLine2#,
+		city=#city#,
+		state=#state#,
+		pincode=#pincode#,
+		home_phone=#phoneNumber#,
+		other_phone=#otherPhone#,
+		modifier_id=#userId#,
+		modification_time=now()
+		WHERE user_id=#studentId#
+		AND address_key='PER'
+		AND user_type='STD'	
+	</update>
+	
+	<insert id="setEntityStudentEDEI">
+		INSERT INTO entity_student
+		(university_id,student_id,first_name,middle_name,last_name,
+		primary_email_id,secondary_email_id,date_of_birth,category_code,gender,
+		father_first_name,father_middle_name,father_last_name,
+		mother_first_name,mother_middle_name,mother_last_name,
+		registered_in_session,insert_time,creator_id,nationality,religion,guardian_name,minority,marital_status)
+		VALUES
+		(#universityId#,#studentId#,#firstName#,#middleName#,#lastName#,
+		#primaryEmail#,#secondaryEmail#,#dob#,#category#,#gender#,
+		#fatherFirstName#,#fatherMiddleName#,#fatherLastName#,
+		#motherFirstName#,#motherMiddleName#,#motherLastName#,
+		CONCAT(SUBSTR(#sessionStartDate#,1,4),'-',SUBSTR(#sessionEndDate#,3,2)),now(),#userId#,#nationality#,#religion#,#guardian#,#minority#,#maritalStatus#)
+	</insert>
+	 
+	<insert id="setStudentAddressEDEI">
+		INSERT INTO admission_addresses_master
+		(user_type,user_id,address_key,address_line1,address_line2,city,
+		state,pincode,home_phone,other_phone,insert_time,creator_id)
+		VALUES
+		('STD',#studentId#,'PER',#addressLine1#,#addressLine2#,#city#,
+		#state#,#pincode#,#phoneNumber#,#otherPhone#,now(),#userId#)
+	</insert>
+	
+	<insert id="setStudentDocsEDEI">
+		INSERT INTO student_docs
+		(registration_number,doc_id,path,insert_time,creator_id)
+		VALUES
+		(#registrationNumber#,#docId#,#docPath#,now(),#userId#);
+	</insert>
+	
+	<insert id="setStudentCallListEDEI">
+		INSERT INTO student_call_list
+		(registration_number,component_id,marks_percentage,marks_obtained,total_marks,
+		start_date,end_date,insert_time,creator_id,degree_desc,marks_grade,program_id,entity_id)
+		VALUES
+		(#registrationNumber#,#componentId#,#percentage#,#marksObtained#,#totalMarks#,
+		#sessionStartDate#,#sessionEndDate#,now(),#userId#,#degreeDescription#,#markOrGrade#,#programId#,#entityId#)
+	</insert>
+	
+	<insert id="setStudentRegistrationEDEI">
+		INSERT INTO student_registration
+		(student_id,registration_number,cos_value,start_date,end_date,insert_time,creator_id,program_id)
+		VALUES
+		(#studentId#,#registrationNumber#,#cosCode#,#sessionStartDate#,#sessionEndDate#,now(),#userId#,#programId#)
+	</insert>
+	
+	<insert id="setTempStudentModuleEDEI">
+		INSERT INTO temp_student_module
+		(course_code,module_code,module_start_date,module_end_date,registration_number,
+		insert_time,creator_id,session_start_date,session_end_date,program_course_key,entity_id,semester_start_date,semester_end_date,program,student_type)
+		VALUES
+		(#coursesId#,#moduleId#,#moduleStartDate#,#moduleEndDate#,#registrationNumber#,
+		now(),#userId#,#sessionStartDate#,#sessionEndDate#,#progCourseKey#,#entityId#,#semesterStartDate#,#semesterEndDate#,#programId#,#studentStatus#)
+	</insert>
+	 
+	<select id="getModuleMaxCreditLimit" resultClass="EDEISummary">
+		SELECT value count FROM system_values WHERE code='MAXCRD'
+	</select>
+	
+	<select id="getStudentModuleEDEI" resultClass="EDEISummary">
+		SELECT Distinct module_code moduleId 
+		FROM temp_student_module 
+		WHERE session_start_date =#sessionStartDate# AND session_end_date=#sessionEndDate#
+		AND registration_number IN 
+		(SELECT registration_number FROM student_registration WHERE student_id=#studentId# and start_date=#sessionStartDate# and end_date=#sessionEndDate#)
+	</select>
+	
+	<select id="getStudentCourseEDEI" resultClass="EDEISummary">
+		SELECT Distinct course_code coursesId 
+		FROM temp_student_module 
+		WHERE session_start_date =#sessionStartDate# AND session_end_date=#sessionEndDate#
+		AND registration_number IN 
+		(SELECT registration_number FROM student_registration WHERE student_id=#studentId# and start_date=#sessionStartDate# and end_date=#sessionEndDate#)
+	</select>
+	
+	<select id="getUniversityOnlineProgramEDEI" resultClass="EDEISummary">
+		SELECT pob.program_id programId,pm.program_name programName
+		FROM program_master pm,program_offered_by pob
+		WHERE program_type=#programType#
+		AND tencodes=#ugPg#
+		AND domain=#domainCode#
+		AND pm.program_id=pob.program_id
+		AND pob.program_id LIKE CONCAT(#universityId#,'%') GROUP BY pob.program_id;
+	</select>
+	
+	<select id="getUniversityOnlineDomainsEDEI" resultClass="EDEISummary">
+		SELECT um.university_code universityId,stt.component_code domainCode, stt.component_description domainName,
+		um.start_date sessionStartDate,um.end_date sessionEndDate
+		FROM system_table_two stt,university_master um
+		WHERE stt.university_code=um.university_code
+		AND um.nick_name=#universityNickName#
+		AND um.current_status=1
+		AND stt.group_code='DOMAIN'
+	</select> 
+	
+	<select id="getUniversityOnlineProgramModuleEDEI" resultClass="EDEISummary">
+		SELECT cman.course_code coursesId,cm.course_name coursesName,cman.module_code moduleId,mm.module_name moduleName,
+		       cman.module_start_date moduleStartDate,cman.module_end_date moduleEndDate,cman.sequence_number sequence,
+		       cman.program_course_key progCourseKey,cman.entity_id entityId,cman.semester_start_date semesterStartDate,
+		       cman.semester_end_date semesterEndDate,mm.credit credit
+		FROM course_module_available_new cman,program_course_header pch,course_master cm,module_master mm
+		WHERE cman.program_course_key=pch.program_course_key
+		AND cman.course_code=cm.course_code
+		AND cman.module_code=mm.module_code
+		AND cm.university_code=#universityId#
+		AND pch.program_id=#programId#
+		ORDER BY cman.course_code,cman.module_code, cman.sequence_number
+	
+	</select>
+	<!-- Add By Devendra to Get Student Personal Details-->	
+	<select id="getPersonalDetailsForEDEISummarySheet" resultClass="EDEISummary">
+		SELECT student_first_name firstName,student_middle_name middleName,student_last_name lastName,primary_email_id primaryEmail,secondary_email_id secondaryEmail,
+		date_of_birth dob,category_code category,gender,father_first_name fatherFirstName,father_middle_name fatherMiddleName,father_last_name fatherLastName,mother_first_name motherFirstName,mother_middle_name motherMiddleName,mother_last_name motherLastName,nationality,religion,
+		guardian_name guardian,address addressLine1,city,state,pincode,home_phone phoneNumber,other_phone otherPhone
+		FROM student_master s,addresses_master a
+		WHERE s.student_id=#studentId# AND s.enrollment_number=#enrollmentNumber# AND a.user_id=s.student_id AND a.address_key='PER';
+	</select>	
+	<!-- Add By Devendra to Insert Records into temp_student_module Table For Existing Program-->	
+	<insert id="setTempStudentModuleEDEIForExistingProgram">
+		INSERT INTO temp_student_module
+		(course_code,module_code,module_start_date,module_end_date,registration_number,
+		insert_time,creator_id,enrollment_number,session_start_date,session_end_date,program_course_key,entity_id,semester_start_date,semester_end_date,program,roll_number,student_type)
+		VALUES
+		(#coursesId#,#moduleId#,#moduleStartDate#,#moduleEndDate#,#registrationNumber#,
+		now(),#userId#,#enrollmentNumber#,#sessionStartDate#,#sessionEndDate#,#progCourseKey#,#entityId#,#semesterStartDate#,#semesterEndDate#,#programId#,#rollNumber#,#studentStatus#)
+	</insert>
+</sqlMap>

@@ -7,10 +7,10 @@ package in.ac.dei.edrp.client.ReportGeneration;
 
 import in.ac.dei.edrp.client.DataBean;
 import in.ac.dei.edrp.client.Shared.constants;
-import in.ac.dei.edrp.client.Shared.messages;
 
 import java.util.Iterator;
 import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.gwtext.client.core.EventObject;
 import com.gwtext.client.data.ArrayReader;
@@ -35,7 +35,6 @@ public class StudentGridList {
 
 	public GridPanel grid = new GridPanel();// 
 	private final constants constant=GWT.create(constants.class);/*for using property files*/
-	private final messages message=GWT.create(messages.class);/*for using property files*/
 	/*
 	 * Default Constructors
 	 */
@@ -62,6 +61,10 @@ public class StudentGridList {
         //sdf[]: to hold column names
         String[] s1=gd1.getDetail();
         String[][] heading=gd1.getCompData();
+        
+        System.out.println("here"+heading.length);
+        System.out.println("on GridLIst"+heading.length*(heading[0].length));
+        
         int length=heading.length*(heading[0].length);
         String[] sdf=new String[3+s1.length+length];
          sdf[0]=constant.registrationNumber();
@@ -171,7 +174,7 @@ public class StudentGridList {
     	//commonCol[d].setEditor(new GridEditor(new TextField()));
     	//setting editor for columns so that user can edit
         for(int d=0;d<commonCol.length;d++){
-        	commonCol[d]= new ColumnConfig(sdf[d], sdf[d], 220, true, null, sdf[d]);
+        	commonCol[d]= new ColumnConfig(sdf[d], sdf[d], 130, true, null, sdf[d]);
         	commonCol[d].setSortable(true);
          } 
        // final BaseColumnConfig[] columns = commonCol;
@@ -191,7 +194,7 @@ public class StudentGridList {
 		        for(int alen=0;alen<sdf.length;alen++){
 		        	grid.setAutoExpandColumn(sdf[alen]);
 		        }
-		        grid.setWidth(800);  
+		        grid.setWidth(900);  
 	            grid.setHeight(350);  
 	              
 		        final PagingToolbar pagingToolbar = new PagingToolbar(store);  
@@ -224,7 +227,8 @@ public class StudentGridList {
 	}
 
 	public GridPanel createStudentGridPanel() {
-		// TODO Auto-generated method stub
+		
+		
 		return grid;
 	}
 }

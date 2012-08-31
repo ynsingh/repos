@@ -45,6 +45,338 @@ public class CM_progMasterInfoGetter implements IsSerializable {
     String system_code;
     String system_value;
     String modifier_id;
+    String specializationName;
+    String specializationId;
+    String entity_id;
+    String component_id;
+    String description;
+    
+    String aplicant_name;
+    String father_name;
+    String gender;
+    String dateofbirth;
+    String registration_number;
+    String marksObtained;
+    String totalMarks;
+    String marksPercentage;
+    String weightageId;
+    String fac_form_number;
+    String[]userDetails;
+    String paper_code;
+    String paper_description;
+    String student_name;
+    String form_number;
+    
+    
+    
+    
+    
+
+    /**
+	 * @return the form_number
+	 */
+	public String getForm_number() {
+		return form_number;
+	}
+
+
+
+	/**
+	 * @param form_number the form_number to set
+	 */
+	public void setForm_number(String form_number) {
+		this.form_number = form_number;
+	}
+
+
+
+	/**
+	 * @return the student_name
+	 */
+	public String getStudent_name() {
+		return student_name;
+	}
+
+
+
+	/**
+	 * @param student_name the student_name to set
+	 */
+	public void setStudent_name(String student_name) {
+		this.student_name = student_name;
+	}
+
+
+
+	/**
+	 * @return the paper_code
+	 */
+	public String getPaper_code() {
+		return paper_code;
+	}
+
+
+
+	/**
+	 * @param paper_code the paper_code to set
+	 */
+	public void setPaper_code(String paper_code) {
+		this.paper_code = paper_code;
+	}
+
+
+
+	/**
+	 * @return the paper_description
+	 */
+	public String getPaper_description() {
+		return paper_description;
+	}
+
+
+
+	/**
+	 * @param paper_description the paper_description to set
+	 */
+	public void setPaper_description(String paper_description) {
+		this.paper_description = paper_description;
+	}
+
+
+
+	/**
+	 * @return the component_id
+	 */
+	public String getComponent_id() {
+		return component_id;
+	}
+
+
+
+	/**
+	 * @param component_id the component_id to set
+	 */
+	public void setComponent_id(String component_id) {
+		this.component_id = component_id;
+	}
+
+
+
+	public CM_progMasterInfoGetter(String registration_number2,
+			String[] userdetail) {
+    	
+    	this.registration_number = registration_number2;
+    	this.userDetails = userdetail;
+	}
+    
+    
+
+	public CM_progMasterInfoGetter() {
+	}
+
+
+
+	/**
+	 * @return the userDetails
+	 */
+	public String[] getUserDetails() {
+		return userDetails;
+	}
+
+
+
+	/**
+	 * @param userDetails the userDetails to set
+	 */
+	public void setUserDetails(String[] userDetails) {
+		this.userDetails = userDetails;
+	}
+
+
+
+	/**
+	 * @return the fac_form_number
+	 */
+	public String getFac_form_number() {
+		return fac_form_number;
+	}
+
+	/**
+	 * @param fac_form_number the fac_form_number to set
+	 */
+	public void setFac_form_number(String fac_form_number) {
+		this.fac_form_number = fac_form_number;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the aplicant_name
+	 */
+	public String getAplicant_name() {
+		return aplicant_name;
+	}
+
+	/**
+	 * @param aplicant_name the aplicant_name to set
+	 */
+	public void setAplicant_name(String aplicant_name) {
+		this.aplicant_name = aplicant_name;
+	}
+
+	/**
+	 * @return the father_name
+	 */
+	public String getFather_name() {
+		return father_name;
+	}
+
+	/**
+	 * @param father_name the father_name to set
+	 */
+	public void setFather_name(String father_name) {
+		this.father_name = father_name;
+	}
+
+	/**
+	 * @return the gender
+	 */
+	public String getGender() {
+		return gender;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	/**
+	 * @return the dateofbirth
+	 */
+	public String getDateofbirth() {
+		return dateofbirth;
+	}
+
+	/**
+	 * @param dateofbirth the dateofbirth to set
+	 */
+	public void setDateofbirth(String dateofbirth) {
+		this.dateofbirth = dateofbirth;
+	}
+
+	/**
+	 * @return the registration_number
+	 */
+	public String getRegistration_number() {
+		return registration_number;
+	}
+
+	/**
+	 * @param registration_number the registration_number to set
+	 */
+	public void setRegistration_number(String registration_number) {
+		this.registration_number = registration_number;
+	}
+
+	/**
+	 * @return the marksObtained
+	 */
+	public String getMarksObtained() {
+		return marksObtained;
+	}
+
+	/**
+	 * @param marksObtained the marksObtained to set
+	 */
+	public void setMarksObtained(String marksObtained) {
+		this.marksObtained = marksObtained;
+	}
+
+	/**
+	 * @return the totalMarks
+	 */
+	public String getTotalMarks() {
+		return totalMarks;
+	}
+
+	/**
+	 * @param totalMarks the totalMarks to set
+	 */
+	public void setTotalMarks(String totalMarks) {
+		this.totalMarks = totalMarks;
+	}
+
+	/**
+	 * @return the marksPercentage
+	 */
+	public String getMarksPercentage() {
+		return marksPercentage;
+	}
+
+	/**
+	 * @param marksPercentage the marksPercentage to set
+	 */
+	public void setMarksPercentage(String marksPercentage) {
+		this.marksPercentage = marksPercentage;
+	}
+
+	/**
+	 * @return the weightageId
+	 */
+	public String getWeightageId() {
+		return weightageId;
+	}
+
+	/**
+	 * @param weightageId the weightageId to set
+	 */
+	public void setWeightageId(String weightageId) {
+		this.weightageId = weightageId;
+	}
+
+	/**
+         * @return the entity_id
+         */
+    public String getEntity_id() {
+        return entity_id;
+    }
+
+    /**
+     * @param entity_id the entity_id to set
+     */
+    public void setEntity_id(String entity_id) {
+        this.entity_id = entity_id;
+    }
+
+    public String getSpecializationName() {
+        return specializationName;
+    }
+
+    public void setSpecializationName(String specializationName) {
+        this.specializationName = specializationName;
+    }
+
+    public String getSpecializationId() {
+        return specializationId;
+    }
+
+    public void setSpecializationId(String specializationId) {
+        this.specializationId = specializationId;
+    }
 
     public String getProgram_type() {
         return program_type;
@@ -107,26 +439,25 @@ public class CM_progMasterInfoGetter implements IsSerializable {
     }
 
     public String getMinimun_duration() {
-		return minimun_duration;
-	}
+        return minimun_duration;
+    }
 
-	public void setMinimun_duration(String minimun_duration) {
-		this.minimun_duration = minimun_duration;
-	}
+    public void setMinimun_duration(String minimun_duration) {
+        this.minimun_duration = minimun_duration;
+    }
 
-	public void setBranch_specialization_code(
+    public void setBranch_specialization_code(
         String[] branch_specialization_code) {
         this.branch_specialization_code = branch_specialization_code;
     }
 
-//    public String getMinimum_duration() {
-//        return minimun_duration;
-//    }
-//
-//    public void setMinimum_duration(String minimum_duration) {
-//        this.minimun_duration = minimum_duration;
-//    }
-
+    //    public String getMinimum_duration() {
+    //        return minimun_duration;
+    //    }
+    //
+    //    public void setMinimum_duration(String minimum_duration) {
+    //        this.minimun_duration = minimum_duration;
+    //    }
     public String getMaximum_duration() {
         return maximum_duration;
     }
@@ -229,14 +560,14 @@ public class CM_progMasterInfoGetter implements IsSerializable {
     }
 
     public String getFixed_duration() {
-		return fixed_duration;
-	}
+        return fixed_duration;
+    }
 
-	public void setFixed_duration(String fixed_duration) {
-		this.fixed_duration = fixed_duration;
-	}
+    public void setFixed_duration(String fixed_duration) {
+        this.fixed_duration = fixed_duration;
+    }
 
-	public boolean isBranch() {
+    public boolean isBranch() {
         return branch;
     }
 

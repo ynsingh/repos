@@ -3,185 +3,229 @@
     PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
     "http://www.ibatis.com/dtd/sql-map-2.dtd">
 
-  <sqlMap namespace="EntityInfo">   
+<sqlMap namespace="EntityInfo">
 
-  <typeAlias alias="EntityInfo" type="in.ac.dei.edrp.client.CM_entityInfoGetter"/>
+	<typeAlias alias="EntityInfo" type="in.ac.dei.edrp.client.CM_entityInfoGetter" />
 
- <resultMap id="EntityNameGetter" class="EntityInfo">
+	<resultMap id="EntityNameGetter" class="EntityInfo">
 
-    <result property="entity_name" column="entity_name"/>
-    <result property="entity_id" column="entity_id"/>
-   
-  </resultMap>
- 
-  <select id="getEntityName" resultMap="EntityNameGetter"> 
- 	select entity_name,entity_id from  ENTITY_MASTER where university_id =#university_id# and entity_type=#entity_type#
+		<result property="entity_name" column="entity_name" />
+		<result property="entity_id" column="entity_id" />
+
+	</resultMap>
+
+	<select id="getEntityName" resultMap="EntityNameGetter">
+		select
+		entity_name,entity_id from entity_master where university_id
+		=#university_id# and entity_type=#entity_type#
+  </select>
+
+	<select id="getDefaultEntityName" resultMap="EntityNameGetter">
+		select
+		entity_name,entity_id from entity_master where university_id
+		=#university_id# and entity_type=#entity_type#
+  </select>
+
+	<select id="getEntityNamefromID" resultMap="EntityNameGetter">
+		select
+		entity_name,entity_id from entity_master where entity_id=#entity_id#
+  </select>
+
+
+	<resultMap id="EntityTypeGetter" class="EntityInfo">
+
+		<result property="entity_type" column="entity_type" />
+
+	</resultMap>
+
+	<select id="getEntityType" resultMap="EntityTypeGetter">
+		select entity_type from
+		university_entity_type where university_id
+		=#university_id# and
+		entity_description=#entity_description#
   </select>
   
-  <select id="getDefaultEntityName" resultMap="EntityNameGetter"> 
- 	select entity_name,entity_id from  ENTITY_MASTER where university_id =#university_id# and entity_type=#entity_type#
-  </select>
-  
-   <select id="getEntityNamefromID" resultMap="EntityNameGetter"> 
- 	select entity_name,entity_id  from  ENTITY_MASTER where entity_id=#entity_id#
-  </select>
-  
-  
- <resultMap id="EntityTypeGetter" class="EntityInfo">
+<select id="getUniversityName" resultClass="java.lang.String">
+select university_name as university_name  from university_master where university_code=#university_id# and current_status='1';
+</select>
 
-    <result property="entity_type" column="entity_type"/>
+	<insert id="insertaddressInfo">
+		insert into admission_addresses_master values(
 
-  </resultMap>
- 
-  <select id="getEntityType" resultMap="EntityTypeGetter"> 
- 	select entity_type from UNIVERSITY_ENTITY_TYPE where university_id =#university_id# and 
- 	entity_description=#entity_description#
-  </select>
-  
-     
- <insert id="insertaddressInfo">
-	insert into ADDRESSES_MASTER values(
-
-	null,
-	#entity_id#,
-	null,
-	#address_line1#,
-	#address_line2#,
-	#city#,
-	#state#,
-	#pincode#,
-	null,
-	null,
-	null,
-	null,
-	#insert_time#,
-	null,
-	#creator_id#,
-	null
-	);
+		'STD',
+		#entity_id#,
+		'COR',
+		#address_line1#,
+		#address_line2#,
+		#city#,
+		#state#,
+		#pincode#,
+		null,
+		null,
+		null,
+		null,
+		#insert_time#,
+		null,
+		#creator_id#,
+		null
+		);
   </insert>
-  
-   
-   <resultMap id="stuAddressGetter" class="EntityInfo">
 
-    <result property="address_line1" column="address_line1"/>
-    <result property="address_line2" column="address_line2"/>
-    <result property="city" column="city"/>
-    <result property="state" column="state"/>
-    <result property="pincode" column="pincode"/>
-   
-  </resultMap>
- 
-  <select id="GetStudentAddressInfo" resultMap="stuAddressGetter"> 
- 
- SELECT * FROM ADDRESSES_MASTER where user_id=#user_id#
 
-  </select>
-  
-  
-  <resultMap id="enrolledStuAddressGetter" class="EntityInfo">
+	<resultMap id="stuAddressGetter" class="EntityInfo">
 
-    <result property="address_line1" column="address_line_one"/>
-    <result property="address_line2" column="address_line_two"/>
-    <result property="city" column="city"/>
-    <result property="state" column="state"/>
-    <result property="pincode" column="pincode"/>
-   
-  </resultMap>
- 
-  <select id="GetEnrolledStudentAddressInfo" resultMap="enrolledStuAddressGetter"> 
- 
- SELECT * FROM courseregistration.ADDRESSES_MASTER where user_id=#user_id#
+		<result property="address_line1" column="address_line1" />
+		<result property="address_line2" column="address_line2" />
+		<result property="city" column="city" />
+		<result property="state" column="state" />
+		<result property="pincode" column="pincode" />
+
+	</resultMap>
+
+	<select id="GetStudentAddressInfo" resultMap="stuAddressGetter">
+
+		SELECT * FROM
+		admission_addresses_master where user_id=#user_id#
 
   </select>
-  
-  
-      
- <update id="updateaddressInfo"> 
- update ADDRESSES_MASTER set 
- 								address_line1=#address_line1#,
- 								address_line2=#address_line2#,
- 								city=#city#,
- 								state=#state#,
- 								pincode=#pincode#,
- 								modification_time=#modification_time#,
-                                modifier_id=#modifier_id#
- 								
- 								
- 							where user_id=#entity_id#
+
+
+	<resultMap id="enrolledStuAddressGetter" class="EntityInfo">
+
+		<result property="address_line1" column="address_line_one" />
+		<result property="address_line2" column="address_line_two" />
+		<result property="city" column="city" />
+		<result property="state" column="state" />
+		<result property="pincode" column="pincode" />
+
+	</resultMap>
+
+	<select id="GetEnrolledStudentAddressInfo" resultMap="enrolledStuAddressGetter">
+
+		SELECT *
+		FROM addresses_master where user_id=(select student_id from
+		student_master where enrollment_number=#user_id#);
+
+  </select>
+
+
+
+	<update id="updateaddressInfo">
+		update admission_addresses_master set
+		address_line1=#address_line1#,
+		address_line2=#address_line2#,
+		city=#city#,
+		state=#state#,
+		pincode=#pincode#,
+		modification_time=#modification_time#,
+		modifier_id=#modifier_id#
+
+
+		where
+		user_id=#entity_id#
  						
   </update>
-  
-  
-  
- <resultMap id="StudentValueGetter" class="EntityInfo">
 
-    <result property="value" column="value"/>
-   
-  </resultMap>
- 
-  <select id="getStudentValue" resultMap="StudentValueGetter"> 
- 	select value from SYSTEM_VALUES where university_id =#university_id# and code=#code#
-  </select>
-  
- <resultMap id="EntIdGetter" class="EntityInfo">
 
-    <result property="entity_id" column="entity_id"/>
-   
-  </resultMap>
- 
-  <select id="getEntId" resultMap="EntIdGetter"> 
- 	select entity_id from ENTITY_MASTER where university_id =#university_id# and entity_name=#entity_name#
-  </select>
-  
-   <select id="getEntId1" resultMap="EntIdGetter"> 
- 	select entity_id from ENTITY_MASTER where entity_name=#entity_name#
-  </select>
-  
-  <update id="updateStudentValue"> 
- update SYSTEM_VALUES set value=#value# where code=#code#
- 						
-  </update>
-  
-   
-  <resultMap id="sessiondate" class="EntityInfo">
 
-    <result property="startdate" column="start_date"/>
-    <result property="enddate" column="end_date"/>
+	<resultMap id="StudentValueGetter" class="EntityInfo">
 
-  </resultMap>
- 
-  <select id="Getsessiondate" resultMap="sessiondate"> 
-  SELECT start_date, end_date FROM UNIVERSITY where university_id IN (select university_id from ENTITY_MASTER where 
-  entity_id=#entity_id#)
-
-  </select>  
-  
-  
-  
-  <resultMap id="EntityDescGetter" class="EntityInfo">
-
-    <result property="entity_description" column="entity_description"/>
-    <result property="entity_type" column="entity_type"/>
-
-  </resultMap>
- 
-  <select id="getEntityDesc" resultMap="EntityDescGetter"> 
- 	select entity_description,entity_type from UNIVERSITY_ENTITY_TYPE where  university_id =#university_id# 
-  </select>
-  
-  <select id="getDefaultEntityDesc" resultMap="EntityDescGetter"> 
- 	select entity_description,entity_type from UNIVERSITY_ENTITY_TYPE where  university_id =#university_id# and entity_type='INS'
-  </select>
-  
-  
-  <resultMap id="getDefaultEntityValue" class="EntityInfo">
 		<result property="value" column="value" />
-  </resultMap>
-	<select id="checkForDefaultEntity" resultMap="getDefaultEntityValue">
+
+	</resultMap>
+
+	<select id="getStudentValue" resultMap="StudentValueGetter">
 		select value from
-		SYSTEM_VALUES where code=#code# and	university_id=#university_id#;
-  </select>   
- 
+		system_values where university_id =#university_id# and
+		code=#code#
+  </select>
+
+	<resultMap id="EntIdGetter" class="EntityInfo">
+
+		<result property="entity_id" column="entity_id" />
+
+	</resultMap>
+
+	<select id="getEntId" resultMap="EntIdGetter">
+		select entity_id from
+		entity_master where university_id =#university_id# and
+		entity_name=#entity_name#
+  </select>
+
+	<select id="getEntId1" resultMap="EntIdGetter">
+		select entity_id from
+		entity_master where entity_name=#entity_name#
+  </select>
+
+	<update id="updateStudentValue">
+		update system_values set value=#value# where
+		code=#code# aND university_id =#university_id#
+ 						
+  </update>
+
+
+	<resultMap id="sessiondate" class="EntityInfo">
+
+		<result property="startdate" column="start_date" />
+		<result property="enddate" column="end_date" />
+
+	</resultMap>
+
+	<!-- query updated -->
+	<select id="Getsessiondate" resultMap="sessiondate">
+		SELECT start_date,
+		end_date FROM university_master where university_code
+		=#university_id# AND current_status=1;
+
+  </select>
+
+
+
+	<resultMap id="EntityDescGetter" class="EntityInfo">
+
+		<result property="entity_description" column="entity_description" />
+		<result property="entity_type" column="entity_type" />
+
+	</resultMap>
+
+	<select id="getEntityDesc" resultMap="EntityDescGetter">
+		select
+		component_code as
+		entity_type,component_description as entity_description from
+		system_table_two where
+		group_code='ENTTYP' AND
+		university_code=#university_id# AND
+		active=1;
+  </select>
+
+	<select id="getDefaultEntityDesc" resultMap="EntityDescGetter">
+		select
+		entity_description,entity_type from university_entity_type where
+		university_id =#university_id# and entity_type='INS'
+  </select>
+
+
+	<resultMap id="getDefaultEntityValue" class="EntityInfo">
+		<result property="universityCode" column="university_code" />
+		<result property="universityName" column="university_name" />
+	</resultMap>
+	<select id="checkForDefaultEntity" resultMap="getDefaultEntityValue">
+		select
+		university_code,university_name from university_master where current_status=1;
+  </select>
+
+	<resultMap id="getentityoffer" class="EntityInfo">
+		<result property="entityId" column="entity_id" />
+		<result property="entityName" column="entity_name" />
+	</resultMap>
+
+	<select id="getOfferingEntity" resultMap="getentityoffer">
+		select
+		entity_id,entity_name from entity_master where entity_id IN(select
+		offered_by from program_offered_by where program_id=#program_id#) and university_id=#university_id#;
+		
+		</select>
+
+
 </sqlMap>
 

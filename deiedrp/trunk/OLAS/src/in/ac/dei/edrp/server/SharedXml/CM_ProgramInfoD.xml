@@ -15,7 +15,7 @@
   </resultMap>
   
   <select id="selectProgramName" resultMap="Program">
-  select program_name from ENTITY_PROGRAM_MASTER
+  select program_name from program_master
   </select>
 
 
@@ -24,8 +24,8 @@
   </resultMap>
   
   <select id="selectBranchName" resultMap="Branch">
-<!--  select branch_name from ENTITY_PROGRAM_BRANCH_DETAIL where branch_name != 'NULL' AND program_id IN (select program_id from ENTITY_PROGRAM_MASTER where program_name = #value#)-->
-  select bb.branch_name from ENTITY_PROGRAM_BRANCH_DETAIL b, PROGRAM_BRANCHES bb where bb.branch_code = b.branch AND b.program_id IN ( select program_id from ENTITY_PROGRAM_MASTER where program_name = #value# ); 
+<!--  select branch_name from ENTITY_PROGRAM_BRANCH_DETAIL where branch_name != 'NULL' AND program_id IN (select program_id from program_master where program_name = #value#)-->
+  select bb.branch_name from entity_program_branch_detail b, program_branches bb where bb.branch_code = b.branch AND b.program_id IN ( select program_id from program_master where program_name = #value# ); 
   </select>
   		
   
@@ -36,11 +36,11 @@
   
   <select id="selectSpecializationWithProgramBranch" resultMap="SpecializationProgramBranch">
 <!--  select specialization_name from ENTITY_PROGRAM_SPECIALIZATION_DETAIL where program_id -->
-<!--  		= ( select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name# ) and branch -->
+<!--  		= ( select program_id from program_master where program_name = #program_name# ) and branch -->
 <!--  		   = ( select branch from ENTITY_PROGRAM_BRANCH_DETAIL where branch_name = #branch_name#)-->
-  select  ss.specialization_name from ENTITY_PROGRAM_SPECIALIZATION_DETAIL s,  PROGRAM_SPECIALIZATIONS ss 
-  	where s.program_id = ( select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name# ) 
-  	   and s.branch = ( select b.branch from ENTITY_PROGRAM_BRANCH_DETAIL b, PROGRAM_BRANCHES bb   
+  select  ss.specialization_name from entity_program_specialization_detail s,  program_specializations ss 
+  	where s.program_id = ( select program_id from program_master where program_name = #program_name# ) 
+  	   and s.branch = ( select b.branch from entity_program_branch_detail b, program_branches bb   
   		 where bb. branch_name = #branch_name# AND bb.branch_code = b.branch) AND ss.specialization_code=s.specialization	   
   </select>
   
@@ -51,10 +51,10 @@
   
   <select id="selectSpecializationWithProgram" resultMap="SpecializationProgram">
 <!--  select specialization_name from ENTITY_PROGRAM_SPECIALIZATION_DETAIL where program_id -->
-<!--     =( select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name# )-->
+<!--     =( select program_id from program_master where program_name = #program_name# )-->
 
-     select ss.specialization_name from ENTITY_PROGRAM_SPECIALIZATION_DETAIL s,  PROGRAM_SPECIALIZATIONS ss 
-     	where s.program_id =( select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name# )
+     select ss.specialization_name from entity_program_specialization_detail s,  program_specializations ss 
+     	where s.program_id =( select program_id from program_master where program_name = #program_name# )
       		AND s.specialization=ss.specialization_code
   </select>
   
@@ -67,13 +67,13 @@
   </resultMap>
   
   <select id="selectAllWithProgramName" resultMap="AllWithProgram">
-<!--	select c.program_name, b.branch_name, a.specialization_name from ENTITY_PROGRAM_MASTER c,ENTITY_PROGRAM_SPECIALIZATION_DETAIL a,-->
-<!--	ENTITY_PROGRAM_BRANCH_DETAIL b where a.program_id = (select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name#)-->
+<!--	select c.program_name, b.branch_name, a.specialization_name from program_master c,ENTITY_PROGRAM_SPECIALIZATION_DETAIL a,-->
+<!--	ENTITY_PROGRAM_BRANCH_DETAIL b where a.program_id = (select program_id from program_master where program_name = #program_name#)-->
 <!--		 AND a.branch=b.branch AND c.program_id = a.program_id-->
 
-	select c.program_name, bb.branch_name, ss.specialization_name from ENTITY_PROGRAM_MASTER c,
-		ENTITY_PROGRAM_SPECIALIZATION_DETAIL a, ENTITY_PROGRAM_BRANCH_DETAIL b, PROGRAM_BRANCHES bb,
-			 PROGRAM_SPECIALIZATIONS ss where a.program_id = (select program_id from ENTITY_PROGRAM_MASTER 
+	select c.program_name, bb.branch_name, ss.specialization_name from program_master c,
+		entity_program_specialization_detail a, entity_program_branch_detail b, program_branches bb,
+			 program_specializations ss where a.program_id = (select program_id from program_master 
 				where program_name = #program_name#)AND a.branch=b.branch AND c.program_id = a.program_id 
 					AND b.branch=bb.branch_code AND c.specialization=ss.specialization_code;
   </select>  
@@ -85,7 +85,7 @@
   </resultMap>
   
   <select id="selectAllWithProgramNameSpecialization" resultMap="AllWithProgramSpecialization">
-	select a.specialization_name,b.program_name from ENTITY_PROGRAM_SPECIALIZATION_DETAIL a,ENTITY_PROGRAM_MASTER b
+	select a.specialization_name,b.program_name from entity_program_specialization_detail a,program_master b
 	 where specialization_name = #specialization_name# AND b.program_id = a.program_id
   </select>
   
@@ -98,14 +98,14 @@
   </resultMap>
   
   <select id="selectAllWithProgramNameBranchName" resultMap="AllWithProgramBranch">
-<!--	select a.program_name, b.branch_name, c.specialization_name from ENTITY_PROGRAM_MASTER a, ENTITY_PROGRAM_BRANCH_DETAIL b,-->
-<!--	 ENTITY_PROGRAM_SPECIALIZATION_DETAIL c where c.program_id = ( select a.program_id from ENTITY_PROGRAM_MASTER a -->
+<!--	select a.program_name, b.branch_name, c.specialization_name from program_master a, ENTITY_PROGRAM_BRANCH_DETAIL b,-->
+<!--	 ENTITY_PROGRAM_SPECIALIZATION_DETAIL c where c.program_id = ( select a.program_id from program_master a -->
 <!--	 where a.program_name = #program_name#) AND c.branch = ( select b.branch from ENTITY_PROGRAM_BRANCH_DETAIL b -->
 <!--	 where b.branch_name = #branch_name# ) AND a.program_id = c.program_id AND b.branch = c.branch ; 		-->
 
-	select a.program_name, bb.branch_name, ss.specialization_name from ENTITY_PROGRAM_MASTER a, ENTITY_PROGRAM_BRANCH_DETAIL b,
-	 ENTITY_PROGRAM_SPECIALIZATION_DETAIL c, PROGRAM_BRANCHES bb,  PROGRAM_SPECIALIZATIONS ss where c.program_id = ( select a.program_id
-	  from ENTITY_PROGRAM_MASTER a where a.program_name = #program_name#) AND c.branch = ( select b.branch_code from PROGRAM_BRANCHES b
+	select a.program_name, bb.branch_name, ss.specialization_name from program_master a, entity_program_branch_detail b,
+	 entity_program_specialization_detail c, program_branches bb,  program_specializations ss where c.program_id = ( select a.program_id
+	  from program_master a where a.program_name = #program_name#) AND c.branch = ( select b.branch_code from program_branches b
 	   where b.branch_name = #branch_name# ) AND a.program_id = c.program_id AND b.branch = c.branch  AND b.branch=bb.branch_code 
 	   AND c.specialization=ss.specialization_code
   </select>  
@@ -119,11 +119,11 @@
   </resultMap>
   
   <select id="selectAllWithProgramNameBranchNameSpecialization" resultMap="AllWithProgramBranchSpecialization">
-<!--	select a.program_name, b.branch_name, c.specialization_name from ENTITY_PROGRAM_MASTER a, ENTITY_PROGRAM_BRANCH_DETAIL b,-->
+<!--	select a.program_name, b.branch_name, c.specialization_name from program_master a, ENTITY_PROGRAM_BRANCH_DETAIL b,-->
 <!--	 ENTITY_PROGRAM_SPECIALIZATION_DETAIL c where a.program_name = #program_name# AND b.branch_name = #branch_name# -->
 <!--	  		AND c.specialization_name = #specialization_name#-->
-select a.program_name, b.branch_name, c.specialization_name from ENTITY_PROGRAM_MASTER a, PROGRAM_BRANCHES b,
-  PROGRAM_SPECIALIZATIONS c where a.program_name = #program_name# AND b.branch_name = #branch_name# 
+select a.program_name, b.branch_name, c.specialization_name from program_master a, program_branches b,
+  program_specializations c where a.program_name = #program_name# AND b.branch_name = #branch_name# 
 	  		AND c.specialization_name = #specialization_name#
   </select>
   
@@ -135,14 +135,14 @@ select a.program_name, b.branch_name, c.specialization_name from ENTITY_PROGRAM_
   </resultMap>
   
   <select id="selectAllWithProgramSpecializationWithoutBranch" resultMap="AllWithProgramSpecializationWithoutBranch">
-<!--	select c.program_name, a.specialization_name from ENTITY_PROGRAM_MASTER c,ENTITY_PROGRAM_SPECIALIZATION_DETAIL a-->
-<!--	 where a.program_id = (select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name#) AND c.program_id = a.program_id-->
+<!--	select c.program_name, a.specialization_name from program_master c,ENTITY_PROGRAM_SPECIALIZATION_DETAIL a-->
+<!--	 where a.program_id = (select program_id from program_master where program_name = #program_name#) AND c.program_id = a.program_id-->
 
-select c.program_name,ss.specialization_name from ENTITY_PROGRAM_MASTER c,ENTITY_PROGRAM_SPECIALIZATION_DETAIL a,
- PROGRAM_SPECIALIZATIONS ss where a.program_id = (select program_id from ENTITY_PROGRAM_MASTER where 
+select c.program_name,ss.specialization_name from program_master c,entity_program_specialization_detail a,
+ program_specializations ss where a.program_id = (select program_id from program_master where 
 program_name = #program_name#) AND c.program_id = a.program_id AND ss.specialization_code=a.specialization
 
-<!--  select c.program_name, a.specialization_name from ENTITY_PROGRAM_MASTER c,ENTITY_PROGRAM_SPECIALIZATION_DETAIL a where a.program_id = (select program_id from ENTITY_PROGRAM_MASTER where program_name = 'B.E.') AND c.program_id = a.program_id;-->
+<!--  select c.program_name, a.specialization_name from program_master c,ENTITY_PROGRAM_SPECIALIZATION_DETAIL a where a.program_id = (select program_id from program_master where program_name = 'B.E.') AND c.program_id = a.program_id;-->
   
   </select>
   
@@ -152,7 +152,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectBranchTest" resultMap="BranchTest">
-	select branch from ENTITY_PROGRAM_MASTER where program_name = #program_name#
+	select branch from program_master where program_name = #program_name#
   </select>
   
  
@@ -167,26 +167,26 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
    </resultMap>
    
   <select id="selectAllProgramDetails" resultMap="AllProgramDetails">
-  select * from PROGRAM_OFFERED_BY
+  select * from program_offered_by
   </select>
   
    <select id="selectAllProgramDetailsWithProgramName" resultMap="AllProgramDetails">
-  select distinct (a.program_name) from ENTITY_PROGRAM_MASTER a, program_offered_by b where a.program_id = b.program_id
-<!--  select * from program_offered_by where program_id = ( select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name# )-->
+  select distinct (a.program_name) from program_master a, program_offered_by b where a.program_id = b.program_id
+<!--  select * from program_offered_by where program_id = ( select program_id from program_master where program_name = #program_name# )-->
   </select>
   
    <select id="selectAllProgramDetailsWithBranchName" resultMap="AllProgramDetails">
-  select * from PROGRAM_OFFERED_BY where branch = #branch# 
+  select * from program_offered_by where branch = #branch# 
 <!--  select * from program_offered_by where branch = ( select branch from ENTITY_PROGRAM_BRANCH_DETAIL where branch_name = #branch_name# )-->
   </select>
   
      <select id="selectAllProgramDetailsWithSpecializationName" resultMap="AllProgramDetails">
-  select * from PROGRAM_OFFERED_BY where specialization = #specialization# 	
+  select * from program_offered_by where specialization = #specialization# 	
 <!--  select * from program_offered_by where specialization = ( select specialization from ENTITY_PROGRAM_SPECIALIZATION_DETAIL where specialization_name = #specialization_name# )-->
   </select>
   
      <select id="selectAllProgramDetailsWithProgramOfferedBy" resultMap="AllProgramDetails">
-  select * from PROGRAM_OFFERED_BY where location_id = #location_id#
+  select * from program_offered_by where location_id = #location_id#
   </select> 
  
   
@@ -197,7 +197,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectEntityName" resultMap="EntityName">
-	select entity_name, entity_id from ENTITY_MASTER
+	select entity_name, entity_id from entity_master
   </select>
   
   
@@ -209,7 +209,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectMentorName1" resultMap="MentorName">
-	select first_name, middle_name, last_name, entity_employee_id  from ENTITY_EMPLOYEE
+	select first_name, middle_name, last_name, entity_employee_id  from entity_employee
   </select>
   
   
@@ -228,7 +228,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectProgramID" resultMap="ProgramID">
-	select program_id from ENTITY_PROGRAM_MASTER where program_name = #program_name#
+	select program_id from program_master where program_name = #program_name#
   </select>
  
   
@@ -237,7 +237,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectBranch" resultMap="Branch">
-	select branch from ENTITY_PROGRAM_BRANCH_DETAIL where branch_name = #branch_name#
+	select branch from entity_program_branch_detail where branch_name = #branch_name#
   </select>
  
   
@@ -246,7 +246,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectSpecialization" resultMap="Specialization">
-	select specialization from ENTITY_PROGRAM_SPECIALIZATION_DETAIL where specialization_name = #specialization_name#
+	select specialization from entity_program_specialization_detail where specialization_name = #specialization_name#
   </select>  
   
  
@@ -255,7 +255,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
 <!--  </resultMap>-->
 <!--  -->
 <!--  <select id="selectEntityID" resultMap="EntityID">-->
-<!--	select entity_id from ENTITY_MASTER where entity_name = #entity_name#-->
+<!--	select entity_id from entity_master where entity_name = #entity_name#-->
 <!--  </select>    -->
   
   
@@ -264,7 +264,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectLocationID" resultMap="LocationID">
-	select location_id from ENTITY_LOCATION where location_name = #location_name#
+	select location_id from entity_location where location_name = #location_name#
   </select> 
 
     
@@ -290,7 +290,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   
   <select id="selectProgramOfferingEntity1" resultMap="ProgramOfferingEntity1">
 <!-- minor change: add a.program_id  -->
-	select distinct a.program_name,a.program_id from ENTITY_PROGRAM_MASTER a, PROGRAM_OFFERED_BY b, ENTITY_MASTER c 
+	select distinct a.program_name,a.program_id from program_master a, program_offered_by b, entity_master c 
 	where c.entity_name = #entity_name# AND a.program_id = b.program_id AND b.offered_by = c.entity_id
   </select>
 
@@ -318,7 +318,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   <select id="selectProgramOfferedBy" resultMap="ProgramOfferedBy">
 	select distinct epm.program_name, epm.program_id, epbd.branch_name, epbd.branch, epsd.specialization_name, epsd.specialization,
 	 em.entity_name, em.entity_id, ee.first_name, ee.middle_name, ee.last_name, ee.entity_employee_id, pob.seats,
-	  el.location_name, el.location_id FROM ENTITY_PROGRAM_MASTER epm, ENTITY_PROGRAM_BRANCH_DETAIL epbd,
+	  el.location_name, el.location_id FROM program_master epm, ENTITY_PROGRAM_BRANCH_DETAIL epbd,
 	   ENTITY_PROGRAM_SPECIALIZATION_DETAIL epsd, entity_employee ee, entity_master em, entity_location el,
 	    program_offered_by pob WHERE pob.offered_by = em.entity_id AND em.entity_name = #offered_by# AND epbd.branch 
 	     = pob.branch AND pob.program_id = epm.program_id AND epm.program_name = #program_name# AND epm.program_id 
@@ -353,7 +353,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectWeightageDescription" resultMap="WeightageDescription">
-	select description from WEIGHTAGE_DESCRIPTION
+	select component_code description from system_table_two where group_code='SPWCOD';
   </select>
 
 
@@ -362,7 +362,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectWeightageDescriptionFromSpecialWeightage" resultMap="SelectWeightageDescriptionFromSpecialWeightage">
-	select description from SPECIAL_WEIGHTAGE 
+	select description from special_weightage 
   </select>
  
   
@@ -372,7 +372,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectGrouping" resultMap="SelectGrouping">
-	select grouping from SPECIAL_WEIGHTAGE_GROUP
+	select component_code grouping from system_table_two where group_code='PAPGRP';
   </select>  
 
 
@@ -382,19 +382,19 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="sysValue" resultMap="SelectValue">
-	select value from SYSTEM_VALUES where university_id = #university_id# AND code = #system_code#
+	select value from system_values where university_id = #university_id# AND code = #system_code#
   </select>
   
  
   
 <update id="updateSysValue">
-	update SYSTEM_VALUES set value = #system_value# where university_id = #university_id# AND code = #system_code#
+	update system_values set value = #system_value# where university_id = #university_id# AND code = #system_code#
   </update>
 
 
 
 <insert id="insertSpecialWeightage">
-		insert into SPECIAL_WEIGHTAGE ( university_id, weightage_id, description, grouping, weightage_percentage )
+		insert into special_weightage ( university_id, weightage_id, description, grouping, weightage_percentage )
 		values( #university_id#, #weightageID#, #weightageDescription#, #grouping#, #weightagePercentage# )
   </insert>
 
@@ -408,25 +408,25 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectSpecialWeightage" resultMap="SelectSpecialWeightage">
-	select weightage_id, description, grouping, weightage_percentage from SPECIAL_WEIGHTAGE where description = #weightageDescription#
+	select weightage_id, description, grouping, weightage_percentage from special_weightage where description = #weightageDescription#
   </select>
 
 
 
 <update id="updateSpecialWeightage">
-	update SPECIAL_WEIGHTAGE set grouping = #grouping#, weightage_percentage = #weightagePercentage# where description = #weightageDescription#
+	update special_weightage set grouping = #grouping#, weightage_percentage = #weightagePercentage# where description = #weightageDescription#
   </update>
   
   
   
 <delete id="deleteSpecialWeightage">
-  	delete from  SPECIAL_WEIGHTAGE WHERE description = #weightageDescription#
+  	delete from  special_weightage WHERE description = #weightageDescription#
   </delete>  
 
 
 
 <insert id="insertNewProgramFirstDegree">
-		insert into PROGRAM_FIRST_DEGREE ( program_id, entity_id, first_degree_code, first_degree_description )
+		insert into program_first_degree ( program_id, entity_id, first_degree_code, first_degree_description )
 		values( #program_id#, #entity_id#, #first_degree_code#, #first_degree_description# )
   </insert>
   
@@ -437,7 +437,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectEntityFromProgramFirstDegree" resultMap="SelectEntityFromProgramFirstDegree">
-	select distinct em.entity_name from ENTITY_MASTER em, PROGRAM_FIRST_DEGREE pfd WHERE em.entity_id = pfd.entity_id
+	select distinct em.entity_name from entity_master em, program_first_degree pfd WHERE em.entity_id = pfd.entity_id
   </select>
   
   
@@ -447,7 +447,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectProgramFromProgramFirstDegree" resultMap="SelectProgramFromProgramFirstDegree">
-	select distinct epm.program_name from ENTITY_PROGRAM_MASTER epm, PROGRAM_FIRST_DEGREE pfd, entity_master em WHERE
+	select distinct epm.program_name from program_master epm, program_first_degree pfd, entity_master em WHERE
      epm.program_id = pfd.program_id AND pfd.entity_id = em.entity_id AND em.entity_name = #entity_name#
   </select>
 
@@ -461,22 +461,22 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectProgramFirstDegree" resultMap="SelectProgramFirstDegree">
-	select em.entity_name,epm.program_name,pfd.first_degree_code,pfd.first_degree_description from ENTITY_MASTER em,
-	  ENTITY_PROGRAM_MASTER epm, PROGRAM_FIRST_DEGREE pfd where epm.program_id = pfd.program_id AND 
+	select em.entity_name,epm.program_name,pfd.first_degree_code,pfd.first_degree_description from entity_master em,
+	  program_master epm, program_first_degree pfd where epm.program_id = pfd.program_id AND 
 	  em.entity_id = pfd.entity_id AND em.entity_name = #entity_name# AND epm.program_name = #program_name#
   </select>
 
 
 
 <delete id="deleteProgramFirstDegree">
-  	delete from PROGRAM_FIRST_DEGREE WHERE first_degree_code = #first_degree_code# AND first_degree_description 
+  	delete from program_first_degree WHERE first_degree_code = #first_degree_code# AND first_degree_description 
   	   = #first_degree_description# 
   </delete>
   
    
   
 <insert id="insertNewProgramPaperCode">
-		insert into PROGRAM_PAPER_CODE ( university_id, program_id, entity_id, paper_code, grouping )
+		insert into program_paper_code ( university_id, program_id, entity_id, paper_code, grouping )
 		values( #university_id#, #program_id#, #entity_id#, #paper_code#, #grouping# )
   </insert>
     
@@ -493,15 +493,15 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectProgramPaperCode" resultMap="SelectProgramPaperCode">
-	select em.entity_name,em.entity_id,epm.program_name,epm.program_id,pc.paper_description,pc.paper_code, ppc.grouping from ENTITY_MASTER em,
-	 ENTITY_PROGRAM_MASTER epm,PROGRAM_PAPER_CODE ppc, PAPER_CODES pc where epm.program_id = ppc.program_id AND 
-	   em.entity_id = ppc.entity_id AND pc.paper_code = ppc.paper_code
+	select em.entity_name,em.entity_id,epm.program_name,epm.program_id,stt.component_description paper_description,stt.component_code paper_code, ppc.grouping from entity_master em,
+	 program_master epm,program_paper_code ppc, system_table_two stt where epm.program_id = ppc.program_id AND 
+	   em.entity_id = ppc.entity_id AND stt.component_code = ppc.paper_code and stt.group_code='PAPCOD'
   </select>
   
   
   
  <delete id="deleteFromProgramPaperCode">
-  	delete from PROGRAM_PAPER_CODE WHERE entity_id = #entity_id# AND program_id = #program_id# AND 
+  	delete from program_paper_code WHERE entity_id = #entity_id# AND program_id = #program_id# AND 
   		paper_code = #paper_code# AND grouping = #grouping#
   </delete>
   
@@ -513,7 +513,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
   <select id="selectPaperCodes" resultMap="SelectPaperCodes">
-	select paper_description, paper_code from PAPER_CODES
+	select component_description paper_description,component_code paper_code from system_table_two where group_code='PAPCOD'
   </select>
   
   
@@ -522,7 +522,7 @@ program_name = #program_name#) AND c.program_id = a.program_id AND ss.specializa
   </resultMap>
   
    <select id="CheckDuplicatePaperCode" resultMap="SelectPaperCodes1">
-	select paper_code from PROGRAM_PAPER_CODE where 
+	select paper_code from program_paper_code where 
 	 university_id=#university_id# AND program_id=#program_id# AND
 	  entity_id=#entity_id# AND paper_code=#paper_code# AND grouping=#grouping#
   </select>

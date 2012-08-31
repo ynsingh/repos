@@ -1,9 +1,14 @@
 package in.ac.dei.edrp.client.Shared;
 
+import in.ac.dei.edrp.client.RPCFiles.CM_connectTemp;
+import in.ac.dei.edrp.client.RPCFiles.CM_connectTempAsync;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.gwtext.client.data.SimpleStore;
 import com.gwtext.client.data.Store;
+import com.gwtext.client.widgets.MessageBox;
 import com.gwtext.client.widgets.form.ComboBox;
-
 
 /**
  *
@@ -11,7 +16,7 @@ import com.gwtext.client.widgets.form.ComboBox;
  *
  */
 public class OA_ComboBoxes  {
-	
+	 private final CM_connectTempAsync connectTemp = (CM_connectTempAsync) GWT.create(CM_connectTemp.class);	
     public final ComboBox statesCB = new ComboBox();
     public final ComboBox genderCB = new ComboBox();
     final ComboBox territoryCB = new ComboBox();
@@ -23,9 +28,7 @@ public class OA_ComboBoxes  {
     final ComboBox banksCB = new ComboBox();
     final ComboBox flagCB = new ComboBox();
     final ComboBox BoardComboBox = new ComboBox();
-    
-    final Store statesStore = new SimpleStore(new String[] { "abbr", "State", "" },
-            getStates());
+    public final ComboBox cityCB = new ComboBox();
     final Store genderStore = new SimpleStore(new String[] { "gen", "Gender", "" },
             getGender());
     final Store territoryStore = new SimpleStore(new String[] {
@@ -50,40 +53,7 @@ public class OA_ComboBoxes  {
     final Store flagStore = new SimpleStore(new String[] { "flag", "Flag", "" },
             getFlag());
     final Store boardStore = new SimpleStore(new String[] { "abbr", "Board", "" },
-            getBoard());
-
-    private Object[][] getStates() {
-        return new String[][] {
-            new String[] { "Am", "  Andra Pradesh", "" },
-            new String[] { "dei", " Arunachal Pradesh", "" },
-            new String[] { "k", " Assam ", "" },
-            new String[] { "r", "Bihar", "" },
-            new String[] { "n", "Chhattisgarh", "" },
-            new String[] { "n", "Delhi", "" }, new String[] { "k", "Goa", "" },
-            new String[] { "k", "Gujarat", "" },
-            new String[] { "r", " Haryana", "" },
-            new String[] { "r", " Himachal Pradesh", "" },
-            new String[] { "n", " Jammu & Kashmir ", "" },
-            new String[] { "r", " Jharkhand ", "" },
-            new String[] { "k", " Karnataka ", "" },
-            new String[] { "k", " Kerala", "" },
-            new String[] { "n", "   Madhya Pradesh ", "" },
-            new String[] { "r", "   Maharashtra ", "" },
-            new String[] { "k", "  Manipur  ", "" },
-            new String[] { "k", " Meghalaya ", "" },
-            new String[] { "k", " Mizoram", "" },
-            new String[] { "n", "Nagaland ", "" },
-            new String[] { "n", "     Orissa  ", "" },
-            new String[] { "r", "    Punjab ", "" },
-            new String[] { "k", "   Rajasthan  ", "" },
-            new String[] { "k", " Sikkim ", "" },
-            new String[] { "n", "Tamil Nadu  ", "" },
-            new String[] { "r", "     Tripura ", "" },
-            new String[] { "k", "   Uttar Pradesh  ", "" },
-            new String[] { "k", "  Uttaranchal ", "" },
-            new String[] { "n", "West Bengal ", "" },
-        };
-    }
+            getBoard());       
 
     private Object[][] getGender() {
         return new String[][] {
@@ -97,15 +67,6 @@ public class OA_ComboBoxes  {
             new String[] { "t", "Tribal", "" },
         };
     }
-
-  /*  private Object[][] getCategory() {
-        return new String[][] {
-            new String[] { "gen", "General", "" },
-            new String[] { "sc", "SC", "" }, new String[] { "st", "ST", "" },
-            new String[] { "obc", "OBC", "" },
-            new String[] { "sp", "Special", "" },
-        };
-    }*/
 
     private Object[][] getReligion() {
         return new String[][] {
@@ -187,11 +148,33 @@ public class OA_ComboBoxes  {
             
         };
     }
-
-    public void onModuleLoad() {
-    	
-    	
-    	 
+public void onStateChange(String state){    
+    connectTemp.getCityData(state, new AsyncCallback<String[][]>() {
+		@Override
+		public void onFailure(Throwable arg0) {
+			MessageBox.alert("Exception in getting city "+arg0.getMessage());	
+			
+		}
+		@Override
+		public void onSuccess(String[][] cityObj) {
+			if(!cityObj[0][0].equals("FileNotFound")){
+					Object[][] cityObject = new String[cityObj.length][2];										
+						for(int i=0;i<cityObj.length;i++){
+							cityObject[i][0]=cityObj[i][0];
+							cityObject[i][1]=cityObj[i][1];							
+						}											  
+	                          
+					Store cityStore = new SimpleStore(new String[] { "cityCode", "cityName"},cityObject);
+					cityStore.load();					 					
+					cityCB.setStore(cityStore); 			        				 		
+				}
+				else{					
+					MessageBox.alert("File not found for getting state");
+				}			
+		}
+	});
+}
+    public void onModuleLoad() {    	    	         	    
     	  boardStore.load();
     	  BoardComboBox.setForceSelection(true);
           BoardComboBox.setMinChars(1);
@@ -205,12 +188,10 @@ public class OA_ComboBoxes  {
           BoardComboBox.setTypeAhead(true);
           BoardComboBox.setSelectOnFocus(true);
           BoardComboBox.setWidth(130);
-    	
-        statesStore.load();
+       
         statesCB.setForceSelection(true);
         statesCB.setMinChars(1);
         statesCB.setFieldLabel("State");
-        statesCB.setStore(statesStore);
         statesCB.setDisplayField("State");
         statesCB.setMode(ComboBox.LOCAL);
         statesCB.setTriggerAction(ComboBox.ALL);
@@ -219,8 +200,50 @@ public class OA_ComboBoxes  {
         statesCB.setTypeAhead(true);
         statesCB.setSelectOnFocus(true);
         statesCB.setWidth(190);
-        statesCB.setHideTrigger(false);
+        statesCB.setHideTrigger(false);                  
+        
+        
+        connectTemp.getStateData(new AsyncCallback<String[][]>() {
+ 			@Override
+ 			public void onFailure(Throwable arg0) {			
+ 				MessageBox.alert("Exception in getting state "+arg0.getMessage());			
+ 			}
 
+ 			@Override
+ 			public void onSuccess(String[][] stateObject) {
+ 				if(!stateObject[0][0].equals("FileNotFound")){
+ 					String[][] object5 = new String[stateObject.length][2];
+ 						for(int i=0;i<stateObject.length;i++){
+ 							object5[i][0]=stateObject[i][0];
+ 							object5[i][1]=stateObject[i][1]; 							
+ 						}
+ 						Object[][] data=new Object[stateObject.length][2];
+ 						  data=object5;	
+ 					Store statesStore = new SimpleStore(new String[] { "abbr", "State", "" },data);
+ 					statesStore.load();
+ 					statesCB.setStore(statesStore); 			        				 		
+ 				}
+ 				else{
+ 					
+ 					MessageBox.alert("File not found for getting state");
+ 				}
+ 				
+ 			}
+ 		});
+           
+        cityCB.setForceSelection(true);
+        cityCB.setMinChars(1);
+        cityCB.setFieldLabel("cityName");
+        cityCB.setDisplayField("cityName");
+        cityCB.setMode(ComboBox.LOCAL);
+        cityCB.setTriggerAction(ComboBox.ALL);
+        cityCB.setEmptyText("Choose City");
+        cityCB.setLoadingText("Searching...");
+        cityCB.setTypeAhead(true);
+        cityCB.setSelectOnFocus(true);
+        cityCB.setWidth(190);
+        cityCB.setHideTrigger(false);
+        
         genderStore.load();
         genderCB.setForceSelection(true);
         genderCB.setMinChars(1);

@@ -149,4 +149,6 @@ public interface CM_connectDAsync {
 //	void methodInstituteList(Object object, Object object2,
 //			AsyncCallback<CM_instituteInfoGetter[]> asyncCallback);
 	
+	void methodGetUniversityDetail(String universityId, AsyncCallback<CM_UniversityInfoGetter[]> callback);
+	
 }

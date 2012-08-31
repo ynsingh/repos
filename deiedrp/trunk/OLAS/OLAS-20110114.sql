@@ -251,8 +251,8 @@ CREATE TABLE `ENTITY_EMPLOYEE` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
 /*!40000 ALTER TABLE `ENTITY_EMPLOYEE` DISABLE KEYS */; 
 INSERT INTO `ENTITY_EMPLOYEE` (`ENTITY_EMPLOYEE_id`,`parent_entity`,`first_name`,`middle_name`,`last_name`,`primary_email_id`,`secondary_email_id`,`qualification`,`designation`,`date_of_birth`,`date_of_joining`,`status`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
- ('E0001000100000001','00010001','Nagendra Kumar Singh',NULL,NULL,NULL,'002',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
- ('E0001000100000002','00010002','Premsewwak SudhishNULL,NULL,NULL,'002',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+ ('E0001000100000001','00010001','Nagendra Kumar Singh','','',NULL,NULL,NULL,'002',NULL,NULL,'ACT',NULL,NULL,NULL,NULL),
+ ('E0001000100000002','00010002','Prem Sewak Sudhish','','',NULL,NULL,NULL,'002',NULL,NULL,'ACT',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `ENTITY_EMPLOYEE` ENABLE KEYS */; 
 
 
@@ -299,8 +299,8 @@ CREATE TABLE `ENTITY_MASTER` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
 
 INSERT INTO `ENTITY_MASTER` (`UNIVERSITY_id`,`entity_id`,`entity_type`,`entity_name`,`entity_address`,`entity_city`,`entity_state`,`entity_phone`,`fax`,`user_id`,`known_by`,`parent_entity_id`,`level`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
- ('0001','00010001','INS','IIT Kanpur','Indian Institute Of Techonology Kanpur','Kanpur','UP','05122122121','45645',NULL,NULL,'0001',1,'2010-10-11 15:13:10',NULL,'E00010010000000001',NULL); 
- ('0001','00010002','INS','DEI Agra','Dayalbagh educational institute Agra','Agra','UP','05622122121','45645',NULL,NULL,'0001',1,'2010-10-11 15:13:10',NULL,'E00010010000000001',NULL); 
+ ('0001','00010001','INS','IIT Kanpur','Indian Institute Of Techonology Kanpur','Kanpur','UP','05122122121','45645',NULL,NULL,'0001',1,'2010-10-11 15:13:10',NULL,'E00010010000000001',NULL), 
+  ('0001','00010002','INS','DEI Agra','Dayalbagh Educational Institute Agra','Agra','UP','05622122121','45645',NULL,NULL,'0001',1,'2010-10-11 15:13:10',NULL,'E00010010000000001',NULL); 
 /*!40000 ALTER TABLE `ENTITY_MASTER` ENABLE KEYS */;
 
 
@@ -1374,9 +1374,9 @@ CREATE TABLE `UNIVERSITY` (
 
 /*!40000 ALTER TABLE `UNIVERSITY` DISABLE KEYS */; 
 INSERT INTO `UNIVERSITY` (`UNIVERSITY_id`,`start_date`,`end_date`,`current_status`,`UNIVERSITY_name`,`UNIVERSITY_address`,`UNIVERSITY_city`,`UNIVERSITY_state`,`UNIVERSITY_pincode`,`phone_number`,`other_phone`,`fax`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
- ('0001','2011-01-14','',NULL,'Indian Institute of Technology Kanpur',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
+ ('0001','2011-01-14','2011-05-30',NULL,'Indian Institute of Technology Kanpur',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
 INSERT INTO `UNIVERSITY` (`UNIVERSITY_id`,`start_date`,`end_date`,`current_status`,`UNIVERSITY_name`,`UNIVERSITY_address`,`UNIVERSITY_city`,`UNIVERSITY_state`,`UNIVERSITY_pincode`,`phone_number`,`other_phone`,`fax`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
- ('0002','2011-01-14','',NULL,'Dayalbagh Educational Institute',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
+ ('0002','2011-01-14','2011-05-30',NULL,'Dayalbagh Educational Institute',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL); 
 /*!40000 ALTER TABLE `UNIVERSITY` ENABLE KEYS */; 
 
 

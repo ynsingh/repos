@@ -15,11 +15,11 @@
   </resultMap>
  
   <select id="selectFromUserID" resultMap="InfoGetter"> 
- 	select instituteID from USERINFO where uID=#string#
+ 	select instituteID from userinfo where uID=#string#
   </select>
   
    <select id="selectFromInstiName" resultMap="InfoGetter"> 
- 	select instituteID from INSTITUTE where instituteName =#string#
+ 	select instituteID from institute where instituteName =#string#
   </select>
   
   
@@ -37,7 +37,7 @@
   </resultMap>
    
   <select id="selectAllInstituteDetails" resultMap="AllInfoGetter">
-  select * from INSTITUTE
+  select * from institute
   </select>
   
   
@@ -49,7 +49,7 @@
   </resultMap>
   
   <select id="selectInstituteName" resultMap="NameGetter">
-  select instituteName from INSTITUTE where instituteID=#id#
+  select instituteName from institute where instituteID=#id#
   </select>
   
    
