@@ -1,6 +1,6 @@
 #*
  * @(#)MailTestMessage.vm
- *  Copyright (c) 2005, 2008, 2009, 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005, 2008, 2009, 2010, 2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
@@ -9,8 +9,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author  <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 31-12-2009, 10-04-2010,07-09-2010, 10-Oct-2010, 11-08-2011 add js
- * @modified date: 15-02-2011
+ * @modified date: 15-02-2011, 05-09-2012
 *#
 
 
@@ -18,6 +19,11 @@
 
 #if ($lang != "english" || $lang != "french" )
 <head>
+#### This scripts is used for autosearch EmailId in compose mail. 
+<script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/jquery/jquery.min.js")"></script>
+<script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/AutoSuggestUser/jquery.autocomplete.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/AutoSuggestUser/jquery.autocomplete.css")" media="screen"/>
+<script type='text/javascript' src="$content.getURI("$usrfile")"></script>
 ##This Script use for Fck Editor in Textarea.
 <script type="text/javascript">
         _editor_url = "$content.getURI("/scrpts/")";
@@ -65,7 +71,6 @@ $!data.getmessage()
 </tr>
 </table>
 <table align=left width=100% bgcolor="$ui.tableColor">
-################################################################
 <tr>
 	#if($tdcolor != "1")
         <td>
@@ -106,7 +111,6 @@ $!data.getmessage()
 	</td>
 
 </tr>
-###################################################
 </table>
 
 #if ( $lang == "english")
@@ -142,18 +146,24 @@ $!data.getmessage()
         #else
 	<tr bgcolor="$ui.tableColor"> 
 		#if($checkVector == "AddressBook")
-			#formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!userVector")
-			<td colspan=4></td>
+			## #formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!userVector")
+			<td>$LocalMail_MailTestMessage_To<font color=Red>*</font></td>
+			<td> <textarea name="addressNames" cols="60" />$!userVector</textarea> </td>
+		##	<td colspan=4></td>
 		#else
-			#formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!toAddress")
-			<td colspan=4></td>
+			##formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!toAddress")
+			<td>$LocalMail_MailTestMessage_To<font color=Red>*</font></td>
+			<td><textarea id="suggest" name="addressNames" cols="60" />$!toAddress</textarea> <img class ="loading" id="loading-image" src="$content.getURI("/images/loader.gif")" alt="Loading..." /></td>
+			##<td colspan=4></td>
 		#end	
 	#end
 	</tr>
 #if($stat1=="insertcc")
 	<tr> 
-		#formCell("$LocalMail_CC" "addressNames1" "")
-		<td colspan=4></td>
+		##formCell("$LocalMail_CC" "addressNames1" "")
+		<td>$LocalMail_CC<font color=Red>*</font></td>
+                <td><textarea id="suggest1" name="addressNames1" cols="60" /></textarea> <img class ="loading1" id="loading-image" src="$content.getURI("/images/loader.gif")" alt="Loading..." /></td>
+	##	<td colspan=4></td>
 	</tr>	
 #end
 #if(($stat1=="insertcc") || ($mode1 == "grpmgmt") )
@@ -164,7 +174,7 @@ $!data.getmessage()
 #end 
 ##<tr bgcolor="$ui.menuColor"> 
 	#formCell("$Notice_Subject" "subject" "$!subject")
-	<td colspan=4></td>
+	##<td colspan=4></td>
 </tr>
 <input type="hidden" name="hexaStr" value="">
 ###if($stat1=="insertcc")
@@ -223,6 +233,19 @@ $!data.getmessage()
 </form>
  </body>
 <SCRIPT LANGUAGE="javascript">
+$(window).load(function() {
+    $('.loading').hide();
+  });
+$(window).load(function() {
+    $('.loading1').hide();
+  });
+$('#suggest').keypress(function() {
+$('.loading').show().fadeOut(4000);
+});
+$('#suggest1').keypress(function() {
+$('.loading1').show().fadeOut(4000);
+});
+
 function checkValue(editform,field){
 	
 	/**

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Local_Mail;
 /*
  * @(#)MailCompose.java	
  *
- *  Copyright (c) 2009, 2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009, 2011,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,7 +35,7 @@ package org.iitk.brihaspati.modules.screens.call.Local_Mail;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  * 
  */
-
+import java.io.File;
 import java.util.List;
 import java.io.FileReader;
 import java.io.IOException;
@@ -49,13 +49,15 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.apache.turbine.util.parser.ParameterParser;  
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.turbine.services.servlet.TurbineServlet;
 /**
      
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 13-Feb-2011 (Shaista)
-
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 13-Feb-2011 (Shaista),05-09-12
  */
 
 public class MailCompose extends SecureScreen
@@ -84,6 +86,44 @@ public class MailCompose extends SecureScreen
                 context.put("val",grpname);
 		String msg_id="", lang="";
 		lang= (String)user.getTemp("lang");
+		
+		String Role=(String)user.getTemp("role");
+		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+		// Get file path
+		File filepath=new File("");
+		if(Role.equals("")){
+			filepath=new File(TurbineServlet.getRealPath("/scrpts/AutoSuggestUser/UserEmailId/adminUser.js"));
+		}
+		else{
+			filepath=new File(TurbineServlet.getRealPath("/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js"));
+		}
+                boolean exist=filepath.exists();
+		String userfile="";
+		/**
+		 * Check file path is exist or not
+		 * Check user role in institute
+		 * write user email id in specific file 
+		 * @return file path
+		 */
+		if(!exist){
+			if((Role.equals("institute_admin")||Role.equals("instructor"))&&(!instituteId.equals(""))){
+			 	userfile=CommonUtility.autocomplte(instituteId,Role);
+			}
+			else{
+				Role="admin";
+				userfile=CommonUtility.autocomplte(instituteId,Role);
+			}
+		}
+		else{
+			if(Role.equals("")){
+			userfile="/scrpts/AutoSuggestUser/UserEmailId/adminUser.js";
+			}
+			else{
+			userfile="/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js";
+			}
+		}
+		context.put("usrfile",userfile);
+		
 		if( (lang.equals("hindi") || lang.equals("marathi")) && !stat.equals(""))
 		{
 			String tempStat = stat;

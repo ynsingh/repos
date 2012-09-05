@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)CommonUtility.java
- *  Copyright (c) 2005-2008,2010-2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005-2008,2010-2011,2012 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 
 import java.util.List;
 import java.util.Calendar;
@@ -105,7 +106,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.actions.Groupmanagement;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
-
+import org.iitk.brihaspati.om.UserPrefPeer;
+import org.iitk.brihaspati.om.UserPref;
 //Lucene
 import org.apache.lucene.search.Hits;
 import org.apache.lucene.search.Query;
@@ -118,6 +120,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.GraphUtil;
+
 /**
  * This class is used for call the method in mylogin 
  * like Create index for Search, Clean the system 
@@ -129,7 +132,7 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:kishore.shukla@gmail.com">Kishore shukla</a>
  * @author <a href="mailto:gaurav.soni992@gmail.com">Gaurav Verma</a>
- * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011
+ * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -872,5 +875,62 @@ public static void grpLeader()
         return search;
 
    }
-		
+	/** 
+         * This method write EmailId in file 
+	 * This method gives autosuggestion list for EmailId of users in compose mail.
+	 * @return String UserFile
+         */
+
+	public static String autocomplte(String instituteId,String Role){
+		String UserFile="";
+		try{
+			String filepath=TurbineServlet.getRealPath("/scrpts/AutoSuggestUser/UserEmailId");
+			File tempFile=new File(filepath);
+			//Create directory
+                	tempFile.mkdirs();
+			String EmailFile="";
+			//Get file path according user role
+			if(Role.equals("admin")){
+                	EmailFile=tempFile+"/adminUser.js";
+			UserFile="/scrpts/AutoSuggestUser/UserEmailId/adminUser.js";
+			}
+			else{
+			EmailFile=tempFile+"/"+instituteId+".js";
+			UserFile="/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js";
+			}
+			//Check file exist or not in specific folder.
+			File UserFilepath=new File(EmailFile);
+                        boolean exist=UserFilepath.exists();
+			//Delete file if exist.
+                        if(exist){
+                                UserFilepath.delete();
+                        }
+			// Write file in specific location
+			FileWriter fstream = new FileWriter(UserFilepath);
+                        BufferedWriter out = new BufferedWriter(fstream);
+                        out.write(("userid =["));
+			// Get all user id of an instiute with the help of institue id
+			Vector lst=InstituteDetailsManagement.getAllUid(instituteId);
+			//get all login name of all user of insttiute using userId 	
+			for(int p=0;p<lst.size();p++){
+                                String userid=lst.get(p).toString();
+				/**Get login name from user id 
+				 * @UserUtil
+				 */
+				int uid=Integer.parseInt(userid);	
+			        String loginName=UserUtil.getLoginName(uid);
+                                if(loginName!=null){
+				//write login name in file for email search in mail compose
+                                out.write('"'+loginName+'"'+",");
+                                }
+                        }
+                        out.write(']');
+                        //Close the output stream
+                        out.close();
+                }
+                catch (Exception e){//Catch exception if any
+                        ErrorDumpUtil.ErrorLog("Exception in getting user list in auto selection--"+e.getMessage());
+                }
+		return UserFile;
+        }
 }//end of class
