@@ -910,7 +910,7 @@ public static void grpLeader()
                         BufferedWriter out = new BufferedWriter(fstream);
                         out.write(("userid =["));
 			// Get all user id of an instiute with the help of institue id
-			Vector lst=InstituteDetailsManagement.getAllUid(instituteId);
+			Vector lst=InstituteDetailsManagement.getInstUserDeatil(instituteId);
 			//get all login name of all user of insttiute using userId 	
 			for(int p=0;p<lst.size();p++){
                                 String userid=lst.get(p).toString();
