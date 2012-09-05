@@ -337,23 +337,23 @@ It is an open standard.
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> #if($lang == "hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi") $brih_Of1 #end $brih_reg </a>
 </b></td></tr>
-<tr><td colspan=4>
+<tr><td colspan=4> <b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang","english")><b>$brih_reg2 $RemoteInstitute $brih_list</b></a>
-</td></tr>
+<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang",$lang)><b>$brih_reg2 $RemoteInstitute $brih_list</b></a>
+</b></td></tr>
 ##Add FAQ link in login page
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_list </a>
+<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ #if($lang == "hindi")  $brih_Of #end $brih_list </a>
 </b></td></tr>
 ##Add ResendActivation link in login page
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english")><b>$brih_resend $brih_act $brih_link</b></a>
+<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang)><b>$brih_resend $brih_act $brih_link</b></a>
 </b></td></tr>
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang","english") > $brih_auth $brih_from $brih_bri $brih_server </a>
+<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) > $brih_auth $brih_from $brih_bri $brih_server </a>
 </b></td></tr>
 ##..........
 </table> ## 4

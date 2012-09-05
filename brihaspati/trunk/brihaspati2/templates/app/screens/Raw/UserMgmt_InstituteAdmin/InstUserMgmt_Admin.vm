@@ -28,9 +28,9 @@ $!data.getMessage()
 	$brih_a_usr
 		#elseif(($mode=="sclist") || ($mode == "instlist"))
                 #if($mode=="sclist")
-                      $brih_student $brih_course $brih_list
+                      $brih_student #if($lang == "hindi") $brih_Of #end $brih_course $brih_list
                 #else
-                        $brih_Instructor $brih_course $brih_list
+                        $brih_Instructor #if($lang == "hindi") $brih_Of #end $brih_course $brih_list
                 #end
 		##<td align=right>
 		#if($mode1=="list")
@@ -83,7 +83,7 @@ $!data.getMessage()
         #elseif($tdcolor == "0")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_course $brih_list </a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor #if($lang == "hindi") $brih_Of #end $brih_course $brih_list </a></td>
 
         #if($tdcolor != "3")
         <td>

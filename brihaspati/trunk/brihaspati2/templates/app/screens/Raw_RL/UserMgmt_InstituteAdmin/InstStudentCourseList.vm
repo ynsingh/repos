@@ -1,12 +1,14 @@
 #*
  * @(#)InstStudentCourseList.vm
- *  Copyright (c) 2010, 2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:sharad23nov@yahoo.com ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
- * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 21-04-2011, 27-03-2012
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
+ * @modified date:28-12-2011(Richa)
+ * @modified date:18-07-2012(Rajeev) 
  *#
 
 $page.setTitle("Admin Home | User Management | Search Student | Course Details for '$username'")
@@ -14,10 +16,11 @@ $!data.getMessage()
 
 $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
-<tr align="right"><td>
+<tr><td>
 <b><a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> |
-<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm") style=text-decoration:none>$brih_mgmt $brih_usr </a> |
-<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist") style=text-decoration:none>$brih_ser_student</a> | $brih_courseDetail
+<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm") style=text-decoration:none> $brih_mgmt $brih_usr</a> |
+##<a href=$link.setPage("call,UserMgmt_Admin,SelectUser.vm")>$brih_ser_student</a> | $brih_courseDetail
+<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist") style=text-decoration:none>$brih_ser_student</a> | $brih_course $brih_detail
 </b></td>
 </tr>
 </table>
@@ -34,7 +37,7 @@ $page.setBgColor($ui.bgcolor)
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto")addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto")addPathInfo("count","6") style=text-decoration:none> $brih_photo $brih_upload</a></td>
 	#if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
@@ -53,18 +56,24 @@ $page.setBgColor($ui.bgcolor)
         <td bgcolor="#AFDCEC">
         #end
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_Instructor</a></td>
+	#if($tdcolor != "0")
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_Of $brih_course $brih_list </a></td>
 	#if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-       <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_course $brih_list</a></td>
+       <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_Of $brih_course $brih_list</a></td>
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_usr</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none> $brih_add $brih_usr</a></td>
 
 </tr>
 </table>
@@ -73,30 +82,30 @@ $page.setBgColor($ui.bgcolor)
 	#foreach($i in $student)
 		#if($!i.getFirstName() != "")
 		<tr bgcolor="$ui.menuColor" align="right">
-			<td colspan="5"><b>$brih_student $brih_Of1 $brih_name</b></td>
-			<td colspan="2"><b>$brih_usr $brih_Of1 $brih_name</b></td>
+			<td><b>$brih_usr $brih_Of1 $brih_name</b></td>
+			<td colspan=6><b> #if($mode=="instlist") $brih_Instructor  #else $brih_student #end $brih_Of1 $brih_name</b></td>
 		</tr>
 		<tr align="right">
-			<td colspan="5">$!i.getFirstName() $!i.getLastName()</td>
-			<td colspan="2">$!i.UserName</td>
+			<td>$!i.UserName</td>
+			<td colspan=6>$!i.getFirstName() $!i.getLastName()</td>
 		</tr>
 		#else
-		<tr bgcolor="$ui.menuColor" align="right">
-			<td colspan="7"><b>$brih_usr $brih_Of1 $brih_name</b></td>
+		<tr bgcolor="$ui.menuColor"  align="right">
+			<td colspan=7><b>$brih_usr $brih_Of1 $brih_name</b></td>
 		</tr>
-		<tr align="right">
-			<td colspan="7">$!i.UserName</td>
+		<tr  align="right">
+			<td colspan=7>$!i.UserName</td>
 		</tr>
 		#end
 	#end
 ##</table>
 ##<table align=left width=100% bgcolor="$ui.tableColor">
 		#foreach($i in $student)
-			<tr bgcolor="$ui.menuColor" align="right">
-				##<td colspan=7><b>$brih_listCourse</b></td>
-				<td colspan="4"><b>$brih_rollno</b></td>
-				<td><b>$brih_program</b></td>
-				<td colspan=2> <b>$brih_listCourse</b></td>
+			<tr bgcolor="$ui.menuColor"  align="right">
+				#if($mode != "instlist") <td colspan="4"><b>$brih_rollno</b></td> <td ><b>$brih_program</b></td>
+				#else <td colspan="5"> </td> 
+				#end
+				<td colspan="2"><b>$brih_listCourse</b></td> 
 			</tr>
 					#set($count="")
 					#set($rlno="")
@@ -106,40 +115,42 @@ $page.setBgColor($ui.bgcolor)
 					#set($temp=0)
 					#foreach($groupname in $groupname)
 						#if($velocityCount%2==0)
-						<tr bgcolor="$ui.menuColor" align="right">
+							<tr bgcolor="$ui.menuColor" align="right">
 						#else
-						<tr bgcolor="$ui.tableColor" align="right">
+							<tr bgcolor="$ui.tableColor" align="right">
 						#end
-							#foreach($st in $UDetail)
-								#foreach($lst in $st.split(":"))
-        		                                                #if($rlno=="")
-                        			                                #set($rlno=$lst)
-                                                		        #elseif($grpname=="")
-			                                                        #set($grpname=$lst)
-		                                                        #elseif($pgcode=="")
-			                                                        #set($pgcode=$lst)
-		                                                        #else
-			                                                        #set($pgname=$lst)
-		                                                        #end
-                	                                        #end
-        	                                                #if($groupname==$grpname)
-									<td colspan="4">$rlno</td>
-                	                                        	<td>$pgname</td>
-									#set($temp=$temp+1)
-                                        	                #end
-                                        	                	#set($rlno="")
-                                                                        #set($grpname="")
-                                                                        #set($pgcode="")
-                                                                        #set($pgname="")
-                                                        #end
                         	                #if($temp==0)
 	                        	        	<td colspan=5></td>
 	                                        #end
-							<td>$groupname</td>
+						#foreach($st in $UDetail)
+							#foreach($lst in $st.split(":"))
+       		                                                #if($rlno=="")
+                       			                                #set($rlno=$lst)
+                                               		        #elseif($grpname=="")
+		                                                        #set($grpname=$lst)
+	                                                        #elseif($pgcode=="")
+		                                                        #set($pgcode=$lst)
+	                                                        #else
+		                                                        #set($pgname=$lst)
+	                                                        #end
+               	                                        #end
+       	                                                #if($groupname==$grpname)
+								<td colspan="4">$rlno</td>
+               	                                        	<td>$pgname</td>
+								#set($temp=$temp+1)
+                                       	                #end
+                                       	                	#set($rlno="")
+       								#set($grpname="")
+                                                                #set($pgcode="")
+                                                                #set($pgname="")
+						#end
+						<td>$groupname</td>
+						#if($mode != "instlist")
 							<td width="5%">
 								#set($userAndGroup = "$groupname:$!i.UserName" )
 								<INPUT TYPE="CHECKBOX" NAME="$userAndGroup" onClick="addDeleteList(this,document.frm);">
 							</td>
+						#end
 						</tr>
 						#set($count="$count$userAndGroup^")
 						#set($temp=0)
@@ -147,21 +158,26 @@ $page.setBgColor($ui.bgcolor)
 					##</table>
 				</td>
 			</tr>
+			#if($mode != "instlist")
 			<tr align="right">
-				<td colspan="7" align="right">
+				<td colspan="7">
 					<INPUT TYPE="SUBMIT" NAME=eventSubmit_doRemove VALUE="$brih_remove"></td></tr>
 					<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
 				</td>
 			</tr>
+			#end
 		#end
 ##</table>
 ##<table align=left width=100% bgcolor="$ui.menuColor"> 
 	<tr bgcolor="$ui.menuColor" align="right">
-		<td colspan="4">$brih_rollno</td>
-		<td> $brih_program $brih_name</td>
-		<td colspan="2">$brih_c_msg13</td> 
+		#if($mode != "instlist") 
+		<td colspan="4"> <b>$brih_rollno </b></td> 
+		<td> <b>$brih_program $brih_Of1 $brih_name </b></td>
+		#else <td colpan="4"></td><td></td>  #end </b>
+		<td colspan=2><b> $brih_c_msg13 </b></td> 
 	</tr>
 	<tr align="right">
+		#if($mode != "instlist")
 		<td colspan="4"><input type="text" name="rollno" value=""></td>
 		<td> <select name="prg" size=1>
                         <option value="Select Program">$brih_select $brih_program</iption>
@@ -169,21 +185,27 @@ $page.setBgColor($ui.bgcolor)
 				        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 			#end
 			</select></td>
-		<td colspan="2">
-		<select name="group" size=1>
+		#end
+		<td colspan=2><select name="group" size=1>
 		#foreach($name in $CourseList)
 			<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName()
 		#end
 		</option>
 		</select>
 		</td>
-	</tr>	
+	</tr>
 	<tr bgcolor="$ui.menuColor" align="right">
 		<td colspan=7>
+			 #if($mode != "instlist")
 			<INPUT TYPE="button" NAME=eventSubmit_doRegister VALUE="$brih_reg1" onclick="ChkField(document.frm,this);">
+			#else
+			<INPUT TYPE="submit" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
+			#end
+		
 			<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
 			<INPUT TYPE="hidden" NAME="actionName" >
-		</td>	
+			<INPUT TYPE="hidden" NAME="mode" VALUE=$mode >
+		</td>
 	</tr>
 </table>
 
@@ -236,4 +258,4 @@ function ChkField(frm,field)
                 }
         }
 }
-</SCRIPT>
+</SCRIPT>																			

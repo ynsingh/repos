@@ -38,13 +38,13 @@ $!data.getMessage()
 ##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_listUsr</a> |
 #end
 #if($Process=="modify")
-	#if($lang == "hindi")
+	#if($lang == "hindi" || $lang == "gujarati")
 		$brih_userDetail $brih_update 
 	#else
 		$brih_update $brih_usr 
         #end
 #else
-	#if($lang == "hindi")
+	#if($lang == "hindi" || $lang == "gujarati")
 		$brih_userDetail $brih_remove 
 	#else
 		$brih_remove $brih_usr
@@ -66,25 +66,25 @@ $!data.getMessage()
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_course $brih_list</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student #if($lang == "hindi" || $lang == "gujarati" ) $brih_Of #end $brih_course $brih_list</a></td>
 	#if($tdcolor != "0")
         <td>
         #elseif($tdcolor == "0")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_course $brih_list </a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_course $brih_list </a></td>
         #if($tdcolor != "3")
         <td>
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_Instructor</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati") $brih_Instructo $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>$brih_delete $brih_student</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati") $brih_student $brih_delete #else $brih_delete $brih_student #end </a></td>
 	#if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
@@ -96,7 +96,7 @@ $!data.getMessage()
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi" || $lang =="gujarati")  $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
         #if($tdcolor != "7")
         <td>
         #elseif($tdcolor == "7")

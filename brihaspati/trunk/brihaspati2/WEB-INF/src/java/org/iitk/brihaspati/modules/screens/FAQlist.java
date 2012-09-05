@@ -466,7 +466,8 @@ public class FAQlist extends VelocityScreen
 	                        else
         	                {
                 	                context.put("status","blank");
-                        	        String LangFile=(String)data.getUser().getTemp("LangFile");
+                        	        //String LangFile=(String)data.getUser().getTemp("LangFile");
+                        	        String LangFile= MultilingualUtil.LanguageSelectionForScreenMessage(lang);
                                 	if(mode.equals("All")){
                                         	String  mssg=MultilingualUtil.ConvertedString("db-Contmsg",LangFile);
 	                                        data.setMessage(mssg);

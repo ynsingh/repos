@@ -1,160 +1,257 @@
 #*
  * @(#) StudentList.vm
- *
- *  Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2009-2010,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
- *
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
- * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
+ * @modified date: 07-04-2010
+ * @modified date: 20-10-2010,3-11-2010
+ * @modified date: 22-11-2010 (Shaista), 30-05-2011,20-05-2012
  *     
  *#
+#set($lang = $data.getUser().getTemp("lang" ).toString())
 
 $page.setTitle("Home | $course | Student Management | Students List")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
-<tr align="right"> 
-	<td width="30%" align="right">
-	#if( $total_size!=0 )
-	#if( $endIndex < $total_size )
-		#if( $endIndex < $userConf )
-                [$k - $total_size] $brih_all $total_size $brih_inFrom 
-		#else
-		[$k - $endIndex] $brih_all $total_size $brih_inFrom
-		#end
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+
+<font face="$ui.sansSerifFonts">$!mmessage</font>
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td>
+     	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
+	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a> |
+	#if($mode!="Search")
+		$brih_listAllStudent
 	#else
-	[$k - $total_size] $brih_all $total_size $brih_inFrom
-	#end
+			$brih_viewSel $brih_students
 	#end
 	</td>
-	<td>
-	<font face="$ui.sansSerifFonts" size=3>
-	<b>
-	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm")> $brih_mgmt $brih_student</a> | 
-	#if($mode!="Search")
-			 $brih_view $brih_all $brih_student 
-	#else
-			 $brih_view $brih_selected $brih_student
+	<td align="right">
+	#if( $total_size!=0 )
+		#if( $endIndex < $total_size )
+        	        #if( $endIndex < $userConf )
+                	        ##[$k - $total_size] of $total_size
+                        	$total_size $brih_in $brih_from1 [$k - $total_size]
+	                #else
+        	                ##[$k - $endIndex] of $total_size
+                	         $total_size $brih_in $brih_from1 [$k - $endIndex] 
+	                #end
+	       #else
+        	       ##[$k - $total_size] of $total_size
+                	$total_size $brih_in $brih_from1 [$k - $total_size]
+	       #end
 	#end
-	|
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
-     	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>  
-	</b>
-	</font>
 	</td>
 </tr>
 </table>
-	#set($headings = ["$brih_availableAction", "$brih_email $brih_ID","$brih_student $brih_Of1 $brih_name","$brih_usr $brih_Of1 $brih_name"] ) 
-<br>
-<br>
+<table bgcolor="$ui.tableColor" width=100%>
+<tr>
+	#if($tdcolor != "1")
+        <td colspan=2>
+	#elseif($tdcolor=="1")
+	<td bgcolor="#AFDCEC" colspan=2>
+	#end
+	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_student $brih_add </a>
+	</td>
+	#if($tdcolor != "2")
+        <td colspan=2>
+	#elseif($tdcolor=="2")
+	<td bgcolor="#AFDCEC" colspan=2>
+	#end
+        <a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("count","2") style=text-decoration:none>$brih_rem_student</a>
+	</td>
+	#if($tdcolor != "3")
+        <td colspan=2>
+	#elseif($tdcolor=="3")
+	<td bgcolor="#AFDCEC" colspan=2>
+	#end
+	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> $brih_multiple1 $brih_student $brih_add </a>
+	</td>
+	#if($tdcolor != "4")
+        <td colspan=3>
+	#elseif($tdcolor=="4")
+	<td bgcolor="#AFDCEC" colspan=3>
+	#end
+	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a>
+	</td>
+	#if($tdcolor != "5")
+        <td colspan=4>
+	#elseif($tdcolor=="5")
+	<td bgcolor="#AFDCEC" colspan=4>
+	#end
+        <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a>
+	</td>
+	#if($status=="notempty")
+		#if($tdcolor != "6")
+        	<td colspan=2>
+		#elseif($tdcolor=="6")
+		<td bgcolor="#AFDCEC" colspan=2>
+		#end
+        	<a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count","6") style=text-decoration:none>$brih_listOfStudent $brih_download </a>
+		</td>
+	#end
+</tr>
+##</table>
+	#set($headings = ["$brih_usr $brih_Of1 $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)"," ","$brih_availableAction"] )
 
-#if($status=="notempty")
-<table width=100%>
-        <tr align="right"><td>
-                <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm")> $brih_student $brih_Of $brih_list $brih_download </a>
+#*if($status=="notempty")
+<table width=100% bgcolor="$ui.menuColor">
+        <tr><td>
+                <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listOfStudent $brih_download </a>
         </td></tr>
 </table>
 #end
-
+*#
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("status","ForallUser")">
-<table border=1 align=center bgcolor="$ui.tableColor" cellpadding=1 cellspacing=1>
-        <tr>
+##<table bgcolor="$ui.tableColor" cellpadding=1 cellspacing=1>
+##<table bgcolor="$ui.menuColor" width=100% align="left">
+        <tr bgcolor="$ui.menuColor">
+                <td><b>$brih_searchBy</b></td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
-                        <input type="hidden" name="mode" value="Search">
-                </td>
-		<td>
-			<b><a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All")">$brih_all $brih_student $brih_Of $brih_list </a></b>
-		</td>
-                <td align=left> <input align=center type="text" name="valueString" value="">
-                </td>
-                <td align=center><b>$brih_match_str</b></td>
-                <td align=left>
                         <select name="queryList">
-                                <option value="UserName"> $brih_usr $brih_Of1 $brih_name </option>
+                                <option value="UserName"> $brih_usr $brih_Of1 $brih_name</option>
                                 <option value="FirstName">$brih_first $brih_name</option>
                                 <option value="LastName">$brih_last $brih_name</option>
                                 <option value="Email">$brih_email $brih_ID</option>
+				<option value="RollNo">$brih_rollno </option>
                         </select>
                 </td>
-                <td align=center><b>$brih_searchBy</b></td>
+                <td><b>$brih_match_str</b></td>
+                <td>
+                        <input align=center type="text" name="valueString" value="">
+                </td>
+                <td>
+                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="hidden" name="mode" value="Search">
+                        <input type="hidden" name="count" value="$tdcolor">
+                </td>
+<td colspan=10><a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listAllStudent</a></td>
         </tr>
-</table>
-<br>
+##</table>
 #if($status=="notempty")
-<br>
-<table width=70% border=0 align=center bgcolor="$ui,tableColor">
+##<table width=100% bgcolor="$ui,tableColor" align="left">
   <tr>
-    <td align=center>
-      <table width=100% border=1 cellspacing=1>
-        <tr align="right">
+    <td colspan=16>
+      <table width=100% align=left bgcolor="$ui.tableColor">
+        <tr>
           #foreach ($heading in $headings)
 		#headerCell($heading)
           #end
         </tr>
-	
-	#foreach ($urecord in $userlist)
-	<tr>		
-        	<td align="right" bgcolor="$ui.tableColor">
-		<font face="$ui.sansSerifFonts">
-                <a href="$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName())">$brih_update</a> &nbsp;
-                <a href="$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","remove").addPathInfo("username",$urecord.getLoginName())">$brih_remove</a> &nbsp;
-                <a href="$link.setPage("call,UserMgmt_User,Usertime_display.vm").addPathInfo("username",$urecord.getLoginName())">$brih_usageDetail</a> &nbsp
-##                <a href=javascript:popupWin("$link.setScreen("call,ViewPhoto").addPathInfo("username",$urecord.getLoginName())","newWin");>$brih_view $brih_photo </a>
-              	</font>
-            	</td>
-        	#entryCell ("<a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a>")
-         	#entryCell ($!urecord.getUserName())
-        	#entryCell ($!urecord.getLoginName())
-        </tr>
-        #end
+		## get the user record list
+                #foreach ($urecord in $userlist)
+                        #if($velocityCount%2==0)
+                        	<tr bgcolor="$ui.tableColor">
+                        #else
+                                <tr bgcolor="$ui.menuColor">
+                       #end                    
+                	## Get one record from the list
+	                ## get login name of user
+                        <td>$!urecord.getLoginName()</td>
+        	        ## get name of User
+                        <td>$!urecord.getUserName()</td>
+                	## get Email of User
+		      	<td><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></td>
+	                ## get the list of student RollNO of that course 
+	                #set ($i=2)
+	                #foreach ($urecord1 in $rollnolist)
+	                	## get Email id form this list
+	                	## Compare Email id of both list
+	                	#if($!urecord.getLoginName()== $!urecord1.getEmail())
+	                		## if email exist then get the roll no and program of that student
+	                		<td> $!urecord1.getRollNo() ($!urecord1.getPrgName())</td>
+					#set ($i = $i - 1)
+				#end
+			#end
+			## if no rollno exist
+			#if($i==2)
+				<td></td><td></td>
+			#end
+			## if one rollno exist
+			#if($i==1)
+				<td></td>
+			#end
+			        	<td>
+
+ 				 ## if user is only student then enable change password link else disable link
+				
+					#if($urecord.getStudsrid()==1)
+					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doUpdatePass") style=text-decoration:none>$brih_changePassword</a> &nbsp;
+					#else
+						<font color="white">$brih_changePassword</font>&nbsp;&nbsp;
+					#end
+##			                <a href=$link.setPage("call,UserMgmt_User,UpdatePass_Ins.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword</a> &nbsp;
+			                <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_update</a> &nbsp;
+		        	        <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","remove").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_remove</a> &nbsp;
+		                	<a href=$link.setPage("call,UserMgmt_User,Usertime_display.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_usageDetail</a> &nbsp
+			##              <a href=javascript:popupWin("$link.setScreen("call,ViewPhoto").addPathInfo("username",$urecord.getLoginName())","newWin");>$brih_view $brih_photo </a>
+					#foreach ($explst in $sexplst)
+						#if($explst.getUid() == $urecord.getLoginName())
+							#if ($explst.getExpiryDate())
+					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doExpDisb") style=text-decoration:none>$DisBoard_Expiry $DisBoard_DBmsg8</a> &nbsp;
+							#else
+					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doExpEnab") style=text-decoration:none>$DisBoard_Expiry $DisBoard_DBmsg7</a> &nbsp;
+							#end
+						#end
+					#end
+					</td>
+			        </tr>
+	        #end
       </table>
          <tr>
-	      <td align=center bgcolor="$ui.menuColor">
+	 <td colspan=16 bgcolor="$ui.menuColor">
 	 #if($mode!="Search")
 	 #if($total_size<= $userConf)
-	 <u><font color="white">$brih_first</font></u> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-	 <u><font color="white">$brih_pre</font></u> &nbsp;
-	 <u><font color="white">$brih_last</font></u> &nbsp;
+	 <font color="white">$brih_first</font> &nbsp;
+	 <font color="white">$brih_nxt</font> &nbsp;
+	 <font color="white">$brih_pre</font> &nbsp;
+	 <font color="white">$brih_last</font> &nbsp;
 	  #elseif($startIndex== $userConf_str)
-	  <u><font color="white">$brih_first</font></u> &nbsp;
-	  <u><font color="white">$brih_pre</font></u> &nbsp;
-	  <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode)">$brih_nxt</a> &nbsp;
-	  <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode)">$brih_last</a> &nbsp;
+	  <font color="white">$brih_first</font> &nbsp;
+	  <font color="white">$brih_pre</font> &nbsp;
+	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
 	 #elseif($endIndex == $total_size || $endIndex > $total_size)
-         <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode)">$brih_first</a> &nbsp;
- 	 <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode)">$brih_pre</a> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
+         <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+ 	 <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+	 <font color="white">$brih_nxt</font>&nbsp;
+         <font color="white">$brih_last</font>&nbsp;
 	  #else
-	   <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode)">$brih_first</a> &nbsp;
-	   <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode)">$brih_pre</a> &nbsp;
-	   <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode)">$brih_nxt</a> &nbsp;
-	    <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode)">$brih_last</a> &nbsp;
+	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+	    <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
      #end
      #else
 	 #if($total_size<= $userConf)
-	 <u><font color="white">$brih_first</font></u> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-	 <u><font color="white">$brih_pre</font></u> &nbsp;
-	 <u><font color="white">$brih_last</font></u> &nbsp;
+	 <font color="white">$brih_first</font>&nbsp;
+	 <font color="white">$brih_nxt</font>&nbsp;
+	 <font color="white">$brih_pre</font>&nbsp;
+	 <font color="white">$brih_last</font>&nbsp;
 	  #elseif($startIndex== $userConf_str)
-	  <u><font color="white">$brih_first</font></u> &nbsp;
-	  <u><font color="white">$brih_pre</font></u> &nbsp;
-	  <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_nxt</a> &nbsp;
-	  <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_last</a> &nbsp;
+	 <font color="white">$brih_first</font>&nbsp;
+	 <font color="white">$brih_pre</font>&nbsp;
+	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+	  <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
 	 #elseif($endIndex == $total_size || $endIndex > $total_size)
-         <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_first</a> &nbsp;
- 	 <a href="$link.setPage("call,UsertMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_pre</a> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &ibsp;
+         <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+ 	 <a href=$link.setPage("call,UsertMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+	 <font color="white">$brih_nxt</font>&nbsp;
+         <font color="white">$brih_last</font>&ibsp;
 	  #else
-	   <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_first</a> &ibsp;
-	   <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_pre</a> &nbsp;
-	   <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_nxt</a> &nbsp;
-	    <a href="$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)">$brih_last</a> &nbsp;
+	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &ibsp;
+	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+	   <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
+	    <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
      #end
     #end
     </td>
@@ -162,8 +259,7 @@ $!data.getMessage()
 </table>
  #end
 </form>
-<br>
-<table width=60% border=1 bgcolor="$ui.tableColor" align=center>
+<table width=100% bgcolor="$ui.tableColor" align=left>
         #foreach( $entry in $error_Messages )
         <tr bgcolor="$ui.tableColor">
         <td align=center>
@@ -176,17 +272,3 @@ $!data.getMessage()
         #end
 </table>
 
-<SCRIPT language="JavaScript">
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable,height=200,width=300");
-        }
-	function checkNull(frm,field){
-                if(frm.valueString.value!=""){
-                        frm.submit();
-                }
-                else{
-                        alert("The 'Match String' text box can not be NULL !!");
-                }
-        }
-</SCRIPT>

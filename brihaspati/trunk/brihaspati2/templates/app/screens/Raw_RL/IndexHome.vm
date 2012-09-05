@@ -87,7 +87,6 @@ a.one:link,a.one:visited
 ############################
 <body>
 $!data.getMessage()
-#set($lang=$data.getUser().getTemp("lang").toString())
 #macro(UNAME)
 
         #if($firstname!="")
@@ -311,6 +310,35 @@ $!data.getMessage()
 			<tr> <td>
 			<table width="100%" border="0">
 				<tr>
+					<td>
+                                        #set($rs=$link.setPage("call").toString())
+                                        #set($count1 = 0)
+                                        #set($count2 = 1)
+                                        #foreach($a in $rs.split(":"))
+                                                #if($count1 == $count2)
+                                                #set($a=$a.substring(2))
+                                                        #if($guest_login=="false")
+                                                        #set($rs=$link.setPage("call").toString())
+                                                        #set($count1 = 0)
+                                                        #set($count2 = 1)
+                                                        #foreach($a in $rs.split(":"))
+                                                        #if($count1 == $count2)
+                                                        #set($a=$a.substring(2))
+                                                                <td align="center">
+                                                                #if($user_role!="student")
+                                                                <a href=$link.setPage("call,Directory.vm").addPathInfo("mode","prot") style=text-decoration:none><b>$brih_directory</b></a>
+                                                                #else
+                                                                <a href=$link.setPage("call,Directory.vm").addPathInfo("mode","stud") style=text-decoration:none><b>$brih_directory</b></a>
+                                                                #end
+                                                                </td>
+                                                        #end
+                                                        #set($count1 = $count1 + 1)
+                                                        #end
+                                                        #end
+                                        #end
+                                        #set($count1 = $count1 + 1)
+                                        #end
+                                        </td>
 
 					#if($guest_login=="false")
                                         <td align="center">

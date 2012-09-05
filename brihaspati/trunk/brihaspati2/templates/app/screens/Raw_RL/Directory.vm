@@ -1,0 +1,42 @@
+#*
+ * @(#) Directory.vm
+ * Copyright(c) 2012,2011 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+$page.setTitle("Directory")
+
+<table width="100%">
+<tr align="right"><td bgcolor="$ui.menuColor" width="100%">
+#if($role=="instructor" || $role=="student")
+<a href=$link.setPage("call,IndexHome.vm").addPathInfo("role",$role)>$brih_home</a> | $brih_directory
+#else
+<a href=$link.setPage("Index.vm")>$brih_home</a> | $brih_directory
+#end
+</td>
+</tr>
+<tr align="right"><td width="100%">
+#set($rs=$link.setPage("call").toString())
+        #set($count1 = 0)
+        #set($count2 = 1)
+        #foreach($a in $rs.split(":"))
+                #if($count1 == $count2)
+                        #set($a=$a.substring(2))
+                        #set($rs=$link.setPage("call").toString())
+                        #set($count1 = 0)
+                        #set($count2 = 1)
+                        #foreach($a in $rs.split(":"))
+                                #if($count1 == $count2)
+                                        #set($a=$a.substring(2))
+<iframe height="400" width="100%" src="http://$a:$port/brihaspatiSpring/directory.vm?mode=$mode&adminconf=$AdminConf&ip=$a&instid=$instid&uid=$uid" frameborder="0"></iframe>
+                                #end
+                                        #set($count1 = $count1 + 1)
+                        #end
+                #end
+                        #set($count1 = $count1 + 1)
+        #end
+</td>
+</tr>
+</table>

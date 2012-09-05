@@ -19,7 +19,7 @@ $!data.getMessage()
 <tr align="right">
 	<td>
      	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home </a> |
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_reg1 </a> |
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_reg1 </a> 
 	#if($mode=="")
 	##	$brih_course $brih_Of1 $brih_reg &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$brih_rem $brih_quota $!rquota $brih_qsizegb
 	#elseif($mode=="MCRegister")
