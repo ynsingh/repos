@@ -12,13 +12,13 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
-<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>Login</a> | Resend Activation
+<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login</a> | $brih_resend $brih_act
 </td></tr>
 </table>
 
 <form name=frm method="post" action="$link.setPage("ResendActivation.vm").setAction("ResendActivation")">
 <table align=left width=100% bgcolor="$ui.tableColor">
-                <tr><td width="15"> <font face="$ui.sansSerifFonts">Email </td>
+                <tr><td width="15"> <font face="$ui.sansSerifFonts">$brih_email </td>
                 <td width="40"><input type="text" size="30" name="email" value=""></td>
 		</tr>
 
@@ -27,7 +27,7 @@ $!data.getMessage()
                 <td colspan=2>
                         <input type="hidden" name="lang" value=$lang>
                         <input type="hidden" name="actionName" >
-		        <input type="button" name="eventSubmit_doCheckUser" value="Get New Mail" onClick="checkUserMail(document.frm,this);">
+		        <input type="button" name="eventSubmit_doCheckUser" value="$brih_get $brih_new $brih_mail" onClick="checkUserMail(document.frm,this);">
                 </td>
                 </tr>
 </table>

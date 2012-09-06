@@ -172,11 +172,11 @@ It is an open standard.
 		</b></td></tr>
 		##Add ResendActivation link in login page
 		<tr align="right"><td colspan="3" align="right"> <b>
-			<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english")><b> $brih_act $brih_key $brih_resend </b></a>
+			<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang)><b> $brih_act $brih_key $brih_resend </b></a>
 			<td> <img src="$content.getURI("/images/orange_sq_but.gif")"> </td>
 		</b></td></tr>
 		<tr align="right"><td colspan=3 align="right"><b>
-			<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang","english") > $brih_brihaspati $brih_server $brih_from1  $brih_auth </a>
+			<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) > $brih_brihaspati $brih_server $brih_from1  $brih_auth </a>
 			<td><img src="$content.getURI("/images/orange_sq_but.gif")"> <td>
 		</b></td></tr>
 
