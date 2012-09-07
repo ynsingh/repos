@@ -884,44 +884,45 @@ public static void grpLeader()
 	public static String autocomplte(String instituteId,String Role){
 		String UserFile="";
 		try{
+		 	Vector userlist=new Vector();
+			String EmailFile="";
 			String filepath=TurbineServlet.getRealPath("/scrpts/AutoSuggestUser/UserEmailId");
 			File tempFile=new File(filepath);
+			
 			//Create directory
                 	tempFile.mkdirs();
-			String EmailFile="";
+			
 			//Get file path according user role
-			if(Role.equals("admin")){
-                	EmailFile=tempFile+"/adminUser.js";
-			UserFile="/scrpts/AutoSuggestUser/UserEmailId/adminUser.js";
+			if(Role.equals("admin"))
+			{
+                		EmailFile=tempFile+"/adminUser.js";
+				UserFile="/scrpts/AutoSuggestUser/UserEmailId/adminUser.js";
+				// Get admin user list
+				userlist=ListManagement.getUserList();
 			}
-			else{
-			EmailFile=tempFile+"/"+instituteId+".js";
-			UserFile="/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js";
+			else
+			{
+				EmailFile=tempFile+"/"+instituteId+".js";
+				UserFile="/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js";
+				// Get instiute admin user list
+				userlist=ListManagement.getInstituteUserList(instituteId);
 			}
-			//Check file exist or not in specific folder.
-			File UserFilepath=new File(EmailFile);
-                        boolean exist=UserFilepath.exists();
-			//Delete file if exist.
-                        if(exist){
-                                UserFilepath.delete();
-                        }
+			
 			// Write file in specific location
+			File UserFilepath=new File(EmailFile);
 			FileWriter fstream = new FileWriter(UserFilepath);
                         BufferedWriter out = new BufferedWriter(fstream);
                         out.write(("userid =["));
-			// Get all user id of an instiute with the help of institue id
-			Vector lst=InstituteDetailsManagement.getInstUserDeatil(instituteId);
-			//get all login name of all user of insttiute using userId 	
-			for(int p=0;p<lst.size();p++){
-                                String userid=lst.get(p).toString();
-				/**Get login name from user id 
-				 * @UserUtil
-				 */
-				int uid=Integer.parseInt(userid);	
-			        String loginName=UserUtil.getLoginName(uid);
-                                if(loginName!=null){
-				//write login name in file for email search in mail compose
-                                out.write('"'+loginName+'"'+",");
+			
+			// Get UserList from vector
+			for(int p=0;p<userlist.size();p++)
+			{
+				CourseUserDetail cud=(CourseUserDetail)userlist.get(p);
+                        	String loginName=cud.getLoginName().toString();
+                                if(loginName!=null)
+				{
+					//write login name in file for email search in mail compose
+                                	out.write('"'+loginName+'"'+",");
                                 }
                         }
                         out.write(']');
