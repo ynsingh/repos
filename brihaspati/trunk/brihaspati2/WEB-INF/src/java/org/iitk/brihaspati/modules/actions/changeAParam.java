@@ -117,6 +117,7 @@ public class changeAParam extends SecureAction_Admin{
                 String department=pp.getString("department","");
                 String designation=pp.getString("designation","");
 		String port=pp.getString("port","8090");
+		String dstore=pp.getString("datastorage","Local");
 
                 String officeno=pp.getString("Offprefix","x")+"-"+pp.getString("Offccode","x")+"-"+pp.getString("Offrcode","x")+"-"+pp.getString("Offphnumber","x");
                 String mobileno=pp.getString("Mobprefix","x")+"-"+pp.getString("Mobccode","x")+"-"+pp.getString("Mobrcode","x")+"-"+pp.getString("Mobphnumber","x");
@@ -234,6 +235,8 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
 			AdminProperties.setValue(path,port,"brihaspati.spring.port");
+			AdminProperties.setValue(path,dstore,"brihaspati.admin.datastore.value");
+
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	

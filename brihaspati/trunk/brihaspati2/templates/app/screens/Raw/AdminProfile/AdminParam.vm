@@ -1,5 +1,5 @@
 #* * @(#)AdminParam.vm
- * Copyright (c) 2005,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009, 2012  ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
@@ -241,15 +241,33 @@ $!data.getMessage()
         <tr>
         	#formCell("$Inst_designation" "designation" "$!designation")
         </tr>
-	<tr>
-                <td>
-                        $brih_spring $brih_port $brih_No
-                </td>
-                <td>
-                        <input type="text" id="port" title="Please use port like 80XX" name="port" value="$!port" maxlength="4" onkeypress="return isNumberKey(event)" >
-                </td>
+	<tr bgcolor="$ui.menuColor">
+        <td>
+                $brih_spring $brih_port $brih_No
+        </td>
+        <td>
+                <input type="text" id="port" title="Please use port like 80XX" name="port" value="$!port" maxlength="4" onkeypress="return isNumberKey(event)" >
+        </td>
         </tr>
+	<tr>
+	<td> $brih_data $brih_storage $brih_option</td>
+	<td> 
 
+		#if($dstore == "HDFS")
+		<input type="radio" name="datastorage" value="$brih_local"  /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs" checked  /> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  /> $brih_both  
+		#elseif($dstore == "Both")				
+		<input type="radio" name="datastorage" value="$brih_local"  /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  /> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  checked  /> $brih_both  
+		#else
+		<input type="radio" name="datastorage" value="$brih_local"  checked  /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  /> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  /> $brih_both  
+		#end
+	</td>
+	</tr>
    <tr bgcolor="$ui.menuColor">
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName"/>

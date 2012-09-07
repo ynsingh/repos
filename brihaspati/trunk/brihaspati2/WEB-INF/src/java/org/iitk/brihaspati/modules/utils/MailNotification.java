@@ -323,8 +323,13 @@ public class MailNotification{
 							
 						} catch (MessagingException mex) { // Trap the MessagingException Error
                                                 // If here, then error in sending Mail. Display Error message.
-                                                msg=msg+"The error in sending Mail Message "+mex.toString();
+                                                	msg=msg+"The error in sending Mail Message "+mex.toString();
                                                 }
+						catch (Exception ex) { // Trap the MessagingException Error
+                                                // If here, then error in sending Mail. Display Error message.
+                                                         msg=msg+"The error in sending Mail Message Exception "+ex.toString();
+                                                }
+                                               
                                                 //msg="Mail send succesfully!!";
                                                 msg=msg + MultilingualUtil.ConvertedString("mail_msg2",LangFile);
                                         }
