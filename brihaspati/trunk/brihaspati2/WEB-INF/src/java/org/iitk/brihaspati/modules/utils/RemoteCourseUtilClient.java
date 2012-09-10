@@ -589,23 +589,25 @@ public class RemoteCourseUtilClient
                         File topiclist[]=dirHandle.listFiles(exclude);
                         File intopiclist[]= null;
                         File inunpublist[]= null;
-                        boolean flag=false;
                         StringBuffer sw = new StringBuffer();
                         for(int i=0 ;i < topiclist.length ; i++)
                         {
+			String unpfilePath = TurbineServlet.getRealPath("/Courses"+ "/" + cId + "/Content"+"/"+topiclist[i].getName()+"/"+"Unpublished" );
+			File nf=new File(unpfilePath);
+			File fl[]=nf.listFiles();
                                 if(topiclist[i].isDirectory())
                                 {
                                         sw.append(topiclist[i].getName()).append("\n");
                                         String filterxml[]={topiclist[i].getName() + "__des.xml"};
                                         exclude = new NotInclude(filterxml);
                                         intopiclist =topiclist[i].listFiles(exclude);
+                                        int totalval=(intopiclist.length-1)+(fl.length);
+                                        sw.append(totalval).append("\n");
                                         for(int j=0 ;j < intopiclist.length ; j++)
                                         {
                                                 if(intopiclist[j].isDirectory())
                                                 {
                                                         inunpublist=intopiclist[j].listFiles();
-							int totalval=(intopiclist.length-1)+(inunpublist.length);
-                                                        sw.append(totalval).append("\n");
                                                         if(inunpublist.length > 0)
                                                         {
                                                                 for(int k=0 ;k < inunpublist.length ; k++)
