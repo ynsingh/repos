@@ -7,7 +7,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 30-03-2010
+ * @modified date: 25-08-2012 (Sunil Yadav)
  * Contributors: Members of Brihaspati software solutions Kanpur
 *#
 
@@ -44,6 +46,7 @@ $!data.getMessage()
 ##if($mode == "UploadImage")
 
 <table width=100% bgcolor="$ui.tableColor">
+#if($user_role == "instructor")
 <tr>
 		#if($tdcolor != "1")
                 <td>
@@ -96,6 +99,46 @@ $!data.getMessage()
          <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>$brih_scorm $Repo_Player</a>
          </td>
 </td></tr>
+#end
+#########TA
+#if($user_role == "teacher_assistant")
+
+         #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
+
+        #if($tdcolor != "2")    
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
+        #if($tdcolor != "4")    
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
+
+        #if($tdcolor != "6")    
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+ <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")> $brih_scorm $brih_packager </a></td>
+ #if($tdcolor != "7")
+         <td>
+         #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+         #end
+       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
+         </td>
+#end
+
+</tr>
 </table>
 ##end
 #if($mode == "UploadImage")

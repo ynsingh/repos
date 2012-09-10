@@ -60,6 +60,20 @@
 	<column name="EXPIRY" required="true" type="INTEGER"/>
 	<column name="EXPIRY_DATE" required="true" type="DATE"/>
 </table>
+<table name="MODULE_PERMISSION">
+        <column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="USER_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="MODULE_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
+        <column name="INSTITUTE_ID" required="true" size="255" type="VARCHAR"/>
+       <column name="MODULE_STATUS" default="0" required="true" type="INTEGER" size="2"/>
+</table>
+
+<table name="COURSE_MODULE">
+        <column name="MODULE_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="MODULE_NAME" required="true" size="255" type="VARCHAR"/>
+</table>
+
 <table name="DB_SEND" idMethod="idbroker">
 	<column name="MSG_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
 	<column name="REPLY_ID" required="true" type="INTEGER"/>

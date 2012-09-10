@@ -375,5 +375,34 @@ public class InstituteIdUtil
                 }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getInstructorInstId() method --[InstituteIdUtil]"+ex);}
         return instidlist;
         }
+	
+	
+	 /**
+         * Get list of registered institute for perticular Teacher Assistant
+         * first get list of all registered Teacher Assistant then get their group id.
+         * From group id, get group name that shows in which group Teacher Assistant is registered
+         * from group name, get institute id of that instructor.
+         */
+        public static Vector getTaInstId(int uid)
+        {
+                Vector instidlist=new Vector();
+                Criteria crit=new Criteria();
+                try{
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                        crit.and(TurbineUserGroupRolePeer.ROLE_ID,8);
+                        List v=TurbineUserGroupRolePeer.doSelect(crit);
+                        for(int k=0;k<v.size();k++)
+                        {
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
+                                int s=(element.getGroupId());
+                                String gname=GroupUtil.getGroupName(s);
+                                String InsId=StringUtils.substringAfterLast(gname,"_");
+                                if(!instidlist.contains(InsId))
+                                        instidlist.add(InsId);
+                        }
+                }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getTaInstId() method --[InstituteIdUtil]"+ex);}
+        return instidlist;
+        }
+
 }
 

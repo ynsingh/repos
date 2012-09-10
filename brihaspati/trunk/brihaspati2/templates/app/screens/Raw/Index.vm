@@ -16,6 +16,8 @@
  * @modified date: 04-04-2011,14-07-2011(smita) 
  * @author <a href="sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @modified date: 11-08-2011 Add general and institutewise discussion group
+ * @author <a href="sunil0711@gmail.com">Sunil Yadav</a>
+ * @modified date: 23-08-2012 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -84,6 +86,13 @@ $!data.getMessage()
        		<a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","instructor").addPathInfo("lang",$lang) style=text-decoration:none>$brih_instructorHome</a>
 		</td></tr>
 		#end
+		
+		#if($Role8=="TeacherAssistantRole")
+                <tr><td align="center" colspan="7">
+                <a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","teacher_assistant").addPathInfo("lang",$lang) style=text-decoration:none> $bri_ta_home</a>
+                </td></tr>
+                #end
+	
     		#if($Role3=="StudentRole")
 		<tr><td align="center" colspan="7">
        		<a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","student").addPathInfo("lang",$lang) style=text-decoration:none>$brih_studentHome</a>
@@ -100,7 +109,8 @@ $!data.getMessage()
                 </td></tr>                                                                                #end                                                                      
 <tr bgcolor="$ui.menuColor">
 #if($guest_login=="false" )
-	#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole"))
+		#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole") || ($Role8=="TeacherAssistantRole"))
+
 	<td width="16%" > <a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
 	</td>
 	<td width="16%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
@@ -119,7 +129,8 @@ $!data.getMessage()
 		<td width="20%" align="center" ><a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4") style=text-decoration:none>$brih_general $DiscussionBoard</a></td>
 	#end
 #end
-#if($Role7=="InstituteAdminRole" || $Role3=="StudentRole" || $Role2=="InstructorRole")
+
+#if($Role7=="InstituteAdminRole" || $Role3=="StudentRole" || $Role2=="InstructorRole" || ($Role8=="TeacherAssistantRole"))
         <td width="20%" ><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang)>$brih_FAQ</a></td>
 #end
 </tr>

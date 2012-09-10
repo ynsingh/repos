@@ -103,7 +103,7 @@ public class MailContent extends SecureScreen
                          *method for how much time user spend in this page.
                          */
 			String Role = (String)user.getTemp("role");
-			if((Role.equals("student")) || (Role.equals("instructor")))
+			if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
 	                        //CourseTimeUtil.getCalculation(user_id);
         	                //ModuleTimeUtil.getModuleCalculation(user_id);

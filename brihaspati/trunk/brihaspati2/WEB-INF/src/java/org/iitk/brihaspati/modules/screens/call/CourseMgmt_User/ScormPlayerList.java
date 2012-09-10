@@ -90,7 +90,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if(((Role.equals("student")) || (Role.equals("instructor")) || Role.equals("teacher_assistant")))
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
@@ -114,7 +114,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 			boolean found=false;
 			String PDate="",topicname="",status="";
 			topicmetadata=new TopicMetaDataXmlReader(filepath+xmlfile);
-			if(Role.equals("instructor"))
+			if((Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                 		topicList=topicmetadata.getFileDetails();
 			else
 				topicList=ReadEntry(filepath,xmlfile);

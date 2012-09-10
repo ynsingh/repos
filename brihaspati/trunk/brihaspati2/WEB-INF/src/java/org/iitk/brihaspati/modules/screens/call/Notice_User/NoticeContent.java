@@ -133,6 +133,8 @@ public class NoticeContent extends SecureScreen{
 			int role_id=0;
 			if(user_role.equals("instructor"))
 				role_id=2;
+			else if(user_role.equals("teacher_assistant"))
+				role_id=8;
 			else
 				role_id=3;
 
@@ -326,7 +328,7 @@ public class NoticeContent extends SecureScreen{
                           *Method for how much time user spend in this page.
                           */
                           String Role=(String)data.getUser().getTemp("role");
-                          if((Role.equals("student")) || (Role.equals("instructor")))
+                          if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                           {
                                    //CourseTimeUtil.getCalculation(user_id);
                                    //ModuleTimeUtil.getModuleCalculation(user_id);

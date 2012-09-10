@@ -259,7 +259,7 @@ public class Calendar_Display extends SecureScreen{
 				gid=GroupUtil.getGID(course_id);
 				//For Time calculation on this page.
                                 String Role = (String)user.getTemp("role");
-                                if((Role.equals("student")) || (Role.equals("instructor")))
+                                if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                                 {
                                         //CourseTimeUtil.getCalculation(user_id);
                                         //ModuleTimeUtil.getModuleCalculation(user_id);

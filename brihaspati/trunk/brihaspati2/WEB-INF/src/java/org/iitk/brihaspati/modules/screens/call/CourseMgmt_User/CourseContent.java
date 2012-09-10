@@ -106,7 +106,7 @@ public class CourseContent extends VelocitySecureScreen{
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(user.getName());
-                         if((role.equals("student")) || (role.equals("instructor")))
+                         if((role.equals("student")) || (role.equals("instructor")) || (role.equals("teacher_assistant")))
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
@@ -118,7 +118,13 @@ public class CourseContent extends VelocitySecureScreen{
 			{
 				context.put("isInstructor","true");
 			}
-			
+				
+			//modified by Sunil Yadav
+			if( acl.hasRole("teacher_assistant",group))
+                        {
+                                context.put("isTeacherAssistant","true");
+                        }
+
 			File Path=new File(filePath+"/coursecontent__des.xml");
 			/**
 			* Write all topic in xml file if topic is not present
@@ -230,13 +236,13 @@ public class CourseContent extends VelocitySecureScreen{
                         User user=data.getUser();
                         String g=user.getTemp("course_id").toString();
 
-                        if (acl==null || (! acl.hasRole("instructor",g) && !acl.hasRole("student",g) && !acl.hasRole("turbine_root")) )
+                        if (acl==null || (! acl.hasRole("instructor",g) && !acl.hasRole("student",g) && !acl.hasRole("teacher_assistant",g) && !acl.hasRole("turbine_root")) )
                         {
                                 data.setScreenTemplate( Turbine.getConfiguration().getString("template.login"));
 
                                 isAuthorized = false;
                         }
-                        else if(acl.hasRole("instructor",g) || acl.hasRole("student",g) || acl.hasRole("turbine_root"))
+                        else if(acl.hasRole("instructor",g) || acl.hasRole("student",g) || acl.hasRole("teacher_assistant",g) || acl.hasRole("turbine_root"))
                         {
                                 isAuthorized = true;
                         }

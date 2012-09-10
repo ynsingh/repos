@@ -67,8 +67,9 @@ import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @ modified date: 13-Oct-2010 (Shaista),01-feb-2012
- * @ modified date: 24-July-2012 (Dewanshu)
+ * @ modified date: 24-July-2012 (Dewanshu),23-08-2012(Sunil Yadav)
  *    
  */
 
@@ -140,7 +141,7 @@ public class Mail extends SecureScreen
 		  	*/
                 	String dir=(String)user.getTemp("course_id");
 			String coursename=(String)user.getTemp("course_name");
-			ErrorDumpUtil.ErrorLog("user id==========>>"+coursename);
+			//ErrorDumpUtil.ErrorLog("user id==========>>"+coursename);
 			/**
 		  	* Getting the userId of logged user from Turbine_User table
 		  	* @see UserUtil in Utils
@@ -187,7 +188,7 @@ public class Mail extends SecureScreen
                          *method for how much time user spend in this page.
                          */
 			String Role = (String)user.getTemp("role");
-			if((Role.equals("student")) || (Role.equals("instructor")))
+			if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
                                 //CourseTimeUtil.getCalculation(user_id);
                                 //ModuleTimeUtil.getModuleCalculation(user_id);
@@ -204,6 +205,8 @@ public class Mail extends SecureScreen
                                 role_id=2;
                         else if(Role.equals("student"))
                                 role_id=3;
+			else if(Role.equals("teacher_assistant"))
+                                role_id=8;
                         Vector unreadMsg=NoticeUnreadMsg.getUnreadNotice(user_id,role_id,dir);
                         context.put("unreadMsg",unreadMsg);
 			

@@ -116,7 +116,7 @@ public class Calendar_Day extends SecureScreen
 			 if(path.equals("course"))
 			 {
                         	int user_id=Integer.parseInt(uid_user);
-                         	if((Role.equals("student")) || (Role.equals("instructor")))
+                         	if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          	{
                                 	//CourseTimeUtil.getCalculation(user_id);
                                 	//ModuleTimeUtil.getModuleCalculation(user_id);

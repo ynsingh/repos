@@ -89,8 +89,10 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 28-01-2010
  * @modified date: 08-07-2010, 13-Oct-2010, 21-04-2011, 16-06-2011 (Shaista)
+ * @modified date: 24-08-2012 (Sunil Yadav)
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -190,11 +192,12 @@ public class Notice_Send_Delete extends SecureAction
                                         if(lst1.size() !=0)
                                        flag=true;
                          	}
-	                         if(flag==true){
+	                         if(flag==true) {
                                      String mssg=MultilingualUtil.ConvertedString("quiz_msg",LangFile);
                                      data.setMessage(mssg);
         	                 return;
                 	        }
+
 				/**
 				 * Checks the group of users to whom this notice has to be delivered
 			 	*/
@@ -204,6 +207,8 @@ public class Notice_Send_Delete extends SecureAction
 					role_id=2;
 				if(notice_role.equals("student"))
 					role_id=3;
+				if(notice_role.equals("teacher_assistant"))
+                                        role_id=8;
 				if(notice_role.equals("all"))
 					role_id=7;
 
@@ -303,7 +308,7 @@ public class Notice_Send_Delete extends SecureAction
                                         {
 
 					Vector userList=new Vector();
-					if(role_id==2 || role_id==3)
+					if(role_id==2 || role_id==3 || role_id==8)
 					{
 						userList=UserGroupRoleUtil.getUID(group_id,role_id);
 						int rows=userList.size();

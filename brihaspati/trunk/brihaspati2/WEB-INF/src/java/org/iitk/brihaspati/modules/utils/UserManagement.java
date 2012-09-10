@@ -103,8 +103,10 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil YAdav</a>
  * @modified date: 08-07-2010, 20-10-2010, 3-11-2010, 26-12-2010
  * @modified date: 27-07-2011, 05-08-2011(Richa), 09-08-2012(Priyanka)
+ * @modified date: 16-08-2012(Sunil Yadav)
  */
 
 public class UserManagement
@@ -270,6 +272,13 @@ public class UserManagement
                         		        	else
                                         			userRole="newInstructorhttps";
                         			}
+						else if(Role.equals("teacher_assistant")){
+                                                        if(serverPort.equals("8080"))
+                                                                userRole="newTeacherAssistant";
+                                                        else
+                                                                userRole="newTeacherAssistanthttps";
+                                                }
+
                         			else if(Role.equals("student")){
                                 			if(serverPort.equals("8080"))
                                         			userRole="newStudent";
@@ -392,7 +401,12 @@ public class UserManagement
                         	                        else
                                 	                        userRole="newInstructorhttps";
                                         	}
-
+						 else if(Role.equals("teacher_assistant")){
+                                                        if(serverPort.equals("8080"))
+                                                                userRole="newTeacherAssistant";
+                                                        else
+                                                                userRole="newTeacherAssistanthttps";
+                                                }
 						else if(Role.equals("student")){
                                 			if(serverPort.equals("8080"))
                                         			userRole="newStudent";

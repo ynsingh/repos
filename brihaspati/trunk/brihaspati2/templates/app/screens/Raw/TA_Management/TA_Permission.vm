@@ -1,0 +1,131 @@
+#*
+ * @(#) TA_Permission.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+$page.setTitle("Home | $coursename | Autherization")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+	<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+
+	<table bgcolor="$ui.tableColor" width=100%>
+	    <tr bgcolor="$ui.menuColor"><td colspan=7>
+		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> |
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$coursename</a> | $brih_course $bri_mod $bri_auth
+		</td>
+	    </tr>
+	</table>
+	
+        <table bgcolor="$ui.tableColor" width=100%>
+	        <tr>
+        	#if($tdcolor != "1")
+	        <td>
+        	#elseif($tdcolor == "1")
+	        <td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_listOf $bri_ta #else $brih_listOf $bri_ta #end </a></td>
+        	#if($tdcolor != "2")
+	        <td>
+	        #elseif($tdcolor == "2")
+	        <td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $brih_reg1 $bri_ta </a></td>
+	        </tr>
+        </table>
+	
+	<FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,TA_Management,TA_Permission.vm").setAction("TA_Registeration").addPathInfo("count","1")">
+	<table bgcolor="$ui.tableColor" width=100%>
+			
+		<tr bgcolor="$ui.menuColor">
+		    <td><font face="$ui.sansSerifFonts"><b>$brih_select</font></td>
+                    <td><font face="$ui.sansSerifFonts"><b>$brih_course $brih_module $brih_name</font></td>
+                    <td><font face="$ui.sansSerifFonts"><b>$bri_unauth</font></td>
+                </tr>
+
+        #set($flag=false)
+	#set( $count = "" )
+        #foreach($users in $courseModule)
+		#if($velocityCount%2==0)
+                   <tr bgcolor="$ui.tableColor" width=100%>
+                #else
+                   <tr bgcolor="$ui.menuColor" width=100%>
+                #end
+		
+		#foreach($InstructCrsMod in $courseModuleList)
+                        ##check check autherise moduleId with All coursemoduleId.
+                        ##if match it shows, module is already autherise
+                        ##then set flag true
+                        #if(("$InstructCrsMod.ModuleId")==("$!users.ModuleId"))
+                                #set($flag=true)
+                        #end    
+                #end
+
+	 ##If flag true then disable that check box 
+                #if($flag)
+	
+                        <td> <INPUT TYPE="CHECKBOX" NAME=$!users.ModuleId onClick="addSelectedList(this,document.frm);" DISABLED> </td>
+                        <td> $!users.ModuleName </td>
+			<td> <a href=$link.setPage("call,TA_Management,TA_Permission.vm").setAction("TA_Registeration").addPathInfo("actionName","eventSubmit_doRemoveModulePermission").addPathInfo("moduleId",$!users.ModuleId).addPathInfo("username",$username) onclick="javascript:return confirm('$bri_do $!users.ModuleName $brih_module !!')" style=text-decoration:none> $bri_unau</a> </td>
+			
+                        #set($flag=false)
+                #else
+                        <td> <INPUT TYPE="CHECKBOX" NAME=$!users.ModuleId onClick="addSelectedList(this,document.frm);" > </td>
+                        <td> $!users.ModuleName </td>
+			<td> <font size="3" color="#B2B2B2"> $bri_unau </font></td>
+                #end
+		</tr>
+        #end
+	#set ( $count = "$count$!users.ModuleId^"  )
+
+        <tr bgcolor="$ui.menuColor" width=100%><td colspan=9>
+		<INPUT TYPE="button" NAME="eventSubmit_doSelect" VALUE="$bri_author" onClick="checkValue(document.frm,this);">
+		<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
+		<INPUT TYPE="hidden" NAME="actionName" VALUE="">
+		<input type="hidden" name="count" value="$tdcolor">
+		<input type="hidden" name="username" value="$username">
+        </td></tr>
+	
+	</table>
+	</FORM>
+
+
+<SCRIPT Language="javascript">
+
+function checkValue(frm,field)
+{               
+        if(frm.selectFileNames.value!="")
+        {               
+                frm.actionName.value=field.name;
+                frm.submit();
+        }               
+        else            
+        {       
+                alert("Please Select check box for Course Module Name !!");
+        }
+}
+
+
+
+function addSelectedList(field,frm)
+{
+if(field.checked)
+{
+frm.selectFileNames.value=frm.selectFileNames.value+field.name+"^";
+}
+                else
+                {
+                        var slFile,index,actualString,preString,postString;
+                        actualString=frm.selectFileNames.value;
+                        index=actualString.indexOf(field.name+"^",0);
+                        preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+                        actualString=preString+postString;
+                        frm.selectFileNames.value=actualString;
+                }
+}
+
+</SCRIPT >
+	

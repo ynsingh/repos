@@ -22,7 +22,7 @@ $!data.getMessage()
 <tr><td>
 	#if($isAdmin=="true")
 		<a href=$link.setPage("Index.vm") style=text-decoration:none> $brih_home </a> | $course | 
-	#elseif ($isInstructor=="true")
+	#elseif (($isInstructor=="true")||($isTeacherAssistant=="true"))
 		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home </a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 		 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
 	#else
@@ -122,6 +122,45 @@ $!data.getMessage()
         <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
 	#end
 #end
+
+
+#if($user_role == "teacher_assistant")
+
+         #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english") $brih_course  $brih_content #else $brih_content #end </a></td>
+
+        #if($tdcolor != "2")    
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else $brih_upload $brih_course $brih_content #end </a></td>
+        #if($tdcolor != "4")    
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
+
+        #if($tdcolor != "6")    
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+ <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")> $brih_scorm $brih_packager </a></td>
+        #if($tdcolor != "7")
+         <td>
+         #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+         #end
+       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
+         </td>
+#end
+
 </tr>
 </table>
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setAction("EditContent_Action").setPage("call,CourseMgmt_User,CourseContent.vm")">

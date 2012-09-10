@@ -7,8 +7,10 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 31-12-2009, 25-04-2010,07-09-2010 , 09-Aug-2011 (Sunil Kr).
+ * @modified date: 24-08-2012 (Sunil Yadav)
 *#
 <head>
 ##This Script use for Fck Editor in textarea.
@@ -258,6 +260,7 @@ $!data.getMessage()
 	<option value="all">$Notice_All
 	<option value="instructor">$brih_Instructor
 	<option value="student">$brih_student
+	<option value="teacher_assistant">$bri_ta
 #else
 	<option value="all">$Notice_All
 #end

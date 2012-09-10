@@ -169,7 +169,7 @@ public class Track_Report extends SecureScreen
 			}
 			uid=UserUtil.getUID(usrname);
 			/** getting Rolename---------------*/
-			if(userrole.equals("instructor"))
+			if(userrole.equals("instructor") || userrole.equals("teacher_assistant"))
 			{
 				context.put("coursename",(String)user.getTemp("course_name"));
 				String courseid=(String)user.getTemp("course_id");

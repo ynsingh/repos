@@ -69,6 +69,10 @@ import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+
+import org.iitk.brihaspati.om.ModulePermissionPeer;
+import org.iitk.brihaspati.om.ModulePermission;
+
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
@@ -80,7 +84,9 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 26-07-2010, 06-08-2010, 09-11-2010, 22-02-2011, 18-07-2011
+ * @modified date: 23-08-2012 (Sunil Yadav)
  */
 
 /* This screen class is called when User's selects a home location as instructor/
@@ -159,6 +165,85 @@ public class IndexHome extends SecureScreen{
 			if(Role.equals(""))
 				Role=(String)user.getTemp("role");
 			context.put("user_role",Role);
+
+			/*
+			 * setting course module in temp variable
+			 *
+			 */
+		
+			// added by sunil yadav
+			String mod_Id = "";
+                        String status = "";
+                        Vector v1 = new Vector();
+                        try {
+                                Criteria crit1 = new Criteria();
+                                crit1.add(ModulePermissionPeer.USER_ID,id);
+                                //crit1.add(ModulePermissionPeer.INSTITUTE_ID,inst_id);
+                                List l=ModulePermissionPeer.doSelect(crit1);
+                                for(int j=0;j<l.size();j++) {
+                                                ModulePermission element=(ModulePermission)(l.get(j));
+                                                 status = Integer.toString(element.getModuleStatus());
+                                                 mod_Id = element.getModuleId();
+                                v1.add(mod_Id);
+                                }
+
+                                context.put("V1",v1);
+                                String mid="";
+                                for(int p=0; p<v1.size(); p++) {
+                                 mid=v1.elementAt(p).toString();
+                                int module_Id=Integer.parseInt(mid);
+                                if(module_Id==100){
+					user.setTemp("modulename","Assignment");
+                                }
+                                if(module_Id==101){
+                                        user.setTemp("modulename1","Backup");
+
+                                }
+				if(module_Id==102){
+                                        user.setTemp("modulename2","Communication");
+
+                                }
+
+                                if(module_Id==103){
+                                        user.setTemp("modulename3","CourseCalendar");
+
+                                }
+
+                                if(module_Id==104){
+                                        user.setTemp("modulename4","CourseManagement");
+
+                                }
+                                if(module_Id==105){
+                                        user.setTemp("modulename5","GroupManagement");
+
+                                }
+                                if(module_Id==106){
+                                        user.setTemp("modulename6","OnlineExaminationSystem");
+
+                                }
+                                if(module_Id==107){
+                                        user.setTemp("modulename7","InstructorManagement");
+
+                                }
+				if(module_Id==108){
+                                        user.setTemp("modulename8","StudentManagement");
+
+                                }
+                                if(module_Id==109){
+                                        user.setTemp("modulename9","MarksUpload");
+
+                                }
+                                if(module_Id==110){
+                                        user.setTemp("modulename10","Wiki");
+
+                                }
+                                if(module_Id==111){
+                                        user.setTemp("modulename11","TrackingReport");
+
+                                }
+				}
+			} catch(Exception e){}
+
 			/**
 			 * Getting configuration Parameter 
 			 * if configuration parameter is not empty set it to display
@@ -177,12 +262,12 @@ public class IndexHome extends SecureScreen{
 			else{
 				user.setTemp("confParam","10");
 			}
-///////////////////////////////////////////////////////////////////////////
+
 			String userNm=user.getName();
 			int uId=UserUtil.getUID(userNm);
 			String str=userNm+"_"+Integer.toString(uId);
 			user.setTemp("stuId",str);
-/////////////////////////////////////////////////////////////////////////////
+
 			// This is check for set temp variables
 			/**
 			 * @param course_name String, Default value should set as null
@@ -199,7 +284,7 @@ public class IndexHome extends SecureScreen{
 			 * Getting List of course's object according to user id in which user is instructor
 			 * to show the list of courses 
 			 * Getting unread message & setting it to display
-			*/
+			 */
 			if(Role.equals("instructor"))
 			{
 		
@@ -221,6 +306,8 @@ public class IndexHome extends SecureScreen{
 					 String Inst_name = InstituteIdUtil.getIstName(instid);
 					 CourseUserDetail cDetail = new CourseUserDetail();
 					 cDetail.setInstId(instid);
+					if(!Inst_name.equals("null")||(!Inst_name.equals("")))
+					
 					 cDetail.setInstName(Inst_name);
 					 InsDetail.add(cDetail);
 					 instname.addElement(Inst_name);
@@ -232,6 +319,50 @@ public class IndexHome extends SecureScreen{
 				unread_inst=NoticeUnreadMsg.getUnreadNotice(u_id,2,"All");
 				context.put("unread_msg",unread_inst);
 			}
+		
+			/**
+                         * if role is Teacher Assistant 
+                         * Getting List of course's object according to user id in which user is Teacher Assistant
+                         * Getting unread message & setting it to display
+                         */
+
+
+	   		if(Role.equals("teacher_assistant"))
+                        {
+
+                                //Getting the Instructor's Institute Id from InstituteIdUtil.
+
+                                Vector instlist = InstituteIdUtil.getTaInstId(u_id);
+
+                                Vector InsDetail=new Vector();
+                                for(int l=0;l<instlist.size();l++)
+                                {
+                                         Vector  instname = new Vector();
+                                        /*
+                                          * Getting InstId from Vector instlist.
+                                          * Conveting int type Instid from String type. 
+                                          */
+                                         int instid=Integer.parseInt((String)instlist.get(l));
+
+                                         //Getting Institute Name  from InstituteIdUtil on the basis of InstituteId.
+                                         String Inst_name = InstituteIdUtil.getIstName(instid);
+                                         CourseUserDetail cDetail = new CourseUserDetail();
+                                         cDetail.setInstId(instid);
+                                        if(!Inst_name.equals("null")||(!Inst_name.equals("")))
+
+                                         cDetail.setInstName(Inst_name);
+                                         InsDetail.add(cDetail);
+                                         instname.addElement(Inst_name);
+                                         context.put("Inst_name",InsDetail);
+                                }
+
+                                Vector course_inst=StudentInstructorMAP.getTAMAP(u_id);
+                                context.put("inst",course_inst);
+                                // getting Unread Notices
+                                unread_inst=NoticeUnreadMsg.getUnreadNotice(u_id,8,"All");
+                                context.put("unread_msg",unread_inst);
+                        }
+
 			/**
 			 * else if role is student 
 			 * Getting List of course's object in which user is student  to show the list of courses 

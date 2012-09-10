@@ -65,7 +65,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author  <a href="mailto:rachanadwivedi22@gmail.com">Rachana Dwivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 13-Feb-2011 (Shaista),05-09-12
+ * @modified date: 05-09-2012 (Sunil Yadav)
  */
 
 public class MailTestMessage extends VelocitySecureScreen
@@ -92,7 +94,8 @@ public class MailTestMessage extends VelocitySecureScreen
 		  *  Checks if the user has logged in as an instructor. If so, then he is
 		  *  authorized to view this page
 		  **/ 
-		   if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g))
+		   //if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g))
+		  if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g) || acl.hasRole("teacher_assistant",g))
 		{
 			authorised=true;
 			//CourseTimeUtil.getCalculation(uid);
