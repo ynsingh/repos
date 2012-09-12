@@ -98,7 +98,7 @@ public class TA_Registeration extends SecureAction_Instructor {
 			String serverName=data.getServerName();
 			int srvrPort=data.getServerPort();
 			String serverPort=Integer.toString(srvrPort);
-			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gName,"teacher_assistant",serverName,serverPort,LangFile,"","","");
+			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gName,"teacher_assistant",serverName,serverPort,LangFile,"","","act");
 			data.setMessage(msg +" "+ mail_msg);			
 
 		} catch(Exception ex) {
