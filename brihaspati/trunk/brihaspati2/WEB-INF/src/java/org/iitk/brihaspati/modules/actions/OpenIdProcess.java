@@ -44,11 +44,18 @@ import java.util.Map;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.modules.actions.VelocityAction;
 import org.apache.turbine.services.security.TurbineSecurity;
+import org.expressme.openid.OpenIdException;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.apache.torque.util.Criteria;
+import org.iitk.brihaspati.om.Openid;
+import org.iitk.brihaspati.om.OpenidPeer;
+import java.util.Iterator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -77,11 +84,17 @@ public class OpenIdProcess
 {
 	private Log log = LogFactory.getLog(OpenIdProcess.class);
 	private RunData data;
+	static final long ONE_HOUR = 3600000L;
+        static final long TWO_HOUR = ONE_HOUR * 2L;
+	Criteria crit = null;
+	Criteria criteria = null;
 
 	public OpenIdProcess(RunData data)
 	{
 		this.data=data;
-	}	
+	}
+
+	public OpenIdProcess(){}	
 
 	/**
          * Processes the returned information from an authentication request
@@ -131,13 +144,12 @@ public class OpenIdProcess
         	{
                 	try{
                         	endpoint = createOpenIdManagerObject().lookupEndpoint("Google");
-                        	//ErrorDumpUtil.ErrorLog("OPENID 2-----OPENID-----  "+endpoint);
+                        	ErrorDumpUtil.ErrorLog("OPENID 2-----OPENID-----  "+endpoint);
         			//return endpoint;
 	        	}catch (Exception e) {
-                  		//String str = ("An error occured while fetching endpoint Url!!");
-		                final Throwable throwable = new Exception(e);
+                  		final Throwable throwable = new Exception(e);
 		                ErrorDumpUtil.ErrorLog("STACK TRACE in performDiscovery of OpenIdProcess  "+getStackTrace(throwable));
-		                //throw new RuntimeException (str,e);
+		                throw new RuntimeException ("Error in discovery",e);
 
 			}
         	}
@@ -145,13 +157,12 @@ public class OpenIdProcess
         	{
                 	try{
                         	endpoint = createOpenIdManagerObject().lookupEndpoint("Yahoo");
-                        	//ErrorDumpUtil.ErrorLog("OPENID 3-----OPENID-----  "+endpoint);
+                        	ErrorDumpUtil.ErrorLog("OPENID 3-----OPENID-----  "+endpoint);
 				//return endpoint;
                 	}catch (Exception e) {
-                  		//String str = ("An error occured while fetching endpoint Url!!");
 		                final Throwable throwable = new Exception(e);
                		 	ErrorDumpUtil.ErrorLog("STACK TRACE in performDiscovery of OpenIdProcess  "+getStackTrace(throwable));
-                		//throw new RuntimeException (str,e);
+                		throw new RuntimeException ("Error in discovery",e);
 
 			}
 
@@ -248,5 +259,128 @@ public String getStackTrace(Throwable throwable)
              return writer.toString();
 }
 
+
+/**
+ * This method checks response_nonce to prevent replay-attack.
+ * @param String nonce Nonce fetched from HTTP request
+ * @param String opurl OpenId Provider from whom 
+ *  request has been received.
+ */
+
+public void checkNonce(String nonce,String opurl)
+{
+	if (nonce==null || nonce.length()<20)
+            throw new OpenIdException("Nonce size null or less than 20. Verify failed.");
+	if (opurl==null ||opurl.equals(null))
+	    throw new OpenIdException("OpenId Provider's name has value null. Verify failed.");
+        long nonceTime = getNonceTime(nonce);
+        long diff = System.currentTimeMillis() - nonceTime;
+        if (diff < 0)
+            diff = (-diff);
+        if (diff > ONE_HOUR)
+            throw new OpenIdException("Bad nonce time.");
+	//removeNonce();	
+	boolean set = isNonceExist(nonce,opurl);
+	ErrorDumpUtil.ErrorLog("isNonceExist in checkNonce() "+set);
+	if (set)
+            throw new OpenIdException("Verify nonce failed.");
+	else
+            storeNonce(nonce, nonceTime, opurl);	
+}
+
+public long getNonceTime(String nonce) {
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                    .parse(nonce.substring(0, 19) + "+0000")
+                    .getTime();
+        }
+        catch(ParseException e) {
+		final Throwable throwable = new Exception(e);
+                ErrorDumpUtil.ErrorLog("STACK TRACE of getNonceTime of OpenIdProcess  "+getStackTrace(throwable));
+                throw new OpenIdException("Bad nonce time.");
+        }
+}
+
+
+/**
+ * This method checks whether nonce for "this"
+ * openid provider exists in database,
+ * existence of nonce in database specifies
+ * a replay attack, and absence, a new request.
+ * It returns true if nonce already exist
+ * in database, and false otherwise. 
+ * @param String nonce Nonce fetched from HTTP request
+ * @param String opurl OpenId Provider from whom 
+ *  request has been received.
+ * @return boolean 
+ */
+
+protected boolean isNonceExist(String nonce,String opurl)
+{
+	String stored_nonce = null;
+	try{
+		ErrorDumpUtil.ErrorLog("Inside isNonceExist() in OpenIdProcess ");
+		crit = new Criteria();
+		ErrorDumpUtil.ErrorLog("111111");
+                crit.add(OpenidPeer.NONCE,nonce);
+		ErrorDumpUtil.ErrorLog("2222");
+		crit.add(OpenidPeer.PROVIDER,opurl);
+		ErrorDumpUtil.ErrorLog("333333");
+                List list = OpenidPeer.doSelect(crit);
+		//int i = list.size();
+		ErrorDumpUtil.ErrorLog("4444");
+		if(list.size()>0)
+		{
+			ErrorDumpUtil.ErrorLog("555555");
+                	stored_nonce =((Openid)list.get(0)).getNonce();
+		}
+		ErrorDumpUtil.ErrorLog("666666 "+stored_nonce);	
+		//if (stored_nonce.equals(null) || stored_nonce == null)
+		if(stored_nonce!=null)
+		{
+			ErrorDumpUtil.ErrorLog("7777");
+			return true;
+		}
+		else
+		{
+		//	return true;
+			ErrorDumpUtil.ErrorLog("88888");
+			return false;
+		}
+		//ErrorDumpUtil.ErrorLog("9999999");
+	}
+	catch(Exception e)
+	{
+		log.error("Error while nonce checking",e);
+		final Throwable throwable = new Exception(e);
+                ErrorDumpUtil.ErrorLog("STACK TRACE of isNonceExist of OpenIdProcess  "+getStackTrace(throwable));
+		throw new OpenIdException ("Error while nonce checking");
+	}
+	//return false;		
+}
+
+/**
+ * This method stores the fresh nonce in database,
+ * the nonce expiry time has been set to one hour.
+ */
+
+private void storeNonce(String nonce, long nonceTime, String provider)
+{
+	try{
+                crit = new Criteria();
+                crit.add(OpenidPeer.NONCE,nonce);
+                crit.add(OpenidPeer.PROVIDER,provider);
+		crit.add(OpenidPeer.TO_DATE,nonceTime);
+                OpenidPeer.doInsert(crit);
+		//ErrorDumpUtil.ErrorLog("Inside storeNonce()");
+        }
+        catch(Exception e)
+        {
+//		ErrorDumpUtil.ErrorLog("Error in storeNonce() method of OpenIdProcess"+e);
+		final Throwable throwable = new Exception(e);
+                ErrorDumpUtil.ErrorLog("STACK TRACE of storeNonce() of OpenIdProcess  "+getStackTrace(throwable));
+                throw new OpenIdException ("Error while inserting nonce in database");
+        }
+}
 
 }//class

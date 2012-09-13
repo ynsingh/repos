@@ -291,27 +291,27 @@ $!msg
 
 <tr><td colspan=4><b>
 <font face="$ui.sansSerifFonts">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR
-<br>Sign in with:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $brih_OR
+<br>$brih_signin:
 </font>
 <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google") shape="rect"><img src="$content.getURI("/images/google.jpeg")" border="0" height="50" width="100"></a>
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.jpg")" border="0"></a>
 &nbsp;&nbsp;
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo") shape="circle"><img src="$content.getURI("/images/yahoo.jpeg")" border="0" height="50" width="100"></a>
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.jpg")" border="0"></a>
 <br>
 </td></tr>
 
 <table bgcolor="#d8d9ec">
 <tr><td>
 <font face="$ui.sansSerifFonts">
-Why OpenID?<br>
-It is a single username and password that allows you to log in to any OpenID-enabled site.
-It works on thousands of websites.
-It is an open standard.
+$brih_openid_msg<br><br>
+$brih_openid_msg1<br>
+$brih_openid_msg2<br>
+$brih_openid_msg3
 </font>
 <br>
-<a href="http://openid.net/what/">learn more &raquo;</a><br>
+<a href="http://openid.net/what/">$brih_learn_more &raquo;</a><br>
 </td></tr>
 </table>
 

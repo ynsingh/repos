@@ -61,37 +61,70 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.om.AssignmentPeer;
 import org.iitk.brihaspati.om.AttendenceSeetPeer;
 import org.iitk.brihaspati.om.AttendenceSeet;
+import org.iitk.brihaspati.om.BatchCoursePeer;
+import org.iitk.brihaspati.om.BatchPeer;
 import org.iitk.brihaspati.om.CalInformationPeer;
+import org.iitk.brihaspati.om.CourseInfoPeer;
+import org.iitk.brihaspati.om.CourseMonthPeer;
+import org.iitk.brihaspati.om.CourseProgramPeer;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CourseTimedayPeer;
+import org.iitk.brihaspati.om.CourseTimePeer;
 import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.DbSendPeer;
+import org.iitk.brihaspati.om.DepartmentPeer;
+import org.iitk.brihaspati.om.EventsPeer;
+import org.iitk.brihaspati.om.FacInfoPeer;
+import org.iitk.brihaspati.om.FacultyCoursePeer;
+import org.iitk.brihaspati.om.FaqmovePeer;
+import org.iitk.brihaspati.om.FaqPeer;
+import org.iitk.brihaspati.om.FaqVotePeer;
 import org.iitk.brihaspati.om.GlossaryAliasPeer;
 import org.iitk.brihaspati.om.GlossaryPeer;
 import org.iitk.brihaspati.om.HintQuestionPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
+import org.iitk.brihaspati.om.InstituteQuotaPeer;
+import org.iitk.brihaspati.om.InstructorPermissionsPeer;
 import org.iitk.brihaspati.om.LecturePeer;
+import org.iitk.brihaspati.om.LearnerScoPeer;
 import org.iitk.brihaspati.om.MailReceivePeer;
 import org.iitk.brihaspati.om.MailSendPeer;
+import org.iitk.brihaspati.om.ModuleTimePeer;
 import org.iitk.brihaspati.om.NewsPeer;
+import org.iitk.brihaspati.om.NotePeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
+import org.iitk.brihaspati.om.OpenidPeer;
+import org.iitk.brihaspati.om.Openid;
+import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.ProxyUserPeer;
 import org.iitk.brihaspati.om.QuizPeer;
+import org.iitk.brihaspati.om.RdfPeer;
 import org.iitk.brihaspati.om.RemoteCoursesPeer;
+import org.iitk.brihaspati.om.RemoteUsersPeer;
 import org.iitk.brihaspati.om.ResearchRepositoryPeer;
+import org.iitk.brihaspati.om.RoomPeer;
 import org.iitk.brihaspati.om.SessionaddressPeer;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.SurveyQuestionPeer;
 import org.iitk.brihaspati.om.SurveyResultPeer;
 import org.iitk.brihaspati.om.SurveyStudentPeer;
 import org.iitk.brihaspati.om.SystemCleantimePeer;
 import org.iitk.brihaspati.om.SystemCleantime;
+import org.iitk.brihaspati.om.TableIdPeer;
 import org.iitk.brihaspati.om.TaskPeer;
 import org.iitk.brihaspati.om.Task;
+import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
+import org.iitk.brihaspati.om.TimetableCourseInfoPeer;
 import org.iitk.brihaspati.om.TurbineGroupPeer;
 import org.iitk.brihaspati.om.TurbineGroup;
 import org.iitk.brihaspati.om.TurbinePermissionPeer;
 import org.iitk.brihaspati.om.TurbineRolePeer;
 import org.iitk.brihaspati.om.TurbineRolePermissionPeer;
+import org.iitk.brihaspati.om.TurbineScheduledJobPeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.TurbineUserPeer;
@@ -100,6 +133,8 @@ import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
+import org.iitk.brihaspati.om.UserPrefPeer;
+import org.iitk.brihaspati.om.VenuePeer;
 
 import org.iitk.brihaspati.modules.actions.UploadAction;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -133,11 +168,16 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
  * @author <a href="mailto:kishore.shukla@gmail.com">Kishore shukla</a>
  * @author <a href="mailto:gaurav.soni992@gmail.com">Gaurav Verma</a>
  * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date:12-09-2012
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
  */
 public class CommonUtility{
+
+	static final long ONE_HOUR = 3600000L;
+
 	/**
 	 * This method create the index of course
 	 * @return boolean 
@@ -236,8 +276,10 @@ public class CommonUtility{
 				boolean OT=optimizeTables();
 				boolean ADB=autoDeletebackup();
 				grpLeader();
+				//Call method removeNonce();
+				boolean nonce = removeNonce();
+				
 				//InsertStuExpRecord();
-
                         }//end of if 2 loop
 
 		}//end of if 1 loop
@@ -457,17 +499,59 @@ public class CommonUtility{
 		AssignmentPeer.executeQuery("ANALYZE TABLE ASSIGNMENT");
 		AssignmentPeer.executeQuery("OPTIMIZE TABLE ASSIGNMENT");
 
-                CalInformationPeer.executeQuery("ANALYZE TABLE CAL_INFORMATION");
+                BatchCoursePeer.executeQuery("ANALYZE TABLE BATCH COURSE");
+                BatchCoursePeer.executeQuery("OPTIMIZE TABLE BATCH COURSE");
+
+		BatchPeer.executeQuery("ANALYZE TABLE BATCH");
+                BatchPeer.executeQuery("OPTIMIZE TABLE BATCH");
+		
+		CalInformationPeer.executeQuery("ANALYZE TABLE CAL_INFORMATION");
                 CalInformationPeer.executeQuery("OPTIMIZE TABLE CAL_INFORMATION");
 
                 CoursesPeer.executeQuery("ANALYZE TABLE COURSES");
                 CoursesPeer.executeQuery("OPTIMIZE TABLE COURSES");
+
+		CourseInfoPeer.executeQuery("ANALYZE TABLE COURSE_INFO");
+                CourseInfoPeer.executeQuery("OPTIMIZE TABLE COURSE_INFO");
+
+		CourseMonthPeer.executeQuery("ANALYZE TABLE COURSE_MONTH");
+                CourseMonthPeer.executeQuery("OPTIMIZE TABLE COURSE_MONTH");
+
+		CourseProgramPeer.executeQuery("ANALYZE TABLE COURSE_PROGRAM");
+                CourseProgramPeer.executeQuery("OPTIMIZE TABLE COURSE_PROGRAM");
+		
+		CourseTimedayPeer.executeQuery("ANALYZE TABLE COURSE_TIMEDAY");
+                CourseTimedayPeer.executeQuery("OPTIMIZE TABLE COURSE_TIMEDAY");
+
+		CourseTimePeer.executeQuery("ANALYZE TABLE COURSE_TIME");
+                CourseTimePeer.executeQuery("OPTIMIZE TABLE COURSE_TIME");
 
                 DbReceivePeer.executeQuery("ANALYZE TABLE DB_RECEIVE");
                 DbReceivePeer.executeQuery("OPTIMIZE TABLE DB_RECEIVE");
 
                 DbSendPeer.executeQuery("ANALYZE TABLE DB_SEND");
                 DbSendPeer.executeQuery("OPTIMIZE TABLE DB_SEND");
+
+		DepartmentPeer.executeQuery("ANALYZE TABLE DEPARTMENT");
+                DepartmentPeer.executeQuery("OPTIMIZE TABLE DEPARTMENT");
+
+		EventsPeer.executeQuery("ANALYZE TABLE EVENTS");
+                EventsPeer.executeQuery("OPTIMIZE TABLE EVENTS");
+
+		FacultyCoursePeer.executeQuery("ANALYZE TABLE FACULTY_COURSE");
+                FacultyCoursePeer.executeQuery("OPTIMIZE TABLE FACULTY_COURSE");
+
+		FacInfoPeer.executeQuery("ANALYZE TABLE FAC_INFO");
+                FacInfoPeer.executeQuery("OPTIMIZE TABLE FAC_INFO");
+
+		FaqPeer.executeQuery("ANALYZE TABLE FAQ");
+                FaqPeer.executeQuery("OPTIMIZE TABLE FAQ");
+
+		FaqmovePeer.executeQuery("ANALYZE TABLE FAQMOVE");
+                FaqmovePeer.executeQuery("OPTIMIZE TABLE FAQMOVE");
+
+		FaqVotePeer.executeQuery("ANALYZE TABLE FAQ_VOTE");
+                FaqVotePeer.executeQuery("OPTIMIZE TABLE FAQ_VOTE");
 
                 GlossaryPeer.executeQuery("ANALYZE TABLE GLOSSARY");
                 GlossaryPeer.executeQuery("OPTIMIZE TABLE GLOSSARY");
@@ -481,8 +565,26 @@ public class CommonUtility{
 //		MailReceivePeer.executeQuery("ANALYZE TABLE ID_TABLE");
 //              MailReceivePeer.executeQuery("OPTIMIZE TABLE ID_TABLE");
 
+		InstituteAdminRegistrationPeer.executeQuery("ANALYZE TABLE INSTITUTE_ADMIN_REGISTRATION");
+                InstituteAdminRegistrationPeer.executeQuery("OPTIMIZE TABLE INSTITUTE_ADMIN_REGISTRATION");
+
+		InstituteAdminUserPeer.executeQuery("ANALYZE TABLE INSTITUTE_ADMIN_USER");
+                InstituteAdminUserPeer.executeQuery("OPTIMIZE TABLE INSTITUTE_ADMIN_USER");		
+
+		InstituteProgramPeer.executeQuery("ANALYZE TABLE INSTITUTE_PROGRAM");
+                InstituteProgramPeer.executeQuery("OPTIMIZE TABLE INSTITUTE_PROGRAM");
+
+		InstituteQuotaPeer.executeQuery("ANALYZE TABLE INSTITUTE_QUOTA");
+                InstituteQuotaPeer.executeQuery("OPTIMIZE TABLE INSTITUTE_QUOTA");
+
+		InstructorPermissionsPeer.executeQuery("ANALYZE TABLE INSTRUCTOR_PERMISSIONS");
+                InstructorPermissionsPeer.executeQuery("OPTIMIZE TABLE INSTRUCTOR_PERMISSIONS");
+
 		LecturePeer.executeQuery("ANALYZE TABLE LECTURE");
                 LecturePeer.executeQuery("OPTIMIZE TABLE LECTURE");
+
+		LearnerScoPeer.executeQuery("ANALYZE TABLE Learner_sco");
+                LearnerScoPeer.executeQuery("OPTIMIZE TABLE Learner_sco");
 
 		MailReceivePeer.executeQuery("ANALYZE TABLE MAIL_RECEIVE");
                 MailReceivePeer.executeQuery("OPTIMIZE TABLE MAIL_RECEIVE");
@@ -490,8 +592,14 @@ public class CommonUtility{
                 MailSendPeer.executeQuery("ANALYZE TABLE MAIL_SEND");
                 MailSendPeer.executeQuery("OPTIMIZE TABLE MAIL_SEND");
 
+		ModuleTimePeer.executeQuery("ANALYZE TABLE MODULE_TIME");
+                ModuleTimePeer.executeQuery("OPTIMIZE TABLE MODULE_TIME");
+
                 NewsPeer.executeQuery("ANALYZE TABLE NEWS");
                 NewsPeer.executeQuery("OPTIMIZE TABLE NEWS");
+
+		NotePeer.executeQuery("ANALYZE TABLE NOTE");
+                NotePeer.executeQuery("OPTIMIZE TABLE NOTE");
 
                 NoticeReceivePeer.executeQuery("ANALYZE TABLE NOTICE_RECEIVE");
                 NoticeReceivePeer.executeQuery("OPTIMIZE TABLE NOTICE_RECEIVE");
@@ -499,17 +607,38 @@ public class CommonUtility{
                 NoticeSendPeer.executeQuery("ANALYZE TABLE NOTICE_SEND");
                 NoticeSendPeer.executeQuery("OPTIMIZE TABLE NOTICE_SEND");
 
+		OpenidPeer.executeQuery("ANALYZE TABLE OPENID");
+                OpenidPeer.executeQuery("OPTIMIZE TABLE OPENID");
+
+		ProgramPeer.executeQuery("ANALYZE TABLE PROGRAM");
+                ProgramPeer.executeQuery("OPTIMIZE TABLE PROGRAM");
+
 		ProxyUserPeer.executeQuery("ANALYZE TABLE PROXY_USER");
 		ProxyUserPeer.executeQuery("OPTIMIZE TABLE PROXY_USER");
 	
 		QuizPeer.executeQuery("ANALYZE TABLE QUIZ");
 		QuizPeer.executeQuery("OPTIMIZE TABLE QUIZ");
 
+		RdfPeer.executeQuery("ANALYZE TABLE RDF");
+                RdfPeer.executeQuery("OPTIMIZE TABLE RDF");
+
 		RemoteCoursesPeer.executeQuery("ANALYZE TABLE REMOTE_COURSES");
 		RemoteCoursesPeer.executeQuery("OPTIMIZE TABLE REMOTE_COURSES");
 
+		RemoteUsersPeer.executeQuery("ANALYZE TABLE REMOTE_USERS");
+                RemoteUsersPeer.executeQuery("OPTIMIZE TABLE REMOTE_USERS");
+
 		ResearchRepositoryPeer.executeQuery("ANALYZE TABLE RESEARCH_REPOSITORY");
 		ResearchRepositoryPeer.executeQuery("OPTIMIZE TABLE RESEARCH_REPOSITORY");
+
+		RoomPeer.executeQuery("ANALYZE TABLE ROOM");
+                RoomPeer.executeQuery("OPTIMIZE TABLE ROOM");
+
+		StudentExpiryPeer.executeQuery("ANALYZE TABLE STUDENT_EXPIRY");
+                StudentExpiryPeer.executeQuery("OPTIMIZE TABLE STUDENT_EXPIRY");
+
+		StudentRollnoPeer.executeQuery("ANALYZE TABLE STUDENT_ROLLNO");
+                StudentRollnoPeer.executeQuery("OPTIMIZE TABLE STUDENT_ROLLNO");
 
 		SurveyQuestionPeer.executeQuery("ANALYZE TABLE SURVEY_QUESTION");
 		SurveyQuestionPeer.executeQuery("OPTIMIZE TABLE SURVEY_QUESTION");
@@ -526,8 +655,17 @@ public class CommonUtility{
                 SessionaddressPeer.executeQuery("ANALYZE TABLE SessionAddress");
                 SessionaddressPeer.executeQuery("OPTIMIZE TABLE SessionAddress");
 
+		TableIdPeer.executeQuery("ANALYZE TABLE TABLE_ID");
+                TableIdPeer.executeQuery("OPTIMIZE TABLE TABLE_ID");
+
 		TaskPeer.executeQuery("ANALYZE TABLE TASK");
 		TaskPeer.executeQuery("OPTIMIZE TABLE TASK");
+
+		TelephoneDirectoryPeer.executeQuery("ANALYZE TABLE TELEPHONE_DIRECTORY");
+                TelephoneDirectoryPeer.executeQuery("OPTIMIZE TABLE TELEPHONE_DIRECTORY");
+
+		TimetableCourseInfoPeer.executeQuery("ANALYZE TABLE TIMETABLE_COURSE_INFO");
+                TimetableCourseInfoPeer.executeQuery("OPTIMIZE TABLE TIMETABLE_COURSE_INFO");
 
                 TurbineGroupPeer.executeQuery("ANALYZE TABLE TURBINE_GROUP");
                 TurbineGroupPeer.executeQuery("OPTIMIZE TABLE TURBINE_GROUP");
@@ -541,6 +679,9 @@ public class CommonUtility{
                 TurbineRolePermissionPeer.executeQuery("ANALYZE TABLE TURBINE_ROLE_PERMISSION");
                 TurbineRolePermissionPeer.executeQuery("OPTIMIZE TABLE TURBINE_ROLE_PERMISSION");
 
+		TurbineScheduledJobPeer.executeQuery("ANALYZE TABLE TURBINE_SCHEDULED_JOB");
+                TurbineScheduledJobPeer.executeQuery("OPTIMIZE TABLE TURBINE_SCHEDULED_JOB");
+
                 TurbineUserPeer.executeQuery("ANALYZE TABLE TURBINE_USER");
                 TurbineUserPeer.executeQuery("OPTIMIZE TABLE TURBINE_USER");
 
@@ -552,6 +693,13 @@ public class CommonUtility{
 
                 UserConfigurationPeer.executeQuery("ANALYZE TABLE USER_CONFIGURATION");
                 UserConfigurationPeer.executeQuery("OPTIMIZE TABLE USER_CONFIGURATION");
+
+		UserPrefPeer.executeQuery("ANALYZE TABLE USER_PREF");
+                UserPrefPeer.executeQuery("OPTIMIZE TABLE USER_PREF");
+
+		VenuePeer.executeQuery("ANALYZE TABLE VENUE");
+                VenuePeer.executeQuery("OPTIMIZE TABLE VENUE");
+
 		}
 		catch(Exception ex)
         	{
@@ -934,4 +1082,53 @@ public static void grpLeader()
                 }
 		return UserFile;
         }
+
+	// Following method added by Priyanka.
+	/**
+ 	 * This method cleans the expired nonce in database,
+	 * the nonce expiry time has been set to one hour.
+	 * @return boolean
+	 */
+
+	 public static boolean removeNonce()
+	 {
+		Criteria criteria = null;
+	        Criteria crit = null;
+
+         	int cnt=0;
+        	try{
+                	ErrorDumpUtil.ErrorLog("inside removeNonce");
+                	long boundary = System.currentTimeMillis() - ONE_HOUR;
+                	crit = new Criteria();
+                	List list = OpenidPeer.doSelect(crit);
+                	for (Iterator i = list.iterator();i.hasNext() ;)
+                	{
+                		ErrorDumpUtil.ErrorLog("removeNonce");
+                        	Openid openid = (Openid) i.next();
+                        	long date = openid.getToDate();
+				ErrorDumpUtil.ErrorLog("date is "+date);
+                        	if(date<boundary)
+                        	{
+                                	String exp_nonce = openid.getNonce();
+                                	ErrorDumpUtil.ErrorLog("Nonce from db is "+exp_nonce);
+                                	String exp_provider = openid.getProvider();
+                                	ErrorDumpUtil.ErrorLog("Provider from db is "+exp_provider);
+                                        criteria = new Criteria();
+                                        criteria.add(OpenidPeer.NONCE,exp_nonce);
+                                        criteria.add(OpenidPeer.PROVIDER,exp_provider);
+                                        OpenidPeer.doDelete(criteria);
+                                        cnt++;
+                                	ErrorDumpUtil.ErrorLog("count is "+cnt);
+                                }//if
+			}//for
+		}//try
+        	catch(Exception e)
+        	{
+               		ErrorDumpUtil.ErrorLog("Error in removeNonce() of CommonUtility  ");
+                	throw new RuntimeException("error cleaning up client nonce from table ");
+        	}//catch
+		return true;
+	}//method removeNonce()
+
+//Add method
 }//end of class

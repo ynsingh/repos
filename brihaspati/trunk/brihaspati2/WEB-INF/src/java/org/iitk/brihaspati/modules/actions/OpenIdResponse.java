@@ -46,6 +46,8 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.om.UserPrefPeer;
+import org.iitk.brihaspati.om.UserPref;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -87,7 +89,8 @@ public class OpenIdResponse extends VelocityAction
     String[] args={};
     //int count=0;
     private String LangFile="";
-    
+    OpenIdProcess open = new OpenIdProcess(); 
+   
 
  public void doPerform( RunData data, Context context )
  {
@@ -101,8 +104,12 @@ public class OpenIdResponse extends VelocityAction
         String email = "";
         String flag=data.getParameters().getString("flag","");
         String lang=data.getParameters().getString("lang","english");
+	LangFile = MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 	String password = "";
 	String new_url= "";
+	String opurl = "";
+	String a_key = "";
+	 List list = null;
 
 /**
  * Creates OpenIdManager object, to carry out 
@@ -118,30 +125,44 @@ public class OpenIdResponse extends VelocityAction
 	{
 		mac_key = (byte[])httpsess.getAttribute(ATTR_MAC);
 	        alias = (String)httpsess.getAttribute(ATTR_ALIAS);
+		opurl = (String)httpsess.getAttribute("provider");
 
 		Map pmap = (Map)httpReq.getParameterMap();
-        //        ParameterList response = new ParameterList(pmap);
 		//ErrorDumpUtil.ErrorLog("i m here	"+pmap);
 	 	StringBuffer receivingURL = httpReq.getRequestURL();
                 //ErrorDumpUtil.ErrorLog("I am in open id responce receiving url "+receivingURL);
                 String receivingUrl = receivingURL.toString();
                 String queryString = httpReq.getQueryString();
-                //ErrorDumpUtil.ErrorLog("I am in open id responce query string "+ queryString);
-		//ErrorDumpUtil.ErrorLog("Check	"+queryString.equalsIgnoreCase(null));
 
                         if(!(queryString.equalsIgnoreCase(null)))
                         {
-				//ErrorDumpUtil.ErrorLog("i m here inside if       ");
                         	new_url =  receivingUrl.concat("?");
-				 //ErrorDumpUtil.ErrorLog("Add receiving URL and Query String1 "+new_url);
 				new_url = new_url.concat(queryString);
 				 //ErrorDumpUtil.ErrorLog("Add receiving URL and Query String2 "+new_url);
                         }
 
-                       //ErrorDumpUtil.ErrorLog("Add receiving URL and Query String3 "+new_url);
        		       HttpServletRequest request = createRequest(new_url);
-		       //ErrorDumpUtil.ErrorLog("http request ");
-        	
+        		
+			// Fetch nonce information from HTTP request
+        		 String nonce = request.getParameter("openid.response_nonce");
+			 try{
+				open.checkNonce(nonce,opurl);
+			 }catch(Exception e)
+			  {
+				log.error("error while nonce checking",e);
+				String str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
+				String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str;
+				try{
+                                       data.setMessage(str);
+                                       data.getResponse().sendRedirect(url1);
+                                 }
+                                 catch (Exception ex){
+                                        ErrorDumpUtil.ErrorLog("After getAuthentication function the url is exception "+ex);
+                                        //      throw new RuntimeException(message,ex);
+                                 }
+				throw new RuntimeException("error while nonce checking", e);                                        
+			  }			
+				
 			/**
                          * Get Authentication response returned by OpenId Provider
                          * fom HttpServletRequest instance. 
@@ -150,7 +171,7 @@ public class OpenIdResponse extends VelocityAction
 				UserData user = null;
 				try{
   					authentication = manager.getAuthentication(request, mac_key, alias);
-                                	//ErrorDumpUtil.ErrorLog("authentication  "+authentication);
+                                	ErrorDumpUtil.ErrorLog("authentication  "+authentication);
                                 	user = openid.setUserData(authentication);
                                  }catch (Exception e) {
                         		String message = "Error occurred during authentication!";
@@ -167,8 +188,9 @@ public class OpenIdResponse extends VelocityAction
                         		}
                         		catch (Exception ex){
                                 		ErrorDumpUtil.ErrorLog("After getAuthentication function the url is exception "+ex);
-                        			throw new RuntimeException(message,ex);
+                        		//	throw new RuntimeException(message,ex);
 					}
+					throw new RuntimeException(message,e);
                         	}
 
 	
@@ -193,8 +215,9 @@ public class OpenIdResponse extends VelocityAction
                                         }
                                         catch (Exception ex){
                                                 ErrorDumpUtil.ErrorLog("Inside OpenIdResponse "+ex);
-                                                throw new RuntimeException(msg,ex);
+                                               // throw new RuntimeException(msg,ex);
                                         }
+					throw new RuntimeException(msg,nl);
 
 					
 				}
@@ -215,7 +238,7 @@ public class OpenIdResponse extends VelocityAction
 			{
 				//String str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
                                 String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=User does not exist!";
-                        	//ErrorDumpUtil.ErrorLog("I am in result uid compare second "+url1);
+                        	ErrorDumpUtil.ErrorLog("I am in result uid compare second "+url1);
                                 try{
 				       data.setMessage("User does not exist!");
                                        data.getResponse().sendRedirect(url1);
@@ -225,37 +248,76 @@ public class OpenIdResponse extends VelocityAction
                                 }
 
                         }
-                        
-		         LoginUtils.CheckSession(email);
-                         Date date=new Date();
-                         data.setMessage(email);
-                         lang=LoginUtils.SetUserData(email, password, flag, lang, data);
-                         data.unsetMessage();
-                         context.put("lang",lang);
-                         //ErrorDumpUtil.ErrorLog("I am in open id responce ande part set user data");
-                         LoginUtils.UpdateUsageData(uid);
-                         try{
-                                 AccessControlList acl = data.getACL();
-                                 if( acl == null ){
-                                        acl = TurbineSecurity.getACL( data.getUser() );
-                                        data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
-                                  }
-                                  //ErrorDumpUtil.ErrorLog("I am in open id responce else part act setting");
-                                  data.setACL(acl);
-                                  data.save();
- 		          }
-                          catch(Exception ex){
-				data.setMessage("Error in setting Access rules :- "+ex);
-			  }
+                
+			 try{
+                                        crit = new Criteria();
+                                        crit.add(UserPrefPeer.USER_ID,uid);
+                                        list = UserPrefPeer.doSelect(crit);
+					a_key = ((UserPref)list.get(0)).getActivation();
+					ErrorDumpUtil.ErrorLog(a_key);
+					if (a_key == null || a_key.equalsIgnoreCase("NULL"))
+                                        {
+						 ErrorDumpUtil.ErrorLog(a_key+" is null");
+                                                 try{
+                                                      data.setMessage("Your account has some problem, contact to administrator or re register.");
+                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account has some problem, contact to administrator or re register.");
+                                                 }
+                                                 catch (Exception ex){
+                                                        ErrorDumpUtil.ErrorLog("User's account activated not activated........... "+ex);
+                                                 }
+                                        }
+					if (a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
+                                        {
+						        
+						ErrorDumpUtil.ErrorLog(a_key+" is not null");
+		         			LoginUtils.CheckSession(email);
+                         			Date date=new Date();
+                         			data.setMessage(email);
+						lang=LoginUtils.SetUserData(email, password, flag, lang, data);
+                         			data.unsetMessage();
+                         			context.put("lang",lang);
+                         			//ErrorDumpUtil.ErrorLog("I am in open id responce ande part set user data");
+                         			LoginUtils.UpdateUsageData(uid);
+                         			try{
+                                 			AccessControlList acl = data.getACL();
+                                 			if( acl == null ){
+                                        		acl = TurbineSecurity.getACL( data.getUser() );
+                                        		data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
+                                  			}
+                                  		//ErrorDumpUtil.ErrorLog("I am in open id responce else part act setting");
+                                  		data.setACL(acl);
+                                  		data.save();
+ 		          			}
+                          			catch(Exception ex){
+							data.setMessage("Error in setting Access rules :- "+ex);
+			  			}
 
-                          boolean CL=CommonUtility.CleanSystem();
-                          if(!CL)
-                                data.addMessage("The Error in Clean System: see Common Utility");
-                          boolean AB=CommonUtility.IFLoginEntry(uid,date);
-                          LoginUtils.SetHintQues(uid, data);
-                          //ErrorDumpUtil.ErrorLog("I am in open id responce else part hint question");
-                          System.gc();
+                          			boolean CL=CommonUtility.CleanSystem();
+                          			if(!CL)
+                                			data.addMessage("The Error in Clean System: see Common Utility");
+                          			boolean AB=CommonUtility.IFLoginEntry(uid,date);
+                          			LoginUtils.SetHintQues(uid, data);
+                          			//ErrorDumpUtil.ErrorLog("I am in open id responce else part hint question");
+                          			System.gc();
+					}//if
+					else
+                                        {
+                                                try{
+                                                      data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
+                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account is not activated. For activation please check your mail. If you did not get the mail, please click on the Resend Activation link.");
+                                                 }
+                                                 catch (Exception ex){
+                                                        String msg = "Error in login";
+                                                        ErrorDumpUtil.ErrorLog("User's account not activated........... "+ex);
+                                                         throw new RuntimeException(msg,ex);
+                                                 }
 
+                                        }//else
+				}//try
+				catch(Exception e){
+                                        String message = "Error in activation   ";
+                                        throw new RuntimeException(message, e);
+                                }//catch
 	}//try
 	catch(Exception e){
 	String str=MultilingualUtil.ConvertedString("openid_msg_2",LangFile);

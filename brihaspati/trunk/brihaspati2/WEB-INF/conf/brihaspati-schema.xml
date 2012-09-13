@@ -600,4 +600,15 @@
                 <unique-column name="USERID"/>
         </unique>
 </table>
+
+<!-- ==========================openid nonce storage======================================================== -->
+<table name="OPENID" idMethod="idbroker" description="OpenId nonce infornation">
+         <column name="NONCE" required="true" primaryKey="true" type="VARCHAR" size="255"/>
+         <column name="PROVIDER" required="true" primaryKey="true" type="VARCHAR" size="32"/>
+         <column name="TO_DATE" required="true" type="BIGINT"/>
+        <unique>
+                <unique-column name="NONCE"/>
+        </unique>
+</table>
+
 </database>

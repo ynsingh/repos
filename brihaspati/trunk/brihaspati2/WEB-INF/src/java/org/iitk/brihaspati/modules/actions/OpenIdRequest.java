@@ -57,6 +57,7 @@ import java.io.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 
 /**
  * Action class for authenticating a user with open id and redirect with the brihaspati system.
@@ -76,6 +77,7 @@ public class OpenIdRequest extends VelocityAction
     	 static final String ATTR_ALIAS = "openid_alias";
 	 HttpSession httpsess;
 	 private String LangFile="";
+	 private Endpoint endpoint = null;
 
 /**
  * This method is invoked upon when user logs in
@@ -96,32 +98,39 @@ public class OpenIdRequest extends VelocityAction
         //ErrorDumpUtil.ErrorLog("Openid Provider = "+openidurl);
         HttpServletRequest httpReq = data.getRequest();
         HttpServletResponse httpResp = data.getResponse();
-	//ErrorDumpUtil.ErrorLog("i'm here 2");
-	
+	//ErrorDumpUtil.ErrorLog("i'm here 2");	
 	OpenIdProcess openid = new OpenIdProcess(data);	
 	//ErrorDumpUtil.ErrorLog("i'm here 1");
-/**
- * Set properties for proxy,
- * since system is behind the firewall.
-	java.util.Properties props = System.getProperties();
+
+	String path="";
+		
+/*	java.util.Properties props = System.getProperties();
 	props.put("proxySet", "true");
-	props.put("proxyHost", data.getServerName());
-	props.put("proxyPort", data.getServerPort());
- */
-	//ErrorDumpUtil.ErrorLog("i'm here 2");
+	props.put("proxyHost", "nknproxy.iitk.ac.in");
+	props.put("proxyPort", "3128");
+	
+	props.put("http.proxySet", "true");
+        props.put("http.proxyHost", "nknproxy.iitk.ac.in");
+     props.put("http.proxyPort", "3128");
+*/  
+	//ErrorDumpUtil.ErrorLog("i'm here 2"
+	
 
-
-
-/**
- * Set the Openid Provider for whom request has to be sent
- * and then fetch the discovery document.
- */
-	 Endpoint endpoint = null;
+	 //Endpoint endpoint = null;
 	if(openidurl.equalsIgnoreCase("Google") || openidurl.equalsIgnoreCase("Yahoo"))
 	{
-		//ErrorDumpUtil.ErrorLog("i'm here 3");
 		try{
-                        endpoint = openid.performDiscovery(openidurl);
+			/**
+ 			 * Set the proxy properties
+			 */
+			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			//ErrorDumpUtil.ErrorLog("Path -----  "+path);
+		//	OpenIdProxy.setProxyProperties(openidurl,path);			
+			/**
+			 * Set the Openid Provider for whom request has to be sent
+			 * and then fetch the discovery document.
+			 */
+			endpoint = openid.performDiscovery(openidurl);
                         //ErrorDumpUtil.ErrorLog("Endpoint -----  "+endpoint);
                 }catch (Exception e) {
                         String message = "Error occurred during looking up endpoint!";
@@ -139,8 +148,9 @@ public class OpenIdRequest extends VelocityAction
                         }
                         catch (Exception ex){
                                 ErrorDumpUtil.ErrorLog("After look up function the url is exception "+ex);
-        			throw new RuntimeException (message,ex);
+        			//throw new RuntimeException (message,ex);
 	                }
+			throw new RuntimeException (message,e);
                  }
 
 	}
@@ -153,7 +163,7 @@ public class OpenIdRequest extends VelocityAction
                    }
                    catch (Exception ex){
                   	String msg = "ERROR IN OPENID ";
-                        ErrorDumpUtil.ErrorLog("ERROR IN JOPENID. USER COULD NOT LOGIN "+ex);
+                        ErrorDumpUtil.ErrorLog("ERROR IN OpenIdRequest. USER COULD NOT LOGIN "+ex);
                         throw new RuntimeException(msg,ex);
                     }
 	}
@@ -166,7 +176,8 @@ public class OpenIdRequest extends VelocityAction
 	Association association = null;
 	try
 	{
-		association = openid.setupAssociation(endpoint);
+		if(endpoint!=null)
+			association = openid.setupAssociation(endpoint);
 	}
 	catch(Exception e){
                String message = "Error occured during association!";
@@ -181,8 +192,9 @@ public class OpenIdRequest extends VelocityAction
                 }
                 catch (Exception ex){
                        ErrorDumpUtil.ErrorLog("After association function exception "+ex);
-			throw new RuntimeException (message,ex);
+			//throw new RuntimeException (message,ex);
                 }
+		throw new RuntimeException (message,e);
         
         }
 
@@ -192,9 +204,12 @@ public class OpenIdRequest extends VelocityAction
  * get extension alias of Openid Provider's end point
  * and store in HttpSeesion's instance. 
  */
-	byte[] mac_key = association.getRawMacKey();
-        String aliaS =  endpoint.getAlias();
-	setSessionData(data, mac_key,aliaS);
+		if(association!=null)
+		{
+			byte[] mac_key = association.getRawMacKey();
+			String aliaS = endpoint.getAlias();
+			setSessionData(data, mac_key,aliaS,openidurl);
+		}
 
 /**
  * Get the Authentication Url of the Openid Provider
@@ -218,8 +233,9 @@ public class OpenIdRequest extends VelocityAction
                 }
                 catch (Exception ex){
                        ErrorDumpUtil.ErrorLog("After association function the url is exception "+ex);
-                	throw new RuntimeException (message,ex);
+                	//throw new RuntimeException (message,ex);
 		}
+		throw new RuntimeException (message,e);
         }
 
 	
@@ -245,8 +261,9 @@ public class OpenIdRequest extends VelocityAction
                 }
                 catch (Exception ex){
                        ErrorDumpUtil.ErrorLog("After association function the url is exception "+ex);
-			throw new RuntimeException (message,ex);
+			//throw new RuntimeException (message,ex);
                 }
+		throw new RuntimeException (message,e);
 	}
  }//method
 
@@ -264,11 +281,12 @@ public static String getStackTrace(Throwable throwable)
  * @param macKey String
  * @param alias String
  */
-public void setSessionData(RunData data, byte[] macKey, String alias)
+public void setSessionData(RunData data, byte[] macKey, String alias, String provider)
 {
 	httpsess = data.getSession();
         httpsess.setAttribute(ATTR_MAC, macKey);
         httpsess.setAttribute(ATTR_ALIAS, alias);
+	httpsess.setAttribute("provider",provider);
 }
 
 }//class
