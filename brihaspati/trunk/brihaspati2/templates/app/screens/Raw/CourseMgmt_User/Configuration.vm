@@ -217,7 +217,7 @@ $page.setBgColor($ui.bgcolor)
                                 <option value="$!cvalue">$!cvalue</option>
                                 #end
 				#foreach( $rec in $csList )
-					  <option value="$rec.idc">$rec.namecnm ($rec.namec) </option>
+					  <option value="$rec.idc">$rec.namecnm </option>
 				#end
                                 </select>
                                 #if($courselistname.size()==0)

@@ -250,7 +250,7 @@ public class Configuration extends SecureScreen_Instructor
                         			param.add(url);
                         			param.add(instvalue);
                         			String courselist = RemoteCourseUtilClient.getCourseList(serverURL,param);
-						ErrorDumpUtil.ErrorLog("The list of course is :"+courselist );
+					//	ErrorDumpUtil.ErrorLog("The list of course is :"+courselist );
 						String crslist=StringUtils.substringBetween(courselist,"[","]");
 						st=new StringTokenizer(crslist,",");
 						
@@ -259,11 +259,8 @@ public class Configuration extends SecureScreen_Instructor
                                                         String ctoken = st.nextElement().toString();
 							String cnme=StringUtils.substringAfterLast(ctoken,"^");
 							String ctoken1=StringUtils.substringBeforeLast(ctoken,"^");
-							String onlycid=StringUtils.substringBeforeLast(ctoken1,"^");
-							//String onlycid=StringUtils.substringBeforeLast(ctoken,"^");
 							map = new HashMap();
 							map.put("idc", ctoken1);
-							map.put("namec", onlycid);
 							map.put("namecnm", cnme);
 							list.add(map);
                                                 }		

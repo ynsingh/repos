@@ -685,7 +685,10 @@ public class RemoteCourseUtilServer
 				String cnme=elmt.getCname();
 				String val=StringUtils.substringAfter(val1,alias);
 				String val2=StringUtils.substringBeforeLast(val,"_");
-				String finalvalue=val1+"^"+val2+"^"+cnme;
+				int uid=UserUtil.getUID(val2);
+				String fname=UserUtil.getFullName(uid);
+				String fcnme=alias+" - "+cnme+" - "+fname;
+				String finalvalue=val1+"^"+val2+"^"+fcnme;
 				fvct.add(finalvalue);	
 			}
 			str=fvct.toString();	
