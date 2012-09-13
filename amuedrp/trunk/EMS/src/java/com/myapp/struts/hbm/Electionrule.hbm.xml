@@ -7,6 +7,9 @@
       <key-property name="ruleId" type="string">
         <column length="20" name="rule_id"/>
       </key-property>
+       <key-property name="positionId" type="int">
+        <column name="position_id"/>
+      </key-property>
       <key-property name="electionId" type="string">
         <column length="20" name="election_id"/>
       </key-property>

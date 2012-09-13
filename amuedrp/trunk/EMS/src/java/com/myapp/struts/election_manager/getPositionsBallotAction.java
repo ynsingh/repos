@@ -47,6 +47,9 @@ public class getPositionsBallotAction extends org.apache.struts.action.Action {
             while(itpos.hasNext())
             {
             Position1 pos = (Position1)itpos.next();
+
+            System.out.println(pos.getId().getPositionId()+"  ID OF POSITION");
+
             positions+="<position>";
             positions+="<positionId>"+pos.getId().getPositionId()+"</positionId>";
             positions+="<positionname>"+pos.getPositionName()+"</positionname>";

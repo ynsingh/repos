@@ -17,7 +17,7 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  *
- * @author faraz
+ * @author Iqubal
  */
 public class getElectionRule extends org.apache.struts.action.Action {
     
@@ -34,28 +34,33 @@ public class getElectionRule extends org.apache.struts.action.Action {
         PositionDAO emailDAO = new PositionDAO();
         HttpSession session = request.getSession();
         String electionid = (String)request.getParameter("getElectionId");
+        int posid = Integer.parseInt(request.getParameter("setpos"));
+        int data = Integer.parseInt(request.getParameter("div"));
         String instituteId = (String)session.getAttribute("institute_id");
+
+        System.out.println("DIV  #########################"+data);
         if(electionid==null)
-            electionid = (String)session.getAttribute("election_id");
-        List<Electionrule> position = (List<Electionrule>)emailDAO.getRules(instituteId, electionid);
-        positions+="<positions>";
+        electionid = (String)session.getAttribute("election_id");
+        List<Electionrule> position = (List<Electionrule>)emailDAO.getRules1(instituteId, electionid,posid);
+        positions+="<positions1>";
         if(position!=null)
         {
-            System.out.println("Position count="+position.size());
+            System.out.println("Rule count="+position.size());
             Iterator itpos = position.listIterator();
 
             while(itpos.hasNext())
             {
-     Electionrule pos = (Electionrule)itpos.next();
-            positions+="<position>";
-            positions+="<positionId>"+pos.getId().getRuleId()+"</positionId>";
-            positions+="<positionname>"+pos.getCriteria()+"</positionname>";
-            positions+="</position>";
+                Electionrule pos = (Electionrule)itpos.next();
+                positions+="<position1>";
+                positions+="<positionId1>"+pos.getId().getRuleId()+"</positionId1>";
+                positions+="<positionname1>"+pos.getCriteria()+"</positionname1>";
+                positions+="<pos>"+String.valueOf(data)+"</pos>";
+                positions+="</position1>";
         }
         
         
     }
-        positions+="</positions>";
+        positions+="</positions1>";
        session.setAttribute("position", position);
 //        System.out.println("XML ="+positions);
         response.setContentType("application/xml");

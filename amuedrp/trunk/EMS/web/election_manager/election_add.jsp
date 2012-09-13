@@ -123,6 +123,7 @@ function createposition()
 {
 i=0;
 j=j+1;
+//alert(j+"CREATE");
 var divtag = document.createElement("div");
      divtag.id = "position"+j;
      divtag.style.backgroundColor = "#E0F8F7";
@@ -131,20 +132,32 @@ var divtag = document.createElement("div");
      divtag.style.width = "930px";
      divtag.style.align = "center";
      divtag.style.marginLeft = "0px";
-     divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';
-   
+     divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr> <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria('+j+');"></table>';
+     document.getElementById("position").appendChild(divtag);
+
 
      
-document.getElementById("position").appendChild(divtag);
     
+
+
+
+
+
+
 
 }
 var k=0;
 var l=0;
-function createcriteria()
+//var j=0;
+function createcriteria(j)
 {
+   
+ if(search(j)==false)
+     return false;
+
 k=0;
 l=l+1;
+
 var divtag = document.createElement("div");
      divtag.id = "criteria"+l;
      divtag.style.backgroundColor = "#E0F8F7";
@@ -153,15 +166,46 @@ var divtag = document.createElement("div");
      divtag.style.width = "930px";
      divtag.style.align = "center";
      divtag.style.marginLeft = "0px";
-     divtag.innerHTML ='<table><tr><td>Criteria*&nbsp;&nbsp;<input type="text" Id="criteria_name'+k+''+l +'" size="25px"/></td>&nbsp;&nbsp;<td></td><td><input type="button" id="but0'+ l +'" value="Save" onclick="search1('+ l +');"/>eg.i)Candidate should have 75% of Attendence<br> ii)No Criminal background should be allowed etc..</td></tr><tr><%--<td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td>--%></tr></table>';
+     divtag.innerHTML ='<table><tr><td>Criteria*&nbsp;&nbsp;<input type="text" Id="criteria_name'+k+''+l +'" size="25px"/></td>&nbsp;&nbsp;<td></td><td><input type="button" id="but0'+ l +'" value="Save" onclick="search1('+ l +','+j+');"/>eg.i)Candidate should have 75% of Attendence<br> ii)No Criminal background should be allowed etc..</td></tr><tr><%--<td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td>--%></tr></table>';
 
 
 
-document.getElementById("criteria").appendChild(divtag);
-
+//document.getElementById("criteria").appendChild(divtag);
+ document.getElementById("position").appendChild(divtag);
 
 }
+l=0;
+function createcriteriaforupdate(posi,iii)
+{
+   // alert("positionid="+posi+","+"dividdd="+iii)
+  iii++;
+ // alert("divid,after increment="+iii);
+  
+     searchCriteria1(posi,(iii-1));
+     
+    // alert("AFTERsearchcriteriacallrulecount"+rulerowcount);
+k=0;
+l=rulerowcount;
+//alert("RULE"+l);
+var divtag = document.createElement("div");
+     divtag.id = "criteria"+l;
+     divtag.style.backgroundColor = "#E0F8F7";
+     divtag.style.border = "solid 5px #0B3B24";
+     divtag.style.borderTopLeftRadius = "10px";
+     divtag.style.width = "930px";
+     divtag.style.align = "center";
+     divtag.style.marginLeft = "0px";
+     divtag.innerHTML ='<table><tr><td>Rule*&nbsp;&nbsp;<input type="text" Id="criteria_name'+k+''+l +'" size="25px"/></td>&nbsp;&nbsp;<td></td><td><input type="button" id="but0'+ l +'" value="Save" onclick="search1('+ l +','+iii+');"/>eg.i)Candidate should have 75% of Attendence<br> ii)No Criminal background should be allowed etc..</td></tr><tr></tr></table>';
+    
 
+
+//document.getElementById("criteria").appendChild(divtag);
+
+ document.getElementById("position"+(iii-1)).appendChild(divtag);
+ 
+l++;
+
+}
 
 function newXMLHttpRequest() {
 var xmlreq = false;
@@ -230,7 +274,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 function search(current) {
-    //alert("index="+index+" current="+current);
+// alert(current);
     var position = "position_name0"+current;
     var posinstruct = "instruct0" + current;
     var numberofchoice = "numberofchoice0"+current;
@@ -247,13 +291,13 @@ function search(current) {
     var PositionId="";
     var butId = "but0"+current;
     var buttonVal = document.getElementById(butId).value;
+   
     if(buttonVal=="Update")
         {
             PositionId = document.getElementById(posid).value;
         }
-if (position_name.length >= 1)
-{
-if(position_name!="" && position_name!=null && noofchoice!="" && noofchoice!=null && electionId!="" && electionId!=null)
+//alert(position_name.length+ " "+noofchoice.length+electionId);
+if(position_name.length>=1 && noofchoice.length>=1 && electionId!="")
 {
     var req = newXMLHttpRequest();
 
@@ -271,12 +315,10 @@ document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
 
 return true;
 }
-alert("Please Enter Values in the Field");
-return false;
+else{alert("Please Enter Values in the Field for Position Entry First");
+return false;}
 }
-alert("Please Enter Values in the Field");
-return false;
-}
+
 function update1(cartXML)
 {
 //alert("call");
@@ -286,51 +328,52 @@ var em1 = em.getElementsByTagName("message");
 //var em = cartXML.firstChild.value;
 for(i=0;i<em1.length;i++)
     {
-alert(em1[i].firstChild.nodeValue);
+
+    if(em1[i].firstChild.nodeValue=="Position updated successfully")
+        {
+            alert(em1[i].firstChild.nodeValue);
+        }
+        else
+        alert(em1[i].firstChild.nodeValue);
 
     }
 }
 
-function search1(current) {
-    //alert("index="+index+" current="+current);
+function search1(current,pos_id) {
+   // alert("search1 ,current="+current+"position_id="+pos_id);
     var position = "criteria_name0"+current;
-     
-   // var posinstruct = "instruct0" + current;
-    //var numberofchoice = "numberofchoice0"+current;
     var position_name = document.getElementById(position).value;
-    //var noofchoice = document.getElementById(numberofchoice).value;
-    //var instruct = document.getElementById(posinstruct).value;
-    //instruct="You can choose "+noofchoice+" Candidate for this Position";
-
     var electionId = document.getElementById("electionId").value;
-    //alert(position_name);
+    //alert("election_id="+electionId);
     position_name = position_name.replace(/^\s*|\s*$/g,"");
-   // noofchoice = noofchoice.replace(/^\s*|\s*$/g,"");
-   // instruct = instruct.replace(/^\s*|\s*$/g,"");
     var posid = "rule_id0"+current;
-    var PositionId="";
+  //  var PositionId="";
     var butId = "but0"+current;
     var buttonVal = document.getElementById(butId).value;
-    if(buttonVal=="Update")
+   <%-- if(buttonVal=="Update")
       {
           PositionId = document.getElementById(posid).value;
-       }
+       }--%>
+        //alert(position_name);
 if (position_name.length >= 1)
 {
+
+
 if(position_name!="" && position_name!=null  && electionId!="" && electionId!=null)
 {
     var req = newXMLHttpRequest();
 
   
-req.onreadystatechange = getReadyStateHandler(req, update2);
+req.onreadystatechange = getReadyStateHandler(req, update13);
 req.open("POST","<%=request.getContextPath()%>/AddRule.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send("setRule="+position_name+"&setElectionId="+electionId);
+req.send("setRule="+position_name+"&setElectionId="+electionId+"&setpos_id="+(pos_id-1));
 var idPos = "criteria"+current;
 
 document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
  document.getElementById(idPos).style.border = "solid 5px #F2F5A9";
+ 
 
 return true;
 }
@@ -338,31 +381,35 @@ alert("Please Enter Values in the Field");
 return false;
 }
 alert("Please Enter Values in the Field");
+
 return false;
+
+  
+
 }
-function update2(cartXML)
+function update13(cartXML)
 {
-//alert("call");
+
 
 var em = cartXML.getElementsByTagName("email_ids")[0];
 var em1 = em.getElementsByTagName("message");
 //var em = cartXML.firstChild.value;
 for(i=0;i<em1.length;i++)
     {
-alert(em1[i].firstChild.nodeValue);
+       alert(em1[i].firstChild.nodeValue);     
+
 
     }
+   window.location.reload();
 }
 function deletePosition(current) {
-   
+ //alert(current);
  var req = newXMLHttpRequest();
  var electionId = document.getElementById("electionId").value;
- var posId = "position_id0"+current;
- var PositionId = document.getElementById(posId).value;
+//alert(electionId);
 req.onreadystatechange = getReadyStateHandler(req, update1);
 
-req.open("POST","<%=request.getContextPath()%>/deletePosition.do?getElectionId="+electionId+"&positionId="+PositionId, true);
-
+req.open("POST","<%=request.getContextPath()%>/deletePosition.do?getElectionId="+electionId+"&positionId="+current, true);
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send();
 return true;
@@ -386,10 +433,10 @@ function updatePositions(cartXML)
 
 var em = cartXML.getElementsByTagName("positions")[0];
 var em1 = em.getElementsByTagName("position");
-//var em = cartXML.firstChild.value;
+
 for(iii=0;iii<em1.length;iii++)
     {
-        //position block creation
+      //position block creation
                 var divtag = document.createElement("div");
                 divtag.id = "position"+iii;
                 divtag.style.backgroundColor = "#D8CEF6";
@@ -400,12 +447,7 @@ for(iii=0;iii<em1.length;iii++)
 
                 divtag.style.marginTop = "5px";
                 divtag.style.marginLeft = "3px";
-                <%if(!button.equals("View") && !button.equals("Block")){%>
-                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deletePosition('+ iii +');"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}else{%>
-                           divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr></table>';<%}%>
-                        document.getElementById("position").appendChild(divtag);
-        //end of block
-var positionname1 = em1[iii].getElementsByTagName("positionname");
+ var positionname1 = em1[iii].getElementsByTagName("positionname");
 var positionname = positionname1[0].firstChild.nodeValue;
 var noofchoice1 = em1[iii].getElementsByTagName("noofchoice");
 var noofchoice = noofchoice1[0].firstChild.nodeValue;
@@ -417,16 +459,31 @@ var posiId = "position_name0"+iii;
 var nochoice = "numberofchoice0"+iii;
 var posid = "position_id0"+iii;
 var inst = "instruct0"+iii;
+
+///alert(iii);
+
+                <%if(!button.equals("View") && !button.equals("Block")){%>
+                            divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td><td><input type="button" id="but0'+ iii +'" value="<%=resource.getString("update")%>" onclick="search('+ iii +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="deletePosition('+ positionid +');"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea><input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px"  onclick="createcriteriaforupdate('+positionid+','+iii+');"></td></tr></table>';<%}else{%>
+                           divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%> *&nbsp;&nbsp;<input type="text" Id="position_name0'+iii +'" size="25px"/><input type="hidden" Id="position_id0'+iii +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%> *&nbsp;&nbsp;<input type="text" Id="numberofchoice0'+ iii +'" size="25px"/></td></tr><tr><td colspan="3"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ iii+'" rows="3" style="width: 415px; height: 46px;"></textarea><input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteriaforupdate('+positionid+','+iii+');"></td></tr></table>';<%}%>
+                        document.getElementById("position").appendChild(divtag);
+          //end of block
+
 document.getElementById(posiId).value = positionname;
 document.getElementById(nochoice).value = noofchoice;
 document.getElementById(posid).value = positionid;
 document.getElementById(inst).value = instrucT;
-}
+  
+//alert(positionid+"AJAX"+ positionId[0].firstChild.nodeValue);
 
-j=iii-1;
+        searchCriteria(positionid,iii);
+
+
+}
+//alert(iii+" TOTAL DIV");
+j=iii;
 if(j<0)j=0;
 
-//alert(i+" "+j);
+//alert(j);
 }
 
 function send()
@@ -769,6 +826,251 @@ var send = document.getElementById("Scrend_date");
         }--%>
   
 }
+// update Criteria specific to position
+var k=0;
+var l=0;
+function update_criteria(posi,current1) {
+   var ele=document.getElementById("position"+posi).getElementsByTagName('input');
+
+     pos=ele[1].value;
+    // alert("pos="+pos);
+  var electionId = document.getElementById("electionId").value;
+var c=0;
+
+       cn = document.getElementById( "position"+posi ).childNodes;
+  for (var i = current1+1;c<=0; i++)
+  {
+
+     var list=cn[i].getElementsByTagName('input');
+   var rule_name=list[0].value;
+  var rule_id=list[1].value;
+
+  var req = newXMLHttpRequest();
+
+if (rule_name.length < 1)
+{
+   alert("Please Enter Values in the Field");
+return false;
+
+}
+
+
+
+req.onreadystatechange = getReadyStateHandler(req, update2);
+
+req.open("POST","<%=request.getContextPath()%>/UpdateRule.do", true);
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send("setRule="+rule_name+"&setElectionId="+electionId+"&ruleId="+rule_id+"&position="+pos);
+
+
+     c++;
+
+
+
+
+
+
+  
+  }
+
+
+return true;
+   
+  
+
+   
+   
+  
+
+}
+function update2(cartXML)
+{
+  // alert("call");
+
+var em = cartXML.getElementsByTagName("email_ids")[0];
+var em1 = em.getElementsByTagName("message");
+//var em = cartXML.firstChild.value;
+for(i=0;i<em1.length;i++)
+    {
+       alert(em1[i].firstChild.nodeValue);
+
+    }
+}
+
+// Deleate Criteria specific to position
+
+
+function search2(posi,current1) {
+   //alert("position idllllllll="+posi+"current="+current1);
+   
+   var ele=document.getElementById("position"+posi).getElementsByTagName('input');
+
+     pos=ele[1].value;
+     //alert("pos="+pos);
+  var electionId = document.getElementById("electionId").value;
+var c=0;
+
+       cn = document.getElementById( "position"+posi ).childNodes;
+  for (var i = current1+1;c<=0; i++)
+  {
+
+     var list=cn[i].getElementsByTagName('input');
+   var rule_name=list[0].value;
+  var rule_id=list[1].value;
+
+  var req = newXMLHttpRequest();
+
+if (rule_name.length < 1)
+{
+   alert("Please Enter Values in the Field");
+return false;
+
+}
+
+
+
+req.onreadystatechange = getReadyStateHandler(req, update4);
+
+req.open("POST","<%=request.getContextPath()%>/UpdateRule.do", true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send("setRule="+rule_name+"&setElectionId="+electionId+"&ruleId="+rule_id+"&position="+pos+"&action="+'t');
+
+
+     c++;
+
+
+  }
+
+
+return true;
+
+}
+function update4(cartXML)
+{
+   
+
+var em = cartXML.getElementsByTagName("email_ids")[0];
+var em1 = em.getElementsByTagName("message");
+//var em = cartXML.firstChild.value;
+for(i=0;i<em1.length;i++)
+    {
+       alert(em1[i].firstChild.nodeValue);
+
+    }
+}
+
+
+
+
+
+function searchCriteria(pos_id,data) {
+   
+    var req = newXMLHttpRequest();
+    var electionId = document.getElementById("electionId").value;
+req.onreadystatechange = getReadyStateHandler(req, updateCriteria);
+
+req.open("POST","<%=request.getContextPath()%>/getRule1.do?getElectionId="+electionId+"&setpos="+pos_id+"&div="+data, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+return true;
+}
+//var rulerowcount;
+function updateCriteria(cartXML1)
+{
+    var st="<%=request.getParameter("st")!=null && request.getParameter("st").equals("'y'")==false ?request.getParameter("st"):""%>";
+
+var emr = cartXML1.getElementsByTagName("positions1")[0];
+var em1r = emr.getElementsByTagName("position1");
+//alert(em1r.length);
+//rulerowcount=em1r.length;
+for(c=0;c<em1r.length;c++)
+    {
+        //position block creation
+                var divtag = document.createElement("div");
+                divtag.id = "rule"+c;
+                divtag.style.backgroundColor = "#D8CEF6";
+                divtag.style.border = "solid 5px #F2F5A9";
+                divtag.style.borderTopLeftRadius = "10px";
+                divtag.style.width = "900px";
+                divtag.style.align = "left";
+
+                divtag.style.marginTop = "5px";
+                divtag.style.marginLeft = "3px";
+            
+//fetch data from XML
+var positionname2 = em1r[c].getElementsByTagName("positionname1");
+var positionname1 = positionname2[0].firstChild.nodeValue;
+var positionId1 = em1r[c].getElementsByTagName("positionId1");
+var pos = em1r[c].getElementsByTagName("pos");
+var posi = pos[0].firstChild.nodeValue;
+//alert(posi+"databaseposiid");
+
+var positionid1 = positionId1[0].firstChild.nodeValue;
+//var posiId = "rule_name0"+iii;
+//var posid = "rule_id0"+iii;
+//document.getElementById(posiId).value = positionname;
+//document.getElementById(posid).value = positionid;
+
+
+                <%if(!button.equals("View") && !button.equals("Block")){%>
+                          divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" Id="rule_name0'+c +'"  value='+positionname1 +' size="25px"/><input type="hidden" Id="rule_id0'+c +'" value='+positionid1 +' size="25px"/></td><td><input type="button" id="but0'+ c +'" value="<%=resource.getString("update")%>" onclick="update_criteria('+posi+','+ c +');"/></td>&nbsp;&nbsp;<td><input type="button" value="<%=resource.getString("delete")%>" onclick="search2('+posi+','+ c +');"/></td></tr></table><br>';
+               <%}else{%>
+                           divtag.innerHTML ='<table><tr><td>Rule : *&nbsp;&nbsp;<input type="text" Id="rule_name0'+c +'"  value='+positionname1 +' size="25px"/><input type="hidden" Id="rule_id0'+c +'" value='+positionid1 +' size="25px"/></td></tr></table><br>';
+                <%}%>
+                        
+        //end of block
+
+
+document.getElementById("position"+posi).appendChild(divtag);
+//rulerowcount++;
+}
+
+//j=c-1;
+//if(j<0)j=0;
+var divtag1 = document.createElement("div");
+     divtag1.id = "result";
+     divtag1.style.backgroundColor = "#E0F8F7";
+    // divtag1.style.border = "solid 5px #0B3B24";
+     divtag1.style.borderTopLeftRadius = "10px";
+  //   divtag1.style.width = "930px";
+     divtag1.style.align = "center";
+     divtag1.style.marginLeft = "0px";
+     <%if(button.equals("View") && button.equals("Block")){%>
+    // divtag1.innerHTML =st;
+     <%}else{%>
+     divtag1.innerHTML =st;
+        <%}%>
+document.getElementById("criteria").appendChild(divtag1);
+}
+
+
+function searchCriteria1(pos_id,data) {
+
+    var req = newXMLHttpRequest();
+    var electionId = document.getElementById("electionId").value;
+req.onreadystatechange = getReadyStateHandler(req, updateCriteria1);
+
+req.open("POST","<%=request.getContextPath()%>/getRule1.do?getElectionId="+electionId+"&setpos="+pos_id+"&div="+data, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+return true;
+}
+var rulerowcount;
+function updateCriteria1(cartXML1)
+{
+   
+
+var emr = cartXML1.getElementsByTagName("positions1")[0];
+var em1r = emr.getElementsByTagName("position1");
+//alert("TOTAL RULES"+em1r.length);
+rulerowcount=em1r.length;
+
+}
+
+
 </script>
     <% String institute_id=(String)session.getAttribute("institute_id");%>
     <% String user_id=(String)session.getAttribute("user_id");%>
@@ -783,7 +1085,8 @@ var send = document.getElementById("Scrend_date");
         <script language="javascript" type="text/javascript">
         function funconLoad()
         {
-            searchPositions();  
+            searchPositions();
+            
         }
 <%
 String id=(String)ElectionDAO.returnMaxElectionId(institute_id);
@@ -834,38 +1137,48 @@ String id=(String)ElectionDAO.returnMaxElectionId(institute_id);
 
              </table>
          </div></td></tr>
-         <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white"><%=resource.getString("position")%></div>
-                 <table dir="<%=rtl%>"><tr><td dir="<%=rtl%>"><div id="position" style="width: 950px;"></div></td></tr>
-                     <tr><td dir="<%=rtl%>"><div style="position: static"><%if(!button.equals("View")&& !button.equals("Block")){%><input type="button" id="add Position" name="add Position" style="margin-left: 0px;" value="<%=resource.getString("addnewposition")%>" size="50px" onclick="createposition();"><%}%></div></td></tr></table></td>
-         </tr>
-          <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid blue"><div style="background-color: teal;width: 100%;color: white">Set Criteria Or Set Eligibility Criteria For Election</div>
-                 <table dir="<%=rtl%>"><tr><td dir="<%=rtl%>"><div id="criteria" style="width: 950px;"></div></td></tr>
-                     <tr><td dir="<%=rtl%>">
-                             <div style="position: static">
-                                 <%if(!button.equals("View")&& !button.equals("Block")){%>
-                                 <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria();"><%}%>
-                             </div></td></tr></table></td>
-         </tr>
-         <%--<tr><td colspan="2" dir="<%=rtl%>">
-                 <div style="border: 2px solid teal">
-                     <div style="background-color: teal;width: 100%;color: white"><%=resource.getString("setcritaria")%> </div>
-                     <table dir="<%=rtl%>">
-                         <tr><td dir="<%=rtl%>" colspan="2"><br><%=resource.getString("crinomi")%>:* <html:text readonly="<%=read %>" name="DepActionForm" property="critaria" size="50px" styleId="cri"/></td></tr></table>
+         <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid teal">
+                 <div style="background-color: teal;width: 100%;color: white"><%=resource.getString("position")%>
                  </div>
+                 <table dir="<%=rtl%>"><tr><td dir="<%=rtl%>">
+        <div id="position" style="width: 950px;">
+            <%--new code--%>
+             <div id="criteria" style="width: 950px;">
+
+            </div>
+            
+           <%--new code--%>
+        </div></td></tr>
+         <tr><td dir="<%=rtl%>">
+        <div style="position: static"><%if(!button.equals("View")&& !button.equals("Block")){%>
+
+
+            <input type="button" id="add Position" name="add Position" style="margin-left: 0px;" value="<%=resource.getString("addnewposition")%>" size="50px" onclick="createposition();">
+
+         <%}%>
+        </div></td></tr>
+         </table>
+        </td>
+         </tr>
+      <%--    <tr><td colspan="2" dir="<%=rtl%>" style="border: 2px solid blue">
+          <div style="background-color: teal;width: 100%;color: white">Set Criteria Or Set Eligibility Criteria For Election
+           </div>
+                 <table dir="<%=rtl%>"><tr><td dir="<%=rtl%>">
+            <div id="criteria" style="width: 950px;">
+
+            </div>
+           </td></tr>
+             <tr><td dir="<%=rtl%>">
+             <div style="position: static">
+             <%if(!button.equals("View")&& !button.equals("Block")){%>
+             <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria();"><%}%>
+             </div>
                  </td></tr>
-         <tr><td colspan="2" dir="<%=rtl%>">
-                 <div style="border: 2px solid teal"><table dir="<%=rtl%>">
-         <tr><td dir="<%=rtl%>" colspan="3"><div style="font-family: Liberation Serif;font-size: 20px;background-color: teal;width: 100%;color: white"><%=resource.getString("seteligiblity")%> </div></td></tr>
-         <tr><td dir="<%=rtl%>" style="width: 250px"><%=resource.getString("department")%>* <html:text readonly="<%=read %>" name="DepActionForm" property="deaprtment" size="12px"/></td>
-             <td dir="<%=rtl%>" style="width: 350px">%<%=resource.getString("marks")%>* <html:text readonly="<%=read %>" name="DepActionForm" property="marks" size="18px"/></td>
-             <td dir="<%=rtl%>" style="width: 200px">%<%=resource.getString("attendence")%> <br> <html:text readonly="<%=read %>" name="DepActionForm" property="attendence" size="18px"/></td></tr>
-         <tr><td dir="<%=rtl%>" style="width: 250px"><%=resource.getString("backlog")%>*</td><td><%=resource.getString("criminal")%>*</td><td style="width: 550px"><%=resource.getString("indiscipline")%>*</td></tr>
-         <tr><td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="backlog" value="yes" /><%=resource.getString("yes")%><html:radio name="DepActionForm" property="backlog" value="no"/><%=resource.getString("no")%></td>
-             <td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="criminal" value="yes"/><%=resource.getString("yes")%><html:radio name="DepActionForm" property="criminal" value="no"/><%=resource.getString("no")%></td>
-    <td dir="<%=rtl%>" style="width: 250px"><html:radio name="DepActionForm" property="indiscipline" value="yes"/><%=resource.getString("yes")%><html:radio name="DepActionForm" property="indiscipline" value="no"/><%=resource.getString("no")%></td></tr>
-                     </table>
-                 </div>
-                 </td></tr>--%>
+                 </table>
+            </td>
+         </tr>--%>
+                  
+        
                  <html:hidden name="DepActionForm" property="status" styleId="status"/>
 <%--
          <%if(request.getAttribute("button").equals("Block")){%>

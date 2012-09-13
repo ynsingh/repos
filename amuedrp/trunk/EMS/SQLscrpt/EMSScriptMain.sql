@@ -258,9 +258,10 @@ DROP TABLE IF EXISTS `electionrule`;
 CREATE TABLE `electionrule` (
   `rule_id` varchar(20) NOT NULL DEFAULT '',
   `election_id` varchar(20) NOT NULL DEFAULT '',
+   `position_id` int NOT NULL DEFAULT '',
   `institute_id` varchar(20) NOT NULL DEFAULT '',
   `criteria` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`rule_id`,`election_id`,`institute_id`),
+  PRIMARY KEY (`rule_id`,`election_id`,`institute_id`,`position_id`),
   KEY `election_id` (`election_id`,`institute_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

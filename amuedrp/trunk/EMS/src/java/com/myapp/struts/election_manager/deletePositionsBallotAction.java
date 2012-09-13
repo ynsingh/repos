@@ -7,6 +7,7 @@ package com.myapp.struts.election_manager;
 
 import com.myapp.struts.hbm.Candidate1;
 import com.myapp.struts.hbm.ElectionDAO;
+import com.myapp.struts.hbm.Electionrule;
 import com.myapp.struts.hbm.Position1;
 import com.myapp.struts.hbm.PositionDAO;
 import java.util.List;
@@ -39,7 +40,7 @@ public class deletePositionsBallotAction extends org.apache.struts.action.Action
         String positionId = (String)request.getParameter("positionId");
         System.out.println("11111111electionid"+electionid+"positionid="+positionId);
         Position1 position = emailDAO.searchPosition1(Integer.parseInt(positionId), electionid, instituteId);
-        
+       
         if(position!=null)
         {
             PositionDAO pos=new PositionDAO();
@@ -48,6 +49,10 @@ public class deletePositionsBallotAction extends org.apache.struts.action.Action
             if(obj.isEmpty()){
             
             emailDAO.deletePosition(position);
+             List<Electionrule> rule = (List<Electionrule>)emailDAO.searchCriteria(Integer.parseInt(positionId), electionid, instituteId);
+            if(rule.isEmpty()==false && rule!=null)
+            emailDAO.deleteRule(rule);
+
             positions+="<email_ids><message>Position Deleted Successfully</message></email_ids>";
             response.setContentType("application/xml");
             response.getWriter().write(positions);

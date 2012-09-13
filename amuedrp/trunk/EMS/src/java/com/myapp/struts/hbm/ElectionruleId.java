@@ -12,14 +12,16 @@ public class ElectionruleId  implements java.io.Serializable {
      private String ruleId;
      private String electionId;
      private String instituteId;
+     private int positionId;
 
     public ElectionruleId() {
     }
 
-    public ElectionruleId(String ruleId, String electionId, String instituteId) {
+    public ElectionruleId(String ruleId, String electionId, String instituteId,int positionId) {
        this.ruleId = ruleId;
        this.electionId = electionId;
        this.instituteId = instituteId;
+        this.positionId = positionId;
     }
    
     public String getRuleId() {
@@ -44,6 +46,13 @@ public class ElectionruleId  implements java.io.Serializable {
         this.instituteId = instituteId;
     }
 
+     public int getPositionId() {
+        return this.positionId;
+    }
+
+    public void setPositionId(int positionId) {
+        this.positionId = positionId;
+    }
 
    public boolean equals(Object other) {
          if ( (this == other ) ) return true;

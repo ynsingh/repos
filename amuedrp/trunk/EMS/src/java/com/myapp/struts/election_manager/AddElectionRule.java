@@ -8,6 +8,7 @@ package com.myapp.struts.election_manager;
 import com.myapp.struts.ajax.Position1DAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.PositionDAO;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +18,7 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  *
- * @author faraz
+ * @author Iqubal
  */
 public class AddElectionRule extends org.apache.struts.action.Action {
 
@@ -34,17 +35,21 @@ public class AddElectionRule extends org.apache.struts.action.Action {
         String positionText = (String)request.getParameter("setRule");
       
         String electionid =(String) request.getParameter("setElectionId");
-   //     String posid =(String) request.getParameter("setposId");
-      //  String instruct = request.getParameter("setposInstruction");
+        int pos_id =Integer.parseInt((String) request.getParameter("setpos_id"));
+   
         HttpSession session = request.getSession();
-       // String electionId = (String)session.getAttribute("electionid");
-        System.out.println("Ajaxxxxxxxxxxxxxxxxxxxxxx"+positionText+electionid);
+       
+        System.out.println("Ajaxxxxxxxxxxxxxxxxxxxxxx"+positionText+electionid+pos_id);
         String instituteId = (String)session.getAttribute("institute_id");
         Electionrule position = new Electionrule();
        // if(posid.equals(""))
         position = emailDAO.getRuleByName(positionText,electionid,instituteId);
-      //  else
-        //    position = emailDAO.searchPosition1(Integer.parseInt(posid),electionid,instituteId);
+
+         List<Position1> pos1 = (List<Position1>)emailDAO.getPosition(electionid,instituteId);
+        System.out.println(pos_id+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"+pos1.get(0).getId().getPositionId());
+         pos_id=pos1.get(0).getId().getPositionId()+pos_id;
+
+         System.out.println(pos_id+"%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 
         if(position==null)
         {
@@ -54,8 +59,8 @@ public class AddElectionRule extends org.apache.struts.action.Action {
             posId.setElectionId(electionid);
             System.out.println("Institute Id = "+instituteId);
             posId.setInstituteId(instituteId);
-            posId.setRuleId((String)ElectionDAO.returnMaxElectionRuleId(instituteId,electionid));
-           // pos.setBallotId(electionid);
+            posId.setRuleId((String)ElectionDAO.returnMaxElectionRuleId(instituteId,electionid,pos_id));
+            posId.setPositionId(pos_id);
 
             System.out.println("Position Text = "+positionText);
             pos.setCriteria(positionText);
@@ -68,7 +73,7 @@ public class AddElectionRule extends org.apache.struts.action.Action {
             emails.append("<email_ids>");
             emails.append("<message>Criteria Saved successfully</message></email_ids>");
             System.out.println("Ajaxxxxxxxxxxxxxxxxxxxxxx");
-        response.getWriter().write(emails.toString());
+            response.getWriter().write(emails.toString());
         }
         else{
 

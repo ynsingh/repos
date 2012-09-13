@@ -57,7 +57,7 @@ String id="";
         }
  return id;
     }
-     public static String returnMaxElectionRuleId(String institute_id,String election_id) {
+     public static String returnMaxElectionRuleId(String institute_id,String election_id,Integer position_id) {
 
 
 String id="";
@@ -68,9 +68,12 @@ String id="";
             Criteria criteria = session.createCriteria(Electionrule.class);
             Criterion a = Restrictions.eq("id.instituteId", institute_id);
             Criterion b = Restrictions.eq("id.electionId", election_id);
-
+            Criterion c = Restrictions.eq("id.positionId", position_id);
             LogicalExpression le = Restrictions.and(a, b);
-            Integer maxbiblio = criteria.add(le).setProjection(Projections.count("id.ruleId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.ruleId")).uniqueResult().toString());
+            LogicalExpression le1 = Restrictions.and(le, c);
+
+
+            Integer maxbiblio = criteria.add(le1).setProjection(Projections.count("id.ruleId")).uniqueResult()==null?0:Integer.valueOf(criteria.add(a).setProjection(Projections.count("id.ruleId")).uniqueResult().toString());
            System.out.println(maxbiblio);
 
             if (maxbiblio == null) {
