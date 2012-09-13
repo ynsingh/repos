@@ -65,3 +65,19 @@ INSERT INTO HINT_QUESTION VALUES (8,"What was your first bike or car?");
 INSERT INTO HINT_QUESTION VALUES (9,"Where did you first meet your girlfriend/boyfriend?");
 INSERT INTO HINT_QUESTION VALUES (10,"What is your favorite food?");
 
+#---------------------------------------------------------------------------
+# Course Module List for TA Module
+#---------------------------------------------------------------------------
+
+insert into COURSE_MODULE (module_id, module_name) VALUES (100, 'Assignment');
+insert into COURSE_MODULE (module_id, module_name) VALUES (101, 'Backup');
+insert into COURSE_MODULE (module_id, module_name) VALUES (102, 'Communication');
+insert into COURSE_MODULE (module_id, module_name) VALUES (103, 'CourseCalendar');
+insert into COURSE_MODULE (module_id, module_name) VALUES (104, 'CourseManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (105, 'GroupManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (106, 'OnlineExaminationSystem');
+insert into COURSE_MODULE (module_id, module_name) VALUES (107, 'InstructorManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (108, 'StudentManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (109, 'MarksUpload');
+insert into COURSE_MODULE (module_id, module_name) VALUES (110, 'Wiki');
+insert into COURSE_MODULE (module_id, module_name) VALUES (111, 'TrackingReport');
