@@ -13,5 +13,5 @@ CREATE TABLE MODULE_PERMISSION
                 	PRIMARY KEY(ID)
 );
 
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (181, 'MODULE_PERMISSION', 100, 1);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (162, 'MODULE_PERMISSION', 100, 1);
 

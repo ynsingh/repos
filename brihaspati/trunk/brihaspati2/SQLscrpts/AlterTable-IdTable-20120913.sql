@@ -1,0 +1,3 @@
+use brihaspati;
+update ID_TABLE set ID_TABLE_ID=161 where TABLE_NAME='COURSE_MODULE';
+update ID_TABLE set ID_TABLE_ID=162 where TABLE_NAME='MODULE_PERMISSION';

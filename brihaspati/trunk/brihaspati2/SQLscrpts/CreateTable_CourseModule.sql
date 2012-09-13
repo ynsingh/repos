@@ -20,5 +20,5 @@ insert into COURSE_MODULE (module_id, module_name) VALUES (108, 'StudentManageme
 insert into COURSE_MODULE (module_id, module_name) VALUES (109, 'MarksUpload');
 insert into COURSE_MODULE (module_id, module_name) VALUES (110, 'Wiki');
 insert into COURSE_MODULE (module_id, module_name) VALUES (111, 'TrackingReport');
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (185, 'COURSE_MODULE', 100, 1);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (161, 'COURSE_MODULE', 100, 1);
 
