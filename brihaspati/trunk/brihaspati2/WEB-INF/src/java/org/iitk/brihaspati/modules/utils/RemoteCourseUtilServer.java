@@ -51,6 +51,7 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 
 /**
 * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+* @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
 * @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
 * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>29August2012
 */
@@ -681,9 +682,10 @@ public class RemoteCourseUtilServer
 				List l=CoursesPeer.doSelect(crit);
 				Courses elmt=(Courses)l.get(0);
 				String alias=elmt.getGroupAlias();
+				String cnme=elmt.getCname();
 				String val=StringUtils.substringAfter(val1,alias);
 				String val2=StringUtils.substringBeforeLast(val,"_");
-				String finalvalue=val1+"^"+val2;
+				String finalvalue=val1+"^"+val2+"^"+cnme;
 				fvct.add(finalvalue);	
 			}
 			str=fvct.toString();	
