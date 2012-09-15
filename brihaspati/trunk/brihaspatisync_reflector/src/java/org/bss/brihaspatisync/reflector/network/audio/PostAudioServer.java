@@ -31,6 +31,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2011
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Created on 2012
  */
 
 public class PostAudioServer {
@@ -77,36 +78,52 @@ class MyPostHandler implements HttpHandler {
 			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();		
 			if (requestMethod.equalsIgnoreCase("POST")) {
 				Headers responseHeaders = exchange.getResponseHeaders();
-				responseHeaders.set("Content-Type", "application/octet-stream");
-				exchange.sendResponseHeaders(200, 0);
-				Headers responseHeader = exchange.getRequestHeaders();
+                                responseHeaders.set("Content-Type", "application/octet-stream");
+                                exchange.sendResponseHeaders(200, 0);
+                                Headers responseHeader = exchange.getRequestHeaders();
                                 String lecture_id=responseHeader.get("session").toString();
-				OutputStream responseBody = exchange.getResponseBody();
-				byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-				InputStream is=new ByteArrayInputStream(bytes);
-				AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
-				try {
-					MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-			                if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
-                        			BufferMgt buffer_mgt= new BufferMgt();
-			                        temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
-                                	}
-                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-                        		if(ais !=null) {
+                                OutputStream responseBody = exchange.getResponseBody();
+                                byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
+                                InputStream is=new ByteArrayInputStream(bytes);
+                                AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
+                                try {
+                                        if(ais !=null) {
+                                                MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+                                                if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
+                                                        BufferMgt buffer_mgt= new BufferMgt();
+                                                        temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
+                                                }
+                                                BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
                                                 buffer_mgt.putByte(ais,client_ip,"Audio_Post"+lecture_id);
                                                 buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id);
                                         }
-					String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
+                                }catch(Exception e){ System.out.println("Error in recive from client to ref PostAudioServer class  "+e.getMessage()); }
+                                responseBody.flush();
+                                responseBody.close();
+			}else if (requestMethod.equalsIgnoreCase("GET")) { 
+				Headers responseHeaders = exchange.getResponseHeaders();
+                                responseHeaders.set("Content-Type", "text/plain");
+                                exchange.sendResponseHeaders(200, 0);
+                                Headers responseHeader = exchange.getRequestHeaders();
+                                String lecture_id=responseHeader.get("session").toString();
+                                OutputStream responseBody = exchange.getResponseBody();
+                                try {
+                                        MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
+                                        String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
                                         if(input!=null) {
-                                                AudioInputStream ais_new =AudioSystem.getAudioInputStream(new FileInputStream(lecture_id+"/"+input+".wav"));
-                                                AudioSystem.write(ais_new,AudioFileFormat.Type.WAVE,responseBody);
+						int kk=Integer.parseInt(input);
+						if(kk>0)
+							kk=kk-1;	
+                                                AudioInputStream ais =AudioSystem.getAudioInputStream(new FileInputStream(lecture_id+"/"+kk+".wav"));
+                                                AudioSystem.write(ais,AudioFileFormat.Type.WAVE,responseBody);
                                         }
-
-                              	}catch(Exception e){}
-           			responseBody.flush();
-				responseBody.close();
-			}//end of if
-		}catch(Exception ex){}
+                                }catch(Exception e){ System.out.println("Error in send from ref to client PostAudioServer class  "+e.getMessage());}
+                                responseBody.flush();
+                                responseBody.close();
+                                exchange.notify();
+			}
+		}catch(Exception ex){System.out.println("Error in PostAudioServer class  "+ex.getMessage());}
 	}
 
 	private AudioFormat getAudioFormat(){

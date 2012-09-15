@@ -103,8 +103,6 @@ class MyPostGetHandler implements HttpHandler {
 					req=line;
                                 }
 				
-				System.out.println("client_ip    "+client_ip+"   data  "+req);
-						
 				/**
  				 ** split() is used to get lecture_id and the data from this request , 
 				 ** where data_value[0] contains lecture_id and data_value[1] contains data.
