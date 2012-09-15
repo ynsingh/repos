@@ -15,7 +15,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.AudioInputStream;
-import org.bss.brihaspatisync.util.ThreadController;
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Jan2012.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified run() Method.
@@ -39,6 +39,8 @@ public class AudioPlayer implements Runnable {
 	}
 	
 	protected void putAudioStream(AudioInputStream object){
+		 if (runner == null) 
+			startThread();
 		audioVector.add(object);
 	}
 	
@@ -123,7 +125,7 @@ public class AudioPlayer implements Runnable {
 	public void run(){
 		startSourceLine();
 		int bufferSize = (int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize());
-		while(flag && ThreadController.getController().getThreadFlag()){
+		while(flag){
 			try{
 				if(audioVector.size() > 1){
 					AudioInputStream input=(AudioInputStream)audioVector.get(0);
@@ -134,7 +136,7 @@ public class AudioPlayer implements Runnable {
         			                        int count;
                 			                while ((count = input.read(buffer, 0, buffer.length)) != -1) {
 								if(count>0)
-                                					sourceDataLine.write(buffer, 0, bufferSize);
+                                					sourceDataLine.write(buffer, 0, count);
 			                                }
         			                }catch (Exception e) {  
 							System.out.println("Error in play audio stream : "+e.getMessage());       

@@ -38,6 +38,8 @@ public class PostAudioStream implements Runnable {
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	
+	private AudioCapture au_cap=new AudioCapture();	
+
 	/**
  	 * Controller for the class.
  	 */
@@ -50,14 +52,10 @@ public class PostAudioStream implements Runnable {
 	/**
  	 * Start Thread
  	 */
-	public void startThread(boolean getscreen){
+	public void startThread(){
         	if (runner == null) {
-			if(getscreen)
-				AudioPlayer.getController().startThread();
-			else
-				AudioCapture.getController().start();
+			au_cap.start();
 			flag=true;
-			getflag=getscreen;
             		runner = new Thread(this);
             		runner.start();
 			System.out.println("PostAudioStream start successfully !!");
@@ -69,12 +67,8 @@ public class PostAudioStream implements Runnable {
         */
 	public void stopThread() {
         	if (runner != null) {
-			if(getflag)
-				AudioPlayer.getController().stopThread();
-			else
-				AudioCapture.getController().stopCapture();
+			au_cap.stopCapture();
 			flag=false;
-			getflag=false;
             		runner.stop();
             		runner = null;
 			System.out.println("PostAudioStream stop successfully !!");
@@ -93,15 +87,11 @@ public class PostAudioStream implements Runnable {
 			while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
 					java.io.ByteArrayOutputStream os=null;
-					if(!getflag) {
-						os=AudioCapture.getController().startCapture();
-					}	
+					os=au_cap.startCapture();
 	                                HttpClient client = new HttpClient();
         	                        PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
                 	                client.setConnectionTimeout(20000);
-                        	        if(os !=null ){
-                                	        postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
-					}
+                                	postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
 					postMethod.setRequestHeader(h);
 					// Http Proxy Handler	
 					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
@@ -112,17 +102,11 @@ public class PostAudioStream implements Runnable {
                                                 client.getState().setProxyCredentials(authScope, credentials);
 	                              	}
         	                        int statusCode1 = client.executeMethod(postMethod);
-					if(getflag) {					
-						byte audioBytes[]=postMethod.getResponseBody();
-	                                        AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(audioBytes),audioFormat, audioBytes.length / getAudioFormat().getFrameSize());
-        	                                if((ais != null) && (audioBytes.length > 1600))
-                	                                AudioPlayer.getController().putAudioStream(ais);
-                        	                ais.close();
-					}
                         	        postMethod.getStatusLine();
                                 	postMethod.releaseConnection();
 					os.flush();
 					os.close();
+					runner.sleep(500);
 					runner.yield();
 				}catch(Exception epe){}
                         }

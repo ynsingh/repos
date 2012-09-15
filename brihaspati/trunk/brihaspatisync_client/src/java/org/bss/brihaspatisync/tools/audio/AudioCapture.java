@@ -23,7 +23,6 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.File;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
@@ -39,22 +38,10 @@ public class AudioCapture {
 	private boolean flag=false;
 	private TargetDataLine targetDataLine;
 	private AudioFormat audioFormat;
-	private InputStream is=null;
-	private static AudioCapture post_audio=null;
     	private DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
     	private AudioFileFormat.Type fileType = null;
-   	private Thread captureThread=null;
    	private Mixer currentMixer=null;
         private int bufferSize=16000;	
-
-	/**
- 	 * Controller for the class.
- 	 */
-	public static AudioCapture getController(){
-		if(post_audio==null)
-			post_audio=new AudioCapture();
-		return post_audio;
-	}
 
    	/**
  	 * Select a mixer from audio system which support audio format

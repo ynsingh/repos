@@ -133,9 +133,11 @@ public class JoinSession {
 
                         if(a_status.equals("1")){
                                 if((client_obj.getUserRole()).equals("instructor")){
-                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(false);
+                                        //org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(false);
+                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread();
                                 }else {
-                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(true);
+                                        //org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(true);
+					org.bss.brihaspatisync.tools.audio.GetAudioStream.getController().startThread();
                                 }	
 			}
 			//AVTransmitReceiveHandler.getController();
