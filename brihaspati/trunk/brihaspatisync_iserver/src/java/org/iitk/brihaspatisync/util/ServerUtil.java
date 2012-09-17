@@ -103,7 +103,6 @@ public class ServerUtil{
 			java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
         	        java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
                 	Date now = new Date();
-	                //String strDate = sdfDate.format(now);
         	        String strTime = sdfTime.format(now);
         	        return "date"+getCurrentDate("/")+" "+strTime;
 		}catch(Exception e){return "UnSuccessfull"; }
@@ -152,6 +151,34 @@ public class ServerUtil{
                         }
                 }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
              	return message;
+        }
+
+	public String getLectureInfo(String lecture_id){
+                String message="";
+                try {
+                        Criteria crit=new Criteria();
+                        crit.add(LecturePeer.LECTUREID,Integer.parseInt(lecture_id));
+                        List l=LecturePeer.doSelect(crit);
+                        for(int i=0;i<l.size();i++) {
+                                Lecture element=(Lecture)(l.get(i));
+                                String lectid=Integer.toString(element.getLectureid());
+                                String lectUserName=element.getGroupName();
+                                String lectCouseName=element.getLecturename();
+                                String lectName=element.getLectureinfo();
+                                String lectInfo=element.getUrlname();
+                                String lectNo=element.getPhoneno();
+                                String lectVedio=element.getForvideo();
+                                String lectAudio=element.getForaudio();
+                                String lectWhiteBoard=element.getForwhiteboard();
+                                Date lectDate=element.getSessiondate();
+                                String lectTime=element.getSessiontime();
+                                String lectDuration=element.getDuration();
+                                String repeattime=element.getRepeatlec();
+                                String fortime=element.getFortime();
+                                message=lectid+","+lectUserName+","+lectCouseName+","+lectName+","+lectInfo+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
+                        }
+                }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
+                return message;
         }	
 		
 }//end of class	

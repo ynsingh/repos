@@ -128,7 +128,28 @@ public class ProcessRequest extends HttpServlet {
                         out.flush();
                         out.close();
 			
-		}
+		}else if(reqType.equals("getjnlp")){
+                        try {
+				File filepath=new File(context.getRealPath("urlbrihaspatisync.jnlp")); 
+				String usr=request.getParameter("usr");
+				String lect_id=request.getParameter("lect_id");
+				String l_name=request.getParameter("l_name");
+				String ins_std=request.getParameter("ins_std");
+				
+				if(filepath.isFile()){
+					filepath.delete();
+				}
+				DataOutputStream dos = new DataOutputStream(new FileOutputStream(filepath,true));
+                		dos.writeBytes( "<?xml version=\"1.0\" encoding=\"utf-8\"?><jnlp  spec=\"1.0+\"  codebase=\"https://172.26.82.19:8443/brihaspatisync_client/jnlp\"  href=\"brihaspatisync.jnlp\"> <information> <title> Brihaspatisync Client </title> <vendor>IIT Kanpur</vendor>  <homepage href=\"http://www.brihaspatisolutions.co.in\"/> <description>Brihaspatisync</description>  <description kind=\"short\">Brihaspatisync Client </description>  <icon href=\"images/info.gif\"/>  <icon kind=\"splash\" href=\"images/Title.jpg\"/>  <!-- <offline-allowed/> -->        </information>           <security>  <all-permissions/>  </security>   <resources>  <j2se version=\"1.0+\" />  <property name=\"sun.java2d.d3d\" value=\"false\"/> <jar href=\"brihaspatisync.jar\"/> </resources> <application-desc main-class=\"org.bss.brihaspatisync.Client\"> <argument> "+usr+"</argument> <argument> "+lect_id+"</argument><argument> "+l_name+"</argument> <argument> https://172.26.82.19:8443/brihaspatisync_iserver </argument> <argument> "+ins_std+"</argument> </application-desc> </jnlp>"); 
+				dos.flush();
+			        dos.close();
+				
+                                RequestDispatcher rd= context.getRequestDispatcher("/brihaspati.html");
+				rd.include(request, response);
+                                out.flush();
+                                out.close();
+                        }catch(Exception e){}
+                }
 
 		/**
 		 * This block of code is used to change the status of reflector which decide that is this reflector 
@@ -198,7 +219,6 @@ public class ProcessRequest extends HttpServlet {
        		                message=message+"\n"+Integer.toString(key);
 				/* send server date to client user for synchrozise clock with this server. */
 				message=message+"\n"+ServerUtil.getController().getCurrentDate("");
-				//ServerLog.getController().Log(message);
 				response.setContentLength(message.length());
                                 out.println(message);
                                 out.flush();
@@ -211,11 +231,9 @@ public class ProcessRequest extends HttpServlet {
 			String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
 			String reflector=request.getParameter("reflector");
 			String username=request.getParameter("username");
-			//ServerLog.getController().Log("reflector ip for logout==>"+reflector+"\nusername==>"+username);
 			/** Remove Entry from the peer list from LecturePeer.xml */
 			if(!(reflector.equals(""))){
 				String lectID=request.getParameter("lectID");
-				//ServerLog.getController().Log("lectID==>"+lectID);
 				PeerManager.getController().removePeer(lectID,username);
 				ReflectorStatusManager.getController().updateStatusPeer(username);
 			}
@@ -246,6 +264,24 @@ public class ProcessRequest extends HttpServlet {
                                 out.flush();
                                 out.close();
 			}
+
+		}else if(reqType.equals("getLectureInfo")) {
+                        String lecture_id=request.getParameter("l_id");
+                        String message=ServerUtil.getController().getLectureInfo(lecture_id);
+			ServerLog.getController().Log(lecture_id);
+			ServerLog.getController().Log(message);
+                        if(!message.equals("")) {
+                                response.setContentLength(message.length());
+                                out.println(message);
+                                out.flush();
+                                out.close();
+                        }else{
+                                message="noLecture";
+                                response.setContentLength(message.length());
+                                out.println(message);
+                                out.flush();
+                                out.close();
+                        }
 		}else if(reqType.equals("getSession")){
 			String courseName=request.getParameter("cn");
 			
@@ -534,6 +570,18 @@ public class ProcessRequest extends HttpServlet {
 				crit.add(LecturePeer.REPEATLEC,"NO");
 				crit.add(LecturePeer.FORTIME,"NO");
 	        	        LecturePeer.doInsert(crit);
+				{
+					crit=new Criteria();
+					crit.addGroupByColumn(LecturePeer.LECTUREID);
+					java.util.List list=LecturePeer.doSelect(crit);
+					int ints[]=new int[list.size()];
+					for(int i=0;i<list.size();i++) {
+                                		Lecture element=(Lecture)(list.get(i));
+						ints[i]=(element.getLectureid());
+					}
+					java.util.Arrays.sort(ints);
+					lect_id=Integer.toString(ints[list.size()-1]);
+				}
 				subject=lectCouseName +"  session name "+lectName+" has been Announced  " ;
 			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
 		}else if(lectGetParameter.equals("GetUpdateLectValues")) {
@@ -571,10 +619,10 @@ public class ProcessRequest extends HttpServlet {
 			}
 			int size=lectCouseName.lastIndexOf("_");
 			Vector mail_id=AdminProperties.getUDetail(gid,3);
+			mail_id.add("instructor");
 			mail_id.addAll(AdminProperties.getUDetail(gid,2));
-			lectCouseName=lectCouseName.substring(0,size);	
-			ServerLog.getController().Log(gid+"  mail_id  "+mail_id);
-			MailNotification.getController().sendMail(context,subject,mail_id,date,lectTime,lectDuration,lectName,lectCouseName);
+			String l_name=lectCouseName.substring(0,size);	
+			MailNotification.getController().sendMail(context,subject,mail_id,date,lectTime,lectDuration,lectName,l_name,lect_id,lectCouseName);
 		}catch(Exception e){}
 		return "Successfull";
 	}

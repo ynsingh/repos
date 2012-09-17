@@ -36,6 +36,9 @@ public class MailNotification {
 	private String lectName="";
 	private String lectCouseName="";
 	private Vector mail_id=null;
+	
+	private String lect_id=null;
+	private String lectCouseName_or=null;
 	private Date date;
 	private static MailNotification  mailNotificationThread=null;
 		
@@ -46,7 +49,7 @@ public class MailNotification {
         }
 	
 
-	public void sendMail( ServletContext context1,String subject1,Vector mail_id1,Date date1,String lectTime1,String lectDuration1,String lectName1,String lectCouseName1 )  {
+	protected void sendMail( ServletContext context1,String subject1,Vector mail_id1,Date date1,String lectTime1,String lectDuration1,String lectName1,String lectCouseName1,String lect_id1,String lectCouseName_or1 )  {
 		
 		this.subject=subject1;
 		this.mail_id=mail_id1;
@@ -56,15 +59,26 @@ public class MailNotification {
 		this.lectCouseName=lectCouseName1;
 		this.date=date1;
 		this.context=context1;
-					
+		this.lectCouseName_or=lectCouseName_or1;
+		this.lect_id=lect_id1;
+						
 		(thread=new Thread(){
                         public void run(){
 					String msg = "";
+					String ins_std="student";
 					for (int i=0;i<mail_id.size();i++){
+						try {
+						if(((mail_id.get(i).toString()).trim()).equals("instructor")){
+							i++;
+							ins_std="instructor";		
+						}
                                 		String str1[]=(mail_id.get(i).toString()).split("-");
-		                                String message="<font size=3> Dear "+str1[1]+" ,<br><br> This message is to informed you that the following lecture will take place "+date+" "+lectTime +" "+lectDuration+".<br><br> Name of the lecture ("+lectCouseName+" to "+lectName+" )<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 1. Click here to join https://202.141.40.216:8443/brihaspatisync_client/jnlp/brihaspatisync.jnlp <br> &nbsp;&nbsp;&nbsp;&nbsp; This link should not be shared with others, it is unique to you.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 2. You will be connected to audio using your computer's microphone and speakers. A headset is recommended. <br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 3. System Requirements :- Any OS compatiable with your microphone and speaker.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 4. Please send your suggestion, comment and feedback to brihspti@iitk.ac.in</font>";
+							
+			                        String url="https://172.26.82.19:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&usr="+java.net.URLEncoder.encode(str1[0],"UTF-8")+"&lect_id="+lect_id+"&l_name="+lectCouseName_or+"&ins_std="+ins_std;
+						
+		                                String message="<font size=3> Dear "+str1[1]+" ,<br><br> This message is to informed you that the following lecture will take place "+date+" "+lectTime +" "+lectDuration+".<br><br> Name of the lecture ("+lectCouseName+" to "+lectName+" )<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 1. Click here to join "+url +" <br> &nbsp;&nbsp;&nbsp;&nbsp; This link should not be shared with others, it is unique to you.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 2. You will be connected to audio using your computer's microphone and speakers. A headset is recommended. <br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 3. System Requirements :- Any OS compatiable with your microphone and speaker.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 4. Please send your suggestion, comment and feedback to brihspti@iitk.ac.in</font>";
 				 		String email_new=str1[0];
-						try{ 
+						 
 							String path=context.getRealPath("WEB-INF")+"/../../brihaspati2/WEB-INF/conf/Admin.properties"; 
                         				String mail_smtp=AdminProperties.getValue(path,"brihaspati.mail.smtp.from");
                         				String host_name=AdminProperties.getValue(path,"brihaspati.mail.server");
@@ -125,12 +139,12 @@ public class MailNotification {
                                                 				msg=msg+"The error in sending Mail Message "+mex.toString();
                                         				}
                                         				msg="Mail send succesfully!!";
-                              					} else{               	msg="Mail can't send since your mail id is null!!";                       					}
-				                     	} else{ 	msg=msg;         					}
-					} catch(Exception ex) { 	ServerLog.getController().Log("The error in mail send !!!"+ex); 	}
-				} mail_id.clear(); ServerLog.getController().Log("mail notofication "+msg);
-			}
-		}).start();
+                              					} else{ msg="Mail can't send since your mail id is null!!"; }
+				                     	} else{ msg=msg;}
+						} catch(Exception ex) { 	ServerLog.getController().Log("The error in mail send !!!"+ex); 	}
+					} mail_id.clear(); ServerLog.getController().Log("mail notofication "+msg);
+				}
+			}).start();
 	}
 }
 
