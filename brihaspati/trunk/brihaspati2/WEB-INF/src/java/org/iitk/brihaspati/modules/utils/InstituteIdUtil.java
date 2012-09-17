@@ -350,6 +350,35 @@ public class InstituteIdUtil
         }
 
 	/**
+         * Get list of registered institute for perticular user role (Instructor, Teaching Assistant, Student)
+         * first get list of all registered instructor then get their group id.
+         * From group id, get group name that shows in which group instructor is registered
+         * from group name, get institute id of that instructor, Teaching Assistant, Student.
+         */
+
+	public static Vector getInstructorInstId(int uid, int rid)
+        {
+                Vector instidlist=new Vector();
+                Criteria crit=new Criteria();
+                try{
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                        crit.and(TurbineUserGroupRolePeer.ROLE_ID,rid);
+                        List v=TurbineUserGroupRolePeer.doSelect(crit);
+                        for(int k=0;k<v.size();k++)
+                        {
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
+                                int s=(element.getGroupId());
+                                String gname=GroupUtil.getGroupName(s);
+                                String InsId=StringUtils.substringAfterLast(gname,"_");
+                                if(!instidlist.contains(InsId))
+                                        instidlist.add(InsId);
+                        }
+                }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getInstructorInstId() method for all role --[InstituteIdUtil]"+ex);}
+        return instidlist;
+        }
+
+
+	/**
          * Get list of registered institute for perticular instructor
          * first get list of all registered instructor then get their group id.
          * From group id, get group name that shows in which group instructor is registered

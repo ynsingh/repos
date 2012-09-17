@@ -35,6 +35,9 @@ package org.iitk.brihaspati.modules.utils;
 import java.util.List;
 import java.util.Date;
 import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 //Turbine classes
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
@@ -42,6 +45,14 @@ import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.AccessControlList;
 //Brihaspati classes4
 import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.NoticeReceivePeer;
+import org.iitk.brihaspati.om.TurbineUserGroupRole;
+import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.CoursesPeer;
 
 /**
@@ -148,4 +159,81 @@ public class CourseUtil{
 		}
                 return GroupName;
         }
+	/**
+ 	 *  This method is used for instructor, Student and TA
+ 	 *  @param uid int USER_ID
+ 	 *  @param rid int ROLE_ID
+ 	 *  @see InstituteIdUtil from Utils
+ 	 *  @see CourseUtil from Utils
+ 	 *  @see CourseTimeUtil from Utils
+ 	 *  @see CourseManagement from Utils
+ 	 *  @exception Exception, a generic exception
+	 *  This method is used for instructor, Student and TA
+	 *  it returns list contains( Institute Name, Course name , Course Alias, Course Id, Course Status,
+	 *  Course Weekly Access Time, Course Guest Status, Unread Message in Course)
+	 */  
+	public static ArrayList getCourseList(int uid,int rid)
+	{
+		ArrayList list = new ArrayList();
+                Map map = new HashMap();
+		String act="", statc="", unread="false";
+		Vector iList=InstituteIdUtil.getInstructorInstId(uid,rid);
+		for(int i=0;i<iList.size();i++)
+                {
+			String instIds=((String)iList.get(i)).trim();
+			int instid=Integer.parseInt(instIds);
+			String instName = InstituteIdUtil.getIstName(instid);
+			map = new HashMap();
+                        map.put("instName", instName);
+                        map.put("instId", instid);
+                        list.add(map);
+			Criteria crit=new Criteria();
+			try{
+        	                crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                	        crit.and(TurbineUserGroupRolePeer.ROLE_ID,rid);
+                        	List v=TurbineUserGroupRolePeer.doSelect(crit);
+	                        for(int j=0;j<v.size();j++)
+        	                {
+                	                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(j);
+                        	        int gid=(element.getGroupId());
+                                	String gName=GroupUtil.getGroupName(gid);
+					if(gName.endsWith(instIds)){
+						String courseName=getCourseName(gName);
+        		                        String Coursealias=getCourseAlias(gName);
+                        		        String weekTime=CourseTimeUtil.getLastweekTime(uid,gName);
+                                        	boolean check_act=CourseManagement.CheckcourseIsActive(gid);
+		                                if(check_act==false)
+                		                        act="1";
+                                		else
+		                                        act="0";
+                		                boolean gustst=getCourseGuestStatus(gName);
+                                		if(gustst)
+		                                        statc="true";
+                		                else
+                                		        statc="false";
+						crit=new Criteria();
+                                        	crit.add(NoticeReceivePeer.RECEIVER_ID,uid);
+						crit.add(NoticeReceivePeer.GROUP_ID,gid);
+                                        	crit.and(NoticeReceivePeer.READ_FLAG,"0");
+						List v2=NoticeReceivePeer.doSelect(crit);
+						if(v2.size()>0){
+							unread="true";
+						}
+						map = new HashMap();
+                                                map.put("crsId", gName);
+                                                map.put("crsName", courseName);
+                                                map.put("crsAlias", Coursealias);
+                                                map.put("crswTime", weekTime);
+                                                map.put("crsact", act);
+                                                map.put("gustSts", statc);
+                                                map.put("unreadM", unread);
+                                                list.add(map);			
+					}
+				
+				}
+			}
+			catch (Exception ex){ErrorDumpUtil.ErrorLog("The error in getCourseList in Course Util "+ex );}
+		}
+		return list;
+	}
 }

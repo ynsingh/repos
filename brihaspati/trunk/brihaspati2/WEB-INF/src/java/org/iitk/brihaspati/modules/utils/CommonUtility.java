@@ -135,6 +135,8 @@ import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.VenuePeer;
+import org.iitk.brihaspati.om.ModulePermissionPeer;
+import org.iitk.brihaspati.om.CourseModulePeer;
 
 import org.iitk.brihaspati.modules.actions.UploadAction;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -499,8 +501,8 @@ public class CommonUtility{
 		AssignmentPeer.executeQuery("ANALYZE TABLE ASSIGNMENT");
 		AssignmentPeer.executeQuery("OPTIMIZE TABLE ASSIGNMENT");
 
-                BatchCoursePeer.executeQuery("ANALYZE TABLE BATCH COURSE");
-                BatchCoursePeer.executeQuery("OPTIMIZE TABLE BATCH COURSE");
+                BatchCoursePeer.executeQuery("ANALYZE TABLE BATCH_COURSE");
+                BatchCoursePeer.executeQuery("OPTIMIZE TABLE BATCH_COURSE");
 
 		BatchPeer.executeQuery("ANALYZE TABLE BATCH");
                 BatchPeer.executeQuery("OPTIMIZE TABLE BATCH");
@@ -513,6 +515,9 @@ public class CommonUtility{
 
 		CourseInfoPeer.executeQuery("ANALYZE TABLE COURSE_INFO");
                 CourseInfoPeer.executeQuery("OPTIMIZE TABLE COURSE_INFO");
+
+		CourseModulePeer.executeQuery("ANALYZE TABLE COURSE_MODULE");
+                CourseModulePeer.executeQuery("OPTIMIZE TABLE COURSE_MODULE");
 
 		CourseMonthPeer.executeQuery("ANALYZE TABLE COURSE_MONTH");
                 CourseMonthPeer.executeQuery("OPTIMIZE TABLE COURSE_MONTH");
@@ -562,9 +567,6 @@ public class CommonUtility{
 		HintQuestionPeer.executeQuery("ANALYZE TABLE HINT_QUESTION");
 		HintQuestionPeer.executeQuery("OPTIMIZE TABLE HINT_QUESTION");
 
-//		MailReceivePeer.executeQuery("ANALYZE TABLE ID_TABLE");
-//              MailReceivePeer.executeQuery("OPTIMIZE TABLE ID_TABLE");
-
 		InstituteAdminRegistrationPeer.executeQuery("ANALYZE TABLE INSTITUTE_ADMIN_REGISTRATION");
                 InstituteAdminRegistrationPeer.executeQuery("OPTIMIZE TABLE INSTITUTE_ADMIN_REGISTRATION");
 
@@ -591,6 +593,9 @@ public class CommonUtility{
 
                 MailSendPeer.executeQuery("ANALYZE TABLE MAIL_SEND");
                 MailSendPeer.executeQuery("OPTIMIZE TABLE MAIL_SEND");
+
+		ModulePermissionPeer.executeQuery("ANALYZE TABLE MODULE_PERMISSION");
+                ModulePermissionPeer.executeQuery("OPTIMIZE TABLE MODULE_PERMISSION");
 
 		ModuleTimePeer.executeQuery("ANALYZE TABLE MODULE_TIME");
                 ModuleTimePeer.executeQuery("OPTIMIZE TABLE MODULE_TIME");
@@ -1097,34 +1102,34 @@ public static void grpLeader()
 
          	int cnt=0;
         	try{
-                	ErrorDumpUtil.ErrorLog("inside removeNonce");
+                	//ErrorDumpUtil.ErrorLog("inside removeNonce");
                 	long boundary = System.currentTimeMillis() - ONE_HOUR;
                 	crit = new Criteria();
                 	List list = OpenidPeer.doSelect(crit);
                 	for (Iterator i = list.iterator();i.hasNext() ;)
                 	{
-                		ErrorDumpUtil.ErrorLog("removeNonce");
+                	//	ErrorDumpUtil.ErrorLog("removeNonce");
                         	Openid openid = (Openid) i.next();
                         	long date = openid.getToDate();
-				ErrorDumpUtil.ErrorLog("date is "+date);
+			//	ErrorDumpUtil.ErrorLog("date is "+date);
                         	if(date<boundary)
                         	{
                                 	String exp_nonce = openid.getNonce();
-                                	ErrorDumpUtil.ErrorLog("Nonce from db is "+exp_nonce);
+                          //      	ErrorDumpUtil.ErrorLog("Nonce from db is "+exp_nonce);
                                 	String exp_provider = openid.getProvider();
-                                	ErrorDumpUtil.ErrorLog("Provider from db is "+exp_provider);
+                            //    	ErrorDumpUtil.ErrorLog("Provider from db is "+exp_provider);
                                         criteria = new Criteria();
                                         criteria.add(OpenidPeer.NONCE,exp_nonce);
                                         criteria.add(OpenidPeer.PROVIDER,exp_provider);
                                         OpenidPeer.doDelete(criteria);
                                         cnt++;
-                                	ErrorDumpUtil.ErrorLog("count is "+cnt);
+                              //  	ErrorDumpUtil.ErrorLog("count is "+cnt);
                                 }//if
 			}//for
 		}//try
         	catch(Exception e)
         	{
-               		ErrorDumpUtil.ErrorLog("Error in removeNonce() of CommonUtility  ");
+               		ErrorDumpUtil.ErrorLog("Error in removeNonce() of CommonUtility  "+e);
                 	throw new RuntimeException("error cleaning up client nonce from table ");
         	}//catch
 		return true;
