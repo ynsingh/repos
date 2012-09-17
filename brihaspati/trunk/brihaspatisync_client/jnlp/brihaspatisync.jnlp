@@ -23,5 +23,11 @@
 		<jar href="poi-3.6-20091214.jar"/>
                 <jar href="poi-scratchpad-3.6-20091214.jar"/>
 	</resources>
-	<application-desc main-class="org.bss.brihaspatisync.Client"/>
+	<application-desc main-class="org.bss.brihaspatisync.Client">
+		<argument>no</argument>
+		<argument>no</argument>	
+		<argument>no</argument>	
+		<argument>no</argument>	
+		<argument>no</argument>	
+	</application-desc>
 </jnlp>

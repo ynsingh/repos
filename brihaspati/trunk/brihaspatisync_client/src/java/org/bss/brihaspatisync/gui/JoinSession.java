@@ -92,7 +92,7 @@ public class JoinSession {
 					StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 				}
 			}else
-                                log.setLog("Insufficient index Server Name in goTOLecture() in joinSession Class :"+indexName);
+                                System.out.println("Insufficient index Server Name in goTOLecture() in joinSession Class :"+indexName);
 
           	}catch(Exception ex){log.setLog("Error on Join Session==> "+ex.getMessage());}
 	}
@@ -103,17 +103,17 @@ public class JoinSession {
 	 */
 	protected void startGUIThread(){
 		// set flag for controle all threads of application.
+
 		if(!(ThreadController.getController().getThreadFlag()))
 			ThreadController.getController().setThreadFlag(true);
-
-		//remove CourseSessionWindow and add gui for view all tools activities.
-		CourseSessionWindow.getController().setVisible(false);
-                MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
-                MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
-		MainWindow.getController().getMenuItem7().setEnabled(true);
-		MainWindow.getController().getContainer().validate();
-		MainWindow.getController().getContainer().repaint();
-
+		try {
+			//remove CourseSessionWindow and add gui for view all tools activities.
+	                MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
+        	        MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
+			MainWindow.getController().getMenuItem7().setEnabled(true);
+			MainWindow.getController().getContainer().validate();
+			MainWindow.getController().getContainer().repaint();
+		}catch(Exception e){System.out.println("Error to open panel in JoinSession "+e.getMessage());}
 		// Timer to print user list in gui.
            	try{
                 	UL_Timer=new Timer(true);
@@ -133,29 +133,24 @@ public class JoinSession {
 
                         if(a_status.equals("1")){
                                 if((client_obj.getUserRole()).equals("instructor")){
-                                        //org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(false);
                                         org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread();
                                 }else {
-                                        //org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread(true);
 					org.bss.brihaspatisync.tools.audio.GetAudioStream.getController().startThread();
                                 }	
 			}
-			//AVTransmitReceiveHandler.getController();
 		}catch(Exception ex){System.out.println("Error in start audio thread");}
 
 		//start video thread
 		try {
 			String v_status=client_obj.getVideoStatus();
-			if(v_status.equals("1")){	
-				if((client_obj.getUserRole()).equals("instructor")) {
+			if((client_obj.getUserRole()).equals("instructor")) {
+				ShareScreenAndPPT.getController().setEnable_Decable();
+				if(v_status.equals("1")){	
                         		org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 					org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(false);
-					ShareScreenAndPPT.getController().setEnable_Decable();
-				} else {
-					org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(true);
 				}
-			}
-			
+			} else 
+				org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(true);
                 }catch(Exception e){}
 		
 	}

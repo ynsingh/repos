@@ -15,6 +15,7 @@ import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.gui.LoginWindow;
+import org.bss.brihaspatisync.gui.MailLogin;
 
 import java.io.File;
 
@@ -34,9 +35,9 @@ public class Client {
 		return client;
 	}
 	
-	public Client(){}
+	private Client(){}
 
-	public void startClient(){
+	private void startClient(){
                 try{
                 	/* The look and feel is set */
 			Language.getController().SelectLanguage("English");
@@ -50,11 +51,32 @@ public class Client {
                 	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("Client.MessageDialog"));
               	}
 	}
+
+	private void startFromURL(String user_name,String lect_id,String course_id,String indexServerName,String ins_std){
+		try {
+			Language.getController().SelectLanguage("English");
+                        UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			MainWindow.getController().createGUI();
+			MailLogin.getController().joindirect(user_name,lect_id,course_id,indexServerName,ins_std);
+		}catch(Exception e){System.out.println("Error on Loading Look&Feel"+e.getMessage());}
+	}
+
+
+
 	
 	/**
          * Main Method for client
          */
-	public static void main(String args[]){
-		Client.getController().startClient();
+	
+	public static void main(String args[]) {
+		String user_name=args[0].trim();
+		String lect_id=args[1].trim();
+		String course_id=args[2].trim();
+		String indexServerName=args[3].trim();
+		String ins_std=args[4].trim();
+		if(user_name.equals("no"))
+			Client.getController().startClient();
+		else 
+			Client.getController().startFromURL(user_name,lect_id,course_id,indexServerName,ins_std);
 	}
 }
