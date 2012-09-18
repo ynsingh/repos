@@ -150,7 +150,9 @@ public class EditContent_Action extends SecureAction
 			data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
 			if(status.equals("Remote"))
                         {
-                                RemoteDelTopic(dir,cName,topic,username1);
+                                RemoteDelTopic(dir,cName,topic,username1,data);
+				data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
+				ErrorDumpUtil.ErrorLog("at line 155doDeleteTopic");
 			}	
 			else if(status.equals("Repo"))
 			{
@@ -284,12 +286,14 @@ public class EditContent_Action extends SecureAction
                                 if(status.equals("Remote"))
                                 {
                                         RemoteDelFile(dir,cName,topic,username1,fileName,3,data);
+                                        //data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
+					ErrorDumpUtil.ErrorLog("deletion at line 289doDelete");
                                 }
                         }
-                        if(status.equals("Remote"))
+                        /*if(status.equals("Remote"))
                         {
                                 return;
-                        }
+                        }*/
 
 			//}
 			xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(filePath,topic);
@@ -621,7 +625,7 @@ public class EditContent_Action extends SecureAction
         * @param RemoteIp String
         */
 
-        public void RemoteDelTopic(String localCourseId,String cName, String topic,String RemoteIp)
+        public void RemoteDelTopic(String localCourseId,String cName, String topic,String RemoteIp,RunData data)
         {
                 try{
                         String match=topic + RemoteIp + cName;
@@ -648,6 +652,8 @@ public class EditContent_Action extends SecureAction
                                 */
                                 File filepath = new File(RemotePath);
                                 SystemIndependentUtil.deleteFile(filepath);
+                                data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
+				ErrorDumpUtil.ErrorLog("which screeen is execute at line 656 RemoteDelTopic");
                         }
                 }//try
                 catch(Exception e)
@@ -776,7 +782,6 @@ public class EditContent_Action extends SecureAction
 
                                 }//switch
 
-
                                 if(Readrec != null)
                                 {
                                         PublishAction PA = new PublishAction();
@@ -795,8 +800,7 @@ public class EditContent_Action extends SecureAction
                                         /**
                                         * if this is last record in all inner (published) xml file delete in the innerxml file
                                         */
-                                        RemoteDelTopic(localCourseId,cName,topic,RemoteIp);
-                                        data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
+                                        RemoteDelTopic(localCourseId,cName,topic,RemoteIp,data);
 
                                 }//if
 

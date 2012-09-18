@@ -553,10 +553,11 @@ public class RemoteCourseUtilClient
 			/**
 			* If subscription is expired delete all links
 			*/
+			org.apache.turbine.util.RunData data=null;
 			if(msg.equals("RemoteServer_msg1"))
 			{
 				EditContent_Action ECA = new EditContent_Action();
- 	                        ECA.RemoteDelTopic(dir,courseNm,topcNm,autherNm);
+ 	                        ECA.RemoteDelTopic(dir,courseNm,topcNm,autherNm,data);
 			}
 			/**
 			* If file got succesfully Write code to change the date of innerxml file 
