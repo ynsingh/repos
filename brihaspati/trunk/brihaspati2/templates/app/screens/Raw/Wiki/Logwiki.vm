@@ -25,13 +25,16 @@ $!data.getMessage()
 </tr>
 </table>
 <table width=100% align=left bgcolor="$ui.tableColor">
-        <tr bgcolor="$ui.tableColor">
-           <td colspan="2">
-                <a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home </a> &nbsp;|&nbsp;
-                <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>
-		&nbsp;|&nbsp;
-	        <a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp;
-           </td>
+	<tr bgcolor="$ui.tableColor">
+        	<td colspan="2">
+                	<a href=$link.setPage("call,Wiki,Wiki_Home.vm") style=text-decoration:none > $brih_Wiki $brih_home </a> &nbsp;|&nbsp;
+	                <a href=$link.setPage("call,Wiki,Wiki.vm") style=text-decoration:none > $brih_index </a>
+			&nbsp;|&nbsp;
+	        	<a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp;
+	      	</td>
+		<td align="right">
+                	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/WikiHelp.html","newWin");>$brih_help</a>
+                </td>
         </tr>
         <tr>
 		<td>

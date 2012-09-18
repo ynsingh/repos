@@ -37,6 +37,7 @@ package org.iitk.brihaspati.modules.screens.call.Wiki;
  */
 
 import org.iitk.brihaspati.modules.utils.WikiUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 import  org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;  
@@ -65,6 +66,9 @@ public class Editwiki extends SecureScreen
 		context.put("course",(String)user.getTemp("course_name"));
 	    	ParameterParser pp=data.getParameters();
 		String userrole=(String)user.getTemp("role");
+		//String loginname=user.getName();
+		//int user_id=UserUtil.getUID(loginname);
+		//ErrorDumpUtil.ErrorLog("\n user id===>>>"+user_id);
 		context.put("userrole",userrole);
     	    	String fName=pp.getString("filename","");
 		String FileName="";

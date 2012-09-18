@@ -65,6 +65,7 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
+ * Last modify 17 Sep 2012
  */
 
 public class Wiki_Home extends SecureScreen{
@@ -143,6 +144,7 @@ public class Wiki_Home extends SecureScreen{
 				//}
 			//}
 			File flog;
+			msg=msg.replaceAll("\"","");
 			flog=new File(filePathLog);
 			context.put("topic",FileViewId_tiopic1);
                         context.put("topic_wiki",msg);
