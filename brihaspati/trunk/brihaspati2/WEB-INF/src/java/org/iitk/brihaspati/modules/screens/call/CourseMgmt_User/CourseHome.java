@@ -73,7 +73,6 @@ import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
-import org.iitk.brihaspati.modules.utils.Permission;
 
 import org.iitk.brihaspati.om.ModulePermissionPeer;
 import org.iitk.brihaspati.om.ModulePermission;
