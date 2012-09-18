@@ -73,6 +73,7 @@ import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
+import org.iitk.brihaspati.modules.utils.Permission;
 
 import org.iitk.brihaspati.om.ModulePermissionPeer;
 import org.iitk.brihaspati.om.ModulePermission;
@@ -117,7 +118,6 @@ public class CourseHome extends SecureScreen{
 			 * Retrieves the COURSE_ID of the course in which user has entered
 			 */
 			 String notf=pp.getString("notf","");
-                        ErrorDumpUtil.ErrorLog("-------------->>>>>>>>>>>>>>..  "+notf);
                         String courseid=pp.getString("courseid","");
                         String userInCourse=(String)user.getTemp("course_id");
                         context.put("notf",notf);
@@ -132,6 +132,7 @@ public class CourseHome extends SecureScreen{
 			String C_Name=CourseUtil.getCourseName(courseid);
  			String username=user.getName();
 			int userid=UserUtil.getUID(username);
+			String User_Id=Integer.toString(userid);
 			/**
 			 * Sets all the temporary variables of the session 
 			 */
@@ -163,7 +164,6 @@ public class CourseHome extends SecureScreen{
 				String[] temp2 = temp1[1].split("_");
 				temp1[0]=temp2[1];
 				inst_id=temp1[0];
-				ErrorDumpUtil.ErrorLog("The Institute Id (In Course Home) is "+temp1[0]);
 				user.setTemp("Institute_id",temp1[0]);
 
 			}
@@ -198,6 +198,7 @@ public class CourseHome extends SecureScreen{
 			*/
 			String groupName=(String)user.getTemp("course_id");
 			int gid=GroupUtil.getGID((String)user.getTemp("course_id"));
+			String g_Id=Integer.toString(gid);
 			Vector newsd=NewsHeadlinesUtil.getNews(gid);
                 	context.put("sample",newsd);
                 	if(newsd.size()!=0)
@@ -319,98 +320,28 @@ public class CourseHome extends SecureScreen{
                         */
                         Vector userList=CourseTimeUtil.getCourseActiveList(gid,groupName);
                         context.put("uList",userList);
-		
+
 			/*
 			 * code for authorization in CourseHome.vm
 			 */	
 			
-                        String mod_Id = "";
+			String mid="";
+			String module_ID="";
 			String status = "";
 			Vector v1 = new Vector();
                         try {
                                 Criteria crit = new Criteria();
-                                crit.add(ModulePermissionPeer.USER_ID,userid);
+                                crit.add(ModulePermissionPeer.USER_ID,User_Id);
+				crit.add(ModulePermissionPeer.GROUP_NAME,g_Id);
                                 crit.add(ModulePermissionPeer.INSTITUTE_ID,inst_id);
                                 List l=ModulePermissionPeer.doSelect(crit);
                                 for(int j=0;j<l.size();j++) {
                                                 ModulePermission element=(ModulePermission)(l.get(j));
-                                                 status = Integer.toString(element.getModuleStatus());
-                                                 mod_Id = element.getModuleId();
-				v1.add(mod_Id);
-                                }
-			
-                                context.put("V1",v1);
-				String mid="";
-				for(int p=0; p<v1.size(); p++) {
-                                 mid=v1.elementAt(p).toString();
-				int module_Id=Integer.parseInt(mid);
-				if(module_Id==100){
-					
-					String module_Name=(String)user.getTemp("modulename");
-					context.put("module_name",module_Name);
+						mid =element.getModuleId();
+						String module_name = "modulename"+mid;
+				        	user.setTemp("modulename"+mid, mid);
 				}
-				if(module_Id==101){
-					String module_Name1=(String)user.getTemp("modulename1");
-                                        context.put("module_name1",module_Name1);
-	
-				}
-		
-				if(module_Id==102){
-                                        String module_Name2=(String)user.getTemp("modulename2");
-                                        context.put("module_name2",module_Name2);
-
-                                }
-
-				if(module_Id==103){
-                                        String module_Name3=(String)user.getTemp("modulename3");
-                                        context.put("module_name3",module_Name3);
-
-                                }
-				
-				if(module_Id==104){
-                                        String module_Name4=(String)user.getTemp("modulename4");
-                                        context.put("module_name4",module_Name4);
-                                
-                                }
-				if(module_Id==105){
-                                        String module_Name5=(String)user.getTemp("modulename5");
-                                        context.put("module_name5",module_Name5);
-                                
-                                }
-				if(module_Id==106){
-                                        String module_Name6=(String)user.getTemp("modulename6");
-                                        context.put("module_name6",module_Name6);
-                                
-                                }
-				if(module_Id==107){
-                                        String module_Name7=(String)user.getTemp("modulename7");
-                                        context.put("module_name7",module_Name7);
-                                
-                                }
-				if(module_Id==108){
-                                        String module_Name8=(String)user.getTemp("modulename8");
-                                        context.put("module_name8",module_Name8);
-                                
-                                }
-				if(module_Id==109){
-                                        String module_Name9=(String)user.getTemp("modulename9");
-                                        context.put("module_name9",module_Name9);
-                                
-                                }
-				if(module_Id==110){
-                                        String module_Name10=(String)user.getTemp("modulename10");
-                                        context.put("module_name10",module_Name10);
-                                
-                                }
-				if(module_Id==111){
-                                        String module_Name11=(String)user.getTemp("modulename11");
-                                        context.put("module_name11",module_Name11);
-                                
-                                }
-
-			}
 			} catch(Exception e){data.addMessage("The error in getting module name in CourseHome.java :-"+e);}
-			//}
 		} catch(Exception e)
 		{
 			data.addMessage("The error in Course Home page :-"+e);

@@ -32,6 +32,13 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $brih_reg1 $bri_ta </a></td>
+	 #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>
+
 	</tr>
 	</table>
 	

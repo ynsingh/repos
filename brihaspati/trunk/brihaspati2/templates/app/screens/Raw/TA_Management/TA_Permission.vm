@@ -33,10 +33,17 @@ $!data.getMessage()
 	        <td bgcolor="#AFDCEC">
 	        #end
         	<a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $brih_reg1 $bri_ta </a></td>
+		#if($tdcolor != "3")
+	        <td>
+        	#elseif($tdcolor == "3")
+	        <td bgcolor="#AFDCEC">
+        	#end
+	        <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>
+	
 	        </tr>
         </table>
 	
-	<FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,TA_Management,TA_Permission.vm").setAction("TA_Registeration").addPathInfo("count","1")">
+	<FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,TA_Management,TA_Permission.vm").setAction("TA_Registeration").addPathInfo("count","3")">
 	<table bgcolor="$ui.tableColor" width=100%>
 			
 		<tr bgcolor="$ui.menuColor">
@@ -68,7 +75,7 @@ $!data.getMessage()
 	
                         <td> <INPUT TYPE="CHECKBOX" NAME=$!users.ModuleId onClick="addSelectedList(this,document.frm);" DISABLED> </td>
                         <td> $!users.ModuleName </td>
-			<td> <a href=$link.setPage("call,TA_Management,TA_Permission.vm").setAction("TA_Registeration").addPathInfo("actionName","eventSubmit_doRemoveModulePermission").addPathInfo("moduleId",$!users.ModuleId).addPathInfo("username",$username) onclick="javascript:return confirm('$bri_do $!users.ModuleName $brih_module !!')" style=text-decoration:none> $bri_unau</a> </td>
+			<td> <a href=$link.setPage("call,TA_Management,TA_Permission.vm").setAction("TA_Registeration").addPathInfo("actionName","eventSubmit_doRemoveModulePermission").addPathInfo("moduleId",$!users.ModuleId).addPathInfo("username",$username).addPathInfo("count","3") onclick="javascript:return confirm('$bri_do $!users.ModuleName $brih_module !!')" style=text-decoration:none> $bri_unau</a> </td>
 			
                         #set($flag=false)
                 #else
