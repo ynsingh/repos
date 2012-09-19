@@ -61,13 +61,14 @@ public class StudentPostServer {
 	public void start() throws Exception {
                 try {
                         server.start();
-                        System.out.println(" VideoPostServer start successfully !! ");
+                        System.out.println(" Student VideoPostServer start successfully !! ");
                 } catch (Exception e) { }
         }
 
         public void stop() throws Exception {
                 if (server != null) {
                         server.stop(0);
+			System.out.println(" Student VideoPostServer stop successfully !! ");
                 }
         }
 	
@@ -75,7 +76,6 @@ public class StudentPostServer {
 
 class MyStudentPostVideoHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
-	
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			String requestMethod = exchange.getRequestMethod();

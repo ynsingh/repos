@@ -129,7 +129,7 @@ public class RuntimeDataObject {
  	 * Load Handraised audio port
  	 */  
 	public int getAudioHandraisePort(){
-                return Integer.parseInt(prop.getProperty("audio_handraise_port"));
+                return Integer.parseInt(prop.getProperty("audio_handraise_get_port"));
         }
 
 	/**

@@ -62,7 +62,6 @@ public class  BufferMgt {
 					String str1=(buffer.get(curpointer)).toString();
                                         str1=str1.trim();
                                         ip=ip.trim();
-					System.out.println("data has been sent"+ip);
                                         if(!(str1.startsWith(ip))){
 						str=buffer.getObject(curpointer);
                                                 curpointer++;
