@@ -25,6 +25,7 @@ import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 import java.io.File;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 
@@ -36,12 +37,12 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
 public class AudioCapture {
 
 	private boolean flag=false;
-	private TargetDataLine targetDataLine;
-	private AudioFormat audioFormat;
-    	private DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-    	private AudioFileFormat.Type fileType = null;
-   	private Mixer currentMixer=null;
         private int bufferSize=16000;	
+   	private Mixer currentMixer=null;
+	private AudioFormat audioFormat;
+	private TargetDataLine targetDataLine;
+    	private AudioFileFormat.Type fileType = null;
+    	private DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
 
    	/**
  	 * Select a mixer from audio system which support audio format

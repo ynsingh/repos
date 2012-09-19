@@ -9,20 +9,22 @@ package org.bss.brihaspatisync.tools.audio;
 
 import java.io.*;
 import java.util.Vector;
+
+import javax.sound.sampled.*;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.HostConfiguration;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import javax.sound.sampled.*;
+
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
- * @author <a href="mailto:esha2008@gmail.com">Esha Srivastava </a>Implement method for dynamic selection of mixer.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Implement method for get audio stream from reflector.
  */
 
@@ -30,8 +32,8 @@ public class GetAudioStream implements Runnable {
 
 	private boolean flag=false;
 	private Thread runner=null;
-	private static GetAudioStream get_audio=null;
 	private AudioFormat audioFormat;
+	private static GetAudioStream get_audio=null;
 	private ClientObject clientObject=ClientObject.getController();
         private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 
@@ -81,7 +83,7 @@ public class GetAudioStream implements Runnable {
                         h.setValue(clientObject.getLectureID());
 			audioFormat=getAudioFormat();
 			int port =runtime_object.getAudioPort();
-		 	while(flag) {
+		 	while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
                                 	HttpClient client = new HttpClient();
 	                                GetMethod method = new GetMethod("http://"+clientObject.getReflectorIP()+":"+port);
@@ -100,11 +102,11 @@ public class GetAudioStream implements Runnable {
         		        	byte audioBytes[]=method.getResponseBody();
         	        		method.releaseConnection();
 					AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(audioBytes),audioFormat, audioBytes.length / getAudioFormat().getFrameSize());
-					if((ais != null) && (audioBytes.length > 70))
+					if((ais != null) && (audioBytes.length > 1000))
                               			AudioPlayer.getController().putAudioStream(ais);
 					ais.close();
 				}catch(Exception we){}
-               			try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}
+               			try { runner.sleep(100); runner.yield(); }catch(Exception ex){}
                         }
 		}catch(Exception exe){try { runner.sleep(5000); runner.yield(); }catch(Exception ex){}System.out.println("Error on get stream in GetAudioStream  "+exe.getMessage());}
 	}

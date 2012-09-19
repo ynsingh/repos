@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.tools.audio;
 
 /**
- * PostAudioStream.java
+ * Std_PostAudioStream
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2012 ETRG,IIT Kanpur.
@@ -23,28 +23,28 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on Oct2011.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified transmit thread.
  */
 
-public class PostAudioStream implements Runnable {
+public class Std_PostAudioStream implements Runnable {
 
-	private Thread runner=null;
 	private boolean flag=false;
+	private Thread runner=null;
 
 	private AudioFormat audioFormat;	
-	private static PostAudioStream post_audio=null;
+	private AudioCapture au_cap=new AudioCapture();	
+	private static Std_PostAudioStream post_audio=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
+	private int  handraise_port=RuntimeDataObject.getController().getAudioHandraisePort();
 	
-	private AudioCapture au_cap=new AudioCapture();	
 
 	/**
  	 * Controller for the class.
  	 */
-	public static PostAudioStream getController(){
+	public static Std_PostAudioStream getController(){
 		if(post_audio==null)
-			post_audio=new PostAudioStream();
+			post_audio=new Std_PostAudioStream();
 		return post_audio;
 	}
 
@@ -87,27 +87,27 @@ public class PostAudioStream implements Runnable {
 				try {
 					java.io.ByteArrayOutputStream os=null;
 					os=au_cap.startCapture();
-					if(os !=null) {
-		                                HttpClient client = new HttpClient();
-        		                        PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
-                		                client.setConnectionTimeout(20000);
-                        	        	postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
+					if(os!=null){
+	                                	HttpClient client = new HttpClient();
+        	                        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+handraise_port);
+	                	                client.setConnectionTimeout(20000);
+        	                        	postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
 						postMethod.setRequestHeader(h);
 						// Http Proxy Handler	
 						if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-        	        	                	HostConfiguration config = client.getHostConfiguration();
-                	        	                config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-                        	        	        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                                	        	AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                                        	        client.getState().setProxyCredentials(authScope, credentials);
-	                              		}
-	        	                        int statusCode1 = client.executeMethod(postMethod);
-        	                	        postMethod.getStatusLine();
-                	                	postMethod.releaseConnection();
-					}	
+                	                		HostConfiguration config = client.getHostConfiguration();
+                        	                	config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+	                                	        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+        	                                	AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+                	                                client.getState().setProxyCredentials(authScope, credentials);
+	                	              	}
+        	                	        int statusCode1 = client.executeMethod(postMethod);
+                        	        	postMethod.getStatusLine();
+	                                	postMethod.releaseConnection();
+					}
 					os.flush();
 					os.close();
-					//runner.sleep(10);
+					runner.sleep(10);
 					runner.yield();
 				}catch(Exception epe){}
                         }
