@@ -112,7 +112,6 @@ public class Configuration extends SecureScreen_Instructor
                         String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
                         int list_conf=Integer.parseInt(conf);
 
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 1" );
 			//online registration configuration by sharad 01-01-2010
 			String courseId=data.getUser().getTemp("course_id").toString();
 			Criteria crit=new Criteria();
@@ -129,7 +128,6 @@ public class Configuration extends SecureScreen_Instructor
 			}
 
 			RemoteCourses rce = null;
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration i2" );
 
 			if(!serial.equals(""))
 			{
@@ -165,7 +163,6 @@ public class Configuration extends SecureScreen_Instructor
                     		context.put("order",order);
               		        context.put("cval",RemoteInstructor);
 			}//if serial
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 3" );
 			/**
 			* Keep xmlrpc port Alive
 			*/
@@ -191,7 +188,6 @@ public class Configuration extends SecureScreen_Instructor
 			* Change here for date from update action
 						ErrorDumpUtil.ErrorLog("I am here in Course configuration 1" );
 			*/
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 4" );
 			if(!serial.equals(""))
 			{
 				String Expiry = rce.getExpiryDate().toString();
@@ -206,7 +202,6 @@ public class Configuration extends SecureScreen_Instructor
 			*/
 			Guest(data,context);
 			/**get Institute list from remote server */
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 5" );
 			if(serial.equals(""))
 			{
 				String url =pp.getString("iip","");
@@ -219,15 +214,12 @@ public class Configuration extends SecureScreen_Instructor
 					String RemoteAction_msg2=m_u.ConvertedString("RemoteAction_msg2",file);
                                 	data.addMessage(RemoteAction_msg2);
                         	}
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 6"+url );
 				if(!url.equals("")){
 					
                         		String serverURL =  "http://" + url + ":12345/" ;
                         		Vector param=new Vector();
                         		param.add(url);
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 6.1" );
                         		String instlist = RemoteCourseUtilClient.getInstituteList(serverURL,param);
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 6.2"+instlist );
 					String str123=StringUtils.substringBetween(instlist,"[","]");
 					Vector vct=new Vector();
 					StringTokenizer st=new StringTokenizer(str123,",");
@@ -237,7 +229,6 @@ public class Configuration extends SecureScreen_Instructor
 						vct.add(token);
                                 	}
 					context.put("instlistname",vct);
-						ErrorDumpUtil.ErrorLog("I am here in Course configuration 7" );
 					if(!instname.equals("")){
 		
 						ArrayList list = new ArrayList();
@@ -245,8 +236,8 @@ public class Configuration extends SecureScreen_Instructor
 
 						String instvalue=instname.trim();
 						param=new Vector();
-						vct=new Vector();
-						Vector onlycrs=new Vector();
+					//	vct=new Vector();
+					//	Vector onlycrs=new Vector();
                         			param.add(url);
                         			param.add(instvalue);
                         			String courselist = RemoteCourseUtilClient.getCourseList(serverURL,param);
@@ -275,7 +266,7 @@ public class Configuration extends SecureScreen_Instructor
 						String cval=pp.getString("cval");
 						String lgname=StringUtils.substringAfterLast(cval,"^");
 						context.put("cval",lgname);
-						ErrorDumpUtil.ErrorLog("The two value is :"+lgname+" "+crsid);
+					//	ErrorDumpUtil.ErrorLog("The two value is :"+lgname+" "+crsid);
 					}
 				}//if url empty
 			}//if serial is empty
