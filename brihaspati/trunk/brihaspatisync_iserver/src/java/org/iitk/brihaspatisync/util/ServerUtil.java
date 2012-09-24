@@ -5,6 +5,7 @@ package org.iitk.brihaspatisync.util;
  * Copyright (c) 2007-2008.All Rights Reserved.
  */
 
+
 import java.util.Random;
 import java.util.Vector;
 import java.util.Date;
@@ -16,8 +17,17 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspatisync.om.Lecture;
 import org.iitk.brihaspatisync.om.LecturePeer;
 
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.*;
+import sun.misc.*;
+
+
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
+ * @author <a href="mailto:ashish.knp@gmail.com"> Arvind Pal </a> // modifyed 2012 
  */
 
 
@@ -26,9 +36,9 @@ public class ServerUtil{
 	private static ServerUtil obj=null;
 
    	public static ServerUtil getController() {
-        	if(obj==null)
+        	if(obj==null) 
            		obj=new ServerUtil();
-        	return obj;
+		return obj;
    	}
 
 	/** Generate a session Key */
@@ -133,20 +143,20 @@ public class ServerUtil{
                         List l=LecturePeer.doSelect(crit);
                         for(int i=0;i<l.size();i++) {
                                 Lecture element=(Lecture)(l.get(i));
-                                String lectid=Integer.toString(element.getLectureid());
-                                String lectUserName=element.getGroupName();
-                                String lectCouseName=element.getLecturename();
-                                String lectName=element.getLectureinfo();
-                                String lectInfo=element.getUrlname();
-                                String lectNo=element.getPhoneno();
-                                String lectVedio=element.getForvideo();
-                                String lectAudio=element.getForaudio();
-                                String lectWhiteBoard=element.getForwhiteboard();
-                                Date lectDate=element.getSessiondate();
-                                String lectTime=element.getSessiontime();
-                                String lectDuration=element.getDuration();
-                                String repeattime=element.getRepeatlec();
-                                String fortime=element.getFortime();
+                                String lectid=encrypt(Integer.toString(element.getLectureid()));
+                                String lectUserName=encrypt(element.getGroupName());
+                                String lectCouseName=encrypt(element.getLecturename());
+                                String lectName=encrypt(element.getLectureinfo());
+                                String lectInfo=encrypt(element.getUrlname());
+                                String lectNo=encrypt(element.getPhoneno());
+                                String lectVedio=encrypt(element.getForvideo());
+                                String lectAudio=encrypt(element.getForaudio());
+                                String lectWhiteBoard=encrypt(element.getForwhiteboard());
+                                String lectDate=encrypt(element.getSessiondate().toString());
+                                String lectTime=encrypt(element.getSessiontime());
+                                String lectDuration=encrypt(element.getDuration());
+                                String repeattime=encrypt(element.getRepeatlec());
+                                String fortime=encrypt(element.getFortime());
                                 message=message+"$$"+lectid+","+lectUserName+","+lectCouseName+","+lectName+","+lectInfo+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
                         }
                 }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
@@ -161,24 +171,31 @@ public class ServerUtil{
                         List l=LecturePeer.doSelect(crit);
                         for(int i=0;i<l.size();i++) {
                                 Lecture element=(Lecture)(l.get(i));
-                                String lectid=Integer.toString(element.getLectureid());
-                                String lectUserName=element.getGroupName();
-                                String lectCouseName=element.getLecturename();
-                                String lectName=element.getLectureinfo();
-                                String lectInfo=element.getUrlname();
-                                String lectNo=element.getPhoneno();
-                                String lectVedio=element.getForvideo();
-                                String lectAudio=element.getForaudio();
-                                String lectWhiteBoard=element.getForwhiteboard();
-                                Date lectDate=element.getSessiondate();
-                                String lectTime=element.getSessiontime();
-                                String lectDuration=element.getDuration();
-                                String repeattime=element.getRepeatlec();
-                                String fortime=element.getFortime();
+                                String lectid=encrypt(Integer.toString(element.getLectureid()));
+                                String lectUserName=encrypt(element.getGroupName());
+                                String lectCouseName=encrypt(element.getLecturename());
+                                String lectName=encrypt(element.getLectureinfo());
+                                String lectInfo=encrypt(element.getUrlname());
+                                String lectNo=encrypt(element.getPhoneno());
+                                String lectVedio=encrypt(element.getForvideo());
+                                String lectAudio=encrypt(element.getForaudio());
+                                String lectWhiteBoard=encrypt(element.getForwhiteboard());
+                                String lectDate=encrypt(element.getSessiondate().toString());
+                                String lectTime=encrypt(element.getSessiontime());
+                                String lectDuration=encrypt(element.getDuration());
+                                String repeattime=encrypt(element.getRepeatlec());
+                                String fortime=encrypt(element.getFortime());
                                 message=lectid+","+lectUserName+","+lectCouseName+","+lectName+","+lectInfo+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
+				ServerLog.getController().Log("sasasa as as a "+message);
                         }
                 }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
                 return message;
         }	
-		
+	
+	private String encrypt(String Data) throws Exception {
+                byte[] encVal = Data.getBytes();
+                String encryptedValue = new sun.misc.BASE64Encoder().encode(encVal);
+                return encryptedValue;
+        }
+
 }//end of class	

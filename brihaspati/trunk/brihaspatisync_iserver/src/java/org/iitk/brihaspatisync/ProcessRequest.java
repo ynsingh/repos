@@ -45,16 +45,17 @@ import org.iitk.brihaspatisync.om.Lecture;
 import org.iitk.brihaspatisync.om.LecturePeer;
 import org.iitk.brihaspatisync.om.Courses;
 import org.iitk.brihaspatisync.om.CoursesPeer;
-import org.iitk.brihaspatisync.om.TurbineGroup;
 import org.iitk.brihaspatisync.om.TurbineUser;
-import org.iitk.brihaspatisync.om.TurbineGroupPeer;
 import org.iitk.brihaspatisync.om.TurbineUserGroupRole;
 import org.iitk.brihaspatisync.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspatisync.om.TurbineUser;
 import org.iitk.brihaspatisync.om.TurbineUserPeer;
+import org.iitk.brihaspatisync.om.UrlConectionPeer;
+import org.iitk.brihaspatisync.om.UrlConection;
 
-import org.iitk.brihaspatisync.om.TurbineGroupPeer;
-//import org.iitk.brihaspatisync.om.TurbineGroupPeer;
+import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
+import org.apache.turbine.services.security.torque.om.TurbineGroup;
+
 import java.sql.Date;
  /**
   * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
@@ -100,6 +101,7 @@ public class ProcessRequest extends HttpServlet {
 			
 		String reqType=request.getParameter("req");
 		PrintWriter out = response.getWriter();
+
 		if(reqType.equals("reflector_logout")){
                         String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
                         String msg =ReflectorManager.getController().removePeer(reflectorIP);
@@ -130,22 +132,41 @@ public class ProcessRequest extends HttpServlet {
 			
 		}else if(reqType.equals("getjnlp")){
                         try {
+				String key=request.getParameter("key");
+				
 				File filepath=new File(context.getRealPath("urlbrihaspatisync.jnlp")); 
-				String usr=request.getParameter("usr");
-				String lect_id=request.getParameter("lect_id");
-				String l_name=request.getParameter("l_name");
-				String ins_std=request.getParameter("ins_std");
+				Criteria crit=new Criteria();
+				crit.add(UrlConectionPeer.SESSION_KEY,Integer.parseInt(key));
+                                java.util.List v=UrlConectionPeer.doSelect(crit);
+				
+				String usr=null;
+				String l_name=null;
+				String lect_id=null;
+				String ins_std=null;
+				for(int i=0;i<v.size();i++)
+                                {
+                                        UrlConection element=(UrlConection)v.get(i);
+                                        lect_id =Integer.toString(element.getLectureid());
+                                        ins_std =element.getRole();
+                                        usr =element.getLoginId();
+                                        l_name =element.getGroupName();
+                                }
+					
 				
 				if(filepath.isFile()){
 					filepath.delete();
 				}
-				DataOutputStream dos = new DataOutputStream(new FileOutputStream(filepath,true));
-                		dos.writeBytes( "<?xml version=\"1.0\" encoding=\"utf-8\"?><jnlp  spec=\"1.0+\"  codebase=\"https://172.26.82.19:8443/brihaspatisync_client/jnlp\"  href=\"brihaspatisync.jnlp\"> <information> <title> Brihaspatisync Client </title> <vendor>IIT Kanpur</vendor>  <homepage href=\"http://www.brihaspatisolutions.co.in\"/> <description>Brihaspatisync</description>  <description kind=\"short\">Brihaspatisync Client </description>  <icon href=\"images/info.gif\"/>  <icon kind=\"splash\" href=\"images/Title.jpg\"/>  <!-- <offline-allowed/> -->        </information>           <security>  <all-permissions/>  </security>   <resources>  <j2se version=\"1.0+\" />  <property name=\"sun.java2d.d3d\" value=\"false\"/> <jar href=\"brihaspatisync.jar\"/> </resources> <application-desc main-class=\"org.bss.brihaspatisync.Client\"> <argument> "+usr+"</argument> <argument> "+lect_id+"</argument><argument> "+l_name+"</argument> <argument> https://202.141.40.215:8443/brihaspatisync_iserver </argument> <argument> "+ins_std+"</argument> </application-desc> </jnlp>"); 
-				dos.flush();
-			        dos.close();
-				
-                                RequestDispatcher rd= context.getRequestDispatcher("/brihaspati.html");
-				rd.include(request, response);
+				if(v.size()>0){
+					DataOutputStream dos = new DataOutputStream(new FileOutputStream(filepath,true));
+        	        		dos.writeBytes( "<?xml version=\"1.0\" encoding=\"utf-8\"?><jnlp  spec=\"1.0+\"  codebase=\"https://202.141.40.216:8443/brihaspatisync_client/jnlp\"  href=\"brihaspatisync.jnlp\"> <information> <title> Brihaspatisync Client </title> <vendor>IIT Kanpur</vendor>  <homepage href=\"http://www.brihaspatisolutions.co.in\"/> <description>Brihaspatisync</description>  <description kind=\"short\">Brihaspatisync Client </description>  <icon href=\"images/info.gif\"/>  <icon kind=\"splash\" href=\"images/Title.jpg\"/>  <!-- <offline-allowed/> -->        </information>           <security>  <all-permissions/>  </security>   <resources>  <j2se version=\"1.0+\" />  <property name=\"sun.java2d.d3d\" value=\"false\"/> <jar href=\"brihaspatisync.jar\"/> </resources> <application-desc main-class=\"org.bss.brihaspatisync.Client\"> <argument> "+usr+"</argument> <argument> "+lect_id+"</argument><argument> "+l_name+"</argument> <argument> https://202.141.40.215:8443/brihaspatisync_iserver </argument> <argument> "+ins_std+"</argument> </application-desc> </jnlp>"); 
+					dos.flush();
+				        dos.close();
+                                	RequestDispatcher rd= context.getRequestDispatcher("/brihaspati.html");
+					rd.include(request, response);
+				}else{
+                                	RequestDispatcher rd= context.getRequestDispatcher("/checkuserbrihaspati.html");
+					rd.include(request, response);
+				}
                                 out.flush();
                                 out.close();
                         }catch(Exception e){}
@@ -169,7 +190,6 @@ public class ProcessRequest extends HttpServlet {
                         out.println(message);
                         out.flush();
                         out.close();
-				
 		}	
 		
 		else if(reqType.equals("http")){
@@ -193,7 +213,6 @@ public class ProcessRequest extends HttpServlet {
 				TCPServer.getController().stop();
 			}
 			TCPServer.getController().start();			      		
-			ServerLog.getController().Log("Client = "+clientIP+" Connect to TCPServer");
 			*/
 				
 		}else if(reqType.equals("login")){
@@ -240,10 +259,9 @@ public class ProcessRequest extends HttpServlet {
 			out.flush();
                         out.close();
 		}else if(reqType.equals("getCourse")){
-			Vector result=new Vector();
 			int id=Integer.parseInt(request.getParameter("id"));
 			int role=Integer.parseInt(request.getParameter("role"));
-			result=getCourse(id,role);
+			Vector result=getCourse(id,role);
 			int resultSize=result.size();
 			String message="";
 			if(resultSize!=0){
@@ -268,8 +286,6 @@ public class ProcessRequest extends HttpServlet {
 		}else if(reqType.equals("getLectureInfo")) {
                         String lecture_id=request.getParameter("l_id");
                         String message=ServerUtil.getController().getLectureInfo(lecture_id);
-			ServerLog.getController().Log(lecture_id);
-			ServerLog.getController().Log(message);
                         if(!message.equals("")) {
                                 response.setContentLength(message.length());
                                 out.println(message);
@@ -283,6 +299,7 @@ public class ProcessRequest extends HttpServlet {
                                 out.close();
                         }
 		}else if(reqType.equals("getSession")){
+			
 			String courseName=request.getParameter("cn");
 			
 			String message=ServerUtil.getController().getSessionList(courseName);
@@ -298,7 +315,7 @@ public class ProcessRequest extends HttpServlet {
                                 out.flush();
 				out.close();
 			}
-		
+			
 		} else if(reqType.equals("putLecture")){
 			String lect_id=request.getParameter("lect_id");
                       	String lectGetParameter=request.getParameter("lectGetParameter");
@@ -373,9 +390,7 @@ public class ProcessRequest extends HttpServlet {
                         	out.println(message);
                         	out.flush();
                         	out.close();
-			}catch(Exception e){
-				ServerLog.getController().Log("error on getting input string==>"+e.getMessage());
-			}
+			}catch(Exception e){ServerLog.getController().Log("error on getting input string==>"+e.getMessage());}
                 }else if(reqType.equals("userlist")){
 			try{
 				String lect_id=request.getParameter("lect_id");
@@ -488,7 +503,6 @@ public class ProcessRequest extends HttpServlet {
 	/** If authorisation is successful then return client's USER_ID else return loginfailed */
 	
 	private String loginAuthorised(String username,String password){
-		
 		String result=null;
 		List returnValue=null;
 		try{
@@ -517,9 +531,7 @@ public class ProcessRequest extends HttpServlet {
         		}
 
 		} catch(Exception e) { ServerLog.getController().Log("Error in authentication in ProcessRequest class= "+e.getMessage());}
-		ServerLog.getController().Log(result);
 		return result;
-		
 	}
 	
 	/** Here Server send the request to the database to get the course in which Client is registered
@@ -528,25 +540,21 @@ public class ProcessRequest extends HttpServlet {
 	private Vector getCourse(int id,int role){
 		Vector result=new Vector();
                 try{
-                	Criteria forgroupId = new Criteria();
-                        forgroupId.add(TurbineUserGroupRolePeer.USER_ID,id);
-                        forgroupId.and(TurbineUserGroupRolePeer.ROLE_ID,role);
-                        List tugr = TurbineUserGroupRolePeer.doSelect(forgroupId);
-                        Iterator iterate = tugr.iterator();
-                        while (iterate.hasNext()){
-                        	TurbineUserGroupRole resultOftugr=(TurbineUserGroupRole)iterate.next();
-                                Criteria forgroupName=new Criteria();
-                                forgroupName.add(TurbineGroupPeer.GROUP_ID,resultOftugr.getGroupId());
-                                List tg=TurbineGroupPeer.doSelect(forgroupName);
-                                Iterator itr=tg.iterator();
-                                while(itr.hasNext()){
-                               		TurbineGroup resultOftg=(TurbineGroup)itr.next();
-                                        result.addElement(resultOftg.getGroupName());
-                              	}
-                      	}
+			Criteria crit=new Criteria();
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,id);
+                        crit.and(TurbineUserGroupRolePeer.ROLE_ID,role);
+                        List v=TurbineUserGroupRolePeer.doSelect(crit);
+                        for(int i=0;i<v.size();i++){
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(i);
+                                String gid=Integer.toString(element.getGroupId());
+                                crit=new Criteria();
+                                crit.add(TurbineGroupPeer.GROUP_ID,gid);
+                                List group_list=TurbineGroupPeer.doSelect(crit);
+                                String groupName=((TurbineGroup)group_list.get(0)).getName();
+                                result.addElement(groupName);
+                        }
             	} catch(Exception e) { ServerLog.getController().Log("Error in selection of course"+e); }
                 return result;
-
 	}
 	
 	private String putLecture(String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard){ 
@@ -604,7 +612,6 @@ public class ProcessRequest extends HttpServlet {
                 	        LecturePeer.doUpdate(crit);
 				subject=lectCouseName +"  session name "+lectName+" has been updateed  " ;
 			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
-			
 		}
 		
 		try {
@@ -617,12 +624,39 @@ public class ProcessRequest extends HttpServlet {
                                	TurbineGroup element=(TurbineGroup)v.get(i);
 	                        gid =element.getGroupId();
 			}
+		
 			int size=lectCouseName.lastIndexOf("_");
-			Vector mail_id=AdminProperties.getUDetail(gid,3);
-			mail_id.add("instructor");
-			mail_id.addAll(AdminProperties.getUDetail(gid,2));
-			String l_name=lectCouseName.substring(0,size);	
-			MailNotification.getController().sendMail(context,subject,mail_id,date,lectTime,lectDuration,lectName,l_name,lect_id,lectCouseName);
+			{	
+				Vector mail_id=AdminProperties.getUDetail(gid,3);
+				for(int i=0;i<mail_id.size();i++){
+					String mail_id_new[]=(mail_id.get(i).toString()).split("-");
+					int key=ServerUtil.getController().generateSessionKey();
+					crit=new Criteria();
+                	                crit.add(UrlConectionPeer.SESSION_KEY,key);
+                        	        crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lect_id));
+                                	crit.add(UrlConectionPeer.LOGIN_ID,mail_id_new[0]);
+	                                crit.add(UrlConectionPeer.GROUP_NAME,lectCouseName);
+        	                        crit.add(UrlConectionPeer.LECTURENAME,lectName);
+                	                crit.add(UrlConectionPeer.ROLE,"student");
+                        	        UrlConectionPeer.doInsert(crit);
+					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key));
+				}
+				mail_id.clear();
+				mail_id=AdminProperties.getUDetail(gid,2);
+				for(int i=0;i<mail_id.size();i++){
+					String mail_id_new[]=(mail_id.get(i).toString()).split("-");
+                                        int key=ServerUtil.getController().generateSessionKey();
+                                        crit=new Criteria();
+                                        crit.add(UrlConectionPeer.SESSION_KEY,key);
+                                        crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lect_id));
+                                        crit.add(UrlConectionPeer.LOGIN_ID,mail_id_new[0]);
+                                        crit.add(UrlConectionPeer.GROUP_NAME,lectCouseName);
+                                        crit.add(UrlConectionPeer.LECTURENAME,lectName);
+                                        crit.add(UrlConectionPeer.ROLE,"instructor");
+                                        UrlConectionPeer.doInsert(crit);
+					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"instructor",Integer.toString(key));
+				}
+			}
 		}catch(Exception e){}
 		return "Successfull";
 	}

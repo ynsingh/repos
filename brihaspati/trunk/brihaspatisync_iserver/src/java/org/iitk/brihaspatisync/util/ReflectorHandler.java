@@ -14,6 +14,8 @@ import java.util.List;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspatisync.om.Lecture;
 import org.iitk.brihaspatisync.om.LecturePeer;
+import org.iitk.brihaspatisync.om.UrlConection;
+import org.iitk.brihaspatisync.om.UrlConectionPeer;
 import org.iitk.brihaspatisync.ReflectorStatusManager;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
@@ -55,6 +57,11 @@ public class ReflectorHandler {
                                        		try { 
 							ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
                                         		filepath.delete();
+							{
+								Criteria crit=new Criteria();
+                        			                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lectid));
+	                                        		UrlConectionPeer.doDelete(crit);	
+							}		
 						}catch(Exception e){}
 					}
 				} else if(Integer.parseInt(lecturdate)==Integer.parseInt(systemdate)) {
@@ -73,6 +80,11 @@ public class ReflectorHandler {
 							try {
 								ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
 								filepath.delete();
+								{
+                                                                	Criteria crit=new Criteria();
+	                                                                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lectid));
+        	                                                        UrlConectionPeer.doDelete(crit);      
+                                                        	}
 							}catch(Exception e){}
 						}
 					}
