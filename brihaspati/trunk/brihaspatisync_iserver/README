@@ -1,3 +1,7 @@
+For generating peer classes to access database object use
+
+\brihaspatisync_iserver$ ant -f build-torque.xml
+
 For compiling the code for indexing server use
 
 \brihaspatisync_iserver$ ant compile
