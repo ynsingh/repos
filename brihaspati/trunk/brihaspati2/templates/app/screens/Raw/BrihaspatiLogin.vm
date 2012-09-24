@@ -91,7 +91,7 @@ $!msg
 	</td> ## 3
 	<td valign="top" class="login"> ## 3
 	<table align="left"> ## 4
-        <tr><td colspan=2><font color="red">$!data.getMessage() </font></td></tr>
+        <tr><td colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 
 	<tr> ## 5
 	#if($lang == "hindi")
@@ -303,19 +303,6 @@ $!msg
 <a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle"></a>
 <br>
 </td></tr>
-
-<table bgcolor="#d8d9ec">
-<tr><td>
-<font face="$ui.sansSerifFonts">
-$brih_openid_msg<br><br>
-$brih_openid_msg1<br>
-$brih_openid_msg2<br>
-$brih_openid_msg3
-</font>
-<br>
-<a href="http://openid.net/what/">$brih_learn_more &raquo;</a><br>
-</td></tr>
-</table>
 
 <table>
 <tr><td colspan=4><b> ## 5, 6
