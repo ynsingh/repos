@@ -100,7 +100,6 @@ public class HandRaiseThreadController implements Runnable{
 						VideoPanel.getController().addStudentPanel();
 					}
 					org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
-					org.bss.brihaspatisync.tools.audio.GetAudioStream.getController().startThread();
 					/*
 					try{
                                 	        AVTransmitReceiveHandler.getController().startReceiveHandraiseAudio();
@@ -114,7 +113,6 @@ public class HandRaiseThreadController implements Runnable{
 				if(stophraudioflag){
 					stophraudioflag=false;
 					org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
-					org.bss.brihaspatisync.tools.audio.GetAudioStream.getController().stopThread();
 					{
 						VideoPanel.getController().removeStudentPanel();
 					}
@@ -203,7 +201,6 @@ public class HandRaiseThreadController implements Runnable{
 						starthraudio=false;
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(false);
-						org.bss.brihaspatisync.tools.audio.Std_PostAudioStream.getController().startThread();
 						/*
 						if(stud_audio==null){
 			                                stud_audio=new AudioFromStudent();
@@ -219,7 +216,6 @@ public class HandRaiseThreadController implements Runnable{
 						stophraudio=false;
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
                                                 org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
-						org.bss.brihaspatisync.tools.audio.Std_PostAudioStream.getController().stopThread();
 						/*
 						try{
                                                         stud_audio.stop();

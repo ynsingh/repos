@@ -33,7 +33,8 @@ public class AudioPlayer implements Runnable {
         private byte audioBytes[]=null;
 	private Vector audioVector=new Vector();
 
-	public static AudioPlayer getController(){
+	
+	protected static AudioPlayer getController(){
 		if(ap==null)
 			ap=new AudioPlayer();
 		return ap;
@@ -128,6 +129,7 @@ public class AudioPlayer implements Runnable {
 		int bufferSize = (int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize());
 		while(flag && ThreadController.getController().getThreadFlag()){
 			try{
+				
 				if(audioVector.size() > 1){
 					AudioInputStream input=(AudioInputStream)audioVector.get(0);
 					audioVector.remove(0);

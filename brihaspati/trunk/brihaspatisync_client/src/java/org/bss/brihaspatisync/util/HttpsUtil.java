@@ -38,7 +38,6 @@ import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.ProxyAuthenticator;
 
-
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
@@ -46,22 +45,23 @@ import org.bss.brihaspatisync.gui.ProxyAuthenticator;
  */
 
 public class HttpsUtil{
+       
+	private List list;
+	
+	private Proxy proxy;
 	
 	private int netType=0;
 	
 	private URL indexurl=null;
-   	
+	
 	private InetSocketAddress proxy_addr;
-        private Proxy proxy;
-        private List list;
-
- 	
+	
 	private static HttpsUtil httpsUtil=null;
 	
 	private HttpsURLConnection connection=null;
 
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	
+        
 	public static HttpsUtil getController(){
 		if (httpsUtil==null){
 			httpsUtil=new HttpsUtil();
@@ -326,6 +326,7 @@ public class HttpsUtil{
                                         	        	if(!(str.equals("noLecture"))){
 									java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
 									while(str1.hasMoreTokens()) {
+										System.out.println(str1.nextElement().toString());
 										userlist.addElement(str1.nextElement().toString());
 									}
         	                                        	}
@@ -342,7 +343,7 @@ public class HttpsUtil{
 		}else
 			return null;
         }
-    	
+
 	/**
      	 * Verify the Organisation Name and Issuer Common Name 
      	 */

@@ -130,35 +130,37 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	}
 
 	private void setLectureValues(int indexnumber,Vector updatevector){
+		try {
 		java.util.StringTokenizer str1 = new java.util.StringTokenizer(updatevector.get(indexnumber).toString(),",");
-                lecture_id=str1.nextElement().toString();
-                courseId=str1.nextElement().toString();
-                lectName_Text.setText(str1.nextElement().toString());
-                lecInfoArea.setText(str1.nextElement().toString());
-                String updatemailid=str1.nextElement().toString();
-                phone_Text.setText(str1.nextElement().toString());
+                lecture_id=decrypt(str1.nextElement().toString());
+                courseId=decrypt(str1.nextElement().toString());
+                lectName_Text.setText(decrypt(str1.nextElement().toString()));
+                lecInfoArea.setText(decrypt(str1.nextElement().toString()));
+                String updatemailid=decrypt(str1.nextElement().toString());
+                phone_Text.setText(decrypt(str1.nextElement().toString()));
                 String updatemailidarry[]=updatemailid.split("@");
                 urlText.setText(updatemailidarry[0]);
                 atRate.setText("@");
                 endText.setText(updatemailidarry[1]);
-                if((str1.nextElement().toString()).equals("1"))
+                if((decrypt(str1.nextElement().toString())).equals("1"))
                         video.setSelected(true);
                 else
                         video.setSelected(false);
-                if((str1.nextElement().toString()).equals("1"))
+                if((decrypt(str1.nextElement().toString())).equals("1"))
                         audio.setSelected(true);
                 else
                         audio.setSelected(false);
-                String sr=str1.nextElement().toString();
+                String sr=decrypt(str1.nextElement().toString());
 
-                updatemailid=str1.nextElement().toString();
+                updatemailid=decrypt(str1.nextElement().toString());
                 updatemailidarry=updatemailid.split("-");
 
-                updatemailid=str1.nextElement().toString();//Session Time
+                updatemailid=decrypt(str1.nextElement().toString());//Session Time
                 updatemailidarry=updatemailid.split(":");
-		String durationtime=str1.nextElement().toString();
+		String durationtime=decrypt(str1.nextElement().toString());
 		durationtime=durationtime.substring(0,durationtime.indexOf(":"));
                 durationBox.setSelectedItem(durationtime+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));	
+		}catch(Exception e){System.out.println("Error in Update session in UpdateSessionPanel class ");}	
 		
 	}	
 
@@ -525,5 +527,11 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                 m=Integer.parseInt(str2[1])+10;
                         }
                 }catch(Exception e){ System.out.println("Error in getTimeIndexingServer() "+e.getMessage());}
+        }
+	
+	private String decrypt(String encryptedData) throws Exception {
+                byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(encryptedData);
+                String decryptedValue = new String(decordedValue);
+                return decryptedValue;
         }
 }//end of class

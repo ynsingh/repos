@@ -137,6 +137,7 @@ public class UserListPanel {
 							if((user.equals(username)) && (status.equals("Allow-Mic") && (flag))){
                                                                 flag=false;
 								HandRaiseThreadController.getController().starthandraiseraudioflag(true);
+								org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
                                                         }
 							if(flag) {
 								flag=false;
@@ -190,6 +191,7 @@ public class UserListPanel {
                                                 }catch(Exception sp){System.out.println("  Error in catch Allow-PPT ==========> ");}
                                         }
 				}else if(role.equals("instructor")) { // check only for controller according to username.
+					
 					if(statusVector.contains("Share-Screen")){
 						if((user.equals(username)) && (status.equals("Share-Screen") && (sharescreenFlag))){
                                                         sharescreenFlag=false;
@@ -268,6 +270,7 @@ public class UserListPanel {
                                 	HandRaiseThreadController.getController().stophraudioflag(true);
 					/******  arvind ***********/
 					HandRaiseThreadController.getController().stophandraiseraudioflag(true);
+					org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(false);
                                 } catch(Exception ex){}
                      	}
                	}
@@ -289,7 +292,9 @@ public class UserListPanel {
 		if(role.equals("instructor")){
 			if((!(statusVector.contains("Get-WB"))) && (!(statusVector.contains("Get-Mic"))) && (!(statusVector.contains("Allow-WB"))) && (!(statusVector.contains("Allow-Mic")))&&(!(statusVector.contains("Share-Screen")))) {
                      		handRaisePanel.setEnableORDisable("available");
-			}		
+				
+			}
+			
 			if(!(statusVector.contains("Get-Mic"))){
                                 if(statusVector.contains("Allow-Mic") && (flag)){
 					flag=false;	

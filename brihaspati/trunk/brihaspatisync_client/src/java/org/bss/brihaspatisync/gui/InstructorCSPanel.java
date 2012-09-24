@@ -34,7 +34,6 @@ import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
 
-
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
@@ -199,23 +198,24 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                 center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("InstructorCSPanel.Actions")+"</font></U></b>"),0);
 		courseid.clear();
 		for(int i=0;i<y;i++){
+			try {
                         java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
-                        String lectid=str1.nextElement().toString();
-		        String lectCouseName=str1.nextElement().toString();
+                        String lectid=decrypt(str1.nextElement().toString());
+		        String lectCouseName=decrypt(str1.nextElement().toString());
 			String str=lectid+"-"+lectCouseName;
 			courseid.add(str);//lectid);
-                        String lectUserName=str1.nextElement().toString();
-                        String lectName=str1.nextElement().toString();
-                        String lectInfo=str1.nextElement().toString();
-                        String lectNo=str1.nextElement().toString();
-                        String lectVedio=str1.nextElement().toString();
-                        String lectAudio=str1.nextElement().toString();
-                        String lectWhiteBoard=str1.nextElement().toString();
-                        String lectDate=str1.nextElement().toString();
-                        String lectTime=str1.nextElement().toString();
-                        String lectDuration=str1.nextElement().toString();
-                        String repeattime=str1.nextElement().toString();
-                        String fortime=str1.nextElement().toString();
+                        String lectUserName=decrypt(str1.nextElement().toString());
+                        String lectName=decrypt(str1.nextElement().toString());
+                        String lectInfo=decrypt(str1.nextElement().toString());
+                        String lectNo=decrypt(str1.nextElement().toString());
+                        String lectVedio=decrypt(str1.nextElement().toString());
+                        String lectAudio=decrypt(str1.nextElement().toString());
+                        String lectWhiteBoard=decrypt(str1.nextElement().toString());
+                        String lectDate=decrypt(str1.nextElement().toString());
+                        String lectTime=decrypt(str1.nextElement().toString());
+                        String lectDuration=decrypt(str1.nextElement().toString());
+                        String repeattime=decrypt(str1.nextElement().toString());
+                        String fortime=decrypt(str1.nextElement().toString());
 			String time[]=lectTime.split(":");
 			int anausetime=	(Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
 
@@ -279,6 +279,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
                         center_mainPanel.add(nsPane[i]);
                         center_mainPanel.add(buttonPanel[i]);
+			}catch(Exception e){System.out.println("Error in get session "+e.getMessage());}
                 }
                 if(y==0){
                         return new JScrollPane();
@@ -493,5 +494,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                 }catch(Exception e){ System.out.println("Error in getTimeIndexingServer() "+e.getMessage());}
         }
 
+	private String decrypt(String encryptedData) throws Exception {
+                byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(encryptedData);
+                String decryptedValue = new String(decordedValue);
+                return decryptedValue;
+        }
 }	
 

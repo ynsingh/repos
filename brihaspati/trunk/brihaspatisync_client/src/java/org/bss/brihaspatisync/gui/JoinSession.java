@@ -132,11 +132,10 @@ public class JoinSession {
 			String a_status=client_obj.getAudioStatus();
 
                         if(a_status.equals("1")){
+				org.bss.brihaspatisync.tools.audio.AudioClient.getController().startThread();
                                 if((client_obj.getUserRole()).equals("instructor")){
-                                        org.bss.brihaspatisync.tools.audio.PostAudioStream.getController().startThread();
-                                }else {
-					org.bss.brihaspatisync.tools.audio.GetAudioStream.getController().startThread();
-                                }	
+                                        org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
+                                }
 			}
 		}catch(Exception ex){System.out.println("Error in start audio thread");}
 
