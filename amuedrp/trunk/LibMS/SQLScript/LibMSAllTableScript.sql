@@ -123,10 +123,10 @@ CREATE TABLE `staff_detail` (
   `contact_no` varchar(20) default NULL,
   `mobile_no` varchar(20) default NULL,
   `email_id` varchar(100) default NULL,
-  `date_joining` date default NULL,
-  `date_releaving` date default NULL,
+  `date_joining` varchar(12) default NULL,
+  `date_releaving` varchar(12) default NULL,
   `father_name` varchar(30) default NULL,
-  `date_of_birth` date default NULL,
+  `date_of_birth` varchar(12) default NULL,
   `gender` varchar(8) default NULL,
   `address1` varchar(50) default NULL,
   `city1` varchar(20) default NULL,
@@ -788,6 +788,11 @@ CREATE TABLE `bibliographic_details` (
   `image` varchar(200) default NULL,
   `digital_data` varchar(200) default NULL,
   `digital_comment` varchar(300) default NULL,
+  `rating` varchar(5) default NULL,
+  `submitted_by` varchar(200) default NULL,
+`last_modified` varchar(200) default NULL,
+`thesis_status` VARCHAR(100) default NULL,
+
   PRIMARY KEY  (`biblio_id`,`library_id`,`sublibrary_id`),
   KEY `library_id` (`library_id`),
   KEY `FKC8EFDF54FFE0695A` (`library_id`),
@@ -867,6 +872,11 @@ CREATE TABLE `bibliographic_details_lang` (
   `image` varchar(200) default NULL,
   `digital_data` varchar(200) default NULL,
   `digital_comment` varchar(300) default NULL,
+  `rating` varchar(5) default NULL,
+  `submitted_by` varchar(200) default NULL,
+`last_modified` varchar(200) default NULL,
+`thesis_status` VARCHAR(100) default NULL,
+
   PRIMARY KEY  (`biblio_id`,`library_id`,`sublibrary_id`),
   KEY `library_id` (`library_id`),
   KEY `FK91E7DFF9FFE0695A` (`library_id`),
@@ -1530,7 +1540,7 @@ CREATE TABLE `acq_invoice_detail` (
   `net_total` varchar(20) DEFAULT NULL,
   `status` varchar(10) DEFAULT NULL,
   `recieving_item_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`invoice_no`,`library_id`,`sub_library_id`,`recieving_no`),
+  PRIMARY KEY (`invoice_no`,`library_id`,`sub_library_id`,`recieving_no`,`recieving_item_id`),
   KEY `library_id` (`library_id`),
   CONSTRAINT `acq_invoice_detail_ibfk_1` FOREIGN KEY (`library_id`) REFERENCES `library` (`library_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -2787,6 +2797,7 @@ CREATE TABLE `temp_excell_import` (
   `status` varchar(20) default NULL,
   `book_language` varchar(20) default NULL,
   `ref_no` varchar(20) default NULL,
+`title1` VARCHAR(200), `subtitle1` VARCHAR(200), `alt_title1` VARCHAR(200), `statement_responsibility1` VARCHAR(200), `main_entry1` VARCHAR(200), `added_entrymli`  VARCHAR(200), `added_entry11` VARCHAR(200), `added_entry21` VARCHAR(200), `added_entry31` VARCHAR(200), `publisher_name1` VARCHAR(200), `publication_place1` VARCHAR(200), `publishing_year1` VARCHAR(20), `subject1` VARCHAR(200), `edition1` VARCHAR(20), `collation11` VARCHAR(20), `notes1` VARCHAR(2000), `abstract1` VARCHAR(2000), `series1` VARCHAR(1000), `volume_no1` VARCHAR(20), `shelving_location1` VARCHAR(200), `index_no1` VARCHAR(20), `no_of_pages1` VARCHAR(20), `bind_type1` VARCHAR(20)
   PRIMARY KEY  (`sno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;

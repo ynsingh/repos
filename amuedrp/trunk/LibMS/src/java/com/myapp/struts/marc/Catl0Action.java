@@ -24,39 +24,33 @@ public class Catl0Action extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    private MarcHibDAO marchib=new MarcHibDAO();
-    
-    MarcHibDAO dao=new MarcHibDAO();
-HashMap hm1 = new HashMap();
-    private Biblio biblio=new Biblio();
-    private BiblioId biblioid= new BiblioId();
+   
 
-    private Biblio biblio1=new Biblio();
-    private BiblioId biblioid1= new BiblioId();
-
-    private Biblio biblio2=new Biblio();
-    private BiblioId biblioid2= new BiblioId();
-
-    private Biblio biblio3=new Biblio();
-    private BiblioId biblioid3= new BiblioId();
-
-    private Biblio biblio4=new Biblio();
-    private BiblioId biblioid4= new BiblioId();
-
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         System.out.println("inside catl0action");
+   MarcHibDAO marchib=new MarcHibDAO();
+    
+    MarcHibDAO dao=new MarcHibDAO();
+HashMap hm1 = new HashMap();
+ Biblio biblio=new Biblio();
+  BiblioId biblioid= new BiblioId();
+
+     Biblio biblio1=new Biblio();
+  BiblioId biblioid1= new BiblioId();
+
+ Biblio biblio2=new Biblio();
+     BiblioId biblioid2= new BiblioId();
+
+  Biblio biblio3=new Biblio();
+     BiblioId biblioid3= new BiblioId();
+
+   Biblio biblio4=new Biblio();
+   BiblioId biblioid4= new BiblioId();
+
         BiblioActionForm caf=(BiblioActionForm)form;
 
         HttpSession session = request.getSession();
@@ -122,10 +116,12 @@ HashMap hm1 = new HashMap();
            biblio.setId(biblioid);
 //           marchib.insert(biblio);
         hm1 = (HashMap)session.getAttribute("hsmp");
+        if(hm1==null)
+            hm1=new HashMap();
           //insert
-        if(hm1.containsKey("1")){
-            hm1.remove("1");
-        }
+     //   if(hm1.containsKey("1")){
+        //    hm1.remove("1");
+      //  }
     hm1.put("1", biblio);
    
     System.out.println("1st object saved");
@@ -151,9 +147,9 @@ HashMap hm1 = new HashMap();
           biblioid1.setBibId(bibid);
            biblio1.setId(biblioid1);
 //           marchib.insert(biblio1);
-            if(hm1.containsKey("2")){
-            hm1.remove("2");
-        }
+         //   if(hm1.containsKey("2")){
+         //   hm1.remove("2");
+      //  }
 hm1.put("2", biblio1);
           //insert
      
@@ -181,9 +177,9 @@ hm1.put("2", biblio1);
          biblioid2.setBibId(bibid);
            biblio2.setId(biblioid2);
 //           marchib.insert(biblio2);
-            if(hm1.containsKey("3")){
-            hm1.remove("3");
-        }
+        //    if(hm1.containsKey("3")){
+         //   hm1.remove("3");
+      //  }
 hm1.put("3", biblio2);
           //insert
     
@@ -206,9 +202,9 @@ hm1.put("3", biblio2);
     biblioid3.setBibId(bibid);
            biblio3.setId(biblioid3);
 //           marchib.insert(biblio3);
-            if(hm1.containsKey("4")){
-            hm1.remove("4");
-        }
+         //   if(hm1.containsKey("4")){
+        //    hm1.remove("4");
+       // }
 hm1.put("4", biblio3);
           //insert
   
@@ -218,7 +214,7 @@ hm1.put("4", biblio3);
    biblioid4.setLibraryId(library_id);
     biblio4.setSublibraryId(sub_library_id);
     biblioid4.setMarctag("082");
-    biblio4.setId(biblioid1);
+    biblio4.setId(biblioid4);
     if(caf.getIn0821()!=null)
     if(StringUtils.isNotBlank(in0821.toString())&&StringUtils.isNotEmpty(in0821.toString()))
     biblio4.setIndicator1(in0821);
@@ -235,16 +231,16 @@ hm1.put("4", biblio3);
          biblioid4.setBibId(bibid);
            biblio4.setId(biblioid4);
 //           marchib.insert(biblio4);
-            if(hm1.containsKey("5")){
-            hm1.remove("5");
-        }
+        //    if(hm1.containsKey("5")){
+        //    hm1.remove("5");
+      //  }
 hm1.put("5", biblio4);
 System.out.println(hm1.size());
           //insert
      session.setAttribute("hsmp", hm1);
     System.out.println("5th object saved");
 
-
+session.setAttribute("hsmp",hm1);
       System.out.println("t value is = "+t);
         //code for mapping forwards......
          if(t.equals("1"))

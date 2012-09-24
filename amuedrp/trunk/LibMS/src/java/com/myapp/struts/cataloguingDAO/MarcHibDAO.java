@@ -118,7 +118,7 @@ List<Integer> obj=null;
             List<Integer> obj=null;
         try {
             session.beginTransaction();
-            Query query = session.createQuery("select distinct id.bibId from Biblio  where id.libraryId= :lib_id and sublibraryId = :sub_id");
+            Query query = session.createQuery("select distinct id.bibId from Biblio  where id.libraryId= :lib_id and sublibraryId = :sub_id ");
             query.setString("lib_id", library_id);
             query.setString("sub_id", sub_library_id);
             obj=(List<Integer>) query.list();
@@ -135,6 +135,60 @@ List<Integer> obj=null;
      }
         return obj;
        }
+
+        public List<Integer> searchDoc3(String library_id, String sub_library_id,String title)
+          {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            List<Integer> obj=null;
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("select distinct id.bibId from Biblio  where id.libraryId= :lib_id and sublibraryId = :sub_id and $a=:title");
+            query.setString("lib_id", library_id);
+            query.setString("sub_id", sub_library_id);
+            query.setString("title", title);
+            obj=(List<Integer>) query.list();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+
+
+     }
+        return obj;
+       }
+        public List<Biblio>  searchBiblioId(String library_id, String sub_library_id, int bib_id,String title) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+         List<Biblio> obj=null;
+
+        try {
+             session.beginTransaction();
+
+            Criteria criteria = session.createCriteria(Biblio.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.bibId", bib_id))
+                    .add(Restrictions.eq("id.Marctag","245"))
+                    .add(Restrictions.eq("$a",title))
+                    .add(Restrictions.eq("sublibraryId", sub_library_id))).addOrder(Order.asc("id.marctag"));
+            obj= (List<Biblio>)criteria.list();
+            session.getTransaction().commit();
+        } catch (RuntimeException e) {
+
+            e.printStackTrace();
+        }
+        finally {
+            session.close();
+
+
+     }
+        return obj;
+       }
+
+
               public List<Biblio>  searchBiblioId(String library_id, String sub_library_id, int bib_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<Biblio> obj=null;

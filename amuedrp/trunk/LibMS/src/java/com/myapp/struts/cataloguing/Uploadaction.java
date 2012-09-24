@@ -43,6 +43,7 @@ public class Uploadaction extends org.apache.struts.action.Action {
             throws Exception {
         StrutsUploadForm uploadForm = (StrutsUploadForm) form;
         HttpSession session = request.getSession();
+        DAO daoobj=new DAO();
             try
             {
 
@@ -70,14 +71,25 @@ public class Uploadaction extends org.apache.struts.action.Action {
                    
                     List<String> obj=new ArrayList<String>();
                     int l=0;
-                    for (int k = 0; k < DAO.columnname(table_name).size(); k++) {
+                    for (int k = 0; k < daoobj.columnname(table_name).size(); k++) {
                         if( k==0)
                             continue;
                          if( k==1)
                             continue;
                          if( k==2)
                             continue;
-                         obj.add(DAO.columnname(table_name).get(k).toString());
+                         if( k==5)
+                            continue;
+                         if( k==20 ||k==27|| k==28 || k==29 || k==30 || k==31 || k==32 || k==33)
+                            continue;
+                          if( k==37 ||k==38|| k==39 || k==40 || k==41 || k==42 || k==43 || k==44)
+                            continue;
+                          if( k==45 ||k==46|| k==47 ||  k==50  )
+                            continue;
+                          if( k==49 ||k==52|| k==58 || k==59 || k==60 || k==61 || k==63|| k==64)
+                            continue;
+
+                         obj.add(daoobj.columnname(table_name).get(k).toString());
                     }
                   
                     String map_table[] = new String[obj.size()];
@@ -89,10 +101,24 @@ public class Uploadaction extends org.apache.struts.action.Action {
                     //get Data type of fields
                        List<String> obj1=new ArrayList<String>();
                   l=0;
-                    for (int k = 0; k < DAO.datatype(table_name).size(); k++) {
-                        if(k==1 || k==2 || k==0)
+                    for (int k = 0; k < daoobj.datatype(table_name).size(); k++) {
+                          if( k==0)
                             continue;
-                         obj1.add(DAO.datatype(table_name).get(k).toString());
+                         if( k==1)
+                            continue;
+                         if( k==2)
+                            continue;
+                         if( k==5)
+                            continue;
+                         if( k==20 ||k==27|| k==28 || k==29 || k==30 || k==31 || k==32 || k==33)
+                            continue;
+                           if( k==37 ||k==38|| k==39 || k==40 || k==41 || k==42 || k==43 || k==44)
+                            continue;
+                           if( k==45 ||k==46|| k==47 ||  k==50  )
+                            continue;
+                          if( k==49 ||k==52|| k==58 || k==59 || k==60 || k==61 || k==63|| k==64)
+                            continue;
+                         obj1.add(daoobj.datatype(table_name).get(k).toString());
                     }
                     
                     String map_column[] = new String[obj1.size()];

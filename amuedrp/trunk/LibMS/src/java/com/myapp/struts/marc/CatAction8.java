@@ -22,41 +22,35 @@ import org.apache.struts.action.ActionMapping;
  */
 public class CatAction8 extends org.apache.struts.action.Action {
     
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-    HashMap hm1=new HashMap();
-
-    private MarcHibDAO marchib=new MarcHibDAO();
-    
-    MarcHibDAO dao=new MarcHibDAO();
-
-    private Biblio biblio=new Biblio();
-    private BiblioId biblioid= new BiblioId();
-
-    private Biblio biblio1=new Biblio();
-    private BiblioId biblioid1= new BiblioId();
-
-    private Biblio biblio2=new Biblio();
-    private BiblioId biblioid2= new BiblioId();
-
-    private Biblio biblio3=new Biblio();
-    private BiblioId biblioid3= new BiblioId();
-
-    private Biblio biblio4=new Biblio();
-    private BiblioId biblioid4= new BiblioId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
+   
+ 
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HashMap hm1=new HashMap();
+
+    MarcHibDAO marchib=new MarcHibDAO();
+    
+    MarcHibDAO dao=new MarcHibDAO();
+
+     Biblio biblio=new Biblio();
+     BiblioId biblioid= new BiblioId();
+
+     Biblio biblio1=new Biblio();
+     BiblioId biblioid1= new BiblioId();
+
+     Biblio biblio2=new Biblio();
+     BiblioId biblioid2= new BiblioId();
+
+     Biblio biblio3=new Biblio();
+     BiblioId biblioid3= new BiblioId();
+
+     Biblio biblio4=new Biblio();
+     BiblioId biblioid4= new BiblioId();
+
         System.out.println("inside cataction8 !");
         CatActionForm8 caf8=(CatActionForm8)form;
 
@@ -176,9 +170,11 @@ public class CatAction8 extends org.apache.struts.action.Action {
                        biblio.setId(biblioid);
 //                       marchib.insert(biblio);
                        hm1=(HashMap)session.getAttribute("hsmp");
-if(hm1.containsKey("30")){
-            hm1.remove("30");
-        }
+                       if(hm1==null)
+                           hm1=new HashMap();
+//if(hm1.containsKey("30")){
+        //    hm1.remove("30");
+       // }
  hm1.put("30", biblio);
 
 
@@ -212,9 +208,9 @@ if(hm1.containsKey("30")){
                     biblioid1.setBibId(bibid);
                        biblio1.setId(biblioid1);
 //                       marchib.insert(biblio1);
-if(hm1.containsKey("31")){
-            hm1.remove("31");
-        }
+//if(hm1.containsKey("31")){
+          //  hm1.remove("31");
+       // }
  hm1.put("31", biblio1);
 
 
@@ -234,9 +230,9 @@ if(hm1.containsKey("31")){
                           biblioid2.setBibId(bibid);
                        biblio2.setId(biblioid2);
 //                       marchib.insert(biblio2);
-if(hm1.containsKey("32")){
-            hm1.remove("32");
-        }
+//if(hm1.containsKey("32")){
+       //     hm1.remove("32");
+       // }
  hm1.put("32", biblio2);
 
                  
@@ -275,9 +271,9 @@ if(hm1.containsKey("32")){
                   biblioid3.setBibId(bibid);
                        biblio3.setId(biblioid3);
 //                       marchib.insert(biblio3);
-if(hm1.containsKey("33")){
-            hm1.remove("33");
-        }
+//if(hm1.containsKey("33")){
+      //      hm1.remove("33");
+       // }
  hm1.put("33", biblio3);
 
               
@@ -336,11 +332,11 @@ if(hm1.containsKey("33")){
                    biblioid4.setBibId(bibid);
                        biblio4.setId(biblioid4);
 //                       marchib.insert(biblio4);
-if(hm1.containsKey("34")){
-            hm1.remove("34");
-        }
+//if(hm1.containsKey("34")){
+         //   hm1.remove("34");
+       // }
  hm1.put("34", biblio4);
-
+session.setAttribute("hsmp", hm1);
        System.out.println("All five objects saved now NAvigating to page "+t);
  //code for mapping forwards......
          if(t.equals("0"))

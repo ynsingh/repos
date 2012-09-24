@@ -28,7 +28,7 @@ import org.marc4j.marc.Leader;
     import org.marc4j.marc.DataField;
     import com.myapp.struts.hbm.BibliographicDetails;
     import com.myapp.struts.hbm.BibliographicDetailsId;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 /**
  *
  * @author zeeshan
@@ -41,7 +41,7 @@ public class MarcCommitAction extends org.apache.struts.action.Action {
     HashMap hm1=new HashMap();
    BibliographicDetails bibd=new BibliographicDetails();
    BibliographicDetailsId biblid=new BibliographicDetailsId();
-   BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
+   BibliographicEntryDAO dao=new BibliographicEntryDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)

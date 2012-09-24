@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 
 /**
  *
@@ -35,13 +34,25 @@ public class BiblioActionForm extends org.apache.struts.action.ActionForm {
         super();
         // TODO Auto-generated constructor stub
     }
-
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-     * @return
-     */
+@Override
+//   public void reset(ActionMapping mapping,
+//		HttpServletRequest request) {
+//		System.out.println("LoginForm::reset()");
+//		title=null;
+//                isbn=null;
+//                btn=null;
+//
+//                 name=null;
+//in0202='\u0000';
+//in0222='\u0000';in0412='\u0000';in0432='\u0000';in0822='\u0000';in0201='\u0000';in0221='\u0000';
+//in0411='\u0000';in0431='\u0000';in0821='\u0000';
+// z020=null;z020c=null;z020z=null;z022=null;
+// z022y=null;z022z=null;z041=null;
+// z041d=null;z043=null;
+// z082=null;z082b=null;z0822=null;
+//
+//
+//	}
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         
         return null;

@@ -50,6 +50,234 @@ public class TempExcellImport  implements java.io.Serializable {
      private String bindType;
      private String refNo;
 
+    public String getAbstract1() {
+        return abstract1;
+    }
+
+    public void setAbstract1(String abstract1) {
+        this.abstract1 = abstract1;
+    }
+
+    public String getAddedEntry11() {
+        return addedEntry11;
+    }
+
+    public void setAddedEntry11(String addedEntry11) {
+        this.addedEntry11 = addedEntry11;
+    }
+
+    public String getAddedEntry21() {
+        return addedEntry21;
+    }
+
+    public void setAddedEntry21(String addedEntry21) {
+        this.addedEntry21 = addedEntry21;
+    }
+
+    public String getAddedEntry31() {
+        return addedEntry31;
+    }
+
+    public void setAddedEntry31(String addedEntry31) {
+        this.addedEntry31 = addedEntry31;
+    }
+
+    public String getAddedEntrymli() {
+        return addedEntrymli;
+    }
+
+    public void setAddedEntrymli(String addedEntrymli) {
+        this.addedEntrymli = addedEntrymli;
+    }
+
+    public String getAltTitle1() {
+        return altTitle1;
+    }
+
+    public void setAltTitle1(String altTitle1) {
+        this.altTitle1 = altTitle1;
+    }
+
+    public String getBindType1() {
+        return bindType1;
+    }
+
+    public void setBindType1(String bindType1) {
+        this.bindType1 = bindType1;
+    }
+
+    public String getCollation11() {
+        return collation11;
+    }
+
+    public void setCollation11(String collation11) {
+        this.collation11 = collation11;
+    }
+
+    public String getDocumentCategory() {
+        return documentCategory;
+    }
+
+    public void setDocumentCategory(String documentCategory) {
+        this.documentCategory = documentCategory;
+    }
+
+    public String getEdition1() {
+        return edition1;
+    }
+
+    public void setEdition1(String edition1) {
+        this.edition1 = edition1;
+    }
+
+    public String getIndexNo1() {
+        return indexNo1;
+    }
+
+    public void setIndexNo1(String indexNo1) {
+        this.indexNo1 = indexNo1;
+    }
+
+    public String getLocation1() {
+        return location1;
+    }
+
+    public void setLocation1(String location1) {
+        this.location1 = location1;
+    }
+
+    public String getMainEntry1() {
+        return mainEntry1;
+    }
+
+    public void setMainEntry1(String mainEntry1) {
+        this.mainEntry1 = mainEntry1;
+    }
+
+    public String getNoOfCopies1() {
+        return noOfCopies1;
+    }
+
+    public void setNoOfCopies1(String noOfCopies1) {
+        this.noOfCopies1 = noOfCopies1;
+    }
+
+    public String getNoOfPages1() {
+        return noOfPages1;
+    }
+
+    public void setNoOfPages1(String noOfPages1) {
+        this.noOfPages1 = noOfPages1;
+    }
+
+    public String getNotes1() {
+        return notes1;
+    }
+
+    public void setNotes1(String notes1) {
+        this.notes1 = notes1;
+    }
+
+    public String getPublicationPlace1() {
+        return publicationPlace1;
+    }
+
+    public void setPublicationPlace1(String publicationPlace1) {
+        this.publicationPlace1 = publicationPlace1;
+    }
+
+    public String getPublisherName1() {
+        return publisherName1;
+    }
+
+    public void setPublisherName1(String publisherName1) {
+        this.publisherName1 = publisherName1;
+    }
+
+    public String getPublishingYear1() {
+        return publishingYear1;
+    }
+
+    public void setPublishingYear1(String publishingYear1) {
+        this.publishingYear1 = publishingYear1;
+    }
+
+    public String getSeries1() {
+        return series1;
+    }
+
+    public void setSeries1(String series1) {
+        this.series1 = series1;
+    }
+
+    public String getShelvingLocation1() {
+        return shelvingLocation1;
+    }
+
+    public void setShelvingLocation1(String shelvingLocation1) {
+        this.shelvingLocation1 = shelvingLocation1;
+    }
+
+    public String getStatementResponsibility1() {
+        return statementResponsibility1;
+    }
+
+    public void setStatementResponsibility1(String statementResponsibility1) {
+        this.statementResponsibility1 = statementResponsibility1;
+    }
+
+    public String getSubtitle1() {
+        return subtitle1;
+    }
+
+    public void setSubtitle1(String subtitle1) {
+        this.subtitle1 = subtitle1;
+    }
+
+    public String getVolumeNo1() {
+        return volumeNo1;
+    }
+
+    public void setVolumeNo1(String volumeNo1) {
+        this.volumeNo1 = volumeNo1;
+    }
+
+
+     private String subtitle1;
+     private String altTitle1;
+     private String statementResponsibility1;
+     private String mainEntry1;
+     private String addedEntrymli;
+     private String addedEntry11;
+     private String addedEntry21;
+     private String addedEntry31;
+     private String publisherName1;
+     private String publicationPlace1;
+     private String publishingYear1;
+     private String edition1;
+     private String noOfCopies1;
+     private String collation11;
+     private String notes1;
+     private String abstract1;
+     private String series1;
+     private String volumeNo1;
+     private String location1;
+     private String shelvingLocation1;
+     private String indexNo1;
+     private String noOfPages1;
+     private String bindType1;
+
+
+
+    public String getTitle1() {
+        return title1;
+    }
+
+    public void setTitle1(String title1) {
+        this.title1 = title1;
+    }
+     private String title1;
+
     public TempExcellImport() {
     }
 

@@ -23,33 +23,26 @@ import org.apache.struts.action.ActionMapping;
 public class CatAction6 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-    HashMap hm1=new HashMap();
-
-    private MarcHibDAO marchib=new MarcHibDAO();
+   
     
-    MarcHibDAO dao=new MarcHibDAO();
-
-    private Biblio biblio=new Biblio();
-    private BiblioId biblioid= new BiblioId();
-
-    private Biblio biblio1=new Biblio();
-    private BiblioId biblioid1= new BiblioId();
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-         System.out.println("inside cataction6 !");
+     
+    HashMap hm1=new HashMap();
+
+     MarcHibDAO marchib=new MarcHibDAO();
+    
+    MarcHibDAO dao=new MarcHibDAO();
+
+     Biblio biblio=new Biblio();
+     BiblioId biblioid= new BiblioId();
+
+     Biblio biblio1=new Biblio();
+     BiblioId biblioid1= new BiblioId();
+        System.out.println("inside cataction6 !");
         CatActionForm6 caf6=(CatActionForm6)form;
 
         HttpSession session = request.getSession();
@@ -111,9 +104,12 @@ public class CatAction6 extends org.apache.struts.action.Action {
                        biblio.setId(biblioid);
 //                       marchib.insert(biblio);
                        hm1=(HashMap)session.getAttribute("hsmp");
-if(hm1.containsKey("26")){
-            hm1.remove("26");
-        }
+                       if(hm1==null)
+                           hm1=new HashMap();
+
+//if(hm1.containsKey("26")){
+    //        hm1.remove("26");
+    //    }
  hm1.put("26", biblio);
 
                 
@@ -154,12 +150,12 @@ if(StringUtils.isNotBlank(z650d)&&StringUtils.isNotEmpty(z650d))
                     biblioid1.setBibId(bibid);
                        biblio1.setId(biblioid1);
 //                       marchib.insert(biblio1);
-if(hm1.containsKey("27")){
-            hm1.remove("27");
-        }
+//if(hm1.containsKey("27")){
+       //     hm1.remove("27");
+       // }
  hm1.put("27", biblio1);
 
-                
+     session.setAttribute("hsmp", hm1);
 
              System.out.println("All both objects saved now NAvigating to page "+t);
              //code for mapping forwards......

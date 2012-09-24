@@ -1,12 +1,14 @@
 //ACTION TO IMPORT DATA
 package com.myapp.struts.cataloguing;
 import com.myapp.struts.utility.UserLog;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.cataloguingDAO.DAO;
 import com.myapp.struts.hbm.AccessionRegister;
 import com.myapp.struts.hbm.AccessionRegisterId;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.BibliographicDetailsId;
+import com.myapp.struts.hbm.BibliographicDetailsLang;
+import com.myapp.struts.hbm.BibliographicDetailsLangId;
 import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.hbm.DocumentDetailsId;
 import org.apache.struts.action.ActionForm;
@@ -42,7 +44,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
     private static Logger log4j =LoggerUtils.getLogger();
     TempExcellImport genericobj = new  TempExcellImport();
      List<TempExcellImport> temp = new  ArrayList<TempExcellImport>();
-       BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+       BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
          DAO daoobj = new DAO();
          
     @Override
@@ -60,7 +62,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
             sublibrary_id=(String)session.getAttribute("sublibrary_id");
             int row_no = 0,count=0;
             String table_name = uploadForm.getCombo_table_name();
-            int size = DAO.columnname(table_name).size();
+            int size = daoobj.columnname(table_name).size();
             int sheet_column_size=0;
             int i=0;
             if (session.getAttribute("no_columns") != null)
@@ -77,7 +79,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
             Iterator<Row> rows = sheet.rowIterator();
             String cellvalue = "";
             String map_table[] = new String[Math.max(sheet_column_size ,size)];
-            map_table = (String[]) DAO.selectedcombo(map_table, (size), uploadForm);
+            map_table = (String[]) daoobj.selectedcombo(map_table, (size), uploadForm);
            int noc=1;
             if (uploadForm.getButton().equals("Back"))
             {
@@ -137,7 +139,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                            
                                            genericobj.setLibraryId(library_id);
                                            genericobj.setSublibraryId(sublibrary_id);
-                                         if (map_table[column_index].equals("document_category"))
+                                         if (map_table[column_index].equals("document_type"))
                                          {
                                             genericobj.setdocumentCategory(cellvalue.trim());
                                               if(genericobj.getdocumentCategory().isEmpty()==true)
@@ -192,10 +194,19 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                         if (map_table[column_index].equals("subtitle"))
                                         {
                                             genericobj.setSubtitle(cellvalue.trim());
-                                        }   
+                                        }
+                                          if (map_table[column_index].equals("subtitle1"))
+                                        {
+                                            genericobj.setSubtitle1(cellvalue.trim());
+                                        }
                                         if (map_table[column_index].equals("alt_title"))
                                         {
                                             genericobj.setAltTitle(cellvalue.trim());
+
+                                        }
+                                           if (map_table[column_index].equals("alt_title1"))
+                                        {
+                                            genericobj.setAltTitle1(cellvalue.trim());
 
                                         }
                                         if (map_table[column_index].equals("statement_responsibility"))
@@ -207,6 +218,11 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             session.setAttribute("importlog", log);
                                             continue s;
                                             }
+                                        }
+                                            if (map_table[column_index].equals("statement_responsibility1"))
+                                        {
+                                            genericobj.setStatementResponsibility1(cellvalue.trim());
+
                                         }
                                         if (map_table[column_index].equals("main_entry"))
                                         {
@@ -220,9 +236,21 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             }
 
                                         }
+                                             if (map_table[column_index].equals("main_entry1"))
+                                        {
+                                            genericobj.setMainEntry1(cellvalue.trim());
+
+
+
+                                        }
                                         if (map_table[column_index].equals("added_entry"))
                                         {
                                             genericobj.setAddedEntry(cellvalue.trim());
+
+                                        }
+                                            if (map_table[column_index].equals("added_entrymli"))
+                                        {
+                                            genericobj.setAddedEntrymli(cellvalue.trim());
 
                                         }
                                         if (map_table[column_index].equals("added_entry1"))
@@ -230,14 +258,29 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             genericobj.setAddedEntry1(cellvalue.trim());
 
                                         }
+                                            if (map_table[column_index].equals("added_entry11"))
+                                        {
+                                            genericobj.setAddedEntry11(cellvalue.trim());
+
+                                        }
                                         if (map_table[column_index].equals("added_entry2"))
                                         {
                                             genericobj.setAddedEntry2(cellvalue.trim());
 
                                         }
+                                        if (map_table[column_index].equals("added_entry21"))
+                                        {
+                                            genericobj.setAddedEntry21(cellvalue.trim());
+
+                                        }
                                         if (map_table[column_index].equals("added_entry3"))
                                         {
                                             genericobj.setAddedEntry3(cellvalue.trim());
+
+                                        }
+                                       if (map_table[column_index].equals("added_entry31"))
+                                        {
+                                            genericobj.setAddedEntry31(cellvalue.trim());
 
                                         }
 //                                           if (map_table[column_index].equals("editor1"))
@@ -285,6 +328,22 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             genericobj.setPublishingYear(cellvalue.trim());
 
                                         }
+                                           if (map_table[column_index].equals("publisher_name1"))
+                                        {
+                                            genericobj.setPublisherName1(cellvalue.trim());
+
+                                        }
+                                        if (map_table[column_index].equals("publication_place1"))
+                                        {
+                                            genericobj.setPublicationPlace1(cellvalue.trim());
+
+                                        }
+                                        if (map_table[column_index].equals("publishing_year1"))
+                                        {
+                                            genericobj.setPublishingYear1(cellvalue.trim());
+
+                                        }
+
                                         if (map_table[column_index].equals("call_no"))
                                         {
                                             genericobj.setCallNo(cellvalue.trim());
@@ -301,9 +360,19 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             genericobj.setSubject(cellvalue.trim());
 
                                         }
+                                         if (map_table[column_index].equals("subject1"))
+                                        {
+                                            genericobj.setSubject1(cellvalue.trim());
+
+                                        }
                                         if (map_table[column_index].equals("entry_language"))
                                         {
                                             genericobj.setEntryLanguage(cellvalue.trim());
+
+                                        }
+                                           if (map_table[column_index].equals("title1"))
+                                        {
+                                            genericobj.setTitle1(cellvalue.trim());
 
                                         }
                                         if (map_table[column_index].equals("isbn10"))
@@ -324,6 +393,11 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                         if (map_table[column_index].equals("edition"))
                                         {
                                             genericobj.setEdition(cellvalue.trim());
+
+                                        }
+                                            if (map_table[column_index].equals("edition1"))
+                                        {
+                                            genericobj.setEdition1(cellvalue.trim());
 
                                         }
 //                                        if (map_table[column_index].equals("no_of_copies"))
@@ -365,6 +439,27 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             genericobj.setSeries(cellvalue.trim());
 
                                         }
+                                        if (map_table[column_index].equals("collation11"))
+                                        {
+                                            genericobj.setCollation11(cellvalue.trim());
+
+                                        }
+                                        if (map_table[column_index].equals("notes1"))
+                                        {
+                                            genericobj.setNotes1(cellvalue.trim());
+
+                                        }
+                                        if (map_table[column_index].equals("abstract1"))
+                                        {
+                                            genericobj.setAbstract1(cellvalue.trim());
+
+                                        }
+                                       if (map_table[column_index].equals("series1"))
+                                       {
+                                            genericobj.setSeries1(cellvalue.trim());
+
+                                        }
+
                                         if (map_table[column_index].equals("accession_no"))
                                         {
                                             genericobj.setAccessionNo(cellvalue.trim());
@@ -387,6 +482,11 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             genericobj.setVolumeNo(cellvalue.trim());
 
                                         }
+                                        if (map_table[column_index].equals("volume_no1"))
+                                        {
+                                            genericobj.setVolumeNo1(cellvalue.trim());
+
+                                        }
                                         if (map_table[column_index].equals("location"))
                                         {
                                             genericobj.setLocation(cellvalue.trim());
@@ -407,12 +507,33 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             genericobj.setBindType(cellvalue.trim());
 
                                         }
+
+                                        if (map_table[column_index].equals("shelving_location1"))
+                                        {
+                                            genericobj.setShelvingLocation1(cellvalue.trim());
+
+                                        }
+                                        if (map_table[column_index].equals("index_no1"))
+                                        {
+                                            genericobj.setIndexNo1(cellvalue.trim());
+
+                                        }
+                                        if (map_table[column_index].equals("bind_type1"))
+                                        {
+                                            genericobj.setBindType1(cellvalue.trim());
+
+                                        }
+
                                         if (map_table[column_index].equals("clref_no")) {
                                             genericobj.setRefNo(cellvalue.trim());
 
                                         }
                                            if (map_table[column_index].equals("no_of_pages")) {
                                             genericobj.setNoOfPages(cellvalue.trim());
+
+                                        }
+                                            if (map_table[column_index].equals("no_of_pages1")) {
+                                            genericobj.setNoOfPages1(cellvalue.trim());
 
                                         }
 //                                            if (map_table[column_index].equals("subject2")) {
@@ -438,18 +559,20 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                             //Add Data in Bibliographic Details
                             BibliographicDetails bibobj;
                             BibliographicDetailsId bibid;
+                            BibliographicDetailsLang bibobjmli=new BibliographicDetailsLang();
+                            BibliographicDetailsLangId bibobjmliId=new BibliographicDetailsLangId();
                             AccessionRegister accessionobj = new AccessionRegister();
                             AccessionRegisterId accessionidobj = new AccessionRegisterId();
                             DocumentDetails documentobj = new DocumentDetails();
                             DocumentDetailsId documentIdobj = new DocumentDetailsId();
                           
                                             //Check for Duplicate CallNO/Title/ISBN10/MainEntry Combination
-                                            BibliographicDetails  uniTitle =(BibliographicDetails) DAO.DuplicateTitleCallno(library_id,sublibrary_id,genericobj.getCallNo(),genericobj.getTitle(),genericobj.getIsbn10(),genericobj.getMainEntry());
+                                            BibliographicDetails  uniTitle =(BibliographicDetails) daoobj.DuplicateTitleCallno(library_id,sublibrary_id,genericobj.getCallNo(),genericobj.getTitle(),genericobj.getIsbn10(),genericobj.getMainEntry());
                                            
                                             if(uniTitle!=null)
                                             {
                                                 //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -458,13 +581,9 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                                     continue s;
                                                 }}
 
-                                                
-
                                                 Integer maxdoc = bibdao.returnMaxDocumentId(library_id, sublibrary_id);
                                                 Integer maxrecord = (Integer) bibdao.returnMaxRecord(library_id, sublibrary_id);
                                                 bibobj=(BibliographicDetails)uniTitle;
-
-                                                
 
                                                 //Add Data in Accession Register
                                                 accessionidobj.setRecordNo(maxrecord);
@@ -536,7 +655,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             {
                                               
                                                  //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -591,7 +710,46 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                                 bibobj.setAbstract_(genericobj.getAbstract_());
                                                 bibobj.setSeries(genericobj.getSeries());
                                                 bibobj.setDateAcquired(genericobj.getDateAcquired());
-                                                 System.out.println("i am here114");
+
+                                                //MLI IMPORT
+                                              if(genericobj.getEntryLanguage().isEmpty()==false){
+                                                bibobjmliId = new BibliographicDetailsLangId();
+                                                bibobjmliId.setBiblioId(bib_id);
+                                                bibobjmliId.setLibraryId(library_id);
+                                                bibobjmliId.setSublibraryId(sublibrary_id);
+                                                bibobjmli = new BibliographicDetailsLang();
+                                                bibobjmli.setId(bibobjmliId);
+                                                bibobjmli.setTitle(genericobj.getTitle1());
+                                                bibobjmli.setMainEntry(genericobj.getMainEntry());
+                                                bibobjmli.setCallNo(genericobj.getCallNo());
+                                                bibobjmli.setStatementResponsibility(genericobj.getStatementResponsibility());
+                                                bibobjmli.setDocumentType(genericobj.getdocumentCategory());
+                                                bibobjmli.setBookType(genericobj.getBookType());
+                                                bibobjmli.setEntryLanguage(genericobj.getEntryLanguage());
+                                                bibobjmli.setSubtitle(genericobj.getSubtitle1());
+                                                bibobjmli.setAltTitle(genericobj.getAltTitle1());
+                                                bibobjmli.setStatementResponsibility(genericobj.getStatementResponsibility1());
+                                                bibobjmli.setMainEntry(genericobj.getMainEntry1());
+                                                bibobjmli.setAddedEntry(genericobj.getAddedEntrymli());
+                                                bibobjmli.setAddedEntry1(genericobj.getAddedEntry11());
+                                                bibobjmli.setAddedEntry2(genericobj.getAddedEntry21());
+                                                bibobjmli.setAddedEntry3(genericobj.getAddedEntry31());
+                                                bibobjmli.setPublisherName(genericobj.getPublisherName1());
+                                                bibobjmli.setPublicationPlace(genericobj.getPublicationPlace1());
+                                                bibobjmli.setPublishingYear(genericobj.getPublishingYear1());
+                                                bibobjmli.setSubject(genericobj.getSubject1());
+                                                bibobjmli.setEdition(genericobj.getEdition1());
+                                                bibobjmli.setCollation1(genericobj.getCollation11());
+                                                bibobjmli.setNotes(genericobj.getNotes1());
+                                                bibobjmli.setAbstract_(genericobj.getAbstract1());
+                                                bibobjmli.setSeries(genericobj.getSeries1());
+
+
+
+                                              }
+
+
+                                                System.out.println("i am here114");
                                                 System.out.println("i am here115");
                                                 System.out.println("i am here acc");
                                                 //Add Data in Accession Register
@@ -654,7 +812,12 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                                 documentobj.setDateAcquired(genericobj.getDateAcquired());
                                                 documentobj.setSeries(genericobj.getSeries());
                                                 //insert in three table jointly
-                                                DAO.insertImport(bibobj,accessionobj,documentobj);
+                                                if(genericobj.getEntryLanguage().isEmpty()==false){
+                                                daoobj.insertImport(bibobj,accessionobj,documentobj,bibobjmli);
+                                                }
+                                                else{
+                                                daoobj.insertImport(bibobj,accessionobj,documentobj);
+                                                }
 //                                                List  TotalEntry =(List) DAO.getTotalNumberDocument(library_id,sublibrary_id,genericobj.getCallNo(),genericobj.getTitle());
 //                                                uniTitle.setNoOfCopies(TotalEntry.size());
 //                                                daoobj.update(uniTitle);
@@ -667,20 +830,23 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                             //Add Data in Bibliographic Details
                             BibliographicDetails bibobj;
                             BibliographicDetailsId bibid;
+                            BibliographicDetailsLang bibobjmli=new BibliographicDetailsLang();
+                            BibliographicDetailsLangId bibobjmliId=new BibliographicDetailsLangId();
+
                             AccessionRegister accessionobj = new AccessionRegister();
                             AccessionRegisterId accessionidobj = new AccessionRegisterId();
                             DocumentDetails documentobj = new DocumentDetails();
                             DocumentDetailsId documentIdobj = new DocumentDetailsId();
 
                                             //Check for Duplicate CallNO/Title/ISBN10/MainEntry Combination
-                                            BibliographicDetails  uniTitle =(BibliographicDetails) DAO.DuplicateTitleCallno(library_id,sublibrary_id,genericobj.getCallNo(),genericobj.getTitle(),genericobj.getMainEntry());
+                                            BibliographicDetails  uniTitle =(BibliographicDetails) daoobj.DuplicateTitleCallno(library_id,sublibrary_id,genericobj.getCallNo(),genericobj.getTitle(),genericobj.getMainEntry());
                                             
                                             if(uniTitle!=null)
                                             {
                                                 
                                                  log4j.error("In LOg1");
                                                 //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -762,7 +928,7 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                             {
                                                 
                                                  //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,genericobj.getAccessionNo());
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -819,6 +985,41 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                                 bibobj.setDateAcquired(genericobj.getDateAcquired());
 
                                                 //bibobj.setNoOfCopies(Integer.parseInt(genericobj.getNoOfCopies()));
+                                                //ADD MLI
+                                                 if(genericobj.getEntryLanguage().isEmpty()==false){
+                                                bibobjmliId = new BibliographicDetailsLangId();
+                                                bibobjmliId.setBiblioId(bib_id);
+                                                bibobjmliId.setLibraryId(library_id);
+                                                bibobjmliId.setSublibraryId(sublibrary_id);
+                                                bibobjmli = new BibliographicDetailsLang();
+                                                bibobjmli.setId(bibobjmliId);
+                                                bibobjmli.setTitle(genericobj.getTitle1());
+                                                bibobjmli.setMainEntry(genericobj.getMainEntry());
+                                                bibobjmli.setCallNo(genericobj.getCallNo());
+                                                bibobjmli.setStatementResponsibility(genericobj.getStatementResponsibility());
+                                                bibobjmli.setDocumentType(genericobj.getdocumentCategory());
+                                                bibobjmli.setBookType(genericobj.getBookType());
+                                                bibobjmli.setEntryLanguage(genericobj.getEntryLanguage());
+                                               bibobjmli.setSubtitle(genericobj.getSubtitle1());
+                                                bibobjmli.setAltTitle(genericobj.getAltTitle1());
+                                                bibobjmli.setStatementResponsibility(genericobj.getStatementResponsibility1());
+                                                bibobjmli.setMainEntry(genericobj.getMainEntry1());
+                                                bibobjmli.setAddedEntry(genericobj.getAddedEntrymli());
+                                                bibobjmli.setAddedEntry1(genericobj.getAddedEntry11());
+                                                bibobjmli.setAddedEntry2(genericobj.getAddedEntry21());
+                                                bibobjmli.setAddedEntry3(genericobj.getAddedEntry31());
+                                                bibobjmli.setPublisherName(genericobj.getPublisherName1());
+                                                bibobjmli.setPublicationPlace(genericobj.getPublicationPlace1());
+                                                bibobjmli.setPublishingYear(genericobj.getPublishingYear1());
+                                                bibobjmli.setSubject(genericobj.getSubject1());
+                                                bibobjmli.setEdition(genericobj.getEdition1());
+                                                bibobjmli.setCollation1(genericobj.getCollation11());
+                                                bibobjmli.setNotes(genericobj.getNotes1());
+                                                bibobjmli.setAbstract_(genericobj.getAbstract1());
+                                                bibobjmli.setSeries(genericobj.getSeries1());
+                                                
+                                                 }
+
 
                                                 //Add Data in Accession Register
                                                 accessionidobj.setRecordNo(maxrecord);
@@ -881,7 +1082,12 @@ public class ExeltoDatabaseAction extends org.apache.struts.action.Action {
                                                 documentobj.setSeries(genericobj.getSeries());
                                                 log4j.error("Upload Data");
                                                 //insert in three table jointly
-                                                DAO.insertImport(bibobj,accessionobj,documentobj);
+                                                 if(genericobj.getEntryLanguage().isEmpty()==false){
+                                                daoobj.insertImport(bibobj,accessionobj,documentobj,bibobjmli);
+                                                }
+                                                else{
+                                                daoobj.insertImport(bibobj,accessionobj,documentobj);
+                                                }
                                              //   List  TotalEntry =(List) DAO.getTotalNumberDocument(library_id,sublibrary_id,genericobj.getCallNo(),genericobj.getTitle());
                                              //   uniTitle.setNoOfCopies(TotalEntry.size());
                                              //   daoobj.update(uniTitle);

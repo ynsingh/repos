@@ -23,28 +23,23 @@ import org.apache.struts.action.ActionMapping;
 public class CatAction4 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-    HashMap hm1=new HashMap();
-     private MarcHibDAO marchib=new MarcHibDAO();
     
-    MarcHibDAO dao=new MarcHibDAO();
-
-    private Biblio biblio=new Biblio();
-    private BiblioId biblioid= new BiblioId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-         System.out.println("inside cataction4 !");
+
+        HashMap hm1=new HashMap();
+     MarcHibDAO marchib=new MarcHibDAO();
+
+    MarcHibDAO dao=new MarcHibDAO();
+
+  Biblio biblio=new Biblio();
+     BiblioId biblioid= new BiblioId();
+
+
+        System.out.println("inside cataction4 !");
         CatActionForm4 caf4=(CatActionForm4)form;
         HttpSession session = request.getSession();
        int bibid = (Integer)session.getAttribute("biblio_id");
@@ -92,11 +87,14 @@ public class CatAction4 extends org.apache.struts.action.Action {
                    biblio.setId(biblioid);
 //                   marchib.insert(biblio);
 hm1=(HashMap)session.getAttribute("hsmp");
-if(hm1.containsKey("19")){
-            hm1.remove("19");
-        }
- hm1.put("19", biblio);
+if(hm1==null)
+    hm1=new HashMap();
 
+//if(hm1.containsKey("19")){
+        //    hm1.remove("19");
+      //  }
+ hm1.put("19", biblio);
+session.setAttribute("hsmp", hm1);
         //code for mapping forwards......
          if(t.equals("0"))
         {

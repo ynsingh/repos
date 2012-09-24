@@ -39,6 +39,7 @@ public class ExportDatabaseAction extends org.apache.struts.action.Action {
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         user_id=(String)session.getAttribute("login_id");
         String filename = "";
+        DAO daoobj=new DAO();
     try
     {
 
@@ -64,14 +65,14 @@ public class ExportDatabaseAction extends org.apache.struts.action.Action {
 
                String tableName=uploadForm.getCombo_table_name();
                StringBuffer line=new StringBuffer();
-               for (int k = 0; k < DAO.columnname1(tableName).size(); k++)
+               for (int k = 0; k < daoobj.columnname1(tableName).size(); k++)
                {
-                    line.append(DAO.columnname1(tableName).get(k).toString());
+                    line.append(daoobj.columnname1(tableName).get(k).toString());
                     line.append("|");
                 }
                line.deleteCharAt(line.length()-1);
                line.append("\n");
-               List<Export> lst = (ArrayList<Export>)DAO.ViewAllTable(uploadForm.getCombo_table_name(),library_id,sublibrary_id) ;
+               List<Export> lst = (ArrayList<Export>)daoobj.ViewAllTable(uploadForm.getCombo_table_name(),library_id,sublibrary_id) ;
                for (int row = 0; row < lst.size(); row++)
 	       {
             if(tableName.equalsIgnoreCase("bibliographic_details"))
@@ -403,6 +404,7 @@ public class ExportDatabaseAction extends org.apache.struts.action.Action {
 
     private  void writeDataSheet1(WritableSheet s, String tableName,String library_id)
             throws WriteException {
+        DAO daoobj=new DAO();
         WritableFont wf = new WritableFont(WritableFont.TIMES,
                 10, WritableFont.NO_BOLD);
         WritableCellFormat cf = new WritableCellFormat(wf);
@@ -414,13 +416,13 @@ public class ExportDatabaseAction extends org.apache.struts.action.Action {
         Label l;
 
         String table_name = tableName;
-        for (int k = 0; k < DAO.columnname1(table_name).size(); k++) {
-            l = new Label(k, 0, DAO.columnname1(table_name).get(k).toString(), cf1);
+        for (int k = 0; k < daoobj.columnname1(table_name).size(); k++) {
+            l = new Label(k, 0, daoobj.columnname1(table_name).get(k).toString(), cf1);
             s.addCell(l);
-            System.out.println("this is table column ::::::::::::::::" + DAO.columnname1(table_name).get(k).toString());
+            System.out.println("this is table column ::::::::::::::::" + daoobj.columnname1(table_name).get(k).toString());
 
         }
-        List<Export> lst = (ArrayList<Export>)DAO.ViewAllTable(table_name,library_id,sublibrary_id) ;
+        List<Export> lst = (ArrayList<Export>)daoobj.ViewAllTable(table_name,library_id,sublibrary_id) ;
         
         for (int row = 0; row < lst.size(); row++)
         {
