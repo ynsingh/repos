@@ -1,0 +1,5 @@
+For compiling the code for indexing server use
+
+\brihaspatisync_iserver$ ant compile
+
+
