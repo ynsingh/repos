@@ -92,16 +92,19 @@ public class  BufferMgt {
 			}
 			if(type.startsWith("Audio_Post")){	
 				Buffer buffer=createhashtable.set_getBuffer(type);
+				java.util.Date now = new java.util.Date();
+			        java.text.SimpleDateFormat dateFormatter = new java.text.SimpleDateFormat("y-M-d'-'h:m:sa");
+			        String str=dateFormatter.format(now);
 				try {
 					if(type.startsWith("Audio_Post")){
-						String str=type.replace("Audio_Post","");
-						File f=new File(str);
+						String sessionid=type.replace("Audio_Post","");
+						File f=new File(sessionid);
 						if(!f.exists())
 							f.mkdir();
-						int bytesWritten = AudioSystem.write((AudioInputStream)data,AudioFileFormat.Type.WAVE,new File(str+"/"+Integer.toString(buffer.size())+".wav"));
+						int bytesWritten = AudioSystem.write((AudioInputStream)data,AudioFileFormat.Type.WAVE,new File(sessionid+"/"+str+".wav"));
 					}
 				}catch(Exception ex){}
-				buffer.putObject(Integer.toString(buffer.size()));
+				buffer.putObject(str);
 				buffer.put(current_ip);
 			}else {
 				Buffer buffer=createhashtable.set_getBuffer(type);

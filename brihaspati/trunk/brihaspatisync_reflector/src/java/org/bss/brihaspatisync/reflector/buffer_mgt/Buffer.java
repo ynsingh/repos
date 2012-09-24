@@ -63,30 +63,17 @@ public class Buffer {
 		if(buffer.size() > endIndex){
 			for(int j=fromIndex;j<endIndex;j++){
 				buffer.removeElementAt(0);
+				String removeelement=data.get(0).toString();
 				data.removeElementAt(0);
 				if(type.startsWith("Audio_Post")){
-					renameFileName(type);
+					String sessionid=type.replace("Audio_Post","");
+					File file=new File(sessionid+"/"+removeelement+".wav"); //0
+                                        file.delete();
 				}
 			}
 		}
    	}
-		
-	private void renameFileName(String type){
-		try {	
-			for(int i=0;i<data.size();i++){
-				int old_filePrefix=Integer.parseInt(getObject(i).toString());
-				int new_filePrefix=old_filePrefix-1;
-				data.setElementAt(Integer.toString(new_filePrefix),i);
-				{
-					String str=type.replace("Audio_Post","");
-                                        File oldfile=new File(str+"/"+Integer.toString(new_filePrefix)+".wav"); //0
-					oldfile.delete();
-                                        File newfile=new File(str+"/"+Integer.toString(old_filePrefix)+".wav");//1
-					newfile.renameTo(oldfile);
-				}
-			}
-		}catch(Exception e){System.out.println(e.getMessage());}
-	}	
+	
 	/**
          * Return <b>true</b> if the buffer is empty.
          */

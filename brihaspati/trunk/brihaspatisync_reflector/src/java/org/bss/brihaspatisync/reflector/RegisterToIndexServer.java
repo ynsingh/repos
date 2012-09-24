@@ -259,7 +259,7 @@ public class RegisterToIndexServer {
 			//Audio Thread
 			PostAudioServer.getController().startThread();
 			//PostNmsServer.getController().startThread();
-                        org.bss.brihaspatisync.reflector.network.audio.Student_PostAudioServer.getController().startThread();            
+                        //org.bss.brihaspatisync.reflector.network.audio.Student_PostAudioServer.getController().startThread();            
 
 			//TCPServer.getController().start(); 	/** port 8888  */
 			//TransmitHandlerThread.getControllerofHandler().start();

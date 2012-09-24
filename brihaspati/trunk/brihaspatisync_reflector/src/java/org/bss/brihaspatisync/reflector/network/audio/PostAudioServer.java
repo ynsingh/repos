@@ -84,44 +84,32 @@ class MyPostHandler implements HttpHandler {
                                 String lecture_id=responseHeader.get("session").toString();
                                 OutputStream responseBody = exchange.getResponseBody();
                                 byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-                                InputStream is=new ByteArrayInputStream(bytes);
-                                AudioInputStream ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
+				AudioInputStream ais=null;
+				if(bytes.length>150000){
+					System.out.println("client_ip "+client_ip+ "  size "+bytes.length);
+                                	InputStream is=new ByteArrayInputStream(bytes);
+                                	ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
+				}
                                 try {
-                                        if(ais !=null) {
-                                                MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-                                                if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
-                                                        BufferMgt buffer_mgt= new BufferMgt();
-                                                        temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
-                                                }
-                                                BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-                                                buffer_mgt.putByte(ais,client_ip,"Audio_Post"+lecture_id);
-                                                buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id);
-                                        }
+                                  	MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
+                                        if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
+                                        	BufferMgt buffer_mgt= new BufferMgt();
+                                                temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
+                                     	}
+                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
+                                        if(ais !=null){ 
+						buffer_mgt.putByte(ais,client_ip,"Audio_Post"+lecture_id);
+					}
+					String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
+                                        if(input != null) {
+						System.out.println("-----------"+client_ip+"   input "+input);
+						AudioInputStream ais1 =AudioSystem.getAudioInputStream(new FileInputStream(lecture_id+"/"+input+".wav"));
+	                                        AudioSystem.write(ais1,AudioFileFormat.Type.WAVE,responseBody);
+        	                        }
+                                        
                                 }catch(Exception e){ System.out.println("Error in recive from client to ref PostAudioServer class  "+e.getMessage()); }
                                 responseBody.flush();
                                 responseBody.close();
-			}else if (requestMethod.equalsIgnoreCase("GET")) { 
-				Headers responseHeaders = exchange.getResponseHeaders();
-                                responseHeaders.set("Content-Type", "text/plain");
-                                exchange.sendResponseHeaders(200, 0);
-                                Headers responseHeader = exchange.getRequestHeaders();
-                                String lecture_id=responseHeader.get("session").toString();
-                                OutputStream responseBody = exchange.getResponseBody();
-                                try {
-                                        MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
-                                        BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-                                        String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
-                                        if(input != null) {
-						int kk=Integer.parseInt(input);
-						if(kk>0)
-							kk=kk-1;	
-                                                AudioInputStream ais =AudioSystem.getAudioInputStream(new FileInputStream(lecture_id+"/"+kk+".wav"));
-                                                AudioSystem.write(ais,AudioFileFormat.Type.WAVE,responseBody);
-                                        }
-                                }catch(Exception e){ /*System.out.println("Error in send from ref to client PostAudioServer class  "+e.getMessage());*/ }
-                                responseBody.flush();
-                                responseBody.close();
-                                exchange.notify();
 			}
 		}catch(Exception ex){}
 	}
