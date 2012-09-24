@@ -117,10 +117,47 @@ else
 String msg1=(String) request.getAttribute("msg1");
 %>
 <script type="text/javascript">
+var pos_no=0;
+function checkpos1(){
+//alert("sdasda");
+      var req = newXMLHttpRequest();
+ var electionId = document.getElementById("electionId").value;
+req.onreadystatechange = getReadyStateHandler(req, updatePositions1);
+
+req.open("POST","<%=request.getContextPath()%>/getPosition.do?getElectionId="+electionId, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+return pos_no;
+
+
+  }
+
+
+function updatePositions1(cartXML)
+{
+
+  
+   var em = cartXML.getElementsByTagName("positions")[0];
+   var em6 = em.getElementsByTagName("position");
+   pos_no=em6.length;
+}
+
+
 var j=0;
 var i=0;
+var count=0;
 function createposition()
 {
+  
+
+checkpos1();
+
+        
+//alert(checkpos);
+
+if(checkpos==true){
+
 i=0;
 j=j+1;
 //alert(j+"CREATE");
@@ -134,17 +171,28 @@ var divtag = document.createElement("div");
      divtag.style.marginLeft = "0px";
      divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr> <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria('+j+');"></table>';
      document.getElementById("position").appendChild(divtag);
-
-
-     
+     checkpos=false;
+}
+else if(count==0){
     
-
-
-
-
-
-
-
+i=0;
+j=j+1;
+count=count+1;
+var divtag = document.createElement("div");
+     divtag.id = "position"+j;
+     divtag.style.backgroundColor = "#E0F8F7";
+     divtag.style.border = "solid 5px #0B3B24";
+     divtag.style.borderTopLeftRadius = "10px";
+     divtag.style.width = "930px";
+     divtag.style.align = "center";
+     divtag.style.marginLeft = "0px";
+     divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr> <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria('+j+');"></table>';
+     document.getElementById("position").appendChild(divtag);
+}
+else{
+    alert("Save Previous  Position Entry First");
+    return false;
+}
 }
 var k=0;
 var l=0;
@@ -273,8 +321,9 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
+var checkpos=false;
 function search(current) {
-// alert(current);
+
     var position = "position_name0"+current;
     var posinstruct = "instruct0" + current;
     var numberofchoice = "numberofchoice0"+current;
@@ -311,11 +360,11 @@ req.send();
 var idPos = "position"+current;
 
 document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
- document.getElementById(idPos).style.border = "solid 5px #F2F5A9";
+document.getElementById(idPos).style.border = "solid 5px #F2F5A9";
 
 return true;
 }
-else{alert("Please Enter Values in the Field for Position Entry First");
+else{alert("Please Enter Values in the Field For Position First");
 return false;}
 }
 
@@ -337,6 +386,7 @@ for(i=0;i<em1.length;i++)
         alert(em1[i].firstChild.nodeValue);
 
     }
+    checkpos=true;
 }
 
 function search1(current,pos_id) {
@@ -344,8 +394,13 @@ function search1(current,pos_id) {
     var position = "criteria_name0"+current;
     var position_name = document.getElementById(position).value;
     var electionId = document.getElementById("electionId").value;
-    //alert("election_id="+electionId);
-    position_name = position_name.replace(/^\s*|\s*$/g,"");
+   // alert("election_id="+electionId+position_name);
+   // position_name = position_name.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
+    //alert("position_nameeeee"+position_name)
+  if(valid(position_name)==false){
+     return false;}
+
+     
     var posid = "rule_id0"+current;
   //  var PositionId="";
     var butId = "but0"+current;
@@ -390,7 +445,7 @@ return false;
 function update13(cartXML)
 {
 
-
+  
 var em = cartXML.getElementsByTagName("email_ids")[0];
 var em1 = em.getElementsByTagName("message");
 //var em = cartXML.firstChild.value;
@@ -826,6 +881,26 @@ var send = document.getElementById("Scrend_date");
         }--%>
   
 }
+
+function valid(rule_name)
+    {
+
+     var s = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+     str=rule_name;
+
+     for (var i = 0; i < str.length; i++)
+     {
+
+        if (s.indexOf(str.charAt(i)) != -1)
+      {
+         alert ("The box has special characters. \nThese are not allowed.\n ie use percent for % etc");
+
+         return false;
+      }
+
+    }
+
+    }
 // update Criteria specific to position
 var k=0;
 var l=0;
@@ -841,8 +916,11 @@ var c=0;
   for (var i = current1+1;c<=0; i++)
   {
 
-     var list=cn[i].getElementsByTagName('input');
+   var list=cn[i].getElementsByTagName('input');
    var rule_name=list[0].value;
+   if(valid(rule_name)==false)
+    return false;
+  
   var rule_id=list[1].value;
 
   var req = newXMLHttpRequest();

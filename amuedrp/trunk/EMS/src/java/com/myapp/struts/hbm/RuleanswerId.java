@@ -13,15 +13,17 @@ public class RuleanswerId  implements java.io.Serializable {
      private String instituteId;
      private String ruleId;
      private String enrollment;
+     private int positionId;
 
     public RuleanswerId() {
     }
 
-    public RuleanswerId(String electionId, String instituteId, String ruleId, String enrollment) {
+    public RuleanswerId(String electionId, String instituteId, String ruleId, String enrollment,int positionId) {
        this.electionId = electionId;
        this.instituteId = instituteId;
        this.ruleId = ruleId;
        this.enrollment = enrollment;
+       this.positionId = positionId;
     }
    
     public String getElectionId() {
@@ -31,6 +33,14 @@ public class RuleanswerId  implements java.io.Serializable {
     public void setElectionId(String electionId) {
         this.electionId = electionId;
     }
+    public int getPositionId(){
+        return this.positionId;
+    }
+
+    public void setPositionId(int positionId){
+        this.positionId= positionId;
+    }
+
     public String getInstituteId() {
         return this.instituteId;
     }

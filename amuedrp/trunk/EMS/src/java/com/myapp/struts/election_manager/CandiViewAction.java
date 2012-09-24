@@ -67,7 +67,7 @@ session.setAttribute("Institute",Institute);
 
         VoterRegistration r=CandidateRegistrationDAO.searchVoterRegistration(eid,id);
         CandidateRegistration c=CandidateRegistrationDAO.searchCandidateRegistration(eid,id,position);
-        List<ElectionCriteria> obj= (List<ElectionCriteria>)CandidateRegistrationDAO.GetRuleDetails(eid,id,eleid);
+        List<ElectionCriteria> obj= (List<ElectionCriteria>)CandidateRegistrationDAO.GetRuleDetails(eid,id,eleid,Integer.parseInt(position));
        System.out.println("AAAAAAAAAAAAAAAAAAa"+obj.size());
        session.setAttribute("rule",obj);
         Candidate1 candi=new Candidate1();

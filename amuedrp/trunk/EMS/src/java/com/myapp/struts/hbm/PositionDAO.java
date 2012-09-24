@@ -509,7 +509,7 @@ Position1 obj=null;
     }
         return obj;
     }
- public  List<Electionrule> getRules(String instituteid,String electionid) {
+ public  List<Electionrule> getRules(String instituteid,String electionid,int pos_id) {
         Session session = null;
         List<Electionrule> obj=null;
         try {
@@ -517,7 +517,8 @@ Position1 obj=null;
             session.beginTransaction();
             Criteria criteria = session.createCriteria(Electionrule.class)
                     .add(Restrictions.conjunction()
-                    .add(Restrictions.eq("id.electionId", electionid)))
+                    .add(Restrictions.eq("id.electionId", electionid))
+                     .add(Restrictions.eq("id.positionId", pos_id)))
                     .add(Restrictions.eq("id.instituteId", instituteid));
         obj= (List<Electionrule>) criteria.list();
 

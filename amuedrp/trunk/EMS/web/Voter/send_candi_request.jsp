@@ -606,7 +606,7 @@ for(iii=0;iii<em1.length;iii++)
     { 
         var electionId1 = em1[iii].getElementsByTagName("election_id");
      
-      var electionName1 = em1[iii].getElementsByTagName("electionname");
+        var electionName1 = em1[iii].getElementsByTagName("electionname");
         var description1 = em1[iii].getElementsByTagName("description");
         var nstart1 = em1[iii].getElementsByTagName("Nstart");
         var nend1 = em1[iii].getElementsByTagName("Nend");
@@ -619,8 +619,7 @@ for(iii=0;iii<em1.length;iii++)
 
         var posts = em1[iii].getElementsByTagName("Posts")[0];
         var post = posts.getElementsByTagName("post");
-        var rules = em1[iii].getElementsByTagName("Rules")[0];
-        var rule = rules.getElementsByTagName("rule");
+        
    
         var electionId = electionId1[0].firstChild.nodeValue;
 
@@ -667,66 +666,54 @@ for(iii=0;iii<em1.length;iii++)
        //innerhtm = innerhtm + '<tr><td>Nomination Withdrawal End Date:</td><td>'+ wend +'</td></tr>';
        innerhtm = innerhtm + '<tr><td>Election Date:</td><td>'+ estart +'&nbsp;&nbsp;&nbsp;&nbsp; to&nbsp;&nbsp;&nbsp;&nbsp; '+ eend +'</td></tr>';
        //innerhtm = innerhtm + '<tr><td>Election End Date:</td><td>'+ eend +'</td></tr>';
-
-        for(jj=0;jj<rule.length;jj++)
+         innerhtm += '<tr><td colspan=2>For the Post of:</td></tr>';
+       
+        for(jj=0;jj<post.length;jj++)
            {
-               var positionId1 = rule[jj].getElementsByTagName("ruleId");
-               var positionId = positionId1[0].firstChild.nodeValue;
-               var position1 = rule[jj].getElementsByTagName("rulevalue");
-               var position = position1[0].firstChild.nodeValue;
-
-              <%-- <%
-               Calendar cal = Calendar.getInstance();
-               Date d = cal.getTime();
-               %>--%>
-                          innerhtm +='<tr><td>'+position+'</td>';
-                         <%-- if(Date.parse(nstart)<=Date.parse(<%=d%>) && Date.parse(nend)>Date.parse(<%=d%>))--%>
-                      // {
-
-                                  innerhtm +='<td><input type="textbox" id="text'+positionId+'" value=""/></td>';
-                                
-                      //}
-                       innerhtm +='</tr>';
-           }
-       innerhtm += '</table>';
-
-
-
-
-
-       innerhtm += '<tr><td colspan=2>For the Post of:</td></tr>';
-      // alert(post.length);
-
-
-
-
-       for(jj=0;jj<post.length;jj++)
-           {
+               
                var positionId1 = post[jj].getElementsByTagName("positionId");
                var positionId = positionId1[0].firstChild.nodeValue;
+               
                var position1 = post[jj].getElementsByTagName("position");
                var position = position1[0].firstChild.nodeValue;
                var candidature1 = post[jj].getElementsByTagName("candidature");
                var candidature = candidature1[0].firstChild.nodeValue;
-              <%-- <%
-               Calendar cal = Calendar.getInstance();
-               Date d = cal.getTime();
-               %>--%>
-                          innerhtm +='<tr><td>'+position+' ('+candidature+')</td>';
-                         <%-- if(Date.parse(nstart)<=Date.parse(<%=d%>) && Date.parse(nend)>Date.parse(<%=d%>))--%>
-                      // {
-                      
-    innerhtm +='<td><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId.toString()+','+rule.length.toString()+');"/></td>';
-                    
-                      //}
-                       innerhtm +='</tr>';
+              var rules = post[jj].getElementsByTagName("Rules")[0];
+   
+        var rule = rules.getElementsByTagName("rule");
+
+               innerhtm +='<tr><td colspan=2><br/>'+position+' ('+candidature+')</td>';
+
+               
+    innerhtm+='</tr><tr><td><table><tr><td colspan=2>'
+  
+   for(jjk=0;jjk<rule.length;jjk++)
+           {
+
+              var positionIdrule1 = rule[jjk].getElementsByTagName("ruleId");
+               var positionIdrule = positionIdrule1[0].firstChild.nodeValue;
+               var position1rule = rule[jjk].getElementsByTagName("rulevalue");
+               var positionr = position1rule[0].firstChild.nodeValue;
+               innerhtm +='<tr><td>'+positionr+'</td>';
+               innerhtm +='<td><input type="textbox" id="text'+positionIdrule+'" value=""/></td>';
+               innerhtm +='</tr>';
            }
-       innerhtm += '</table>';
+           
+       innerhtm += '</td></tr></table>';
+       innerhtm+='</td></tr><tr>'
+innerhtm +='<td colspan=2><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId.toString()+','+rule.length.toString()+');"/></td></tr></table>';
+        
+           }
+      
+
+}
+
+      
        block1.innerHTML = innerhtm;
        doc.appendChild(block1);
        curElec.appendChild(doc);
-
-    }
+ 
+   
 var doc2 = document.getElementById("currentElections");
 doc2.style.display = "block";
 
@@ -836,6 +823,11 @@ function createul(current)
     par.appendChild(dul);
     obj = dul;
 }
+
+
+
+
+
 <%
 String instituteName=(String)session.getAttribute("institute_name");
 

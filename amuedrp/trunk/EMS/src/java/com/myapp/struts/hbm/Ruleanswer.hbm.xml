@@ -17,6 +17,9 @@
             <key-property name="enrollment" type="string">
                 <column name="enrollment" length="30" />
             </key-property>
+       <key-property name="positionId" type="int">
+        <column name="position_id"/>
+      </key-property>
         </composite-id>
         <property name="answer" type="string">
             <column name="answer" length="500" />

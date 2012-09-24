@@ -82,25 +82,27 @@ Election election1 =(Election)election.get(tcount);
                     emp_ids.append("<positionId>"+p.getPosition_id()+"</positionId>");
                     emp_ids.append("<position>"+p.getPosition_name()+"</position>");
                     emp_ids.append("<candidature>"+p.getCandidature()+"</candidature>");
+
+                    emp_ids.append("<Rules>");
+                    PositionDAO posdao1 = new PositionDAO();
+                    List<Electionrule> lstPos1 = posdao1.getRules(election1.getId().getInstituteId(),election1.getId().getElectionId(),p.getPosition_id());
+                    Iterator itlstPos1=null;
+                    if(lstPos1!=null) itlstPos1 = lstPos1.iterator();
+                     while(itlstPos1!=null && itlstPos1.hasNext())
+                    {
+                        Electionrule p1 = (Electionrule)itlstPos1.next();
+                        emp_ids.append("<rule>");
+                        emp_ids.append("<ruleId>"+p1.getId().getRuleId()+"</ruleId>");
+                        emp_ids.append("<rulevalue>"+p1.getCriteria()+"</rulevalue>");
+                        emp_ids.append("</rule>");
+                      }
+                    emp_ids.append("</Rules>");
+                   
                     emp_ids.append("</post>");
                 }
                 emp_ids.append("</Posts>");
 
-                   emp_ids.append("<Rules>");
-                PositionDAO posdao1 = new PositionDAO();
-                List<Electionrule> lstPos1 = posdao1.getRules(election1.getId().getInstituteId(),election1.getId().getElectionId());
-                Iterator itlstPos1=null;
-                if(lstPos1!=null) itlstPos1 = lstPos1.iterator();
-               while(itlstPos1!=null && itlstPos1.hasNext())
-               {
-                    Electionrule p = (Electionrule)itlstPos1.next();
-                  emp_ids.append("<rule>");
-                    emp_ids.append("<ruleId>"+p.getId().getRuleId()+"</ruleId>");
-                    emp_ids.append("<rulevalue>"+p.getCriteria()+"</rulevalue>");
-
-                   emp_ids.append("</rule>");
-               }
-                emp_ids.append("</Rules>");
+                 
 
                 emp_ids.append("</election>");
                }

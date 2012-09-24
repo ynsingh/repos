@@ -156,6 +156,7 @@ int i=0;
            objid.setEnrollment(enrollment);
            obj.setAnswer(str.nextElement().toString());
            obj.setId(objid);
+           objid.setPositionId(Integer.parseInt(position));
            CandidateRegistrationDAO.insert1(obj);
 i++;
 

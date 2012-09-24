@@ -13,6 +13,7 @@
     <mapping resource="com/myapp/struts/hbm/StaffDetail.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Election.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Electionrule.hbm.xml"/>
+     <mapping resource="com/myapp/struts/hbm/Ruleanswer.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Eligibility.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/VoterRegistration.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Ballot.hbm.xml"/>

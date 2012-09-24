@@ -168,7 +168,7 @@ alert(em1[0].firstChild.nodeValue);
 
 req.onreadystatechange = getReadyStateHandler(req, designBallot);
 
-req.open("POST","<%=request.getContextPath()%>/getPosition.do", true);
+req.open("POST","<%=request.getContextPath()%>/getPosition1.do", true);
 
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 req.send();
@@ -247,7 +247,8 @@ for(jj=0;jj<ca.length;jj++)
         var candidatename1 = ca[jj].getElementsByTagName("candidatename");
         var candidatename;
             if(candidatename1[0].firstChild!=null) candidatename = candidatename1[0].firstChild.nodeValue;
-            else candidatename = "";
+            else   candidatename = "";
+
        htm = htm +'<tr><td style="text-align: left;"><label for="entry'+iii+'">'+candidatename+'</label></td>';
 
        var cl = "checkCandidateLimit("+iii+","+jj+",this,"+ noofchoice +",count1["+iii+"],'"+candidatename+"','"+positionname+"')";
@@ -259,6 +260,9 @@ if(noofchoice>1)
            {
                htm = htm +'<td><input type="radio" value="'+jj+'" onclick="'+cl+'"  name="entry'+iii+'" id="entry'+iii+'" ></td></tr>';
            }
+            
+           
+
 ival = iii;
     }
 //}
@@ -296,6 +300,7 @@ window.setTimeout('fn()', 400);
 }
 function Validate(index,ch,posxm)
 {
+   //alert("index="+index+"ch="+ch+"posxm="+posxm)
    for(var i=0;i<=index;i++){
         //alert("count1["+i+"]="+count1[i]+" ch["+i+"]="+choice[i]);
         if(count1[i]!=choice[i] || count1[i]==undefined){
@@ -345,7 +350,7 @@ function checkCandidateLimit(iii,jj,this1,noofchoice,currentSel,candidateName,po
             count1[iii]--;}
     if(count1[iii]>noofchoice)
         {
-            alert("You may Select more than maximum choice.");
+            alert("You have Selected more than maximum choice.");
             this1.checked = false;
             positionSel[iii][1][jj]="";
             count1[iii]--;

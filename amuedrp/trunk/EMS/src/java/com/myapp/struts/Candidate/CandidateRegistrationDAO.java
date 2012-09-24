@@ -678,7 +678,7 @@ public static List<SetVoter> getVoterDetails(String instituteid){
         }
     return candi;
 }
- public static List<ElectionCriteria> GetRuleDetails(String instituteId,String enrollment,String eid)
+ public static List<ElectionCriteria> GetRuleDetails(String instituteId,String enrollment,String eid,int position_id)
     {
          Session session =null;
 
@@ -689,7 +689,7 @@ public static List<SetVoter> getVoterDetails(String instituteid){
 
             String sql="";
 
-            sql = "select a.*,b.* from electionrule  b, ruleanswer a where a.rule_id=b.rule_id and a.institute_id=b.institute_id and a.election_id=b.election_id and a.institute_id=:institute_id and a.enrollment=:enrollment and a.election_id=:election_id";
+            sql = "select a.*,b.* from electionrule  b, ruleanswer a where a.rule_id=b.rule_id and a.institute_id=b.institute_id and a.election_id=b.election_id and a.position_id=b.position_id and a.institute_id=:institute_id and a.enrollment=:enrollment and a.election_id=:election_id and a.position_id=:position_id";
 
 
             System.out.println(sql);
@@ -702,7 +702,7 @@ public static List<SetVoter> getVoterDetails(String instituteid){
           query.setString("institute_id",instituteId );
           query.setString("enrollment", enrollment);
           query.setString("election_id", eid);
-
+          query.setInteger("position_id", position_id);
          candi= (List<ElectionCriteria>)query.list();
             session.getTransaction().commit();
         }

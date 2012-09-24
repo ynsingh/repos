@@ -23,40 +23,24 @@ public class ChatRoomList
 	{
 		roomList = new HashMap();
 	}
-	/**
-	* adds new chat room object to a list of Rooms.
-	* @param room ChatRoom object
-	* @return void
-	*/
+	
 	public synchronized void addRoom(ChatRoom room)
 	{
 		roomList.put(room.getName(),room);
 	}
 	
-	/**
-	* Used to remove a ChatRoom object from the
-	* list of ChatRooms.
-	* @param name is a String object is the name of the
-	* room to be removed from the list of rooms.
-	* @return void
-	*/
+	
 	public synchronized void removeRoom(String name)
 	{
 		roomList.remove(name);
 	}
 	
-	/** Returns a ChatRoom object
-	* @param name is the name of the ChatRoom object to be returned.
-	* @return ChatRoom object.
-	*/
+	
 	public ChatRoom getRoom(String name)
 	{
 		return (ChatRoom) roomList.get(name);
 	}
-	/** Finds the room of chatter having this name.
-	* @param name is the name of the Chatter object.
-	* @return ChatRoom object.
-	*/
+	
 	public ChatRoom getRoomOfChatter(String name)
 	{
 		ChatRoom[] rooms = this.getRoomListArray();
@@ -70,9 +54,7 @@ public class ChatRoomList
 		}
 		return null;
 	}
-	/** Returns a Set containing all the ChatRoom objects
-	* @return Set
-	*/
+	
 	
 	public Set getRoomList()
 	{
@@ -98,11 +80,7 @@ public class ChatRoomList
 		return roomListArray;
 	}
 	
-	/**
-	* searches each ChatRoom for existance of a chatter.
-	* @param nickname Name of the chatter to find.
-	* @return boolean
-	*/
+	
 	public boolean chatterExists(String nickname)
 	{
 		boolean chatterexists = false;

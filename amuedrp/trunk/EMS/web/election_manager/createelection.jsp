@@ -117,13 +117,43 @@ else
 String msg1=(String) request.getAttribute("msg1");
 %>
 <script type="text/javascript">
+    var pos_no=0;
+function checkpos1(){
+//alert("sdasda");
+      var req = newXMLHttpRequest();
+ var electionId = document.getElementById("electionId").value;
+req.onreadystatechange = getReadyStateHandler(req, updatePositions1);
+
+req.open("POST","<%=request.getContextPath()%>/getPosition.do?getElectionId="+electionId, true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send();
+return pos_no;
+
+
+  }
+
+
+function updatePositions1(cartXML)
+{
+
+
+   var em = cartXML.getElementsByTagName("positions")[0];
+   var em6 = em.getElementsByTagName("position");
+   pos_no=em6.length;
+}
+
 var j=0;
 var i=0;
+var count=0;
 function createposition()
 {
+
+ checkpos1();
 i=0;
 j=j+1;
-//alert(j+"CREATE");
+
+if(checkpos==true){
 var divtag = document.createElement("div");
      divtag.id = "position"+j;
      divtag.style.backgroundColor = "#E0F8F7";
@@ -134,17 +164,26 @@ var divtag = document.createElement("div");
      divtag.style.marginLeft = "0px";
      divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr> <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria('+j+');"></table>';
      document.getElementById("position").appendChild(divtag);
-
-
+     checkpos=false;
+    }
+    else if(count==0){
+        count=count+1;
+     var divtag = document.createElement("div");
+     divtag.id = "position"+j;
+     divtag.style.backgroundColor = "#E0F8F7";
+     divtag.style.border = "solid 5px #0B3B24";
+     divtag.style.borderTopLeftRadius = "10px";
+     divtag.style.width = "930px";
+     divtag.style.align = "center";
+     divtag.style.marginLeft = "0px";
+     divtag.innerHTML ='<table><tr><td><%=resource.getString("positionname")%>*&nbsp;&nbsp;<input type="text" Id="position_name'+i+''+j +'" size="25px"/></td>&nbsp;&nbsp;<td><%=resource.getString("numberofchoice")%>*<input type="text" onkeypress="return isNumberKey(event)" Id="numberofchoice'+i+''+ j +'" size="25px"/></td><td><input type="button" id="but0'+ j +'" value="Save" onclick="search('+ j +');"/></td></tr><tr><td colspan="2"><%=resource.getString("instruction")%>:&nbsp;&nbsp;<textarea id="instruct0'+ j+'" readonly="true" rows="3" style="width: 415px; height: 46px;"></textarea></td></tr> <input type="button" id="Add Criteria" name="Add Criteria" style="margin-left: 0px;" value="Add Criteria" size="50px" onclick="createcriteria('+j+');"></table>';
+     document.getElementById("position").appendChild(divtag);
+    }
+  else{
+      alert("Save Value in Previous Position First");
+  }
      
-    
-
-
-
-
-
-
-
+  
 }
 var k=0;
 var l=0;
@@ -273,6 +312,7 @@ alert("HTTP error "+req.status+": "+req.statusText);
 }
 }
 }
+var checkpos=false;
 function search(current) {
 // alert(current);
     var position = "position_name0"+current;
@@ -315,7 +355,7 @@ document.getElementById(idPos).style.backgroundColor = "#D8CEF6";
 
 return true;
 }
-else{alert("Please Enter Values in the Field for Position Entry First");
+else{alert("Please Enter Values in the Field for Position  First");
 return false;}
 }
 
@@ -337,6 +377,7 @@ for(i=0;i<em1.length;i++)
         alert(em1[i].firstChild.nodeValue);
 
     }
+    checkpos=true;
 }
 
 function search1(current,pos_id) {
@@ -345,7 +386,10 @@ function search1(current,pos_id) {
     var position_name = document.getElementById(position).value;
     var electionId = document.getElementById("electionId").value;
     //alert("election_id="+electionId);
-    position_name = position_name.replace(/^\s*|\s*$/g,"");
+    //position_name = position_name.replace(/^\s*|\s*$/g,"");
+    if(valid(position_name)==false){
+        return false;
+    }
     var posid = "rule_id0"+current;
   //  var PositionId="";
     var butId = "but0"+current;
@@ -826,14 +870,38 @@ var send = document.getElementById("Scrend_date");
         }--%>
   
 }
+
+function valid(rule_name)
+    {
+      
+     var s = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?%";
+     str=rule_name;
+     
+     for (var i = 0; i < str.length; i++)
+     {
+        
+        if (s.indexOf(str.charAt(i)) != -1)
+      {
+         alert ("The box has special characters. \nThese are not allowed.\n ie use percent for % etc");
+       
+         return false;
+      }
+     
+    }
+    
+    }
+
+
 // update Criteria specific to position
 var k=0;
 var l=0;
 function update_criteria(posi,current1) {
+    
    var ele=document.getElementById("position"+posi).getElementsByTagName('input');
 
      pos=ele[1].value;
     // alert("pos="+pos);
+    //.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,'');
   var electionId = document.getElementById("electionId").value;
 var c=0;
 
@@ -843,6 +911,12 @@ var c=0;
 
      var list=cn[i].getElementsByTagName('input');
    var rule_name=list[0].value;
+   if(valid(rule_name)==false)
+    return false;
+   
+    
+ //  alert("rulename222="+rule_name);
+
   var rule_id=list[1].value;
 
   var req = newXMLHttpRequest();
@@ -850,7 +924,7 @@ var c=0;
 if (rule_name.length < 1)
 {
    alert("Please Enter Values in the Field");
-return false;
+   return false;
 
 }
 
@@ -860,7 +934,7 @@ req.onreadystatechange = getReadyStateHandler(req, update2);
 
 req.open("POST","<%=request.getContextPath()%>/UpdateRule.do", true);
 req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-req.send("setRule="+rule_name+"&setElectionId="+electionId+"&ruleId="+rule_id+"&position="+pos);
+req.send("setRule="+rule_name+"&setElectionId="+electionId+"&ruleId="+rule_id+"&position="+pos+"&textvalue="+rule_name);
 
 
      c++;
@@ -871,9 +945,9 @@ req.send("setRule="+rule_name+"&setElectionId="+electionId+"&ruleId="+rule_id+"&
 
 
   
-  }
+ 
 
-
+}
 return true;
    
   
@@ -1089,7 +1163,7 @@ rulerowcount=em1r.length;
             
         }
 <%
-String id=(String)ElectionDAO.returnMaxElectionId(institute_id);
+    String id=(String)ElectionDAO.returnMaxElectionId(institute_id);
 %>
         </script>
     </head>

@@ -23,15 +23,7 @@ public class UpdateElectionRule extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -45,6 +37,7 @@ public class UpdateElectionRule extends org.apache.struts.action.Action {
         String ruleid = (String)request.getParameter("ruleId");
         String setRule = (String)request.getParameter("setRule");
         String action = (String)request.getParameter("action");
+        String textvalue = (String)request.getParameter("textvalue");
         System.out.println((String)request.getParameter("position"));
         int positionid = Integer.parseInt((String)request.getParameter("position"));
         String instituteId = (String)session.getAttribute("institute_id");
@@ -67,7 +60,7 @@ public class UpdateElectionRule extends org.apache.struts.action.Action {
 else
 {
             emailDAO.updateRule(position);
-            System.out.println("action==========u="+action);
+            System.out.println("action==========u="+action+textvalue);
              positions+="<email_ids><message>Rule Updated Successfully</message></email_ids>";
             response.setContentType("application/xml");
             response.getWriter().write(positions);

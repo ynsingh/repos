@@ -55,77 +55,49 @@ public class ChatRoom
 		
 	}
 
-	/**
-	* Returns name of the room
-	* @return java.lang.String
-	*/
+	
 	public String getName()
 	{
 		return name;
 	}
 	
-	/**
-	* Returns description of the room
-	* @return java.lang.String
-	*/
+	
 	public String getDescription()
 	{
 		return description;
 	}
 	
-	/**
-	* adds a Chatter object to list of Chatters
-	* @param chatter Chatter object
-	* @return void
-	*/
+	
 	public synchronized void addChatter(Chatter chatter)
 	{
 		chatters.put(chatter.getName(), chatter);
 	}
-	/**
-	* removes a Chatter object from list of Chatters
-	* @param chatterName name of the chatter.
-	* @return void
-	*/
+	
 	public synchronized Object removeChatter(String chatterName)
 	{
 		return chatters.remove(chatterName);
 	}
 	
-	/**
-	* returns a Chatter object from chatters list.
-	* @param chatterName name of the chatter
 	
-	*/
 	public Chatter getChatter(String chatterName)
 	{
 		return (Chatter)chatters.get(chatterName);
 	}
 	
-	/**
-	* checks whether a chatter exists or not
-	* @param chatterName name of the chatter to check
-	* @return boolean
-	*/
+	
 	
 	public boolean chatterExists(String chatterName)
 	{
 		return chatters.containsKey(chatterName);
 	}
 	
-	/**
-	* returns total number of chatters in this room
-	* @return int
-	*/
+	
 	public int getNoOfChatters()
 	{
 		return chatters.size();
 	}
 	
-	/**
-	* returns a Set containing all the Chatters in the room
-	* @return java.util.Set
-	*/
+	
 	public Set getChatters()
 	{
 		return chatters.entrySet();
@@ -150,10 +122,7 @@ public class ChatRoom
 		return chattersArray;
 	}
 	
-	/** adds the message to the messages list
-	* @param msg A Message Object
-	* @return void
-	*/
+	
 	public synchronized void addMessage(Message msg)
 	{
 		if(messages.size()==messages_size)
@@ -163,20 +132,13 @@ public class ChatRoom
 		messages.add(msg);
 	}
 	
-	/**
-	* returns a ListIterator object containing all the messages
-	* @return java.util.ListIterator
-	*/	
+	
 	public ListIterator getMessages()
 	{
 		return messages.listIterator();
 	}
 
-	/**
-	* returns an array of messages sent after given time
-	* @param afterTimeStamp Time in milliseconds.
-	* @return array
-	*/	
+	
 	public Message[] getMessages(long afterTimeStamp)
 	{
 		ListIterator li = messages.listIterator();
@@ -199,29 +161,19 @@ public class ChatRoom
 		return arr;
 	}
 
-	/**
-	* returns total number of messages in the messages List
-	* @return int
-	*/
+	
 	public int getNoOfMessages()
 	{
 		return messages.size();
 	}
 	
-	/**
-	* sets maxmium number of messages to this number.
-	* @param size the maximum no of messages to hold at a time.
-	* @return void
-	*/
+	
 	public void setMaximumNoOfMessages(int size)
 	{
 		messages_size = size;
 	}
 	
-	/**
-	* returns maxmium number of messages set.
-	* @return int
-	*/
+	
 	public int getMaxiumNoOfMessages()
 	{
 		return messages_size;
