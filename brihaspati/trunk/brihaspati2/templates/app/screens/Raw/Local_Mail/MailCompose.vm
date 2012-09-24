@@ -15,6 +15,7 @@
 
 #if ($lang != "english" || $lang != "french" )
 <head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 ## This scripts is used for autosearch EmailId in compose mail. 
 <script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/jquery/jquery.min.js")"></script>
 <script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/AutoSuggestUser/jquery.autocomplete.js")"></script>
@@ -130,9 +131,9 @@ $!data.getmessage()
 <tr bgcolor="$ui.menuColor">
 <td align="left" colspan=2>
 <font face="$ui.sansserifFonts">
-  <input type="button" name="eventSubmit_doSend" value="$Notice_Send"  onClick="checkValue(document.editform,this);"/>
+  <input type="button" class="button-ftextstyle" name="eventSubmit_doSend" value="$Notice_Send"  onClick="checkValue(document.editform,this);"/>
   #if($status!="reply")
-  	<input type="reset" value="$brih_clear"> 
+  	<input type="reset" class="button-ftextstyle" value="$brih_clear"> 
   #end
         <input type="hidden" name="mode1" value="$mode1">
 	<input type="hidden" name="val" value="$val">

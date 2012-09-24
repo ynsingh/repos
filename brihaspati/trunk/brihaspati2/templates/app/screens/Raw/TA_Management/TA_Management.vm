@@ -11,6 +11,10 @@ $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+<head>
+<link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
+</head>
+
 	<table bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor"><td colspan=7>
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> |
@@ -81,7 +85,7 @@ $!data.getMessage()
 
 	 <tr bgcolor="$ui.menuColor">
                 <td colspan=6>
-                        <INPUT TYPE="button" NAME="eventSubmit_doRemoveUser" VALUE="$brih_delete" onClick="DeleteField(document.frm,this);">
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doRemoveUser" VALUE="$brih_delete" onClick="DeleteField(document.frm,this);">
                         <INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
                         <INPUT TYPE="hidden" NAME="actionName" VALUE="">
                         <INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">

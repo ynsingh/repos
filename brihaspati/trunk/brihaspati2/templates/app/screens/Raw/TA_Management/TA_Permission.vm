@@ -9,6 +9,7 @@ $page.setTitle("Home | $coursename | Autherization")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+	<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 	<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 
 	<table bgcolor="$ui.tableColor" width=100%>
@@ -88,7 +89,7 @@ $!data.getMessage()
 	#set ( $count = "$count$!users.ModuleId^"  )
 
         <tr bgcolor="$ui.menuColor" width=100%><td colspan=9>
-		<INPUT TYPE="button" NAME="eventSubmit_doSelect" VALUE="$bri_author" onClick="checkValue(document.frm,this);">
+		<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doSelect" VALUE="$bri_author" onClick="checkValue(document.frm,this);">
 		<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
 		<INPUT TYPE="hidden" NAME="actionName" VALUE="">
 		<input type="hidden" name="count" value="$tdcolor">

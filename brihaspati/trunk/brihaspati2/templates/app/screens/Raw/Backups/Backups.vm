@@ -13,7 +13,9 @@
 
 $page.setTitle("Backups")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
 	<td>
@@ -102,8 +104,8 @@ $!data.getMessage()
 <tr bgColor="$ui.menuColor">
 <td colspan="3"><b>$brih_backup7</b></td>
 </tr>
-<tr>
-	<td><select name="courses">
+<tr bgColor="$ui.tableColor">
+	<td><select class="drop" name="courses">
         <option value="Courses">$brih_all $brih_courses</option>
         #foreach($group in $courseList)
 		#if($data.getUser().getUserName() == "admin")
@@ -120,14 +122,14 @@ $!data.getMessage()
         </td>
         <td>
 		#if($lang == "hindi")
-	        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+	        <input type="button"  class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
 		#else
-	        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
+	        <input type="button"  class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
 		#end
 		#if($lang == "hindi")
-                <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+                <input type="button"  class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
 		#else
-                <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
+                <input type="button"  class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
 		#end
                 <input type="hidden" name="actionName">
                 <input type="hidden" name="count" value="$tdcolor">

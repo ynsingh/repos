@@ -44,13 +44,14 @@ $page.setBgColor("$ui.bgcolor")
 ##file is not video than play other files
 #else
 <body>
-<table width="100%"> ##1#t table
+<div style="width:1100px; margin:0px auto;">
+<table> ##1#t table
 	<tr> ##1#t tr
 		<td colspan="2">$navigation.setTemplate("/DefaultTop.vm")</td>
 	</tr> ##1#t tr closed
 	<tr> ##2#d tr
 		<td colspan=2>  ##1#t td of 2nd tr
-         			<table width="100%"> ##2#d table
+         			<table <div style="width:1100px; margin:0px auto;"> ##2#d table
 	 				##<tr bgcolor="$ui.headerLinkColor"> ##3#d tr
 	 				<tr bgcolor="$ui.menuColor"> ##3#d tr
 	    					#if($data.getUser().hasLoggedIn()) ##if(7)
@@ -122,7 +123,6 @@ $page.setBgColor("$ui.bgcolor")
              					#end ##end(7)
           				</tr> ##3#d tr closed
         			</table> ##2#d table closed
-		<br>
    		</td> ##1#t td of 2nd tr
 	</tr> ##2#d tr closed
 	<tr> ##5#h tr
@@ -180,6 +180,7 @@ $page.setBgColor("$ui.bgcolor")
 	</tr> ##8#h tr closed
 </table>
 </body>
+</div>
 #end
 </html>
 

@@ -12,6 +12,10 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("$brih_home |$personal $area |$shared $area")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 
 #if($val !="")
@@ -35,7 +39,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.menuColor">
                 <td><b>$brih_searchBy</b></td>
                 <td>
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
 				<option value="UserName"> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
 				<option value="Word"> $brih_Content</option>
                         </select>
@@ -45,7 +49,7 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">
                 </td>
                 <td>
-                        <input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search" onClick="checkNull(document.frm,this);">
 			<input type="hidden" name="ulist" value=$userlist>
                 </td>
 		<td colspan=5><a href=$link.setPage("call,UserMgmt_User,SharedArea.vm") style=text-decoration:none>$brih_listUsr</a></td>
@@ -121,12 +125,12 @@ $!data.getMessage()
 		 </td>
 			<td>$fname
 			</td>
-			 <td><select name="topic" size=1 >
+			 <td><select name="topic" size=1 class="drop">
                          #foreach($cvalue in $contentvalue)
                          <option value="$cvalue">$cvalue
                          #end
                         </select>
-			<input type="Submit" name="Submit" value=$brih_move>
+			<input type="Submit" name="Submit" class="button-ftextstyle" value=$brih_move>
 			<input type="hidden" name="name" value=$name>
 			<input type="hidden" name="filename" value=$fname>
 			<input type="hidden" name="mode" value=$mode>

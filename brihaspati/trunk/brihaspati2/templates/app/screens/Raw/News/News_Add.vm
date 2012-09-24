@@ -121,7 +121,7 @@ $!data.getMessage()
 		#end
             	</td>
              	<td align="left">
-                  <select name="Start_year">
+                  <select class="drop" name="Start_year">
                   <option value="$cyear">$cyear
 		  #foreach($year in $year_list)
 		    #if($cyear != $year)
@@ -130,7 +130,7 @@ $!data.getMessage()
 		  #end
                 </select>
       &nbsp<b><font size=+1>-</font></b>&nbsp
-          <select name="Start_mon">
+          <select class="drop" name="Start_mon">
             <option value="$cmonth">$cmonth
 	    #foreach($mon in $month)
 	    #if($mon != $cmonth)
@@ -139,7 +139,7 @@ $!data.getMessage()
 	    #end
             </select>
   		&nbsp;<b><font size=+1>-</font></b>&nbsp;
-                  <select name="Start_day">
+                  <select class="drop" name="Start_day">
                   <option value="$cdays">$cdays
 		  #foreach($d in $day)
 		    #if($d!=$cdays)
@@ -166,8 +166,8 @@ $!data.getMessage()
                         <tr bgcolor="$ui.menuColor">
                                 <td align=left colspan=2>
                                <font face="$ui sanSerif fonts">
-			     <input type=button name="eventSubmit_doInsert" value=$brih_submit onClick="checkNews(document.frm,this);"/>
-			     <input type=button name="reset" value=$brih_reset onClick="clearData(document.frm,this);">
+			     <input type=button class="button-ftextstyle" name="eventSubmit_doInsert" value=$brih_submit onClick="checkNews(document.frm,this);"/>
+			     <input type=button class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);">
 			     <input type="hidden" name="actionName">
 			     <input type="hidden" name="count" value="$tdcolor" >
                                 </font>

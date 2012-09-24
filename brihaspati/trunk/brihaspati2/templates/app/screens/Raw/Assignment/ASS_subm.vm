@@ -118,12 +118,12 @@ $!data.getMessage()
 		<td><input type="text" name="contentTopic" value="$topic" size=26 onChange="validate1(this)"/> &nbsp;
 		#end
 		#if($mode!="Update")
-		<input type="button" name="dosubmitView" value="$QuestionBank_available" onClick="checkBlank1(document.uploadform,this);"/></td>
+		<input type="button" class="button-ftextstyle" name="dosubmitView" value="$QuestionBank_available" onClick="checkBlank1(document.uploadform,this);"/></td>
 		#end
 	</tr>
 	<tr>
 		<td><b>$brih_due $brih_Da</b></td>
-		<td><select id="y" name="Start_year"  >
+		<td><select class="drop" id="y" name="Start_year"  >
                 <option value="$cyear" >$cyear
                 #foreach($year in $year_list)
                 	#if($cyear != $year)
@@ -132,7 +132,7 @@ $!data.getMessage()
 		#end
                 </select>
                 &nbsp <b><font size=+1>-</font></b>&nbsp
-                <select id="m" name="Start_mon"  >
+                <select class="drop" id="m" name="Start_mon"  >
                 <option value="$cmonth">$cmonth
 		#foreach($mon in $month)
                 	#if($mon != $cmonth)
@@ -141,7 +141,7 @@ $!data.getMessage()
               	#end
                 </select>
 		&nbsp<b><font size=+1>-</font></b>&nbsp
-                <select id="d" name="Start_day"  >
+                <select class="drop" id="d" name="Start_day"  >
                 <option value="$cdays">$cdays
                 #foreach($d in $day)
                 	#if($d!=$cdays)
@@ -177,9 +177,9 @@ $!data.getMessage()
 	<tr>
 		<td colspan=2>
 		#if($mode!="Update")
-		<input type="button" name="brih_upload" value="$brih_upload" onClick="checkBlank(document.uploadform,this);" />
+		<input type="button" class="button-ftextstyle" name="brih_upload" value="$brih_upload" onClick="checkBlank(document.uploadform,this);" />
 		#else
-		<input type="button" name="doUpdate" value="$brih_update" onClick="checkBlank(document.uploadform,this);" />
+		<input type="button" class="button-ftextstyle" name="doUpdate" value="$brih_update" onClick="checkBlank(document.uploadform,this);" />
 		#end
                         </font>
                         </td>

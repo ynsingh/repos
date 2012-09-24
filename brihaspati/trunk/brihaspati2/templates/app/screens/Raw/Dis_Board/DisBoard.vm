@@ -144,7 +144,7 @@ $!data.getMessage()
 		#if($mode!="reply")
 			<tr><td colspan=2>
 				<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>&nbsp $brih_Exist $brih_topic
-				<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+				<SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 				<option></option>
 				#foreach($topic in $allTopics)
 					<option>$topic</option>
@@ -192,7 +192,7 @@ $!data.getMessage()
 		</tr>
 		<tr>
 			<td colspan=2>
-			<input type="button" name="eventSubmit_doSend" value="$DisBoard_DB_msg25" onClick="checkBlank(document.uploadform,this);"/>&nbsp;
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doSend" value="$DisBoard_DB_msg25" onClick="checkBlank(document.uploadform,this);"/>&nbsp;
 			<input type="hidden" name="mode" value="All">
 			<input type="hidden" name="courseid" value="$cid">
 			<input type="hidden" name="actionName">
@@ -202,7 +202,7 @@ $!data.getMessage()
 	 		<INPUT TYPE="hidden" NAME="count" value="$tdcolor">
 			<input type="hidden" NAME="mode2" value="$mode2">
 			##<input type="button" name="eventSubmit_doSend" value="$DisBoard_DB_msg25" onClick="checkBlank(document.uploadform,this);"/>&nbsp;&nbsp	
-			<input type="reset" value="$brih_clear" onClick="makeEnable();">
+			<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="makeEnable();">
 			</td>
 		</tr>
 		</table>

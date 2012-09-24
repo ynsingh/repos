@@ -9,6 +9,7 @@ $page.setTitle(" $brih_home | $course | $brih_Wiki")
 $page.setBgColor("#ffffff")
 #set($lang=$data.getUser().getTemp("lang").toString())
 <head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 ##This Script use for wiki text to html.
 <script charset="utf-8" type="text/javascript" src="$content.getURI("/scrpts/wiki2html.js")"> </script>
 </head>
@@ -39,7 +40,7 @@ $page.setBgColor("#ffffff")
                 	<a href=$link.setPage("call,Wiki,Adminwiki.vm") style=text-decoration:none > $Wikimain5 </a>&nbsp; &nbsp;
 		        <b> $brih_search </b><INPUT type="text" name="query" size="15">
                         <input type="hidden" name="actionName" >
-                        <input type="submit" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
+                        <input type="submit" class="button-ftextstyle" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
 	        </td>
 	</tr>
 </table>

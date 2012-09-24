@@ -15,6 +15,9 @@
  * @modidied date: 20-10-2010, 23-12-2010, 11-01-2011, 05-08-2011,10-12-2011,07-02-2012
  * @modified date: 09-08-2012 (Priyanka)	
  *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setTitle("Login Page | Online Registration ")
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
@@ -62,7 +65,7 @@ $!data.getMessage()
 	  <td> #if($lang =="hindi") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
 	<td>
     	##<select id="inst_id" name="instname" size=1 onChange="ChangeRole(document.frm,this);"/>
-    	<select name="instName" size=1 onChange="checkOption(document.frm,this);"/>
+    	<select name="instName" size=1 class="drop" onChange="checkOption(document.frm,this);"/>
 	#if($Insname=="")
 		<option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
 	#else
@@ -73,8 +76,8 @@ $!data.getMessage()
 	  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
 	  #end
 	  </select>
-	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
-		<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search" class="button-ftextstyle"/>
+		<select id="group_id" class="drop" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
 	  	##<option></option>
 		##set($counter=1)
 		#foreach($crsname in $courseList)
@@ -99,14 +102,14 @@ $!data.getMessage()
 		#formCell(" $online_organisation " "ORGTN " "")
 	</tr>	
 	<tr><td>$brih_sel_Role <font color="Red">*</font></td>
-        <td><select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
+        <td><select id="role_id" name="role" size=1 class="drop" onChange="ChangeGroup(document.frm,this);"/>
 		<option value="student">$brih_student</option>
 	</select>
 	</td>
 	</tr>
 	<tr>
                 <td>$brih_program($brih_if $brih_student)</td>
-                <td colspan=3><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+                <td colspan=3><select name="prg" size=1 onChange="ChkPrg(document.frm,this);" class="drop" />
 			<option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end</option>
 			#foreach($progname in $PrgDetail)
 				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
@@ -123,8 +126,8 @@ $!data.getMessage()
         <input type="hidden" name="groupName" value="$name.getName()">
     	<input type="hidden" name="group_author">
     	<input type="hidden" name="role_author">
-    	<input type="button" name="eventSubmit_UserRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
-	<input type="Reset" name="Reset" Value="$brih_clear" onClick="clearField(document.frm,this);"/>
+    	<input type="button" class="button-ftextstyle" name="eventSubmit_UserRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
+	<input type="Reset" name="Reset" class="button-ftextstyle" Value="$brih_clear" onClick="clearField(document.frm,this);"/>
 	<input type="hidden" name="count" value="$tdcolor"/>
 	<input type="hidden" name="status" value="$status"/>
 	<input type="hidden" name="val"/>
@@ -142,7 +145,7 @@ $!data.getMessage()
 	<tr>
 	<td>$brih_select $RemoteInstitute $brih_name <font color=RED>*</font></td>
 	<td>
-    	<select name="instName">
+    	<select name="instName" class="drop">
 	#foreach($name in $instList)
 	<option value="$name.getInstituteName()">$name.getInstituteName() </option>
 	#end
@@ -182,9 +185,9 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
             <td colspan=3>
     		<input type="hidden" name="actionName">
-    		<input type="button" name="eventSubmit_CourseRegister" value=" $brih_submit " onClick="checkCourseName(document.frm,this);"/>
+    		<input type="button" class="button-ftextstyle" name="eventSubmit_CourseRegister" value=" $brih_submit " onClick="checkCourseName(document.frm,this);"/>
        		 &nbsp;&nbsp;&nbsp;
-    		<input type="reset" name="Clear" value=" $brih_clear " onClick="checkClear(document.frm,this);"/>
+    		<input type="reset" name="Clear" value=" $brih_clear" class="button-ftextstyle" onClick="checkClear(document.frm,this);"/>
                 <input type="hidden" name="count" value="$tdcolor">
                 <input type="hidden" name="status" value="$status">
 		##following mode added by Priyanka

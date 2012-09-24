@@ -10,7 +10,7 @@
 $!data.getMessage()
 <html>
 	<head>
-		
+		<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 		 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
 	        <script type="text/javascript" src="/brihaspati2/scrpts/dygraph-dev.js"></script>
 		##<script type="text/javascript" src="/brihaspati2/scrpts/CommonScripts/CommonScript.js")"></script>
@@ -36,7 +36,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.tableColor">
 			<td colspan="1">
 	         	$brih_select $brih_usrName
-			<select name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
+			<select class="drop" name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
 			#if($usrname!="")
                         	<option>$usrname </option>
                         #else
@@ -56,7 +56,7 @@ $!data.getMessage()
 	#if($userList2.size()!=0)
 		#if(($type=="sgraph") && ($usrname!=""))
 			$brih_select $brih_module $brih_name
-			<select name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
+			<select class="drop" name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
 			#if($mname!="")
                         	<option>$mname </option>
                         #else
@@ -76,7 +76,7 @@ $!data.getMessage()
 	#if($userList2.size()!=0)	
 		#if(($type=="sgraph") && ($mname!="") && ($usrname!=""))
 			$brih_select $brih_days	
-                        <select name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
+                        <select class="drop" name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                         	<option>$value </option>
                         #else
@@ -96,7 +96,7 @@ $!data.getMessage()
 		#else
 		#if(($type=="sgraph") && ($usrname!=""))
                         $brih_select $brih_days
-                        <select name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
+                        <select class="drop" name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                        		<option>$value </option>
                         #else

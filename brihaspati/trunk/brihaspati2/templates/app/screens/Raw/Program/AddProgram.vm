@@ -21,6 +21,7 @@ $!data.getMessage()
 ## was set in corresponding screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ##creating link for Admin's home & Program Management
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table  bgcolor="$ui.tableColor" width=100%>
         <tr bgcolor="$ui.menuColor">
                 <td>
@@ -78,10 +79,10 @@ $!data.getMessage()
         </tr>*#
         <tr>
 	#if($status=="update")
-                <td colspan=2><input type="button" name="eventSubmit_doSubmit" value="$brih_update" onClick="checkValue(document.frm,this);"/></td>
+                <td colspan=2><input type="button" class="button-ftextstyle" name="eventSubmit_doSubmit" value="$brih_update" onClick="checkValue(document.frm,this);"/></td>
 		<input type="hidden" name="status" value="$status">
 	#else
-		<td colspan=2><input type="button" name="eventSubmit_doSubmit" value="$brih_submit" onClick="checkValue(document.frm,this);"/></td>
+		<td colspan=2><input type="button" class="button-ftextstyle" name="eventSubmit_doSubmit" value="$brih_submit" onClick="checkValue(document.frm,this);"/></td>
 	#end	
         </tr>
 		<input type="hidden" name="actionName">

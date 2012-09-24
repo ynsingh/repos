@@ -20,7 +20,7 @@ $!data.getMessage()
         <option value=0>0</option>
         <option value=+>+</option>
 #end
-
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor">
 	<td>
@@ -83,7 +83,7 @@ $!data.getMessage()
    </tr>
 	<tr>
                                 <td>$brih_officeno</td>
-                                <td><select name="Offprefix">
+                                <td><select class="drop" name="Offprefix">
                                         #if($!offprefix=="+")
                                                 #option1()
                                         #else
@@ -110,7 +110,7 @@ $!data.getMessage()
                         </tr>
         <tr bgcolor="$ui.menuColor">
 				<td>$brih_mobileno</td>
-                                <td><select name="Mobprefix">
+                                <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
                                                 #option1()
                                         #else   
@@ -137,7 +137,7 @@ $!data.getMessage()
                         </tr>
                         <tr>
                                 <td>$brih_homeno</td>
-                                <td><select name="Homeprefix">
+                                <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
                                                 #option1()
                                         #else
@@ -164,7 +164,7 @@ $!data.getMessage()
                         </tr>
                         <tr bgcolor="$ui.menuColor">
                                 <td>$brih_otherno</td>
-				<td><select name="Othprefix">
+				<td><select class="drop" name="Othprefix">
                                         #if($!othprefix=="+")
                                                 #option1()
                                         #else
@@ -208,8 +208,8 @@ $!data.getMessage()
    <tr>
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName">
-          <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
-	  <input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
+	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 	  <input type="hidden" name="count" value="$tdcolor">
  	<input type="hidden" name="iname" value="$iname">
       </td>

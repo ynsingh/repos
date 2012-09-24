@@ -12,6 +12,7 @@ $page.setBgColor("#ffffff")
 $!data.getMessage()
 <head>
 ##This Script use for Fck Editor in Textarea.
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <LINK Rel="stylesheet" Href="$content.getURI("/scrpts/wiki.css")" Type="text/css">
 <script type="text/javascript" src="$content.getURI("/scrpts/Brihwiki.js")"></script>
 ##<script type="text/javascript" src="$content.getURI("/scrpts/Wiki.js")"></script>
@@ -210,12 +211,12 @@ $t
                 	<tr width="100%">
                         	<td width="100%" align="left" bgcolor="$ui.menuColor" >
 					#if($FileName == "newtab")
-						<input type="button" name="eventSubmit_doCreate" value="$WikiSave" onClick="checkFileName(document.frm,this);" />
+						<input type="button" class="button-ftextstyle" name="eventSubmit_doCreate" value="$WikiSave" onClick="checkFileName(document.frm,this);" />
 					#else
 						#if($traffic =="stop")
-							<input type="submit" disabled  name="eventSubmit_doEdit" value="$WikiSave" />
+							<input type="submit" class="button-ftextstyle" disabled  name="eventSubmit_doEdit" value="$WikiSave" />
 						#else
-							<input type="submit" name="eventSubmit_doEdit" value="$WikiSave" />
+							<input type="submit" class="button-ftextstyle" name="eventSubmit_doEdit" value="$WikiSave" />
 						#end
 					#end
                                         <input type="hidden" name="actionName" >		

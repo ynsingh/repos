@@ -16,6 +16,7 @@ $page.setTitle("create group")
 $page.setBgColor("$ui.bgcolor")
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
 	<tr> <td><b>
 	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
@@ -77,7 +78,7 @@ $!data.getMessage()
 		#end
 		</td>
 		<td>
-        		<select name="groupname" size="1" onChange="Changegroup(document.frm,this);"/>
+        		<select class="drop" name="groupname" size="1" onChange="Changegroup(document.frm,this);"/>
        				<option>  - $brih_select - </option>
 				#foreach($grpname in $grplist)
 					<option value="$grpname.Name">$grpname.Name
@@ -92,7 +93,7 @@ $!data.getMessage()
         	<b> $brih_grp #if($lang == "hindi") $brih_Of #end $brih_activity :</b>
 		</td>
         	<td>
-       			<select name="activity" size="1" onKeyUp="if (this.disabled) this.value=''" onChange="Changeactivity(document.frm,this);" />
+       			<select class="drop" name="activity" size="1" onKeyUp="if (this.disabled) this.value=''" onChange="Changeactivity(document.frm,this);" />
        				<option>  - $brih_select - </option>
        				<option value="Discussion Board">$DiscussionBoard</option>
        				<option value="Notice">$brih_Notices</option>
@@ -112,15 +113,15 @@ $!data.getMessage()
 	</tr>
 	<tr  bgcolor="$ui.tableHeaderColor"> <td colspan="5">
 		#if($lang == "hindi" || $lang == "gujarati")
-        	<input type="button" name="eventSubmit_doActivity" value="$brih_activity $brih_insert1 " onClick="checkselect(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doActivity" value="$brih_activity $brih_insert1 " onClick="checkselect(document.frm,this);"/>
 		
 		#else
-        	<input type="button" name="eventSubmit_doActivity" value="$brih_set $brih_activity " onClick="checkselect(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doActivity" value="$brih_set $brih_activity " onClick="checkselect(document.frm,this);"/>
 		#end
 		#if($lang == "english")
-        	<input type="button" name="eventSubmit_doResetActivity" value="$brih_reset $brih_activity " onClick="checkselect(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doResetActivity" value="$brih_reset $brih_activity " onClick="checkselect(document.frm,this);"/>
 		#else
-        	<input type="button" name="eventSubmit_doResetActivity" value="$brih_activity $brih_remove" onClick="checkselect(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doResetActivity" value="$brih_activity $brih_remove" onClick="checkselect(document.frm,this);"/>
 		#end
 	</td></tr>
 	##end ## end if

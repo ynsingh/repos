@@ -9,13 +9,16 @@ $page.setBgColor("#ffffff")
 <link rel="shortcut icon" href="$content.getURI("favicon.ico")" >
 <link rel="icon" type="image/gif" href="$content.getURI("images/animated_favicon.gif")">
 </head>
+<div style="width:1100px; margin:0px auto;">
 #if($cid!="" && $istat)
 <table border=0><tr><td width="55%"><img src="$content.getURI("images/Header/$cid")" width="100%" height="120px"></td><td width="20%"><img height="112px" width="212px" src="$content.getURI("images/Logo/logo")"</td><td width="20%"><img height="112px" src="$content.getURI("images/Logo/$instituteid")"</td></tr></table>
 #elseif($instituteid!="" && $lang!="")
-	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"></td><td width="20%"><img height="112px" width="212px" src="$content.getURI("images/Logo/logo")"</td><td width="20%"><img height="112px" src="$content.getURI("images/Logo/$instituteid")"</td></tr></table>
+	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"width="750px" height="120px"></td><td width="20%"><img height="112px" width="212px" src="$content.getURI("images/Logo/logo")"</td><td width="20%"><img height="112px" src="$content.getURI("images/Logo/$instituteid")"</td></tr></table>
 #elseif($lang!="" && $instituteid=="")
 	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"></td><td colspan=2 width="40%"><img height="112px" width="212px" src="$content.getURI("images/Logo/logo")"</td></tr></table>
 #else
-	<table border=0><tr><td width="55%"><img src="$content.getURI("images/englishbrihaspati3.png")"></td><td colspan=2 width="40%"><img height="112px" width="212px" src="$content.getURI("images/Logo/logo")"</td></tr></table>
+	
+<table><tr><td><img src="$content.getURI("images/englishbrihaspati3.png")"></td><td style="margin-left:-35px; position:absolute;"><img src="$content.getURI("images/Logo/logo")"</td></tr></table>
 #end
-<hr>
+</div>
+<hr style="width:1090px; margin:5px auto;">

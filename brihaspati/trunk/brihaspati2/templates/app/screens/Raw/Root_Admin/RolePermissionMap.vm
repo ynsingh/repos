@@ -13,6 +13,9 @@
 $page.setTitle("Admin Home | View Role Permission List")
 
 $page.setBgColor($ui.bgcolor)
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <body>
 
 $!data.getMessage()
@@ -57,6 +60,7 @@ $!data.getMessage()
 
 	</tr>
 </table>
+<div class="scroll">
 <table  bgcolor="$ui.tableColor" width=100%>
 	#if($mode=="all")
       	<tr bgcolor="$ui.menuColor">
@@ -110,7 +114,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
                 <input type="hidden" name="actionName" value="eventSubmit_doAddRole">
-		<input type="submit" name="eventSubmit_doAddRole" value="$brih_add">
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doAddRole" value="$brih_add">
 		</td>
         </tr>
 
@@ -127,7 +131,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
                 <input type="hidden" name="actionName" value="eventSubmit_doAddPerm">
-                <input type="submit" name="eventSubmit_doAddPerm" value="$brih_add">
+                <input type="submit" class="button-ftextstyle" name="eventSubmit_doAddPerm" value="$brih_add">
                 </td>
         </tr>
 	#end
@@ -137,14 +141,14 @@ $!data.getMessage()
         <td align=center> #if($lang == "hindi" || $lang == "gujarati") $Repo_Perm $brih_Of1 $brih_name $brih_select #else $brih_select $Repo_Perm $brih_name  #end </td>
         </tr>
         <tr><td>
-                <select name="role">
+                <select class="drop" name="role">
                         <option value=$rlid>$rlnme</option>
                 #foreach($data2 in $info2)
                         <option value=$data2.getRoleId()>$data2.getRoleName()</option>
                 #end
                 </select>
        </td><td>
-               <select name="permi">
+               <select class="drop" name="permi">
                #foreach($data3 in $perm)
                         <option value=$data3.getPermissionId()>$data3.getPermissionName()</option>
                #end
@@ -153,14 +157,15 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
                 <input type="hidden" name="actionName">
-                <input type="submit" name="eventSubmit_doAccept" value="$brih_add" onClick="return checkActName(document.frm,this);">
-                <input type="submit" name="eventSubmit_doReject" value="$brih_remove" onClick="return checkActName(document.frm,this);">
+                <input type="submit" class="button-ftextstyle"  name="eventSubmit_doAccept" value="$brih_add" onClick="return checkActName(document.frm,this);">
+                <input type="submit" class="button-ftextstyle" name="eventSubmit_doReject" value="$brih_remove" onClick="return checkActName(document.frm,this);">
                 <input type="hidden" name="count" value="$tdcolor">
                 </td>
         </tr>
 	#end
 
 </table>
+</div>
 </form>
 </body>
 

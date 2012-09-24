@@ -2,7 +2,9 @@ $page.DefaultDoctype
 $page.setBgColor("$ui.bgcolor")
 $page.setTitle("Upload file")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 Please select the file for uploading:
 <br/><br/>
 <table>
@@ -21,7 +23,7 @@ Please select the file for uploading:
 		</tr>
 		<tr>
 			<td><input type="hidden" name="actionName" value="eventSubmit_doUpload"></td>
-			<td><input type="submit" value=Submit></td>
+			<td><input class="button-ftextstyle" type="submit" value=Submit></td>
 		</tr>
 	</form>
 </table>

@@ -16,6 +16,7 @@ $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
@@ -157,7 +158,7 @@ $!data.getMessage()
 		<td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
 		</td>
                 <td>
-                <select name="instName" size=1 />
+                <select class="drop" name="instName" size=1 />
                           #foreach($name in $instList)
                                   <option value="$name.getInstituteName()">$name.getInstituteName() </option>
                           #end
@@ -169,8 +170,8 @@ $!data.getMessage()
           <td align=left colspan=2>
     <input type="hidden" name="actionName" >
     <input type="hidden" name="mode" value="$mode" >
-    <input type="button" name="eventSubmit_doRegister" value=$brih_reg onClick="checkCourseName(document.frm,this);"/>
-    <input type="reset" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
+    <input class="button-ftextstyle" type="button" name="eventSubmit_doRegister" value=$brih_reg onClick="checkCourseName(document.frm,this);"/>
+    <input class="button-ftextstyle" type="reset" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
     <input type="hidden" name="count" value="$tdcolor" >
 	</td>
 	</tr>
@@ -208,7 +209,7 @@ $!data.getMessage()
                 <td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
                 </td>
                 <td>
-                <select name="instName" size=1 />
+                <select class="drop" name="instName" size=1 />
                           #foreach($name in $instList)
                                   <option value="$name.getInstituteName()">$name.getInstituteName() </option>
                           #end
@@ -226,7 +227,7 @@ $!data.getMessage()
         ##<td colspan=2 align="left" bgcolor="$ui.buttonBoxColor">
         <td colspan=2 align="left">
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+                <input  class="button-ftextstyle" type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor">
 
@@ -286,7 +287,7 @@ $!data.getMessage()
                 <td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
                 </td>
                 <td>
-                <select name="instName" size=1 />
+                <select class="drop" name="instName" size=1 />
                           #foreach($name in $instList)
                                   <option value="$name.getInstituteName()">$name.getInstituteName() </option>
                           #end
@@ -304,7 +305,7 @@ $!data.getMessage()
         ##<td colspan=2 align="left" bgcolor="$ui.buttonBoxColor">
         <td colspan=2 align="left">
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadMultiUserZip" value="Upload" onClick="CheckFieldFile(document.frm,this);"/>
+                <input class="button-ftextstyle" type="button" name="eventSubmit_doUploadMultiUserZip" value="Upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor">
                 <input type="hidden" name="role" value="admin">
@@ -345,7 +346,7 @@ $!data.getMessage()
                 <td align=center><b>$brih_searchBy</b></td>
 
                 <td align=left>
-                        <select name="queryList">
+                        <select class="drop" name="queryList">
                                 <option value=CourseId>$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_ID</option>
                                 <option value="Course Name">$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
                                 <option value=Dept>$brih_dept</option>
@@ -358,7 +359,7 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">
                 </td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input class="button-ftextstyle" type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="scourse" value="scourse">
                         <input type="hidden" name="count" value="$tdcolor">

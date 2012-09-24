@@ -11,6 +11,7 @@ $page.setBgColor("bgcolor")
 $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/InstituteAdminRegistration.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
 <tr bgcolor="$ui.menuColor"><td colspan=7>
@@ -92,8 +93,8 @@ $!data.getMessage()
                 </tr>
                 <tr> <td colspan=2>
                 <input type="hidden" name="actionName">
-               <input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAdminMgmt(document.frm,this);"/>
-                <input type="Reset" name="Reset" Value="$brih_clear"/>
+               <input type="button" class="button-ftextstyle" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAdminMgmt(document.frm,this);"/>
+                <input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
                 <input type="hidden" name="Institute_Id" Value="$Institute_Id">
                 <input type="hidden" name="Institute_Name" Value="$Institute_Name">
                 <input type="hidden" name="count" Value="$tdcolor">

@@ -11,6 +11,7 @@
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 #set($iid =$data.getUser().getTemp("Institute_id"))
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr>
 		<td>
@@ -65,7 +66,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
                 <td><b>$brih_searchBy</b></td>
                 <td align=left>
-                        <select name="queryList">
+                        <select class="drop" name="queryList">
                                 <option value="CourseId"> $brih_course $brih_ID</option>
                                 <option value="Course Name">$brih_course $brih_name</option>
                                 <option value="Dept">$brih_dept </option>
@@ -76,7 +77,7 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">
                 </td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="status" value="Search">
                         <input type="hidden" name="mode" value="$mode">
                         <input type="hidden" name="count" value="$tdcolor">
@@ -209,7 +210,7 @@ $!data.getMessage()
                 <td colspan=10><input type="text" name="cquota" value="$cquota"></td>
 	</tr>
 	<tr bgcolor="$ui.tableColor"><td colspan=10>
-	<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="Updatefield(document.frm,this);"/>	
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="Updatefield(document.frm,this);"/>	
 	</td></tr>
 #end
                 <input type="hidden" name="actionName">

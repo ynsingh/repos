@@ -12,6 +12,7 @@ $page.setTitle("Tracking Report")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td><b>
 	<font face="$ui.sansSerifFonts">
@@ -55,7 +56,8 @@ $!data.getMessage()
 		$brih_reports $brih_for $RemoteInstitute $brih_select 
 	#else 
 		$brih_select $RemoteInstitute $brih_for $brih_reports 
-	#end:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="instname" size="1" onChange="Changename(document.frm,this);"/>
+	#end:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select class="drop" name="instname" size="1" onChange="Changename(document.frm,this);"/>
         <option>$brih_select</option>
                                 #if($data.getUser().getUserName() == "admin")
                                 #foreach($instname in $instdetail)
@@ -63,7 +65,7 @@ $!data.getMessage()
                                 </option>
                                 #end
                                 #end
-                        </select>
+         </select>
          </td>
 </tr>
 #if($inst_name!="")

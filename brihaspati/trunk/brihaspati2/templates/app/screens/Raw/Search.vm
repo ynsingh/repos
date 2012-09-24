@@ -13,6 +13,9 @@ $page.setTitle("Admin Home | Search Engine")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $page.setBgColor("#ffffff")
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 #if($val !="")
 $val
@@ -39,7 +42,7 @@ $val
                         <input type="text" size=25 name="WORD" value=""> 
 		#end
 	
-		<input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);">
 		<input type="hidden" name="actionName" value="">
 		</td>
 	</tr>

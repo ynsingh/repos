@@ -24,6 +24,10 @@
 $page.setTitle("User Home Page")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
+</head>
+
 <body onload="doLoad();">
 #macro(UNAME)
        <font color="blue">
@@ -48,8 +52,27 @@ $!data.getMessage()
         </tr>
 	#end
 #end
+<table>
+<td valign="top" width="20%">
+<div style="overflow:auto;  height:180px;">
+        <table  bgcolor="$ui.tableColor">
+                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr>
 
-<table bgcolor="$ui.tableColor" width=85% align=right>
+                        #foreach($element in $uList)
+                        #if($velocityCount%2==0)
+                                <tr bgcolor="$ui.menuColor">
+                        #else
+                                <tr bgcolor="$ui.tableColor">
+                        #end
+
+                                <td> $element </td>
+                                  </tr>
+                        #end
+        </table>
+</div>
+</td>
+<td width="80%" valign="top">
+<table bgcolor="$ui.tableColor" width="100%">
 <tr bgcolor="$ui.menuColor"><td align=center colspan="7">
 #if(( $data.getUser().getTemp("lang" ).toString())!="english")
 	<font face="$ui.sansSerifFonts"><b> #UNAME() $brih_welcome </b></font> 
@@ -118,7 +141,7 @@ $!data.getMessage()
 	
 		<td width="16%" > #if($lang == "hindi") $brih_Institute $brih_wise $brih_chat/$DiscussionBoard #else $RemoteInstitute $brih_wise $brih_chat/$DiscussionBoard #end </td>
 		<td width="16%" > 
-    		<select name="instName" onChange="checkOption(this);"/>
+    		<select name="instName" onChange="checkOption(this);" class="drop" />
                 <option> #if($lang == "hindi" || $lang == "gujarati") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
 	  	#foreach($name in $instNameList)
 		<option value="$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8").addPathInfo("grpName",$name)">$name </option>
@@ -142,22 +165,8 @@ $!data.getMessage()
 </td>
 </tr>
 </table>
-<div style="overflow:auto;  height:180px;">
-        <table  bgcolor="$ui.tableColor" width="98%"  align="left">
-                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr>
-
-                        #foreach($element in $uList)
-                        #if($velocityCount%2==0)
-                                <tr bgcolor="$ui.menuColor">
-                        #else
-                                <tr bgcolor="$ui.tableColor">
-                        #end
-
-                                <td> $element </td>
-                                  </tr>
-                        #end
-        </table>
-</div>
+</td>
+</table>
 </body>
 <SCRIPT Language="javascript">
 

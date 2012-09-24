@@ -1,6 +1,9 @@
 $page.setTitle("Login Page | RemoteLogin")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
@@ -18,7 +21,7 @@ $!data.getMessage()
         </tr>
         <tr bgcolor="$ui.menuColor">
                 <td colspan=2>
-                        <input type="button" name="eventSubmit_dochk" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+ <input type="button" class="button-ftextstyle" name="eventSubmit_dochk" value="$brih_submit" onClick="checkField(document.frm,this);"/>
                         <input type="hidden" name="actionName">
                         <input type="hidden" name="lang" value=$lang>
                 </td>

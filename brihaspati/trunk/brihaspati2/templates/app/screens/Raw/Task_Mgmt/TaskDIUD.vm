@@ -11,10 +11,14 @@
 
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
-<script type="text/javascript" src="$content.getURI("/scrpts/Task.js")"></script>
+
 $page.setTitle("List Your Task Here")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/Task.js")"></script>
+</head>
 
 <style type="text/css">
 #sddm div
@@ -362,28 +366,28 @@ a.one:link,a.one:visited
                         <tr><td>
                         	<b>$brih_start $brih_Da </b>
                             </td><td>
-                                 <select name="Start_year"> #Y($cyear) </select>
+                                 <select  class="drop" name="Start_year"> #Y($cyear) </select>
                                                 &nbsp<b><font size=+1>-</font></b>&nbsp
-                                 <select name="Start_mon"> #M($cmonth) </select>
+                                 <select class="drop" name="Start_mon"> #M($cmonth) </select>
                                                 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                                 <select name="Start_day"> #D($cday)    </select>
+                                 <select class="drop" name="Start_day"> #D($cday)    </select>
                         </td></tr>
                         <tr><td>
                         	<b>$brih_end $brih_Da </b>
                             </td><td>
-                                 <select name="End_year"> #Y($nyear) </select>
+                                 <select class="drop" name="End_year"> #Y($nyear) </select>
                                                 &nbsp<b><font size=+1>-</font></b>&nbsp
-                                 <select name="End_mon"> #M($nmonth) </select>
+                                 <select class="drop" name="End_mon"> #M($nmonth) </select>
                                                 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                                 <select name="End_day"> #D($nday)    </select>
+                                 <select class="drop" name="End_day"> #D($nday)    </select>
                         </td><tr>
                                 <td><b> $brih_expiry<font color=RED> *</font></b></td>
                                 <td><input type="text" size=3 name="et" value="7"></td>
                         </tr>
 			<tr><td align=center colspan=2 bgcolor="$ui.menuColor"><font face="$ui sanSerif fonts">
-                        	<input type=button name="eventSubmit_doInsert" value= $brih_add  onClick="addtask(document.frm,this);"/>
+                        	<input type="button" class="button-ftextstyle" name="eventSubmit_doInsert" value= $brih_add  onClick="addtask(document.frm,this);"/>
 ##                 		<input type="button" name="Reset" value=Reset>
-				<input type="button" name="reset" value=Reset onClick="clearData(document.frm,this);" />    
+				<input type="button" class="button-ftextstyle" name="reset" value=Reset onClick="clearData(document.frm,this);" />    
                                 <input type="hidden" name="actionName">
 				<input type="hidden" name="dd" value="1">
 				<input type="hidden" name="seqno" value="$seqno">
@@ -413,11 +417,11 @@ a.one:link,a.one:visited
                         <tr><td>
                         	<b>$brih_start $brih_Da </b>
                             </td><td>
-                                <select name="Start_year"> #Y($usdate.get(0)) </select>
+                                <select class="drop" name="Start_year"> #Y($usdate.get(0)) </select>
                                                 &nbsp<b><font size=+1>-</font></b>&nbsp
-                                <select name="Start_mon"> #M($usdate.get(1))  </select>
+                                <select  class="drop" name="Start_mon"> #M($usdate.get(1))  </select>
                                                 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                                <select name="Start_day"> #D($usdate.get(2))  </select>
+                                <select  class="drop" name="Start_day"> #D($usdate.get(2))  </select>
                         </td></tr>
                         <tr><td>
                         	<b>$brih_end $brih_Da </b>
@@ -443,12 +447,12 @@ a.one:link,a.one:visited
 
 		     <td align=center colspan=2 bgcolor="$ui.buttonBoxColor"><font face="$ui sanSerif fonts">
 			 #if($ulist.get(0).getStatus()>=1)
-			          <input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="checktask(document.frm,this);"/>
+			          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="checktask(document.frm,this);"/>
                         #else
-        	                  <input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="addtask(document.frm,this);"/>
+        	                  <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="addtask(document.frm,this);"/>
                         #end
   ##                           	<input type=button name="reset" value=Reset>
-				<input type="button" name="reset" value=$brih_reset onClick="clearData(document.frm,this);"/>  		
+				<input type="button" class="button-ftextstyle" name="reset" value=$brih_reset onClick="clearData(document.frm,this);"/>  		
 	       	                <input type="hidden" name="actionName">
 				<input type="hidden" name="id" value="$id">
                              </font></td>

@@ -191,7 +191,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.tableColor">
 		<td>$brih_sel_course</td>
 		<td>
-		<select name="course_list" size=1>
+		<select class="drop" name="course_list" size=1>
 		#foreach($c_ls in $clist)
 			#if($data.getUser().getUserName() == "admin")
 			###if(($c_ls.getName()!="author")&&($c_ls.getName()!="global"))
@@ -255,7 +255,7 @@ $!data.getMessage()
 ##<tr bgcolor="$ui.tableColor">
 <td>$Notice_NoticeSend_msg3</td>
 <td>
-<select name="role" size=1>
+<select class="drop" name="role" size=1>
 #if($mode1!= "grpmgmt")
 	<option value="all">$Notice_All
 	<option value="instructor">$brih_Instructor
@@ -315,10 +315,10 @@ $!data.getMessage()
 	        <input type="hidden" name="countTemp" value="1">
 		<input type="hidden" name="actionName">
 	        #if($nflag == "fh")
-        	  <input type="button" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/>
+        	  <input type="button" class="button-ftextstyle" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/>
 		  <input type="hidden" name="nflag" value="$nflag" >
 	        #else
-        	  <input type="button" name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
+        	  <input type="button" class="button-ftextstyle"  name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
 	        #end
 
         	</font>

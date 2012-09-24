@@ -8,6 +8,9 @@
 
 $page.setTitle("Quiz Preview")
 $page.setBgColor("bgcolor")
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 ## If some message has been set, that is retrieved and displayed.
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
@@ -190,9 +193,9 @@ $page.setBgColor("bgcolor")
 	<table align=center bgcolor="$ui.tableColor" cellpadding="5" width=100% >
 		<tr>
 			<td align=center>	
-				<input type="button"" name="eventSubmit_ShowPreview" value="$brih_showpreview" onClick="checkValue(document.frm,this);" $exist>
-				<input type="button"" name="eventSubmit_PreviewQuiz" value="$online_accept $brih_preview" onClick="checkField(document.frm,this);">	
-				<input type="button" name="eventSubmit_RejectQuiz" value="$online_reject $brih_preview" onClick="checkValue(document.frm,this);">	
+				<input type="button" class="button-ftextstyle" name="eventSubmit_ShowPreview" value="$brih_showpreview" onClick="checkValue(document.frm,this);" $exist>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_PreviewQuiz" value="$online_accept $brih_preview" onClick="checkField(document.frm,this);">	
+				<input type="button" class="button-ftextstyle" name="eventSubmit_RejectQuiz" value="$online_reject $brih_preview" onClick="checkValue(document.frm,this);">	
 			</td>
 		</tr>
 	</table>

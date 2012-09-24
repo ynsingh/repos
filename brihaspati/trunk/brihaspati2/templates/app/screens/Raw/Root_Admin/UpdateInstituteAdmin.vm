@@ -13,6 +13,7 @@ $!data.getMessage()
 $page.setTitle("Login Page | Institute Admin Registration ")
 #set($lang = $data.getUser().getTemp("lang").toString())	
 ## Adding the line containing urls after the header image.
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table  bgcolor="$ui.tableColor" width=100%>
         <tr bgcolor="$ui.menuColor">
                 <td colspan=14>
@@ -110,7 +111,7 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 				<input type="hidden" name="status" value="$status">
 				<input type="hidden" name="mode" value="$mode">
 				<input type="hidden" name="count" value="$tdcolor">
-				<input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
+				<input class="button-ftextstyle" type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
         			</td>
         		</tr>
 			

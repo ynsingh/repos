@@ -25,6 +25,9 @@ $page.setBgColor($ui.bgcolor)
 	#end
 #end
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
@@ -176,13 +179,13 @@ $!data.getMessage()
 	        #set($temp1=0)
 	        #if(($Crscount==0)||($sizecount==0)||($counter==0))
 	        <tr bgcolor="$ui.menuColor">
-                <td><select name="group1" size=1>
+                <td><select class="drop" name="group1" size=1>
                         <option value="Select Course">$brih_select $brih_course </option>
 			#foreach($name in $CourseList)
 				<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName() </option>
 			#end
 		</td>
-                <td><select name="prg1" size=1>
+                <td><select class="drop" name="prg1" size=1>
 			<option value="Select Program">$brih_select $brih_program </iption>
 			#foreach($instplist in $PrgDetail)
 	                        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
@@ -229,7 +232,7 @@ $!data.getMessage()
 	                        #end
 				#if($temp == $temp1)
                 	        #set($tmpCourse = $grpname)
-               	        <td><select name="group$num" size=1 id="$num">
+               	        <td><select class="drop" name="group$num" size=1 id="$num">
 					<option value="$grpname">$crsals: $crsnm - $crsInst </option>
         	                #end
 		                #foreach($name in $CourseList)
@@ -238,7 +241,7 @@ $!data.getMessage()
 			                #end
 			        #end
                 </select></td>
-	        <td><select name="prg$num" size=1 id="pg$num">
+	        <td><select class="drop" name="prg$num" size=1 id="pg$num">
 		## get another record from the list
 		## display in drop down list
 		        #if($temp == $temp1)
@@ -320,9 +323,9 @@ $!data.getMessage()
             shouldn't appear when inserting a new user.
           *#
           #if ($Process== "modify")
-            <input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
+            <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
           #elseif ($Process == "delete")
-            <input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+            <input type="submit" class="button-ftextstyle" name="eventSubmit_doDelete" value="$brih_remove"/>
           #end
       </td>
     </tr>

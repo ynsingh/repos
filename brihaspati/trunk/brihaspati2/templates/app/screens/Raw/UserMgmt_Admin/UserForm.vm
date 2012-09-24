@@ -27,6 +27,7 @@ $page.setBgColor($ui.bgcolor)
 	#end
 #end
 $!data.getMessage()
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
@@ -130,9 +131,9 @@ $!data.getMessage()
             shouldn't appear when inserting a new user.
           *#
           #if ($Process== "modify")
-            <input type="submit" name="eventSubmit_doUpdate" value="$brih_update"/>
+            <input class="button-ftextstyle" type="submit" name="eventSubmit_doUpdate" value="$brih_update"/>
           #elseif ($Process == "delete")
-            <input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+            <input class="button-ftextstyle" type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
           #end
       </td>
     </tr>

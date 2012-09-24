@@ -7,6 +7,9 @@
 *#
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setTitle("Backups")
 $!data.getMessage()
@@ -55,19 +58,19 @@ $!data.getMessage()
 </tr>
 	<tr>
 	<td>
-                <select name="instName" size=1 onChange="checkOption(document.frm,this);"/>
+                <select name="instName" class="drop" size=1 onChange="checkOption(document.frm,this);"/>
                 #foreach($name in $instList)
                 <option value="$name.getInstituteName()">$name.getInstituteName() </option>
                 #end
                 </select>
         </td>
         <td>
-        	<input type="submit" name="eventSubmit_doCrssearch" value="$brih_search">
+        	<input type="submit" class="button-ftextstyle" name="eventSubmit_doCrssearch" value="$brih_search">
         </td>
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 	<td>
-                <select name="courses" onChange="selectOption(document.frm,this);"/>
+                <select name="courses" class="drop" onChange="selectOption(document.frm,this);"/>
                 #foreach($crsname in $crsList)
                 <option value="$crsname.getGroupName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
                 #end
@@ -75,14 +78,14 @@ $!data.getMessage()
 	</td>	
         <td colspan=5>
 		#if($lang == "hindi")
-	        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+	        <input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
 		#else
-	        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
+	        <input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
 		#end
 		#if($lang == "hindi")
-                <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
 		#else
-                <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
 		#end
                 <input type="hidden" name="actionName">
                 <input type="hidden" name="count" value="$tdcolor">

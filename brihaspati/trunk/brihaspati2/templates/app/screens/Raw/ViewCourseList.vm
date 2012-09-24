@@ -12,6 +12,9 @@
 $page.setTitle("$brih_reg2 $brih_courses $brih_list")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
@@ -31,7 +34,7 @@ $!data.getMessage()
 	#else
 		<b>$brih_select $brih_valueList</b> &nbsp;&nbsp;
 	#end
-<select name="SearchList" onChange="ShowList(document.frm,this);"/>
+<select name="SearchList" onChange="ShowList(document.frm,this);" class="drop"/>
 <option value=$ListConf_str>$ListConf_str</option>
 #foreach($list in $listConf)
 	#if($ListConf_str != $list)
@@ -47,7 +50,7 @@ $!data.getMessage()
 		<b>$brih_searchBy $RemoteInstitute </b>&nbsp;&nbsp;
         #end
 
-<select name="InstId" onChange="ShowList(document.frm,this);"/>
+<select name="InstId" onChange="ShowList(document.frm,this);" class="drop" />
 #if($InstName!="")
 	<option value="$Instid">$InstName</option>
         	<option value=""></option>
@@ -70,7 +73,7 @@ $!data.getMessage()
         #else
 		<b>$brih_searchBy $brih_course</b>&nbsp;&nbsp;
         #end
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
 				<option value="CourseId"> $brih_course #if($lang == "hindi") $brih_Of1  #end $brih_ID</option>
                                 <option value="Course Name"> $brih_course #if($lang == "hindi") $brih_Of1  #end $brih_name</option>
 			</select>

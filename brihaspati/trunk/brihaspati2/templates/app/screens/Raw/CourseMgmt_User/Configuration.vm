@@ -18,6 +18,10 @@
 $page.setTitle("Home | $course | Course Management |  Course Configuration for Guest")
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/RemoteCourse.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $page.setBgColor($ui.bgcolor)
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
 
@@ -27,7 +31,7 @@ $page.setBgColor($ui.bgcolor)
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> |  $brih_course  $RemoteConfiguration
 	<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a></td>
-        </td></tr>
+		</td></tr>
 </table>
 
 <table width=100% bgcolor="$ui.tableColor">
@@ -102,7 +106,7 @@ $page.setBgColor($ui.bgcolor)
                 	        <font color="Red"><b>$Guest_msg2</b></font>
                 	#end
                         </td><td align="left">
-                                <input type="submit"  value="$brih_yes">
+                                <input type="submit" class="button-ftextstyle"  value="$brih_yes">
                                 <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
                                 <input type="hidden"  name="count" value="$tdcolor"> &nbsp;&nbsp;
                          </td></tr>
@@ -125,7 +129,7 @@ $page.setBgColor($ui.bgcolor)
 			<td align="left">
                                 #if($online_conf==1) 
                                 </select>
-                                        <select name="onlineconf">
+                                        <select name="onlineconf" class="drop">
                                         <option value="withoutapproval">$brih_without $brih_approval
  $brih_allowed
                                         <option value="onapproval">$brih_on $brih_approval
@@ -135,7 +139,7 @@ $page.setBgColor($ui.bgcolor)
                                 #elseif($online_conf==2)
                                 </select>
 
-                                        <select name="onlineconf">
+                                        <select name="onlineconf" class="drop">
                                         <option value="notallowed"> $brih_no $brih_allowed
                                         <option value="onapproval"> $brih_on $brih_approval
                                         <option value="withoutapproval"> $brih_without $brih_approval
@@ -143,7 +147,7 @@ $page.setBgColor($ui.bgcolor)
                                 </select>
                                 #else   
                                 </select>
-                                        <select name="onlineconf">
+                                        <select name="onlineconf" class="drop">
                                         <option value="onapproval"> $brih_on $brih_approval
                                         <option value="withoutapproval"> $brih_without $brih_approval
                                         <option value="notallowed"> $brih_no $brih_allowed
@@ -153,7 +157,7 @@ $page.setBgColor($ui.bgcolor)
 
 			</td>				
 			<td align="left">
-                                <input type="submit"  value="$brih_update">
+                                <input type="submit" class="button-ftextstyle"  value="$brih_update">
                                 <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
                                 <input type="hidden"  name="count" value="$tdcolor"> &nbsp;&nbsp;
                          </td></tr>
@@ -199,7 +203,7 @@ $page.setBgColor($ui.bgcolor)
 			<tr bgcolor ="$ui.menuColor">
 			<td> $RemoteInstitute $RemoteIP $RemoteAddress</td><td> <input type="text" name="iip" value="$!url">
                                 &nbsp;&nbsp;&nbsp;&nbsp;$RemoteInstitute $brih_name
-                                <select name="inm">
+                                <select name="inm" class="drop">
                                 #if($ivalue=="")
                                 <option value="">$brih_select $RemoteInstitute</option>
                                 #else
@@ -210,7 +214,7 @@ $page.setBgColor($ui.bgcolor)
                                 #end
                                 </select>
                                 &nbsp;&nbsp;&nbsp;&nbsp;$brih_course $brih_ID
-                                <select name="cid" onChange="ChangeCname(document.frm,this);">
+                                <select name="cid" class="drop" onChange="ChangeCname(document.frm,this);">
                                 #if($cvalue=="")
                                 <option value="">Select Course</option>
                                 #else
@@ -223,7 +227,7 @@ $page.setBgColor($ui.bgcolor)
                                 #if($courselistname.size()==0)
                                 <b><font color="red">Courses are not exists in selected Institute</font></b>
                                 #end    
-                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="submit" value="$brih_get"  style="width:50px" onClick="callapi(document.frm,this);"/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="submit" class="button-ftextstyle" value="$brih_get"  style="width:50px" onClick="callapi(document.frm,this);"/>
                                 </td>
                         </tr>
 			<tr>
@@ -237,7 +241,7 @@ $page.setBgColor($ui.bgcolor)
 			<tr>
 			<td>$RemoteTransaction</td>
 			<td>
-				<select name="order">
+				<select name="order" class="drop">
 						 #if($order!="")
 						 	#if($order =="Purchase")
 								##<option value="Purchase"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; $RemoteBUY &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -255,7 +259,7 @@ $page.setBgColor($ui.bgcolor)
 			<tr bgcolor="$ui.menuColor">
                 	<td>$DisBoard_Expiry $brih_Da</td>
                 		<td>
-                  			<select name="Start_year">
+                  			<select name="Start_year" class="drop">
                   			<option value="$cyear">$cyear
                   			#foreach($year in $year_list)
                     				#if($cyear != $year)
@@ -263,7 +267,7 @@ $page.setBgColor($ui.bgcolor)
                     				#end
                   			#end
                 			</select>
-          				<select name="Start_mon">
+          				<select name="Start_mon" class="drop">
             				<option value="$cmonth">$cmonth
             				#foreach($mon in $month)
             					#if($mon != $cmonth)
@@ -271,7 +275,7 @@ $page.setBgColor($ui.bgcolor)
             					#end
             				#end
             				</select>
-                  			<select name="Start_day">
+                  			<select name="Start_day" class="drop">
                   			<option value="$cdays">$cdays
                   			#foreach($d in $day)
                     				#if($d!=$cdays)
@@ -284,11 +288,11 @@ $page.setBgColor($ui.bgcolor)
 			<tr><td>
 
 				#if($serial !="")
-				<input type="submit"  name="eventSubmit_doInsert" value="$brih_update " onClick="return checkForm(document.frm,this);"/>
+				<input type="submit" class="button-ftextstyle"  name="eventSubmit_doInsert" value="$brih_update " onClick="return checkForm(document.frm,this);"/>
 				#else
-				<input type="submit"  name="eventSubmit_doInsert" value="$brih_submit" onClick="return checkForm(document.frm,this);"/>
+				<input type="submit" class="button-ftextstyle"  name="eventSubmit_doInsert" value="$brih_submit" onClick="return checkForm(document.frm,this);"/>
 				#end
-				<input type="reset" name="clear" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+				<input type="reset" class="button-ftextstyle" name="clear" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 				<INPUT TYPE="hidden" NAME="updatestartIndex" value="$updatestartIndex">
 				<INPUT TYPE="hidden" NAME="serial" value="$serial">
 				<INPUT TYPE="hidden" NAME="count" value="$tdcolor">

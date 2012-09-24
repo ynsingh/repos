@@ -9,6 +9,9 @@
 $page.setTitle("Login Page | Resend Activation")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
@@ -27,7 +30,7 @@ $!data.getMessage()
                 <td colspan=2>
                         <input type="hidden" name="lang" value=$lang>
                         <input type="hidden" name="actionName" >
-		        <input type="button" name="eventSubmit_doCheckUser" value="$brih_get $brih_new $brih_mail" onClick="checkUserMail(document.frm,this);">
+   <input type="button" name="eventSubmit_doCheckUser" class="button-ftextstyle" value="$brih_get $brih_new $brih_mail" onClick="checkUserMail(document.frm,this);">
                 </td>
                 </tr>
 </table>

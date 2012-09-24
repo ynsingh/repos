@@ -16,6 +16,7 @@
 <head>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Formsubmit.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Scorm content Upload")
@@ -167,7 +168,7 @@ $!data.getMessage()
 	</td>
         </tr>
         <tr bgcolor="$ui.menuColor" width="100%"><td colspan="6">
-        <input type="submit" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkselect(document.frm,this);"/>
+        <input type="submit" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkselect(document.frm,this);"/>
         </td></tr>
         #else
 	#if($Mode == "NoBlank")

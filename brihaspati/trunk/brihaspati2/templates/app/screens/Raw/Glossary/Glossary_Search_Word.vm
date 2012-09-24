@@ -96,7 +96,7 @@ $!data.getMessage()
 		#end
        ##</td>
        ##<td colspan=2>
-		<input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);"/>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);"/>
 	  	<input type ="hidden" name="search" value="search">
 	  	<input type ="hidden" name="actionName">
 	  	<input type ="hidden" name="count" value="$tdcolor">

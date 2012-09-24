@@ -15,27 +15,31 @@
 
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
-<table width="100%">
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+<div class="main" style="width:1100px; margin:-10px auto;">
+<table>
 <tr><td>
 <marquee> <font size=4>$!fNoti</font></marquee>
 </td></tr>
 </table>
 $!data.getMessage() 
 $!msg
-<table align=left> ## 1
-<tr><td valign="top" width="25%">  ## 2, 3
-		<table bgcolor="$ui.tableColor" width="100%"> ## 4
-        	<tr bgcolor="$ui.menuColor"><td>  ## 5, 6
+<table align=center> ## 1
+<tr><td valign="top">  ## 2, 3
+		<table class="news"> ## 4
+        	<tr bgcolor="$ui.menuColor"><td align=center>  ## 5, 6
                 <img src="$content.getURI("/images/newspaper.gif")"><u><b>$brih_newsHeadline</b></u>
         	</td></tr> ## 6, 5
         	<tr><td> ## 5, 6
-		<marquee scrollamount="1" direction="up" loop="2" width="100%" behaviour="slide">
+		<marquee scrollamount="1" direction="up" loop="2" behaviour="slide">
 		#if($status!="empty")
                 #set($count=1)
                 #foreach($news in $detail)
                         #if($count % 2 == 0)
                                 <font size=3>
-                                <table bgcolor="$ui.buttonBoxColor" width="100%"> ## 7
+                                <table bgcolor="$ui.buttonBoxColor"> ## 7
                                 <tr> ## 8
                                 <td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject() ## 9
 				<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
@@ -63,9 +67,9 @@ $!msg
                 </td></tr> ## 6, 5
         </table> ## 4
 	</td> ## 3
-	<td valign="top" width="50%"> ## 3
-	<table align="left" bgcolor="$ui.tableColor"> ## 4
-	<tr><td> ## 5, 6
+	<td valign="top"> ## 3
+	<table align="left" class="desc"> ## 4
+	<tr><td valign=top> ## 5, 6
 	##<marquee scrollamount="3" direction="left" loop="0" width="100%" behaviour="slide">
 	<b>$brih_msg</b>
 	##</marquee>
@@ -85,8 +89,8 @@ $!msg
 	</td></tr> ## 6, 5
 	</table> ## 4
 	</td> ## 3
-	<td valign="top" bgcolor="$ui.tableColor" width="25%"> ## 3
-	<table align="left" width="100%"> ## 4
+	<td valign="top" class="login"> ## 3
+	<table align="left"> ## 4
         <tr><td colspan=2><font color="red">$!data.getMessage() </font></td></tr>
 
 	<tr> ## 5
@@ -96,7 +100,7 @@ $!msg
                 <td> $brih_language</td>
         #end
         <td> ## 6
-	<select id="language" onChange ="javascript:OnChange();">
+	<select id="language" onChange ="javascript:OnChange();" class="drop">
 	#if($flag)
 		<option> $brih_select $brih_language </option>
 	#end
@@ -280,7 +284,7 @@ $!msg
 <tr align="right"><td align=left> ## 5, 6
 <font face="$ui.sansSerifFonts">
 ##<input type="button" value="$brih_submit" onClick="checkUNamePwd(document.frm,this);">
-<input type="button" value="$brih_login" onClick="checkUNamePwd(document.frm,this);">
+<input type="button" value="$brih_login" class="button-ftextstyle" onClick="checkUNamePwd(document.frm,this);">
 ##<input type=hidden name="LangFile" value="$LangFile">
 <input type=hidden name="lang" value="$lang">
 <input type=hidden name="flag" value="$flag">
@@ -357,6 +361,8 @@ $brih_openid_msg3
 </table> ## 4
 </td></tr> ## 3, 2
 </table> ## 1
+</div>
+<br>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {

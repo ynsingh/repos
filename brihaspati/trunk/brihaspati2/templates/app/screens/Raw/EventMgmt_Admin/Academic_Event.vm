@@ -10,7 +10,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <body>
 #set($lang = $data.getUser().getTemp("lang").toString())
 ## Representation of TOP BAR
@@ -84,7 +86,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
             	<td>$brih_Da</td>
              	<td colspan=3>
-			<select name="Start_mon">
+			<select class="drop" name="Start_mon">
             		<option value="$cmonth">$cmonth
 	    		#foreach($mon in $month)
 	    			#if($mon != $cmonth)
@@ -93,7 +95,7 @@ $!data.getMessage()
 			#end
 			</select>
       			&nbsp<font size=+1>.</font>&nbsp
-			<select name="Start_year">
+			<select class="drop" name="Start_year">
                 	<option value="$cyear">$cyear
 			#foreach($year in $year_list)
 				#if($cyear != $year)
@@ -105,7 +107,7 @@ $!data.getMessage()
 	</tr>		
 	<tr bgcolor="$ui.tableColor">
         	<td>$brih_Ev #if($lang =="hindi") $brih_Of2 #end $brih_type</td>
-		<td colspan=3><select name="etype" onChange="checkoption(document.frm,this);">
+		<td colspan=3><select name="etype" class="drop" onChange="checkoption(document.frm,this);">
 			<option value="Academic">$brih_acd
 			<option value="holidays">$brih_col2
 		</td>	
@@ -137,10 +139,10 @@ $!data.getMessage()
         	<td colspan=4>
         	<font face="$ui.sanSerifFonts">
 		#if(($mode==" ") || ($actionName=="eventSubmit_doInsert")|| ($actionName=="eventSubmit_doUpdate"))
-		<input type=button name="eventSubmit_doInsert" value=$brih_submit onClick="checkEvent(document.frm,this);"/>
-		<input type=button name="eventSubmit_doGet" value=$brih_edit onClick="checkData(document.frm,this);"/>
+		<input type=button class="button-ftextstyle"  name="eventSubmit_doInsert" value=$brih_submit onClick="checkEvent(document.frm,this);"/>
+		<input type=button class="button-ftextstyle"  name="eventSubmit_doGet" value=$brih_edit onClick="checkData(document.frm,this);"/>
 		#else
-		<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="checkList(document.frm,this);"/>
+		<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="checkList(document.frm,this);"/>
 		#end
 		<input type="hidden" name="actionName">
 		<input type="hidden" name="val">

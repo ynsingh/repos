@@ -9,6 +9,11 @@
 
 $page.setTitle("Quiz Management")
 $page.setBgColor("#ffffff")
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 <font face="$ui.sansSerifFonts">
@@ -124,9 +129,9 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" colspan="4">
 		<td align=left colspan="4">
 			#if($type=="practice")
-	        	<input type="button" name="eventSubmit_attemptPracticeQuiz" value="$brih_startquiz" onClick="confirmQuizStart1(document.frm,this);">
+	        	<input type="button" class="button-ftextstyle" name="eventSubmit_attemptPracticeQuiz" value="$brih_startquiz" onClick="confirmQuizStart1(document.frm,this);">
         	#else
-	        	<input type="button" name="eventSubmit_attemptQuiz" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this,'$securityData','$ip');">
+	        	<input type="button" name="eventSubmit_attemptQuiz" class="button-ftextstyle" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this,'$securityData','$ip');">
 	        #end
 		</td>
 	</tr>

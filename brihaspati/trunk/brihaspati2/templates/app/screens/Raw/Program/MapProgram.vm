@@ -10,6 +10,8 @@
 $page.setTitle("MapProgram")
 
 $page.setBgColor($ui.bgcolor)
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+
 <body> 
 #set($lang = $data.getUser().getTemp("lang").toString())
 ## If some message has been set, that is retrieved and displayed.
@@ -89,7 +91,7 @@ $!data.getMessage()
 	</tr>
         <tr bgcolor="$ui.menuColor">
                 <td colspan=3>
-                        <INPUT TYPE="button" NAME="eventSubmit_doSelect" VALUE="$brih_submit" onClick="checkValue(document.frm,this);">
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doSelect" VALUE="$brih_submit" onClick="checkValue(document.frm,this);">
 			<INPUT TYPE="hidden" NAME="selectFileNames" VALUE="">
                         <INPUT TYPE="hidden" NAME="actionName" VALUE="">
                 </td>

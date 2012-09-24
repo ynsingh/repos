@@ -16,6 +16,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle(" Home | Course Management | Upload Course Header")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 #set($lang = $data.getUser().getTemp("lang").toString())
 
@@ -152,7 +155,7 @@ $!data.getMessage()
         </tr>
         <tr bgcolor="$ui.menuColor">
         <td colspan=2 align="left">
-       		<input type="button" name="eventSubmit_doUploadImage" value="$brih_upload" onClick="CheckField(document.frm,this);"/>
+       		<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadImage" value="$brih_upload" onClick="CheckField(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor"/>
 
@@ -197,7 +200,7 @@ $!data.getMessage()
         </tr>
 	<tr bgcolor="$ui.tableColor" >
 		<td colspan=2 align="left">
-			<input type="button" name="eventSubmit_doGradecard" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doGradecard" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
         	        <input type="hidden" name="actionName" value=""/>
         	        <input type="hidden" name="count" value="$tdcolor"/>
                 </font>

@@ -14,6 +14,7 @@ $page.setTitle("Admin Home | Change Parameters")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #macro(option1)
         <option value=+>+</option>
         <option value=0>0</option>
@@ -119,7 +120,7 @@ $!data.getMessage()
 	<tr>
 
                                 <td>$brih_officeno</td>
-                                <td><select name="Offprefix">
+                                <td><select class="drop" name="Offprefix">
                                         #if($!offprefix=="+")
                                                 #option1()
                                         #else
@@ -146,7 +147,7 @@ $!data.getMessage()
                         </tr>
 	<tr bgcolor="$ui.menuColor">
                                 <td>$brih_mobileno</td>
-                                <td><select name="Mobprefix">
+                                <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
                                                 #option1()
                                         #else   
@@ -173,7 +174,7 @@ $!data.getMessage()
                         </tr>
                         <tr>
                                 <td>$brih_homeno</td>
-                                <td><select name="Homeprefix">
+                                <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
                                                 #option1()
                                         #else
@@ -200,7 +201,7 @@ $!data.getMessage()
                         </tr>
                         <tr bgcolor="$ui.menuColor">
                                 <td>$brih_otherno</td>
-                                <td><select name="Othprefix">
+                                <td><select class="drop" name="Othprefix">
                                         #if($!othprefix=="+")
                                                 #option1()
                                         #else
@@ -271,8 +272,8 @@ $!data.getMessage()
    <tr bgcolor="$ui.menuColor">
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName"/>
-          <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
-	  <input type="reset" name="reset" value="$brih_reset"Click ="checkClear(document.frm,this);"/>
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
+	  <input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset"Click ="checkClear(document.frm,this);"/>
 	  <input type="hidden" name="count" value="$tdcolor">
       </td>
    </tr>

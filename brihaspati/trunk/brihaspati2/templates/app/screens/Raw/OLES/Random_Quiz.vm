@@ -5,6 +5,11 @@
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
  * Contributors: Members of MHRD, DEI Agra.
 *#
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #if($mode == "update")
 	$page.setTitle("Question Setting Update")
 #else
@@ -94,7 +99,7 @@ $!data.getMessage()
 	#end
 	<tr>
 		<td><b>$brih_topic $brih_name</b><font color=Red>*</font></td>        		              
-        	<td><select name=topicList >		
+        	<td><select name=topicList class="drop" >		
 			#if($mode == "update")
 				#foreach($topicname in $topicList)				
 					#if($topicname.getTopic().toString()==$topic.toString())						
@@ -112,7 +117,7 @@ $!data.getMessage()
 	</tr>
         <tr>
         	<td><b>$brih_type</b><font color=Red>*</font></td>
-        	<td><select name=typeList >            	
+        	<td><select name=typeList class="drop" >            	
 		    	#if($mode == "update")
 		    		#if($questionType=='mcq')	
 		    			#set($mcq='selected')                		
@@ -133,7 +138,7 @@ $!data.getMessage()
         </tr>
         <tr>
         	<td><b>$brih_difflevel</b><font color=Red>*</font></td>        	
-        	<td><select name="levelList" >
+        	<td><select name="levelList" class="drop" >
     			#if($mode == "update")
     				#if($questionLevel=='0-3')	
     					#set($easy='selected')										
@@ -172,12 +177,12 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5">
 			#if($mode == "update")
-				<input type="button" name="eventSubmit_updateQuizQuestionSetting" value="$brih_update" onClick="checkValue(document.frm,this);"/>
-		  		<input type="reset" name="$brih_reset" value="$brih_restore $brih_original"/>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_updateQuizQuestionSetting" value="$brih_update" onClick="checkValue(document.frm,this);"/>
+		  		<input type="reset" class="button-ftextstyle" name="$brih_reset" value="$brih_restore $brih_original"/>
 			#else
-				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"/>
-				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" onClick="checkValue(document.frm,this);">			
-				<input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"/>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" onClick="checkValue(document.frm,this);">			
+				<input type="reset" class="button-ftextstyle" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 			#end
 		</td>
 	</tr>

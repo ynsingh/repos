@@ -8,6 +8,11 @@
 
 $page.setTitle("Quiz Evaluation")
 $page.setBgColor($ui.bgcolor)
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ## Creating the links for help regarding FAQ 
@@ -156,7 +161,7 @@ $page.setBgColor($ui.bgcolor)
 
 <input type="hidden" ID="quesID$velocityCount" name="quesID$velocityCount" value="$!answer.getQuestionID()">
 <input type="hidden" ID="fileName$velocityCount" name="fileName$velocityCount" value="$!answer.getFileName()">
-<input type="button" name="eventSubmit_EvaluateQuestion" value="Save Evaluation" onClick="javascript:return saveEvaluation(document.frm,$!num);">
+<input type="button" class="button-ftextstyle" name="eventSubmit_EvaluateQuestion" value="Save Evaluation" onClick="javascript:return saveEvaluation(document.frm,$!num);">
 						
 						##<a href=$link.setPage("call,OLES,Evaluate_Quiz.vm").addPathInfo("quesID",$!answer.getQuestionID()).addPathInfo("fileName",$!answer.getFileName()) onClick="javascript:return saveEvaluation(document.frm,$!num)">Save Evaluation </a>
 					#end
@@ -182,7 +187,7 @@ $page.setBgColor($ui.bgcolor)
 	<tr>
 		<td>
 			#if($flag)
-					<input type="button" name="eventSubmit_EvaluateQuestionDone" value="Evaluation Done" onClick="saveEvaluation1(document.frm,this);"/>
+					<input type="button" class="button-ftextstyle" name="eventSubmit_EvaluateQuestionDone" value="Evaluation Done" onClick="saveEvaluation1(document.frm,this);"/>
 			#end
 		</td>
 	</tr>

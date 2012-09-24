@@ -4,6 +4,9 @@ $page.setTitle("Select Department")
 
 #set($Brihaspatilanguage = $data.getUser().getTemp("lang" ).toString()) 
 #set($dirList = $data.getRequest().getAttribute("dirList"))
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head
 <br/>
 Manage Departments : select those which you want to be present.
 <br/>
@@ -29,7 +32,7 @@ Manage Departments : select those which you want to be present.
 	<input type="checkbox" name="department" value="Water Resources Development~WRD" /> Water Resources Development<br/>
 	<input type="checkbox" name="department" value="Paper Technology~PP" /> Paper Technology <br/>
 
-	<input type="submit" value=Update /> <a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("count", "1") > Back</a>
+	<input type="submit" class="button-ftextstyle" value=Update /> <a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("count", "1") > Back</a>
 
 
 </form>

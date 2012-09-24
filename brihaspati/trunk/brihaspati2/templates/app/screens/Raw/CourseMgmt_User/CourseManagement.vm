@@ -14,6 +14,10 @@
 
 $page.setTitle("Home | $course | Course management")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang = $data.getUser().getTemp("lang" ).toString())  
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -98,7 +102,7 @@ $!data.getMessage()
 	        #elseif($tdcolor == "0")
         	<td bgcolor="#AFDCEC">
 	        #end
-        	<a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td><td>
+        	<a href=$link.setPage("call,CourseMgmt_User,CourseMgmt.vm").addPathInfo("count","0")> $brih_course $Profile_user</a></td>
 		#if($tdcolor != "2")
 		<td>
 		#elseif($tdcolor == "2")
@@ -164,7 +168,130 @@ $!data.getMessage()
 #end
 ######################################
  ## Upload.vm
-<script LANGUAGE="JAVASCRIPT">
+##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,Upload.vm").setAction("UploadAction")">
+<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UploadAction")">
+<table width="100%" align="left">
+    ##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="0">
+      #if ($errorTemplate)
+      <tr>
+        <td colspan="4">
+          <table bgcolor="$ui.bgcolor">
+            <tr>
+              <td>
+                <img src="$ui.image($ui.alertImage,$data)">
+              </td>
+              <td>
+                #parse ($errorTemplate)
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      #end
+        <tr width=100% bgcolor="$ui.menuColor">
+                <img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
+        </tr>
+	
+	#if($user_role == "instructor")
+      <tr width=100% bgcolor="$ui.tableColor">
+         <td colspan=4>
+         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
+        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
+        <SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+          <option></option>
+        #foreach($topic in $allTopics)
+                <option>$topic</option>
+          #end
+        </SELECT>
+	<input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
+        </td>
+        ##</tr>
+        ##<tr>
+        <td>
+        <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b>
+        </td>
+        </tr>
+	#else
+	<tr width=100% bgcolor="$ui.tableColor">
+         <td colspan=6>
+         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
+        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
+        <SELECT class="drop" name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform) class="drop">
+          <option></option>
+        #foreach($topic in $allTopics)
+                <option>$topic</option>
+          #end
+        </SELECT>
+        <input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
+        </td>
+	</tr>	
+	#end
+      <tr bgcolor="$ui.menuColor" width=100%>
+        ##formCell ("Topic Name" "contentTopic" "")
+        <td>
+        <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end $brih_name</font> </b>
+        </td>
+        <td colspan=4>
+        <input type="text" name=contentTopic onFocus=checkRadio() size=20>
+        </td>
+      <tr bgcolor="$ui.tableColor">
+              #fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td></td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
+      </tr>
+      <tr bgcolor="$ui.menuColor">
+              #fileUpload ("2. &nbsp; $brih_at_file " "file2")</td><td></td>#fileUpload ("7.&nbsp; $brih_at_file  &nbsp;" "file7")
+      </tr>
+      <tr bgcolor="$ui.tableColor">
+              #fileUpload ("3. &nbsp; $brih_at_file " "file3")</td><td></td>#fileUpload ("8.&nbsp; $brih_at_file  &nbsp;" "file8")
+      </tr>
+      <tr bgcolor="$ui.menuColor">
+              #fileUpload ("4. &nbsp; $brih_at_file " "file4")</td><td></td>#fileUpload ("9.&nbsp; $brih_at_file  &nbsp;" "file9")
+        </tr>
+	<tr bgcolor="$ui.tableColor">
+              #fileUpload ("5. &nbsp; $brih_at_file " "file5")</td><td></td>#fileUpload ("10.&nbsp; $brih_at_file  &nbsp;" "file10")
+      </tr>
+
+#*      <tr>
+        <td bgcolor="$ui.tableColor">
+        <b><font face="$ui.sansSerifFonts">Topic Description </font> </b>
+        </td>
+        <td>
+        <font face="$ui.sansSerifFonts"><textarea name="topicDescription" rows=5 cols=60></textarea></font>
+        </td>
+      </tr>
+*#
+#*    <tr>
+        <td bgcolor="$ui.tableColor">
+        <b><font face="$ui.sansSerifFonts">File Information </font> </b>
+        </td>
+        <td>
+        <font face="$ui.sansSerifFonts"><textarea name="fileDescription" rows=5 cols=60></textarea></font>
+        </td>
+      </tr>
+*#
+      <tr>
+        <td colspan=5 align="left" bgcolor="$ui.buttonBoxColor">
+          #*
+            Check for a mode, the update and delete buttons
+            shouldn't appear when inserting a new user.
+          *#
+	<font face="$ui.sansSerifFonts">
+
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
+        <input type="hidden" name="actionName" value="">
+        <input type="hidden" name="count" value="$tdcolor">
+
+          </font>
+        </td>
+      </tr>
+    </table>
+</form>
+
+<SCRIPT language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
+        }
+
         function blurTopicName(frm)
         {
                 frm.contentTopic.value=frm.topicList.options[frm.topicList.selectedIndex].text;
@@ -181,7 +308,7 @@ $!data.getMessage()
                         frm.contentTopic.focus();
                 }
         }
-	 function checkRadio()
+         function checkRadio()
         {
                 if(document.uploadform.topicExisting[0].checked)
                 {
@@ -189,7 +316,7 @@ $!data.getMessage()
                 }
 
         }
-	function validate(uploadform,field)
+        function validate(uploadform,field)
         {
                 var tList=uploadform.topicList;
                 var cTopic=uploadform.contentTopic;
@@ -223,129 +350,5 @@ $!data.getMessage()
                         alert("Topic Name Can not Empty !!");
                 }
         }
-</script>
-##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,Upload.vm").setAction("UploadAction")">
-<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_User,CourseManagement.vm").setAction("UploadAction")">
-<table width="100%" align="left">
-    ##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="0">
-      #if ($errorTemplate)
-      <tr>
-        <td colspan="4">
-          <table bgcolor="$ui.bgcolor">
-            <tr>
-              <td>
-                <img src="$ui.image($ui.alertImage,$data)">
-              </td>
-              <td>
-                #parse ($errorTemplate)
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      #end
-        <tr width=100% bgcolor="$ui.menuColor">
-                <img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
-        </tr>
-	
-	#if($user_role == "instructor")
-      <tr width=100% bgcolor="$ui.tableColor">
-         <td colspan=4>
-         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-        <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-          <option></option>
-        #foreach($topic in $allTopics)
-                <option>$topic</option>
-          #end
-        </SELECT>
-	<input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
-        </td>
-        ##</tr>
-        ##<tr>
-        <td>
-        <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b>
-        </td>
-        </tr>
-	#else
-	<tr width=100% bgcolor="$ui.tableColor">
-         <td colspan=6>
-         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-        <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-          <option></option>
-        #foreach($topic in $allTopics)
-                <option>$topic</option>
-          #end
-        </SELECT>
-        <input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
-        </td>
-	</tr>	
-	#end
-      <tr bgcolor="$ui.menuColor" width=100%>
-        ##formCell ("Topic Name" "contentTopic" "")
-        <td>
-        <b><font face="$ui.sansSerifFonts">$brih_topic #if($lang=="hindi")  #end $brih_name</font> </b>
-        </td>
-        <td colspan=4>
-        <input type="text" name=contentTopic onFocus=checkRadio() size=20>
-        </td>
-      <tr bgcolor="$ui.tableColor">
-              #fileUpload ("1. &nbsp; $brih_at_file " "file1")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("6.&nbsp; $brih_at_file  &nbsp;" "file6")
-      </tr>
-      <tr bgcolor="$ui.menuColor">
-              #fileUpload ("2. &nbsp; $brih_at_file " "file2")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("7.&nbsp; $brih_at_file  &nbsp;" "file7")
-      </tr>
-      <tr bgcolor="$ui.tableColor">
-              #fileUpload ("3. &nbsp; $brih_at_file " "file3")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("8.&nbsp; $brih_at_file  &nbsp;" "file8")
-      </tr>
-      <tr bgcolor="$ui.menuColor">
-              #fileUpload ("4. &nbsp; $brih_at_file " "file4")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("9.&nbsp; $brih_at_file  &nbsp;" "file9")
-        </tr>
-	<tr bgcolor="$ui.tableColor">
-              #fileUpload ("5. &nbsp; $brih_at_file " "file5")</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>#fileUpload ("10.&nbsp; $brih_at_file  &nbsp;" "file10")
-      </tr>
 
-#*      <tr>
-        <td bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">Topic Description </font> </b>
-        </td>
-        <td>
-        <font face="$ui.sansSerifFonts"><textarea name="topicDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>
-*#
-#*    <tr>
-        <td bgcolor="$ui.tableColor">
-        <b><font face="$ui.sansSerifFonts">File Information </font> </b>
-        </td>
-        <td>
-        <font face="$ui.sansSerifFonts"><textarea name="fileDescription" rows=5 cols=60></textarea></font>
-        </td>
-      </tr>
-*#
-      <tr>
-        <td colspan=5 align="left" bgcolor="$ui.buttonBoxColor">
-          #*
-            Check for a mode, the update and delete buttons
-            shouldn't appear when inserting a new user.
-          *#
-	<font face="$ui.sansSerifFonts">
-
-          <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
-        <input type="hidden" name="actionName" value="">
-        <input type="hidden" name="count" value="$tdcolor">
-
-          </font>
-        </td>
-      </tr>
-    </table>
-</form>
-
-############################
-<SCRIPT language="JavaScript">
-        function popupWin(url,popupName)
-        {
-                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400");
-        }
 </SCRIPT>
