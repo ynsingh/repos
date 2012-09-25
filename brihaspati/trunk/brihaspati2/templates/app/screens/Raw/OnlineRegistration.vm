@@ -76,8 +76,8 @@ $!data.getMessage()
 	  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
 	  #end
 	  </select>
-	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search" class="button-ftextstyle"/>
-		<select id="group_id" class="drop" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search" id="btnSearch" style="visibility: hidden"/>
+		<select class="drop" id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
 	  	##<option></option>
 		##set($counter=1)
 		#foreach($crsname in $courseList)
@@ -241,6 +241,7 @@ $!data.getMessage()
 	function checkOption (frm,field)
         {
                 frm.val.value=document.frm.instName.value;
+		document.getElementById('btnSearch').click();
         }
 
 

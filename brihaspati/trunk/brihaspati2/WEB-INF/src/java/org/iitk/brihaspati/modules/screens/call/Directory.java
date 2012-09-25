@@ -58,6 +58,8 @@ public class Directory extends SecureScreen{
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
                         context.put("AdminConf",AdminConf);
+			String ip = data.getServerName();
+			context.put("ip",ip);
 			String port = AdminProperties.getValue(path,"brihaspati.spring.port");
 			context.put("port",port);
 			int usedport = data.getServerPort();
@@ -75,7 +77,6 @@ public class Directory extends SecureScreen{
                         int u_id=UserUtil.getUID(username);
                         context.put("uid",u_id);
 			Vector instid1=InstituteIdUtil.getAllInstId(u_id);
-			ErrorDumpUtil.ErrorLog("====================>>>>>"+instid1);
 			Vector vAToBeRemoved=new Vector();
 			for (int k = 0 ; k < instid1.size(); k++)
 		            {                       
@@ -85,16 +86,11 @@ public class Directory extends SecureScreen{
 		                {
                 			int duplicate = instid1.indexOf(b);
 			                vAToBeRemoved.add(b);
-					ErrorDumpUtil.ErrorLog("dddd====================>>>>>"+vAToBeRemoved);
 			                instid1.removeElementAt(duplicate);
 		                }
 		             }
 			instid1.removeAll(vAToBeRemoved);
 			instid1.addAll(vAToBeRemoved);
-			ErrorDumpUtil.ErrorLog("====================>>>>>"+instid1);
-			ErrorDumpUtil.ErrorLog("====================>>>>>"+instid1.size());
-
-
 
 			String str11="";
                         String instid="";
