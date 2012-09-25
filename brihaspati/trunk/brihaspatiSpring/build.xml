@@ -23,7 +23,7 @@
         <echo message=""/>
         <echo message="Available targets are:"/>
         <echo message=""/>
-        <echo message="build     --> Build the application"/>
+        <echo message="compile     --> Build the application"/>
         <echo message="deploy    --> Deploy application as directory"/>
         <echo message="deploywar --> Deploy application as a WAR file"/>
         <echo message="install   --> Install application in Tomcat"/>
@@ -31,10 +31,24 @@
         <echo message="start     --> Start Tomcat application"/>
         <echo message="stop      --> Stop Tomcat application"/>
         <echo message="list      --> List Tomcat applications"/>
-        <echo message="peer      --> Create peer based file"/>
+        <echo message="project-om      --> Create peer based file"/>
+        <echo message="copy      --> Copy Schema file from turbine brihaspati for generating object model"/>
     </target>
-
-    <target name="build" description="Compile main source tree java files">
+	<target name="copy" description="Copy Schema file from turbine brihaspati for generating om model">
+		<copy
+			file="../brihaspati2/WEB-INF/conf/brihaspati-schema.xml"
+		      	tofile="schema/brihaspati-schema.xml"
+		      	overwrite="yes"
+      			filtering="yes"
+		/>
+		<copy
+			file="../brihaspati2/WEB-INF/conf/id-table-schema.xml"
+		      	tofile="schema/id-table-schema.xml"
+		      	overwrite="yes"
+      			filtering="yes"
+		/>
+	</target>
+    <target name="compile" description="Compile main source tree java files">
         <mkdir dir="${build.dir}"/>
         <javac destdir="${build.dir}" source="1.5" target="1.5" debug="true"
                deprecation="false" optimize="false" failonerror="true">
@@ -43,7 +57,7 @@
         </javac>
     </target>
 
-    <target name="deploy" depends="build" description="Deploy application">
+    <target name="deploy" depends="compile" description="Deploy application">
         <copy todir="${deploy.path}/${name}/WEB-INF" preservelastmodified="true">
             <fileset dir="WEB-INF">
                 <include name="**/*.*"/>
@@ -52,19 +66,20 @@
     </target>
 
     <target
-    name="peer"
+    name="project-om"
+    depends="copy"
     unless="noObjectModel"
     description="--> generates the peer-based object model for your project">
 
     <ant
       antfile="${torque.buildFile}"
-      target="om">
+      target="project-om">
     </ant>
 
     </target>
 
 
-    <target name="deploywar" depends="build" description="Deploy application as a WAR file">
+    <target name="deploywar" depends="compile" description="Deploy application as a WAR file">
         <war destfile="${name}.war"
              webxml="WEB-INF/web.xml">
             <fileset dir="WEB-INF">
@@ -82,8 +97,8 @@
     name="init"
     description="--> generates the full application">
 
-    <antcall target="peer"/>
-    <antcall target="build"/>
+    <antcall target="project-om"/>
+    <antcall target="compile"/>
 
   </target>
     
