@@ -90,7 +90,6 @@ public class ProcessRequest extends HttpServlet {
                		}catch(Exception dberror){ServerLog.getController().Log("Error in database connection "+dberror.getMessage());}
 		}
 		
-			
 		try{
   			dbTimer.schedule(TimerOfDatabase.getController(), 1000, 60*60*1000);
  		}catch(Exception e){ ServerLog.getController().Log("Error in database Scheduler "+e.getMessage());}
@@ -157,8 +156,13 @@ public class ProcessRequest extends HttpServlet {
 					filepath.delete();
 				}
 				if(v.size()>0){
+					String url=null;
+					try {
+						url=request.getRequestURL().toString();
+						url=url.substring(0,url.lastIndexOf("/"));	
+					} catch (Exception e) { ServerLog.getController().Log("Error in get url ");}
 					DataOutputStream dos = new DataOutputStream(new FileOutputStream(filepath,true));
-        	        		dos.writeBytes( "<?xml version=\"1.0\" encoding=\"utf-8\"?><jnlp  spec=\"1.0+\"  codebase=\"https://202.141.40.216:8443/brihaspatisync_client/jnlp\"  href=\"brihaspatisync.jnlp\"> <information> <title> Brihaspatisync Client </title> <vendor>IIT Kanpur</vendor>  <homepage href=\"http://www.brihaspatisolutions.co.in\"/> <description>Brihaspatisync</description>  <description kind=\"short\">Brihaspatisync Client </description>  <icon href=\"images/info.gif\"/>  <icon kind=\"splash\" href=\"images/Title.jpg\"/>  <!-- <offline-allowed/> -->        </information>           <security>  <all-permissions/>  </security>   <resources>  <j2se version=\"1.0+\" />  <property name=\"sun.java2d.d3d\" value=\"false\"/> <jar href=\"brihaspatisync.jar\"/> </resources> <application-desc main-class=\"org.bss.brihaspatisync.Client\"> <argument> "+usr+"</argument> <argument> "+lect_id+"</argument><argument> "+l_name+"</argument> <argument> https://202.141.40.215:8443/brihaspatisync_iserver </argument> <argument> "+ins_std+"</argument> </application-desc> </jnlp>"); 
+        	        		dos.writeBytes( "<?xml version=\"1.0\" encoding=\"utf-8\"?><jnlp  spec=\"1.0+\"  codebase=\"https://202.141.40.216:8443/brihaspatisync_client/jnlp\"  href=\"brihaspatisync.jnlp\"> <information> <title> Brihaspatisync Client </title> <vendor>IIT Kanpur</vendor>  <homepage href=\"http://www.brihaspatisolutions.co.in\"/> <description>Brihaspatisync</description>  <description kind=\"short\">Brihaspatisync Client </description>  <icon href=\"images/info.gif\"/>  <icon kind=\"splash\" href=\"images/Title.jpg\"/>  <!-- <offline-allowed/> -->        </information>           <security>  <all-permissions/>  </security>   <resources>  <j2se version=\"1.0+\" />  <property name=\"sun.java2d.d3d\" value=\"false\"/> <jar href=\"brihaspatisync.jar\"/> </resources> <application-desc main-class=\"org.bss.brihaspatisync.Client\"> <argument> "+usr+"</argument> <argument> "+lect_id+"</argument><argument> "+l_name+"</argument> <argument>"+url+"</argument> <argument> "+ins_std+"</argument> </application-desc> </jnlp>"); 
 					dos.flush();
 				        dos.close();
                                 	RequestDispatcher rd= context.getRequestDispatcher("/brihaspati.html");
@@ -330,8 +334,11 @@ public class ProcessRequest extends HttpServlet {
                       	String lectAudio=request.getParameter("lectAudio");
                       	String lectVedio=request.getParameter("lectVedio");
                       	String lectWhiteBoard=request.getParameter("lectWhiteBoard");
-
-			String message=putLecture(lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard);                        
+			StringBuffer url =null;
+			try {
+				url=request.getRequestURL();
+			}catch(Exception e){}
+			String message=putLecture(url,lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard);                        
                        	out.println(message);
                         out.flush();
 			out.close();
@@ -557,7 +564,7 @@ public class ProcessRequest extends HttpServlet {
                 return result;
 	}
 	
-	private String putLecture(String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard){ 
+	private String putLecture(StringBuffer url,String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard) { 
 		String subject="";
 		String message=" ";
 		Date date=Date.valueOf(lectDate);
@@ -639,7 +646,7 @@ public class ProcessRequest extends HttpServlet {
         	                        crit.add(UrlConectionPeer.LECTURENAME,lectName);
                 	                crit.add(UrlConectionPeer.ROLE,"student");
                         	        UrlConectionPeer.doInsert(crit);
-					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key));
+					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
 				}
 				mail_id.clear();
 				mail_id=AdminProperties.getUDetail(gid,2);
@@ -654,7 +661,7 @@ public class ProcessRequest extends HttpServlet {
                                         crit.add(UrlConectionPeer.LECTURENAME,lectName);
                                         crit.add(UrlConectionPeer.ROLE,"instructor");
                                         UrlConectionPeer.doInsert(crit);
-					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"instructor",Integer.toString(key));
+					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"instructor",Integer.toString(key),url);
 				}
 			}
 		}catch(Exception e){}

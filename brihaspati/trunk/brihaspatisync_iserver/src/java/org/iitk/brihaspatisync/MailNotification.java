@@ -37,6 +37,7 @@ public class MailNotification {
 	private String lectCouseName="";
 	private String ins_std="";
 	private String mail_id[]=null;
+	private StringBuffer url=null;
 	
 	private String key=null;
 	private Date date;
@@ -49,7 +50,7 @@ public class MailNotification {
         }
 	
 
-	protected void sendMail( ServletContext context1,String subject1,String mail_id1[],Date date1,String lectTime1,String lectDuration1,String lectName1,String lectCouseName1,String ins_std1,String key1)  {
+	protected void sendMail( ServletContext context1,String subject1,String mail_id1[],Date date1,String lectTime1,String lectDuration1,String lectName1,String lectCouseName1,String ins_std1,String key1,StringBuffer url1)  {
 		
 		this.subject=subject1;
 		this.mail_id=mail_id1;
@@ -61,14 +62,13 @@ public class MailNotification {
 		this.context=context1;
 		this.key=key1;
 		this.ins_std=ins_std1;
-						
+		this.url=url1;				
 		(thread=new Thread(){
                         public void run(){
 					String msg = "";
 					try {
-		               			String url="https://202.141.40.215:8443/brihaspatisync_iserver/ProcessRequest?req=getjnlp&key="+key;
-						ServerLog.getController().Log(url);  	
-		                                String message="<font size=3> Dear "+mail_id[1]+" ,<br><br> This message is to informed you that the following lecture will take place "+date+" "+lectTime +" "+lectDuration+".<br><br> Name of the lecture ("+lectCouseName+" to "+lectName+" )<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 1. Click here to join "+url +" <br> &nbsp;&nbsp;&nbsp;&nbsp; This link should not be shared with others, it is unique to you.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 2. You will be connected to audio using your computer's microphone and speakers. A headset is recommended. <br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 3. System Requirements :- Any OS compatiable with your microphone and speaker.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 4. Please send your suggestion, comment and feedback to brihspti@iitk.ac.in</font>";
+		               			String url_new=(url+"?req=getjnlp&key="+key).toString();
+		                                String message="<font size=3> Dear "+mail_id[1]+" ,<br><br> This message is to informed you that the following lecture will take place "+date+" "+lectTime +" "+lectDuration+".<br><br> Name of the lecture ("+lectCouseName+" to "+lectName+" )<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 1. Click here to join "+url_new +" <br> &nbsp;&nbsp;&nbsp;&nbsp; This link should not be shared with others, it is unique to you.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 2. You will be connected to audio using your computer's microphone and speakers. A headset is recommended. <br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 3. System Requirements :- Any OS compatiable with your microphone and speaker.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 4. Please send your suggestion, comment and feedback to brihspti@iitk.ac.in</font>";
 				 		String email_new=mail_id[0];
 						 
 						String path=context.getRealPath("WEB-INF")+"/../../brihaspati2/WEB-INF/conf/Admin.properties"; 
