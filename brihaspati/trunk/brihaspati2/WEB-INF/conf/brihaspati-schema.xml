@@ -297,10 +297,20 @@
            <column name="FORTIME" size="255" type="VARCHAR"/>
 </table>
 <table name="SessionAddress" idMethod="idbroker">
-  <column name="SerialNo" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
-  <column name="MulticastAddress" size="255" type="VARCHAR"/>
-  <column name="Flag" type="INTEGER"/>
+	  <column name="SerialNo" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	  <column name="MulticastAddress" size="255" type="VARCHAR"/>
+	  <column name="Flag" type="INTEGER"/>
 </table>
+<table name="URL_CONECTION" idMethod="idbroker">
+           <column name="SESSION_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+           <column name="SESSION_KEY" required="true" type="INTEGER"/>
+           <column name="LECTUREID" required="true" type="INTEGER"/>
+           <column name="LOGIN_ID" required="true" size="255" type="VARCHAR" />
+           <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
+           <column name="LECTURENAME" required="true" size="255" type="VARCHAR"/>
+           <column name="ROLE" required="true" size="255" type="VARCHAR"/>
+</table>
+
 <!-- ==================================================================== -->
 <table name="RESEARCH_REPOSITORY" idMethod="idbroker">
         <column name="SUBJECT_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
