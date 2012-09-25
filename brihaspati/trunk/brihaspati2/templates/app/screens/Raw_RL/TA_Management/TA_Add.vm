@@ -1,0 +1,88 @@
+#*
+ * @(#) TA_Add.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+
+$page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+	<table bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.menuColor"><td colspan=7>
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> |
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course1</a> | $brih_reg1 $bri_ta 
+	</td>
+	</tr>
+	</table>
+	<table bgcolor="$ui.tableColor" width=100%>
+	<tr >
+	#if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_listOf $bri_ta #else $brih_listOf $bri_ta #end </a>
+        </td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $brih_reg1 $bri_ta </a></td>
+	 #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>
+
+	</tr>
+	</table>
+	
+	<table bgcolor="$ui.tableColor" width=100%>
+	<form name=frm method="post" action="$link.setPage("call,TA_Management,TA_Add.vm").setAction("TA_Registeration")">
+	<tr bgcolor="$ui.menuColor">
+        <td><b>$brih_course $brih_ID</b></td>
+        <td><b>$course1</b></td>
+	</tr>
+	<tr>
+	        #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+	        #formPasswordCell ("$brih_pwd" "PASSWD" "")
+	</tr>
+	<tr>
+	        #formCell ("$brih_first $brih_name" "FNAME" "")
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+	        #formCell("$brih_last $brih_name" "LNAME" "")
+	</tr>
+	<tr>
+	        <td colspan=5 align="left">
+	        <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+	        <input type="hidden" name="actionName">
+	        <input type="Reset" name="Reset" Value="$brih_clear"/>
+	        <input type="hidden" name="count" Value="$tdcolor"/>
+		<input type="hidden" name="cName" value="$cName">
+
+	        </td>
+	</tr>
+	</form>
+	</table>
+	<SCRIPT LANGUAGE="javascript">
+	        function checkField(frm,field)
+	        {
+	                if((frm.EMAIL.value!="")) {
+	                        frm.actionName.value=field.name;
+	                        frm.submit();
+	                }
+	                else
+	                {
+	                        alert("Please fill the Mandatory(*) Fields !");
+        	        }
+	        }
+	</SCRIPT>
+
