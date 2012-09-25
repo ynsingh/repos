@@ -120,7 +120,7 @@ public class DirectoryController extends SimpleFormController {
                                                 str="DEPARTMENT";
 
                                         crit=new Criteria();
-                                        crit.add(table,str,(Object)("%"+match+"%"),crit.LIKE);
+                                        crit.add(table,str,(Object)("%"+match.trim()+"%"),crit.LIKE);
                                         st1=TelephoneDirectoryPeer.doSelect(crit);
                                         vect = new Vector(st1);
                                         vect1.addAll(vect);
@@ -155,7 +155,7 @@ public class DirectoryController extends SimpleFormController {
 	
         	                        crit=new Criteria();
 					String str44="INSTITUTE_ID";
-					crit.add(table,str,(Object)("%"+match+"%"),crit.LIKE);
+					crit.add(table,str,(Object)("%"+match.trim()+"%"),crit.LIKE);
 					crit.add(table,str44,(Object)("%"+inst+"%"),crit.LIKE);
 	                                st1=TelephoneDirectoryPeer.doSelect(crit);
 					vect = new Vector(st1);

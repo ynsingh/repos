@@ -10,20 +10,24 @@
 
 <head><title>Directory</title></head>
 <link rel="stylesheet" type="text/css" href="css/profile_css.css" />
+<link rel="stylesheet" type="text/css" href="css/color.css" />
 
 <body>
-	<p><font color="red">$!{model.ErrorMsg}</font><p>
+#if(${model.status}=="blank")
+	<p><font color="red">#springMessage("msg_dir")</font><p>
+#end
+
 	<form name="frm" method="post" action="http://${model.ip}:${model.port}/brihaspatiSpring/directory.vm?mode=${model.mod}&adminconf=${model.AdminConf}">
-	<table width="100%" bgcolor="#efe3b5" border="0" cellspacing="2" cellpadding="5">
+	<table width="100%" class="menuColor" border="0" cellspacing="2" cellpadding="5">
 	<tr>
-		<td align="right" width="120px"><b><font size="4">Search By</font></b></td>
+		<td align="right" width="120px"><b><font size="4">#springMessage("brih_search")</font></b></td>
 		<td><select name="querylist" value="">
-			<option value="name">Name</option>
-			<option value="mailid">Mail ID</option>
-			<option value="address">Address</option>
-			<option value="department">Department</option>
+			<option value="name">#springMessage("brih_name")</option>
+			<option value="mailid">#springMessage("brih_mail")</option>
+			<option value="address">#springMessage("brih_address")</option>
+			<option value="department">#springMessage("brih_dept")</option>
 		</select></td>
-		<td align="right" width="150px"><b><font size="4">Match String</font></b></td>
+		<td align="right" width="170px"><b><font size="4">#springMessage("brih_match")</font></b></td>
 		<td width="70px"><input type="text" name="matchstring" value="">
 		</td><td><input title="Search" type="image" src="images/Search.png" width="30" height="30"name="Search" value="Search" onClick="checkNull(document.frm,this);"></td><td>
 		<input type="hidden" name="crt" value="Search">
@@ -48,19 +52,20 @@
 </td>
 	</tr>
 	</table>
-	<table width="100%" bgcolor="#f7f3de" border="1" cellspacing="2" cellpadding="5" border-color="c6bfbf">
-	<tr bgcolor="#efe3b5" class="adv"><b>
-		<td>ID</td>
-		<td>NAME</td>
-		<td>MAIL-ID</td>
-		<td>ADDRESS</td>
-		<td>OFFICE NO</td>
-		<td>MOBILE NO</td>
-		<td>HOME NO</td>
-		<td>OTHER NO</td>
-		<td>DEPARTMENT</td>
-		<td>DESIGNATION</td>
-		<td>STATE</td></b>
+	<div class="scroll">
+	<table width="100%" class="headerColor" border="1" cellspacing="2" cellpadding="5">
+	<tr class="adv menuColor"><b>
+		<td>#springMessage("brih_ID")</td>
+		<td>#springMessage("brih_name")</td>
+		<td>#springMessage("brih_mail")</td>
+		<td>#springMessage("brih_address")</td>
+		<td>#springMessage("brih_officeno")</td>
+		<td>#springMessage("brih_mobileno")</td>
+		<td>#springMessage("brih_homeno")</td>
+		<td>#springMessage("brih_otherno")</td>
+		<td>#springMessage("brih_dept")</td>
+		<td>#springMessage("brih_designation")</td>
+		<td>#springMessage("brih_state")</td></b>
 	</tr>
 #set($coun=${model.count})
 #foreach ($value in ${model.dirList})
@@ -80,7 +85,8 @@
 #set($coun=$coun+1)
 #end
 	</table>
-	<table width="100%"><tr><td bgcolor="#efe3b5">
+	</div>
+	<table width="100%"><tr><td class="menuColor">
 	#if(${model.crt}=="null")
 	#if(${model.total_size}<= ${model.AdminConf})
         <img title="First" src="images/First_blank.png" width="35" height="25"> &nbsp;

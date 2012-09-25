@@ -4,7 +4,7 @@ body{overflow-y:scroll}
 
 .ad { 
     color: #6e6e6e;
-    font: bold 12px Helvetica, Arial, sans-serif;
+    font: bold 15px Helvetica, Arial, sans-serif;
  	padding-top: 4px ;
 	padding-left: 4px ;
 	padding-right: 4px ;
@@ -24,11 +24,6 @@ body{overflow-y:scroll}
     -moz-border-radius: 2px;
 	}
 .ad:hover {
-	font-size: 120%;
-    color: #800080;
-    border-color: #999;
-    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .adv { 
@@ -53,3 +48,8 @@ body{overflow-y:scroll}
     background-position: center bottom;
     background-repeat:no-repeat;
 }
+.scroll{
+        width:870px;
+        overflow-x:scroll;
+}
+
