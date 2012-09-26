@@ -63,7 +63,7 @@ public class RegisterToIndexServer {
 	
 	public boolean connectToMasterServer() {
                 try {
-			String m_url=RuntimeDataObject.getController().getMasterUrl().trim()+"req=getLEDList";
+			String m_url=RuntimeDataObject.getController().getMasterUrl().trim()+"/ProcessRequest?req=getLEDList";
 			if(!(m_url.equals(""))){
                         	try {
                                         URL indexurl = new URL(m_url);
@@ -75,6 +75,7 @@ public class RegisterToIndexServer {
                                           		if((str=in.readLine())!=null) {
 								String str_1[]=str.split(",");
 								for(int i=0;i<str_1.length;i++) {
+									
 									brihaspati.add(str_1[i]);	
 								}
                                                         }
@@ -93,7 +94,7 @@ public class RegisterToIndexServer {
 
 	public Vector connectToMasterServer1(){
                 try {
-                        String m_url=RuntimeDataObject.getController().getMasterUrl().trim()+"req=getISList";;
+                        String m_url=RuntimeDataObject.getController().getMasterUrl().trim()+"/ProcessRequest?req=getISList";
                         if(!(m_url.equals(""))){
                                 try {
                                         URL indexurl = new URL(m_url);
