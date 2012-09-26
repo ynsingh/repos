@@ -52,7 +52,7 @@
 </td>
 	</tr>
 	</table>
-	<div class="scroll">
+	#if(${model.mod}=="psnl")<div class="scroll">#else <div class="scrollo">#end
 	<table width="100%" class="headerColor" border="1" cellspacing="2" cellpadding="5">
 	<tr class="adv menuColor"><b>
 		<td>#springMessage("brih_ID")</td>
