@@ -10,6 +10,11 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
 
 <table bgcolor="$ui.menuColor" width=100%>
@@ -105,13 +110,13 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
 		<td><b><I>$brih_start $brih_time <font color=RED size="4">* </font></I></b></td>
 		<td>
-                	<select name="Start_hr">
+                	<select name="Start_hr" class="drop">
 			#foreach($hr in $hour)
                         	<option value="$hr">$hr
 		    	#end
 			</select>
                  	&nbsp;<b><font size=+1>:: </font></b>&nbsp;
-            		<select name="Start_min">
+            		<select name="Start_min" class="drop">
 			#foreach($m in $min)
 	          		<option value="$m">$m	
 			#end
@@ -121,13 +126,13 @@ $!data.getMessage()
        	<tr>
 		<td><b><I>$brih_end $brih_time <font color=RED size="4">* </font></I></b></td>
 		<td>
-			<select name="Last_hr">
+			<select name="Last_hr" class="drop">
          		#foreach($hr in $hour)
            		<option value="$hr">$hr
          		#end
        			</select>
        			&nbsp;<b><font size=+1>:: </font></b>&nbsp;
-       			<select name="Last_min">
+       			<select name="Last_min" class="drop">
           		#foreach($m in $min)
 	     		<option value="$m">$m	
 	  		#end
@@ -139,9 +144,9 @@ $!data.getMessage()
 	</tr>
   	<tr>
 		<td colspan=2>
-         	<input type ="button" name="eventSubmit_doInsert" value="$brih_insert" onClick="checkField(document.frm,this)"> 
+         	<input type ="button" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_insert" onClick="checkField(document.frm,this)"> 
 		<input type="hidden" name="uname" value=$name>
-                <input type= "reset" value="$brih_reset">
+                <input type= "reset" class="button-ftextstyle" value="$brih_reset">
 		</td>
 	</tr>
 </table>
@@ -161,7 +166,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
 		<td><b><I>$brih_start $brih_time</b><I></td>
 		<td>
-			<select name="Start_hr">
+			<select name="Start_hr" class="drop">
 			<option value="$st_hr">$st_hr
 			#foreach($hr in $hour)
 				#if($hr!=$st_hr)
@@ -170,7 +175,7 @@ $!data.getMessage()
 			#end
             		</select>
                  	&nbsp;<b><font size=+1>:: </font></b>&nbsp;
-            		<select name="Start_min">
+            		<select name="Start_min" class="drop">
 	          	<option value="$st_min">$st_min	
 			#foreach($m in $min)
 		  		#if($m!=$st_min)
@@ -183,7 +188,7 @@ $!data.getMessage()
 	<tr>
 		<td><b><I>$brih_end $brih_time</I></b></td>
        		<td>
-			<select name="Last_hr">
+			<select name="Last_hr" class="drop">
            		<option value="$end_hr">$end_hr
          		#foreach($hr in $hour)
 				#if($hr!=$end_hr)
@@ -192,7 +197,7 @@ $!data.getMessage()
 			#end
 			</select>
 			&nbsp;<b><font size=+1>:: </font></b>&nbsp;
-			<select name="Last_min">
+			<select name="Last_min" class="drop">
 			<option value="$end_min">$end_min
 			#foreach($m in $min)
 				#if($m!=$end_min)
@@ -207,7 +212,7 @@ $!data.getMessage()
 	</tr>
 	<tr>
 		<td align=left colspan=2>
-         	<input type ="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this)"> 
+         	<input type ="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this)"> 
 		</td>
 	</tr>
 </table>

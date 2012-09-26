@@ -9,6 +9,9 @@
  * @modified date: 07-04-2010,20-05-2012
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Home | $course | Student Management | Add Multiple Users ")
@@ -106,7 +109,7 @@ $!data.getMessage()
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
           *#
-          	<input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+          	<input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
           	<input type="hidden" name="actionName" value=""/>
           	<input type="hidden" name="count" value="$tdcolor"/>
     

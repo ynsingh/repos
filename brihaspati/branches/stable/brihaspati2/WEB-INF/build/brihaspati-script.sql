@@ -12,6 +12,7 @@ insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (4,'group_admin');
 insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (5,'author');
 insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (6,'user');
 insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (7,'institute_admin');
+insert into TURBINE_ROLE (ROLE_ID,ROLE_NAME) values (8,'teacher_assistant');
 
 insert into TURBINE_PERMISSION (PERMISSION_ID,PERMISSION_NAME) values (2,'read');
 insert into TURBINE_PERMISSION (PERMISSION_ID,PERMISSION_NAME) values (3,'write');
@@ -48,6 +49,7 @@ update TURBINE_USER set LOGIN_NAME='admin',PASSWORD_VALUE= MD5('admin') where US
 insert into TURBINE_USER(USER_ID,LOGIN_NAME,PASSWORD_VALUE,FIRST_NAME,LAST_NAME) values(0,'guest',MD5('guest'),'guest','');
 insert into PROGRAM (ID, PROGRAM_CODE, PROGRAM_NAME) values(0,'RWP', 'RegistrationWithoutProgram');
 INSERT INTO USER_PREF (USER_ID, USER_LANG) SELECT USER_ID, USER_LANG FROM TURBINE_USER;
+update USER_PREF set ACTIVATION='ACTIVATE' where ACTIVATION='null';
 #---------------------------------------------------------------------------
 # Hint questions for forget password module
 #---------------------------------------------------------------------------
@@ -62,4 +64,21 @@ INSERT INTO HINT_QUESTION VALUES (7,"What is your high school mascot?");
 INSERT INTO HINT_QUESTION VALUES (8,"What was your first bike or car?");
 INSERT INTO HINT_QUESTION VALUES (9,"Where did you first meet your girlfriend/boyfriend?");
 INSERT INTO HINT_QUESTION VALUES (10,"What is your favorite food?");
+
+#---------------------------------------------------------------------------
+# Course Module List for TA Module
+#---------------------------------------------------------------------------
+
+insert into COURSE_MODULE (module_id, module_name) VALUES (1, 'Assignment');
+insert into COURSE_MODULE (module_id, module_name) VALUES (2, 'Backup');
+insert into COURSE_MODULE (module_id, module_name) VALUES (3, 'Communication');
+insert into COURSE_MODULE (module_id, module_name) VALUES (4, 'CourseCalendar');
+insert into COURSE_MODULE (module_id, module_name) VALUES (5, 'CourseManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (6, 'GroupManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (7, 'OnlineExaminationSystem');
+insert into COURSE_MODULE (module_id, module_name) VALUES (8, 'InstructorManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (9, 'StudentManagement');
+insert into COURSE_MODULE (module_id, module_name) VALUES (10, 'MarksUpload');
+insert into COURSE_MODULE (module_id, module_name) VALUES (11, 'Wiki');
+insert into COURSE_MODULE (module_id, module_name) VALUES (12, 'TrackingReport');
 

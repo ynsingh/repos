@@ -115,6 +115,7 @@ public class PublishAction extends SecureAction_Instructor
                                 //int seq=CalendarUtil.getSequence(BPath,"content",topic);
                                 int seq=CalendarUtil.getSequence(BPath,"coursecontent",topic);
                                 //xmlwriter=TopicMetaDataXmlWriter.WriteXml_NewModify(BPath,"content");
+				ErrorDumpUtil.ErrorLog("int seq=="+seq);
                                 xmlwriter=TopicMetaDataXmlWriter.WriteXml_NewModify(BPath,"coursecontent");
                                 xmlwriter.writeXmlFile();
                                 //TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(BPath+"/"+"content__des.xml");
@@ -129,7 +130,7 @@ public class PublishAction extends SecureAction_Instructor
                                         SystemIndependentUtil.deleteFile(f1);
                                 }
                         //}
-
+			ErrorDumpUtil.ErrorLog("status============"+status);
 			SystemIndependentUtil.deleteFile(f);
 			data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
 			}catch(Exception ex){data.setMessage("exception in delete method==="+ex);}
@@ -137,7 +138,9 @@ public class PublishAction extends SecureAction_Instructor
 			EditContent_Action ECA = new EditContent_Action();
 			if(status.equals("Remote"))
 			{
-				ECA.RemoteDelTopic(dir,cName,topic,username);
+				ErrorDumpUtil.ErrorLog("in remote===="+status);
+				ECA.RemoteDelTopic(dir,cName,topic,username,data);
+				ErrorDumpUtil.ErrorLog("in remote below line===="+status);
 			}
 			else if(status.equals("Repo"))
                         {

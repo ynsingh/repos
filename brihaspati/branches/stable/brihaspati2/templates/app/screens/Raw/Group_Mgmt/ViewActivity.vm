@@ -12,6 +12,11 @@
 
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
@@ -98,7 +103,7 @@ $!data.getMessage()
         <b> $QuestionBank_available $brih_activity:</b></td>
         <td align="left" colspan="4">
 	#if($groupdesc!="")
-       	<select name="activity" size="1" />
+       	<select name="activity" size="1" class="drop" />
 	##onChange="Changeactivity(document.frm,this);"/>
 	##<option>- $brih_select - </option>
 	#if($act0=="Discussion Board")
@@ -122,7 +127,7 @@ $!data.getMessage()
         </option>
 	#end
         </select>
-	&nbsp;&nbsp;&nbsp;<input type="button" name="test" value="$brih_go" onClick="go(document.frm,this);"/>
+	&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="test" value="$brih_go" onClick="go(document.frm,this);"/>
 	#else
 	<b><font size="3"><font color="blue"><left>$brih_activity $brih_available1........</left></font></font></b>
 	#end
@@ -136,9 +141,9 @@ $!data.getMessage()
 <td><b> #if($lang == "hindi") $brih_grp $brih_Of1 $brih_grpleader $brih_select: #else $brih_select $brih_grp $brih_grpleader: #end </b></td>
 <td colspan="4">
 	#if($data.getUser().getUserName() == $name || $curdate == $stuno || $check == "nocheck")
-        <select name="leadername" disabled size="1" onChange="Changeleader(document.frm,this);"/>
+        <select name="leadername" class="drop" disabled size="1" onChange="Changeleader(document.frm,this);"/>
 	#else
-        <select name="leadername" size="1" onChange="Changeleader(document.frm,this);"/>
+        <select name="leadername" size="1" class="drop" onChange="Changeleader(document.frm,this);"/>
                 <option>  - #if($lang == "hindi") $brih_grpleader $brih_select #else $brih_select $brih_grpleader #end - </option>
                         #foreach($studentname in $mblist1)
                         <option value="$studentname">
@@ -147,7 +152,7 @@ $!data.getMessage()
                  </option>
         </select>
 	#end
-     &nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doPolling" value="$brih_grpVote" onClick="checkselect(document.frm,this);"/>
+     &nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doPolling" value="$brih_grpVote" onClick="checkselect(document.frm,this);"/>
 </td>
 </tr>
 #else

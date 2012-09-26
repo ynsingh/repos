@@ -45,6 +45,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import java.util.Vector;
+import java.util.LinkedHashSet;
 
 
 /**
@@ -57,6 +58,8 @@ public class Directory extends SecureScreen{
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
                         context.put("AdminConf",AdminConf);
+			String ip = data.getServerName();
+			context.put("ip",ip);
 			String port = AdminProperties.getValue(path,"brihaspati.spring.port");
 			context.put("port",port);
 			int usedport = data.getServerPort();
@@ -74,6 +77,21 @@ public class Directory extends SecureScreen{
                         int u_id=UserUtil.getUID(username);
                         context.put("uid",u_id);
 			Vector instid1=InstituteIdUtil.getAllInstId(u_id);
+			Vector vAToBeRemoved=new Vector();
+			for (int k = 0 ; k < instid1.size(); k++)
+		            {                       
+                		Object a = instid1.elementAt(0);
+		                Object b = instid1.elementAt(k);
+                		if(a == b )
+		                {
+                			int duplicate = instid1.indexOf(b);
+			                vAToBeRemoved.add(b);
+			                instid1.removeElementAt(duplicate);
+		                }
+		             }
+			instid1.removeAll(vAToBeRemoved);
+			instid1.addAll(vAToBeRemoved);
+
 			String str11="";
                         String instid="";
                         String str33="";

@@ -11,6 +11,9 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setTitle("$brih_home | $brih_course | $brih_student $brih_reg")
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
@@ -23,7 +26,9 @@ $!data.getMessage()
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | $brih_student $brih_reg
 </td></tr>
 </table>
-#if($user_role == "instructor")
+## #if($user_role == "instructor")
+## modify by sunil
+#if(($user_role == "instructor") || ($user_role == "teacher_assistant"))
 <table align=left bgcolor="$ui.tableColor" width=100%>
 <tr>
 	#if($tdcolor != "1")
@@ -94,7 +99,7 @@ $!data.getMessage()
 	<td colspan=3></td>*#	
 	<tr bgcolor="$ui.menuColor">
 	        <td>$brih_program</td>
-         	<td><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+         	<td><select name="prg" class="drop" size=1 onChange="ChkPrg(document.frm,this);"/>
 			<option value="Select Program"> #if($lang=="hindi"  || $lang == "gujarati" ) $brih_program $brih_select #else $brih_select $brih_program #end</option>
 			#foreach($progname in $PrgDetail)
 				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
@@ -110,8 +115,8 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
         <td align="left" colspan=5>
                 <input type="hidden" name="actionName">
-             <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldStudent(document.frm,this);"/>
-                <input type="reset" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+             <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldStudent(document.frm,this);"/>
+                <input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
                 <input type="hidden" name="count" value="$tdcolor">
         </td>
         </tr>

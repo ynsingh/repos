@@ -108,44 +108,63 @@ $!data.getMessage()
                 #elseif($tdcolor == "2")
                         <td width="50%" bgcolor="#AFDCEC">
                 #end
-			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName)>$brih_chat</a></td>
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode2","instituteWise").addPathInfo("grpName",$grpName) style=text-decoration:none>$brih_chat</a></td>
 #elseif($mode == "general")
 		#if($tdcolor!="2")
         	        <td width="50%">
 	        #elseif($tdcolor == "2")
         	        <td width="50%" bgcolor="#AFDCEC">
 	        #end
-			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)>$brih_chat</a></td>
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode) style=text-decoration:none>$brih_chat</a></td>
 #else
 		#if($tdcolor!="1")
 	        	<td>
 	        #elseif($tdcolor == "1")
         		<td bgcolor="#AFDCEC">
 	        #end
-        	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+        	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_localmail</a></td>
 		#if($tdcolor!="2")
 			<td>
 	        #elseif($tdcolor == "2")
 		       	<td bgcolor="#AFDCEC">
 	        #end
-		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2") style=text-decoration:none>$brih_chat</a></td>
 		#if($tdcolor!="3")
 	        	<td>
         	#elseif($tdcolor == "3")
 		        <td bgcolor="#AFDCEC">
         	#end
 		#if( $data.getUser().getTemp("role") == "student")
-                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
+			#foreach($msg in $unreadMsg)
+                        #if($msg!="0")
+                        #BlinkingText("New")
+                        #end
+                        #end
+
+			</td>
                #else
 			##<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
-			<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+			<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices
+			#foreach($msg in $unreadMsg)
+                        #if($msg!="0")
+                        #BlinkingText("New")
+                        #end
+                        #end
+
+			</td>
 		#end
 		#if($tdcolor!="4")
 		        <td>
         	#elseif($tdcolor == "4")
 	        	<td bgcolor="#AFDCEC">
         	#end
-		<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+		<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none>$DiscussionBoard
+		#if($unreadm!="0")
+                        #BlinkingText("New")
+                        #end
+
+		</td>
 		#if( $data.getUser().getTemp("role") != "student")
 			#if($tdcolor!="5")
 		        	<td>

@@ -91,7 +91,7 @@ public class MailView extends SecureScreen{
 		 String Role = (String)user.getTemp("role");
                  //String =user.getName();
                  int uid=UserUtil.getUID(user_name);
-                 if((Role.equals("student")) || (Role.equals("instructor")))
+                 if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                  {
 	                 //CourseTimeUtil.getCalculation(uid);
         	         //ModuleTimeUtil.getModuleCalculation(uid);

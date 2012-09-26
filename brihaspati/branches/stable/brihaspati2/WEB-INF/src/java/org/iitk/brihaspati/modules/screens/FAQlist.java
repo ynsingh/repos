@@ -441,6 +441,7 @@ public class FAQlist extends VelocityScreen
 				crit1 = new Criteria();
                                 crit1.addGroupByColumn(FaqmovePeer.MSG_ID);
                                 List dbList=FaqmovePeer.doSelect(crit1);
+				entry=new Vector();
 				for(int count1=0;count1<dbList.size();count1++)
                                 {//for2 
                                         Faqmove element1=(Faqmove)(dbList.get(count1));
@@ -465,7 +466,8 @@ public class FAQlist extends VelocityScreen
 	                        else
         	                {
                 	                context.put("status","blank");
-                        	        String LangFile=(String)data.getUser().getTemp("LangFile");
+                        	        //String LangFile=(String)data.getUser().getTemp("LangFile");
+                        	        String LangFile= MultilingualUtil.LanguageSelectionForScreenMessage(lang);
                                 	if(mode.equals("All")){
                                         	String  mssg=MultilingualUtil.ConvertedString("db-Contmsg",LangFile);
 	                                        data.setMessage(mssg);

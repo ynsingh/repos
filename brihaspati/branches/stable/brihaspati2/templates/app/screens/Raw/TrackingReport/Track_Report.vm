@@ -12,6 +12,7 @@ $page.setTitle("Tracking Report")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td><b>
 	<font face="$ui.sansSerifFonts">
@@ -66,7 +67,8 @@ $!data.getMessage()
 #if($mode == "repotype")
 ##<tr bgcolor="$ui.menuColor"><b><i> Tracking Report</i></b></tr>
 <tr bgcolor="$ui.tableColor"><td><b><i><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("type","user")>$brih_usr $brih_reports</a></i></b></td>
-#if($data.getUser().getTemp("role")=="instructor")
+###if($data.getUser().getTemp("role")=="instructor")
+#if(($data.getUser().getTemp("role")=="instructor")||($data.getUser().getTemp("role")=="teacher_assistant"))
 <td><b><i><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("type","course")>$brih_course/$brih_lesson $brih_reports</a></i></b></td>
 <td><b><i><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("type","quiz")>$brih_test/$brih_quiz $brih_reports</a></i></b></td>
 #end
@@ -83,7 +85,7 @@ $!data.getMessage()
         <td>
         <b>$brih_match $brih_string </b>
               <input align=center type="text" name="valueString" value="" >
-              <input type="button" name="eventSubmit_doSearchvalue" value="$brih_search" onClick="checkNull(document.frm,this);">
+              <input type="button"  class="button-ftextstyle"  name="eventSubmit_doSearchvalue" value="$brih_search" onClick="checkNull(document.frm,this);">
               <input type="hidden" name="status" value="Search">
         </td>
         <td><b> 
@@ -91,7 +93,8 @@ $!data.getMessage()
 			$brih_reports $brih_for $brih_usr $brih_select 
 		#else  
 			$brih_select $brih_usr $brih_for $brih_reports 
-		#end :</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="uname" size="1" onChange="Changename(document.frm,this);"/>
+		#end :</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select class ="drop" name="uname" size="1" onChange="Changename(document.frm,this);"/>
         <option>  - $brih_select - </option>
                                 #if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
                                 #foreach($usrname in $userList1)
@@ -105,7 +108,7 @@ $!data.getMessage()
                                 #end
                                 </option>
                         </select>
-        <input type="button" name="eventSubmit_doSelectValue" value="$brih_submit" onClick="Checkfield(document.frm,this);">
+        <input type="button"  class="button-ftextstyle" name="eventSubmit_doSelectValue" value="$brih_submit" onClick="Checkfield(document.frm,this);">
          </td>
 </tr>
 #end

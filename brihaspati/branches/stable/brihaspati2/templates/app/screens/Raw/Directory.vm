@@ -18,25 +18,10 @@ $page.setTitle("Directory")
 </td>
 </tr>
 <tr><td width="100%">
-#set($rs=$link.setPage("call").toString())
-        #set($count1 = 0)
-        #set($count2 = 1)
-        #foreach($a in $rs.split(":"))
-                #if($count1 == $count2)
-                        #set($a=$a.substring(2))
-                        #set($rs=$link.setPage("call").toString())
-                        #set($count1 = 0)
-                        #set($count2 = 1)
-                        #foreach($a in $rs.split(":"))
-                                #if($count1 == $count2)
-                                        #set($a=$a.substring(2))
-<iframe height="400" width="100%" src="http://$a:$port/brihaspatiSpring/directory.vm?mode=$mode&adminconf=$AdminConf&ip=$a&instid=$instid&uid=$uid" frameborder="0"></iframe>
-                                #end
-                                        #set($count1 = $count1 + 1)
-                        #end
-                #end
-                        #set($count1 = $count1 + 1)
-        #end
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+
+<iframe height="400" width="100%" src="http://$ip:$port/brihaspatiSpring/directory.vm?mode=$mode&adminconf=$AdminConf&ip=$ip&instid=$instid&uid=$uid&language=$lang" frameborder="0"></iframe>
+
 </td>
 </tr>
 </table>

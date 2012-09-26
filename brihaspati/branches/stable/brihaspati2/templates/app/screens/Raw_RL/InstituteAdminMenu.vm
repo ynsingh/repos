@@ -116,5 +116,21 @@
          <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_quota</a>
       </td>
    </tr>
+ <tr bgcolor="$ui.menuColor" align="right">
+                <td><a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> $brih_mgmt $RemoteInstitute $brih_admin </a></td>
+        </tr>
+<tr align="right">
+        <td>
+                <a href=$link.setPage("call,Directory.vm").addPathInfo("mode","psnl") style=text-decoration:none>$brih_directory</a>
+        </td>
+</tr>
+
+        <tr bgcolor="$ui.menuColor" align="right">
+                <td>
+                        <a href=$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a>
+
+               </td>
+       </tr>
+
 </table>
 

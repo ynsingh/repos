@@ -11,6 +11,10 @@
  * @modify date- 10-12-2011
  * @modify date 09-08-2012 (Priyanka)
  *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $!data.getMessage()
 $page.setTitle("Login Page | Institute Admin Registration ")
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
@@ -90,7 +94,7 @@ $page.setTitle("Login Page | Institute Admin Registration ")
                         <tr>
                                 ##formCell ("$Inst_type <font color=red>*</font>" "ITYPE" "")
 				<td>$Inst_type <font color=red>*</font></td>
-				<td><select name="ITYPE">
+				<td><select name="ITYPE" class="drop">
 				        <option value=Govt>$brih_govt</option>
 				        <option value=SemiGovt2>$brih_semi $brih_govt</option>
 				        <option value=SF>$brih_sf</option>
@@ -126,8 +130,8 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 				<input type="hidden" name="actionName">
 				##following mode added by Priyanka
 				<input type="hidden" name="mode" value="cnfrm_i">
-				<input type="button" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkFieldInstAdmin(document.frm,this);"/>
-        			<input type="Reset" name="Reset" Value="$brih_clear"/>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkFieldInstAdmin(document.frm,this);"/>
+        			<input type="Reset" name="Reset" Value="$brih_clear" class="button-ftextstyle"/>
         			</td>
         		</tr>
 			

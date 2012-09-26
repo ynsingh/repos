@@ -30,19 +30,16 @@
    <tr bgcolor="$ui.menuColor">
       <td>
          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
-                ##<img src="$content.getURI("/images/$lang/registration.jpg")"border=0></a><br>
       </td>
    </tr>
    #*<tr bgcolor="$ui.menuColor">
       <td>
          <a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a>
-                ##<img src="$content.getURI("/images/$lang/usermanagement.jpg")"border=0></a><br>
       </td>
    </tr>
 *#
    <tr>
       <td><a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
-              ##  <img src="$content.getURI("/images/$lang/listmanagement.jpg")"border=0></a><br>
       </td>
    </tr>
    <tr bgcolor="$ui.menuColor">
@@ -55,14 +52,12 @@
 
    <tr bgcolor="$ui.menuColor">
       <td><a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_ad $brih_Of1 $brih_backup #else $brih_ad $brih_backup #end</a>
-##       <img src="$content.getURI("/images/$lang/adminbackup.jpg")" border="0"></a>
       </td>
    </tr>
 
    <tr>
       <td>
          <a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1") style=text-decoration:none>$brih_restoration</a>
-##                <img src="$content.getURI("/images/$lang/restoration.jpg")" border="0"></a><br>
       </td>
    </tr>
 

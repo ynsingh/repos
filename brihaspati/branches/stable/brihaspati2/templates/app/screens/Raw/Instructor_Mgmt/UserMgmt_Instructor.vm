@@ -12,6 +12,7 @@ $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -95,9 +96,9 @@ $!data.getMessage()
 </tr>
 <tr>
 	<td colspan=5 align="left">
-	<input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
         <input type="hidden" name="actionName">
-        <input type="Reset" name="Reset" Value="$brih_clear"/>
+        <input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
         <input type="hidden" name="count" Value="$tdcolor"/>
 	<input type="hidden" name="cName" value="$cName">
 	</td>
@@ -192,7 +193,7 @@ $!data.getMessage()
         </tr>
 	#if($permission=="1")
         <tr bgcolor="$ui.menuColor"><td colspan=5 >
-	  <input type="button" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
+	  <input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
           <input type="hidden" name="deleteFileNames" value="">
  	  <input type="hidden" name="count" value="$tdcolor">
           <input type="hidden" name="actionName" value="">

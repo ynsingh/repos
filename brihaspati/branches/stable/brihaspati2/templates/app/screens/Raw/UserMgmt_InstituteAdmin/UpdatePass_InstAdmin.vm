@@ -13,6 +13,9 @@ $page.setTitle("call,List Management | User List | Change Password")
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
 
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr><td><font face="$ui.sansSerifFonts" size=3>
 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
@@ -61,8 +64,8 @@ $!data.getMessage()
 </table>
 <table align="left" width="100%" bgcolor="$ui.menuColor" >
 	<tr><td>
-        <input type="button" name="eventSubmit_doUpdatePass" value="$brih_update" onClick="checkpass(document.frm,this);"/>
-        <input type="reset" name="clear" value="$brih_clear" onClick="clearValues(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdatePass" value="$brih_update" onClick="checkpass(document.frm,this);"/>
+        <input type="reset" class="button-ftextstyle" name="clear" value="$brih_clear" onClick="clearValues(document.frm,this);"/>
         <input type="hidden" name="username" value=$username />
         <input type="hidden" name="actionName"/>
         <input type="hidden" name="mode" value="All"/>

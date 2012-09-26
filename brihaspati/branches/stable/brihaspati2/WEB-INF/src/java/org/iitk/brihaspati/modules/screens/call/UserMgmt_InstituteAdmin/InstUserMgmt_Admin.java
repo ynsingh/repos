@@ -304,8 +304,9 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         {
                                 String usrWith=m_u.ConvertedString("usrWith",file);
                                 String notExist=m_u.ConvertedString("notExist",file);
-                                if(((String)data.getUser().getTemp("lang")).equals("hindi"))
-                                        data.setMessage(usrWith+" "+query+" "+"'"+ valueString+"'"+" "+notExist );
+                                if(((String)data.getUser().getTemp("lang")).equals("urdu"))
+                                        data.setMessage(usrWith+" "+notExist+" " +query+" "+"'"+ valueString+"'" );
+                                        //data.setMessage(usrWith+" "+query+" "+"'"+ valueString+"'"+" "+notExist );
                                 else
                                         data.setMessage(usrWith+" "+query+" "+"'"+ valueString+"'"+" "+notExist );
 

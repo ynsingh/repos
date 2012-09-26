@@ -36,7 +36,6 @@ $!data.getMessage()
 		</td>
 	</tr>
 </table>
-<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
 <table  bgcolor="$ui.tableColor" width=100%>
 	<tr align="right">
 		#if($tdcolor != "3")
@@ -59,6 +58,35 @@ $!data.getMessage()
 		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none> $brih_pending $brih_Institute $brih_Of $brih_list </a></td>
 	</tr>
 </table>
+############################
+#if($mode=="approved")
+        <form name="frm1" method="post" action="$link.setPage("call,Root_Admin,InstituteList.vm")">
+                <table width=100% align=left bgcolor="$ui.tableColor">
+                <tr>
+                        <td><b>$brih_searchBy</b></td>
+                        <td align=left>
+                                <select name="queryList">
+                                        <option value="InstituteId"> $RemoteInstitute  $brih_ID</option>
+                                        <option value="InstituteName"> $RemoteInstitute $brih_name</option>
+                                        <option value="InstituteAdd"> $RemoteInstitute  $brih_address</option>
+                                </select>
+                        </td>
+                        <td align=left><b>$brih_match_str</b></td>
+                        <td align=left>
+                                <input align=center type="text" name="valueString" value="">
+                        </td>
+                        <td>
+                                <input type="button" name="Search" value="Search" onClick="checkNull(document.frm1,this);">
+                                <input type="hidden" name="mode" value="approved">
+                                <input type="hidden" name="mod" value="Search">
+                                <input type="hidden" name="count" value="2">
+                      </td>
+                </tr>
+                </table>
+        </form>
+#end
+############################
+<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
 <table  bgcolor="$ui.tableColor" width=100%>
 	#if($mode=="pendinglist")
       	<tr bgcolor="$ui.menuColor" align="right">
@@ -78,25 +106,34 @@ $!data.getMessage()
         <td align=center>$brih_select</td>
         </tr>
 	#foreach($details in $idetail)
-	<tr align="right">
-		<td> $details.getAdminUname() </td>
-		<td> $details.getAdminDesignation() </td>
-		<td> $details.getAdminEmail() </td>
-		<td> $details.getAdminLname() </td>
-		<td> $details.getAdminFname() </td>
-		<td> $details.getInstituteWebsite() </td>
-		<td> $details.getTypeOfInstitution() </td>
-		<td> $details.getInstituteDomain() </td>
-		<td> $details.getLandlineNo() </td>
-		<td> $details.getState() </td>
-		<td> $details.getCity() </td>
-		<td> $details.getInstiuteAddress() </td>
-		<td> $details.getInstituteName() </td>
-		<td align="center"> <INPUT TYPE="CHECKBOX" NAME="$details.getInstituteId()" onClick="apprv_rej(this,document.frm);"> </td>
+		#foreach($details1 in $idetail1)
+		        #if($details.getInstituteId()==$details1.getInstituteId())
+				#if($velocityCount%2==0)
+			        	<tr bgcolor="$ui.menuColor" align="right">
+			        #else
+				        <tr bgcolor="$ui.tableColor" align="right">
+				#end 
 
-	</tr>
+				##	<tr align="right">
+				<td> $details.getAdminUname() </td>
+				<td> $details.getAdminDesignation() </td>
+				<td> $details.getAdminEmail() </td>
+				<td> $details.getAdminLname() </td>
+				<td> $details.getAdminFname() </td>
+				<td> $details.getInstituteWebsite() </td>
+				<td> $details.getTypeOfInstitution() </td>
+				<td> $details.getInstituteDomain() </td>
+				<td> $details.getLandlineNo() </td>
+				<td> $details.getState() </td>
+				<td> $details.getCity() </td>
+				<td> $details.getInstiuteAddress() </td>
+				<td> $details.getInstituteName() </td>
+				<td align="center"> <INPUT TYPE="CHECKBOX" NAME="$details.getInstituteId()" onClick="apprv_rej(this,document.frm);"> </td>
+				</tr>
+			#end
+		#end
 	#end
-        <tr align="right" bgcolor="$ui.menuColor">
+        #*<tr align="right" bgcolor="$ui.menuColor">
                 <td align="right" colspan=14>
                 <input type="hidden" name="actionName">
                 <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
@@ -106,7 +143,7 @@ $!data.getMessage()
                 <input type="hidden" name="institute_id" value="$idetail.get(0).getInstituteId()">
                 <input type="hidden" name="count" value="$tdcolor">
                 </td>
-        </tr> 
+        </tr> *#
 	#end
 </table>
 <table width=100% bgcolor="$ui.tableColor">

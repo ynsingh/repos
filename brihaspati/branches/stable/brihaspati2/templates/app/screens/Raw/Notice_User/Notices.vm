@@ -7,8 +7,10 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modified date: 31-12-2009, 25-04-2010,07-09-2010 , 09-Aug-2011 (Sunil Kr).
+ * @modified date: 24-08-2012 (Sunil Yadav)
 *#
 <head>
 ##This Script use for Fck Editor in textarea.
@@ -18,6 +20,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
 
@@ -189,7 +192,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.tableColor">
 		<td>$brih_sel_course</td>
 		<td>
-		<select name="course_list" size=1>
+		<select class="drop" name="course_list" size=1>
 		#foreach($c_ls in $clist)
 			#if($data.getUser().getUserName() == "admin")
 			###if(($c_ls.getName()!="author")&&($c_ls.getName()!="global"))
@@ -253,11 +256,12 @@ $!data.getMessage()
 ##<tr bgcolor="$ui.tableColor">
 <td>$Notice_NoticeSend_msg3</td>
 <td>
-<select name="role" size=1>
+<select class="drop" name="role" size=1>
 #if($mode1!= "grpmgmt")
 	<option value="all">$Notice_All
 	<option value="instructor">$brih_Instructor
 	<option value="student">$brih_student
+	<option value="teacher_assistant">$bri_ta
 #else
 	<option value="all">$Notice_All
 #end
@@ -312,10 +316,10 @@ $!data.getMessage()
 	        <input type="hidden" name="countTemp" value="1">
 		<input type="hidden" name="actionName">
 	        #if($nflag == "fh")
-        	  <input type="button" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/>
+        	  <input type="button" class="button-ftextstyle" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/>
 		  <input type="hidden" name="nflag" value="$nflag" >
 	        #else
-        	  <input type="button" name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
+        	  <input type="button" class="button-ftextstyle"  name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/>
 	        #end
 
         	</font>

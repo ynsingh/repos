@@ -33,7 +33,7 @@ package org.iitk.brihaspati.modules.screens;
  * 
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
-*/
+ */
 
 import java.util.Date;
 import java.util.Vector;
@@ -70,8 +70,9 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @ mdified date 05-05-2010,13-07-2010,5-10-2010(Smita),23-12-2010
- * @ mdified date 04-04-2011 (Shaista),25-07-2011(Tej)
+ * @ mdified date 04-04-2011 (Shaista),25-07-2011(Tej),23-08-2012(Sunil)
  */
 
 public class Index extends SecureScreen{
@@ -197,6 +198,7 @@ public class Index extends SecureScreen{
                         context.put("lang",lang);
 			lang = "";
 			user.setTemp("role","");
+			user.setTemp("modulename","");
 			user.setTemp("mInststat","");
 			user.setTemp("course_id","");
 			user.setTemp("Institute_id","");
@@ -213,6 +215,9 @@ public class Index extends SecureScreen{
 			Vector Author_Role=UserGroupRoleUtil.getGID(uid,5);
 		// check for InstituteAdmin Role
 			Vector InstituteAdmin_Role=UserGroupRoleUtil.getGID(uid,7);
+		// check for ta Role
+			Vector TeacherAssistant_Role=UserGroupRoleUtil.getGID(uid,8);
+
 			if(Admin_Role.size()!=0)
 			{
 	                        context.put("Role1","AdminRole");
@@ -242,7 +247,11 @@ public class Index extends SecureScreen{
 			{
 				context.put("Role7","InstituteAdminRole");
 			}
-			
+			if(TeacherAssistant_Role.size()!=0)
+                        {
+                                context.put("Role8","TeacherAssistantRole");
+                        }
+	
 			if(user.getName().equals("guest")){
 				context.put("guest_login","true");
 			}

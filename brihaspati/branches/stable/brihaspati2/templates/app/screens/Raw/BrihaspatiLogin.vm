@@ -15,26 +15,31 @@
 
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
-<table width="100%">
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+<div class="main" style="width:1100px; margin:-10px auto;">
+<table>
 <tr><td>
 <marquee> <font size=4>$!fNoti</font></marquee>
 </td></tr>
 </table>
+$!data.getMessage() 
 $!msg
-<table align=left> ## 1
-<tr><td valign="top" width="25%">  ## 2, 3
-		<table bgcolor="$ui.tableColor" width="100%"> ## 4
-        	<tr bgcolor="$ui.menuColor"><td>  ## 5, 6
+<table align=center> ## 1
+<tr><td valign="top">  ## 2, 3
+		<table class="news"> ## 4
+        	<tr bgcolor="$ui.menuColor"><td align=center>  ## 5, 6
                 <img src="$content.getURI("/images/newspaper.gif")"><u><b>$brih_newsHeadline</b></u>
         	</td></tr> ## 6, 5
         	<tr><td> ## 5, 6
-		<marquee scrollamount="1" direction="up" loop="2" width="100%" behaviour="slide">
+		<marquee scrollamount="1" direction="up" loop="2" behaviour="slide">
 		#if($status!="empty")
                 #set($count=1)
                 #foreach($news in $detail)
                         #if($count % 2 == 0)
                                 <font size=3>
-                                <table bgcolor="$ui.buttonBoxColor" width="100%"> ## 7
+                                <table bgcolor="$ui.buttonBoxColor"> ## 7
                                 <tr> ## 8
                                 <td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject() ## 9
 				<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
@@ -62,9 +67,9 @@ $!msg
                 </td></tr> ## 6, 5
         </table> ## 4
 	</td> ## 3
-	<td valign="top" width="50%"> ## 3
-	<table align="left" bgcolor="$ui.tableColor"> ## 4
-	<tr><td> ## 5, 6
+	<td valign="top"> ## 3
+	<table align="left" class="desc"> ## 4
+	<tr><td valign=top> ## 5, 6
 	##<marquee scrollamount="3" direction="left" loop="0" width="100%" behaviour="slide">
 	<b>$brih_msg</b>
 	##</marquee>
@@ -84,9 +89,9 @@ $!msg
 	</td></tr> ## 6, 5
 	</table> ## 4
 	</td> ## 3
-	<td valign="top" bgcolor="$ui.tableColor" width="25%"> ## 3
-	<table align="left" width="100%"> ## 4
-        <tr><td colspan=2><font color="red">$!data.getMessage() </font></td></tr>
+	<td valign="top" class="login"> ## 3
+	<table align="left"> ## 4
+        <tr><td colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 
 	<tr> ## 5
 	#if($lang == "hindi")
@@ -95,7 +100,7 @@ $!msg
                 <td> $brih_language</td>
         #end
         <td> ## 6
-	<select id="language" onChange ="javascript:OnChange();">
+	<select id="language" onChange ="javascript:OnChange();" class="drop">
 	#if($flag)
 		<option> $brih_select $brih_language </option>
 	#end
@@ -279,7 +284,7 @@ $!msg
 <tr align="right"><td align=left> ## 5, 6
 <font face="$ui.sansSerifFonts">
 ##<input type="button" value="$brih_submit" onClick="checkUNamePwd(document.frm,this);">
-<input type="button" value="$brih_login" onClick="checkUNamePwd(document.frm,this);">
+<input type="button" value="$brih_login" class="button-ftextstyle" onClick="checkUNamePwd(document.frm,this);">
 ##<input type=hidden name="LangFile" value="$LangFile">
 <input type=hidden name="lang" value="$lang">
 <input type=hidden name="flag" value="$flag">
@@ -288,27 +293,18 @@ $!msg
 <tr><td colspan=4>$brih_guestMsg2</td></tr>
 </form>
 
-<form name="frm1" method="post" action="$link.setAction("AOpenid")">
-<tr><td colspan=4> <b>$brih_login $brih_with $brih_open $brih_ID </b></td></tr>
-<tr><td colspan=4>$brih_openId:</td></tr>
-<tr><td colspan=4>
-<input id="openid_identifier" name="openid_identifier" type="text" value="http://202.141.40.216:8081/openid/username" size="49" style="border: 1px solid #789; padding: 0.2em;"/>
-</td></tr>
-<tr align="right"><td align=left colspan=4> ## , 
+<tr><td colspan="4"><b>
 <font face="$ui.sansSerifFonts">
-<input type="submit" value="$brih_login">
-<input type=hidden name="lang" value="english">
-<input type=hidden name="flag" value="$flag">
+<br>$brih_signin:
 </font>
-</td> </tr> ## ,
-<tr><td colspan=4> $brih_openId1 <a href="http://202.141.40.217:8080/openid/">  <br>
-<a href=javascript:popupWin("/brihaspati2/docs/openidfaq.html","newWin");> $brih_openId2?</a>
-$brih_openId3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle"></a>
+&nbsp;&nbsp;
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle"></a>
+<br>
+</td></tr>
 
-$brih_openId4 <a href="http://openid.net/what/"> $brih_openId5 </a> & <a href="http://openid.net/get/"> $brih_openId6 </a>.
-   </td></tr>
-</form> 
-
+<table>
 <tr><td colspan=4><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
@@ -330,24 +326,30 @@ $brih_openId4 <a href="http://openid.net/what/"> $brih_openId5 </a> & <a href="h
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> #if($lang == "hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi") $brih_Of1 #end $brih_reg </a>
 </b></td></tr>
-<tr><td colspan=4>
+<tr><td colspan=4> <b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang","english")><b>$brih_reg2 $RemoteInstitute $brih_list</b></a>
-</td></tr>
+<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang",$lang)><b>$brih_reg2 $RemoteInstitute $brih_list</b></a>
+</b></td></tr>
 ##Add FAQ link in login page
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_list </a>
+<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ #if($lang == "hindi")  $brih_Of #end $brih_list </a>
 </b></td></tr>
 ##Add ResendActivation link in login page
-<tr><td colspan=4>
+<tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english")><b>Resend Activation</b></a>
-</td></tr>
+<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang)><b>$brih_resend $brih_act $brih_link</b></a>
+</b></td></tr>
+<tr><td colspan=4><b>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) > $brih_auth $brih_from $brih_bri $brih_server </a>
+</b></td></tr>
 ##..........
 </table> ## 4
 </td></tr> ## 3, 2
 </table> ## 1
+</div>
+<br>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {

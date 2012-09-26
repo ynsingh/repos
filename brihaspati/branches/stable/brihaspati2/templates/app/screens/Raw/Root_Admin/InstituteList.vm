@@ -21,7 +21,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
-
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table  bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
@@ -81,7 +81,7 @@ $!data.getMessage()
 	        <tr>
         		<td><b>$brih_searchBy</b></td>
 	                <td align=left>
-        	                <select name="queryList">
+        	                <select name="queryList" class="drop">
                 	                <option value="InstituteId"> $RemoteInstitute  $brih_ID</option>
                         	        <option value="InstituteName"> $RemoteInstitute $brih_name</option>
                                 	<option value="InstituteAddress"> $RemoteInstitute  $brih_address</option>
@@ -92,7 +92,7 @@ $!data.getMessage()
                         	<input align=center type="text" name="valueString" value="">
 	                </td>
         	        <td>
-                	        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm1,this);">
+                	        <input class="button-ftextstyle" type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm1,this);">
                         	<input type="hidden" name="mode" value="$mode">
                         	<input type="hidden" name="mod" value="$brih_search">
 	                        <input type="hidden" name="count" value="2">
@@ -102,8 +102,11 @@ $!data.getMessage()
 	</form>
 #end
 <form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
-<table  bgcolor="$ui.tableColor" width=100%>
+##<div class="scroll">
+#if($mode!="pendinglist")<table  bgcolor="$ui.tableColor" width=100%>#end
 	#if($mode=="pendinglist")
+<div class="scroll">
+<table  bgcolor="$ui.tableColor" width=100%>
 	#if($idetail.size()!=0)
       	<tr bgcolor="$ui.menuColor">
         <td>$brih_select</td>
@@ -175,9 +178,9 @@ $!data.getMessage()
 	#else
 		$brih_pend
 	#end
+</table></div>
 	#end
-
-</table>
+#if($mode!="pendinglist")</table>#end
 <table width=100% bgcolor="$ui.tableColor">
 	#if($mode=="approved")
 	<tr><td colspan="5">
@@ -264,9 +267,9 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
                 <input type="hidden" name="actionName">
-                <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
+                <input class="button-ftextstyle" type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
 		#if($mode != "reject")
-                <input type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
+                <input class="button-ftextstyle" type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
 		#end
                 <input type="hidden" name="deleteFileNames" value="">
 		<input type="hidden" name="role" value="7">

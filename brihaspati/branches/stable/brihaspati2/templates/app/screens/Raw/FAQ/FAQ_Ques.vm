@@ -15,6 +15,7 @@ $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
 ##link for faq with modes(add,delete,alllist and edit)
 <tr><td><b>
@@ -100,7 +101,7 @@ $!data.getMessage()
 				<b>$brih_Exist $brih_cat #if($lang == "hindi") $brih_Of #end $brih_list</b>
        				</td>
 				<td>
-                       			<select name="categoryname" size="1"  onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
+                       			<select class="drop" name="categoryname" size="1"  onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
                        			<option></option>
                        			#foreach($catlist in $entry)
                        				<option value="$catlist">$catlist
@@ -162,13 +163,13 @@ $!data.getMessage()
 	#if($mode!="alllist")
         	<tr bgcolor="$ui.tableColor" width="100%"><td align="left" width="100%" colspan="5">
 			#if($mode=="add")
-			<input type="button" name="eventSubmit_doSaveFaq" value="$WikiSave" onClick="validate(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doSaveFaq" value="$WikiSave" onClick="validate(document.frm,this);"/>
 			#end
 			#if($mode=="edit")
-			<input type="button" name="eventSubmit_doSaveFaq" value="$brih_edit" onClick="checkField(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doSaveFaq" value="$brih_edit" onClick="checkField(document.frm,this);"/>
 			#end
 			#if($mode=="delete" && $status!="blank")
-			<input type="button" name="eventSubmit_doDeleteQues" value="$brih_delete" onClick="deleteConfirm(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteQues" value="$brih_delete" onClick="deleteConfirm(document.frm,this);"/>
 			#end
 		</td></tr>
 	#end

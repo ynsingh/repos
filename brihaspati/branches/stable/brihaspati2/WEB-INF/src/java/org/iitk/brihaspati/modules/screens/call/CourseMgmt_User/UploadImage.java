@@ -48,11 +48,13 @@ public class UploadImage extends SecureScreen_Instructor {
 			 * Get User Role
 			 */
 			 String Role = (String)user.getTemp("role");
+                         context.put("user_role",Role);
+
 			/**
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);

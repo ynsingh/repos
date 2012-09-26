@@ -14,6 +14,7 @@
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/InstituteAdminRegistration.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 $page.setTitle("Login Page | Add Admin ")
 #set($lang=$data.getUser().getTemp("lang").toString())
 	
@@ -82,8 +83,8 @@ $page.setTitle("Login Page | Add Admin ")
 
 		<tr>
         			<td colspan=2>
-				<input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAddAdmin(document.frm,this);"/>
-        			<input type="Reset" name="Reset" Value="$brih_clear"/>
+				<input class="button-ftextstyle" type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAddAdmin(document.frm,this);"/>
+        			<input class="button-ftextstyle" type="Reset" name="Reset" Value="$brih_clear"/>
 				<input type="hidden" name="mode" value="viewadmin">
         			</td>
         	</tr>

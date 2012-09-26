@@ -12,6 +12,7 @@ $page.setBgColor($ui.bgcolor)
 $page.setTitle("Instructor Backup")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
         <td><b><a href=$link.setPage("call,IndexHome.vm")>$brih_home </a> |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString() </a> |  $brih_backup 
@@ -44,8 +45,8 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" >
 <td><input type="text" name="courses" value="$data.getUser().getTemp("course_id" ).toString()" readonly /></td>
 <td align=left>
-<input type="button" name="eventSubmit_doCourseBackup" value="$brih_content #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
-<input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
+<input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
+<input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
 <input type="hidden" name="actionName">
 </td>
 </tr>

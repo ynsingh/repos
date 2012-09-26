@@ -8,6 +8,11 @@
 
 $page.setTitle("Quiz Score")
 $page.setBgColor($ui.bgcolor)
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ## Creating the links for help regarding FAQ 
@@ -83,8 +88,8 @@ $page.setBgColor($ui.bgcolor)
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 	        <td colspan=5>
-        	<input type="button" name="eventSubmit_answerSheet" value="$brih_answer $brih_sheet" onClick="showAnswerSheet(document.frm,this);"/>
-        	<input type="button" style="visibility:$setVisible" value="$brih_apply $brih_for $brih_reevaluation" name="eventSubmit_revaluate" onClick="setValue(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_answerSheet" value="$brih_answer $brih_sheet" onClick="showAnswerSheet(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" style="visibility:$setVisible" value="$brih_apply $brih_for $brih_reevaluation" name="eventSubmit_revaluate" onClick="setValue(document.frm,this);"/>
 	        </td>
 	</tr>
 </table>

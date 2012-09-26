@@ -8,6 +8,11 @@
 *#
 $page.setTitle("QuestionBank")
 $page.setBgColor("bgcolor")
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
 $!Msg
@@ -79,7 +84,7 @@ $!Msg
                 	<td><b>$brih_qus #if($lang =="hindi" || $lang == "gujarati")  $brih_Of2 #end $brih_type</b><font color=Red>*</font>
 			</td>
                 	<td>
-			<select name="Questype" onChange="ChangeQuestype(document.frm);"/>
+			<select name="Questype" class="drop" onChange="ChangeQuestype(document.frm);"/>
                 	<option>
 			<option value="mcq">$brih_multiplechoice $brih_qus $brih_type
 			<option value="tft">$brih_true/$brih_false $brih_type
@@ -94,7 +99,7 @@ $!Msg
                 	<td><b>$brih_qus #if($lang =="hindi")  $brih_Of2 #end $brih_difflevel </b><font color=Red>*</font>
 			</td>
                 	<td>
-			<select name="difflevel" onChange="Changedifflevel(document.frm);"/>
+			<select name="difflevel" class="drop" onChange="Changedifflevel(document.frm);"/>
                 	<option>
 			<option value="0-3">$brih_easy
 			<option value="4-6">$brih_medium
@@ -113,11 +118,11 @@ $!Msg
 		</tr>
 		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5">
 		#if($typeques=="obo_ques"||$typeques=="imgtypeques")
-                <input type="button" name="eventSubmit_doSetPage" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doSetPage" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
 		#else
-                <input type="button" name="eventSubmit_doUploadQues_Bank" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadQues_Bank" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 		#end
-		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+		<input type="reset" name="reset" class="button-ftextstyle" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td></tr>
 	#end
 		##foreach( $e in $Msg )

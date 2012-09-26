@@ -14,7 +14,22 @@ $page.setBgColor($ui.bgcolor)
 <!-- <table align="right"><tr><td><b> -->
 $!data.getMessage()
 <!-- </b></td></tr></table> -->
+
+<style type="text/css">
+
+.button-ftextstyle { 	 color: #fff;    font: bold 15px Helvetica, Arial, sans-serif;   padding-left: 22px ;	padding-right: 22px ;	padding-top: 8px ;	padding-bottom: 8px ;    -webkit-transition: border-color .218s;    -moz-transition: border .218s;    -o-transition: border-color .218s;    transition: border-color .218s;    background: #999;    background: -webkit-gradient(linear,0% 40%,0% 70%,from(#F5F5F5),to(#F1F1F1));   background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#F5F5F5),to(#F1F1F1));    border: solid 1px #d1d1d1;    border-radius: 2px;    -webkit-border-radius: 2px;  border-radius: 5px; text-decoration:none; 	}
+
+		.button-ftextstyle:hover {    color: #fff;    border-color: #f3f3f3;    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);}
+</style>
+
+
+<div style="width:950px; margin:0px auto;">
 <form name="frm">
+
+
+
+
+
 <table>
 <tr>
 <td align="left"> <font color="red"><b> <blink>
@@ -25,12 +40,23 @@ Click here  </a>
 </td>
 </tr>
 </table>
-<table align="right">
+
+
+<br>
+
+
+
+<div style="width:340px; height:300px; float:right; background:#f3f3f3; border-radius:10px;">
+<table align="right" >
 <tr>
 <td>
 <font color="purple">Click here to enter in <b>Brihaspati</b></font><br>  
-<a href=$link.setPage("BrihaspatiLogin.vm")>
-<img src="$content.getURI("/images/login.jpg")" border="0"></a>
+<br>
+<a href=$link.setPage("BrihaspatiLogin.vm") class="button-ftextstyle">
+Login
+</a>
+<br>
+<br>
 </td>
 </tr>
 
@@ -59,10 +85,15 @@ Click here  </a>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang","english") style=text-decoration:none>Registered Institute List </a>
 </td></tr>
+##Add FAQ link in login page
+<tr><td colspan=2>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("FAQlist.vm").addPathInfo("lang","english").addPathInfo("mode","alllist").addPathInfo("type","general") style=text-decoration:none>FAQ List </a>
+</td></tr>
 ##following link added by Priyanka
 <tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english") style=text-decoration:none>Resend Activation </a>
+<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english") style=text-decoration:none>Resend Activation Link</a>
 </td></tr>
 
 <tr><td colspan=2>
@@ -72,9 +103,18 @@ Click here  </a>
 </table>
 <br>
 <br>
+
+</div>
+
+
+
+
+
+<div style="width:500px; height:auto; float:left;">
+
 <table>
 <tr>
-<td align="Left" width="90%">
+<td align="Left">
 <b><u>What is BRIHASPATI? </u></b><br>
 A platform independent, highly scalable content-delivery tool for web based e-learning system !!<br><br>
 <b><u>Entities !!</u></b><br>
@@ -90,4 +130,16 @@ ENJOY the features of Administrator, Instructor (Primary/Secondary) or Student !
 </td>
 </tr>
 </table>
+</div>
+
+
+
+
+
+
+
 </form>
+</div>
+</body>
+
+</html>

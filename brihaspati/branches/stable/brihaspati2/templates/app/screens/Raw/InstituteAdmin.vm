@@ -43,6 +43,7 @@ $!data.getMessage()
 	##<tr><td align="center">Institute Admin List</td></tr>
 	<tr><td align="center"> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ad #if($lang =="hindi") $brih_Of #end $brih_list </td></tr>
 	#if($rldpage != "yes")
+		#set($coun=1)
 		#foreach($lst in $list1)
 		##	#foreach($lst1 in $list1)
 		##		#if($lst.getInstituteId() == $lst1.getInstituteId())
@@ -53,7 +54,14 @@ $!data.getMessage()
                                 <tr bgcolor="$ui.menuColor">
                         #end
 
-		<td align=center><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes").addPathInfo("count","1") style=text-decoration:none>$lst.getInstituteName()</a></td>
+		<td align=center><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes").addPathInfo("count","1") style=text-decoration:none>$lst.getInstituteName()</a>
+                ##set($coun1=1)
+                #foreach($idinst in $onlineinst)
+                ###if($coun==$coun1)
+                #if("$lst.getInstituteId()"=="$idinst")
+&nbsp;&nbsp;<a href=javascript:popupWin("$link.setPage("call,OnLine_Rgtn,OnlineCourseApproval.vm").addPathInfo("instituteId",$lst.getInstituteId())","newWin");>$online_online $brih_courses $brih_view </a></td>
+		#end
+		#end		
 		</tr>
 		##		#end
 		##	#end
@@ -63,3 +71,51 @@ $!data.getMessage()
 	#end	
 </table>
 </body>
+<SCRIPT language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable,height=800,width=1200");
+        }
+        function checkUNamePwd(frm,field)
+        {
+                if(frm.username.value!="")
+                {
+                        if(frm.password.value!="")
+                        {
+                                frm.submit();
+                        }
+                        else
+                        {
+                                alert("Password should not be blank !!");
+                                frm.password.focus();
+                        }
+                }
+                else
+                {
+                        alert("User Name should not be blank !!");
+                        frm.username.focus();
+                }
+        }
+function doSomething(e)
+ {
+
+        if (!e) var e = window.event;
+        if (e.keyCode == 13)
+        {
+        checkUNamePwd(document.frm,this);
+        }
+}
+
+document.onkeydown = doSomething;
+function OnChange()
+{
+var x=document.getElementById("language");
+/** These below line show the selected index value (lang ) at very first row of selected box while u select. **/
+//var index = (x.value).indexOf("lang");
+//var str=(x.value).substring(index+5);
+//x.options[x.selectedIndex].text=str;
+window.location=x.value;
+}
+
+</SCRIPT>
+

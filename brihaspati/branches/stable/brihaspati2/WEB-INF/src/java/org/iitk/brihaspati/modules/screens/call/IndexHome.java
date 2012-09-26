@@ -35,6 +35,9 @@ i *  DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  * 
  */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.*;
 import java.text.*;
 import java.util.Vector;
@@ -51,11 +54,11 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
 import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
@@ -70,6 +73,10 @@ import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+
+import org.iitk.brihaspati.om.ModulePermissionPeer;
+import org.iitk.brihaspati.om.ModulePermission;
+
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
@@ -81,7 +88,9 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:rekha20july@gmail.com">Rekha Pal</a>
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 26-07-2010, 06-08-2010, 09-11-2010, 22-02-2011, 18-07-2011
+ * @modified date: 23-08-2012 (Sunil Yadav)
  */
 
 /* This screen class is called when User's selects a home location as instructor/
@@ -115,14 +124,11 @@ public class IndexHome extends SecureScreen{
 			User user=data.getUser();
 		        System.gc();	
 			String username=user.getName();
-			String fname=user.getFirstName();
-			String lname=user.getLastName();
-                        context.put("username",username);
-                        context.put("firstname",fname);
-                        context.put("lastname",lname);
 			
 			int u_id=UserUtil.getUID(username);
 			String id=Integer.toString(u_id);
+			String fnme=UserUtil.getFullName(u_id);
+                        context.put("username",fnme);
 			/**
                         * Get the current date
 			* Getting Task list according to current date  & setting to display 
@@ -160,6 +166,7 @@ public class IndexHome extends SecureScreen{
 			if(Role.equals(""))
 				Role=(String)user.getTemp("role");
 			context.put("user_role",Role);
+
 			/**
 			 * Getting configuration Parameter 
 			 * if configuration parameter is not empty set it to display
@@ -178,12 +185,12 @@ public class IndexHome extends SecureScreen{
 			else{
 				user.setTemp("confParam","10");
 			}
-///////////////////////////////////////////////////////////////////////////
+/*
 			String userNm=user.getName();
 			int uId=UserUtil.getUID(userNm);
 			String str=userNm+"_"+Integer.toString(uId);
 			user.setTemp("stuId",str);
-/////////////////////////////////////////////////////////////////////////////
+*/
 			// This is check for set temp variables
 			/**
 			 * @param course_name String, Default value should set as null
@@ -200,39 +207,26 @@ public class IndexHome extends SecureScreen{
 			 * Getting List of course's object according to user id in which user is instructor
 			 * to show the list of courses 
 			 * Getting unread message & setting it to display
-			*/
+			 */
 			if(Role.equals("instructor"))
 			{
-		
-				//Getting the Instructor's Institute Id from InstituteIdUtil.
-	
-				Vector instlist = InstituteIdUtil.getInstructorInstId(u_id);
-
-			        Vector InsDetail=new Vector();
-				for(int l=0;l<instlist.size();l++)
-				{	
-					 Vector  instname = new Vector();
-					 /*
-					  * Getting InstId from Vector instlist.
-					  * Conveting int type Instid from String type. 
-					  */
-					 int instid=Integer.parseInt((String)instlist.get(l));
-
-					 //Getting Institute Name  from InstituteIdUtil on the basis of InstituteId.
-					 String Inst_name = InstituteIdUtil.getIstName(instid);
-					 CourseUserDetail cDetail = new CourseUserDetail();
-					 cDetail.setInstId(instid);
-					 cDetail.setInstName(Inst_name);
-					 InsDetail.add(cDetail);
-					 instname.addElement(Inst_name);
-					 context.put("Inst_name",InsDetail);
-				}
-				Vector course_inst=StudentInstructorMAP.getIMAP(u_id);
-                        	context.put("inst",course_inst);
-				// getting Unread Notices
-				unread_inst=NoticeUnreadMsg.getUnreadNotice(u_id,2,"All");
-				context.put("unread_msg",unread_inst);
+				ArrayList list=CourseUtil.getCourseList(u_id,2);
+				context.put("clistd",list);
 			}
+		
+			/**
+                         * if role is Teacher Assistant 
+                         * Getting List of course's object according to user id in which user is Teacher Assistant
+                         * Getting unread message & setting it to display
+                         */
+
+
+	   		if(Role.equals("teacher_assistant"))
+                        {
+				ArrayList list=CourseUtil.getCourseList(u_id,8);
+                                context.put("clistd",list);
+                        }
+
 			/**
 			 * else if role is student 
 			 * Getting List of course's object in which user is student  to show the list of courses 
@@ -266,22 +260,22 @@ public class IndexHome extends SecureScreen{
                          * specific user to display
                          */
                         crit=new Criteria();
-                        //crit.add(CalInformationPeer.GROUP_ID,"1");
                         crit.add(CalInformationPeer.USER_ID,id);
                         crit.add(CalInformationPeer.P_DATE,(Object)Cdate,crit.EQUAL);
                         crit.addAscendingOrderByColumn(CalInformationPeer.START_TIME);
                         List Cdetail=CalInformationPeer.doSelect(crit);
-                        Vector u=new Vector();
-                        Vector Etime=new Vector();
-                        Vector Stime=new Vector();
+
+			ArrayList tsklist = new ArrayList();
+                        Map map = new HashMap();
+
                         for(int i=0;i<Cdetail.size();i++)
 			{
+				String ETime=null;
                                 CalInformation element=(CalInformation)Cdetail.get(i);
                                 String stime=(element.getStartTime()).toString();
                                 String sh=stime.substring(0,2);
                                 String sm=stime.substring(3,5);
                                 String btime=sh+sm;
-                                Stime.addElement(btime);
                                 byte b[]=element.getDetailInformation();
                                 String description=new String(b);
                                 String DI=new String();
@@ -291,20 +285,22 @@ public class IndexHome extends SecureScreen{
                                 String etime=(element.getEndTime()).toString();
                                 String eh=etime.substring(0,2);
                                 String em=etime.substring(3,5);
-                                String ETime=eh+em;
-                                Etime.addElement(ETime);
+                                ETime=eh+em;
                                 StringBuffer sb2=new StringBuffer(etime);
                                 sb2.delete(5,8);
                                 DI=sb1 + "-" + sb2 + " " + description;
-                                u.addElement(DI);
+
                                 }
                                 catch(Exception ex){data.addMessage("new error"+ex);}
+				map = new HashMap();
+                                map.put("stime", btime);
+                                map.put("etime", ETime);
+                                map.put("minfo", DI);
+                                tsklist.add(map);
                         }
-                        if(u.size()!=0)
+                        if(tsklist.size()!=0)
                         {
-                                context.put("information",u);
-                                context.put("Stime",Stime);
-                                context.put("Etime",Etime);
+                                context.put("info",tsklist);
                         }
 
 			System.gc();
@@ -330,7 +326,7 @@ public class IndexHome extends SecureScreen{
                         /*entry id from COURSE_TIME */
                         int eid2=CourseTimeUtil.getentryid(u_id);
                         if(eid1==eid2){
-                        MailNotificationThread.getController().CourseTimeSystem(u_id,eid2);
+                        	MailNotificationThread.getController().CourseTimeSystem(u_id,eid2);
 			}
 
 		}

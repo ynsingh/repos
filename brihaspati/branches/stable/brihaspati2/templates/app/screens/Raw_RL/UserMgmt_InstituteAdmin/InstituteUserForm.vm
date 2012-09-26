@@ -55,7 +55,7 @@ $!data.getMessage()
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> $brih_photo $brih_upload</a></td>
 	#if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
@@ -74,18 +74,24 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_Instructor</a></td>
+	#if($tdcolor != "0")
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_Of $brih_course $brih_list </a></td>
         #if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_course $brih_list</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_Of $brih_course $brih_list</a></td>
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_usr</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none> $brih_usr $brih_add </a></td>
 
 #else
 	#if($tdcolor !="2")

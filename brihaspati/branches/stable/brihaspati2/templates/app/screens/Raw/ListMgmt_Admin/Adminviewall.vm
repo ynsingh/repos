@@ -15,7 +15,7 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
-
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <font face="$ui.sansSerifFonts"> $!mmessage</font>
 ##<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 
@@ -78,7 +78,7 @@ $!data.getMessage()
         <tr>
                 <td>$brih_searchBy </td>
                 <td>
-                        <select name="queryList">
+                        <select class="drop" name="queryList">
                                 <option value="User Name">$brih_usr #if($lang == "hindi") $brih_Of1 #end  $brih_name</option>
                                 <option value="First Name">$brih_first $brih_name</option>
                                 <option value="Last Name">$brih_last $brih_name</option>
@@ -90,7 +90,7 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">
                 </td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input class="button-ftextstyle" type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                 </td>
@@ -220,7 +220,7 @@ $!data.getMessage()
 #set($count=$count+1)
 #end
 <tr>
-	<td><input type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick=" DeleteField(document.frm,this);"></td>
+	<td><input class="button-ftextstyle" type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick=" DeleteField(document.frm,this);"></td>
 </tr>
 		<input type="hidden" name="Process" value="delete">
 		<input type="hidden" name="mode" value="All">

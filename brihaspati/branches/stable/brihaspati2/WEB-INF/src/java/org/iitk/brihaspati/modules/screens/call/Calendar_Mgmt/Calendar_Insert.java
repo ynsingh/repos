@@ -94,7 +94,7 @@ public class Calendar_Insert extends SecureScreen
 		{
 			String Role = (String)user.getTemp("role");
 			int uid=UserUtil.getUID(username);
-			if((Role.equals("student")) || (Role.equals("instructor")))
+			if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
 			{
 				//CourseTimeUtil.getCalculation(uid);
         	                //ModuleTimeUtil.getModuleCalculation(uid);

@@ -12,6 +12,7 @@ $page.setTitle("Tracking Report")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td><b>
 	<font face="$ui.sansSerifFonts">
@@ -193,7 +194,8 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" width="100%">
 	<td align="left" width="30%"><b> $brih_start $brih_time: </b></td>
         <td align="left" width="70%">
-        	<select name="fStart_year">
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+			<select class="drop" name="fStart_year">
                 	<option value="$cyear">$cyear
                 	#foreach($year in $year_list)
                 	#if($cyear != $year)
@@ -202,7 +204,7 @@ $!data.getMessage()
                 	#end
                 </select>
                  &nbsp<b><font size=+1>-</font></b>&nbsp
-                 <select name="fStart_mon">
+                 <select class="drop" name="fStart_mon">
                 	<option value="$cmonth">$cmonth
                                 #foreach($mon in $month)
                                         #if($mon != $cmonth)
@@ -211,7 +213,7 @@ $!data.getMessage()
                                 #end
                 </select>
 		 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                <select name="fStart_day">
+                <select class="drop" name="fStart_day">
                         <option value="$cdays">$cdays
                         #foreach($d in $day)
                                 #if($d!=$cdays)
@@ -224,7 +226,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.tableColor" width="100%">
 	<td align="left" width="30%"><b>$brih_end $brih_time: </b></td>
         <td align="left" width="70%">
-		<select name="tStart_year">
+		<select class="drop" name="tStart_year">
                         <option value="$cyear">$cyear
                         #foreach($year in $year_list)
                         #if($cyear != $year)
@@ -234,7 +236,7 @@ $!data.getMessage()
                 </select>
 
                  &nbsp<b><font size=+1>-</font></b>&nbsp
-                 <select name="tStart_mon">
+                 <select class="drop"  name="tStart_mon">
                 	<option value="$cmonth">$cmonth
                                 #foreach($mon in $month)
                                         #if($mon != $cmonth)
@@ -243,7 +245,7 @@ $!data.getMessage()
                                 #end
                 </select>
 		 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                <select name="tStart_day">
+                <select class="drop" name="tStart_day">
                         <option value="$cdays">$cdays
                         #foreach($d in $day)
                                 #if($d!=$cdays)
@@ -258,7 +260,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" width="100%">
 <td align="left" width="100%">
 	##<input type="button" name="search" value="submit" onClick="checkNull(document.frm,this);">
-	<input type="button" name="eventSubmit_doUserCourseInfo" value="$brih_submit" onClick="disabled="true";">
+	<input type="button" class="button-ftextstyle"name="eventSubmit_doUserCourseInfo" value="$brih_submit" onClick="disabled="true";">
 	##<input type="button" name="eventSubmit_doUserCourseInfo" value="submit" onClick="checkNull(document.frm,this);">
         <input type="hidden" name="mode" value="search">
 </td>

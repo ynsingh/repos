@@ -14,6 +14,11 @@
 
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 
@@ -154,9 +159,9 @@ $!data.getMessage()
 		<tr><td> ## td 5 start
 	#end
 	#if($lang=="english")
-	<input type="button" name="eventSubmit_doDeleteGroup" value="$brih_delete $brih_grp" onClick="deleteConfirm(document.frm,this);"/>
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_delete $brih_grp" onClick="deleteConfirm(document.frm,this);"/>
 	#else
-	<input type="button" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
 	#end
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2")> #if($lang=="hindi") $brih_member $brih_add #else $brih_add/$brih_view$brih_member #end </a>
         	#if($total_size <= $userConf)

@@ -12,10 +12,11 @@
 #set($lang=$data.getUser().getTemp("lang").toString())
 
 $!data.getMessage()
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <table bgcolor="$ui.tableColor" width=100% align="center">
-    <tr bgcolor="$ui.menuColor" align="right"> <td colspan=7>
+    <tr bgcolor="$ui.menuColor" align="right"> <td colspan="8">
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a> | $brih_attendence
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_usr $brih_mgmt</a> | $brih_attendence
      </td></tr>
 ##</table>
 ##<table align=left width=100% bgcolor="$ui.tableColor">
@@ -31,13 +32,13 @@ $!data.getMessage()
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> $brih_photo $brih_upload </a></td>
 	#if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none>$brih_add $brih_multiple1 $brih_usr</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none> $brih_multiple1 $brih_usr $brih_add </a></td>
 	#if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
@@ -50,18 +51,24 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_ins</a></td>
+	 #if($tdcolor != "0")
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_Of $brih_course $brih_list </a></td>
 	#if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_course $brih_list</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_Of $brih_course $brih_list</a></td>
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none >$brih_add $brih_usr</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none > $brih_usr $brih_add </a></td>
 </tr>
 ##</table>
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("status","ForallUser")">
@@ -70,7 +77,7 @@ $!data.getMessage()
 ##<table align="left" width=100% bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor" align="right">
                 ##<td align=left colspan=2 bgcolor="$ui.menuColor">
-                <td colspan=7>
+                <td colspan="8">
                         <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
@@ -81,17 +88,17 @@ $!data.getMessage()
 
 	<tr align="right">	
 		##<td colspan=2 align="left" bgcolor="$ui.menuColor" ><font size=4>
-		<td colspan=7>
+		<td colspan="8" align="right">
 	                <b> <font color=green><i> $brih_ins </i>$brih_for $brih_attendence </b></font>
                 </td>
 	</tr> 
   	<tr align="right">
 	##<td bgcolor="$ui.tableColor" valign=top width="40%">
-	<td colspan=7>
+	<td colspan="8">
       		##<table width="100%" valign=top > 
 			##<tr bgcolor="$ui.menuColor">
 			<tr bgcolor="$ui.menuColor" align="right">
-				<td colspan=7><b>
+				<td colspan="8"><b>
 					$brih_ins $brih_Of1 $brih_name  
 				</td>
 			</tr>
@@ -103,7 +110,7 @@ $!data.getMessage()
 		        	<tr bgcolor="$ui.tableColor" align="right">
 				#set($flag="false")
 			#end
-		                <td colspan=7>
+		                <td colspan="8">
                 		<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserAttendence_Sheet.vm").addPathInfo("name",$e.getSender()).addPathInfo("userId",$e.getMSubject()).addPathInfo("status","Subcolumn").addPathInfo("count","$tdcolor") style=text-decoration:none> $e.getSender() </a>&nbsp;&nbsp;&nbsp;
                 		</td>
 			##</tr> ##today 24aug by jai
@@ -119,7 +126,7 @@ $!data.getMessage()
 			#else
 				<tr align="right">
 			#end
-				<td colspan=7 align="right"> $brih_of $brih_attendence <font color=green><i>$name</i> </font></td>
+				<td colspan="8" align="right"> $brih_of $brih_attendence <font color=green><i>$name</i> </font></td>
 			</tr>
 			##<tr bgcolor="$ui.menuColor" >
 			#if($falg=="true")
@@ -128,7 +135,7 @@ $!data.getMessage()
 				<tr bgcolor="$ui.menuColor" align="right">
 			#end
 			##<tr align="right">
-				<td colspan=7>$brih_Da $brih_and $brih_time</td>
+				<td colspan="8">$brih_Da $brih_and $brih_time</td>
 			</tr>
 		#if($status1 == "check")
 			#foreach ($e in $instructorList)
@@ -138,7 +145,7 @@ $!data.getMessage()
 				#else
 					<tr align="right">
 				#end
-                                <td colspan=7 align="right">
+                                <td colspan="8" align="right">
                                         $e
                                </td>
                          </tr>
@@ -150,7 +157,7 @@ $!data.getMessage()
 			#else
 				<tr align="right">
 			#end
-			        <td colspan=7>
+			        <td colspan="8">
 					<b> <font color=green>	<i> $mess   </i></b></font>
                         	</td>
 			</tr>
@@ -161,9 +168,9 @@ $!data.getMessage()
 	</tr>
 ## For pagination
 #if($status != "Subcolumn")
-<tr bgcolor="$ui.menuColor">
+<tr bgcolor="$ui.menuColor" align="right">
                 ##<td align=left colspan=2 bgcolor="$ui.menuColor">
-                <td align=left colspan=7>
+                <td colspan="8">
         #if($mode!="Search")
         #if($total_size<= $AdminConf)
          <font color="white">$brih_first</font> &nbsp;
@@ -213,14 +220,3 @@ $!data.getMessage()
         </tr>
 #end
 </table>
-
-<SCRIPT language="JavaScript">
-        function checkNull(frm,field){
-                if(frm.valueString.value!=""){
-                        frm.submit();
-                }
-                else{
-                        alert("The 'Match String' text box can not be NULL");
-                }
-        }
-</SCRIPT>

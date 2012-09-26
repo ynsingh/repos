@@ -13,6 +13,9 @@
 
 $page.setTitle("Change Profile")
 $page.setBgColor($ui.bgcolor)
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -47,7 +50,7 @@ $!data.getMessage()
 	 #end
 	<tr>
                                 <td>$brih_officeno</td>
-                                <td><select name="Offprefix">
+                                <td><select name="Offprefix" class="drop">
 					#if($!offprefix=="+")
                                         	#option1()
                                         #else
@@ -78,7 +81,7 @@ $!data.getMessage()
         <tr>
                                 <td>$brih_mobileno</td>
 
-                                <td><select name="Mobprefix">
+                                <td><select name="Mobprefix" class="drop">
                                         #if($!mobprefix=="+")
                                         	#option1()
                                         #else   
@@ -109,7 +112,7 @@ $!data.getMessage()
                         <tr>
                                 <td>$brih_homeno</td>
 
-                                <td><select name="Homeprefix">
+                                <td><select name="Homeprefix" class="drop">
 					#if($!homeprefix=="+")
                                         	#option1()
                                         #else
@@ -139,7 +142,7 @@ $!data.getMessage()
                         <tr>
                                 <td>$brih_otherno</td>
 
-                                <td><select name="Othprefix">
+                                <td><select name="Othprefix" class="drop">
 					#if($!othprefix=="+")
                                         	#option1()
                                         #else
@@ -191,7 +194,7 @@ $!data.getMessage()
 	<tr>	
 	   <td>#if($lang=="hindi") $brih_qus $brih_select #else $brih_select $brih_qus #end</td>
 	    <td>
-		 <select name="que" size=1 onChange="clearAnswer(document.frm,this);"/>
+		 <select name="que" size=1 class="drop" onChange="clearAnswer(document.frm,this);"/>
                  <option value=$!qid> #foreach($q in $qname) $q.getQuestionName() #end</option>
                  #foreach($questions in $question)
                         <option value="$questions.getQuestionId()">$questions.getQuestionName()</option>
@@ -220,7 +223,7 @@ $!data.getMessage()
 		##foreach($num in [1..$counter])
 		#foreach($num in [1..$count])
 			<tr>
-			<td><select name="instName$num" size=1  #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
+			<td><select name="instName$num" class="drop" size=1  #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
 				#set($temp1=0)
                                 #foreach($st in $UDetail)
                                 	#if($temp == $temp1)
@@ -233,7 +236,7 @@ $!data.getMessage()
 					        <option value="$name.getInstituteId()">$name.getInstituteName() </option>
 				          	#end
 			        </select></td>	
-			<td><select name="prg$num" size=1 #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
+			<td><select name="prg$num" class="drop" size=1 #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
 				#set($temp1=0)
 				#foreach($st in $UDetail)
                                         #if($temp == $temp1)
@@ -268,11 +271,11 @@ $!data.getMessage()
 		<tr bgcolor="$ui.menuColor">
                 <td colspan=7>
 		#if($size == 0)
-                	<input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
+                	<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
 		#else
-			<input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkAnswer(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkAnswer(document.frm,this);"/>
 		#end
-		<input type="reset"  value="$brih_reset"/>
+		<input type="reset"  value="$brih_reset" class="button-ftextstyle" />
 		<input type="hidden" name="actionName"/>
 		<input type="hidden" name="counter" value="$counter"/>
 		<input type="hidden" name="count" value="$count"/>

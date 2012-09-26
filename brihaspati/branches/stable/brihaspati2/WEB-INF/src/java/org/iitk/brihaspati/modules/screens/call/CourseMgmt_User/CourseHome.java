@@ -73,13 +73,19 @@ import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
+
+import org.iitk.brihaspati.om.ModulePermissionPeer;
+import org.iitk.brihaspati.om.ModulePermission;
+
 /**
  * This Class manage all functionality of Course
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
  * @author <a href="mailto:nagendrakumarpal@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
- *@author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @modified date 23-08-2012 (sunil yadav)
  */
 
 public class CourseHome extends SecureScreen{
@@ -88,6 +94,8 @@ public class CourseHome extends SecureScreen{
 		try{
 			User user=data.getUser();
 			ParameterParser pp=data.getParameters();
+			String inst_id="";
+
 			/**
 			  * Get the Guest user name and put in context
 			  */
@@ -108,9 +116,11 @@ public class CourseHome extends SecureScreen{
 			/**
 			 * Retrieves the COURSE_ID of the course in which user has entered
 			 */
+			 String notf=pp.getString("notf","");
+                        String courseid=pp.getString("courseid","");
+                        String userInCourse=(String)user.getTemp("course_id");
+                        context.put("notf",notf);
 
-			String courseid=pp.getString("courseid","");
-			String userInCourse=(String)user.getTemp("course_id");
 			/** Check course id for null
 			*/
 			if( userInCourse!=null && !userInCourse.equals("") && courseid.equals(""))
@@ -121,6 +131,7 @@ public class CourseHome extends SecureScreen{
 			String C_Name=CourseUtil.getCourseName(courseid);
  			String username=user.getName();
 			int userid=UserUtil.getUID(username);
+			String User_Id=Integer.toString(userid);
 			/**
 			 * Sets all the temporary variables of the session 
 			 */
@@ -132,6 +143,9 @@ public class CourseHome extends SecureScreen{
 				role_id=2;
 			else if(Role.equals("student"))
 				role_id=3;
+			else if(Role.equals("teacher_assistant"))
+                                role_id=8;
+
 			if(!courseid.equals("")&& !courseid.equals(userInCourse))
 			{
 				user.setTemp("course_name",C_Name);
@@ -148,7 +162,7 @@ public class CourseHome extends SecureScreen{
 				String[] temp1 = courseid.split("@");
 				String[] temp2 = temp1[1].split("_");
 				temp1[0]=temp2[1];
-				ErrorDumpUtil.ErrorLog("The Institute Id (In Course Home) is "+temp1[0]);
+				inst_id=temp1[0];
 				user.setTemp("Institute_id",temp1[0]);
 
 			}
@@ -183,6 +197,7 @@ public class CourseHome extends SecureScreen{
 			*/
 			String groupName=(String)user.getTemp("course_id");
 			int gid=GroupUtil.getGID((String)user.getTemp("course_id"));
+			String g_Id=Integer.toString(gid);
 			Vector newsd=NewsHeadlinesUtil.getNews(gid);
                 	context.put("sample",newsd);
                 	if(newsd.size()!=0)
@@ -290,7 +305,7 @@ public class CourseHome extends SecureScreen{
 		         /*
                          *Time calculaion for how long user use this page.
                          */
-                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                         {
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(userid,eid);
@@ -305,8 +320,28 @@ public class CourseHome extends SecureScreen{
                         Vector userList=CourseTimeUtil.getCourseActiveList(gid,groupName);
                         context.put("uList",userList);
 
-
-		}catch(Exception e)
+			/*
+			 * code for authorization in CourseHome.vm
+			 */	
+			
+			String mid="";
+			String module_ID="";
+			String status = "";
+			Vector v1 = new Vector();
+                        try {
+                                Criteria crit = new Criteria();
+                                crit.add(ModulePermissionPeer.USER_ID,User_Id);
+				crit.add(ModulePermissionPeer.GROUP_NAME,g_Id);
+                                crit.add(ModulePermissionPeer.INSTITUTE_ID,inst_id);
+                                List l=ModulePermissionPeer.doSelect(crit);
+                                for(int j=0;j<l.size();j++) {
+                                                ModulePermission element=(ModulePermission)(l.get(j));
+						mid =element.getModuleId();
+						String module_name = "modulename"+mid;
+				        	user.setTemp("modulename"+mid, mid);
+				}
+			} catch(Exception e){data.addMessage("The error in getting module name in CourseHome.java :-"+e);}
+		} catch(Exception e)
 		{
 			data.addMessage("The error in Course Home page :-"+e);
 		}

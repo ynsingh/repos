@@ -14,6 +14,7 @@
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table bgcolor="$ui.tableColor" width=100% align="center">
     <tr bgcolor="$ui.menuColor"> <td colspan=8>
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
@@ -81,7 +82,7 @@ $!data.getMessage()
                 <td align=left colspan=8>
                         <b>$brih_match_str </b>
                         <input align=center type="text" name="valueString" value="" >
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input class="button-ftextstyle" type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                 </td>

@@ -12,6 +12,10 @@
  * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
  *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
@@ -142,7 +146,7 @@ $!data.getMessage()
 		</tr>
                 <tr>
 			<td colspan=8>
-                        <INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
                 	<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
                         <INPUT TYPE="hidden" NAME="actionName">
 			<INPUT TYPE="hidden" name="Deleteper" value="Archive_Deleted">

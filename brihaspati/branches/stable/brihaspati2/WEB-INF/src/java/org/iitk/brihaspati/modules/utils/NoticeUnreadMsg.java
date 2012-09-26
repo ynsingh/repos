@@ -45,6 +45,8 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 /**
  * In this class,We have count unread notices from all groups or particuler group
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ *  @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ *  @modified date 23-08-2012
  */
 
 
@@ -119,7 +121,7 @@ public class NoticeUnreadMsg{
                                   * 2(instructor) or 7(global)
                                  */
 
-                                 if(role==2 || role==3 || role==7){
+                                 if(role==2 || role==3 || role==7 || role==8){
                                         crit=new Criteria();
                                         crit.add(NoticeReceivePeer.NOTICE_ID,msgId);
                                         crit.and(NoticeReceivePeer.RECEIVER_ID,userId);

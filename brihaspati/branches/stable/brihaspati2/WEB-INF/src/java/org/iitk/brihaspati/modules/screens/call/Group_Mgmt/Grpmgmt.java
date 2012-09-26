@@ -79,7 +79,7 @@ public class Grpmgmt extends SecureScreen
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);
@@ -90,7 +90,7 @@ public class Grpmgmt extends SecureScreen
                         context.put("user_role",Role);
 			context.put("tdcolor",data.getParameters().getString("count",""));	
 			////////////////////////////////////////////////Creategroup.java add by jai
-			if(Role.equals("instructor")){
+			if((Role.equals("instructor")) || (Role.equals("teacher_assistant"))) {
 			ParameterParser pp=data.getParameters();
 
                         /**

@@ -11,6 +11,9 @@
 $page.setTitle("Registered Institute List")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
@@ -28,7 +31,7 @@ $!data.getMessage()
         <tr>
 	<td><b>$brih_searchBy</b></td>
                 <td align=left>
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
 				#if($query!="")
 				<option value="$query">$query</option>
                                 <option value="InstituteName"> $RemoteInstitute $brih_name</option>
@@ -48,7 +51,7 @@ $!data.getMessage()
 			#end
                 </td>
                 <td>
-                        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);">
+                        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);" class="button-ftextstyle">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
               </td>

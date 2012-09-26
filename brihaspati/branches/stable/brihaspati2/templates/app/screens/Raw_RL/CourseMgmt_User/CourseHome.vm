@@ -181,7 +181,7 @@ $!data.getMessage()
                         #end
                               <table  bgcolor="$ui.tableColor" width="98%"  align="left">
                                     <tr>
-                                           <td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_course $brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr></b>
+                                           <td colspan="1" align="center" bgcolor="$ui.menuColor"><b> ($brih_course $brih_active $brih_usr $brih_Of $brih_list &nbsp;&nbsp;( $uList.size()</b></td></tr></b>
                                            </td>
                                     </tr>
 
@@ -201,7 +201,7 @@ $!data.getMessage()
                         <div style="overflow:auto;  height:100px;">
                                 <table  bgcolor="$ui.tableColor" width="98%"  align="left">
                                         <tr>
-                                                <td colspan="2" align="center" bgcolor="$ui.menuColor"><b>$brih_module $brih_Usage $brih_time (7 $brih_days)</b></td></tr></b>
+                                                <td colspan="2" align="center" bgcolor="$ui.menuColor"><b> ($brih_module $brih_Usage $brih_time (7 $brih_days</b></td></tr></b>
                                                   </td>                                                                                                              </tr>
                                         #foreach($timelist in $weektime)       
                                         #if($velocityCount%2==0)
@@ -441,6 +441,7 @@ $!data.getMessage()
 					</td>
                                         ## inner column 2 (4)close
 					## tracking Report
+					 ## inner column 3 (4)open
                                         <td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
@@ -451,22 +452,31 @@ $!data.getMessage()
                                                                 <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
                                                         </td></tr>
                                                 </table>
-						 <tr>
-                                                        <td align=center>
+					</td>
+					 ## inner column 3 (4)close
+					 <tr> ##inner Row (5) open 
+						 ## inner column 1 (5) open
+						<td align=center>
                                                         <table>
                                                         <tr><td align=center>
                                                          <a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>
-                                                <img border=0 src="$content.getURI("/images/rsz_1rsz_graph.jpg")"></a>
-                </td></tr>
+	                                                <img border=0 src="$content.getURI("/images/rsz_1rsz_graph.jpg")"></a>
+        					        </td></tr>
 
                                                         <tr><td align=center>
                                                         <a href=$link.setPage("call,Browser_Statistics,MakeGraph.vm").addPathInfo("count","1") style=text-decoration:none>$Repo_browser $brih_statistics</a><br>
-                                                        </td></tr></table>
                                                         </td></tr>
-
-                                        </td>
-                                        ## tracking Report
-				</tr>
+							</table>
+						</td>  ## inner column 1 (5) close
+						 ## inner column 2 (5) open
+		                                <td align=center>
+		       	                                <table>
+        		                                    <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $bri_ta </a><br></td></tr>
+                		                            <tr><td align=center><a href=$link.setPage("call,TA_Management,TA_Management.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/teacher.png")"></a></td></tr>
+                	        	                </table>
+                        	        	</td>
+                                ## inner column 2 (5) close
+				</tr> ##inner Row (5) close
 			#elseif($user_role=="student")
 				## inner row 1 open
 				<tr>

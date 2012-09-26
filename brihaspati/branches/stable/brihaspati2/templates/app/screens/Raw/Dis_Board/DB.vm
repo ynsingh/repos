@@ -65,7 +65,14 @@ $!data.getMessage()
         			<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")>$Notice_NoticeContent_msg1</td>
 			#end
 			 #if($data.getUser().getTemp("role") == "instructor")
-				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices
+				#foreach($msg in $unreadMsg)
+			#if($msg!="0")
+			#BlinkingText("New")
+			#end
+			#end
+
+				</td>
 				#if($tdcolor != "5")
 	        			<td>
 			       	#elseif($tdcolor=="5")

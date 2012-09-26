@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
 /*
  * @(#)AdminParam.java	
  *
- *  Copyright (c) 2005,2009,2010,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2009-2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -107,6 +107,8 @@ public class AdminParam extends SecureScreen{
 		 String hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
 		 String port = AdminProperties.getValue(path,"brihaspati.spring.port");
                  context.put("port",port);
+		 String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
+		 context.put("dstore",dstore);
 
 		// --------------------------------Telephone Directory------------------
 	Criteria crt=new Criteria();

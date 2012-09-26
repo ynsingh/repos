@@ -7,6 +7,11 @@
 *#
 $page.setTitle("Quiz Creation")
 $page.setBgColor("bgcolor")
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
@@ -72,12 +77,12 @@ $!data.getMessage()
 	        	<font face="$ui.sansSerifFonts">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
-	        			<select name=quizList>
+	        			<select name=quizList class="drop">
 	        				#foreach($qid in $quizList)
 	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getAllowPractice()">$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
-	        			<input type="button" name="eventSubmit_generateQuiz" value="$brih_submit" onClick="checkValue(document.frm,this);">
+	        			<input type="button" class="button-ftextstyle" name="eventSubmit_generateQuiz" value="$brih_submit" onClick="checkValue(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
 				#else
 					$brih_No_NewQuiz

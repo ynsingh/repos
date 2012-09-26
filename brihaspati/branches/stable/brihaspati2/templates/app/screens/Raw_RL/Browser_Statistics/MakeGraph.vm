@@ -31,6 +31,7 @@ $!data.getMessage()
 	      </tr>
 	</table>
 	<form name="frm" method="post">
+#if($userList1.size()!=0)
 	<table width="100%">
 		<tr bgcolor="$ui.tableColor" align="right">
 
@@ -128,6 +129,7 @@ $!data.getMessage()
 			<tr bgcolor="$ui.menuColor"><td colspan="1"><div id="graphdiv2"></td></div></tr>
 		#end
 	</table>
+#end
 		<input type="hidden" name="valdir">
 		<input type="hidden" name="mname" value="$mname">
 		<input type="hidden" name="valuestr" value="$valuestr">

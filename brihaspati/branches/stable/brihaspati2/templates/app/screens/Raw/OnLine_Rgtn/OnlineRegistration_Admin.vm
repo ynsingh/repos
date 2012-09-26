@@ -18,6 +18,7 @@ $page.setBgColor($ui.bgcolor)
 
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang").toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table  bgcolor="$ui.menuColor" width=100%>
 <tr> <td>
  <b><a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
@@ -135,8 +136,8 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=10>
                 <input type="hidden" name="actionName" value="">
-                <input type="button" name="eventSubmit_AcceptUser" value="$online_accept" onClick="AcceptField(document.frm,this);">
-                <input type="button" name="eventSubmit_RejectUser" value="$online_reject" onClick="AcceptField(document.frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_AcceptUser" value="$online_accept" onClick="AcceptField(document.frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_RejectUser" value="$online_reject" onClick="AcceptField(document.frm,this);">
                 <input type="hidden" name="deleteFileNames" value="">
                 <input type="hidden" name="role" value="$role">
                 <input type="hidden" name="count" value="$tdcolor">
@@ -224,8 +225,8 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
   	<td align="left" colspan=8>
 	<input type="hidden" name="actionName" value="">
-	<input type="button" name="eventSubmit_doAcceptCourses" value="$online_accept" onClick="AcceptField(document.frm,this);">
-	<input type="button" name="eventSubmit_doDeleteCourse" value="$online_reject" onClick="AcceptField(document.frm,this);">
+	<input type="button" class="button-ftextstyle"  name="eventSubmit_doAcceptCourses" value="$online_accept" onClick="AcceptField(document.frm,this);">
+	<input type="button" class="button-ftextstyle"  name="eventSubmit_doDeleteCourse" value="$online_reject" onClick="AcceptField(document.frm,this);">
 	<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
                 <input type="hidden" name="count" value="$tdcolor">
      	</td>

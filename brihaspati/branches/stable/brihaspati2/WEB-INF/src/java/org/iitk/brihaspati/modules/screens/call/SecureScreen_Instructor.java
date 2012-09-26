@@ -41,6 +41,9 @@ import org.apache.turbine.om.security.User;
  * executing the doBuildtemplate().
 
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @modified date: 21-08-2012 by sunil yadav
+
  */
 public class SecureScreen_Instructor extends VelocitySecureScreen
 {
@@ -56,35 +59,32 @@ public class SecureScreen_Instructor extends VelocitySecureScreen
      	* @return True if the user is authorized to access the screen.
      	* @exception Exception, a generic exception.
 	*/
- 	protected boolean isAuthorized( RunData data )  throws Exception
-    	{
-        	boolean isAuthorized = false;
-                try{
-                        AccessControlList acl = data.getACL();
+	
+	 protected boolean isAuthorized( RunData data )  throws Exception
+        {
+                boolean isAuthorized = false;
+                AccessControlList acl = data.getACL();
+                try
+                {
                         User user=data.getUser();
                         String g=user.getTemp("course_id").toString();
 
-                /**
-                 * Checks if the user has logged in as an instructor. If so, then he is
-                 * authorized to view this page
-                 */
+                        if(acl==null || (! acl.hasRole("instructor",g) && !acl.hasRole("teacher_assistant",g) && !acl.hasRole("turbine_root")) )
+                        {
+                                data.setScreenTemplate( Turbine.getConfiguration().getString("template.login"));
 
-                        if (acl==null || (! acl.hasRole("turbine_root") && ! acl.hasRole("instructor",g)))
-                        {
-                            data.setScreenTemplate(Turbine.getConfiguration().getString("template.login"));
-                            isAuthorized = false;
+                                isAuthorized = false;
                         }
-                        else if((acl.hasRole("instructor",g)) || (acl.hasRole("turbine_root")))
+                        else if(acl.hasRole("instructor",g) || acl.hasRole("teacher_assistant",g) || acl.hasRole("turbine_root"))
                         {
-                            isAuthorized = true;
+                                isAuthorized = true;
                         }
                 }
                 catch(Exception e)
                 {
-                                data.setScreenTemplate(Turbine.getConfiguration().getString("template.login"));
-                                return false;
+                        data.setScreenTemplate(Turbine.getConfiguration().getString("template.login"));
+                        return false;
                 }
-     		return isAuthorized;
-     }
-
+                return isAuthorized;
+        }
 }

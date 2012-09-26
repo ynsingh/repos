@@ -53,10 +53,12 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 /**
   * This class contains code for edit user profile according specific username
   * Grab all the records in a table using a Peer, and
@@ -119,6 +121,7 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 				if(InstId.equals(UsrInstid))
 				{
 					List Crslist = CourseProgramUtil.getCourseRollnoDetail(sturlid);
+					//ErrorDumpUtil.ErrorLog("CrsList in screen file for student==="+Crslist.size()+"Crslist>>>>>"+Crslist);
 					context.put("Crscount",Crslist.size());
 	                                for(ListIterator k = Crslist.listIterator();k.hasNext();)
 	                                {
@@ -139,6 +142,7 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 	                                        studid= item.getValue ("STUDENT_ID").asString();
 						//ErrorDumpUtil.ErrorLog("student id from execute query  :-"+studid);
 	                                        String tmp = rl+":"+CrsId+":"+pgcode+":"+pgname+":"+CrsName+":"+CrsAlias+":"+CrsInstrName+":"+studid;
+						//ErrorDumpUtil.ErrorLog("tmp from screen  :-"+tmp);
 						UsDetail.addElement(tmp);
 					}
         		                context.put("UDetail",UsDetail);
@@ -150,7 +154,21 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 			/**
  			 * getting institute id from temp & list of program for that institute 
  			 */ 
-			Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(InstId);
+			//Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(InstId);
+			Vector courseList = UserGroupRoleUtil.getGID(uid,3);
+			//ErrorDumpUtil.ErrorLog("courselist in screen file==="+courseList);
+			Vector CourseDetail = new Vector();
+			Vector CrsDescrp = new Vector();
+			for(int k=0;k<courseList.size();k++)
+			{
+				String gid = (String)courseList.elementAt(k);
+				String gname = GroupUtil.getGroupName(Integer.parseInt(gid));
+				if(gname.endsWith(InstId))
+				{
+					CrsDescrp.add(gname);
+				}
+			}
+			CourseDetail= InstituteDetailsManagement.getGroupCourseDetails(CrsDescrp);
 			Criteria crit=new Criteria();
 	                crit.add(InstituteProgramPeer.INSTITUTE_ID,Integer.parseInt(InstId));
 	                List Instplist= InstituteProgramPeer.doSelect(crit);
@@ -175,7 +193,7 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 			String from=pp.getString("from","");
 			context.put("from",from);
 			context.put("type",type);
-			context.put("CourseList",courseList);
+			context.put("CourseList",CourseDetail);
 		}
 		catch (Exception e){
 			data.setMessage("The error in user id :- "+e);

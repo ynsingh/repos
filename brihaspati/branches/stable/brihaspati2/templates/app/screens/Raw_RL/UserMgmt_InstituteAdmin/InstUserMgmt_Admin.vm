@@ -38,28 +38,35 @@ $!data.getMessage()
 			#end
 		#end
 		</td>		
-		<td colspan="6">
-	#else
 		<td colspan="7">
+	#else
+		<td colspan="8">
 	#end
      	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> | 
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_usr</a> | 
 	#if($mode=="")
 		$brih_add $brih_usr
-	#elseif($mode=="sclist")
-		$brih_student $brih_course $brih_list 
+
+	##elseif($mode=="sclist")
+		##$brih_student $brih_course $brih_list 
+	 #elseif(($mode=="sclist") || ($mode == "instlist"))
+                #if($mode=="sclist")
+                      $brih_student $brih_Of $brih_course $brih_list
+                #else
+                        $brih_Instructor $brih_Of $brih_course $brih_list
+                #end
 	#elseif($mode=="AddMUser")
 	##	$brih_add $brih_multiple1 $brih_usr
-		$brih_add $brih_multiple1 $brih_usr | $brih_upload $brih_txt $brih_file
+		$brih_multiple1 $brih_usr $brih_add | $brih_txt $brih_file $brih_upload 
         #elseif($mode=="USzip")
-	       $brih_add $brih_multiple1 $brih_usr | $brih_upload $brih_zip $brih_file
+	       $brih_multiple1 $brih_usr $brih_add | $brih_zip $brih_file $brih_upload 
 	#elseif($mode=="UPhoto")
-		$brih_upload $brih_photo	 
+		$brih_photo $brih_upload 	 
 	#else
 		#if($role=="instructor")
-			$brih_delete $brih_ins
+			$brih_delete $brih_ins 
 		#else
-			$brih_delete $brih_student
+			$brih_delete $brih_student 
 		#end
 	#end
 </td></tr>
@@ -75,7 +82,7 @@ $!data.getMessage()
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> $brih_photo $brih_upload </a></td>
 	 #if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
@@ -88,19 +95,26 @@ $!data.getMessage()
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>  #if($lang == "hindi") $brih_student $brih_delete #else $brih_delete $brih_student #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none> $brih_delete $brih_student </a></td>
         #if($tdcolor != "3")
         <td>
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_Instructor $brih_delete #else $brih_delete $brih_Instructor #end </a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> $brih_delete $brih_Instructor</a></td>
+	#if($tdcolor != "0")
+        <td>
+        #elseif($tdcolor == "0")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_Of $brih_course $brih_list </a></td>
+
 	#if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student #if($lang == "hindi") $brih_Of #end $brih_course $brih_list</a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_Of $brih_course $brih_list</a></td>
 	#if($tdcolor != "1")
         <td>
         #elseif($tdcolor == "1")
@@ -109,7 +123,7 @@ $!data.getMessage()
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_usr</a></td>
 </tr>
 </table>
-#if(($mode=="")&&($mode !="sclist")&&($mode !="AddMUser")&&($mode !="UPhoto")&&(($mode !="userdelete")||($role=="instructor")||($role=="student"))) 
+#if(($mode=="")&&($mode !="instlist")&&($mode !="sclist")&&($mode !="AddMUser")&&($mode !="UPhoto")&&(($mode !="userdelete")||($role=="instructor")||($role=="student"))) 
 <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("AddUser_Institute")">
 <table width=100% align="right" bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor" align="right"><td align="right" colspan="5"><b>$brih_entUsrDetail</b></td></tr>
@@ -175,7 +189,7 @@ $!data.getMessage()
 		</select>
         </td>
           <td align="right">
-		<font color="Red">*</font> $brih_sel_Role
+		<font color="Red">*</font> $brih_role $brih_select
           </td>
         </tr>
 	<tr align="right">
@@ -206,27 +220,28 @@ $!data.getMessage()
 </table>
 </form>
 #end
-#if($mode == "sclist")
+##if($mode == "sclist")
+#if(($mode == "sclist")||($mode == "instlist"))
  <form name=frm method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("status","ForallStudent")">
 <table width=100% cellpadding=1 align="right" bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor" align="right">
-                <td colspan=9>
+                <td colspan=10>
                 <select name="queryList">
                 <option value="User Name">$brih_usr $brih_Of1 $brih_name</option>
                 <option value="First Name">$brih_first $brih_name</option>
                 <option value="Last Name">$brih_last $brih_name</option>
                 <option value="Email">$brih_email</option>
-		<option value="RollNo">$brih_rollno </option>
+		#if($mode == "sclist") 	<option value="RollNo">$brih_rollno </option> #end
                 </select></td>
                 <td width=20% align="right">$brih_searchBy</td>
         </tr>
         <tr align="right">
-                <td colspan=9><input align=left type="text" name="value" value=""></td>
+                <td colspan=10><input align=left type="text" name="valueString" value=""></td>
                 <td width=20%>$brih_match_str</td>
         </tr>
         <tr bgcolor="$ui.menuColor" align="right">
-                <td colspan=10>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                <td colspan=11>
+			<input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm, this);">
 			<input type="hidden" name="mode" value="$mode"/>	
 			<input type="hidden" name="mode1" value="list"/>	
 			<input type="hidden" name="count" value="$tdcolor"/>	
@@ -234,22 +249,28 @@ $!data.getMessage()
         </tr>
 #if($total_size != 0)
 #if($mode1 == "list")
-<tr bgcolor="$ui.menuColor" align="right">
-###set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email"," ",""] )
-#set ( $headings = ["","","", "", "", "", "$brih_rollno", "$brih_email", "$brih_student $brih_Of1 $brih_name", "$brih_login $brih_name"]) 
-##,"$brih_student $brih_name","$brih_email"," ",""] )
+	<tr align="right">
+	#if($mode == "sclist")
+		#set ( $headings = ["", "", "", "", "", "", "", "$brih_rollno", "$brih_email", "$brih_student $brih_Of1 $brih_name", "$brih_login $brih_name"])
+	#elseif($mode == "instlist")
+		#set ( $headings = ["", "", "", "", "", "", "", "","$brih_login $brih_name","$brih_Instructor $brih_Of1 $brih_name","$brih_email"] )
+	#end
+ 
         #foreach ($heading in $headings)
                 <td><font size=3><b>$heading</b></font></td>
         #end
     </tr>
         #foreach($list in $ListUser)
 		#if($velocityCount%2==0)
-        	<tr bgcolor="$ui.menuColor" align="right">
+        		<tr bgcolor="$ui.tableColor" align="right">
         	#else
-        	<tr bgcolor="$ui.tableColor" align="right">
+	        	<tr bgcolor="$ui.menuColor" align="right">
         	#end
-        	##<td colspan=5><a href=$link.setPage("call,UserMgmt_Admin,StudentCourselist.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
-        	<td align="right" colspan="3"><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
+		 #if($mode == "sclist")
+	                <td colspan="4"><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2").addPathInfo("mode","sclist") style=text-decoration:none>$brih_course $brih_Of $brih_list</a></td>
+                #elseif($mode == "instlist")
+        	        <td colspan="4"><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","0").addPathInfo("mode","instlist") style=text-decoration:none>$brih_course $brih_Of $brih_list</a></td>
+                #end
 		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp; </td>
 		<td align="right"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
 		##<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
@@ -276,7 +297,7 @@ $!data.getMessage()
     		</tr>
         #end
 	<tr align="right">
-        <td bgcolor="$ui.menuColor" colspan="10" align="right">
+        <td bgcolor="$ui.menuColor" colspan="11" align="right">
         #if($total_size<= $AdminConf)
 
         <font color="white">$brih_first</font> &nbsp;
@@ -343,7 +364,7 @@ face="$ui.sansSerifFonts">$type</font>
 <font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/Userdoc.html","newWin"); style=text-decoration:none>$brih_help</a></font> <img src="$content.getURI("/images/Lefthand.gif")">
 </td></tr>
 <tr  bgcolor="$ui.menuColor" align="right">
-<td bgcolor="#AFDCEC" width="25%"  align="right"> 
+<td bgcolor="#AFDCEC" align="right"> 
 	<img src="$content.getURI("/images/text.jpg")"> 
 	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none> $brih_txt $brih_file $brih_upload</a></td>
 <td  align="right"> 
@@ -459,7 +480,7 @@ face="$ui.sansSerifFonts">$type</font>
 #if($mode == "USzip")
 <table width="100%" bgcolor="$ui.tableColor" align="left">
 <tr bgcolor="$ui.menuColor" align="right">
-<td width="25%"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")"> $brih_txt $brih_file $brih_upload </a></td>
+<td> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none><img src="$content.getURI("/images/text.jpg")"> $brih_txt $brih_file $brih_upload </a></td>
 <td bgcolor="#AFDCEC"> <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","5").addPathInfo("mode","USzip") style=text-decoration:none><img src="$content.getURI("/images/zipfile.jpg")"> $brih_zip $brih_file $brih_upload</a></td>
 </tr>
 <tr align="left"><td align="left" colspan=8>
@@ -485,9 +506,12 @@ face="$ui.sansSerifFonts">$type</font>
         </tr>
         #end
         <tr bgcolor="$ui.tableColor" align="right">
-        <td colspan=2  align="left"><font size=4><b>$brih_upload_msg1</b></font></td>
+        <td colspan=2  align="right"><font size=4><b>$brih_upload_msg1</b></font></td>
         </tr>
         <tr bgcolor="$ui.menuColor" align="right">
+	<td><input type="file" name="file" value=""> </td>
+
+	<td> <font color=RED>*</font> $brih_at_file</td>
         ##fileUpload ("Attach File <font color=RED>*</font>" "file")
 		
         </tr>

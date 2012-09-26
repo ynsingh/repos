@@ -12,6 +12,7 @@ $page.setTitle("Admin Home | User Management")
 $page.setBgColor("#ffffff")
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
@@ -84,7 +85,7 @@ $!data.getMessage()
                 ##<td><b>$brih_searchBy</b></td>
                 <td><b>$brih_searchBy</b>
                 ##<td align=left>
-                        <select name="queryList">
+                        <select class="drop" name="queryList">
                                 <option value="CourseId"> $brih_course $brih_ID</option>
                                 <option value="Course Name">$brih_course $brih_name</option>
                                 <option value="Dept">$brih_dept </option>
@@ -95,7 +96,7 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 ##</td>
                 ##<td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button"  class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="listcourse" value="listcourse">
                         <input type="hidden" name="count" value="$tdcolor">

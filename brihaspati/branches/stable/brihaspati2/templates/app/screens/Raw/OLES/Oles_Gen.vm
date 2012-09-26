@@ -8,6 +8,11 @@
 
 $page.setTitle("Quiz Management")
 $page.setBgColor("bgcolor")
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 ## If some message has been set, that is retrieved and displayed.
 <font face="$ui.sansSerifFonts">
 $!data.getMessage()
@@ -144,13 +149,13 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" width="100%">
 	<td align="left" width="100%" colspan="5">
 		#if($mode == "QuizDetail")
-			<input type=button name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
+			<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			<input type="hidden" name="mode" value=$mode >
 			<input type="hidden" name="quizMode" value=$quizMode >					
 		#else
-			<input type="button" name="eventSubmit_doUploadQuiz" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadQuiz" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 		#end		
-		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+		<input type="reset" class="button-ftextstyle" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 	</td>
 </tr>
 </table>

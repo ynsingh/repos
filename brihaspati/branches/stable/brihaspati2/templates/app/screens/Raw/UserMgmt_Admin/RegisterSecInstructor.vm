@@ -19,6 +19,7 @@ $page.setTitle("Admin Home | Registeration Management | Register Secondary Instr
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 <table align=left bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -86,8 +87,8 @@ $!data.getMessage()
 *#
 	<tr bgcolor="$ui.menuColor">
 	<td colspan=2 align=left>
-	    <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
-	    <input type="reset" name="Clear" value="$brih_clear"/>
+	    <input class="button-ftextstyle" type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldInst(document.frm,this);"/>
+	    <input class="button-ftextstyle" type="reset" name="Clear" value="$brih_clear"/>
 	</td>
 	</tr>
     </table>

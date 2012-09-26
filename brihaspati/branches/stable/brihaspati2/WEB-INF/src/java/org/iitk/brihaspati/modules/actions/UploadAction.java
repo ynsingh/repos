@@ -53,6 +53,8 @@ import org.apache.torque.util.Criteria;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 
+import java.util.Date;
+import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
@@ -309,14 +311,21 @@ public class UploadAction extends SecureAction
 			if(flag1){	
 			if(Pub.equals("Publish"))
 			{
+				ErrorDumpUtil.ErrorLog("tttttttttt================================");
 				if(new_files_uploaded.size()!=0)
                        		{
                                		for(int k=0;k<new_files_uploaded.size();k++)
                                		{
                                        		String fileName=new_files_uploaded.get(k).toString();
+				ErrorDumpUtil.ErrorLog("tttttttttt================================"+fileName);
                                			xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
+				ErrorDumpUtil.ErrorLog("tttttttttt================================"+Path+"|======|"+contentTopic);
                                        		TopicMetaDataXmlWriter.appendFileElement(xmlWriter,fileName,fileName,dateOfCreation);
+				ErrorDumpUtil.ErrorLog("tttttttttt================================vipul"+dateOfCreation);
                        				xmlWriter.writeXmlFile();
+				//boolean courseModified = true;
+				Date d=new Date();
+				updateLastModified(courseHome,d);
                                		}//for
                        		}//if
 			}//ifpublish
@@ -361,7 +370,17 @@ public class UploadAction extends SecureAction
 		data.addMessage("The Error in Uploading in Course contents !!"+ex);
 	}
 }//do
+//////////////////////////////////////////////////////////////////////
+	public void updateLastModified(String courseId,Date lastMod) throws Exception
+        {
+		ErrorDumpUtil.ErrorLog("tttttttttt======update last modified");
+                Criteria crit=new Criteria();
+                crit.add(CoursesPeer.GROUP_NAME,courseId);
+                crit.add(CoursesPeer.LASTMODIFIED,lastMod);
+                CoursesPeer.doUpdate(crit);
+        }
 
+/////////////////////////////////////////////////////////////////////
 	public void topicSequence(String way,String contentTopic,String dateOfCreation,String uName,String location){
 		try
                 {

@@ -40,11 +40,16 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 13-Oct-2010 (Shaista)
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @ modified date: 13-Oct-2010 (Shaista),01-feb-2012(Dewanshu Singh Sisaudiya)
+ * @ modified date: 24-08-2012 (Sunil Yadav)
  */
 
 import java.util.Vector;
 import java.util.List;
+import java.util.Iterator;
+
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -60,9 +65,11 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import com.workingdogs.village.Record;
+import org.iitk.brihaspati.om.DbReceivePeer;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.Notification;
 
 public class Notices extends SecureScreen
 {
@@ -73,61 +80,70 @@ public class Notices extends SecureScreen
 	 * Loads the template screen
 	 */
 	public void doBuildTemplate( RunData data, Context context ) {
-		 try{
+		 try{  
                         /**
                          * Retreives the login name and user id of the user logged in
                          */
 
                         User user=data.getUser();
+			String user_name = user.getName();
                         String loginname=user.getName();
                         int user_id=UserUtil.getUID(loginname);
 			ParameterParser pp = data.getParameters();
-                        //used for group management
-                        //String mode1=data.getParameters().getString("mode1","");
                         String mode1=pp.getString("mode1","");
                         context.put("mode1",mode1);
-                        //String grpname=data.getParameters().getString("val1","");
                         String grpname=pp.getString("val1","");
                         context.put("val",grpname);
 
-                        //String flag=data.getParameters().getString("nflag","");
                         String flag=pp.getString("nflag","");
 			
                         context.put("nflag",flag);
-                        //String counter=data.getParameters().getString("count","");
+			String dir=(String)user.getTemp("course_id");
                         String counter=pp.getString("count","");
                         context.put("tdcolor",counter);
                         context.put("tdcolor1",pp.getString("countTemp",""));
+			String stats=data.getParameters().getString("stats","");
+                        String mode2=data.getParameters().getString("mode2","");
+                        String dev = Notification.DisBoardNf(user_name,dir,stats,mode2);
+                        context.put("unreadm",dev);
+
                         /**
                          * Retreives all courses for use of Admin and Institute Admin
                          */
+
 			String rolename=(user.getTemp("role")).toString();
 			String instituteId=(user.getTemp("Institute_id")).toString();
-			ErrorDumpUtil.ErrorLog("rname=="+rolename+"\niId==="+instituteId);
 			List CList=null;
-                        if(loginname.equals("admin")){
+                        if(loginname.equals("admin"))	{
                         	CList=ListManagement.getCourseList();
-				ErrorDumpUtil.ErrorLog("clist in admin loop====="+CList);
-                        	//context.put("clist",CList);
+			
 			}
-			else{
-				ErrorDumpUtil.ErrorLog("testing in else loop in notices");
+			
+			else {
 				if(rolename.equals("institute_admin")){	
-                                //CList=ListManagement.getInstituteCourseList(instituteId);
 				CList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
-				ErrorDumpUtil.ErrorLog("size()instituteadmin loop=="+CList.size());
-                        	//context.put("clist",CList);
 				}
 			}
-			ErrorDumpUtil.ErrorLog("clist out of admin loop====="+CList);
+
                         context.put("clist",CList);
-                        //CList=null;
-                        /**
-                         * Retreives all the courses in which the user is an instructor
-                         */
 			Vector courselist=new Vector();
 			Vector groupIdList=new Vector();
-                        Vector v=UserGroupRoleUtil.getGID(user_id,2);
+			Vector v = new Vector();
+
+			 /**
+                         * Retreives all the courses in which the user is an instructor
+			 * with roleId 2 and Teacher Assistant with roleId 8.
+                         */
+
+			//modify by Sunil Yadav
+
+			if(rolename.equals("instructor")) {
+                        
+				v=UserGroupRoleUtil.getGID(user_id,2);
+			} else {
+				
+				v=UserGroupRoleUtil.getGID(user_id,8);
+			}
                         int rows=v.size();
                         for(int count=0;count<rows;count++){
                                 String groupId=(String)(v.elementAt(count));
@@ -162,8 +178,9 @@ public class Notices extends SecureScreen
 		/*
 		 *method for how much time user spend in this page.
 		 */
+
 		String Role=(String)data.getUser().getTemp("role");
-		if((Role.equals("instructor"))||(Role.equals("student")))
+		if((Role.equals("instructor"))||(Role.equals("student")) || (Role.equals("teacher_assistant")))
 		{
 			//CourseTimeUtil.getCalculation(user_id);
         	        //ModuleTimeUtil.getModuleCalculation(user_id);

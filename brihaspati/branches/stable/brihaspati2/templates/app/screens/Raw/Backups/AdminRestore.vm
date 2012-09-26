@@ -7,6 +7,9 @@
 *#
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setBgColor($ui.bgcolor)
 #if($st=="db")
@@ -74,11 +77,11 @@ $page.setBgColor($ui.bgcolor)
 
           <font face="$ui.sansSerifFonts">
 	#if($st == "db")
-          <input type="button" name="eventSubmit_doRestoreDatabase" value="$brih_restore" onClick="checkValues(document.uploadform,this);"/>
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doRestoreDatabase" value="$brih_restore" onClick="checkValues(document.uploadform,this);"/>
 	#elseif($st=="glsry")
-          <input type="button" name="eventSubmit_doRestoreGlossary" value="$brih_restore" onClick="checkValues(document.uploadform,this);"/>
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doRestoreGlossary" value="$brih_restore" onClick="checkValues(document.uploadform,this);"/>
 	#else
-          <input type="button" name="eventSubmit_doRestoreContent" value="$brih_restore" onClick="checkValues(document.uploadform,this);"/>
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doRestoreContent" value="$brih_restore" onClick="checkValues(document.uploadform,this);"/>
 	#end
 	 <input type="hidden" name="actionName">
         </td>

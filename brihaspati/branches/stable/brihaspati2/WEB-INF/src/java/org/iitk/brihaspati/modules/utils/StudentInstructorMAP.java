@@ -58,7 +58,8 @@ import org.iitk.brihaspati.modules.utils.CourseUserDetail;
  *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
- *  @modified Date: 27-02-2012(jaivir,seema,kishore)
+ *  @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ *  @modified Date: 27-02-2012(jaivir,seema,kishore),23-08-2012(Sunil Yadav)
  */
 
 public class StudentInstructorMAP
@@ -203,4 +204,64 @@ public class StudentInstructorMAP
 		}
 		return entries;
 	}
+
+
+
+	/**
+          * This Method used for shows all details of Teacher Assistant
+          * @param uid int USER_ID
+          * @see CourseUserDetail from Utils
+          * @exception Exception, a generic exception
+          * @return Vector
+          */
+        public static Vector getTAMAP(int uid)
+        {
+                Vector entries=new Vector();
+                String role_id="8";
+                try{
+
+                        Criteria crit=new Criteria();
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,Integer.toString(uid));
+                        crit.and(TurbineUserGroupRolePeer.ROLE_ID,role_id);
+                        List inst_list=TurbineUserGroupRolePeer.doSelect(crit);
+                        CourseUserDetail cDetail=new CourseUserDetail();
+                        String act="", statc="";
+                        for(int i=0;i<inst_list.size();i++)
+                        {
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)inst_list.get(i);
+                                int gid=element.getGroupId();
+
+                                String groupName=GroupUtil.getGroupName(gid);
+                                String courseName=CourseUtil.getCourseName(groupName);
+                                String Coursealias=CourseUtil.getCourseAlias(groupName);
+                                String weekTime=CourseTimeUtil.getLastweekTime(uid,groupName);
+                                        boolean check_act=CourseManagement.CheckcourseIsActive(gid);
+                                if(check_act==false)
+                                        act="1";
+                                else
+                                        act="0";
+                                boolean gustst=CourseUtil.getCourseGuestStatus(groupName);
+                                if(gustst)
+                                        statc="true";
+				 else
+                                        statc="false";
+
+                                cDetail=new CourseUserDetail();
+                                cDetail.setCourseName(courseName);
+                                cDetail.setGroupName(groupName);
+                                cDetail.setCAlias(Coursealias);
+                                cDetail.setActive(act);
+                                cDetail.setCourseTime(weekTime);
+                                cDetail.setCGuest(statc);
+                                entries.add(cDetail);
+                        }
+
+                }
+                catch(Exception e){
+                        String error="The error in Teacher Assistant Login --"+e;
+                        entries.add(error);
+                }
+                return entries;
+        }
+
 }

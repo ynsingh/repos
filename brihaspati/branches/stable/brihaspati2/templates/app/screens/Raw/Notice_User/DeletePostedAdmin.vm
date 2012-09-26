@@ -15,6 +15,7 @@
         _editor_url = "$content.getURI("/scrpts/")";
         _editor_lang = "en";
 </script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script>
 </head>
@@ -82,7 +83,7 @@ $!data.getMessage()
 	#end
 	<tr bgcolor="$ui.tableColor">
 	<td>
-		<input type="button" name="eventSubmit_doDelete" value="$brih_delete" onClick="CheckValue(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" value="$brih_delete" onClick="CheckValue(document.frm,this);">
 		<input type="hidden" name="actionName" value="">
 		<input type="hidden" name="deleteFileNames" VALUE="">
 	</td>

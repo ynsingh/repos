@@ -13,6 +13,11 @@
 
 $page.setTitle("create group")
 $page.setBgColor("$ui.bgcolor")
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 
@@ -108,7 +113,7 @@ $!data.getMessage()
 					#else
 					<b><font color="Red">*</font>$brih_select $brih_grp:&nbsp;&nbsp;</b>
 					#end
-                			<select name="groupname" size="1" onChange="Changegroup(document.frm,this);"/>
+                			<select name="groupname" size="1" class="drop" onChange="Changegroup(document.frm,this);"/>
                         			<option> </option>
                         			#foreach($grpname in $grplist)
                         			<option value="$grpname.Name">$grpname.Name
@@ -151,7 +156,7 @@ $!data.getMessage()
 							#end
 							</b> </td>
 							<td>
-							<select name="leadername" size="1"  onChange="Changeleader(document.frm,this);"/>
+							<select name="leadername" size="1" class="drop" onChange="Changeleader(document.frm,this);"/>
 							#if($lang == "hindi" || $lang == "gujarati")
 	               						<option>  - $brih_grpleader $brih_select - </option>
 							#else
@@ -258,27 +263,27 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor"><td>
 		#if($Status =="Edit")
 			#if($actmode =="lead")
-        		<input type="button" name="eventSubmit_doRemoveselectedstudent" value= #if($lang =="hindi" || $lang =="gujarati") "$brih_grpleader $brih_select" #else "$brih_select $brih_grpleader" #end onClick="checkfield(document.frm,this);"/>
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveselectedstudent" value= #if($lang =="hindi" || $lang =="gujarati") "$brih_grpleader $brih_select" #else "$brih_select $brih_grpleader" #end onClick="checkfield(document.frm,this);"/>
 			#else
 			#if($lang == "hindi" || $lang =="gujarati")
-        		<input type="button" name="eventSubmit_doRemoveselectedstudent" value="$brih_member $brih_remove" onClick="checkfield(document.frm,this);"/>
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveselectedstudent" value="$brih_member $brih_remove" onClick="checkfield(document.frm,this);"/>
 			#else
-        		<input type="button" name="eventSubmit_doRemoveselectedstudent" value="$brih_remove $brih_member" onClick="checkfield(document.frm,this);"/>
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveselectedstudent" value="$brih_remove $brih_member" onClick="checkfield(document.frm,this);"/>
 			#end
 			#end
 		#else
 			#if($lang == "hindi" || $lang =="gujarati")
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doAddSelected" value="$brih_member $brih_add" onClick="checkselect(document.frm,this);"/>
+        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doAddSelected" value="$brih_member $brih_add" onClick="checkselect(document.frm,this);"/>
 			#else
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doAddSelected" value="$brih_add $brih_member" onClick="checkselect(document.frm,this);"/>
+        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doAddSelected" value="$brih_add $brih_member" onClick="checkselect(document.frm,this);"/>
 			#end
 			#if($lang =="hindi" || $lang =="gujarati")
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doViewmember" value="$brih_member $brih_Of1 $brih_view" onClick="checkselect1(document.frm,this);"/>
+        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doViewmember" value="$brih_member $brih_Of1 $brih_view" onClick="checkselect1(document.frm,this);"/>
 			#else
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doViewmember" value="$brih_view $brih_member " onClick="checkselect1(document.frm,this);"/>
+        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doViewmember" value="$brih_view $brih_member " onClick="checkselect1(document.frm,this);"/>
 			#end
 		#end
-			&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 				#else
 				<b><font color="blue"><i>$brih_grpmsg18.</i></font></b>
 				#end

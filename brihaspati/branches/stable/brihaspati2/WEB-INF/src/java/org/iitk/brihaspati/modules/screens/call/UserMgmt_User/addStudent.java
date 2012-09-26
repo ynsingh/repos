@@ -42,8 +42,6 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
@@ -67,10 +65,8 @@ public class addStudent extends SecureScreen_Instructor
 		String Role = (String)data.getUser().getTemp("role");
 		String username=data.getUser().getName();
                 int uid=UserUtil.getUID(username);
-                if((Role.equals("student")) || (Role.equals("instructor")))
+                if((Role.equals("student")) || (Role.equals("instructor"))||(Role.equals("teacher_assistant")))
                 {
-	                //CourseTimeUtil.getCalculation(uid);
-                        //ModuleTimeUtil.getModuleCalculation(uid);
 			int eid=0;
 			MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                 }

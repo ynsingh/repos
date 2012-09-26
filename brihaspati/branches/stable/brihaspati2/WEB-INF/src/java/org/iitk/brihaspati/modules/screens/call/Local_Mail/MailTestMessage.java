@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Local_Mail;
 /*
  * @(#)MailTestMessage.java	
  *
- *  Copyright (c) 2005-2006, 2008, 2010-2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2010-2011,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.screens.call.Local_Mail;
  * 
  */
 
+import java.io.File;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.parser.ParameterParser;  
 import org.apache.torque.util.Criteria;   
@@ -55,13 +56,18 @@ import org.iitk.brihaspati.om.MailSendPeer;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.apache.turbine.services.servlet.TurbineServlet;
 /**
      
  * @author  <a href="mailto:chitvesh@yahoo.com">chitvesh dutta</a>
  * @author  <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="mailto:rachanadwivedi22@gmail.com">Rachana Dwivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @ modified date: 13-Feb-2011 (Shaista)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @modified date: 13-Feb-2011 (Shaista),05-09-12
+ * @modified date: 05-09-2012 (Sunil Yadav)
  */
 
 public class MailTestMessage extends VelocitySecureScreen
@@ -88,7 +94,8 @@ public class MailTestMessage extends VelocitySecureScreen
 		  *  Checks if the user has logged in as an instructor. If so, then he is
 		  *  authorized to view this page
 		  **/ 
-		   if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g))
+		   //if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g))
+		  if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g) || acl.hasRole("teacher_assistant",g))
 		{
 			authorised=true;
 			//CourseTimeUtil.getCalculation(uid);
@@ -133,7 +140,32 @@ public class MailTestMessage extends VelocitySecureScreen
 		lang= (String)user.getTemp("lang");
 		String counter=pp.getString("count","1");
 		context.put("tdcolor",counter);
-		//ErrorDumpUtil.ErrorLog("stat="+stat);
+		String Role=(String)user.getTemp("role");
+                String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+		// Get file path
+		File filepath=new File(TurbineServlet.getRealPath("/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js"));	
+		boolean exist=filepath.exists();
+                String userfile="";
+		 /**
+                 * Check file path is exist or not
+                 * Check user role in institute
+                 * write user email id in specific file 
+                 * @return file path
+                 */
+		if(!exist){
+                	if((Role.equals("institute_admin")||Role.equals("instructor"))&&(!instituteId.equals(""))){
+                        	userfile=CommonUtility.autocomplte(instituteId,Role);
+                	}
+			else{
+                        	Role="admin";
+                        	userfile=CommonUtility.autocomplte(instituteId,Role);
+                	}
+		}
+		else{
+			userfile="/scrpts/AutoSuggestUser/UserEmailId/"+instituteId+".js";	
+		}
+                context.put("usrfile",userfile);
+
 		if (!stat.equals("")){
 			if( lang.equals("hindi") || lang.equals("marathi"))
 			{

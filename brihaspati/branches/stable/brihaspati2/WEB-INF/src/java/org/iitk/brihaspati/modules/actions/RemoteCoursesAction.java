@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 
 /*
  * @(#) RemoteCoursesAction.java
- *  Copyright (c) 2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2006,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -58,11 +58,13 @@ import org.iitk.brihaspati.modules.utils.RemoteCourseUtilServer;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
-
+ * @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>29August2012
  */
 
 public class RemoteCoursesAction extends SecureAction_Instructor
@@ -140,20 +142,20 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 
                         int status1=0;
                         Date d=new Date();
-                        String cId=pp.getString("cid","");
+                        String cId=pp.getString("cid","").trim();
 
-                        String course_s=pp.getString("csell","");
+                        String course_s=pp.getString("csell","").trim();
 
-                        String course_p=pp.getString("cpurch","");
+                        String course_p=pp.getString("cpurch","").trim();
 
-                        String url =pp.getString("iip","");
+                        String url =pp.getString("iip","").trim();
 
 
-                        String inst_name=pp.getString("inm","");
+                        String inst_name=pp.getString("inm","").trim();
 
-                        String sec_key=pp.getString("sec_key","");
+                        String sec_key=pp.getString("sec_key","").trim();
 
-                        String status=pp.getString("order");
+                        String status=pp.getString("order").trim();
 
                         if(status.equals("Sell"))
 			{
@@ -268,7 +270,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			/**
 			* Call getRemoteFileList method   to create links in Course Contents 
 			*/
-
 			String gotlist = getRemoteFileList(url,myCourse,cId,params);
 			if(gotlist.equals("ERRORS"))
 			{
@@ -341,40 +342,29 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			User user=data.getUser();
 
 			String username=user.getName();
-	// comment lower 7 lines because here we use login name which is unique
-	                /*String firstname=user.getFirstName();
-        	        String lastname=user.getLastName();
-			String name = null;
-			if((firstname==null)|(lastname==null))
-                        name = username;
-                        else
-                        name = firstname + lastname ;*/
-
-
                         String cId=(String)user.getTemp("course_id");
 			String Path=data.getServerName();
-
 			ParameterParser pp=data.getParameters();
 			int status1=0;
 			Date d=new Date();
-			String course_id=pp.getString("cid","");
+			String course_id=pp.getString("cid","").trim();
 			context.put("c1",course_id);
 			
-			String RIName = pp.getString("riname","");
+			String RIName = pp.getString("riname","").trim();
 			context.put("c2",RIName);
 			
 			
-			String inst_ip=pp.getString("iip","");
+			String inst_ip=pp.getString("iip","").trim();
 			context.put("c4",inst_ip);
 						
 			
-			String inst_name=pp.getString("inm","");
+			String inst_name=pp.getString("inm","").trim();
 			context.put("c5",inst_name);
 						
-			String sec_key=pp.getString("sec_key","");
+			String sec_key=pp.getString("sec_key","").trim();
 			context.put("sec_key",sec_key);
 
-			String status=pp.getString("order");
+			String status=pp.getString("order").trim();
 			context.put("order",status);
 
 
@@ -630,11 +620,10 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 
 			File descFile1= new File(fullpath +"/"+ subtopic + "__des.xml");
 			boolean fileexists1 = descFile1.exists();
-			
-
-		 	String topicpath = fullpath.replaceAll("Unpublished","");
-			int seqpub = checkTopicXmlFile(topicpath,subtopic,fName);
-			int seqaccess = checkTopicXmlFile(topicpath,"/Access__des.xml",fName);
+		 	//String topicpath = fullpath.replaceAll("Unpublished","");
+		 	String topicpath = fullpath;
+			int seqpub = checkTopicXmlFile(fullpath,subtopic,fName);
+			int seqaccess = checkTopicXmlFile(fullpath,"/Access__des.xml",fName);
 			/**
 			* Check if the given course has already entry in published/accssible topic__des.xml file
 			* if found return (for publish purpose) i.e, dont do any thing when new file got from gotlist
@@ -798,6 +787,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 				* xmlWriter.writeXmlFile() is called after 
 				* TopicMetaDataXmlWriter.WriteXml_New1 because it deletes file after reading
 				*/
+					xmlWriter=new XmlWriter(path +"/"+ "RemoteCourse__des.xml");
               		        	xmlWriter=TopicMetaDataXmlWriter.WriteXml_New1(path ,"/RemoteCourse__des.xml");
 					xmlWriter.writeXmlFile();
 				}//try
@@ -863,7 +853,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         String instituteId=(data.getUser().getTemp("Institute_id")).toString();
                         String Confpath=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/InstituteProfileDir/"+instituteId+"Admin.properties";
                         String conf =AdminProperties.getValue(Confpath,"brihaspati.admin.listconfiguration.value");
-			//String conf=(String)user.getTemp("confParam","10");
                         int list_conf=Integer.parseInt(conf);
 
                         int startIndex=pp.getInt("updatestartIndex",0);
@@ -980,16 +969,15 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			*/
 
                         int status1=0;
-                        String cId=pp.getString("cid","");
-                        String course_s=pp.getString("csell","");
-                        String course_p=pp.getString("cpurch","");
-                        String url =pp.getString("iip","");
-                        String inst_name=pp.getString("inm","");
-                        String sec_key=pp.getString("sec_key","");
-                        String status=pp.getString("order");
-                        String expd=pp.getString("expD");
+                        String cId=pp.getString("cid","").trim();
+                        String course_s=pp.getString("csell","").trim();
+                        String course_p=pp.getString("cpurch","").trim();
+                        String url =pp.getString("iip","").trim();
+                        String inst_name=pp.getString("inm","").trim();
+                        String sec_key=pp.getString("sec_key","").trim();
+                        String status=pp.getString("order").trim();
 			String username=user.getName();
-		//comment lower 7 lines this is not required because we use login name
+			//comment lower 7 lines this is not required because we use login name
 			if(status.equals("Sell"))
 			{
 				status1=1;
@@ -1004,7 +992,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			}
                         pp.add("status",status1);
 
-			//addby seema
 			context.put("status",status1);
 			/**
                         * Check if Remote Turbine is Stop
@@ -1020,8 +1007,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			* Request to Check Remote Server Registration  send Successfully
 			* Response from RemoteServer 
 			*/
-			//data.addMessage(RemoteClient_msg5);
-			//data.addMessage(RemoteAction_msg8);
 			Vector params = new Vector();
 			params.add(myCourse);
 			params.add(cId);
@@ -1084,7 +1069,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 	* @param checkRegisterparams Vector
  	* @return String
 	*/
-        public String  getRemoteFileList(String url,String myCourse,String cId,Vector checkRegisterparams )
+        public static String  getRemoteFileList(String url,String myCourse,String cId,Vector checkRegisterparams )
         {
 		try{
 			/**
@@ -1092,7 +1077,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 			*/
 			String serverURL =  "http://" + url + ":12345/" ;
 			String gotlist = RemoteCourseUtilClient.getRemoteFileList(serverURL,checkRegisterparams);
-
 			if(gotlist.equals("ERRORS") || gotlist.equals("ERRORC"))
 			{
                                 return gotlist;
@@ -1125,17 +1109,17 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         {//for(01)
 					
 				subtopic = ll[k];
+				if(!(subtopic.endsWith("unpub"))||(subtopic.endsWith("publish")))
                         	destination = dest2 + "/" + subtopic  ;
 				fullpath =  destination + "/Unpublished";
 				subtopiclength = Integer.parseInt(ll[++k]);
 				for( ;subtopiclength >0; subtopiclength --)
 				{//for(02)
 					fName = ll[++k];
-
-			/**
-			* destination path is specified below ,make directories if not existing 
-			* This is done to store the file recieved from remote server
-			*/
+					/**
+					* destination path is specified below ,make directories if not existing 
+					* This is done to store the file recieved from remote server
+					*/
 					File dest = new File(fullpath);
 					dest.mkdirs();
 					/**
@@ -1145,21 +1129,29 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 					if(!ff.exists())
 					{
 						FileWriter fw = new FileWriter(ff);
-						fw.write("Sorry !!! Brihaspati was Unable to Fetch Contents of the File from Server");
+						fw.write("Sorry !!! Brihaspati was Unable to Fetch Contents of the File from Server/Contact to Course Instructor");
 						fw.close();
 					}//if
 
-			/**
-			* Make .xml files if  not already existing 
-			*/
-			/**
-			*  call outerxml to create outer XML
-			*/
+					/**
+					*  call outerxml to create outer XML
+					*/
 					outerxml(path ,url,subtopic,cId); 
-			/**
-			*  call innerxml to create Unpublished  inner XML
-			*/
-					innerxml(fullpath,subtopic,fName,true);
+					/**
+					*  call innerxml to create Unpublished  inner XML
+					*/
+					String finalFname="";
+					if(fName.endsWith("publish"))
+					{
+						String fullpathpub =  destination;
+						finalFname=StringUtils.substringBeforeLast(fName,"^");
+						innerxml(fullpathpub,subtopic,finalFname,true);
+					}
+					else
+					{
+						finalFname=StringUtils.substringBeforeLast(fName,"^");
+						innerxml(fullpath,subtopic,finalFname,true);
+					}
 				}//for(02)
                         }//for(01)
 			return "SUCCESS";
@@ -1237,7 +1229,6 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                		return e.getMessage();
 		}//catch
 	}
-
 	 /**
          * This is the default method called when the button is not found
          * @param data RunData
@@ -1246,6 +1237,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
         public void doPerform(RunData data,Context context) throws Exception
         {
                 String action=data.getParameters().getString("actionName","");
+		context.put("actionName",action);
                /**
                  * Passing the value of file from temporary variable
                  * According to selection of Language.
@@ -1256,6 +1248,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         doDelete(data,context);
                 else if(action.equals("eventSubmit_doCheckregistration"))
                         doCheckregistration(data,context);
+
                 else if(action.equals("eventSubmit_doGet"))
                         doGet(data,context);
                 else
@@ -1264,5 +1257,4 @@ public class RemoteCoursesAction extends SecureAction_Instructor
                         data.setMessage(str);
                 }
         }
-	
    }//class

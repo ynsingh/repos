@@ -202,7 +202,7 @@ public class viewall extends SecureScreen{
 			String Role = (String)user.getTemp("role");
 			 String username=user.getName();
                         int uid=UserUtil.getUID(username);
-                        if((Role.equals("student")) || (Role.equals("instructor")))
+                        if((Role.equals("student")) || (Role.equals("instructor")) ||(Role.equals("teacher_assistant")))
                         {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);

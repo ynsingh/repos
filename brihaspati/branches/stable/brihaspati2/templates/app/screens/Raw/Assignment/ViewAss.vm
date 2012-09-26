@@ -8,6 +8,10 @@
  * @modified date: 04-04-2011 (Shaista)
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
@@ -77,18 +81,19 @@ $!data.getMessage()
 <Form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,ViewAss.vm").setAction("Assignments")>   
 <table width=100% bgcolor="$ui.tableColor">
         <tr>
-	#if($user_role == "instructor")
+	## #if($user_role == "instructor")
+	#if(($user_role == "instructor")||($user_role == "teacher_assistant"))
 	<td><b>$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b>&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="text" name="GetUser"  size=26 onChange="validate1(this)" /></td>
         #end
         <td><b>$brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
-	<SELECT name=topicList>
+	<SELECT name=topicList class="drop">
         <option value="" ></option>
         #foreach($topic in $allTopics)
         <option value="$topic" > $topic </option>
         #end
         </SELECT> &nbsp;
-        <input type="button" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"/>
+        <input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"/>
         <input type="hidden" name="actionName">
         </td>
 	<td>
@@ -109,13 +114,13 @@ $!data.getMessage()
 			##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<tr bgcolor="$ui.tableColor"><b> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name </b> &nbsp;
                 	##<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-                	<SELECT name=topicList>
+                	<SELECT name=topicList class="drop">
 				<option value="" ></option>
 				#foreach($topic in $allTopics)
 					<option value="$topic" > $topic </option>
                         	#end
                 	</SELECT> &nbsp;
-                	<input type="button" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
+                	<input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
                        	<input type="hidden" name="actionName">
                 </td>
         </tr>*#
@@ -140,7 +145,8 @@ $!data.getMessage()
         	<td align="center">  <b> $brih_feedback  </b> </td>
 		#end
 	#end	
-	#if($user_role ==  "instructor")
+	## #if($user_role ==  "instructor")
+	#if(($user_role ==  "instructor")||($user_role ==  "teacher_assistant"))
 	<tr bgcolor="$ui.menuColor">
 		<td align="center"> <b> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</b> </td>
 		<td align="center">  <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_file  </b> </td>
@@ -165,7 +171,8 @@ $!data.getMessage()
 
 	#end
 	</tr>	
-	#if($user_role ==  "instructor")
+	## #if($user_role ==  "instructor")
+	#if(($user_role ==  "instructor") || ($user_role == "teacher_assistant"))
 	#foreach($e in $Assignmentlist )
 	#if($velocityCount%2==0)
 	<tr bgcolor="$ui.menuColor">

@@ -10,8 +10,8 @@ $!data.getMessage()
 
 <html>
         <head>
-
                  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
+		 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
                 <script type="text/javascript" src="/brihaspati2/scrpts/dygraph-dev.js"></script>
                 ##<script type="text/javascript" src="/brihaspati2/scrpts/CommonScripts/CommonScript.js")"></script>
         </head>
@@ -35,7 +35,7 @@ $!data.getMessage()
                 <tr bgcolor="$ui.tableColor">
                         <td colspan="1">
                         $brih_select $brih_courseName
-                        <select name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
+                        <select class="drop" name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
 			#if($cname!="")
                                 <option>$coursename</option>
                         #else
@@ -52,7 +52,7 @@ $!data.getMessage()
 	#if($userList.size()!=0)
 		#if(($mode=="cinfo") && ($cname!=""))
 			$brih_select $brih_student $brih_name
-			<select name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
+			<select class="drop" name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
 			#if($studname!="")
                                <option>$studname </option>
                 	 #else
@@ -74,7 +74,7 @@ $!data.getMessage()
 	 #if($ModuleList.size()!=0)
 		#if(($mode=="cinfo") && ($studname!=""))
 			$brih_select $brih_module $brih_name
-                        <select name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
+                        <select class="drop" name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
                          #if($mname!="")
                                 <option>$mname </option>
                          #else
@@ -93,7 +93,7 @@ $!data.getMessage()
 	#if($ModuleList.size()!=0)
 		#if(($mode=="cinfo") && ($studname!="") && ($mname!=""))
 			$brih_select $brih_days
-			<select name="uname4" id="u4" size="1" onChange="Changename(document.frm,this);"/>
+			<select class="drop" name="uname4" id="u4" size="1" onChange="Changename(document.frm,this);"/>
 			#if($value!="")
                                 <option>$value </option>
 	                #else
@@ -115,7 +115,7 @@ $!data.getMessage()
 		#else
 		#if(($mode=="cinfo") && ($studname!=""))
                                 $brih_select $brih_days
-                                <select name="uname4" id="u4" size="1" onChange="Changename(document.frm,this);"/>
+                                <select class="drop" name="uname4" id="u4" size="1" onChange="Changename(document.frm,this);"/>
                                 #if($value!="")
                                 <option>$value </option>
                                 #else

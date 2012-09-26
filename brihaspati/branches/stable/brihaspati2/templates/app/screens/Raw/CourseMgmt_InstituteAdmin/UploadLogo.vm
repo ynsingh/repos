@@ -15,6 +15,7 @@ $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang").toString())
 
 <table bgcolor="$ui.menuColor" width=100%>
@@ -41,7 +42,7 @@ $!data.getMessage()
         </tr>
         <tr bgcolor="$ui.menuColor">
         <td colspan=2 align="left">
-       		<input type="button" name="eventSubmit_doUploadLogo" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+       		<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadLogo" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor"/>
 

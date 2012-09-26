@@ -103,7 +103,7 @@ public class ViewAss extends  SecureScreen
                          *Time calculaion for how long user use this page.
                          */
                          int userid=UserUtil.getUID(UserName);
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
                                // CourseTimeUtil.getCalculation(userid);
                                // ModuleTimeUtil.getModuleCalculation(userid);
@@ -133,11 +133,8 @@ public class ViewAss extends  SecureScreen
 				
                         int uid=GroupUtil.getGID(courseid);
                         Vector stname=new Vector();
-			if(Role.equals("instructor")){	
+			if((Role.equals("instructor"))||(Role.equals("teacher_assistant"))){	
                         	String GetUser =pp.getString("GetUser","");
-					
-
-
 				Criteria crit3=new Criteria();
                         	crit3.add(TurbineUserGroupRolePeer.GROUP_ID,uid);
                         	crit3.and(TurbineUserGroupRolePeer.ROLE_ID,3);
@@ -149,7 +146,7 @@ public class ViewAss extends  SecureScreen
                                 	int s=(element.getUserId());
                                 	if(s>1)
                                 	{
-                                       		 Criteria crit4=new Criteria();
+                                       		Criteria crit4=new Criteria();
                                         	crit4.add(TurbineUserPeer.USER_ID,s);
                                         	List v4=TurbineUserPeer.doSelect(crit4);
                                         	for(int j=0;j<v4.size();j++)

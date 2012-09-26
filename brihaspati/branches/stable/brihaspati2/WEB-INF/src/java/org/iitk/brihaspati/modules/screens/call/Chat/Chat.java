@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.Chat;
 import java.util.List;
 import java.util.Vector;
 import java.io.File;
+import java.util.Iterator;
+
 //Apache classes
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
@@ -47,6 +49,7 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
+import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -54,15 +57,23 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import com.workingdogs.village.Record;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.apache.turbine.om.security.User;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.Notification;
+import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 /**
  * In this class, Get all details for Chat applet server
  *
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:dewanshu.sisaudiya17@gmail.com">Dewanshu Singh Sisaudiya</a>
  * @modified date: 10-08-2010 (Shaista), 26-08-2011(Sunil kr) 
  * @modified date: 10-02-2011, 04-04-2011 (Shaista)
- */
+* @modified date: 30-01-2012 (Dewanshu Singh Sisaudiya) 
+*/
 
 public class Chat extends SecureScreen
 {
@@ -74,7 +85,7 @@ public class Chat extends SecureScreen
 
     {
 	  try{
-		/**
+				/**
 		* Get UserName, Passwd, CourseId, serverName, Base Path, mode
 		*/
           	String uname=data.getUser().getName();
@@ -84,8 +95,9 @@ public class Chat extends SecureScreen
 		String mode2=data.getParameters().getString("mode2","");
 	        //context.put("mode2",mode2);
 		String stat=data.getParameters().getString("mode1","");
+		User user=data.getUser();
 		//ErrorDumpUtil.ErrorLog("mode2===="+stat+"\n\n\n mode222="+mode2);
-		
+	
 		/**
 		 * if { mode is general then room name is General} 
 		   else {
@@ -182,14 +194,34 @@ public class Chat extends SecureScreen
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
 			}
+			
+			///////////////////////////////////
+                        String user_name = user.getName();
+			 int user_id = UserUtil.getUID(user_name);
+                        String dir=(String)user.getTemp("course_id");
+                        String stats=data.getParameters().getString("stats","");
+                       //String mode2=data.getParameters().getString("mode2","");
+                        String dev = Notification.DisBoardNf(user_name,dir,stats,mode2);
+                        context.put("unreadm",dev);
+			int role_id=0;
+                        if(Role.equals("instructor"))
+                                role_id=2;
+                        else if(Role.equals("student"))
+                                role_id=3;
+                        Vector unreadMsg=NoticeUnreadMsg.getUnreadNotice(user_id,role_id,dir);
+                        context.put("unreadMsg",unreadMsg);
+                        ErrorDumpUtil.ErrorLog("===============================unread"+unreadMsg);
+	                ///////////////////////////////////
+
 		}
 	}
 	catch(Exception ex)
 	{
 		context.put("course",data.getUser().getTemp("course_name").toString());
 		data.setMessage("The error in chat !!"+ex);
-	}
-          
-    }
+		}
+    }	
+
+
 }
 

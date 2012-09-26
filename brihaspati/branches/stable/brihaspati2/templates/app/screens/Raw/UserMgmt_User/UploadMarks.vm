@@ -10,6 +10,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Upload Marks")
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
@@ -129,7 +132,7 @@ $!data.getMessage()
 	          *#
 	
         	  <font face="$ui.sansSerifFonts">
-        	  <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkFile(document.uploadform,this);"/>
+        	  <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkFile(document.uploadform,this);"/>
 		  ##<input type="hidden" name="count" value="$tdcolor">
 	          </font>
 	        </td>
@@ -167,9 +170,9 @@ $!data.getMessage()
 ## table 3 created for viewing spreadsheet
         <table>
 #if($type=="spreadsheet")
-        <input type="button" name="eventSubmit_doSave" value="Save" onClick="exportDataToTextarea(document.uploadform,this)";>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="Save" onClick="exportDataToTextarea(document.uploadform,this)";>
 #else
-        <input type="button" name="eventSubmit_doSave" value="Update" onClick="exportDataToTextarea(document.uploadform,this)";>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="Update" onClick="exportDataToTextarea(document.uploadform,this)";>
 #end
         <input type="hidden" name="fieldValue" value="">
         <input type="hidden" name="type" value="$type">

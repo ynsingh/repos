@@ -95,9 +95,9 @@ public class StudentList extends SecureScreen_Instructor{
                  * configuration parameter.
                  */
                                                             
-		String LangFile = null;
-		User user=data.getUser();
-		LangFile=(String)user.getTemp("LangFile");
+			String LangFile = null;
+			User user=data.getUser();
+			LangFile=(String)user.getTemp("LangFile");
 			context.put("tdcolor",data.getParameters().getString("count","")); 
 			Vector userList=new Vector();
 			List rusrlist;
@@ -106,8 +106,8 @@ public class StudentList extends SecureScreen_Instructor{
 			context.put("course",course_name);
 			int g_id=GroupUtil.getGID(course_id);
 			ParameterParser pp=data.getParameters();
-                        	String stat=pp.getString("status","");
-		                context.put("stat",stat);
+                        String stat=pp.getString("status","");
+		        context.put("stat",stat);
 			String query="";
 			String valueString="";
                         String Mode=data.getParameters().getString("mode");
@@ -116,7 +116,7 @@ public class StudentList extends SecureScreen_Instructor{
                          */
 			 String Role = (String)user.getTemp("role");
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor")) || (Role.equals("teacher_assistant")))
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);

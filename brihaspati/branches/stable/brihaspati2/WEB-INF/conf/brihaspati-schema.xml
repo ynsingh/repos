@@ -60,6 +60,20 @@
 	<column name="EXPIRY" required="true" type="INTEGER"/>
 	<column name="EXPIRY_DATE" required="true" type="DATE"/>
 </table>
+<table name="MODULE_PERMISSION">
+        <column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="USER_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="MODULE_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
+        <column name="INSTITUTE_ID" required="true" size="255" type="VARCHAR"/>
+       <column name="MODULE_STATUS" default="0" required="true" type="INTEGER" size="2"/>
+</table>
+
+<table name="COURSE_MODULE">
+        <column name="MODULE_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="MODULE_NAME" required="true" size="255" type="VARCHAR"/>
+</table>
+
 <table name="DB_SEND" idMethod="idbroker">
 	<column name="MSG_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
 	<column name="REPLY_ID" required="true" type="INTEGER"/>
@@ -283,10 +297,20 @@
            <column name="FORTIME" size="255" type="VARCHAR"/>
 </table>
 <table name="SessionAddress" idMethod="idbroker">
-  <column name="SerialNo" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
-  <column name="MulticastAddress" size="255" type="VARCHAR"/>
-  <column name="Flag" type="INTEGER"/>
+	  <column name="SerialNo" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	  <column name="MulticastAddress" size="255" type="VARCHAR"/>
+	  <column name="Flag" type="INTEGER"/>
 </table>
+<table name="URL_CONECTION" idMethod="idbroker">
+           <column name="SESSION_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+           <column name="SESSION_KEY" required="true" type="INTEGER"/>
+           <column name="LECTUREID" required="true" type="INTEGER"/>
+           <column name="LOGIN_ID" required="true" size="255" type="VARCHAR" />
+           <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
+           <column name="LECTURENAME" required="true" size="255" type="VARCHAR"/>
+           <column name="ROLE" required="true" size="255" type="VARCHAR"/>
+</table>
+
 <!-- ==================================================================== -->
 <table name="RESEARCH_REPOSITORY" idMethod="idbroker">
         <column name="SUBJECT_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
@@ -586,4 +610,15 @@
                 <unique-column name="USERID"/>
         </unique>
 </table>
+
+<!-- ==========================openid nonce storage======================================================== -->
+<table name="OPENID" idMethod="idbroker" description="OpenId nonce infornation">
+         <column name="NONCE" required="true" primaryKey="true" type="VARCHAR" size="255"/>
+         <column name="PROVIDER" required="true" primaryKey="true" type="VARCHAR" size="32"/>
+         <column name="TO_DATE" required="true" type="BIGINT"/>
+        <unique>
+                <unique-column name="NONCE"/>
+        </unique>
+</table>
+
 </database>

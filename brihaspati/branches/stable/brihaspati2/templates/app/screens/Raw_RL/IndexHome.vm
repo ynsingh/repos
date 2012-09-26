@@ -87,7 +87,6 @@ a.one:link,a.one:visited
 ############################
 <body>
 $!data.getMessage()
-#set($lang=$data.getUser().getTemp("lang").toString())
 #macro(UNAME)
 
         #if($firstname!="")
@@ -188,142 +187,166 @@ $!data.getMessage()
 					<font face="$ui.sansSerifFonts"><b>$brih_reg2 $brih_course <b></font>
 				</td></tr>
 			</table>
-			<tr><td bgcolor="$ui.menuColor">
+			<tr align="right"><td bgcolor="$ui.menuColor">
 				<table width="100%" valign="top" align="left">
+				## Instructor and TA part
 				#if(($guest_login=="false")&&($user_role!="student"))
-					<tr bgcolor="$ui.tableColor">
+					<tr bgcolor="$ui.tableColor" align="right">
+					<td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>$brih_guest $brih_login</font>
+                                        </td>
 					<td align=center >
 					<font face="$ui.sansSerifFonts"><b>$brih_msg2</font>
 					</td>
+					<td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>($brih_course $brih_Usage $brih_time(7 $brih_days</font>
+                                        </td>
 					<td align=center >
 					<font face="$ui.sansSerifFonts"><b>$brih_status</font>
 					</td>
 					<td align=center >
 					<font face="$ui.sansSerifFonts"><b>$brih_course $brih_Of1 $brih_name</font>
 					</td>
-					</tr>
-					#set($count=1)
-					#foreach($instructor in $inst)
-					#set($count1=1)
-					#foreach($message in $unread_msg)
-					#if($count==$count1)
-					#if($velocityCount%2 == 0)
-						<tr bgcolor="$ui.tableColor">
-					#else
-                                        	<tr bgcolor="$ui.buttonBoxColor">
-					#end
-
-						#if($message=="0" )
-							<td align=center>
-								<font face="$ui.sansSerifFonts"> $message $brih_unread $brih_msg2 </font>
-							</td>
-						#else
-							<td align=center>
-							<font face="$ui.sansSerifFonts">
-							<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$instructor.getGroupName()).addPathInfo("flag","FromHome")>$message $brih_unread $brih_msg2</a>
-							</font>
-							</td>
-						#end
-                        			<td align="center">
-						#if($instructor.getActive()=="1")
-							<font color="$ui.fontColorGreen">$brih_active</font>
-						#else
-							<font color="$ui.fontColorRed">$brih_inactive</font>
-						#end
-						</td>
-						<td align=center>
-						<font face="$ui.sansSerifFonts">
-						<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$instructor.getGroupName())>$instructor.getCAlias()-$instructor.getCourseName()</a>
-						</td>
-	 				</tr>
-					#end ##if
-					#set($count1=$count1+1)
-					#end ## foreach
-					#set($count=$count+1)
-					#end ##foreach
-				#else
-					<tr bgcolor="$ui.tableColor">	
 					<td align=center>
-					<font face="$ui.sansSerifFonts"><b>$brih_msg2</font>
-					</td>
-					<td align=center bgcolor="$ui.tableColor">
-					<font face="$ui.sansSerifFonts"><b>$brih_instructor $brih_Of1 $brih_name</font>
-					</td>
-					<td align=center bgcolor="$ui.tableColor">
-					<font face="$ui.sansSerifFonts"><b>$brih_course $brih_Of1 $brih_name</font>
-					</td>
+                                        <font face="$ui.sansSerifFonts"><b>$RemoteInstitute $brih_name</font>
+                                        </td>
 					</tr>
-					#set ( $count1 = 1 )
-					#foreach($student in $stud)
-					#if($velocityCounter % 2 == 0)
-                                         	<tr bgcolor="$ui.tableColor">
-					#else
-                                                <tr bgcolor="$ui.buttonBoxColor">
-					#end
-					##<tr>
-						#set ( $count2 = 1 )
-						#foreach($message in $unread_msg)	
-							#if($count1 == $count2)
+					#foreach($rec in $clistd)
+                                                #if($rec.instName != "")
+                                                        <tr bgcolor="#CEF6CE" align="right">
+                                                        <font face="$ui.sansSerifFonts">
+                                                        <td colspan=6>$rec.instName</td></font>
+                                                        </tr>
+                                                #else
+                                                        #if($velocityCount%2 == 0)
+                                                                <tr bgcolor="$ui.tableColor">
+                                                        #else                                   
+                                                                <tr bgcolor="$ui.buttonBoxColor">
+                                                        #end
+                                                        <td align="center">
+                                                        <form name="frm" method="post" action="$link.setPage("call,IndexHome.vm").setAction("Guest")">
+                                                        #if($rec.gustSts=="true")
+                                                                <input type="submit"  value="$DisBoard_DBmsg8" name="$DisBoard_DBmsg7">
+                                                        #else
+                                                                <input type="submit"  value="$DisBoard_DBmsg7" name="$DisBoard_DBmsg8">
+                                                        #end
+                                                        <input type="hidden" value="$rec.crsId"  name="courseId">
+                                                        </form>
+                                                        </td>
+                                                        <td align=center>
+                                                        <font face="$ui.sansSerifFonts">
+                                                        #if($rec.unreadM =="false")
+                                                                 $brih_unread $brih_message
+                                                        #else
+                                                                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$rec.crsId).addPathInfo("flag","FromHome").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $brih_unread $brih_message</a>
+                                                        #end
+                                                        </font>
+                                                        </td>
+                                                        <td align=center>$rec.crswTime</td>
+                                                        <td align="center">
+                                                        #if($rec.crsact=="1")
+                                                                <font color="green">$brih_active</font>
+                                                        #else
+                                                                <font color="red">$brih_inactive</font>
+                                                        #end
+                                                        </td>
+                                                        <td align=center>
+                                                        <font face="$ui.sansSerifFonts">
+                                                        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$rec.crsId).addPathInfo("actionName","eventSubmit_doCourseInsert").setAction("CourseLogin") style=text-decoration:none>$rec.crsAlias - $rec.crsName</a>
+                                                        </td>
+                                                        <td></td>
+                                                        </tr>
+						  #end
+                                        #end
+				## Student part start
+                                #else
+                                        <tr bgcolor="$ui.tableColor" align="right">
+                                        <td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>$brih_course $brih_Of1 $brih_name</font>
+                                        </td>
+                                        <td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>$brih_instructor $brih_Of1 $brih_name</font>
+                                        </td>
+                                        <td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>($brih_course $brih_Usage $brih_time(7 $brih_days</font>
+                                        </td>
+                                        <td align=center>
+                                        <font face="$ui.sansSerifFonts"><b>$brih_msg2</font>
+                                        </td>
+                                        </tr>
+                                        #set ( $count1 = 1 )
+                                        #foreach($student in $stud)
+                                                #if($velocityCount%2 == 0)
+                                                        <tr bgcolor="$ui.tableColor" align="right">
+                                                #else
+                                                        <tr bgcolor="$ui.buttonBoxColor" align="right">
+                                                #end
+                                                #set ( $count2 = 1 )
+                                                #foreach($message in $unread_msg)       
+                                                        #if($count1 == $count2) 
 								#if( $message=="0" )
-		                                                        <td align=center>
-                		                                        <font face="$ui.sansSerifFonts">
-                                		                        $message $brih_unread $brih_msg2
-                                                		        ##$message Unread Messages
-		                                                        </font>
-                		                                        </td>
-                                		                #else
-                                                		        <td align=center>
-		                                                        <font face="$ui.sansSerifFonts">
-                		                                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("role","student").addPathInfo("flag","FromHome")>$message $brih_unread $brih_msg2
-                                		                        </a>
-                                                		        #set ($no_of_messages=$message)
-		                                                        <input type="hidden" name="no_of_messages">
-                		                                        </font>
-                                		                        </td>
-                                                		#end
-								<td align=center>
-									<font face="$ui.sansSerifFonts">
-										$student.getInstructorName()
-						     			</font>
-								</td>
+                                                                	<td align=center>
+	                                                                <font face="$ui.sansSerifFonts">
+        	                                                                $message $brih_unread $brih_message
+                	                	                               ##$message Unread Messages
+                        		        			</font>
+	                                                                </td>
+        	                                                #else
+                	                                                <td align=center>
+                        	                                        <font face="$ui.sansSerifFonts">
+                                					<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("role","student").addPathInfo("flag","FromHome").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none>$message $brih_unread $brih_message</a>
+                                                                        #set ($no_of_messages=$message)
+	                                                                <input type="hidden" name="no_of_messages" value="$message">
+        	                                                        </font>
+                	                                                </td>
+                        	                                #end
+                                                                <td align=center>
+                                                                <font face="$ui.sansSerifFonts">
+                                                                        $student.getCourseTime()
+                                                                </font>
+                                                                </td>
+                                                                <td align=center> <font face="$ui.sansSerifFonts">
+                                                                        $student.getInstructorName()
+                                                                </font> </td>
+        	                                                <td align=center>
+	                                                        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("notf",$student.hasLastModifiedAfter($lastlogin)).addPathInfo("actionName","eventSubmit_doCourseInsert").setAction("CourseLogin") style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
 
-								<td align=center>
-									<font face="$ui.sansSerifFonts">
-										<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName())>$student.getCAlias() - $student.getCourseName()</a>
-						     			</font>
-										## Putting "New" word as a superscript while any new course are registered
-                                                                                #if( $student.hasLastModifiedAfter($lastlogin) )
-                                                                                        #BlinkingText("New")
-                                                                                #end
-	
-								</td>
+                                                                ## Putting "New" word as a superscript while any new course are registered 
+                                                                #if( $student.hasLastModifiedAfter($lastlogin) )
+                                                                        #BlinkingText("New")
+                                                                #end
+                                                                </td>
+                                	                #end
+                                        	        #set ( $count2 = $count2+1 )
+	                                        #end
+                                        #set ( $count1 = $count1+1 )    
+                                        </tr>
+                                #end ## this student part else end
+                        #end
+				 </table>
+                                                </td></tr>
+                                                </td> </tr>
+                                                <tr> <td>
+                                <table width="100%" border="0">
+                                        <tr align="right">
+                                        #if($guest_login=="false")
+                                                <td align="center">
+                                                #if($user_role!="student")
+                                                        <a href=$link.setPage("call,Directory.vm").addPathInfo("mode","prot") style=text-decoration:none><b>$brih_directory</b></a>
+                                                #else
+                                                        <a href=$link.setPage("call,Directory.vm").addPathInfo("mode","stud") style=text-decoration:none><b>$brih_directory</b></a>
+                                                #end
+                                                </td>
+                                                <td align="center"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none><b>$personal $brih_calendar</b></a></td>
+                                                <td align="center"><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none><b>$personal $area</b></a></td>
+                                        #end
+                                        </tr>
+                                </table>
+                        </td></tr>
 
-							#end
-							#set ( $count2 = $count2+1 )
-						#end
-						#set ( $count1 = $count1+1 )	
-					</tr>
-				#end
-				#end
-			</table>
-	                </td> </tr>
-			</td> </tr>
-			<tr> <td>
-			<table width="100%" border="0">
-				<tr>
-
-					#if($guest_login=="false")
-                                        <td align="center">
-						<td align="center"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none><b>$personal $brih_calendar </b></a></td>
-					<td align="center">
-						<td align="center"><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none><b>$personal $area</b> </a> </td>
-					#end
-				</tr>
-			</table>
-			</td></tr>
-		</table>
-		</div>
-		</td>
+                </table>
+                </div>
+        </td>
 	##start of today's task
 		#if($guest_login=="false")
 		<td width=20% valign="top">

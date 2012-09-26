@@ -112,7 +112,7 @@ public class  ASS_subm  extends  SecureScreen
 			 *Time calculaion for how long user use this page.
 			 */
 			 int uid=UserUtil.getUID(user.getName());
-			 if((Role.equals("student")) || (Role.equals("instructor")))
+			 if((Role.equals("student")) || (Role.equals("instructor"))||(Role.equals("teacher_assistant")))
                          {
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(uid,eid);

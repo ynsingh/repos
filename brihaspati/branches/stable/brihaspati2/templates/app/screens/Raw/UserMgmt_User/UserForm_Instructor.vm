@@ -9,6 +9,9 @@
  * @modified date:20-10-2010, 05-08-2011
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 #set($lang=$data.getUser().getTemp("lang" ).toString())
 $page.setBgColor($ui.bgcolor)
@@ -112,7 +115,7 @@ $page.setBgColor($ui.bgcolor)
 					#if($num==2)
 					<tr>
 					#end
-                	                <td><select id="instnm" name="instName$num" size=1>
+                	                <td><select id="instnm" name="instName$num" size=1 class="drop">
 					#set($temp1=0)
 					## get one record from the list
 					## get institute name from that record
@@ -140,7 +143,7 @@ $page.setBgColor($ui.bgcolor)
 								#end
 							#end
 	                               </select></td>
-	                               <td><select name="prg$num" size=1>
+	                               <td><select name="prg$num" size=1 class="drop">
 	                               #set($temp1=0)
 	                               ## get program name from record
 	                               ## display in drop down list
@@ -225,9 +228,9 @@ $page.setBgColor($ui.bgcolor)
 	#end
 		<td colspan=5 >
 			#if(($stat== "update")||($type=="more"))
-				<input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			#elseif ($stat == "remove")
-				<input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+				<input type="submit" class="button-ftextstyle" name="eventSubmit_doDelete" value="$brih_remove"/>
 			#end
 			<input type=hidden name="mode" value="All">
 			<input type=hidden name="count" value="$tdcolor">

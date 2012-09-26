@@ -19,6 +19,17 @@ $page.setTitle("Home | Communication | Local Mail")
 #else
 $page.setTitle("Home | $cname | Communication | Local Mail")
 #end
+####################################
+#macro (BlinkingText $text)
+  <font face="$ui.sansSerifFonts" color="RED">
+      &nbsp;&nbsp;<blink><sup>$text</sup></blink>&nbsp;
+  </font>
+#end
+
+
+##########################
+
+
 <body>
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
@@ -108,18 +119,37 @@ $!data.getMessage()
 			#end
 			#if( $role == "student")
 				##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$Notice_NoticeSend_msg1</a></td>
-                		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$groupName).addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+                		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$groupName).addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
+				 #foreach($msg in $unreadMsg)
+                        #if($msg!="0")
+                        #BlinkingText("New")
+                        #end
+                        #end
+
+				</td>
 			#else
 				##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$Notice_NoticeSend_msg1</a></td>
 				##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$Notice_NoticeSend_msg1</a></td>
-				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices</a></td>
+				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices</a>
+				#foreach($msg in $unreadMsg)
+                        #if($msg!="0")
+                        #BlinkingText("New")
+                        #end
+                        #end
+
+				</td>
 			#end
 			#if($tdcolor!="4")
 				<td>
 			#elseif($tdcolor == "4")
 				<td bgcolor="#AFDCEC">
 			#end
-			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none>$DiscussionBoard</td>
+			<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none>$DiscussionBoard
+			#if($unreadm!="0")
+                        #BlinkingText("New")
+                        #end
+	
+			</td>
 			#if( $role != "student")
 				#if($tdcolor!="5")
 					<td>

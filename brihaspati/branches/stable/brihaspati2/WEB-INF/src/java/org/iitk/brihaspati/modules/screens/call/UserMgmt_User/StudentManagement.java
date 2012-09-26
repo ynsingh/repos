@@ -89,7 +89,7 @@ public class StudentManagement extends SecureScreen_Instructor
                   *Time calculaion for how long user use this page.
                   */
                  int uid=UserUtil.getUID(user.getName());
-                 if((Role1.equals("student")) || (Role1.equals("instructor")))
+                 if((Role1.equals("student")) || (Role1.equals("instructor")) ||  (Role1.equals("teacher_assistant")))
                  {
                            //CourseTimeUtil.getCalculation(uid);
                            //ModuleTimeUtil.getModuleCalculation(uid);

@@ -15,6 +15,7 @@ $page.setTitle("Admin Home | User Management | Search Student | Course Details f
 $!data.getMessage()
 
 $page.setBgColor($ui.bgcolor)
+#set($lang = $data.getUser().getTemp("lang"))
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr><td>
 <b><a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
@@ -37,25 +38,25 @@ $page.setBgColor($ui.bgcolor)
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-       <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student$brih_course $brih_list</a></td>
+       <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student #if($lang == "hindi" || $lang == "gujarati") $brih_Of #end $brih_course $brih_list</a></td>
 	#if($tdcolor != "0")
         <td>
         #elseif($tdcolor == "0")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor $brih_course $brih_list </a></td>
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","instlist").addPathInfo("count","0") style=text-decoration:none>$brih_Instructor #if($lang == "hindi" ||  $lang == "gujarati") $brih_Of #end $brih_course $brih_list </a></td>
 	#if($tdcolor != "3")
         <td>
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_Instructor</a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>  #if($lang == "hindi" ||  $lang == "gujarati") $brih_Instructor  $brih_delete #else $brih_delete $brih_Instructor #end</a></td>
 	#if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>$brih_delete $brih_student</a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none> #if($lang == "hindi" ||  $lang == "gujarati") $brih_student $brih_delete #else $brih_delete $brih_student #end </a></td>
 	#if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
@@ -67,7 +68,7 @@ $page.setBgColor($ui.bgcolor)
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto")addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto")addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi" ||  $lang == "gujarati") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
 	#if($tdcolor != "7")
         <td>
         #elseif($tdcolor == "7")
@@ -82,8 +83,8 @@ $page.setBgColor($ui.bgcolor)
 	#foreach($i in $student)
 		#if($!i.getFirstName() != "")
 		<tr bgcolor="$ui.menuColor">
-			<td><b>$brih_usr $brih_name</b></td>
-			<td colspan=6><b> #if($mode=="instlist") $brih_Instructor  #else $brih_student #end $brih_name</b></td>
+			<td><b>$brih_usr #if($lang == "hindi" ||  $lang == "gujarati") $brih_Of1 #end $brih_name</b></td>
+			<td colspan=6><b> #if($mode=="instlist") $brih_Instructor  #else $brih_student #end  #if($lang == "hindi" ||  $lang == "gujarati") $brih_Of1 #end $brih_name</b></td>
 		</tr>
 		<tr>
 			<td>$!i.UserName</td>

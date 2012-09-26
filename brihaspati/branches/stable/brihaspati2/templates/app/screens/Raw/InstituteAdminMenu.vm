@@ -42,7 +42,6 @@
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td>
-         ##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
          <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
       </td>
    </tr>
@@ -64,13 +63,11 @@
    <tr bgcolor="$ui.menuColor">
       <td>
          <a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1") style=text-decoration:none>$brih_restoration</a>
-##                <img src="$content.getURI("/images/$lang/restoration.jpg")" border="0"></a><br>
       </td>
    </tr>
    <tr>
       <td>
          <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_Ev $brih_mgmt</a>
-##                <img src="$content.getURI("/images/$lang/eventmanagement.jpg")"border=0></a><br>
       </td>
    </tr>
    <tr bgcolor="$ui.menuColor">
@@ -78,12 +75,6 @@
          <a href=$link.setPage("call,AdminProfile,InstituteProfile.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a>
       </td>
    </tr>
-#*
-   <tr>
-      <td>
-         <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","uquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
-      </td>
-   </tr>*#
    <tr>
       <td>
          <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $online_online $brih_reg $brih_Of1 $brih_view #else $brih_view $online_online $brih_reg #end </a>
@@ -107,7 +98,6 @@
 </tr>  
 <tr>
       <td>
-         ##<a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","cquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
          <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
       </td>
 </tr>

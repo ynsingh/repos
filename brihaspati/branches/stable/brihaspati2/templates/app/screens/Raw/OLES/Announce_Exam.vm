@@ -7,6 +7,11 @@
 *#
 $page.setTitle("Announce Exam")
 $page.setBgColor("bgcolor")
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 ## If some message has been set, that is retrieved and displayed.
 <font size="4">
 $!data.getMessage()
@@ -108,7 +113,7 @@ $!data.getMessage()
 	<tr>
 		<td><b>$brih_start $brih_Da</b><font color=Red>*</font></td>
 		<td>
-			<select name="Start_year">
+			<select name="Start_year" class="drop">
 				#if($mode=="update")
 					<option value="$Start_year">$Start_year
 				#else
@@ -127,7 +132,7 @@ $!data.getMessage()
 				#end				
 			</select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
-			<select name="Start_mon">
+			<select name="Start_mon" class="drop">
 				#if($mode=="update")
 					<option value="$Start_month">$Start_month
 				#else
@@ -146,7 +151,7 @@ $!data.getMessage()
 				#end							
 			</select>
   			&nbsp;<b><font size=+1>-</font></b>&nbsp;
-	                <select name="Start_day">
+	                <select name="Start_day" class="drop">
 				#if($mode=="update")
 					<option value="$Start_day">$Start_day
 				#else
@@ -170,7 +175,7 @@ $!data.getMessage()
 		<td><b>$brih_start $brih_time</b><font color=Red>*</font></td>
 		<td>
 		    
-			<select name="Start_hr">
+			<select name="Start_hr" class="drop">
 				#if($mode=="update")
 					<option value="$Start_hr">$Start_hr
 				#else
@@ -189,7 +194,7 @@ $!data.getMessage()
 				#end
                 	</select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
-			<select name="Start_min">
+			<select name="Start_min" class="drop">
 				#if($mode=="update")
 					<option value="$Start_min">$Start_min
 				#else
@@ -212,7 +217,7 @@ $!data.getMessage()
 	<tr>
 		<td><b>$brih_end $brih_Da</b></td>
 		<td>
-                	<select name="End_year" id="end1">
+                	<select name="End_year" id="end1" class="drop">
 				#if($mode=="update")
 					<option value="$End_year">$End_year
 				#else
@@ -231,7 +236,7 @@ $!data.getMessage()
 				#end	
 			</select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
-			<select name="End_mon" id="end2">
+			<select name="End_mon" id="end2" class="drop">
 				#if($mode=="update")
 					<option value="$End_month">$End_month
 				#else
@@ -250,7 +255,7 @@ $!data.getMessage()
 				#end					
 			</select>
 	  		&nbsp;<b><font size=+1>-</font></b>&nbsp;
-	                <select name="End_day" id="end3">
+	                <select name="End_day" id="end3" class="drop">
 				#if($mode=="update")
 					<option value="$End_day">$End_day
 				#else
@@ -273,7 +278,7 @@ $!data.getMessage()
 	<tr>
 		<td><b>$brih_end $brih_time</b></td>
 		<td>
-        	<select name="End_hr">
+        	<select name="End_hr" class="drop">
 				#if($mode=="update")
 					<option value="$End_hr">$End_hr
 				#else
@@ -292,7 +297,7 @@ $!data.getMessage()
 				#end			
             </select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
-			<select name="End_min">
+			<select name="End_min" class="drop">
 				#if($mode=="update")
 					<option value="$End_min">$End_min
 				#else
@@ -316,7 +321,7 @@ $!data.getMessage()
         <tr style="visibility:$setVisible">
 		<td><b>$brih_result $brih_Da</b></td>
 		<td>
-                	<select name="Res_year" id="res1">
+                	<select name="Res_year" id="res1" class="drop">
 				#if($mode=="update")
 					<option value="$Res_year">$Res_year
 				#else
@@ -335,7 +340,7 @@ $!data.getMessage()
 				#end	
 			</select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
-			<select name="Res_mon" id="res2">
+			<select name="Res_mon" id="res2" class="drop">
 				#if($mode=="update")
 					<option value="$Res_month">$Res_month
 				#else
@@ -354,7 +359,7 @@ $!data.getMessage()
 				#end					
 			</select>
 	  		&nbsp;<b><font size=+1>-</font></b>&nbsp;
-	                <select name="Res_day" id="res3">
+	                <select name="Res_day" id="res3" class="drop">
 				#if($mode=="update")
 					<option value="$Res_day">$Res_day
 				#else
@@ -378,11 +383,11 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5">
 			#if($mode == "update")
-				<input type=button name="eventSubmit_newAnnouncement" value="$brih_update" onClick="checkField(document.frm,this);"/>
+				<input type=button class="drop" name="eventSubmit_newAnnouncement" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			#else
-				<input type="button" name="eventSubmit_newAnnouncement" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+				<input type="button" class="drop" name="eventSubmit_newAnnouncement" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 			#end		
-			<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+			<input type="reset" name="reset" class="drop" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td>
 	</tr>
 #end

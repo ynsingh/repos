@@ -40,6 +40,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
@@ -48,8 +49,11 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import java.util.Vector;
 import java.util.List;
+import java.io.File;
 
 /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
@@ -138,6 +142,45 @@ public class InstituteAdmin extends SecureScreen{
 			context.put("list",iname);
 			}
 			context.put("rldpage",rldpage);
+//sharad
+			Vector idinst=new Vector();
+                        for(int j=0;j<list1.size();j++)
+                        {
+                                String inst_id=(list1.get(j)).toString();
+                                int insttuteid=Integer.parseInt(inst_id);
+				String path=TurbineServlet.getRealPath("/OnlineUsers");
+	                        Vector entry=new Vector();
+        	                File xmlfile= new File(path+"/courses.xml");
+	                        if(xmlfile.exists())
+        	                {
+                	                TopicMetaDataXmlReader topicmetadata=null;
+                        	        Vector listt=new Vector();
+                                	topicmetadata=new TopicMetaDataXmlReader(path+"/courses.xml");
+                                	listt=topicmetadata.getOnlineCourseDetails();
+					if(listt!=null)
+        	                        {
+                	                        for(int i=0;i<listt.size();i++)
+                        	                {
+                                	                int instid=((CourseUserDetail) listt.elementAt(i)).getInstId();
+							String flag=((CourseUserDetail) listt.elementAt(i)).getFlag();
+							if(flag.equals("1"))
+							{
+                                        	        String instituteId=Integer.toString(instid);
+							if(inst_id.equals(instituteId))
+							{
+								if(!idinst.contains(inst_id))
+									idinst.add(inst_id);
+							}
+							}
+							
+						}
+					}
+				}
+				//context.put("onlineinst",idinst);
+			
+			}
+			context.put("onlineinst",idinst);
+//end sharad
 		}
 		catch(Exception e){data.setMessage("The error in InstituteAdmin !!"+e);}
 	}

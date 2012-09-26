@@ -64,7 +64,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
   */
  
   
-public class UploadMarks extends SecureScreen_Instructor
+public class UploadMarks extends SecureScreen_Instructor  
 {
 	public void doBuildTemplate( RunData data, Context context )
 	{
@@ -78,7 +78,7 @@ public class UploadMarks extends SecureScreen_Instructor
                          *Time calculaion for how long user use this page.
                          */
                          int uid=UserUtil.getUID(user.getName());
-                         if((Role.equals("student")) || (Role.equals("instructor")))
+                         if((Role.equals("student")) || (Role.equals("instructor"))||(Role.equals("teacher_assistant")))
                          {
                                 //CourseTimeUtil.getCalculation(uid);
                                 //ModuleTimeUtil.getModuleCalculation(uid);

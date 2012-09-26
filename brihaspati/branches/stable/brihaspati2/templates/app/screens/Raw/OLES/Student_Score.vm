@@ -9,6 +9,11 @@
 
 $page.setTitle("Quiz Score")
 $page.setBgColor("#ffffff")
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
+
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 <font face="$ui.sansSerifFonts">
@@ -94,16 +99,16 @@ $!data.getMessage()
 	        	<font face="$ui.sansSerifFonts">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
-	        			<select name=quizList>
+	        			<select name=quizList class="drop">
 	        				#foreach($qid in $quizList)	
 	        					       				
 	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getQuestionNumber(),$qid.getMaxTime()">$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
 	        			#if($type=="gradeCard")
-	        				<input type="button" name="eventSubmit_showReportCard" value="$RemoteShow $brih_grade $brih_card" onClick="showScore(document.frm,this);">
+	        				<input type="button" class="button-ftextstyle" name="eventSubmit_showReportCard" value="$RemoteShow $brih_grade $brih_card" onClick="showScore(document.frm,this);">
         				#else
-	        			<input type="button" name="eventSubmit_showScoreQuiz" value="$RemoteShow $brih_score $brih_card" onClick="showScore(document.frm,this);">
+	        			<input type="button" name="eventSubmit_showScoreQuiz" class="button-ftextstyle" value="$RemoteShow $brih_score $brih_card" onClick="showScore(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
 						#end
 				#else
