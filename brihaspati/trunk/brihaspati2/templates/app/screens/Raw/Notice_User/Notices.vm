@@ -20,6 +20,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
 

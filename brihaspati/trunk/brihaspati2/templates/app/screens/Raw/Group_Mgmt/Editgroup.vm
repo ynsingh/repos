@@ -21,6 +21,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
 
@@ -250,11 +251,11 @@ $!data.getMessage()
 		<tr>
 		<td align="left"> ## td 5 start
 		#if($lang=="english")
-		<input type="button" name="eventSubmit_doupdategroup" value="$brih_update $brih_grp" onClick="checkfield(document.frm,this);"/>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doupdategroup" value="$brih_update $brih_grp" onClick="checkfield(document.frm,this);"/>
 		#else
-		<input type="button" name="eventSubmit_doupdategroup" value="$brih_grp $brih_update" onClick="checkfield(document.frm,this);"/>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doupdategroup" value="$brih_grp $brih_update" onClick="checkfield(document.frm,this);"/>
 		#end
-		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel" />
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel" />
 		</td></tr> ## td 5 end
 	#end
 	</td></tr> ## td tr 2 end

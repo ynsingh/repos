@@ -20,6 +20,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
 
@@ -243,7 +244,7 @@ $!data.getMessage()
 		<tr bgcolor="$ui.menuColor">
 	#end
 	<td align=center>
-		<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+		<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
         	<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
         	<INPUT TYPE="hidden" NAME="actionName" VALUE="">
         	<INPUT TYPE="hidden" NAME="flag" VALUE="$flag">

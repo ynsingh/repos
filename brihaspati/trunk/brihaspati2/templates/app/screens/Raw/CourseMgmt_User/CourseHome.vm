@@ -1034,9 +1034,9 @@ $!data.getMessage()
 		                </table>
 		#if($guest_login == "false")
 			#if($user_role != "instructor")
-			 <div style="overflow:auto;  height:120px; background:#f7f3de;">
+			 <div style="overflow:auto;  height:120px; background:$ui.tableColor">
 			#else
-			<div style="overflow:auto;  height:280px; background:#f7f3de;">
+			<div style="overflow:auto;  height:280px; background:$ui.tableColor">
 			#end
                               <table  bgcolor="$ui.tableColor" width="98%"  align="left">
                            	    <tr>

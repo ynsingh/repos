@@ -20,6 +20,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
 
@@ -99,7 +100,7 @@ $!data.getMessage()
 		<tr align="$ui.buttonAlignment">
 		<td align="center" colspan=2 bgcolor="$ui.menuColor">
 		<font face="$ui.sansSerifFonts">
-		<input type="button" name="eventSubmit_doPermission" value="$Repo_Perm" onClick="check(document.frm,this);"/>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doPermission" value="$Repo_Perm" onClick="check(document.frm,this);"/>
 		<input type="hidden" name="perm" value="$perm">
 		<input type="hidden" name="actionName">
 	        <input type="hidden" name="msgid" value="$mgid">
@@ -199,11 +200,11 @@ $!data.getMessage()
                                 ##<input type="hidden" name="Repid" value="$msg_id">
 				<input type="hidden" name="expstatus">
 				<input type="hidden" name="actionName">
-				<input type="button" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkBlank(document.uploadform,this);"/>&nbsp&nbsp
+				<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkBlank(document.uploadform,this);"/>&nbsp&nbsp
 				#if($expirytime == "-1")
-				<input type="reset" value="$brih_clear" onClick="makeDisable();">
+				<input type="reset" value="$brih_clear" class="button-ftextstyle" onClick="makeDisable();">
 				#else
-				<input type="reset" value="$brih_clear" onClick="makeEnable();">
+				<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="makeEnable();">
 				#end
 				<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
 				<INPUT TYPE="hidden" NAME="countTemp" VALUE="$tdcolor1">

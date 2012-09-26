@@ -8,6 +8,10 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
@@ -55,7 +59,7 @@ $!data.getMessage()
 	</SELECT>			
 	</td>
 		<td  width="35%">
-		<select  name="Start_year" >
+		<select  name="Start_year" class="drop">
 	                <option value="$cyear">$cyear
         	        #foreach($year in $year_list)
                 	    #if($cyear != $year)
@@ -64,7 +68,7 @@ $!data.getMessage()
                   	#end
                  </select>
       		&nbsp<b><font size=+1>-</font></b>&nbsp
-          	<select  name="Start_mon" >
+          	<select  name="Start_mon" class="drop">
           		<option value="$cmonth">$cmonth
             		#foreach($mon in $month)
             			#if($mon != $cmonth)
@@ -73,7 +77,7 @@ $!data.getMessage()
             		#end
           	</select>
                 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                <select  name="Start_day" >
+                <select  name="Start_day" class="drop">
                 	<option value="$cdays">$cdays
                   	#foreach($d in $day)
                     		#if($d!=$cdays)
@@ -85,8 +89,8 @@ $!data.getMessage()
                </tr>
 	<tr bgcolor="$ui.menuColor">
      		<td colspan=3>
-		<input type="button" name="Repermission" value="$Repo_Perm #if($lang == "hindi") $brih_Of #end $brih_granted" onClick="checkBlank(document.uploadform,this);"  />
-		<input type="button" name="Reset" value="$brih_reset" onClick="checkBlank1(document.uploadform,this);"  />
+		<input type="button" class="button-ftextstyle" name="Repermission" value="$Repo_Perm #if($lang == "hindi") $brih_Of #end $brih_granted" onClick="checkBlank(document.uploadform,this);"  />
+		<input type="button" class="button-ftextstyle" name="Reset" value="$brih_reset" onClick="checkBlank1(document.uploadform,this);"  />
 		<input type="hidden" name="actionName"> 
 		</td>
 	</tr>

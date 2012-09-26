@@ -11,6 +11,10 @@
  * @modified date: 04-04-2011 (Shaista)
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang"))
@@ -151,7 +155,7 @@ $!data.getMessage()
 		#if($size!="0")	 
 		<tr bgcolor="$ui.tableColor">
 		<td align=left>
-		<input type="button" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
         	<input type="hidden" name="actionName">
         	<input type="hidden" name="deleteFileNames">
 		<input type="hidden" name="path" value=$path>

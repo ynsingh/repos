@@ -8,6 +8,10 @@
  * @modified date: 04-04-2011 (Shaista)
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
@@ -83,13 +87,13 @@ $!data.getMessage()
 	<input type="text" name="GetUser"  size=26 onChange="validate1(this)" /></td>
         #end
         <td><b>$brih_topic  #if($lang == "hindi") $brih_Of1 #end $brih_name</b>
-	<SELECT name=topicList>
+	<SELECT name=topicList class="drop">
         <option value="" ></option>
         #foreach($topic in $allTopics)
         <option value="$topic" > $topic </option>
         #end
         </SELECT> &nbsp;
-        <input type="button" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"/>
+        <input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"/>
         <input type="hidden" name="actionName">
         </td>
 	<td>
@@ -110,13 +114,13 @@ $!data.getMessage()
 			##&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<tr bgcolor="$ui.tableColor"><b> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name </b> &nbsp;
                 	##<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
-                	<SELECT name=topicList>
+                	<SELECT name=topicList class="drop">
 				<option value="" ></option>
 				#foreach($topic in $allTopics)
 					<option value="$topic" > $topic </option>
                         	#end
                 	</SELECT> &nbsp;
-                	<input type="button" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
+                	<input type="button" class="button-ftextstyle" name="dosubmitView" value="$brih_search" onClick="checkBlank(document.uploadform,this);"  />
                        	<input type="hidden" name="actionName">
                 </td>
         </tr>*#

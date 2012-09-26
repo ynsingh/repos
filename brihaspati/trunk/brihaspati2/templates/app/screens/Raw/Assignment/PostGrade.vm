@@ -6,6 +6,10 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()  
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
@@ -25,8 +29,8 @@ $!data.getMessage()
 <tr><td>$brih_feedback</td><td><textarea name="feedback" rows=4 cols=15 wrap=physical ></textarea></td></tr>
 <tr bgcolor="$ui.menuColor" >
 <td colspan=2>
-	<input type="button" name="PostGrade" value="$brih_upload $brih_marks " onClick="checkBlank(document.uploadform,this);"  />
-        <input type="button" name="MarkUpload" value="$brih_file$brih_upload" onClick="checkBlank1(document.uploadform,this);"  />
+	<input type="button" class="button-ftextstyle" name="PostGrade" value="$brih_upload $brih_marks " onClick="checkBlank(document.uploadform,this);"  />
+        <input type="button" class="button-ftextstyle" name="MarkUpload" value="$brih_file$brih_upload" onClick="checkBlank1(document.uploadform,this);"  />
 	<input type="hidden" name="topicList1" value="$topicList1" >
 	<input type="hidden" name="topicList" value="$topicList" >
 	<input type="hidden" name="actionName"> 

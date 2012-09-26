@@ -16,6 +16,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
 
@@ -104,7 +105,7 @@ $!data.getMessage()
 		#end
 	</td>
         <td>
-        	 <select name="year">
+        	 <select name="year" class="drop">
 		<option value="$year">$year    
 		#foreach($Year in $year_list)
                     #if($year != $Year)	
@@ -113,7 +114,7 @@ $!data.getMessage()
 			#end
                 </select>
       &nbsp;<b><font size=+1>-</font></b>&nbsp;
-          <select name="month">
+          <select name="month" class="drop">
             <option value="$month1">$month1
 	     #foreach($mon in $month)
 		#if($mon !=$month1)
@@ -122,7 +123,7 @@ $!data.getMessage()
 		#end	
             </select>
                 &nbsp;<b><font size=+1>-</font></b>&nbsp;
-                  <select name="days">
+                  <select name="days" class="drop">
                   <option value="$days">$days
 		#foreach($d in $day)
 		#if($d !=$days)
@@ -148,7 +149,7 @@ $!data.getMessage()
 #* check for a mode,the update and delete buttons should not appear when inserting a new user *#          
 	<tr bgcolor="$ui.menuColor">
 		<td colspan=2>
-		<input type="button" name="eventSubmit_doUpdate" value=$brih_update onClick="checkNews(document.frm,this);"/>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="checkNews(document.frm,this);"/>
 		<input type="hidden" name="id" value="$id">
 		<input type="hidden" name="actionName">
 		<input type="hidden" name="status" value=$status>

@@ -9,6 +9,10 @@
  * @modified date: 04-04-2011 (Shaista)
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 #set($lang=$data.getUser().getTemp("lang").toString())
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
@@ -26,7 +30,7 @@ $!data.getMessage()
 	#if($user_role ==  "student") 	
 	<td width=15%> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
 	<td>
-        	<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+        	<SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
          	<option value="" ></option>
 		#foreach($topic in $allTopics1)
 			<option value="$topic" >$topic</option>
@@ -36,7 +40,7 @@ $!data.getMessage()
 	#else
 	<td>$brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name</td>
 	<td>
-		<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+		<SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
                 
 		#if($answerfilecheck == "notchecked")
 			<option value="$topicList" >$topicList</option>	
@@ -47,7 +51,7 @@ $!data.getMessage()
         	        <option value="$topic">$topic</option>
                 #end
                 </SELECT>	
-		<input type="button" name="Go" value="$brih_go" onClick="checkBlank1(document.uploadform,this);" />
+		<input type="button" class="button-ftextstyle" name="Go" value="$brih_go" onClick="checkBlank1(document.uploadform,this);" />
 	</td>	
 	#end
 	
@@ -58,7 +62,7 @@ $!data.getMessage()
 </tr>
 <tr>
         <td colspan=2>
-        <input type="button" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"  />
+        <input type="button" class="button-ftextstyle" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"  />
         </td>
 </tr>
 #else
@@ -69,9 +73,9 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" >
 		<td colspan=2>
 		#if($answerfile1 ==  "no")	
-		<input type="button" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"/>
+		<input type="button" class="button-ftextstyle" name="dosubmit" value="$brih_upload" onClick="checkBlank(document.uploadform,this);"/>
 		#else
-		<input type="button" name="RePostAns" value="$brih_reload" onClick="checkBlank(document.uploadform,this);"/>
+		<input type="button" class="button-ftextstyle" name="RePostAns" value="$brih_reload" onClick="checkBlank(document.uploadform,this);"/>
 		#end
 		</td>
         </tr>

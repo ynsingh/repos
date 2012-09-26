@@ -18,6 +18,7 @@
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body onload="initEditor()">
 
@@ -168,7 +169,7 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
         	<tr>
 	#end
 	<td>
-	<input type="button" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
 	<input type="hidden" name="actionName">
 	<input type="hidden" name="deleteFileNames">
 	<input type="hidden" name="status" value=$status>

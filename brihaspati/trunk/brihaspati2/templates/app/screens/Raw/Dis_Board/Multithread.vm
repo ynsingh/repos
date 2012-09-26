@@ -12,6 +12,9 @@
 
 $page.setTitle("Home | $cname | Communication |DiscussionBoard |$DisBoard_DB_msg23")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 <table bgcolor="$ui.tableColor" width=100%>
         <tr bgcolor="$ui.menuColor"><td colspan=5>
@@ -238,8 +241,8 @@ seHome.vm")>$cname</a> |
 		#end
 		<tr>
                  <td colspan=5>
-                        <INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
-			<INPUT TYPE="button" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
 
                         <INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
                         <INPUT TYPE="hidden" NAME="actionName">

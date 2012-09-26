@@ -12,6 +12,10 @@
  * @author <a href="mailto:tpthshobhi30@gmail.com">Shobhika</a>
  * @ modified date: 13-Oct-2010 (Shaista), 08-Aug-2011 (Sunil Kr)
  *#
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
  
 $page.setTitle("$brih_home | $cname | $brih_communication |$DiscussionBoard |$DisBoard_DB_msg23")
 $!data.getMessage()
@@ -300,12 +304,12 @@ $!data.getMessage()
        		<tr bgcolor="$ui.menuColor">
      	         <td colspan=8>
 		#if(($stats=="fromIndex") || ($mode2 == "instituteWise"))
-			<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
-			<INPUT TYPE="button" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
 		#else
-			<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
-			<INPUT TYPE="button" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
-			<INPUT TYPE="button" NAME="eventSubmit_doMove" VALUE="Move" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doArchive" VALUE="$brih_archive" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doMove" VALUE="Move" onClick="checkValue(document.frm,this);">
                 #end	
 			<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
 	     		<INPUT TYPE="hidden" NAME="actionName">

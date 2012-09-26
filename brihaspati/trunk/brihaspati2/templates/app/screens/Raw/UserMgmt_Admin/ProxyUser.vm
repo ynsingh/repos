@@ -9,6 +9,10 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $page.setTitle("Admin Home | User Management | Proxy User")
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
@@ -41,7 +45,7 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
 	<td colspan=2>
 	<input type="hidden" name="actionName">
-	<input type="button" name="eventSubmit_doRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
 	</td>
 </tr>
 </table>

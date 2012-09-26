@@ -11,6 +11,11 @@
 
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 
@@ -52,7 +57,7 @@ $!data.getMessage()
 				#end
 				</td>
 				<td>
-				<select name="groupname" size="1" onChange="Changegroup(document.frm,this);"/>
+				<select name="groupname" class="drop" size="1" onChange="Changegroup(document.frm,this);"/>
 				<option>- $brih_select -</option>
 				#foreach($grpname in $glist)
 				<option value="$grpname">$grpname
@@ -74,11 +79,11 @@ $!data.getMessage()
 	</tr></td>
 	<tr bgcolor="$ui.menuColor"><td>
 	#if($lang=="english")
-	<input type="button" name="eventSubmit_doJoinGroup" value="$brih_join $brih_grp" onClick="checkField(document.frm,this);"/>
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doJoinGroup" value="$brih_join $brih_grp" onClick="checkField(document.frm,this);"/>
 	#else
-	<input type="button" name="eventSubmit_doJoinGroup" value="$brih_grp $brih_in $brih_join" onClick="checkField(document.frm,this);"/>
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doJoinGroup" value="$brih_grp $brih_in $brih_join" onClick="checkField(document.frm,this);"/>
 	#end
-	<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+	<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</tr></td>
 	<input type="hidden" name="actionName"> 
 	<input type="hidden" name="val" value="$val">
