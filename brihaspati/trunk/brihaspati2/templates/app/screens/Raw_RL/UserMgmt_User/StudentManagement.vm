@@ -1,19 +1,22 @@
 #*
  * @(#) StudentManagement.vm
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009-2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
- *
- *
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date:09-04-2010 , 20-10-2010,3-11-2010,23-12-2010, 11-01-2011, 30-05-2011, 10-12-2011, 07-02-2012
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
 
 $page.setTitle("$brih_home | $brih_course | $brih_student $brih_mgmt")
 
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
-
+$!data.getMessage()
+## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <font face="$ui.sansSerifFonts">
 <body>
 
@@ -27,46 +30,98 @@ $page.setTitle("$brih_home | $brih_course | $brih_student $brih_mgmt")
 </font>
 </tr>
 </table>
-<br>
+
 #if($user_role == "instructor")
-	<table align=center bgcolor="$ui.menuColor" width=20% cellpadding=10>
-	<tr>
-	<td align=center>
- 	<table cellspacing=10>
- 	<tr>
-	<td>
-    	<a href=$link.setPage("call,UserMgmt_User,addStudent.vm")>
-	<img src="$content.getURI("/images/$lang/addstudent.jpg")" border="0"></a><br>
-	</td>
- 	</tr>
- 	<tr>
-	<td>
-    	<a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm")>
-	<img src="$content.getURI("/images/$lang/DeleteStudent.jpg")" border="0"></a><br>
-	</td>
- 	</tr>
- 	<tr>
-	<td>
-    	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm")>
-	<img src="$content.getURI("/images/$lang/addmultiplestudents.jpg")" border="0"></a><br>
-	</td>
- 	</tr>
- 	<tr>
-	<td>
-    	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All")>
-	<img src="$content.getURI("/images/$lang/Viewlistofstudents.jpg")" border="0"></a><br>
-	</td>
-	 </tr>
-	<tr>
+<table align=left bgcolor="$ui.tableColor" width=100%>
+<tr>
+	
+#if($tdcolor != "5")
         <td>
-        <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm")>
-        <img src="$content.getURI("/images/$lang/onlineRegView.jpg")"border=0></a><br>
-        </td>
-	</tr>
- 	</table>
-</td>
+        #elseif($tdcolor == "5")        
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a></td>
+ #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor == "4")        
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a></td>
+
+        #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor == "3")        
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a></td>
+#if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")        
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("count","2") style=text-decoration:none>$brih_rem_student</a></td>
+  #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")        
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_student $brih_add #else $brih_add $brih_students #end </a>
+
+
 </tr>
+##</table>
+#end
+##addStudent.vm
+<form name="frm" method="post" action="$link.setPage("call,UserMgmt_User,StudentManagement.vm").setAction("UserAction_Instructor")">
+
+ <tr bgcolor="$ui.menuColor" align="right"><td align="right" colspan="5"><b>$brih_entUsrDetail</b></td></tr>
+        <tr align="right">
+        ##formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+           ##formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
+                <td align="right" colspan="4"> <input type="text" name="EMAIL" value=""> </td>
+                <td> <font color=red>*</font> $brih_email $brih_ID </td>
+      </tr>
+      <tr bgcolor="$ui.menuColor" align="right">
+        ##formPasswordCell ("$brih_pwd" "PASSWD" "")
+        <td align="right" colspan="4"> <input type="password" name="PASSWD" value=""> </td>
+        <td> $brih_pwd </td>
+      </tr>
+          <tr align="right">
+                ##formCell ("$brih_first $brih_name" "FNAME" "")
+                <td align="right" colspan="4"> <input type="text" name="FNAME" value=""> </td>
+                <td> $brih_first $brih_name </td>
+          </tr>
+          <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell("$brih_last $brih_name" "LNAME" "")
+                <td align="right" colspan="4"> <input type="text" name="LNAME" value=""> </td>
+                <td> $brih_last $brih_name </td>
+
+          </tr>
+                <tr align="right">
+               <td colspan="4" align="right"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+                        <option value="Select Program"> $brih_program $brih_select </option>
+                        #foreach($progname in $PrgDetail)
+                                <option value="$progname.getPrgCode()">$progname.getPrgName() </option>
+                        #end
+                        </select></td>
+
+                <td>$brih_program</td>
+        </tr>
+        <tr bgcolor="$ui.menuColor" align="right">
+                ##formCell ("$brih_rollno($brih_if $brih_student)" "rollno" "")
+                <td align="right" colspan="4"> <input type="text" name="rollno" value="" disabled="true"/> </td>
+                <td> $brih_rollno</td>
+        </tr>
+        <tr bgcolor="$ui.menuColor">
+      <td align="right" colspan=5>
+            <input type="hidden" name="actionName">
+       <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldStudent(document.frm,this);"/>
+            
+        <input type="reset" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+      <input type="hidden" name="count" value="$tdcolor">
+       </td>
+      </tr>
+
+
 </table>
-  #end
-</font>
-</body>    
+</form>
