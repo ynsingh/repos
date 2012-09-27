@@ -77,7 +77,7 @@ public class Desktop_Sharing {
  	 */
 	public void showImage(BufferedImage originalImage){
 		try{
-			BufferedImage scaledImage= ImageScaler.resize(originalImage, ImageScaler.Method.QUALITY, IMG_WIDTH, IMG_HEIGHT, ImageScaler.OP_ANTIALIAS);
+			BufferedImage scaledImage= ImageScaler.resize(originalImage, ImageScaler.Method.QUALITY, ImageScaler.Mode.FIT_EXACT ,IMG_WIDTH,IMG_HEIGHT, ImageScaler.OP_ANTIALIAS);
 			imageDisplay.setIcon(new ImageIcon(scaledImage));
 			scaledImage.flush(); 
 		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!");}
