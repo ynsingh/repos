@@ -171,7 +171,8 @@ public class PeerManager
                                         element = ( Element )node;
                                         String User=element.getAttribute("User");
                                         if(User.equals(username)){
-						flag=true;
+						if(!User.equals("guest"))
+							flag=true;
                                         }
                                 }
                         }
