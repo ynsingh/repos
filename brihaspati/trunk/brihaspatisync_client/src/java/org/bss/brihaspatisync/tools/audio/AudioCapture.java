@@ -42,7 +42,7 @@ public class AudioCapture {
 	private AudioFormat audioFormat;
 	private TargetDataLine targetDataLine;
     	private AudioFileFormat.Type fileType = null;
-    	private DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+    	private DataLine.Info dataLineInfo = null; //new DataLine.Info(TargetDataLine.class, audioFormat);
 
    	/**
  	 * Select a mixer from audio system which support audio format
@@ -69,7 +69,7 @@ public class AudioCapture {
 			if(currentMixer==null){
 				currentMixer = getMixer();
 			}
-    			if(currentMixer!=null)
+    			if(currentMixer != null)
             			targetDataLine =(TargetDataLine)currentMixer.getLine(dataLineInfo);
             		else
             			System.out.println("Mixer not found!!");
@@ -136,5 +136,18 @@ public class AudioCapture {
 		    boolean bigEndian =false;	//true,false
 		    return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
  	}
-
+	
+	/**
+	private AudioFormat getAudioFormat(){
+                AudioFormat.Encoding encoding = new AudioFormat.Encoding("PCM_SIGNED");
+                float sampleRate = 8000;        //8000,11025,16000,22050,44100
+                int sampleSizeInBits = 8;       //8,16
+                int channels = 1;               //1,2
+                boolean signedStat = true;      //true,false
+                boolean bigEndian =false;       //true,false
+                int frameSize = 2000; // number of octets in single frame. 
+                int frameRate= 4; //number of frames played per second.
+                return new AudioFormat(encoding, sampleRate, sampleSizeInBits, channels, frameSize, frameRate, bigEndian);
+        }*/
+	
 }

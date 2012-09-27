@@ -129,7 +129,9 @@ public class UserListPanel {
 				statusVector.add(status);
 				if(role.equals("student")) {		
 					if(user.equals(username)){
-						handRaisePanel.setEnableORDisable(status);
+						if(!user.equals("guest"))
+							handRaisePanel.setEnableORDisable(status);
+			
 					}
 					// Student mic controller. 
 					if(statusVector.contains("Allow-Mic")){
