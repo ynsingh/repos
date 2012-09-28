@@ -21,8 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 import java.awt.BorderLayout;
-
-import java.awt.Graphics2D;
+import java.awt.Color;
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import java.awt.image.BufferedImage;
@@ -30,12 +29,7 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 import org.bss.brihaspatisync.util.ImageScaler;
 
-public class Desktop_Sharing {
-
-	private Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-	private int kk=(int)dim.getWidth()-5;
-	private int IMG_WIDTH =(int)dim.getWidth();
-        private int IMG_HEIGHT =((int)dim.getHeight()-200);
+public class Desktop_Sharing{
 
 	private JScrollPane js=null;
         private JPanel mainPanel=null;
@@ -43,6 +37,7 @@ public class Desktop_Sharing {
 	private JLabel imageDisplay = null;
 	private BufferedImage origanalimage=null;	
         private static Desktop_Sharing desktopSharing=null;
+
 	
 	public static Desktop_Sharing getController(){
                 if (desktopSharing==null){
@@ -57,6 +52,7 @@ public class Desktop_Sharing {
 	public JPanel createGUI(){  
                 js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		mainPanel=new JPanel();
+
 		centerPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
 		centerPanel.setBackground(new java.awt.Color(24,116,205));
@@ -64,27 +60,34 @@ public class Desktop_Sharing {
 		imageDisplay.setBackground(new java.awt.Color(24,116,205));
                 js.getViewport().add(imageDisplay);
 
-                mainPanel.add(js,BorderLayout.CENTER);
-		mainPanel.add(centerPanel,BorderLayout.EAST);
-		mainPanel.add(centerPanel,BorderLayout.WEST);
-		mainPanel.add(centerPanel,BorderLayout.NORTH);
-		mainPanel.add(centerPanel,BorderLayout.SOUTH);
+                mainPanel.add(imageDisplay,BorderLayout.CENTER);
 		return mainPanel; 	
 	}
+
 	
 	/*This method uses ImageScaler class to resize and rescale image to show on player panel.
  	 *@author : Ashish Yadav 
  	 */
 	public void showImage(BufferedImage originalImage){
 		try{
-			BufferedImage scaledImage= ImageScaler.resize(originalImage, ImageScaler.Method.QUALITY, ImageScaler.Mode.FIT_EXACT ,IMG_WIDTH,IMG_HEIGHT, ImageScaler.OP_ANTIALIAS);
-			imageDisplay.setIcon(new ImageIcon(scaledImage));
-			scaledImage.flush(); 
-		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!");}
-	}
 
-	public void setIMG_WIDTH(int value){
-        	IMG_WIDTH=kk-value;
-        }	
+			Dimension mainPanel_dim=mainPanel.getSize();
+			int mainPanelWidth = (int)mainPanel_dim.getWidth();
+        		int mainPanelHeight = (int)mainPanel_dim.getHeight();
+        		int imageWidth = originalImage.getWidth();
+        		int imageHeight = originalImage.getHeight();
+        		double xScale = (double)mainPanelWidth/imageWidth;
+        		double yScale = (double)mainPanelHeight/imageHeight;
+        		double scale = Math.min(xScale, yScale);// scale to fit
+                       	Math.max(xScale, yScale); // scale to fill
+                        int targetWidth = (int)(scale*imageWidth);
+                        int targetHeight = (int)(scale*imageHeight);
+			BufferedImage scaledImage= ImageScaler.resize(originalImage, ImageScaler.Method.QUALITY,ImageScaler.Mode.FIT_EXACT, targetWidth, targetHeight,ImageScaler.OP_ANTIALIAS);
+			imageDisplay.setIcon(new ImageIcon(scaledImage));
+			imageDisplay.setHorizontalAlignment(JLabel.CENTER);
+			mainPanel.setBackground(Color.GRAY);
+			scaledImage.flush(); 
+		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!"+ex);}
+	}
 }
 

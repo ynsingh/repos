@@ -145,13 +145,7 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
                                 String propertyName = changeEvent.getPropertyName();
                                 if (propertyName.equals(JSplitPane.LAST_DIVIDER_LOCATION_PROPERTY)) {
                                         int current = sourceSplitPane.getDividerLocation();
-					/*
-                                        try {
-                                                System.out.println(current);
-                                    	}catch(Exception e){}
-					*/
                                         VideoPanel.getController().setIMG_WIDTH(current);
-                                        Desktop_Sharing.getController().setIMG_WIDTH(current);
                                 }
                         }
                 };
