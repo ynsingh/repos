@@ -10,6 +10,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Admin Home | User Management | Add Multiple Users ")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 #set($lang = $data.getUser().getTemp("lang").toString())
 
@@ -55,7 +58,7 @@ $!data.getMessage()
 	</tr>
 	<tr align="right">
      	<td>
-    		<select name="GroupName" size=1>
+    		<select name="GroupName" class="drop" size=1>
 		#foreach($name in $courseList)
           	#if(($name.getName()!="global") && ($name.getName()!="author"))
           		<option value="$name.getName()">$name.getName()
@@ -72,7 +75,7 @@ $!data.getMessage()
     	</tr>
      	<tr align="right">
      	  <td>
-    	  	<select name="role" size=1>
+    	  	<select name="role" class="drop" size=1>
 	 	<option value="instructor">$brih_Instructor
 	  	<option value="student">$brih_student
 	  	</option>
@@ -95,7 +98,7 @@ $!data.getMessage()
             shouldn't appear when inserting a new user.
           *#
           	<font face="$ui.sansSerifFonts">
-          	<input type="button" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
+          	<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
           	<input type="hidden" name="actionName" value=""/>
     
           	</font>

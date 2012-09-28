@@ -14,7 +14,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Course Content")
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 <tr align ="right"><td>
@@ -138,7 +140,7 @@ $!data.getMessage()
                 <tr>
                         <td></td>
 			 <td>
-        <input type="button" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
+        <input type="button" class="button-ftextstyle" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
                 <input type="hidden" name="actionName" value="">
                 <input type="hidden" name="deleteFileNames" value="">
                 <input type="hidden" name="changeFileNameOrder" value="">
@@ -149,7 +151,7 @@ $!data.getMessage()
 
                         <td>
                         ##if( $dirContent.size()>1)
-                        <select name="actionType">
+                        <select name="actionType" class="drop">
                         <option selected value="-1"></option>
                         <option value=1>$brih_move</option>
                         <option value=2>$brih_exchange</option>
@@ -158,7 +160,7 @@ $!data.getMessage()
                         </td>
                         <td>
                         ##if( $dirContent.size()>1)
-                        <select name="destinationSeqno">
+                        <select name="destinationSeqno" class="drop">
                         <option selected value="-1"></option>
                         #foreach($index in [1..$dirContent.size()])
                         #set ( $seqno= $index - 1 )
@@ -175,7 +177,7 @@ $!data.getMessage()
         ##if( $dirContent.size()>1)
        ## <tr bgcolor="$ui.menuColor">
 #*	<td>
-        <input type="button" name=eventSubmit_doChangeTopicOrder value="Change file Order" onClick="isOrderChanged(document.frm,this);">
+        <input type="button" class="button-ftextstyle" name=eventSubmit_doChangeTopicOrder value="Change file Order" onClick="isOrderChanged(document.frm,this);">
                 <input type="hidden" name="actionName" value="">
                 <input type="hidden" name="deleteFileNames" value="">
                 <input type="hidden" name="changeFileNameOrder" value="">
@@ -334,14 +336,14 @@ $!data.getMessage()
 			</td>
 			#if(($i%2!=0)&&($flag==true))
 				<td width="15%" align="center">
-        	                        <select name="actionType">
+        	                        <select name="actionType" class="drop">
                 		                <option selected value="-1"></option>
 			                        <option value=1>"$brih_move"</option>
                         		        <option value=2>"$brih_exchange"</option>
 	                                </select>
                                 </td>
         	                <td width="15%" align="center">
-					<select name="destinationSeqno">
+					<select name="destinationSeqno" class="drop">
 			                        <option selected value="-1"></option>
 						#foreach($index in [1..$dirContent.size()])
 						#set ( $seqno= $index - 1 )
@@ -350,7 +352,7 @@ $!data.getMessage()
 					</select>
 				</td>
 	                        <td align="left">
-        		                <input type="button" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
+        		                <input type="button" class="button-ftextstyle" name=eventSubmit_doChangeTopicOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
 	                        </td>
 				#set($flag=false)
 			#end

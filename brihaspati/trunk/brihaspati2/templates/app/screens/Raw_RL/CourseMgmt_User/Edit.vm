@@ -11,7 +11,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $brih_content | $brih_edit $brih_content")
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align="right">
 <td>
@@ -106,16 +108,16 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 	</tr>
 	<tr bgcolor="$ui.tableColor">
 		<td>
-		<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
-		<input type="button" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
-		<input type="button" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
 			#if($lang =="hindi")
-		<input type="button" name=eventSubmit_doUpdate value=" $brih_desc $brih_update " onClick="Update(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name=eventSubmit_doUpdate value=" $brih_desc $brih_update " onClick="Update(document.frm,this);">
 			#else
-		<input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
 			#end
-		<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
-		<input type="button" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
 		</td>
 	</tr>
 </table>
@@ -206,7 +208,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
         <tr>
         <td>
                 #if( $totalRows>1)
-                        <select name="actionType">
+                        <select name="actionType" class="drop" >
                                 <option selected value="-1"></option>
                                 <option value=1>$brih_move</option>
                                 <option value=2>$brih_exchange </option>
@@ -215,7 +217,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
         </td>
         <td>
                 #if( $totalRows>1)
-                        <select name="destinationSeqno">
+                        <select name="destinationSeqno" class="drop" >
                                 <option selected value="-1"></option>
                                 #foreach($index in [1..$totalRows])
                                         #set ( $seqno= $index - 1 )
@@ -229,7 +231,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 
         	              	#*<td>
 				#if( $totalRows>1)
-		                        <select name="actionType">
+		                        <select name="actionType" class="drop" >
                 		                <option selected value="-1"></option>
                                 		<option value=1>$brih_move</option>
                                 		<option value=2>$brih_exchange </option>
@@ -238,7 +240,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
         			</td>
         			<td>
                 		#if( $totalRows>1)
-                        		<select name="destinationSeqno">
+                        		<select name="destinationSeqno" class="drop" >
                                 		<option selected value="-1"></option>
                                 		#foreach($index in [1..$totalRows])
                                         	#set ( $seqno= $index - 1 )
@@ -255,15 +257,15 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 	</table>
       
 	<div style="background-color:$ui.menuColor;text-align:left">	
-	<input type="button" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
-	<input type="button" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name=eventSubmit_doDelete value="$brih_deleteCheck $brih_file #if($lang =="hindi") $brih_delete #end" onClick="deleteConfirm(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name=eventSubmit_doChangeAlias value="$brih_aliasChange" onClick="changeAlias(document.frm,this);">
 	#if($lang == "hindi")
-	<input type="button" name=eventSubmit_doUpdate value="$brih_desc $brih_update" onClick="Update(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name=eventSubmit_doUpdate value="$brih_desc $brih_update" onClick="Update(document.frm,this);">
 	#else
-	<input type="button" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name=eventSubmit_doUpdate value="$brih_update $brih_desc" onClick="Update(document.frm,this);">
 	#end
-	<input type="button" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
-	<input type="button" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name=eventSubmit_doUpdateDelete value="$brih_update & $brih_delete" onClick="UpdateDelete(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name=eventSubmit_doChangeOrder value="$brih_fileOrder" onClick="isOrderChanged(document.frm,this);">
 	</div>
     </td>
     </tr>

@@ -6,7 +6,9 @@
  * @author  <a href="sweetshaista00@yahoo.com">Shaista Shekh</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #if($role=="instructor")
 	$page.setTitle("Admin Home | User Management | Remove Instructor")
 #else	
@@ -57,7 +59,7 @@ $!data.getMessage()
           </b>
           </td>
           <td>
-          <select name="group" size=1>
+          <select name="group" class="drop" size=1>
           #set($i=1)
           <option name=all value="All">$Notice_All
 	  #foreach($course in $courses)
@@ -71,7 +73,7 @@ $!data.getMessage()
           </space>
          </td>
   	<td align="center">
-      	<input type="submit" name="eventSubmit_doSearch" value="$brih_search">
+      	<input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search">
       	<input type="hidden" name="role" value="$role">
      	</td>
 </tr>
@@ -133,7 +135,7 @@ $!data.getMessage()
 	</tr>
 	<tr>
 		<td align="center">
-		<input type="submit" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="checkField(document.frm,this);">
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="checkField(document.frm,this);">
 		<input type="hidden" name="deleteFileNames" value="">
 		<input type="hidden" name="group" value="$group">
 		<input type="hidden" name="role" value="$role">

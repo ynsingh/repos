@@ -6,7 +6,9 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Home | Communication | Delete Posted Notice")
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr align="right">
@@ -83,7 +85,7 @@ $!data.getMessage()
 		#end
 		<tr bgcolor="$ui.tableColor" align="right">
 		<td align="center" colspan="3">
-		<input type="button" name="eventSubmit_doDelete" value="$brih_delete" onClick="CheckValue(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" value="$brih_delete" onClick="CheckValue(document.frm,this);">
 		<input type="hidden" name="actionName" value="">
 		<input type="hidden" name="deleteFileNames" VALUE="">
 		</td>

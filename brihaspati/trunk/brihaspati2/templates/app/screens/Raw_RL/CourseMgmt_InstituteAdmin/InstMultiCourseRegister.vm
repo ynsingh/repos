@@ -9,7 +9,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Admin Home | Course User Management | Upload Multiple Course ")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang = $data.getUser().getTemp("lang").toString())
 
 <br>
@@ -57,7 +59,7 @@ $!data.getMessage()
       	<tr>
         <td colspan=2 align="center" bgcolor="$ui.buttonBoxColor">
           	<font face="$ui.sansSerifFonts">
-          	<input type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
+          	<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
           	<input type="hidden" name="actionName" value=""/>
     
           	</font>

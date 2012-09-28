@@ -6,7 +6,8 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 $page.setTitle("$brih_home | $brih_course | $brih_student $brih_mgmt | $brih_student $brih_reg")
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 <table bgcolor="$ui.tableColor" width=100%>
@@ -43,12 +44,12 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" >
 		<td align=center colspan=3 >
 			#if($slct == "slct")
-				<input type="button" name="$brih_go" value="$brih_search" onClick="checkField(document.frm,this);"/> &nbsp;&nbsp;&nbsp; 
+				<input type="button" class="button-ftextstyle" name="$brih_go" value="$brih_search" onClick="checkField(document.frm,this);"/> &nbsp;&nbsp;&nbsp; 
 			#end
        			#if($totalmarks != "0" )
 				<font size=4><b>$totalmarks : $brih_max $brih_marks </b></font>
        	               	#end
-	               	<SELECT name=Quizid onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+	               	<SELECT name=Quizid class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
                       		#if($slct != "slct")
 					<option value="$Quizid1">$Quizid1</option>
 				#else
@@ -60,7 +61,7 @@ $!data.getMessage()
                		</SELECT>
 			&nbsp;&nbsp;&nbsp;
 	        	<font size=4><b>$brih_usr $brih_Of1 $brih_name  </b></font> &nbsp;&nbsp;&nbsp;
-        		<SELECT name=userList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+        		<SELECT name=userList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 			#if($slct != "slct")
 	        		<option value="$userList1">$userList1</option>
 			#else
@@ -118,7 +119,7 @@ $!data.getMessage()
 	#if($longtype == false)
 	<tr bgcolor="$ui.tableColor" >
 		<td align=center colspan=3 >
-	        	<input type="button" name="eventSubmit_doGrade" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
+	        	<input type="button" class="button-ftextstyle" name="eventSubmit_doGrade" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
 		<input type="hidden" name="check" value=$flg>
 			<input type="hidden" name="long_short" value="$long_short" />
 			<input type="reset" name="Reset" value="$brih_reset" /> 

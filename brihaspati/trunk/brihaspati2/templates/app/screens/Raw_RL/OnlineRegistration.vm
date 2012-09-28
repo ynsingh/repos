@@ -7,6 +7,9 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modify 20-03-2009, 27-03-2012
  *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setTitle("Login Page | Online Registration ")
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
@@ -53,14 +56,14 @@ $!data.getMessage()
 	</td>
         </tr>*#
         <tr align="right"> <td colspan="2"> 
-                <select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+                <select id="group_id" class="drop" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
                 ##set($counter=1)
                 #foreach($crsname in $courseList)
                         <option value="$crsname.getGroupName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
                 #end
                 </select>
-		 <input type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
-		<select name="instName" size=1 onChange="checkOption(document.frm,this);"/>
+		 <input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search"/>
+		<select name="instName" class="drop" size=1 onChange="checkOption(document.frm,this);"/>
         	#if($Insname=="")
                 	<option> $brih_Institute $brih_select </option>
 	        #else
@@ -111,7 +114,7 @@ $!data.getMessage()
 	  
 	  <tr align="right">
        <td colspan="2">
-    	<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+    	<select id="group_id" name="group" class="drop" size=1 onChange="ChangeRole(document.frm,this);"/>
 	  <option>
 	  #foreach($name in $courseList)
 	  #if($name.getName()!="global")
@@ -126,7 +129,7 @@ $!data.getMessage()
 *#
 	<tr align="right">
 	  <td colspan="2">
-	  <select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
+	  <select id="role_id" name="role" class="drop" size=1 onChange="ChangeGroup(document.frm,this);"/>
 	  <option>
 	  <option value="student">$brih_student
 	  ##<option value="author">$brih_author
@@ -136,7 +139,7 @@ $!data.getMessage()
 	  <td>  <b> <font color="Red">*</font> <font face="$ui.sansSerifFonts">$brih_role $brih_select </font> </b> </td>
 	</tr>
 	<tr align="right">
-                <td colspan="2"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+                <td colspan="2"><select name="prg" size=1 class="drop" onChange="ChkPrg(document.frm,this);"/>
                         <option value="Select Program"> $brih_program $brih_select</option>
                         #foreach($progname in $PrgDetail)
                                 <option value="$progname.getPrgCode()">$progname.getPrgName() </option>
@@ -155,8 +158,8 @@ $!data.getMessage()
         <input type="hidden" name="groupName" value="$name.getName()">
     	<input type="hidden" name="group_author">
     	<input type="hidden" name="role_author">
-    	<input type="button" name="eventSubmit_UserRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
-	<input type="Reset" name="Reset" Value="$brih_clear" onClick="clearField(document.frm,this);"/>
+    	<input type="button" class="button-ftextstyle" name="eventSubmit_UserRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
+	<input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear" onClick="clearField(document.frm,this);"/>
         <input type="hidden" name="count" value="$tdcolor"/>
         <input type="hidden" name="status" value="$status"/>
         <input type="hidden" name="val"/>
@@ -172,7 +175,7 @@ $!data.getMessage()
 	#if($status == "CourseRegistration")	
 	<tr align="right">
         <td colspan="2">
-        <select name="instName">
+        <select name="instName" class="drop">
         #foreach($name in $instList)
         <option value="$name.getInstituteName()">$name.getInstituteName() </option>
         #end
@@ -234,9 +237,9 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
             <td align="right" colspan=3> 
     		<input type="hidden" name="actionName">
-    		<input type="button" name="eventSubmit_CourseRegister" value=" $brih_submit " onClick="checkCourseName(document.frm,this);"/>
+    		<input type="button" class="button-ftextstyle" name="eventSubmit_CourseRegister" value=" $brih_submit " onClick="checkCourseName(document.frm,this);"/>
        		 &nbsp;&nbsp;&nbsp;
-    		<input type="reset" name="Clear" value=" $brih_clear " onClick="checkClear(document.frm,this);"/>
+    		<input type="reset" class="button-ftextstyle"  name="Clear" value=" $brih_clear " onClick="checkClear(document.frm,this);"/>
        	    </td>
         </tr>
 		

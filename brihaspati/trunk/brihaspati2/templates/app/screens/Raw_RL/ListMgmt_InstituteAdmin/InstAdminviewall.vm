@@ -12,6 +12,9 @@ $page.setTitle("Admin Home | User Management | View All Users")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+<head>
 	<script type="text/javascript" src="$content.getURI("/scrpts/FormValidation/Instructor_Mgmt.js")"></script>
 </head>
 <font face="$ui.sansSerifFonts"> $!mmessage</font>
@@ -74,7 +77,7 @@ $!data.getMessage()
 			<b><a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listUsr</a></b>
 		<td>
                 <td>
-                        <input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search" onClick="checkNull(document.frm,this);">
 		##	<input type="hidden" name="mode" value="$mode">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
@@ -83,7 +86,7 @@ $!data.getMessage()
                 <td> <input align=center type="text" name="valueString" value=""> </td>
                 <td><b>$brih_match_str </b></td>
                 <td>
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
                                 <option value="User Name">$brih_usr $brih_Of1 $brih_name</option>
                                 <option value="First Name">$brih_first $brih_name</option>
                                 <option value="Last Name">$brih_last $brih_name</option>
@@ -232,7 +235,7 @@ $!data.getMessage()
 #set($count=$count+1)
 #end
 <tr align="right">
-	<td><input type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick="DeleteField(document.frm,this);"></td>
+	<td><input type="button" class="button-ftextstyle" name="eventSubmit_doExpire" Value=$brih_delete onClick="DeleteField(document.frm,this);"></td>
 </tr>
 		<input type="hidden" name="Process" value="delete">
 		##<input type="hidden" name="mode" value="All">

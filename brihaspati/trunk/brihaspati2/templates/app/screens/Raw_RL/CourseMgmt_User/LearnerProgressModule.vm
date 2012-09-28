@@ -12,6 +12,7 @@
 <head>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/Scormjs/back.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Scorm content Upload")
@@ -145,7 +146,7 @@ $!data.getMessage()
 <tr  align="right">
 <td colspan="5" align="right">
 	
-	<input type="button" value="$brih_back" onclick="back()">
+	<input type="button" class="button-ftextstyle" value="$brih_back" onclick="back()">
 	
 </td>
 </tr>

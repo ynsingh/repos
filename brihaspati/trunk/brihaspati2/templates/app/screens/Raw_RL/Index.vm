@@ -13,6 +13,13 @@
 $page.setTitle("User Home Page")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+<head>
+<script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/jquery.js")"></script>
+<script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/username.js")"></script>
+<script type="text/javascript" language="JavaScript" src="$content.getURI("/scrpts/chat.js")"></script>
+<link rel="stylesheet" href="$content.getURI("/css/chat.css")" type="text/css">
+<link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
+</head>
 
 #macro(UNAME)
        <font color="blue">
@@ -95,7 +102,7 @@ $!data.getMessage()
 		<td width="16%" align="right"> <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
 		<td width="16%" align="right" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none>$Profile_user $brih_usr </a></td>
                 <td width="16%" align="right">
-                <select name="instName" onChange="checkOption(this);"/>
+                <select name="instName" onChange="checkOption(this);" class="drop"/>
                 <option> $brih_Institute $brih_select </option>
                 #foreach($name in $instNameList)
                   <option value="$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","instituteWise").addPathInfo("grpName",$name)">$name </option>

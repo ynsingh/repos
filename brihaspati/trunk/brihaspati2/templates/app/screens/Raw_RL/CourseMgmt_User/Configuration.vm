@@ -13,7 +13,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Course Content")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align="right">
  <td><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a>  <img src="$content.getURI("/images/Lefthand.gif")">
@@ -104,7 +106,7 @@ $!data.getMessage()
          <tr><td bgcolor="$ui.tableColor" >
                 <table width=100%>
                       <tr><td align="right">
-            	               <input type="submit"  value="$brih_yes">
+            	               <input type="submit" class="button-ftextstyle" value="$brih_yes">
                                <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
                                 <input type="hidden"  name="count" value="$tdcolor"> &nbsp;&nbsp;
                               <td align="right">
@@ -131,7 +133,7 @@ $!data.getMessage()
                 <table width=100%>
                         <tr align="right">
 		            <td align="right"> 
-                                <input type="submit"  value="$brih_update">
+                                <input type="submit" class="button-ftextstyle" value="$brih_update">
                                 <input type="hidden"  name="cname" value="$course"> &nbsp;&nbsp;
                                 <input type="hidden"  name="count" value="$tdcolor"> &nbsp;&nbsp;
 				</td>
@@ -287,11 +289,11 @@ $!data.getMessage()
 		##<table align="left" width=100% bgcolor="$ui.tableColor">
 			<tr><td align="right">
 
-				<input type="reset" name="clear" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+				<input type="reset" class="button-ftextstyle" name="clear" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 				#if($serial !="")
-				<input type="submit"  name="eventSubmit_doInsert" value="$brih_update " onClick="return checkForm(document.frm,this);"/>
+				<input type="submit" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_update " onClick="return checkForm(document.frm,this);"/>
 				#else
-				<input type="submit"  name="eventSubmit_doInsert" value="$brih_submit" onClick="return checkForm(document.frm,this);"/>
+				<input type="submit" class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_submit" onClick="return checkForm(document.frm,this);"/>
 				#end
 				<INPUT TYPE="hidden" NAME="updatestartIndex" value="$updatestartIndex">
 				<INPUT TYPE="hidden" NAME="serial" value="$serial">

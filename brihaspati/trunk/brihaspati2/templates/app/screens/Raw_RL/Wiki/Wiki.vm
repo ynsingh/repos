@@ -9,7 +9,9 @@
 $page.setTitle(" $brih_home | $course | $brih_Wiki")
 $page.setBgColor("$ui.bgcolor")
 #set($lang=$data.getUser().getTemp("lang").toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr>
 <td>
@@ -55,8 +57,8 @@ $!data.getMessage()
 			<FORM  name=frm method="POST" action="$link.setPage("call,Wiki,Wiki.vm").setAction("Wikieditaction")">
 			<b>$Wikimain4 </b><br /><INPUT type="text" name="query" size="15">
 			<input type="hidden" name="actionName" >
-			<input type="submit" name="eventSubmit_doFind" value="${Wikimain6}" onClick="return checkSearchName(document.frm,this);" /> ##
-			<input type="submit" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doFind" value="${Wikimain6}" onClick="return checkSearchName(document.frm,this);" /> ##
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doFindPage" value="${Wikimain7}" onClick="return checkSearchName(document.frm,this);" />
 			</FORM>
 		</td>
 	</tr>

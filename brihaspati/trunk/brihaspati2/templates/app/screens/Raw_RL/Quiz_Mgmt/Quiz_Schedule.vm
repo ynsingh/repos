@@ -8,7 +8,9 @@
 *#
 
 $page.setBgColor($ui.bgcolor)
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #set($lang=$data.getUser().getTemp("lang").toString())
 
@@ -68,7 +70,7 @@ $!data.getMessage()
 	#end
         <tr align="right">
 		<td>
-                  <select name="Start_year">
+                  <select name="Start_year" class="drop">
 			#if($quizinfo == "QuizDetail")
 				<option value="$year">$cyear
 			#else
@@ -83,7 +85,7 @@ $!data.getMessage()
 			#end
 		  </select>
 		  &nbsp<b><font size=+1>-</font></b>&nbsp
-		  <select name="Start_mon">
+		  <select name="Start_mon" class="drop">
             		<option value="$cmonth">$cmonth
 			#if($totaltime == "notBlockUpdate")	
 	    			#foreach($mon in $month)
@@ -94,7 +96,7 @@ $!data.getMessage()
 			#end
 		</select>
   		&nbsp;<b><font size=+1>-</font></b>&nbsp;
-                <select name="Start_day">
+                <select name="Start_day" class"drop">
 			<option value="$cdays">$cdays
 			#if($totaltime == "notBlockUpdate")
 			#foreach($d in $day)
@@ -111,7 +113,8 @@ $!data.getMessage()
 	</tr>	
 	<tr align="right">
                 <td>
-                  <select name="Start_hr">
+                  <select name="Start_hr" class="drop">
+
                   #if($quizinfo == "QuizDetail")
 			<option value="$hr">$hr
 		  #end
@@ -124,7 +127,7 @@ $!data.getMessage()
 	
 		&nbsp<b><font size=+1>-</font></b>&nbsp
 	
-		<select name="Start_min">
+		<select name="Start_min" class="drop">
 		#if($quizinfo == "QuizDetail")
 			<option value="$m">$m
 		#end
@@ -143,7 +146,7 @@ $!data.getMessage()
 	<tr align="right">
                 <td>
 
-                <select name="Last_hr">
+                <select name="Last_hr" class="drop">
 			#if($quizinfo == "QuizDetail")
                         	<option value="$hr1">$hr1
                 	#end	
@@ -154,7 +157,7 @@ $!data.getMessage()
 			#end
 		</select>
 		&nbsp<b><font size=+1>-</font></b>&nbsp
-		<select name="Last_min">
+		<select name="Last_min" class="drop">
 			#if($quizinfo == "QuizDetail")
                         	<option value="$m1">$m1
                 	#end
@@ -182,14 +185,14 @@ $!data.getMessage()
 	<td align=center colspan=2>
         	<font face="$ui sanSerif fonts">
 			#if($quizinfo == "QuizDetail")
-				<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="checkfield(document.frm,this);"/>
+				<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="checkfield(document.frm,this);"/>
 				<input type="hidden" name="mode" value=$quizinfo >	
 				<input type="hidden" name="quizid" value=$qid>	
 				<input type="hidden" name="title" value=$title>	
 			#else
-			     <input type=button name="eventSubmit_doSchedule" value=$brih_submit onClick="checkQuez(document.frm,this);"/>
+			     <input type=button name="eventSubmit_doSchedule" class="button-ftextstyle" value=$brih_submit onClick="checkQuez(document.frm,this);"/>
 			#end
-			     <input type=button name="reset" value="$brih_reset" >
+			     <input type=button class="button-ftextstyle" name="reset" value="$brih_reset" >
 			     <input type="hidden" name="actionName">
                                 </font>
 	</td>

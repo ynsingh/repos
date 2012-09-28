@@ -10,7 +10,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
   <tr align=right>
                 <td>
@@ -87,7 +89,7 @@ $brih_course $brih_Of $brih_news
 		<tr bgcolor="$ui.menuColor">
 		<td width=3%>
 		#if($mode!="NoNews")
-		<input type="button" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
 		<input type="hidden" name="actionName">
 		<input type="hidden" name="deleteFileNames">
 		<input type="hidden" name="status" value=$status>
@@ -125,7 +127,7 @@ $brih_course $brih_Of $brih_news
      frm.submit();
     }
     else
-     alert("Please select checkbox for deletion !!");
+     alert("Please class="button-ftextstyle" select checkbox for deletion !!");
    }
 function addDeleteList(field,frm)
 {

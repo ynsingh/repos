@@ -5,7 +5,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("File Upload")
 
@@ -108,7 +110,7 @@ $!data.getMessage()
 	</tr>
 	<tr align="right">
 		<td colspan=4 align="right">
-		<SELECT name="topicList" onFocus="changeTopic(document.uploadform)" onChange="changeTopic(document.uploadform)">
+		<SELECT name="topicList" class="drop" onFocus="changeTopic(document.uploadform)" onChange="changeTopic(document.uploadform)">
 		<option></option>
 	  	#foreach($topic in $allTopics)
 			<option>$topic</option>
@@ -134,9 +136,9 @@ $!data.getMessage()
       	<tr>
 	  <td align=center colspan=2>
           <font face="$ui.sansSerifFonts">
-	  <input type="button" name="eventSubmit_doSubmit" value="$brih_submit" onClick="validate(document.uploadform,this);"/>
+	  <input type="button" class="button-ftextstyle" name="eventSubmit_doSubmit" value="$brih_submit" onClick="validate(document.uploadform,this);"/>
  	  <input type="hidden" name="actionName" value="">
-  	  <input type="reset" value="$brih_reset">
+  	  <input type="reset" class="button-ftextstyle" value="$brih_reset">
     
           </font>
         </td>

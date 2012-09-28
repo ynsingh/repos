@@ -8,6 +8,9 @@
  * @modified date: 24-03-2012 (Shaista)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $!data.getMessage()
 $page.setTitle("Login Page | Institute Admin Registration ")
 
@@ -101,7 +104,7 @@ $page.setTitle("Login Page | Institute Admin Registration ")
                         <tr align="right">
                                 ###formCell ("$Inst_type <font color=red>*</font>" "ITYPE" "")
 				<td align="right" width=75%> 
-				<select name="ITYPE">
+				<select name="ITYPE" class="drop">
                                         ##opt()
 					<option value=Govt>$brih_govt</option>
 				        <option value=SemiGovt2>$brih_semi $brih_govt</option>
@@ -146,8 +149,8 @@ $page.setTitle("Login Page | Institute Admin Registration ")
                                 ##formCell ("$brih_ad $brih_Of1 $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
         			<td colspan=2 align="right">
 				<input type="hidden" name="actionName">
-				<input type="button" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
-        			<input type="Reset" name="Reset" Value="$brih_clear"/>
+				<input type="button" class="button-ftextstyle" name="eventSubmit_InstituteRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
+        			<input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
         			</td>
         		</tr>
 			

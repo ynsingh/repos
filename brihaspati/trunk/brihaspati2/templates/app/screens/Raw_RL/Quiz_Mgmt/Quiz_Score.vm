@@ -6,7 +6,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Quiz Management")
 $page.setBgColor($ui.bgcolor)
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
@@ -32,8 +34,8 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" ><td colspan=2>
 		<table border=0 width="100%" bgcolor="$ui.tableColor" ><tr>		
 		<td align=center >
-			<input type="button" name="Go" value="$brih_submit" onClick="checkField(document.frm,this);"/> &nbsp;&nbsp;&nbsp;&nbsp;
-                	<SELECT name="Quizid" onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
+			<input type="button" class="button-ftextstyle" name="Go" value="$brih_submit" onClick="checkField(document.frm,this);"/> &nbsp;&nbsp;&nbsp;&nbsp;
+                	<SELECT name="Quizid" class="drop" onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
 		       	        #foreach($topic in $Quizid)
 	                		<option value="$!topic">$!topic</option>
 	        	        #end
@@ -70,7 +72,7 @@ $!data.getMessage()
 	<tr>
 
 	        <td align=center colspan=2>
-        	<input type="button" name="eventSubmit_doGetdetail" value="$brih_answer $brih_Of1 $brih_sheet" onClick="detailedquiz(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doGetdetail" value="$brih_answer $brih_Of1 $brih_sheet" onClick="detailedquiz(document.frm,this);"/>
 	        </td>
 	</tr>
 	#foreach($detai in $detail)

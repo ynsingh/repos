@@ -5,7 +5,9 @@
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * Contributors: Members of MHRD Project DEI Agra
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Quiz Evaluation")
 $page.setBgColor($ui.bgcolor)
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
@@ -182,7 +184,7 @@ $page.setBgColor($ui.bgcolor)
 	<tr>
 		<td>
 			#if($flag)
-					<input type="button" name="eventSubmit_EvaluateQuestionDone" value="Evaluation Done" onClick="saveEvaluation1(document.frm,this);"/>
+					<input type="button" class="button-ftextstyle" name="eventSubmit_EvaluateQuestionDone" value="Evaluation Done" onClick="saveEvaluation1(document.frm,this);"/>
 			#end
 		</td>
 	</tr>

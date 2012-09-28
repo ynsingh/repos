@@ -11,6 +11,9 @@
 $page.setTitle("Chat")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 #if ($lang == "urdu")
         #set($lang="urd")

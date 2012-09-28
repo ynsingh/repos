@@ -15,6 +15,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 <br>
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
@@ -44,11 +47,11 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor">
 	<tr>
   	<td align="center" bgcolor="$ui.tableColor">
-      	<input type="submit" name="eventSubmit_doSearch" value="$brih_search">
+      	<input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search">
       	<input type="hidden" name="role" value="$role">
      	</td>
           <td>
-          <select name="group" size=1>
+          <select name="group" class="drop" size=1>
           #set($i=1)
           <option name=all value="All">$Notice_All
 	  #foreach($course in $courses)
@@ -125,7 +128,7 @@ $!data.getMessage()
 	</tr>
 	<tr>
 		<td align="center">
-		<input type="submit" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="checkField(document.frm,this);">
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="checkField(document.frm,this);">
 		<input type="hidden" name="deleteFileNames" value="">
 		<input type="hidden" name="group" value="$group">
 		<input type="hidden" name="role" value="$role">

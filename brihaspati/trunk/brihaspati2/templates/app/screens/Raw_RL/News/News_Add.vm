@@ -9,7 +9,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <body>
 ## Representation of TOP BAR
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
@@ -67,7 +69,7 @@ $!data.getMessage()
                 <table border=1 Cellspacing=0 align=center bgcolor="$ui.tableColor">
     		<tr align="right">
              	<td align=right>
-                  <select name="Start_year">
+                  <select name="Start_year" class="drop">
                   <option value="$cyear">$cyear
 		  #foreach($year in $year_list)
 		    #if($cyear != $year)
@@ -76,7 +78,7 @@ $!data.getMessage()
 		  #end
                 </select>
       &nbsp<b><font size=+1>-</font></b>&nbsp
-          <select name="Start_mon">
+          <select name="Start_mon" class="drop">
             <option value="$cmonth">$cmonth
 	    #foreach($mon in $month)
 	    #if($mon != $cmonth)
@@ -85,7 +87,7 @@ $!data.getMessage()
 	    #end
             </select>
   		&nbsp;<b><font size=+1>-</font></b>&nbsp;
-                  <select name="Start_day">
+                  <select name="Start_day" class="drop">
                   <option value="$cdays">$cdays
 		  #foreach($d in $day)
 		    #if($d!=$cdays)
@@ -115,8 +117,8 @@ $!data.getMessage()
                         <tr>
                                 <td align=center colspan=2>
                                <font face="$ui sanSerif fonts">
-			     <input type=button name="eventSubmit_doInsert" value="$brih_submit" onClick="checkNews(document.frm,this);"/>
-			     <input type=button name="reset" value="$brih_reset" onClick="clearData(document.frm,this);">
+			     <input type=button class="button-ftextstyle" name="eventSubmit_doInsert" value="$brih_submit" onClick="checkNews(document.frm,this);"/>
+			     <input type=button class="button-ftextstyle" name="reset" value="$brih_reset" onClick="clearData(document.frm,this);">
 			     <input type="hidden" name="actionName">
                                 </font>
                                 </td>

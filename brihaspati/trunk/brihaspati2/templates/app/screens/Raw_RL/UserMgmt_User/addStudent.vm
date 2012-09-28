@@ -7,7 +7,9 @@
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("$brih_home | $brih_course | $brih_student $brih_mgmt | $brih_student $brih_reg")
 $!data.getMessage()
 <br>
@@ -109,8 +111,8 @@ $!data.getMessage()
 	<tr>
 	    <td align="center" colspan=2 bgcolor="$ui.menuColor">	
     		<input type="hidden" name="actionName">
-    		<input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
-    		<input type="reset" name="Reset" value="$brih_clear"/>
+    		<input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+    		<input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear"/>
 	   </td>
 	</tr>
     </table>

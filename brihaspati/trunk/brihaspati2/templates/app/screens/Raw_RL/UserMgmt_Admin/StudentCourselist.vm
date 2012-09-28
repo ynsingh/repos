@@ -10,7 +10,9 @@
 
 $page.setTitle("Admin Home | User Management | Search Student | Course Details for '$username'")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 <tr align="right">
@@ -87,7 +89,7 @@ $page.setBgColor($ui.bgcolor)
 			</tr>
 			<tr>
 				<td align=center>
-					<INPUT TYPE="SUBMIT" NAME=eventSubmit_doRemove VALUE="$brih_remove"></td></tr>
+					<INPUT TYPE="SUBMIT" class="button-ftextstyle" NAME=eventSubmit_doRemove VALUE="$brih_remove"></td></tr>
 				</td>
 			</tr>
 		#end
@@ -96,9 +98,9 @@ $page.setBgColor($ui.bgcolor)
 <br>
 <table align=center border=1 width=60% cellspacing="$ui.tableCellSpacing" cellpadding=5> 
 	<tr>
-		<td bgcolor="$ui.tableColor"><INPUT TYPE="SUBMIT" NAME=eventSubmit_doRegister VALUE="$brih_reg1"></td>
+		<td bgcolor="$ui.tableColor"><INPUT TYPE="SUBMIT" class="button-ftextstyle" NAME=eventSubmit_doRegister VALUE="$brih_reg1"></td>
 		<td align="center" bgcolor="$ui.tableColor">
-			<select name="group" size=1>
+			<select name="group" class="drop" size=1>
 				#foreach($name in $CourseList)
 					#if($name.getName() !="global" && $name.getName()!="author")
 						<option value="$name.getName()">$name.getName()

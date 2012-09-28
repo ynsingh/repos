@@ -5,7 +5,9 @@
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * Contributors: Members of MHRD Project DEI Agra
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Report Card")
 $page.setBgColor($ui.bgcolor)
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
@@ -85,7 +87,7 @@ $page.setBgColor($ui.bgcolor)
 	
 	<tr bgcolor="$ui.menuColor">
 	        <td colspan=5>
-	        <input type="button" name="print" value="$brih_print" onClick="javascript:window.print();"/>
+	        <input type="button" class="button-ftextstyle" name="print" value="$brih_print" onClick="javascript:window.print();"/>
         	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")> Go Back </a>
 	        </td>
 	</tr>

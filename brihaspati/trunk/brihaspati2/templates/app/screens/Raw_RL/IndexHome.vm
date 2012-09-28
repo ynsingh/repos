@@ -14,6 +14,7 @@ $page.setTitle("Login | Index | IndexHome")
 $page.setBgColor("$ui.bgcolor")
 ###########################
 <script type="text/javascript" src="$content.getURI("/scrpts/Task.js")"></script>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <style type="text/css">
 
  #bubble_tooltip{
@@ -398,7 +399,7 @@ $!data.getMessage()
 	</tr>
 </table>
 ## bookmarks##
-<table width="27%" align="right">
+<table width="20%" align="right">
 	#if($guest_login=="false")
 		<tr align="right" bgcolor="$ui.menuColor">
 	        <ul>

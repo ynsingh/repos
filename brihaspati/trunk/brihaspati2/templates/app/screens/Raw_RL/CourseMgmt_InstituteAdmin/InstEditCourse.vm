@@ -12,7 +12,7 @@
 $page.setTitle("Admin Home | List Management | View All Courses | Edit Course")
 
 $!data.getMessage()
-
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
@@ -87,11 +87,11 @@ $!data.getMessage()
       	<tr align="right">
 	<td colspan=2 >
 		#if($cd.getActive() == "1")
-			<input type="button" name="eventSubmit_doshow" onclick="confirmForUD(document.frm,this.name)" value="$brih_delete" />
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doshow" onclick="confirmForUD(document.frm,this.name)" value="$brih_delete" />
 		#else
-			<input type="button" name="eventSubmit_doDelete" onclick="confirmForUD(document.frm,this.name)" value="$brih_delete" />
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" onclick="confirmForUD(document.frm,this.name)" value="$brih_delete" />
 		#end
-		<input type="button" name="eventSubmit_doUpdate" onclick="confirmForUD(document.frm,this.name)" value="$brih_update" />
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" onclick="confirmForUD(document.frm,this.name)" value="$brih_update" />
 	</td>
       	</tr>
 	<input type="hidden" name="gName" value="$Courseid"/>

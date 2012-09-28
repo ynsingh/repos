@@ -6,6 +6,9 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com ">Shaista</a> 
  *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setBgColor($ui.bgcolor)
 #if($status!="viewallUser")
@@ -98,9 +101,9 @@ $!data.getMessage()
           *#
           <font face="$ui.sansSerifFonts">
           #if ($Process== "modify")
-            <input type="submit" name="eventSubmit_doUpdate" value="$brih_update"/>
+            <input type="submit" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update"/>
           #elseif ($Process == "delete")
-            <input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+            <input type="submit" class="button-ftextstyle" name="eventSubmit_doDelete" value="$brih_remove"/>
           #end
           </font>
       </td>

@@ -16,7 +16,9 @@ $page.setTitle("Home | Glossary |Update Word")
 #elseif($mode == "alias")
 $page.setTitle("Home | Glossary |Insert alias")
 #end
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100%>
  <tr align=right>
@@ -59,8 +61,8 @@ $!data.getMessage()
       <tr>
           <td align=center colspan=2 bgcolor="$ui.menuColor">
              <input type="hidden" name="actionName" value="">
-             <input type="button" name="eventSubmit_doInsertWord" value="$brih_insert" onClick="checkValue(document.frm,this);"/>
-             <input type="reset" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+             <input type="button" class="button-ftextstyle" name="eventSubmit_doInsertWord" value="$brih_insert" onClick="checkValue(document.frm,this);"/>
+             <input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
           </td>
       </tr>
     </table>
@@ -102,9 +104,9 @@ $!data.getMessage()
              <input type="hidden" name="actionName">
              <input type="hidden" name="wordId" value="$w_id">
               #if($mode=="modify")
-                   <input type="button" name="eventSubmit_doUpdateword" value="$brih_submit" onClick="checkValue(document.frm,this);"/>
+                   <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdateword" value="$brih_submit" onClick="checkValue(document.frm,this);"/>
               #elseif($mode=="alias")
-                   <input type="button" name="eventSubmit_doInsertalias" value="$brih_insert" onClick="checkValue(document.frm,this);"/>
+                   <input type="button" class="button-ftextstyle" name="eventSubmit_doInsertalias" value="$brih_insert" onClick="checkValue(document.frm,this);"/>
               #end  
          </td>
       </tr>

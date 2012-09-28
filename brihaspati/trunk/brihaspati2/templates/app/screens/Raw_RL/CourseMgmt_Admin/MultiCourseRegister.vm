@@ -10,7 +10,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Admin Home | Course User Management | Upload Multiple Course ")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <br>
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 
@@ -49,14 +51,14 @@ $!data.getMessage()
 	<tr align="right" bgcolor="$ui.tableColor">
 
         	## #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")
-		<td><input type="file" size="30%" name="file" value=""> </td>
+		<td><input type="file" class="button-ftextstyle" size="30%" name="file" value=""> </td>
 		<td> <b> <font color="$ui.fontColorRed">*</font> $brih_at_file </b> </td>			
 
    	</tr>
       	<tr>
         <td colspan=2 align="center" bgcolor="$ui.menuColor">
           	<font face="$ui.sansSerifFonts">
-          	<input type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
+          	<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
           	<input type="hidden" name="actionName" value=""/>
     
           	</font>

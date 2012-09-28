@@ -9,6 +9,9 @@
 $page.setTitle("$brih_home | $course | $brih_Wiki |  $brih_edit $brih_Wiki $WikiPage")
 $page.setBgColor("$ui.bgcolor")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 <style type="text/css">input{width:170px;}</style>
 
@@ -93,16 +96,16 @@ $t
 					<td align="center"> 
 						<input type="hidden" name="actionName" >
 						#if($filename == "")
-							<input type="button" name="eventSubmit_doCreate" value="$WikiSave" onClick="checkFileName(document.frm,this);" />
+							<input type="button" class="button-ftextstyle" name="eventSubmit_doCreate" value="$WikiSave" onClick="checkFileName(document.frm,this);" />
 						#else
 							#if($traffic =="stop")
-								<input type="submit" disabled  name="eventSubmit_doEdit" value="$WikiSave" />
+								<input type="submit" disabled  class="button-ftextstyle" name="eventSubmit_doEdit" value="$WikiSave" />
 							#else
-								<input type="submit" name="eventSubmit_doEdit" value="$WikiSave" />
+								<input type="submit" name="eventSubmit_doEdit" class="button-ftextstyle" value="$WikiSave" />
 							#end
 						#end
 	 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- 						<input type="reset" name="Clear" value="${brih_clear}" onClick="checkClear(document.frm,this);"/>
+ 						<input type="reset" name="Clear" value="${brih_clear}" class="button-ftextstyle" onClick="checkClear(document.frm,this);"/>
 
 					</td>
 				</tr>

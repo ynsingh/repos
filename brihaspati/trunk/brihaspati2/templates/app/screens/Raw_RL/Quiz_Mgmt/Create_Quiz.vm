@@ -8,7 +8,9 @@
 
 $page.setTitle("Create Quiz")
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
         <tr align="right">
                 <td>
@@ -52,7 +54,7 @@ $!data.getMessage()
         <tr align="right">
 		<td  width=70% >
         		<font face="$ui.sansSerifFonts">  &nbsp;
-        		<SELECT name=typeList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.frm)>
+        		<SELECT name=typeList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.frm)>
                         <option></option>
 		        <option value="Multiple">$brih_multiple1 $brih_qus</option>
 		        <option value="TF">$brih_true / $brih_false $brih_qus</option>
@@ -70,11 +72,11 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
 		<td align="center" colspan=2>
 
-			<input type="button" name="eventSubmit_doCreate" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doCreate" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 			
 			<input type="hidden" name="quizid" value="$Quizid">
                 	<input type="hidden" name="actionName">
-			<input type="reset" name="Reset" value="$brih_reset"/>
+			<input type="reset"  class="button-ftextstyle" name="Reset" value="$brih_reset"/>
 	        </td>
         </tr>
     </table>

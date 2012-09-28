@@ -13,7 +13,9 @@
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
 	<tr align="right"> <td><b>
         <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")> $brih_mgmt $brih_grp </a> |
@@ -43,8 +45,8 @@ $!data.getMessage()
 				<input type="radio" name="grouptype" value="signupgroup">$brih_grp $brih_signup $WikiCreate<br>
 				&nbsp;&nbsp;($brih_grpmsg3)
 				<tr bgcolor="$ui.tableHeaderColor"><td colspan="5">
-				&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doCreategrouptype" value="$brih_cont" onClick="checkField1(document.frm, this);"/>
-				&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel">
+				&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doCreategrouptype" value="$brih_cont" onClick="checkField1(document.frm, this);"/>
+				&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="eventSubmit_doCancel" class="button-ftextstyle" value="$brih_cancel">
 			</tr></td> ## tr td 2 end
 		#end
 		#if($actionName == "eventSubmit_doCreategrouptype" && $grouptype == "usagegroup")
@@ -136,15 +138,15 @@ $!data.getMessage()
                 <table border="0" bgcolor="$ui.tableHeaderColor" colspan="5" width="100%"> ## table 7 start
                         <tr><td align="left" >&nbsp;&nbsp;&nbsp;
 			#if($grouptype=="usagegroup")
-                          <input type="button" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField(document.frm,this);"/>
+                          <input type="button" class="button-ftextstyle" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField(document.frm,this);"/>
 			#end
 			#if($grouptype=="Multiplegroup")
-                          <input type="button" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField3(document.frm,this);"/>
+                          <input type="button" class="button-ftextstyle" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField3(document.frm,this);"/>
                         #end
 			#if($grouptype=="signupgroup")
-                          <input type="button" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField2(document.frm,this);"/>
+                          <input type="button" class="button-ftextstyle" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField2(document.frm,this);"/>
                         #end
-                                <input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+                                <input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
                         </tr></td>
                 </table> ## end of table 7
         </tr></td> ## end od td tr 8

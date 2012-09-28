@@ -11,7 +11,9 @@
 $page.setTitle("QuestionBank | View All Question Bank")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 <td align=left>
         <td>
@@ -67,7 +69,7 @@ $!data.getMessage()
 	#end
 	<tr>
 	<td>
-	<input type="button" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
 	<input type="hidden" name="actionName">
 	<input type="hidden" name="deleteFileNames">
 	</td>
@@ -80,7 +82,7 @@ $!data.getMessage()
 <td>
 #if($status == "quesList")
 Select Question Type
-<select name="Ques_Type" onChange="ShowQues(document.frm);">
+<select name="Ques_Type" class="drop" onChange="ShowQues(document.frm);">
 	<option value=""></option>
 	<option value="Multiple">$brih_multiple1 $brih_qus</option>
 	<option value="TF">$brih_true $brih_false $brih_qus</option>

@@ -13,7 +13,9 @@
 
 $page.setTitle("Admin Home | User Management | Search Student | Course Details for '$username'")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr><td>
@@ -179,14 +181,14 @@ $page.setBgColor($ui.bgcolor)
 	<tr align="right">
 		#if($mode != "instlist")
 		<td colspan="4"><input type="text" name="rollno" value=""></td>
-		<td> <select name="prg" size=1>
+		<td> <select name="prg" class="drop" size=1>
                         <option value="Select Program">$brih_select $brih_program</iption>
 			#foreach($instplist in $PrgDetail)
 				        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 			#end
 			</select></td>
 		#end
-		<td colspan=2><select name="group" size=1>
+		<td colspan=2><select name="group" class="drop" size=1>
 		#foreach($name in $CourseList)
 			<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName()
 		#end
@@ -197,9 +199,9 @@ $page.setBgColor($ui.bgcolor)
 	<tr bgcolor="$ui.menuColor" align="right">
 		<td colspan=7>
 			 #if($mode != "instlist")
-			<INPUT TYPE="button" NAME=eventSubmit_doRegister VALUE="$brih_reg1" onclick="ChkField(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME=eventSubmit_doRegister VALUE="$brih_reg1" onclick="ChkField(document.frm,this);">
 			#else
-			<INPUT TYPE="submit" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
+			<INPUT TYPE="submit" class="button-ftextstyle" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
 			#end
 		
 			<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">

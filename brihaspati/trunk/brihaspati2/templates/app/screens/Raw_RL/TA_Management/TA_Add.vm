@@ -9,6 +9,9 @@
 $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 	<table bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor"><td colspan=7>
@@ -62,9 +65,9 @@ $!data.getMessage()
 	</tr>
 	<tr>
 	        <td colspan=5 align="left">
-	        <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+	        <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
 	        <input type="hidden" name="actionName">
-	        <input type="Reset" name="Reset" Value="$brih_clear"/>
+	        <input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
 	        <input type="hidden" name="count" Value="$tdcolor"/>
 		<input type="hidden" name="cName" value="$cName">
 

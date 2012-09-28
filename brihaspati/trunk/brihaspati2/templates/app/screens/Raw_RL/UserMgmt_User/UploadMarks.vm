@@ -6,7 +6,9 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista</a>
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Upload Marks")
 <table bgcolor="$ui.tableColor" width=100%>
@@ -110,7 +112,7 @@ $page.setTitle("Upload Marks")
 
           <font face="$ui.sansSerifFonts">
 	  <input type="hidden" name="actionName">
-          <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkFile(document.uploadform,this);"/>
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkFile(document.uploadform,this);"/>
           </font>
         </td>
       </tr>

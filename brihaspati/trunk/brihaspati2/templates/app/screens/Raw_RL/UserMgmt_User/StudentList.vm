@@ -15,7 +15,9 @@
  *     
  *#
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Home | $course | Student Management | Students List")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
@@ -127,7 +129,7 @@ $!data.getMessage()
 <td align="Left" colspan=10><a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listAllStudent</a></td>
 
                 <td align="left">
-                        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="Search" value="Search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                 </td>
@@ -139,7 +141,7 @@ $!data.getMessage()
                 </td>
 
                         <td align="right">
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
                                 <option value="UserName"> $brih_usr #if($lang == "hindi")  #end $brih_name</option>
                                 <option value="FirstName">$brih_first $brih_name</option>
                                 <option value="LastName">$brih_last $brih_name</option>

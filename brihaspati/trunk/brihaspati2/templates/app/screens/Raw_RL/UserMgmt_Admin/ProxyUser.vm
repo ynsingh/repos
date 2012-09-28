@@ -5,6 +5,9 @@
  * @author <a href="mailto:nagendrakumarpal@yahoo.co.in">Nagendra Kumar Singh</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setTitle("Admin Home | User Management | Proxy User")
 
@@ -39,7 +42,7 @@ $!data.getMessage()
 			</tr>
 			<tr><td colspan="2" align="center" bgcolor="$ui.menuColor">
 				<input type="hidden" name="actionName">
-				<input type="button" name="eventSubmit_doRegister" value="Register" onClick="checkField(document.frm,this);"/> 
+				<input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="Register" onClick="checkField(document.frm,this);"/> 
 			</td></tr>
 		</table>
 	</div>

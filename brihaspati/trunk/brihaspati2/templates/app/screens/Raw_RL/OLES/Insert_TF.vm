@@ -10,7 +10,9 @@ $page.setTitle("Question True False")
 $page.setBgColor($ui.bgcolor)
 #set($lang=$data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr>
         <td colspan=3>
@@ -85,7 +87,7 @@ $!data.getMessage()
    	</td>
    	<td width=70% align="left">
     	<font face="$ui.sansSerifFonts">
-      	<select name="Answer" size=1>
+      	<select name="Answer" class="drop" size=1>
 	<option value=$!Ans>$!Ans
 		<option value="true">$brih_true
 		<option value="false">$brih_false
@@ -108,12 +110,12 @@ $!data.getMessage()
 <font face ="$ui.sansserifFonts">
 		#if($acttype!="viewques")
 		#if($acttype=="editques")
-                <input type="button" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
-                <input type="reset" value="$brih_reset">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
+                <input type="reset" class="button-ftextstyle" value="$brih_reset">
                 #else
-  		<input type="reset" value="$brih_reset"> 
-  		<input type="button" name="eventSubmit_doInserQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
-  		<input type="button" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
+  		<input type="reset" class="button-ftextstyle" value="$brih_reset"> 
+  		<input type="button" name="eventSubmit_doInserQuestion" class="button-ftextstyle" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
+  		<input type="button" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" class="button-ftextstyle" onClick="checkValue(document.frm,this);"> 
 		#end
 		#end
   <input type="hidden" name="actionName" value="">

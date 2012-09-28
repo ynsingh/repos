@@ -9,6 +9,9 @@ $page.setTitle("QuestionBank")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -73,7 +76,7 @@ $!data.getMessage()
                         </td>
                         <td>
                         ##<select name="Questype" onChange="ChangeQuestype(document.frm);"/>
-                        <select name="Questype" onChange="ShowQues(document.frm);"/>
+                        <select name="Questype" class="drop"onChange="ShowQues(document.frm);"/>
                         ##<option>$questype</option>$questype
                         <option></option>
                         <option value="mcq">$brih_multiplechoice $brih_qus $brih_type
@@ -88,7 +91,7 @@ $!data.getMessage()
                         </td>
                         <td>
                         ##<select name="difflevel" onChange="Changedifflevel(document.frm);"/>
-                        <select name="difflevel" onChange="ShowQues(document.frm);"/>
+                        <select name="difflevel" class="drop" onChange="ShowQues(document.frm);"/>
                         ##<option>$dlevel</option>$dlevel
                         <option></option>
                         <option value="0-3">$brih_easy

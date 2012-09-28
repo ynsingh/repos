@@ -10,7 +10,9 @@
  *#
  
 $page.setTitle("$brih_home | $cname | $brih_communication |$DiscussionBoard |$DisBoard_DB_msg23")
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr align="right"><td>
 		<font face="$ui.sansSerifFonts"><b>
@@ -160,7 +162,7 @@ $!data.getMessage()
       		#end ## foreach ends
        		<tr>
      	         <td colspan=8 align="right">
-			<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
                 	<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
 	     		<INPUT TYPE="hidden" NAME="actionName">
 			<INPUT TYPE="hidden" name="msg_id" value="$msgid">

@@ -13,6 +13,9 @@
 $page.setTitle("create group")
 $page.setBgColor("$ui.bgcolor")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
@@ -38,7 +41,7 @@ $!data.getMessage()
 		</tr></td> ## td tr 1 end
 	<tr align="right" bgcolor="$ui.tableColor">
 		<td>
-        		<select name="groupname" size="1" onChange="Changegroup(document.frm,this);"/>
+        		<select name="groupname" class="drop" size="1" onChange="Changegroup(document.frm,this);"/>
        				<option>  - $brih_select - </option>
 				#foreach($grpname in $grplist)
 					<option value="$grpname.Name">$grpname.Name
@@ -52,7 +55,7 @@ $!data.getMessage()
 	</tr>
         <tr align="right" bgcolor="$ui.tableColor">
         	<td>
-       			<select name="activity" size="1" onChange="Changeactivity(document.frm,this);"/>
+       			<select name="activity" class="drop" size="1" onChange="Changeactivity(document.frm,this);"/>
        				<option>  - $brih_select - </option>
        				<option value="Discussion Board">$DiscussionBoard</option>
        				<option value="Notice">$brih_Notices</option>
@@ -62,8 +65,8 @@ $!data.getMessage()
         	<td align="center"><b> : $brih_grp $brih_Of $brih_activity </b></td>
         </tr>
 	<tr  bgcolor="$ui.tableHeaderColor"> <td colspan="5">
-        	<input type="button" name="eventSubmit_doActivity" value="$brih_activity $brih_insert " onClick="checkselect(document.frm,this);"/>
-        	<input type="button" name="eventSubmit_doResetActivity" value="$brih_activity $brih_remove" onClick="checkselect(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doActivity" value="$brih_activity $brih_insert " onClick="checkselect(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doResetActivity" value="$brih_activity $brih_remove" onClick="checkselect(document.frm,this);"/>
 	</td></tr>
 	##end ## end if
 	<input type="hidden" name="actionName" >

@@ -8,7 +8,9 @@
  * @Developed 27-07-2009
 *#
 
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Admin Home | View Institute List")
 
 $page.setBgColor($ui.bgcolor)
@@ -134,8 +136,8 @@ RemoteInstitute $brih_list
         <tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
                 <input type="hidden" name="actionName">
-                <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
-                <input type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
+                <input type="button" name="eventSubmit_RejectAdmin" class="button-ftextstyle" value="$online_reject" onClick="AcceptField(document.frm,this);">
                 <input type="hidden" name="deleteFileNames" value="">
 		<input type="hidden" name="role" value="7">
                 <input type="hidden" name="institute_id" value="$idetail.get(0).getInstituteId()">

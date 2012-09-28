@@ -12,6 +12,12 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr align="right">
 		<td>
@@ -126,7 +132,7 @@ $!data.getMessage()
 		<td>(MB) $brih_usr $brih_Of1 $brih_quota $quota_sze $brih_in</td>
 	</tr>
 	<tr><td>
-	<input type=button name="eventSubmit_doUpdate" value=$brih_modify onClick="checkfield(document.frm,this);"/>	
+	<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_modify onClick="checkfield(document.frm,this);"/>	
 	</td></tr>
 #end
 #if($mode=="cquota")  
@@ -197,7 +203,7 @@ $!data.getMessage()
 		<td>(MB) $brih_course $brih_Of1 $brih_quota $quota_sze $brih_in</td>
 	</tr>
 	<tr bgcolor="$ui.tableColor"><td>
-	<input type=button name="eventSubmit_doUpdate" value=$brih_modify onClick="Updatefield(document.frm,this);"/>	
+	<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_modify onClick="Updatefield(document.frm,this);"/>	
 	</td></tr>
 #end
                 <input type="hidden" name="actionName">

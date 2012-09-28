@@ -9,6 +9,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *#
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $page.setTitle("$brih_home |$DiscussionBoard")
 <body>
@@ -43,7 +46,7 @@ $page.setTitle("$brih_home |$DiscussionBoard")
 	#if($total!="0")
 		<tr> <td colspan="2" > </td> <td align="right">
 			<input type="hidden" name="mode" value="All">
-			<input type="Submit" name=submit value="$LocalMail_Mail_msg2">
+			<input type="Submit" class="button-ftextstyle" name=submit value="$LocalMail_Mail_msg2">
 			<input type="hidden" name="course_id" value=$courseid>
 		</td></tr>
 	#end

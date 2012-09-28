@@ -9,7 +9,9 @@
 
 $page.setTitle("Admin Home | User Management | Add User")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>/
 <br>
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 <tr align="right">
@@ -55,7 +57,7 @@ $!data.getMessage()
 	  
 	  <tr align ="right" bgcolor="$ui.tableColor">
      <td>
-    	<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+    	<select id="group_id" class="drop" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
 	  <option>
 	  #foreach($name in $courseList)
 	  #if($name.getName()!="global")
@@ -75,7 +77,7 @@ $!data.getMessage()
 
  <tr align ="right" bgcolor="$ui.tableColor">
      <td>
-    <select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
+    <select id="role_id" class="drop" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
 	  <option>
 	  <option value="instructor">$brih_instructor
 	  <option value="student">$brih_student
@@ -96,8 +98,8 @@ $!data.getMessage()
 	<input type="hidden" name="actionName">
     	<input type="hidden" name="group_author">
     	<input type="hidden" name="role_author">
-	<input type="Reset" name="Reset" Value="$brih_clear"/>
-    	<input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/> 
+	<input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
+    	<input type="button" name="eventSubmit_doRegister" class="button-ftextstyle" value="$brih_reg" onClick="checkField(document.frm,this);"/> 
 	</td>
 	</tr>
         </table>

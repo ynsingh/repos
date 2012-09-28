@@ -10,6 +10,9 @@
 $page.setTitle("$Repo_Repo1")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 
 <table bgcolor="$ui.tableColor" width=100% align="center">
@@ -118,14 +121,14 @@ $!data.getMessage()
 	<td>$filename
 	</td>
         <td>
-        <select name="Total" size=1 onChange="ChangeDir(document.frm,this);")>
+        <select name="Total" class="drop" size=1 onChange="ChangeDir(document.frm,this);")>
         #foreach($files1 in $contentvalue1)
         <option value="$files1">$files1
         #end
 	</option>
         </select>
 	</space>
-	<input type="Submit" name="Submit" value= "$brih_move">
+	<input type="Submit" class="button-ftextstyle" name="Submit" value= "$brih_move">
 	<input type="hidden" name="Total" value="dir_author">
 	<input type="hidden" name="name" value="$contentlist">
 	<input type="hidden" name="topic" value="$topic">

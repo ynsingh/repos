@@ -10,7 +10,9 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Admin Home | View Institute List")
 
 $page.setBgColor($ui.bgcolor)
@@ -65,7 +67,7 @@ $!data.getMessage()
                 <tr>
                         <td><b>$brih_searchBy</b></td>
                         <td align=left>
-                                <select name="queryList">
+                                <select name="queryList" class="drop">
                                         <option value="InstituteId"> $RemoteInstitute  $brih_ID</option>
                                         <option value="InstituteName"> $RemoteInstitute $brih_name</option>
                                         <option value="InstituteAdd"> $RemoteInstitute  $brih_address</option>
@@ -76,7 +78,7 @@ $!data.getMessage()
                                 <input align=center type="text" name="valueString" value="">
                         </td>
                         <td>
-                                <input type="button" name="Search" value="Search" onClick="checkNull(document.frm1,this);">
+                                <input type="button" class="button-ftextstyle" name="Search" value="Search" onClick="checkNull(document.frm1,this);">
                                 <input type="hidden" name="mode" value="approved">
                                 <input type="hidden" name="mod" value="Search">
                                 <input type="hidden" name="count" value="2">
@@ -136,8 +138,8 @@ $!data.getMessage()
         #*<tr align="right" bgcolor="$ui.menuColor">
                 <td align="right" colspan=14>
                 <input type="hidden" name="actionName">
-                <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
-                <input type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
                 <input type="hidden" name="deleteFileNames" value="">
 		<input type="hidden" name="role" value="7">
                 <input type="hidden" name="institute_id" value="$idetail.get(0).getInstituteId()">

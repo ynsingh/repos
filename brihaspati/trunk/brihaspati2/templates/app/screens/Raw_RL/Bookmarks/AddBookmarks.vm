@@ -13,6 +13,9 @@
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
         <tr align ="right"> 
 	<td align="left">
@@ -47,7 +50,7 @@ $!data.getMessage()
 	<td><b>: $brih_Url/$brih_Location </b></td>
 </tr>
 <tr align="right">
-        <td align="left"><input type="button" name="eventSubmit_doCreateFolder" value="$brih_new $brih_Folder" onClick="SetDirName(document.frm,this);"/></td>
+        <td align="left"><input type="button" class="button-ftextstyle" name="eventSubmit_doCreateFolder" value="$brih_new $brih_Folder" onClick="SetDirName(document.frm,this);"/></td>
         <td><input type="text"  size="31" name="comment"  value=""/></td>
         <td><b>: $brih_Comment</b></td>
 	<input type="hidden" name="type" value="general">
@@ -55,7 +58,7 @@ $!data.getMessage()
 <tr align="right">
 	#if($Mode=="NoBlank")
 	<td colspan="2">
-                        <select name="foldername" size="1" onChange="Changefolder(document.frm,this);"/>
+                        <select name="foldername" class="drop" size="1" onChange="Changefolder(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
                                 #foreach($bdname in $dirvalue)
                                         <option value="$bdname">$bdname
@@ -70,8 +73,8 @@ $!data.getMessage()
 
 </tr>
 	<tr align="right"><td colspan="3">
-        	<input type="button" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField(document.frm,this);"/>
-		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField(document.frm,this);"/>
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</td></tr>
 </table>
 #end
@@ -102,8 +105,8 @@ $!data.getMessage()
 	<input type="hidden" name="type" value="$mode">
 </tr>
 	<tr align="right"><td> ## align="left">
-        	<input type="button" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField2(document.frm,this);"/>
-		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField2(document.frm,this);"/>
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</td></tr>
 </table>
 #end
@@ -113,7 +116,7 @@ $!data.getMessage()
 #if($Mode=="NoBlank")
 <tr align="right">
         <td> ##align="left">
-       	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="movedir" size="1" onChange="Changedir(document.frm,this);"/>
+       	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="movedir" size="1" class="drop" onChange="Changedir(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
                                 #foreach($bdname in $dirvalue)
                                         <option value="$bdname">$bdname
@@ -125,8 +128,8 @@ $!data.getMessage()
 </tr>
 <tr align="right"><td> ## align="left">
 
-         <input type="button" name="eventSubmit_doMove" value="$brih_move" onClick="checkselect(document.frm,this);"/>
-	 <input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+         <input type="button" class="button-ftextstyle" name="eventSubmit_doMove" value="$brih_move" onClick="checkselect(document.frm,this);"/>
+	 <input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 </td></tr>
 #else
 <td align="center"><b>$brih_Folder $Res_mess1</b></td>
@@ -142,8 +145,8 @@ $!data.getMessage()
 </td>
 </tr>
 <tr align="right"> <td colspan="3"> ##align="left">
-         <input type="button" name="eventSubmit_doRename" value="$brih_Rename" onClick="checkselect1(document.frm,this);"/>
-	 <input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+         <input type="button" class="button-ftextstyle" name="eventSubmit_doRename" value="$brih_Rename" onClick="checkselect1(document.frm,this);"/>
+	 <input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 </td></tr>
 #end
 </table>

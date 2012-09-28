@@ -12,7 +12,9 @@ $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
 		<font face="$ui.sansSerifFonts">
@@ -170,7 +172,7 @@ $!data.getMessage()
 	#end
 	<tr>
        		<td><b>$brih_topic $brih_name</b><font color=Red>*</font></td>  
-       		<td><select name=topicList >
+       		<td><select name=topicList class="drop">
 			#if($mode == "update")
 				#foreach($allTopic in $topicList)				
 					#if($allTopic.getTopic()==$topic)						
@@ -188,7 +190,7 @@ $!data.getMessage()
 	</tr>
         <tr>
         	<td><b>$brih_type</b><font color=Red>*</font></td>
-        	<td><select name=typeList >
+        	<td><select name=typeList class="drop">
 			#if($mode == "update")
 		    		#if($questionType=='mcq')	
 		    			#set($mcq='selected')                		
@@ -209,7 +211,7 @@ $!data.getMessage()
         </tr>
         <tr>
         	<td><b>$brih_difflevel</b><font color=Red>*</font></td>        	
-        	<td><select name="levelList" >
+        	<td><select name="levelList" class="drop">
 			#if($mode == "update")
     				#if($questionLevel=='0-3')	
     					#set($easy='selected')										
@@ -228,8 +230,8 @@ $!data.getMessage()
 	
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5">
-				<input type="button" name="eventSubmit_oneByOneQuiz" value="$brih_search $brih_qus2" onClick="checkValue(document.frm,this);"/>
-		  		<input type="reset" name="Reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>			
+				<input type="button" class="button-ftextstyle" name="eventSubmit_oneByOneQuiz" value="$brih_search $brih_qus2" onClick="checkValue(document.frm,this);"/>
+		  		<input type="reset" name="Reset" class="button-ftextstyle" value="$brih_reset" onClick="checkClear(document.frm,this);"/>			
 		</td>
 	</tr>
 #end

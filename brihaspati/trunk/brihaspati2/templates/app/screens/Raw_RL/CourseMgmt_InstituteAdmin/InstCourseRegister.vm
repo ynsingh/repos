@@ -9,7 +9,9 @@
 
 $page.setTitle("UserHome | Admin Home | Course Registration")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <br>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
@@ -68,8 +70,8 @@ $!data.getMessage()
     	  <tr bgcolor="$ui.menuColor">
 	  <td align=center colspan=2 bgcolor="$ui.menuColor">
     <input type="hidden" name="actionName" >
-    <input type="button" name="eventSubmit_doRegister" value=$brih_reg onClick="checkCourseName(document.frm,this);"/>
-    <input type="reset" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
+    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value=$brih_reg onClick="checkCourseName(document.frm,this);"/>
+    <input type="reset" class="button-ftextstyle" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
 	</td>
 	</tr>
 	</table>
