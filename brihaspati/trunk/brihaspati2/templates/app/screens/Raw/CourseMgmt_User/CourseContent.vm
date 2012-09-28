@@ -41,9 +41,9 @@ $!data.getMessage()
 #if ($isInstructor=="true")
 	<tr>
         #if($AccessMsg!="")
-	        <td colspan=2><font color="red" size="4">$AccessMsg</td>
+	        <td colspan=7><font color="red" size="4">$AccessMsg</td>
         #end
-               	<td align=right colspan=9>
+               	<td align=right colspan=3>
 		<img src="$content.getURI("/images/hand.gif")">	<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin");> $brih_help </a>
 #end
 </td></tr>

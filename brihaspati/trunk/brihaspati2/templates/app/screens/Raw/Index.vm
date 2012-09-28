@@ -85,7 +85,7 @@ $!data.getMessage()
 <div align=center>
 	#foreach($photo in $Image)
         	#if($photo.getPhoto()!="")
-                	<img src="$content.getURI("/images/Photo/$username")" width="80" height="100">
+                	<img src="$content.getURI("/localImages/Photo/$username")" width="80" height="100">
 	        #end
 	#end
 </div>

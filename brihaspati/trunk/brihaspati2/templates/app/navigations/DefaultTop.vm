@@ -11,14 +11,15 @@ $page.setBgColor("#ffffff")
 </head>
 <div style="width:1100px; margin:0px auto;">
 #if($cid!="" && $istat)
-<table border=0><tr><td width="55%"><img src="$content.getURI("images/Header/$cid")" height="120px" width="650px" ></td><td width="20%"><img height="112px" src="$content.getURI("images/Logo/logo")" width="200px"></td><td width="20%"><img height="112px" width="230px" src="$content.getURI("images/Logo/$instituteid")"></td></tr></table>
+	<table border=0><tr><td width="650px" height="112px"><img src="$content.getURI("localImages/Header/$cid")" height="112px" width="650px"></td><td width="200px" height="112px"><img src="$content.getURI("localImages/Logo/logo")" width="200px" height="112px"></td><td width="230px" height="112px"><img src="$content.getURI("localImages/Logo/$instituteid")"></td></tr></table>
 #elseif($instituteid!="" && $lang!="")
-	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")" width="650px" height="120px"></td><td width="20%"><img height="112px" width="200px" src="$content.getURI("images/Logo/logo")"></td><td width="20%"><img height="112px" width="230px" src="$content.getURI("images/Logo/$instituteid")" ></td></tr></table>
+	<table border=0><tr><td width="650px" height="112px"><img src="$content.getURI("images/${lang}brihaspati3.png")" height="112px" width="650px"></td><td width="200px" height="112px"><img src="$content.getURI("localImages/Logo/logo")" width="200px" height="112px"></td><td><img src="$content.getURI("localImages/Logo/$instituteid")" ></td></tr></table>
 #elseif($lang!="" && $instituteid=="")
-	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")" width="650px"></td><td colspan=2 width="40%"><img height="112px" src="$content.getURI("images/Logo/logo")" width="200px" ></td></tr></table>
+	<table border=0><tr><td width="850px" height="112px"><img src="$content.getURI("images/${lang}brihaspati3.png")" height="112px" width="850px"></td><td colspan=2 width="200px" height="112px"><img src="$content.getURI("localImages/Logo/logo")" width="200px" height="112px"></td></tr></table>
 #else
 	
-<table><tr><td><img src="$content.getURI("images/englishbrihaspati3.png")" width="650px"></td><td style="margin-left:-35px; position:absolute;"><img src="$content.getURI("images/Logo/logo")" width="200px"></td></tr></table>
+	<table><tr><td width="850px" height="112px"><img src="$content.getURI("images/englishbrihaspati3.png")" height="112px" width="850px"></td><td  colspan=2 width="200px" height="112px"><img src="$content.getURI("localImages/Logo/logo")" width="200px" height="112px"></td></tr></table>
 #end
+
 </div>
 <hr style="width:1090px; margin:5px auto;">

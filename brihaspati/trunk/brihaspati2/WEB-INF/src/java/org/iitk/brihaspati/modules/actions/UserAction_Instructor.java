@@ -509,7 +509,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 ParameterParser pp=data.getParameters();
 		FileItem file = pp.getFileItem("file");
                 String fileName=file.getName();
-		String imagesRealPath=TurbineServlet.getRealPath("/images");
+		String imagesRealPath=TurbineServlet.getRealPath("/localImages");
 		if(fileName.endsWith("jpg")|| fileName.endsWith("gif")|| fileName.endsWith("png"))
                 {
 			try{

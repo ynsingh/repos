@@ -197,7 +197,7 @@ $page.setBgColor($ui.bgcolor)
 	<tr bgcolor ="$ui.menuColor"><td  align="left" colspan="5">
 		<font size=4> <b>$RemoteTag $brih_course $RemoteConfiguration</b></font>
 	</td></tr>
-	<tr><td >
+	<tr><td colspan=3>
 		<font color=Red>* $Remotemandatory</font>
 	</td></tr>
 			<tr bgcolor ="$ui.menuColor">

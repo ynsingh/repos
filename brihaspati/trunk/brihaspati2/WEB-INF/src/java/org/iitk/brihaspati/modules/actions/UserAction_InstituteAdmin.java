@@ -436,7 +436,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
 				Date date=new Date();
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+".zip");
                                 file.write(f);
-				File photoDir=new File(TurbineServlet.getRealPath("/images")+"/Photo/");
+				File photoDir=new File(TurbineServlet.getRealPath("/localImages")+"/Photo/");
 				photoDir.mkdirs();
 				GetUnzip guz=new GetUnzip(f.getAbsolutePath(),photoDir.getAbsolutePath());	
 				String photoArr[]=photoDir.list();
@@ -511,7 +511,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 FileItem file = pp.getFileItem("file");
                 String fileName=file.getName();
 		fileName=fileName.toLowerCase();
-                String imagesRealPath=TurbineServlet.getRealPath("/images");
+                String imagesRealPath=TurbineServlet.getRealPath("/localImages");
 		String msg1;
                 if(fileName.endsWith("jpg")|| fileName.endsWith("gif")|| fileName.endsWith("png")||fileName.endsWith("jpeg"))
                 {
