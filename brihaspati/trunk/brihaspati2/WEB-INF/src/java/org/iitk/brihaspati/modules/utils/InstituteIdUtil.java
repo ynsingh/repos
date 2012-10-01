@@ -55,6 +55,7 @@ import org.iitk.brihaspati.om.StudentRollno;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:sharad23nov@yahoo.com">sharad singh</a>
  * @modify date:23-12-2010,10-02-2011,05-08-2011(Richa),27-02-2012(jaivir,seema,kishore)
  */
 public class InstituteIdUtil
@@ -432,6 +433,41 @@ public class InstituteIdUtil
                 }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getTaInstId() method --[InstituteIdUtil]"+ex);}
         return instidlist;
         }
+
+        /*
+        *  method to get all institute ids in which he is registered
+        *  created and modified version (getInstructorInstId(int uid)) by sharad
+        */
+        public static Vector getUserAllInstId(int uid)
+        {
+                Vector instidlist=new Vector();
+                Criteria crit=new Criteria();
+                try{
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                        crit.or(TurbineUserGroupRolePeer.ROLE_ID,2);
+                        crit.or(TurbineUserGroupRolePeer.ROLE_ID,3);
+
+                        List v=TurbineUserGroupRolePeer.doSelect(crit);
+                //      ErrorDumpUtil.ErrorLog("List in InstituteIdUtil=====>"+v);
+                        for(int k=0;k<v.size();k++)
+                        {
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
+                                //ErrorDumpUtil.ErrorLog("Group id in InstituteIdUtil=====>"+element);
+                                int s=(element.getGroupId());
+                //              ErrorDumpUtil.ErrorLog("Group id in InstituteIdUtil=====>"+s);
+                                String gname=GroupUtil.getGroupName(s);
+                                //ErrorDumpUtil.ErrorLog("Group name in InstituteIdUtil=====>"+gname);
+                                String actgname[]=gname.split("_");
+                                String InsId=actgname[1];
+                                //ErrorDumpUtil.ErrorLog("InstId in InstituteIdUtil=====>"+InsId);
+                                if(!instidlist.contains(InsId))
+                                        instidlist.add(InsId);
+                        }
+                }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getInstructorInstId() method --[InstituteIdUtil]"+ex);}
+        ErrorDumpUtil.ErrorLog("Inst id in InstituteIdUtil======>"+instidlist.size());
+        return instidlist;
+        }
+
 
 }
 

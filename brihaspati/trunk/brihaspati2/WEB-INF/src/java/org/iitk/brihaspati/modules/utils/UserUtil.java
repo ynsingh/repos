@@ -40,7 +40,7 @@ import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.apache.commons.lang.StringUtils;
-
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 
 /**
@@ -169,6 +169,26 @@ public class UserUtil
 		}
 	return v;
 	
-	}			
+	}
+	//added by sharad for removal		
+        public static List inst_stud_group(int uid)throws Exception
+        {
+                List v=null;
+                int nogid[]={1,4,5};
+		int roleid[]={2,3,8};
+                try{
+                        Criteria crit = new Criteria();
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                        crit.addNotIn(TurbineUserGroupRolePeer.GROUP_ID,nogid);
+                        crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleid);
+                        v=TurbineUserGroupRolePeer.doSelect(crit);
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("Exception inside getAllGrpId() UserUtil.java!!"+e);
+                }
+        return v;
+
+        }
+	
 
 }
