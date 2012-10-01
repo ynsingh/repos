@@ -63,9 +63,14 @@ public class JoinSession {
                 try{
 			lectid="lect_id="+URLEncoder.encode(Lecture_ID,"UTF-8");
 			String usr_name=client_obj.getUserName();
-			if(!(usr_name.equals("")))
-	                	username="user="+URLEncoder.encode(usr_name,"UTF-8");
-			else
+			if(!(usr_name.equals(""))){
+				if(usr_name.equals("guest")) {
+					usr_name = javax.swing.JOptionPane.showInputDialog(null, "Please give nick name : ", "Nick name panel ", 1);
+					client_obj.setUserName(usr_name);
+					usr_name=java.net.URLEncoder.encode(usr_name);
+				}
+				username="user="+URLEncoder.encode(usr_name,"UTF-8");
+			} else
 				log.setLog("Insufficient username in goTOLecture() in joinSession Class :"+usr_name);
 
 			if(!(client_obj.getUserRole().equals("")))

@@ -304,7 +304,6 @@ public class MainWindow  extends JFrame implements ActionListener{
         }
 
 	public  void setCouseid(String courseid){
-		System.out.println(courseid);
                 label.setText("<html><blink><Font size=3 color=black><b>"+courseid+"</b></font></blink></html>");
 
         }

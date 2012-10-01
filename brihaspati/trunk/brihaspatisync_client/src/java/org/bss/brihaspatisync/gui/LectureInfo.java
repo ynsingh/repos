@@ -85,8 +85,10 @@ public class LectureInfo extends JFrame implements MouseListener
 		int k=0;
 		descLabel=new JLabel[20];
 		while(str1.hasMoreTokens()){
-			descLabel[k]=new JLabel("<html><font color=Black>"+sessionInfo[k]+"</font><font color=Black><b>=</font><font color=blue><I>"+str1.nextElement().toString()+"</font></html>");  
-			k++;
+			try {
+				descLabel[k]=new JLabel("<html><font color=Black>"+sessionInfo[k]+"</font><font color=Black><b>=</font><font color=blue><I>"+decrypt(str1.nextElement().toString())+"</font></html>");  
+				k++;
+			}catch(Exception e){}
 		}	
 		descPanel=new JPanel();
 		descPanel.setLayout(new GridLayout(0,2,5,0));
@@ -145,6 +147,12 @@ public class LectureInfo extends JFrame implements MouseListener
 		 }
 		 	
 	}
+	
+	private String decrypt(String encryptedData) throws Exception {
+                byte[] decordedValue = new sun.misc.BASE64Decoder().decodeBuffer(encryptedData);
+                String decryptedValue = new String(decordedValue);
+                return decryptedValue;
+        }
 
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}

@@ -138,10 +138,10 @@ public class ClientObject {
 	public String getwelcomeUserName(){
                 String name_new=usr_name;
                 try {
-                        int k=name_new.lastIndexOf("@");
-                        name_new=name_new.substring(0,k);
-                        if(name_new.length()>10){
-                                name_new=name_new.substring(0,12);
+                        //int k=name_new.lastIndexOf("@");
+                        //name_new=name_new.substring(0,k);
+                        if(name_new.length()>9){
+                                name_new=name_new.substring(0,7);
                                 name_new=name_new+"..";
                         }
                 }catch(Exception e){}
