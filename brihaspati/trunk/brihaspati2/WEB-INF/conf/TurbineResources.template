@@ -62,7 +62,7 @@ mail.password=
 # Default: false
 # -------------------------------------------------------------------
 
-module.cache=false
+module.cache=true
 
 # If module.cache=true, then how large should we make the hashtables
 # by default.
@@ -587,7 +587,7 @@ services.VelocityService.resource.loader = file
 services.VelocityService.file.resource.loader.description = Velocity File Resource Loader
 services.VelocityService.file.resource.loader.class = org.apache.velocity.runtime.resource.loader.FileResourceLoader
 services.VelocityService.file.resource.loader.path = /templates/app,/templates/flux
-services.VelocityService.file.resource.loader.cache = false
+services.VelocityService.file.resource.loader.cache = true
 services.VelocityService.file.resource.loader.modificationCheckInterval = 2
 
 #
