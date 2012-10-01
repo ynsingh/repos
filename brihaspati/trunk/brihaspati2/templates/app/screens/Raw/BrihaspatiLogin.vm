@@ -338,7 +338,7 @@ $!msg
 ##Add ResendActivation link in login page
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang)><b>$brih_resend $brih_act $brih_link</b></a>
+<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang)><b>$brih_resend $brih_mail</b></a>
 </b></td></tr>
 <tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;

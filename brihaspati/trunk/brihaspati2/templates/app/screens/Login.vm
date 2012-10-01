@@ -93,7 +93,7 @@ Login
 ##following link added by Priyanka
 <tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english") style=text-decoration:none>Resend Activation Link</a>
+<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english") style=text-decoration:none>Resend Mail</a>
 </td></tr>
 
 <tr><td colspan=2>

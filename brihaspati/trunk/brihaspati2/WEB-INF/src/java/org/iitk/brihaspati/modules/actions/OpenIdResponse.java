@@ -73,6 +73,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * Action class to receive authentication response from OpenID Provider
  * and fetch required parameters from the response.
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * modified date : 01-10-2012
  */
 
 public class OpenIdResponse extends VelocityAction
@@ -90,7 +91,7 @@ public class OpenIdResponse extends VelocityAction
     //int count=0;
     private String LangFile="";
     OpenIdProcess open = new OpenIdProcess(); 
-   
+    String str;   
 
  public void doPerform( RunData data, Context context )
  {
@@ -150,7 +151,7 @@ public class OpenIdResponse extends VelocityAction
 			 }catch(Exception e)
 			  {
 				log.error("error while nonce checking",e);
-				String str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
+				str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
 				String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str;
 				try{
                                        data.setMessage(str);
@@ -179,7 +180,7 @@ public class OpenIdResponse extends VelocityAction
                         		final Throwable throwable = new Exception(e);
                         		ErrorDumpUtil.ErrorLog("STACK TRACE   "+getStackTrace(throwable));
                         		ErrorDumpUtil.ErrorLog("Error occured during authentication*** "+ e);
-    					String str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
+    					str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
 	                    		String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str;
                         		ErrorDumpUtil.ErrorLog("After getAuthentication function the url is  "+url1);
                         		try{
@@ -207,7 +208,7 @@ public class OpenIdResponse extends VelocityAction
                                         final Throwable throwable = new Exception(nl);
                                         ErrorDumpUtil.ErrorLog("STACK TRACE   "+getStackTrace(throwable));
                                         ErrorDumpUtil.ErrorLog("Error occured while fetching data*** "+ nl);
-					String str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
+					str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
                                         String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str;
                                         try{
                                                 data.setMessage(str);
@@ -240,7 +241,9 @@ public class OpenIdResponse extends VelocityAction
                                 String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=User does not exist!";
                         	ErrorDumpUtil.ErrorLog("I am in result uid compare second "+url1);
                                 try{
-				       data.setMessage("User does not exist!");
+					str=MultilingualUtil.ConvertedString("usr_doesntExist",LangFile);
+                                        data.setMessage(str);
+				       //data.setMessage("User does not exist!");
                                        data.getResponse().sendRedirect(url1);
                                 }
                                 catch (Exception ex){
@@ -259,8 +262,10 @@ public class OpenIdResponse extends VelocityAction
                                         {
 						 ErrorDumpUtil.ErrorLog(a_key+" is null");
                                                  try{
-                                                      data.setMessage("Your account has some problem, contact to administrator or re register.");
-                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account has some problem, contact to administrator or re register.");
+						      str=MultilingualUtil.ConvertedString("act_prb",LangFile);
+		                                      data.setMessage(str);
+                                                      //data.setMessage("Your account has some problem, contact to administrator or re register.");
+                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                                  }
                                                  catch (Exception ex){
                                                         ErrorDumpUtil.ErrorLog("User's account activated not activated........... "+ex);
@@ -303,8 +308,10 @@ public class OpenIdResponse extends VelocityAction
 					else
                                         {
                                                 try{
-                                                      data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
-                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account is not activated. For activation please check your mail. If you did not get the mail, please click on the Resend Activation link.");
+							str=MultilingualUtil.ConvertedString("reAct_mail",LangFile);
+		                                        data.setMessage(str);
+                                                      //data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
+                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=str");
                                                  }
                                                  catch (Exception ex){
                                                         String msg = "Error in login";
@@ -320,7 +327,7 @@ public class OpenIdResponse extends VelocityAction
                                 }//catch
 	}//try
 	catch(Exception e){
-	String str=MultilingualUtil.ConvertedString("openid_msg_2",LangFile);
+	str=MultilingualUtil.ConvertedString("openid_msg_2",LangFile);
 	ErrorDumpUtil.ErrorLog("Exception in OpenIdResponse	"+e);
 	final Throwable throwable = new Exception(e);
         ErrorDumpUtil.ErrorLog("STACK TRACE   "+getStackTrace(throwable));

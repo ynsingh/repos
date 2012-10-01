@@ -55,7 +55,7 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
 //import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
  * Action class for authenticating a user into the system
  * This class also contains code for recording login statistics of 
@@ -71,7 +71,7 @@ import org.iitk.brihaspati.modules.utils.UpdateMailthread;
  *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  *  @author <a href="mailto:palseema30@gmail.com">Manorama pal</a>
  *  @author modified date 04 Oct 2011<a href="mailto:kishore.shukla@gmail.com">kishore shukla</a>
- * @author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author modified date 09-08-2012, 01-10-2012 <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  */
 
 public class myLogin extends VelocityAction{
@@ -89,7 +89,7 @@ public class myLogin extends VelocityAction{
 		Criteria crit = null;
 		String userLanguage = "";
 		String a_key = "";	
-	
+		String str;	
 		List list = null;	
 
 		/** Getting Language according to Selection of Language in lang Variable
@@ -98,7 +98,7 @@ public class myLogin extends VelocityAction{
 		String flag=data.getParameters().getString("flag");
                 //String LangFile =data.getParameters().getString("Langfile","");
                 String lang=data.getParameters().getString("lang","");
-
+		String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
 		String password = data.getParameters().getString("password", "" );
@@ -128,8 +128,10 @@ public class myLogin extends VelocityAction{
 					if (a_key == null || a_key.equalsIgnoreCase("NULL"))
 					{
 						 try{
-                	                              data.setMessage("Your account has some problem, contact to administrator or re register.");
-                        	                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account has some problem, contact to administrator or re register.");
+                	                              	str=MultilingualUtil.ConvertedString("act_prb",LangFile);
+                                                        data.setMessage(str);
+							//data.setMessage("Your account has some problem, contact to administrator or re register.");
+                        	                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                  	         }
 	                                         catch (Exception ex){
                 	                                ErrorDumpUtil.ErrorLog("User's account activated not activated........... "+ex);
@@ -199,8 +201,10 @@ public class myLogin extends VelocityAction{
 					else
 					{
 						try{
-                                                      data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
-                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account is not activated. For activation please check your mail. If you did not get the mail, please click on the Resend Activation link.");
+							str=MultilingualUtil.ConvertedString("reAct_mail",LangFile);
+                                                        data.setMessage(str);
+                                                      //data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
+                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                                  }
                                                  catch (Exception ex){
 							String msg = "Error in login";

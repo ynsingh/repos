@@ -58,7 +58,7 @@ import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
-import org.iitk.brihaspati.modules.utils.EncryptionUtil;
+//import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 
 /**
  * @author <a href="mailto:palseema@rediffmail.com">Seema Pal </a>23April2012
@@ -68,7 +68,7 @@ import org.iitk.brihaspati.modules.utils.EncryptionUtil;
  * @modified date: 22-11-2010, 16-06-2011
  * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
  * @modified date: 22-11-2010, 08-08-2012(Shaista)
- *@author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *@author modified date 09-08-2012, 25-09-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  */
 /**
 * class for registration of a new institute as well institute admin information
@@ -216,7 +216,7 @@ public class InstituteRegistration extends VelocitySecureAction
                                 		subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
                                 		messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
                                 		confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                                		confirmationMail=MailNotification.getMessage(confirmationMail, instituteadminemail, a_key, mode);
+                                		confirmationMail=MailNotification.getMessage(confirmationMail, instituteadminemail, a_key, mode, lang);
                                 		confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
                                 		messageFormate = messageFormate+confirmationMail;
                                 		Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", instituteadminemail, subject, "", Lang, "", "");

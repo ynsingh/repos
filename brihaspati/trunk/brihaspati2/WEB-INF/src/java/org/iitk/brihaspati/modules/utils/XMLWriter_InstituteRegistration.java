@@ -55,7 +55,7 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
  * @author <a href="jaivirpal@gmail.com">Jaivir Singh</a>
  * @author <a href="palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modify date: 009-08-2012 (Priyanka)
+ * @modify date: 009-08-2012, 25-09-2012 (Priyanka)
  */
 
 /**class for hadling all the stuff of institute registration in xml file	
@@ -685,8 +685,9 @@ public class XMLWriter_InstituteRegistration {
                 catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(RemoveElementRejectxml)"+e);}
         }
 
-//following method added by Priyanka
-	 /**method for setting Flag element in xml file
+//following methods added by Priyanka
+	 /**
+ 	  * method for setting Flag element in xml file
  	  *@param filePath (String)
           *@param email (String)
           *@param activation (String)
@@ -745,5 +746,56 @@ public class XMLWriter_InstituteRegistration {
 		}
                 return set;
 	}//method
+
+	/**
+ 	 * Method to get activation key 
+ 	 * @param email (String)
+ 	 * @param filepath (String)
+ 	 * @return a_key Activation key correspoding to the email 
+	 */
+	 public static String getActivationKey(String filePath, String email)
+	 {
+		Element eElement=null;
+                try {
+                        File f=new File(filePath);
+                        if(f.exists()) {
+                                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                DocumentBuilder builder = factory.newDocumentBuilder();
+                                Document doc = builder.parse(getFile(filePath));
+                                doc.getDocumentElement().normalize();
+                                 NodeList nodeList = doc.getElementsByTagName("Institute");
+                                 for( int i=0; i<nodeList.getLength(); i++ ) {
+                                        Node nNode = nodeList.item(i);
+                                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                eElement = (Element) nNode;
+						/**get tag value by passing tag(email)
+                                                 *@see getTagValue method
+                                                 */
+						 String e_mail=getTagValue("Email",eElement);
+                                                 ErrorDumpUtil.ErrorLog("email from xml "+e_mail);
+                                                 if(email.equals(e_mail))
+                                                 {
+							String flag=getTagValue("Flag",eElement);
+							if(flag.equals("0"))
+							{
+                                          	 		String a_key=getTagValue("Activation",eElement);
+								return a_key;
+							}//if 4
+							else
+							{
+								String message="Email confirmed";
+								return message;
+							}
+						 }//if 3
+					}//if 2
+				}//for
+			}//if 1
+		}//try
+		catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(getActivationKey)"+e);
+                }//catch			
+		return null;
+	 }//method
 //...............................
 }
