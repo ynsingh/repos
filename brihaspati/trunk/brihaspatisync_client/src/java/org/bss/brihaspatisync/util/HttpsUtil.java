@@ -287,7 +287,6 @@ public class HttpsUtil{
                                 try{
 					while((str=in.readLine())!=null){
 	                                	if(!(str.equals(message))){
-							System.out.println("sffsf fsd fs dfs f"+msgList);
 							if(str.matches("(.*)loginfailed(.*)")){
 								return null;
 							}else
@@ -309,7 +308,7 @@ public class HttpsUtil{
 
 	public synchronized Vector getSessionForCourse(Vector courseList, String indexServerName) {
 		if(courseList !=null) {
-			Vector userlist=new Vector();
+			Vector sessionList=new Vector();
 			for(int i=0;i<courseList.size();i++){
                         	try{
                                 	String courseName="cn="+java.net.URLEncoder.encode((String)courseList.get(i),"UTF-8");
@@ -324,10 +323,9 @@ public class HttpsUtil{
                         	        	try{
                                 	        	if((str=in.readLine())!=null){
                                         	        	if(!(str.equals("noLecture"))){
-									java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
-									while(str1.hasMoreTokens()) {
-										System.out.println(str1.nextElement().toString());
-										userlist.addElement(str1.nextElement().toString());
+									java.util.StringTokenizer st = new java.util.StringTokenizer(str,"$$");
+									while(st.hasMoreTokens()) {
+										sessionList.addElement(st.nextElement().toString());
 									}
         	                                        	}
                 	                        	}
@@ -339,7 +337,7 @@ public class HttpsUtil{
                 	                System.out.println("Error at getSessionList()in HttpsConnection : "+e.getMessage());
                         	}
 			}
-                	return userlist;
+                	return sessionList;
 		}else
 			return null;
         }
