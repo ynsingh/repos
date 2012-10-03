@@ -24,7 +24,7 @@ $page.setTitle("Home | $course | Course Management |  Course Configuration for G
 
 $page.setBgColor($ui.bgcolor)
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
-
+<div class="scroll">
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td>
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
@@ -326,7 +326,7 @@ $page.setBgColor($ui.bgcolor)
                 </td>
         </tr>
 </table>
-
+</div>
 <SCRIPT LANGUAGE="javascript">
 function ChangeCname(frm,field)
 {

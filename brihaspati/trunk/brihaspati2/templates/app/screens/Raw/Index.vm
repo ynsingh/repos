@@ -72,6 +72,7 @@ $!data.getMessage()
 </div>
 </td>
 <td width="80%" valign="top">
+<div class="indexscroll">
 <table bgcolor="$ui.tableColor" width="100%">
 <tr bgcolor="$ui.menuColor"><td align=center colspan="7">
 #if(( $data.getUser().getTemp("lang" ).toString())!="english")
@@ -165,6 +166,7 @@ $!data.getMessage()
 </td>
 </tr>
 </table>
+</div>
 </td>
 </table>
 </body>
