@@ -145,6 +145,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 
                 menuItem4=new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem4"));
                 menuItem4.setActionCommand("Start-Recorder");
+		menuItem4.setEnabled(false);
                 menuItem4.addActionListener(this);
                 menu2.add(menuItem4);
 
@@ -152,11 +153,13 @@ public class MainWindow  extends JFrame implements ActionListener{
 
                 menuItem5 = new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem5"));
                 menuItem5.setActionCommand("Connection");
+		//menuItem5.setEnabled(false);
                 menuItem5.addActionListener(this);
                 menu3.add(menuItem5);
 		
 		menuItem6 = new JMenuItem(Language.getController().getLangValue("MainWindow.menuItem6"));
                 menuItem6.setActionCommand("VideoServer");
+		//menuItem6.setEnabled(false);
                 menuItem6.addActionListener(this);
                 menu3.add(menuItem6);
 
@@ -208,7 +211,7 @@ public class MainWindow  extends JFrame implements ActionListener{
                 	desktop.revalidate();
                 	desktop.validate();
                 	desktop.repaint();
-                	menuItem4.setEnabled(false);
+                	//menuItem4.setEnabled(false);
 
             	}else if(e.getActionCommand().equals("Sessionout")){
 			content.removeAll();//(1);
@@ -244,7 +247,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 			Logout.getController().sendLogoutRequest();
                         System.exit(0);
 		}else if(e.getActionCommand().equals("Start-Recorder")){
-			// Action code for start recorder.
+			 // Action code for start recorder.
                 } else if(e.getActionCommand().equals("LectureInfo")){
 		  	LectureInfo info=new LectureInfo(org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfoIndex(),org.bss.brihaspatisync.util.ClientObject.getController().getLectureInfo());                      
                 }

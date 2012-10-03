@@ -274,11 +274,11 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	        submitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 submitLabel.addMouseListener(this);
                 submitLabel.setName("submit.Action");
-                cancelLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/cancle.jpg")));
+                cancelLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/cancel.jpg")));
                 cancelLabel.setEnabled(false);
                 cancelLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 cancelLabel.addMouseListener(this);
-                cancelLabel.setName("cancle.Action");
+                cancelLabel.setName("cancel.Action");
 
                 forgetpass=new JLabel("<html><font color=blue><u>"+Language.getController().getLangValue("LoginWindow.forgetpass")+"</u></font></html>");
                 forgetpass.addMouseListener(this);
@@ -396,7 +396,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			submitLabel.setCursor(defaultCursor);
 			
                  }
-                 else if(e.getComponent().getName().equals("cancle.Action")){
+                 else if(e.getComponent().getName().equals("cancel.Action")){
 			cancelLabel.setCursor(busyCursor);
 			try{
                                 Thread.sleep(500);
