@@ -40,6 +40,7 @@ import org.apache.torque.util.Criteria;
 import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -65,6 +66,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 public class ViewMarks extends SecureScreen_Student 
 {
 	private String rollno1,rollno2="";
+	private List v=null;
 	public void doBuildTemplate(RunData data,Context context)
 	{
 		
@@ -79,8 +81,6 @@ public class ViewMarks extends SecureScreen_Student
                          int uid=UserUtil.getUID(checkUser);
                          if((Role.equals("student")) || (Role.equals("instructor")))
                          {
-                                //CourseTimeUtil.getCalculation(uid);
-                                //ModuleTimeUtil.getModuleCalculation(uid);
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                          }
@@ -92,73 +92,87 @@ public class ViewMarks extends SecureScreen_Student
 			{
 				Criteria crit=new Criteria();
 	                        crit.add(StudentRollnoPeer.EMAIL_ID,checkUser);
-	                        List v=StudentRollnoPeer.doSelect(crit);
-				StudentRollno element=(StudentRollno)v.get(0);
-	                        rollno1=element.getRollNo();
+	                        v=StudentRollnoPeer.doSelect(crit);
+				if(v.size()>0){
+					StudentRollno element=(StudentRollno)v.get(0);
+		                        rollno1=element.getRollNo();
 				/**
  				 * Vector size greater than 1 shows that user have more than 1 rollno
  				 * then get another rollno 
  				 */ 
-				if(v.size()>1)
-				{
-					StudentRollno element1=(StudentRollno)v.get(1);
-					rollno2=element1.getRollNo();
+					if(v.size()>1)
+					{
+						StudentRollno element1=(StudentRollno)v.get(1);
+						rollno2=element1.getRollNo();
+					}
 				}
+			//ErrorDumpUtil.ErrorLog("The roll no is "+checkUser +" ==== "+ rollno1 +"===="+rollno2);
 			}
 			catch(Exception e)
 			{ 
 				ErrorDumpUtil.ErrorLog("Error inside getting value in view marks"+e);
 			}
-			String dir=(String)user.getTemp("course_id");
-			context.put("course",(String)user.getTemp("course_name"));
-			String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/MARK.txt";
-			FileReader fr=new FileReader(filePath);
-			BufferedReader br=new BufferedReader(fr);
-			String line;
-			StringTokenizer sTokenizer;
-			if((line=br.readLine())!=null)
-			{
-				sTokenizer=new StringTokenizer(line,",");
-				Vector heading=new Vector();
-				sTokenizer.nextToken();
-				while(sTokenizer.hasMoreTokens())
-				{
-					heading.addElement(sTokenizer.nextToken());
-				}
-				context.put("markHeading",heading);
-			}
-			while((line=br.readLine())!=null)
-			{
-				sTokenizer=new StringTokenizer(line,",");
-				try{
-					String userName=sTokenizer.nextToken().trim();
-					if(rollno1.equals(userName)||rollno2.equals(userName))
-					//if(rollno1.equals(userName))
+			
+			boolean flag=true;
+			if(v.size()>0){
+				String dir=(String)user.getTemp("course_id");
+				context.put("course",(String)user.getTemp("course_name"));
+				String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/MARK.txt";
+				
+				if(((new File (filePath)).exists())){
+					FileReader fr=new FileReader(filePath);
+					BufferedReader br=new BufferedReader(fr);
+					String line;
+					StringTokenizer sTokenizer;
+					if((line=br.readLine())!=null)
 					{
-						Vector markDetail=new Vector();
+						sTokenizer=new StringTokenizer(line,",");
+						Vector heading=new Vector();
+						sTokenizer.nextToken();
 						while(sTokenizer.hasMoreTokens())
 						{
-							markDetail.addElement(sTokenizer.nextToken());
+							heading.addElement(sTokenizer.nextToken());
 						}
-						br.close();
-						context.put("marks",markDetail);
-						context.put("marksDSize",Integer.toString(markDetail.size()));
-						context.put("status","NoBlank");
-						break;
+						context.put("markHeading",heading);
 					}
-					else
+					while((line=br.readLine())!=null)
 					{
-						context.put("marksDSize","0");
-						context.put("status","Blank");
+						sTokenizer=new StringTokenizer(line,",");
+						try{
+							String userName=sTokenizer.nextToken().trim();
+							if(rollno1.equals(userName)||rollno2.equals(userName))
+							{
+								Vector markDetail=new Vector();
+								while(sTokenizer.hasMoreTokens())
+								{
+									markDetail.addElement(sTokenizer.nextToken());
+								}
+								br.close();
+						//	ErrorDumpUtil.ErrorLog("Error inside getting value in view marks 22"+markDetail.toString());
+								context.put("marks",markDetail);
+								context.put("marksDSize",Integer.toString(markDetail.size()));
+								context.put("status","NoBlank");
+								flag=false;
+								break;
+							}/* 
+							else
+							{
+								context.put("marksDSize","0");
+								context.put("status","Blank");
+							} */
+						}
+						catch(Exception e){
+							context.put("status","Blank");
+							context.put("Exp","Exp");
+							ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
+						}
 					}
-				}
-				catch(Exception e){
-						context.put("status","Blank");
-						context.put("Exp","Exp");
-						ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
-				}
+				}//if file exist
 			}
-
+			if (flag){
+                                context.put("marksDSize","0");
+                                context.put("status","Blank");
+                        }
 		}
 		catch(IOException e)
 		{
