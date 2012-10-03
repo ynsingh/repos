@@ -4,13 +4,16 @@ package org.bss.brihaspatisync.gui;
  * InstructorCSPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur
+ * Copyright (c) 2011,2012 ETRG, IIT Kanpur
  */
 
 import java.awt.Cursor;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.Cursor;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -35,7 +38,7 @@ import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Creadted on 2008, Modified on 2011, modified by 2012. 
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified ActionListener and MouseListener for signalling
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
@@ -107,15 +110,28 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		instCourseCombo_Panel.setBackground(Color.LIGHT_GRAY);
 		reload_Panel=new JPanel();
 		reload_Panel.setBackground(Color.LIGHT_GRAY);
-		north_mainPanel.setLayout(new FlowLayout());
+
+		north_mainPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		Insets insets = new Insets(5,10,5,10);
+
 		north_mainPanel.setBackground(Color.LIGHT_GRAY);
 		instLabel=new JLabel("<html><b>"+Language.getController().getLangValue("InstructorCSPanel.Label1")+"</b></html>");
+		gbc.gridx = 0;
+                gbc.gridy = 0;
+		north_mainPanel.add(instLabel,gbc);
+
 		/**
 		 * get Course list form clienmt object class.
 		 */		
 		instCourseCombo=new JComboBox(reloadCourseList());
 		instCourseCombo.addActionListener(this);	
 		instCourseCombo_Panel.add(instCourseCombo,BorderLayout.CENTER);
+		gbc.gridx = 1;
+                gbc.gridy = 0;
+                north_mainPanel.add(instCourseCombo_Panel,gbc);
+
 		
 		reloadLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/reload.png")));
                 reloadLabel.setEnabled(true);
@@ -131,6 +147,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		
 		reload_Panel.add(reloadLabel,new FlowLayout());
 		reload_Panel.add(reloadLabel_1,new FlowLayout());
+		gbc.gridx = 2;
+                gbc.gridy = 0;
+                north_mainPanel.add(reload_Panel,gbc);
+
 
 		announceLabel=new JLabel("<html><b><font color=black>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceNewSession")+"</font></b></html>");
 		announceLabel.setEnabled(false);		
@@ -138,12 +158,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		announceLabel.removeMouseListener(this);
     		announceLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     		announceLabel.setName("announceLabel.Action");
-		
-		north_mainPanel.add(instLabel,BorderLayout.WEST);
-		north_mainPanel.add(instCourseCombo_Panel,BorderLayout.CENTER);
-		north_mainPanel.add(reload_Panel,BorderLayout.CENTER);
-		north_mainPanel.add(announceLabel,BorderLayout.SOUTH);
-		
+		gbc.gridx = 3;
+                gbc.gridy = 0;
+                north_mainPanel.add(announceLabel,gbc);
+
 		mainPanel.add(north_mainPanel, BorderLayout.NORTH);
 		mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
 		return mainPanel;
@@ -165,7 +183,9 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 	protected JScrollPane showLecture(Vector lectVector){
 		getTimeIndexingServer();
 		lectinfoVector=lectVector;
+		System.out.println("session list from server"+lectVector);
         	int y=lectVector.size();
+		System.out.println("session list size : "+y);
 		serialNo=new JLabel[y];
                 nameLabel=new JLabel[y];
 		buttonPanel=new JPanel[y];
@@ -199,7 +219,8 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		courseid.clear();
 		for(int i=0;i<y;i++){
 			try {
-                        java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
+
+/*                      java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
                         String lectid=decrypt(str1.nextElement().toString());
 		        String lectCouseName=decrypt(str1.nextElement().toString());
 			String str=lectid+"-"+lectCouseName;
@@ -218,6 +239,28 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         String fortime=decrypt(str1.nextElement().toString());
 			String time[]=lectTime.split(":");
 			int anausetime=	(Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
+*/
+
+			java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
+                        String lectid=(str1.nextElement().toString());
+                        String lectCouseName=(str1.nextElement().toString());
+                        String str=lectid+"-"+lectCouseName;
+                        courseid.add(str);//lectid);
+                        String lectUserName=(str1.nextElement().toString());
+                        String lectName=(str1.nextElement().toString());
+                        String lectInfo=(str1.nextElement().toString());
+                        String lectNo=(str1.nextElement().toString());
+                        String lectVedio=(str1.nextElement().toString());
+                        String lectAudio=(str1.nextElement().toString());
+                        String lectWhiteBoard=(str1.nextElement().toString());
+                        String lectDate=(str1.nextElement().toString());
+                        String lectTime=(str1.nextElement().toString());
+                        String lectDuration=(str1.nextElement().toString());
+                        String repeattime=(str1.nextElement().toString());
+                        String fortime=(str1.nextElement().toString());
+                        String time[]=lectTime.split(":");
+                        int anausetime= (Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
+
 
 			buttonPanel[i]=new JPanel();
                         buttonPanel[i].setLayout(new FlowLayout());

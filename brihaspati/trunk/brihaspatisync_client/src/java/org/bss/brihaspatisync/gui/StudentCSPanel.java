@@ -10,6 +10,9 @@ package org.bss.brihaspatisync.gui;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.Cursor;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -32,7 +35,7 @@ import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on 2008, modified on 2011, modified on 2012 
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for signalling.
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
@@ -98,18 +101,29 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		mainPanel.setLayout(new BorderLayout());	
 			
 		north_mainPanel=new JPanel();
-		north_mainPanel.setLayout(new FlowLayout());
+		north_mainPanel.setLayout(new GridBagLayout());
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                Insets insets = new Insets(5,10,5,10);
+
 		studentCourseCombo_Panel=new JPanel();
 		reload_Panel=new JPanel();
 		studentCourseCombo_Panel.setBackground(Color.LIGHT_GRAY);
 		reload_Panel.setBackground(Color.LIGHT_GRAY);
 		north_mainPanel.setBackground(Color.LIGHT_GRAY);
 		studLabel=new JLabel("<html><b>"+Language.getController().getLangValue("StudentCSPanel.TitleLabel")+"</b></html>");
+		gbc.gridx = 0;
+                gbc.gridy = 0;
+                north_mainPanel.add(studLabel,gbc);
+
 		
 		studCourseCombo=new JComboBox(reloadCourseList());
 		studCourseCombo.addActionListener(this);	
 		studentCourseCombo_Panel.add(studCourseCombo,BorderLayout.CENTER);
-			
+		gbc.gridx = 1;
+                gbc.gridy = 0;
+                north_mainPanel.add(studentCourseCombo_Panel,gbc);
+
 		reloadLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/reload.png")));
                 reloadLabel.setEnabled(true);
                 reloadLabel.addMouseListener(this);
@@ -124,10 +138,10 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		
                 reload_Panel.add(reloadLabel,new FlowLayout());
                 reload_Panel.add(reloadLabel_1,new FlowLayout());
+		gbc.gridx = 2;
+                gbc.gridy = 0;
+                north_mainPanel.add(reload_Panel,gbc);
 		
-		north_mainPanel.add(studLabel,BorderLayout.WEST);
-		north_mainPanel.add(studentCourseCombo_Panel,BorderLayout.CENTER);
-		north_mainPanel.add(reload_Panel,BorderLayout.CENTER);
 	   	mainPanel.add(north_mainPanel, BorderLayout.NORTH);
 	   	
                 mainPanel.add(showLecture(client_obj.getSessionList(reloadCourseList(),client_obj.getIndexServerName())),BorderLayout.CENTER);
@@ -162,8 +176,8 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
     	
  		center_mainPanel.setLayout(new GridLayout(0,2,5,3));
     		center_mainPanel.setBorder(BorderFactory.createTitledBorder(Language.getController().getLangValue("StudentCSPanel.BorderText")));
-		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.LectureLabel")+"</font></U></b>",0));
-		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.ActionLabel")+"</font></U></b>",0));
+		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.LectureLabel")+"</font></U></b>"),0);
+		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.ActionLabel")+"</font></U></b>"),0);
 	
 		String str_curday="";
                 String str_curmonth="";
