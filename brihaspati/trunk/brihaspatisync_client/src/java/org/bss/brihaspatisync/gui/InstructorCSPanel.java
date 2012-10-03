@@ -183,9 +183,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 	protected JScrollPane showLecture(Vector lectVector){
 		getTimeIndexingServer();
 		lectinfoVector=lectVector;
-		System.out.println("session list from server"+lectVector);
         	int y=lectVector.size();
-		System.out.println("session list size : "+y);
 		serialNo=new JLabel[y];
                 nameLabel=new JLabel[y];
 		buttonPanel=new JPanel[y];
@@ -240,7 +238,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			String time[]=lectTime.split(":");
 			int anausetime=	(Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
 */
-
 			java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
                         String lectid=(str1.nextElement().toString());
                         String lectCouseName=(str1.nextElement().toString());
@@ -260,8 +257,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         String fortime=(str1.nextElement().toString());
                         String time[]=lectTime.split(":");
                         int anausetime= (Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
-
-
+			
 			buttonPanel[i]=new JPanel();
                         buttonPanel[i].setLayout(new FlowLayout());
                         buttonPanel[i].setBorder(BorderFactory.createLineBorder(Color.gray));
