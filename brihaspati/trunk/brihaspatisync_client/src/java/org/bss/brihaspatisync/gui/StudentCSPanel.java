@@ -176,8 +176,9 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
     	
  		center_mainPanel.setLayout(new GridLayout(0,2,5,3));
     		center_mainPanel.setBorder(BorderFactory.createTitledBorder(Language.getController().getLangValue("StudentCSPanel.BorderText")));
-		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.LectureLabel")+"</font></U></b>"),0);
-		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.ActionLabel")+"</font></U></b>"),0);
+				
+		center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("StudentCSPanel.ActionLabel")+"</font></U></b>"),0);
+		center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("StudentCSPanel.LectureLabel")+"</font></U></b>"),0);
 	
 		String str_curday="";
                 String str_curmonth="";
@@ -250,7 +251,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			buttonPanel[i].add(descLabel[i]);
 			center_mainPanel.add(nsPane[i]);
 			center_mainPanel.add(buttonPanel[i]);
-			}catch(Exception e){System.out.println("Error in load session in StudentCSPanel class  ");}
+			}catch(Exception e){System.out.println("Error in load session in StudentCSPanel class  "+e.getMessage());}
 		}
        		if(y==0){
 			return new JScrollPane();

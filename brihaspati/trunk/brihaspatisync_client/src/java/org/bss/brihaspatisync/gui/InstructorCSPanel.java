@@ -212,13 +212,13 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		center_mainPanel.setLayout(new GridLayout(0,2,5,3));
 
                 center_mainPanel.setBorder(BorderFactory.createTitledBorder(Language.getController().getLangValue("InstructorCSPanel.AnnouncedSession")));
-                center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("InstructorCSPanel.LectureName")+"</font></U></b>"),0);
-                center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("InstructorCSPanel.Actions")+"</font></U></b>"),0);
+                center_mainPanel.add(new JLabel("<html><b><U><font color=green >"+Language.getController().getLangValue("InstructorCSPanel.Actions")+"</font></U></b>"),0);
+                center_mainPanel.add(new JLabel("<html><b><U><font color=green > "+Language.getController().getLangValue("InstructorCSPanel.LectureName")+"</font></U></b>"),0);
 		courseid.clear();
 		for(int i=0;i<y;i++){
 			try {
 
-/*                      java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
+                        java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
                         String lectid=decrypt(str1.nextElement().toString());
 		        String lectCouseName=decrypt(str1.nextElement().toString());
 			String str=lectid+"-"+lectCouseName;
@@ -237,26 +237,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         String fortime=decrypt(str1.nextElement().toString());
 			String time[]=lectTime.split(":");
 			int anausetime=	(Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
-*/
-			java.util.StringTokenizer str1 = new java.util.StringTokenizer(lectVector.get(i).toString(),",");
-                        String lectid=(str1.nextElement().toString());
-                        String lectCouseName=(str1.nextElement().toString());
-                        String str=lectid+"-"+lectCouseName;
-                        courseid.add(str);//lectid);
-                        String lectUserName=(str1.nextElement().toString());
-                        String lectName=(str1.nextElement().toString());
-                        String lectInfo=(str1.nextElement().toString());
-                        String lectNo=(str1.nextElement().toString());
-                        String lectVedio=(str1.nextElement().toString());
-                        String lectAudio=(str1.nextElement().toString());
-                        String lectWhiteBoard=(str1.nextElement().toString());
-                        String lectDate=(str1.nextElement().toString());
-                        String lectTime=(str1.nextElement().toString());
-                        String lectDuration=(str1.nextElement().toString());
-                        String repeattime=(str1.nextElement().toString());
-                        String fortime=(str1.nextElement().toString());
-                        String time[]=lectTime.split(":");
-                        int anausetime= (Integer.parseInt(time[0])*60)+Integer.parseInt(time[1]);
+
 			
 			buttonPanel[i]=new JPanel();
                         buttonPanel[i].setLayout(new FlowLayout());

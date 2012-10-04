@@ -25,7 +25,7 @@ public class ClientObject {
 	private String a_status="";
 	private String v_status="";
 
-//mention what is stored in a_status and v_status --YNS
+	//mention what is stored in a_status and v_status --YNS
 
 	private String usr_name="";
 	private String usr_role="";
@@ -262,19 +262,21 @@ public class ClientObject {
                 return a_status;
         } 
 	
-	private Vector LectureInfo=new Vector();
+	private Vector LectureInfo=null;
 	private int LectureInfoindex=-1;
 	
-	public void setLectureInfo(Vector LectureInfo){
-                this.LectureInfo=LectureInfo;
+	public void setLectureInfo(Vector info){
+                this.LectureInfo=info;
         }
+
+	public Vector getLectureInfo(){
+                return LectureInfo;
+        }
+	
 	public void setLectureInfoIndex(int LectureInfoindex){
                 this.LectureInfoindex=LectureInfoindex;
         }
 	
-	public Vector getLectureInfo(){
-                return LectureInfo;
-        }
         public int getLectureInfoIndex(){
                 return LectureInfoindex;
         }

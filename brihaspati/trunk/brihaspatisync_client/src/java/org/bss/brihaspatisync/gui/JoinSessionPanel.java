@@ -16,17 +16,12 @@ import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.border.TitledBorder;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
-import java.util.Vector;
+
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardPanel;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
@@ -39,7 +34,7 @@ import org.bss.brihaspatisync.tools.presentation.PresentationViewPanel;
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
-public class JoinSessionPanel extends JPanel implements ActionListener, MouseListener{
+public class JoinSessionPanel extends JPanel { 
 
 	private static JoinSessionPanel win=null; 
 	private JPanel av_Pane=null;
@@ -58,19 +53,15 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
                 }
                 return win;
         }
+	
    	public JPanel getAV_Panel(){
    		return av_Pane;
    	}
+	
    	public JSplitPane getSplit_Panel(){
    		return splitPane;
    	}
-   	public JPanel getLeft_Panel(){
-   		return left_Pane;
-   	}
-   	public JPanel getRight_Panel(){
-   		return right_Pane;
-   	}
-   	
+	
 	/**
          * Cretae GUI for JoinSessionPanel.
          */
@@ -154,8 +145,6 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		splitPane1.setBackground(Color.WHITE);
                 splitPane1.setDividerLocation(275);
 		
-		
-		
 		splitPane=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setTopComponent(splitPane1);
 		splitPane.setBottomComponent(StatusPanel.getController());
@@ -163,22 +152,5 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		splitPane.setDividerLocation(((int)dim.getHeight())-110);
 		return splitPane;
 	}
-
-	public void actionPerformed(ActionEvent e){}
-		
- 	/**
-       	* Action for mouse click in Announce Session Panel.
-        */
-
-	public void mouseClicked(MouseEvent ev) {
-        	if(ev.getComponent().getName().equals("")){
-		}
-	}
-	
-	public void mousePressed(MouseEvent e) {}
-        public void mouseReleased(MouseEvent e) {}
-        public void mouseEntered(MouseEvent e) {}
-        public void mouseExited(MouseEvent e) {}
-
 
 }//end of class
