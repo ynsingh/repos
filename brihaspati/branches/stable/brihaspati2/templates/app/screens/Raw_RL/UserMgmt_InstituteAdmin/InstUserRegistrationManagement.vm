@@ -12,6 +12,9 @@
 $page.setTitle("Admin Home | Registration Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 #set($InstituteId = $data.getUser().getTemp("Institute_id" ))
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
@@ -130,8 +133,8 @@ $!data.getMessage()
           <td align="right" colspan=2>
     <input type="hidden" name="actionName" >
     <input type="hidden" name="mode" value="$mode" >
-    <input type="button" name="eventSubmit_doRegister" value=$brih_reg onClick="checkCourseName(document.frm,this);"/>
-    <input type="reset" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
+    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value=$brih_reg onClick="checkCourseName(document.frm,this);"/>
+    <input type="reset" class="button-ftextstyle" name="Clear" value=$brih_clear onClick="checkClear(document.frm,this);"/>
     <input type="hidden" name="count" value="$tdcolor" >
     ##<input type="hidden" name="instituteId" value="$lst.get(0).getInstitueId()" >
     <input type="hidden" name="instituteId" value="$instituteId" >
@@ -174,7 +177,7 @@ $!data.getMessage()
         ##<td colspan=2 align="left" bgcolor="$ui.buttonBoxColor">
         <td colspan=2 align="right">
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadcourse" value="$brih_upload" onClick="CheckFields(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="count" value="$tdcolor">
     		<input type="hidden" name="domainname" value="$domainname" >
@@ -215,7 +218,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor" align="right">
                 <td> <b><a href="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("mode","All").addPathInfo("scourse","scourse").addPathInfo("count",$tdcolor)">$brih_course $brih_Of $brih_list</a></b> <td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="scourse" value="scourse">
                         <input type="hidden" name="count" value="$tdcolor">
@@ -223,7 +226,7 @@ $!data.getMessage()
                 <td align="right"> <input align=center type="text" name="valueString" value=""> </td>
                 <td align=center><b>$brih_match_str</b></td>
                 <td align="right">
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
                                 <option value=CourseId>$brih_course $brih_Of $brih_ID</iption>
                                 <option value="Course Name">$brih_course $brih_Of $brih_name</option>
                                 <option value=Dept>$brih_dept</option>

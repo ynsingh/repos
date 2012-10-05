@@ -52,6 +52,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
   * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
   * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
   * @author <a href="mailto:santoshkumarmiracle@gmail.com">Santosh Kumar</a>
+  * @author <a href="mailto:sharad23nov@yahoo.com">sharad singh</a>
+  
   */
  
 public class UserGroupRoleUtil{
@@ -61,16 +63,18 @@ public class UserGroupRoleUtil{
 		Vector gid=new Vector();
 		List v=null;
 		try{
-
 			Criteria crit=new Criteria();
 			crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
 			crit.and(TurbineUserGroupRolePeer.ROLE_ID,role_id);
 			v=TurbineUserGroupRolePeer.doSelect(crit);
+
 			for(int i=0;i<v.size();i++){
 				TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(i);
 				String s=Integer.toString(element.getGroupId());
 				gid.add(s);
+				
 			}
+			
 		}		
 
 		catch(Exception e){
@@ -354,7 +358,8 @@ public class UserGroupRoleUtil{
 		    return("user");
 	    if(rid==7)
 		    return("institute_admin");	
-			    
+	    if(rid==8)
+		    return("teacher_assistant");				    
 	    else
 		    return("error");
 	    

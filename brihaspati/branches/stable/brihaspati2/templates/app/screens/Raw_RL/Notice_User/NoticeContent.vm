@@ -11,7 +11,9 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Home | $CName | Communication | Local Mail | Mails")
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr align="right">
@@ -135,7 +137,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
 	<td> </td>
 	<td align=center>
-		<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
+		<INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
         	<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
         	<INPUT TYPE="hidden" NAME="actionName" VALUE="">
         	<INPUT TYPE="hidden" NAME="flag" VALUE="$flag">

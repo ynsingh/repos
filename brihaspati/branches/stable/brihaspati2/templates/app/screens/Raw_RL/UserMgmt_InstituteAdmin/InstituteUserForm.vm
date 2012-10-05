@@ -9,7 +9,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 20-10-2010, 21-04-2011, 27-03-2012
  *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #if($status!="viewallUser")
@@ -180,13 +182,13 @@ $!data.getMessage()
 			                <td colspan="4" align="right">
 			                        <input type="text" name="rollno1" value="">
 			                </td>
-			                <td align="right"><select name="prg1" size=1>
+			                <td align="right"><select name="prg1" class="drop" size=1>
 						<option value="Select Program"> $brih_program $brih_select</iption>
 						#foreach($instplist in $PrgDetail)
 	                			        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 				                #end
 				        </td>
-			                <td align="right" bgcolor="$ui.menuColor" colspan="2"><select name="group1" size=1>
+			                <td align="right" bgcolor="$ui.menuColor" colspan="2"><select name="group1" class="drop" size=1>
                         			<option value="Select Course">$brih_course $brih_select</option>
 						#foreach($name in $CourseList)
 							<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName() </option>
@@ -236,7 +238,7 @@ $!data.getMessage()
 					#set($flag=false)
 		                #end
         			</td>
-	        		<td align="right"><select name="prg$num" size=1 id="pg$num">
+	        		<td align="right"><select name="prg$num" class="drop" size=1 id="pg$num">
 				## get another record from the list
 				## display in drop down list
 			        #if($temp == $temp1)
@@ -251,7 +253,7 @@ $!data.getMessage()
 				</select></td>
 				#if($temp == $temp1)
                 		        #set($tmpCourse = $grpname)
-		               	  	<td align="right" bgcolor="$ui.menuColor" colspan="2"><select name="group$num" size=1 id="$num">
+		               	  	<td align="right" bgcolor="$ui.menuColor" colspan="2"><select name="group$num" class="drop" size=1 id="$num">
 						<option value="$grpname">$crsals: $crsnm - $crsInst </option>
         	        	#end
 		                #foreach($name in $CourseList)
@@ -317,9 +319,9 @@ $!data.getMessage()
 	            shouldn't appear when inserting a new user.
         	  *#
 	        #if ($Process== "modify")
-			<input type="submit" name="eventSubmit_doUpdate" value="$brih_update"/>
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update"/>
 		#elseif ($Process == "delete")
-        		<input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+        		<input type="submit" name="eventSubmit_doDelete" class="button-ftextstyle" value="$brih_remove"/>
 		#end
 		</td>
 	</tr>

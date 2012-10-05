@@ -66,7 +66,7 @@ import javax.mail.Transport;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 22-11-2010;
  * @modified date: 14-07-2011 (Shaista);
- * @modified date: 09-08-2012 (Priyanka)
+ * @modified date: 09-08-2012, 25-09-2012 (Priyanka)
  */
 
 public class MailNotification{
@@ -143,11 +143,12 @@ public class MailNotification{
 	}
 
 // Following method added by Priyanka
-	public static String getMessage(String info,String uName, String aKey, String mode) throws Exception{
+	public static String getMessage(String info,String uName, String aKey, String mode, String lang) throws Exception{
 	
 		info=info.replaceAll("e_mail",uName);
 		info=info.replaceAll("activation_key",aKey);
 		info=info.replaceAll("u_mode",mode);
+		info=info.replaceAll("u_lang",lang);
 		return info;
 	}
 	

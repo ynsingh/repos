@@ -11,7 +11,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <br>
 <table bgcolor="$ui.menuColor" width="100%">
 <tr align=right>
@@ -99,10 +101,10 @@ $!data.getMessage()
 ## width added by Shaista
 	   <table align=center bgcolor="$ui.tableColor" width="100%">
 	<tr bgcolor="$ui.menuColor"><td >
-	<input type ="submit" value="$brih_go">
+	<input type ="submit" class="button-ftextstyle"  value="$brih_go">
 	#set($count=1)
 	<font size=2>	
-		<select name="month">
+		<select name="month" class="drop" >
        		<option value="$M">$M
 		#foreach($month_name in $mon)
 			#if($month_name!=$M)
@@ -112,7 +114,7 @@ $!data.getMessage()
 		#end
 			</option>
        		</select>
-       <select name="year">
+       <select name="year" class="drop" >
        <option value="$year1">$year1
 	#foreach($list in $year_list)
 		#if($list!=$year1)

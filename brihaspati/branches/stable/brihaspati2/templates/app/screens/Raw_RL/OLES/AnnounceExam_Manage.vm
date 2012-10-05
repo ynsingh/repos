@@ -10,6 +10,9 @@ $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 <font face="$ui.sansSerifFonts">
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 </font>
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -89,13 +92,13 @@ $!data.getMessage()
 	        	<font face="$ui.sansSerifFonts">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
-	        			<select name=quizList>
+	        			<select name=quizList class="drop">
 						#foreach($qid in $quizList)
 						
 		        				<option value="$qid.getQuizID(),$!qid.getExamDate()">$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
-	        			<input type="button" name="eventSubmit_announceExam" value="$brih_submit" onClick="checkValue(document.frm,this);">
+	        			<input type="button" class="button-ftextstyle" name="eventSubmit_announceExam" value="$brih_submit" onClick="checkValue(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
 				#else
 					$brih_No_NewQuiz

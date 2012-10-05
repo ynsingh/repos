@@ -11,6 +11,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #if($mode=="compose")
 	$page.setTitle("$brih_home | $DiscussionBoard |$LocalMail_MailContent_msg1")
 #else
@@ -153,7 +156,7 @@ $!data.getMessage()
 		#if($mode!="reply")
 			<tr align="right">
 				<td colspan=2 >
-				<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+				<SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 				<option></option>
 				#foreach($topic in $allTopics)
 					<option>$topic</option>
@@ -218,8 +221,8 @@ $!data.getMessage()
 			<input type="hidden" name="courseid" value="$cid">
 			<input type="hidden" name="actionName">
                         <input type="hidden" name="expstatus">		
-			<input type="button" name="eventSubmit_doSend" value="$Notice_Send" onClick="checkBlank(document.uploadform,this);"/>&nbsp&nbsp	
-			<input type="reset" value="$brih_clear" onClick="makeEnable();">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doSend" value="$Notice_Send" onClick="checkBlank(document.uploadform,this);"/>&nbsp&nbsp	
+			<input type="reset" class="button-ftextstyle" value="$brih_clear" onClick="makeEnable();">
 			</font>
 			</td>
 		</tr>

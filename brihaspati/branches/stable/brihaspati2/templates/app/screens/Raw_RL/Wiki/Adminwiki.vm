@@ -9,7 +9,9 @@
 $page.setTitle("$brih_home|$course|$brih_Wiki | $Wikimain5")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <style type="text/css"> input{ width:170px; } </style>
 
 <table bgcolor="$ui.tableColor" width=100%>
@@ -67,37 +69,37 @@ $!data.getMessage()
 					<p align=center>
 					<input type="hidden" name="actionName" >
 		 			#if($merge == "false")
-						<input type="submit" name="eventSubmit_doShowhistory" value="$Wikibutton1"/>
-						<input type="submit" name="eventSubmit_doShowhistory" value="$Wikibutton2"/>
-						<input type="submit" name="eventSubmit_doDiff" value="$Wikibutton3"/>
-						<input type="submit" name="eventSubmit_doDiff" value="$Wikibutton4"/>
- 						<input type="submit" name="eventSubmit_doShoworiginal" value="$Wikibutton5"/>
-						<input type="button" name="eventSubmit_doRevert" value="$Wikibutton6"  onClick="checktextName(document.frm,this);"/>
-						<input type="button" name="eventSubmit_doDelpage" value="$Wikibutton7" onClick="doAskPage(document.frm,this);"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doShowhistory" value="$Wikibutton1"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doShowhistory" value="$Wikibutton2"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doDiff" value="$Wikibutton3"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doDiff" value="$Wikibutton4"/>
+ 						<input type="submit" class="button-ftextstyle" name="eventSubmit_doShoworiginal" value="$Wikibutton5"/>
+						<input type="button" class="button-ftextstyle" name="eventSubmit_doRevert" value="$Wikibutton6"  onClick="checktextName(document.frm,this);"/>
+						<input type="button" class="button-ftextstyle" name="eventSubmit_doDelpage" value="$Wikibutton7" onClick="doAskPage(document.frm,this);"/>
 						#if($fname!="")
         						#if($traffic == "stop")
-                						<input disabled type="submit" name="eventSubmit_doStoptraffic" value="$Wikibutton8"/>
-               							<input type="submit" name="eventSubmit_doStoptraffic" value="$Wikibutton9"/>
+                						<input disabled type="submit" class="button-ftextstyle" name="eventSubmit_doStoptraffic" value="$Wikibutton8"/>
+               							<input type="submit" class="button-ftextstyle" name="eventSubmit_doStoptraffic" value="$Wikibutton9"/>
         						#end
         						#if($traffic == "start")
-                						<input type="submit"  name="eventSubmit_doStoptraffic" value="$Wikibutton8"/>
-                						<input disabled type="submit" name="eventSubmit_doStoptraffic" value="$Wikibutton9"/>
+                						<input type="submit"  class="button-ftextstyle" name="eventSubmit_doStoptraffic" value="$Wikibutton8"/>
+                						<input disabled type="submit" class="button-ftextstyle" name="eventSubmit_doStoptraffic" value="$Wikibutton9"/>
         						#end
 						#end
 					#end
  	                               	#if(($traffic == "stop")&&($merge != "true"))
 
 
-						<input type="button" name="eventSubmit_doDelversion" value="$Wikibutton10" onClick="doAskVersion(document.frm,this);"/>
+						<input type="button" class="button-ftextstyle" name="eventSubmit_doDelversion" value="$Wikibutton10" onClick="doAskVersion(document.frm,this);"/>
 
 					#end
 					#if($traffic == "stop")
-						<input type="button" name="eventSubmit_doMergenow" value="$Wikibutton11" onClick="checkVersion(document.frm,this);"/>
+						<input type="button" class="button-ftextstyle" name="eventSubmit_doMergenow" value="$Wikibutton11" onClick="checkVersion(document.frm,this);"/>
 					#end
         	        		#if(($fname!="")&&($merge == "true"))
-						<input type="submit" name="eventSubmit_doMergedone" value="$Wikibutton12"/>
-                				<input type="submit" name="eventSubmit_doShoworiginal" value="$Wikibutton13"/>
-                				<input type="submit" name="eventSubmit_doRevert" value="$Wikibutton14"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doMergedone" value="$Wikibutton12"/>
+                				<input type="submit" class="button-ftextstyle" name="eventSubmit_doShoworiginal" value="$Wikibutton13"/>
+                				<input type="submit" class="button-ftextstyle" name="eventSubmit_doRevert" value="$Wikibutton14"/>
         				#end
 					</p>
 				</td>
@@ -105,7 +107,7 @@ $!data.getMessage()
 			<tr>
 				<td>
 					<p align ="center">
-					${WikiCreatetxt2} <SELECT  name="fname" >
+					${WikiCreatetxt2} <SELECT  name="fname" class="drop" >
 					#if($fname!="")
 						<OPTION >$fname</OPTION>
 					#end
@@ -118,7 +120,7 @@ $!data.getMessage()
 						value ="$vname" 
 					#end
 					size="25">
-					<input type="submit" name="eventSubmit_doShoworiginal" value="$Wikibutton15"  />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="submit" class="button-ftextstyle" name="eventSubmit_doShoworiginal" value="$Wikibutton15"  />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 					</p>
 				</td>
@@ -146,39 +148,39 @@ $t
 				<td>
 					<p align=center>
 		 			#if($merge == "false")
-						<input type="submit" name="eventSubmit_doShowhistory" value="$Wikibutton1"/>
-						<input type="submit" name="eventSubmit_doShowhistory" value="$Wikibutton2"/>
-						<input type="submit" name="eventSubmit_doDiff" value="$Wikibutton3"/>
-						<input type="submit" name="eventSubmit_doDiff" value="$Wikibutton4"/>
- 						<input type="submit" name="eventSubmit_doShoworiginal" value="$Wikibutton5"/>
-						<input type="button" name="eventSubmit_doRevert" value="$Wikibutton6"  onClick="checktextName(document.frm,this);"/>
-						<input type="button" name="eventSubmit_doDelpage" value="$Wikibutton7" onClick="doAskPage(document.frm,this);"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doShowhistory" value="$Wikibutton1"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doShowhistory" value="$Wikibutton2"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doDiff" value="$Wikibutton3"/>
+						<input type="submit" class="button-ftextstyle" name="eventSubmit_doDiff" value="$Wikibutton4"/>
+ 						<input type="submit" class="button-ftextstyle" name="eventSubmit_doShoworiginal" value="$Wikibutton5"/>
+						<input type="button" class="button-ftextstyle" name="eventSubmit_doRevert" value="$Wikibutton6"  onClick="checktextName(document.frm,this);"/>
+						<input type="button" class="button-ftextstyle" name="eventSubmit_doDelpage" value="$Wikibutton7" onClick="doAskPage(document.frm,this);"/>
 
 						#if($fname!="")
 
         						#if($traffic == "stop")
-                						<input type="submit" disabled name="eventSubmit_doStoptraffic" value="$Wikibutton8"/>
-                						<input type="submit" name="eventSubmit_doStoptraffic" value="$Wikibutton9"/>
+                						<input type="submit" class="button-ftextstyle" disabled name="eventSubmit_doStoptraffic" value="$Wikibutton8"/>
+                						<input type="submit" name="eventSubmit_doStoptraffic" class="button-ftextstyle" value="$Wikibutton9"/>
         						#else
-               							<input type="submit" name="eventSubmit_doStoptraffic" value="$Wikibutton8"/>
-                						<input type="submit" disabled  name="eventSubmit_doStoptraffic" value="$Wikibutton9"/>
+               							<input type="submit" name="eventSubmit_doStoptraffic" class="button-ftextstyle" value="$Wikibutton8"/>
+                						<input type="submit" disabled  name="eventSubmit_doStoptraffic" class="button-ftextstyle" value="$Wikibutton9"/>
         						#end
 						#end
 		  			#end
 					
 					#if(($traffic == "stop")&&($merge != "true"))
 
-						<input type="button" name="eventSubmit_doDelversion" value="$Wikibutton10" onClick="doAskVersion(document.frm,this);"/>
+						<input type="button" name="eventSubmit_doDelversion" value="$Wikibutton10" class="button-ftextstyle" onClick="doAskVersion(document.frm,this);"/>
 
 					#end
 					#if($traffic == "stop")
 
-						<input type="button" name="eventSubmit_doMergenow" value="$Wikibutton11" onClick="checkVersion(document.frm,this);"/>
+						<input type="button" name="eventSubmit_doMergenow" value="$Wikibutton11" class="button-ftextstyle" onClick="checkVersion(document.frm,this);"/>
 		   			#end
         	   			#if(($fname!="")&&($merge == "true"))
-						<input type="submit" name="eventSubmit_doMergedone" value="$Wikibutton12"/>
-                				<input type="submit" name="eventSubmit_doShoworiginal" value="$Wikibutton13"/>
-                				<input type="submit" name="eventSubmit_doRevert" value="$Wikibutton14"/>
+						<input type="submit" name="eventSubmit_doMergedone" class="button-ftextstyle" value="$Wikibutton12"/>
+                				<input type="submit" name="eventSubmit_doShoworiginal" class="button-ftextstyle" value="$Wikibutton13"/>
+                				<input type="submit" name="eventSubmit_doRevert" class="button-ftextstyle" value="$Wikibutton14"/>
         	    			#end
 					</p>
 		

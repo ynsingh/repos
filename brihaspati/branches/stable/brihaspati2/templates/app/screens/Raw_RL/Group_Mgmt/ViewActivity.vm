@@ -12,6 +12,9 @@
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
@@ -66,8 +69,8 @@ $!data.getMessage()
 <tr bgcolor="$ui.tableColor" align="center"><br>
         <td align="left" colspan="4">
 	#if($groupdesc!="")
-	&nbsp;&nbsp;&nbsp;<input type="button" name="test" value="$brih_go" onClick="go(document.frm,this);"/>
-       	<select name="activity" size="1" onChange="Changeactivity(document.frm,this);"/>
+	&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="test" value="$brih_go" onClick="go(document.frm,this);"/>
+       	<select name="activity" class="drop" size="1" onChange="Changeactivity(document.frm,this);"/>
 	#if($act0=="Discussion Board")
        	<option value="call,Dis_Board,DBContent.vm/mode/All/$courseid">$DiscussionBoard
        	</option>

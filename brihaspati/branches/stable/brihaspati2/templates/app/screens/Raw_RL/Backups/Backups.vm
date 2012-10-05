@@ -11,6 +11,9 @@
 $page.setTitle("Backups")
 $page.setBgColor("#ffffff")
 ##$!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="#d9e3ec" width=100% cellspacing=0>
 	<tr align="right"><td>
 		<font face="$ui.sansSerifFonts" size=3>

@@ -15,7 +15,7 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
-<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login</a> | $brih_resend $brih_act
+<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login</a> | $brih_resend $brih_mail
 </td></tr>
 </table>
 

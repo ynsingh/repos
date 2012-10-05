@@ -6,6 +6,9 @@
  * @author <a href="mailto:sunil_gupta20801@rediffmail.com">Sunil Kumar Gupta</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 
 $page.setTitle("Admin Home | Search Engine")
 
@@ -36,7 +39,7 @@ $val
 			#formCell("$brih_search $brih_inside $brih_bri" "WORD" "") 
 		#end
 		<td>
-		<input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);">
 		<input type="hidden" name="actionName" value="">
 		</td>
 	</tr>

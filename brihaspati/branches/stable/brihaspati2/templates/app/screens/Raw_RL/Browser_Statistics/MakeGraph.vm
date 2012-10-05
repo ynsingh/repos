@@ -10,7 +10,7 @@
 $!data.getMessage()
 <html>
 	<head>
-		
+		<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
 	        <script type="text/javascript" src="/brihaspati2/scrpts/dygraph-dev.js"></script>
 		##<script type="text/javascript" src="/brihaspati2/scrpts/CommonScripts/CommonScript.js")"></script>
@@ -38,7 +38,7 @@ $!data.getMessage()
 	#if($userList2.size()!=0)	
 		#if(($type=="sgraph") && ($mname!="") && ($usrname!=""))
 			<td>
-                        <select name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
+                        <select name="uname3" id="u3" size="1" class="drop" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                         	<option>$value </option>
                         #else
@@ -60,7 +60,7 @@ $!data.getMessage()
 	#else
 		#if(($type=="sgraph") && ($usrname!=""))
 			<td>
-                        <select name="uname3" id="u3" size="1" onChange="Changename(document.frm,this);"/>
+                        <select name="uname3" id="u3" class="drop" size="1" onChange="Changename(document.frm,this);"/>
                         #if($value!="")
                        		<option>$value </option>
                         #else
@@ -83,7 +83,7 @@ $!data.getMessage()
 	#if($userList2.size()!=0)
 		#if(($type=="sgraph") && ($usrname!=""))
 			<td>
-			<select name="uname2" id="u2" size="1" onChange="Changename(document.frm,this);"/>
+			<select name="uname2" class="drop" id="u2" size="1" onChange="Changename(document.frm,this);"/>
 			#if($mname!="")
                         	<option>$mname </option>
                         #else
@@ -103,7 +103,7 @@ $!data.getMessage()
 			
 	#end
 	<td colspan="1">
-		<select name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
+		<select name="uname1" class="drop" id="u1" size="1" onChange="Changename(document.frm,this);"/>
 		#if($usrname!="")
                        	<option>$usrname </option>
         	#else

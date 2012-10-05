@@ -44,102 +44,82 @@ $page.setBgColor("$ui.bgcolor")
 #else
 
 <body>
-<table width="100%"> ##1#t table
+<div style="width:1100px; margin:0px auto;">
+<table> ##width="100%"> ##1#t table
 	<tr> ##1#t tr
 		<td colspan="2">$navigation.setTemplate("/DefaultTop.vm")</td>
 	</tr> ##1#t tr closed
 	<tr> ##2#d tr
 		<td colspan=2>  ##1#t td of 2nd tr
-			<table width="100%"> ##3#d table
+			##<table width="100%"> ##3#d table
+			<table style="width:1100px; margin:0px auto;">
            			<tr bgcolor="$ui.menuColor" align="right"> ##4#h tr
               				#if($data.getUser().hasLoggedIn()) ##if(7)
-                 				<td> ##13#h td
+                 				<td width=100> ##13#h td
                    					<a href=$link.setAction("myLogout") style=text-decoration:none> 
-							<font size=2>$brih_logout</font>
-		   					<img src=$content.getURI("/images/logout.JPG") style=border:0px solid;>
-							</a>
+							<center>
+                                                        <img src=$content.getURI("/images/lgot.png") style=border:0px solid;><br><font size=2>$brih_logout</font></a></center>
                  				</td> ##13#h td closed
-						 <td> ##14#h td
-                                                        <a href=$link.setActionEvent("TimetableAction", "doInit").setPage("call,Timetable,Index.vm") style=text-decoration:none>
-                                                        <font size=2>$brih_timetable</font></a>
+						 <td width=100> ##14#h td
+                                                      	<a href=$link.setActionEvent("TimetableAction", "doInit").setPage("call,Timetable,Index.vm") style=text-decoration:none><center>
+                                                        <img src=$content.getURI("/images/Timetable.png") style=border:0px solid;><br>
+                                                        <font size=2>$brih_timetable</font></a></center>
                                                         </td> ##14#h td closed
-                 				<td> ##15#h td
-            						<a href=$link.setPage("call,Calculator.vm") style=text-decoration:none>
-							<font size=2>$brih_calculator</font>
-		   					<img src=$content.getURI("/images/calculater.JPG") style=border:0px solid;>
-							</a>
-                 				</td> ##15#h td closed
-                 				<td> ##16#h td
-							<a href=$link.setPage("call,ResearchRepository,ResearchRepo.vm").addPathInfo("count","1") style=text-decoration:none> 
-							<font size=2>$brih_Res $brih_grp</font>
-		   					<img src=$content.getURI("/images/rschgrp.JPG") style=border:0px solid;>
-							</a>
-                 				</td> ##16#h td closed
+                 				<td width=100> ##15#h td
+            						<a href=$link.setPage("call,Calculator.vm") style=text-decoration:none><center>
+                                                        <img src=$content.getURI("/images/calculater.png") style=border:0px solid;><br><font size=2>$brih_calculator</font></a></center>
+                                                        </td> ##12#h td closed
+						<td width=120> ##11#h td
+                                                        <a href=$link.setPage("call,ResearchRepository,ResearchRepo.vm").addPathInfo("count","1") style=text-decoration:none> <center>
+                                                        <img src=$content.getURI("/images/rschgrp.png") style=border:0px solid;><br><font size=2>$brih_Res $brih_grp</font></a></center>
+                                                        </td> ##11#h td closed
 		    				#if($data.getUser().getUserName() != "guest") ##if(10)
-		       				<td> ##17#h td 
-                      						<a href=$link.setPage("call,Search.vm") style=text-decoration:none> 
-								<font size=2>$brih_eng</font>
-		      						<img src=$content.getURI("/images/search.JPG") style=border:0px solid;>
-								</a>
-                       				</td> ##17#h td closed
-                       				<td> ##18#h td closed
-                      						<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromIndex") style=text-decoration:none>
-								<font size=2>$brih_genNews</font>
-		      						<img src=$content.getURI("/images/news.JPG") style=border:0px solid;>
-								</a>
-                       				</td> ##18#h td closed
-                       				<td> ##19#h td 
-                      						<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1") style=text-decoration:none> 
-								<font size=2>$Glossary</font>
-		      						<img src=$content.getURI("/images/glsry.JPG") style=border:0px solid;>
-								</a>
-                       				</td> ##19#h td closed
+						<td width=110> ##10#h td
+                                                                <a href=$link.setPage("call,Search.vm") style=text-decoration:none> <center>
+                                                                <img src=$content.getURI("/images/search.png") style=border:0px solid;><br><font size=2>$brih_eng</font></a></center>
+                                                                </td> ##10#h td closed
+						<td width=110> ##9#h td
+                                                                <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromIndex") style=text-decoration:none><center>
+                                                                <img src=$content.getURI("/images/news.png") style=border:0px solid;><br><font size=2>$brih_genNews</font></a></center>
+                                                                </td> ##9#h td closed
+						<td width=100> ##8#h td
+                                                                <a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1") style=text-decoration:none> <center>
+                                                                <img src=$content.getURI("/images/glsry.png") style=border:0px solid;><br><font size=2>$Glossary</font></a></center>
+                                                                </td> ##8#h td closed 
 		       					#if($data.getUser().getUserName() != "admin") ##if(11)
-                          				<td> ##20#h td
-                      						<a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm") style=text-decoration:none>
-								<font size=2> $brih_task </font>
-		      						<img src=$content.getURI("/images/TaskManager.JPG") style=border:0px solid;>
-								</a>
-                          				</td> ##20#h td closed
+						<td width=100> ##7#h td
+                                                                <a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm").addPathInfo("all","aa") style=text-decoration:none><center>
+                                                                <img src=$content.getURI("/images/TaskManager.png") style=border:0px solid;><br><font size=2>$brih_task</font></a></center>
+                                                                </td>
                         				#end ##end(11)
                     				#end	 ##end(10)
 		    				#if($data.getUser().getUserName() == "admin") ##if(9)
-                       				<td> ##21#h td
-                   						<a href=$link.setPage("call,UserMgmt_Admin,ProxyUser.vm") style=text-decoration:none>
-								<font size=2>$Proxy_User</font>
-		   						<img src=$content.getURI("/images/prxyusr.JPG") style=border:0px solid;>
-								</a>
-                       				</td> ##21#h td closed
-                       				<td> ##22#h td
-                   					<a href=$link.setPage("Index.vm") style=text-decoration:none>
-							<font size=2>$brih_ad $brih_Of1 $brih_home</font>
-		   					<img src=$content.getURI("/images/home.JPG") style=border:0px solid; >
-							</a>
-                        			</td> ##22#h td closed
+						<td width=100> ##6#h td
+                                                                <a href=$link.setPage("call,UserMgmt_Admin,ProxyUser.vm") style=text-decoration:none><center>
+                                                                <img src=$content.getURI("/images/prxyusr.png") style=border:0px solid;><br><font size=2>$Proxy_User</font></a></center>
+                                                        </td> 
+						<td width=100> ##2#d td
+                                                        <a href=$link.setPage("Index.vm") style=text-decoration:none><center>
+                                                        <img src=$content.getURI("/images/home.png") style=border:0px solid; ><br><font size=2>$brih_home</font></a></center>
+                                                        </td>
                     				#end  ##end(9)////
 		    				#if($data.getUser().getUserName() != "guest") ##if(0)
                        					#if($data.getUser().getTemp("role") == "author") ##if(8)
-                       					<td> ##23#h td
-                      						<a href=$link.setPage("call,Repository_Mgmt,RepositoryBrowser.vm") style=text-decoration:none>
-								<font size=2>$Repo_Repo1</font>
-		   						<img src=$content.getURI("/images/repository.JPG") style=border:0px solid;>
-								</a>
-                       					</td> ##23#h td closed
-                       					#else
-                       					<td> ##24#h td
-                         					<a href=$link.setPage("call,Repository_Mgmt,Author.vm") style=text-decoration:none>
-								<font size=2>$Repo_Repo1</font>
-		   						<img src=$content.getURI("/images/repository.JPG") style=border:0px solid; >
-								</a>
-                       					</td> ##24#h td closed
+							<td width=100> ##3#d td
+                                                                <a href=$link.setPage("call,Repository_Mgmt,Author.vm") style=text-decoration:none><center>
+                                                                <img src=$content.getURI("/images/repository.png") style=border:0px solid; ><br><font size=2>$Repo_Repo1</font></a></center>
+                                                                </td> ##3#t td closed
+                                                                #else
+                                                                <td width=100> ##4#h td
+                                                                <a href=$link.setPage("call,Repository_Mgmt,RepositoryBrowser.vm") style=text-decoration:none><center>
+                                                                <img src=$content.getURI("/images/repository.png") style=border:0px solid;><br><font size=2>$Repo_Repo1</font></a></center>
+                                                                </td> 
                         				#end ##(end8)
 		    				#end	##end(0)
-		    				<td> ##25#h td 
-                  					<a href=$link.setPage("Index.vm") style=text-decoration:none>
-							<font size=2>$brih_home</font>
-		   					<img src=$content.getURI("/images/home.JPG") style=border:0px solid; >
-							</a>
-                    				</td> ##25#h td closed
+						 <td width=100> ##2#d td
+                                                        <a href=$link.setPage("Index.vm") style=text-decoration:none><center>
+                                                        <img src=$content.getURI("/images/home.png") style=border:0px solid; ><br><font size=2>$brih_home</font></a></center>
+                                                        </td>
 	   				#end ##end(7)
         			</tr> ##4#h tr closed
 			</table> ##3#d table closed
@@ -201,6 +181,7 @@ $page.setBgColor("$ui.bgcolor")
 	</tr> ##8#h tr closed
 </table>
 </body>
+</div>
 #end
 </html>
 

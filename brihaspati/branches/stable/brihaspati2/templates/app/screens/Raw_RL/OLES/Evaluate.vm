@@ -8,6 +8,9 @@
 
 $page.setTitle("quiz Evaluation")
 $page.setBgColor("bgcolor")
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 ## If some message has been set, that is retrieved and displayed.
 <font face="$ui.sansSerifFonts">
 	$!data.getMessage()
@@ -95,7 +98,7 @@ $page.setBgColor("bgcolor")
 	        <b>$brih_usr $brih_name </b>
         </td>
 		<td>
-    		<SELECT name=userList>	
+    		<SELECT name=userList class="drop">	
     		<option value="1" >Select Student</option>
 			#foreach($topic in $userList2)
 				#if($!topic.getLoginName()==$!studentLoginName)
@@ -112,7 +115,7 @@ $page.setBgColor("bgcolor")
 			<b> $brih_quiz $brih_name  </b>
     	</td>
 		<td>
-        	<SELECT name=quizlist>       		
+        	<SELECT name=quizlist class="drop">       		
 			<option value="1">Select Quiz</option>			
 				#foreach($topic in $quizList)
 					#if($!topic.getQuizID()==$!quizID)
@@ -128,9 +131,9 @@ $page.setBgColor("bgcolor")
 	<tr bgcolor="$ui.menuColor" >
 		<td colspan="2">
 		#if($type=="result")
-		<input type="button" name="eventSubmit_Result" value="Result" onClick="checkField(document.frm,this);"/>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_Result" value="Result" onClick="checkField(document.frm,this);"/>
 		#else
-		<input type="button" name="eventSubmit_Evaluate" value="Evaluate" onClick="checkField(document.frm,this);"/>
+		<input type="button" name="eventSubmit_Evaluate" class="button-ftextstyle" value="Evaluate" onClick="checkField(document.frm,this);"/>
 		#end 			
 		</td>
 	</tr>    		
@@ -139,7 +142,7 @@ $page.setBgColor("bgcolor")
 	#if($longtype == false)
 	<tr bgcolor="$ui.tableColor" >
 		<td align=center colspan=3 >
-	        	<input type="button" name="eventSubmit_doGrade" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
+	        	<input type="button" class="button-ftextstyle" name="eventSubmit_doGrade" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
 		<input type="hidden" name="check" value="$flg">
 			<input type="hidden" name="long_short" value="$long_short" />
 			<input type="reset" name="Reset" value="$brih_reset" /> 

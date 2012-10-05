@@ -9,7 +9,9 @@
  * @modified date: 20-10-2010, 22-11-2010, 23-12-2010, 11-01-2011, 27-03-2012
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Admin Home | User Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
@@ -151,7 +153,7 @@ $!data.getMessage()
           </tr>
 	<tr align="right">
      	<td align="right" colspan="4">
-        <select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+        <select id="group_id" class="drop" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
           ##<option>
 		#foreach($name in $courseList)
                         <option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
@@ -179,7 +181,7 @@ $!data.getMessage()
          </tr>
  	<tr bgcolor="$ui.menuColor" align="right">
      	<td colspan="4" align="right">
-		<select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
+		<select id="role_id" class="drop" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
         	  <option>
 	          <option value="instructor">$brih_Instructor
         	  <option value="student">$brih_student
@@ -193,7 +195,7 @@ $!data.getMessage()
           </td>
         </tr>
 	<tr align="right">
-                <td colspan="4" align="right"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+                <td colspan="4" align="right"><select name="prg" class="drop" size=1 onChange="ChkPrg(document.frm,this);"/>
                         <option value="Select Program"> $brih_program $brih_select </option>
                         #foreach($progname in $PrgDetail)
                                 <option value="$progname.getPrgCode()">$progname.getPrgName() </option>
@@ -212,8 +214,8 @@ $!data.getMessage()
         <input type="hidden" name="actionName">
         <input type="hidden" name="group_author">
         <input type="hidden" name="role_author">
-        <input type="button" name="eventSubmit_doRegister" value="$brih_reg1" onClick="checkFieldAddUser(document.frm,this);"/>
-        <input type="Reset" name="Reset" Value="$brih_clear"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg1" onClick="checkFieldAddUser(document.frm,this);"/>
+        <input type="Reset" class="button-ftextstyle" name="Reset" Value="$brih_clear"/>
         <input type="hidden" name="count" Value="$tdcolor"/>
         </td>
         </tr>
@@ -226,7 +228,7 @@ $!data.getMessage()
 <table width=100% cellpadding=1 align="right" bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor" align="right">
                 <td colspan=10>
-                <select name="queryList">
+                <select name="queryList" class="drop">
                 <option value="User Name">$brih_usr $brih_Of1 $brih_name</option>
                 <option value="First Name">$brih_first $brih_name</option>
                 <option value="Last Name">$brih_last $brih_name</option>
@@ -241,7 +243,7 @@ $!data.getMessage()
         </tr>
         <tr bgcolor="$ui.menuColor" align="right">
                 <td colspan=11>
-			<input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm, this);">
+			<input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm, this);">
 			<input type="hidden" name="mode" value="$mode"/>	
 			<input type="hidden" name="mode1" value="list"/>	
 			<input type="hidden" name="count" value="$tdcolor"/>	
@@ -405,7 +407,7 @@ face="$ui.sansSerifFonts">$type</font>
 	<tr bgcolor="$ui.menuColor" align="right">
         ##<td bgcolor="$ui.tableColor">
         <td>
-                <select name="GroupName" size=1>
+                <select name="GroupName" size=1 class="drop">
                 #foreach($name in $courseList)
                 ##if(($name.getName()!="global") && ($name.getName()!="author"))
                         <option value="$name">$name
@@ -424,7 +426,7 @@ face="$ui.sansSerifFonts">$type</font>
         <tr align="right">
           ##<td bgcolor="$ui.menuColor">
           <td>
-                <select name="role" size=1>
+                <select name="role" size=1class="drop">
                 <option value="student">$brih_student
                 <option value="instructor">$brih_Instructor
                 </option>
@@ -451,7 +453,7 @@ face="$ui.sansSerifFonts">$type</font>
             shouldn't appear when inserting a new user.
           *#
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadadmin" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="mode" value="$mode"/>
                 <input type="hidden" name="count" value="$tdcolor"/>
@@ -518,7 +520,7 @@ face="$ui.sansSerifFonts">$type</font>
         <tr bgcolor="$ui.tableColor" align="right">
         <td colspan=2 align="right">
         <font face="$ui.sansSerifFonts">
-        <input type="button" name="eventSubmit_doUploadMultiUserZip" value="Upload" onClick="CheckFieldFile(document.frm,this);"/>
+        <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadMultiUserZip" value="Upload" onClick="CheckFieldFile(document.frm,this);"/>
         <input type="hidden" name="actionName" value=""/>
         <input type="hidden" name="mode" value="$mode"/>
         <input type="hidden" name="count" value="$tdcolor"/>
@@ -560,7 +562,7 @@ face="$ui.sansSerifFonts">$type</font>
         <tr bgcolor="$ui.menuColor" align="right">
         <td colspan="2" align="right">
                 <font face="$ui.sansSerifFonts">
-                <input type="button" name="eventSubmit_doUploadphoto" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doUploadphoto" value="$brih_upload" onClick="CheckFieldFile(document.frm,this);"/>
                 <input type="hidden" name="actionName" value=""/>
                 <input type="hidden" name="mode" value="$mode"/>
                 <input type="hidden" name="count" value="$tdcolor"/>
@@ -592,13 +594,13 @@ face="$ui.sansSerifFonts">$type</font>
 			<table align="right" width=100%>
 			        <tr bgcolor="$ui.menuColor" align="right">
 				        <td align="right">
-				        <input type="submit" name="eventSubmit_doSearch" value="$brih_search">
+				        <input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search">
 				        <input type="hidden" name="role" value="$role">
 				        <input type="hidden" name="mode" value="userdelete">
 				        <input type="hidden" name="count" value="$tdcolor">
 				        </td>
 				          <td width=20% align="right">
-					          <select name="group" size=1>
+					          <select name="group" size=1 class="drop">
 						          #set($i=1)
 						          <option name=all value="All">$Notice_All
 							#foreach($course in $courseList)
@@ -676,7 +678,7 @@ face="$ui.sansSerifFonts">$type</font>
 			        </tr>
 			        <tr bgcolor="$ui.menuColor" align="right">
 			                <td align="right">
-				                <input type="submit" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
+				                <input type="submit" class="button-ftextstyle" name="eventSubmit_doRemoveUser" value="$brih_remove" onClick="DeleteField(document.frm,this);">
 				                <input type="hidden" name="deleteFileNames" value="">
 				                <input type="hidden" name="group" value="$group">
 				                <input type="hidden" name="role" value="$role">
@@ -719,8 +721,8 @@ face="$ui.sansSerifFonts">$type</font>
                 </table>
                 <table align="right" width="100%" bgcolor="$ui.menuColor" >
         	        <tr align="right"><td>
-                	        <input type="button" name="eventSubmit_doUpdatePass" value="$brih_update" onClick="checkpass(document.frm,this);"/>
-                        	<input type="reset" name="clear" value="$brih_clear" onClick="clearValues(document.frm,this);"/>
+                	        <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdatePass" value="$brih_update" onClick="checkpass(document.frm,this);"/>
+                        	<input type="reset" class="button-ftextstyle" name="clear" value="$brih_clear" onClick="clearValues(document.frm,this);"/>
 	                        <input type="hidden" name="username" value=$username />
         	                <input type="hidden" name="actionName"/>
                 	        <input type="hidden" name="mode" value="sclist"/>

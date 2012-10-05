@@ -13,7 +13,9 @@
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
 <tr align="right">
 	<td align=right>
@@ -113,7 +115,7 @@ $!data.getMessage()
         	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
         	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
         	#end
-	&nbsp;&nbsp;&nbsp;&nbsp; <input type="button" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
+	&nbsp;&nbsp;&nbsp;&nbsp; <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteGroup" value="$brih_grp $brih_delete" onClick="deleteConfirm(document.frm,this);"/>
         </td>
 </tr>
 #else

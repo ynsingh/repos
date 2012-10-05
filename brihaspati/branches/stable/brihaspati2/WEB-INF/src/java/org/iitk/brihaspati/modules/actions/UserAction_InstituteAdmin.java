@@ -67,6 +67,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 //import org.iitk.brihaspati.modules.utils.ExtractZipFile;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.usercourseinfr;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 
@@ -254,11 +255,13 @@ public class UserAction_InstituteAdmin extends SecureAction{
 			
 		}
 	}
+	
 	 /**
           * ActionEvent responsible for removing a user from the system
           * @param data RunData
           * @param context Context
           */
+/*
         public void doDelete(RunData data, Context context) throws Exception
 	{
 		String instFirstLastName="";
@@ -304,7 +307,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
                          * Getting full name of user using UserUtil.
                          * @see UserUtil in utils
                          */
-			aUid = UserUtil.getUID(element.getAdminUname());
+	/*		aUid = UserUtil.getUID(element.getAdminUname());
                         instFirstLastName =UserUtil.getFullName(aUid);
                         //ErrorDumpUtil.ErrorLog("\n\ninstFirstLastName"+instFirstLastName);
 		}
@@ -340,15 +343,16 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 	msgInstAdmin = msgInstAdmin.replaceAll("institute_admin", instAdminName);
 
 		subject = MailNotification.subjectFormate(info_new, "", pr );
-		/**
 		if(grpInstructor.size()!=0)
 		{
 			gId=Integer.parseInt((String)grpInstructor.get(0));
 		}
-		**/
 		//message = MailNotification.getMessage(info_new, groupName, "", "", "", server_name, srvrPort,pr);
 		//ErrorDumpUtil.ErrorLog("\nRoleName="+RoleName+"\n   subject="+subject);	
-		////////////////////////////////////////////////////
+
+
+
+
 		if(RoleName.equals("instructor"))
 		{
 			String Gname="";
@@ -373,7 +377,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
 					message = MailNotification.getMessage(info_new, cName, "", "", "", pr);
                 			message = message.replaceAll("institute_admin",instName);
 					//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
-					Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");//last parameter added by Priyanka
+					Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId);
 					data.setMessage(Mail_msg);
 					String st1=mu.ConvertedString("delIns1",LangFile);
 					String st2=mu.ConvertedString("delIns2",LangFile);
@@ -398,13 +402,13 @@ public class UserAction_InstituteAdmin extends SecureAction{
 			message = MailNotification.getMessage(info_new, groupName, "", "", "", pr);
        			message = message.replaceAll("institute_admin",instName);
 			//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
-			Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");//last parameter added by Priyanka
+			Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId);
 			Messages=UserManagement.RemoveUser(userName,LangFile);
 			context.put("error_Messages",Messages);
 			data.setMessage(Mail_msg);
 		}
         }
-
+*/
 	/**
 	 * ActionEvent responsible for uploading  users photo from the system
          * @param data RunData
@@ -436,7 +440,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
 				Date date=new Date();
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+".zip");
                                 file.write(f);
-				File photoDir=new File(TurbineServlet.getRealPath("/images")+"/Photo/");
+				File photoDir=new File(TurbineServlet.getRealPath("/localImages")+"/Photo/");
 				photoDir.mkdirs();
 				GetUnzip guz=new GetUnzip(f.getAbsolutePath(),photoDir.getAbsolutePath());	
 				String photoArr[]=photoDir.list();
@@ -463,7 +467,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
 
                 }
         }
-
+/*
 	public void doExpire(RunData data, Context context)
         {
                 try{
@@ -496,6 +500,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
                         data.setMessage("The error in doExpire method -"+ex);
                 }
         }
+*/
  /**
           * ActionEvent responsible for upload institute logo in the system
           * @param data RunData
@@ -511,7 +516,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 FileItem file = pp.getFileItem("file");
                 String fileName=file.getName();
 		fileName=fileName.toLowerCase();
-                String imagesRealPath=TurbineServlet.getRealPath("/images");
+                String imagesRealPath=TurbineServlet.getRealPath("/localImages");
 		String msg1;
                 if(fileName.endsWith("jpg")|| fileName.endsWith("gif")|| fileName.endsWith("png")||fileName.endsWith("jpeg"))
                 {
@@ -673,6 +678,210 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 data.setMessage("The Error in Zip File Uploading!! "+ex);
                 }
         }
+	/**
+          * ActionEvent responsible for removing a user from the system
+          * @param data RunData
+          * @param context Context
+          */
+        public void doDelete(RunData data,Context context)
+        {
+                try{
+                        //get username of an user whom to be removed.
+                        String instituteid=(data.getUser().getTemp("Institute_id")).toString();
+                        MultilingualUtil mu=new MultilingualUtil();
+                        LangFile=(String)data.getUser().getTemp("LangFile");
+                        ParameterParser pp=data.getParameters();
+                        String username=pp.getString("username");
+                        String mode=pp.getString("mode");
+                        String count=pp.getString("count");
+                        int userid = UserUtil.getUID(username);
+
+                        //Get the associated institute by an user.
+
+                        InstituteIdUtil ini=new InstituteIdUtil();
+                        Vector instid=ini.getUserAllInstId(userid);
+
+                        //Get associated group of an user.
+
+                        List groupid=null;
+                        GroupUtil grputil=new GroupUtil();
+                        UserUtil usu=new UserUtil();
+                        groupid=usu.inst_stud_group(userid);
+                        //get all group name from group id
+
+                        Vector grpname = new Vector();
+                        for(int grpid=0;grpid<groupid.size();grpid++)
+                        {
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)groupid.get(grpid);
+                                int idgroup=element.getGroupId();
+                                int idrole=element.getRoleId();
+                                //get role of user in a group
+
+                                String role="";
+                                String grp_name=grputil.getGroupName(idgroup);
+				//ErrorDumpUtil.ErrorLog();
+                                if(!grp_name.contains(username) && (idrole==3))
+                                        role="student";
+
+                                if(grp_name.contains(username) && (idrole==2))
+                                        role="pinstructor";
+
+                                if(!grp_name.contains(username) && (idrole==2))
+                                        role="sinstructor";
+				if(!grp_name.contains(username) && (idrole==8))
+                                        role="teaching_assistant";
+
+
+                                usercourseinfr usrcsrinf = new usercourseinfr();
+                                if(grp_name.endsWith(instituteid))
+                                {
+                                        Criteria crit=new Criteria();
+                                        crit.add(CoursesPeer.GROUP_NAME,grp_name);
+                                        List grprecord=CoursesPeer.doSelect(crit);
+                                        Courses crs=(Courses)grprecord.get(0);
+                                        String active=(new Byte(crs.getActive())).toString();
+                                        String act="";
+                                        if(active.equals("0"))
+                                                act="Inactive";
+                                        if(active.equals("1"))
+                                                act="Active";
+                                        String cname=crs.getCname();
+                                        usrcsrinf.setgrp(grp_name);
+                                        usrcsrinf.setrole(role);
+                                        usrcsrinf.setcname(cname);
+                                        usrcsrinf.setactive(act);
+                                        grpname.add(usrcsrinf);
+                                }
+                        }
+
+                        //ErrorDumpUtil.ErrorLog("Size of GroupName vector ===>"+grpname.size());
+                        context.put("grpname",grpname);
+                        context.put("uname",username);
+                        context.put("noList","nolist");
+                }
+                catch(Exception exp)
+                {
+                }
+        }
+	
+        public void doExpire(RunData data, Context context)
+        {
+                try{
+
+                        LangFile=(String)data.getUser().getTemp("LangFile");
+                        String grouprecord=data.getParameters().getString("deleteFileNames","");
+                        MultilingualUtil mu=new MultilingualUtil();
+                        String username=data.getParameters().getString("username");
+			String subject="", info_new = "", info_Opt="", msgRegard="", msgInstAdmin="",groupname="",userrole="",coursestatus="",coursename="",instFirstLastName="",mailsubject="";
+			User user = data.getUser();
+			String instituteId=(user.getTemp("Institute_id")).toString();
+                	String instAdminName = user.getName();
+			int aUid = 0;
+                        String msg="";
+                        Vector Message=new Vector();
+                        UserManagement usmt=new UserManagement();
+			String instName=InstituteIdUtil.getIstName(Integer.parseInt(instituteId));
+		 	int instIdint=InstituteIdUtil.getIst_Id(instName);
+			String server_name=TurbineServlet.getServerName();
+		        String serverport=TurbineServlet.getServerPort();
+                        if(serverport.equals("8080"))
+			{
+	                        info_new = "deleteUser";
+				info_Opt = "newUser";
+			}
+                        else
+			{
+                                info_new = "deleteUserhttps";
+				info_Opt = "newUserhttps";;
+			}	
+			Criteria crit=new Criteria();
+                	try{
+                		crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
+                        	List inm=InstituteAdminUserPeer.doSelect(crit);
+                        	InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+				/****** shaista ***********
+                         	* Getting full name of user using UserUtil.
+                         	* @see UserUtil in utils
+                         	*/
+				aUid = UserUtil.getUID(element.getAdminUname());
+                        	instFirstLastName =UserUtil.getFullName(aUid);
+			}
+                	catch(Exception ex){
+                		ErrorDumpUtil.ErrorLog("The error in UserAction_InstituteAdmin class at line 263 !!"+ex);
+			}
+                        String filename=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                        Properties pr =MailNotification.uploadingPropertiesFile(filename);
+			try{
+			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+	                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, serverport);
+			}catch(Exception ex1){ErrorDumpUtil.ErrorLog("exception message===>"+ex1.getMessage());}
+        	        msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+                	if ( instFirstLastName.length() > 0)
+                		msgInstAdmin = msgInstAdmin.replaceAll("institute_admin", instFirstLastName);
+			else if(instAdminName.length() > 0)
+                		msgInstAdmin = msgInstAdmin.replaceAll("institute_admin", instAdminName);
+			subject = MailNotification.subjectFormate(info_new, "", pr );
+                        String email="", Mail_msg="", message="", loginname="",infrmtn="";
+                        loginname=username;
+                        String userid=Integer.toString(UserUtil.getUID(username));
+                        email=((TurbineUser)UserManagement.getUserDetail(userid).get(0)).getEmail();
+                        if(!grouprecord.equals(""))
+                        {
+                                StringTokenizer st=new StringTokenizer(grouprecord,"^");
+                                for(int j=0;st.hasMoreTokens();j++)
+                                {
+                                        String str1=st.nextToken();
+                                        String str2[]=str1.split(",");
+                                        groupname=str2[0];
+                                        userrole=str2[1];
+                                        coursestatus=str2[2];
+                                        coursename=str2[3];
+					message = MailNotification.getMessage(info_new, coursename, "", "", "", pr);
+                			message = message.replaceAll("institute_admin",instName);
+					Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");
+                                        data.setMessage(Mail_msg);
+                                        String first=mu.ConvertedString("delIns1",LangFile);
+                                        String second=mu.ConvertedString("delIns2",LangFile);
+                                        infrmtn=first+" "+username+" "+second;
+                                        if(userrole.equals("pinstructor"))	
+                                        {
+
+                                                if(coursestatus.equals("Active"))
+                                                        coursestatus="0";
+                                                else
+                                                        coursestatus="0";
+
+                                                String updatecoursestatus=CourseManagement.UpdateCourseDetails(groupname,coursename,"","",coursestatus,LangFile);
+                                                msg=UserManagement.DeleteInstructor(groupname,LangFile);	
+						message = MailNotification.getMessage(info_new, coursename, "", "", "", pr);
+	                                        message = message.replaceAll("institute_admin",instName);
+        	                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");
+                	                        data.setMessage(Mail_msg);
+                                                Message.add(msg);
+                                        }
+                                        else
+                                        {
+						message = MailNotification.getMessage(info_new, groupname, "", "", "", pr);
+       						message = message.replaceAll("institute_admin",instName);
+						Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");						
+                                                msg=usmt.removeUserProfileWithMail(username,groupname,LangFile,info_new,email,"firstName",loginname,"","",filename,server_name,serverport);
+                                                Message.add(msg);
+                                        }
+                                }
+                        }
+                        context.put("Message",Message);
+                        context.put("infrmtn",username);
+                }
+                catch(Exception ex)
+                {
+                        data.setMessage("The error in doExpire method -"+ex);
+                }
+        }
+
+
+
+
+
 
 	 /**
           * ActionEvent responsible if no method found in this action i.e. Default Method

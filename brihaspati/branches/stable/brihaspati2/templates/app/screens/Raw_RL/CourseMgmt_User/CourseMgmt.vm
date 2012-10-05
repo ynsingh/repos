@@ -12,7 +12,7 @@ $page.setTitle("Course Management")
 $!data.getMessage()
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
 <head>
-##      <script type="text/javascript" src="$content.getURI("/scrpts/Dayvenue.js")"></script>   
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <body>
 <table bgcolor="$ui.menuColor" width=100%>
@@ -116,7 +116,7 @@ $!data.getMessage()
  ##    <tr bgcolor="$ui.menuColori>
               <tr align="right">
 
- <td align="right"><select Instructor="sinst" name="Second_Instructor">
+ <td align="right"><select Instructor="sinst" class="drop" name="Second_Instructor">
                 #if($cyear == "")
                         <option value="$sinst" >$brih_Instructor</option>
                 #else
@@ -314,8 +314,8 @@ $!data.getMessage()
         <tr>
         	<td align="center" colspan=5>  
 			#if($isInstructor=="true") 
-				<input type="reset" name="Reset" value="$brih_clear"/>
-		      		<input type="button" name="eventSubmit_doSelect" value="$brih_submit" onClick="checkField(document.frm,this);"/>&nbsp;
+				<input type="reset" class="button-ftextstyle" name="Reset" value="$brih_clear"/>
+		      		<input type="button" class="button-ftextstyle" name="eventSubmit_doSelect" value="$brih_submit" onClick="checkField(document.frm,this);"/>&nbsp;
                       #end
 			<input type="hidden" name="actionName">
                 	<input type="hidden" name="count" value="$tdcolor">

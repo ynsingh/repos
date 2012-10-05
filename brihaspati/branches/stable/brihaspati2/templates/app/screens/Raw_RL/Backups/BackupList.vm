@@ -12,6 +12,9 @@
 
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <font face="$ui.sansSerifFonts">
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
            <td align="right">

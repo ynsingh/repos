@@ -6,7 +6,9 @@
  * @modified <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 #if($data.getUser().getUserName() == "admin")
 $page.setTitle("AdminHome | Notices | Send Notice")
@@ -92,7 +94,7 @@ $!data.getMessage()
 	#if($data.getUser().getUserName() == "admin")
          <tr align="right" bgcolor="$ui.tableColor">
                 <td>
-                <select name="course_list" size=1>
+                <select name="course_list" class="drop" size=1>
                 #foreach($c_ls in $clist)
                         #if(($c_ls.getName()!="author")&&($c_ls.getName()!="global"))
                                 <option value="$c_ls.getName()">$c_ls.getName()
@@ -136,7 +138,7 @@ $!data.getMessage()
 
      <tr align="right">
      	  <td>
-    	  	<select name="role" size=1>
+    	  	<select name="role" class="drop" size=1>
 		#if($mode1!= "grpmgmt")
 		  	<option value="all">$Notice_All
 		 	<option value="instructor">$brih_Instructor
@@ -192,9 +194,9 @@ $!data.getMessage()
 
 	  <input type="hidden" name="actionName">
 	#if($nflag == "fh")
-	  <input type="button" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/> 
+	  <input type="button" class="button-ftextstyle" name="eventSubmit_doWrite" value="$Notice_Send" onClick="checkField1(document.frm,this);"/> 
 	#else
-	  <input type="button" name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/> 
+	  <input type="button" class="button-ftextstyle" name="eventSubmit_doSend" value="$Notice_Send" onClick="checkField(document.frm,this);"/> 
 	#end
     
           </font>

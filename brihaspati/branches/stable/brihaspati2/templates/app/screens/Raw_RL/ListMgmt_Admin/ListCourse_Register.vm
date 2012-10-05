@@ -10,7 +10,9 @@
 $page.setTitle("Admin Home | Registration Management | CoursesList ")
 $page.setBgColor("$ui.bgcolor")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 <tr align="right">
 	<td width="30%" align="right">
@@ -56,7 +58,7 @@ $!data.getMessage()
                         <b><a href="$link.setPage("call,ListMgmt_Admin,ListCourse_Register.vm").addPathInfo("mode","All")">$brih_course $brih_Of $brih_list </a></b>
                 </td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                 </td>
 		<td align=left>
@@ -64,7 +66,7 @@ $!data.getMessage()
                 </td>
 		<td align=center><b>$brih_match_str</b></td>
 		<td align=left>
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
                                 <option value=CourseId>$brih_course $brih_Of1 $brih_ID</option>
                                 <option value="Course Name">$brih_course $brih_Of1 $brih_name</iption>
                                 <option value=Dept>$brih_dept</option>

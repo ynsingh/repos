@@ -11,6 +11,9 @@
  *
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="#d9e3ec" width=100% > ##table 1 start
         <tr align="right"><td><b>
         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
@@ -62,11 +65,11 @@
                 	<table border="0" align="center" bgcolor="#e5e5e5" colspan="5"> ## table 7 start
                         	<tr bgcolor="#e5e5e5"><td align="center" colspan="2">&nbsp;&nbsp;&nbsp;
 					#if($mode!="reply")
-                          		<input type="button" name="eventSubmit_doPosttopic" value="$brih_add $brih_new $brih_topic" onClick="checkField(document.frm,this);"/>
+                          		<input type="button" class="button-ftextstyle" name="eventSubmit_doPosttopic" value="$brih_add $brih_new $brih_topic" onClick="checkField(document.frm,this);"/>
 					#else
-					<input type="button" name="eventSubmit_doPosttopic" value="$brih_add $LocalMail_Reply" onClick="checkmessage(document.frm,this);"/>
+					<input type="button" class="button-ftextstyle" name="eventSubmit_doPosttopic" value="$brih_add $LocalMail_Reply" onClick="checkmessage(document.frm,this);"/>
 					#end
-                           		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+                           		<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
                         	</tr></td>
                 	</table> ## end of table 7
         	</tr></td> ## end od td tr 8
@@ -107,7 +110,7 @@
 		#end
 		<tr>
 		<td align="right">
-		<input type="button" name="eventSubmit_doDeleteTopic" value="$brih_delete" onClick="deleteConfirm(document.frm,this);"/></td>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteTopic" value="$brih_delete" onClick="deleteConfirm(document.frm,this);"/></td>
 		</tr>
 		#else
 		<b><font size="3">$Res_mess</font></b>

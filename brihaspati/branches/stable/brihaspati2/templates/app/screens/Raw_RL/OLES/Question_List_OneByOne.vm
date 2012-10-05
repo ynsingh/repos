@@ -10,6 +10,9 @@ $page.setTitle("Question List")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -71,8 +74,8 @@ $!data.getMessage()
 <table width="100%" bgcolor="$ui.tableColor">
 	<tr>
 		<td align="left" width="100%" colspan="5">
-			<input type="button" name="eventSubmit_addQuestion" value="$brih_add $brih_qus" onClick="checkValue(document.frm,this);"/>
-			<input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_addQuestion" value="$brih_add $brih_qus" onClick="checkValue(document.frm,this);"/>
+			<input type="reset" name="reset" class="button-ftextstyle" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 		</td>
 	</tr>
 </table>

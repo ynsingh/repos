@@ -10,7 +10,9 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Zip File View")
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr>
 <td>
@@ -52,8 +54,8 @@ $!data.getMessage()
 
       		<tr>	
 			<H3><u>$brih_attachment</u></H3>
-			<center><input type="button" name="eventSubmit_doExtract" value="$brih_submit" onClick="confirmSubmit(document.frm,this);">
-			<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel">
+			<center><input type="button" class="button-ftextstyle" name="eventSubmit_doExtract" value="$brih_submit" onClick="confirmSubmit(document.frm,this);">
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel">
 			#set ( $count=1 )
 
 			<table border=1 cellpadding=0 cellspacing=0 bgcolor="$ui.tableColor">
@@ -97,8 +99,8 @@ $!data.getMessage()
 		</tr>
 		<tr>
 		<td colspan=4 align="center">
-			<input type="button" name="eventSubmit_doExtract" value="$brih_submit" onClick="confirmSubmit(document.frm,this);">
-			<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doExtract" value="$brih_submit" onClick="confirmSubmit(document.frm,this);">
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel">
 			<input type="hidden" name=actionName value="">
 			<input type="hidden" name="totalfiles" value="$totalfiles">
 			<input type="hidden" name=topic value="$topic">

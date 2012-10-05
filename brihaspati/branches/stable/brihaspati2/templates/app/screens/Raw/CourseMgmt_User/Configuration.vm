@@ -24,7 +24,7 @@ $page.setTitle("Home | $course | Course Management |  Course Configuration for G
 
 $page.setBgColor($ui.bgcolor)
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
-
+<div class="scroll">
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td>
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
@@ -197,7 +197,7 @@ $page.setBgColor($ui.bgcolor)
 	<tr bgcolor ="$ui.menuColor"><td  align="left" colspan="5">
 		<font size=4> <b>$RemoteTag $brih_course $RemoteConfiguration</b></font>
 	</td></tr>
-	<tr><td >
+	<tr><td colspan=3>
 		<font color=Red>* $Remotemandatory</font>
 	</td></tr>
 			<tr bgcolor ="$ui.menuColor">
@@ -326,7 +326,7 @@ $page.setBgColor($ui.bgcolor)
                 </td>
         </tr>
 </table>
-
+</div>
 <SCRIPT LANGUAGE="javascript">
 function ChangeCname(frm,field)
 {

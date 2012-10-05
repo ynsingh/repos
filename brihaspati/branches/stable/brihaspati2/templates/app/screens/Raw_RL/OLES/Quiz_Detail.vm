@@ -5,6 +5,9 @@
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * Contributors: Members of MHRD Project, DEI Agra
 *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Quiz Management")
 $page.setBgColor($ui.bgcolor)
 ##<link rel="stylesheet" type="text/css" href="/brihaspati2/resources/css/DEI_Agra.css" />
@@ -171,8 +174,8 @@ $!data.getMessage()
 			        <td colspan=7>
 			        	<input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
 			        	<font face="$ui.sansSerifFonts"><b>$brih_selAll</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="button" name="eventSubmit_doRemove" value="$brih_delete" onClick="checkField(document.frm,this);"/>
-					<input type="reset" value="$brih_reset">
+					<input type="button" class="button-ftextstyle" name="eventSubmit_doRemove" value="$brih_delete" onClick="checkField(document.frm,this);"/>
+					<input type="reset" class="button-ftextstyle" value="$brih_reset">
 			        </td>
 			</tr>
 		#end	

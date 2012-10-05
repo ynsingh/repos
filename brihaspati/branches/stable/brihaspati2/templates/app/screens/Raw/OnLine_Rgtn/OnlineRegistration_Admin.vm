@@ -18,7 +18,10 @@ $page.setBgColor($ui.bgcolor)
 
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang").toString())
+<head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+<body>
 <table  bgcolor="$ui.menuColor" width=100%>
 <tr> <td>
  <b><a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
@@ -30,8 +33,6 @@ $!data.getMessage()
 #end 
 </td></tr>
 </table>
-<body>
-<form name="frm" method="post" action="$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("lang",$lang).setAction("OnlineRegistration_Admin")">
 <table align="left" width=100% bgcolor="$ui.tableColor">
 <tr>
 	#if($tdcolor!="1")
@@ -52,7 +53,9 @@ $!data.getMessage()
 </tr>
 </table>
 #if($entry.size() !=0)
-<table bgcolor="$ui.tableColor" cellpadding="5" align=left width=100%>
+<div class="scroll" style="margin-top:7px; position:absolute;">
+<form name="frm" method="post" action="$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("lang",$lang).setAction("OnlineRegistration_Admin")">
+<table bgcolor="$ui.tableColor" cellpadding="5" align=left>
 	#if($status == "UserResitration")
 
       <tr bgcolor="$ui.menuColor">
@@ -237,9 +240,9 @@ $!data.getMessage()
 </td>
 </tr>
 </table>
-#end
-
 </form>
+</div>
+#end
 </body>
 
 <SCRIPT LANGUAGE="javascript">

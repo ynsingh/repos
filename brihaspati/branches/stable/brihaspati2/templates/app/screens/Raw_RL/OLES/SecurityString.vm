@@ -7,6 +7,9 @@
 *#
 $page.setTitle("Show Security String")
 $page.setBgColor($ui.bgcolor)
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 ## If some message has been set, that is retrieved and displayed.
@@ -70,7 +73,7 @@ $page.setBgColor($ui.bgcolor)
 	        	<b>$brih_usr $brih_name </b>
       	  </td>
 			<td>
-    			<SELECT name=userList>	
+    			<SELECT name=userList class="drop">	
     			<option value="1" > #if($lang =="hindi" || $lang=="gujarati") $brih_student $brih_select #else $brih_select $brih_student #end </option>
 				#foreach($topic in $userList2)
 					#if($!topic.getLoginName()==$!studentLoginName)
@@ -87,7 +90,7 @@ $page.setBgColor($ui.bgcolor)
 				<b> $brih_quiz $brih_name  </b>
     		</td>
 			<td>
-        		<SELECT name=quizlist>       		
+        		<SELECT name=quizlist class="drop">       		
 				<option value="1"> #if($lang =="hindi" || $lang=="gujarati") $brih_quiz $brih_select #else $brih_select $brih_quiz #end </option>			
 					#foreach($topic in $quizList)
 						#if($!topic.getQuizID()==$!quizID)
@@ -102,7 +105,7 @@ $page.setBgColor($ui.bgcolor)
 	
 		<tr bgcolor="$ui.menuColor">
 			<td colspan="2">
-				<input type="button" name="eventSubmit_Security" value="$brith_showSecurity" onClick="checkField(document.frm,this);"/>		
+				<input type="button" class="button-ftextstyle" name="eventSubmit_Security" value="$brith_showSecurity" onClick="checkField(document.frm,this);"/>		
 			</td>
 		</tr>    
 		<input type="hidden" name="actionName">
@@ -119,7 +122,7 @@ $page.setBgColor($ui.bgcolor)
 				<b> $brih_quiz $brih_name  </b>
     		</td>
 			<td>
-        		<SELECT name=quizlist>       		
+        		<SELECT name=quizlist class="drop">       		
 				<option value="1"> $brih_select $brih_quiz </option>			
 					#foreach($topic in $quizList)
 						#if($!topic.getQuizID()==$!quizID)
@@ -135,7 +138,7 @@ $page.setBgColor($ui.bgcolor)
 	
 		<tr bgcolor="$ui.menuColor">
 			<td colspan="2">
-				<input type="button" name="eventSubmit_generateSecurity" value="$brith_generateSecurity" onClick="checkField1(document.frm,this);"/>		
+				<input type="button" class="button-ftextstyle" name="eventSubmit_generateSecurity" value="$brith_generateSecurity" onClick="checkField1(document.frm,this);"/>		
 			</td>
 		</tr>    
 		<input type="hidden" name="actionName">

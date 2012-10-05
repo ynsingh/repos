@@ -6,7 +6,9 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("$brih_select $brih_hint $brih_qus")
 $!data.getMessage()
 #set($lang =$data.getUser().getTemp("lang").toString())
@@ -24,7 +26,7 @@ $!data.getMessage()
 	</td> </tr>
 	<tr bgcolor="$ui.menuColor" align="right">
         	<td>
-              	<select name="qid" size=1>
+              	<select name="qid" size=1 class="drop" >
         	 #foreach($i in $question)	  
 	 	 	<option value="$i.getQuestionId()">$i.getQuestionName()
 		 #end
@@ -45,7 +47,7 @@ $!data.getMessage()
 	  <input type="hidden" name="actionName">
 	  <input type="hidden" name="uid" value=$uid>
 	  <input type="hidden" name="lang" value="$lang">
-	  <input type="button" name="eventSubmit_doInsertHint" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>
+	  <input type="button" name="eventSubmit_doInsertHint" value="$brih_submit" class="button-ftextstyle" onClick="checkAnswer(document.frm,this);"/>
 	</td>
 	</tr>	 
 </table>

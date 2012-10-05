@@ -9,6 +9,7 @@
 *#
 $page.setTitle("Admin Home | Change Parameters")
 $page.setBgColor($ui.bgcolor)
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 <table bgcolor="$ui.tableColor" width=100%>
@@ -82,8 +83,8 @@ $!data.getMessage()
    <tr align="right" bgcolor="$ui.tableColor">
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName">
-          <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
-	  <input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
+	  <input type="reset" name="reset" value="$brih_reset" class="button-ftextstyle" onClick="checkClear(document.frm,this);"/>
 	  <input type="hidden" name="count" value="$tdcolor">
  	<input type="hidden" name="iname" value="$iname">
       </td>

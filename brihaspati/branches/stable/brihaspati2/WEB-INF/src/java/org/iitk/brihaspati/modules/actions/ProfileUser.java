@@ -168,7 +168,7 @@ public class ProfileUser extends SecureAction
 		user.setEmail(eMail);
 		TurbineSecurity.saveUser(user);
 
-          	String imagesRealPath=TurbineServlet.getRealPath("/images");	
+          	String imagesRealPath=TurbineServlet.getRealPath("/localImages");	
 	  	FileItem fileItem=pp.getFileItem("PHOTO");
 		String configuration=pp.getString("Conf");
 		 String tconf=pp.getString("TaskConf");

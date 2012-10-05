@@ -10,7 +10,9 @@
 $page.setTitle("Quiz Management")
 $page.setBgColor($ui.bgcolor)
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align="right">
 	<td>
@@ -53,8 +55,8 @@ $!data.getMessage()
 	#if($Quizid.size()!=0)
 	<tr bgcolor="$ui.menuColor" align="right">
 	        <td colspan=7 border=0>
-	        <input type="button" name="eventSubmit_doRemove" value=$brih_delete onClick="checkField(document.frm,this);"/>
-		<input type="reset" value="$brih_reset">
+	        <input type="button" class="button-ftextstyle" name="eventSubmit_doRemove" value=$brih_delete onClick="checkField(document.frm,this);"/>
+		<input type="reset" class="button-ftextstyle" value="$brih_reset">
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font face="$ui.sansSerifFonts"><b>$brih_selAll</b>
 		<input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
 	        </td>

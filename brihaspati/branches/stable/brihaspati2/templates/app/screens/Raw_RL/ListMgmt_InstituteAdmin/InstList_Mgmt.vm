@@ -72,7 +72,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor" align="right">
                 <td></td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="listcourse" value="listcourse">
                         <input type="hidden" name="count" value="$tdcolor">
@@ -80,7 +80,7 @@ $!data.getMessage()
                 <td align="right"> <input type="text" name="valueString" value=""> </td>
                 <td align="right"><b>$brih_match_str</b></td>
                 <td align="right">
-                        <select name="queryList">
+                        <select name="queryList" class="drop">
                                 <option value="CourseId"> $brih_course $brih_Of1 $brih_ID</option>
                                 <option value="Course Name">$brih_course $brih_Of1 $brih_name</option>
                                 <option value="Dept">$brih_dept </option>

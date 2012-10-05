@@ -9,7 +9,9 @@
 $page.setTitle("Enter the Question")
 $page.setBgColor($ui.bgcolor)
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 <tr align="right">
 	<td>
@@ -45,8 +47,8 @@ $!data.getMessage()<br>
 <tr bgcolor="$ui.menuColor" >
    	<td  width=70% align="left"  >
         	<font face="$ui.sansSerifFonts">
-		<b>  $brih_for $!quizid </b>  &nbsp;&nbsp;&nbsp; <input type="button" name="Go" value="$brih_search" onClick="checkValue1(document.frm,this);"> &nbsp;&nbsp;&nbsp;
-		<SELECT name=typeList onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
+		<b>  $brih_for $!quizid </b>  &nbsp;&nbsp;&nbsp; <input type="button" class="button-ftextstyle" name="Go" value="$brih_search" onClick="checkValue1(document.frm,this);"> &nbsp;&nbsp;&nbsp;
+		<SELECT name=typeList class="drop" onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
 			#if($allTopics1 != " ")
 				#if($allTopics1 == "Multiple")
 				<option value="Multiple">$brih_multiple1  $brih_type $brih_Of2 $brih_qus</option>
@@ -167,11 +169,11 @@ $!data.getMessage()<br>
 	</tr>
 	<tr bgcolor="$ui.menuColor" ><td align=center colspan=2><font face ="$ui.sansserifFonts">
 		#if($xmlsize == $noofquestion )
-			<input type="button" name="eventSubmit_doSaveQuestion" value="$brih_finish" onClick="checkValue(document.frm,this);">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doSaveQuestion" value="$brih_finish" onClick="checkValue(document.frm,this);">
 		#else
-                	<input type="button" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);">
+                	<input type="button" class="button-ftextstyle" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);">
 		#end
-                       	<input type="reset" value="$brih_reset">
+                       	<input type="reset" class="button-ftextstyle" value="$brih_reset">
 	</font></td></tr>	
 		
 	#end
@@ -277,8 +279,8 @@ $!data.getMessage()<br>
 	<tr bgcolor="$ui.menuColor" >
 		<td align=center colspan=2>
        		<font face ="$ui.sansserifFonts">
-                <input type="button" name="eventSubmit_doSaveQuestion" value= $brih_update onClick="checkValue(document.frm,this);">
-                <input type="reset" value="$brih_reset">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doSaveQuestion" value= $brih_update onClick="checkValue(document.frm,this);">
+                <input type="reset" class="button-ftextstyle" value="$brih_reset">
 #end	
 		<input type="hidden" name="mode" value=$mode >
                 <input type="hidden" name="quizid" value=$quizid >
@@ -410,7 +412,7 @@ $!data.getMessage()<br>
         {
                 if(frm.topicExisting[0].checked)
                 {
-                        frm.contentTopic.value=frm.typeList.options[frm.typeList.selectedIndex].text;
+                        frm.contentTopic.value=frm.typeList.options[frm.typeList.class="button-ftextstyle" selectedIndex].text;
 
                 }
                 else

@@ -6,7 +6,9 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("brih_home | $course1 | $brih_ins $brih_mgmt")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
@@ -81,7 +83,7 @@ $!data.getMessage()
 
 	 <tr bgcolor="$ui.menuColor">
                 <td colspan=6>
-                        <INPUT TYPE="button" NAME="eventSubmit_doRemoveUser" VALUE="$brih_delete" onClick="DeleteField(document.frm,this);">
+                        <INPUT TYPE="button" class="button-ftextstyle" NAME="eventSubmit_doRemoveUser" VALUE="$brih_delete" onClick="DeleteField(document.frm,this);">
                         <INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
                         <INPUT TYPE="hidden" NAME="actionName" VALUE="">
                         <INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">

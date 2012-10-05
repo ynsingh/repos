@@ -13,6 +13,9 @@
 $page.setTitle("Res Repo Page")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="#d9e3ec" width=100%>
 <tr <tr align="right">
@@ -64,8 +67,8 @@ $!data.getMessage()
               <tr><td> ## td tr 8 start
                 <table border="0" bgcolor="#e5e5e5" colspan="5" width="100%"> ## table 7 start
                         <tr><td align="center" >
-                          <input type="button" name="eventSubmit_doCreate_resrepo" value="$WikiCreate" onClick="checkField(document.frm,this);"/>
-                           <input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
+                          <input type="button" class="button-ftextstyle" name="eventSubmit_doCreate_resrepo" value="$WikiCreate" onClick="checkField(document.frm,this);"/>
+                           <input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
                         </tr></td>
                 </table> ## end of table 7
         </tr></td> ## end od td tr 8
@@ -75,12 +78,12 @@ $!data.getMessage()
 <table  border="0" bgcolor="#d9e3ec" width="100%"> ## table 5 start
 <tr bgcolor="#e5e5e5">
         <td>
-                <input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkNull(document.frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search" onClick="checkNull(document.frm,this);">
                 <input align=center type="text" name="valueString" value="">
                 <b>$brih_match_str</b>
        </td>
         <td align=left>
-                <select name="queryList">
+                <select name="queryList" class="drop">
                 <option value="Author Name">$brih_author $brih_Of1 $brih_name</option>
                 <option value="Research Group">$brih_Res $brih_grp</option>
                 </select>
@@ -264,10 +267,10 @@ $!data.getMessage()
         	#end
     	#end
 	#if($check=="Noblank" || $content1=="value")
-	        <input type="button" name="eventSubmit_doDeleteTopic" value="$brih_delete $brih_grp" onClick="deleteConfirm(document.frm,this);"/>
+	        <input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteTopic" value="$brih_delete $brih_grp" onClick="deleteConfirm(document.frm,this);"/>
 	#end
 	#if($type=="Unjoin" && $value=="yesvalue")
-        	<input type="button" name="eventSubmit_doUnjoinUser" value="$brih_unjoin $brih_usr" onClick="deleteConfirm(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doUnjoinUser" value="$brih_unjoin $brih_usr" onClick="deleteConfirm(document.frm,this);"/>
 	#end
         </td>
 </tr>

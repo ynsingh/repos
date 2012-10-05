@@ -18,7 +18,9 @@ $page.setTitle("Admin Home | Glossary | Search Word")
 $page.setTitle("Home | Glossary | Search Word")
 #end
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr align="right">
 	<td>
@@ -50,7 +52,7 @@ $!data.getMessage()
 <table>
 	<tr bgcolor="$ui.tableColor">
        <td align=center colspan=2>
-		<input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);"/>
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);"/>
        	<td>
 		#if($key!="")
 			## #formCell("$brih_string $brih_search" "WORD" "$key")

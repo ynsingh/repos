@@ -11,7 +11,9 @@
 *#
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 <body>
 ## Representation of TOP BAR
@@ -78,18 +80,18 @@ $!data.getMessage()
 	</b></I></td></tr>
 		#if(($mode=="adphase")||($mode=="sresult") ||($mode=="update"))	
 		<tr><td width=100% align="center">
-			<select name="g">
+			<select name="g" class="drop">
 				<option value="$!value">$!value	</option>
 			</select>
-			<select name="uname">
+			<select name="uname" class="drop">
 			#foreach($n in $ul)
 				#foreach($u in $n)
 					<option value=$!u.UserName>$!u.UserName</option>
 				#end
 			#end
 			</select>
-			<input type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
-			<select name="group1" onChange="checkoption(document.frm,this)";>
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search"/>
+			<select name="group1" class="drop" onChange="checkoption(document.frm,this)";>
 				<option>$brih_select</option>
 					#foreach($gname in $glist)
 						#if(($gname.getName()!="author") && ($gname.getName()!="global"))
@@ -101,12 +103,12 @@ $!data.getMessage()
 		#end
 		#if($mode=="sresult")
 		<tr><td width=100% align="center" bgcolor="$ui.menuColor">
-			<input type=button  name="eventSubmit_doGetrank" value=$brih_result onClick="CheckResult(document.frm,this);"/>
+			<input type=button  class="button-ftextstyle" name="eventSubmit_doGetrank" value=$brih_result onClick="CheckResult(document.frm,this);"/>
 		</td></tr>
 		#end
 		#if($mode=="update")
 		<tr><td width=100% align="center" bgcolor="$ui.menuColor">
-			<input type=button name="eventSubmit_doGet" value=$brih_get onClick="CheckResult(document.frm,this);"/>
+			<input type=button class="button-ftextstyle" name="eventSubmit_doGet" value=$brih_get onClick="CheckResult(document.frm,this);"/>
 		</td></tr>
 		#end
 </table>
@@ -114,7 +116,7 @@ $!data.getMessage()
 <table border=1 align=center bgcolor="$ui.tableColor" width=50%>
 	#if($mode == "adphase")
 		<tr align="right" >
-			<td colspan=2><select name="Start_year">
+			<td colspan=2><select name="Start_year" class="drop">
                 	<option value="$cyear">$cyear
                 	#foreach($year in $year_list)
 				#if($cyear != $year)
@@ -123,7 +125,7 @@ $!data.getMessage()
                   	#end
                 	</select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
-			<select name="Start_month">
+			<select name="Start_month" class="drop">
 			<option value="$cmonth">$cmonth
 			#foreach($mon in $month)
 				#if($mon != $cmonth)
@@ -132,7 +134,7 @@ $!data.getMessage()
 			#end
 			</select>
                 	&nbsp;<b><font size=+1>-</font></b>&nbsp;
-                	<select name="Start_day">
+                	<select name="Start_day" class="drop">
                 	<option value="$cdays">$cdays
                 	#foreach($d in $day)
 				#if($d!=$cdays)
@@ -172,14 +174,14 @@ $!data.getMessage()
                         <td align=center colspan=3 bgcolor="$ui.menuColor">
                         <font face="$ui.sanSerifFonts">
 
-                	<input type=button name="eventSubmit_doInsert" value=$brih_submit onClick="CheckQues(document.frm,this);"/>
+                	<input type=button class="button-ftextstyle" name="eventSubmit_doInsert" value=$brih_submit onClick="CheckQues(document.frm,this);"/>
                 	</font>
 		</td></tr>
 	#elseif($mode=="stphase") 
 			#foreach($detail in $sdetail)
 			<tr align="right">
 				##formCell("$brih_ques1" "" "$sdetail.get(0).getQues1()")
-				<td><select name="marks1">
+				<td><select name="marks1" class="drop">
 					#ls()
 				</select></td>		
 				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues1()"></td>
@@ -187,7 +189,7 @@ $!data.getMessage()
 			</tr>
 			<tr align="right">
 				###formCell("$brih_ques2" "" "$sdetail.get(0).getQues2()")
-				<td><select name="marks2">
+				<td><select name="marks2" class="drop">
 					#ls()
 				</select></td>		
 				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues2()"></td>
@@ -195,7 +197,7 @@ $!data.getMessage()
 			</tr>
 			<tr align="right">
 				##formCell("$brih_ques3" "" "$sdetail.get(0).getQues3()")
-				<td><select name="marks3">
+				<td><select name="marks3" class="drop">
 					#ls()
 				</select></td>		
 				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues3()"></td>
@@ -203,7 +205,7 @@ $!data.getMessage()
 			</tr>
 			<tr align="right">
 				##formCell("$brih_ques4" "" "$sdetail.get(0).getQues4()")
-				<td><select name="marks4">
+				<td><select name="marks4" class="drop">
 					#ls()
 				</select></td>		
 				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues4()"></td>
@@ -211,7 +213,7 @@ $!data.getMessage()
 			</tr>
 			<tr align="right" >
 				##formCell("$brih_ques5" "" "$sdetail.get(0).getQues5()")
-				<td><select name="marks5">
+				<td><select name="marks5" class="drop">
 					#ls()
 				</select></td>
 				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues5()"></td>
@@ -227,9 +229,9 @@ $!data.getMessage()
                         <font face="$ui.sanSerifFonts">
 
 				#if($rank>0)
-					<input type=button name="eventSubmit_doSend" value=$brih_post disabled="true"/>
+					<input type=button class="button-ftextstyle" name="eventSubmit_doSend" value=$brih_post disabled="true"/>
 				#else
-					<input type=button name="eventSubmit_doSend" value=$brih_post onClick="CheckMarks(document.frm,this);"/>
+					<input type=button class="button-ftextstyle" name="eventSubmit_doSend" value=$brih_post onClick="CheckMarks(document.frm,this);"/>
 				#end
                 	</font>
 			</td></tr>
@@ -269,7 +271,7 @@ $!data.getMessage()
 			<tr>
                         <td align=center colspan=3 bgcolor="$ui.menuColor">
                         <font face="$ui.sanSerifFonts">
-			<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="ValueUpdate(document.frm,this);"/>
+			<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value=$brih_update onClick="ValueUpdate(document.frm,this);"/>
                 	</font>
 			</td></tr>
                 	<input type="hidden" name="iname" value=$list.get(0).getInstId()>
@@ -309,7 +311,7 @@ $!data.getMessage()
                 	<td align=center colspan=3 bgcolor="$ui.menuColor">
                         <font face="$ui.sanSerifFonts">
 
-                                <input type=button name="eventSubmit_doDelete" value=$brih_delete onClick="checkField(document.frm,this);"/>
+                                <input type=button  class="button-ftextstyle" name="eventSubmit_doDelete" value=$brih_delete onClick="checkField(document.frm,this);"/>
                 		<input type="hidden" name="deleteFileNames" value="">
                 	</font>
 			</td>

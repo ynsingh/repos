@@ -49,14 +49,27 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.torque.TorqueException;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import java.io.File;
+import java.util.Vector;
 
 /**
- * Action class to resend activation mail
+ * Action class to resend activation for direct registration
+ * and confirmation mail for institute registration and online regitration.
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date: 09-08-2012, 01-10-2012
  */
 
 public class ResendActivation extends VelocityAction{
         private Log log = LogFactory.getLog(this.getClass());
+	String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";
+        Properties pr ;
+	String fileName=new String();
+
 	
 	public void doPerform( RunData data, Context context )
         {
@@ -64,134 +77,343 @@ public class ResendActivation extends VelocityAction{
                 System.gc();
                 Criteria crit = null;
                 String e_mail=data.getParameters().getString("email");
-		 Properties pr ;
-		 String fileName=new String();
-		String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";	
+		String lang=data.getParameters().getString("lang","english");
+		ErrorDumpUtil.ErrorLog("Language "+lang);
+		//Properties pr ;
+		//String fileName=new String();
+		//String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";	
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
 		String Mail_msg=new String();
-         	 String message=new String();
-
-		// Get user id
-		int cmpid=-1;
-                int uid=UserUtil.getUID(e_mail);
-                boolean Result= uid == cmpid;
-                ErrorDumpUtil.ErrorLog("GETTING USER ID....." +uid +" "+ Result);
-		
-                if(Result){
-	                  try{
-                              data.setMessage("You are not registered in Brihaspati LMS");
-                              data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=You are not registered in Brihaspati LMS");
-                          }
-                          catch (Exception ex){
-				String msg = "Error in activation	";
-                               ErrorDumpUtil.ErrorLog("User not registered in Brihaspati LMS inside 1st catch "+ex);
-				 throw new RuntimeException(msg,ex);
-                          }
-		}
-		else{
-
-                        try{
-			 // select activation key corresponding to user id in a_key
-			  crit = new Criteria();
-                          crit.add(UserPrefPeer.USER_ID,uid);
-                          List list = UserPrefPeer.doSelect(crit);
-                          String a_key =((UserPref)list.get(0)).getActivation();
-			ErrorDumpUtil.ErrorLog("ACTIVATION KEY INSIDE RESEND ACTIVATION	"+a_key);
-			  if (a_key == null || a_key.equalsIgnoreCase("NULL"))
-			  {
-				try{
-                              data.setMessage("You are not registered in Brihaspati LMS.If you are registered then you contact to administrator.");
-                              data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=You are not registered in Brihaspati LMS.If you are registered then you contact to administrator.");
-                          	}
-                          	catch (Exception ex){
-					String msg1 = "Error in activation	";
-                               		ErrorDumpUtil.ErrorLog("User not registered in Brihaspati LMS  inside 2nd catch"+ex);
-                        		throw new RuntimeException(msg1,ex);
-				}
-			  }
-			ErrorDumpUtil.ErrorLog("AFTER FIRST IF INSIDE RESEND ACTIVATION");
-			   if (a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
-			   {
-				try{
-	                              data.setMessage("Your account has already been activated.");
-        	                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account has already been activated.");
-                                }
-                                catch (Exception ex){
-					String msg2 = "Error in activation	";
-                                        ErrorDumpUtil.ErrorLog("User account already exists inside 3rd catch"+ex);
-					 throw new RuntimeException(msg2,ex);
-                                }
-
-			   }
-			ErrorDumpUtil.ErrorLog("AFTER SECOND IF INSIDE RESEND ACTIVATION");
-			    if (a_key != "ACTIVATE" && a_key != null)
-			     {
-				ErrorDumpUtil.ErrorLog("INSIDE 4TH IF");
-				//sending activation link in the mail
-				
-				/**
- 				* Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
-                                * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
-                                */
-				if(serverPort.equals("8080"))
-                                      info_Opt = "newUser";
-                                else
-                                      info_Opt = "newUserhttps";
-				
-				fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                                pr =MailNotification.uploadingPropertiesFile(fileName);
-				msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
-//                                msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
-				msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", e_mail);
-				msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-				subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_subject");
-      //                          messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
-        			messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_message"); // get a_key
-	                        activationLink=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".activationLink");
-                                activationLink=MailNotification.getMessage(activationLink, e_mail, a_key,"");
-                                activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
-                                messageFormate = messageFormate+activationLink;
-			//	Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid);
-				Mail_msg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", e_mail, subject, "", "", "","");//last parameter added by Priyanka
-				data.setMessage(Mail_msg);
-				
-
-				try{
-                             		 data.setMessage("An Activation email has been  sent to "+e_mail+" .Please click on the Activation link to activate your account.");
-                             		 data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=An Activation email has been sent to "+e_mail+" .Please click on the Activation link to	activate your account.");
-                                }
-                                catch (Exception ex){
-					String msg3 = "Error in activation	";
-					ErrorDumpUtil.ErrorLog("Activation mail sending	inside 4th catch "+ex);
-                               		throw new RuntimeException(msg3);
-				 }
+         	String message=new String();
+		String a_key = null;
+		String path, email, str, flag;
+		boolean sent = false;
+		String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);	
+		MultilingualUtil mu = new MultilingualUtil();		
 	
-			     }
-			      else
+		try{	
+		//Check, if email exists in InstituteRegistrationList.xml
+		path=TurbineServlet.getRealPath("/InstituteRegistration/InstituteRegistrationList.xml");
+                File f=new File(path);
+		if(f.exists()){
+			a_key = XMLWriter_InstituteRegistration.getActivationKey(path,e_mail);			
+			ErrorDumpUtil.ErrorLog("ACTIVATION KEY 1....." +a_key);
+			if(a_key!=null)
+			{
+				if(a_key.equals("Email confirmed"))
 				{
 					try{
-                                         data.setMessage("Oops ! An error occured. Please re-enter your Email Id.");
-                                         data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Oops ! An error occured. Please re-enter your Email Id.");
-	                                }
-        	                        catch (Exception ex){
-						String msg4 = "Error in activation       ";
-	                                        ErrorDumpUtil.ErrorLog(" Error sending activation mail inside 5th catch "+ex);
-                        	     		throw new RuntimeException(msg4);
-
-					   }
+						sent=true;
+		                        	str=MultilingualUtil.ConvertedString("ac_cnfrm",LangFile);
+                		        	data.setMessage(str);
+					}
+					catch (Exception ex){
+                        			String msg3 = "Error in activation      ";
+                       				ErrorDumpUtil.ErrorLog("Activation mail sending  "+ex);
+                		        	throw new RuntimeException(msg3);
+		                	}
+				}			
+				else{
+					sent = sendMail(e_mail,a_key,"cnfrm_i",LangFile,data,lang);
+					ErrorDumpUtil.ErrorLog("SENT VALUE 1....."+sent);
 				}
-				
-			  }
-			 catch(Exception ex){
-                                String msg5 = "Error in activation   ";
-				ErrorDumpUtil.ErrorLog(" Error sending activation mail inside 6th catch "+ex);
-				 throw new RuntimeException(msg5);
 			}
+		}
 
+		if(!sent){
+			//Check, if email exists in courses.xml
+			path=data.getServletContext().getRealPath("/OnlineUsers/courses.xml");
+			File f1 =new File(path);
+			if(f1.exists()){
+				TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(path);
+				Vector userList = topicmetadata.getOnlineCourseDetails();
+				 if(userList != null){
+					for(int i=0; i <userList.size(); i++)
+                                 	{
+                                        	email = ((CourseUserDetail)userList.get(i)).getEmail();
+                                        	if(email.equals(e_mail))
+                                        	{
+							flag = ((CourseUserDetail)userList.get(i)).getFlag();
+							if(flag.equals("0"))
+							{
+								a_key = ((CourseUserDetail)userList.get(i)).getActivation();
+								ErrorDumpUtil.ErrorLog("ACTIVATION KEY 2....." +a_key);
+								if(a_key!=null){
+				                                	sent = sendMail(e_mail,a_key,"cnfrm_c",LangFile,data, lang);
+									ErrorDumpUtil.ErrorLog("SENT VALUE 2....."+sent);
+                        					}//if 5
+							}//if 4
+							else
+							{
+								ErrorDumpUtil.ErrorLog("FLAG 1....."+flag);
+								try{
+									sent=true;
+			                                                str=MultilingualUtil.ConvertedString("ac_cnfrm",LangFile);
+                        			                        data.setMessage(str);
+                                        			}
+                                        			catch (Exception ex){
+                                                			String msg3 = "Error in activation      ";
+                                                			ErrorDumpUtil.ErrorLog("Activation mail sending  "+ex);
+                                                			throw new RuntimeException(msg3);
+                                        			}
+
+							}
+						}//if 3 
+					}//for
+				 }//if 2	
+			}//if 1
+		}//if
+
+		if(!sent){
+                        //Check, if email exists in OnlineUser.xml
+                        path=data.getServletContext().getRealPath("/OnlineUsers/OnlineUser.xml");
+                        File file =new File(path);
+                        if(file.exists()){
+                                TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(path);
+                                Vector userList1 = topicmetadata.getOnlineUserDetails();
+                                 if(userList1 != null){
+                                        for(int i=0; i <userList1.size(); i++)
+                                        {
+                                                email = ((CourseUserDetail)userList1.get(i)).getEmail();
+                                                if(email.equals(e_mail))
+                                                {
+							flag = ((CourseUserDetail)userList1.get(i)).getFlag();
+                                                        if(flag.equals("0"))
+                                                        {
+								a_key = ((CourseUserDetail)userList1.get(i)).getActivation();
+								ErrorDumpUtil.ErrorLog("ACTIVATION KEY 3....." +a_key);
+                                                        	if(a_key!=null){
+                                                                	sent = sendMail(e_mail,a_key,"cnfrm_u",LangFile,data, lang);
+									ErrorDumpUtil.ErrorLog("SENT VALUE 3....."+sent);
+                                                        	}//if 5
+							}//if 4
+							else
+							{
+								ErrorDumpUtil.ErrorLog("FLAG....."+flag);	
+								try{
+									sent=true;
+                                                			str=MultilingualUtil.ConvertedString("ac_cnfrm",LangFile);
+                                                			data.setMessage(str);
+                                        			}
+                                        			catch (Exception ex){
+                                                			String msg3 = "Error in activation      ";
+                                                			ErrorDumpUtil.ErrorLog("Activation mail sending  "+ex);
+                                                			throw new RuntimeException(msg3);
+                                        			}
+							}
+                                                }//if 3
+                                        }//for
+                                 }//if 2
+                        }//if 1 
+                }//if 
+		}//try
+		catch(Exception ex){
+                     String msg5 = "Error in activation   ";
+                     ErrorDumpUtil.ErrorLog(" Error sending activation mail inside 6th catch "+ex);
+                     throw new RuntimeException(msg5);
+                }//catch 1
+
+
+		if(!sent){
+			// Get user id
+			int cmpid=-1;
+                	int uid=UserUtil.getUID(e_mail);
+                	boolean Result= uid == cmpid;
+                	ErrorDumpUtil.ErrorLog("GETTING USER ID....." +uid +" "+ Result);
+		
+                	if(Result){
+	                	  try{
+					str=MultilingualUtil.ConvertedString("usr_doesntExist",LangFile); 
+                             		data.setMessage(str);
+                              		//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                          	    }
+                          	    catch (Exception ex){
+					String msg = "Error in activation	";
+                               		ErrorDumpUtil.ErrorLog("User not registered in Brihaspati LMS inside 1st catch "+ex);
+				 	throw new RuntimeException(msg,ex);
+                          	    }
+			}//if 1
+			else{
+
+                        	try{
+			 	// select activation key corresponding to user id in a_key
+			  		crit = new Criteria();
+                          		crit.add(UserPrefPeer.USER_ID,uid);
+                          		List list = UserPrefPeer.doSelect(crit);
+                          		a_key =((UserPref)list.get(0)).getActivation();
+					ErrorDumpUtil.ErrorLog("ACTIVATION KEY INSIDE RESEND ACTIVATION	"+a_key);
+			  		if (a_key == null || a_key.equalsIgnoreCase("NULL"))
+			  		{
+						ErrorDumpUtil.ErrorLog("i m here 1");
+						try{
+							str=MultilingualUtil.ConvertedString("usr_queries",LangFile);
+                              				data.setMessage(str);
+                              				//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                          			 }
+                          			catch (Exception ex){
+							String msg1 = "Error in activation	";
+                               				ErrorDumpUtil.ErrorLog("User not registered in Brihaspati LMS  inside 2nd catch"+ex);
+                        				throw new RuntimeException(msg1,ex);
+						}
+			  		}//if 2
+					else if(a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
+			   		{
+						ErrorDumpUtil.ErrorLog("i m here 2");
+						try{
+							str=MultilingualUtil.ConvertedString("ac_activate",LangFile);
+	                              			data.setMessage(str);
+        	                      			//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                                		 }
+                                		 catch (Exception ex){
+							String msg2 = "Error in activation	";
+                                        		ErrorDumpUtil.ErrorLog("User account already exists inside 3rd catch"+ex);
+					 		throw new RuntimeException(msg2,ex);
+                                		 }
+
+			   		}//if 3
+					else if(!(a_key.equalsIgnoreCase("ACTIVATE")) && !(a_key.equalsIgnoreCase("NULL")))
+			     		{
+						ErrorDumpUtil.ErrorLog("INSIDE 4TH IF");
+						//sending activation link in the mail
+				
+						/**
+ 						 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+                                		 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+                                		 */
+						if(serverPort.equals("8080"))
+                                      			info_Opt = "newUser";
+                                		else
+                                      			info_Opt = "newUserhttps";
+				
+						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                                		pr =MailNotification.uploadingPropertiesFile(fileName);
+						msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+//                                		msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
+						msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", e_mail);
+						msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                		msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+						subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_subject");
+      //                          		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
+        					messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_message"); // get a_key
+	                        		activationLink=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".activationLink");
+                                		activationLink=MailNotification.getMessage(activationLink, e_mail, a_key,"", lang);
+                                		activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
+                                		messageFormate = messageFormate+activationLink;
+			//			Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid);
+						Mail_msg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", e_mail, subject, "", "", "","");//last parameter added by Priyanka
+						//data.setMessage(Mail_msg);
+				
+						try{
+							str=MultilingualUtil.ConvertedString("act_mail",LangFile);
+                             		 		data.setMessage(str);
+                             		 		//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                                		 }
+                                		catch (Exception ex){
+							String msg3 = "Error in activation	";
+							ErrorDumpUtil.ErrorLog("Activation mail sending	inside 4th catch "+ex);
+                               				throw new RuntimeException(msg3);
+				 		}
+	
+			     		}//if 4
+			      		else
+					{
+						ErrorDumpUtil.ErrorLog("i m here 3");
+						try{
+							str=MultilingualUtil.ConvertedString("oops_msg",LangFile);
+                                         		data.setMessage(str);
+                                         		//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+	                                	}
+        	                        	catch (Exception ex){
+							String msg4 = "Error in activation       ";
+	                                        	ErrorDumpUtil.ErrorLog(" Error sending activation mail inside 5th catch "+ex);
+                        	     			throw new RuntimeException(msg4);
+
+					   	}
+					}//else 3
+				
+			  	}//try 1
+			 	catch(Exception ex){
+                                	String msg5 = "Error in activation   ";
+					ErrorDumpUtil.ErrorLog(" Error sending activation mail inside 6th catch "+ex);
+				 	throw new RuntimeException(msg5);
+				}//catch 1
+
+		  	}//else 2
+		}//if
+	}//method
+
+/**
+ * Method to send confirmation mail
+ * in case of Institute Regitration and Online Registration
+ * @param email  User's email id
+ * @param a_key activation key corresponding to email
+ * @param u_mode user mode, can have values "cnfrm_i", "cnfrm_c", "cnfrm_u"
+ * @param LangFile language selected by user
+ * @param data RunData
+ * in xml file
+ * @return boolean
+ */
+private boolean sendMail(String email, String a_key, String u_mode, String LangFile, RunData data, String lang){
+	String str, Mailmsg, confirmationMail;
+	String serverName=data.getServerName();
+        int srvrPort=data.getServerPort();
+        String serverPort=Integer.toString(srvrPort);
+
+	try{
+		ErrorDumpUtil.ErrorLog("i m here 4");
+	 /**
+          * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+          * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+          */
+		if(serverPort.equals("8080"))
+                        info_Opt = "newUser";
+                else
+                        info_Opt = "newUserhttps";
+		// set key in link and pass in mail
+		fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                pr =MailNotification.uploadingPropertiesFile(fileName);
+                msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+                msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_subject");
+                messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_message"); // get a_key
+                confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
+                confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
+                messageFormate = messageFormate+confirmationMail;
+                Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "", "","");
+
+		try{
+			str=MultilingualUtil.ConvertedString("cnfrm_mail",LangFile);
+			data.setMessage(str);
+			//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+		}
+		catch (Exception ex){
+                        String msg3 = "Error in activation      ";
+                        ErrorDumpUtil.ErrorLog("Activation mail sending inside 4th catch "+ex);
+                        throw new RuntimeException(msg3);
+                }
+		
+		return true;
+	}//try
+	catch(Exception e){
+		 String message = "Error occurred while resending confirmation mail!";
+                 log.error(message, e);
+		 String str1=MultilingualUtil.ConvertedString("oops_msg",LangFile);
+                 //String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str1;
+		try{
+                          data.setMessage(str1);
+                          //data.getResponse().sendRedirect(url1);
+                 }
+                 catch (Exception ex){
+                	  ErrorDumpUtil.ErrorLog("Error while resending confirmation mail"+ex);
 		  }
+		return false;
 	}
-}
+}//method
+
+}//class
 

@@ -10,7 +10,9 @@
 
 $page.setTitle("Enter the Question")
 $page.setBgColor($ui.bgcolor)
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
 <tr>
         <td>
@@ -63,7 +65,7 @@ $!data.getMessage()
    	</td>
    	<td width=70% align="left" bgcolor="$ui.tableColor">
     	<font face="$ui.sansSerifFonts">
-      	<select name="Answer" size=1>
+      	<select name="Answer" size=1 class"drop">
 	 <option value=$!ans>$!ans
          <option value="A">$brih_a</option>
          <option value="B">$brih_b</option>
@@ -81,12 +83,12 @@ $!data.getMessage()
 <tr>
 <td align=center colspan=2>  
 <font face ="$ui.sansserifFonts">
-  <input type="reset" value="$brih_reset"> 
+  <input type="reset" class="button-ftextstyle" value="$brih_reset"> 
 	#if($mode=="Insert")
-  		<input type="button" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
-  		<input type="button" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
+  		<input type="button" class="button-ftextstyle" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
+  		<input type="button" class="button-ftextstyle" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
 	#else
-		<input type="button" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doEditQuestion" value="$brih_edit" onClick="checkValue(document.frm,this);">
   		<input type="hidden" name="qid" value=$qid>
 	#end
   <input type="hidden" name="modulename" value=$modulename> 

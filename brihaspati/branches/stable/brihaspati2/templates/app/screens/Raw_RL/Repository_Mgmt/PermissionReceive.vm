@@ -10,6 +10,9 @@
 $page.setTitle("$brih_ad $brih_home |$Repo_Repo1")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang=$data.getUser().getTemp("lang").toString())
 
 <table bgcolor="$ui.tableColor" width=100%>
@@ -94,7 +97,7 @@ $!data.getMessage()
 		<input type="hidden" name="mode" value="$mode">
 		<input type="hidden" name="empty" value="false">
 		<input type="hidden" name="actionName" value="">
-                <input type="button" name="eventSubmit_doRemoveperm_receive" value="$brih_remove" onClick="checkField(frm,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveperm_receive" value="$brih_remove" onClick="checkField(frm,this);">
                </td>
 		</tr>
 				#else
@@ -173,7 +176,7 @@ $!data.getMessage()
 		<input type="hidden" name="actionName" value="">
 		<input type="hidden" name="mode" value="$mode">
 		<input type="hidden" name="empty" value="false">
-                <input type="button" name="eventSubmit_doRemoveperm_given" value="$brih_remove" onClick="checkField(document.frm1,this);">
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveperm_given" value="$brih_remove" onClick="checkField(document.frm1,this);">
                 </td>
 		</tr>
 				#else

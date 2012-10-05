@@ -93,7 +93,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>3May2012
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 20-10-2010,23-12-2010, 16-06-2011,20-04-2012
- * @modified date: 09-08-2012 (Priyanka)
+ * @modified date: 09-08-2012, 25-09-2012 (Priyanka)
  */
 
 
@@ -332,7 +332,7 @@ public class OnlineRegistration extends VelocitySecureAction
           			                        sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
         			                        messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
    			                                confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-   			                                confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+   			                                confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
       				                        confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
                                			        messageFormate = messageFormate+confirmationMail;
                         			        Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
@@ -380,7 +380,7 @@ public class OnlineRegistration extends VelocitySecureAction
                                              sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
                                              messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
                                              confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                                             confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+                                             confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
                                              confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
                                              messageFormate = messageFormate+confirmationMail;
                                              Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
@@ -443,7 +443,7 @@ public class OnlineRegistration extends VelocitySecureAction
 						sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteId)));
 					}
 				}
-				break;								
+				//break;								
 			 }	
 		}
 		String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
@@ -628,7 +628,7 @@ public class OnlineRegistration extends VelocitySecureAction
                                         sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
                                         messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
                                         confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                                        confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+                                        confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
                                         confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
                                         messageFormate = messageFormate+confirmationMail;
                                         Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
@@ -676,7 +676,7 @@ public class OnlineRegistration extends VelocitySecureAction
                                  sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
                                  messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
                                  confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                                 confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode);
+                                 confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
                                  confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
                                  messageFormate = messageFormate+confirmationMail;
                                  Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
@@ -724,7 +724,7 @@ public class OnlineRegistration extends VelocitySecureAction
 						instituteid =((CourseUserDetail)userList1.get(i)).getInstId();
                                         	sendMailToApproval("fromCourse",LangFile,uname,fname,lname,cname,instituteid);
                                 	}
-                                	break;
+                                	//break;
                          	}
                 	}	
 			String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);

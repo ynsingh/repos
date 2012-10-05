@@ -7,7 +7,9 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 ##<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 ##<body bgcolor="$ui.bgcolor" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
@@ -76,8 +78,8 @@ $!data.getMessage()
       </tr>*#
 	<tr>
 	<td colspan=2 align=left>
-	    <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
-	    <input type="reset" name="Clear" value="$brih_clear"/>
+	    <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
+	    <input type="reset" class="button-ftextstyle" name="Clear" value="$brih_clear"/>
 	</td>
 	</tr>
     </table>

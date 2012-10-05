@@ -6,7 +6,9 @@
  * Contributors: Members of MHRD, DEI Agra.
 *#
 
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Quiz Management")
 $page.setBgColor("#ffffff")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -96,7 +98,7 @@ $!data.getMessage()
 	        	<font face="$ui.sansSerifFonts">
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
-	        			<select name=quizList>
+	        			<select name=quizList class="drop">
 	        				#foreach($qid in $quizList)	        				
 	        					<option value="$qid.getQuizID(),$qid.getMaxTime()">$qid.getQuizName()</option>
 	        				#end
@@ -124,9 +126,9 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor" colspan="4">
 		<td align=left colspan="4">
 			#if($type=="practice")
-	        	<input type="button" name="eventSubmit_attemptPracticeQuiz" value="$brih_startquiz" onClick="confirmQuizStart1(document.frm,this);">
+	        	<input type="button" class="button-ftextstyle" name="eventSubmit_attemptPracticeQuiz" value="$brih_startquiz" onClick="confirmQuizStart1(document.frm,this);">
         	#else
-	        	<input type="button" name="eventSubmit_attemptQuiz" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this,'$securityData','$ip');">
+	        	<input type="button" name="eventSubmit_attemptQuiz" class="button-ftextstyle" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this,'$securityData','$ip');">
 	        #end
 		</td>
 	</tr>

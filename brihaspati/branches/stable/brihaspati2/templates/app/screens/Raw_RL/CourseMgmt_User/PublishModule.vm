@@ -8,7 +8,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 30-03-2010, 13-03-2010
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Home | $course | Course Management | Course Content | Publishing Module")
 
@@ -121,7 +123,7 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 </div>
 	<div style="background-color:$ui.menuColor;text-align:right">
 ##<b>$brih_topicDelete </b><input type="checkbox" name=delTopic>
-<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
+<input type="button" class="button-ftextstyle" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
 <b>$brih_topicDelete </b><input type="checkbox" name=delTopic>
 
 </div> 
@@ -263,8 +265,8 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 	#end
 	<tr>
 	<td colspan=7 align="right" bgcolor="$ui.menuColor">
-	<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel">
-	<input type="button" name="eventSubmit_doPublish" value="$brih_submit" onClick="deleteConfirm(document.frm,this);">
+	<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel">
+	<input type="button" class="button-ftextstyle" name="eventSubmit_doPublish" value="$brih_submit" onClick="deleteConfirm(document.frm,this);">
         </td>
 	</tr>
        </table>

@@ -8,7 +8,9 @@
 
 $page.setTitle("Change Profile")
 $page.setBgColor($ui.bgcolor)
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr align=right><td>
 <font face="$ui.sansSerifFonts"><b>
@@ -69,7 +71,7 @@ $!data.getMessage()
 	</tr>
 	<tr align="right">
 	    <td size ="30%">
-		 <select name="que" size=1 onChange="clearAnswer(document.frm,this);"/>
+		 <select name="que" class="drop" size=1 onChange="clearAnswer(document.frm,this);"/>
 		<option value=$!qid> #foreach($q in $qname) $q.getQuestionName() #end
                  #foreach($questions in $question)
                         <option value="$questions.getQuestionId()">$questions.getQuestionName()
@@ -95,8 +97,8 @@ $!data.getMessage()
 
 		<tr>
              <td align="center" colspan=2>
-                 <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
-		 <input type="reset"  value="$brih_reset"/>
+                 <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
+		 <input type="reset"  class="button-ftextstyle" value="$brih_reset"/>
 		 <input type="hidden" name="actionName"/>
              </td>
           </tr>

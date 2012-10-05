@@ -13,6 +13,9 @@
 $page.setTitle(" $Repo_Repo1")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="#d9e3ec" width=100%>
         <tr><td><b>
         <a href=$link.setPage("call,Repository_Mgmt,Author.vm")>$brih_authorHome</a>| 
@@ -70,7 +73,7 @@ $!data.getMessage()
 		<input type="hidden" name="statvalue" value="PermissionRecieve">
 		<input type="hidden" name="stats" value="permission" >
 		<input type="hidden" name="tname" value=$contentlist>
-        	<input type="button" name="eventSubmit_doPermission" value="$Repo_Perm $Repo_Permgiv" onClick="checkField(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_doPermission" value="$Repo_Perm $Repo_Permgiv" onClick="checkField(document.frm,this);"/>
 		</td>
 		</tr>
 </table>

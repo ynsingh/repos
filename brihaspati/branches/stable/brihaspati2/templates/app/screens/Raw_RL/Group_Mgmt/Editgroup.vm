@@ -13,7 +13,9 @@
 $page.setTitle("create group")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
 <tr align="right">
 	<td>
@@ -160,8 +162,8 @@ $!data.getMessage()
         	<br><br>
         	## end of multiple group
 		<tr bgcolor="$ui.tableColor"><td align="left"> ## td 5 start
-		<input type="button" name="eventSubmit_doupdategroup" value="$brih_grp $brih_update" onClick="checkfield(document.frm,this);"/>
-		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel" />
+		<input type="button" class="button-ftextstyle" name="eventSubmit_doupdategroup" value="$brih_grp $brih_update" onClick="checkfield(document.frm,this);"/>
+		<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel" />
 		</td></tr> ## td 5 end
 	#end
 	</td></tr> ## td tr 2 end

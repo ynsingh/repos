@@ -106,7 +106,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:sunil0711@gmail.com">Sunil YAdav</a>
  * @modified date: 08-07-2010, 20-10-2010, 3-11-2010, 26-12-2010
  * @modified date: 27-07-2011, 05-08-2011(Richa), 09-08-2012(Priyanka)
- * @modified date: 16-08-2012(Sunil Yadav)
+ * @modified date: 16-08-2012(Sunil Yadav), 25-09-2012 (Priyanka)
  */
 
 public class UserManagement
@@ -499,7 +499,9 @@ public class UserManagement
                                 		/**
                                  		* Create the new user entry in the babylon chat server
                                  		*/
-				      		tool.createUser(UName,encrPasswd_babylon);
+				      		//ErrorDumpUtil.ErrorLog("to test-"+encrPasswd_babylon+" "+UName);
+						tool.createUser(UName,encrPasswd_babylon);
+						//ErrorDumpUtil.ErrorLog("to test-1");
 						/**
 				 		* Grants the new user in the role "user" in "global" group
 				 		* Grants the role in specified group
@@ -568,9 +570,11 @@ public class UserManagement
 							String randm_n = PasswordUtil.randmPass();	
                                                 	String str=randm_n+Email;
                                                 	String a_key=EncryptionUtil.createDigest("MD5",str);
-                                                	activationLink=pr.getProperty("brihaspati.Mailnotification."+NewUser+".activationLink");
-	                                         	activationLink=MailNotification.getMessage(activationLink, Email, a_key, mode);
-						 	activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
+                                                	//ErrorDumpUtil.ErrorLog("Inside User Management Activation key = "+a_key);
+							activationLink=pr.getProperty("brihaspati.Mailnotification."+NewUser+".activationLink");
+	                                         	activationLink=MailNotification.getMessage(activationLink, Email, a_key, mode,"english");
+						 	//activationLink=MailNotification.getMessage(activationLink, Email, a_key, mode);
+							activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
 						 	messageFormate = messageFormate+activationLink;
 						 	MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,mode);//last parameter added by Priyanka
 							// UPDATE USER_PREF TABLE......................
@@ -584,11 +588,11 @@ public class UserManagement
 						if((mode.equals("cnfrm_i")) || (mode.equals("cnfrm_u")) || (mode.equals("cnfrm_c")))
 						{
 							MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,mode);//last parameter added by Priyanka
-       						 crit = new Criteria();
-                                                 int uid=UserUtil.getUID(Email);
-                                                 crit.add(UserPrefPeer.USER_ID,uid);
-                                                 crit.add(UserPrefPeer.ACTIVATION,"ACTIVATE");
-                                                 UserPrefPeer.doUpdate(crit);
+       							 crit = new Criteria();
+						         int uid=UserUtil.getUID(Email);
+						         crit.add(UserPrefPeer.USER_ID,uid);
+						         crit.add(UserPrefPeer.ACTIVATION,"ACTIVATE");
+						         UserPrefPeer.doUpdate(crit);
 						}
 				
 				/*		if(mode.equals(""))
@@ -599,7 +603,7 @@ public class UserManagement
 				*/
 				//...............
 						subject = ""; messageFormate =""; msgBrihAdmin="";
-						ErrorDumpUtil.ErrorLog("to test----------------->else3 part");
+						//ErrorDumpUtil.ErrorLog("to test----------------->else3 part");
 						if(Role.equals("author") || Role.equals("institute_admin"))
                                                         msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
                                                 else{
@@ -622,7 +626,7 @@ public class UserManagement
                                                         msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgInstAdmin");
                                                         msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
                                                 }
-						ErrorDumpUtil.ErrorLog("to test----------------->else4 part");
+						//ErrorDumpUtil.ErrorLog("to test----------------->else4 part");
                                                	subject = MailNotification.subjectFormate(userRole, "", pr );
 						if(Role.equals("author"))
 						{
@@ -1730,4 +1734,13 @@ public class UserManagement
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in removeUserProfileWithMail method in UserManagment util"+e);}
 		return Mail_msg+":"+Msg;
 	}
+
+/*public String getStackTrace(Throwable throwable)
+{
+             Writer writer = new StringWriter();
+             PrintWriter printWriter = new PrintWriter(writer);
+             throwable.printStackTrace(printWriter);
+             return writer.toString();
+}*/
+
 }

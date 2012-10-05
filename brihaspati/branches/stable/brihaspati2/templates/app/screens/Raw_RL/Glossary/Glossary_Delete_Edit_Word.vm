@@ -15,7 +15,9 @@ $page.setTitle("Admin Home | Glossary | Delete & Edit Word")
 $page.setTitle("Home | Glossary | Delete & Edit Word")
 #end
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
  <table bgcolor="$ui.tableColor" width=100%>
     <tr align=right> 
         <td><font face="$ui.sansSerifFonts"><b>
@@ -76,7 +78,7 @@ $!data.getMessage()
 					#end
 		<tr bgcolor="$ui.menuColor"> <td  colspan=4 align=center>
 			<input type="hidden" name="actionName" >
-			<input type="button" name="eventSubmit_doDeleteWord" value="$brih_delete" onClick="checkField(document.frm,this);">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteWord" value="$brih_delete" onClick="checkField(document.frm,this);">
 		</td> </tr>
 	</table> </div>
 </form>

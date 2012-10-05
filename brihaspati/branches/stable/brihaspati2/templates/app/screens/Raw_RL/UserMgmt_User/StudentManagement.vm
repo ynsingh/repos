@@ -12,7 +12,9 @@
 *#
 
 $page.setTitle("$brih_home | $brih_course | $brih_student $brih_mgmt")
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
@@ -98,7 +100,7 @@ $!data.getMessage()
 
           </tr>
                 <tr align="right">
-               <td colspan="4" align="right"><select name="prg" size=1 onChange="ChkPrg(document.frm,this);"/>
+               <td colspan="4" align="right"><select name="prg" class="drop" size=1 onChange="ChkPrg(document.frm,this);"/>
                         <option value="Select Program"> $brih_program $brih_select </option>
                         #foreach($progname in $PrgDetail)
                                 <option value="$progname.getPrgCode()">$progname.getPrgName() </option>
@@ -115,9 +117,9 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor">
       <td align="right" colspan=5>
             <input type="hidden" name="actionName">
-       <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldStudent(document.frm,this);"/>
+       <input type="button" class="button-ftextstyle" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkFieldStudent(document.frm,this);"/>
             
-        <input type="reset" name="Reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+        <input type="reset" name="Reset" class="button-ftextstyle" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
       <input type="hidden" name="count" value="$tdcolor">
        </td>
       </tr>

@@ -178,7 +178,7 @@ function changeTopic(frm)
         $brih_Exist $brih_topic
         <td colspan=4>
         <input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>
-        <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+        <SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
           <option></option>
           #foreach($topic in $allTopics)
                 <option>$topic</option>
@@ -266,7 +266,7 @@ bgcolor="$ui.tableColor" size=10%> .9 </td></b>&nbsp;
 
           <font face="$ui.sansSerifFonts">
 
-          <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
         <input type="hidden" name="actionName"value="">
 
           </font>

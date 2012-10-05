@@ -11,7 +11,9 @@
  * @modified date: 30-03-2010
  * @modified date: 15-02-2011
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Home | $course | Course management")
 #set($lang = $data.getUser().getTemp("lang" ).toString())  
 
@@ -261,7 +263,7 @@ $page.setTitle("Home | $course | Course management")
 	        	<td colspan=5 align="right">
 			         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
 			        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-			        <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+			        <SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 					<option></option>
 		        #foreach($topic in $allTopics)
         		        <option>$topic</option>
@@ -277,7 +279,7 @@ $page.setTitle("Home | $course | Course management")
 		         <td colspan=7>
 			         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
 			        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
-			        <SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+			        <SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 				          <option></option>
 					  #foreach($topic in $allTopics)
 				                <option>$topic</option>
@@ -378,7 +380,7 @@ $page.setTitle("Home | $course | Course management")
           *#
 	<font face="$ui.sansSerifFonts">
 
-          <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
+          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>&nbsp;
         <input type="hidden" name="actionName" value="">
         <input type="hidden" name="count" value="$tdcolor">
 

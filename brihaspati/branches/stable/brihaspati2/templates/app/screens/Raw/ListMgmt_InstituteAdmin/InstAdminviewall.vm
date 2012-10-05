@@ -205,67 +205,118 @@ $!data.getMessage()
 </table>
  #end
 #if($noList=="nolist")
-<table align=left><tr><td>$!infrmtn</td></tr></table>
+<table align=center><tr><td>$!infrmtn</td></tr></table>
 #end
 <br><br>
 <table width="100%" align="left" bgcolor="$ui.tableColor">
 #if($actionName == "eventSubmit_doDelete")
-#if($roleName=="instructor")
-#if(($pInst==true)&&($noList=="nolist"))
-#set ( $ClName = ["","$brih_course $brih_ID","$brih_course $brih_name", "$brih_status"] )
-#foreach ($heading in $ClName)
-#headerCell($heading)
-#end
-#set($count=1)
-#foreach($inm in $lst)
-#set($count1=1)
-#foreach($coursen in $CN)
-#set($count2=1)
-#foreach($stts in $actn)
-	#if(($count==$count1)&&($count==$count2))
-	<tr bgcolor="$ui.menuColor">
-		#set($str=",")	
-		#set($val = "$inm$str$coursen$str$stts")
-		<td><input type="checkbox" name="$val" value="" onClick="addDeleteList(this,document.frm);"></td>
-		<td>$inm</td>
-		<td>$coursen</td>
-		<td>
-                #if($stts == "1")
-                <font bgcolor="$ui.tableColor" color="Green">$brih_active</font>
-                #else
-                <font bgcolor="$ui.tableColor" color="Red">$brih_inactive</font>
-                #end
+        #set ( $ClName = ["$brih_courseid","$brih_coursename","$brih_roles" , "$brih_stat"] )
+		<td align=left>
+                        <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
+                        <font face="$ui.sansSerifFonts"><b>
+			#if($lang == "hindi")
+                                 $brih_all $brih_select</b>
+                        #else
+                                $brih_select $brih_all</b>
+                        #end
+
                 </td>
-	</tr>
-	#end
-#set($count2=$count2+1)
+
+                #foreach ($heading in $ClName)
+                        #headerCell($heading)
+                #end
+	#set($values="")
+        #foreach($rec in $grpname)
+		
+                <tr>
+                #set($str=",")
+                #set($val = "$rec.getgrp()$str$rec.getrole()$str$rec.getactive()$str$rec.getcname()")   
+                <td><input type="checkbox" name="$val" value="" onClick="addDeleteList(this,document.frm);"></td>
+                <td>$rec.getgrp()</td>
+                <td>$rec.getcname()</td>
+		<td>
+		#if($rec.getrole()=="pinstructor")
+			<b>$brih_primary</b>
+		#end
+		#if($rec.getrole()=="sinstructor")
+                        $brih_secondary
+		#end
+		#if($rec.getrole()=="student")
+                        $brih_student
+		#end
+		#if($rec.getrole()=="teaching_assistant")
+                        $bri_ta
+                #end
+
+                </td>
+		#if($rec.getrole()=="pinstructor")
+                <td>$rec.getactive()</td>
+		#end
+                </tr>
+		#set($values="$values$val^")
+        #end
+        <tr>
+                <td><input type="button" name="eventSubmit_doExpire" Value=$brih_delete onClick="DeleteField(document.frm,this);"></td>
+        </tr>
+                <input type="hidden" name="Process" value="delete">
+                ##<input type="hidden" name="mode" value="All">
+                <input type="hidden" name="mode" value="$mode">
+                ##<input type="hidden" name="actionName">
+                <input type="hidden" name="deleteFileNames" VALUE="">
+                <input type="hidden" name="count" VALUE="$tdcolor">
+                <input type="hidden" name="username" value="$uname">
+
 #end
-#set($count1=$count1+1)
-#end
-#set($count=$count+1)
-#end
-<tr>
-	<td><input type="button" class="button-ftextstyle" name="eventSubmit_doExpire" Value=$brih_delete onClick="DeleteField(document.frm,this);"></td>
-</tr>
-		<input type="hidden" name="Process" value="delete">
-		##<input type="hidden" name="mode" value="All">
-		<input type="hidden" name="mode" value="$mode">
-		##<input type="hidden" name="actionName">
-        	<input type="hidden" name="deleteFileNames" VALUE="">
-        	<input type="hidden" name="count" VALUE="$tdcolor">
-#end    
-#end
-#end 
 </table>
+
 </form>
 <br>
 <table width=60%  bgcolor="$ui.tableColor" align=center>
-        #foreach( $entry in $error_Messages )
+        #foreach( $entry in $Message )
         <tr bgcolor="$ui.tableHeaderColor">
         <td align=center>
-        <font face="$ui.sansSerifFonts">$entry.getErr_Type()</font>
+        <font face="$ui.sansSerifFonts">$entry</font>
         </td>
         </tr>
         #end
 </table>
 
+<SCRIPT LANGUAGE="javascript">
+        function selectAll(field){
+                if(field.checked){
+                        var rmFile,index,actualString,pre=0,next=0;
+			actualString=document.frm.deleteFileNames.value="$values";
+                        while( ( pre=actualString.indexOf("^",next) ) >=0 ){
+                                var temp=actualString.substring(next,pre);
+                                next=pre+1;
+                                rmFile=document.frm.elements[temp].checked=true;
+                        }
+                }
+                else{
+                        var rmFile,index,actualString,pre=0,next=0;
+                        actualString=document.frm.deleteFileNames.value="$values";
+                        while( ( pre=actualString.indexOf("^",next) ) >=0 ){
+                                var temp=actualString.substring(next,pre);
+                                next=pre+1;
+                                rmFile=document.frm.elements[temp].checked=false;
+                        }
+                        document.frm.deleteFileNames.value="";
+                }
+        }
+	function addDeleteList(field,frm)
+        {
+                if(field.checked) {
+                       frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+		}
+		else{
+			var rmFile,index,actualString,preString,postString;
+			actualString=frm.deleteFileNames.value;
+			index=actualString.indexOf(field.name+"^",0);
+			preString=actualString.substring(0,index);
+			postString=actualString.substring(index+field.name.length+1);
+			actualString=preString+postString;
+			frm.deleteFileNames.value=actualString;
+		}
+	}
+
+</SCRIPT>

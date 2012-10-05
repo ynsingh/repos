@@ -8,7 +8,9 @@
  *   @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("")
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 
@@ -154,18 +156,18 @@ $!data.getMessage()
 			        	<a href="$link.setPage("call,Quiz_Mgmt,Close_Quiz.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString)"> $brih_skip </a> &nbsp;
         			#end
 			#end
-			<input type="button" name="eventSubmit_doRegister1" value="$brih_submit" onClick="checkValue1(document.frm,this);">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doRegister1" value="$brih_submit" onClick="checkValue1(document.frm,this);">
 			<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
 			#if($ViewDraft != "ViewDraftQuiz")
-				<input type="button" name="Draft" value="$brih_draft" onClick="checkValue(document.frm,this);">
+				<input type="button" class="button-ftextstyle" name="Draft" value="$brih_draft" onClick="checkValue(document.frm,this);">
 			#end
 			<input type="hidden" name="startIndex" value="$!startIndex">
 			<input type="hidden" name="ViewDraft" value="$!ViewDraft" >
 		#else
-			<input type="button" name="ViewDraft1" value="$brih_view $brih_draft" onClick="checkValue(document.frm,this);">
+			<input type="button" class="button-ftextstyle" name="ViewDraft1" value="$brih_view $brih_draft" onClick="checkValue(document.frm,this);">
 	                <input type="hidden" name="ViewDraft" value="ViewDraftQuiz">
 		#end		
-			<input type="button" name="eventSubmit_doStopQuiz" value="$brih_end $brih_quiz" onClick="checkValue(document.frm,this);">	
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doStopQuiz" value="$brih_end $brih_quiz" onClick="checkValue(document.frm,this);">	
 			<input type="hidden" name="quiztitle" value="$!quiztitle">
 	                <input type="hidden" name="actionName">
 		</td>	

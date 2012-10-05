@@ -10,6 +10,9 @@ $page.setTitle("Attempt Quiz")
 <META HTTP-EQUIV="Expires" CONTENT="Tue, 01 Jan 1980 1:00:00 GMT"> 
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 $page.setBgColor("bgcolor")
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 ## Creating the links for help regarding FAQ 
@@ -173,7 +176,7 @@ $page.setBgColor("bgcolor")
 					#end
 				<tr>
 					<td colspan="2" align=center>			
-						<input type="button" name="eventSubmit_saveAnswerQuiz" value="Save Answer" onClick="saveAnswer(document.frm,this);">
+						<input type="button" class="button-ftextstyle" name="eventSubmit_saveAnswerQuiz" value="Save Answer" onClick="saveAnswer(document.frm,this);">
 						##<input type="button" name="" value="Start Timer" onClick="Init();">
 						##<input type="button" name="" value="Stop timer" onClick="StopTimer();">	
 					</td>
@@ -183,7 +186,7 @@ $page.setBgColor("bgcolor")
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 		<td colspan="3" align=center>
-			<input type="button" name="eventSubmit_saveFinalQuiz" value="Submit Quiz" onClick="saveFinalQuiz(document.frm,this);">
+			<input type="button" class="button-ftextstyle" name="eventSubmit_saveFinalQuiz" value="Submit Quiz" onClick="saveFinalQuiz(document.frm,this);">
 		</td>
 	</tr>
 </table>					    	

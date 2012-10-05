@@ -12,6 +12,9 @@ $page.setBgColor("bgcolor")
 <font face="$ui.sansSerifFonts">
 $!data.getMessage()
 </font>
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -144,13 +147,13 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" width="100%">
 	<td align="left" width="100%" colspan="5">
 		#if($mode == "QuizDetail")
-			<input type=button name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
+			<input type=button class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			<input type="hidden" name="mode" value=$mode >
 			<input type="hidden" name="quizMode" value=$quizMode >					
 		#else
-			<input type="button" name="eventSubmit_doUploadQuiz" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+			<input type="button" class="button-ftextstyle" name="eventSubmit_doUploadQuiz" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 		#end		
-		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+		<input type="reset" name="reset" value="$brih_clear" class="button-ftextstyle" onClick="checkClear(document.frm,this);"/>
 	</td>
 </tr>
 </table>

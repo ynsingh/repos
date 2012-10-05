@@ -5,7 +5,9 @@
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * Contributors: Members of MHRD Project DEI Agra
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setTitle("Quiz Score")
 $page.setBgColor($ui.bgcolor)
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
@@ -83,8 +85,8 @@ $page.setBgColor($ui.bgcolor)
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 	        <td colspan=5>
-        	<input type="button" name="eventSubmit_answerSheet" value="$brih_answer $brih_sheet" onClick="showAnswerSheet(document.frm,this);"/>
-        	<input type="button" style="visibility:$setVisible" value="$brih_apply $brih_for $brih_reevaluation" name="eventSubmit_revaluate" onClick="setValue(document.frm,this);"/>
+        	<input type="button" class="button-ftextstyle" name="eventSubmit_answerSheet" value="$brih_answer $brih_sheet" onClick="showAnswerSheet(document.frm,this);"/>
+        	<input type="button" style="visibility:$setVisible" class="button-ftextstyle" value="$brih_apply $brih_for $brih_reevaluation" name="eventSubmit_revaluate" onClick="setValue(document.frm,this);"/>
 	        </td>
 	</tr>
 </table>

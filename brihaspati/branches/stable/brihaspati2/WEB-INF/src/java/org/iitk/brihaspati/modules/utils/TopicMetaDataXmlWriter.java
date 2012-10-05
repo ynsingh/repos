@@ -60,7 +60,7 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
  * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 20-10-2010, 23-12-2010
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modify date: 09-08-2012 (Priyanka)
+ * @modify date: 09-08-2012, 25-09-2012 (Priyanka)
  */
 
 public class TopicMetaDataXmlWriter
@@ -426,12 +426,13 @@ public static boolean WriteXml_OnlineUser(String filePath1,String xmlFile1,Strin
 							appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,"1");
 							set=true;
 						}
-        				else
+        				}	
+					else
 					{
 						appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program, instAdminName,a_key,flag);
                               		}
-					xmlWriter.writeXmlFile();
-                        		}
+						xmlWriter.writeXmlFile();
+                        		//}
                 	}
 		}		
                 catch(Exception e) {
@@ -487,12 +488,13 @@ public static boolean WriteXml_OnlineCourse(String filePath1,String xmlFile1,Str
 		                                        appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,"1");
 					                 set=true;
                                                 }
-                                        	else
-                                        	{
-                                                	appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,flag);
-	                                 	}
+                                	}        
+					else
+                                        {
+                                               	appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,registerationDate,inst_id,a_key,flag);
+	                                }
                                         	xmlWriter.writeXmlFile();
-                                        }
+                                       // }
                         }
                 }
                catch(Exception e) {

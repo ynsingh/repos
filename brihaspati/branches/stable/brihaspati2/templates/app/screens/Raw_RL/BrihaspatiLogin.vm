@@ -24,7 +24,10 @@
 
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+<div class="main" style="width:1100px; margin:-20px auto;">
 <table width="100%">
 <tr><td>
 ##<marquee direction="left">
@@ -41,7 +44,7 @@ $page.setBgColor($ui.bgcolor)
 		<tr align="right">
         	<td colspan="3">
 			##<div class="scrollable">
-			<select id="language" onChange ="javascript:OnChange();">
+			<select id="language" onChange ="javascript:OnChange();" class="drop">
                                 #if ($lang == "urdu")
                                 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
 				#elseif($lang == "arabic")
@@ -103,7 +106,7 @@ $page.setBgColor($ui.bgcolor)
 		<tr align="right">
 		<td colspan="4">
 			<font face="$ui.sansSerifFonts">
-			<input type="button" value="$brih_login" onClick="checkUNamePwd(document.frm,this);">
+			<input type="button" value="$brih_login" class="button-ftextstyle" onClick="checkUNamePwd(document.frm,this);">
 			</font>
 		</td>
 		</tr>
@@ -250,6 +253,7 @@ $brih_openid_msg3
 </table> ## Ta1 end
 ##</form>
 
+</div>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {

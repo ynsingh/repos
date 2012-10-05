@@ -219,6 +219,9 @@ public class CourseUtil{
 						if(v2.size()>0){
 							unread="true";
 						}
+						else{
+							unread="false";
+						}
 						map = new HashMap();
                                                 map.put("crsId", gName);
                                                 map.put("crsName", courseName);

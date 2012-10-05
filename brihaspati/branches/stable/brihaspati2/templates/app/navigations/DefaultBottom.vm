@@ -3,7 +3,7 @@
 <div style="width:1000px; margin:0px auto;">
 <table nosave size=640>
 <tr>
-<td valign=bottom size="40%">
+<td size="40%">
 <a href="http://jakarta.apache.org/turbine">
 <img align="left" border=0 src="$content.getURI("images/logo.gif")"></a> </td>
 <td valign=bottom><font size=-1><center>
@@ -15,11 +15,18 @@ MHRD</a><br>
 Opensource development available for download at <a href="http://sourceforge.net/projects/brihaspati">Sourceforge.net<a><br>
 For problems at this site send email to <a href="mailto:brihspti@iitk.ac.in">ETRG, IIT Kanpur</a><br>
 For reporting bugs, suggestion, feature request, and maintainence support<br>
- send Email to <a href="mailto:brihaspati@brihaspatisolutions.co.in">BSS</a> or Post at <b>brihaspati_ERP_mission@yahoogroups.com</b>
+ post at <b>brihaspati_ERP_mission@yahoogroups.com</b>
 <br>Copyright &copy; 2002-2012 ETRG, IIT Kanpur, Copyright &copy; 2006-2011 BSS</center> </font></td>
-<td valign=bottom align=right><font size=-1>Based on Open Source Brihaspati at</font><br>
+<td align=center> <a href="http://groups.yahoo.com/group/brihaspati_ERP_mission/join">
+  <img src="http://us.i1.yimg.com/us.yimg.com/i/yg/img/i/us/ui/join.gif"
+       style="border: 0px;"
+       alt="Click to join brihaspati_ERP_mission"/><br>
+  Click to join brihaspati_ERP_mission
+</a>
+</td>
+<td align=center><font size=-1>Based on Open Source Brihaspati at</font><br>
 <a href="http://sourceforge.net/projects/brihaspati">
-<img align="right" border=0 src="$content.getURI("images/sflogo.png")"></a>
+<img align="center" border=0 src="$content.getURI("images/sflogo.png")"></a>
 </td>
 </tr></table>
 </font>

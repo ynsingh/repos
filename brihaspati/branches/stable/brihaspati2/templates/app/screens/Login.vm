@@ -10,26 +10,16 @@
 *#
 $page.setTitle("Brihaspati")
 $page.setBgColor($ui.bgcolor)
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 <br>
 <!-- <table align="right"><tr><td><b> -->
 $!data.getMessage()
 <!-- </b></td></tr></table> -->
-
-<style type="text/css">
-
-.button-ftextstyle { 	 color: #fff;    font: bold 15px Helvetica, Arial, sans-serif;   padding-left: 22px ;	padding-right: 22px ;	padding-top: 8px ;	padding-bottom: 8px ;    -webkit-transition: border-color .218s;    -moz-transition: border .218s;    -o-transition: border-color .218s;    transition: border-color .218s;    background: #999;    background: -webkit-gradient(linear,0% 40%,0% 70%,from(#F5F5F5),to(#F1F1F1));   background: -moz-linear-gradient(linear,0% 40%,0% 70%,from(#F5F5F5),to(#F1F1F1));    border: solid 1px #d1d1d1;    border-radius: 2px;    -webkit-border-radius: 2px;  border-radius: 5px; text-decoration:none; 	}
-
-		.button-ftextstyle:hover {    color: #fff;    border-color: #f3f3f3;    -moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2) -webkit-box-shadow:0 2px 5px rgba(0, 0, 0, 0.2);    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);}
-</style>
-
-
 <div style="width:950px; margin:0px auto;">
 <form name="frm">
-
-
-
-
-
 <table>
 <tr>
 <td align="left"> <font color="red"><b> <blink>
@@ -40,19 +30,14 @@ Click here  </a>
 </td>
 </tr>
 </table>
-
-
 <br>
-
-
-
 <div style="width:340px; height:300px; float:right; background:#f3f3f3; border-radius:10px;">
 <table align="right" >
 <tr>
 <td>
 <font color="purple">Click here to enter in <b>Brihaspati</b></font><br>  
 <br>
-<a href=$link.setPage("BrihaspatiLogin.vm") class="button-ftextstyle">
+<a href="$link.setPage("BrihaspatiLogin.vm")" class="button-ftextstyle">
 Login
 </a>
 <br>
@@ -93,7 +78,7 @@ Login
 ##following link added by Priyanka
 <tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english") style=text-decoration:none>Resend Activation Link</a>
+<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang","english") style=text-decoration:none>Resend Mail</a>
 </td></tr>
 
 <tr><td colspan=2>

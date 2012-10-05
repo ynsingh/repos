@@ -57,11 +57,13 @@ import java.io.File;
  * Action class for updating the activation status 
  * of user, when user clicks activation link.
  *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *  modified date : 01-10-2012
  */
 
 public class Activation extends VelocityAction{
         private Log log = LogFactory.getLog(this.getClass());
-	
+	String str, msg;	
+	MultilingualUtil mu = new MultilingualUtil();	
 
 	/**
  	 * This method is called when user clicks on activation link
@@ -73,8 +75,8 @@ public class Activation extends VelocityAction{
                // ErrorDumpUtil.ErrorLog("INSIDE ACTIVATION ACTION------------------->> ");
                 System.gc();
                 String u_mode=rundata.getParameters().getString("mode");         
-		
-                if(u_mode.equals("cnfrm_u") || u_mode.equals("cnfrm_c") || u_mode.equals("cnfrm_i"))
+					
+              if(u_mode.equals("cnfrm_u") || u_mode.equals("cnfrm_c") || u_mode.equals("cnfrm_i"))
 		{
                         mailConfirmation(rundata,context);
                 }
@@ -88,6 +90,8 @@ public class Activation extends VelocityAction{
 	public void mailActivation(RunData data, Context context)
         {
 		Criteria crit = null;
+		String lang=data.getParameters().getString("lang");
+                String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 		String e_mail=data.getParameters().getString("email");
                 String a_key=data.getParameters().getString("key");
                 String u_mode=data.getParameters().getString("mode");
@@ -101,8 +105,10 @@ public class Activation extends VelocityAction{
                           String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm";
                 //          ErrorDumpUtil.ErrorLog("I am in result uid compare second "+url1);
                           try{
-                              data.setMessage("You are not registered in Brihaspati LMS");
-                              data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=You are not registered in Brihaspati LMS");
+       				str=MultilingualUtil.ConvertedString("usr_doesntExist",LangFile);
+                                data.setMessage(str);
+	                        //data.setMessage("You are not registered in Brihaspati LMS");
+                              	data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                           }
                           catch (Exception ex){
 				String msg0 = "Error in activation	";
@@ -130,11 +136,12 @@ public class Activation extends VelocityAction{
 		//			ErrorDumpUtil.ErrorLog("INSIDE 1ST IF.....");
 	
 					try{
-                		              data.setMessage("Your account has now been activated. You may now Login.");
-                             		      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Your account has now been activated. You may now Login.");
+						str=MultilingualUtil.ConvertedString("act_login",LangFile);
+                                                data.setMessage(str);
+                		                data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                           		}
                           		catch (Exception ex){
-						String msg = "ERROR IN ACCOUNT ACTIVATION 1";
+						msg = "ERROR IN ACCOUNT ACTIVATION 1";
 						ErrorDumpUtil.ErrorLog("User's account  not activated inside 2nd catch "+ex);
                           			throw new RuntimeException(msg,ex);
 					}
@@ -145,8 +152,9 @@ public class Activation extends VelocityAction{
 		
 		//			ErrorDumpUtil.ErrorLog("INSIDE 2ND IF.....");
 					try{
-                                              data.setMessage("Oops ! Your account could not be activated. Please recheck the Activation link.");
-                                              data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Oops ! Your account could not be activated. Please recheck the Activation link.");
+					      str=MultilingualUtil.ConvertedString("oopsAct_msg",LangFile);
+                                              data.setMessage(str);
+                                              data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                         }
                                         catch (Exception ex){
 						String msg1 = "ERROR IN ACCOUNT ACTIVATION 1";
@@ -172,8 +180,9 @@ public class Activation extends VelocityAction{
 		String e_mail=data.getParameters().getString("email");
                 String a_key=data.getParameters().getString("key");
 		String mode=data.getParameters().getString("mode");
-		String LangFile = MultilingualUtil.LanguageSelectionForScreenMessage("english");
-		String msg="",path="";
+		String lang=data.getParameters().getString("lang");
+                String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
+		String path="";
 		File filepath=null;
 		File file1=null;
 		boolean set;
@@ -199,8 +208,10 @@ public class Activation extends VelocityAction{
 				instituteregister.InstituteRegister(data,context);
 		
 				try{
-                                	  data.setMessage("Institute registered successfully. Message is in queue, please wait for approval.");
-                                 	  data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Institute registered successfully. Message is in queue, please wait for approval.");
+					msg = mu.ConvertedString("brih_Institue", LangFile)+" "+mu.ConvertedString("brih_registration", LangFile)+" "+mu.ConvertedString("brih_successful", LangFile)+" "+mu.ConvertedString("brih_waitForApprove", LangFile);
+					 data.setMessage(msg);
+                                	//data.setMessage("Institute registered successfully. Message is in queue, please wait for approval.");
+                                 	data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+msg);
                            	}
                         	catch (Exception ex){
                                 	  msg = "ERROR IN ACCOUNT ACTIVATION ";
@@ -213,8 +224,10 @@ public class Activation extends VelocityAction{
 			{
 		//		 ErrorDumpUtil.ErrorLog("INSIDE ELSE.....");
                         	 try{
-                                	data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
-                                	data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
+					str=MultilingualUtil.ConvertedString("oopsCnfrm_msg",LangFile);
+                                        data.setMessage(str);
+                                	//data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
+                                	data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?"+str);
                            	 }
                          	catch (Exception ex){
                                 	String msg1 = "ERROR IN EMAIL ID CONFIRMATION 1";
@@ -258,7 +271,7 @@ public class Activation extends VelocityAction{
 		//		ErrorDumpUtil.ErrorLog("activation      "+pp.getString("mode"));
 				OnlineRegistration onlineregister = new OnlineRegistration();
                                 onlineregister.CourseRegister(data,context);
-                                String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
+                                String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
                                 data.setMessage(str);
                                 data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                               
@@ -266,8 +279,10 @@ public class Activation extends VelocityAction{
                         else
                         {
                   //               ErrorDumpUtil.ErrorLog("INSIDE ELSE.....");
-                                 data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
-                                 data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
+                  		 str=MultilingualUtil.ConvertedString("oopsCnfrm_msg",LangFile);
+                                 data.setMessage(str); 
+                                 //data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
+                                 data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                         }
 
 			}//try
@@ -323,8 +338,10 @@ public class Activation extends VelocityAction{
                         	else
                         	{
                   //              	 ErrorDumpUtil.ErrorLog("INSIDE ELSE.....");
-                                 	data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
-                                 	data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
+                 			str=MultilingualUtil.ConvertedString("oopsCnfrm_msg",LangFile);
+                                        data.setMessage(str);
+                                 	//data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
+                                 	data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                         	}
 			}//try        
 			catch (Exception ex){

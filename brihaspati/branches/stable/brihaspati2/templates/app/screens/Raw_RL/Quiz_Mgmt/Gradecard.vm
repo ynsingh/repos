@@ -5,7 +5,8 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 #set($lang=$data.getUser().getTemp("lang").toString())
 <table bgcolor="$ui.tableColor" width=100%>
@@ -35,11 +36,11 @@ $!data.getMessage()
 	#if($user_role == "instructor")
 	<tr bgcolor="$ui.tableColor" >	
                 <td width=20% align="center" colspan=2 bgcolor="$ui.menuColor">
-                        <input type="button" name="Go" value="$brih_search" onClick="checkField1(document.frm,this);"/>
+                        <input type="button" class="button-ftextstyle" name="Go" value="$brih_search" onClick="checkField1(document.frm,this);"/>
                 </td>
                 <td width=30% align="center" bgcolor="$ui.menuColor" colspan=2 >
 			<font color=blue > <i> $userList1 </i> </font>
-                        <SELECT name=userList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
+                        <SELECT name=userList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 				<option value=""></option> 
                                #foreach($topic in $userList)
                                		<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
@@ -113,8 +114,8 @@ $!data.getMessage()
 	#if($user_role == "instructor")
         <tr bgcolor="$ui.menuColor">
                 <td align="center" colspan=4 >
-			<input type="button" name="Savegradecard" value="$WikiSave" onClick="checkField(document.frm,this);"/>
-                        <input type="reset"  value="$brih_reset" />
+			<input type="button" class="button-ftextstyle" name="Savegradecard" value="$WikiSave" onClick="checkField(document.frm,this);"/>
+                        <input type="reset"  class="button-ftextstyle" value="$brih_reset" />
                         <INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">
 			<INPUT TYPE="hidden" name="DB_subject" value="">
                 </td>

@@ -10,7 +10,9 @@
  *#
 
 #set($lang=$data.getUser().getTemp("lang").toString())
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <table bgcolor="$ui.tableColor" width=100% align="center">
@@ -78,7 +80,7 @@ $!data.getMessage()
         <tr bgcolor="$ui.menuColor" align="right">
                 ##<td align=left colspan=2 bgcolor="$ui.menuColor">
                 <td colspan="8">
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" class="button-ftextstyle" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
                         <input align=center type="text" name="valueString" value="" >

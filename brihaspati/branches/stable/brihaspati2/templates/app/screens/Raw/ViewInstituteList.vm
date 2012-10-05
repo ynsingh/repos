@@ -16,14 +16,14 @@ $!data.getMessage()
 </head>
 
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td>
+<tr><td width="250">
 	<font face="$ui.sansSerifFonts" size=3>
 	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_login $WikiPage</a> |
 	$brih_reg2 $RemoteInstitute
 	</font>
 	</td>
-	<td>$brih_total $RemoteInstitute [$institutenum] </td><td><b><font color="red">* </font>$brih_adnotexist</b></td>
-	<td><b>$brih_admin $brih_email:$!adminemail</b></td>
+	<td width="180">$brih_total $RemoteInstitute [$institutenum] </td><td width="280"><b><font color="red">* </font>$brih_adnotexist</b></td>
+	<td width="300"><b>$brih_admin $brih_email:$!adminemail</b></td>
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setPage("ViewInstituteList.vm")">

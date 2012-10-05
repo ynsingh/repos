@@ -15,7 +15,9 @@ $page.setBgColor($ui.bgcolor)
 $page.setTitle("Instructor Backup")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <font face="$ui.sansSerifFonts">
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr align="right">
@@ -52,9 +54,9 @@ $!data.getMessage()
 </td></tr>
 <tr bgcolor="$ui.menuColor" >
 <td align="left">
-<input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
+<input type="button" name="eventSubmit_doStudent_db_backup" class="button-ftextstyle" value="$brih_database #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
 <input type="hidden" name="actionName">
-<input type="button" name="eventSubmit_doCourseBackup" value="$brih_content #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
+<input type="button" name="eventSubmit_doCourseBackup" class="button-ftextstyle" value="$brih_content #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
 <td align="right"><input type="text" name="courses" value="$data.getUser().getTemp("course_id" ).toString()" readonly />
 </td>
 </td>

@@ -6,6 +6,9 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *#
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 #if($mode=="adminmail")
 	$page.setTitle("Home | Communication | Local Mail")
 #else
@@ -65,7 +68,7 @@ $!data.getMessage()
 	#if($total!="0")
 	<tr><td colspan=4 align="center">
 	<input type="hidden" name="mode" value="All">
-	<input type="submit" name=submit value="$LocalMail_Mail_msg2">
+	<input type="submit" class="button-ftextstyle" name=submit value="$LocalMail_Mail_msg2">
 	</td></tr>
 	#end
 </td></tr>
