@@ -288,7 +288,7 @@ public class CourseTimeUtil
 					}
 				}
 			}
-		} catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getCourseUid------"+ex); }
+		} catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getCourseActiveList------"+ex); }
                  return userList;
 		}
 	/*

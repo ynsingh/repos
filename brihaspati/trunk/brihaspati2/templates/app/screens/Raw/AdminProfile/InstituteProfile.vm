@@ -30,6 +30,8 @@ $!data.getMessage()
 	</td>
 <td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Profile.html","newWin");>$brih_help</a></td>
 </tr>
+</table>
+<table bgcolor="$ui.tableColor" width=100%>
 ## Form action in InstchangeAParam.java
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,InstituteProfile.vm").setAction("InstchangeAParam")">
     <tr><td colspan=2><font size=4> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap  ($iname)</font></td></tr>

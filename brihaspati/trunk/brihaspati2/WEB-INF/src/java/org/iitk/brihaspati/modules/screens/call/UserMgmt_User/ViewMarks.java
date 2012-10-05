@@ -75,6 +75,8 @@ public class ViewMarks extends SecureScreen_Student
 			User user=data.getUser();
 			String checkUser=user.getName();
 			String Role = (String)user.getTemp("role");
+			String dir=(String)user.getTemp("course_id");
+			context.put("course",(String)user.getTemp("course_name"));
 			/**
                          *Time calculaion for how long user use this page.
                          */
@@ -115,8 +117,6 @@ public class ViewMarks extends SecureScreen_Student
 			
 			boolean flag=true;
 			if(v.size()>0){
-				String dir=(String)user.getTemp("course_id");
-				context.put("course",(String)user.getTemp("course_name"));
 				String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/MARK.txt";
 				
 				if(((new File (filePath)).exists())){
