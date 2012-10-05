@@ -121,7 +121,7 @@ public class CourseUtil{
         	return (Date)((Courses)mainResult.get(0)).getLastmodified();
 
 	}
-
+// this method takes time
 	public static boolean getCourseGuestStatus(String Course_id)
         {
 		boolean gstat=false;
@@ -159,6 +159,32 @@ public class CourseUtil{
 		}
                 return GroupName;
         }
+/**
+ *      This method is used for geting guest status in a course
+ *      @param gid int GROUP_ID
+ *	@exception Exception, a generic exception
+ *	@return boolean
+ */	
+	public static boolean getCourseGuestStatus(int gid)
+        {
+                boolean gstat=false;
+                try{
+                        Criteria crit=new Criteria();
+                        crit.add(TurbineUserGroupRolePeer.USER_ID,0);
+                        crit.and(TurbineUserGroupRolePeer.ROLE_ID,3);
+                        crit.and(TurbineUserGroupRolePeer.GROUP_ID,gid);
+                        List v=TurbineUserGroupRolePeer.doSelect(crit);
+                        if(v.size()>0){
+                                gstat=true;
+                        }
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The Error in course Util Guest Status in int gid "+e);
+                }
+                return gstat;
+
+        }
+
 	/**
  	 *  This method is used for instructor, Student and TA
  	 *  @param uid int USER_ID
@@ -206,7 +232,7 @@ public class CourseUtil{
                 		                        act="1";
                                 		else
 		                                        act="0";
-                		                boolean gustst=getCourseGuestStatus(gName);
+                		                boolean gustst=getCourseGuestStatus(gid);
                                 		if(gustst)
 		                                        statc="true";
                 		                else
