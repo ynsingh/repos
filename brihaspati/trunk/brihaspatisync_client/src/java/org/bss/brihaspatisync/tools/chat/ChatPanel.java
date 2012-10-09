@@ -7,7 +7,6 @@ package org.bss.brihaspatisync.tools.chat;
  * Copyright (c) 2012 ETRG,IIT Kanpur
  */
 
-import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -32,10 +31,6 @@ import javax.swing.JTextField;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
 import javax.swing.JColorChooser;
-import java.net.InetAddress;
-import java.net.DatagramPacket;
-import java.io.DataOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
@@ -43,13 +38,11 @@ import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
-import org.bss.brihaspatisync.network.Log;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
- * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a>
- * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> View and modify for chat panel 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a> Modify for multilingual implementation. 
  */
 
 public class ChatPanel extends JPanel implements ActionListener,KeyListener,MouseListener {
@@ -58,16 +51,13 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
         private JPanel south_mainPanel;
         private JPanel center_mainPanel;
 	private JButton save;
+	private BlinkLabel textLabel;
 	private JTextField input_text;
 	private JTextArea textArea;
 	private JToolBar toolbar;
-	private UtilObject utilObject=UtilObject.getController();
 	private static ChatPanel chatPanel=null;
-//	private Log log=Log.getController();
 	private JScrollPane scrollpane=null;
-	int i=0;
-	Thread runner=null;
-	boolean flag=false;
+	private UtilObject utilObject=UtilObject.getController();
 
 	/**
 	 * Controller for class
@@ -100,20 +90,16 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 		toolbar=new JToolBar("ChatTool"); 
 		
 		south_mainPanel=new JPanel();
-		JLabel textLabel = new JLabel(Language.getController().getLangValue("ChatPanel.Label1"),JLabel.LEFT);
-                //south_mainPanel.add(textLabel);
-                toolbar.add(textLabel);
-
+		textLabel = new BlinkLabel(Language.getController().getLangValue("ChatPanel.Label1"));
                 input_text=new JTextField(20);
 		input_text.addMouseListener(this);
 		input_text.addKeyListener(this);
-		//south_mainPanel.add(input_text);
-                toolbar.add(input_text);
                 
 		save=new JButton(Language.getController().getLangValue("ChatPanel.SaveBttn"));
 		save.addActionListener(this);
-		//south_mainPanel.add(save);
 		toolbar.add(save);
+                toolbar.add(textLabel);
+                toolbar.add(input_text);
 		mainPanel.add(toolbar,BorderLayout.SOUTH);
 
 		return mainPanel;
@@ -121,7 +107,6 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 
 	 public void actionPerformed(ActionEvent ae){
 		if(ae.getSource()==save){
-			
                         FileOutputStream fileStream = null;
 			JFileChooser c = new JFileChooser();
    			int rVal = c.showSaveDialog(this);
@@ -151,36 +136,13 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 
 	}
 
-	//Modified by pratibha
 	// Adding this method for blinking thread 
 	public void showMsg(String data){
 		Font f=new Font("Courier",Font.BOLD,14);
                 textArea.setFont(f);
                 textArea.append(data+System.getProperty("line.separator"));
                 textArea.setCaretPosition(textArea.getDocument().getLength());
-		input_text.setFocusable(false);
-		runner=new Thread(new Runnable(){
-				public void run(){
-					if(flag==false)
-						flag=true;
-					while(flag && ThreadController.getController().getThreadFlag()){
-						try{
-							if((i%2)==0){
-								toolbar.setBackground(new Color(255,228,225));//Color.red);
-								repaint();
-								runner.sleep(500);
-								i++;
-							}else{
-								toolbar.setBackground(new Color(245,245,245));//.white);
-								repaint();
-								runner.sleep(500);
-								i++;
-							}
-						}catch(InterruptedException ie){continue;}
-					}
-				}
-			}, "BlinkThread");
-		runner.start();
+		textLabel.setBlinking(true);
 	} 
         // end of method  modification
 
@@ -210,43 +172,12 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 		}
       	}
 
-	// Added By pratibha
    	public void keyTyped(KeyEvent e){
-		if(i>0){
-			try{
-				if(runner==null){
-					System.out.println("thread is going to stop:");
-					if(flag==true){
-
-						flag=false;
-						runner.interrupt();
-						runner=null;
-						toolbar.setBackground(new Color(245,245,245));//.white);
-						repaint();
-						i=0;
-					}
-				}
-			}catch(Exception ex){System.out.println("---"+ex.getMessage());}
-		}
+		textLabel.setBlinking(false);
 	}
    	public void keyReleased(KeyEvent e){}
-	public void mouseClicked(MouseEvent me){
-		if(i>0){
-                	try{
-                        	if(runner!=null){
-                                        System.out.println("thread is going to stop:");
-                                        if(flag==true){
-                                                flag=false;
-                                                runner.interrupt();
-                                                runner=null;
-                                                toolbar.setBackground(new Color(245,245,245));
-                                                repaint();
-						i=0;
-                                        }
-                                }
-                        }catch(Exception ex){System.out.println("---"+ex.getMessage());}
-			input_text.setFocusable(true);
-                }
+	public void mouseClicked(MouseEvent me) {
+		textLabel.setBlinking(false);
 	}
 	public void mouseReleased(MouseEvent me){}
 	public void mouseExited(MouseEvent me){}
