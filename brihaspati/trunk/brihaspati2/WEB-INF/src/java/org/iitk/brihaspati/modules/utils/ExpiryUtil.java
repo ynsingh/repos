@@ -31,11 +31,13 @@ package org.iitk.brihaspati.modules.utils;
  *  
  *  
  */
-
+import java.io.*;
+import java.util.*;
+import java.text.*;
 import java.util.Calendar;
 import java.util.Vector;
 import java.util.List;
-import java.sql.Date;
+//import java.sql.Date;
 import java.util.StringTokenizer;
 import java.io.File;
 import org.apache.turbine.util.RunData;
@@ -69,7 +71,9 @@ import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRole;
-
+import java.text.DateFormat;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 /**
  * This class gets current date from system, expiry date,data expired from database 
  * and get year,month and day are seperated and put in a
@@ -79,10 +83,11 @@ import org.iitk.brihaspati.om.TurbineUserGroupRole;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date: 26-02-2011,08May2012
+ * @modified date: 26-02-2011,08May2012,10-10-2012
  */
 
 public class ExpiryUtil{
+	private static Log log = LogFactory.getLog(ExpiryUtil.class);
 	/**
 	 * This method retreives the current date of the system with delimiter
 	 * in yyyymmdd or yyyy-mm-dd etc format
@@ -457,46 +462,46 @@ public class ExpiryUtil{
 				/**
 				* update status field in table
 				* delete record from tables if status is DISABLE
-				* Added by @Tej
 				*/ 
 				else if(str[i].equals("StudentCrsDisable"))
                                 {
+                                        //get current date time with Date()
+					DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                        Date date = new Date();
+					String cur_date=dateFormat.format(date);
+                                        String newdate="0000-00-00 00:00:00";
+					//Select list from Student Expiry table which expiry date less or equal to current system date
 					crit=new Criteria();
-                                        crit.addAscendingOrderByColumn(StudentExpiryPeer.ID);
-                                        v=StudentExpiryPeer.doSelect(crit);
-                                        String stat="DISABLE";
-                                        String cdate=getCurrentDate("");
-                                        int currdate=Integer.parseInt(cdate);
-                                        for(int j=0;j<v.size();j++)
-                                        {
-                                                StudentExpiry element=(StudentExpiry)v.get(j);
-                                                int id1=element.getId();
-                                                String information="UPDATE STUDENT_EXPIRY SET STATUS='"+stat+"' WHERE EXPIRY_DATE <='"+currdate+"' and EXPIRY_DATE>'0000-00-00 00:00:00'";
-                                                StudentExpiryPeer.executeStatement(information);
-						crit=new Criteria();
-						crit.add(StudentExpiryPeer.STATUS,"DISABLE");
-						List lstt=StudentExpiryPeer.doSelect(crit);
-						for(int e=0;e<lstt.size();e++)
-						{
-						StudentExpiry elementt=(StudentExpiry)lstt.get(e);
-						int idd=elementt.getId();
-						//String uname=Integer.toString(elementt.getUid());
-						String uname=String.valueOf(elementt.getUid());
+                                        crit.add(StudentExpiryPeer.EXPIRY_DATE,(Object)cur_date,crit.LESS_EQUAL);
+                                        crit.and(StudentExpiryPeer.EXPIRY_DATE,(Object)newdate,crit.GREATER_THAN);
+                                        List lstt=StudentExpiryPeer.doSelect(crit);
+					for(int e=0;e<lstt.size();e++)
+					{
+						StudentExpiry element=(StudentExpiry)lstt.get(e);
+						int idd=element.getId();
+						String uname=String.valueOf(element.getUid());
+						//get user id from UserUtil
 						int usid=UserUtil.getUID(uname);
-						String c_name=elementt.getCid();
+						String c_name=element.getCid();
+						//get Group id from GroupUtil
 						int gid=GroupUtil.getGID(c_name);
+						// check user id for guest and admin
+						// if userid is not equal to 0 or 1 then delete student form table
+						int usidd=0;
+						if((usidd!=0) ||(usidd!=1)){
 						crit=new Criteria();
 						crit.add(StudentExpiryPeer.ID,idd);
 						StudentExpiryPeer.doDelete(crit);
+						
 						crit=new Criteria();
 						crit.add(TurbineUserGroupRolePeer.USER_ID,usid);
 						crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
 						crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
 						TurbineUserGroupRolePeer.doDelete(crit);
+						//write log file
+						log.info("this is user deletion message after completed their expiry date. User Information is --> User Email="+uname+" | User Id="+usid+" | CourseName ="+c_name+" | Group Id= "+gid);
 						}
-
-                                        }
-
+					}
                                 }
 			}
 			success=true;
