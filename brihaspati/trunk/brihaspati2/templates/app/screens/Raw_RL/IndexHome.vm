@@ -424,7 +424,7 @@ $!data.getMessage()
                 	                <td> <li dir="rtl"><a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$Allbookmark.Topic).addPathInfo("bturl",$Allbookmark.Url).addPathInfo("bgroup",$Allbookmark.Name).addPathInfo("stat","view").addPathInfo("stat1","All") style=text-decoration:none>$Allbookmark.Url</a></li></td>
                         	        #end
                                 	#if($Allbookmark.type=="Course_file")
-	                                <td><li dir="rtl"><a href=javascript:popupWin1($link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$Allbookmark.Topic).addPathInfo("dir",$Allbookmark.Name).addPathInfo("type","Bookmarks").addPathInfo("filename",$Allbookmark.Url) style=text-decoration:none,"newWin")>$Allbookmark.Url</a></li></td>
+	                                <td><li dir="rtl"><a href=javascript:popupWin1("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$Allbookmark.Topic).addPathInfo("dir",$Allbookmark.Name).addPathInfo("type","Bookmarks").addPathInfo("filename",$Allbookmark.Url)","newWin") style=text-decoration:none >$Allbookmark.Url</a></li></td>
         	                        #end
                                 #end
 		</div>
