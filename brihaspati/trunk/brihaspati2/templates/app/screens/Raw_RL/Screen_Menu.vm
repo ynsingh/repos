@@ -12,6 +12,11 @@
  * @ modified date: 05-Aug-2012 (Shaista)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
+
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
 <table width="100%" bgcolor="$ui.tableColor">
 <tr bgcolor="$ui.menuColor" align="right">
 <td><i><center><font size=4>$data.getUser().getTemp("course_name")</font></center></i><hr/></td>
