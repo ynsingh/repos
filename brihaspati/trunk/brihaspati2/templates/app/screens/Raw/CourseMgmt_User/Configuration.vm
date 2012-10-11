@@ -11,8 +11,9 @@
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
+  @author <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
  * @modified date: 30-03-2010
- * @modified date: 04-04-2011 (Shaista)
+ * @modified date: 04-04-2011 (Shaista),04-10-2012.
 *#
 
 $page.setTitle("Home | $course | Course Management |  Course Configuration for Guest")
@@ -21,6 +22,16 @@ $page.setTitle("Home | $course | Course Management |  Course Configuration for G
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
+<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+
+<script type="text/javascript">
+        $(function () {
+            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        });
+ </script>
 
 $page.setBgColor($ui.bgcolor)
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
@@ -30,7 +41,9 @@ $page.setBgColor($ui.bgcolor)
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> |  $brih_course  $RemoteConfiguration
-	<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a></td>
+	<td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin"); style=text-decoration:none>$brih_help</a>
+		<a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> |$brih_VideoHelp</a>
+		</td>
 		</td></tr>
 </table>
 

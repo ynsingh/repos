@@ -38,6 +38,12 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
+import java.util.Properties;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import java.util.List;
 import java.util.Calendar;
 import java.util.Vector;
@@ -169,9 +175,10 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:kishore.shukla@gmail.com">Kishore shukla</a>
  * @author <a href="mailto:gaurav.soni992@gmail.com">Gaurav Verma</a>
- * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modified date:12-09-2012
+ * @author <a href="mailto:piyushm45@gmail.com">PiyushMishra</a>	
+ * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
+ * @modified date:12-09-2012,10-10-2012
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -1135,5 +1142,18 @@ public static void grpLeader()
 		return true;
 	}//method removeNonce()
 
+
+	public static String GetBrihVideoId(String path,String key) throws Exception{
+                InputStream f = new FileInputStream(path);
+                Properties p = new Properties();
+                 p.load(f);
+                 String val = p.getProperty(key);
+                 String[] link_Id1= val.split("v=");
+                 String[] link_Id2= link_Id1[1].split("&");
+                //return(val);
+                 return(link_Id2[0]);
+         }
+
 //Add method
 }//end of class
+

@@ -54,7 +54,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
-
+import org.iitk.brihaspati.modules.utils.CommonUtility;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
@@ -101,6 +101,12 @@ public class CourseManagement extends SecureScreen
                 long unpdir=QuotaUtil.getDirSizeInMegabytes(dirHandle1);
                 context.put("TUSize",unpdir);
                 String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content";
+		
+		//Help Video Configuration
+                         String h_Video=data.getServletContext().getRealPath("/resources")+"/youTubeLinks"+"/"+"help_Video.properties";
+                         String v_Id = CommonUtility.GetBrihVideoId(h_Video,"upload_Course_Content");
+                         context.put("vid",v_Id);
+
 		/*File Path=new File(filePath+"/coursecontent__des.xml");
                         String tnme="";
                         String location="";

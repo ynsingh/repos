@@ -9,7 +9,8 @@
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 30-03-2010,30-04-2012(Richa)
+ * @author <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
+ * @modified date: 30-03-2010,30-04-2012(Richa),Oct04 2012(Piyush Mishra)
 *#
 
 $page.setBgColor($ui.bgcolor)
@@ -18,6 +19,15 @@ $page.setTitle("Course Content")
 #set ($loginusr=$data.getUser().getName().toString())
 
 $!data.getMessage()
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
+<script type="text/javascript">
+        $(function () {
+            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        });
+ </script>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 	#if($isAdmin=="true")
@@ -45,6 +55,7 @@ $!data.getMessage()
         #end
                	<td colspan=9>
 		<img src="$content.getURI("/images/hand.gif")">	<a href=javascript:popupWin("/brihaspati2/docs/CourseContent.html","newWin");> $brih_help </a>
+		<a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</a>
 #end
 </td></tr>
 <tr bgcolor="$ui.menuColor">

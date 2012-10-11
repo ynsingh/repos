@@ -8,8 +8,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+  @author <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
  * @modified date: 30-03-2010
- * @modified date: 15-02-2011, 20-04-2012
+ * @modified date: 15-02-2011, 20-04-2012,04-10-2012
 *#
 
 $page.setTitle("Home | $course | Course management")
@@ -17,7 +18,15 @@ $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-
+<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+<script type="text/javascript">
+        $(function () {
+            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        });
+ </script>
 #set($lang = $data.getUser().getTemp("lang" ).toString())  
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -85,7 +94,8 @@ $!data.getMessage()
         #end
         <td align=right>
         <img src="$content.getURI("/images/hand.gif")"> <a href=javascript:popupWin("/brihaspati2/docs/Upload.html","newWin"); style=text-decoration:none>$brih_help</a>
-        </td>
+        <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3"> |$brih_VideoHelp</a>
+	</td>
 </tr>
 </table>
 #if($user_role == "instructor")
