@@ -40,6 +40,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.modules.actions.VelocityAction;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.UserPref;
+import org.iitk.brihaspati.om.TurbineUser;
+import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iitk.brihaspati.om.UserPrefPeer;
@@ -54,14 +56,16 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.XMLWriter_EmailUpdation;
 import java.io.File;
 import java.util.Vector;
+import java.util.Iterator;
 
 /**
  * Action class to resend activation for direct registration
  * and confirmation mail for institute registration and online regitration.
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modified date: 09-08-2012, 01-10-2012
+ * @modified date: 09-08-2012, 01-10-2012, 15-10-2012
  */
 
 public class ResendActivation extends VelocityAction{
@@ -92,7 +96,9 @@ public class ResendActivation extends VelocityAction{
 		boolean sent = false;
 		String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);	
 		MultilingualUtil mu = new MultilingualUtil();		
-	
+		String hash="", emai_l="", u_name="";	
+		int user = 0;
+
 		try{	
 		//Check, if email exists in InstituteRegistrationList.xml
 		path=TurbineServlet.getRealPath("/InstituteRegistration/InstituteRegistrationList.xml");
@@ -158,7 +164,7 @@ public class ResendActivation extends VelocityAction{
                                                 			ErrorDumpUtil.ErrorLog("Activation mail sending  "+ex);
                                                 			throw new RuntimeException(msg3);
                                         			}
-
+								sent=true;
 							}
 						}//if 3 
 					}//for
@@ -202,12 +208,86 @@ public class ResendActivation extends VelocityAction{
                                                 			ErrorDumpUtil.ErrorLog("Activation mail sending  "+ex);
                                                 			throw new RuntimeException(msg3);
                                         			}
+								sent=true;
 							}
                                                 }//if 3
                                         }//for
                                  }//if 2
                         }//if 1 
                 }//if 
+
+		if(!sent){		
+			//check if mail exists in EmailUpdation.xml
+			path=data.getServletContext().getRealPath("/EmailUpdation/EmailUpdation.xml");
+                        File file =new File(path);
+			//String hash, emai_l, u_name;
+                        if(file.exists()){
+				boolean flag1=XMLWriter_EmailUpdation.mailExist(path,e_mail);
+				
+                                //if email exists in xml file
+                                //read details from file
+                                if(flag1)
+				{
+                                	Vector v = XMLWriter_EmailUpdation.readProfileDetails(path,e_mail);
+                                	if(v.capacity()>0)
+                                	{
+                                		u_name =(String) v.get(0);
+                                        	emai_l =(String) v.get(1);
+                                        	hash =(String) v.get(2);
+                                	}
+                                	if(emai_l.equals(e_mail))
+                                	{
+						if(hash.equals("updated"))
+						{
+                                        		try{
+                                        			str=MultilingualUtil.ConvertedString("already_verify",LangFile);
+                                                		data.setMessage(str);
+                                        		}
+                                        		catch (Exception ex){
+                                                		String msg3 = "Error in confirmation      ";
+                                                		ErrorDumpUtil.ErrorLog("Error while confirmation mail resending"+ex);
+                                                		throw new RuntimeException(msg3);
+                                        		}
+							sent=true;
+						}
+						else
+						{
+							//confirmation mail sent successfully
+							sent = sendMail(e_mail,hash,"cnfrm_mail",LangFile,data,lang);
+                                        		ErrorDumpUtil.ErrorLog("SENT VALUE 3....."+sent);			
+						}
+                                	}	
+				}//if
+				else
+				{
+					//email updated in database
+					crit = new Criteria();
+                        		List list = TurbineUserPeer.doSelect(crit);
+                        		for (Iterator i = list.iterator();i.hasNext() ;)
+                        		{
+                              			TurbineUser tuser = (TurbineUser) i.next();
+                              			email = tuser.getEmail();
+                              			if(e_mail.equals(email))
+                                   			user++;
+                        		}//for 
+					if(user!=0)
+		                        {
+						sent = true;
+                		                try{
+						        str=mu.ConvertedString("brih_email",LangFile)+" "+mu.ConvertedString("update_msg",LangFile);
+                                        		data.setMessage(str);
+                                        		data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                                		}
+                                		catch (Exception ex){
+                                        		String msg1 = "ERROR IN EMAIL VERIFICATION";
+                                        		ErrorDumpUtil.ErrorLog("User's email could not be updated "+ex);
+                                        		throw new RuntimeException(msg1,ex);
+                                		}
+                        		}
+				}//else
+			}//if
+		}//if
+
 		}//try
 		catch(Exception ex){
                      String msg5 = "Error in activation   ";
@@ -227,7 +307,6 @@ public class ResendActivation extends VelocityAction{
 	                	  try{
 					str=MultilingualUtil.ConvertedString("usr_doesntExist",LangFile); 
                              		data.setMessage(str);
-                              		//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                           	    }
                           	    catch (Exception ex){
 					String msg = "Error in activation	";
@@ -250,7 +329,6 @@ public class ResendActivation extends VelocityAction{
 						try{
 							str=MultilingualUtil.ConvertedString("usr_queries",LangFile);
                               				data.setMessage(str);
-                              				//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                           			 }
                           			catch (Exception ex){
 							String msg1 = "Error in activation	";
@@ -261,17 +339,15 @@ public class ResendActivation extends VelocityAction{
 					else if(a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
 			   		{
 						ErrorDumpUtil.ErrorLog("i m here 2");
-						try{
-							str=MultilingualUtil.ConvertedString("ac_activate",LangFile);
-	                              			data.setMessage(str);
-        	                      			//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
-                                		 }
-                                		 catch (Exception ex){
-							String msg2 = "Error in activation	";
-                                        		ErrorDumpUtil.ErrorLog("User account already exists inside 3rd catch"+ex);
-					 		throw new RuntimeException(msg2,ex);
-                                		 }
-
+							try{
+								str=MultilingualUtil.ConvertedString("ac_activate",LangFile);
+	                              				data.setMessage(str);
+                                		 	}
+                                		 	catch (Exception ex){
+								String msg2 = "Error in activation	";
+                                        			ErrorDumpUtil.ErrorLog("User account already exists inside 3rd catch"+ex);
+					 			throw new RuntimeException(msg2,ex);
+                                		 	}
 			   		}//if 3
 					else if(!(a_key.equalsIgnoreCase("ACTIVATE")) && !(a_key.equalsIgnoreCase("NULL")))
 			     		{
@@ -350,9 +426,9 @@ public class ResendActivation extends VelocityAction{
  * @param email  User's email id
  * @param a_key activation key corresponding to email
  * @param u_mode user mode, can have values "cnfrm_i", "cnfrm_c", "cnfrm_u"
- * @param LangFile language selected by user
+ * @param LangFile langFile for language
  * @param data RunData
- * in xml file
+ * @param lang language to be stored in xml file
  * @return boolean
  */
 private boolean sendMail(String email, String a_key, String u_mode, String LangFile, RunData data, String lang){
@@ -381,38 +457,52 @@ private boolean sendMail(String email, String a_key, String u_mode, String LangF
                 subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_subject");
                 messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_message"); // get a_key
                 confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
+		if(u_mode.equals("cnfrm_mail"))
+			confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, LangFile);
+		else
+                	confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
                 confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
                 messageFormate = messageFormate+confirmationMail;
-                Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "", "","");
-
-		try{
-			str=MultilingualUtil.ConvertedString("cnfrm_mail",LangFile);
-			data.setMessage(str);
-			//data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+		Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "", "","");
+		if(!Mailmsg.equals(""))
+		{
+			//mail sent successfully
+			try{
+				str=MultilingualUtil.ConvertedString("cnfrm_mail",LangFile);
+				data.setMessage(str);
+			}
+			catch (Exception ex){
+                        	String msg3 = "Error in activation      ";
+                        	ErrorDumpUtil.ErrorLog("Activation mail sending inside 4th catch "+ex);
+                        	throw new RuntimeException(msg3);
+                	}
+		}//if
+		else
+		{
+			//mail could not be sent
+			String str1=MultilingualUtil.ConvertedString("oops_msg",LangFile);
+	                 try{   
+        	                  data.setMessage(str1);
+                	 }
+                 	catch (Exception ex){
+                        	  ErrorDumpUtil.ErrorLog("Error while resending confirmation mail"+ex);
+                  	}
 		}
-		catch (Exception ex){
-                        String msg3 = "Error in activation      ";
-                        ErrorDumpUtil.ErrorLog("Activation mail sending inside 4th catch "+ex);
-                        throw new RuntimeException(msg3);
-                }
-		
-		return true;
+		//return true;
 	}//try
 	catch(Exception e){
 		 String message = "Error occurred while resending confirmation mail!";
                  log.error(message, e);
 		 String str1=MultilingualUtil.ConvertedString("oops_msg",LangFile);
-                 //String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str1;
-		try{
+                 try{
                           data.setMessage(str1);
-                          //data.getResponse().sendRedirect(url1);
                  }
                  catch (Exception ex){
                 	  ErrorDumpUtil.ErrorLog("Error while resending confirmation mail"+ex);
 		  }
-		return false;
+		//return false;
 	}
+	return true;
 }//method
 
 }//class

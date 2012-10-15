@@ -57,7 +57,7 @@ import java.io.File;
  * Action class for updating the activation status 
  * of user, when user clicks activation link.
  *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- *  modified date : 01-10-2012
+ *  modified date : 01-10-2012, 15-10-2012
  */
 
 public class Activation extends VelocityAction{
@@ -75,8 +75,13 @@ public class Activation extends VelocityAction{
                // ErrorDumpUtil.ErrorLog("INSIDE ACTIVATION ACTION------------------->> ");
                 System.gc();
                 String u_mode=rundata.getParameters().getString("mode");         
-					
-              if(u_mode.equals("cnfrm_u") || u_mode.equals("cnfrm_c") || u_mode.equals("cnfrm_i"))
+		
+		if(u_mode.equals("cnfrm_mail"))
+		{
+			EmailVerification everify = new EmailVerification(rundata);
+			everify.profileUpdation(rundata);
+		}			
+                if(u_mode.equals("cnfrm_u") || u_mode.equals("cnfrm_c") || u_mode.equals("cnfrm_i"))
 		{
                         mailConfirmation(rundata,context);
                 }

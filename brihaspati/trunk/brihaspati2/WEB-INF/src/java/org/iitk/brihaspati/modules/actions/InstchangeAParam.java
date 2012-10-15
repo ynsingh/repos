@@ -53,6 +53,8 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
+import org.iitk.brihaspati.om.TurbineUser;
+import org.iitk.brihaspati.om.TurbineUserPeer;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
@@ -60,6 +62,8 @@ import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:singh_jaivir@gmail.com">Jaivir Singh</a>29apr2011
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date: 15-10-2012
  */
 //Last update 19-10-2011(Sunil)
 
@@ -81,7 +85,7 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
 		 * Get the user object from RunData for the user
 		 * currently logged in
 		 */
-
+	
 		User user=data.getUser();
 		/**
  		*Get User Name and uid for getting the InstituteId.
@@ -140,18 +144,29 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
                 String homedirectory=pp.getString("Homedirectory");
                 String othdirectory=pp.getString("Othdirectory");
 
+		//For email verification
+		String email_msg="";
+		// Get value of email as in TURBINE_USER
+		Criteria crit = new Criteria();
+                crit.add(TurbineUserPeer.USER_ID,uid);
+                List list = TurbineUserPeer.doSelect(crit);
+                String oldEmail =((TurbineUser)list.get(0)).getEmail();
+		ErrorDumpUtil.ErrorLog("Old email = "+oldEmail);
+                EmailVerification everify = new EmailVerification(data);
+		
+
 		// -----------------Telephone Directory -----------------------------------------
 		/* Insert or update value into database
  		* Insert value in table "TELEPHONE_DIRECTORY" when corresponding data are not present
 		* and update value in table "TELEPHONE_DIRECTORY" when corresponding data are present
 		*/
-		
+	
 		Vector instid1=InstituteIdUtil.getAllInstId(uid);
                                 String str11="";
                                 String instid="";
                                 String str33="";
                                 try{
-                                        for(int j=0;j<=instid1.size();j++){
+                                        for(int j=0;j<instid1.size();j++){
                                                 str11=instid1.elementAt(j).toString();
                                                 if(!str11.equals(str33)){
                                                         instid=instid+"/"+str11;
@@ -161,7 +176,7 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
                                 }catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in getting institute Id in institute admin Profile User Action "+ex);};
 
 
-
+				
 				List li=null;
                                 Criteria tele = new Criteria();
 
@@ -172,10 +187,24 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
                                                         TelephoneDirectory element=(TelephoneDirectory)(li.get(0));
                                                         int id=(element.getId());
                                                         tele.add(TelephoneDirectoryPeer.ID,id);
-                                                }
-                                
-
-                                tele.add(TelephoneDirectoryPeer.MAIL_ID,eMail);
+							//added for email verification
+							oldEmail = (element.getMailId());
+                                                 }
+                                ErrorDumpUtil.ErrorLog("Old email = "+oldEmail);
+				/**
+ 				 * now email will be updated after verification
+				 * thus value of old email will be maintained.
+				 * It will be same as of TURBINE_USER in case email is being updated
+				 * and will remain as it is, in case email is not updated.
+				 */
+				tele.add(TelephoneDirectoryPeer.MAIL_ID,oldEmail);
+				//tele.add(TelephoneDirectoryPeer.MAIL_ID,eMail);
+                                if(!eMail.equals(""))
+				{
+					ErrorDumpUtil.ErrorLog("New email = "+eMail);
+					email_msg = everify.profileDetails(eMail, uname, LangFile, false);
+				}
+					
                                 tele.add(TelephoneDirectoryPeer.NAME, name);
                                 tele.add(TelephoneDirectoryPeer.ADDRESS, address);
                                 tele.add(TelephoneDirectoryPeer.STATE, state);
@@ -183,6 +212,7 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
                                 tele.add(TelephoneDirectoryPeer.DEPARTMENT, department);
                                 tele.add(TelephoneDirectoryPeer.DESIGNATION, designation);
 				tele.add(TelephoneDirectoryPeer.INSTITUTE_ID,instid);
+				ErrorDumpUtil.ErrorLog("i m here");
                                 if(offdirectory.equals("Public")){
                                         String PubOffNo="1-"+officeno;
                                         tele.add(TelephoneDirectoryPeer.OFFICE_NO, PubOffNo);
@@ -237,7 +267,7 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
                                                 TelephoneDirectoryPeer.doUpdate(tele);
 
 		// -------------------------------------------------------------------------------
-
+		ErrorDumpUtil.ErrorLog("After making changes in TELEPHONE_DIRECTORY");
 		/**
 		 * Replacing the variable value from Property file
 		 * Update the first,last name configuration parameter values for Institute Admin
@@ -251,7 +281,8 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
 			user.setFirstName(AFName);
 			user.setLastName(ALName);
-			user.setEmail(eMail);
+			//now email will be updated after verification
+			//user.setEmail(eMail);
 			TurbineSecurity.saveUser(user);
 			// for delete the file  and set the value for admin configuration
 		 	(new File(path)).delete();
@@ -264,7 +295,17 @@ public class InstchangeAParam extends SecureAction_Institute_Admin{
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			AdminProperties.setValue(path,expdays,"brihaspati.user.expdays.value");// Add by @tej
 			//setTemplate(data,"Index.vm");
-			prof_update=m_u.ConvertedString("usr_prof",LangFile);
+			//For email verification
+			if(email_msg.equals("Successfull"))
+	                        prof_update=MultilingualUtil.ConvertedString("usr_prof3",LangFile);
+                        else if(email_msg.equals("Exists"))
+                                prof_update=MultilingualUtil.ConvertedString("usr_prof5",LangFile);
+                        else if(email_msg.equals("UnSuccessfull") || email_msg.equals(""))
+                                prof_update=MultilingualUtil.ConvertedString("usr_prof4",LangFile);
+                        else if(email_msg.equals("Email_updated"))
+                                prof_update=MultilingualUtil.ConvertedString("usr_prof",LangFile);
+                        else
+				prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	
 			//data.addMessage("Disk space is update for user and Courses");

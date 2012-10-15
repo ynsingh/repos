@@ -48,7 +48,8 @@ import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
-
+import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -67,13 +68,13 @@ import java.io.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
+import java.util.Iterator;
 
 /**
  * Action class to receive authentication response from OpenID Provider
  * and fetch required parameters from the response.
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * modified date : 01-10-2012
+ * modified date : 01-10-2012, 15-10-2012
  */
 
 public class OpenIdResponse extends VelocityAction
@@ -93,10 +94,9 @@ public class OpenIdResponse extends VelocityAction
     OpenIdProcess open = new OpenIdProcess(); 
     String str;   
 
- public void doPerform( RunData data, Context context )
+ public void doPerform(RunData data, Context context)
  {
 	OpenIdProcess openid = new OpenIdProcess(data);
-        //ErrorDumpUtil.ErrorLog("i'm here 1");
         HttpServletRequest httpReq = data.getRequest();
         httpsess = data.getSession();
         HttpServletResponse httpResp = data.getResponse();
@@ -129,9 +129,7 @@ public class OpenIdResponse extends VelocityAction
 		opurl = (String)httpsess.getAttribute("provider");
 
 		Map pmap = (Map)httpReq.getParameterMap();
-		//ErrorDumpUtil.ErrorLog("i m here	"+pmap);
-	 	StringBuffer receivingURL = httpReq.getRequestURL();
-                //ErrorDumpUtil.ErrorLog("I am in open id responce receiving url "+receivingURL);
+		StringBuffer receivingURL = httpReq.getRequestURL();
                 String receivingUrl = receivingURL.toString();
                 String queryString = httpReq.getQueryString();
 
@@ -139,8 +137,7 @@ public class OpenIdResponse extends VelocityAction
                         {
                         	new_url =  receivingUrl.concat("?");
 				new_url = new_url.concat(queryString);
-				 //ErrorDumpUtil.ErrorLog("Add receiving URL and Query String2 "+new_url);
-                        }
+			}
 
        		       HttpServletRequest request = createRequest(new_url);
         		
@@ -159,7 +156,6 @@ public class OpenIdResponse extends VelocityAction
                                  }
                                  catch (Exception ex){
                                         ErrorDumpUtil.ErrorLog("After getAuthentication function the url is exception "+ex);
-                                        //      throw new RuntimeException(message,ex);
                                  }
 				throw new RuntimeException("error while nonce checking", e);                                        
 			  }			
@@ -189,8 +185,7 @@ public class OpenIdResponse extends VelocityAction
                         		}
                         		catch (Exception ex){
                                 		ErrorDumpUtil.ErrorLog("After getAuthentication function the url is exception "+ex);
-                        		//	throw new RuntimeException(message,ex);
-					}
+        				}
 					throw new RuntimeException(message,e);
                         	}
 
@@ -216,7 +211,6 @@ public class OpenIdResponse extends VelocityAction
                                         }
                                         catch (Exception ex){
                                                 ErrorDumpUtil.ErrorLog("Inside OpenIdResponse "+ex);
-                                               // throw new RuntimeException(msg,ex);
                                         }
 					throw new RuntimeException(msg,nl);
 
@@ -237,105 +231,146 @@ public class OpenIdResponse extends VelocityAction
                         ErrorDumpUtil.ErrorLog("This Exception comes (in side First try) in the user id" +uid +" "+ Result);
                         if(Result)
 			{
-				//String str=MultilingualUtil.ConvertedString("openid_msg_1",LangFile);
-                                String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=User does not exist!";
-                        	ErrorDumpUtil.ErrorLog("I am in result uid compare second "+url1);
-                                try{
-					str=MultilingualUtil.ConvertedString("usr_doesntExist",LangFile);
-                                        data.setMessage(str);
-				       //data.setMessage("User does not exist!");
-                                       data.getResponse().sendRedirect(url1);
-                                }
-                                catch (Exception ex){
-                                       ErrorDumpUtil.ErrorLog("User not registered in Brihaspati LMS "+ex);
-                                }
+				//check whether this email exists in database
+				int cnt=0;
+				crit = new Criteria();
+                                list = TurbineUserPeer.doSelect(crit);
+				for (Iterator i = list.iterator();i.hasNext() ;)
+	                        {
+					TurbineUser tuser = (TurbineUser) i.next();
+                                	String email_id = tuser.getEmail();
+					if(email.equals(email_id))
+					{
+						int user_id = tuser.getUserId();
+						String login_name = tuser.getLoginName();
+						//checkActivation(user_id, email, password, flag, lang, data, context);
+						checkActivation(user_id, login_name, password, flag, lang, data, context);
+						cnt++;	
+					}	
+				}//for			
 
-                        }
-                
-			 try{
-                                        crit = new Criteria();
-                                        crit.add(UserPrefPeer.USER_ID,uid);
-                                        list = UserPrefPeer.doSelect(crit);
-					a_key = ((UserPref)list.get(0)).getActivation();
-					ErrorDumpUtil.ErrorLog(a_key);
-					if (a_key == null || a_key.equalsIgnoreCase("NULL"))
-                                        {
-						 ErrorDumpUtil.ErrorLog(a_key+" is null");
-                                                 try{
-						      str=MultilingualUtil.ConvertedString("act_prb",LangFile);
-		                                      data.setMessage(str);
-                                                      //data.setMessage("Your account has some problem, contact to administrator or re register.");
-                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
-                                                 }
-                                                 catch (Exception ex){
-                                                        ErrorDumpUtil.ErrorLog("User's account activated not activated........... "+ex);
-                                                 }
-                                        }
-					if (a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
-                                        {
-						        
-						ErrorDumpUtil.ErrorLog(a_key+" is not null");
-		         			LoginUtils.CheckSession(email);
-                         			Date date=new Date();
-                         			data.setMessage(email);
-						lang=LoginUtils.SetUserData(email, password, flag, lang, data);
-                         			data.unsetMessage();
-                         			context.put("lang",lang);
-                         			//ErrorDumpUtil.ErrorLog("I am in open id responce ande part set user data");
-                         			LoginUtils.UpdateUsageData(uid);
-                         			try{
-                                 			AccessControlList acl = data.getACL();
-                                 			if( acl == null ){
-                                        		acl = TurbineSecurity.getACL( data.getUser() );
-                                        		data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
-                                  			}
-                                  		//ErrorDumpUtil.ErrorLog("I am in open id responce else part act setting");
-                                  		data.setACL(acl);
-                                  		data.save();
- 		          			}
-                          			catch(Exception ex){
-							data.setMessage("Error in setting Access rules :- "+ex);
-			  			}
-
-                          			boolean CL=CommonUtility.CleanSystem();
-                          			if(!CL)
-                                			data.addMessage("The Error in Clean System: see Common Utility");
-                          			boolean AB=CommonUtility.IFLoginEntry(uid,date);
-                          			LoginUtils.SetHintQues(uid, data);
-                          			//ErrorDumpUtil.ErrorLog("I am in open id responce else part hint question");
-                          			System.gc();
-					}//if
-					else
-                                        {
-                                                try{
-							str=MultilingualUtil.ConvertedString("reAct_mail",LangFile);
-		                                        data.setMessage(str);
-                                                      //data.setMessage("Your account is not activated. For activation please check your mail./n If you did not get the mail, please click on the Resend Activation link.");
-                                                      data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=str");
-                                                 }
-                                                 catch (Exception ex){
-                                                        String msg = "Error in login";
-                                                        ErrorDumpUtil.ErrorLog("User's account not activated........... "+ex);
-                                                         throw new RuntimeException(msg,ex);
-                                                 }
-
-                                        }//else
-				}//try
-				catch(Exception e){
-                                        String message = "Error in activation   ";
-                                        throw new RuntimeException(message, e);
-                                }//catch
+				/**
+ 				 * if email_id is neither registered as user_name
+				 * nor as email_id with Brihaspati
+				 */
+				if(cnt==0)
+				{
+                                	String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=User does not exist!";
+                        		ErrorDumpUtil.ErrorLog("I am in result uid compare second "+url1);
+                                	try{
+						str=MultilingualUtil.ConvertedString("usr_doesntExist",LangFile);
+                                        	data.setMessage(str);
+				       		//data.setMessage("User does not exist!");
+                                       		data.getResponse().sendRedirect(url1);
+                               	 	}
+                                	catch (Exception ex){
+                                       		ErrorDumpUtil.ErrorLog("User not registered in Brihaspati LMS "+ex);
+                                	}
+				}//if
+                        }//if
+			else
+                		checkActivation(uid, email, password, flag, lang, data, context);
 	}//try
 	catch(Exception e){
-	str=MultilingualUtil.ConvertedString("openid_msg_2",LangFile);
-	ErrorDumpUtil.ErrorLog("Exception in OpenIdResponse	"+e);
-	final Throwable throwable = new Exception(e);
-        ErrorDumpUtil.ErrorLog("STACK TRACE   "+getStackTrace(throwable));
-	throw new RuntimeException(str, e);
+		str=MultilingualUtil.ConvertedString("openid_msg_2",LangFile);
+		ErrorDumpUtil.ErrorLog("Exception in OpenIdResponse	"+e);
+		final Throwable throwable = new Exception(e);
+        	ErrorDumpUtil.ErrorLog("STACK TRACE   "+getStackTrace(throwable));
+		throw new RuntimeException(str, e);
 	}//catch
 
  }//method
 
+
+/**
+ * Checks the activation status of the 
+ * user's account, if status is ACTIVATE
+ * then allow user to login, else display
+ * appropriate message.
+ * @param uid UserId of the user
+ * @param email LoginName of the user
+ * @param password 
+ * @param flag 
+ * @param lang Language selected by the user
+ * @param data RunData
+ * @param context Context
+ */
+
+private void checkActivation(int uid, String email, String password, String flag, String lang, RunData data, Context context)
+{
+	Criteria crit;
+	List list;
+	String a_key, str;
+
+	try{
+        	crit = new Criteria();
+                crit.add(UserPrefPeer.USER_ID,uid);
+                list = UserPrefPeer.doSelect(crit);
+                a_key = ((UserPref)list.get(0)).getActivation();
+                ErrorDumpUtil.ErrorLog(a_key);
+                if (a_key == null || a_key.equalsIgnoreCase("NULL"))
+                {
+                	ErrorDumpUtil.ErrorLog(a_key+" is null");
+                        try{
+                        	str=MultilingualUtil.ConvertedString("act_prb",LangFile);
+                                data.setMessage(str);
+                                data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
+                        }
+                        catch (Exception ex){
+                                 ErrorDumpUtil.ErrorLog("User's account activated not activated........... "+ex);
+                        }
+                }
+                if (a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
+                {
+                        ErrorDumpUtil.ErrorLog(a_key+" is not null");
+                        LoginUtils.CheckSession(email);
+                        Date date=new Date();
+                        data.setMessage(email);
+                        lang=LoginUtils.SetUserData(email, password, flag, lang, data);
+                        data.unsetMessage();
+                        context.put("lang",lang);
+                        LoginUtils.UpdateUsageData(uid);
+                        try{
+	                        AccessControlList acl = data.getACL();
+                                if( acl == null ){
+        	                        acl = TurbineSecurity.getACL( data.getUser() );
+                                        data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
+                                }
+                                data.setACL(acl);
+                                data.save();
+                         }
+                         catch(Exception ex){
+                                data.setMessage("Error in setting Access rules :- "+ex);
+                         }
+
+                         boolean CL=CommonUtility.CleanSystem();
+                         if(!CL)
+                                data.addMessage("The Error in Clean System: see Common Utility");
+                         boolean AB=CommonUtility.IFLoginEntry(uid,date);
+                         LoginUtils.SetHintQues(uid, data);
+                         System.gc();
+		}//if
+                else
+                {
+                	try{
+                               	str=MultilingualUtil.ConvertedString("reAct_mail",LangFile);
+                                data.setMessage(str);
+                                data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg=str");
+                        }
+                        catch (Exception ex){
+                                String msg = "Error in login";
+                                ErrorDumpUtil.ErrorLog("User's account not activated........... "+ex);
+                                throw new RuntimeException(msg,ex);
+                        }
+
+                }//else
+	}//try
+        catch(Exception e){
+        	String message = "Error in activation   ";
+                throw new RuntimeException(message, e);
+       }//catch
+
+}//method
 
 public static String getStackTrace(Throwable throwable) 
 {
@@ -359,18 +394,14 @@ static HttpServletRequest createRequest(String url) throws UnsupportedEncodingEx
         if (pos==(-1))
             throw new IllegalArgumentException("Bad url.>>>>>");
         String query = url.substring(pos + 1);
-	//ErrorDumpUtil.ErrorLog("Create1 "+query);
         String[] params = query.split("[\\&]+");
         final Map<String, String> map = new HashMap<String, String>();
         for (String param : params) {
-	//ErrorDumpUtil.ErrorLog("Create2 "+param);
             pos = param.indexOf('=');
             if (pos==(-1))
                 throw new IllegalArgumentException("Bad url.");
             String key = param.substring(0, pos);
-	    //ErrorDumpUtil.ErrorLog("Key = "+key);
             String value = param.substring(pos + 1);
-	    //ErrorDumpUtil.ErrorLog("Value = "+value);
             map.put(key, URLDecoder.decode(value, "UTF-8"));
         }
         return (HttpServletRequest) Proxy.newProxyInstance(
@@ -378,15 +409,10 @@ static HttpServletRequest createRequest(String url) throws UnsupportedEncodingEx
                 new Class[] { HttpServletRequest.class },
                 new InvocationHandler() {
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        		//int count=0;  
 	              if (method.getName().equals("getParameter"))
 			{
-			     //ErrorDumpUtil.ErrorLog("Create3 "+map.get((String)args[0]));	
                             return map.get((String)args[0]);
-			//	++count;
                 	}
-			//ErrorDumpUtil.ErrorLog("Inside invoke() after if ");
-		
 		        throw new UnsupportedOperationException(method.getName());
                     }
                 }
