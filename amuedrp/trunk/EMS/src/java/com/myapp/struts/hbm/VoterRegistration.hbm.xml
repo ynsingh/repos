@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 2, 2012 11:01:17 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.VoterRegistration" table="voter_registration" catalog="emsiitk">
+    <class name="com.myapp.struts.hbm.VoterRegistration" table="voter_registration" >
         <composite-id name="id" class="com.myapp.struts.hbm.VoterRegistrationId">
             <key-property name="enrollment" type="string">
                 <column name="enrollment" length="20" />

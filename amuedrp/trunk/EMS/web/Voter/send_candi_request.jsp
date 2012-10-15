@@ -512,17 +512,19 @@ return heigh;
 }
 var p,e;
 function candiReq(pos,election,nor) {
+    //alert(pos+","+nor);
     var data="";
    for(i=1;i<=nor;i++)
-     { if(document.getElementById('text'+i).value=="")
+     { if(document.getElementById('text'+pos+i).value=="")
       {
           
           alert("Please Specify Election Rules Ans before submit");
           return false;  }else{
-          data+=document.getElementById('text'+i).value+"|";
+          data+=document.getElementById('text'+pos+i).value+"|";
 
           }
      }
+    // alert("Data"+data);
 p=pos;
 e=election;
     var req = newXMLHttpRequest();
@@ -695,7 +697,7 @@ for(iii=0;iii<em1.length;iii++)
                var position1rule = rule[jjk].getElementsByTagName("rulevalue");
                var positionr = position1rule[0].firstChild.nodeValue;
                innerhtm +='<tr><td>'+positionr+'</td>';
-               innerhtm +='<td><input type="textbox" id="text'+positionIdrule+'" value=""/></td>';
+               innerhtm +='<td><input type="textbox" id="text'+positionId+(jjk+1)+'" value=""/></td>';
                innerhtm +='</tr>';
            }
            

@@ -194,13 +194,45 @@ else{
     return false;
 }
 }
+function search4(current) {
+
+    var position = "position_name0"+current;
+    var posinstruct = "instruct0" + current;
+    var numberofchoice = "numberofchoice0"+current;
+    var position_name = document.getElementById(position).value;
+    var noofchoice = document.getElementById(numberofchoice).value;
+    var instruct = document.getElementById(posinstruct).value;
+   // instruct="You can choose "+noofchoice+" Candidate for this Position";
+
+    var electionId = document.getElementById("electionId").value;
+    position_name = position_name.replace(/^\s*|\s*$/g,"");
+    noofchoice = noofchoice.replace(/^\s*|\s*$/g,"");
+    instruct = instruct.replace(/^\s*|\s*$/g,"");
+    var posid = "position_id0"+current;
+    var PositionId="";
+    var butId = "but0"+current;
+    var buttonVal = document.getElementById(butId).value;
+
+
+if(position_name.length>=1 && noofchoice.length>=1 && electionId!="" && instruct.length>=1)
+{
+
+
+     return true;
+}
+else{alert("Please Enter Values in the Field For Position First");
+return false;}
+}
+
+
+
 var k=0;
 var l=0;
 //var j=0;
 function createcriteria(j)
 {
    
- if(search(j)==false)
+ if(search4(j)==false)
      return false;
 
 k=0;

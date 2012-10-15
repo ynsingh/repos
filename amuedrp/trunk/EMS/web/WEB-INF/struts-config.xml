@@ -152,7 +152,7 @@
                <forward name="success" path="/election_manager/voter_setup.jsp"/>
            </action>
 <action   path="/votedvoterlist" scope="request" type="PrintAction.PrintVotedVoterList"> </action>
-
+<action   path="/printlog" scope="request" type="com.myapp.struts.admin.ReportAction"> </action>
        <!--====================================Admin Action Setting===============================================-->
 
  <action path="/update_email" scope="request" type="com.myapp.struts.admin.UpdateStaffEmailAction"/>
@@ -523,6 +523,15 @@
  <action path="/registerfrmpending" scope="request" type="com.myapp.struts.election_manager.RegisterfromPendingAction">
     <forward name="success" path="/election_manager/pending_voter.jsp"/>
 </action>
+ <action path="/xmlexport" scope="request" type="com.myapp.struts.election_manager.XMLExportAction">
+    <forward name="success" path="/election_manager/Election_List.jsp"/>
+</action>
+
+ <action path="/xlsexport" scope="request" type="com.myapp.struts.election_manager.XLSExportAction">
+    <forward name="success" path="/election_manager/Election_List.jsp"/>
+</action>
+
+
    <!--====================================Voter  Action Setting==========================================-->
 
              <action input="/election_manager/pending_voter.jsp" name="VoterRegActionForm" path="/newregistration1" scope="request" type="com.myapp.struts.Voter.VoterViewAction1">

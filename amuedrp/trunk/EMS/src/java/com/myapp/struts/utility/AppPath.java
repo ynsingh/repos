@@ -4,14 +4,10 @@
  */
 
 package com.myapp.struts.utility;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.HashMap;
 import javax.naming.*;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 import org.apache.struts.upload.FormFile;
@@ -227,5 +223,25 @@ public static byte[] getImage(FormFile image) throws GlobalException
 
     }
     return img;
+}
+public static String getProjectExportPath(){
+
+    String os=System.getProperty("os.name");
+    String projectPath = getProject();
+
+
+    if(os.equalsIgnoreCase("linux"))
+    {
+        projectPath=projectPath+"/Export/";
+        return projectPath;
+    }
+    else
+    {
+       projectPath=projectPath+"\\Export\\";
+       return projectPath;
+    }
+
+
+
 }
 }

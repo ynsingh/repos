@@ -7,6 +7,7 @@ package com.myapp.struts.hbm;
 
 
 import com.myapp.struts.election_manager.CandidateReg;
+import com.myapp.struts.election_manager.CandidateReg1;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;
@@ -51,6 +52,35 @@ and sv.status='Voted' and v.institute_id = '101' and sv.election_id='2'
           query.setString("instituteId",institueid);
           query.setString("electionId",electionid);
             tx=  query.list();
+            session.getTransaction().commit();
+        }
+    catch(RuntimeException e){
+    e.printStackTrace();
+    }
+    finally {
+            session.close();
+        }
+    return tx;
+
+}
+
+      public List<CandidateReg1> VotedVoterListXML(String institueid,String electionid)
+    {
+    Session session =null;
+    List tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+
+            String sql="";
+
+            sql = "select i.instituteName As i_institute_name,v.voterName AS v_voter_name,v.gender AS v_gender,v.email AS v_email,v.course AS v_course,v.department AS v_department,v.id.enrollment AS v_enrollment,e.electionName As e_election_name,e.startDate As e_start,e.endDate As e_end FROM Institute i,VoterRegistration v,VotingProcess sv,Election e WHERE   i.id.instituteId=v.id.instituteId and i.id.instituteId=sv.id.instituteId and v.id.instituteId=sv.id.instituteId and v.email=sv.id.voterId  and  sv.Status='Voted' and sv.id.instituteId=e.id.instituteId and sv.id.electionId=e.id.electionId and v.id.instituteId = :instituteId and sv.id.electionId=:electionId";
+            System.out.println(sql);
+          Query query =  session.createQuery(sql)
+          .setResultTransformer(Transformers.aliasToBean(CandidateReg1.class));
+          query.setString("instituteId",institueid);
+          query.setString("electionId",electionid);
+            tx=  (List<CandidateReg1>)query.list();
             session.getTransaction().commit();
         }
     catch(RuntimeException e){

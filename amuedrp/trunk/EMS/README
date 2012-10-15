@@ -1,0 +1,33 @@
+*************************************************************************************************************
+Copyright 2012 ERP Mission, IIT Kanpur
+Contributions by:- Nagendra Kumar Singh
+Last modified on 10 July 2012
+*************************************************************************************************************
+This document describes procedure to install EMS(New) on any Linux machine or windows PC.
+Step for Installation of Library Management System
+
+1. You must install tomcat application server version 6.0 onwards, 
+	download from http://tomcat.apache.org/
+2. You must install ant 1.6 onwards, 
+	download from http://ant.apache.org/
+3. You must install mysql 5 or onwards,
+	download from http://dev.mysql.com/downloads/
+4. Download source code from sourceforge.net or our svn repository, 
+	download from http://sourceforge.net/projects/brihaspati 
+	or 
+	svn co http://brihsvn.iitk.ernet.in/repos/amuedrp/trunk/EMS
+5. 	Set the context for project in context.xml at your application server
+		<Resource name="jdbc/Testems" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="10" maxWait="100"
+               username="xxxxx" password="xxxxx" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/emsiitk?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+<Environment name="path1" value="<Tomcat server Webapps folder path>/EMS"
+type="java.lang.String" override="false"/>
+
+6. Run sql script in mysql database for creating database
+7. run ant command in side EMS dir
+	This will generate war file
+8. Start application server and deploy this war file on server
+9. Access application via this URL
+	http://servername:portname/EMS
+

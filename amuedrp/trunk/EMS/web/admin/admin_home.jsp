@@ -198,7 +198,8 @@ if(session.getAttribute("username")==null)
       <b style="color:white" dir="<%=rtl%>"> Rejected Institute List</b></a></li>
         <li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
       <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%></b></a></li>
-  
+ <%-- <li><a href="<%=contextPath%>/printlog.do" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+      <b style="color:white" dir="<%=rtl%>"> User Log</b></a></li>--%>
 
 </ul>
 </li>

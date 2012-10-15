@@ -11,7 +11,7 @@ if(session.isNew()){
 <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
 <jsp:include page="/election_manager/login.jsp"/>
-<%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election"%>
+<%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election,com.myapp.struts.utility.*"%>
 
     <%@ page import="java.util.*,java.lang.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -216,18 +216,18 @@ String msg1=(String)request.getAttribute("msg1");
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="80%" style="top:150px;position: absolute;z-index: 30 ">
+<table align="<%=align%>" dir="<%=rtl%>" width="100%" style="top:150px;position: absolute;z-index: 30 ">
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
-    <column width="10%">
+    <column width="5%">
       <header value="${Election_Id}" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_id}"   hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="10%">
+    <column width="5%">
       <header value="${Election_Name}" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_name}"  styleClass="item"/>
     </column>
@@ -246,12 +246,12 @@ else
       <header value="${Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.status}"   hAlign="left" styleClass="item"/>
     </column>
-<column width="10%">
+<column width="5%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Update" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
-<column width="10%">
+<column width="5%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
     </column>
@@ -274,28 +274,43 @@ else
       <item   value="Preview Ballot" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
-       <column width="10%">
+       <column width="5%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Candidate List" hyperLink="${path}/AllCandiList.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
-      <column width="10%">
+      <column width="5%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Voter List" hyperLink="${path}/voterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
- <column width="10%">
+ <column width="5%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Publish Election" hyperLink="${path}/electionview1.do?id=${doc.election_id}&amp;publish='y'"  hAlign="left" styleClass="item"/>
     </column>
-        <column width="100px">
+        <column width="5%">
       <header value="Vote Cast Till Date" hAlign="left" styleClass="header"/>
       <item   value="${doc.totalvoted}" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
-      <column width="100px">
-      <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Voted Voter List" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+      <column width="5%">
+      <header value="View All Voted Voter" hAlign="left" styleClass="header"/>
+      <item   value="PDF" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
+       <column width="5%" >
+      <header value=""   hAlign="left" styleClass="header"   />
+   <item>
+      <![CDATA[<a href="/EMS/xmlexport.do?election=${doc.election_id}">XML</a>]]>
+  </item>
+
+    </column>
+   <column width="5%" >
+      <header value=""   hAlign="left" styleClass="header"   />
+   <item>
+      <![CDATA[<a href="/EMS/xlsexport.do?election=${doc.election_id}">XLS</a>]]>
+  </item>
+
+    </column>
+
  </columns>
 
 <rows styleClass="rows" hiliteStyleClass="hiliterows"/>
@@ -337,14 +352,33 @@ else
       
 </table>
   <%
+  String msg=(String)request.getAttribute("msg");
+  if(msg!=null){out.println(msg);}
 
-String msg=(String)request.getAttribute("msg");
-if(msg!=null)
-    {%>
-    <p class="err" style="font-size:12px"><%=msg%></p>
+  
+String msg2=(String)session.getAttribute("exportmsg");
+if(msg2!=null)
+    {
+  out.println(msg2);
+  %>
+   <%-- <p class="err" style="font-size:12px"><%=msg%></p>--%>
+ <% String requestpage=(String)request.getAttribute("exportpath");%>
+    <a href="<%=request.getContextPath()%>/Export/<%=requestpage%>" target="_blank">Download It</a>
 
+<%}
+ session.removeAttribute("exportmsg");
+%>
 
-<%}%>
+<%
+     String msgxls=(String)request.getAttribute("msgxls");
+     if(msgxls!=null){out.println(msgxls);
+%>
+<%
+  String filename=(String)session.getAttribute("filename");%>
+   <a href="<%=request.getContextPath()%>/Export/<%=filename%>" target="_blank">Download It</a>
+<%  }
+%>
+
   <%
 
 msg=(String)request.getAttribute("msgerr");
@@ -355,7 +389,13 @@ if(msg!=null)
 
 <%}%>
 
-  <%}%></td></tr>
+  <%}%></td>
+
+  <td align="right">
+    
+</td>
+
+  </tr>
 </table>
     </body>
 

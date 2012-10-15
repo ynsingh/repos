@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="logs" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="40"/>
+	<parameter name="election_name" class="java.lang.String"/>
+	<parameter name="institute_name" class="java.lang.String"/>
+	<field name="gender" class="java.lang.String"/>
+	<field name="voted" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="71" splitType="Stretch">
+			<staticText>
+				<reportElement x="212" y="42" width="197" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Voted Voter Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="9" width="102" height="20"/>
+				<textElement/>
+				<text><![CDATA[Institute Name:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="99" y="9" width="173" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{institute_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="300" y="9" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Election Name:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="381" y="9" width="174" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{election_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="299" splitType="Stretch">
+			<elementGroup>
+				<bar3DChart>
+					<chart>
+						<reportElement x="216" y="27" width="107" height="158"/>
+						<chartTitle color="#0000FF"/>
+						<chartSubtitle/>
+						<chartLegend backgroundColor="#B51D1D"/>
+					</chart>
+					<categoryDataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{gender}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{gender}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{voted}]]></valueExpression>
+							<labelExpression><![CDATA[$F{gender}]]></labelExpression>
+						</categorySeries>
+					</categoryDataset>
+					<bar3DPlot>
+						<plot/>
+						<itemLabel color="#AC2F2F" backgroundColor="#FFFFFF"/>
+						<categoryAxisFormat>
+							<axisFormat labelColor="#830000" tickLabelColor="#791313">
+								<labelFont/>
+								<tickLabelFont/>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat labelColor="#034000" tickLabelColor="#701313">
+								<labelFont/>
+								<tickLabelFont/>
+							</axisFormat>
+						</valueAxisFormat>
+					</bar3DPlot>
+				</bar3DChart>
+			</elementGroup>
+		</band>
+	</summary>
+</jasperReport>
