@@ -281,6 +281,18 @@ public class ClientObject {
                 return LectureInfoindex;
         }
 
-		
+	/**
+	 * Define audio format
+ 	 */
+	
+        public javax.sound.sampled.AudioFormat getAudioFormat(){
+		float sampleRate = 8000;    //8000,11025,16000,22050,44100
+		int sampleSizeInBits = 16;  //8,16
+                int channels = 1;           //1,2
+		boolean signed = true;      //true,false
+		boolean bigEndian =false;    //true,false
+		return new javax.sound.sampled.AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
+    	}
+
 }
 

@@ -7,7 +7,7 @@ package org.bss.brihaspatisync.tools.audio;
  * Copyright (c) 2012 ETRG,IIT Kanpur.
  */
 
-import java.util.Vector;
+import java.util.LinkedList;
 
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.DataLine;
@@ -27,11 +27,11 @@ public class AudioPlayer implements Runnable {
 	private static AudioPlayer ap=null;
 	private Thread runner=null;
         private boolean flag=false;
-	private SourceDataLine sourceDataLine;
-        private AudioFormat audioFormat;
-        private DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
         private byte audioBytes[]=null;
-	private Vector audioVector=new Vector();
+	private SourceDataLine sourceDataLine;
+	private LinkedList<byte[]> audioVector=new LinkedList<byte[]>();
+        private AudioFormat audioFormat=org.bss.brihaspatisync.util.ClientObject.getController().getAudioFormat();;
+        private DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
 
 	
 	protected static AudioPlayer getController(){
@@ -40,39 +40,32 @@ public class AudioPlayer implements Runnable {
 		return ap;
 	}
 	
-	protected void putAudioStream(AudioInputStream object){
+	protected void putAudioStream(byte[] audio_data){
 		 if (runner == null) 
 			startThread();
-		audioVector.add(object);
+		audioVector.addLast(audio_data);
 	}
 	
-	public void startThread(){
+	private void startThread(){
 		 if (runner == null) {
                         flag=true;
                         runner = new Thread(this);
                         runner.start();
+			startSourceLine();
                 }
 	
 	}
 
-	public void stopThread(){
+	private void stopThread(){
 		if (runner != null) {
                         flag=false;
                         runner.stop();
                         runner = null;
+			stopSourceLine();
                 }
 	
 	}
 	
-	 private AudioFormat getAudioFormat(){
-                    float sampleRate = 8000;    //8000,11025,16000,22050,44100
-                    int sampleSizeInBits = 16;  //8,16
-                    int channels = 1;           //1,2
-                    boolean signed = true;      //true,false
-                    boolean bigEndian =true;    //true,false
-                    return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
-        }
-
 	/**
  	 * Getting a available mixer in local system which support selected audio format.
  	 */  
@@ -93,16 +86,15 @@ public class AudioPlayer implements Runnable {
 	/**
  	 * start output line (sourceDataLine) to play audio.
  	 */  	
-	public void startSourceLine(){
+	private void startSourceLine(){
                 try{
+			int bufferSize =(int)(audioFormat.getSampleRate())*(audioFormat.getFrameSize());
 			if(sourceDataLine!=null){
-                        	audioFormat = getAudioFormat();
-                       		sourceDataLine.open(audioFormat);
+                       		sourceDataLine.open(audioFormat,bufferSize);
                         	sourceDataLine.start();
 			}else {
 				getMixer();
-				audioFormat = getAudioFormat();
-                                sourceDataLine.open(audioFormat);
+                                sourceDataLine.open(audioFormat,bufferSize);
                                 sourceDataLine.start();
 			}
                 }catch(Exception e){System.out.println("Error in open sourceDataLine : "+e.getMessage());}
@@ -112,7 +104,7 @@ public class AudioPlayer implements Runnable {
 	/**
  	 * Stop output line (SourceDataLine) to stop play audio.
  	 */  
-        public void stopSourceLine(){
+        private void stopSourceLine(){
                 try{
 			sourceDataLine.flush();
                         sourceDataLine.stop();
@@ -124,25 +116,26 @@ public class AudioPlayer implements Runnable {
 	/**
  	 * Play audio thread which get audio stream from audioVector(local buffer for audio stream).
  	 */ 		 
-	public void run(){
-		startSourceLine();
-		int bufferSize = (int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize());
+	public void run() {
+		int bufferSize =(int)(audioFormat.getSampleRate())*(audioFormat.getFrameSize());
+		int offset=0;
+		int numRead = bufferSize;
+                int size=bufferSize*25;
 		while(flag && ThreadController.getController().getThreadFlag()){
-			try{
-				
-				if(audioVector.size() > 1){
-					AudioInputStream input=(AudioInputStream)audioVector.get(0);
+			try {
+				if(audioVector.size() > 0){
+                              		// sourceDataLine.write(audioVector.get(0), 0, bufferSize);
+					
+                                	if(size >=numRead){
+						offset=0;
+						numRead = bufferSize;	
+					}
+					numRead=numRead + offset;
+                                	offset += sourceDataLine.write(audioVector.get(0),offset, numRead);
+					
 					audioVector.remove(0);
-					byte buffer[] = new byte[bufferSize];
-					try {
-        			        	int count;
-                			        while ((count = input.read(buffer, 0, buffer.length)) != -1) {
-						if(count>0)
-                                			sourceDataLine.write(buffer, 0, count);
-			                        }
-        			     	}catch (Exception e) {  System.out.println("Error in play audio stream : "+e.getMessage()); }
-					try { 	input.reset(); input.close(); input=null; }catch(Exception ew){} 
-				}//end of if
+				} //end of if
+				runner.yield();	
 			}catch(Exception ex){System.out.println("Error in AudioPlayer run() "+ex.getMessage());}
 		}//end of while
 	}

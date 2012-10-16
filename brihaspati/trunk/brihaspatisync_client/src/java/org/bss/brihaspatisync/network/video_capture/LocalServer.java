@@ -79,6 +79,7 @@ public class LocalServer implements Runnable {
 
 	public void run() {
 		while(flag && ThreadController.getController().getThreadFlag()) {
+			
 		        try {
 				HttpClient client = new HttpClient();
 				HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());

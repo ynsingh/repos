@@ -14,10 +14,6 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
-import java.io.File;
-import java.io.*;
-import java.io.ByteArrayOutputStream;
-import javax.sound.sampled.*;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
@@ -33,12 +29,11 @@ public class AudioClient implements Runnable {
 	private Thread runner=null;
 	private boolean flag=false;
 
-	private AudioFormat audioFormat;	
 	private static AudioClient audio=null;
 	private HttpClient client = new HttpClient();	
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	
+	private javax.sound.sampled.AudioFormat audioFormat=org.bss.brihaspatisync.util.ClientObject.getController().getAudioFormat();	
 	private AudioCapture au_cap=new AudioCapture();	
 
 	/**
@@ -88,18 +83,22 @@ public class AudioClient implements Runnable {
 		try {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                        	h.setName("session");
-                        h.setValue(clientObject.getLectureID());
+                        h.setValue(clientObject.getLectureID()+","+clientObject.getUserName());
 			int port = runtime_object.getAudioPort();
-			audioFormat=getAudioFormat();
 			while(flag && ThreadController.getController().getThreadFlag()) {
 				try {
                                         PostMethod method = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
                                         client.setConnectionTimeout(8000);
-                                        method.setRequestBody(new java.io.ByteArrayInputStream(au_cap.startCapture().toByteArray()));
+					byte [] audiodata=au_cap.getAudioData();
+					if(audiodata != null) {
+						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
+						javax.sound.sampled.AudioInputStream ais = new javax.sound.sampled.AudioInputStream(new java.io.ByteArrayInputStream(audiodata),audioFormat, audiodata.length / audioFormat.getFrameSize());
+						javax.sound.sampled.AudioSystem.write(ais,javax.sound.sampled.AudioFileFormat.Type.WAVE, os);
+						method.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
+					}
                                         method.setRequestHeader(h);	
 					
 					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-
                                                 HostConfiguration config = client.getHostConfiguration();
                                                 config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
                                                 Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
@@ -107,28 +106,18 @@ public class AudioClient implements Runnable {
                                                 client.getState().setProxyCredentials(authScope, credentials);
                                         }
 
-                                        int statusCode1 = client.executeMethod(method);
+                                        int statusCode = client.executeMethod(method);
 					byte audioBytes[]=method.getResponseBody();
 					try {
 						method.releaseConnection();
-                	                        if((audioBytes.length) > 1000) {
-							AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(audioBytes),audioFormat, audioBytes.length / getAudioFormat().getFrameSize());
-                        	                        AudioPlayer.getController().putAudioStream(ais);
-                                	        	ais.close();
+                	                        if((audioBytes.length) > 15000) {
+                        	                        AudioPlayer.getController().putAudioStream(audioBytes);
 						}
 					}catch(Exception e){System.out.println(e.getMessage());}
-					try { runner.sleep(500); runner.yield(); }catch(Exception ex){}
-				}catch(Exception epe){}
+					try { runner.yield(); }catch(Exception ex){}
+				}catch(Exception epe){try { runner.sleep(500); runner.yield(); }catch(Exception ex){} }
                         }
 		}catch(Exception e){ System.out.println("Error in PostMethod of Audio sender : "+e.getMessage()); }
 	}
 	
-	private AudioFormat getAudioFormat(){
-                    float sampleRate = 8000;//8000,11025,16000,22050,44100
-                    int sampleSizeInBits = 16;  //8,16
-                    int channels = 1;   //1,2
-                    boolean signed = true; //true,false
-                    boolean bigEndian =true; //true,false
-                    return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
-        }
 }

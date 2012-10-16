@@ -105,7 +105,7 @@ public class StudentPostVideoCapture implements Runnable {
 	public void run() {
 		org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
 		h.setName("session");
-                h.setValue(clientObject.getLectureID());	
+                h.setValue(clientObject.getLectureID()+","+clientObject.getUserName());	
 		int port=runtime_object.client_stdpostvedio_port();
 		while(flag && ThreadController.getController().getThreadFlag()) {
 			try {

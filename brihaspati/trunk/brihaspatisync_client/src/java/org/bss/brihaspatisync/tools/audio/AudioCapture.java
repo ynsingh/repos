@@ -7,26 +7,15 @@ package org.bss.brihaspatisync.tools.audio;
  * Copyright (c) 2012 ETRG,IIT Kanpur.
  */
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import java.net.URLEncoder;
 import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.TargetDataLine;
-import java.io.IOException;
-import java.io.File;
+
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
-import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 
 /**
@@ -34,16 +23,18 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified transmit thread.
  */
 
-public class AudioCapture {
+public class AudioCapture implements Runnable {
 
 	private boolean flag=false;
-        private int bufferSize=16000;	
+	private boolean flag1=false;
+        private int bufferSize=0;	
+	private Thread runner=null;	
+	private byte audio_data[]=null;
    	private Mixer currentMixer=null;
-	private AudioFormat audioFormat;
 	private TargetDataLine targetDataLine;
-    	private AudioFileFormat.Type fileType = null;
+	private AudioFormat audioFormat=ClientObject.getController().getAudioFormat();
+	private java.util.LinkedList<byte[]> audioVector=new java.util.LinkedList<byte[]>();
     	private DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-
    	/**
  	 * Select a mixer from audio system which support audio format
  	 */  
@@ -66,21 +57,19 @@ public class AudioCapture {
  	 */  
     	public TargetDataLine getTargetLine() {
 		try{
-			if(currentMixer==null){
+			if(currentMixer==null)
 				currentMixer = getMixer();
-			}
-    			if(currentMixer != null)
+			if(currentMixer != null)
             			targetDataLine =(TargetDataLine)currentMixer.getLine(dataLineInfo);
             		else
             			System.out.println("Mixer not found!!");
-			audioFormat = getAudioFormat();
 			if(!targetDataLine.isOpen()){
-            			targetDataLine.open(audioFormat);
+            			targetDataLine.open(audioFormat, bufferSize);
 				System.out.println("opening targetDataLine !!");
 			}
             		targetDataLine.start();
 		}catch(Exception e){System.out.println("Error in open targetdataline "+e.getMessage());}
-			return targetDataLine;
+		return targetDataLine;
     	}
 
 	/**
@@ -91,50 +80,52 @@ public class AudioCapture {
 		targetDataLine.stop();
 		targetDataLine.drain();
 	        targetDataLine.close();
+		runner.stop();
 		System.out.println("stopping audio capture successfull");
         }
 	
 	protected void start(){
-                getTargetLine();
-                bufferSize = (int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize());
+		if(!flag1){
+	                bufferSize = (int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize());
+                	getTargetLine();
+			flag1=true;
+			runner=new Thread(this);
+			runner.start();
+		}
+		
         }
 	
 	protected void setflag(boolean f){
 		flag=f;	
-		if(f)
+		if(f){
 			start();
+		}
+		else {
+			stopCapture();
+			flag1=false;
+		}
 	}
 
 
 	/**
  	 * Local thread for record audio from microphone and save in file named as filename variable.
  	 */  
-	public java.io.ByteArrayOutputStream startCapture(){ 
+	public void run(){ 
                 try {
-			byte tempBuffer[] = new byte[bufferSize*10];
-                        try {
-				java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
-				if(flag){	
-                                	int cnt = targetDataLine.read(tempBuffer,0,tempBuffer.length);
-                                	AudioInputStream ais = new AudioInputStream(new java.io.ByteArrayInputStream(tempBuffer),audioFormat, tempBuffer.length / getAudioFormat().getFrameSize());
-                                	AudioSystem.write(ais,AudioFileFormat.Type.WAVE, os);
-				}
-				return os;	
-                        } catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
+			while(flag){	
+			        audio_data = new byte[bufferSize];
+                               	int cnt = targetDataLine.read(audio_data,0,audio_data.length);
+				audioVector.addLast(audio_data);
+			}
                 }catch(Exception e){System.out.println("Error in capture Audio"+e.getCause());}
-		return null;
         }
-
-	/**
- 	 * Define audio format
- 	 */  
-	private AudioFormat getAudioFormat(){
-		    float sampleRate = 8000;	//8000,11025,16000,22050,44100
-		    int sampleSizeInBits = 16;	//8,16
-		    int channels = 1;		//1,2
-		    boolean signed = true;	//true,false
-		    boolean bigEndian =false;	//true,false
-		    return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
- 	}
-	
+		
+	protected byte [] getAudioData(){
+		if(audioVector.size()>0){
+			byte[] data=audioVector.get(0);
+			audioVector.remove(0);
+			return data;
+		}
+		return null;
+	}
 }

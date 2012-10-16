@@ -135,7 +135,6 @@ public class JoinSession {
 		//start audio thread
 		try{
 			String a_status=client_obj.getAudioStatus();
-
                         if(a_status.equals("1")){
 				org.bss.brihaspatisync.tools.audio.AudioClient.getController().startThread();
                                 if((client_obj.getUserRole()).equals("instructor")){

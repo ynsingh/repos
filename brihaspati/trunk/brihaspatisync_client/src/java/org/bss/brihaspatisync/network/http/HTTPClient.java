@@ -49,20 +49,22 @@ public class HTTPClient extends Thread {
         private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private final String refHttpPort=runtime_object.getRefHttpPort();
+	private HttpClient client = new HttpClient();
 
 	public HTTPClient(){ }
 
 	public HTTPClient(String reflectorIP,String lect_id){
 		this.reflectorIP=reflectorIP;
 		this.lect_id=lect_id;
+		System.out.println("ssssssss");
         }
-	private HttpClient client = new HttpClient();
 
 	public void run() {
                 try {
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                         h.setName("session");
-                        h.setValue(this.lect_id);
+                        h.setValue(this.lect_id+","+clientObject.getUserName());
+			
 			while(ThreadController.getController().getThreadFlag()){
                         	try {
 					String datastr="nodata";
@@ -81,11 +83,11 @@ public class HTTPClient extends Thread {
                         	        }else{
                                 	        reg="null";
                                 	}
-					PostMethod method = new PostMethod("http://"+reflectorIP+":"+refHttpPort);
-                                        client.setConnectionTimeout(8000);
-                                        method.setRequestBody(clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg);
-                                        method.setRequestHeader(h);
-
+					PostMethod postMethod = new PostMethod("http://"+reflectorIP+":"+refHttpPort);
+                                        client.setConnectionTimeout(80000);
+                                        postMethod.setRequestBody(clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg);
+                                        postMethod.setRequestHeader(h);
+					
 					// Http Proxy Handler
 					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
 					
@@ -95,11 +97,10 @@ public class HTTPClient extends Thread {
         					AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
 	        				client.getState().setProxyCredentials(authScope, credentials);
 					}
-
-	                        	int statusCode1 = client.executeMethod(method);
-        	                	java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(method.getResponseBodyAsStream()));
-                	        	String str;
-                        		while((str = rd.readLine()) != null) {
+	                        	int statusCode = client.executeMethod(postMethod);
+					byte[] bytes=postMethod.getResponseBody();
+					try {
+						String str=new String(bytes);
 						java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
 						if (Tok.hasMoreElements()) {
 							String str1=(String)Tok.nextElement();
@@ -110,16 +111,13 @@ public class HTTPClient extends Thread {
 							if(!str1.equals("nodata"))
 								utilObject.setRecQueue(str2);	
 						}
-                        		}
-                        		method.releaseConnection();
-					org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");
-					
-					try {
+						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");
 						this.sleep(500);
 						this.yield();
 					}catch(Exception ww){
 						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
-					}	
+					}
+	                        	postMethod.releaseConnection();
 	                  	}catch(Exception ex) { 
 					try {
 						this.sleep(500);

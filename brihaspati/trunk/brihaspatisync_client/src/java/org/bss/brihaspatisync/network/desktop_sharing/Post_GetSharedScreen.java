@@ -43,10 +43,6 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
  * @author <a href="mailto: ashish.knp@gmail.com" > Ashish Yadav</a>
@@ -132,7 +128,7 @@ public class Post_GetSharedScreen implements Runnable {
 			robot = new Robot();
 			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
                         h.setName("session");
-                        h.setValue(clientObject.getLectureID());
+                        h.setValue(clientObject.getLectureID()+","+clientObject.getUserName());
 			
 			int port=runtime_object.client_postsharescreen_port(); 
 			while(flag &&ThreadController.getController().getThreadFlag()) {
@@ -142,15 +138,9 @@ public class Post_GetSharedScreen implements Runnable {
 					client.setConnectionTimeout(8000);
 					/****   send the image to reflector **********/
 					if(!getflag) {
-						BufferedImage bimg=captureScreen();
+						BufferedImage image=captureScreen();
 						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
-						
-						JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
-                	        		JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
-                        	        	enParam.setQuality(0.25F, true);
-		                                jencoder.setJPEGEncodeParam(enParam);
-        		                	jencoder.encode(bimg);
-						
+						ImageIO.write(image, "jpeg", os);
        	                		        postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
 						os.flush();	
 						os.close();	
@@ -178,7 +168,7 @@ public class Post_GetSharedScreen implements Runnable {
 					}
                 	       		postMethod.getStatusLine();
                        			postMethod.releaseConnection();
-                       			try {	runner.sleep(10); runner.yield(); }catch(Exception ex){}
+                       			try {	runner.yield(); }catch(Exception ex){}
 					StatusPanel.getController().setdestopClient("yes");
 				}catch(Exception e){    StatusPanel.getController().setdestopClient("no"); }
 				System.gc();
