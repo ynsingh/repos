@@ -79,32 +79,34 @@ class MyStudentPostVideoHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			String requestMethod = exchange.getRequestMethod();
-			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 			if (requestMethod.equalsIgnoreCase("POST")) {
       				Headers responseHeaders = exchange.getResponseHeaders();
       				responseHeaders.set("Content-Type", "text/plain");
       				exchange.sendResponseHeaders(200, 0);
 				Headers responseHeader = exchange.getRequestHeaders();
-                                String lecture_id=responseHeader.get("session").toString();
-				OutputStream responseBody = exchange.getResponseBody();
+				String lecture_id_username=responseHeader.get("session").toString();
+                                String lecture_id_usernamearray[]=lecture_id_username.split(",");
+                                String lecture_id=lecture_id_usernamearray[0];
+                                String username=lecture_id_usernamearray[1];
 			        byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-			        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+				OutputStream responseBody = exchange.getResponseBody();
 		              	try {
-						MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
-                               			if(!temp_ht.getStatus("stud_video"+lecture_id)){
-				                        BufferMgt buffer_mgt= new BufferMgt();
-                        		                temp_ht.setValues("stud_video"+lecture_id,buffer_mgt);
-                                		}
-						BufferMgt buffer_mgt=temp_ht.getValues("stud_video"+lecture_id);
-					if(image!=null) {
-                                                buffer_mgt.putByte(image,client_ip,"stud_video"+lecture_id);	
-						buffer_mgt.sendData(client_ip,"stud_video"+lecture_id);
+					MyHashTable temp_ht=runtimeObject.getStudentVideoMyHashTable();
+                               		if(!temp_ht.getStatus("stud_video"+lecture_id)){
+					        BufferMgt buffer_mgt= new BufferMgt();
+                        			temp_ht.setValues("stud_video"+lecture_id,buffer_mgt);
+                                	}
+					BufferMgt buffer_mgt=temp_ht.getValues("stud_video"+lecture_id);
+					if((bytes.length>0) && (bytes !=null)) {
+                                                buffer_mgt.putByte(bytes,username,"stud_video"+lecture_id);	
+						buffer_mgt.sendData(username,"stud_video"+lecture_id);
 					}
-					BufferedImage image_new=(BufferedImage)(buffer_mgt.sendData(client_ip,"stud_video"+lecture_id));
-                                        if(image_new != null){
-                                               	ImageIO.write(image_new, "jpeg", responseBody);
+					byte[] sendbytes = buffer_mgt.sendData(username,"stud_video"+lecture_id);
+                                        if((sendbytes.length>0) && (sendbytes !=null)){
+						responseBody.write(sendbytes);
                                         }
 	               	        }catch(Exception e){}
+				
 				responseBody.flush();
 			        responseBody.close();
     			}

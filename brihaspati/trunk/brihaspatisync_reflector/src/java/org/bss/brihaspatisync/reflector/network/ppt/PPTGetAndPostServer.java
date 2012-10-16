@@ -73,6 +73,7 @@ class PPTHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
         public void handle(HttpExchange exchange) throws IOException {
 		try {
+			/*
                 	while(PPTGetAndPostServer.getController().getFlag()){
 				String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 				String requestMethod = exchange.getRequestMethod();
@@ -117,6 +118,7 @@ class PPTHandler implements HttpHandler {
                 	                responseBody.close();
 				}
                 	}
+			*/
 		}catch(Exception ep){}
         }
 }

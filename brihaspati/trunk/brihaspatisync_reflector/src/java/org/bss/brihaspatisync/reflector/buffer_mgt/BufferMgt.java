@@ -51,13 +51,13 @@ public class  BufferMgt {
     	}
 
 	
-	private Object sendData_IncreasePointer(String ip,String type) throws Exception {
+	private byte[] sendData_IncreasePointer(String ip,String type) throws Exception {
 		try {	
              		int curpointer = createhashtable.getValue(ip,type);
 			Buffer buffer=createhashtable.set_getBuffer(type);
 			int size=buffer.size();
 			if(curpointer<size){
-				Object str=null;	
+				byte[] str=null;	
 				while( curpointer != size) {
 					String str1=(buffer.get(curpointer)).toString();
                                         str1=str1.trim();
@@ -84,33 +84,15 @@ public class  BufferMgt {
          * packet type and queue type.                
          */                  
 
-	 public  synchronized void putByte(Object data,String current_ip,String type){
+	 public  synchronized void putByte(byte[] data,String current_ip,String type){
 		try {
 			counter++;
 			if(counter==65535){
 				counter=0;
 			}
-			if(type.startsWith("Audio_Post")){	
-				Buffer buffer=createhashtable.set_getBuffer(type);
-				java.util.Date now = new java.util.Date();
-			        java.text.SimpleDateFormat dateFormatter = new java.text.SimpleDateFormat("y-M-d'-'h:m:sa");
-			        String str=dateFormatter.format(now);
-				try {
-					if(type.startsWith("Audio_Post")){
-						String sessionid=type.replace("Audio_Post","");
-						File f=new File(sessionid);
-						if(!f.exists())
-							f.mkdir();
-						int bytesWritten = AudioSystem.write((AudioInputStream)data,AudioFileFormat.Type.WAVE,new File(sessionid+"/"+str+".wav"));
-					}
-				}catch(Exception ex){}
-				buffer.putObject(str);
-				buffer.put(current_ip);
-			}else {
-				Buffer buffer=createhashtable.set_getBuffer(type);
-                                buffer.put(current_ip);
-                                buffer.putObject(data);
-			}
+			Buffer buffer=createhashtable.set_getBuffer(type);
+                        buffer.put(current_ip);
+                        buffer.putObject(data);
 		}catch(Exception e){ System.out.println("Error in putByte method in BufferMgt class ----->"+e.getMessage()); }
 	}
 	
@@ -120,7 +102,7 @@ public class  BufferMgt {
         }
 
 
- 	public Object sendData(String newip,String type) {
+ 	public byte[] sendData(String newip,String type) {
                 try {
 			if(!newip.equals("")) {
 				return sendData_IncreasePointer(newip,type);

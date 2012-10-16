@@ -77,17 +77,19 @@ class MyHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
+			
 			String requestMethod = exchange.getRequestMethod();
-			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 			if (requestMethod.equalsIgnoreCase("POST")) {
       				Headers responseHeaders = exchange.getResponseHeaders();
       				responseHeaders.set("Content-Type", "text/plain");
       				exchange.sendResponseHeaders(200, 0);
 				Headers responseHeader = exchange.getRequestHeaders();
-				String lecture_id=responseHeader.get("session").toString();
+				String lecture_id_username=responseHeader.get("session").toString();
+                                String lecture_id_usernamearray[]=lecture_id_username.split(",");
+                                String lecture_id=lecture_id_usernamearray[0];
+                                String username=lecture_id_usernamearray[1];
 				OutputStream responseBody = exchange.getResponseBody();
 			        byte[] bytes =org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody()); 
-			        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		              	try {
 					MyHashTable temp_ht=runtimeObject.getDesktopServerMyHashTable();
 			                if(!temp_ht.getStatus("Desktop_Post"+lecture_id)){
@@ -96,16 +98,15 @@ class MyHandler implements HttpHandler {
                         		}
 					
 					BufferMgt buffer_mgt=temp_ht.getValues("Desktop_Post"+lecture_id);
-					if(image != null) {
-					        buffer_mgt.putByte(image,client_ip,"Desktop_Post"+lecture_id);		
-						buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id);
+					if( (bytes.length>0) && (bytes !=null)) {
+					        buffer_mgt.putByte(bytes,username,"Desktop_Post"+lecture_id);		
+						buffer_mgt.sendData(username,"Desktop_Post"+lecture_id);
 					}
 					
-					BufferedImage image_new=(BufferedImage)(buffer_mgt.sendData(client_ip,"Desktop_Post"+lecture_id));
-                                        if(image_new != null){
-						ImageIO.write(image_new, "jpeg", responseBody);
+					byte[] image_new=buffer_mgt.sendData(username,"Desktop_Post"+lecture_id);
+                                        if((image_new.length>0) && (image_new !=null) ){
+						responseBody.write(image_new);	
 					}
-				
                 	     	} catch(Exception e){}
 				responseBody.flush();
 		        	responseBody.close();

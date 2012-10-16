@@ -75,21 +75,17 @@ class MyPostHandler implements HttpHandler {
 	public void handle(HttpExchange exchange) throws IOException {
 		try{
 			String requestMethod = exchange.getRequestMethod();
-			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();		
 			if (requestMethod.equalsIgnoreCase("POST")) {
 				Headers responseHeaders = exchange.getResponseHeaders();
                                 responseHeaders.set("Content-Type", "application/octet-stream");
                                 exchange.sendResponseHeaders(200, 0);
                                 Headers responseHeader = exchange.getRequestHeaders();
-                                String lecture_id=responseHeader.get("session").toString();
+                                String lecture_id_username=responseHeader.get("session").toString();
+				String lecture_id_usernamearray[]=lecture_id_username.split(",");
+				String lecture_id=lecture_id_usernamearray[0];
+				String username=lecture_id_usernamearray[1];	
                                 OutputStream responseBody = exchange.getResponseBody();
                                 byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-				AudioInputStream ais=null;
-				if(bytes.length>150000){
-					System.out.println("client_ip "+client_ip+ "  size "+bytes.length);
-                                	InputStream is=new ByteArrayInputStream(bytes);
-                                	ais = new AudioInputStream(is, getAudioFormat(), bytes.length / getAudioFormat().getFrameSize());
-				}
                                 try {
                                   	MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
                                         if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
@@ -97,31 +93,32 @@ class MyPostHandler implements HttpHandler {
                                                 temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
                                      	}
                                         BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-                                        if(ais !=null){ 
-						buffer_mgt.putByte(ais,client_ip,"Audio_Post"+lecture_id);
+                                        if((bytes.length>16000) && (bytes !=null) ) {
+						System.out.println(bytes.length);
+						buffer_mgt.putByte(bytes,username,"Audio_Post"+lecture_id);
 					}
-					String input=(String)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
-                                        if(input != null) {
-						System.out.println("-----------"+client_ip+"   input "+input);
-						AudioInputStream ais1 =AudioSystem.getAudioInputStream(new FileInputStream(lecture_id+"/"+input+".wav"));
-	                                        AudioSystem.write(ais1,AudioFileFormat.Type.WAVE,responseBody);
+					byte[] sendbytes=buffer_mgt.sendData(username,"Audio_Post"+lecture_id);
+						
+                                        if((sendbytes.length >16000) && (sendbytes != null) ) {
+						responseBody.write(sendbytes);
         	                        }
                                         
-                                }catch(Exception e){ System.out.println("Error in recive from client to ref PostAudioServer class  "+e.getMessage()); }
+                                }catch(Exception e){ /*System.out.println("Error in recive from client to ref PostAudioServer class  "+e.getMessage());*/ }
                                 responseBody.flush();
                                 responseBody.close();
 			}
 		}catch(Exception ex){}
 	}
+	
+	private javax.sound.sampled.AudioFormat getAudioFormat(){
+		float sampleRate = 8000;    //8000,11025,16000,22050,44100
+                int sampleSizeInBits = 16;  //8,16
+		int channels = 1;           //1,2
+                boolean signed = true;      //true,false
+		boolean bigEndian =true;    //true,false
+		return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
+	}
 
-	private AudioFormat getAudioFormat(){
-		    float sampleRate = 8000;	//8000,11025,16000,22050,44100
-		    int sampleSizeInBits = 16;	//8,16
-		    int channels = 1;			//1,2
-		    boolean signed = true;		//true,false
-		    boolean bigEndian =true;	//true,false
-		    return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
- 	}
 }
 
 

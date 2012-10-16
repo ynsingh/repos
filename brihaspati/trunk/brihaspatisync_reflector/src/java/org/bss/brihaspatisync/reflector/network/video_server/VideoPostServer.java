@@ -80,16 +80,17 @@ class MyPostVideoHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
 		try {
 			String requestMethod = exchange.getRequestMethod();
-			String client_ip=exchange.getRemoteAddress().getAddress().getHostAddress();
 			if (requestMethod.equalsIgnoreCase("POST")) {
       				Headers responseHeaders = exchange.getResponseHeaders();
       				responseHeaders.set("Content-Type", "text/plain");
       				exchange.sendResponseHeaders(200, 0);
 				Headers responseHeader = exchange.getRequestHeaders();
-                                String lecture_id=responseHeader.get("session").toString();	
+				String lecture_id_username=responseHeader.get("session").toString();
+                                String lecture_id_usernamearray[]=lecture_id_username.split(",");
+                                String lecture_id=lecture_id_usernamearray[0];
+                                String username=lecture_id_usernamearray[1];
 				OutputStream responseBody = exchange.getResponseBody();
 			        byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
-			        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		              	try {
 					MyHashTable temp_ht=runtimeObject.getInstructorVideoMyHashTable();
                                		if(!temp_ht.getStatus("ins_video"+lecture_id)){
@@ -97,15 +98,16 @@ class MyPostVideoHandler implements HttpHandler {
                         			temp_ht.setValues("ins_video"+lecture_id,buffer_mgt);
 			        	}
 					BufferMgt buffer_mgt=temp_ht.getValues("ins_video"+lecture_id);
-					if(image !=null) {
-			                        buffer_mgt.putByte(image,client_ip,"ins_video"+lecture_id);
-						buffer_mgt.sendData(client_ip,"ins_video"+lecture_id);
+					if((bytes.length>0) && (bytes !=null)) {
+			                        buffer_mgt.putByte(bytes,username,"ins_video"+lecture_id);
+						buffer_mgt.sendData(username,"ins_video"+lecture_id);
 					}
-					BufferedImage image_new=(BufferedImage)(buffer_mgt.sendData(client_ip,"ins_video"+lecture_id));
-                                        if(image_new != null){
-                                                ImageIO.write(image_new, "jpeg", responseBody);
+					byte[] sendbytes=buffer_mgt.sendData(username,"ins_video"+lecture_id);
+                                        if((sendbytes.length>0) && (sendbytes !=null)){
+                                                responseBody.write(sendbytes);
                                         }
                 	  	} catch(Exception e){}
+				
 				responseBody.flush();
 		                responseBody.close();
     			}

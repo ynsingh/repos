@@ -8,8 +8,9 @@ package org.bss.brihaspatisync.reflector.buffer_mgt;
  */
 
 
-import java.util.Vector; 
 import java.io.File; 
+import java.util.Vector; 
+import  java.util.LinkedList;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> 
@@ -18,15 +19,14 @@ import java.io.File;
 
 public class Buffer { 
 
-	private Vector buffer; 
-	private Vector data; 
-  	  
+	private Vector ipstore; 
+  	private LinkedList<byte[]> data;  
 	/**
          * Create an empty Buffer
          */
 	public Buffer(){
-		buffer= new Vector(11);
-		data= new Vector(11);
+		ipstore= new Vector(11);
+		data=new LinkedList<byte[]>();
 	} 
     
        	/** 
@@ -36,40 +36,34 @@ public class Buffer {
 	public synchronized Object get(int temp) throws QueueEmptyException { 
            	if(isEmpty()) 
                 	throw new QueueEmptyException(); 
-               	Object obj = buffer.elementAt(temp); 
+               	Object obj = ipstore.elementAt(temp); 
                	return obj; 
        	} 
 		
-	public synchronized Object getObject(int temp) throws QueueEmptyException {
+	public synchronized byte[] getObject(int temp) throws QueueEmptyException {
                 if(isEmpty())
-                        throw new QueueEmptyException();
-                Object obj = data.elementAt(temp);      
+                      return null;
+                byte[] obj = data.get(temp);      
                 return obj;
         }
         
 	public synchronized void put(Object x) {
-                buffer.add(x);
+                ipstore.add(x);
         }
     	
-	public synchronized void putObject(Object x) {
-                data.add(x);
+	public synchronized void putObject(byte[] x) {
+                data.addLast(x);
         }
-	 
+	
 	/**
 	 * remove element from buffer 
 	 */
 	
 	public synchronized void removeRange(int fromIndex, int endIndex,String type) {
-		if(buffer.size() > endIndex){
+		if(ipstore.size() > endIndex){
 			for(int j=fromIndex;j<endIndex;j++){
-				buffer.removeElementAt(0);
-				String removeelement=data.get(0).toString();
-				data.removeElementAt(0);
-				if(type.startsWith("Audio_Post")){
-					String sessionid=type.replace("Audio_Post","");
-					File file=new File(sessionid+"/"+removeelement+".wav"); //0
-                                        file.delete();
-				}
+				ipstore.removeElementAt(0);
+				data.remove(0);
 			}
 		}
    	}
@@ -79,7 +73,7 @@ public class Buffer {
          */
         
 	public boolean isEmpty() {
-                return buffer.size() == 0;
+                return ipstore.size() == 0;
         }
 
         /**
@@ -87,7 +81,7 @@ public class Buffer {
          */
 
         public int size() {
-                return buffer.size();
+                return ipstore.size();
         }
 	
 	/**
@@ -95,7 +89,7 @@ public class Buffer {
          */
         
 	public synchronized void Notify(){
-        	buffer.notify();
+        	ipstore.notify();
 	}
 }
 

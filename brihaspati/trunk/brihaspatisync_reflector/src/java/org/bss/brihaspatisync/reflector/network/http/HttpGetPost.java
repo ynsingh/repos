@@ -82,12 +82,10 @@ public class HttpGetPost {
 }
 
 class MyPostGetHandler implements HttpHandler {
-	private String client_ip="";
 	private HandraiseAction handraiseAction=new HandraiseAction();
         public void handle(HttpExchange exchange) throws IOException {
 		try {
                         String requestMethod = exchange.getRequestMethod();
-			client_ip=exchange.getRemoteAddress().getHostName();
                         if (requestMethod.equalsIgnoreCase("POST")) {
 				Headers responseHeaders = exchange.getResponseHeaders();
                                 responseHeaders.set("Content-Type", "text/plain");
@@ -95,7 +93,10 @@ class MyPostGetHandler implements HttpHandler {
                                 OutputStream responseBody = exchange.getResponseBody();
 				
 				Headers responseHeader = exchange.getRequestHeaders();
-				String lecture_id=responseHeader.get("session").toString();
+				String lecture_id_username=responseHeader.get("session").toString();
+                                String lecture_id_usernamearray[]=lecture_id_username.split(",");
+                                String lecture_id=lecture_id_usernamearray[0];
+                                String username=lecture_id_usernamearray[1];
                                 java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(exchange.getRequestBody()));
 				String req="";
                                 String line;
@@ -125,43 +126,46 @@ class MyPostGetHandler implements HttpHandler {
                                         MyHashTable temp_ht=runtimeObject.getMyHashTable();
                                         /** set All course id */
                                         runtimeObject.setCourseID(data_value[0]);
-                                        if(runtimeObject.getStatusCourseidIP(data_value[0]+"#"+client_ip)) {
+                                        if(runtimeObject.getStatusCourseidIP(data_value[0]+"#"+username)) {
                                                 /** set course id and ip */
-                                                runtimeObject.setCourseid_IP(data_value[0]+"#"+client_ip);
+                                                runtimeObject.setCourseid_IP(data_value[0]+"#"+username);
                                         }
 
                                         if(data_value[2].startsWith("parent")) {
 						data_value[2]=data_value[2].replace("parent","");
                                                 if(!data_value[2].equals("")) {
-                                                        org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(data_value[0],data_value[2]);
+                                                        //org.bss.brihaspatisync.reflector.network.ref_to_ref.CommonDataObject.getController().get_setStatusCourseId(data_value[0],data_value[2]);
                                                 }
                                         } 
-					 
-					if(!temp_ht.getStatus("ch_wb"+lecture_id)) {
-						BufferMgt buffer_mgt= new BufferMgt();
-						temp_ht.setValues("ch_wb"+lecture_id,buffer_mgt);
-						buffer_mgt.putByte(data_value[1],client_ip,"ch_wb"+lecture_id);
-						responseBody.close();
-                                        } else if(temp_ht.getStatus("ch_wb"+lecture_id)) {
-                                                BufferMgt buffer_mgt=temp_ht.getValues("ch_wb"+lecture_id);
-						if(!data_value[1].equals("nodata"))
-							buffer_mgt.putByte(data_value[1],client_ip,"ch_wb"+lecture_id);
-						String str=(String)buffer_mgt.sendData(client_ip,"ch_wb"+lecture_id);
-						/**  get Lecture id ***************/
-						String data=UserListUtil.getContriller().getDataForVector(data_value[0]);
-						/**  get Lecture id ***************/
-						if(data.equals("")) data="nodata";
-						if(str == null) str="nodata";
-						data=data+"  "+str;
-						responseBody.write(data.getBytes("UTF-8"));
+					try { 
+						if(!temp_ht.getStatus("ch_wb"+lecture_id)) {
+							BufferMgt buffer_mgt= new BufferMgt();
+							temp_ht.setValues("ch_wb"+lecture_id,buffer_mgt);
+							buffer_mgt.putByte(data_value[1].getBytes(),username,"ch_wb"+lecture_id);
+							responseBody.close();
+                        	                } else if(temp_ht.getStatus("ch_wb"+lecture_id)) {
+                                	                BufferMgt buffer_mgt=temp_ht.getValues("ch_wb"+lecture_id);
+							if(!data_value[1].equals("nodata"))
+								buffer_mgt.putByte(data_value[1].getBytes(),username,"ch_wb"+lecture_id);
+							byte[] ch_wb_data=buffer_mgt.sendData(username,"ch_wb"+lecture_id);
+							String userlist_data=UserListUtil.getContriller().getDataForVector(data_value[0]);
+							if(userlist_data.equals("")) userlist_data="nodata";
+							String ch_wb="";
+							if(ch_wb_data == null) ch_wb="nodata";
+							else                   ch_wb=new String(ch_wb_data);
+							String userlist_ch_wb_data=userlist_data+"  "+ch_wb;
+							responseBody.write(userlist_ch_wb_data.getBytes());
+							responseBody.flush();
+	                                                responseBody.close();
+        	                                }
+					}catch(Exception e) {
+						System.out.println("Error in Send and rechive data in http post and get server "+e.getMessage());
 						responseBody.flush();
-                                                responseBody.close();
-                                        } else {
-                                             responseBody.close();
+                                               	responseBody.close();
 					}
                                 }
                      	}   
-                }catch(Exception ex){}
+                }catch(Exception ex){System.out.println("Error in in http post and get server "+ex.getMessage());}
         }
 }
 
