@@ -300,6 +300,7 @@ public String getMerge(String word ,String filePath)
                    }
                 catch(Exception e)
                         {
+			ErrorDumpUtil.ErrorLog("The error in Wiki Utils (Check Traffic) "+e);
                         return(false);
                         }
         } //  checktraffic ends
