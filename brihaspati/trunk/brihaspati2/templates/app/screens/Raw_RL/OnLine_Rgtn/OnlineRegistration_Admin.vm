@@ -20,14 +20,15 @@ $page.setBgColor($ui.bgcolor)
 <tr align="right">
  <td> 
  <font face="$ui.sansSerifFonts" size=3> 
- <b> <a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_view $online_online $brih_reg    </b>
+## <b> <a href=$link.setPage("call,Index.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_view $online_online $brih_reg    </b>
+	<b><a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |$brih_view $online_online $brih_reg    </b>
  </font>
 </td>
 </tr>
 </table>
 <body>
 <form name="frm" method="post" action="$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("lang",$lang).setAction("OnlineRegistration_Admin")">
-<div>
+<div class="scroll" style="margin-top:7px; position:absolute;">
         <table> <tr align="left"><td >
         <font face="$ui.sansSerifFonts" size=3>
         <a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistrationAdmin.html","newWin");>$brih_help</a>

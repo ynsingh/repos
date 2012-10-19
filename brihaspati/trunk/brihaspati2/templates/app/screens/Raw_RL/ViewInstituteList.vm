@@ -17,11 +17,11 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 <tr align="right">
 	#if($adminemail != "")
-		<td><b> $!adminemail: $brih_admin $brih_Of $brih_email </b></td>
+		<td width="300"><b> $!adminemail: $brih_admin $brih_Of $brih_email </b></td>
 	#else
 		<td>
 	#end
-	<td align="right"> <b>[$institutenum] </b></td> <td align="left"><b>$brih_total $RemoteInstitute </b></td><td><b>$brih_adnotexist<font color="red">* </font></b></td>
+	<td width="180" align="right"> <b>[$institutenum] </b></td> <td align="left"><b>$brih_total $RemoteInstitute </b></td><td width="280"><b>$brih_adnotexist<font color="red">* </font></b></td>
 	<td> <font face="$ui.sansSerifFonts" size=3> <b>
 		<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_login $WikiPage</a> |
 		$brih_reg2 $RemoteInstitute
