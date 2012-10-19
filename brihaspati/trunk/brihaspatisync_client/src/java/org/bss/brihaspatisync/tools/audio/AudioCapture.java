@@ -86,7 +86,7 @@ public class AudioCapture implements Runnable {
 	
 	protected void start(){
 		if(!flag1){
-	                bufferSize = (int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize());
+	                bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
                 	getTargetLine();
 			flag1=true;
 			runner=new Thread(this);

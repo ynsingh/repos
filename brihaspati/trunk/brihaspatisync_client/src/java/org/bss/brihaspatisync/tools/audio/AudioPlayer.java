@@ -27,6 +27,7 @@ public class AudioPlayer implements Runnable {
 	private static AudioPlayer ap=null;
 	private Thread runner=null;
         private boolean flag=false;
+	private int bufferSize=0;
         private byte audioBytes[]=null;
 	private SourceDataLine sourceDataLine;
 	private LinkedList<byte[]> audioVector=new LinkedList<byte[]>();
@@ -88,7 +89,6 @@ public class AudioPlayer implements Runnable {
  	 */  	
 	private void startSourceLine(){
                 try{
-			int bufferSize =(int)(audioFormat.getSampleRate())*(audioFormat.getFrameSize());
 			if(sourceDataLine!=null){
                        		sourceDataLine.open(audioFormat,bufferSize);
                         	sourceDataLine.start();
@@ -117,24 +117,13 @@ public class AudioPlayer implements Runnable {
  	 * Play audio thread which get audio stream from audioVector(local buffer for audio stream).
  	 */ 		 
 	public void run() {
-		int bufferSize =(int)(audioFormat.getSampleRate())*(audioFormat.getFrameSize());
-		int offset=0;
-		int numRead = bufferSize;
-                int size=bufferSize*25;
+		bufferSize =((int)(audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
 		while(flag && ThreadController.getController().getThreadFlag()){
 			try {
 				if(audioVector.size() > 0){
-                              		// sourceDataLine.write(audioVector.get(0), 0, bufferSize);
-					
-                                	if(size >=numRead){
-						offset=0;
-						numRead = bufferSize;	
-					}
-					numRead=numRead + offset;
-                                	offset += sourceDataLine.write(audioVector.get(0),offset, numRead);
-					
+                                	sourceDataLine.write(audioVector.get(0),0,bufferSize);
 					audioVector.remove(0);
-				} //end of if
+				} 
 				runner.yield();	
 			}catch(Exception ex){System.out.println("Error in AudioPlayer run() "+ex.getMessage());}
 		}//end of while

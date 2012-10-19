@@ -222,10 +222,10 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                         String lectid=decrypt(str1.nextElement().toString());
 		        String lectCouseName=decrypt(str1.nextElement().toString());
 			String str=lectid+"-"+lectCouseName;
-			courseid.add(str);//lectid);
-                        String lectUserName=decrypt(str1.nextElement().toString());
+			courseid.add(str);
                         String lectName=decrypt(str1.nextElement().toString());
                         String lectInfo=decrypt(str1.nextElement().toString());
+                        String lectUserName=decrypt(str1.nextElement().toString());
                         String lectNo=decrypt(str1.nextElement().toString());
                         String lectVedio=decrypt(str1.nextElement().toString());
                         String lectAudio=decrypt(str1.nextElement().toString());
@@ -247,6 +247,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 			nsPane[i].setBorder(BorderFactory.createLineBorder(Color.gray));
 			
 			nameLabel[i]=new JLabel(lectName);
+			nameLabel[i].setHorizontalAlignment(JLabel.CENTER);
 			nsPane[i].add(nameLabel[i]);
 			lectDate=lectDate.substring(0,10);
 			lectDate=lectDate.replaceAll("-","");

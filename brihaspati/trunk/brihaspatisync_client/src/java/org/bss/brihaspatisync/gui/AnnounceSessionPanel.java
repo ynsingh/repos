@@ -337,7 +337,14 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 					}
 				}
 				
-				if(((String)lectName_Text.getText()).length()<6)
+				if( (((String)lecInfoArea.getText()).length()<6) || (((String)lecInfoArea.getText()).length()>50) )
+                                {
+                                        JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog6"));
+                                        lectValue=null;
+                                        return lectValue;
+                                }
+
+				if( (((String)lectName_Text.getText()).length()<6) || (((String)lectName_Text.getText()).length()>50) )
 				{
 					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog4"));
                                         lectValue=null;  

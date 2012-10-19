@@ -33,7 +33,6 @@ public class AudioClient implements Runnable {
 	private HttpClient client = new HttpClient();	
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private javax.sound.sampled.AudioFormat audioFormat=org.bss.brihaspatisync.util.ClientObject.getController().getAudioFormat();	
 	private AudioCapture au_cap=new AudioCapture();	
 
 	/**
@@ -91,10 +90,7 @@ public class AudioClient implements Runnable {
                                         client.setConnectionTimeout(8000);
 					byte [] audiodata=au_cap.getAudioData();
 					if(audiodata != null) {
-						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
-						javax.sound.sampled.AudioInputStream ais = new javax.sound.sampled.AudioInputStream(new java.io.ByteArrayInputStream(audiodata),audioFormat, audiodata.length / audioFormat.getFrameSize());
-						javax.sound.sampled.AudioSystem.write(ais,javax.sound.sampled.AudioFileFormat.Type.WAVE, os);
-						method.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
+						method.setRequestBody(new java.io.ByteArrayInputStream(audiodata));
 					}
                                         method.setRequestHeader(h);	
 					
@@ -110,7 +106,7 @@ public class AudioClient implements Runnable {
 					byte audioBytes[]=method.getResponseBody();
 					try {
 						method.releaseConnection();
-                	                        if((audioBytes.length) > 15000) {
+                	                        if((audioBytes.length) > 3000) {
                         	                        AudioPlayer.getController().putAudioStream(audioBytes);
 						}
 					}catch(Exception e){System.out.println(e.getMessage());}

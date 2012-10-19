@@ -420,6 +420,17 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 					whiteboard1="0";
 				}
 				try {
+					if( (((String)lecInfoArea.getText()).length()<6) || (((String)lecInfoArea.getText()).length()> 50) )
+                                	{
+                                        	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog6"));
+                                        	return lectValue;
+                                	}
+
+                                	if( (((String)lectName_Text.getText()).length()<6) || (((String)lectName_Text.getText()).length()>50) )
+	                                {
+        	                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog4"));
+                	                        return lectValue;
+                        	        }
 					lectValue = "&"+"lect_id="+URLEncoder.encode(lecture_id,"UTF-8");
                                         lectValue =lectValue+"&"+"lectGetParameter="+URLEncoder.encode("GetUpdateLectValues","UTF-8");
                                         lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
@@ -434,7 +445,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         lectValue =lectValue+"&"+"lectVedio="+URLEncoder.encode(vedeo,"UTF-8");
                                         lectValue =lectValue+"&"+"lectWhiteBoard="+URLEncoder.encode(whiteboard1,"UTF-8");
                                 } catch(Exception es){}
-	
 			}//if
             	}//else
 		return lectValue;
@@ -453,8 +463,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			}finally{
 				annBttn.setCursor(defaultCursor);
 			}
-			//BufferedReader in=null;
-			//URL indexurl=null;
 			try{
 				String lectValue = getLectureValues();
                                 String indexServerName=client_obj.getIndexServerName();
