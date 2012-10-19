@@ -144,10 +144,10 @@ public class ServerUtil{
                         for(int i=0;i<l.size();i++) {
                                 Lecture element=(Lecture)(l.get(i));
                                 String lectid=encrypt(Integer.toString(element.getLectureid()));
-                                String lectUserName=encrypt(element.getGroupName());
-                                String lectCouseName=encrypt(element.getLecturename());
-                                String lectName=encrypt(element.getLectureinfo());
-                                String lectInfo=encrypt(element.getUrlname());
+                                String lectUserName=encrypt(element.getUrlname());
+                                String lectCouseName=encrypt(element.getGroupName());//element.getLecturename());
+	                        String lectName=encrypt(element.getLecturename());
+                                String lectInfo=encrypt(element.getLectureinfo().trim());
                                 String lectNo=encrypt(element.getPhoneno());
                                 String lectVedio=encrypt(element.getForvideo());
                                 String lectAudio=encrypt(element.getForaudio());
@@ -157,9 +157,10 @@ public class ServerUtil{
                                 String lectDuration=encrypt(element.getDuration());
                                 String repeattime=encrypt(element.getRepeatlec());
                                 String fortime=encrypt(element.getFortime());
-                                message=message+"$$"+lectid+","+lectUserName+","+lectCouseName+","+lectName+","+lectInfo+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
-                        }
-                }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
+                                message=message+"$$"+lectid+","+lectCouseName+","+lectName+","+lectInfo+","+lectUserName+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
+			}
+			ServerLog.getController().Log("getSessionList in ServerUtil class  "+message);
+                }catch(Exception e){ServerLog.getController().Log("Error getSessionList in ServerUtil class "+e.getMessage());}
              	return message;
         }
 
@@ -172,10 +173,10 @@ public class ServerUtil{
                         for(int i=0;i<l.size();i++) {
                                 Lecture element=(Lecture)(l.get(i));
                                 String lectid=encrypt(Integer.toString(element.getLectureid()));
-                                String lectUserName=encrypt(element.getGroupName());
-                                String lectCouseName=encrypt(element.getLecturename());
-                                String lectName=encrypt(element.getLectureinfo());
-                                String lectInfo=encrypt(element.getUrlname());
+                                String lectCouseName=encrypt(element.getGroupName());//element.getLecturename());
+                                String lectName=encrypt(element.getLecturename());
+                                String lectInfo=encrypt(element.getLectureinfo().trim());
+				String lectUserName=encrypt(element.getUrlname());
                                 String lectNo=encrypt(element.getPhoneno());
                                 String lectVedio=encrypt(element.getForvideo());
                                 String lectAudio=encrypt(element.getForaudio());
@@ -185,8 +186,8 @@ public class ServerUtil{
                                 String lectDuration=encrypt(element.getDuration());
                                 String repeattime=encrypt(element.getRepeatlec());
                                 String fortime=encrypt(element.getFortime());
-                                message=lectid+","+lectUserName+","+lectCouseName+","+lectName+","+lectInfo+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
-				ServerLog.getController().Log("sasasa as as a "+message);
+                                message=lectid+","+lectCouseName+","+lectName+","+lectInfo+","+lectUserName+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
+				ServerLog.getController().Log("getLectureInfo in ServerUtil class  "+message);
                         }
                 }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
                 return message;

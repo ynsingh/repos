@@ -67,10 +67,10 @@ public class MailNotification {
                         public void run(){
 					String msg = "";
 					try {
+						lectCouseName=lectCouseName.substring(0,lectCouseName.lastIndexOf("_"));
 		               			String url_new=(url+"?req=getjnlp&key="+key).toString();
 		                                String message="<font size=3> Dear "+mail_id[1]+" ,<br><br> This message is to informed you that the following lecture will take place "+date+" "+lectTime +" "+lectDuration+".<br><br> Name of the lecture ("+lectCouseName+" to "+lectName+" )<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 1. Click here to join "+url_new +" <br> &nbsp;&nbsp;&nbsp;&nbsp; This link should not be shared with others, it is unique to you.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 2. You will be connected to audio using your computer's microphone and speakers. A headset is recommended. <br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 3. System Requirements :- Any OS compatiable with your microphone and speaker.<br> <br> &nbsp;&nbsp;&nbsp;&nbsp; 4. Please send your suggestion, comment and feedback to brihspti@iitk.ac.in</font>";
 				 		String email_new=mail_id[0];
-						 
 						String path=context.getRealPath("WEB-INF")+"/../../brihaspati2/WEB-INF/conf/Admin.properties"; 
                         			String mail_smtp=AdminProperties.getValue(path,"brihaspati.mail.smtp.from");
                         			String host_name=AdminProperties.getValue(path,"brihaspati.mail.server");

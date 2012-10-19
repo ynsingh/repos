@@ -2,7 +2,8 @@ package org.iitk.brihaspatisync;
 
 /*@(#)ProcessRequest.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008.All Rights Reserved.
+ * Copyright (c) 2007-2008, 2012.
+ * All Rights Reserved.
  */
 
 import javax.servlet.RequestDispatcher;
@@ -597,8 +598,8 @@ public class ProcessRequest extends HttpServlet {
 					java.util.Arrays.sort(ints);
 					lect_id=Integer.toString(ints[list.size()-1]);
 				}
-				subject=lectCouseName +"  session name "+lectName+" has been Announced  " ;
-			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
+				subject=lectCouseName.substring(0,lectCouseName.lastIndexOf("_"))+"  session name "+lectName+" has been Announced  " ;
+			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture: "+e.getMessage()); }
 		}else if(lectGetParameter.equals("GetUpdateLectValues")) {
 			try {
 				Criteria crit=new Criteria();
@@ -617,8 +618,8 @@ public class ProcessRequest extends HttpServlet {
 	                        crit.add(LecturePeer.REPEATLEC,"NO");
         	                crit.add(LecturePeer.FORTIME,"NO");
                 	        LecturePeer.doUpdate(crit);
-				subject=lectCouseName +"  session name "+lectName+" has been updateed  " ;
-			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
+				subject=lectCouseName.substring(0,lectCouseName.lastIndexOf("_")) +"  session name "+lectName+" has been updated." ;
+			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture:  "+e.getMessage()); }
 		}
 		
 		try {
@@ -648,6 +649,16 @@ public class ProcessRequest extends HttpServlet {
                         	        UrlConectionPeer.doInsert(crit);
 					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
 				}
+				int key_g=ServerUtil.getController().generateSessionKey();
+                                crit=new Criteria();
+                                crit.add(UrlConectionPeer.SESSION_KEY,key_g);
+                                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lect_id));
+                                crit.add(UrlConectionPeer.LOGIN_ID,"NULL");
+                                crit.add(UrlConectionPeer.GROUP_NAME,lectCouseName);
+                                crit.add(UrlConectionPeer.LECTURENAME,lectName);
+                                crit.add(UrlConectionPeer.ROLE,"guest");
+                                UrlConectionPeer.doInsert(crit);
+
 				mail_id.clear();
 				mail_id=AdminProperties.getUDetail(gid,2);
 				for(int i=0;i<mail_id.size();i++){
