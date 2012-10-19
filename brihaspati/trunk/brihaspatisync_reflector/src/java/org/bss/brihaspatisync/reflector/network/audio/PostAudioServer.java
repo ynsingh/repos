@@ -4,10 +4,11 @@ package org.bss.brihaspatisync.reflector.network.audio;
  * PostAudioServer.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG, IIT Kanpur
+ * Copyright (c) 2012 ETRG, IIT Kanpur
  */
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.Iterator;
@@ -20,8 +21,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.*;
-import javax.sound.sampled.*;
+//import java.io.*;
+//import javax.sound.sampled.*;
 
 import org.apache.commons.io.IOUtils;
 
@@ -38,7 +39,6 @@ public class PostAudioServer {
 
 	private static PostAudioServer postserver=null;
     	private HttpServer server =null;
-	private SourceDataLine line;
 	private int server_port=RuntimeDataObject.getController().getAudioPostPort();
 
 
@@ -72,6 +72,7 @@ public class PostAudioServer {
 
 class MyPostHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
+        byte[] bytes=new byte[4000];
 	public void handle(HttpExchange exchange) throws IOException {
 		try{
 			String requestMethod = exchange.getRequestMethod();
@@ -85,7 +86,8 @@ class MyPostHandler implements HttpHandler {
 				String lecture_id=lecture_id_usernamearray[0];
 				String username=lecture_id_usernamearray[1];	
                                 OutputStream responseBody = exchange.getResponseBody();
-                                byte[] bytes=org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
+				InputStream input=exchange.getRequestBody();
+				int count=input.read(bytes,0,bytes.length);
                                 try {
                                   	MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
                                         if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
@@ -93,32 +95,20 @@ class MyPostHandler implements HttpHandler {
                                                 temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
                                      	}
                                         BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-                                        if((bytes.length>16000) && (bytes !=null) ) {
-						System.out.println(bytes.length);
+                                        if((count > 3000) && (count !=-1) ) {
 						buffer_mgt.putByte(bytes,username,"Audio_Post"+lecture_id);
 					}
+					
 					byte[] sendbytes=buffer_mgt.sendData(username,"Audio_Post"+lecture_id);
-						
-                                        if((sendbytes.length >16000) && (sendbytes != null) ) {
-						responseBody.write(sendbytes);
-        	                        }
-                                        
-                                }catch(Exception e){ /*System.out.println("Error in recive from client to ref PostAudioServer class  "+e.getMessage());*/ }
+					if(sendbytes != null)	
+                                        	responseBody.write(sendbytes);
+        	                        
+                                }catch(Exception e){ System.out.println("Error in PostAudioServer Handler class  "+e.getMessage()); }
                                 responseBody.flush();
                                 responseBody.close();
 			}
 		}catch(Exception ex){}
 	}
-	
-	private javax.sound.sampled.AudioFormat getAudioFormat(){
-		float sampleRate = 8000;    //8000,11025,16000,22050,44100
-                int sampleSizeInBits = 16;  //8,16
-		int channels = 1;           //1,2
-                boolean signed = true;      //true,false
-		boolean bigEndian =true;    //true,false
-		return new AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
-	}
-
 }
 
 
