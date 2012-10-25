@@ -50,19 +50,19 @@ $!data.getMessage()
 		<b>$brih_searchBy $RemoteInstitute </b>&nbsp;&nbsp;
         #end
 
-<select name="InstId" onChange="ShowList(document.frm,this);" class="drop" />
+<select name="InstId" onChange="ShowList(document.frm,this);" class="drop" style="width:300px;" />
 #if($InstName!="")
 	<option value="$Instid">$InstName</option>
         	<option value=""></option>
  	        #foreach ($iname in $instdetail)
 	       	        #if($iname.getInstituteName()!= $InstName)
-	                        <option value="$iname.getInstituteId()">$iname.getInstituteName()</option>
+	                        <option value="$iname.getInstituteId()" style="width:275px;" title="$iname.getInstituteName()">$iname.getInstituteName()</option>
                         #end
                 #end
 #else
         <option value=""></option>
                 #foreach ($iname in $instdetail)
-	                <option value="$iname.getInstituteId()">$iname.getInstituteName()</option>
+	                <option value="$iname.getInstituteId()" style="width:275px;" title="$iname.getInstituteName()">$iname.getInstituteName()</option>
                 #end
 #end
 </select>

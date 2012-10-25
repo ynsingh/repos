@@ -35,15 +35,15 @@ $!data.getMessage()
                 <tr bgcolor="$ui.tableColor">
                         <td colspan="1">
                         $brih_select $brih_courseName
-                        <select class="drop" name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);"/>
+                        <select class="drop" name="uname1" id="u1" size="1" onChange="Changename(document.frm,this);" style="width:300px;"/>
 			#if($cname!="")
-                                <option>$coursename</option>
+                                <option style="width:275px;">$coursename</option>
                         #else
                                 <option>  - $brih_courseName - </option>
                         #end
                         #foreach($cnamelist in $courseList)
                                 #if($cname!=$cnamelist.getGroupName())
-                                <option value="$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("mode","cinfo").addPathInfo("cname",$cnamelist.getGroupName())">$cnamelist.getCourseName()
+                                <option value="$link.setPage("call,Browser_Statistics,InsAdmin_MakeGraph.vm").addPathInfo("mode","cinfo").addPathInfo("cname",$cnamelist.getGroupName())" style="width:275px;" title="$cnamelist.getCourseName()">$cnamelist.getCourseName()
                                 #end    
                                 </option>
                         #end

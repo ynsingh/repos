@@ -18,7 +18,7 @@ $page.setBgColor($ui.bgcolor)
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-<div class="main" style="width:1100px; margin:-10px auto;">
+<div class="main" style="width:1100px; margin:-10px auto; background:$ui.tableColor;">
 <table>
 <tr><td>
 <marquee> <font size=4>$!fNoti</font></marquee>

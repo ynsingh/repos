@@ -65,7 +65,7 @@ $!data.getMessage()
 	  <td> #if($lang =="hindi") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font></td>
 	<td>
     	##<select id="inst_id" name="instname" size=1 onChange="ChangeRole(document.frm,this);"/>
-    	<select name="instName" size=1 class="drop" onChange="checkOption(document.frm,this);"/>
+    	<select name="instName" size=1 class="drop" onChange="checkOption(document.frm,this);" style="width:300px;"/>
 	#if($Insname=="")
 		<option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
 	#else
@@ -73,15 +73,15 @@ $!data.getMessage()
 		<option> #if($lang == "hindi") $brih_Institute $brih_select #else  $brih_select $RemoteInstitute #end </option>
 	#end
 	  #foreach($name in $instList)
-	  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+	  <option value="$name.getInstituteName()" style="width:300px;" title="$name.getInstituteName()">$name.getInstituteName() </option>
 	  #end
 	  </select>
 	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search" id="btnSearch" style="visibility: hidden"/>
-		<select class="drop" id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+		<select class="drop" id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);" style="width:300px;"/>
 	  	##<option></option>
 		##set($counter=1)
 		#foreach($crsname in $courseList)
-			<option value="$crsname.getGroupName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
+			<option value="$crsname.getGroupName()" style="width:275px;" title="$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
 		#end
 		</select>
 	  </td>
@@ -145,9 +145,9 @@ $!data.getMessage()
 	<tr>
 	<td>$brih_select $RemoteInstitute $brih_name <font color=RED>*</font></td>
 	<td>
-    	<select name="instName" class="drop">
+    	<select name="instName" class="drop" style="width:300px;">
 	#foreach($name in $instList)
-	<option value="$name.getInstituteName()">$name.getInstituteName() </option>
+	<option value="$name.getInstituteName()" style="width:275px;" title="$name.getInstituteName()">$name.getInstituteName() </option>
 	#end
 	</select>
 	</td>

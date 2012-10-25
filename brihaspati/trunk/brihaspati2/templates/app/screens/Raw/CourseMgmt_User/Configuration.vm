@@ -215,26 +215,26 @@ $page.setBgColor($ui.bgcolor)
 	</td></tr>
 			<tr bgcolor ="$ui.menuColor">
 			<td> $RemoteInstitute $RemoteIP $RemoteAddress</td><td> <input type="text" name="iip" value="$!url">
-                                &nbsp;&nbsp;&nbsp;&nbsp;$RemoteInstitute $brih_name
-                                <select name="inm" class="drop">
+                                &nbsp;$RemoteInstitute $brih_name
+                                <select name="inm" class="drop" style="width:200px;">
                                 #if($ivalue=="")
                                 <option value="">$brih_select $RemoteInstitute</option>
                                 #else
                                 <option value="$!ivalue">$!ivalue</option>
                                 #end
                                 #foreach($instname.trim() in $instlistname)
-                                <option value="$instname">$instname
+                                <option value="$instname" title="$instname" style="width:275px;">$instname
                                 #end
                                 </select>
                                 &nbsp;&nbsp;&nbsp;&nbsp;$brih_course $brih_ID
-                                <select name="cid" class="drop" onChange="ChangeCname(document.frm,this);">
+                                <select name="cid" class="drop" onChange="ChangeCname(document.frm,this);" style="width:200px;">
                                 #if($cvalue=="")
                                 <option value="">Select Course</option>
                                 #else
                                 <option value="$!cvalue">$!cvalue</option>
                                 #end
 				#foreach( $rec in $csList )
-					  <option value="$rec.idc">$rec.namecnm </option>
+					  <option value="$rec.idc" title="$rec.namecnm" style="width:275px;">$rec.namecnm </option>
 				#end
                                 </select>
                                 #if($courselistname.size()==0)
@@ -298,7 +298,7 @@ $page.setBgColor($ui.bgcolor)
             				</select>
                   		</td>
    			</tr>
-			<tr><td>
+			<tr><td colspan=3>
 
 				#if($serial !="")
 				<input type="submit" class="button-ftextstyle"  name="eventSubmit_doInsert" value="$brih_update " onClick="return checkForm(document.frm,this);"/>

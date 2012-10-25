@@ -31,7 +31,7 @@ Click here  </a>
 </tr>
 </table>
 <br>
-<div style="width:340px; height:300px; float:right; background:#f3f3f3; border-radius:10px;">
+<div style="width:340px; float:right; background:#f3f3f3; border-radius:10px;">
 <table align="right" >
 <tr>
 <td>
@@ -44,7 +44,6 @@ Login
 <br>
 </td>
 </tr>
-
 <tr><td colspan=2> 
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang","english").addPathInfo("status","User") style=text-decoration:none>Forgot Password</a>
@@ -88,15 +87,9 @@ Login
 </table>
 <br>
 <br>
-
 </div>
 
-
-
-
-
 <div style="width:500px; height:auto; float:left;">
-
 <table>
 <tr>
 <td align="Left">
@@ -116,15 +109,7 @@ ENJOY the features of Administrator, Instructor (Primary/Secondary) or Student !
 </tr>
 </table>
 </div>
-
-
-
-
-
-
-
 </form>
 </div>
 </body>
-
 </html>
