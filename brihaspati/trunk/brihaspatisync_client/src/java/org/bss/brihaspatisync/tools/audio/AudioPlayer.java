@@ -29,7 +29,7 @@ public class AudioPlayer implements Runnable {
         private boolean flag=false;
 	private int bufferSize=0;
         private byte audioBytes[]=null;
-	private SourceDataLine sourceDataLine;
+	private SourceDataLine sourceDataLine=null;
 	private LinkedList<byte[]> audioVector=new LinkedList<byte[]>();
         private AudioFormat audioFormat=org.bss.brihaspatisync.util.ClientObject.getController().getAudioFormat();;
         private DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, audioFormat);
@@ -70,32 +70,36 @@ public class AudioPlayer implements Runnable {
 	/**
  	 * Getting a available mixer in local system which support selected audio format.
  	 */  
-	private SourceDataLine getMixer(){
-		try {
-	                Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-        	        for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
-                        	Mixer currentMixer = AudioSystem.getMixer(mixerInfo[cnt]);
-	                        if( currentMixer.isLineSupported(dataLineInfo) ) {
-					sourceDataLine =(SourceDataLine)currentMixer.getLine(dataLineInfo);
-                        	        return sourceDataLine;
-	                        }
-        	        }
-		}catch(Exception e){}
+	
+	private Mixer getMixer(){
+                Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+                System.out.println("Available mixers:");
+                for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
+                        System.out.println(mixerInfo[cnt].getName());
+                        Mixer currentMixer = AudioSystem.getMixer(mixerInfo[cnt]);
+                        if( currentMixer.isLineSupported(dataLineInfo) ) {
+                                System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
+                                return currentMixer;
+                        }
+                }
                 return null;
         }
-
+	
 	/**
  	 * start output line (sourceDataLine) to play audio.
  	 */  	
+
 	private void startSourceLine(){
                 try{
-			if(sourceDataLine!=null){
-                       		sourceDataLine.open(audioFormat,bufferSize);
-                        	sourceDataLine.start();
-			}else {
-				getMixer();
-                                sourceDataLine.open(audioFormat,bufferSize);
-                                sourceDataLine.start();
+			if(sourceDataLine == null) {
+				Mixer currentMixer =null;
+				while((currentMixer =getMixer()) != null ) {
+					System.out.println("Available mixers:");
+					sourceDataLine =(SourceDataLine)currentMixer.getLine(dataLineInfo);
+					sourceDataLine.open(audioFormat,bufferSize);
+                                	sourceDataLine.start();
+					break;
+				}
 			}
                 }catch(Exception e){System.out.println("Error in open sourceDataLine : "+e.getMessage());}
 
@@ -121,8 +125,10 @@ public class AudioPlayer implements Runnable {
 		while(flag && ThreadController.getController().getThreadFlag()){
 			try {
 				if(audioVector.size() > 0){
-                                	sourceDataLine.write(audioVector.get(0),0,bufferSize);
-					audioVector.remove(0);
+					if(sourceDataLine != null ) {
+                                		sourceDataLine.write(audioVector.get(0),0,bufferSize);
+						audioVector.remove(0);
+					}
 				} 
 				runner.yield();	
 			}catch(Exception ex){System.out.println("Error in AudioPlayer run() "+ex.getMessage());}

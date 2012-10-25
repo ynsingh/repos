@@ -31,22 +31,24 @@ public class AudioCapture implements Runnable {
 	private Thread runner=null;	
 	private byte audio_data[]=null;
    	private Mixer currentMixer=null;
-	private TargetDataLine targetDataLine;
+	private TargetDataLine targetDataLine=null;
 	private AudioFormat audioFormat=ClientObject.getController().getAudioFormat();
 	private java.util.LinkedList<byte[]> audioVector=new java.util.LinkedList<byte[]>();
     	private DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
+
    	/**
  	 * Select a mixer from audio system which support audio format
  	 */  
+
 	private Mixer getMixer(){
 		Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
    		System.out.println("Available mixers:");
        		for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
          		System.out.println(mixerInfo[cnt].getName());
-           		Mixer currentMixer = AudioSystem.getMixer(mixerInfo[cnt]);
-			if( currentMixer.isLineSupported(dataLineInfo) ) {
+           		Mixer currentMixer_local = AudioSystem.getMixer(mixerInfo[cnt]);
+			if( currentMixer_local.isLineSupported(dataLineInfo) ) {
 				System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
-				return currentMixer;
+				return currentMixer_local;
 			}
         	}
         	return null;
@@ -56,19 +58,19 @@ public class AudioCapture implements Runnable {
  	 * Open and start input Line (TargetDataLine) from selected Mixer.
  	 */  
     	public TargetDataLine getTargetLine() {
-		try{
-			if(currentMixer==null)
-				currentMixer = getMixer();
-			if(currentMixer != null)
-            			targetDataLine =(TargetDataLine)currentMixer.getLine(dataLineInfo);
-            		else
-            			System.out.println("Mixer not found!!");
-			if(!targetDataLine.isOpen()){
+		try {
+			do {
+				currentMixer=getMixer();
+			} while (currentMixer ==null);
+            	
+			targetDataLine =(TargetDataLine)currentMixer.getLine(dataLineInfo);
+			
+			if(targetDataLine !=null){
             			targetDataLine.open(audioFormat, bufferSize);
-				System.out.println("opening targetDataLine !!");
-			}
-            		targetDataLine.start();
-		}catch(Exception e){System.out.println("Error in open targetdataline "+e.getMessage());}
+            			targetDataLine.start();
+				System.out.println("opening targetDataLine.");
+			} else System.out.println("targetDataLine could not initialized.");
+		} catch(Exception e){System.out.println("Error in open targetdataline "+e.getMessage());}
 		return targetDataLine;
     	}
 
