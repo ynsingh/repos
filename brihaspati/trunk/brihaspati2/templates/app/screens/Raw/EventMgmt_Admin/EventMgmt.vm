@@ -99,16 +99,16 @@ $!data.getMessage()
         </td></tr>
                 #if(($mode=="adphase")||($mode=="sresult") ||($mode=="update"))
                 <tr bgcolor="$ui.menuColor"><td colspan=4>
-                        <select class="drop" name="group1" onChange="checkoption(document.frm,this)";>
+                        <select class="drop" name="group1" onChange="checkoption(document.frm,this);" style="width:300px;">
                                 <option>$brih_select</option>
                                         #foreach($gname in $glist)
 						#if($data.getUser().getUserName() == "admin")
                                                 	#if(($gname.getName()!="author") && ($gname.getName()!="global") &&($gname.getName()!="institute_admin"))
-                                                	<option value="$!gname.getName()">$!gname.getName()</option>
+                                                	<option value="$!gname.getName()" title="$!gname.getName()" style="width:275px;">$!gname.getName()</option>
 							#end
 						#else
 							#if($data.getUser().getTemp("role")=="institute_admin")
-                                                        <option value="$!gname.getGroupName()">$!gname.getGroupName()</option>
+                                                        <option value="$!gname.getGroupName()" title="$!gname.getGroupName()" style="width:275px;">$!gname.getGroupName()</option>
 							#end
                                                 #end
                                         #end
@@ -117,12 +117,12 @@ $!data.getMessage()
                         <select  class="drop" name="uname">
                         #foreach($n in $ul)
                                 #foreach($u in $n)
-                                        <option value=$!u.UserName>$!u.UserName</option>
+                                        <option value="$!u.UserName">$!u.UserName</option>
                                 #end
                         #end
                         </select>
-                        <select class="drop"  name="g">
-                                <option value="$!value">$!value </option>
+                        <select class="drop"  name="g" style="width:300px;">
+                                <option value="$!value" title="$!value" style="width:275px;">$!value </option>
                         </select>
 			  </td></tr>
                 #end

@@ -13,7 +13,7 @@
 $page.setTitle("Admin Home | Registration Management")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
-## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
+## This java script is called to return an alert message and to highlight the field in the form, in which input value missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
@@ -158,9 +158,9 @@ $!data.getMessage()
 		<td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
 		</td>
                 <td>
-                <select class="drop" name="instName" size=1 />
+                <select class="drop" name="instName" size=1 style="width:300px;" />
                           #foreach($name in $instList)
-                                  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+                                  <option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
                           #end
                 </select>
 		</td>
@@ -209,9 +209,9 @@ $!data.getMessage()
                 <td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
                 </td>
                 <td>
-                <select class="drop" name="instName" size=1 />
+                <select class="drop" name="instName" size=1 style="width:300px;" />
                           #foreach($name in $instList)
-                                  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+                                  <option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
                           #end
                 </select>
                 </td>
@@ -287,9 +287,9 @@ $!data.getMessage()
                 <td> #if($lang =="hindi" || $lang == "gujarati") $RemoteInstitute $brih_name $brih_select #else $brih_select $RemoteInstitute $brih_name #end <font color=RED>*</font>
                 </td>
                 <td>
-                <select class="drop" name="instName" size=1 />
+                <select class="drop" name="instName" size=1 style="width:300px;" />
                           #foreach($name in $instList)
-                                  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+                                  <option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
                           #end
                 </select>
                 </td
@@ -321,13 +321,13 @@ $!data.getMessage()
 <table width=100% bgcolor="$ui.menuColor" align=left>
 #foreach( $e in $Msg )
         <tr bgcolor="$ui.tableColor">
-        <td align=center>
-        <font face="$ui.sansSerifFonts">$brih_entry <font color="$ui.fontColorBrown">"$e.getErr_User()"</font>
-        </font>
-        </td>
-        <td align=center>
-        <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
-        </td>
+           <td align=center>
+              <font face="$ui.sansSerifFonts">$brih_entry <font color="$ui.fontColorBrown">"$e.getErr_User()"</font>
+              </font>
+           </td>
+           <td align=center>
+              <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
+           </td>
         </tr>
 #end
 </table>
