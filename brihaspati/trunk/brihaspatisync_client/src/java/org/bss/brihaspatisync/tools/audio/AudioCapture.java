@@ -122,6 +122,10 @@ public class AudioCapture implements Runnable {
 		
 	protected byte [] getAudioData(){
 		if(audioVector.size()>0){
+			if(audioVector.size()>10){
+                                for(int removepacket=0;removepacket<5;removepacket++)
+                                        audioVector.remove(0);
+                        }
 			byte[] data=audioVector.get(0);
 			audioVector.remove(0);
 			return data;

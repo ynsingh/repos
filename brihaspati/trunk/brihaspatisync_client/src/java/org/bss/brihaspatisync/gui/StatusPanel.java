@@ -30,10 +30,12 @@ public class StatusPanel extends JPanel {
 	private JLabel ppt=new JLabel();
 	private JLabel destop=new JLabel();
 	private JLabel httpclient=new JLabel();
+	private JLabel audioclient=new JLabel();
 	
 	private String pptmess="";
 	private String destopmess="";
 	private String httpclientmess="";
+	private String audioclientmess="";
 	private static StatusPanel labe =null;
 	private ClassLoader clr= this.getClass().getClassLoader();
 	private FlowLayout flowLayout = new FlowLayout();
@@ -41,6 +43,7 @@ public class StatusPanel extends JPanel {
 	private JPanel desktop_panel=null;
 	private JPanel ppt_panel=null;
 	private JPanel reflector_panel=null;
+	private JPanel audio_panel=null;
 	
 	public StatusPanel() {
 		setLayout(new BorderLayout());
@@ -66,6 +69,7 @@ public class StatusPanel extends JPanel {
 			
 			reflector_panel=new JPanel();
 			reflector_panel.setBackground(new Color(24,116,205));
+
 			east_panel.add(desktop_panel,flowLayout);
 			east_panel.add(ppt_panel,flowLayout);
 			east_panel.add(reflector_panel,flowLayout);
@@ -85,6 +89,23 @@ public class StatusPanel extends JPanel {
 		label1.setText("<html><blink><Font size=3 color=white><b>"+message+"</b></font></blink></html>");
 		label.updateUI();
 	}
+	
+	public void setaudioClient(String message){
+                if(!audioclientmess.equals(message)){
+                        audioclientmess=message;
+                        if(audioclient != null)
+                                reflector_panel.remove(audioclient);
+                        if(message.equals("yes"))
+                                audioclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
+                        else
+                                audioclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
+                        audioclient.setText("<html><Font size=3 color=white><b> Audio </b></font></html>");
+                        reflector_panel.add(audioclient,flowLayout);
+                        audioclient.updateUI();
+                }
+        }
+
+
 	public void sethttpClient(String message){
 		if(!httpclientmess.equals(message)){
 			httpclientmess=message;	
@@ -101,22 +122,21 @@ public class StatusPanel extends JPanel {
 	}
 	
 	public void setdestopClient(String message){
-		if(!destopmess.equals(message)){
+        	if(!destopmess.equals(message)){
                         destopmess=message;
                         if(destop != null)
                                 desktop_panel.remove(destop);
-			try {
-                        	if(message.equals("yes"))
-                                	destop=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
-                        	else
-                                	destop=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-			}catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
+                       try {
+                               if(message.equals("yes"))
+                                       destop=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
+                               else
+                                       destop=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
+                       }catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
                         destop.setText("<html><Font size=3 color=white><b> DesktopShare</b></font></html>");
                         desktop_panel.add(destop,flowLayout);
                         destop.updateUI();
-			desktop_panel.revalidate();
+                       desktop_panel.revalidate();
                 }
-		
         }
 	
 	public void setpptClient(String message){
