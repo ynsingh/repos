@@ -21,9 +21,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-//import java.io.*;
-//import javax.sound.sampled.*;
-
 import org.apache.commons.io.IOUtils;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
@@ -72,7 +69,6 @@ public class PostAudioServer {
 
 class MyPostHandler implements HttpHandler {
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
-        byte[] bytes=new byte[4000];
 	public void handle(HttpExchange exchange) throws IOException {
 		try{
 			String requestMethod = exchange.getRequestMethod();
@@ -86,8 +82,7 @@ class MyPostHandler implements HttpHandler {
 				String lecture_id=lecture_id_usernamearray[0];
 				String username=lecture_id_usernamearray[1];	
                                 OutputStream responseBody = exchange.getResponseBody();
-				InputStream input=exchange.getRequestBody();
-				int count=input.read(bytes,0,bytes.length);
+				byte[] bytes =org.apache.commons.io.IOUtils.toByteArray(exchange.getRequestBody());
                                 try {
                                   	MyHashTable temp_ht=runtimeObject.getAudioServerMyHashTable();
                                         if(!temp_ht.getStatus("Audio_Post"+lecture_id)){
@@ -95,17 +90,17 @@ class MyPostHandler implements HttpHandler {
                                                 temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
                                      	}
                                         BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-                                        if((count > 3000) && (count !=-1) ) {
+                                        if((bytes.length) > 3000) {
 						buffer_mgt.putByte(bytes,username,"Audio_Post"+lecture_id);
 					}
 					
 					byte[] sendbytes=buffer_mgt.sendData(username,"Audio_Post"+lecture_id);
-					if(sendbytes != null)	
-                                        	responseBody.write(sendbytes);
-        	                        
+					if(sendbytes != null){	
+						responseBody.write(sendbytes);
+					}
+        	                       	responseBody.flush();
+	                                responseBody.close(); 
                                 }catch(Exception e){ System.out.println("Error in PostAudioServer Handler class  "+e.getMessage()); }
-                                responseBody.flush();
-                                responseBody.close();
 			}
 		}catch(Exception ex){}
 	}
