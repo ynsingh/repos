@@ -289,7 +289,7 @@ function bs_array_toCsv(array, separator) {
 		ret += lineA.join(separator) + "\n";
 		//alert("----------return array value"+ ret);
 	}
-	document.uploadform.fieldValue.value = ret;
+	document.show.fieldValue.value = ret;
 	return ret;
 }
 

@@ -32,7 +32,6 @@ $!data.getMessage()
         <script type="text/javascript" src="/brihaspati2/scrpts/Bs_SpreadSheet.inc.js"></script>
         <script type="text/javascript" src="/brihaspati2/scrpts/Bs_ButtonBar.class.js"></script>
         <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Button.class.js"></script>
-	<script type="text/javascript" src="/brihaspati2/scrpts/jquery/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 	    		var counter = 2;
@@ -43,7 +42,7 @@ $!data.getMessage()
         			}
         			var newTextBoxDiv = $(document.createElement('div'))
              			.attr("id", 'FileBoxDiv' + counter);
-        			newTextBoxDiv.html('<label><b>Alias</b></label> <input type="text" name="text' + counter + '" id="text' + counter + '" value="" > <label><b>File</b></label> <input class="browse" type="file" name="file' + counter + '" id="file' + counter + '" value="" >');
+        			newTextBoxDiv.html('<label><b>Alias</b></label> <input type="text" name="text" id="text' + counter + '" value="" > <label><b>File</b></label> <input class="browse" type="file" name="file" id="file' + counter + '" value="" >');
         			newTextBoxDiv.appendTo("#FileBoxesGroup");
         			counter++;
      			});
@@ -113,7 +112,7 @@ $!data.getMessage()
 |
 <a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("dl",1).addPathInfo("filename",$name)" style="text-decoration:none">$brih_download</a>
 |
-<a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("filename",$name).addPathInfo("status","edit").addPathInfo("type","edit")">$brih_edit</a>
+<a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("filename",$name).addPathInfo("status","edit").addPathInfo("type","edit")" style="text-decoration:none">$brih_edit</a>
 </td>
 </tr>
 #end
@@ -152,9 +151,9 @@ $!data.getMessage()
 <div id='FileBoxesGroup'>
         <div id="FileBoxDiv1">
         <label><b>Alias</b></label>
-        <input type='text' id='text1' name="text1">
+        <input type='text' id='text1' name="text">
         <label><b>File</b></label>
-        <input class="browse" type="file" name="file1" id="file1">
+        <input class="browse" type="file" name="file" id="file1">
         </div>
 </div>
 <div align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$brih_create $brih_sheet</a></div>
@@ -174,8 +173,13 @@ $!data.getMessage()
 <SCRIPT language="JavaScript">
         function checkpass(upload,field)
         {
-                upload.actionName.value=field.name;
-                upload.submit();
+		if((upload.text.value!="") &&(upload.file.value!="")){
+	                upload.actionName.value=field.name;
+        	        upload.submit();
+                }else{
+                        alert("Please upload file with unique alias name!");
+                }
+
         }
 
         function popupWin(urlName,popupName)
