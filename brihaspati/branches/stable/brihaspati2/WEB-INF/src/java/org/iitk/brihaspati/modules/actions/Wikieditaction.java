@@ -140,6 +140,7 @@ public  synchronized void  doEdit(RunData data,Context context){
 		/**
                 * check if there is illegal symbol >>>>>>> in edited file
                 */
+		ol=new WikiUtil();
 		if(!((word.contains(">>>>>>>"))||(word.contains("<<<<<<<"))||(word.contains("======"))))
                 {//if illegal
 
@@ -468,6 +469,7 @@ public void doShoworiginal(RunData data,Context context)
 			  String choose=pp.getString("eventSubmit_doShoworiginal");
                           String filePath=data.getServletContext().getRealPath("/WIKI"+"/"+cId+"/");
 			  String filePathf=null;
+			  v=new Vector();
 			  /**
 			  * choose if you want to see Wikifirst(original) or Wikilast(new merged file) or Wikilog
 			  */
@@ -581,6 +583,8 @@ public void doShowhistory(RunData data,Context context)
 				* for wikilast no checking needed
 				*/
 				boolean bool1=true;
+				v=new Vector();
+				ol=new WikiUtil();
 				if(!(choose.equals(Wikibutton1)))  //Wikibutton1=Show Page
 				bool1=((vIda.equals(""))||(!((m > historyversion)||(m < myversion))));
 
@@ -678,6 +682,7 @@ public void doDiff(RunData data,Context context)
 			  fr= new FileReader(fpath+",v");	
 			  br =new BufferedReader(fr);
 			  String s=null;
+			  v=new Vector();
 			  /** 
 			  * Here we read the contents of 
 			  * Wikilast RCS file that is *,v file
@@ -769,6 +774,7 @@ public void doMergenow(RunData data,Context context)
 		/**
                 * check if there is conflict in Wikilast merged file
                 */
+                ol=new WikiUtil();
 		if(!(ol.checkconflict(filePath1t)))
                 {//if conflict
 
@@ -851,6 +857,7 @@ public void doMergenow(RunData data,Context context)
 						fr= new FileReader(filePath1t);
                           			br=new BufferedReader(fr);
                           			String s2=null;
+						v=new Vector();
                           			/**
                           			* Here we are reading contents of Wikifirst file
                           			* line wise ,storing in vector and sending to vm
@@ -975,6 +982,7 @@ public void doStoptraffic(RunData data,Context context)
 			* Check if page is already disabled or not
 			*/
 			boolean bool;
+                        ol=new WikiUtil();
 			bool=ol.checktraffic(filePathl);
 			/**
 			* Choose b/w Stop traffic/Start Traffic 
@@ -1129,7 +1137,7 @@ public void doRevert(RunData data,Context context)
 				data.setMessage(Wikiaction25);
 			}
                 	String filePathh=filePath+ "/Wikihistory";
-
+                        ol=new WikiUtil();
                 	/**
                 	* check if there is illegal symbol >>>>>>> in edited file
                 	*/
@@ -1254,7 +1262,7 @@ public void doFind(RunData data,Context context)
 				
 
                 		Arrays.sort(Str);//sorts the files
-
+				v=new Vector();
 				/**
 				* this for loop searches word in all files in
 				* wikifirst and stores files in a Vector
@@ -1379,7 +1387,7 @@ public void doFindPage(RunData data,Context context)
 				
 
                 		Arrays.sort(Str);//sorts the files
-
+				v=new Vector();
 				/**
 				* this for loop searches word in all files
 				* in wikifirst and stores files in a String for all files
@@ -1470,7 +1478,7 @@ public void doMergedone(RunData data,Context context)
 			     /**
                 	     * check if there is conflict in Wikilast merged file
                 	     */
-                
+                            ol=new WikiUtil(); 
 			    if(!(ol.checkconflict(filePath1t)))
                 	    {//if conflict			   
 			
@@ -1593,6 +1601,7 @@ public void doDelversion(RunData data,Context context)
 			    * if yes than disable edit * should be placed
 			    * after deletion also  
 			    */
+                            ol=new WikiUtil();
 			    boolean bool=false;             
 			    if(ol.checktraffic(filePathlog))
 			    	bool=true;

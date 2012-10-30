@@ -69,6 +69,7 @@ import org.iitk.brihaspati.modules.utils.RemoteCourseUtilClient;
 import org.iitk.brihaspati.modules.screens.call.News.News_Add;
 import  org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 import org.apache.commons.lang.StringUtils;
+import org.iitk.brihaspati.modules.utils.CommonUtility;
 /**
  *
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
@@ -119,6 +120,11 @@ public class Configuration extends SecureScreen_Instructor
                 	List onlineconf = CoursesPeer.doSelect(crit);
 			int online_conf=((Courses)onlineconf.get(0)).getOnlineconf();
 			context.put("online_conf",online_conf);
+			
+			 //Help Video Configuration
+                         String h_Video=data.getServletContext().getRealPath("/resources")+"/youTubeLinks"+"/"+"help_Video.properties";
+                         String v_Id = CommonUtility.GetBrihVideoId(h_Video,"course_Configuration");
+                         context.put("vid",v_Id);
 
 			//code end
                         int startIndex=pp.getInt("updatestartIndex",0);

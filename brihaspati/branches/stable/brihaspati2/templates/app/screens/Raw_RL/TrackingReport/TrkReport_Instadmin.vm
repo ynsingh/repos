@@ -1,0 +1,139 @@
+#*
+ * @(#)TrkReport_Instadmin.vm
+ * Copyright (c) 2009 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+$page.setTitle("Tracking Report")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td><b>
+	<font face="$ui.sansSerifFonts">
+	##if($data.getUser().getUserName() == "admin")
+	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+	##if($type =="Instadmin")
+      	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+        $RemoteInstitute $brih_reports
+        ##end
+	</font>
+</b></td>
+<td align=right>
+        #if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a>
+        #else
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help</a>
+        #end
+</td>
+<td align=right>
+                #if( $total_size!=0 )
+                        #if( $endIndex < $total_size )
+                                #if( $endIndex < $userConf )
+                                [$k - $total_size] of $total_size
+                                #elseif($k == $j)
+                                [$k - $total_size] of $total_size
+                                #else
+                                [$k - $endIndex] of $total_size
+                                #end
+                        #else
+                        [$k - $total_size] of $total_size
+                        #end
+                #end
+        </td></tr>
+</tr>
+</table>
+<br>
+<form name="frm" method="post" action=$link.setPage("call,TrackingReport,TrkReport_Instadmin.vm")>
+<table width=100%  bgcolor="$ui.tableColor">
+##<tr><td bgcolor="$ui.menuColor"><b>Select Institute For Report:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="instname" size="1" onChange="Changename(document.frm,this);"/>
+<tr><td><b> #if($lang == "hindi" || $lang == "gujarati") 
+		$brih_reports $brih_for $RemoteInstitute $brih_select 
+	#else 
+		$brih_select $RemoteInstitute $brih_for $brih_reports 
+	#end:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select class="drop" name="instname" size="1" onChange="Changename(document.frm,this);"/>
+        <option>$brih_select</option>
+                                #if($data.getUser().getUserName() == "admin")
+                                #foreach($instname in $instdetail)
+                                <option value="$instname.getInstituteName()">$instname.getInstituteName()
+                                </option>
+                                #end
+                                #end
+         </select>
+         </td>
+</tr>
+#if($inst_name!="")
+<table bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
+<tr width="100%"><td width="100%" colspan="5"><b>$RemoteInstitute $brih_infos</b></td></tr>
+<tr bgcolor="$ui.menuColor" align="left">
+        <td align="left" width="50%">$RemoteInstitute $brih_name:
+        <td align="left" width="50%"><b>$inst_name</b>
+</tr>
+<tr>
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_program $brih_Of $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_program 
+					#end :
+	#if($Instproglist.size()==0)
+        <td align="left" width="50%">$brih_program<b></b>
+	#else
+        <td align="left" width="50%"><b>$Instproglist</b>
+	#end
+</tr>
+<tr bgcolor="$ui.menuColor" >
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") $brih_course $brih_Of $brih_total $brih_nos #else $brih_total $brih_nos $brih_course #end:
+        <td align="left" width="50%"><b>$ttlno_Course</b>
+</tr>
+<tr>
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati") 
+					$brih_student $brih_Of $brih_total $brih_nos 
+				#else 
+					$brih_total $brih_nos $brih_student 
+				#end:
+        <td align="left" width="50%"><b>$Studentlist</b>
+</tr>
+<tr bgcolor="$ui.menuColor" >
+        <td align="left" width="50%">  #if($lang == "hindi" || $lang == "gujarati") 
+						$brih_ins $brih_Of $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_ins 
+					#end :
+        <td align="left" width="50%"><b>$istructorlist</b>
+</tr>
+<tr>
+        <td align="left" width="50%"> #if($lang == "hindi" || $lang == "gujarati")
+						$brih_admin($brih_Institute $brih_admin)  $brih_Of $brih_total $brih_nos 
+					#else 
+						$brih_total $brih_nos $brih_admin($RemoteInstitute $brih_admin) 
+					#end :
+        <td align="left" width="50%"><b>$instadmin</b>
+</tr>
+#end
+</table>
+	<input type="hidden" name="actionName" >
+        <input type="hidden" name="type" value="$type">
+        <input type="hidden" name="mode" value="$mode">
+        <input type="hidden" name="status" value="$status">
+        <input type="hidden" name="usrname" value="$usrname">
+        <input type="hidden" name="valdir">
+<form>
+<SCRIPT LANGUAGE="javascript">
+function Changename(frm,field)
+        {
+                frm.valdir.value=document.frm.instname.value;
+		if(frm.instname!="")
+		frm.submit();
+
+        }
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+</script>

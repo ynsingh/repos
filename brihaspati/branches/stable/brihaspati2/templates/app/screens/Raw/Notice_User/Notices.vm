@@ -192,16 +192,16 @@ $!data.getMessage()
 		<tr bgcolor="$ui.tableColor">
 		<td>$brih_sel_course</td>
 		<td>
-		<select class="drop" name="course_list" size=1>
+		<select class="drop" name="course_list" size=1 style="width:300px;">
 		#foreach($c_ls in $clist)
 			#if($data.getUser().getUserName() == "admin")
 			###if(($c_ls.getName()!="author")&&($c_ls.getName()!="global"))
 				#if(($c_ls.getName()!="author")&&($c_ls.getName()!="global") && ($c_ls.getName()!="institute_admin"))
-					<option value="$c_ls.getName()">$c_ls.getName()
+					<option value="$c_ls.getName()" title="$c_ls.getName()" style="width:275px;">$c_ls.getName()
 				#end
 			#else
 				#if($data.getUser().getTemp("role")=="institute_admin")
-					<option value="$c_ls.getGroupName()">$c_ls.getGroupName()
+					<option value="$c_ls.getGroupName()" title="$c_ls.getGroupName()" style="width:275px;">$c_ls.getGroupName()
 				#end
 			#end
 		#end

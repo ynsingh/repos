@@ -27,19 +27,25 @@ $page.setBgColor($ui.bgcolor)
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-<div class="main" style="width:1100px; margin:-20px auto;">
-<table width="100%">
+<div class="main" style="width:1100px; margin:-10px auto;">
+#*<table width="100%">
 <tr><td>
 ##<marquee direction="left">
 <font size=4>$!fNoti</font>
 ##</morque>
 </td></tr>
 </table>
+*#
+<table align=left class="main" bgcolor="$ui.tableColor"> ## Ta1
+<tr><td>
+##<marquee direction="left">
+<font size=4>$!fNoti</font>
+##</morque>
+</td></tr>
 
-<table align=left> ## Ta1
 <tr> ## tr1
-	<td valign="top" bgcolor="$ui.tableColor" width="25%"> ## TD1 
-		<table align="left" width="100%">
+	<td valign="top" bgcolor="$ui.tableColor" width="65%"> ## TD1 
+		<table align="left" width="100%" class="login">
 		<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 		<tr align="right">
         	<td colspan="3">
@@ -126,7 +132,7 @@ $page.setBgColor($ui.bgcolor)
 <a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google") shape="rect"><img src="$content.getURI("/images/google.png")" border="0" height="50" width="100"></a>
 <br>
 </td></tr>
-
+#*
 <table bgcolor="#d8d9ec">
 <tr><td>
 <font face="$ui.sansSerifFonts">
@@ -139,7 +145,8 @@ $brih_openid_msg3
 <a href="http://openid.net/what/">$brih_learn_more &raquo;</a><br>
 </td></tr>
 </table>
-<table>
+*#
+##<table align="right">
 		<tr align="right"><td colspan=4 align="right"><b>
 			<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
 			<img src="$content.getURI("/images/orange_sq_but.gif")">
@@ -187,7 +194,7 @@ $brih_openid_msg3
 		</table>
 	</td> ## TD1 end
 	<td valign="top" width="50%"> ## TD2
-		<table align="left" bgcolor="$ui.tableColor">
+		<table align="left" bgcolor="$ui.tableColor" class="urdu_desc">
 			<tr align="right"><td>
 				<b>$brih_msg</b>
 			</td></tr>
@@ -207,8 +214,8 @@ $brih_openid_msg3
 		</table>
 	</td> ## TD2
 	
-	<td valign="top" width="25%"> ## TD3
-		<table bgcolor="$ui.tableColor" width="100%">
+	<td valign="top" width="45%"> ## TD3
+		<table bgcolor="$ui.tableColor" width="100%" class="urdu_news">
 	        	<tr bgcolor="$ui.menuColor" align="right"><td>
 				<u><b>$brih_newsHeadline</b></u> <img src="$content.getURI("/images/newspaper.gif")">
         		</td></tr>

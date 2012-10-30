@@ -1,27 +1,203 @@
 #*
  * @(#) UploadMarks.vm
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
- * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com ">Richa Tandon</a>
+ * @modified date 15-09-2010
 *#
-<head>
-<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-</head>
+
+$page.setBgColor($ui.bgcolor)
+$page.setTitle("Upload Marks")
+
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in the corresponding screen class.
+#set ($lang=$data.getUser().getTemp("lang" ).toString())
+<html>
+        <head>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_HtmlUtil.lib.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Array.class.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_String.lib.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_CsvUtil.class.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Misc.lib.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_SpreadSheet.class.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_SpreadSheet.inc.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_ButtonBar.class.js"></script>
+        <script type="text/javascript" src="/brihaspati2/scrpts/Bs_Button.class.js"></script>
+        </head>
+
+##This check for displaying spreadsheet
+##if type is spreadsheet or status is edit then load spreadsheet
+#if(($type=="spreadsheet")||($status=="edit"))
+        <body onload="init();" id="cvsTextarea">
+#end
+
+##first row for link is created
+
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Upload Marks")
 <table bgcolor="$ui.tableColor" width=100%>
-<tr align="right">
-<td>
-	<font face="$ui.sansSerifFonts"><b>
-	$brih_upload $brih_marks
-	| <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>  
-	</font>
+<tr align="right" bgcolor="$ui.menuColor">
+<td align="right" colspan=3>
+        <font face="$ui.sansSerifFonts"><b>
+        $brih_upload $brih_marks
+        | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a>
+        </font>
 </td>
 </tr>
-</table>
+
+## if type is not spreadsheet then show help image for uploading marks
+#if($type !="spreadsheet")
+ <tr align="right"><td align="right">
+<a href=javascript:popupWin("/brihaspati2/docs/MarkList.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")">
+<td align="right" colspan=3>
+        <font color=red>$brih_MarksMsg1</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+        </td></tr>
+#end
+
+## Form is created
+<form name="uploadform" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,UploadMarks.vm").setAction("UploadMarksAction")">
+
+
+## if marks file exist than show link of View marks & Download Marks
+        <tr  align="right">
+         #if($fileExists=="true")
+          <td align="right"><a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("dl",1).addPathInfo("filename",$fileName)"> #if($lang=="hindi") Marks List  Download #else $brih_download $brih_marks #end </a></td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+                <td align="right"><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("filename",$fileName)","newWin");> #if($lang=="hindi") Marks List  View #else $brih_view $brih_marks #end </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                 #end
+##if type is spreadsheet then show help link for inserting marks in spreadsheet
+#if($type == "spreadsheet")
+    <td align="right">
+    <a href=javascript:popupWin("/brihaspati2/docs/SpreadsheetInst.html","newWin");>$brih_help</a><img src="$content.getURI("/images/Lefthand.gif")"></td>
+    
+#end   
+
+               </td>
+        </tr>
+
+     	#if ($errorTemplate)
+      	<tr>
+        <td colspan="4">
+          <table bgcolor="$ui.bgcolor">
+            <tr>
+              <td>
+                <img src="$ui.image($ui.alertImage,$data)">
+              </td>
+              <td>
+                #parse ($errorTemplate)
+              </td>
+            </tr>
+          </table>
+        </td>
+      	</tr>
+      	#end
+	#*<tr>
+	<td>
+		<font color="brown"><b>$!data.getMessage()</b></font>
+	</td>
+	</tr>*#
+	<input type="hidden" name="actionName">
+## if type is not spreadsheet then show marks upload text box
+#if($type !="spreadsheet")
+	<tr align="right" bgcolor="$ui.menuColor">
+		<td colspan=3><b>
+		#if(($data.getUser().getTemp("lang" ).toString())=="hindi")
+		$brih_marks $brih_upload
+		#else
+		$brih_upload $brih_marks
+		#end
+		</b>
+		</td>
+	</tr>
+      	<tr align="right">
+ ## Create Sheet link for spreadsheet
+                <td align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$WikiCreate  $brih_sheet</a>
+                </td>
+ <td><input type="file" size="40%" name="file" value=""> </td>
+                <td> <b> <font color="RED">*</font> $brih_at_file </b> </td>
+
+
+        	##fileUpload ("$brih_at_file <font color=Red>*</font>" "file")
+
+        </tr>
+
+      	</tr>
+      	<tr align="right" bgcolor="$ui.menuColor">
+        	<td colspan=3>
+          	#*
+	            Check for a mode, the update and delete buttons
+	            shouldn't appear when inserting a new user.
+	          *#
+	
+        	  <font face="$ui.sansSerifFonts">
+        	  <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkFile(document.uploadform,this);"/>
+		  ##<input type="hidden" name="count" value="$tdcolor">
+	          </font>
+	        </td>
+      </tr>
+#end
+    </table> ## table 1 end
+
+#if(($type !="spreadsheet")&&($FileExist == "true"))
+        ## table 2 created
+        
+<table align="right" bgcolor="$ui.tableColor" width=100%>
+                <tr align="right">
+                  <td  align="right" colspan=1>
+                        <font size=4><b>$brih_availableAction
+                        </td>
+                        <td align="right"colspan=3 bgcolor="$ui.tableColor">
+                        <font size=4><b>$brih_topics #if($lang=="hindi") of #end $brih_name
+                        </td>
+                </tr>
+                #if($velocityCount%2==0)
+                <tr align="right" bgcolor="$ui.tableColor">
+                #else
+                <tr align="right" bgcolor="$ui.menuColor">
+            ##   #end
+
+                        <td align="center"><a href="$link.setAction("UploadMarksAction").addPathInfo("actionName","eventSubmit_doDelete")" onclick="javascript:return confirm('Do you want to delete this file')">$brih_delete</a></td>
+                     <td align="center"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("status","edit")" >$brih_edit</a>&nbsp;&nbsp;</td>
+                        <td align="center"><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("filename",$fileName)","newWin");>  #if($lang=="hindi") $brih_marks $brih_list $brih_Of1 $brih_view #else $brih_view $brih_marks  #end </a>
+              #end      
+                         #if($FileExist=="true")
+                        <td align="right">$fileName</td>
+#end
+                </tr>
+        </table> ## table 2 end
+
+#end
+
+
+#if(($type=="spreadsheet")||($status=="edit"))
+<div id="dataTableDiv" style="width:600; height:300; border:1px solid black;"></div>
+## table 3 created for viewing spreadsheet
+        <table>
+#if($type=="spreadsheet")
+        <input type="button" name="eventSubmit_doSave" value="Save" onClick="exportDataToTextarea(document.uploadform,this)";>
+#else
+        <input type="button" name="eventSubmit_doSave" value="Update" onClick="exportDataToTextarea(document.uploadform,this)";>
+#end
+        <input type="hidden" name="fieldValue" value="">
+        <input type="hidden" name="type" value="$type">
+        <input type="hidden" name="marksDetail" value="$marksDetail">
+        <input type="hidden" name="formulaDetail" value="$formulaDetail">
+        <input type="hidden" name="status" value="$status">
+        </table> ## table 3 end
+#end
+
+</form> ## form end
+        </body> ## body end
+</html> ## html end
+
 <SCRIPT language="JavaScript">
         function popupWin(urlName,popupName)
         {
@@ -39,83 +215,97 @@ $page.setTitle("Upload Marks")
 			alert("File could not empty !!");
 		}
 	}
+	if (moz) {
+                        document.writeln("<link rel='stylesheet' href='/brihaspati2/scrpts/win2k_mz.css'>");
+                }
+        else    {
+                        document.writeln("<link rel='stylesheet' href='/brihaspati2/scrpts/win2k_ie.css'>");
+                }
+        function init()
+        {
+                //var enable= "false";
+                //if(enable)
+                        //alert("status is"+document.uploadform.status.value);
+                        //alert("type is"+document.uploadform.type.value);
+
+                /**
+                * below method for editing spreadsheet
+                */
+                var data = new Array();
+                if(document.uploadform.type.value!="spreadsheet")
+                {// 1 if
+                        /**
+                        * @param str, String having value of spreadsheet
+                        */
+                        var temp = new Array();
+                        var rstr = new Array();
+                        var i;
+                        var j;
+                        var str = document.uploadform.marksDetail.value;
+                        /**
+                        * @param temp, gives split string with '/' that represent change of line
+                        */
+                        temp = str.split("/");
+                        //alert(temp.length);
+                        mySpreadSheet = new Bs_SpreadSheet;
+                        mySpreadSheet.objectName = 'mySpreadSheet';
+                        mySpreadSheet.mayUseWysiwyg = false;
+                        //mySpreadSheet.sheetWidth  = 550;
+                        mySpreadSheet.sheetWidth  = 750;
+                        //mySpreadSheet.sheetHeight = 250;
+                        mySpreadSheet.sheetHeight = 450;
+                        /**
+                        * loop for geeting each line of spreadsheet
+                        */
+                        for(i =0; i < temp.length ; i++)
+                        {//1 for
+                                //alert("No of line ="+temp[i]);
+                                var stemp = temp[i];
+                                /**
+                                * @param rstr ,split values with ',' that give saperate values of cell
+                                */
+                                rstr = stemp.split(",");
+                                //alert(" No of column length="+rstr.length);
+				 data[i] = new Array();
+                                /**
+                                * put into array to display in spreadsheet
+                                */
+                                for(j=0; j< rstr.length; j++)
+                                {//2 for 
+                                        var columStr= rstr[j];
+                                        //alert(columStr);
+                                        if(columStr != "" )
+                                        data[i][j] = columStr;
+                                        //alert("data["+i+"]["+j+"]="+ data[i][j]);
+                                }// end of 2 for
+                        }// end of 1 for
+                        //alert("data Length="+data.length);
+                }// end of 1 if
+                else
+                {// 1 else
+                        mySpreadSheet = new Bs_SpreadSheet;
+                        mySpreadSheet.objectName = 'mySpreadSheet';
+                        mySpreadSheet.mayUseWysiwyg = false;
+                        mySpreadSheet.sheetWidth  = 550;
+                        mySpreadSheet.sheetHeight = 250;
+                }// end of 1 else
+                mySpreadSheet.init(data,'dataTableDiv');
+        }// end of init function
+        function exportDataToTextarea(uploadform,field) 
+	{
+		/**
+		 * @param elm,getting id where spreadsheet have to be opened
+		 */
+        	var elm = document.getElementById('cvsTextarea');
+		/**
+		 * Getting values of spreadsheet
+		 */
+        	elm.value = mySpreadSheet.exportDataToCsv(); //note that formatting information (bold etc) is not exported.
+        	//alert("Getting spreadsheet value--------->"+document.uploadform.fieldValue.value);
+                        document.uploadform.status.value = "";
+                        document.uploadform.type.value = "";
+                        uploadform.actionName.value=field.name;
+                        uploadform.submit();
+        }
+
 </SCRIPT>
-<marquee scrollamount="3" direction="left" loop="0" width="100%" behaviour="slide">
-                <font size=4 color=red><b>$brih_MarksMsg1 </b></font>
-        </marquee>
-
-
-<form name="uploadform" method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,UploadMarks.vm").setAction("UploadMarksAction")" on>
-
-  	<div align="left">
-    	<font face="$ui.sansSerifFonts">
-		<a href=javascript:popupWin("/brihaspati2/docs/MarkList.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
-	</font>
-  	</div>
-#if($fileExists=="true")
-	<table align="right">
-	<tr aligh="right">
-	<td align="right">
-		<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("filename",$fileName)","newWin");> $brih_view $brih_marks  </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		</td>
-		</tr>
-		<tr align="right">
-		<td align="right">
-		<a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("dl",1).addPathInfo("filename",$fileName)"> $brih_download $brih_marks </a>&nbsp;&nbsp;
-	</td>
-	</tr>
-  	</table>
-#end
-	
-	<table width=100% bgcolor="$ui.bgcolor" align="center">
-      	#if ($errorTemplate)
-      	<tr>
-        <td colspan="4">
-          <table bgcolor="$ui,bgcolor">
-            <tr>
-              <td>
-                <img src="$ui.image($ui.alertImage,$data)">
-              </td>
-              <td>
-                #parse ($errorTemplate)
-              </td>
-            </tr>
-          </table>
-        </td>
-      	</tr>
-      	#end
-	<tr>
-	<td>
-		<font color="brown"><b>$!data.getMessage()</b></font>
-	</td>
-	</tr>
-        </table>
-
-	<table border=1 bgcolor="$ui.bgcolor" width="50%" align="center">
-	<tr>
-	<td colspan=2 bgcolor="$ui.menuColor" align="center"><font size=4><b>
-		$brih_upload $brih_marks
-	</b></font>
-	</td>
-	</tr>
-      	<tr align="right">
-        	##fileUpload ("$brih_at_file <font color=Red>*</font>" "file")
-		<td><input type="file" size="35" name="file"> </td>
-		<td> &nbsp;&nbsp; <font color=Red>*</font> $brih_at_file </td>
-      	</tr>
-      	<tr>
-        <td align="center" colspan=2 bgcolor="$ui.buttonBoxColor">
-          #*
-            Check for a mode, the update and delete buttons
-            shouldn't appear when inserting a new user.
-          *#
-
-          <font face="$ui.sansSerifFonts">
-	  <input type="hidden" name="actionName">
-          <input type="button" class="button-ftextstyle" name="eventSubmit_doUpload" value="$brih_upload" onClick="checkFile(document.uploadform,this);"/>
-          </font>
-        </td>
-      </tr>
-      
-    </table>
-</form>

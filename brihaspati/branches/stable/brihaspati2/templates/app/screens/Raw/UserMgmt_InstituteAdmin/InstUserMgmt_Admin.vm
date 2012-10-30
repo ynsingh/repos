@@ -145,10 +145,10 @@ $!data.getMessage()
           $brih_sel_course <font color=RED>*</font>
           </td>
      	<td>
-        <select id="group_id" class="drop" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+        <select id="group_id" class="drop" name="group" size=1 onChange="ChangeRole(document.frm,this);" style="width:300px;"/>
           ##<option>
           #foreach($name in $courseList)
-          		<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
+          		<option value="$name.getGroupName()" style="width:275px;" title="$name.getCAlias(): $name.getCourseName()-$name.getUserName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
           #end
            ##</option>
           </select>
@@ -387,9 +387,9 @@ face="$ui.sansSerifFonts">$type</font>
                 </b>
         </td>
         <td>
-                <select name="GroupName" size=1 class="drop">
+                <select name="GroupName" size=1 class="drop" style="width:300px;" >
                 #foreach($name in $courseList)
-                        <option value="$name.getGroupName()">$name.getCAlias():$name.getCourseName()-$name.getUserName()
+                        <option value="$name.getGroupName()" style="width:275px;" title="$name.getCAlias():$name.getCourseName()-$name.getUserName()">$name.getCAlias():$name.getCourseName()-$name.getUserName()
                 #end
                 </option>
                 </select>
@@ -571,11 +571,11 @@ face="$ui.sansSerifFonts">$type</font>
           </font>
           </b></td>
           <td width=20%>
-          <select name="group" size=1 class="drop">
+          <select name="group" size=1 class="drop" style="width:300px;">
           #set($i=1)
           <option name=all value="All">$Notice_All
           #foreach($course in $courseList)
-	  	<option name=option$i value="$course.getGroupName()">$course.getCAlias(): $course.getCourseName()-$course.getUserName()</option>	
+	  	<option name=option$i value="$course.getGroupName()" style="width:275px;" title="$course.getCAlias(): $course.getCourseName()-$course.getUserName()">$course.getCAlias(): $course.getCourseName()-$course.getUserName()</option>	
           	#set($i=$i+1)
           #end
           ##</option>

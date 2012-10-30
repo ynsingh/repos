@@ -58,9 +58,9 @@ $!data.getMessage()
 </tr>
 	<tr>
 	<td>
-                <select name="instName" class="drop" size=1 onChange="checkOption(document.frm,this);"/>
+                <select name="instName" class="drop" size=1 onChange="checkOption(document.frm,this);"/ style="width:300px;">
                 #foreach($name in $instList)
-                <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+                <option value="$name.getInstituteName()" title="$name.getInstituteName()" style="width:275px;">$name.getInstituteName() </option>
                 #end
                 </select>
         </td>
@@ -70,9 +70,9 @@ $!data.getMessage()
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 	<td>
-                <select name="courses" class="drop" onChange="selectOption(document.frm,this);"/>
+                <select name="courses" class="drop" onChange="selectOption(document.frm,this);" style="width:300px;" />
                 #foreach($crsname in $crsList)
-                <option value="$crsname.getGroupName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
+                <option value="$crsname.getGroupName()" title="$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()" style="width:275px;">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
                 #end
                 </select>
 	</td>	

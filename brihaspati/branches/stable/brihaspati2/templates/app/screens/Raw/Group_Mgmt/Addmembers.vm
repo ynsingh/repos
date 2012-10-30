@@ -229,7 +229,7 @@ $!data.getMessage()
 				<td bgcolor="$ui.menuColor" valign="top" align="left">
 				#if($nolist == "yeslist")
 				#if($val == "")
-					<td bgcolor="$ui.menuColor"><i><font color="blue">$brih_grpmsg13</font><i></td>
+					<td bgcolor="$ui.menuColor" width="40%"><i><font color="blue">$brih_grpmsg13</font><i></td>
 				#else
 					#if($lang =="hindi" || $lang =="gujarati")
                         		#set($headings=["","<font color=green>$val</font> $brih_grp $brih_Of2 $brih_selected $brih_student "])
@@ -258,9 +258,9 @@ $!data.getMessage()
 				#end
 				</td>
 			#end
-                </table> ## table end 6
-        </tr></td> ## end of tr td 7
-        <tr bgcolor="$ui.menuColor"><td>
+        ##        </table> ## table end 6
+       ## </tr></td> ## end of tr td 7
+        <tr bgcolor="$ui.tableColor"><td>
 		#if($Status =="Edit")
 			#if($actmode =="lead")
         		<input type="button" class="button-ftextstyle" name="eventSubmit_doRemoveselectedstudent" value= #if($lang =="hindi" || $lang =="gujarati") "$brih_grpleader $brih_select" #else "$brih_select $brih_grpleader" #end onClick="checkfield(document.frm,this);"/>
@@ -287,7 +287,6 @@ $!data.getMessage()
 				#else
 				<b><font color="blue"><i>$brih_grpmsg18.</i></font></b>
 				#end
-        </tr></td>
 	<input type="hidden" name="actionName" value="$actionName">
 	<input type="hidden" name="grpdesc" value="$grpdesc" >
         <input type="hidden" name="type" value="$type" >
@@ -303,6 +302,9 @@ $!data.getMessage()
         <input type="hidden" name="Status" value="$Status">
         <input type="hidden" name="actmode" value="$actmode">
         <input type="hidden" name="leadval">
+        </tr></td>
+        </table> ## table end 6
+        </tr></td> ## end of tr td 7
 </table>
 </form>
 <SCRIPT LANGUAGE="javascript">

@@ -119,6 +119,10 @@ public class OnlineRegistration extends VelocitySecureAction
         String info_Opt="", msgRegard="", msgDear="", messageFormate="", sbjct="", confirmationMail="";
         String Mailmsg=new String();
         String mssg=new String();
+	int cmpid;
+        int u_id;
+        boolean Result;
+	String str;
 
         protected boolean isAuthorized( RunData data ) throws Exception
         {
@@ -144,8 +148,8 @@ public class OnlineRegistration extends VelocitySecureAction
 		u_mode=pp.getString("mode");
 		if(u_mode.equals("cnfrm_u"))
 		{
-			String flag1="0";
-			
+			String flag1;
+	
 		/**
                  * Retreiving details entered by the user
                  */
@@ -310,7 +314,22 @@ public class OnlineRegistration extends VelocitySecureAction
 						xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 						if(program.equals("Select Program"))
                                                         program="";
-					//following lines added by Priyanka
+				
+						//following lines added by Priyanka
+						/**
+                                                 * Check whether user is already  
+                                                 * registered in Brihaspati
+                                                 */
+						cmpid=-1;
+                                                u_id=UserUtil.getUID(uname);
+                                                Result= u_id == cmpid;
+                                                ErrorDumpUtil.ErrorLog("GETTING USER ID....." +u_id +" "+ Result);
+
+	                                        if(Result)
+        	                                {
+						flag1="0";
+				     
+						
 						/**
 		                                 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
                                                  * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
@@ -338,14 +357,21 @@ public class OnlineRegistration extends VelocitySecureAction
                         			        Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
 						//ADD HASH AND FLAG TO XML	
 					//.............
-				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);//last two parameters added by Priyanka
-        				        xmlWriter.writeXmlFile();
-					//MOVED FOLLOWING TO ELSE PART, by Priyanka
-					/*	if(gname.equals("author"))
-							sendMailToApproval(gname,LangFile,uname,"","","",0);
-						else
-							sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
-					*/
+							TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);//last two parameters added by Priyanka
+							xmlWriter.writeXmlFile();
+
+							}//if
+							else
+							{
+								flag1="1";
+				                		TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,"",flag1);//last two parameters added by Priyanka
+								xmlWriter.writeXmlFile();
+								if(gname.equals("author"))
+		                                                        sendMailToApproval(gname,LangFile,uname,"","","",0);
+                		                                else
+                                		                        sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
+							}
+        				        
 			        	} //else 4
 				} //if 3
 
@@ -358,7 +384,21 @@ public class OnlineRegistration extends VelocitySecureAction
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 					if(program.equals("Select Program"))
                                                         program="";
-				//following lines added by Priyanka
+					//following lines added by Priyanka
+					/**
+                                         * Check whether user is already  
+                                         * registered in Brihaspati
+                                         */
+					cmpid=-1;
+                                        u_id=UserUtil.getUID(uname);
+                                        Result= u_id == cmpid;
+                                        ErrorDumpUtil.ErrorLog("GETTING USER ID....." +u_id +" "+ Result);
+
+                                         if(Result)
+                                         {
+                                         flag1="0";
+
+
 					/**
                                          * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
                                          * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
@@ -385,14 +425,26 @@ public class OnlineRegistration extends VelocitySecureAction
                                              messageFormate = messageFormate+confirmationMail;
                                              Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
                                                 //ADD HASH AND FLAG TO XML      
-					//...........
-		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);
-        		        	xmlWriter.writeXmlFile();
-				//MOVED FOLLOWING TO ELSE PART, by Priyanka
-				/*	sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));*/
+					       	TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);
+        		        		xmlWriter.writeXmlFile();
+					}//if
+					else
+					{	
+						flag1="1";
+                                                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,"",flag1);//last two parameters added by Priyanka
+                                                xmlWriter.writeXmlFile();
+						sendMailToApproval(gname,LangFile,uname,fname,lname,"",(Integer.parseInt(instituteid)));
+					}//else
+					//.....
 				} //else 3
-				String str=MultilingualUtil.ConvertedString("mail_confirm",LangFile);	
-	//		String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
+				
+				cmpid=-1;
+                                u_id=UserUtil.getUID(uname);
+                                Result= u_id == cmpid;
+				if(Result)
+					str=MultilingualUtil.ConvertedString("mail_confirm",LangFile);
+				else	
+					str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
         		        data.setMessage(str);
 			} // else 2
 		} //if 1
@@ -446,10 +498,10 @@ public class OnlineRegistration extends VelocitySecureAction
 				//break;								
 			 }	
 		}
-		String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
+		str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
                 data.setMessage(str);
 	}
-//......................
+//......
 	} //method
 
 	/**
@@ -466,7 +518,8 @@ public class OnlineRegistration extends VelocitySecureAction
         	u_mode=pp.getString("mode");
         	if(u_mode.equals("cnfrm_c"))
                 {
-		String flag2="0";
+		String flag2;
+		
         
 	        /**
                  * store details from the page where user has entered them
@@ -605,6 +658,13 @@ public class OnlineRegistration extends VelocitySecureAction
 					ErrorDumpUtil.ErrorLog("server name "+srvrPort);
 
 				//following lines added by Priyanka
+					cmpid=-1;
+                                        u_id=UserUtil.getUID(uname);
+                                        Result= u_id == cmpid;
+					
+					if(Result)
+					{
+					flag2="0";
 					/**
                                          * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
                                          * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
@@ -633,16 +693,20 @@ public class OnlineRegistration extends VelocitySecureAction
                                         messageFormate = messageFormate+confirmationMail;
                                         Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
 					
-				//...........................
 					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile, instAdminName, InstituteId);
                                         xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-					//TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate, instname);
 					TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
                                         xmlWriter.writeXmlFile();
-				//MOVED FOLLOWING TO ELSE PART, by Priyanka
-				/*
-					 sendMailToApproval("fromCourse",LangFile,uname,fname,lname, cname,instituteid);
-				*/
+					}//if
+					else
+					{
+					flag2="1";
+					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile, instAdminName, InstituteId);
+                                        xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
+                                        TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,"",flag2);
+                                        xmlWriter.writeXmlFile();
+					sendMailToApproval("fromCourse",LangFile,uname,fname,lname, cname,instituteid);
+					}//else
 				} //else inner
         		}
 			else
@@ -653,6 +717,14 @@ public class OnlineRegistration extends VelocitySecureAction
                                 srvrPort= TurbineServlet.getServerPort();
 
   			//following lines added by Priyanka
+  				cmpid=-1;
+                                u_id=UserUtil.getUID(uname);
+                                Result= u_id == cmpid;
+
+                                if(Result)
+                                {
+                                flag2="0";
+
 				/**
                                  * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
                                  * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
@@ -680,25 +752,31 @@ public class OnlineRegistration extends VelocitySecureAction
                                  confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
                                  messageFormate = messageFormate+confirmationMail;
                                  Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
-
-                           //...........................
                                 xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
-                                //TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,instname);
                                 TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
                                 xmlWriter.writeXmlFile();
-
-				//MOVED FOLLOWING TO ELSE PART, by Priyanka
-				/*
+				}//if
+				else
+				{
+				flag2="1";
+				xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
+                                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,"",flag2);
+                                xmlWriter.writeXmlFile();
 				sendMailToApproval("fromCourse",LangFile,uname,fname,lname,cname,instituteid);
-				*/
+				}//else
 			}
 		}
                 context.put("lang",lang);
-		String str=MultilingualUtil.ConvertedString("mail_confirm",LangFile);
-        //        String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
+		cmpid=-1;
+                u_id=UserUtil.getUID(uname);
+                Result= u_id == cmpid;
+                if(Result)
+			str=MultilingualUtil.ConvertedString("mail_confirm",LangFile);
+        	else
+		        str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
                 data.setMessage(str);
 		}//NEW IF 
-//following lines added by Priyanka
+
 		if(u_mode.equals("act"))
 		{
 			int instituteid;
@@ -727,11 +805,11 @@ public class OnlineRegistration extends VelocitySecureAction
                                 	//break;
                          	}
                 	}	
-			String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
+			str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
                         data.setMessage(str);
 
 		}
-//..................
+//.....
         }
 	/**
 	* Method for get and send email.

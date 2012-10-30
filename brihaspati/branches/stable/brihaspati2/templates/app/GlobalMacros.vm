@@ -79,7 +79,7 @@
     ##<font face="$ui.sansSerifFonts">
       ##<input type="file" size="35" name="$name">
 	##today16apr
-      <input type="file" class="button-ftextstyle" size="20" name="$name">
+      <input type="file" class="browse" size="20" name="$name">
     ##</font>
   </td>
 #end

@@ -54,7 +54,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
-
+import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.UserConfigurationPeer; 
 import org.iitk.brihaspati.modules.utils.UserUtil;  
 import org.iitk.brihaspati.modules.utils.CourseProgramUtil;  
@@ -75,6 +75,8 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @author <a href="mailto:richa.tandon1@gmail.com ">Richa Tandon</a>
  * @modified date:3-11-2010,23-12-2010
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date: 15-10-2012
  */
 
 public class ProfileUser extends SecureAction
@@ -129,10 +131,13 @@ public class ProfileUser extends SecureAction
 	  	int count = Integer.parseInt(pp.getString("count"));
 	  	//ErrorDumpUtil.ErrorLog("count in profile action-------->"+count);
 	  	User user=data.getUser();
+
+		//For email verification
          	String mail_msg="";
           	String LangFile=(String)user.getTemp("LangFile");
-
-
+		String oldEmail="";	
+		String email_msg="";
+		EmailVerification everify = new EmailVerification(data);
 	        		
 	  	Criteria crit=new Criteria();
 		if(!eMail.equals("")) {
@@ -165,7 +170,8 @@ public class ProfileUser extends SecureAction
 	  {
 		user.setFirstName(fName);
 		user.setLastName(lName);
-		user.setEmail(eMail);
+		//following commented by Priyanka
+		//user.setEmail(eMail);
 		TurbineSecurity.saveUser(user);
 
           	String imagesRealPath=TurbineServlet.getRealPath("/localImages");	
@@ -175,6 +181,7 @@ public class ProfileUser extends SecureAction
                 int taskconf=Integer.parseInt(tconf);
           	if(fileItem.getSize() >0)
  		{		
+			ErrorDumpUtil.ErrorLog("i m here");
 	  		long size=fileItem.getSize();	
 	  		Long size1=new Long(size);
 	  		byte Filesize=size1.byteValue();		
@@ -217,8 +224,18 @@ public class ProfileUser extends SecureAction
 					crit=new Criteria();
                 			crit.add(TurbineUserPeer.FIRST_NAME,fName);
 	                		crit.add(TurbineUserPeer.LAST_NAME,lName);
-        	        		crit.add(TurbineUserPeer.EMAIL,eMail);
-                			TurbineUserPeer.doUpdate(crit);
+					TurbineUserPeer.doUpdate(crit);
+
+					// email will now be updated after verification
+        	        		//crit.add(TurbineUserPeer.EMAIL,eMail);
+        	        		crit=new Criteria();
+                                	crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,uid);
+        	        		List list = org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
+                			oldEmail =((org.iitk.brihaspati.om.TurbineUser)list.get(0)).getEmail();
+					ErrorDumpUtil.ErrorLog("Old email = "+oldEmail);
+        	        		if(!(eMail.equals("")))
+        	        			email_msg = everify.profileDetails(eMail, loginName, LangFile, true);
+                			//TurbineUserPeer.doUpdate(crit);
 				       /**
 	        			* This is the updation in table STUDENT_ROLLNO in the database.
 				        */
@@ -256,7 +273,18 @@ public class ProfileUser extends SecureAction
 					filePath.mkdirs();
 					filePath=new File(filePath+"/"+PhotoName);
 					fileItem.write(filePath);
-					msg1=MultilingualUtil.ConvertedString("usr_prof",LangFile);
+					//For email verification
+					ErrorDumpUtil.ErrorLog("Catch the error "+email_msg);
+					if(email_msg.equals("Successfull"))
+						msg1=MultilingualUtil.ConvertedString("usr_prof3",LangFile);
+					else if(email_msg.equals("Exists"))
+						msg1=MultilingualUtil.ConvertedString("usr_prof5",LangFile);
+					else if(email_msg.equals("UnSuccessfull") || email_msg.equals(""))
+                                                msg1=MultilingualUtil.ConvertedString("usr_prof4",LangFile);
+					else if(email_msg.equals("Email_updated"))
+                                                msg1=MultilingualUtil.ConvertedString("usr_prof",LangFile);
+					else
+						msg1=MultilingualUtil.ConvertedString("usr_prof",LangFile);
 		  			data.setMessage(msg1);
 				}//close4
 				else
@@ -275,19 +303,34 @@ public class ProfileUser extends SecureAction
 		}//close2
        		else
                 {	 
-                		crit=new Criteria();
+				crit=new Criteria();
                 		crit.add(UserConfigurationPeer.USER_ID,uid);
         	       	 	crit.add(UserConfigurationPeer.LIST_CONFIGURATION,configuration);
 				crit.add(UserConfigurationPeer.TASK_CONFIGURATION,taskconf);
                 		crit.add(UserConfigurationPeer.QUESTION_ID,qid);
                 		crit.add(UserConfigurationPeer.ANSWER,ans);
-               	 		UserConfigurationPeer.doUpdate(crit);
+				UserConfigurationPeer.doUpdate(crit);
 				
 				crit=new Criteria();
                 		crit.add(TurbineUserPeer.FIRST_NAME,fName);
                 		crit.add(TurbineUserPeer.LAST_NAME,lName);
-                		crit.add(TurbineUserPeer.EMAIL,eMail);
-                		TurbineUserPeer.doUpdate(crit);
+				TurbineUserPeer.doUpdate(crit);
+
+				// email will now be updated after verification
+                		//crit.add(TurbineUserPeer.EMAIL,eMail);
+                		// For email verification
+                		crit=new Criteria();
+                                crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,uid);
+				ErrorDumpUtil.ErrorLog("i m here 1");
+				List list = org.iitk.brihaspati.om.TurbineUserPeer.doSelect(crit);
+				ErrorDumpUtil.ErrorLog("size of list "+list.size());
+				if(list.size()>0)
+                	        	oldEmail =((org.iitk.brihaspati.om.TurbineUser)list.get(0)).getEmail();
+                //		String oldEmail =((TurbineUser)list.get(0)).getEmail();
+		            	ErrorDumpUtil.ErrorLog("Old email 1 = "+oldEmail);
+                		if(!(eMail.equals("")))
+                			email_msg = everify.profileDetails(eMail, loginName, LangFile, false);
+                		//TurbineUserPeer.doUpdate(crit);
 
 		//-------------------------Telephone Directory-------------------------------
 		/* Insert or update value into database
@@ -295,14 +338,19 @@ public class ProfileUser extends SecureAction
 		* and update value in table "TELEPHONE_DIRECTORY" when corresponding data are present
 		*/
 				Vector instid1=InstituteIdUtil.getAllInstId(uid);
+				ErrorDumpUtil.ErrorLog("Institute vector "+instid1);
 				String str11="";
 				String instid="";
 				String str33="";
 				try{
-					for(int j=0;j<=instid1.size();j++){
+					for(int j=0;j<instid1.size();j++){
+						ErrorDumpUtil.ErrorLog("Institute Size "+instid1.size());
+						ErrorDumpUtil.ErrorLog("Value of j "+j);
 						str11=instid1.elementAt(j).toString();
+						ErrorDumpUtil.ErrorLog("Value of str11 "+str11);
 						if(!str11.equals(str33)){
 							instid=instid+"/"+str11;
+							ErrorDumpUtil.ErrorLog("Value of instid "+instid);
 						}
 					str33=str11;
 					}
@@ -314,15 +362,24 @@ public class ProfileUser extends SecureAction
 				
                                 tele.add(TelephoneDirectoryPeer.USER_ID,uid);
 				{
+						ErrorDumpUtil.ErrorLog("i m here");
                                                li = TelephoneDirectoryPeer.doSelect(tele);
                                                 if(li.size()>0) {
                                                         TelephoneDirectory element=(TelephoneDirectory)(li.get(0));
                                                         int id=(element.getId());
                                                         tele.add(TelephoneDirectoryPeer.ID,id);
-                                                }
+							oldEmail = (element.getMailId());
+						}
                                 }
-				
-                                tele.add(TelephoneDirectoryPeer.MAIL_ID,eMail);
+				ErrorDumpUtil.ErrorLog("Old email 2 = "+oldEmail);
+				/**
+                                 * now email will be updated after verification
+                                 * thus value of old email will be maintained.
+                                 * It will be same as of TURBINE_USER in case email is being updated
+                                 * and will remain as it is, in case email is not updated.
+                                 */
+				tele.add(TelephoneDirectoryPeer.MAIL_ID,oldEmail);
+				//tele.add(TelephoneDirectoryPeer.MAIL_ID,eMail);
                                 tele.add(TelephoneDirectoryPeer.NAME, name);
                                 tele.add(TelephoneDirectoryPeer.ADDRESS, address);
                                 tele.add(TelephoneDirectoryPeer.STATE, state);
@@ -330,7 +387,7 @@ public class ProfileUser extends SecureAction
                                 tele.add(TelephoneDirectoryPeer.DEPARTMENT, department);
                                 tele.add(TelephoneDirectoryPeer.DESIGNATION, designation);
 				tele.add(TelephoneDirectoryPeer.INSTITUTE_ID,instid);
-
+				ErrorDumpUtil.ErrorLog("i m here 1");
                                 if(offdirectory.equals("Public")){
                                         String PubOffNo="1-"+officeno;
                                         tele.add(TelephoneDirectoryPeer.OFFICE_NO, PubOffNo);
@@ -379,16 +436,25 @@ public class ProfileUser extends SecureAction
                                         String PriOthNo="3-"+otherno;
                                         tele.add(TelephoneDirectoryPeer.OTHER_NO, PriOthNo);
                                         }
+					// ErrorDumpUtil.ErrorLog("i m here 2");
 					if(li.size()==0)
-	                                	TelephoneDirectoryPeer.doInsert(tele);
+					{
+			                       	TelephoneDirectoryPeer.doInsert(tele);
+						 ErrorDumpUtil.ErrorLog("i m here 2");
+					}
 					else
+					{
 						TelephoneDirectoryPeer.doUpdate(tele);
+						 ErrorDumpUtil.ErrorLog("i m here 20");
+					}	
 			//---------------------------Telephone Directory----------------------------
 				/**
 				 * Getting values of template from parameterparser 
-				 */	
+				 */	 
+				ErrorDumpUtil.ErrorLog("i m here 21");
 				for(int k=1;k<=count;k++)
                                 {
+					ErrorDumpUtil.ErrorLog("i m here 3");
 					String InstName = pp.getString("instName"+k,"");
                         	        String PrgName = pp.getString("prg"+k,"");
                                 	String rollno = pp.getString("rollno"+k,"").trim();
@@ -425,11 +491,23 @@ public class ProfileUser extends SecureAction
  				 * then insert value in database
  				 */ 		
 				if(!rollno.equals(RlNo)){
+					ErrorDumpUtil.ErrorLog("i m here 4");	
 					//rollmsg=CourseProgramUtil.InsertRollNo(loginName,rollno,LangFile);
 					//rollmsg=CourseProgramUtil.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
 				}
 				}
-				msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
+				//following check added by Priyanka
+				ErrorDumpUtil.ErrorLog("Catch the error 1 "+email_msg);
+				if(email_msg.equals("Successfull"))
+					msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg4",LangFile);
+				else if(email_msg.equals("Exists"))
+                                        msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg6",LangFile);
+				else if(email_msg.equals("UnSuccessfull") || email_msg.equals(""))
+                                        msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg5",LangFile);
+				else if(email_msg.equals("Email_updated"))
+                                        msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
+				else
+					msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
            			data.setMessage(msg1+" "+rollmsg);
 
                 }

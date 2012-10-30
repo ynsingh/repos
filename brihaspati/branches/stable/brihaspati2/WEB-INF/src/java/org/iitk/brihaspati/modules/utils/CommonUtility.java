@@ -38,6 +38,12 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
+import java.util.Properties;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+
 import java.util.List;
 import java.util.Calendar;
 import java.util.Vector;
@@ -169,9 +175,10 @@ import org.iitk.brihaspati.modules.utils.GraphUtil;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:kishore.shukla@gmail.com">Kishore shukla</a>
  * @author <a href="mailto:gaurav.soni992@gmail.com">Gaurav Verma</a>
- * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modified date:12-09-2012
+ * @author <a href="mailto:piyushm45@gmail.com">PiyushMishra</a>	
+ * @modified date:09-11-2010,03-03-2011,02-07-2011,04-10-2011,05-09-2012
+ * @modified date:12-09-2012,10-10-2012,23-10-2012
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -281,6 +288,8 @@ public class CommonUtility{
 				//Call method removeNonce();
 				boolean nonce = removeNonce();
 				
+				//Call method removeNupdateEmailUser();
+				boolean rmvNupdt = removeNupdateEmailUser();	
 				//InsertStuExpRecord();
                         }//end of if 2 loop
 
@@ -1135,5 +1144,75 @@ public static void grpLeader()
 		return true;
 	}//method removeNonce()
 
+
+	public static String GetBrihVideoId(String path,String key) throws Exception{
+                InputStream f = new FileInputStream(path);
+                Properties p = new Properties();
+                 p.load(f);
+                 String val = p.getProperty(key);
+                 String[] link_Id1= val.split("v=");
+                 String[] link_Id2= link_Id1[1].split("&");
+                //return(val);
+                 return(link_Id2[0]);
+         }
+	
+	/**
+         * This method remove entry of emailId from file,
+         * and update periodically(15 days after file creation date),
+         * This method help to update entry of User Email id for auto search for Email Compose.
+         * @return boolean
+         */
+
+        public static boolean removeNupdateEmailUser()
+        {
+                try{
+                        // Get Current date using Util date and convert into sql date.
+                        java.util.Date TempCurrentDate = new java.util.Date();
+                        java.sql.Date CurrentDate= new java.sql.Date(TempCurrentDate.getTime());
+                        
+			// Get FilePath of User email List.
+                        File UserFile = new File(TurbineServlet.getRealPath("/scrpts/AutoSuggestUser/UserEmailId"));
+                        
+			// Get list of files from UserEmailId folder.
+                        String[] listOfFiles = UserFile.list();
+                        if(listOfFiles.length>0){
+                                
+				//Get modification date of all User Email-Id File within folder
+                                for (int i=0; i<listOfFiles.length; i++){
+                                        String tempfilenm = listOfFiles[i];
+                                        File EmailIdFile=new File(UserFile+"/"+tempfilenm);
+                                       
+					 //Get Last modified date of file.
+                                        long lastModifiedDate = EmailIdFile.lastModified();
+                                        
+					/**
+                                         * Create a new date object and pass last modified information
+                                         * to the date object
+                                         * Get last file-modification date.
+                                         */
+                                        
+					Date tempdate = new Date(lastModifiedDate);
+                                        java.sql.Date fileMdate= new java.sql.Date(tempdate.getTime());
+                                        String fileMdate1=fileMdate.toString();
+                                        
+					// calculate expiry date of file periodically(15 days).
+                                        String E_date=ExpiryUtil.getExpired(fileMdate1,15);
+                                        java.sql.Date FileExpdate= java.sql.Date.valueOf(E_date);
+                                        
+					// compare file expiry date and current date.
+                                        if(CurrentDate.compareTo(FileExpdate) >= 0)  {
+                                                //Delete file
+                                                EmailIdFile.delete();
+                                        }
+                                }
+                        }
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("error in getting file modification date : "+e);
+                }
+                return true;
+        }
+
 //Add method
 }//end of class
+

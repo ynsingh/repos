@@ -78,13 +78,13 @@ $!data.getMessage()
 	
                 <td><b> #if($lang == "hindi" || $lang == "gujarati") $RemoteInstitute $brih_searchBy #else $brih_searchBy $RemoteInstitute #end </b></td>
                 <td align=left>
-			<select class="drop" name="ciname" size="1" onChange="Changename(document.frm,this);">
+			<select class="drop" name="ciname" size="1" onChange="Changename(document.frm,this);" style="width:300px;">
 				#if($mode != "All")
                                 <option value="$ciid">$cinme</option>
 				#end
                                 <option>  </option>
                                 #foreach ($iname in $instdetail)
-                                        <option value="$iname.getInstituteId()">$iname.getInstituteName()</option>
+                                        <option value="$iname.getInstituteId()" title="$iname.getInstituteName()" style="width:275px;">$iname.getInstituteName()</option>
                                 #end
                         </select>
 		</td>

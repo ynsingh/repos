@@ -18,7 +18,7 @@ $page.setBgColor($ui.bgcolor)
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-<div class="main" style="width:1100px; margin:-10px auto;">
+<div class="main" style="width:1100px; margin:-10px auto; background:$ui.tableColor;">
 <table>
 <tr><td>
 <marquee> <font size=4>$!fNoti</font></marquee>
@@ -298,9 +298,9 @@ $!msg
 <br>$brih_signin:
 </font>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle"></a>
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
 &nbsp;&nbsp;
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle"></a>
+<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
 <br>
 </td></tr>
 

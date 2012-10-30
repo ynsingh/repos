@@ -105,16 +105,16 @@ $!data.getMessage()
 <td colspan="3"><b>$brih_backup7</b></td>
 </tr>
 <tr bgColor="$ui.tableColor">
-	<td><select class="drop" name="courses">
+	<td><select class="drop" name="courses" style="width:300px;">
         <option value="Courses">$brih_all $brih_courses</option>
         #foreach($group in $courseList)
 		#if($data.getUser().getUserName() == "admin")
                 	#if(($group.Name !="global") && ($group.Name !="author")&&($group.Name !="institute_admin"))
-                	<option value="$group.Name">$group.Name</option>
+                	<option value="$group.Name" title="$group.Name" style="width:275px;">$group.Name</option>
                        	#end
 		#else
                 	#if($data.getUser().getTemp("role")=="institute_admin")
-                        <option value="$group.getGroupName()">$group.getGroupName()</option>
+                        <option value="$group.getGroupName()" title="$group.getGroupName()" style="width:275px;">$group.getGroupName()</option>
 			#end
 		#end
         #end

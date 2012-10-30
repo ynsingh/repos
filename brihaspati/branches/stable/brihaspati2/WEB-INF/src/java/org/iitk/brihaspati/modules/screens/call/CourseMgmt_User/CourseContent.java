@@ -59,7 +59,7 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.xml.sax.helpers.AttributesImpl;
-
+import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
@@ -100,6 +100,11 @@ public class CourseContent extends VelocitySecureScreen{
 			//File dFile=new File(filePath+"/"+"content__des.xml");
 			File dFile=new File(filePath+"/"+"coursecontent__des.xml");
 			String filePath1=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content"+"/Permission";
+			//Help Video Configuration
+			 String h_Video=data.getServletContext().getRealPath("/resources")+"/youTubeLinks"+"/"+"help_Video.properties";
+			 String v_Id = CommonUtility.GetBrihVideoId(h_Video,"course_Content");
+                         context.put("vid",v_Id);
+
 	
 			File f=new File(filePath1+"/permissionReceive__des.xml");
 			 /**

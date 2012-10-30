@@ -34,14 +34,15 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  * 
  */
+import java.io.File;
 import java.util.Vector;
 import java.util.List;
 import org.apache.torque.util.Criteria;
 import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.File;
 import java.io.IOException;
+import java.io.*;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -50,17 +51,16 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Student;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
-
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-//import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-//import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
  /** 
   * In this class, View Marks from Marks file uploading by group instructor
   * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
   * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
   * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
-  * @modified date: 20-10-2010
+  * @author <a href="mailto:vipulk.iitk.ac.in">Vipul Kumar Pal</a>
+  * @modified date: 20-10-2010,01-02-2012
   */
  
 public class ViewMarks extends SecureScreen_Student 
@@ -76,7 +76,7 @@ public class ViewMarks extends SecureScreen_Student
 			String checkUser=user.getName();
 			String Role = (String)user.getTemp("role");
 			String dir=(String)user.getTemp("course_id");
-			context.put("course",(String)user.getTemp("course_name"));
+                        context.put("course",(String)user.getTemp("course_name"));
 			/**
                          *Time calculaion for how long user use this page.
                          */
@@ -97,82 +97,94 @@ public class ViewMarks extends SecureScreen_Student
 	                        v=StudentRollnoPeer.doSelect(crit);
 				if(v.size()>0){
 					StudentRollno element=(StudentRollno)v.get(0);
-		                        rollno1=element.getRollNo();
-				/**
- 				 * Vector size greater than 1 shows that user have more than 1 rollno
- 				 * then get another rollno 
- 				 */ 
+	                        	rollno1=element.getRollNo();
+				
+					/**
+	 				 * Vector size greater than 1 shows that user have more than 1 rollno
+ 					 * then get another rollno 
+ 					 */ 
 					if(v.size()>1)
 					{
 						StudentRollno element1=(StudentRollno)v.get(1);
 						rollno2=element1.getRollNo();
 					}
 				}
-			//ErrorDumpUtil.ErrorLog("The roll no is "+checkUser +" ==== "+ rollno1 +"===="+rollno2);
 			}
 			catch(Exception e)
 			{ 
 				ErrorDumpUtil.ErrorLog("Error inside getting value in view marks"+e);
 			}
-			
-			boolean flag=true;
+
+			String tempfilePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks";
+			File MarksDir=new File(tempfilePath);
+			String[] listOfFiles = MarksDir.list();
+			Vector markDetail=new Vector();
+			Vector heading=new Vector();
+			Vector alias = new Vector();
+			// this block of code is responsible to read all files from Marks directory and checks if user's 
+			// roll number exists or not ,if exists then show their results according to alias name
 			if(v.size()>0){
-				String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/MARK.txt";
-				
-				if(((new File (filePath)).exists())){
-					FileReader fr=new FileReader(filePath);
-					BufferedReader br=new BufferedReader(fr);
-					String line;
-					StringTokenizer sTokenizer;
-					if((line=br.readLine())!=null)
-					{
-						sTokenizer=new StringTokenizer(line,",");
-						Vector heading=new Vector();
-						sTokenizer.nextToken();
-						while(sTokenizer.hasMoreTokens())
-						{
-							heading.addElement(sTokenizer.nextToken());
-						}
-						context.put("markHeading",heading);
-					}
-					while((line=br.readLine())!=null)
-					{
-						sTokenizer=new StringTokenizer(line,",");
-						try{
-							String userName=sTokenizer.nextToken().trim();
-							if(rollno1.equals(userName)||rollno2.equals(userName))
-							{
-								Vector markDetail=new Vector();
-								while(sTokenizer.hasMoreTokens())
-								{
-									markDetail.addElement(sTokenizer.nextToken());
-								}
-								br.close();
-						//	ErrorDumpUtil.ErrorLog("Error inside getting value in view marks 22"+markDetail.toString());
-								context.put("marks",markDetail);
-								context.put("marksDSize",Integer.toString(markDetail.size()));
-								context.put("status","NoBlank");
-								flag=false;
+			for (int i=0; i<listOfFiles.length; i++){
+				String filename=listOfFiles[i];
+				String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/"+filename;
+
+				FileReader fr=new FileReader(filePath);
+				BufferedReader br=new BufferedReader(fr);
+				String line;
+				StringTokenizer sTokenizer;
+				while((line=br.readLine())!=null)
+				{
+					sTokenizer=new StringTokenizer(line,",");
+					try{
+						String userName=sTokenizer.nextToken().trim();
+						if(rollno1.equals(userName)||rollno2.equals(userName)){
+							String str = StringUtils.substringBeforeLast(filename,"-");
+							//String str[] = filename.split("-");
+				                        alias.add(str);
+
+							FileReader freader1 = null;
+  							LineNumberReader lnreader1 = null;
+						 	File   file1 = new File(filePath);
+							freader1 = new FileReader(file1);
+							lnreader1 = new LineNumberReader(freader1);
+							String line1 = "";
+							while ((line1 = lnreader1.readLine()) != null){
+								StringTokenizer Tokenizer=new StringTokenizer(line1,",");
+                                        		        Vector heading1=new Vector();
+		                                                Tokenizer.nextToken();
+                		                                while(Tokenizer.hasMoreTokens())
+                                		                {
+                                                		        heading1.addElement(Tokenizer.nextToken());
+		                                                }
+                		                                heading.add(heading1);
+
 								break;
-							}/* 
-							else
+							}
+							Vector markDetail1=new Vector();
+							while(sTokenizer.hasMoreTokens())
 							{
-								context.put("marksDSize","0");
-								context.put("status","Blank");
-							} */
-						}
-						catch(Exception e){
-							context.put("status","Blank");
-							context.put("Exp","Exp");
-							ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
+								markDetail1.addElement(sTokenizer.nextToken());
+							}
+							br.close();
+							markDetail.add(markDetail1);
+							break;
 						}
 					}
-				}//if file exist
+					catch(Exception e){
+						ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
+					}
+				}
 			}
-			if (flag){
-                                context.put("marksDSize","0");
-                                context.put("status","Blank");
-                        }
+				context.put("alias",alias);
+				context.put("markHeading",heading);
+				context.put("markDetail",markDetail);
+				context.put("marksDSize",Integer.toString(markDetail.size()));
+				context.put("status","NoBlank");
+				if(markDetail.size()==0){
+					context.put("marksDSize","0");
+                                        context.put("status","Blank");
+				}
+			}// end of if
 		}
 		catch(IOException e)
 		{

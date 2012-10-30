@@ -1,0 +1,117 @@
+#*
+ * @(#) InstBackups.vm
+ * Copyright(c)2011 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+*#
+
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
+
+$page.setTitle("Backups")
+$!data.getMessage()
+
+<table bgcolor="$ui.tableColor" width=100%>
+<tr bgcolor="$ui.menuColor">
+	<td>
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
+		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a> | $RemoteInstitute $brih_backup
+</tr>
+</table>
+<table width=100% bgcolor="$ui.tableColor">
+<tr>
+	#if($tdcolor!="1")
+	<td>
+	#elseif($tdcolor=="1")
+	<td bgcolor="#AFDCEC">
+	#end
+    	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none > #if($lang == "hindi") $brih_content $brih_Of1 $brih_backup #else $brih_backup $brih_content #end </a></td>
+	#if($tdcolor!="2")
+	<td>
+	#elseif($tdcolor=="2")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system #if($lang == "hindi") $brih_Of1 #end $brih_backup</a></td>
+	#if($tdcolor!="3")
+	<td>
+	#elseif($tdcolor=="3")
+	<td bgcolor="#AFDCEC">
+	#end
+    	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("mode","blist").addPathInfo("count","3") style=text-decoration:none>$brih_backup $brih_list</a></td>
+	#if($tdcolor!="4")
+	<td>
+	#elseif($tdcolor=="4")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4")" style=text-decoration:none >$Glossary #if($lang == "hindi") $brih_Of1 #end $brih_backup</td>
+	#if($tdcolor!="5")
+	<td>
+	#elseif($tdcolor=="5")
+	<td bgcolor="#AFDCEC">
+	#end
+    	<a href=$link.setPage("call,Backups,InstBackups.vm").addPathInfo("count","5") style=text-decoration:none>$RemoteInstitute $brih_backup</a></td>
+</tr>
+<form name="frm" method="post" action="$link.setPage("call,Backups,InstBackups.vm").setAction("BackupAction")">
+</tr>
+	<tr>
+	<td>
+                <select name="instName" class="drop" size=1 onChange="checkOption(document.frm,this);"/>
+                #foreach($name in $instList)
+                <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+                #end
+                </select>
+        </td>
+        <td>
+        	<input type="submit" class="button-ftextstyle" name="eventSubmit_doCrssearch" value="$brih_search">
+        </td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+	<td>
+                <select name="courses" class="drop" onChange="selectOption(document.frm,this);"/>
+                #foreach($crsname in $crsList)
+                <option value="$crsname.getGroupName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
+                #end
+                </select>
+	</td>	
+        <td colspan=5>
+		#if($lang == "hindi")
+	        <input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+		#else
+	        <input type="button" class="button-ftextstyle" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
+		#end
+		#if($lang == "hindi")
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+		#else
+                <input type="button" class="button-ftextstyle" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
+		#end
+                <input type="hidden" name="actionName">
+                <input type="hidden" name="count" value="$tdcolor">
+         </td>
+</tr>
+</form>
+</table>
+
+<SCRIPT LANGUAGE="javascript">
+	function checkField(frm,field)
+        {
+		frm.actionName.value=field.name;
+                frm.submit();
+	}
+	function checkOption (frm,field)
+        {
+                frm.val.value=document.frm.instName.value;
+        }
+        function checkNull(frm,field)
+        {
+                if(frm.value.value!=""){
+                        frm.submit();
+                }
+        }
+	function selectOption (frm,field)
+        {
+                frm.gname.value=document.frm.courses.value;
+        }
+</SCRIPT>

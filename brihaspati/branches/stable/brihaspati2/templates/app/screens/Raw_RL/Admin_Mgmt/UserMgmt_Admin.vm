@@ -1,0 +1,223 @@
+#*
+ * @(#) UserMgmt_Admin.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+
+$page.setTitle("$brih_ad $brih_home | $brih_admin $brih_mgmt")
+$page.setBgColor("bgcolor")
+$!data.getMessage()
+<script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/InstituteAdminRegistration.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table bgcolor="$ui.tableColor" width=100%>
+<tr bgcolor="$ui.menuColor"><td colspan=7>
+	<a href=$link.setPage("Index.vm") style=text-decoration:none> $brih_ad $brih_home</a> |
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> $brih_ad $brih_mgmt</a> | #if($mode != "instadminlist") $brih_reg1 $brih_sec $brih_admin #else $brih_view $brih_ad $brih_list #end </td>
+
+	 #if($permission !="0")
+        <td align=right>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Admin.html","newWin");>$brih_help</a>
+        </td>
+        #else
+        <td align=right>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/UserMgmt_Admin_sec.html","newWin");>$brih_help</a>
+        </td>
+        #end
+</tr>
+</table>
+
+<table bgcolor="$ui.tableColor" width=100%>
+	#if($permission != "0")
+        <tr bgcolor="$ui.tableColor">
+                #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> #if($lang == "hindi") $brih_view $brih_ad $brih_list #else $brih_view $brih_ad $brih_list #end </a>
+                </td>
+		 #if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+                #end
+		
+		#if($permission != "0")
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("Institute_Id",$Institute_Id).addPathInfo("Institute_Name",$Institute_Name).addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_reg1 $brih_sec $brih_admin #else $brih_reg1 $brih_sec $brih_admin #end </a>
+		#end
+                </td>
+        </tr>
+	#else
+        <tr>
+                #if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count","1").addPathInfo("mode","instadminlist") style=text-decoration:none> #if($lang == "hindi") $brih_view $brih_ad $brih_list #else $brih_view $brih_ad $brih_list #end </a>
+                </td>
+        </tr>
+	#end
+
+##</table>
+
+#if(($mode =="")&&($permission != "0"))
+##<table bgcolor="$ui.tableColor" width="100%">
+<form name=frm method="post" action="$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").setAction("AdminList_Action")"> 
+
+                <tr bgcolor="$ui.menuColor">
+                        <td>$RemoteInstitute $brih_name</td>
+                        <td><input type="text" name="Institute_Name" value="$Institute_Name" readonly="readonly"></td>
+                </tr>
+
+                <tr>
+                        <td>$brih_ad #if($lang =="hindi")  #end $brih_first $brih_name <font color=red>*</font> </td>
+                        <td> <input type="text" name="IADMINFNAME" value=""> </td>
+                </tr>
+                <tr bgcolor="$ui.menuColor">
+                      <td>$brih_ad #if($lang =="hindi")  #end $brih_last $brih_name <font color=red>*</font> </td>
+                      <td> <input type="text" name="IADMINLNAME" value=""> </td>
+                </tr>
+		<tr>
+                        <td>$brih_ad #if($lang =="hindi")  #end $Inst_designation </td>
+                        <td> <input type="text" name="IADMINDESIGNATION" value=""> </td>
+                </tr>
+
+                <tr bgcolor="$ui.menuColor">
+                        <td>$brih_ad #if($lang =="hindi")  #end $brih_email <font color=red>*</font> </td>
+                        <td> <input type="text" name="IADMINEMAIL" value=""> </td>
+                </tr>
+                <tr> <td colspan=2>
+                <input type="hidden" name="actionName">
+               <input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkFieldAdminMgmt(document.frm,this);"/>
+                <input type="Reset" name="Reset" Value="$brih_clear"/>
+                <input type="hidden" name="Institute_Id" Value="$Institute_Id">
+                <input type="hidden" name="Institute_Name" Value="$Institute_Name">
+                <input type="hidden" name="count" Value="$tdcolor">
+                </td> </tr>
+
+</form>
+</table>
+#end
+
+#if($mode=="instadminlist")
+<table  bgcolor="$ui.tableColor" width=100%>
+#if($permission !="0")
+#set($headings = ["$brih_ad $brih_first $brih_name","$brih_ad $brih_last $brih_name","$brih_ad $brih_usrName","$brih_ad $brih_availableAction","$brih_ad $brih_status"] )
+#else
+#set($headings = ["$brih_ad $brih_first $brih_name","$brih_ad $brih_last $brih_name","$brih_ad $brih_usrName"] )
+#end
+<FORM ENCTYPE="multipart/form-data" NAME="frm" METHOD="POST" action="$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").setAction("AdminList_Action").addPathInfo("mode","instadminlist")">
+		<tr bgcolor="$ui.menuColor">
+		#foreach ($heading in $headings)
+		#headerCell ($heading)
+		#end
+		</tr>
+                #set($count1= 0) 	      
+		#foreach($admin_list1 in $adminlist)
+			#set($temp1= 0)
+			 #foreach($us in $usrprms) 
+			 	#if($count1 == $temp1) 
+					#if($us!="1") 
+						#if($us=="2") 
+						<tr bgcolor="#F6CECE" width=100%>
+                                                                                
+						#else  
+							#if($velocityCount%2==0) 
+							<tr bgcolor="$ui.menuColor" width=100%>
+							#else   
+							<tr bgcolor="$ui.tableColor" width=100%>
+							#end 
+						#end 
+			 					
+					#else 
+					<tr bgcolor="#CEF6CE" width=100%>
+					#end  
+
+				#end 
+                        	#set($temp1 = $temp1 + 1)
+                      	#end   
+			#foreach($admin_list in $admin_list1)
+			##<td>$admin_list.getAdminFname()</td>
+			<td>$admin_list.getInstituteFName()</td>
+                                                
+			##<td>$admin_list.getAdminLname()</td>
+			<td>$admin_list.getInstituteLName()</td>
+                                        
+			##<td>$admin_list.getInstituteEmail()</td>
+			<td>$admin_list.getInstituteUserName()</td>
+			
+			 #if($permission != "0")
+			 <td>
+                            #set($temp= 0)      
+                            #foreach($us in $usrprms)
+                                #if($count1 == $temp)
+                                    #if($us!="1")       
+                                        #if($us=="2")
+                                                #if($admin_list.getInstituteUserName() != $flag )
+					<a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("permission","0").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionsecondryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg8 $Repo_Perm</a> &nbsp; &nbsp;
+                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
+                                                #else
+                                	<a>$DisBoard_DBmsg7 $Repo_Perm</a>&nbsp; &nbsp; &nbsp;
+		                        <a>$brih_remove</a>
+                                                #end
+                			<td><a><font face="times, times new roman" size="4" color="green">$brih_prim $brih_admin</a></td>
+                                        #else 
+					<a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("permission","2").addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doPermissionUser") onclick="javascript:return confirm('$brih_permissionprimaryadmin !!')" style=text-decoration:none>$DisBoard_DBmsg7 $Repo_Perm</a> &nbsp; &nbsp;
+
+                                        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('$brih_removesecondryadmin')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td>
+                <td><a><font face="times, times new roman" size="4" color="red">$brih_sec $brih_admin</font></a></td>
+                                        #end 
+                                #else
+						 #if($admin_list.getInstituteUserName() != $flag )               
+                                        <center> <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("username",$admin_list.getInstituteUserName()).addPathInfo("count",$tdcolor).addPathInfo("Institute_Id",$Institute_Id).addPathInfo("mode","instadminlist").setAction("AdminList_Action").addPathInfo("actionName","eventSubmit_doRemove") onclick="javascript:return confirm('Do you want to Delete This Admin !! ')" style=text-decoration:none>$brih_remove</a> &nbsp; &nbsp;</td></center>
+                                                #else
+                                                <center>$brih_remove</center>
+                                                #end
+
+			
+                        	<td><a><font face="times, times new roman, serif" size="4">$brih_prim $brih_admin</font></a></td>
+                                #end
+			      #end    
+			      #set($temp = $temp + 1)
+			      #end    
+                              #end
+                        #end
+			#set($count1 = $count1 + 1)
+                #end
+		</tr>
+		
+        #if($mode == "instadminlist")
+        <tr><td align=left bgcolor="$ui.tableColor" colspan=7>
+        #if($total_size <= $AdminConf)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <font color="white">$brih_nxt</font>&nbsp;
+        <font color="white">$brih_last</font> &nbsp;
+        #elseif($startIndex == $AdminConf_str)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$startIndex) style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
+
+        #elseif($endIndex == $total_size || $endIndex > $total_size)
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_pre) style=text-decoration:none>$brih_pre</a> &nbsp;
+        <font color="white">$brih_nxt</font> &nbsp;
+        <font color="white">$brih_last</font> &nbsp;
+
+        #else
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_pre) style=text-decoration:none>$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex) style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
+        #end
+        </td>
+        </tr>
+        #end
+</FORM>
+</table>
+ #end
