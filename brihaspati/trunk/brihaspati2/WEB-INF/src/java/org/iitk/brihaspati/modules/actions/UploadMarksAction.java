@@ -61,6 +61,8 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.XMLWriter_Marks;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * In this class, We upload marks in txt format file
@@ -70,6 +72,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  * @modified date 29-12-2009
  * @modified date: 08-07-2010
  * @modified date 15-09-2010, 16-06-2011 (Shaista)
@@ -77,74 +80,70 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 public class UploadMarksAction extends SecureAction_Instructor
 {
+	
     public void doUpload(RunData data, Context context)
     {
 	try{
-		String LangFile=data.getUser().getTemp("LangFile").toString();
-		User user=data.getUser();
 		ParameterParser pp=data.getParameters();
-                String serverName= TurbineServlet.getServerName();
-                String serverPort= TurbineServlet.getServerPort();
-		/**
-	 	 * Get the course id from user's temporary variable
-	 	 */
+		User user=data.getUser();
+		String cName=(String)user.getTemp("course_id");
+		String coursesRealPath=TurbineServlet.getRealPath("/Courses");
+                String destDir1=coursesRealPath+"/"+cName+"/Marks";
+                String xmlpath=coursesRealPath+"/"+cName+"/Marks.xml";
+		File MarksDir=new File(destDir1);
+		if(!MarksDir.exists()){
+                MarksDir.mkdirs();
+		}
+		String LangFile=(String)data.getUser().getTemp("LangFile");
+		String text="null";
+		String myvalue = pp.getString("myvalue");
+		for(int count=0;count<10;count++){
+		FileItem fileItem=pp.getFileItem("file"+(count+1));
+		text = pp.getString("text"+(count+1));
+		String fileName=fileItem.getName();
+		if((!(fileName.toLowerCase()).endsWith(".txt")))
+                        {
+                                 /**
+                                 * Getting file value from temporary variable according to selection of Language
+                                 * Replacing the static value from Property file
+                                 **/
 
-		String courseHome=(String)user.getTemp("course_id","");
-		/**
-	 	 * Get the file for uploading and check if the file is "null"
-	 	 */
-		FileItem fileItem=pp.getFileItem("file");
-		if((fileItem!=null) && (fileItem.getSize()!=0))
-		{
-			/**
-	 		 * Get the name of the file for uploading and check if the
-	 		 * extension is ".txt"
-	 		 */
-			String fileName=fileItem.getName();
-			String mailMsg ="";
-			if(!(fileName.toLowerCase()).endsWith(".txt") && !(fileName.toLowerCase()).endsWith(".csv"))
-			{
- 				data.setMessage(MultilingualUtil.ConvertedString("Marks_msg1",LangFile));
+                                String upload_msg3=MultilingualUtil.ConvertedString("upload_msg2",LangFile);
+                                data.addMessage(upload_msg3);
+                        }
+		else{
+
+			String check = "";
+
+			String checked = XMLWriter_Marks.Check(xmlpath,"checked");
+			if(checked.equals("Exist")){
+			check = "checked";
 			}
-			else
-			{
-				/**
-		 		 * Get the real path of the marks directory
-		 		 */
 
-				String coursesRealPath=TurbineServlet.getRealPath("/Courses");
-				String destDir=coursesRealPath+"/"+courseHome+"/Marks/";
-
-				File marksDir=new File(destDir);
-				File marksFile=new File(marksDir,"MARK.txt");
-				boolean marksExist=false;
-
-				/**
-		 		 * Check if the marks file exists
-		 		 */
-
-				if(marksFile.exists())
-				{
-					marksExist=true;
-				}
-				marksDir.mkdirs();
-				String userName=user.getName();
-				File tempFile=new File(TurbineServlet.getRealPath("/tmp")+"/"+userName+".txt");
-				fileItem.write(tempFile);
-				StringUtil.insertCharacter(tempFile.getAbsolutePath(),marksFile.getAbsolutePath(),',','-');
-				tempFile.delete();
-				SendMail(data,user,courseHome,userName,marksExist);
+			String checkalias = XMLWriter_Marks.CheckElement(xmlpath,text);
+			if(!checkalias.equals("Exist")){
+				String markxml = XMLWriter_Marks.MarksXml(xmlpath,fileItem.getName(),text,check);
+				File tempFile=new File(destDir1+"/"+text+"-"+fileItem.getName());
+		                fileItem.write(tempFile);
+                                String Marks_msg2=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
+        		        data.setMessage(Marks_msg2);
+			}else{
+				String FName = XMLWriter_Marks.ReadFileNameElement(xmlpath,text);
+				String remove = XMLWriter_Marks.RemoveElement(xmlpath,text);
+				File DelFile=new File(destDir1+"/"+text+"-"+FName);
+                	        DelFile.delete();
+				String markxml = XMLWriter_Marks.MarksXml(xmlpath,fileItem.getName(),text,check);
+                                File tempFile=new File(destDir1+"/"+text+"-"+fileItem.getName());
+                                fileItem.write(tempFile);
+                                String Marks_msg6=MultilingualUtil.ConvertedString("Marks_msg6",LangFile);
+				data.addMessage(Marks_msg6);
 			}
 		}
-		else
-		{
-			data.setMessage(MultilingualUtil.ConvertedString("Marks_msg4",LangFile));
-			
 		}
 	}
 	catch(Exception ex)
 	{
-		data.setMessage("The error in Uplodaing in Marks !!"+ex);
+		ErrorDumpUtil.ErrorLog("we are in Exception of uploadmarksaction"+ex);
 	}
     }
 
@@ -159,27 +158,59 @@ public class UploadMarksAction extends SecureAction_Instructor
 	                         * @param user Getting User object
         	                 */
 				User user=data.getUser();
+				String fileName="";
+				/**
+                                 * @param cName getting course name which is set by setTemp() method
+                                 */
+                                String cName=(String)user.getTemp("course_id");
 
+                                /**
+                                 * getting actual path where marks have to be saved
+                                 */
+                                String coursesRealPath=TurbineServlet.getRealPath("/Courses");
+                                String destDir=coursesRealPath+"/"+cName+"/Marks/";
+                                String destDirtemp=coursesRealPath+"/"+cName;
+                		String xmlpath=coursesRealPath+"/"+cName+"/Marks.xml";
 				/**
 				 *set status null that shows status is not edit
 				 */
 				context.put("status","null");
 				ParameterParser pp=data.getParameters();
+				String filename = pp.getString("fileName","MARK.txt");
+				String type = pp.getString("type","");
+				String alias = pp.getString("alias","");
+				if(type.equals("SpreadSheet")){
+					fileName=alias+"-"+filename;
+///////////////////////////////////////////
+					String check = "";
+                        String checked = XMLWriter_Marks.Check(xmlpath,"checked");
+                        if(checked.equals("Exist")){
+                        check = "checked";
+                        }
+                        String checkalias = XMLWriter_Marks.CheckElement(xmlpath,alias);
+                        if(!checkalias.equals("Exist")){
+                                String markxml = XMLWriter_Marks.MarksXml(xmlpath,filename,alias,check);
+                                String Marks_msg2=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
+                                data.addMessage(Marks_msg2);
+                        }else{
+                                String FName = XMLWriter_Marks.ReadFileNameElement(xmlpath,alias);
+                                String remove = XMLWriter_Marks.RemoveElement(xmlpath,alias);
+                                File DelFile=new File(destDir+alias+"-"+FName);
+                                DelFile.delete();
+                                String markxml = XMLWriter_Marks.MarksXml(xmlpath,filename,alias,check);
+                                String Marks_msg6=MultilingualUtil.ConvertedString("Marks_msg6",LangFile);
+                                data.addMessage(Marks_msg6);
+                        }
+///////////////////////////////////////////////
+				}
+				else{
+					fileName = filename;
+				}
 			
-				/**
-		                 * @param cName getting course name which is set by setTemp() method
-                		 */
-				String cName=(String)user.getTemp("course_id");
-			
-				/**
-				 * getting actual path where marks have to be saved
-				 */
-				String coursesRealPath=TurbineServlet.getRealPath("/Courses");
-                                String destDir=coursesRealPath+"/"+cName+"/Marks/";
-				
 				File marksDir=new File(destDir);
-                                File marksFile=new File(marksDir,"MARK.txt");
-                                File tmpFile=new File(marksDir,"TMPMARK.txt");
+				File marksDirtemp=new File(destDirtemp);
+                                File marksFile=new File(marksDir,fileName);
+                                File tmpFile=new File(marksDirtemp,"TMPMARK.txt");
                                 boolean marksExist=false;
 
                                 /**
@@ -257,6 +288,8 @@ public class UploadMarksAction extends SecureAction_Instructor
 		public void doDelete(RunData data, Context context)
 		{// function start
 			try{// 1 try
+				String LangFile=data.getUser().getTemp("LangFile").toString();
+
 				/**
                                  * @param user Getting User object
                                  */
@@ -265,28 +298,37 @@ public class UploadMarksAction extends SecureAction_Instructor
 				 * @param pp instance of ParameterParser
 				 */
                                 ParameterParser pp=data.getParameters();
-				/**
+				String alias = pp.getString("alias","");
+				 /**
                                  * @param cName getting course id which is set by setTemp() method
                                  */
                                 String cName=(String)user.getTemp("course_id");
-				/**
+				 /**
                                  * getting actual path where marks saved
                                  * @RETURN String
                                  */
-                                String coursesRealPath=TurbineServlet.getRealPath("/Courses");
-                                String destDir=coursesRealPath+"/"+cName+"/Marks/MARK.txt";
-                                String tmpdestDir=coursesRealPath+"/"+cName+"/Marks/TMPMARK.txt";
-                                File marksDir=new File(destDir);
-                                File tmpmarksDir=new File(tmpdestDir);
-				/**	
-				 * Deleting MARK.txt & TMPMARK.txt if exist
-				 */
-				marksDir.delete();
-				tmpmarksDir.delete();
-				/**
-				 * set template UploadMarks after deleting txt file
-				 */
-				setTemplate(data,"call,UserMgmt_User,UploadMarks.vm");
+
+
+				String coursesRealPath1=TurbineServlet.getRealPath("/Courses"+"/"+cName+"/Marks");
+				String FileName = pp.getString("FileName","");
+		                String coursesRealPath11=TurbineServlet.getRealPath("/Courses"+"/"+cName+"/Marks.xml");
+				String remove = XMLWriter_Marks.RemoveElement(coursesRealPath11,alias);
+
+		                File MarksDir=new File(coursesRealPath1);
+				String[] listOfFiles = MarksDir.list();
+
+                 		for (int i=0; i<listOfFiles.length; i++){
+		                        String filename=listOfFiles[i];
+					String flName = StringUtils.substringBeforeLast(filename,"-");
+                		        //String flName[]=filename.split("\\-");
+
+		 	               if( alias.equals(flName)){
+		 				File DelFile=new File(coursesRealPath1+"/"+filename);
+		 				DelFile.delete();
+                                		String Marks_msg7=MultilingualUtil.ConvertedString("Marks_msg7",LangFile);
+						data.setMessage(Marks_msg7);
+                			}
+                		}
 			}// end of 1 try
 			catch(Exception e)
 			{// 1 catch
@@ -294,6 +336,7 @@ public class UploadMarksAction extends SecureAction_Instructor
 			}// end of 1 catch
 
 		}// end of function
+
 	/**
 	 * below method for sending mail to instructor and students 
 	 */
@@ -309,7 +352,9 @@ public class UploadMarksAction extends SecureAction_Instructor
 					String LangFile=data.getUser().getTemp("LangFile").toString();
 					String serverName= TurbineServlet.getServerName();
                                 	String serverPort= TurbineServlet.getServerPort();
-	                                String mailMsg = "";
+	                                String mailMsg = "";//help.ubuntu.com/
+
+
 				 	String mailId="";
 	                                //String marksUploadStr="Marks are uploaded in"+courseHome;
 					// Shaista did Modification for mail Sending 

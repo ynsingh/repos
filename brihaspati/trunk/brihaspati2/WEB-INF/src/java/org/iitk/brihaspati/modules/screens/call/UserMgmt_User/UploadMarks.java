@@ -48,6 +48,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.XMLWriter_Marks;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
@@ -60,6 +61,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
   * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
   * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
   * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+  * @author <a href="mailto:vipulk@iitk.ac.in">vipul kumar pal</a>
   * @modified date 15-09-2010
   */
  
@@ -100,6 +102,7 @@ public class UploadMarks extends SecureScreen_Instructor
                          */	
 			String Type=pp.getString("type","");
 			String status=pp.getString("status","");
+			String fileName=pp.getString("filename","");
 			context.put("status",status);
 			context.put("type",Type);
 			context.put("course",(String)user.getTemp("course_name"));
@@ -112,12 +115,19 @@ public class UploadMarks extends SecureScreen_Instructor
                          * getting actual path where marks saved
                          * @RETURN String                               
 			 */
-			String marks=coursesRealPath+"/"+dir+"/Marks/MARK.txt";
+			String xmlPath=coursesRealPath+"/"+dir+"/Marks.xml";
+			// Read xml file and saves data in show vector.
+			// Send them into vm file
+			Vector show = new Vector();
+			show = XMLWriter_Marks.ReadMarksDeatils(xmlPath);
+			context.put("show",show);
+
 			/**
                          * getting actual path where formula saved
                          * @RETURN String
                          */
-			String tmpmarks=coursesRealPath+"/"+dir+"/Marks/TMPMARK.txt";
+			String marks=coursesRealPath+"/"+dir+"/Marks/"+fileName;
+			String tmpmarks=coursesRealPath+"/"+dir+"/TMPMARK.txt";
 			File marksFile=new File(marks);
 			File tmpFile=new File(tmpmarks);
 			/**
@@ -128,11 +138,10 @@ public class UploadMarks extends SecureScreen_Instructor
 				if(marksFile.exists())
 					{// 1 if
 						context.put("fileExists","true");
-						context.put("fileName","MARK.txt");
+						context.put("fileName",fileName);
 						if(data.getMessage()==null)
 						{// 2 if
 							String LangFile=user.getTemp("LangFile").toString();
-							data.setMessage(MultilingualUtil.ConvertedString("Marks_msg5",LangFile));
 						}// end of 2 if
 					}// end of 1 if
 				else
@@ -148,11 +157,10 @@ public class UploadMarks extends SecureScreen_Instructor
 			 	if(tmpFile.exists())
                                         {// 3 if
                                                 context.put("FileExist","true");
-                                                context.put("fileName","MARK.txt");
+                                                context.put("fileName",fileName);
                                                 if(data.getMessage()==null)
                                                 {// 4 if
                                                         String LangFile=user.getTemp("LangFile").toString();
-                                                        data.setMessage(MultilingualUtil.ConvertedString("Marks_msg5",LangFile));
                                                 }// end of 4 if
                                         }// end of 3 if
                                 else
@@ -214,7 +222,7 @@ public class UploadMarks extends SecureScreen_Instructor
 		}// end of try
 	catch(Exception ex)
 		{
-			data.setMessage("The error in Upload Screen !!"+ex);
+			//data.setMessage("The error in Upload Screen !!"+ex);
 		}
 	}
 }
