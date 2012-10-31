@@ -26,7 +26,6 @@ import org.bss.brihaspatisync.util.ThreadController;
 public class AudioCapture implements Runnable {
 
 	private boolean flag=false;
-	private boolean flag1=false;
         private int bufferSize=0;	
 	private Thread runner=null;	
 	private byte audio_data[]=null;
@@ -34,80 +33,57 @@ public class AudioCapture implements Runnable {
 	private TargetDataLine targetDataLine=null;
 	private AudioFormat audioFormat=ClientObject.getController().getAudioFormat();
 	private java.util.LinkedList<byte[]> audioVector=new java.util.LinkedList<byte[]>();
-    	private DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
-
-   	/**
- 	 * Select a mixer from audio system which support audio format
- 	 */  
-
-	private Mixer getMixer(){
-		Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-   		System.out.println("Available mixers:");
-       		for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
-         		System.out.println(mixerInfo[cnt].getName());
-           		Mixer currentMixer_local = AudioSystem.getMixer(mixerInfo[cnt]);
-			if( currentMixer_local.isLineSupported(dataLineInfo) ) {
-				System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
-				return currentMixer_local;
-			}
-        	}
-        	return null;
-	}
 
 	/**
  	 * Open and start input Line (TargetDataLine) from selected Mixer.
  	 */  
-    	public TargetDataLine getTargetLine() {
+    	public void getTargetLine() {
 		try {
-			do {
-				currentMixer=getMixer();
-			} while (currentMixer ==null);
-            	
-			targetDataLine =(TargetDataLine)currentMixer.getLine(dataLineInfo);
-			
-			if(targetDataLine !=null){
-            			targetDataLine.open(audioFormat, bufferSize);
-            			targetDataLine.start();
+			if(targetDataLine ==null){
+				targetDataLine =ClientObject.getController().getTargetLine();
 				System.out.println("opening targetDataLine.");
 			} else System.out.println("targetDataLine could not initialized.");
 		} catch(Exception e){System.out.println("Error in open targetdataline "+e.getMessage());}
-		return targetDataLine;
     	}
 
 	/**
  	 * Stop TargetDataLine
  	 */  
 	public void stopCapture(){
-		targetDataLine.flush();
-		targetDataLine.stop();
-		targetDataLine.drain();
-	        targetDataLine.close();
-		runner.stop();
-		System.out.println("stopping audio capture successfull");
+		if(runner !=null){
+			runner.stop();
+			runner=null;
+			targetDataLine=null;
+			flag=false;
+			System.out.println("stopping audio capture successfull");
+		}
         }
 	
 	protected void start(){
-		if(!flag1){
+		if(runner ==null){
 	                bufferSize = ((int) (audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
                 	getTargetLine();
-			flag1=true;
 			runner=new Thread(this);
+			flag=true;
 			runner.start();
+			System.out.println("capture Audio start successfully .");
 		}
 		
         }
 	
-	protected void setflag(boolean f){
-		flag=f;	
-		if(f){
-			start();
-		}
-		else {
-			stopCapture();
-			flag1=false;
+	protected void setflag(boolean flag){
+		if((ClientObject.getController().getUserRole()).equals("instructor")) {
+			if(flag)
+        	       		start();
+	                
+		}else {
+			if(flag){
+				start();
+			}else { 
+				stopCapture();
+			}
 		}
 	}
-
 
 	/**
  	 * Local thread for record audio from microphone and save in file named as filename variable.

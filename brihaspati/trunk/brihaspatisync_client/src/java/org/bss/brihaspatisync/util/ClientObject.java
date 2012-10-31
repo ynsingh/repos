@@ -4,19 +4,30 @@ package org.bss.brihaspatisync.util;
  * ClientObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010-2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2010-2011-2012, ETRG, IIT Kanpur.
  */
 
 import java.util.Vector;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.SourceDataLine;
 import org.bss.brihaspatisync.http.HttpCommManager;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  * This class is used to store objects which are needed in runtime by this client.
  */
 
 public class ClientObject {
 
+	private Mixer currentMixer=null;
+	private SourceDataLine sourceDataLine=null;
+	private TargetDataLine targetDataLine=null;
+	
 	private static ClientObject cb=null;
 	private Vector indexServerList=null;
 	private String indexServerName="";
@@ -294,5 +305,58 @@ public class ClientObject {
 		return new javax.sound.sampled.AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);
     	}
 
+	/**
+ 	 * Getting a available mixer in local system which support selected audio format.
+ 	 **/
+
+        private void getMixer(){
+                if(currentMixer==null) {
+                        try {
+                                DataLine.Info targetdataLineInfo = new DataLine.Info(TargetDataLine.class, getAudioFormat());
+                                DataLine.Info soursedataLineInfo = new DataLine.Info(SourceDataLine.class, getAudioFormat());
+                                Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+                                System.out.println("Available mixers:");
+                                for (int cnt = 0; cnt < mixerInfo.length; cnt++) {
+                                        System.out.println(mixerInfo[cnt].getName());
+                                        Mixer currentMixer_local = AudioSystem.getMixer(mixerInfo[cnt]);
+					if( currentMixer_local.isLineSupported(soursedataLineInfo) ) {
+                                                System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
+						currentMixer=currentMixer_local;
+                                                try {
+                                                        sourceDataLine =(SourceDataLine)currentMixer.getLine(soursedataLineInfo);
+                                                        sourceDataLine.open(getAudioFormat());
+                                                        sourceDataLine.start();
+                                                        System.out.println("opening sourceDataLine.");
+                                                } catch(Exception ex){System.out.println("Error in get Miser and start sourceDataLine "+ex.getMessage());}
+					}
+
+                                        if( currentMixer_local.isLineSupported(targetdataLineInfo) ) {
+                                                System.out.println("mixer name: " + mixerInfo[cnt].getName() + " index:" + cnt);
+                                                currentMixer=currentMixer_local;
+						try {
+							targetDataLine =(TargetDataLine)currentMixer.getLine(targetdataLineInfo);
+							targetDataLine.open(getAudioFormat());
+		                	                targetDataLine.start();
+                		        	        System.out.println("opening targetDataLine.");
+						} catch(Exception ex){System.out.println("Error in get Miser and start targetDataLine "+ex.getMessage());}	
+						break;
+                                        }
+                                }
+                        }catch(Exception e){System.out.println("Error in get Miser and start sourceDataLine and targetDataLine "+e.getMessage());}
+                }
+        }
+	
+	public TargetDataLine getTargetLine() {
+		if(currentMixer == null)
+			getMixer();
+		return 	targetDataLine;
+	}
+	
+	public SourceDataLine getSourceLine(){
+		if(currentMixer == null)
+                        getMixer();
+		return sourceDataLine;
+	}	
+		
 }
 

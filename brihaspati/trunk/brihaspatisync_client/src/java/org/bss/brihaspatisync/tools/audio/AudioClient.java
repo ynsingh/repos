@@ -68,10 +68,8 @@ public class AudioClient implements Runnable {
       		}
    	}
 
-	public void postAudio(boolean f) {
-		au_cap.setflag(f);	
-		if(!f)
-			au_cap.stopCapture();
+	public void postAudio(boolean startstopflag) {
+		au_cap.setflag(startstopflag);	
 	}
 
 	/**
@@ -107,6 +105,7 @@ public class AudioClient implements Runnable {
 					try {
 						method.releaseConnection();
                 	                        if((audioBytes.length) > 3000) {
+							System.out.println("audio rechive from reflector !!!!!!!! "+audioBytes.length);
                         	                        AudioPlayer.getController().putAudioStream(audioBytes);
 						}
 					}catch(Exception e){System.out.println(e.getMessage());}
