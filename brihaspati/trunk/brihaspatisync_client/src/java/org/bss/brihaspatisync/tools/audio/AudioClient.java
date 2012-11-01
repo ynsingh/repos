@@ -14,6 +14,7 @@ import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
+import org.bss.brihaspatisync.gui.StatusPanel;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
@@ -105,14 +106,14 @@ public class AudioClient implements Runnable {
 					try {
 						method.releaseConnection();
                 	                        if((audioBytes.length) > 3000) {
-							System.out.println("audio rechive from reflector !!!!!!!! "+audioBytes.length);
                         	                        AudioPlayer.getController().putAudioStream(audioBytes);
 						}
 					}catch(Exception e){System.out.println(e.getMessage());}
 					try { runner.yield(); }catch(Exception ex){}
-				}catch(Exception epe){try { runner.sleep(500); runner.yield(); }catch(Exception ex){} }
+					StatusPanel.getController().setaudioClient("yes");
+				}catch(Exception epe){try { runner.sleep(500); runner.yield(); StatusPanel.getController().setaudioClient("no"); }catch(Exception ex){} }
                         }
-		}catch(Exception e){ System.out.println("Error in PostMethod of Audio sender : "+e.getMessage()); }
+		}catch(Exception e){ System.out.println("Error in PostMethod of Audio sender : "+e.getMessage()); StatusPanel.getController().setaudioClient("no"); }
 	}
 	
 }

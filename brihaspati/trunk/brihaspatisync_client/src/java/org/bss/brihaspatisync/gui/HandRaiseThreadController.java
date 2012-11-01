@@ -10,14 +10,10 @@ package org.bss.brihaspatisync.gui;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen;
-import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
-import org.bss.brihaspatisync.tools.audio_video.AudioVideoPanel;
-import org.bss.brihaspatisync.tools.audio_video.transmitter.PresentationAudioTransmit;
+
 import org.bss.brihaspatisync.network.ppt_sharing.GetAndPostPPT;
 import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
-import org.bss.brihaspatisync.tools.audio_video.transmitter.AudioFromStudent;
 
-//import org.bss.brihaspatisync.tools.presentation.PresentationPanel;
 
 /**
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>Created on feb2011	
@@ -48,8 +44,6 @@ public class HandRaiseThreadController implements Runnable{
         private boolean stop_pres_audio_rec = false;
 
 	private boolean pres_mic_flag=false;
-	private AudioFromStudent stud_audio=null;
-	private PresentationAudioTransmit pres_audio=null;
         private static HandRaiseThreadController thread_controll=null;
 	private String username=ClientObject.getController().getUserName();;
         private String role=ClientObject.getController().getUserRole();
@@ -100,13 +94,6 @@ public class HandRaiseThreadController implements Runnable{
 						VideoPanel.getController().addStudentPanel();
 					}
 					org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
-					/*
-					try{
-                                	        AVTransmitReceiveHandler.getController().startReceiveHandraiseAudio();
-                                                AudioVideoPanel.getController().stopPlayer();
-                                                AudioVideoPanel.getController().startPlayer();
-                                        } catch(Exception e){System.out.println("Error in start thread for get handraise audio "+e.getCause());}
-					*/
 				}
 		
 				//Stop audio handraise controll for student
@@ -116,37 +103,8 @@ public class HandRaiseThreadController implements Runnable{
 					{
 						VideoPanel.getController().removeStudentPanel();
 					}
-					/*
-					try{
-                                	        AVTransmitReceiveHandler.getController().stopReceiveHandraiseAudio();
-                                                AudioVideoPanel.getController().stopPlayer();
-                                                AudioVideoPanel.getController().startPlayer();
-                                        } catch(Exception e){System.out.println("Error in stop thread for get handraise audio "+e.getCause());}
-					*/
 				}
 				
-				//Start audio handraise controll for student
-				if(start_pres_audio_rec){
-                                        start_pres_audio_rec=false;
-                                        try{
-                                                AVTransmitReceiveHandler.getController().startReceivePresentationAudio();
-                                                AudioVideoPanel.getController().stopPlayer();
-                                                AudioVideoPanel.getController().startPlayer();
-                                        } catch(Exception e){System.out.println("Error in start thread for get presentation audio "+e.getCause());}
-                                }
-
-				//Stop audio handraise controll for student
-				if(stop_pres_audio_rec){
-                                        stop_pres_audio_rec=false;
-                                        try{
-                                                AVTransmitReceiveHandler.getController().stopReceivePresentationAudio();
-                                                AudioVideoPanel.getController().stopPlayer();
-                                                AudioVideoPanel.getController().startPlayer();
-                                        } catch(Exception e){System.out.println("Error in stop thread for get presentation audio "+e.getCause());}
-                                }
-
-				
-
 				if(role.equals("student")) {
 					// Start get share screen controll for student
 					if(startgetscreeflag) {
@@ -201,46 +159,19 @@ public class HandRaiseThreadController implements Runnable{
 						starthraudio=false;
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(false);
-						/*
-						if(stud_audio==null){
-			                                stud_audio=new AudioFromStudent();
-                                                	String result=stud_audio.start();
-                                               		if(result!=null)
-        	                                        	System.out.println("Could not start audio transmit");
-                                                	else 
-                                                		System.out.println("Starting Audio from Student");
-						}*/
 					}
 					//Stop Handraise Audio transmission.
 					if(stophraudio){
 						stophraudio=false;
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
                                                 org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
-						/*
-						try{
-                                                        stud_audio.stop();
-                                                        stud_audio=null;
-                                                } catch(Exception error){System.out.println("Error in stopping Handraise Audio Transmit");}
-						*/
 					}
-					// Starting Presentation Audio mic capture for student to give presentation.
-					if(start_pres_audio_transmit){
-                                                start_pres_audio_transmit=false;
-						if(pres_audio==null) {
-                                                	pres_audio=new PresentationAudioTransmit();
-                                                	String result=pres_audio.start();
-                                                        if(result!=null)
-                                                                System.out.println("Could not start presentation audio transmit");
-                                                        else
-                                                                System.out.println("Starting Audio from Student");
-						}	
-                                        }
 					//Stop Presentation Audio transmission.
 					if(stop_pres_audio_transmit){
                                                 stop_pres_audio_transmit=false;
                                                 try{
-                                                        pres_audio.stop();
-                                                        pres_audio=null;
+                                                        //pres_audio.stop();
+                                                        //pres_audio=null;
                                                 } catch(Exception error){System.out.println("Error in stopping Handraise Audio Transmit");}
                                         }
 

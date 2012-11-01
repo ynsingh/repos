@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.util;
  * @(#)RuntimeObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010 ETRG, IIT Kanpur.
+ * Copyright (c) 2010,2012 ETRG, IIT Kanpur.
  */
 
 import java.util.Properties;
@@ -108,43 +108,22 @@ public class RuntimeDataObject {
 		return Integer.parseInt(prop.getProperty("client_postaudio_port"));
         }
 	
-	public int client_getaudio_port(){
-		return Integer.parseInt(prop.getProperty("client_getaudio_port"));
-	}
-        
 	public int client_inspostvedio_port(){
 		return Integer.parseInt(prop.getProperty("client_inspostvedio_port"));
         }
 	
 	public int client_insgetvedio_port(){
-                return Integer.parseInt(prop.getProperty("client_insgetvedio_port"));
-        }
+		return Integer.parseInt(prop.getProperty("client_insgetvedio_port"));
+      	}
 	
 	public int client_stdpostvedio_port(){
                 return Integer.parseInt(prop.getProperty("client_stdpostvedio_port"));
-        }
-	
-	public int client_stdgetvedio_port(){
-                return Integer.parseInt(prop.getProperty("client_stdgetvedio_port"));
         }
 	
 	public int client_postsharescreen_port(){
                 return Integer.parseInt(prop.getProperty("client_postsharescreen_port"));
         }
 	
-	public int client_getsharescreen_port(){
-                return Integer.parseInt(prop.getProperty("client_getsharescreen_port"));
-        }
-		
-	
-	public int getAudioHandraisePort() {
-                return Integer.parseInt(prop.getProperty("audio_handraise_port"));
-        }
-
-	public int getPresentationAudioPort() {
-                return Integer.parseInt(prop.getProperty("presentation_audio_port"));
-        }
-
 	public int getPPTPort() {
                 return Integer.parseInt(prop.getProperty("client_ppt_port"));
         }

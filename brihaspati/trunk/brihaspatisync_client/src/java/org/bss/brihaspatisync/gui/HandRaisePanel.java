@@ -16,8 +16,8 @@ import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
-import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
-import org.bss.brihaspatisync.tools.audio_video.AudioVideoPanel;
+//import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
+//import org.bss.brihaspatisync.tools.audio_video.AudioVideoPanel;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>

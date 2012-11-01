@@ -9,7 +9,6 @@ package org.bss.brihaspatisync.gui;
 
 import java.io.File;
 import java.awt.BorderLayout;
-//import javax.swing.JOptionPane;
 import java.net.URLEncoder;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,7 +23,6 @@ import org.bss.brihaspatisync.network.http.HTTPClient;
 import org.bss.brihaspatisync.network.Log;
 
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;	
-import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2008
