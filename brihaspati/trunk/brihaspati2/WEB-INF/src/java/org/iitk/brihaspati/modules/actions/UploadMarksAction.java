@@ -84,61 +84,65 @@ public class UploadMarksAction extends SecureAction_Instructor
     public void doUpload(RunData data, Context context)
     {
 	try{
+		String LangFile=(String)data.getUser().getTemp("LangFile");
 		ParameterParser pp=data.getParameters();
 		User user=data.getUser();
-		String cName=(String)user.getTemp("course_id");
+		String userName=user.getName();
+		String serverName= TurbineServlet.getServerName();
+                String serverPort= TurbineServlet.getServerPort();
+		String cName=(String)user.getTemp("course_id","");
 		String coursesRealPath=TurbineServlet.getRealPath("/Courses");
-                String destDir1=coursesRealPath+"/"+cName+"/Marks";
+                String destDir=coursesRealPath+"/"+cName+"/Marks";
                 String xmlpath=coursesRealPath+"/"+cName+"/Marks.xml";
-		File MarksDir=new File(destDir1);
+		File MarksDir=new File(destDir);
+		boolean marksExist=false;
 		if(!MarksDir.exists()){
-                MarksDir.mkdirs();
+	                MarksDir.mkdirs();
 		}
-		String LangFile=(String)data.getUser().getTemp("LangFile");
 		String text="null";
 		String myvalue = pp.getString("myvalue");
 		for(int count=0;count<10;count++){
-		FileItem fileItem=pp.getFileItem("file"+(count+1));
-		text = pp.getString("text"+(count+1));
-		String fileName=fileItem.getName();
-		if((!(fileName.toLowerCase()).endsWith(".txt")))
-                        {
-                                 /**
-                                 * Getting file value from temporary variable according to selection of Language
-                                 * Replacing the static value from Property file
-                                 **/
+			FileItem fileItem=pp.getFileItem("file"+(count+1));
+			text = pp.getString("text"+(count+1));
+			String fileName=fileItem.getName();
+			if((fileItem!=null) && (fileItem.getSize()!=0))
+        	        {
+				if(!(fileName.toLowerCase()).endsWith(".txt") && !(fileName.toLowerCase()).endsWith(".csv"))
+        	        	        {
+                	        	         /**
+                        	        	 * Getting file value from temporary variable according to selection of Language
+	                                	 * Replacing the static value from Property file
+		                                 **/
+        		                        String upload_msg3=MultilingualUtil.ConvertedString("upload_msg2",LangFile);
+                		                data.addMessage(upload_msg3);
+	                        	}
+				else{
+					File marksFile=new File(MarksDir,text+"-"+fileItem.getName());
+					String check = "";
 
-                                String upload_msg3=MultilingualUtil.ConvertedString("upload_msg2",LangFile);
-                                data.addMessage(upload_msg3);
-                        }
-		else{
-
-			String check = "";
-
-			String checked = XMLWriter_Marks.Check(xmlpath,"checked");
-			if(checked.equals("Exist")){
-			check = "checked";
+					String checked = XMLWriter_Marks.Check(xmlpath,"checked");
+					if(checked.equals("Exist")){
+						check = "checked";
+					}
+					String checkalias = XMLWriter_Marks.CheckElement(xmlpath,text);
+					if(checkalias.equals("Exist")){
+						marksExist=true;
+						String FName = XMLWriter_Marks.ReadFileNameElement(xmlpath,text);
+						String remove = XMLWriter_Marks.RemoveElement(xmlpath,text);
+						File DelFile=new File(destDir+"/"+text+"-"+FName);
+		                	        DelFile.delete();
+					}
+					String markxml = XMLWriter_Marks.MarksXml(xmlpath,fileItem.getName(),text,check);
+                                	File tempFile=new File(TurbineServlet.getRealPath("/tmp")+"/"+userName+".txt");
+	                                fileItem.write(tempFile);
+        	                        StringUtil.insertCharacter(tempFile.getAbsolutePath(),marksFile.getAbsolutePath(),',','-');
+                	                tempFile.delete();
+					SendMail(data,user,cName,userName,marksExist);
+				}
 			}
-
-			String checkalias = XMLWriter_Marks.CheckElement(xmlpath,text);
-			if(!checkalias.equals("Exist")){
-				String markxml = XMLWriter_Marks.MarksXml(xmlpath,fileItem.getName(),text,check);
-				File tempFile=new File(destDir1+"/"+text+"-"+fileItem.getName());
-		                fileItem.write(tempFile);
-                                String Marks_msg2=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
-        		        data.setMessage(Marks_msg2);
-			}else{
-				String FName = XMLWriter_Marks.ReadFileNameElement(xmlpath,text);
-				String remove = XMLWriter_Marks.RemoveElement(xmlpath,text);
-				File DelFile=new File(destDir1+"/"+text+"-"+FName);
-                	        DelFile.delete();
-				String markxml = XMLWriter_Marks.MarksXml(xmlpath,fileItem.getName(),text,check);
-                                File tempFile=new File(destDir1+"/"+text+"-"+fileItem.getName());
-                                fileItem.write(tempFile);
-                                String Marks_msg6=MultilingualUtil.ConvertedString("Marks_msg6",LangFile);
-				data.addMessage(Marks_msg6);
+			else{
+				data.setMessage(MultilingualUtil.ConvertedString("Marks_msg8",LangFile));
 			}
-		}
 		}
 	}
 	catch(Exception ex)
@@ -181,27 +185,25 @@ public class UploadMarksAction extends SecureAction_Instructor
 				String alias = pp.getString("alias","");
 				if(type.equals("SpreadSheet")){
 					fileName=alias+"-"+filename;
-///////////////////////////////////////////
 					String check = "";
-                        String checked = XMLWriter_Marks.Check(xmlpath,"checked");
-                        if(checked.equals("Exist")){
-                        check = "checked";
-                        }
-                        String checkalias = XMLWriter_Marks.CheckElement(xmlpath,alias);
-                        if(!checkalias.equals("Exist")){
-                                String markxml = XMLWriter_Marks.MarksXml(xmlpath,filename,alias,check);
-                                String Marks_msg2=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
-                                data.addMessage(Marks_msg2);
-                        }else{
-                                String FName = XMLWriter_Marks.ReadFileNameElement(xmlpath,alias);
-                                String remove = XMLWriter_Marks.RemoveElement(xmlpath,alias);
-                                File DelFile=new File(destDir+alias+"-"+FName);
-                                DelFile.delete();
-                                String markxml = XMLWriter_Marks.MarksXml(xmlpath,filename,alias,check);
-                                String Marks_msg6=MultilingualUtil.ConvertedString("Marks_msg6",LangFile);
-                                data.addMessage(Marks_msg6);
-                        }
-///////////////////////////////////////////////
+		                        String checked = XMLWriter_Marks.Check(xmlpath,"checked");
+                		        if(checked.equals("Exist")){
+		                        check = "checked";
+                		        }
+		                        String checkalias = XMLWriter_Marks.CheckElement(xmlpath,alias);
+                		        if(!checkalias.equals("Exist")){
+                                		String markxml = XMLWriter_Marks.MarksXml(xmlpath,filename,alias,check);
+		                                String Marks_msg2=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
+                		                data.addMessage(Marks_msg2);
+		                        }else{
+                	                String FName = XMLWriter_Marks.ReadFileNameElement(xmlpath,alias);
+                        	        String remove = XMLWriter_Marks.RemoveElement(xmlpath,alias);
+                                	File DelFile=new File(destDir+alias+"-"+FName);
+	                                DelFile.delete();
+        	                        String markxml = XMLWriter_Marks.MarksXml(xmlpath,filename,alias,check);
+                	                String Marks_msg6=MultilingualUtil.ConvertedString("Marks_msg6",LangFile);
+                        	        data.addMessage(Marks_msg6);
+                        		}
 				}
 				else{
 					fileName = filename;
