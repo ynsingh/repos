@@ -27,8 +27,6 @@ import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
 
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 
-import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
-
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopPostServer;
@@ -259,7 +257,6 @@ public class RegisterToIndexServer {
 			//Audio Thread
 			PostAudioServer.getController().startThread();
 			//PostNmsServer.getController().startThread();
-                        //org.bss.brihaspatisync.reflector.network.audio.Student_PostAudioServer.getController().startThread();            
 
 			//TCPServer.getController().start(); 	/** port 8888  */
 			//TransmitHandlerThread.getControllerofHandler().start();

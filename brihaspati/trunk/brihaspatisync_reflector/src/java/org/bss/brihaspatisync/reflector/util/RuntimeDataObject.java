@@ -89,6 +89,7 @@ public class RuntimeDataObject {
         public String getcertIssuerName(){
                 return prop.getProperty("cert_Issuer_Name");
         }
+	/*************************************/
 
 	/**
          * Load Reflector HTTP port from which clients will connect to receive media stream
@@ -98,45 +99,10 @@ public class RuntimeDataObject {
         }
 
 	/**
- 	 * Load Reflector TCP port to communicate with peer reflector
- 	 */  
-        public int getTcpPort(){
-                return Integer.parseInt(prop.getProperty("ref_tcp_port"));
-        }
-
-	/**
-         * Load Reflector UDP port to communicate with peer reflector
-         */
-        public int getUdpPort(){
-                return Integer.parseInt(prop.getProperty("ref_udp_port"));
-        }
-
-	/**
          * Load Audio post port 
          */
         public int getAudioPostPort(){
                 return Integer.parseInt(prop.getProperty("ref_audio_post_port"));
-        }
-
-        /**
-         * Load Audio get port 
-         */
-        public int getAudioGetPort(){
-                return Integer.parseInt(prop.getProperty("ref_audio_get_port"));
-        }
-
-	/**
- 	 * Load Handraised audio port
- 	 */  
-	public int getAudioHandraisePort(){
-                return Integer.parseInt(prop.getProperty("audio_handraise_get_port"));
-        }
-
-	/**
-         * Load Handraised audio port
-         */
-	public int getAudioPresentationPort(){
-                return Integer.parseInt(prop.getProperty("audio_presentation_port"));
         }
 
 	/**
@@ -147,43 +113,27 @@ public class RuntimeDataObject {
         }
 
 	/**
-         * Load Desktop Post port
-         */
-	public int getDesktopGetPort(){
-                return Integer.parseInt(prop.getProperty("desktop_get_port"));
-        }
-
-	/**
          * Load ppt server port
          */
 	public int getPPtServerPort(){
                 return Integer.parseInt(prop.getProperty("ppt_server_port"));
         }
 
-	/**
- 	 * Load video port
- 	 */  
-        public int getVedioPort(){
-                return Integer.parseInt(prop.getProperty("ref_video_port"));
-        }
-
-	/******************************/
 	public int get_inspostVideoPort(){
                 return Integer.parseInt(prop.getProperty("ref_inspostvideo_port"));
-        }
-	
-	public int get_insgetVideoPort(){
-                return Integer.parseInt(prop.getProperty("ref_insgetvideo_port"));
         }
 	
 	public int get_stdpostVideoPort(){
                 return Integer.parseInt(prop.getProperty("ref_stdpostvideo_port"));
         }
 	
-	public int get_stdgetVideoPort(){
-                return Integer.parseInt(prop.getProperty("ref_stdgetvideo_port"));
-        }		
-
+	/**
+         * Load Reflector TCP port to communicate with peer reflector
+         **/  
+	public int getTcpPort(){
+        	return Integer.parseInt(prop.getProperty("ref_tcp_port"));
+     	}	
+	
 	/*****************************/
 
 	public Vector getCourseid_IP(String course_id){

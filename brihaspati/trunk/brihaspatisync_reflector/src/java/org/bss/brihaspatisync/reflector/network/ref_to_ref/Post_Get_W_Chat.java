@@ -90,7 +90,7 @@ public class Post_Get_W_Chat implements Runnable {
 			String client_ip="127.0.0.1";
 			while(flag) {
 				try {
-					
+					/*
 					String datastr="nodata";
 					String reg=null;
 					MyHashTable temp_ht=runtimeObject.getMyHashTable();
@@ -113,7 +113,6 @@ public class Post_Get_W_Chat implements Runnable {
 	               			postMethod.setRequestHeader(h);
 
         	               		int statusCode1 = client.executeMethod(postMethod);
-					/***********   rechive data from another reflector **************/
 					java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(postMethod.getResponseBodyAsStream()));
                                         String str;
                                         if((str = rd.readLine()) != null) {
@@ -128,7 +127,7 @@ public class Post_Get_W_Chat implements Runnable {
 							}
                                 		}catch(Exception e){ System.out.println(" Exception in rechive data to another reflector "+e.getMessage()); }
 					}
-                       			postMethod.releaseConnection();
+                       			postMethod.releaseConnection();*/
 				} catch(Exception e){   } 
 				//System.gc();
 			}

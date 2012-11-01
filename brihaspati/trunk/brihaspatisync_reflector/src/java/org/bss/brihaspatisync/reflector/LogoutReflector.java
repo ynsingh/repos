@@ -23,10 +23,7 @@ import java.io.InputStreamReader;
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
 import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
 
-//import org.bss.brihaspatisync.reflector.network.tcp.TCPServer;
-//import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
-import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
 
 
@@ -82,7 +79,6 @@ public class LogoutReflector {
        	        		      	        		
 				PPTGetAndPostServer.getController().stopThread();
               			//log.stop();
-              			TransmitHandlerThread.getControllerofHandler().stop();
 				Timer UL_Timer =riserver.getTimer();
 				if(UL_Timer != null) {
 					UL_Timer.cancel();

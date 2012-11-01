@@ -140,11 +140,11 @@ public class TCPClient implements Runnable{
 									MyHashTable temp_ht=RuntimeDataObject.getController().getMyHashTable();
 									if(temp_ht.getStatus(courseid)) {
                                                                                 BufferMgt te=temp_ht.getValues(courseid);
-                                                                                te.putByte(str,client_ip,"ch_wb");
+                                                                                //te.putByte(str,client_ip,"ch_wb");
                                                                         } else if(!temp_ht.getStatus(courseid)) {
                                                                                 BufferMgt bm= new BufferMgt();
                                                                                 temp_ht.setValues(courseid,bm);
-                                                                                bm.putByte(str,client_ip,"ch_wb");
+                                                                                //bm.putByte(str,client_ip,"ch_wb");
                                                                         }
 									}	
 								}

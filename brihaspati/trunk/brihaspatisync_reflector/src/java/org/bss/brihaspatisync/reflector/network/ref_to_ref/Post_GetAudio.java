@@ -92,6 +92,7 @@ public class Post_GetAudio implements Runnable {
 				
 			while(flag) {
 				try {
+					/*
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+CommonDataObject.getController().getReflectorParentIP(lecture_id1)+":"+port);
 					client.setConnectionTimeout(8000);
@@ -104,7 +105,7 @@ public class Post_GetAudio implements Runnable {
                                                 temp_ht.setValues("Audio_Post"+lecture_id,buffer_mgt);
                                      	}
                                         BufferMgt buffer_mgt=temp_ht.getValues("Audio_Post"+lecture_id);
-					
+					*/
 					/*
                                         BufferedImage image=(BufferedImage)(buffer_mgt.sendData(client_ip,"Audio_Post"+lecture_id));
 					if(image != null) {
@@ -117,9 +118,9 @@ public class Post_GetAudio implements Runnable {
 						}catch(Exception e){}
                                      	}*/
 					
-        	               		int statusCode1 = client.executeMethod(postMethod);
+        	               		//int statusCode1 = client.executeMethod(postMethod);
 					
-					byte[] bytes1=postMethod.getResponseBody();
+					//byte[] bytes1=postMethod.getResponseBody();
 					
 					/*
 		                        BufferedImage image_new = ImageIO.read(new java.io.ByteArrayInputStream(bytes1));
@@ -130,8 +131,8 @@ public class Post_GetAudio implements Runnable {
                                 	}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
 					*/
 					
-                	       		postMethod.getStatusLine();
-                       			postMethod.releaseConnection();
+                	       		//postMethod.getStatusLine();
+                       			//postMethod.releaseConnection();
                        			try {	runner.sleep(40); runner.yield(); }catch(Exception ex){}
 				}catch(Exception e){    }
 				System.gc();

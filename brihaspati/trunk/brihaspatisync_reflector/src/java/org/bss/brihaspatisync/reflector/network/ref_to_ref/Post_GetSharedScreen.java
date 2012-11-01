@@ -90,6 +90,7 @@ public class Post_GetSharedScreen implements Runnable {
 			String client_ip="127.0.0.1";
 			while(flag) {
 				try {
+					/*
 					HttpClient client = new HttpClient();
 			        	PostMethod postMethod = new PostMethod("http://"+CommonDataObject.getController().getReflectorParentIP(lecture_id1)+":"+port);
 					client.setConnectionTimeout(8000);
@@ -122,7 +123,7 @@ public class Post_GetSharedScreen implements Runnable {
                                 	}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
 					
                 	       		postMethod.getStatusLine();
-                       			postMethod.releaseConnection();
+                       			postMethod.releaseConnection();*/
                        			try {	runner.sleep(40); runner.yield(); }catch(Exception ex){}
 				}catch(Exception e){   } 
 				System.gc();
