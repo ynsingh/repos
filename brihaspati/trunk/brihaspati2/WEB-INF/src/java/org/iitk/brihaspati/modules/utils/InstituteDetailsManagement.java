@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  *  @(#) InstituteDetailsManagement.java
- *  Copyright (c) 2010 ETRG,IIT Kanpur 
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -42,13 +42,15 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
-import java.util.StringTokenizer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 /**
  * @author <a href="mailto:nksnghiitk@gmail.com">Nagendra Kumar Singh</a>
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>01Nov2012
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
  */
 
 public class InstituteDetailsManagement 
@@ -306,6 +308,24 @@ public static Vector getInstAdminUid(String instId)
                 }
                 return(Cdetails);
         }
+	/** This method return the courselist of an institute*/
+	public static Vector InstwiseCourse(String Instname) throws Exception
+        {
+		Vector CourseList=new Vector();
+		try
+		{
+                	Criteria crit=new Criteria();
+                	crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,Instname);
+                	List lst=InstituteAdminRegistrationPeer.doSelect(crit);
+                	int instid=((InstituteAdminRegistration)lst.get(0)).getInstituteId();
+                	CourseList=getInstituteCourseDetails(Integer.toString(instid));
+		}
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The Error in InstituteDetailsManagementUtil Method(InstwiseCourse)"+e);
+                }
+		return CourseList;
+	}//method
 
 
 }	

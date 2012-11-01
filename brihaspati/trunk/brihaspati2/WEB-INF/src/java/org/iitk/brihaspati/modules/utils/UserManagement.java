@@ -1253,6 +1253,13 @@ public class UserManagement
 						crit = new Criteria();
                                                 crit.add(StudentRollnoPeer.EMAIL_ID,userName);
                                                 StudentRollnoPeer.doDelete(crit);
+
+						/**Remove UserId from UserPref table
+ 						* Add by Jaivir Singh and Seema
+ 			 			*/
+						crit=new Criteria();
+                                                crit.add(UserPrefPeer.USER_ID,user_id);
+                                                UserPrefPeer.doDelete(crit);
                                                	/**
                        				* Delete the repository from the server for
                        				* this User

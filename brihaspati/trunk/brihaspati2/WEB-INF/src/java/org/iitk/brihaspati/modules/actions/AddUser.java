@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) AddUser.java	
  *
- *  Copyright (c) 2004-2006,2009,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006,2009,2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -31,23 +31,28 @@ package org.iitk.brihaspati.modules.actions;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.List;
+import java.util.Vector;
 import org.apache.turbine.util.RunData;
+import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User; 
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.modules.utils.StringUtil;
-//import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
 
 /**
  * This class is responsible for adding a new user in specified group and 
  * assigned role to the system.
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a> 
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>28oct2012 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
  * @modified date: 20-10-2010, 23-12-2010 
  */
 
@@ -71,9 +76,7 @@ public class AddUser extends SecureAction_Admin
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
-
                 String roleName=pp.getString("role","");
-		ErrorDumpUtil.ErrorLog("Role 72==========>"+roleName);
 		/**
                  * Getting the value of file from temporary variable
                  * According to selection of Language.
@@ -97,15 +100,7 @@ public class AddUser extends SecureAction_Admin
                 }
                 String program = pp.getString("prg","");
 		String gname=new String();
-		//String roleName=new String();
 		gname=pp.getString("group","");
-		ErrorDumpUtil.ErrorLog("gname at line 89========"+gname);
-		/*String []starr=gname.split("@");
-		String gnamewdomain=starr[1];
-		String actgname[]=gnamewdomain.split("_");
-		String addUname=actgname[0];
-                //roleName=pp.getString("role","");
-		ErrorDumpUtil.ErrorLog("groupname 89===>"+gname+"[1]======"+gname+"starr=="+gnamewdomain+"new gname==="+gname);*/
 		if(gname.equals(""))
 		{
 			gname=new String();	
@@ -116,10 +111,7 @@ public class AddUser extends SecureAction_Admin
 			roleName=new String();	
 			roleName=pp.getString("role_author");
 		}
-		//String uname=pp.getString("UNAME");
                 String passwd=pp.getString("PASSWD");
-                //if(passwd.equals(""))
-                //        passwd=uname;
                 String fname=pp.getString("FNAME");
                 String lname=pp.getString("LNAME");
                 String email=pp.getString("EMAIL");
@@ -138,14 +130,28 @@ public class AddUser extends SecureAction_Admin
 		 * @see UserManagement in utils
 		 */
 		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"");   //modified by Shikha. Last parameter added by Priyanka.
-		//ErrorDumpUtil.ErrorLog("msg at line 131====="+msg);
 		data.setMessage(msg);
 		}
 		catch(Exception ex){
 		data.setMessage("The Error in AddUser Action");
 		}
 	}
-
+	/**
+ 	*This method return the courses of selected institute in which admin register the user
+ 	*/ 
+	public void doSearch(RunData data, Context context) throws Exception
+        {
+		String LangFile=(String)data.getUser().getTemp("LangFile");
+                ParameterParser pp=data.getParameters();
+                String instName=pp.getString("institute");
+		Vector CourseList=InstituteDetailsManagement.InstwiseCourse(instName);
+                if(CourseList.size()!=0){
+			context.put("courseList",CourseList);
+		}
+		else{
+			data.setMessage("The courses are not registered in this Institute");
+		}
+	}//method
 	/**
 	 * This is the default method called when the button is not found
 	 * @param data RunData
@@ -162,9 +168,10 @@ public class AddUser extends SecureAction_Admin
 		LangFile=(String)data.getUser().getTemp("LangFile");
 		if(action.equals("eventSubmit_doRegister"))
 			doRegister(data,context);
+		else if(action.equals("eventSubmit_doSearch"))
+                        doSearch(data,context);
 		else
 		{
-			
 			String str=m_u.ConvertedString("c_msg",LangFile);
                         data.setMessage(str);
 		}
