@@ -168,11 +168,11 @@ $!data.getMessage()
         <label><b>$brih_file<font color="red">*</font></b></label>
         <input class="browse" type="file" name="file1" id="file1">
         </div>
-</div>
 <div align="right"><a href="$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("type","spreadsheet")">$brih_create $brih_sheet</a></div>
-</br>
+</div>
+
 <input class="button-ftextstyle" type="button" name="eventSubmit_doUpload" value="$brih_upload" id="upload"/>
-<input class="button-ftextstyle" type='button' value='$brih_at_file' id='addFile'>
+<input class="button-ftextstyle" type='button' value='$brih_add $brih_marks $brih_file' id='addFile'> 
 <input class="button-ftextstyle" type='button' value='$brih_remove $brih_file' id='removeFile'>
 <input type="hidden" name="actionName" value="eventSubmit_doUpload">
 <input type="hidden" name="type" value="$type">
@@ -217,7 +217,7 @@ $!data.getMessage()
                 * below method for editing spreadsheet
                 */
                 var data = new Array();
-                if(upload.type.value!="spreadsheet")
+                if(document.upload.type.value!="spreadsheet")
                 {// 1 if
                         /**
                         * @param str, String having value of spreadsheet

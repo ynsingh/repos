@@ -57,7 +57,7 @@ public class HDFSClient {
 
     }
 
-    public void addFile(String source, String dest) throws IOException {
+    public static void addFile(String source, String dest) throws IOException {
         Configuration conf = new Configuration();
 	// Conf object will read the HDFS configuration parameters from these
 	// XML files.
@@ -105,7 +105,7 @@ public class HDFSClient {
         fileSystem.close();
     }
 
-    public void readFile(String file) throws IOException {
+    public static  void readFile(String file) throws IOException {
         Configuration conf = new Configuration();
         conf.addResource(new Path("/home/brihaspati/hadoop/conf/core-site.xml"));
 
@@ -119,8 +119,7 @@ public class HDFSClient {
 
         FSDataInputStream in = fileSystem.open(path);
 
-        String filename = file.substring(file.lastIndexOf('/') + 1,
-            file.length());
+        String filename = file.substring(file.lastIndexOf('/') + 1, file.length());
 	OutputStream out = new BufferedOutputStream(new FileOutputStream(
             new File(filename)));
 
@@ -135,7 +134,7 @@ public class HDFSClient {
         fileSystem.close();
     }
 
-    public void deleteFile(String file) throws IOException {
+    public static void deleteFile(String file) throws IOException {
         Configuration conf = new Configuration();
         conf.addResource(new Path("/home/brihaspati/hadoop/conf/core-site.xml"));
 
@@ -152,7 +151,7 @@ public class HDFSClient {
         fileSystem.close();
     }
 
-    public void mkdir(String dir) throws IOException {
+    public static void mkdir(String dir) throws IOException {
         Configuration conf = new Configuration();
         conf.addResource(new Path("/home/brihaspati/hadoop/conf/core-site.xml"));
 
