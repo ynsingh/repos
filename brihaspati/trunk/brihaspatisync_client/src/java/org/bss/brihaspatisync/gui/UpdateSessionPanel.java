@@ -88,6 +88,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         private JCheckBox audio;
         private JCheckBox video;
         private JCheckBox whiteboard;
+	private JCheckBox mail_send;
         private JButton annBttn;
 
 	private Vector returnVector=null;
@@ -159,6 +160,13 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 updatemailidarry=updatemailid.split(":");
 		String durationtime=decrypt(str1.nextElement().toString());
 		durationtime=durationtime.substring(0,durationtime.indexOf(":"));
+		String mail=decrypt(str1.nextElement().toString());
+		mail=decrypt(str1.nextElement().toString());
+		mail=decrypt(str1.nextElement().toString());
+		if(mail.equals("1"))
+			mail_send.setSelected(true);		
+		else
+			mail_send.setSelected(false);
                 durationBox.setSelectedItem(durationtime+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));	
 		}catch(Exception e){System.out.println("Error in Update session in UpdateSessionPanel class ");}	
 		
@@ -180,10 +188,13 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 audio.setBackground(Color.LIGHT_GRAY);
                 whiteboard=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.WBCheck")+"</font></html>");
                 whiteboard.setBackground(Color.LIGHT_GRAY);
+		mail_send=new JCheckBox("<html><font color=green>Mail send");
+                mail_send.setBackground(Color.LIGHT_GRAY);	
                 north_Panel.add(new JLabel("                           "));
                 north_Panel.add(audio);
                 north_Panel.add(video);
                 north_Panel.add(whiteboard);
+		north_Panel.add(mail_send);
                 whiteboard.setSelected(true);
                 north_Panel.add(new JLabel("                            "));
 		
@@ -419,6 +430,13 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         	               	}else{
 					whiteboard1="0";
 				}
+				String mail_send1="1";
+                                if(mail_send.isSelected()==true){
+                                        mail_send1="1";
+                                }else{
+                                        mail_send1="0";
+                                }
+				
 				try {
 					if( (((String)lecInfoArea.getText()).length()<6) || (((String)lecInfoArea.getText()).length()> 50) )
                                 	{
@@ -444,6 +462,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         lectValue =lectValue+"&"+"lectAudio="+URLEncoder.encode(audio1,"UTF-8");
                                         lectValue =lectValue+"&"+"lectVedio="+URLEncoder.encode(vedeo,"UTF-8");
                                         lectValue =lectValue+"&"+"lectWhiteBoard="+URLEncoder.encode(whiteboard1,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectmail_send="+URLEncoder.encode(mail_send1,"UTF-8");
                                 } catch(Exception es){}
 			}//if
             	}//else

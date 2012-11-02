@@ -80,6 +80,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
         private JCheckBox audio;
         private JCheckBox video;
         private JCheckBox whiteboard;
+        private JCheckBox mail_send;
         private JButton annBttn;
 
 	private Vector returnVector=null;
@@ -138,12 +139,16 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 audio=new JCheckBox("<html><font color=green>Audio");
                 audio.setBackground(Color.LIGHT_GRAY);
                 whiteboard=new JCheckBox("<html><font color=green>WhiteBoard");
-                whiteboard.setBackground(Color.LIGHT_GRAY);
+                whiteboard.setBackground(Color.LIGHT_GRAY); 
+		mail_send=new JCheckBox("<html><font color=green>Mail send");
+                mail_send.setBackground(Color.LIGHT_GRAY); 
                 north_Panel.add(new JLabel("                           "));
                 north_Panel.add(audio);
                 north_Panel.add(video);
                 north_Panel.add(whiteboard);
+		north_Panel.add(mail_send);
                 whiteboard.setSelected(true);
+		
                 north_Panel.add(new JLabel("                            "));
 		
 		return north_Panel;
@@ -350,7 +355,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                                         lectValue=null;  
 					return lectValue;  
 				}
-	              		//String st_duration=(String)durationBox.getSelectedItem();
 				String st_duration=Integer.toString(durationBox.getSelectedIndex()+1)+":Hour";	
 				if(!((client_obj.getCourseForAnnounce()).equals("")))
 					courseName=client_obj.getCourseForAnnounce();
@@ -360,14 +364,14 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                                         return lectValue;
 				}
 				String vedeo="";	
-                       	       	if(video.isSelected()==true){
+                       	       	if(video.isSelected()){
 					vedeo="1";
                        		}else{	
 					vedeo="0";
 				}
 				
 				String audio1="";
-	                      	if(audio.isSelected()==true){
+	                      	if(audio.isSelected()){
 					audio1="1";
                             	}else{
 					audio1="0";
@@ -378,6 +382,12 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
         	               	}else{
 					whiteboard1="0";
 				}
+				String mail_send1="";
+                                if(mail_send.isSelected()){
+                                        mail_send1="1";
+                                }else{
+                                        mail_send1="0";
+                                }
 				try {
 					lectValue = "&"+"lectGetParameter="+URLEncoder.encode("GetAnnounceValues","UTF-8");
 					lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
@@ -391,6 +401,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 					lectValue =lectValue+"&"+"lectAudio="+URLEncoder.encode(audio1,"UTF-8");
 					lectValue =lectValue+"&"+"lectVedio="+URLEncoder.encode(vedeo,"UTF-8");
 					lectValue =lectValue+"&"+"lectWhiteBoard="+URLEncoder.encode(whiteboard1,"UTF-8");
+					lectValue =lectValue+"&"+"lectmail_send="+URLEncoder.encode(mail_send1,"UTF-8");
 				} catch(Exception es){}
 			}
             	}//else

@@ -71,7 +71,7 @@ public class LectureInfo extends JFrame implements MouseListener
 
 	private JPanel descPanel=null;
        
-	private String[] sessionInfo={"Lecture Id","Course Name","Lecture Name","Lecture Info","Author Url","Phone No","Transmit Video","Transmit Audio","WhiteBoard-chat","Session Date","Session Time","Duration","Repeat","For Times" };
+	private String[] sessionInfo={"Lecture Id","Course Name","Lecture Name","Lecture Info","Author Url","Phone No","Transmit Video","Transmit Audio","WhiteBoard-chat","Session Date","Session Time","Duration","Repeat","For Times"," Mail Notification" };
 	
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);	
@@ -93,7 +93,7 @@ public class LectureInfo extends JFrame implements MouseListener
 		descPanel=new JPanel();
 		descPanel.setLayout(new GridLayout(0,2,5,0));
 		descPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		for(int i=0;i<=13;i++)
+		for(int i=0;i<15;i++)
 			descPanel.add(descLabel[i]);			
 		infoLabel=new JLabel("<html><u><Font Color=Black>"+Language.getController().getLangValue("LectureInfo.InformationOfLecture")+"</Font Color=Black></u></html>");
 		closeLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/close.jpg")));
