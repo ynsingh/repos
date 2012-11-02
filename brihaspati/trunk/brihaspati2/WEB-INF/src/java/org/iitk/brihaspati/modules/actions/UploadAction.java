@@ -334,13 +334,17 @@ public class UploadAction extends SecureAction
 						 // then write the name of file in xml file
 						if(serverOn){
 						// set the location of the file
-							f.mkdirs();
-							String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
-                                                        String fospath=filePath+tempFile[count];
-                                                        writeData(descfilepath, fileItem, fospath);
+							if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+								f.mkdirs();
+								String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
+	                                                        String fospath=filePath+tempFile[count];
+                                                        	writeData(descfilepath, fileItem, fospath);
+							}
 							HDFSClient.mkdir(filePath);
 							HDFSClient.addFile(filePath+temp, filePath);
-							(new File(filePath+temp)).delete();
+							if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+								(new File(filePath+temp)).delete();
+							}
 
 					 	}
                         			else{
