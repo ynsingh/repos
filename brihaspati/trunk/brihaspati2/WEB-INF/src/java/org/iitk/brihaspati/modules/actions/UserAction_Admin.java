@@ -179,8 +179,7 @@ public class UserAction_Admin extends SecureAction_Admin{
                 }
 		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
 		String insid=pp.getString("InstName","");
-		String Studsrid=pp.getString("Studsrid","");
-		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,Studsrid,CId);
+		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,CId);
 	 	data.setMessage(msg);
 	}
     	/**

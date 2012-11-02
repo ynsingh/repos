@@ -9,6 +9,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 24-03-2012 (Shaista) 
  * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>   
+ * @modified date: 30-10-2012 (Richa) 
  *#
 
 $page.setTitle("Admin Home | User Management | View All Users")
@@ -76,7 +77,7 @@ $!data.getMessage()
 </tr>
 </table>
 
-#set ( $headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno","", "$brih_availableAction "] )
+#set ( $headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno","$brih_availableAction "] )
 ##<form name=frm method="post" action="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("status","ForallUser")">
 <form name=frm method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").setAction("UserAction_InstituteAdmin")">
 <table width=100% align=left bgcolor="$ui.menuColor">
@@ -118,30 +119,27 @@ $!data.getMessage()
         </tr>
 	#foreach ($urecord in $userlist)
 	#if($velocityCount%2==0)
-	<tr bgcolor="$ui.tableColor">
+		<tr bgcolor="$ui.tableColor">
+		#set($bg=$ui.menuColor)
 	#else
-	<tr bgcolor="$ui.menuColor">
+		<tr bgcolor="$ui.menuColor">
+		#set($bg=$ui.tableColor)
 	#end
               <td>$!urecord.getLoginName()</td>
               <td>$!urecord.getUserName()</td>
               <td><a href=mailto:$!urecord.getEmail() style=text-decoration:none>$!urecord.getEmail()</a></td>
-         	#set ($i=2)
+		#set ($i=2)
                 #set ($j=0)
+		<td>	
                	#foreach ($urecord1 in $rollnolist)
 			#if($!urecord.getLoginName()== $!rollnolist.get($j).getEmailId())
-	                	<td> $!rollnolist.get($j).getRollNo()</td>
+				#if($i<=1) <font color=$bg>| </font>#end 
+		                	$!rollnolist.get($j).getRollNo()
 	                        #set ($i = $i - 1)
                        #end
 	               #set($j = $j + 1)
 	        #end
-	        ## if no rollno exist
-	        #if($i==2)
-	               <td></td><td></td>
-	        #end
-	        ## if one rollno exist
-		#if($i==1)
-                	<td></td>
-               #end
+	        </td>
               <td>
               <font face="$ui.sansSerifFonts">
 	      <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","All").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_update</a> &nbsp;

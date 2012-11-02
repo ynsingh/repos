@@ -106,7 +106,8 @@ public class InstStudentList extends SecureScreen_Institute_Admin
 			context.put("value",valueString);
 			String str=null;
 			Vector userList=new Vector();
-			List rusrlist;
+                        List rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
+                        context.put("rollnolist",rusrlist);
 
 			if(query.equals("First Name"))
 				str="FIRST_NAME";
@@ -128,8 +129,8 @@ public class InstStudentList extends SecureScreen_Institute_Admin
                                 crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
                                 v=StudentRollnoPeer.doSelect(crit);
                                 //ErrorDumpUtil.ErrorLog("List return from screen after search======"+v);
-                                rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
-                                context.put("rollnolist",rusrlist);
+                                //rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
+                                //context.put("rollnolist",rusrlist);
                         }
                        	else
 			{

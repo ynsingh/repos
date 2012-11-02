@@ -9,7 +9,7 @@
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date: 20-10-2010, 22-11-2010, 23-12-2010, 11-01-2011,05-08-2011,10-12-2011,12-01-2012,07-02-2012
- * @modified date:18-07-2012(Rajeev)
+ * @modified date:18-07-2012(Rajeev),30-10-2012(Richa)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -237,9 +237,11 @@ $!data.getMessage()
     </tr>
         #foreach($list in $ListUser)
 		#if($velocityCount%2==0)
-        	<tr bgcolor="$ui.menuColor">
+	        	<tr bgcolor="$ui.menuColor">
+			#set($bg=$ui.tableColor)
         	#else
-        	<tr bgcolor="$ui.tableColor">
+	        	<tr bgcolor="$ui.tableColor">
+			#set($bg=$ui.menuColor)
         	#end
         	<td>$!list.getLoginName()</td>
         	<td>$!list.getUserName()</td>
@@ -247,31 +249,27 @@ $!data.getMessage()
 		#set ($i=2)
 		#if($mode == "sclist")
         	        #set ($j=0)
+        	        <td>
 	                #foreach ($urecord1 in $rollnolist)
 	        	        #if($!list.getLoginName()== $!rollnolist.get($j).getEmailId())
-        			        <td> $!rollnolist.get($j).getRollNo()</td>
+	        	        	#if($i<=1) <font color=$bg>| </font>#end
+        			         $!rollnolist.get($j).getRollNo()
 			                #set ($i = $i - 1)
 	                	#end
 	                	#set($j = $j + 1)
                 	#end
-                #end
-                ## if no rollno exist
-                #if(($i==2) && ($mode == "sclist"))
-		<td></td><td></td>
-                #end
-                ## if one rollno exist
-                #if($i==1)
-               	<td></td>
+                	</td>
                 #end
 		#if($mode == "sclist")
-		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
+			<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a></td>
 		#end
         	##<td colspan=5><a href=$link.setPage("call,UserMgmt_Admin,StudentCourselist.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a></td>
-        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp;
+        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a></td>
 		#if($mode == "sclist")
-        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2").addPathInfo("mode","sclist") style=text-decoration:none>$brih_course $brih_list</a></td>
+	        	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2").addPathInfo("mode","sclist") style=text-decoration:none>$brih_course $brih_list</a></td>
+			<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_rollno $brih_mgmt </a> </td>
 		#elseif($mode == "instlist")
-		<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","0").addPathInfo("mode","instlist") style=text-decoration:none>$brih_course $brih_list</a></td>
+			<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","0").addPathInfo("mode","instlist") style=text-decoration:none>$brih_course $brih_list</a></td>
 		#end
     		</tr>
         #end
@@ -709,6 +707,78 @@ face="$ui.sansSerifFonts">$type</font>
                 </table>
 #end
 </form>
+
+#if($mode=="rollnomgmt")
+<form name="frm" method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin").addPathInfo("username",$username).addPathInfo("mode",$mode)">
+#if($type=="notEmpty")
+        <table align="left" width="100%" bgcolor="$ui.menuColor" >
+                <tr><td>$brih_rollno $brih_Manage $brih_for $username</td></tr>
+        </table>
+                <table align="left" width="100%" bgcolor="$ui.tableColor" >
+
+	#* If Rollno conflict with other user then it comes inside if check otherwise in else check*#
+		#if($Rollnolist.size()>0)
+		 	<tr>
+                                <td><b>$brih_email</b></td>
+                                <td><b>$brih_program</b></td>
+                                <td><b>$brih_rollno</b></td>
+                        </tr>
+			 #foreach($st in $Rollnolist)
+			<tr bgcolor="$ui.menuColor">
+                        	<td>$st.confuname</td>
+	                        <td>$st.confProgram</td>
+				<td><input type="text" name="rollno1" value=$st.confRollno></td>
+			</tr>
+			<tr>
+                                <td>$st.uname</td>
+                                <td>$st.Program</td>
+				<td><input type="text" name="rollno2" value=$st.Rollno></td>
+                                <input type="hidden" name="confuser" value=$st.confuname>
+                                <input type="hidden" name="confprogram" value=$st.confProgram>
+                                <input type="hidden" name="rlnocount" value="2">
+                        #end
+                        </tr>
+			<tr bgcolor="$ui.menuColor">
+                                <td colspan=3><input type="button" class="button-ftextstyle" name="eventSubmit_doUpdateConflictRollno" VALUE="$brih_update" onClick="UpdateConflictrollno(document.frm,this);"></td>
+                        </tr>
+		#else
+                        <tr>
+			#set ( $headings = ["","$brih_program","$brih_rollno","","","",""] )
+				#foreach ($heading in $headings)
+					<td><font size=3><b>$heading</b></font></td>
+				#end
+                        </tr>
+			#set($num=0)
+			#foreach ($urecord1 in $rlnolist)
+			#set($num=$num+1)
+                        #if($velocityCount%2==0)
+                        	<tr bgcolor="$ui.tableColor">
+			#else
+				<tr bgcolor="$ui.menuColor">
+			#end
+				<td width="5%">
+                                        <INPUT TYPE="CHECKBOX" NAME="PrgAndRollno" onClick="addUpdateList(this,document.frm,$num);">
+                                </td>
+					<td id="pg$num">$urecord1.getPrgName()</td>
+					<td colspan=5><input type="text" name="rlno$num" id="rl$num" value=$urecord1.getRollNo()></td>
+				</tr>
+			#end
+			#if($rlnolist.size()%2==0)
+	                        <tr bgcolor="$ui.menuColor">
+	                #else
+	                        <tr>
+	                #end
+	                	<td colspan=7><input type="button" class="button-ftextstyle" name="eventSubmit_doUpdateRollno" value="$brih_update" onClick="DeleteField(document.frm,this);"></td>
+                 	        ##<td colspan=6><input type="button" class="button-ftextstyle" name="eventSubmit_doDeleteRollno" value="Remove" OnClick="ConfirmDelete(document.frm,this);"></td>
+                        </tr>
+                #end
+	                	<input type="hidden" name="deleteFileNames" value="">
+                                <input type="hidden" name="actionName" value="">
+                                <input type="hidden" name="count" value="$tdcolor"/>
+                </table>
+#end
+</form>
+#end
 </table>
 <SCRIPT LANGUAGE="javascript">
 	function ChangeRole(frm,field)
@@ -823,4 +893,48 @@ face="$ui.sansSerifFonts">$type</font>
         {
                 frm.newpass.value="";
         }
+function addUpdateList(field,frm,count){
+	var pgid = document.getElementById("pg"+count).textContent;
+        var rlid = document.getElementById("rl"+count);
+        var rlval = rlid.value;
+        var tmp=pgid+":"+rlval;
+
+        if(field.checked){
+        	frm.deleteFileNames.value=frm.deleteFileNames.value+tmp+"^";
+       	}
+       	else{
+                var rmFile,index,actualString,preString,postString;
+                actualString=frm.deleteFileNames.value;
+                //index=actualString.indexOf(field.name+"^",0);
+                index=actualString.indexOf(tmp+"^",0);
+                preString=actualString.substring(0,index);
+                //postString=actualString.substring(index+field.name.length+1);
+                postString=actualString.substring(index+tmp.length+1);
+                actualString=preString+postString;
+        	frm.deleteFileNames.value=actualString;
+        }
+}
+/*function ConfirmDelete(frm,field)
+{
+        var x = confirm("It will delete all courses associated with this rollno and program.");
+        {
+               if(x)
+               {
+                        frm.actionName.value=field.name;
+                        frm.submit();
+               }
+        }
+}*/
+function UpdateConflictrollno(frm,field)
+{
+        if(frm.rollno1.value==frm.rollno2.value)
+        {
+                alert("Roll no cannot be same for two students");
+        }
+        else
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+}
 </SCRIPT>

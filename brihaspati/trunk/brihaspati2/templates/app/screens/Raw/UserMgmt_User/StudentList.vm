@@ -109,9 +109,9 @@ $!data.getMessage()
 </tr>
 ##</table>
 #if($lang == "hindi")
-	#set($headings = ["$brih_usr $brih_Of1 $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)"," ","$brih_availableAction"] )
+	#set($headings = ["$brih_usr $brih_Of1 $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)","$brih_availableAction"] )
 #else
-	#set($headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)"," ","$brih_availableAction"] )
+	#set($headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID","$brih_rollno ($brih_program)","$brih_availableAction"] )
 #end
 
 #*if($status=="notempty")
@@ -162,8 +162,10 @@ $!data.getMessage()
                 #foreach ($urecord in $userlist)
                         #if($velocityCount%2==0)
                         	<tr bgcolor="$ui.tableColor">
+				#set($bg=$ui.menuColor)
                         #else
                                 <tr bgcolor="$ui.menuColor">
+				#set($bg=$ui.tableColor)
                        #end                    
                 	## Get one record from the list
 	                ## get login name of user
@@ -174,23 +176,18 @@ $!data.getMessage()
 		      	<td><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></td>
 	                ## get the list of student RollNO of that course 
 	                #set ($i=2)
+	                <td>
 	                #foreach ($urecord1 in $rollnolist)
 	                	## get Email id form this list
 	                	## Compare Email id of both list
 	                	#if($!urecord.getLoginName()== $!urecord1.getEmail())
 	                		## if email exist then get the roll no and program of that student
-	                		<td> $!urecord1.getRollNo() ($!urecord1.getPrgName())</td>
+	                		#if($i<=1) <font color=$bg>| </font>#end
+	                		 $!urecord1.getRollNo() ($!urecord1.getPrgName())
 					#set ($i = $i - 1)
 				#end
 			#end
-			## if no rollno exist
-			#if($i==2)
-				<td></td><td></td>
-			#end
-			## if one rollno exist
-			#if($i==1)
-				<td></td>
-			#end
+			</td>
 			        	<td>
 
  				 ## if user is only student then enable change password link else disable link

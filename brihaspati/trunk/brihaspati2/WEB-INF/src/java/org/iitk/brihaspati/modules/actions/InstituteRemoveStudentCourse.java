@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)InstituteRemoveStudentCourse.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,7 +39,7 @@ package org.iitk.brihaspati.modules.actions;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
- * @modified date: 20-10-2010,23-12-2010,3-03-2011, 16-06-2011, 08-08-2012
+ i* @modified date: 20-10-2010,23-12-2010,3-03-2011, 16-06-2011, 08-08-2012, 30-10-2012(Richa)
  */
 import java.util.Vector;
 import java.util.List;
@@ -49,10 +49,12 @@ import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -85,6 +87,7 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 		*/
 		LangFile=(String)data.getUser().getTemp("LangFile");
 		MultilingualUtil m_u=new MultilingualUtil();
+		String uname=data.getParameters().getString("username");
 		try{
 		/**
 		 * Here Courselist have student Name and GroupName from Selected
@@ -139,14 +142,14 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 				 * preString have course id
 				 * postString have user name
 				 */
-				int index=s.indexOf(":",0);
-				String preString=s.substring(0,index);
-				String postString=s.substring(index+1);
+				//int index=s.indexOf(":",0);
+				String preString=StringUtils.substringBeforeLast(s,":");
+				/*String preString=s.substring(0,index);
+				String postString=s.substring(index+1);*/
 				/**
 				 * Get the user id from the user name obtained 
 				 * @see UserUtil in utils
 				 */
-				int userId=UserUtil.getUID(postString);
 				UserManagement umt=new UserManagement();
 				Vector Err_user=new Vector();
 				Vector Err_type=new Vector();
@@ -161,7 +164,8 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
                 		else
         	        		info_new = "deleteUserhttps";	
 				 */
-				int uId=UserUtil.getUID(postString);
+				//int uId=UserUtil.getUID(postString);
+				int uId=UserUtil.getUID(uname);
 		                String uid=Integer.toString(uId);
 				TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 				String email=element.getEmail();
@@ -172,9 +176,11 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 				String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instId,"");//last parameter added by Priyanka
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 data.setMessage(Mail_msg);
-				String msg=umt.removeUserProfile(postString,preString,LangFile);
+				//String msg=umt.removeUserProfile(postString,preString,LangFile);
+				String msg=umt.removeUserProfile(uname,preString,LangFile);
 				if(umt.flag.booleanValue()==false){ 
-					Err_user.addElement(postString);
+					//Err_user.addElement(postString);
+					Err_user.addElement(uname);
 					Err_type.addElement(msg);
 				} 
 				context.put("error_user",Err_user);
@@ -182,9 +188,11 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 		 	String varStudent=m_u.ConvertedString("varStudent",LangFile);
 			String remStudent=m_u.ConvertedString("remStudent",LangFile);
 			if(LangFile.endsWith("en.properties")){
-				data.setMessage(varStudent+" "+"'" +postString+"'"+" "+remStudent);}
+				//data.setMessage(varStudent+" "+"'" +postString+"'"+" "+remStudent);}
+				data.setMessage(varStudent+" "+"'" +uname+"'"+" "+remStudent);}
 			else 
-				data.setMessage(varStudent +" "+remStudent+"'" +postString+"'");
+				//data.setMessage(varStudent +" "+remStudent+"'" +postString+"'");
+				data.setMessage(varStudent +" "+remStudent+"'" +uname+"'");
 			}
 		} 
 		/**
@@ -263,6 +271,46 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 			 data.setMessage("The error in User Registration "+e); 
 		}
 	}
+	public void doUpdate(RunData data,Context context)
+	{
+		String CourseList=data.getParameters().getString("deleteFileNames","");	
+		MultilingualUtil m_u=new MultilingualUtil();
+		//ErrorDumpUtil.ErrorLog("inside do update method in action file"+CourseList);
+		String instId= data.getUser().getTemp("Institute_id").toString();
+		try{
+		String msg="";
+                LangFile=(String)data.getUser().getTemp("LangFile");
+                ParameterParser pp=data.getParameters();
+       	        String uname=pp.getString("username");
+       	        String Rollno="";
+		int count=Integer.parseInt(pp.getString("counter",""));
+		//ErrorDumpUtil.ErrorLog("counter for do update method in action file\n"+count);
+		if(!CourseList.equals("")){
+			StringTokenizer st=new StringTokenizer(CourseList,"^");
+                        for(int i=0;st.hasMoreTokens();i++){
+	                                String s=st.nextToken();
+					//ErrorDumpUtil.ErrorLog("Token inside string---"+s);
+					String Prg=StringUtils.substringAfterLast(s,":");
+					//ErrorDumpUtil.ErrorLog("Prg after ---"+Prg);
+					String CrsId=StringUtils.substringBeforeLast(s,":");
+					//ErrorDumpUtil.ErrorLog("Crsid before---"+CrsId);
+					msg=CourseProgramUtil.InsertPrgRollNo(uname,Rollno,Prg,instId,LangFile,CrsId);
+			}
+			if(msg.equals(""))
+			{
+				msg=m_u.ConvertedString("prgm_msg2",LangFile);
+			}
+			data.setMessage(msg);
+		}
+		else{
+                        String courseMsg=m_u.ConvertedString("c_msg12",LangFile);
+                        data.setMessage(courseMsg);
+                }
+		}
+		catch(Exception e){
+			data.setMessage("The error in Course Updation"+e);
+		}	
+	}
 	/** This is default method 
 	  * @param data RunData 
 	  * @param context Context
@@ -280,6 +328,8 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
                 //context.put("action",action);
                 if(action.equals("eventSubmit_doRegister"))
                         doRegister(data,context);
+		else if(action.equals("eventSubmit_doUpdate"))
+			doUpdate(data,context);
 		else{
 			String usrMsg=m_u.ConvertedString("usr_prof2",LangFile);
 			data.setMessage(usrMsg);

@@ -106,7 +106,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:sunil0711@gmail.com">Sunil YAdav</a>
  * @modified date: 08-07-2010, 20-10-2010, 3-11-2010, 26-12-2010
  * @modified date: 27-07-2011, 05-08-2011(Richa), 09-08-2012(Priyanka)
- * @modified date: 16-08-2012(Sunil Yadav), 25-09-2012 (Priyanka)
+ * @modified date: 16-08-2012(Sunil Yadav), 25-09-2012 (Priyanka), 30-10-2012(Richa)
  */
 
 public class UserManagement
@@ -237,7 +237,7 @@ public class UserManagement
 						/**
 						 * if role is student then insert roll no in table
 						 */
-						if((Role.equals("student"))&& (!(RollNo.equals(""))))
+						if((Role.equals("student"))&& (!(Program.equals("")))&&(!(Program.equals("Select Program"))))
 						{
 							String actgname[]=GroupName.split("_");
                                                         String InsId=actgname[1];
@@ -513,7 +513,7 @@ public class UserManagement
 						/**
 						 * Insert roll no in table if role is student
 						 */
-						if((Role.equals("student"))&&(!(RollNo.equals(""))))
+						if((Role.equals("student"))&&(!(Program.equals("")))&&(!(Program.equals("Select Program"))))
 						{
 							String actgname[]=GroupName.split("_");
                                                         String InsId=actgname[1];
@@ -1046,12 +1046,11 @@ public class UserManagement
 	 * @param RollNo String The Rollno of the user 
 	 * @param Program String The Program of the user 
 	 * @param Instid String The institute id of the user 
-	 * @param StudSrid String The serial id of the user 
 	 * @param CourseId String The course id of the user 
 	 *
 	 * @return String
 	 */
-	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program,String Instid,String StudSrid,String CourseId)
+	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program,String Instid,String CourseId)
 	{
 		String msg=new String();
 		Criteria crit=new Criteria();
@@ -1059,6 +1058,7 @@ public class UserManagement
 		try
 		{
 			String rollmsg = "";
+			int stdntid=0;
                 	User user = TurbineSecurity.getUser(userName);
                 	user.setFirstName(fName);
                 	user.setLastName(lName);
@@ -1072,71 +1072,9 @@ public class UserManagement
 
                 	TurbineSecurity.saveUser(user);
 			int uid=UserUtil.getUID(userName);
-			/** 
- 			 * if student serial id is not null it shows student have information in StudentRollNo table
- 			 * then update information
- 			 */ 
-			if(!RollNo.equals("")&&!StudSrid.equals("")&&!Program.equals("Select Program")&&!Instid.equals("0")&&!CourseId.equals("Select Course"))
-			{
-				/**
- 				 * set flag inside catch block to get an error, if occured  
- 				 */ 
-				try{
-					crit.add(StudentRollnoPeer.ID,StudSrid);
-		                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
-					crit.add(StudentRollnoPeer.PROGRAM,Program);
-					crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
-					StudentRollnoPeer.doUpdate(crit);
-
-				List CrsList = CourseProgramUtil.getUserCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
-				//ErrorDumpUtil.ErrorLog("CrsList in util file---"+CrsList);
-                                if(CrsList.size()==0 && !CourseId.equals("Select Course")){
-                                        CourseProgramUtil.InsertCourseProgram(Integer.parseInt(StudSrid),CourseId,Program);
-                                }
-                                else
-                                {
-                                        CourseProgram element = (CourseProgram)CrsList.get(0);
-                                        int Id = element.getId();
-                                        crit = new Criteria();
-                                        crit.add(CourseProgramPeer.ID,Id);
-                                        crit.add(CourseProgramPeer.STUDENT_ID,Integer.parseInt(StudSrid));
-                                        crit.add(CourseProgramPeer.COURSE_ID,CourseId);
-                                        crit.add(CourseProgramPeer.PROGRAM,Program);
-                                        CourseProgramPeer.doUpdate(crit);
-                                }
-				}
-				catch(Exception ex){
-					ErrorDumpUtil.ErrorLog("Error in UpdateUserDetail method while updating profile[UserManagement.java]--\n"+ex);
-					flag="true";
-					return(flag);
-					}
-			}
-			/**
-			 * else insert value in table
-			 */
-			else if(!RollNo.equals("")&&!Program.equals("")&&!Instid.equals("0"))
-			{
-                                rollmsg=CourseProgramUtil.InsertPrgRollNo(userName,RollNo,Program,Instid,file,CourseId);
-                        }
-			/**
- 			 * this below check is put, if any how any value is null. 
- 			 */ 	
-			else if(!RollNo.equals(""))
-			{
-				if(!Program.equals(""))
-				{
-					if(!Instid.equals("0"))
-					{
-						msg="";
-					}
-					else
-						msg="Except Institute.";
-				}
-				else
-					msg="Except Program.";
-			}
-			else
-				msg="Except Rollno.";
+			//For updating student rollno, program and course
+			//@see InsertPrgRollNo method in CourseProgramUtil in utils
+			rollmsg=CourseProgramUtil.InsertPrgRollNo(userName,RollNo,Program,Instid,file,CourseId);
                 	String profileOf=MultilingualUtil.ConvertedString("profileOf",file);
                         String update_msg=MultilingualUtil.ConvertedString("update_msg",file);
 			if(file.endsWith("hi.properties"))
@@ -1190,10 +1128,10 @@ public class UserManagement
 						/**
                                                 * Remove student membership from the Student Expiry 
                                                 */
-                                                crit=new Criteria();
-                                                crit.add(StudentExpiryPeer.UID,userName);
-                                                crit.add(StudentExpiryPeer.CID,group_name);
-                                                StudentExpiryPeer.doDelete(crit);
+                                                	crit=new Criteria();
+	       	                                        crit.add(StudentExpiryPeer.UID,userName);
+        	       	                                crit.add(StudentExpiryPeer.CID,group_name);
+                	       	                        StudentExpiryPeer.doDelete(crit);
                         /**
                         * Delete the role of the user from the specified group
                         */
@@ -1230,15 +1168,15 @@ public class UserManagement
                                                	/**
                                                	* Remove the login details for the user
                                                	*/	
-                                               	crit=new Criteria();
-                                               	crit.add(UsageDetailsPeer.USER_ID,user_id);
-						UsageDetailsPeer.doDelete(crit);
+		                                    	crit=new Criteria();
+	        	                                crit.add(UsageDetailsPeer.USER_ID,user_id);
+							UsageDetailsPeer.doDelete(crit);
 						/**
                                                 * Remove the Configuration details for the user
                                                 */
-                                                crit=new Criteria();
-                                                crit.add(UserConfigurationPeer.USER_ID,user_id);
-                                                UserConfigurationPeer.doDelete(crit);
+	                                                crit=new Criteria();
+        	                                        crit.add(UserConfigurationPeer.USER_ID,user_id);
+                	                                UserConfigurationPeer.doDelete(crit);
 						
                                                	/**
                                                	* Finally remove the user profile from the
@@ -1249,10 +1187,10 @@ public class UserManagement
 						/**
                                                  * Remove the user rollno and Program from database  
                                                  */
-						CourseProgramUtil.DeleteCoursePrg(userName,"");
-						crit = new Criteria();
-                                                crit.add(StudentRollnoPeer.EMAIL_ID,userName);
-                                                StudentRollnoPeer.doDelete(crit);
+							CourseProgramUtil.DeleteCoursePrg(userName,"");
+							crit = new Criteria();
+        	                                        crit.add(StudentRollnoPeer.EMAIL_ID,userName);
+                	                                StudentRollnoPeer.doDelete(crit);
 
 						/**Remove UserId from UserPref table
  						* Add by Jaivir Singh and Seema

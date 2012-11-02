@@ -56,8 +56,11 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.CourseProgramPeer;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.apache.torque.util.Criteria;
@@ -108,6 +111,7 @@ public class StudentList extends SecureScreen_Instructor{
 			ParameterParser pp=data.getParameters();
                         String stat=pp.getString("status","");
 		        context.put("stat",stat);
+			String InstId = (String)data.getUser().getTemp("Institute_id");
 			String query="";
 			String valueString="";
                         String Mode=data.getParameters().getString("mode");
@@ -127,7 +131,7 @@ public class StudentList extends SecureScreen_Instructor{
 			/**
 			 * Getting list of user rollno record 
 			 */
-			rusrlist=CourseProgramUtil.getListOfRollNo(g_id,3);
+			rusrlist=CourseProgramUtil.getListOfRollNo(g_id,Integer.parseInt(InstId));
                         context.put("rollnolist",rusrlist);
 			/**
  			 * getting the list of student expiry in this course
@@ -174,7 +178,7 @@ public class StudentList extends SecureScreen_Instructor{
 			if(query.equals("RollNo"))
                         {
                                 crit = new Criteria();
-				crit.addJoin(StudentRollnoPeer.ID,CourseProgramPeer.STUDENT_ID);
+				crit.addJoin(StudentRollnoPeer.EMAIL_ID,CourseProgramPeer.EMAIL_ID);
                                 crit.add("STUDENT_ROLLNO",str,(Object)("%"+valueString+"%"),crit.LIKE);
                                 crit.add(CourseProgramPeer.COURSE_ID,course_id);
 				crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);

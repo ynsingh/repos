@@ -1,6 +1,6 @@
 #*
  * @(#)InstStudentCourseList.vm
- *  Copyright (c) 2010,2011 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2011-12 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:sharad23nov@yahoo.com ">Awadhesh Kumar Trivedi</a>
@@ -8,12 +8,15 @@
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date:28-12-2011(Richa)
- * @modified date:18-07-2012(Rajeev) 
+ * @modified date:18-07-2012(Rajeev),30-10-2012(Richa) 
  *#
 
 $page.setTitle("Admin Home | User Management | Search Student | Course Details for '$username'")
 $!data.getMessage()
 
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 $page.setBgColor($ui.bgcolor)
 #set($lang = $data.getUser().getTemp("lang"))
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
@@ -99,19 +102,16 @@ $page.setBgColor($ui.bgcolor)
 		</tr>
 		#end
 	#end
-##</table>
-##<table align=left width=100% bgcolor="$ui.tableColor">
 		#foreach($i in $student)
 			<tr bgcolor="$ui.menuColor">
-				<td colspan=2><b>$brih_listCourse</b></td> #if($mode != "instlist")<td ><b>$brih_program</b></td><td colspan=3><b>$brih_rollno</b></td> #else <td colspan=4> </td> #end
+				<td colspan=2><b>$brih_listCourse</b></td> #if($mode != "instlist")<td ><b>$brih_program</b></td>#else <td colspan=4> </td> #end
 			</tr>
 					#set($count="")
-					#set($rlno="")
-                                        #set($grpname="")
-                                        #set($pgcode="")
-                                        #set($pgname="")
 					#set($temp=0)
+					#set($counter=0)
+                                        #set($num=0)
 					#foreach($groupname in $groupname)
+						#set($num=$num+1)
 						#if($velocityCount%2==0)
 						<tr bgcolor="$ui.menuColor">
 						#else
@@ -119,39 +119,47 @@ $page.setBgColor($ui.bgcolor)
 						#end
 							#if($mode != "instlist")
 							<td width="5%">
-								#set($userAndGroup = "$groupname:$!i.UserName" )
-								<INPUT TYPE="CHECKBOX" NAME="$userAndGroup" onClick="addDeleteList(this,document.frm);">
+								##set($userAndGroup = "$groupname:$!i.UserName" )
+								<INPUT TYPE="CHECKBOX" NAME="$userAndGroup" onClick="addUpdateList(this,document.frm,$num);">
 							</td>
 							#end
-							<td>$groupname</td>
+							<td id="grp$num">$groupname</td>
 							#foreach($st in $UDetail)
-								#foreach($lst in $st.split(":"))
-        		                                                #if($rlno=="")
-                        			                                #set($rlno=$lst)
-                                                		        #elseif($grpname=="")
-			                                                        #set($grpname=$lst)
-		                                                        #elseif($pgcode=="")
-			                                                        #set($pgcode=$lst)
-		                                                        #else
-			                                                        #set($pgname=$lst)
-		                                                        #end
-                	                                        #end
-        	                                                #if($groupname==$grpname)
-                	                                        	<td>$pgname</td>
-									<td colspan=3>$rlno</td>
+        	                                                #if($groupname==$st.grpname)
+        	                                                	 <td><select name="prg$num" id="pg$num" class="drop" size=1>
+                                                                                <option value="$st.pgcode">$st.pgname </option>
+										#foreach($instplist in $PrgDetail)
+	                                                                                #if($st.pgname!=$instplist.getPrgName())
+		                                                                                <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+		                                                                        #end
+		                                                                #end
+		                                                        </select></td>
 									#set($temp=$temp+1)
+								#else
+	                                                                #set($counter=$counter+1)
                                         	                #end
-                                        	                	#set($rlno="")
-                                                                        #set($grpname="")
-                                                                        #set($pgcode="")
-                                                                        #set($pgname="")
+                                        	                #if($counter==$UDetail.size()&&($mode != "instlist"))
+                                        	                	<td><select name="prg$num" id="pg$num" class="drop" size=1>
+                                                                                <option value="Select Program">$brih_select $brih_program</option>
+										#foreach($instplist in $PrgDetail)
+											<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+										#end
+									</select></td>
+								#end
                                                         #end
-                        	                #if($temp==0)
-	                        	        	<td colspan=5></td>
-	                                        #end
+                                                        #if(($temp==0)&&($UDetail.size()==0)&&($mode != "instlist"))
+                                                        	<td><select name="prg$num" id="pg$num" class="drop" size=1>
+	                                                                <option value="Select Program">$brih_select $brih_program</option>
+									#foreach($instplist in $PrgDetail)
+										<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
+									#end
+								</select></td>
+							#end
 						</tr>
 						#set($count="$count$userAndGroup^")
 						#set($temp=0)
+						#set($counter=0)
+					<INPUT TYPE="hidden" NAME="counter" VALUE="$num">
 					#end
 					##</table>
 				</td>
@@ -159,19 +167,19 @@ $page.setBgColor($ui.bgcolor)
 			#if($mode != "instlist")
 			<tr>
 				<td>
-					<INPUT TYPE="SUBMIT" NAME=eventSubmit_doRemove VALUE="$brih_remove"></td></tr>
+					<INPUT TYPE="SUBMIT" class="button-ftextstyle" NAME=eventSubmit_doRemove VALUE="$brih_remove"></td>
+				<td>    <INPUT TYPE="submit" class="button-ftextstyle" NAME=eventSubmit_doUpdate VALUE="$brih_update"></td>
 					<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
-				</td>
 			</tr>
 			#end
 		#end
 ##</table>
 ##<table align=left width=100% bgcolor="$ui.menuColor"> 
 	<tr bgcolor="$ui.menuColor">
-		<td colspan=2><b> $brih_c_msg13 </b></td> #if($mode != "instlist") <td> <b>$brih_program $brih_name </b></td><td> <b>$brih_rollno </b></td> #else <td></td><td></td>  #end </b>
+		<td colspan=2><b> $brih_c_msg13 </b></td> #if($mode != "instlist") <td> <b>$brih_program $brih_name </b></td> #else <td></td><td></td>  #end </b>
 	</tr>
 	<tr>
-		<td colspan=2><select name="group" size=1>
+		<td colspan=2><select name="group" class="drop" size=1>
 		#foreach($name in $CourseList)
 			##if($name.getName() !="global" && $name.getName()!="author")
 			##<option value="$name.getName()">$name.getName()
@@ -183,21 +191,21 @@ $page.setBgColor($ui.bgcolor)
 		</select>
 		</td>
 		#if($mode != "instlist")
-		<td> <select name="prg" size=1>
+		<td> <select name="prg" class="drop" size=1 >
                         <option value="Select Program">$brih_select $brih_program</iption>
 			#foreach($instplist in $PrgDetail)
 				        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 			#end
 			</select></td>
-		<td><input type="text" name="rollno" value=""></td>
+		##<td><input type="text" name="rollno" value=""></td>
 		#end
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 		<td colspan=7>
 			 #if($mode != "instlist")
-			<INPUT TYPE="button" NAME=eventSubmit_doRegister VALUE="$brih_reg1" onclick="ChkField(document.frm,this);">
+			<INPUT TYPE="button" class="button-ftextstyle" NAME=eventSubmit_doRegister VALUE="$brih_reg1" onclick="ChkField(document.frm,this);">
 			#else
-			<INPUT TYPE="submit" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
+			<INPUT TYPE="submit" class="button-ftextstyle" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
 			#end
 		
 			<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
@@ -231,29 +239,33 @@ else
 }
 function ChkField(frm,field)
 {
-        if(frm.prg.value=="Select Program")
-        {
-                if(frm.rollno.value=="")
-                {
-                        frm.actionName.value=field.name;
-                        frm.submit();
-                }
-                else
-                {
-                         alert("Please fill the Program Field!!");
-                }
+	frm.actionName.value=field.name;
+        frm.submit();
+}
+function addUpdateList(field,frm,count)
+{
+        var grpid = document.getElementById("grp"+count).textContent;
+        //alert("inside script document.frm.prg1.value\n"+grpid);
+        var pgid = document.getElementById("pg"+count);
+        var pgval = pgid.value;
+        //alert("inside script document.frm.rollno1.value\n"+pgval);
+        var tmp=grpid+":"+pgval;
+
+        if(field.checked){
+               frm.deleteFileNames.value=frm.deleteFileNames.value+tmp+"^";
+               //alert("check field ---"+frm.deleteFileNames.value);
+
         }
-        else
-        {
-                if(frm.rollno.value!="")
-                {
-                        frm.actionName.value=field.name;
-                        frm.submit();
+        else{
+                var rmFile,index,actualString,preString,postString;
+                actualString=frm.deleteFileNames.value;
+                //index=actualString.indexOf(field.name+"^",0);
+                index=actualString.indexOf(tmp+"^",0);
+                preString=actualString.substring(0,index);
+                //postString=actualString.substring(index+field.name.length+1);
+                postString=actualString.substring(index+tmp.length+1);
+                actualString=preString+postString;
+                frm.deleteFileNames.value=actualString;
                 }
-                else
-                {
-                        alert("Please fill the Roll No Field!!");
-                }
-        }
 }
 </SCRIPT>																			
