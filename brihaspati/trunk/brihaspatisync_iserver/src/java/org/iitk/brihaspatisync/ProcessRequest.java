@@ -288,7 +288,7 @@ public class ProcessRequest extends HttpServlet {
                                 out.close();
 			}
 
-		}else if(reqType.equals("getLectureInfo")) {
+		} else if(reqType.equals("getLectureInfo")) {
                         String lecture_id=request.getParameter("l_id");
                         String message=ServerUtil.getController().getLectureInfo(lecture_id);
                         if(!message.equals("")) {
@@ -335,11 +335,13 @@ public class ProcessRequest extends HttpServlet {
                       	String lectAudio=request.getParameter("lectAudio");
                       	String lectVedio=request.getParameter("lectVedio");
                       	String lectWhiteBoard=request.getParameter("lectWhiteBoard");
+                      	String mailsend_permission=request.getParameter("lectmail_send");
 			StringBuffer url =null;
 			try {
 				url=request.getRequestURL();
 			}catch(Exception e){}
-			String message=putLecture(url,lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard);                        
+			String message=putLecture(url,lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard,mailsend_permission);                       
+			 
                        	out.println(message);
                         out.flush();
 			out.close();
@@ -565,7 +567,7 @@ public class ProcessRequest extends HttpServlet {
                 return result;
 	}
 	
-	private String putLecture(StringBuffer url,String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard) { 
+	private String putLecture(StringBuffer url,String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard,String mailsend_permission) { 
 		String subject="";
 		String message=" ";
 		Date date=Date.valueOf(lectDate);
@@ -580,6 +582,7 @@ public class ProcessRequest extends HttpServlet {
 				crit.add(LecturePeer.FORVIDEO,lectVedio);
 				crit.add(LecturePeer.FORAUDIO,lectAudio);
 				crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
+				crit.add(LecturePeer.MAIL_NOTIFICATION,mailsend_permission);
 				crit.add(LecturePeer.SESSIONDATE,date);
 				crit.add(LecturePeer.SESSIONTIME,lectTime);
 				crit.add(LecturePeer.DURATION,lectDuration);
@@ -612,6 +615,7 @@ public class ProcessRequest extends HttpServlet {
                 	        crit.add(LecturePeer.FORVIDEO,lectVedio);
                         	crit.add(LecturePeer.FORAUDIO,lectAudio);
 	                        crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
+				crit.add(LecturePeer.MAIL_NOTIFICATION,mailsend_permission);	
         	                crit.add(LecturePeer.SESSIONDATE,date);
                 	        crit.add(LecturePeer.SESSIONTIME,lectTime);
                         	crit.add(LecturePeer.DURATION,lectDuration);
@@ -647,7 +651,9 @@ public class ProcessRequest extends HttpServlet {
         	                        crit.add(UrlConectionPeer.LECTURENAME,lectName);
                 	                crit.add(UrlConectionPeer.ROLE,"student");
                         	        UrlConectionPeer.doInsert(crit);
-					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
+					if(mailsend_permission.equals("1"))
+						MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
+					
 				}
 				int key_g=ServerUtil.getController().generateSessionKey();
                                 crit=new Criteria();
@@ -672,7 +678,9 @@ public class ProcessRequest extends HttpServlet {
                                         crit.add(UrlConectionPeer.LECTURENAME,lectName);
                                         crit.add(UrlConectionPeer.ROLE,"instructor");
                                         UrlConectionPeer.doInsert(crit);
-					MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"instructor",Integer.toString(key),url);
+					if(mailsend_permission.equals("1"))
+						MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"instructor",Integer.toString(key),url);
+					
 				}
 			}
 		}catch(Exception e){}
