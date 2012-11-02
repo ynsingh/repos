@@ -65,7 +65,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
  
 public class ViewMarks extends SecureScreen_Student 
 {
-	private String rollno1,rollno2="";
+	private String rollno1=null,rollno2=null;
 	private List v=null;
 	public void doBuildTemplate(RunData data,Context context)
 	{
@@ -98,7 +98,7 @@ public class ViewMarks extends SecureScreen_Student
 				if(v.size()>0){
 					StudentRollno element=(StudentRollno)v.get(0);
 	                        	rollno1=element.getRollNo();
-				
+					rollno2="";
 					/**
 	 				 * Vector size greater than 1 shows that user have more than 1 rollno
  					 * then get another rollno 
@@ -114,7 +114,7 @@ public class ViewMarks extends SecureScreen_Student
 			{ 
 				ErrorDumpUtil.ErrorLog("Error inside getting value in view marks"+e);
 			}
-
+			ErrorDumpUtil.ErrorLog("The value of roll no select vector is "+ v.toString() + " and roll no is "+ rollno1 +" ==== "+ rollno2);
 			String tempfilePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks";
 			File MarksDir=new File(tempfilePath);
 			String[] listOfFiles = MarksDir.list();
@@ -175,6 +175,7 @@ public class ViewMarks extends SecureScreen_Student
 					}
 				}
 			}
+				ErrorDumpUtil.ErrorLog("The value of marks detail vector is "+ markDetail.toString());
 				context.put("alias",alias);
 				context.put("markHeading",heading);
 				context.put("markDetail",markDetail);

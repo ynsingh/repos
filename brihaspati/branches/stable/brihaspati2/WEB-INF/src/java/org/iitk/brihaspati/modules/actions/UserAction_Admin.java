@@ -61,12 +61,9 @@ import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils. InstituteIdUtil;
-import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 
 import org.iitk.brihaspati.om.UserConfigurationPeer;
@@ -84,9 +81,10 @@ import org.iitk.brihaspati.om.InstituteAdminUserPeer;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>01nov2012
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>
  * @modified date: 08-07-2010, 20-10-2010, 23-12-2010, 27-07-2011, 18-04-2012
  */
 
@@ -110,12 +108,7 @@ public class UserAction_Admin extends SecureAction_Admin{
 			System.gc();
 			LangFile=(String)data.getUser().getTemp("LangFile");	
 			ParameterParser pp=data.getParameters();
-			/**
-			 * Added by shaista
-			 * Getting institute id as a String from prameter Parser Variable
-			 * Getting instName as a String according to institute id
-			 */
-			String instName= InstituteIdUtil.getIstName(Integer.parseInt(pp.getString("instId","")));
+			String instname=pp.getString("institute","");
 	        	FileItem file = pp.getFileItem("file");
         		String fileName=file.getName();
 			if((!(fileName.toLowerCase()).endsWith(".txt"))||(file.getSize()<=0))
@@ -129,23 +122,19 @@ public class UserAction_Admin extends SecureAction_Admin{
 				data.setMessage(upload_msg2);
         		}
 	        	else{
-				//String serverName=data.getServerName();
-        	                //int srvrPort=data.getServerPort();
-	                        //String serverPort=Integer.toString(srvrPort);
 				String group=pp.getString("GroupName");
         			String role=pp.getString("Role");
 				Date date=new Date();
                 		File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+group+role+date.toString()+".txt");
 				file.write(f);
-				/** 
-				 * Added By shaista 	
-               	                 * passing instituteName variable as a string 
-                       	         * to get institute id for exprydate according to admin profile
-                       	         * to get Institute admin name and Institute Name
-                               	 * @see RegisterMultiUser util
-                                 * @see UserManagement Util
-       	                         **/
-        			Vector msg=RegisterMultiUser.Multi_Register(f,group,role,LangFile,instName);
+				Vector msg=new Vector();
+				if(role.equals("student"))
+				{
+        				msg=RegisterMultiUser.Multi_Register(f,group,role,LangFile,instname);
+				}
+				else{
+					msg=RegisterMultiUser.RegisterInstructor(f,LangFile,instname);
+				}
 	        		context.put("Msg",msg);
 			}
 		}
@@ -190,8 +179,7 @@ public class UserAction_Admin extends SecureAction_Admin{
                 }
 		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
 		String insid=pp.getString("InstName","");
-		String Studsrid=pp.getString("Studsrid","");
-		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,Studsrid,CId);
+		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,CId);
 	 	data.setMessage(msg);
 	}
     	/**
@@ -209,7 +197,6 @@ public class UserAction_Admin extends SecureAction_Admin{
 			/**
 		 	* Get the user name and new password enterd by admin for the user.
 		 	*/
-              //  	String uname=pp.getString("username");
 			String userName=pp.getString("username");
 			if(StringUtil.checkString(userName) != -1)
                        	{
@@ -261,8 +248,6 @@ public class UserAction_Admin extends SecureAction_Admin{
                 List listone=TurbineRolePeer.doSelect(crit);
                 String RoleName=((TurbineRole)listone.get(0)).getRoleName();
 		context.put("roleName",RoleName);
-		//Vector grpInstructor = UserGroupRoleUtil.getGID(userId,2);
-		//int gId=0;
 		String server_name=TurbineServlet.getServerName();
                 String srvrPort=TurbineServlet.getServerPort();
 		String subject="", info_new = "", info_Opt="", msgRegard="";
@@ -398,6 +383,7 @@ public class UserAction_Admin extends SecureAction_Admin{
                  * Getting file value from temporary variable according to selection
                  * Replacing the static value from Property file
                  **/
+			//ErrorDumpUtil.ErrorLog("testing in upload photo");
 			LangFile=(String)data.getUser().getTemp("LangFile");
                         ParameterParser pp=data.getParameters();
                         FileItem file = pp.getFileItem("file");
@@ -478,6 +464,21 @@ public class UserAction_Admin extends SecureAction_Admin{
                 }
         }
 
+	/**This method return the courses of selected institute in which admin register the user*/
+	public void doSearch(RunData data, Context context) throws Exception
+        {
+                String LangFile=(String)data.getUser().getTemp("LangFile");
+                ParameterParser pp=data.getParameters();
+                String instName=pp.getString("institute");
+		Vector CourseList=InstituteDetailsManagement.InstwiseCourse(instName);
+                if(CourseList.size()!=0){
+                        context.put("courseList",CourseList);
+                }
+                else{
+                        data.setMessage("The courses are not registered in this Institute");
+                }
+        }//method
+
 	 /**
           * ActionEvent responsible if no method found in this action i.e. Default Method
           * @param data RunData
@@ -500,8 +501,8 @@ public class UserAction_Admin extends SecureAction_Admin{
 			doUploadMultiUser(data,context);
 		else if(action.equals("eventSubmit_doUploadphoto"))
 			doUploadMultiUserPhoto(data,context);
-		//else if(action.equals("eventSubmit_doChangeStatus"))
-		//	doChangeStatus(data,context);
+		else if(action.equals("eventSubmit_doSearch"))
+			doSearch(data,context);
 		else
 		{
 			 /**

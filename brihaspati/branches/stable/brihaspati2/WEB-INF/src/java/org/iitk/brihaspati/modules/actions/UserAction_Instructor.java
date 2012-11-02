@@ -84,7 +84,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
  * @modified date: 26-02-2011, 27-07-2011, 05-08-2011, 19-04-2012
- * @modified date: 08-08-2012
+ * @modified date: 08-08-2012, 30-10-2012(Richa)
  */
 public class UserAction_Instructor extends SecureAction_Instructor
 {
@@ -397,8 +397,8 @@ public class UserAction_Instructor extends SecureAction_Instructor
 		String CId = (String)data.getUser().getTemp("course_id");
                 ParameterParser pp=data.getParameters();
                 String uname=pp.getString("username");
+		String Instid=((String)data.getUser().getTemp("Institute_id")).toString();
 		/* Counter tells in how many institute the user is registered*/
-		int count=Integer.parseInt(pp.getString("counter",""));                                                                                                                      
 		if(StringUtil.checkString(uname) != -1)
 		{
                 	data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
@@ -409,36 +409,31 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
                 String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
 		/**
- 		 * loop fro getting more than one institute, program and rollno
-		 * Serial id to update perticular student record.
+ 		 * getting program and rollno to update perticular student record.
  		 */ 
-		for(int k=1;k<=count;k++)
+		String PrgCode = pp.getString("prg1","");
+                String rollno = pp.getString("rollno1","").trim();
+		/**
+	         * check if rollno have any special character then return message
+	         */
+		if(StringUtil.checkString(rollno) != -1)
                 {
-                	String Instid = pp.getString("instName"+k,"");
-                        String PrgCode = pp.getString("prg"+k,"");
-                        String rollno = pp.getString("rollno"+k,"").trim();
-			/**
-	                  * check if rollno have any special character then return message
-	                  */
-			if(StringUtil.checkString(rollno) != -1)
-                        {
-                		data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
-                                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
-                               return;
-                        }
-                        String Studsrid = pp.getString("Srid"+k,"");
-                	msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,Studsrid,CId);
-			/**
-                         * If msg is equal to true, it shows error in updating profile
-                         * then show message.     
-                         */
-			if(msg.equals("true")){
-				String msg1 = MultilingualUtil.ConvertedString("rollno_msg2",LangFile);
-				String msg2 = MultilingualUtil.ConvertedString("rollno_msg",LangFile);
-				msg = msg1+" "+msg2;
-				break;}
-               }
-               data.setMessage(msg);
+                	data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
+                        data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
+                        return;
+                }
+		//ErrorDumpUtil.ErrorLog("Rollno--"+rollno+"---Program--"+PrgCode);
+                msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,PrgCode,Instid,CId);
+		/**
+                 * If msg is equal to true, it shows error in updating profile
+                 * then show message.     
+                 */
+		if(msg.equals("true")){
+			String msg1 = MultilingualUtil.ConvertedString("rollno_msg2",LangFile);
+			String msg2 = MultilingualUtil.ConvertedString("rollno_msg",LangFile);
+			msg = msg1+" "+msg2;
+		}
+		data.setMessage(msg);
 		}
 		catch(Exception ex){
                 		data.setMessage("The Error in Action UserAction_Intructor doUpdate method !!");

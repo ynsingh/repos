@@ -42,11 +42,14 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>
  * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date:28-12-2011(Richa)
- * @modified date:18-07-2012(Rajeev)
+ * @modified date:18-07-2012(Rajeev),30-10-2012(Richa)
  */
 
 import java.util.Vector;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ListIterator;
 import com.workingdogs.village.Record;
 import org.apache.velocity.context.Context;
@@ -145,55 +148,71 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 				context.put("CourseList",courseList);
 				setTemplate(data,"call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm");
 			}
+			/**
+                        * getting institute id from temp & list of program for that institute 
+                       	*/
 			crit=new Criteria();
                         crit.add(InstituteProgramPeer.INSTITUTE_ID,Integer.parseInt(instituteId));
                         List Instplist= InstituteProgramPeer.doSelect(crit);
                         Vector PrgDetail = new Vector();
+                        CourseUserDetail cDetails=new CourseUserDetail();
                         for(int i=0;i<Instplist.size();i++)
                         {
                                 InstituteProgram element = (InstituteProgram)Instplist.get(i);
                                 String PrgCode = element.getProgramCode();
                                 String prgName = InstituteIdUtil.getPrgName(PrgCode);
-                                CourseUserDetail cDetails=new CourseUserDetail();
+				cDetails = new CourseUserDetail();
                                 cDetails.setPrgName(prgName);
                                 cDetails.setPrgCode(PrgCode);
                                 PrgDetail.add(cDetails);
-                                context.put("PrgDetail",PrgDetail);
                         }
-                        List userRollNo=CourseProgramUtil.getUserRollNo(uname);
-                        int rlsize = userRollNo.size();
-                        Vector UsDetail = new Vector();
-                        String rlprgcode="",rl="",pgname="", pgcode="",cId="",CrsName="",CrsAlias="",CrsInstrName="";
+                        context.put("PrgDetail",PrgDetail);
+			/**
+                         * getting user rollno and program list 
+                         */
+			List userRollNo=CourseProgramUtil.getUserInstituteRollnoList(uname,instituteId);
+			Vector rollprglist = new Vector();
                         for(int j=0;j<userRollNo.size();j++)
                         {
                                 StudentRollno element = (StudentRollno)userRollNo.get(j);
-                                CourseUserDetail cDetails=new CourseUserDetail();
-                                int sturlid = element.getId();
-				String Instid = element.getInstituteId();
-				if(Instid.equals(instituteId)){
-	                                List Crslist = CourseProgramUtil.getCourseRollnoDetail(sturlid);
-        	                        for(ListIterator k = Crslist.listIterator();k.hasNext();)
-                	                {
-                        	                Record item = (Record)k.next();
-	                                        rl = item.getValue ("ROLL_NO").asString();
-	                                        //ErrorDumpUtil.ErrorLog("return value from execute query  :- "+rl);
-	                                        cId = item.getValue ("COURSE_ID").asString();
-	                                        //ErrorDumpUtil.ErrorLog("return value cid from execute query  :- "+cId);
-	                                        String Insid = item.getValue ("INSTITUTE_ID").asString();
-	                                        //ErrorDumpUtil.ErrorLog("return value Insid from execute query  :- "+Insid);
-	                                        pgcode= item.getValue ("PROGRAM").asString();
-	                                        //ErrorDumpUtil.ErrorLog("return value pgr from execute query  :- "+pgcode);
-	                                        pgname = InstituteIdUtil.getPrgName(pgcode);
-	                                        //ErrorDumpUtil.ErrorLog("pgname from util :- "+pgname);
-						String tmp = rl+":"+cId+":"+pgcode+":"+pgname;
-	                                        CrsName = CourseUtil.getCourseName(cId);
-	                                        CrsAlias = CourseUtil.getCourseAlias(cId);
-	                                        CrsInstrName= CourseProgramUtil.getCourseInstructorName(cId);
-	                                	UsDetail.addElement(tmp);
-        	                        }
-                	                context.put("UDetail",UsDetail);
+                                String rollno = element.getRollNo();
+                                String Program = element.getProgram();
+                                cDetails = new CourseUserDetail();
+                                cDetails.setPrgCode(Program);
+                                cDetails.setRollNo(rollno);
+                                rollprglist.add(cDetails);
+                        }
+                        context.put("rlprglist",rollprglist);
+			/**
+                        * getting registered course, program and rollno list of the user 
+                        */
+                        Vector UsDetail = new Vector();
+			ArrayList list = new ArrayList();
+                        Map map = new HashMap();
+                        String rlprgcode="",rl="",pgname="", pgcode="",cId="",CrsName="",CrsAlias="",CrsInstrName="";
+                        List Crslist = CourseProgramUtil.getCourseRollnoDetail(uname,Integer.parseInt(instituteId));
+			//ErrorDumpUtil.ErrorLog("List from InstitueStudentList screen----"+Crslist+"-----Crslist size"+Crslist.size());
+                        for(ListIterator k = Crslist.listIterator();k.hasNext();)
+       	                {
+	       	                Record item = (Record)k.next();
+	                        rl = item.getValue ("ROLL_NO").asString();
+	                        //ErrorDumpUtil.ErrorLog("return value from execute query  :- "+rl);
+	                        cId = item.getValue ("COURSE_ID").asString();
+	                        //ErrorDumpUtil.ErrorLog("return value cid from execute query  :- "+cId);
+	                        pgcode= item.getValue ("PROGRAM_CODE").asString();
+	                        //ErrorDumpUtil.ErrorLog("return value pgr from execute query  :- "+pgcode);
+	                        pgname = InstituteIdUtil.getPrgName(pgcode);
+	                        //ErrorDumpUtil.ErrorLog("pgname from util :- "+pgname);
+	                        if(cId.endsWith(instituteId)){
+					map = new HashMap();
+					map.put("rlno",rl);
+					map.put("grpname",cId);
+					map.put("pgcode",pgcode);
+					map.put("pgname",pgname);
+	                               	list.add(map);
 				}
-			}
+                        }
+       	                context.put("UDetail",list);
 		}
 		catch (Exception e)
 		{

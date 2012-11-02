@@ -640,6 +640,7 @@ function Bs_SpreadSheet() {
 	* @since  bs4.4
 	*/
 	this.exportDataToCsv = function() {
+		
 		var clean = new Array;
 		for (var i=0; i<this._data.length; i++) {
 			//alert("length of data in data to csv\n"+this._data.length);
@@ -1612,13 +1613,13 @@ function Bs_SpreadSheet() {
                         var y = this.getCol(cell.id) +1;
                         var x = this.getRow(cell.id) +1;
                         var Col = this._getColCaption(y-1) + '' + x;//getting field span value
-                                if(document.uploadform.status.value == null)
+                                if(document.show.status.value == null)
                                 {//1 if
-                                        document.uploadform.status.value = 'edit';
+                                        document.show.status.value = 'edit';
                                 }// end of 1 if
                                 else
                                 {// 1 else
-        	                        var tmp = document.uploadform.formulaDetail.value;
+        	                        var tmp = document.show.formulaDetail.value;
 	                                //alert("formula value in check formula-------->"+tmp);
 	                                var frtmp = tmp.split("/");//split each line of formula
 	                                var flag;
@@ -1643,8 +1644,8 @@ function Bs_SpreadSheet() {
 
 				if(flag == true)
                                                 {// 3 if
-                                                        if(document.uploadform.status.value == 'edit')
-                                                        document.uploadform.status.value = null;
+                                                        if(document.show.status.value == 'edit')
+                                                        document.show.status.value = null;
                                                 }// end of 3 if
                                                 else
                                                 this.ChkEdit(cell);
@@ -1663,7 +1664,7 @@ function Bs_SpreadSheet() {
                         var y = this.getCol(cell.id) +1;
                         var x = this.getRow(cell.id) +1;
                         var Col = this._getColCaption(y-1) + '' + x;//getting field span value
-                                var tmp = document.uploadform.formulaDetail.value;
+                                var tmp = document.show.formulaDetail.value;
 				if(tmp != "$formulaDetail")
 				{// 1 if
 	                                //alert("formula value is-------->"+tmp);

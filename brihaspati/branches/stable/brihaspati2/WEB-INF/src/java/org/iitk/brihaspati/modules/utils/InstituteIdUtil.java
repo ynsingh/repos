@@ -154,6 +154,23 @@ public class InstituteIdUtil
 		return pName;
 	} 	
 	
+	/** 
+	 * Get the Program code on the basis of programe name
+ 	 */
+	public static String getPrgCode(String PrgName){
+		String pCode=null;
+		Criteria crt=new Criteria();
+		try{
+                crt.add(ProgramPeer.PROGRAM_NAME,PrgName);
+                List pcode=ProgramPeer.doSelect(crt);
+                Program element=(Program)pcode.get(0);
+                pCode=element.getProgramCode();
+		}
+		catch(Exception ex){
+                        ErrorDumpUtil.ErrorLog("The error in getPrgCode() - Institute Id Util class !!"+ex);
+                }
+		return pCode;
+	} 	
         /**
          * getting the instituteid of institute admin by the help of userid
          */
@@ -226,8 +243,10 @@ public class InstituteIdUtil
                 try{
                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,Inst_Name);
                         List inm=InstituteAdminRegistrationPeer.doSelect(crit);
-                        InstituteAdminRegistration element=(InstituteAdminRegistration)inm.get(0);
-                	inst_id=element.getInstituteId();
+			if(inm.size()>0){
+	                        InstituteAdminRegistration element=(InstituteAdminRegistration)inm.get(0);
+        	        	inst_id=element.getInstituteId();
+			}
         	}
 		catch(Exception ex){
                         ErrorDumpUtil.ErrorLog("The error in getIsteId() -Institute Id Util class !!"+ex);

@@ -43,7 +43,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date:23-12-2010, 11-01-2011, 31-01-2012
- * @modified date:18-07-2012(Rajeev)
+ * @modified date:18-07-2012(Rajeev),30-10-2012(Richa)
  */
 import java.util.List;
 import java.util.Vector;
@@ -67,6 +67,7 @@ import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
@@ -97,11 +98,40 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	//String role1=data.getParameters().getString("Role");
 	//context.put("role1",role1);
 	//ErrorDumpUtil.ErrorLog("Role====>>"+role1);
+	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+        String file=(String)data.getUser().getTemp("LangFile");
+	/**
+ 	* Get institute wise user rollno list.
+ 	* *@see CourseProgramUtil util in utils.   
+ 	*/ 
+	List rollnoprglist=CourseProgramUtil.getUserInstituteRollnoList(uname,instituteId);
+        Vector Rollnolist = new Vector();
+        for(int j=0;j<rollnoprglist.size();j++)
+ 	{
+        	StudentRollno st = (StudentRollno)rollnoprglist.get(j);
+                String PrgCode = st.getProgram();
+                String Pgname = InstituteIdUtil.getPrgName(PrgCode);
+                String rollno = st.getRollNo();
+                CourseUserDetail Crsdetail=new CourseUserDetail();
+                Crsdetail.setPrgName(Pgname);
+                Crsdetail.setRollNo(rollno);
+                Rollnolist.add(Crsdetail);
+        }
+        context.put("rlnolist",Rollnolist);
+	if(mode.equals("rollnomgmt")){
+		if(rollnoprglist.size()==0){
+			context.put("type","NoRollno");
+			String msg=MultilingualUtil.ConvertedString("prgm_msg6",file);
+			data.setMessage(msg);
+		}	
+		else
+			context.put("type","notEmpty");
+	}
+
 	/**
 	  *get InstituteId and used in getting Institute Course List.
 	  *@see InstituteDetailsManagement util in utils. 	
 	  */
-	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 	try{
 		if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))||(mode.equals("USzip"))){	
 			Vector CourseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId);
@@ -136,9 +166,8 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         cDetails.setPrgName(prgName);
                         cDetails.setPrgCode(PrgCode);
                         PrgDetail.add(cDetails);
-                        context.put("PrgDetail",PrgDetail);
                 }   
-
+               	context.put("PrgDetail",PrgDetail);
 	}
 	catch(Exception e)
 	{
@@ -158,9 +187,7 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 		List v=null;
 		if(mode1.equals("list")){
 		try{
-			String file=null;
                         MultilingualUtil m_u=new MultilingualUtil();
-                        file=(String)data.getUser().getTemp("LangFile");
 
                         /**
                          * Get the search criteria and the search string
@@ -184,9 +211,9 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         context.put("query",query);
                         context.put("value",valueString);
                         String str=null;
-			//List rusrlist;
 			List rusrlist=CourseProgramUtil.getInstituteUserRollnoList(instituteId);
                         context.put("rollnolist",rusrlist);
+			//ErrorDumpUtil.ErrorLog("rollnolist in instUserMagmt_Admin screen---"+rusrlist);
 
 			/*set the feild as in TURBINE_USER table 
 			 *according to search string set by user.

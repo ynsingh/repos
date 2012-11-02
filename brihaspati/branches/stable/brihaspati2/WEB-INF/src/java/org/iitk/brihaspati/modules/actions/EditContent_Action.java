@@ -97,14 +97,11 @@ public class EditContent_Action extends SecureAction
 		try
 		{
 			User user=data.getUser();
-			//Course course=data.getCourse();
                         ParameterParser pp=data.getParameters();
                         String topic=pp.getString("topic","");
                         String dir=(String)user.getTemp("course_id");
                         String cName=pp.getString("cName","");
 			String status=pp.getString("status","");
-			//String status=pp.getString("location","");
-			//ErrorDumpUtil.ErrorLog("locatior in crspath===="+status);
                         String username=pp.getString("uname");
 			if(status.equals("Remote"))
                         {
@@ -152,7 +149,6 @@ public class EditContent_Action extends SecureAction
                         {
                                 RemoteDelTopic(dir,cName,topic,username1,data);
 				data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
-				ErrorDumpUtil.ErrorLog("at line 155doDeleteTopic");
 			}	
 			else if(status.equals("Repo"))
 			{
@@ -195,9 +191,7 @@ public class EditContent_Action extends SecureAction
 			}//outer if
 			XmlWriter xmlwriter=null;
 			String BPath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content";
-			//File f1=new File(BPath+"/"+"content__des.xml");
 			File f1=new File(BPath+"/"+"coursecontent__des.xml");
-			 //int seq=CalendarUtil.getSequence(BPath,"content",topic);
 			 int seq=CalendarUtil.getSequence(BPath,"coursecontent",topic);
                                 xmlwriter=TopicMetaDataXmlWriter.WriteXml_NewModify(BPath,"coursecontent");
                                 xmlwriter.writeXmlFile();
@@ -287,7 +281,6 @@ public class EditContent_Action extends SecureAction
                                 {
                                         RemoteDelFile(dir,cName,topic,username1,fileName,3,data);
                                         //data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
-					ErrorDumpUtil.ErrorLog("deletion at line 289doDelete");
                                 }
                         }
                         /*if(status.equals("Remote"))
@@ -653,7 +646,6 @@ public class EditContent_Action extends SecureAction
                                 File filepath = new File(RemotePath);
                                 SystemIndependentUtil.deleteFile(filepath);
                                 data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
-				ErrorDumpUtil.ErrorLog("which screeen is execute at line 656 RemoteDelTopic");
                         }
                 }//try
                 catch(Exception e)

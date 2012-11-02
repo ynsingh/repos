@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UploadAction.java
  *
- *  Copyright (c) 2005-2011 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -41,6 +41,11 @@ import java.io.FileOutputStream;
 import java.util.Vector;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
+import java.io.IOException;
 
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -67,7 +72,9 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.HDFSClient;
+import org.apache.commons.lang.StringUtils;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 /**
  * Class responsible for Upload files in particuler Area
  *
@@ -166,6 +173,16 @@ public class UploadAction extends SecureAction
 		String way=coursesRealPath+"/"+courseHome+"/Content/";
 		String filePath="";
 		f=new File(topicDir.getPath()+"/Unpublished/");
+	
+		/** Put the check for file storage system get value from configuration file
+ 		*   on the basis set the path of storage area
+		**/
+                String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
+                if(StringUtils.isBlank(dstore)){
+                        dstore="Local";
+                }
+
 		/**
  		 * check guest access for course inside database
  		 */
@@ -176,7 +193,7 @@ public class UploadAction extends SecureAction
 		crit.add(TurbineUserGroupRolePeer.USER_ID,0);
 		List v=TurbineUserGroupRolePeer.doSelect(crit);	
 
-//check for available quota space and return true if space available
+	//check for available quota space and return true if space available
 	//	String gname=GroupUtil.getGroupName(uid,2);
 		long dirS=QuotaUtil.getDirSizeInMegabytes(new File(coursesRealPath+"/"+courseHome));
 	//	ErrorDumpUtil.ErrorLog(" The dirs is "+ Long.toString(dirS)+ "C Name "+gname+ " C Home "+courseHome );
@@ -239,8 +256,7 @@ public class UploadAction extends SecureAction
 		catch(FileUploadException ex)
 		{
 			ErrorDumpUtil.ErrorLog("Error in writing topic in xml"+ex);
-		
-	data.setMessage("See ExceptionLog");
+			data.setMessage("See ExceptionLog");
 		}
 			int successfulUploadFilesCount=0;
 			int totalFilesEntries=0;
@@ -270,58 +286,84 @@ public class UploadAction extends SecureAction
 					continue;
 					++successfulUploadFilesCount;
 					new_files_uploaded.addElement(tempFile[count]);
-					
-					long fsize=fileItem.getSize()/1024/1024;
-					long uquota=QuotaUtil.getCrsQuota(courseHome);
-					uquota= uquota - dirS;
-					long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
-			//		ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
-					if((uquota>fsize)&&(disSpace>fsize))
-					{
-                                        	f.mkdirs();
-                                        	flag1=true;
-                        			if(flag1)
-						{
-							File descFile= new File(topicDir+"/"+contentTopic+"__des.xml");
-                                        		if(!descFile.exists())
-							TopicMetaDataXmlWriter.writeWithRootOnly(descFile.getAbsolutePath());
-							
-							int readCount;
-							InputStream is=fileItem.getInputStream();
-                                        		FileOutputStream fos=new FileOutputStream(filePath+tempFile[count]);
-                                        		byte[] buf=new byte[4*1024];
-                                        		while((readCount=is.read(buf)) !=-1)
-							{
-                                                		fos.write(buf,0,readCount);
-	                                        	}
-        	                                	fos.close();
-                	                        	is.close();
-							//fileItem.write(f1);
-                                                }
 
-                                        }
-					else{
-						//data.setMessage("");
-						data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg5",LangFile));
-					}
-	
-					System.gc();
+					//if start data storage on Local disk
+					if((StringUtils.equalsIgnoreCase(dstore,"Local"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
+						long fsize=fileItem.getSize()/1024/1024;
+						long uquota=QuotaUtil.getCrsQuota(courseHome);
+						uquota= uquota - dirS;
+						long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
+				//		ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
+						if((uquota>fsize)&&(disSpace>fsize))
+						{
+                                        		f.mkdirs();
+	                                        	flag1=true;
+        	                			if(flag1)
+							{
+								String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
+                                                                String fospath=filePath+tempFile[count];
+                                                                writeData(descfilepath, fileItem, fospath);
+        	       	                                }
+	                                        }
+						else{
+							//data.setMessage("");
+							data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg5",LangFile));
+						}
+						System.gc();
+					}//if disk storage local
+					if((StringUtils.equalsIgnoreCase(dstore,"HDFS"))||(StringUtils.equalsIgnoreCase(dstore,"Both"))){
+						// write the code here for storing data in hdfs file system
+						// check name node is running is running or not
+						boolean serverOn=false;
+			                        try {
+                        			        URL myURL = new URL("http://202.141.40.215:50070/");
+			                                HttpURLConnection connection = (HttpURLConnection)myURL.openConnection();
+                        			        connection.setDoOutput(true);
+			                                connection.setRequestMethod("POST");
+                        			        connection.connect();
+			                                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        			                serverOn=true;
+                                			}
+                        			}
+			                        catch (MalformedURLException e) {
+                        			        data.setMessage("The problem in connecting to server "+e);
+			                        }
+                        			catch (IOException e) {
+			                                data.setMessage("The problem in connecting to server (IO exception) "+e);
+                        			}
+						 // then write the name of file in xml file
+						if(serverOn){
+						// set the location of the file
+							if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+								f.mkdirs();
+								String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
+	                                                        String fospath=filePath+tempFile[count];
+                                                        	writeData(descfilepath, fileItem, fospath);
+							}
+							HDFSClient.mkdir(filePath);
+							HDFSClient.addFile(filePath+temp, filePath);
+							if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+								(new File(filePath+temp)).delete();
+							}
+
+					 	}
+                        			else{
+			                                data.setMessage("The problem in connecting to server due to either network failure or server/service down");
+                        			}
+                			}//if end data storage on hdfs
+
 				}//fileTiem
 			}//count
 			if(flag1){	
 			if(Pub.equals("Publish"))
 			{
-				ErrorDumpUtil.ErrorLog("tttttttttt================================");
 				if(new_files_uploaded.size()!=0)
                        		{
                                		for(int k=0;k<new_files_uploaded.size();k++)
                                		{
                                        		String fileName=new_files_uploaded.get(k).toString();
-				ErrorDumpUtil.ErrorLog("tttttttttt================================"+fileName);
                                			xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
-				ErrorDumpUtil.ErrorLog("tttttttttt================================"+Path+"|======|"+contentTopic);
                                        		TopicMetaDataXmlWriter.appendFileElement(xmlWriter,fileName,fileName,dateOfCreation);
-				ErrorDumpUtil.ErrorLog("tttttttttt================================vipul"+dateOfCreation);
                        				xmlWriter.writeXmlFile();
 				//boolean courseModified = true;
 				Date d=new Date();
@@ -370,6 +412,36 @@ public class UploadAction extends SecureAction
 		data.addMessage("The Error in Uploading in Course contents !!"+ex);
 	}
 }//do
+		/**
+                 * This method is responsble for wrting data to local disk location
+                 * @param descfilepath String this is XML descriptor file path
+                 * @param fileItem FileItem  class which allows to get input stream
+                 * @param fospath String This is content data path, where we want to write data
+                 * @return boolean return true or false
+                 */
+	
+	 public boolean writeData(String descfilepath, FileItem fileItem, String fospath){
+                        boolean wd=false;
+                try{
+                        File descFile= new File(descfilepath);
+                        if(!descFile.exists())
+                        TopicMetaDataXmlWriter.writeWithRootOnly(descFile.getAbsolutePath());
+                        int readCount;
+                        InputStream is=fileItem.getInputStream();
+                        FileOutputStream fos=new FileOutputStream(fospath);
+                        byte[] buf=new byte[4*1024];
+                        while((readCount=is.read(buf)) !=-1)
+                        {
+                                fos.write(buf,0,readCount);
+                        }
+                        fos.close();
+                        is.close();
+                        wd=true;
+                }
+                catch(Exception ex){ErrorDumpUtil.ErrorLog(" The error in writing file data "+ex);wd=false;}
+                return wd;
+        }
+
 //////////////////////////////////////////////////////////////////////
 	public void updateLastModified(String courseId,Date lastMod) throws Exception
         {

@@ -34,7 +34,8 @@ package org.iitk.brihaspati.modules.actions;
 
 /** 
  * @author  <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
- * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>29oct2012
+ * @author  <a href="palseema@rediffmail.com">Manorama Pal</a>
  * @author  <a href="shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 08-08-2012
  */
@@ -60,6 +61,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 
 public class UserManagement_RemoveUser extends SecureAction_Admin{
 	/**
@@ -86,10 +88,8 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 			/**
 		 	* Get the group and role selected by the admin from the previous screen
 		 	*/
-
-			String gName=pp.getString("group");
-			context.put("group",gName);
-
+			String instName=pp.getString("group");
+			context.put("group",instName);
 			String role=pp.getString("role");
 			context.put("role",role);
 			int roleId=0;
@@ -101,104 +101,117 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 			Vector g=new Vector();
 			List user=null;
 			Vector user_list=new Vector();
-			if(!gName.equals("")){  
+			if(!instName.equals("")){  
 
 				/**
 			 	* This 'if' is executed when the users to be
 			 	* listed are for a specific group selected by
 			 	* the user
 			 	*/
-
-				if(!gName.equals("All")){ 
-
-				/**
-				 * Find the group id depending on the group name obtained
-				 * @see GroupUtil in utils
-				 */
-			
-					int GID=GroupUtil.getGID(gName);
-
-					/**
-				 	* Get all the user ids having the specified role in the
-				 	* group selected
-				 	* @see UserGroupRoleUtil in utils
-				 	*/
-
-					Vector UID=UserGroupRoleUtil.getUID(GID,roleId);
+				boolean flag=false;
+				if(!instName.equals("All")){
+					int instId=InstituteIdUtil.getIst_Id(instName); 
+					try{
+						Vector CourseList=InstituteDetailsManagement.getInstituteCourseDetails(Integer.toString(instId));
+						context.put("courseList",CourseList);
+						if(CourseList.size()==0)
+						{
+							String c_msg01=m_u.ConvertedString("course_exists",LangFile);
+                                        		data.setMessage(c_msg01+""+instName);
+							//data.setMessage("Courses are not exists in this Institute"+" "+instName);
+							flag=true;
+						}	
+					}catch(Exception e){data.setMessage("error testing"+e);}
 
 					/**
-				 	* For all the user ids obtained above, add the user details in
-				 	* a vector and the name of group in another vector
+				 	* Find the group id depending on the group name obtained
+				 	* @see GroupUtil in utils
 				 	*/
+					if(flag==false){
+						String gName=pp.getString("Cgroup","");
+						if(!gName.equals("")){
+							if(gName.endsWith(Integer.toString(instId))){
+                        					context.put("Cgroup",gName);
+								int GID=GroupUtil.getGID(gName);
 
-					for(int i=0;i<UID.size();i++){  
-						int uid=Integer.parseInt(UID.elementAt(i).toString());
+								/**
+				 				* Get all the user ids having the specified role in the
+				 				* group selected
+				 				* @see UserGroupRoleUtil in utils
+				 				*/
 
-						Criteria crit=new Criteria();
-						crit.add(TurbineUserPeer.USER_ID,uid);
-						try{
-							user=TurbineUserPeer.doSelect(crit);
-						}catch(Exception e){}
-						user_list.addElement(user);
-						/**
-						 * Obtaining the list of all groupId of particular user and role, in vector
-						*/
-						Vector gid=UserGroupRoleUtil.getGID(uid,roleId);      
-						for(int j=0;j<gid.size();j++){ 
-							String gname=GroupUtil.getGroupName(Integer.parseInt(gid.elementAt(j).toString()));
-							if(gName.equals(gname))
-								g.addElement(gname);
-						} 
-					} 
+								Vector UID=UserGroupRoleUtil.getUID(GID,roleId);
 
-					/**
-				 	* If no users are found satisfying the condition, then the
-				 	* proper error message should be displayed. Else the vectors
-				 	* having user details and group should be put into context.
-				 	*/
+								/**
+				 				* For all the user ids obtained above, add the user details in
+				 				* a vector and the name of group in another vector
+				 				*/
 
-					if(user_list.size()==0){ 
-						if(roleId==3){ 
-							String stu_msgc=m_u.ConvertedString("stu_msgc",LangFile);
-							data.setMessage(stu_msgc +" "+gName);
-						}
+								for(int i=0;i<UID.size();i++){  
+									int uid=Integer.parseInt(UID.elementAt(i).toString());
+
+									Criteria crit=new Criteria();
+									crit.add(TurbineUserPeer.USER_ID,uid);
+									try{
+										user=TurbineUserPeer.doSelect(crit);
+									}catch(Exception e){}
+									user_list.addElement(user);
+									/**
+						 			* Obtaining the list of all groupId of particular user and role, in vector
+									*/
+									Vector gid=UserGroupRoleUtil.getGID(uid,roleId);      
+									for(int j=0;j<gid.size();j++){ 
+										String gname=GroupUtil.getGroupName(Integer.parseInt(gid.elementAt(j).toString()));
+										if(gName.equals(gname))
+											g.addElement(gname);
+									} 
+								} 
+								/**
+				 				* If no users are found satisfying the condition, then the
+				 				* proper error message should be displayed. Else the vectors
+				 				* having user details and group should be put into context.
+				 				*/
+
+								if(user_list.size()==0){ 
+									if(roleId==3){ 
+										String stu_msgc=m_u.ConvertedString("stu_msgc",LangFile);
+										data.setMessage(stu_msgc +" "+gName);
+									}
 
 
-						else{ 
+									else{ 
+										String ins_msg=m_u.ConvertedString("ins_msg",LangFile);
+										data.setMessage(ins_msg +" "+gName);
+									} 
 
-
-							String ins_msg=m_u.ConvertedString("ins_msg",LangFile);
-							data.setMessage(ins_msg +" "+gName);
-						} 
-
-
-						status="empty";
-					} 
-					else{ 
-						status="notempty";
-						context.put("selected_users",user_list);
-						context.put("groupname",g);
-					}              
-				} 
+									status="empty";
+								} 
+								else{ 
+									status="notempty";
+									context.put("selected_users",user_list);
+									context.put("groupname",g);
+								}              
+							} //ifgName
+						} //ifgName
+					}//flag
+				}//ALL
 			
 				/**
 			 	* This 'else' part is executed when the user
 			 	* list is required for all groups
 			 	*/
-
 				else{ 
-
-				/**
-				 * Get all the user ids with specific role i.e. either 
-				 * 'instructor' or 'student'
-				 */
+					/**
+			 		* Get all the user ids with specific role i.e. either 
+			 		* 'instructor' or 'student'
+			 		*/
 
 					Vector AUID=UserGroupRoleUtil.getAllUID(roleId);
 
 					/**
-				 	* For all the user ids obtained above, add the user details in
-				 	* a vector and the name of group in another vector
-				 	*/
+			 		* For all the user ids obtained above, add the user details in
+			 		* a vector and the name of group in another vector
+			 		*/
 
 					for(int i=0;i<AUID.size();i++){  
 						int uid=Integer.parseInt(AUID.elementAt(i).toString());
@@ -228,15 +241,12 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 					if(user_list.size()==0){ 
 						if(roleId==3){ 
 
-							
 							String stu_msg=m_u.ConvertedString("stu_msg",LangFile);
 							data.setMessage(stu_msg);
 						} 
 
 						else{ 
-
-
-							
+						
 							String ins_msg1=m_u.ConvertedString("ins_msg1",LangFile);
 							data.setMessage(ins_msg1);
 						} 
@@ -249,30 +259,19 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 						context.put("selected_users",user_list);
 						context.put("groupname",g);
 					} 
-				}  
-			} 
+				}//else  
+			}//null instcheck 
 			else{ 
 
-
-				
 				String c_msg12=m_u.ConvertedString("c_msg12",LangFile);
 				data.setMessage(c_msg12);
-
-
+				//Course is not selected
 			} 
 
-		context.put("status",status);
-		}
-		catch(Exception e){
-
-
-			data.setMessage("Error in Searching"+e);
-			
-			
-
-
-		}
-	}
+			context.put("status",status);
+		}//try
+		catch(Exception e){data.setMessage("Error in Searching"+e);}
+	}//method
 	/**
           * ActionEvent responsible for removing a users(Instructors or Students) from the system 
           * @param data RunData
@@ -380,6 +379,10 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
                                                 */
                                                 String preString=s.substring(0,index);
                                                 postString=s.substring(index+1);
+						String dmnarray[]=preString.split("@");
+						String dmn=dmnarray[1];
+						String iddmnarray[]=dmn.split("_");
+						String iid=iddmnarray[1];
                                                 subject=checkUserAvailabilityDifferntGroup(postString,2,srvrPort);
 
                                                 /**
@@ -387,7 +390,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
                                                 * or inactive and PrimaryInstructor
                                                 * @see CourseManagement from Utils
                                                 */
-                                                boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,postString);
+                                                boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,(postString+"_"+iid));
                                                 int gId=GroupUtil.getGID(preString);
 						boolean check_Active=CourseManagement.CheckcourseIsActive(gId);
                                                 /**
@@ -517,8 +520,11 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 		*/
 		LangFile=(String)data.getUser().getTemp("LangFile");
          	String action=data.getParameters().getString("actionName","");
-		if(action.equals("eventSubmit_doRemoveUser"))
+		if(action.equals("eventSubmit_doRemoveUser")){
                 	doRemoveUser(data,context);
+		}	
+		else if(action.equals("eventSubmit_doSearch"))
+                	doSearch(data,context);
                 else
 		{
 			String c_msg=MultilingualUtil.ConvertedString("c_msg",LangFile);

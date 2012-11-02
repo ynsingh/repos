@@ -381,8 +381,9 @@
 	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
 	<column name="EMAIL_ID" required="true" type="VARCHAR" size="255"/>
         <column name="ROLL_NO" required="true" type="VARCHAR" size="255" />
-        <column name="PROGRAM" type="VARCHAR" size="255"/>
-        <column name="INSTITUTE_ID" type="VARCHAR" size="255"/> 
+        <column name="PROGRAM" required="true" type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_ID" required="true" type="VARCHAR" size="255"/> 
+	<column name="EXPIRY_DATE" default="0" required="true" type="TIMESTAMP"/>
 	<unique>
 	   	<unique-column name="ROLL_NO"/>
 	   	<unique-column name="PROGRAM"/>
@@ -566,17 +567,14 @@
 <!-- ===============================COURSE PROGRAM SCHEMA==================================== -->
 <table name="COURSE_PROGRAM" idMethod="idbroker">
         <column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
-        <column name="STUDENT_ID" required="true" type="INTEGER"/>
+        <column name="EMAIL_ID" required="true" type="VARCHAR" size="255"/>
         <column name="COURSE_ID" required="true" type="VARCHAR" size="255"/>
-        <column name="PROGRAM" required="true" type="VARCHAR" size="255"/>
+        <column name="PROGRAM_CODE" required="true" type="VARCHAR" size="255"/>
         <unique>
-	        <unique-column name="STUDENT_ID"/>
+	        <unique-column name="EMAIL_ID"/>
                 <unique-column name="COURSE_ID"/>
-                <unique-column name="PROGRAM"/>
+                <unique-column name="PROGRAM_CODE"/>
         </unique>
-        <foreign-key foreignTable="STUDENT_ROLLNO">
-        	<reference local="STUDENT_ID" foreign="ID"/>
-        </foreign-key>
 </table>
 <table name="USER_PREF" idMethod="idbroker"  description="User preference information">
 	<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
