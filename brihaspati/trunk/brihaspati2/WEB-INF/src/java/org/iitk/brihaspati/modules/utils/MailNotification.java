@@ -66,7 +66,7 @@ import javax.mail.Transport;
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 22-11-2010;
  * @modified date: 14-07-2011 (Shaista);
- * @modified date: 09-08-2012, 25-09-2012 (Priyanka)
+ * @modified date: 09-08-2012, 25-09-2012, 02-11-2012 (Priyanka)
  */
 
 public class MailNotification{
@@ -142,7 +142,21 @@ public class MailNotification{
 		return replaceString("user_pass",uPassword);
 	}
 
-// Following method added by Priyanka
+	public static String getMessage(String info, String email, Properties pr) throws Exception
+	{
+                message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
+                return replaceString("new_email",email);
+        }
+
+	/**
+         * Replaces constants for the purpose of  
+         * sending verification mail to user.
+         * @param info Main message
+         * @param uName User name
+         * @param aKey Verification key
+         * @param mode String
+         * @param lang Language selected
+         */
 	public static String getMessage(String info,String uName, String aKey, String mode, String lang) throws Exception{
 	
 		info=info.replaceAll("e_mail",uName);
@@ -152,6 +166,21 @@ public class MailNotification{
 		return info;
 	}
 	
+	/**
+ 	 * Replaces constants with institute name
+ 	 * and message, for the purpose of source 
+ 	 * mail verification before sending mail
+ 	 * to institute admin.
+ 	 */
+	public static String getMessage(String messageFormate, String instName, String message) throws Exception
+        {
+                messageFormate=messageFormate.replaceAll("institute_name",instName);
+                messageFormate=messageFormate.replaceAll("admin_message",message);
+                return messageFormate;
+
+        }
+
+
 	 public static String replaceServerPort(String info,String serverName, String serverPort) throws Exception {
                if(serverName.length() >0)
                        info=info.replaceAll("server_name", serverName);
@@ -161,7 +190,7 @@ public class MailNotification{
 	}
 	
 	public static String getMessage_new(String info,String FName,String LName,String i_name,String uName) throws Exception {
-                if(FName.length()>0){ 
+	       if(FName.length()>0){ 
                         info=info.replaceAll("first_name",FName);
 		}
                 else
@@ -174,7 +203,10 @@ public class MailNotification{
 		if(i_name.length()>0) {
                         info=info.replaceAll("institute_admin",i_name);
 		}
-	          
+		else
+		{
+			info=info.replaceAll("institute_admin","");
+	          }
 		 return info;
         }
 
