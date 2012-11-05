@@ -260,6 +260,7 @@
            <column name="FORVIDEO" size="255" type="VARCHAR"/>
            <column name="FORAUDIO" size="255" type="VARCHAR"/>
            <column name="FORWHITEBOARD" size="255" type="VARCHAR"/>
+	   <column name="MAIL_NOTIFICATION" size="255" type="VARCHAR"/>
            <column name="SESSIONDATE" required="true" type="DATE"/>
            <column name="SESSIONTIME" required="true" size="255" type="VARCHAR"/>
            <column name="DURATION" size="255" type="VARCHAR"/>
