@@ -55,7 +55,7 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
  * @author <a href="jaivirpal@gmail.com">Jaivir Singh</a>
  * @author <a href="palseema30@gmail.com">Manorama Pal</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modify date: 009-08-2012, 25-09-2012 (Priyanka)
+ * @modify date: 009-08-2012, 25-09-2012, 06-11-2012 (Priyanka)
  */
 
 /**class for hadling all the stuff of institute registration in xml file	
@@ -696,7 +696,6 @@ public class XMLWriter_InstituteRegistration {
 	
 	public static boolean SetFlag(String filePath, String email, String activation)
 	{
-		ErrorDumpUtil.ErrorLog("email from mail "+email);
 		boolean set=false;
 		//READ the file
 		Element eElement=null;
@@ -717,7 +716,6 @@ public class XMLWriter_InstituteRegistration {
                                                   *@see getTagValue method
                                                   */
                                                 String e_mail=getTagValue("Email",eElement);
-						ErrorDumpUtil.ErrorLog("email from xml "+e_mail);
 						if(email.equals(e_mail))
 						{
 							/**get tag value by passing tag(Activation)
@@ -772,7 +770,6 @@ public class XMLWriter_InstituteRegistration {
                                                  *@see getTagValue method
                                                  */
 						 String e_mail=getTagValue("Email",eElement);
-                                                 ErrorDumpUtil.ErrorLog("email from xml "+e_mail);
                                                  if(email.equals(e_mail))
                                                  {
 							String flag=getTagValue("Flag",eElement);
@@ -797,5 +794,51 @@ public class XMLWriter_InstituteRegistration {
                 }//catch			
 		return null;
 	 }//method
+
+	/**
+         * Method to get domain on the basis of
+         * email and activation key from xml 
+         * @param email (String)
+         * @param filepath (String)
+         * @param a_key (String)
+         * @return domain  
+         */
+
+	public static String getDomain(String filePath, String email, String a_key)
+         {
+                Element eElement=null;
+		String i_domain=null;
+                try {
+                        File f=new File(filePath);
+                        if(f.exists()) {
+                                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                                DocumentBuilder builder = factory.newDocumentBuilder();
+                                Document doc = builder.parse(getFile(filePath));
+                                doc.getDocumentElement().normalize();
+                                 NodeList nodeList = doc.getElementsByTagName("Institute");
+                                 for( int i=0; i<nodeList.getLength(); i++ ) {
+                                        Node nNode = nodeList.item(i);
+                                        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                                                eElement = (Element) nNode;
+						String akey=getTagValue("Activation",eElement);
+                                                 if(akey.equals(a_key))
+                                                 {
+                                                        String e_mail=getTagValue("Email",eElement);
+							if(e_mail.equals(email))
+                                                        {
+                                                                i_domain=getTagValue("Domain",eElement);
+                                                        }//if 4
+                                                 }//if 3
+                                        }//if 2
+                                }//for
+                        }//if 1
+                }//try
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(getDomain)"+e);
+                }//catch                        
+                return i_domain;
+         }//method
+						
 //...............................
 }
