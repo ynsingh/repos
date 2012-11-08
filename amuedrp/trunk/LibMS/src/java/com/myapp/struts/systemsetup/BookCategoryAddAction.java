@@ -32,6 +32,7 @@ public class BookCategoryAddAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        BookCategoryDAO bookdao=new BookCategoryDAO();
      BookCategoryDecideActionForm bcda  =(BookCategoryDecideActionForm)form;
      HttpSession session=request.getSession();
       try{
@@ -63,8 +64,8 @@ System.out.println(bcda.getFull_name()+"  "+bcda.getPermitday());
 
 /*get the id of member and sub member type*/
 
-EmployeeType memtype=BookCategoryDAO.searchMemTypeId(library_id,emptype_id);
-SubEmployeeType submemtype=BookCategoryDAO.searchSubMemTypeId(library_id,emptype_id,subemptype_id);
+EmployeeType memtype=bookdao.searchMemTypeId(library_id,emptype_id);
+SubEmployeeType submemtype=bookdao.searchSubMemTypeId(library_id,emptype_id,subemptype_id);
 
 if(memtype!=null)
     emptype_id=memtype.getId().getEmptypeId();
@@ -85,7 +86,7 @@ book.setDetail(full_name);
 book.setIssueDaysLimit(Integer.parseInt(no_of_issue));
 book.setFine(fine);
 
-result=BookCategoryDAO.insert(book);
+result=bookdao.insert(book);
 if(result==true)
 {
   //request.setAttribute("msg","Record Successfully Added");

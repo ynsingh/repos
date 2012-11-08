@@ -38,7 +38,34 @@ public class BibliographicDetails  implements java.io.Serializable {
 private String image;
 private String digitalData;
 private String digitalComment;
+
     
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+private String submittedBy;
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+private String lastModified;
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+private String rating;
 
      private BibliographicDetailsId id;
 
@@ -102,6 +129,15 @@ private String digitalComment;
      private Set accessionRegisters = new HashSet(0);
      private Set documentDetailses = new HashSet(0);
 
+    public String getThesisStatus() {
+        return thesisStatus;
+    }
+
+    public void setThesisStatus(String thesisStatus) {
+        this.thesisStatus = thesisStatus;
+    }
+     private String thesisStatus;
+
     public BibliographicDetails() {
     }
 
@@ -110,7 +146,7 @@ private String digitalComment;
         this.id = id;
         this.library = library;
     }
-    public BibliographicDetails(BibliographicDetailsId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, int publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, Set accessionRegisters, Set documentDetailses,String image,String digitalData,String digitalComment) {
+    public BibliographicDetails(BibliographicDetailsId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, int publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType, Set accessionRegisters, Set documentDetailses,String image,String digitalData,String digitalComment,String Last,String tstatus) {
        this.id = id;
        this.library = library;
        this.documentType = documentType;
@@ -166,6 +202,8 @@ private String digitalComment;
        this.image=image;
        this.digitalComment=digitalComment;
        this.digitalData=digitalData;
+       this.lastModified=Last;
+       this.thesisStatus=tstatus;
     }
    
     public BibliographicDetailsId getId() {

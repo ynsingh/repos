@@ -1,30 +1,28 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.Department" table="department" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.DepartmentId">
-            <key-property name="deptId" type="string">
-                <column name="dept_id" length="20" />
-            </key-property>
-            <key-property name="facultyId" type="string">
-                <column name="faculty_id" length="20" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="faculty" class="com.myapp.struts.hbm.Faculty" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="faculty_id" length="20" not-null="true" />
-        </many-to-one>
-        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-        </many-to-one>
-        <property name="deptName" type="string">
-            <column name="dept_name" length="50" />
-        </property>
-       
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.Department" table="department">
+    <composite-id class="com.myapp.struts.hbm.DepartmentId" name="id">
+      <key-property name="deptId" type="string">
+        <column length="20" name="dept_id"/>
+      </key-property>
+      <key-property name="facultyId" type="string">
+        <column length="20" name="faculty_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Faculty" fetch="select" insert="false" name="faculty" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+      <column length="20" name="faculty_id" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="deptName" type="string">
+      <column length="50" name="dept_name"/>
+    </property>
+  </class>
 </hibernate-mapping>

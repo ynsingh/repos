@@ -21,7 +21,8 @@ public class AcqPurchaseOrderAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-   
+   AcquisitionDao acqdao=new AcquisitionDao();
+   AcqOrderDao acqorderdao=new AcqOrderDao();
    
     String title;
     @Override
@@ -52,7 +53,7 @@ public class AcqPurchaseOrderAction extends org.apache.struts.action.Action {
         String button=acqprchase.getButton();
 
 
-        AcqOrderHeader acqorderheader=(AcqOrderHeader)AcquisitionDao.searchOrderHeaderByOrderNo(library_id,sub_library_id,order_no);
+        AcqOrderHeader acqorderheader=(AcqOrderHeader)acqdao.searchOrderHeaderByOrderNo(library_id,sub_library_id,order_no);
 
 System.out.println(discount+"  "+ship_cost+" "+other_cost+ " "+tax_rate+" "+tax_amount+" "+grand_total+" "+comment+ship_cmpny_name+ship_address);
    
@@ -75,7 +76,7 @@ System.out.println(discount+"  "+ship_cost+" "+other_cost+ " "+tax_rate+" "+tax_
                          
                     
                          acqorderheader.setComments(comment);
-                  boolean result=  AcqOrderDao.updateAcqOrderHeader(acqorderheader);
+                  boolean result=  acqorderdao.updateAcqOrderHeader(acqorderheader);
              if(result==true){
              String msg="Order Successfully processed";
               request.setAttribute("button", button);

@@ -46,7 +46,7 @@ public class AddDepartmentAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+DeptDAO deptdao=new DeptDAO();
          HttpSession session=request.getSession();
          try{
 
@@ -69,7 +69,7 @@ public class AddDepartmentAction extends org.apache.struts.action.Action {
 
       
         library_id=(String)session.getAttribute("library_id");
-         Department fcheck=DeptDAO.getDeptId(library_id, faculty_id, dept_name);
+         Department fcheck=deptdao.getDeptId(library_id, faculty_id, dept_name);
         System.out.println("Dept"+fcheck);
             if(fcheck==null)
             {
@@ -83,7 +83,7 @@ public class AddDepartmentAction extends org.apache.struts.action.Action {
         did.setLibraryId(library_id);
         did.setFacultyId(faculty_id);
         d.setId(did);
-        result=DeptDAO.insert(d);
+        result=deptdao.insert(d);
         if(result==true)
         {
            //request.setAttribute("msg", "Record Inserted Successfully");

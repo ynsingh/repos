@@ -38,7 +38,9 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-
+CirculationDAO cirdao=new CirculationDAO();
+DocumentCategoryDAO doccatobj=new DocumentCategoryDAO();
+BookCategoryDAO bookcatobj=new BookCategoryDAO();
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -62,7 +64,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
 
         CallnoForBookActionForm cfbaf=(CallnoForBookActionForm)form;
         long days=0;
-        call_no=cfbaf.getCall_no();
+        call_no=cfbaf.getAccessionno();
         if(call_no==null)
         {
             call_no = request.getParameter("callno");
@@ -72,7 +74,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
         String memid= (String)session.getAttribute("memid");
 
 
-         CirMemberAccount cma=CirculationDAO.getAccount(library_id,sublibrary_id, memid);
+         CirMemberAccount cma=cirdao.getAccount(library_id,sublibrary_id, memid);
                    if(cma!=null)
           {
           String date_reg=cma.getReqDate();
@@ -81,7 +83,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
           days=DateCalculation.getDifference( date_ex,system_date);
           
           }
-        String document_category=CirculationDAO.DistinctDocType(library_id, sublibrary_id, call_no);
+        String document_category=cirdao.DistinctDocType(library_id, sublibrary_id, call_no);
         System.out.println(document_category);
         if(document_category==null)
         {
@@ -94,7 +96,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
 
 
         }
-        DocumentCategory dc=DocumentCategoryDAO.searchDocumentCategory(library_id, sublibrary_id, document_category);
+        DocumentCategory dc=doccatobj.searchDocumentCategory(library_id, sublibrary_id, document_category);
         System.out.println(dc+"..........In CallNO");
 
         String status_check=dc.getIssueCheck();
@@ -114,7 +116,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
         String submem_type=cma.getSubMemberType();
         System.out.println(document_category+"   "+mem_type+submem_type);
 
-      BookCategory bookobj=BookCategoryDAO.searchBookTypeDetails(library_id, mem_type, submem_type, document_category);
+      BookCategory bookobj=bookcatobj.searchBookTypeDetails(library_id, mem_type, submem_type, document_category);
         if(bookobj==null){
 
            //  String msg1="Please Configure Fine Detail For Member Type from System Setup";
@@ -125,7 +127,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
         }
 
 
-      Integer m=BookCategoryDAO.returnIssueLimit(library_id, document_category, mem_type,submem_type);
+      Integer m=bookcatobj.returnIssueLimit(library_id, document_category, mem_type,submem_type);
 
     
       int n=m.intValue();
@@ -142,7 +144,7 @@ public class CallnoForBookAction extends org.apache.struts.action.Action {
         }
         }
         if(status_check.equals("Issuable")){
-        List list=CirculationDAO.searchDoc1(library_id,sublibrary_id, call_no);
+        List list=cirdao.searchDoc1(library_id,sublibrary_id, call_no);
         session.setAttribute("list", list);
         return mapping.findForward("success");
         }

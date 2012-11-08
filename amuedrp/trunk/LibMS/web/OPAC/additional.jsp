@@ -109,7 +109,7 @@ catch(Exception e)
                 newOpt.value = ndValue;
                 newOpt.text = ndValue1;
             }
-            <%--  var x=document.getElementById('TXTAUTHOR').value;
+          <%--    var x=document.getElementById('TXTAUTHOR').value;
              var y=document.getElementById('TXTTITLE').value;
               var z=document.getElementById('TXTSUBJECT').value;
                var a=document.getElementById('TXTOTHER').value;
@@ -157,7 +157,7 @@ catch(Exception e)
               var z=document.getElementById('TXTSUBJECT').value;
 //               var a=document.getElementById('TXTOTHER').value;
 
-        if(x=='' && y=='' && z=='' )
+      if(x=='' && y=='' && z=='' )
             {
                 alert("Please Enter KeyWord No to Search Title");
                 return false;

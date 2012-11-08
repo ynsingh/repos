@@ -1,8 +1,4 @@
-<%-- 
-    Document   : newjsp
-    Created on : Mar 29, 2011, 3:21:11 PM
-    Author     : zeeshan
---%>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -13,34 +9,50 @@
 <jsp:include page="/admin/header.jsp"/>
 <html>
     <head>
-       
+       <c:remove var="hsmp" scope="session" />
+<c:set var="BiblioActionForm" value="${null}"/>
+<c:set var="CatControlActionForm" value="${null}"/>
+<c:set var="CatActionForm1" value="${null}"/>
+<c:set var="CatActionForm2" value="${null}"/>
+<c:set var="CatActionForm3" value="${null}"/>
+<c:set var="CatActionForm4" value="${null}"/>
+<c:set var="CatActionForm5" value="${null}"/>
+<c:set var="CatActionForm6" value="${null}"/>
+<c:set var="CatActionForm7" value="${null}"/>
+<c:set var="CatActionForm8" value="${null}"/>
+<%
+session.removeAttribute("data");
+%>
+
+
+
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Manage MARC Based Bibliography</title>
         <link rel="shortcut icon" type="image/x-icon" href="<%=request.getContextPath()%>/images/marci.gif">
-             <link rel="stylesheet" href="<%=request.getContextPath()%>/LibMS-Struts/css/page.css"/>
-         <link rel="stylesheet" href="<%=request.getContextPath()%>/LibMS-Struts/css/formstyle.css"/>
+             <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
          
     </head>
     <script type="text/javascript"  >
         function vcheck(){
 
-        var str=document.getElementsById("title").value;
-       alert(str);
-        var str1=document.getElementById("isbn").value;
+        var str=document.getElementById("title").value;
+       
+       // var str1=document.getElementById("isbn").value;
 
 
-     // //   if (str.value=="") {
-        //    alert("Special Symbols, null And digits Are Not Allowed in TITLE OF BOOK!");
-
-         //   return false;
-       // }
-
-         if (str1=="") {
-            alert("ISBN Cann't be Blank !");
+        if (str.value=="") {
+            alert("Special Symbols, null And digits Are Not Allowed in TITLE OF BOOK!");
 
             return false;
         }
+
+         <%--if (str1=="") {
+            alert("ISBN Cann't be Blank !");
+
+            return false;
+        }--%>
         }
 
         function back()
@@ -49,19 +61,21 @@
         }
  </script>
             <body>
-                
+     
+            
         
         <table border="1" cellspacing="0"  class="table" width="500"  style="position: absolute; top: 20%; left: 20%" >
             
-            <html:form action="/biblio" method="post">
+            <html:form action="/biblio" method="post" onsubmit="return vcheck();">
                 <tr><td colspan="2" align="center" class="headerStyle" bgcolor="#E0E8F5" height="30px;" ><b>Machine Readable Cataloging</b></td></tr>
                 <tr><td>
                 <table border="0" cellspacing="8" cellpadding="1" align="center">
                 <tr><td width="60"></td></tr>
 
                 <tr><td width="60">
-
-<layout:suggest suggestAction="/getTitleSuggestions"   isRequired="false"  key="*Title" styleId="title" property="title" suggestCount="8"/>
+<layout:html>
+<layout:suggest suggestAction="/getTitleSuggestions"  isRequired="true"   key="*Title" styleId="title" property="title" suggestCount="8"/>
+</layout:html>
                     </td>
                 </tr>
                 <tr></tr>

@@ -32,7 +32,9 @@ public class FineDetailsAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-           CirCheckInReportActionForm ccra   =(CirCheckInReportActionForm)form;
+        CirRequestfromOpacDAO ciropacdao=new CirRequestfromOpacDAO();
+        CirculationDAO cirdao=new CirculationDAO();
+        CirCheckInReportActionForm ccra   =(CirCheckInReportActionForm)form;
 
            HttpSession session=request.getSession();
            String  library_id=(String)session.getAttribute("library_id");
@@ -43,16 +45,13 @@ session.setAttribute("mem",memid);
             String year2=ccra.getEnd_date();
 
 
-         //List circheckInlist1=(List)CirculationDAO.CheckInReport(library_id, sub_lib, year1, year2, memid);
-         //session.setAttribute("circheckInlist1", circheckInlist1);
-         //System.out.println("@@@@@@@@@@@@+"+circheckInlist1.size());
-
+    
            List<CheckInDocumentDetails>  requestList=null;
 List<FineDetails> finedetaillist=null;
 
 
-requestList = (List<CheckInDocumentDetails>)CirRequestfromOpacDAO.getCheckIn(library_id, sub_lib, memid, year1, year2);
-  finedetaillist=(List<FineDetails>)CirculationDAO.getfinedetailslist(library_id, sub_lib, memid);
+requestList = (List<CheckInDocumentDetails>)ciropacdao.getCheckIn(library_id, sub_lib, memid, year1, year2);
+  finedetaillist=(List<FineDetails>)cirdao.getfinedetailslist(library_id, sub_lib, memid);
 System.out.println("size===="+requestList.size());
 //FineDetails fd=CirculationDAO.getfinedetails(library_id, sub_lib, memid);
 

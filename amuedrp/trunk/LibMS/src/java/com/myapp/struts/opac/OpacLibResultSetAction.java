@@ -19,7 +19,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    MemberCategoryDAO memcatdao=new MemberCategoryDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -105,7 +105,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action
         {
             List list1;
 
-                list1=(List)MemberCategoryDAO.searchEmpType(lib_id);
+                list1=(List)memcatdao.searchEmpType(lib_id);
             //    list2=(List)MemberCategoryDAO.searchSubEmpType(lib_id);
                // list3=(List)FacultyDAO.searchFaculty(lib_id);
              //   list4=(List)DeptDAO.getDeptRecord(lib_id);

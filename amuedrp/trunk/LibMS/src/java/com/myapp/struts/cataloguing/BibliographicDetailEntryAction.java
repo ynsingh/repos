@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.DocumentCategory;
 import com.myapp.struts.hbm.DocumentCategoryId;
 import com.myapp.struts.hbm.Location;
@@ -29,7 +29,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
     BibliographicDetailsId bibid = new BibliographicDetailsId();
     BibliographicDetails bib = new BibliographicDetails();
     AcqFinalDemandList acqdemand = new AcqFinalDemandList();
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
@@ -38,6 +38,9 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
+        LocationDAO locdao=new LocationDAO();
+        DeptDAO deptdao=new DeptDAO();
         BibliographicDetailEntryActionForm bibform = (BibliographicDetailEntryActionForm) form;
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
@@ -64,7 +67,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
         List d = dao.getTitles2(title, library_id, doc_type);//all
         List c = dao.getTitles1(title, library_id, sub_library_id);//acquisition
         List empty=new ArrayList();
-        List<DocumentCategory> ll=DocumentCategoryDAO.ListbookType(library_id,sub_library_id);
+        List<DocumentCategory> ll=doccatdao.ListbookType(library_id,sub_library_id);
                 if(ll.isEmpty()){
                       String msg1 = resource.getString("cataloguing.catoldtitle.setdocumentcategory");//You need to set document category
                       request.setAttribute("msg1", msg1);
@@ -84,7 +87,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
           list2.add(book);
          }
         session.setAttribute("DocumentCategory", list2);
-        List<Location> loc=LocationDAO.listlocation(library_id, sub_library_id);
+        List<Location> loc=locdao.listlocation(library_id, sub_library_id);
         if(loc.isEmpty()){
                         String msg1 = resource.getString("cataloguing.catoldtitle.setlocation");//You need to set location
                         request.setAttribute("msg1", msg1);
@@ -93,7 +96,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
         List<MixLocationSublibrary> lmls=new ArrayList<MixLocationSublibrary>();
         if(library_id.equals(sub_library_id))
        {
-           List<SubLibrary> sub1=DeptDAO.listsub1(library_id);
+           List<SubLibrary> sub1=deptdao.listsub1(library_id);
                                       if(sub1.isEmpty()){
                         String msg1 = resource.getString("cataloguing.catoldtitle.setsublibrary");//You need to set sublibrary
                         request.setAttribute("msg1", msg1);
@@ -108,7 +111,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
             mls.setLocationName(loc.get(j).getLocationName());
             lmls.add(mls);
             }
-              List<SubLibrary> sub=DeptDAO.listsub(library_id,sub_library_id);
+              List<SubLibrary> sub=deptdao.listsub(library_id,sub_library_id);
                         if(sub.isEmpty()){
                         String msg1 = resource.getString("cataloguing.catoldtitle.setsublibrary");//You need to set sublibrary
                         request.setAttribute("msg1", msg1);
@@ -130,7 +133,7 @@ public class BibliographicDetailEntryAction extends org.apache.struts.action.Act
            lmls.add(mls);
            }
            else{
-               List<SubLibrary> sub=DeptDAO.listsub(library_id,sub_library_id);
+               List<SubLibrary> sub=deptdao.listsub(library_id,sub_library_id);
            for (int j = 0; j < loc.size(); j++)
             {
             MixLocationSublibrary mls=new MixLocationSublibrary();

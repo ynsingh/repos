@@ -25,7 +25,7 @@ public class NoticeAction extends org.apache.struts.action.Action {
     private String library_id,sublibrary_id;
     OpacSearchDAO osdao=new OpacSearchDAO();
     
-    
+    NewDemandDAO newdemanddao=new NewDemandDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +33,7 @@ public class NoticeAction extends org.apache.struts.action.Action {
             HttpSession session=(HttpSession)request.getSession();
             library_id=(String)session.getAttribute("library_id");
             sublibrary_id=(String)session.getAttribute("sublibrary_id");
-            List notices=NewDemandDAO.Notice(library_id, sublibrary_id);
+            List notices=newdemanddao.Notice(library_id, sublibrary_id);
             List noticelibray_id=osdao.LibrarySearch(library_id);
             /*Library lib = new Library("sel", "Active");
             lib.setLibraryName("Select");

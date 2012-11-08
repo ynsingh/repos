@@ -59,7 +59,9 @@ private String password1;
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-            HttpSession session=request.getSession();
+        CirculationDAO cirdao=new CirculationDAO();
+        SubMemberDAO submemdao=new SubMemberDAO();
+        HttpSession session=request.getSession();
          try{
 
         locale1=(String)session.getAttribute("locale");
@@ -96,7 +98,7 @@ private String password1;
         library = ccaaf.getLibrary();
         button = request.getParameter("button");
       
-        CirMemberAccount cirmemac=CirculationDAO.getAccount(library_id, library, mem_id);
+        CirMemberAccount cirmemac=cirdao.getAccount(library_id, library, mem_id);
         if(cirmemac==null)cirmemac = new CirMemberAccount();
         if(cirmemac.getId()==null){
         CirMemberAccountId cirmemId = new CirMemberAccountId(library_id, library, mem_id);
@@ -114,7 +116,7 @@ private String password1;
         cirmemac.setReqDate(TXTREG_DATE);
         cirmemac.setSemester(TXTSEM);
         String no_of_issueable="";
-        SubEmployeeType book=(SubEmployeeType)SubMemberDAO.searchIssueLimit(library_id,MEMCAT,MEMSUBCAT);
+        SubEmployeeType book=(SubEmployeeType)submemdao.searchIssueLimit(library_id,MEMCAT,MEMSUBCAT);
         if(book!=null)
         {
          no_of_issueable=String.valueOf(book.getNoOfIssueableBook());
@@ -128,7 +130,7 @@ private String password1;
               cirmemac.setNoOfIssueableBook(no_of_issueable);
               cirmemac.setCurrentIssuedBook("0");
               cirmemac.setReservationMade("0");
-                CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+                CirMemberDetail cirobj=cirdao.searchCirMemDetails(library_id, mem_id);
                 //Create Member Account  Successfully from LibMS OPAC Login","User Id="+mem_id+" Your Password for LibMS OPAC Login is="
                   String path = servlet.getServletContext().getRealPath("/");
             obj=new Email(cirobj.getEmail(),password,"Congruation,Your are Registered as Library Member","Dear "+cirobj.getMname()+" "+cirobj.getMname()+" "+cirobj.getLname()+",\nYou Have been registered as a valid Library member for Library Name"+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+"\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
@@ -139,7 +141,7 @@ private String password1;
                     obj.send();
                 }
             });
-        result=CirculationDAO.insert1(cirmemac);
+        result=cirdao.insert1(cirmemac);
         if(result==true)
         {
            

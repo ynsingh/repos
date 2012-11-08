@@ -47,6 +47,7 @@ public class CirViewAllMemberDetailAction extends org.apache.struts.action.Actio
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
         CirViewAll1ActionForm  cir =  (CirViewAll1ActionForm)form;
        String sub_lib =cir.getCMBSUBLib();
       String memid =cir.getTXTTITLE();
@@ -74,7 +75,7 @@ public class CirViewAllMemberDetailAction extends org.apache.struts.action.Actio
       
         if(button.equalsIgnoreCase("Find") && cir.getCheckbox()==null)
       {
-     List searchviewall  = (List)CirculationDAO.ViewAllSearchReport(library_id, sub_lib, year1, year2, memid, status, fac, dept, course, title,(String)session.getAttribute("login_id"));
+     List searchviewall  = (List)cirdao.ViewAllSearchReport(library_id, sub_lib, year1, year2, memid, status, fac, dept, course, title,(String)session.getAttribute("login_id"));
        
      System.out.println(searchviewall.size());
           session.setAttribute("searchviewall",searchviewall);
@@ -97,7 +98,7 @@ path=path+"/JasperReport";
              CirViewAll1ActionForm ccra   =(CirViewAll1ActionForm)form;
         
 
-        List circheckInlist1=(List)CirculationDAO.ViewAllSearchReport(library_id, sub_lib, year1, year2, memid,status,  fac, dept, course, title,(String)session.getAttribute("login_id"));
+        List circheckInlist1=(List)cirdao.ViewAllSearchReport(library_id, sub_lib, year1, year2, memid,status,  fac, dept, course, title,(String)session.getAttribute("login_id"));
 
       System.out.println("@@@@@@@@@@@@+///////////////////////////////////////////////////////////////////////////////////////"+circheckInlist1.size());
 
@@ -153,7 +154,7 @@ JasperExportManager.exportReportToPdfStream(jasperPrint, ouputStream);
       {
      System.out.println("In Find");
   
-        List circheckInlist2=(List)CirculationDAO.ViewAllThoughOpacReq((String)session.getAttribute("library_id"), sub_lib, year1, year2, memid,  fac, dept, course, title,(String)session.getAttribute("login_id"));
+        List circheckInlist2=(List)cirdao.ViewAllThoughOpacReq((String)session.getAttribute("library_id"), sub_lib, year1, year2, memid,  fac, dept, course, title,(String)session.getAttribute("login_id"));
 
         
         if(circheckInlist2.size()>0 && circheckInlist2!=null)
@@ -176,7 +177,7 @@ path=path+"/JasperReport";
         {
              CirViewAll1ActionForm ccra   =(CirViewAll1ActionForm)form;
 
-        List circheckInlist2=(List)CirculationDAO.ViewAllThoughOpacReq((String)session.getAttribute("library_id"), sub_lib, year1, year2, memid,  fac, dept, course, title,(String)session.getAttribute("login_id"));
+        List circheckInlist2=(List)cirdao.ViewAllThoughOpacReq((String)session.getAttribute("library_id"), sub_lib, year1, year2, memid,  fac, dept, course, title,(String)session.getAttribute("login_id"));
 
 
 

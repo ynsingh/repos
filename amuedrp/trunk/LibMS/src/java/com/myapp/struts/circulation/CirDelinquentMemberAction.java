@@ -41,7 +41,7 @@ public class CirDelinquentMemberAction extends org.apache.struts.action.Action {
         String library_id =(String)session.getAttribute("library_id");
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
              CirDelinquentMemberActionForm   cdma =(CirDelinquentMemberActionForm)form;
-  
+  CirculationDAO cirdao=new CirculationDAO();
         String changestatus = cdma.getChangestatus();
 
      String memid = cdma.getMemid();
@@ -53,10 +53,10 @@ public class CirDelinquentMemberAction extends org.apache.struts.action.Action {
   String exp_date=cdma.getTXTEXP_DATE();
 
 
-  CirMemberDetail cirmem=CirculationDAO.getMemid(library_id,memid);
+  CirMemberDetail cirmem=cirdao.getMemid(library_id,memid);
 
 
-  CirMemberAccount cirmemac =  CirculationDAO.getAccount(library_id, sublibrary_id, memid);
+  CirMemberAccount cirmemac =  cirdao.getAccount(library_id, sublibrary_id, memid);
   
   
 
@@ -82,7 +82,7 @@ public class CirDelinquentMemberAction extends org.apache.struts.action.Action {
 
 
 
- result = CirculationDAO.updateAccount(cirmemac);
+ result = cirdao.updateAccount(cirmemac);
 
 
 
@@ -106,7 +106,7 @@ public class CirDelinquentMemberAction extends org.apache.struts.action.Action {
 
       request.setAttribute("msg","Member Record Sucessfully  "+cirmemac.getStatus()+" for Member id " +memid +" Mail Sent Successfully");
 
-         List cirmemacclist=CirculationDAO.searchCirMemAccount2(library_id,sublibrary_id);
+         List cirmemacclist=cirdao.searchCirMemAccount2(library_id,sublibrary_id);
          session.removeAttribute("cirmemacclist");
         if(!cirmemacclist.isEmpty())
         {
@@ -139,7 +139,7 @@ public class CirDelinquentMemberAction extends org.apache.struts.action.Action {
 
 
 
- result = CirculationDAO.updateAccount(cirmemac);
+ result = cirdao.updateAccount(cirmemac);
 
 
 
@@ -147,7 +147,7 @@ public class CirDelinquentMemberAction extends org.apache.struts.action.Action {
   {
       request.setAttribute("msg","Member Record Sucessfully  "+cirmemac.getStatus()+" for Member id " +memid);
 
-         List cirmemacclist=CirculationDAO.searchCirMemAccount2(library_id,sublibrary_id);
+         List cirmemacclist=cirdao.searchCirMemAccount2(library_id,sublibrary_id);
          session.removeAttribute("cirmemacclist");
         if(!cirmemacclist.isEmpty())
         {

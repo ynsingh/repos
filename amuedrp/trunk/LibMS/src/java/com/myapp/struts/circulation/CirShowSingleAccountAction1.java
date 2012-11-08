@@ -28,19 +28,20 @@ public class CirShowSingleAccountAction1 extends org.apache.struts.action.Action
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         mem_id=(String)request.getParameter("id");
         status=(String)request.getParameter("status");
         CirMemberAccount cmaccount;
-        CirMemberDetail cmemdetail=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+        CirMemberDetail cmemdetail=cirdao.searchCirMemDetails(library_id, mem_id);
         
 
 //System.out.println(status+" ............ "+mem_id);
 if(status==null)
 {
-            cmaccount=CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
+            cmaccount=cirdao.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
             request.setAttribute("fname",cmemdetail.getFname());
           request.setAttribute("status", status);
             request.setAttribute("cmaccount",cmaccount);
@@ -48,21 +49,21 @@ if(status==null)
 }
 if(status.equalsIgnoreCase("Renewal")){
 
-        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Cancel");
+        cmaccount=cirdao.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Cancel");
         }
 else if(status.equalsIgnoreCase("Blocked")){
 
-        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Active");
+        cmaccount=cirdao.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Active");
         }
        
 
 else if(status.equalsIgnoreCase("Cancel")){
 
-        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Active");
+        cmaccount=cirdao.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Active");
         }
        
  else{
-        cmaccount=CirculationDAO.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Blocked");
+        cmaccount=cirdao.searchCirMemAccountDetails2(library_id, sublibrary_id, mem_id,"Blocked");
         }
 
 

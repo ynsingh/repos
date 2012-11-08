@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;
 import java.util.List;
@@ -27,7 +27,7 @@ public class DiscAccessionEntryAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     BibliographicDetails bib = new BibliographicDetails();
     BibliographicDetailsId bid = new BibliographicDetailsId();
     DocumentDetails doc = new DocumentDetails();
@@ -38,19 +38,12 @@ public class DiscAccessionEntryAction extends org.apache.struts.action.Action {
     String locale1="en";
     String rtl="ltr";
     String align="left";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
            BibliographicDetailEntryActionForm bform = (BibliographicDetailEntryActionForm) form;
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
@@ -95,7 +88,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     doc.setRecordNo(maxrecord);
                     doc.setTitle(bform.getTitle());
                     doc.setSubtitle(bform.getSubtitle());
-                    DocumentCategory dc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
+                    DocumentCategory dc = (DocumentCategory)doccatdao.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
                     if(dc!=null)
                         doc.setBookType(dc.getId().getDocumentCategoryId());
                     else
@@ -111,7 +104,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     doc.setAddedEntry1(bform.getAdded_entry0());
                     doc.setAddedEntry2(bform.getAdded_entry1());
                     doc.setAddedEntry3(bform.getAdded_entry2());
-                    doc.setPublishingYear(bform.getPublishing_year());
+                  //  doc.setPublishingYear(bform.getPublishing_year());
                     doc.setLccNo(bform.getLCC_no());
                     doc.setCallNo(bform.getCall_no());
                     doc.setIsbn10(bform.getIsbn10());
@@ -152,7 +145,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     bid.setSublibraryId(sub_library_id);
                     bib.setId(bid);
                     //bib.setBookType(bform.getBook_type());
-                    DocumentCategory dc1 = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
+                    DocumentCategory dc1 = (DocumentCategory)doccatdao.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
                     if(dc1!=null)
                         bib.setBookType(dc1.getId().getDocumentCategoryId());
                     else
@@ -168,7 +161,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     bib.setAddedEntry3(bform.getAdded_entry2());
                     bib.setPublisherName(bform.getPublisher_name());
                     bib.setPublicationPlace(bform.getPublication_place());
-                    bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
+                  //  bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
                     bib.setLccNo(bform.getLCC_no());
                     bib.setIsbn10(bform.getIsbn10());
                     bib.setIsbn13(bform.getIsbn13());

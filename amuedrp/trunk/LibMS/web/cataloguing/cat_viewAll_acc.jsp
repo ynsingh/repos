@@ -79,6 +79,7 @@ int pagesize=100;
             obj1.setMain_entry(obj.getMainEntry());
             obj1.setPublisher(obj.getPublisherName());
             obj1.setPubplace(obj.getPublicationPlace());
+            obj1.setDb_category(obj.getDocumentType());
             j++;
             i++;
         opacList.add(obj1);
@@ -218,7 +219,12 @@ else
       <item  styleClass="item"  value="${doc.accessionno}"   hAlign="left"/>
 
     </column>
-    <column width="20%">
+<column width="20%">
+      <header value="Document" hAlign="left" styleClass="admingridheader"/>
+      <item  styleClass="item"  value="${doc.db_category}"   hAlign="left"/>
+
+    </column>
+      <column width="20%">
       <header value="Title" hAlign="left" styleClass="admingridheader"/>
       <item  styleClass="item"  value="${doc.title}"   hAlign="left"/>
 

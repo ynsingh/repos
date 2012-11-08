@@ -21,8 +21,8 @@ import com.myapp.struts.hbm.*;
 public class CirculationShowMemberAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
     
+    CirculationDAO cirdao=new CirculationDAO();
 String library_id,sublibrary_id;
 String mem_id;
 String button;
@@ -42,8 +42,8 @@ button=cir.getButton();
 library_id=(String)session.getAttribute("library_id");
 System.out.println(library_id+" "+sublibrary_id+ " "+mem_id);
 
-CirMemberAccount cirmem=(CirMemberAccount)CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
-CirMemberDetail cirmemobj=(CirMemberDetail)CirculationDAO.searchCirMemDetails(library_id, mem_id);
+CirMemberAccount cirmem=(CirMemberAccount)cirdao.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
+CirMemberDetail cirmemobj=(CirMemberDetail)cirdao.searchCirMemDetails(library_id, mem_id);
 System.out.println(cirmemobj+" " +cirmem+ ".........."+button);
 request.setAttribute("cirmemaccountdetail", cirmem);
 request.setAttribute("cirmemdetail", cirmemobj);

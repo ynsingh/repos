@@ -32,10 +32,129 @@ import org.hibernate.exception.SQLGrammarException;
  */
 public class CirculationDAO
 {
-   static  Integer maxNewRegId;
-   static Query query;
+     Integer maxNewRegId;
+    Query query;
 
-   public static List<FineDetails> getfinedetailslist(String library_id,String sublibrary_id,String memid) {
+  
+public static  CirMemberAccount searchCirMemCardId(String library_id,String sublibrary_id,String card_id)
+{
+        Session session = HibernateUtil.getSessionFactory().openSession();
+CirMemberAccount obj=null;
+        try
+        {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(CirMemberAccount.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
+
+                    .add(Restrictions.eq("cardId", card_id)));
+            obj= (CirMemberAccount) criteria.uniqueResult();
+session.getTransaction().commit();
+
+        }
+       catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally
+        {
+           session.close();
+        }
+        return obj;
+}
+
+public  List  FineTransaction1(String library_id,String sub_lib,String memid)
+    {
+       List obj=null;
+    Session session=null;
+
+
+        try
+        {
+
+          session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String sql="";
+
+            sql = "(select  acc.memid as member_id,concat(d.fname,' ',d.mname,' ',d.lname) fname,acc.req_date,acc.expiry_date,(select CONVERT(f.faculty_name using utf8) from faculty f where f.faculty_id=acc.faculty_id and acc.library_id=f.library_id) faculty_name,(select CONVERT(da.dept_name using utf8) from department da where acc.faculty_id=da.faculty_id and acc.library_id=da.library_id and acc.dept_id=da.dept_id) dept_name,(select CONVERT(c.course_name using utf8) from courses c where c.faculty_id=acc.faculty_id and c.library_id=acc.library_id and c.dept_id=acc.dept_id and c.course_id=acc.course_id) course_name from cir_member_detail d,cir_member_account acc where  acc.library_id=d.library_id  and acc.memid=d.memId ";
+
+
+ if(!memid.equals(""))
+{
+     System.out.println("gpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp");
+
+              sql += " and acc.memid ='"+memid+"'";
+
+ }
+
+sql+=")";
+
+          Query query =  session.createSQLQuery(sql)
+                    .setResultTransformer(Transformers.aliasToBean(CirculationList_1.class));
+
+          System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            obj= (List<CirculationList_1>)query.list();
+session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally
+        {
+           session.close();
+        }
+        return obj;
+}
+
+
+   public  List  FineTransaction(String library_id,String sub_lib,String memid)
+    {
+       List obj=null;
+    Session session=null;
+
+
+        try
+        {
+
+          session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String sql="";
+
+            sql = "(select  acc.memid as member_id,concat(d.fname,' ',d.mname,' ',d.lname) fname,acc.req_date,acc.expiry_date,(select CONVERT(f.faculty_name using utf8) from faculty f where f.faculty_id=acc.faculty_id and acc.library_id=f.library_id) faculty_name,(select CONVERT(da.dept_name using utf8) from department da where acc.faculty_id=da.faculty_id and acc.library_id=da.library_id and acc.dept_id=da.dept_id) dept_name,(select CONVERT(c.course_name using utf8) from courses c where c.faculty_id=acc.faculty_id and c.library_id=acc.library_id and c.dept_id=acc.dept_id and c.course_id=acc.course_id) course_name,fd.paydate,fd.paid,fd.paymod from fine_details fd, cir_member_detail d,cir_member_account acc where   d.library_id=fd.library_id  and d.`memId`=fd.memid and acc.library_id=d.library_id and acc.library_id=fd.library_id and acc.memid=d.memId and acc.memid=fd.memid  and acc.sublibrary_id=fd.sublibrary_id";
+
+
+ if(!memid.equals(""))
+{
+     System.out.println("gpppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp");
+
+              sql += " and acc.memid ='"+memid+"'";
+
+ }
+
+sql+=" order by fd.paydate)";
+
+          Query query =  session.createSQLQuery(sql)
+                    .setResultTransformer(Transformers.aliasToBean(CirculationList_1.class));
+
+          System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            obj= (List<CirculationList_1>)query.list();
+session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+
+        }
+        finally
+        {
+           session.close();
+        }
+        return obj;
+}
+
+
+   public  List<FineDetails> getfinedetailslist(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<FineDetails> obj=null;
         try {
@@ -64,7 +183,7 @@ public class CirculationDAO
 
 
 
- public static FineDetails getfinedetails(String library_id,String sublibrary_id,String memid) {
+ public  FineDetails getfinedetails(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        FineDetails obj=null;
         try {
@@ -130,7 +249,7 @@ public void insert(FineDetails finedetails) {
 
 
 
-public static CirMemberAccount cirMemdetail(String mem_id,String library_id,String sub_library_id) {
+public  CirMemberAccount cirMemdetail(String mem_id,String library_id,String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         try {
@@ -147,7 +266,7 @@ public static CirMemberAccount cirMemdetail(String mem_id,String library_id,Stri
         }
 
 }
-public static  boolean update1(CirMemberAccount obj)
+public   boolean update1(CirMemberAccount obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -178,7 +297,7 @@ public static  boolean update1(CirMemberAccount obj)
    return true;
 
 }
-   public static CirMemberDetail getCirMemdtail(String library_id,String memid) {
+   public  CirMemberDetail getCirMemdtail(String library_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -234,7 +353,7 @@ public static  boolean update1(CirMemberAccount obj)
 }
 
 
-public static List<MemberList>  Memberlist(String library_id,String memid,String reg_date,String expiry_date) throws Exception
+public  List<MemberList>  Memberlist(String library_id,String memid,String reg_date,String expiry_date) throws Exception
  {   int j=0,k=0;
      boolean flag=false;
     Session session =null;
@@ -316,7 +435,7 @@ public static List<MemberList>  Memberlist(String library_id,String memid,String
 
 
 
-   public static  Courses LoadCourseName(String library_id,String course_id,String dept_id,String faculty_id)
+   public   Courses LoadCourseName(String library_id,String course_id,String dept_id,String faculty_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Courses course=null;
@@ -348,7 +467,7 @@ Courses course=null;
         return course;
 }
 
-  public static  List<CirMemberAccount> searchCirMemAccount2(String library_id,String sublibrary_id)
+  public   List<CirMemberAccount> searchCirMemAccount2(String library_id,String sublibrary_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CirMemberAccount> obj=null;
@@ -375,7 +494,7 @@ List<CirMemberAccount> obj=null;
         return obj;
 }
 
- public static  CirRequestfromOpac searchMemberfromOPAC(String library_id,String sublibrary_id,String mem_id)
+ public   CirRequestfromOpac searchMemberfromOPAC(String library_id,String sublibrary_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirRequestfromOpac obj=null;
@@ -404,7 +523,7 @@ CirRequestfromOpac obj=null;
 
 
 
-    public static  List<CirMemberAccount> searchCirMemCancel(String library_id,String sublibrary_id)
+    public   List<CirMemberAccount> searchCirMemCancel(String library_id,String sublibrary_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CirMemberAccount> obj=null;
@@ -430,7 +549,7 @@ List<CirMemberAccount> obj=null;
         }
         return obj;
 }
-    public static  CirMemberAccount searchCirMemAccountDetails2(String library_id,String sublibrary_id,String mem_id,String status)
+    public   CirMemberAccount searchCirMemAccountDetails2(String library_id,String sublibrary_id,String mem_id,String status)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirMemberAccount obj=null;
@@ -457,7 +576,7 @@ CirMemberAccount obj=null;
         }
         return obj;
 }
-        public static  List<DeliquencyReason> searchDelReason(String library_id,String sublibrary_id)
+        public   List<DeliquencyReason> searchDelReason(String library_id,String sublibrary_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<DeliquencyReason> obj=null;
@@ -484,7 +603,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-         public static  List<CancellationReason> searchCancelReason(String library_id,String sublibrary_id)
+         public   List<CancellationReason> searchCancelReason(String library_id,String sublibrary_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CancellationReason> obj=null;
@@ -511,7 +630,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-          public static  CancellationReason searchCancelReason(String library_id,String sublibrary_id,String id)
+          public   CancellationReason searchCancelReason(String library_id,String sublibrary_id,String id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CancellationReason  obj=null;
@@ -539,7 +658,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-    public static  DeliquencyReason searchDeliReason(String library_id,String sublibrary_id,String id)
+    public   DeliquencyReason searchDeliReason(String library_id,String sublibrary_id,String id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 DeliquencyReason obj=null;
@@ -567,7 +686,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-public static List  CheckInReport1(String library_id,String sub_lib,String year1,String year2,String memid)
+public  List  CheckInReport1(String library_id,String sub_lib,String year1,String year2,String memid)
     {
        List obj=null;
     Session session=null;
@@ -652,7 +771,7 @@ session.getTransaction().commit();
 
 
 
-   public static List  CheckoutReport1(String library_id,String sub_lib,String year1,String year2,String memid)
+   public  List  CheckoutReport1(String library_id,String sub_lib,String year1,String year2,String memid)
     {
     List obj=null;
      Session session=null;
@@ -720,7 +839,7 @@ session.getTransaction().commit();
 }
 
 
-public static List  ViewAllSearchReport(String library_id,String sub_lib,String year1,String year2,String memid,String status,String fac,String dept,String course,String title,String login_id)
+public  List  ViewAllSearchReport(String library_id,String sub_lib,String year1,String year2,String memid,String status,String fac,String dept,String course,String title,String login_id)
     {
         List obj=null;
     
@@ -820,7 +939,7 @@ hsession.getTransaction().commit();
 }
 
 
- public static  List<Faculty> LoadFaculty(String library_id)
+ public   List<Faculty> LoadFaculty(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<Faculty> obj=null;
@@ -847,7 +966,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
- public static  List<Department> LoadDepartment(String library_id)
+ public   List<Department> LoadDepartment(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<Department> obj=null;
@@ -877,7 +996,7 @@ session.getTransaction().commit();
 }
 
 
- public static  List<Courses> LoadCourses(String library_id)
+ public   List<Courses> LoadCourses(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<Courses> obj=null;
@@ -906,10 +1025,11 @@ session.getTransaction().commit();
         return obj;
 }
 
- public static  List<SubLibrary> LoadSublibrary(String library_id)
+ public   List<SubLibrary> LoadSublibrary(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
+
         try
         {
             session.beginTransaction();
@@ -937,7 +1057,7 @@ session.getTransaction().commit();
 
 
 
-   public static  boolean insertCirCheckout(CirCheckout obj)
+   public   boolean insertCirCheckout(CirCheckout obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -958,7 +1078,7 @@ session.getTransaction().commit();
         }
         return true;
 }
-   public static  boolean insertDelinquencyout(DeliquencyReason obj)
+   public   boolean insertDelinquencyout(DeliquencyReason obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -983,7 +1103,7 @@ session.getTransaction().commit();
 
 }
 
-    public static  boolean insertCancellation(CancellationReason obj)
+    public   boolean insertCancellation(CancellationReason obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -1008,7 +1128,7 @@ session.getTransaction().commit();
 
 }
 
-public static  boolean insertCirTransHistory(CirTransactionHistory obj)
+public   boolean insertCirTransHistory(CirTransactionHistory obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -1035,7 +1155,7 @@ public static  boolean insertCirTransHistory(CirTransactionHistory obj)
 
 
 
-   public static  CirCheckin searchCheckinMemDetails(String library_id,String mem_id)
+   public   CirCheckin searchCheckinMemDetails(String library_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirCheckin obj=null;
@@ -1062,7 +1182,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-   public static  CirCheckin searchCheckinMemDetails(String library_id,String sublibrary_id,String mem_id,String checkIn)
+   public   CirCheckin searchCheckinMemDetails(String library_id,String sublibrary_id,String mem_id,String checkIn)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirCheckin obj=null;
@@ -1093,7 +1213,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-public static List  ViewAllThoughOpacReq(String library_id,String sub_lib,String year3,String year4,String memid,String fac,String dept,String course,String title,String login_id)
+public  List  ViewAllThoughOpacReq(String library_id,String sub_lib,String year3,String year4,String memid,String fac,String dept,String course,String title,String login_id)
     {
         List obj=new ArrayList<MixCirMemberDetail>();
     Session session=null;
@@ -1185,7 +1305,7 @@ hsession.getTransaction().commit();
 }
 
 
-    public static  List<CirMemberAccount> searchCirMemAccount1(String library_id,String sublibrary_id)
+    public   List<CirMemberAccount> searchCirMemAccount1(String library_id,String sublibrary_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
  List<CirMemberAccount> obj=null;
@@ -1213,7 +1333,7 @@ session.getTransaction().commit();
 }
 
 
-public static boolean insert(CirMemberAccount cma)
+public  boolean insert(CirMemberAccount cma)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -1239,7 +1359,7 @@ public static boolean insert(CirMemberAccount cma)
 
         }
 
-   public static  DocumentDetails searchDocumentID(String library_id,String sub_library_id,String accession_no)
+   public   DocumentDetails searchDocumentID(String library_id,String sub_library_id,String accession_no)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 DocumentDetails obj=null;
@@ -1266,7 +1386,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-      public static  CirCheckout searchCheckOutDetails(String library_id,String sub_library_id,String document_id)
+      public   CirCheckout searchCheckOutDetails(String library_id,String sub_library_id,String document_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirCheckout obj=null;
@@ -1294,7 +1414,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-       public static  CirCheckout searchCheckOutDetails1(String library_id,String sub_library_id,String document_id,String status)
+       public   CirCheckout searchCheckOutDetails1(String library_id,String sub_library_id,String document_id,String status)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirCheckout obj=null;
@@ -1321,7 +1441,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-           public static  CirCheckout searchCheckOutDetailsByStatus(String library_id,String sub_library_id,String document_id,String status)
+           public   CirCheckout searchCheckOutDetailsByStatus(String library_id,String sub_library_id,String document_id,String status)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirCheckout obj=null;
@@ -1349,7 +1469,7 @@ CirCheckout obj=null;
         return obj;
 }
 
-            public static  List<CirCheckout> searchCheckOutListByStatus(String library_id,String sub_library_id,String memId,String status)
+            public   List<CirCheckout> searchCheckOutListByStatus(String library_id,String sub_library_id,String memId,String status)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CirCheckout> obj=null;
@@ -1376,7 +1496,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
- public static  CirMemberDetail searchCirMemDetails(String library_id,String mem_id)
+ public   CirMemberDetail searchCirMemDetails(String library_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirMemberDetail obj=null;
@@ -1404,7 +1524,7 @@ session.getTransaction().commit();
 }
 
            
-      public static  CirOpacRequest searchCirOpacRequest(String library_id,String sublibrary_id,String document_id,String accession_no)
+      public   CirOpacRequest searchCirOpacRequest(String library_id,String sublibrary_id,String document_id,String accession_no)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirOpacRequest obj=null;
@@ -1431,7 +1551,7 @@ CirOpacRequest obj=null;
         }
         return obj;
 }
-public static  CirOpacRequest searchCirOpacRequest1(String library_id,String sublibrary_id,String document_id,String accession_no)
+public   CirOpacRequest searchCirOpacRequest1(String library_id,String sublibrary_id,String document_id,String accession_no)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirOpacRequest obj=null;
@@ -1459,7 +1579,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-      public static  CirOpacRequest searchCirOpacRequestByMemId(String library_id,String sublibrary_id,String memId,String accession_no)
+      public   CirOpacRequest searchCirOpacRequestByMemId(String library_id,String sublibrary_id,String memId,String accession_no)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirOpacRequest obj=null;
@@ -1487,7 +1607,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-  public static  List<CirMemberAccount> searchCirMemAccountDetailsBySubMember(String library_id,String emptype_id,String sub_emptype_id)
+  public   List<CirMemberAccount> searchCirMemAccountDetailsBySubMember(String library_id,String emptype_id,String sub_emptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CirMemberAccount> obj=null;
@@ -1515,7 +1635,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-        public static  List<CirMemberAccount> searchCirMemAccountDetails(String library_id,String mem_id)
+        public   List<CirMemberAccount> searchCirMemAccountDetails(String library_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CirMemberAccount> obj=null;
@@ -1541,7 +1661,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-public static  CirMemberAccount searchCirMemAccountDetails(String library_id,String sublibrary_id,String mem_id)
+public   CirMemberAccount searchCirMemAccountDetails(String library_id,String sublibrary_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirMemberAccount obj=null;
@@ -1568,7 +1688,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-public static  List<CirMemberAccount> searchCirMemAccountDetailsLst(String library_id,String sublibrary_id,String mem_id)
+public   List<CirMemberAccount> searchCirMemAccountDetailsLst(String library_id,String sublibrary_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
  List<CirMemberAccount>  obj=null;
@@ -1595,7 +1715,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-       public static  CirTransactionHistory searchCirTransactionHistory(String library_id,String sub_library_id,Integer checkoutId)
+       public   CirTransactionHistory searchCirTransactionHistory(String library_id,String sub_library_id,Integer checkoutId)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirTransactionHistory obj=null;
@@ -1621,7 +1741,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-public static  BookCategory searchfineDetails(String library_id,String book_type,String memtype,String submemtype)
+public   BookCategory searchfineDetails(String library_id,String book_type,String memtype,String submemtype)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 BookCategory obj=null;
@@ -1650,7 +1770,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-        public static  BookCategory searchfineDetails(String library_id,String book_type)
+        public   BookCategory searchfineDetails(String library_id,String book_type)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 BookCategory obj=null;
@@ -1676,7 +1796,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-        public static  BookCategory searchfineDetailsByType(String library_id,String sublibraryId,String docId)
+        public   BookCategory searchfineDetailsByType(String library_id,String sublibraryId,String docId)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 BookCategory obj=null;
@@ -1703,7 +1823,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-         public static  List<MemberFineWithCheckoutDetails> searchfineDetailsByMemId(String library_id,String subLibraryId,String memId)
+         public   List<MemberFineWithCheckoutDetails> searchfineDetailsByMemId(String library_id,String subLibraryId,String memId)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<MemberFineWithCheckoutDetails> obj=null;
@@ -1734,7 +1854,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-         public static  HashMap searchCirMemberStatistics(String library_id,String subLibraryId)
+         public   HashMap searchCirMemberStatistics(String library_id,String subLibraryId)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 HashMap<String,String> demo=new HashMap<String,String>();
@@ -1765,7 +1885,7 @@ HashMap<String,String> demo=new HashMap<String,String>();
 }
 
 
-             public static  String searchTotalCheckOut(int bibid,String library_id,String subLibraryId)
+             public   String searchTotalCheckOut(int bibid,String library_id,String subLibraryId)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -1833,7 +1953,7 @@ session.getTransaction().commit();
         return maxbiblio;
 }
 
-        public static boolean updateCheckin(CirCheckin obj1,CirCheckout obj2,CirMemberAccount obj3,DocumentDetails obj4,CirTransactionHistory obj5)
+        public  boolean updateCheckin(CirCheckin obj1,CirCheckout obj2,CirMemberAccount obj3,DocumentDetails obj4,CirTransactionHistory obj5)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -1861,7 +1981,7 @@ session.getTransaction().commit();
         
 }
 
-         public static boolean updateCheckOut(CirOpacRequest cmd)
+         public  boolean updateCheckOut(CirOpacRequest cmd)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -1886,7 +2006,7 @@ session.getTransaction().commit();
        
 }
 
-public static boolean delete(String library_id,String sublibrary_id,String memid) {
+public  boolean delete(String library_id,String sublibrary_id,String memid) {
         Session session =null;
     Transaction tx = null;
     try {
@@ -1915,7 +2035,7 @@ return true;
         }
        
 }
-public static boolean deleteDelinq(String library_id,String sublibrary_id,String id) {
+public  boolean deleteDelinq(String library_id,String sublibrary_id,String id) {
         Session session =null;
     Transaction tx = null;
     try {
@@ -1945,7 +2065,7 @@ return true;
       
 }
 
-public static boolean deleteCancelReason(String library_id,String sublibrary_id,String id) {
+public  boolean deleteCancelReason(String library_id,String sublibrary_id,String id) {
         Session session =null;
     Transaction tx = null;
     try {
@@ -1975,7 +2095,7 @@ return true;
       
 }
 
-public static boolean deleteAccount(String library_id,String sublibrary_id,String memid) {
+public  boolean deleteAccount(String library_id,String sublibrary_id,String memid) {
         Session session =null;
     Transaction tx = null;
     try {
@@ -2002,7 +2122,7 @@ return false;
         }
        
 }
-  public static boolean update(CirMemberDetail cmd)
+  public  boolean update(CirMemberDetail cmd)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -2029,7 +2149,7 @@ return false;
 
         }
 
-   public static boolean insert(CirMemberDetail cmd)
+   public  boolean insert(CirMemberDetail cmd)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -2056,7 +2176,7 @@ return false;
 
         }
 
-      public static List<CirMemberAccount> getMaxReservationId(String library_id, String mem_id) {
+      public  List<CirMemberAccount> getMaxReservationId(String library_id, String mem_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
          List<CirMemberAccount> obj=null;
@@ -2082,7 +2202,7 @@ return false;
         return obj;
 }
   
- public static boolean insert(CirOpacRequest cmd)
+ public  boolean insert(CirOpacRequest cmd)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -2109,7 +2229,7 @@ return false;
 
         }
 
-public static  List<MixDocumentType> getDocument_Cat_Details(String library_id,String sublibrary_id,String doc_type)
+public   List<MixDocumentType> getDocument_Cat_Details(String library_id,String sublibrary_id,String doc_type)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<MixDocumentType> obj=null;
@@ -2151,7 +2271,7 @@ List<MixDocumentType> obj=null;
 
 
 
- public static  List<CirMemberDetail> searchCirMemDetails1(String library_id)
+ public   List<CirMemberDetail> searchCirMemDetails1(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CirMemberDetail> obj=null;
@@ -2178,7 +2298,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-public static List  CheckInReport(String library_id,String sub_lib,String year1,String year2,String memid)
+public  List  CheckInReport(String library_id,String sub_lib,String year1,String year2,String memid)
     {
         List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
@@ -2218,7 +2338,7 @@ public static List  CheckInReport(String library_id,String sub_lib,String year1,
         }
         return obj;
 }
-public static List  CheckInReport(String library_id,String sub_lib)
+public  List  CheckInReport(String library_id,String sub_lib)
     {
        List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
@@ -2247,7 +2367,7 @@ public static List  CheckInReport(String library_id,String sub_lib)
         }
         return obj;
 }
- public static List  CheckoutReport(String library_id,String sub_lib,String year1,String year2,String memid)
+ public  List  CheckoutReport(String library_id,String sub_lib,String year1,String year2,String memid)
     {
        List obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
@@ -2293,7 +2413,7 @@ hsession.getTransaction().commit();
         }
         return obj;
 }
- public static  CirCheckout searchCheckoutMemDetails(String library_id,String mem_id)
+ public   CirCheckout searchCheckoutMemDetails(String library_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
  CirCheckout obj=null;
@@ -2319,7 +2439,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-public static  List<CirCheckout> searchCheckoutMemDetails(String library_id,String sublibrary_id,String mem_id)
+public   List<CirCheckout> searchCheckoutMemDetails(String library_id,String sublibrary_id,String mem_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<CirCheckout> obj=null;
@@ -2346,7 +2466,7 @@ List<CirCheckout> obj=null;
         }
         return obj;
 }
-public static  CirCheckout searchCheckoutMemDetails(String library_id,String sublibrary_id,String mem_id,String checkoutId)
+public   CirCheckout searchCheckoutMemDetails(String library_id,String sublibrary_id,String mem_id,String checkoutId)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirCheckout obj=null;
@@ -2374,7 +2494,7 @@ CirCheckout obj=null;
         }
         return obj;
 }
-public static List<EmployeeType> getAllEmployeeTypes(String library_id) {
+public  List<EmployeeType> getAllEmployeeTypes(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<EmployeeType> obj=null;
         try {
@@ -2397,7 +2517,7 @@ List<EmployeeType> obj=null;
         }
         return obj;
 }
-public static List<SubEmployeeType> getAllSubEmployeeTypes(String library_id) {
+public  List<SubEmployeeType> getAllSubEmployeeTypes(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubEmployeeType> obj=null;
         try {
@@ -2420,7 +2540,7 @@ List<SubEmployeeType> obj=null;
         }
         return obj;
 }
-public static List<Faculty> getAllFaculty(String library_id) {
+public  List<Faculty> getAllFaculty(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<Faculty> obj=null;
         try {
@@ -2442,7 +2562,7 @@ List<Faculty> obj=null;
         }
         return obj;
 }
-public static List<SubLibrary> getAllSubLibrary(String library_id,String sublibraryId,String memId) {
+public  List<SubLibrary> getAllSubLibrary(String library_id,String sublibraryId,String memId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -2464,7 +2584,7 @@ List<SubLibrary> obj=null;
         }
         return obj;
 }
-public static List<SubLibrary> getAllSubLibrary1(String library_id,String sublibraryId,String memId) {
+public  List<SubLibrary> getAllSubLibrary1(String library_id,String sublibraryId,String memId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -2490,7 +2610,7 @@ obj= (List<SubLibrary>) query1.list();
         return obj;
 }
 
-public static List<SubLibrary> getAllSubLibrary2(String library_id,String sublibraryId) {
+public  List<SubLibrary> getAllSubLibrary2(String library_id,String sublibraryId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -2514,7 +2634,7 @@ List<SubLibrary> obj=null;
         }
         return obj;
 }
-public static  CirMemberAccount searchCirMemAccountDetails1(String library_id,String sublibrary_id,String mem_id,String password)
+public   CirMemberAccount searchCirMemAccountDetails1(String library_id,String sublibrary_id,String mem_id,String password)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirMemberAccount obj=null;
@@ -2543,7 +2663,7 @@ CirMemberAccount obj=null;
         }
         return obj;
 }
-public static  CirMemberAccount searchCirMemAccountDetails(String library_id,String sublibrary_id,String mem_id,String password)
+public   CirMemberAccount searchCirMemAccountDetails(String library_id,String sublibrary_id,String mem_id,String password)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirMemberAccount obj=null;
@@ -2570,7 +2690,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-  public static CirMemberAccount getAccountDate(String library_id,String sublibrary_id,String memid) {
+  public  CirMemberAccount getAccountDate(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        CirMemberAccount obj=null;
         try {
@@ -2595,7 +2715,7 @@ session.getTransaction().commit();
         return obj;
 }
 
- public static List searchDoc1(String library_id, String sub_library_id,String call_no) {
+ public  List searchDoc1(String library_id, String sub_library_id,String call_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List obj=null;
         try {
@@ -2620,15 +2740,15 @@ session.getTransaction().commit();
         }
         return obj;
 }
- public static String DistinctDocType(String library_id,String sublibrary_id,String call_no) {
+ public  String DistinctDocType(String library_id,String sublibrary_id,String acc_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         String status="available";
         String obj=null;
         try {
             session.beginTransaction();
-            query = session.createQuery("Select distinct bookType From  DocumentDetails where id.libraryId =:library_id and callNo= :callNo and status = :status and id.sublibraryId=:sublibrary_id");
+            query = session.createQuery("Select distinct bookType From  DocumentDetails where id.libraryId =:library_id and accessionNo= :accNo and status = :status and id.sublibraryId=:sublibrary_id");
             query.setString("library_id", library_id);
-            query.setString("callNo", call_no);
+            query.setString("accNo", acc_no);
             query.setString("status", status);
             query.setString("sublibrary_id",sublibrary_id);
             obj= (String)  query.uniqueResult();
@@ -2644,7 +2764,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-public static CirMemberAccount getAccount2(String library_id,String sublibrary_id,String memid) {
+public  CirMemberAccount getAccount2(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         CirMemberAccount obj=null;
@@ -2672,7 +2792,7 @@ public static CirMemberAccount getAccount2(String library_id,String sublibrary_i
 
 
 
-public static CirMemberDetail getMemberDetail(String library_id,String memid) {
+public  CirMemberDetail getMemberDetail(String library_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirMemberDetail obj=null;
                 try {
@@ -2697,7 +2817,7 @@ CirMemberDetail obj=null;
 
 
 
-public static  boolean update2(CirMemberAccount obj)
+public   boolean update2(CirMemberAccount obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -2724,7 +2844,7 @@ public static  boolean update2(CirMemberAccount obj)
 
 
 
-public static CirMemberDetail getMemid(String library_id,String memid) {
+public  CirMemberDetail getMemid(String library_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         CirMemberDetail obj = null;
         try {
@@ -2747,7 +2867,7 @@ public static CirMemberDetail getMemid(String library_id,String memid) {
         return obj;
 }
 
-public static CirMemberAccount getAccount(String library_id,String sublibrary_id,String memid) {
+public  CirMemberAccount getAccount(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         CirMemberAccount obj = null;
         try {
@@ -2770,7 +2890,7 @@ public static CirMemberAccount getAccount(String library_id,String sublibrary_id
         return obj;
 }
 
-public static List<CirOpacRequest> getOpacCheckOut(String library_id,String sublibrary_id,String status) {
+public  List<CirOpacRequest> getOpacCheckOut(String library_id,String sublibrary_id,String status) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<CirOpacRequest> obj = null;
         try {
@@ -2794,7 +2914,7 @@ public static List<CirOpacRequest> getOpacCheckOut(String library_id,String subl
 }
 
 
-public static List<DocumentDetails> searchBYCallno(String library_id,String sublibrary_id,String call_no) {
+public  List<DocumentDetails> searchBYCallno(String library_id,String sublibrary_id,String call_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         String status="available";
         List<DocumentDetails>  obj=null;
@@ -2818,7 +2938,7 @@ public static List<DocumentDetails> searchBYCallno(String library_id,String subl
         }
         return obj;
 }
-public static DocumentDetails getBook(String library_id,String sublibrary_id,String accession_no) {
+public  DocumentDetails getBook(String library_id,String sublibrary_id,String accession_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        DocumentDetails obj = null;
         try {
@@ -2840,7 +2960,7 @@ public static DocumentDetails getBook(String library_id,String sublibrary_id,Str
         }
         return obj;
 }
-public static DocumentDetails getBookStatus(String library_id,String sublibrary_id,String accession_no) {
+public  DocumentDetails getBookStatus(String library_id,String sublibrary_id,String accession_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         DocumentDetails obj = null;
         try {
@@ -2863,7 +2983,7 @@ public static DocumentDetails getBookStatus(String library_id,String sublibrary_
         }
         return obj;
 }
-public static DocumentDetails getDocument(String library_id,String sublibrary_id,int document_id) {
+public  DocumentDetails getDocument(String library_id,String sublibrary_id,int document_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         DocumentDetails obj = null;
         try {
@@ -2886,7 +3006,7 @@ public static DocumentDetails getDocument(String library_id,String sublibrary_id
         return obj;
 }
 
-public static CirMemberAccount getCirMem(String library_id,String sublibrary_id,String memid) {
+public  CirMemberAccount getCirMem(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         CirMemberAccount obj=null;
         try {
@@ -2910,7 +3030,7 @@ public static CirMemberAccount getCirMem(String library_id,String sublibrary_id,
 }
 
 
-public static  boolean update(CirMemberAccount obj3,DocumentDetails obj4)
+public   boolean update(CirMemberAccount obj3,DocumentDetails obj4)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -2947,7 +3067,7 @@ public static  boolean update(CirMemberAccount obj3,DocumentDetails obj4)
 
 
 
- public static List getMaxChkoutId(String library_id,String sublibrary_id) {
+ public  List getMaxChkoutId(String library_id,String sublibrary_id) {
         Session session =HibernateUtil.getSessionFactory().openSession();
         List obj = null;
         try {
@@ -2970,7 +3090,7 @@ public static  boolean update(CirMemberAccount obj3,DocumentDetails obj4)
 }
 
 
- public static List getMaxTransId(String library_id) {
+ public  List getMaxTransId(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List obj = null;
         try {
@@ -2991,7 +3111,7 @@ public static  boolean update(CirMemberAccount obj3,DocumentDetails obj4)
         return obj;
 }
 
-public static  boolean delete(CirMemberAccount obj)
+public   boolean delete(CirMemberAccount obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -3015,7 +3135,7 @@ public static  boolean delete(CirMemberAccount obj)
    return true;
 
 }
- public static boolean updateAccount(CirMemberAccount cmd)
+ public  boolean updateAccount(CirMemberAccount cmd)
         {
             Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -3041,7 +3161,7 @@ public static  boolean delete(CirMemberAccount obj)
 
         }
 
-public static  boolean insert1(CirMemberAccount obj)
+public   boolean insert1(CirMemberAccount obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

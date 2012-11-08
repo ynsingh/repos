@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;
 import java.util.List;
@@ -18,10 +18,11 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import com.myapp.struts.utility.DateCalculation;
+import org.jfree.chart.labels.BubbleXYItemLabelGenerator;
 public class AccessionEntryAction extends org.apache.struts.action.Action {
 
     private static final String SUCCESS = "success";
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     BibliographicDetails bib = new BibliographicDetails();
     BibliographicDetailsId bid = new BibliographicDetailsId();
     DocumentDetails doc = new DocumentDetails();
@@ -40,6 +41,9 @@ public class AccessionEntryAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
+        DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
+        BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
+
               try{
         locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
@@ -71,6 +75,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                 } else {
                     BibliographicDetailsId dd = new BibliographicDetailsId(bform.getBiblio_id(), library_id, sub_library_id);
                     bib.setId(dd);
+                    //bib=bibdao.getBiblio(library_id, sub_library_id, bform.getBiblio_id());
                     Integer maxdoc = dao.returnMaxDocumentId(library_id, sub_library_id);
                     Integer maxrecord = (Integer) dao.returnMaxRecord(library_id, sub_library_id);
                     did.setDocumentId(maxdoc);
@@ -84,7 +89,7 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     doc.setRecordNo(maxrecord);
                     doc.setTitle(bform.getTitle());
                     doc.setSubtitle(bform.getSubtitle());
-                    DocumentCategory dc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
+                    DocumentCategory dc = (DocumentCategory)doccatdao.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
                     if(dc!=null)
                         doc.setBookType(dc.getId().getDocumentCategoryId());
                     else
@@ -122,6 +127,18 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     doc.setColour(bform.getColour());
                     doc.setEntryLanguage(bform.getLanguage());
                     doc.setDateAcquired(DateCalculation.now());
+                   
+                    //Disseration Entry
+                     doc.setSubmittedBy(bform.getSubmittedBy());
+                     doc.setGuideName(bform.getGuide_name());
+                     doc.setSubmittedOn(bform.getSubmitted_on());
+                     doc.setDegree(bform.getDegree());
+                     doc.setAcceptanceYear(bform.getAcceptance_year());
+                     
+
+                     
+
+
                     aid.setLibraryId(library_id);
                     aid.setSublibraryId(sub_library_id);
                     aid.setRecordNo(maxrecord);
@@ -141,41 +158,41 @@ String msg1 = resource.getString("cataloguing.ownaccessionentryaction.accessblan
                     ac.setColour(bform.getColour());
                     ac.setDateAcquired(DateCalculation.now());
                     dao.insert2(ac);
-                    bid.setBiblioId(bform.getBiblio_id());
-                    bid.setLibraryId(library_id);
-                    bid.setSublibraryId(sub_library_id);
-                    bib.setId(bid);
+                    bib=dao.getBiblio(library_id, sub_library_id, bform.getBiblio_id());
+                    //bid.setLibraryId(library_id);
+                    //bid.setSublibraryId(sub_library_id);
+                    //bib.setId(bid);
                     //bib.setBookType(bform.getBook_type());
-                    DocumentCategory dc1 = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
-                    if(dc1!=null)
-                        bib.setBookType(dc1.getId().getDocumentCategoryId());
-                    else
-                        bib.setBookType(bform.getBook_type());
-                    bib.setDocumentType(bform.getDocument_type());
-                    bib.setTitle(bform.getTitle());
-                    bib.setSubtitle(bform.getSubtitle());
-                    bib.setStatementResponsibility(bform.getStatement_responsibility());
-                    bib.setMainEntry(bform.getMain_entry());
-                    bib.setAddedEntry(bform.getAdded_entry());
-                    bib.setAddedEntry1(bform.getAdded_entry0());
-                    bib.setAddedEntry2(bform.getAdded_entry1());
-                    bib.setAddedEntry3(bform.getAdded_entry2());
-                    bib.setPublisherName(bform.getPublisher_name());
-                    bib.setPublicationPlace(bform.getPublication_place());
-                    bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
-                    bib.setLccNo(bform.getLCC_no());
-                    bib.setIsbn10(bform.getIsbn10());
-                    bib.setIsbn13(bform.getIsbn13());
-                    bib.setEdition(bform.getEdition());
-                    bib.setCallNo(bform.getCall_no());
-                    bib.setAltTitle(bform.getAlt_title());
-                    bib.setSubject(bform.getSubject());
-                    bib.setAbstract_(bform.getThesis_abstract());
-                    bib.setSeries(bform.getSer_note());
-                    bib.setNotes(bform.getNotes());
-                    bib.setEntryLanguage(bform.getLanguage());
-                    bib.setTypeOfDisc(bform.getType_of_disc());
-                    bib.setDateAcquired(bform.getDate_acquired1());
+                   // DocumentCategory dc1 = (DocumentCategory)doccatdao.searchDocumentCategoryByName(library_id, sub_library_id, bform.getBook_type());
+                   // if(dc1!=null)
+                    //    bib.setBookType(dc1.getId().getDocumentCategoryId());
+                   // else
+                      //  bib.setBookType(bform.getBook_type());
+                  //  bib.setDocumentType(bform.getDocument_type());
+                   // bib.setTitle(bform.getTitle());
+                   // bib.setSubtitle(bform.getSubtitle());
+                   // bib.setStatementResponsibility(bform.getStatement_responsibility());
+                   // bib.setMainEntry(bform.getMain_entry());
+                   // bib.setAddedEntry(bform.getAdded_entry());
+                  //  bib.setAddedEntry1(bform.getAdded_entry0());
+                   // bib.setAddedEntry2(bform.getAdded_entry1());
+                   // bib.setAddedEntry3(bform.getAdded_entry2());
+                  //  bib.setPublisherName(bform.getPublisher_name());
+                  //  bib.setPublicationPlace(bform.getPublication_place());
+                  //  bib.setPublishingYear(Integer.parseInt(bform.getPublishing_year()));
+                  //  bib.setLccNo(bform.getLCC_no());
+                  //  bib.setIsbn10(bform.getIsbn10());
+                  //  bib.setIsbn13(bform.getIsbn13());
+                  //  bib.setEdition(bform.getEdition());
+                  //  bib.setCallNo(bform.getCall_no());
+                 //   bib.setAltTitle(bform.getAlt_title());
+                 //   bib.setSubject(bform.getSubject());
+                 //   bib.setAbstract_(bform.getThesis_abstract());
+                 //   bib.setSeries(bform.getSer_note());
+                  //  bib.setNotes(bform.getNotes());
+                  //  bib.setEntryLanguage(bform.getLanguage());
+                  //  bib.setTypeOfDisc(bform.getType_of_disc());
+                 //   bib.setDateAcquired(bform.getDate_acquired1());
                     List a = dao.getItems(library_id, sub_library_id, bform.getBiblio_id());
                     int b = a.size();
                     bform.setNo_of_copies(b);

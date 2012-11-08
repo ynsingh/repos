@@ -29,7 +29,7 @@ public class CirMembercardManageAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+CirculationDAO cirdao=new CirculationDAO();
         CirMembercardManageActionForm myform=(CirMembercardManageActionForm)form;
         memid=myform.getMemid();
         reg_date=myform.getReg_date();
@@ -38,7 +38,7 @@ public class CirMembercardManageAction extends org.apache.struts.action.Action {
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
-        List<MemberList> memberlist=(List<MemberList>)CirculationDAO.Memberlist(library_id, memid, reg_date, expiry_date);
+        List<MemberList> memberlist=(List<MemberList>)cirdao.Memberlist(library_id, memid, reg_date, expiry_date);
         session.setAttribute("memberlist", memberlist);
 
         return mapping.findForward(SUCCESS);

@@ -59,7 +59,8 @@ locale1=(String)session.getAttribute("locale");
        String library_id=(String)session.getAttribute("library_id");
 if(sublibrary_name.equalsIgnoreCase("Main Library"))
 {
-    AdminRegistration admin=AdminRegistrationDAO.searchInstitute(library_id);
+    AdminRegistrationDAO admindao=new AdminRegistrationDAO();
+    AdminRegistration admin=admindao.searchInstitute(library_id);
     sublibrary_name=admin.getLibraryName()+"/Central Library"; }
         String login_role=(String)session.getAttribute("login_role");
         String role_name="";
@@ -519,7 +520,7 @@ if(sublibrary_name.equalsIgnoreCase("Main Library"))
         <!-- CSS for Menu -->
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/build/menu/assets/menu.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/page.css">
-        <!-- Page-specific styles -->
+        <!-- Page-specific styles 
        <style type="text/css">
 
 
@@ -528,35 +529,18 @@ if(sublibrary_name.equalsIgnoreCase("Main Library"))
             /* Define a new style for each menubar */
 
             div.yuimenubar {
-
-                border-width:1px 0;
-                border-color:#666;
-                border-style:solid;
-          
-                background-color: #E0E8F5;
-color:white;
-
+		background-color: #A8B9DA;
+		color:white;
+		font-family:arial;
+		font-size:12px;
+		font-weight:bold;
             }
 
-            div.yuimenubar div.bd {
-
-                border-width:1px 0;
-                border-color:#ddd;
-                border-style:solid;
-
-            }
+         
 
             div.yuimenubar li.yuimenubaritem {
-
-                border-width:0;
-                border-style:none;
                 padding:4px 12px;
-                font-family:arial;
-                font-size:11px;
-                 background-color: #E0E8F5;
-                 
-                font-weight:bold;
-                ctext-color:white;olor:white;
+                text-color:white;color:white;
 
             }
 
@@ -566,6 +550,7 @@ color:white;
                 border:0;
                 height:1px;
                 width:1px;
+		color:white;
 
             }
 
@@ -573,16 +558,14 @@ color:white;
             /* Define a new style for each menu */
 
             div.yuimenu {
-
-                border:solid 1px #666;
-                 background-color: #E0E8F5;
-color:white;
+                background-color: #A8B9DA;
+		color:white;
             }
 
             div.yuimenu div.bd {
-
                 border-width:0;
                 border-style:none;
+		color:white;
 
             }
 
@@ -592,6 +575,7 @@ color:white;
             div.yuimenu li.yuimenuitem {
 
                 padding-top:4px;
+		color:white;
                 padding-bottom:4px;
 
             }
@@ -601,15 +585,14 @@ color:white;
                 height:8px;
                 width:8px;
                 margin:0 -16px 0 10px;
+		color:white;
                 border:0;
 
             }
 
             div.yuimenu ul {
-
-                border:solid 1px #666;
                 border-width:1px 0 0 0;
-
+		color:white;
             }
 
 
@@ -617,14 +600,14 @@ color:white;
 
             div.yuimenu li.selected,
             div.yuimenubar li.selected {
-color:white;
+		color:white;
                 background-color:#039;
 
             }
 
             div.yuimenu li.selected a.selected,
             div.yuimenubar li.selected a.selected {
-
+		color:white;
                 text-decoration:none;
 
             }
@@ -640,7 +623,7 @@ color:white;
 
             }
 
-        </style>
+        </style>-->
 
         <!-- Namespace source file -->
         <script type="text/javascript" src="<%=request.getContextPath()%>/build/yahoo/yahoo.js"></script>
@@ -899,8 +882,8 @@ color:white;
                // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Refer From Demand List", {  disabled: <%=ser_privilege[3]%>,  url: ""}));
                 oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial34") %>", {  disabled: <%=ser_privilege[3]%>,  url: ""}));
 
-               // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("New Entry", {  disabled: <%=ser_privilege[4]%>,  url: ""}));
-                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial35") %>", {  disabled: <%=ser_privilege[4]%>,  url: ""}));
+               // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("New Entry", {  disabled: <%=ser_privilege[4]%>,  url: "<%=request.getContextPath()%>/serial/ser_new_entry.jsp"}));
+                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial35") %>", {  disabled: <%=ser_privilege[4]%>,  url: "<%=request.getContextPath()%>/serial/ser_new_entry.jsp"}));
                 //oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Request For Specimen Copy", {  disabled: <%=ser_privilege[5]%>,  url: ""}));
                 oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial36") %>", {  disabled: <%=ser_privilege[5]%>,  url: ""}));
                // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("New Serial Status", {  disabled: <%=ser_privilege[6]%>,  url: ""}));
@@ -985,7 +968,7 @@ color:white;
                // oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Miscellaneous", {submenu:oSerMiscellaneousMenu ,  disabled: <%=ser_privilege[60]%>,  url: ""}));
                  oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial68") %>", {submenu:oSerMiscellaneousMenu ,  disabled: <%=ser_privilege[60]%>,  url: ""}));
 
-		// var oSerRecordKeepingMenu = new YAHOO.widget.Menu("Record Keeping");
+		 var oSerRecordKeepingMenu = new YAHOO.widget.Menu("Record Keeping");
                             var oSerRecordKeepingMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial80") %>");
                // oSerRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("Serial Language", {disabled: <%=ser_privilege[62]%>,  url: ""}));
                 oSerRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial81") %>", { disabled: <%=ser_privilege[62]%>,  url: "<%=request.getContextPath()%>/serial/ser_language.jsp"}))
@@ -1030,7 +1013,7 @@ color:white;
                 //oSerMenu.addItem(new YAHOO.widget.MenuItem("Article Indexing", {submenu:oSerArticleIndexingMenu ,   disabled: <%=ser_privilege[49]%>,  url:"" } ));
                 oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial78") %>", {submenu:oSerArticleIndexingMenu ,   disabled: <%=ser_privilege[49]%>,  url:"" } ));
                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Record Keeping", {submenu:oSerRecordKeepingMenu ,   disabled: <%=ser_privilege[61]%>,  url:"" } ));
-              //  oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial79") %>", {submenu:oSerRecordKeepingMenu , disabled: <%=ser_privilege[61]%>, url:"" } ));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial79") %>", {submenu:oSerRecordKeepingMenu , disabled: <%=ser_privilege[61]%>, url:"" } ));
 
 
 
@@ -1173,7 +1156,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Cancellation", {   disabled: <%=cir_privilege[17]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Renewal", {   disabled: <%=cir_privilege[18]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Delinquent Member", {   disabled: <%=cir_privilege[19]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
-                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("UnBlock Member", {   disabled: <%=cir_privilege[20]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Upload Member Details", {   disabled: <%=cir_privilege[20]%>,  url:"<%=request.getContextPath()%>/circulation/member_data_import.jsp" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Institute Member", {submenu:oCirInstituteMemberMenu ,   disabled: <%=cir_privilege[21]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Scheme Allocation", {   disabled: <%=cir_privilege[26]%>,  url:"" }));
 */
@@ -1187,7 +1170,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation37") %>", {   disabled: <%=cir_privilege[17]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation38") %>", {   disabled: <%=cir_privilege[18]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation39") %>", {   disabled: <%=cir_privilege[19]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
-                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation40") %>", {   disabled: <%=cir_privilege[20]%>,  url:"<%=request.getContextPath()%>/circulation/cir_viewallaccount1.do" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation40") %>", {   disabled: <%=cir_privilege[20]%>,  url:"<%=request.getContextPath()%>/circulation/member_data_import.jsp" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation41") %>", {submenu:oCirInstituteMemberMenu ,   disabled: <%=cir_privilege[21]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation42") %>", {   disabled: <%=cir_privilege[26]%>,  url:"" }));
 
@@ -1381,110 +1364,58 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
 //Start:Cataloguing Menu *********************************************************************************
 //submenu of cataloguing
-
-
-//Start: Third Level Catalogue Menu 333333333333333333333333333333333333333333333333333333333333333333333333
-
-
-                var oCatTitleHoldingmanagementMenu =  new YAHOO.widget.Menu("Title Holding Management");
-
-             /*   oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("Merge Titles", {  disabled: <%=cat_privilege[7]%>,  url: ""}));
-                oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("Update Holding", {  disabled: <%=cat_privilege[8]%>,  url: ""}));
-                oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("Remove Title", {  disabled: <%=cat_privilege[9]%>,  url: ""}));
-*/
- oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing1") %>", {  disabled: <%=cat_privilege[7]%>,  url: ""}));
-                oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing2") %>", {  disabled: <%=cat_privilege[8]%>,  url: ""}));
-                oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing3") %>", {  disabled: <%=cat_privilege[9]%>,  url: ""}));
-
-                var oCatOldTitleMenu = new YAHOO.widget.Menu("Old Title Entry");
-               /* oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("Manage Biblography", {  disabled: <%=cat_privilege[4]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_old_title.jsp"}));
-                oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("View All", {  disabled: <%=cat_privilege[5]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_search.jsp"}));
-*/
- oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing4") %>", {  disabled: <%=cat_privilege[4]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_old_title.jsp"}));
-                oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing5") %>", {  disabled: <%=cat_privilege[5]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_search.jsp"}));
-
-                var oCatAccessionManagementMenu =  new YAHOO.widget.Menu("Accession Management");
-
-              /*  oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("Chnage Accession No", {  disabled: <%=cat_privilege[12]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
-                oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("Assign Accession No", {  disabled: <%=cat_privilege[13]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
-*/
- oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing6") %>", {  disabled: <%=cat_privilege[12]%>,  url: "<%=request.getContextPath()%>/cataloguing/acc_search.jsp"}));
-                oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing7") %>", {  disabled: <%=cat_privilege[13]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
-
-
-                var oCatTitleManagementMenu =  new YAHOO.widget.Menu("Cataloguing of New Titles");
-
-               /* oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("Entry using Simple Template", {  disabled: <%=cat_privilege[15]%>,  url: ""}));
-                oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("Entry using MARC21 Template", {  disabled: <%=cat_privilege[16]%>,  url: ""}));
-                 oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("Entry using Customized Template", {  disabled: <%=cat_privilege[17]%>,  url: ""}));
-*/
-                    oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing8") %>", {  disabled: <%=cat_privilege[15]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_biblio.jsp"}));
-               oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing9") %>", {  disabled: <%=cat_privilege[16]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"}));
-                oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing37") %>", {  disabled: <%=cat_privilege[17]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_editmarc.jsp"}));
-
-
-//End: Third Level Catalogue Menu 33333333333333333333333333333333333333333333333333333333333333333333333333
 //Start: Second Level Catalogue Menu 2222222222222222222222222222222222222222222222222222222222222222222222
-                var oCatInitiateCataloguingMenu = new YAHOO.widget.Menu("Initiate Cataloguing");
+                var oCatInitiateCataloguingMenu = new YAHOO.widget.Menu("Bibliographic Entry");
 
-              /*  oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Copy catalog", {  disabled: <%=cat_privilege[2]%>,  url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Old Title Entry", { submenu:oCatOldTitleMenu, disabled: <%=cat_privilege[3]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Title Holding management", {submenu:oCatTitleHoldingmanagementMenu,  disabled: <%=cat_privilege[6]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Subject Updates", {  disabled: <%=cat_privilege[10]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Accession Management", {submenu:oCatAccessionManagementMenu,  disabled: <%=cat_privilege[11]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Cataloguing of New Titles", {submenu:oCatTitleManagementMenu,  disabled: <%=cat_privilege[14]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Multimedia Management", {  disabled: <%=cat_privilege[18]%>, url: ""}));
+
+               /* oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Entry using Simple Template AACR", {  disabled: <%=cat_privilege[2]%>,  url: ""}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Entry using MARC21 Template", {  disabled: <%=cat_privilege[3]%>,  url: ""}));
+                 oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Entry using Customized Template", {  disabled: <%=cat_privilege[4]%>,  url: ""}));
 */
-                  oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing10") %>", {  disabled: <%=cat_privilege[2]%>,  url: "<%=request.getContextPath()%>/viewMarcRepos.do"}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing11") %>", { submenu:oCatOldTitleMenu, disabled: <%=cat_privilege[3]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing12") %>", {submenu:oCatTitleHoldingmanagementMenu,  disabled: <%=cat_privilege[6]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing13") %>", {  disabled: <%=cat_privilege[10]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing14") %>", {submenu:oCatAccessionManagementMenu,  disabled: <%=cat_privilege[11]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing15") %>", {submenu:oCatTitleManagementMenu,  disabled: <%=cat_privilege[14]%>, url: ""}));
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing16") %>", {  disabled: <%=cat_privilege[18]%>, url: ""}));
+                    oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing8") %>", {  disabled: <%=cat_privilege[2]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_biblio.jsp"}));
+               oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing9") %>", {  disabled: <%=cat_privilege[3]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_new_MARC.jsp"}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing37") %>", {  disabled: <%=cat_privilege[4]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_editmarc.jsp"}));
+             
 
-
-                var oCatLatestCognizanceMenu= new YAHOO.widget.Menu("Latest Cognizance");
-
-              /*  oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("Generate Latest Addition List", {  disabled: <%=cat_privilege[20]%>, url: ""}));
-                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("Update Latest Addition List", {  disabled: <%=cat_privilege[21]%>, url: ""}));
-                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("View Latest Addition List", {  disabled: <%=cat_privilege[22]%>, url: ""}));
-                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("Develop Bibliography", {  disabled: <%=cat_privilege[23]%>, url: ""}));
-*/
- oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing17") %>", {  disabled: <%=cat_privilege[20]%>, url: ""}));
-                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing18") %>", {  disabled: <%=cat_privilege[21]%>, url: ""}));
-                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing19") %>", {  disabled: <%=cat_privilege[22]%>, url: ""}));
-                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing20") %>", {  disabled: <%=cat_privilege[23]%>, url: ""}));
-
-
-
+            
                var oCatReportsMenu = new YAHOO.widget.Menu("Catalogue Reports");
 
-             /*  oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Document Slip", {  disabled: <%=cat_privilege[30]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("List Titles", {  disabled: <%=cat_privilege[31]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Subjects/Keywords", {  disabled: <%=cat_privilege[32]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Arrival Notice", {  disabled: <%=cat_privilege[33]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Classified Subjects", {  disabled: <%=cat_privilege[34]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Highly Priced titles", {  disabled: <%=cat_privilege[35]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Withdrawn Register", {  disabled: <%=cat_privilege[36]%>, url: ""}));
+             /*  oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Document Slip", {  disabled: <%=cat_privilege[16]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("List Titles", {  disabled: <%=cat_privilege[17]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Subjects/Keywords", {  disabled: <%=cat_privilege[18]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Arrival Notice", {  disabled: <%=cat_privilege[19]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Classified Subjects", {  disabled: <%=cat_privilege[20]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Highly Priced titles", {  disabled: <%=cat_privilege[21]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Withdrawn Register", {  disabled: <%=cat_privilege[22]%>, url: ""}));
 */
- oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing21") %>", {  disabled: <%=cat_privilege[30]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing22") %>", {  disabled: <%=cat_privilege[31]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing23") %>", {  disabled: <%=cat_privilege[32]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing24") %>", {  disabled: <%=cat_privilege[33]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing25") %>", {  disabled: <%=cat_privilege[34]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing26") %>", {  disabled: <%=cat_privilege[35]%>, url: ""}));
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing27") %>", {  disabled: <%=cat_privilege[36]%>, url: ""}));
+ oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing21") %>", {  disabled: <%=cat_privilege[16]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing22") %>", {  disabled: <%=cat_privilege[17]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing23") %>", {  disabled: <%=cat_privilege[18]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing24") %>", {  disabled: <%=cat_privilege[19]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing25") %>", {  disabled: <%=cat_privilege[20]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing26") %>", {  disabled: <%=cat_privilege[21]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing27") %>", {  disabled: <%=cat_privilege[22]%>, url: ""}));
+
+
+var oSearchMenu = new YAHOO.widget.Menu("Search Record");
+
+         /*      oSearchMenu.addItem(new YAHOO.widget.MenuItem("Bibliographic Details", {  disabled: <%=cat_privilege[6]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_search.jsp"}));
+               oSearchMenu.addItem(new YAHOO.widget.MenuItem("Accession Register", {  disabled: <%=cat_privilege[7]%>,  url: "<%=request.getContextPath()%>/cataloguing/acc_search.jsp"}));
+*/
+
+               oSearchMenu.addItem(new YAHOO.widget.MenuItem("Bibliographic Details", {  disabled: <%=cat_privilege[6]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_search.jsp"}));
+               oSearchMenu.addItem(new YAHOO.widget.MenuItem("Accession Register", {  disabled: <%=cat_privilege[7]%>,  url: "<%=request.getContextPath()%>/cataloguing/acc_search.jsp"}));
+
 
 
  var oDataImportExport = new YAHOO.widget.Menu("Data Import/Export");
 
-         /*      oDataImportExport.addItem(new YAHOO.widget.MenuItem("Data Import", {  disabled: <%=cat_privilege[27]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_data_import_read.jsp" }));
-               oDataImportExport.addItem(new YAHOO.widget.MenuItem("Data Export", {  disabled: <%=cat_privilege[28]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_exportDatabaseToExcell.jsp" }));
+         /*      oDataImportExport.addItem(new YAHOO.widget.MenuItem("Data Import", {  disabled: <%=cat_privilege[13]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_data_import_read.jsp" }));
+               oDataImportExport.addItem(new YAHOO.widget.MenuItem("Data Export", {  disabled: <%=cat_privilege[14]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_exportDatabaseToExcell.jsp" }));
 */
 
-               oDataImportExport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing38") %>", {  disabled: <%=cat_privilege[27]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_data_import_read.jsp" }));
-               oDataImportExport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing39") %>", {  disabled: <%=cat_privilege[28]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_exportDatabaseToExcell.jsp"  }));
+               oDataImportExport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing38") %>", {  disabled: <%=cat_privilege[13]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_data_import_read.jsp" }));
+               oDataImportExport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing39") %>", {  disabled: <%=cat_privilege[14]%>, url: "<%=request.getContextPath()%>/cataloguing/cat_exportDatabaseToExcell.jsp"  }));
 
 
 
@@ -1492,26 +1423,35 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 //Start: First Level Catalogue Menu 11111111111111111111111111111111111111111111111111111111111111111111111
                var oCatMenu = new YAHOO.widget.Menu("Cataloguing", { zIndex:2 });
 
-              /*  oCatMenu.addItem(new YAHOO.widget.MenuItem("Initiate Cataloguing", {submenu:oCatInitiateCataloguingMenu ,   disabled: <%=cat_privilege[1]%>, url:""} ));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Latest Cognizance", {submenu:oCatLatestCognizanceMenu ,  disabled: <%=cat_privilege[18]%>, url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Print Catalogue Cards", {  disabled: <%=cat_privilege[24]%>, url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Generate Book BarCode", {  disabled: <%=cat_privilege[25]%>,url:"" }));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Data Import/Export", {   disabled: <%=cat_privilege[26]%>,url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Catalogue Reports", {submenu:oCatReportsMenu ,  disabled: <%=cat_privilege[27]%>,url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Annual Stock", {  disabled: <%=cat_privilege[35]%>,url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Database Backup", {  disabled: <%=cat_privilege[36]%>, url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Online Search", {  disabled: <%=cat_privilege[37]%>, url:""}));
+              /*  oCatMenu.addItem(new YAHOO.widget.MenuItem("Bibliographic Entry", {submenu:oCatInitiateCataloguingMenu ,   disabled: <%=cat_privilege[1]%>, url:""} ));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Search Record", {submenu:oSearchMenu ,  disabled: <%=cat_privilege[5]%>, url:""}));
+
+               
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Accession Management", {  disabled: <%=cat_privilege[8]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Latest Addition List", {  disabled: <%=cat_privilege[9]%>, url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Generate Book BarCode", {  disabled: <%=cat_privilege[10]%>,url:"<%=request.getContextPath()%>/cataloguing/barcode_entry.jsp" }));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Union Catalog", {  disabled: <%=cat_privilege[11]%>,  url: "<%=request.getContextPath()%>/viewMarcRepos.do"}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Data Import/Export", {submenu:oDataImportExport,   disabled: <%=cat_privilege[12]%>,url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Catalogue Reports", {submenu:oCatReportsMenu ,  disabled: <%=cat_privilege[15]%>,url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Annual Stock", {  disabled: <%=cat_privilege[23]%>,url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("Database Backup", {  disabled: <%=cat_privilege[24]%>, url:""}));
+	        oCatMenu.addItem(new YAHOO.widget.MenuItem("Subject Updates", {  disabled: <%=cat_privilege[25]%>, url:""}));
+	        oCatMenu.addItem(new YAHOO.widget.MenuItem("Generate Catalog Card", {  disabled: <%=cat_privilege[26]%>,url:"<%=request.getContextPath()%>/cataloguing/listcataloguecard.jsp" }));
+
 */
 
- oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing28") %>", {submenu:oCatInitiateCataloguingMenu ,   disabled: <%=cat_privilege[1]%>, url:""} ));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing29") %>", {submenu:oCatLatestCognizanceMenu ,  disabled: <%=cat_privilege[19]%>, url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing30") %>", {  disabled: <%=cat_privilege[24]%>, url:"<%=request.getContextPath()%>/cataloguing/listcataloguecard.jsp"}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing31") %>", {  disabled: <%=cat_privilege[25]%>,url:"<%=request.getContextPath()%>/cataloguing/barcode_entry.jsp" }));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing32") %>", {  submenu:oDataImportExport , disabled: <%=cat_privilege[26]%>,url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing33") %>", {submenu:oCatReportsMenu ,  disabled: <%=cat_privilege[29]%>,url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing34") %>", {  disabled: <%=cat_privilege[37]%>,url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing35") %>", {  disabled: <%=cat_privilege[38]%>, url:""}));
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing36") %>", {  disabled: <%=cat_privilege[39]%>, url:""}));
+	oCatMenu.addItem(new YAHOO.widget.MenuItem("Bibliographic Entry", {submenu:oCatInitiateCataloguingMenu ,   disabled: <%=cat_privilege[1]%>, url:""} ));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Search Record", {submenu:oSearchMenu ,  disabled: <%=cat_privilege[5]%>, url:""}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Accession Management", {  disabled: <%=cat_privilege[8]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Latest Addition List", { disabled: <%=cat_privilege[9]%>, url:""}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Generate Book BarCode", {  disabled: <%=cat_privilege[10]%>,url:"<%=request.getContextPath()%>/cataloguing/barcode_entry.jsp" }));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Union Catalog", {  disabled: <%=cat_privilege[11]%>,  url: "<%=request.getContextPath()%>/viewMarcRepos.do"}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Data Import/Export", {submenu:oDataImportExport,   disabled: <%=cat_privilege[12]%>,url:""}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Catalogue Reports", {submenu:oCatReportsMenu ,  disabled: <%=cat_privilege[15]%>,url:""}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Annual Stock", {  disabled: <%=cat_privilege[23]%>,url:""}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Database Backup", {  disabled: <%=cat_privilege[24]%>, url:""}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Subject Updates", {  disabled: <%=cat_privilege[25]%>, url:""}));
+        oCatMenu.addItem(new YAHOO.widget.MenuItem("Generate Catalog Card", {  disabled: <%=cat_privilege[26]%>,url:"<%=request.getContextPath()%>/cataloguing/listcataloguecard.jsp" }));
 
 
 
@@ -1612,19 +1552,16 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
               var oAcqPlaceorderMenu = new YAHOO.widget.Menu("Place Order");
 
               /*   oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("View List For Order", {submenu:oAcqViewListForOrderMenu , disabled: <%=acq_privilege[22]%> ,url: ""}));
-                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("Generate Order", {disabled: <%=acq_privilege[25]%> ,url: ""}));
-                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("List of Ordered Titles", {disabled: <%=acq_privilege[26]%> ,url: ""}));
+                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("Generate Order", {disabled: <%=acq_privilege[25]%> ,url: "<%=request.getContextPath()%>/acq_order.do"}));
+                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("List of Ordered Titles", {disabled: <%=acq_privilege[26]%> ,url: "<%=request.getContextPath()%>/acquisition/acq_order_process_report.jsp"}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("Overdue Notices", {disabled: <%=acq_privilege[27]%> ,url: ""}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("Cancel Order", {disabled: <%=acq_privilege[28]%> ,url: ""}));
 */
+
                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition25") %>", {submenu:oAcqViewListForOrderMenu , disabled: <%=acq_privilege[22]%> ,url: ""}));
 
-
-
-
-
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition26") %>", {disabled: <%=acq_privilege[25]%> ,url: "<%=request.getContextPath()%>/acq_order.do"}));
-                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition27") %>", {disabled: <%=acq_privilege[26]%> ,url: ""}));
+                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition27") %>", {disabled: <%=acq_privilege[26]%> ,url: "<%=request.getContextPath()%>/acquisition/acq_order_process_report.jsp"}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition28") %>", {disabled: <%=acq_privilege[27]%> ,url: ""}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition29") %>", {disabled: <%=acq_privilege[28]%> ,url: ""}));
 
@@ -1644,11 +1581,11 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                var oAccessioningMenu =new YAHOO.widget.Menu("Accessioning");
 
-           /*    oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Process", {disabled: <%=acq_privilege[40]%> ,url: ""}));
+           /*    oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Process", {disabled: <%=acq_privilege[40]%> ,url: "<%=request.getContextPath()%>/acq_book_accessioning.do"}));
                oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Register", {disabled: <%=acq_privilege[41]%> ,url: ""}));
 */
 
-                  oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition34") %>", {disabled: <%=acq_privilege[40]%> ,url: ""}));
+                  oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition34") %>", {disabled: <%=acq_privilege[40]%> ,url: "<%=request.getContextPath()%>/acq_book_accessioning.do"}));
                oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition35") %>", {disabled: <%=acq_privilege[41]%> ,url: ""}));
 
                 var oAcqRecordkeepingMenu = new YAHOO.widget.Menu("Record Keeping");
@@ -1811,8 +1748,8 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                 oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin6")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp?p=8"}));
                 //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Delete Staff Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
                 oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin7")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp?p=9"}));
-                //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Account", {url: "<%=request.getContextPath()%>/admin/viewallaccount.do"}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin8")%>", {url: "<%=request.getContextPath()%>/admin/viewallaccount.do?p=10"}));
+                //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Account", {url: "<%=request.getContextPath()%>/viewallaccount.do"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin8")%>", {url: "<%=request.getContextPath()%>/viewallaccount.do?p=10"}));
 
 
 //submenu of admin Staff
@@ -1827,11 +1764,11 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                 //oStaffMenu.addItem(new YAHOO.widget.MenuItem("View Staff Record", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
                 oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin12")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp?p=4"}));
 
-                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Record", {url: "<%=request.getContextPath()%>/admin/viewall.do"}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin13")%>", {url: "<%=request.getContextPath()%>/admin/viewall.do?p=5"}));
+                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Record", {url: "<%=request.getContextPath()%>/viewall.do"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin13")%>", {url: "<%=request.getContextPath()%>/viewall.do?p=5"}));
 
-                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("Upload Staff Record", {url: ""}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("Upload Staff Record", {url: ""}));
+                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("Upload Staff Record", {url: "<%=request.getContextPath()%>/admin/cat_data_import_read.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("Upload Staff Record", {url: "<%=request.getContextPath()%>/admin/cat_data_import_read.jsp"}));
 
 
 //submenu of admin-privilege
@@ -2037,6 +1974,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                 //oAdminMenu.addItem(new YAHOO.widget.MenuItem("Manage Staff Privilege", { submenu: oPrivilegeMenu }));
                 oAdminMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin2")%>", { submenu: oPrivilegeMenu }));
 		
+
     <% if(login_role.equalsIgnoreCase("insti-admin") || login_role.equalsIgnoreCase("admin")){%>
 
 		//oAdminMenu.addItem(new YAHOO.widget.MenuItem("Change Institute Logo", {url: "<%=request.getContextPath()%>/admin/changelogo.jsp"}));		
@@ -2232,6 +2170,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                             if(oSubmenu) {
 
+
                                 oSubmenu.hide();
 
                             }
@@ -2347,9 +2286,8 @@ else {
 
     </head>
    
-  <body style="margin:2px 2px 2px 2px;">
-
-           <% if(locale1.equalsIgnoreCase("ar")|| locale1.equalsIgnoreCase("ur")){%>
+  <body style="margin:0px 0px 0px 0px;">
+     <% if(locale1.equalsIgnoreCase("ar")|| locale1.equalsIgnoreCase("ur")){%>
 <table width="100%"  border="0px" class="logout">
 
                <tr>
@@ -2419,55 +2357,23 @@ document.write('</div></span>');
                 </table>
                                 <%}else{%>
 
-<table width="100%"  border="0px"  style="font:8pt Verdana;text-decoration:none;" border="0">
+<table style="margin: 0px 0px 0px 0px;" width="100%" class="homepage">
+<tr style="background-color:#E0E8F5;color:black;font-weight:bold;"><td height=20px width=15%>&nbsp;Library Management System(LibMS) </td><td align=center width=50%>
+<%=library_name%>&nbsp;(<%=sublibrary_name%>)
 
-               <tr><td width="15%"  align="left" valign="bottom">
-
-
-                    <img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="banner space"   align="top" style="padding:5px 5px 5px 5px;">
-
-
-  
-                   </td>
-
-                        <td align="center" width="60%">
-
-<table>
-<tr>
-<td align="right">      <html:img src="/LibMS/admin/viewimage.jsp" width="50" height="50" border="1px" />
-                     
-</td>
-<td align="center">
+</td><td  align="right"  valign="top" width=15%><%=resource.getString("login.hello")%>,&nbsp;   <%=username%>                  
 
 
-
-<span style="font-size:20px;font-weight:bold;color:blue;font:Verdana;" >
-
- <%=library_name%></span>&nbsp;&nbsp;<br/><span class="mess"><%=resource.getString("opac.simplesearch.library")%>&nbsp;[<%=sublibrary_name%>]&nbsp;&nbsp;<%=resource.getString("admin.header.role")%>:&nbsp;[<%=role_name%>]</span>
-</td></tr>
-</table>
-
-</td>
-
-                    <td  align="right" width="25%"  valign="top" style="font:8pt Verdana;text-decoration:none;">
-
-<table width="100%" border="0px"><tr>
-<td>
-<html:img src="/LibMS/images/logo.png" width="150px" height="60px"  />
-</td>
-<td align="right"  valign="top"><%=resource.getString("login.hello")%>,&nbsp;                     
-
-
-                        <script>document.write('<span ');
+                        <!--<script>document.write('<span ');
 document.write('height:10px;border:0px solid black;font:bold 10pt Verdana;');
 document.write(' onClick="toggle_menu(1);');
 document.write('event.cancelBubble=1" ><span style="cursor:hand;text-decoration:none;">');
-document.write('<%=username%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>')
+document.write(' <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>')
 document.write('<div id="ddmenu" style="');
 document.write('height:45px;border:0px solid black;background-color:white;text-decoration:none;text-align: right;padding-right:2px');
 document.write('overflow-y:scroll;visibility:hidden;">')
-  additem("Change Profile","<%=request.getContextPath()%>/admin/staffupdate.do");
-additem("Change Password","<%=request.getContextPath()%>/admin/changeuserpassword.do");
+  additem("Change Profile","");
+additem("Change Password","");
 
 
 
@@ -2477,13 +2383,26 @@ document.write('</div></span>');
 
                         </script>
 
-</td><td align="left" valign="top" width="20%">
-|&nbsp;<a href="<%=request.getContextPath()%>/logout.do"><%=resource.getString("login.signout")%></a>
+</td><td align="left" valign="top" width="20%">-->
+|&nbsp;<a style="color:black;text-decoration:none" href="<%=request.getContextPath()%>/logout.do"><%=resource.getString("login.signout")%>&nbsp;</a>
 
 </td></tr>
-</table>
+               <tr> 
 
+<td width="50%" style="font: arial;font-size: 22px;" colspan=2 valign="middle" align=left>
+<table><tr><td>
+&nbsp;     <html:img src="/LibMS/admin/viewimage.jsp" width="50px" height="50px"  />&nbsp; </td><td>     <%=role_name%> Interface            
+</td></tr></table>
+</td>
 
+                    <td  align="right"   valign="top" style="font:8pt Verdana;text-decoration:none;">
+
+<table><tr><td align=center>
+<a href="<%=request.getContextPath()%>/staffupdate.do"><html:img src="/LibMS/images/update.jpg" width="40px" height="40px"  /><br>Update Profile</a>
+</td><td align=center>&nbsp;
+<a href="<%=request.getContextPath()%>/changeuserpassword.do"><html:img src="/LibMS/images/setting.jpg" width="40px" height="40px"  /><br>Change Password</a></td>
+<td align=center>&nbsp;<html:img src="/LibMS/images/logo.png" width="120px" height="50px"  /></td>
+</tr></table>
 
 </td>
                 </tr>

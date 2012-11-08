@@ -1,60 +1,57 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jun 12, 2012 4:17:47 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.FineDetails" table="fine_details" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.FineDetailsId">
-            
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-            <key-property name="memid" type="string">
-                <column name="memid" length="70" />
-            </key-property>
-            <key-property name="slipno" type="string">
-                <column name="slipno"  />
-            </key-property>
-        </composite-id>
-        
-        <property name="tfine" type="java.lang.Double">
-            <column name="tfine" precision="22" scale="0" />
-        </property>
-        <property name="paid" type="java.lang.Double">
-            <column name="paid" precision="22" scale="0" />
-        </property>
-        <property name="paid1" type="java.lang.Double">
-            <column name="paid1" precision="22" scale="0" />
-        </property>
-        <property name="paid2" type="java.lang.Double">
-            <column name="paid2" precision="22" scale="0" />
-        </property>
-        <property name="paid3" type="java.lang.Double">
-            <column name="paid3" precision="22" scale="0" />
-        </property>
-        <property name="paid4" type="java.lang.Double">
-            <column name="paid4" precision="22" scale="0" />
-        </property>
-        <property name="remaining" type="java.lang.Double">
-            <column name="remaining" precision="22" scale="0" />
-        </property>
-        <property name="paymod" type="string">
-            <column name="paymod" length="50" />
-        </property>
-        <property name="chequeDdNo" type="string">
-            <column name="cheque_dd_no" length="50" />
-        </property>
-        <property name="bankname" type="string">
-            <column name="bankname" />
-        </property>
-        <property name="issuedate" type="string">
-            <column name="issuedate" length="50" />
-        </property>
-        <property name="paydate" type="string">
-            <column name="paydate" length="50" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.FineDetails" table="fine_details">
+    <composite-id class="com.myapp.struts.hbm.FineDetailsId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+      <key-property name="memid" type="string">
+        <column length="70" name="memid"/>
+      </key-property>
+      <key-property name="slipno" type="string">
+        <column name="slipno"/>
+      </key-property>
+    </composite-id>
+    <property name="tfine" type="java.lang.Double">
+      <column name="tfine" precision="22" scale="0"/>
+    </property>
+    <property name="paid" type="java.lang.Double">
+      <column name="paid" precision="22" scale="0"/>
+    </property>
+    <property name="paid1" type="java.lang.Double">
+      <column name="paid1" precision="22" scale="0"/>
+    </property>
+    <property name="paid2" type="java.lang.Double">
+      <column name="paid2" precision="22" scale="0"/>
+    </property>
+    <property name="paid3" type="java.lang.Double">
+      <column name="paid3" precision="22" scale="0"/>
+    </property>
+    <property name="paid4" type="java.lang.Double">
+      <column name="paid4" precision="22" scale="0"/>
+    </property>
+    <property name="remaining" type="java.lang.Double">
+      <column name="remaining" precision="22" scale="0"/>
+    </property>
+    <property name="paymod" type="string">
+      <column length="50" name="paymod"/>
+    </property>
+    <property name="chequeDdNo" type="string">
+      <column length="50" name="cheque_dd_no"/>
+    </property>
+    <property name="bankname" type="string">
+      <column name="bankname"/>
+    </property>
+    <property name="issuedate" type="string">
+      <column length="50" name="issuedate"/>
+    </property>
+    <property name="paydate" type="string">
+      <column length="50" name="paydate"/>
+    </property>
+  </class>
 </hibernate-mapping>

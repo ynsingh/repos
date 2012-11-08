@@ -10,6 +10,11 @@
 -->
 
 <tiles-definitions>
+ <definition name="superadmin-template" path="/admin/superadmin_layout.jsp">
+	<put name="header" value="/admin/superadminheader.jsp" />
+	<put name="footer" value="/OPAC/opacfooter.jsp" />
+   </definition>
+
 
     <!-- sample tiles definitions
     <definition name=".mainLayout" path="/common/layouts/classicLayout.jsp">

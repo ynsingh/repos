@@ -4,7 +4,7 @@
  */
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.BibliographicDetailsId;
 import com.myapp.struts.hbm.DocumentDetails;
@@ -36,7 +36,7 @@ public class BibliographicCdAction extends org.apache.struts.action.Action {
     BibliographicDetails bib2 = new BibliographicDetails();
     BibliographicDetails bib1 = new BibliographicDetails();
      BibliographicDetails bib3 = new BibliographicDetails();
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     DocumentDetails dd = new DocumentDetails();
     DocumentDetailsId ddid = new DocumentDetailsId();
     Locale locale=null;
@@ -44,15 +44,7 @@ public class BibliographicCdAction extends org.apache.struts.action.Action {
     String rtl="ltr";
     String align="left";
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -143,7 +135,10 @@ public class BibliographicCdAction extends org.apache.struts.action.Action {
                 bib.setSubtitle(bibform.getSubtitle());
                 bib.setMainEntry(bibform.getMain_entry());
                 bib.setPublisherName(bibform.getPublisher_name());
+                if(bibform.getPublishing_year()!=null && bibform.getPublishing_year().isEmpty()==false)
                 bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
+                else
+                    bib.setPublishingYear(0);
                 bib.setIsbn10(isbn10);
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setEdition(bibform.getEdition());
@@ -200,7 +195,10 @@ public class BibliographicCdAction extends org.apache.struts.action.Action {
                 bib.setSubtitle(bibform.getSubtitle());
                 bib.setMainEntry(bibform.getMain_entry());
                 bib.setPublisherName(bibform.getPublisher_name());
+                if(bibform.getPublishing_year()!=null && bibform.getPublishing_year().isEmpty()==false)
                 bib.setPublishingYear(Integer.parseInt(bibform.getPublishing_year()));
+                else
+                    bib.setPublishingYear(0);
                 bib.setIsbn10(isbn10);
                 bib.setIsbn13(bibform.getIsbn13());
                 bib.setEdition(bibform.getEdition());

@@ -65,16 +65,16 @@ public class DelinqUpdateAction extends org.apache.struts.action.Action {
        actid.setLibraryId(library_id);
        actid.setSublibraryId(sublibrary_id);
        act.setId(actid);
-       CirculationDAO.insertDelinquencyout(act);
+       dao.insertDelinquencyout(act);
        }
        }
       }
       if(actf.getButton().equals("Delete"))
       {
-      CirculationDAO.deleteDelinq(library_id, sublibrary_id, id.getFirst().toString());
+      dao.deleteDelinq(library_id, sublibrary_id, id.getFirst().toString());
       id.removeFirst();
       }
-        session.setAttribute("actlist", CirculationDAO.searchDelReason(library_id, sublibrary_id));
+        session.setAttribute("actlist", dao.searchDelReason(library_id, sublibrary_id));
       return mapping.findForward(SUCCESS);
     }
 

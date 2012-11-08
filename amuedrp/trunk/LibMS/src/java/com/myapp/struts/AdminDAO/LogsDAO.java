@@ -23,7 +23,7 @@
 // */
 //public class LogsDAO {
 //
-//    public static List  searchlog(String search_by, String search_keyword, String sort_by){
+//    public  List  searchlog(String search_by, String search_keyword, String sort_by){
 //  Session session =null;
 //    Transaction tx = null;
 //    try {
@@ -48,7 +48,7 @@
 //
 //
 //
-//    public static  List<Logs> searchlog(String library_id,String sublibrary_id,String year1,String year2,String userid)
+//    public   List<Logs> searchlog(String library_id,String sublibrary_id,String year1,String year2,String userid)
 //{
 //        //int count=1;
 //        Session hsession=HibernateUtil.getSessionFactory().openSession();
@@ -95,7 +95,7 @@
 // }
 //
 //
-// public static List<Logs> loglist(String library_id,String sublibrary_id) {
+// public  List<Logs> loglist(String library_id,String sublibrary_id) {
 //        Session session = HibernateUtil.getSessionFactory().openSession();
 //
 //        try {
@@ -124,7 +124,7 @@
 //
 //}
 //
-// public static List SearchlogLib() {
+// public  List SearchlogLib() {
 //        Session session = HibernateUtil.getSessionFactory().openSession();
 //
 //        try {
@@ -137,7 +137,7 @@
 //
 //    }
 //
-// public static Library SearchlogLibName(String library_id) {
+// public  Library SearchlogLibName(String library_id) {
 //        Session session = HibernateUtil.getSessionFactory().openSession();
 //
 //        try {
@@ -154,7 +154,7 @@
 //
 //
 //
-//    public static List log() {
+//    public  List log() {
 //        Session session = HibernateUtil.getSessionFactory().openSession();
 //
 //        try {
@@ -166,7 +166,7 @@
 //        }
 //
 //    }
-//public static boolean insertLog(Logs obj)
+//public  boolean insertLog(Logs obj)
 //{
 //        Session session = HibernateUtil.getSessionFactory().openSession();
 //        Transaction tx = null;
@@ -197,7 +197,7 @@
 //
 //}
 //
-//public static boolean insertSetting(Logsetting obj)
+//public  boolean insertSetting(Logsetting obj)
 //{
 //        Session session = HibernateUtil.getSessionFactory().openSession();
 //        Transaction tx = null;
@@ -227,7 +227,7 @@
 //   return true;
 //
 //}
-//    public static boolean DeleteSetting() {
+//    public  boolean DeleteSetting() {
 //      Session session = HibernateUtil.getSessionFactory().openSession();
 //        Transaction tx = null;
 //
@@ -258,7 +258,7 @@
 //
 //
 //}
-// public static Logsetting searchSetting(){
+// public  Logsetting searchSetting(){
 //        Session session = null;
 //    try {
 //      session= HibernateUtil.getSessionFactory().openSession();
@@ -271,7 +271,7 @@
 //            session.close();
 //        }
 //}
-//    public static List<Logs> getUserLog(){
+//    public  List<Logs> getUserLog(){
 //        Session session = null;
 //    try {
 //      session= HibernateUtil.getSessionFactory().openSession();
@@ -284,7 +284,7 @@
 //          //  session.close();
 //        }
 //}
-//public static List<Log1> getUserLogChart(){
+//public  List<Log1> getUserLogChart(){
 //    List<Log1> log1=new ArrayList<Log1>();
 //       Session session = null;
 //

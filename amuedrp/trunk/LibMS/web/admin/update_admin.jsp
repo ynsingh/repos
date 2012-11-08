@@ -70,13 +70,7 @@ function isNumberKey(evt)
 </head>
 
 <body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
 
-      visibility: show;">
 <%!
    
    
@@ -108,6 +102,8 @@ if (rs!=null){
 	Ob.setInstitute_name(adminReg.getInstituteName());
 	Ob.setStatus(adminReg.getStatus());
 	Ob.setAdmin_email(adminReg.getAdminEmail());
+          Ob.setAddress(adminReg.getInstituteAddress());
+        Ob.setUser_name(adminReg.getAdminFname()+" "+adminReg.getAdminLname());
      it.next();
    requestList.add(Ob);
    adminReg=null;
@@ -127,7 +123,11 @@ System.out.println("tcount="+tcount);
    pageContext.setAttribute("tCount", tcount);
      pageContext.setAttribute("rec",perpage);
 %>
-<br><br>
+
+<table border="1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" align="center"  width="80%" >
+        <tr><td class="headerStyle" align="center">Update  Institute Details
+            </td></tr>
+        <tr><td align="center">
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Record Found</p>
@@ -173,7 +173,7 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("Action",Action);
 
 %>
- View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+<p align="right" class="txtStyle">View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></p>
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
     
   <columns>
@@ -192,7 +192,14 @@ locale1=(String)session.getAttribute("locale");
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
-       
+      <column width="200">
+      <header value="Institute Address" hAlign="left" styleClass="header"/>
+      <item   value="${doc.address}" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="200">
+      <header value="Institute AdminName" hAlign="left" styleClass="header"/>
+      <item   value="${doc.user_name}" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
     <column width="150">
       <header value="${AdminEmail}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
@@ -237,7 +244,7 @@ locale1=(String)session.getAttribute("locale");
 </c:choose>
 </c:forEach>
 </td><td align="center">
-     Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
+     Export :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
     <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
     <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
 </td>
@@ -272,8 +279,8 @@ if(msg!=null)
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
- </div>
-    </body>
+ 
+</td></tr></table>   </body>
 
     <script type="text/javascript" language="javascript">
             function change()

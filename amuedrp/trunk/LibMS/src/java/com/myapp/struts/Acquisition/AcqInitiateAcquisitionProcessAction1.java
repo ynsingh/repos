@@ -29,6 +29,7 @@ public class AcqInitiateAcquisitionProcessAction1 extends org.apache.struts.acti
     AcqBibliography acqbibdtail=new AcqBibliography();
     AcqBibliographyId acqbibdtailid=new AcqBibliographyId();
     AcquisitionDao acqdao=new AcquisitionDao();
+    BudgetDAO buddao=new BudgetDAO();
       float total;
 
     
@@ -96,8 +97,8 @@ System.out.println("TTTTTTTITTTTTTTTll         "+title_id);
 
 
 
-         AcqCurrency acq=(AcqCurrency)BudgetDAO.getConversionRate(library_id,curr);
-        AcqBudgetAllocation allocation=BudgetDAO.getSearchBudgetHead(library_id,budgetHeadId,year);
+         AcqCurrency acq=(AcqCurrency)buddao.getConversionRate(library_id,curr);
+        AcqBudgetAllocation allocation=buddao.getSearchBudgetHead(library_id,budgetHeadId,year);
 
 
         if(!curr.equalsIgnoreCase("Select")){
@@ -107,7 +108,7 @@ System.out.println("TTTTTTTITTTTTTTTll         "+title_id);
       total=rate*noc;
 
 
-      String acq1=BudgetDAO.getBudgetTransaction(library_id,budgetHeadId);
+      String acq1=buddao.getBudgetTransaction(library_id,budgetHeadId);
 
 float bal=0;
 if(acq1!=null)
@@ -135,7 +136,7 @@ if(acq1!=null)
         }
         else
         {
-               BaseCurrency acq1=(BaseCurrency)BudgetDAO.getBaseCurrency(library_id);
+               BaseCurrency acq1=(BaseCurrency)buddao.getBaseCurrency(library_id);
               acqbibdtail1.setCurrency(acq1.getId().getBaseCurrencySymbol());
         
         total=unitprice*noc;
@@ -158,7 +159,7 @@ if(acq1!=null)
        budget.setControlNo(String.valueOf(control_no));
        budget.setAmount(Double.parseDouble(String.valueOf(total)));
        budget.setTransactionDate(DateCalculation.now());
-       BudgetDAO.insertTransaction(budget);
+       buddao.insertTransaction(budget);
 
 
 

@@ -46,6 +46,10 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+    SubMemberDAO submemdao=new SubMemberDAO();
+    MemberDAO memdao=new MemberDAO();
+    BookCategoryDAO bookdao=new BookCategoryDAO();
+    CirculationDAO cirdao=new CirculationDAO();
         HttpSession session=request.getSession();
         try{
 
@@ -72,7 +76,7 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
         
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
-        SubEmployeeType subemptype=SubMemberDAO.getSubEployeeName(library_id,emptype_id,sub_emptype_id);
+        SubEmployeeType subemptype=submemdao.getSubEployeeName(library_id,emptype_id,sub_emptype_id);
          if(button.equals("Update"))
         {
              List<CirMemberAccount> cirobj=null;
@@ -80,7 +84,7 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
 
             if(no!=Integer.parseInt(no_of_issueable_book))
             {
-              cirobj=(List<CirMemberAccount>)CirculationDAO.searchCirMemAccountDetailsBySubMember(library_id,emptype_id,sub_emptype_id);
+              cirobj=(List<CirMemberAccount>)cirdao.searchCirMemAccountDetailsBySubMember(library_id,emptype_id,sub_emptype_id);
              if(cirobj!=null && !cirobj.isEmpty())
 {
                  Iterator it = cirobj.iterator();
@@ -105,7 +109,7 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
 
 
 
-             result=SubMemberDAO.Update(subemptype,cirobj);
+             result=submemdao.Update(subemptype,cirobj);
 
              if(result==true)
              {
@@ -123,7 +127,7 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
         }
         if(button.equals("Delete"))
         {
-            List<CirMemberAccount> cir=   (List<CirMemberAccount>)MemberDAO.searchAccount(library_id,emptype_id,sub_emptype_id);
+            List<CirMemberAccount> cir=   (List<CirMemberAccount>)memdao.searchAccount(library_id,emptype_id,sub_emptype_id);
            if(!cir.isEmpty()){
 
            //   request.setAttribute("msg1", "Account Created With SubMember,Cannot Deleted");
@@ -132,7 +136,7 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
            }
 
 
-            result=SubMemberDAO.Delete(subemptype);
+            result=submemdao.Delete(subemptype);
              if(result==true)
              {
                // request.setAttribute("msg", "Record Deleted Successfully");
@@ -141,7 +145,7 @@ public class SubMemberUpdateViewAction extends org.apache.struts.action.Action {
              }
              else
              {
-                List<BookCategory> book=(List<BookCategory>)BookCategoryDAO.searchBookCategoryBySubMemberId(library_id,emptype_id,sub_emptype_id);
+                List<BookCategory> book=(List<BookCategory>)bookdao.searchBookCategoryBySubMemberId(library_id,emptype_id,sub_emptype_id);
                 if(!book.isEmpty())
                 {
                  // request.setAttribute("msg", "Please Remove Related Data from Document Category");

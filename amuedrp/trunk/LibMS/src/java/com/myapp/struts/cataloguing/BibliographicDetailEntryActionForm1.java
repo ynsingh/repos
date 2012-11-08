@@ -11,6 +11,64 @@ import org.apache.struts.action.ActionMapping;
  */
 public class BibliographicDetailEntryActionForm1 extends org.apache.struts.action.ActionForm {
 
+      private String submittedBy;
+      private String submittedBy1;
+       private String last_Modified;
+    private String last_Modified1;
+    private String thesis_status;
+    private String thesis_status1;
+
+    public String getLast_Modified() {
+        return last_Modified;
+    }
+
+    public void setLast_Modified(String last_Modified) {
+        this.last_Modified = last_Modified;
+    }
+
+    public String getLast_Modified1() {
+        return last_Modified1;
+    }
+
+    public void setLast_Modified1(String last_Modified1) {
+        this.last_Modified1 = last_Modified1;
+    }
+
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+
+    public String getSubmittedBy1() {
+        return submittedBy1;
+    }
+
+    public void setSubmittedBy1(String submittedBy1) {
+        this.submittedBy1 = submittedBy1;
+    }
+
+    public String getThesis_status() {
+        return thesis_status;
+    }
+
+    public void setThesis_status(String thesis_status) {
+        this.thesis_status = thesis_status;
+    }
+
+    public String getThesis_status1() {
+        return thesis_status1;
+    }
+
+    public void setThesis_status1(String thesis_status1) {
+        this.thesis_status1 = thesis_status1;
+    }
+
+
+
+
     private String acc_no1;
 
     public String getAcc_no1() {

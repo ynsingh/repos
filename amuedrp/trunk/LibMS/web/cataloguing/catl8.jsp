@@ -32,7 +32,7 @@
 %>
 <%
  hm1 = (HashMap)session.getAttribute("hsmp");
-
+if(hm1!=null){
   if(hm1.containsKey("30")){
        bib1=(Biblio)hm1.get("30");
         }
@@ -48,6 +48,7 @@
     if(hm1.containsKey("34")){
        bib5=(Biblio)hm1.get("34");
         }
+  }
  %>
 
 
@@ -213,7 +214,7 @@ description[54]='Note relating to the electronic location of the source identifi
   <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -340,7 +341,7 @@ Control Field Entry
 </DIV>
 
                                       <!-- Marc entries Starts from here . -->
-
+You are on MARC Page : 8 Tag Page
 
 <div>
 

@@ -14,7 +14,25 @@ import java.io.Serializable;
  * @author System Administrator
  */
 public class CirculationList_1 implements Serializable{
-    private String memId,returning_date,fname,mname,lname,main_entry,title,member_id;
+    private String memId,returning_date,fname,mname,lname,main_entry,title,member_id,paydate,paymod;
+
+    public String getPaydate() {
+        return paydate;
+    }
+
+    public void setPaydate(String paydate) {
+        this.paydate = paydate;
+    }
+
+    public String getPaymod() {
+        return paymod;
+    }
+
+    public void setPaymod(String paymod) {
+        this.paymod = paymod;
+    }
+
+    
      private String faculty_name;
     private String dept_name;
     private String course_name;
@@ -84,6 +102,17 @@ public class CirculationList_1 implements Serializable{
         this.memId = memId;
     }
     private Float fine_amt;
+    private Double paid;
+
+    public Double getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Double paid) {
+        this.paid = paid;
+    }
+
+    
 
     /**
      * @return the member_id

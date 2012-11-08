@@ -32,7 +32,11 @@ public class AssignPrivilegeAction extends org.apache.struts.action.Action {
     private String staff_name;
     private String staff_sublibrary_id;
    LoginDAO logindao;
-
+PrivilegeDAO privdao=new PrivilegeDAO();
+AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
+CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
 
     String sql;
    
@@ -118,11 +122,11 @@ logindao=new LoginDAO();
             staff_sublibrary_id=loginobj.getSublibraryId();
             request.setAttribute("staff_sub_library",staff_sublibrary_id);
 
-        Privilege privobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       AcqPrivilege acqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
-        CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-        SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        Privilege privobj=privdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       AcqPrivilege acqprivobj=acqprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       CatPrivilege catprivobj=catprivdao.getPrivilege(library_id,staff_sublibrary_id, staff_id);
+        CirPrivilege cirprivobj=cirprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        SerPrivilege serprivobj=serprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
         Login loginprivobj=logindao.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
         session.setAttribute("privilege", privobj);

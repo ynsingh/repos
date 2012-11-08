@@ -35,7 +35,8 @@ index=list.get(0).getIndexNo();
 pages=list.get(0).getNoOfPages();
  booktype=list.get(0).getBookType();
  doctype=list.get(0).getDocumentType();
- List ob=(List<String>)OpacSearchDAO.searchVol(list.get(0).getId().getLibraryId(),list.get(0).getId().getSublibraryId(),list.get(0).getBiblioId());
+ OpacSearchDAO opacdao=new OpacSearchDAO();
+ List ob=(List<String>)opacdao.searchVol(list.get(0).getId().getLibraryId(),list.get(0).getId().getSublibraryId(),list.get(0).getBiblioId());
  int i=0;
  String totvol="";
  System.out.println(ob.size());
@@ -89,7 +90,8 @@ dd = (List<BibliographicDetails>)session.getAttribute("documentDetail1");
             if(phy_width==null)phy_width="";
             if(status==null)status="";
             if(accno==null)accno="";
-            DocumentCategory docc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(lib_id, sublib_id, booktype);
+            DocumentCategoryDAO docdao=new DocumentCategoryDAO();
+            DocumentCategory docc = (DocumentCategory)docdao.searchDocumentCategory(lib_id, sublib_id, booktype);
 
             String issuetype ="";
 

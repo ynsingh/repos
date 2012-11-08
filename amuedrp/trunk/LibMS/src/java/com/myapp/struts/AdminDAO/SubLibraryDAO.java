@@ -7,12 +7,10 @@ package com.myapp.struts.AdminDAO;
 import com.myapp.struts.hbm.*;
 import java.util.*;
 import com.myapp.struts.hbm.HibernateUtil;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.Query;
-import org.hibernate.criterion.Projections;
 /**
  * Developed By : Kedar Kumar
  * Modified By  : 18-Feb-2011
@@ -22,8 +20,8 @@ public class SubLibraryDAO {
 
 
  
-   static Query query;
-   public static boolean Delete(String library_id,String sublibrary_id) {
+    Query query;
+   public  boolean Delete(String library_id,String sublibrary_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -54,7 +52,7 @@ public class SubLibraryDAO {
 
 }
 
-public static SubLibrary getMainSubLibraryId(String library_id,String sublibrary_id) {
+public  SubLibrary getMainSubLibraryId(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
       SubLibrary sublib=null;
         try {
@@ -77,7 +75,7 @@ session.getTransaction().commit();
 
 }
 
-public static List<SubLibrary> getAllSubLibrary(String library_id) {
+public  List<SubLibrary> getAllSubLibrary(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -100,7 +98,7 @@ List<SubLibrary> obj=null;
 }
 
 
-public static SubLibrary getLibName(String library_id,String sublibrary_id) {
+public  SubLibrary getLibName(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 SubLibrary obj=null;
         try {
@@ -122,7 +120,7 @@ SubLibrary obj=null;
  return obj;
 }
 
-public static SubLibrary getSubLibraryId(String library_id,String sublibrary_name) {
+public  SubLibrary getSubLibraryId(String library_id,String sublibrary_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         SubLibrary sublib=null;
         try {
@@ -144,7 +142,7 @@ public static SubLibrary getSubLibraryId(String library_id,String sublibrary_nam
  return sublib;
 }
 
-public static List<SubLibrary> searchAccessibleSubLib(String library_id,String sublibrary_id) {
+public  List<SubLibrary> searchAccessibleSubLib(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> sublib=null;
         try {
@@ -166,7 +164,7 @@ session.getTransaction().commit();
  return sublib;
 }
 
-public static List<SubLibrary> searchSubLib(String library_id) {
+public  List<SubLibrary> searchSubLib(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> sublib=null;
         try {
@@ -187,7 +185,7 @@ List<SubLibrary> sublib=null;
         }
 return sublib;
 }
-public static List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
+public  List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> sublib=null;
         try {
@@ -209,7 +207,7 @@ session.getTransaction().commit();
 return sublib;
 }
 
-  public static SubLibrary searchLibraryName(String sublibrary_name) {
+  public  SubLibrary searchLibraryName(String sublibrary_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 SubLibrary sub=null;
         try {
@@ -230,7 +228,7 @@ SubLibrary sub=null;
         }
 return sub;
 }
-public static  boolean update(SubLibrary obj)
+public   boolean update(SubLibrary obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -256,7 +254,7 @@ public static  boolean update(SubLibrary obj)
 }
 
 
-public static  boolean insert(SubLibrary obj)
+public   boolean insert(SubLibrary obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

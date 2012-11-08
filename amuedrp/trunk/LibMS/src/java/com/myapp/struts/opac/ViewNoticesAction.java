@@ -28,6 +28,7 @@ public class ViewNoticesAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,HttpServletRequest request, HttpServletResponse response)
             throws Exception {
          HttpSession session=(HttpSession)request.getSession();
+         NewDemandDAO newdemanddao=new NewDemandDAO();
         l_id=(String)session.getAttribute("l_id");
         
         s_id=(String)session.getAttribute("s_id");
@@ -42,7 +43,7 @@ public class ViewNoticesAction extends org.apache.struts.action.Action {
         notice_id= request.getParameter("name");
         System.out.println("%%%%%%%%%%%%%%%%%%"+notice_id);
         System.out.println("library_id"+library_id+"sublibrary_id"+sublibrary_id+"notice_id"+notice_id);
-        Notices notice=NewDemandDAO.ViewNotice(library_id, sublibrary_id, notice_id);
+        Notices notice=newdemanddao.ViewNotice(library_id, sublibrary_id, notice_id);
         
     
        if(notice!=null)

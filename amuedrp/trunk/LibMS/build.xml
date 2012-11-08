@@ -10,8 +10,8 @@
 <project name="LibMS" default="default" basedir=".">
     <description>Builds, tests, and runs the project LibMS.</description>
     <import file="nbproject/build-impl.xml"/>
-<property name="libs.CopyLibs.classpath" value="org-netbeans-modules-java-j2seproject-copylibstask.jar"/>
-<!--<property name="libs.Ant.classpath" value="org-netbeans-modules-javawebstart-anttasks.jar"/>-->
+    <import file="nbproject/profiler-build-impl.xml"/>
+<property name="libs.CopyLibs.classpath" value="web/WEB-INF/lib/org-netbeans-modules-java-j2seproject-copylibstask.jar"/>
 <property name="libs.struts.classpath" value="web/WEB-INF/lib/struts-core-1.3.8.jar"/>
 <property name="j2ee.platform.classpath" value="web/WEB-INF/lib/servlet-api.jar"/>
 <property name="libs.hibernate-support.classpath" value="web/WEB-INF/lib/hibernate3.jar"/>

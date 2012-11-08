@@ -19,7 +19,7 @@ import org.hibernate.transform.Transformers;
  * @author EdRP-05
  */
 public class DocumentCategoryDAO {
-    public static boolean insert(DocumentCategory obj) {
+    public  boolean insert(DocumentCategory obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -45,7 +45,7 @@ public class DocumentCategoryDAO {
         return true;
 
     }
-        public static boolean update(DocumentCategory obj) {
+        public  boolean update(DocumentCategory obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -63,7 +63,7 @@ e.printStackTrace();
         return true;
 
     }
-         public static List<DocumentCategory> ListbookType(String library_id,String sublibrary_id) {
+         public  List<DocumentCategory> ListbookType(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<DocumentCategory> obj=null;
         try {
@@ -86,7 +86,7 @@ session.getTransaction().commit();
     }
 
 
-         public static List<DocumentDetails> searchDocumentDetailByDocumentCategory(String library_id, String sublibrary_id, String doc_category_id) {
+         public  List<DocumentDetails> searchDocumentDetailByDocumentCategory(String library_id, String sublibrary_id, String doc_category_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<DocumentDetails> obj=null;
         try {
@@ -109,7 +109,7 @@ session.getTransaction().commit();
     }
 
 
-        public static boolean delete(String library_id,String sublibrary_id,String location_id) {
+        public  boolean delete(String library_id,String sublibrary_id,String location_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -136,7 +136,7 @@ session.getTransaction().commit();
        return true;
     }
 
-    public static DocumentCategory searchDocumentCategory(String library_id, String sublibrary_id, String doc_category_id) {
+    public  DocumentCategory searchDocumentCategory(String library_id, String sublibrary_id, String doc_category_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
  DocumentCategory obj=null;
         try {
@@ -158,7 +158,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-    public static List<DocumentCategory> searchDocumentCategory(String library_id, String sublibrary_id)
+    public  List<DocumentCategory> searchDocumentCategory(String library_id, String sublibrary_id)
     {
         Session session = HibernateUtil.getSessionFactory().openSession();
  List<DocumentCategory> obj=null;
@@ -181,7 +181,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-    public static List<DocumentCategory> listdoccategory(String library_id,String sublibrary_id) {
+    public  List<DocumentCategory> listdoccategory(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
  List<DocumentCategory> obj=null;
         try {
@@ -204,7 +204,7 @@ session.getTransaction().commit();
     }
 
 
-    public static DocumentCategory searchDocumentCategoryByName(String library_id, String sublibrary_id, String doc_category_name) {
+    public  DocumentCategory searchDocumentCategoryByName(String library_id, String sublibrary_id, String doc_category_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 DocumentCategory obj=null;
         try {
@@ -226,7 +226,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-    public static List<DocumentCategory> listdoccategory1(String library_id,String sublibrary_id) {
+    public  List<DocumentCategory> listdoccategory1(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         String status="NotIssuable";
 List<DocumentCategory> obj=null;

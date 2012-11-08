@@ -24,12 +24,13 @@ String list=(String)request.getAttribute("list");
 System.out.println(list);
 
 VendorDAO ven=new VendorDAO();
+BudgetDAO buddao=new BudgetDAO();
 AcqVendor acqvendor=(AcqVendor)ven.search2VendorId(orderheader.getVendorId(),library_id,sub_library_id);
 
- BaseCurrency cur=BudgetDAO.getBaseCurrency(library_id);
+ BaseCurrency cur=buddao.getBaseCurrency(library_id);
  AcqCurrency acq=null;
  if(cur.getId().getBaseCurrencySymbol().equalsIgnoreCase(acqvendor.getVendorCurrency())==true){
- acq=(AcqCurrency)BudgetDAO.getConversionRate(library_id,acqvendor.getVendorCurrency());
+ acq=(AcqCurrency)buddao.getConversionRate(library_id,acqvendor.getVendorCurrency());
  }
 
 String max=(String)request.getAttribute("maxitemid");

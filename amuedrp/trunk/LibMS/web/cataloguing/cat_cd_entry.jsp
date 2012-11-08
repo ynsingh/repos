@@ -70,7 +70,7 @@ String msg1=(String) request.getAttribute("msg1");
 <script type="text/javascript">
 function send()
 {
-    window.location="<%=request.getContextPath()%>/cataloguing/cat_old_title.jsp";
+    window.location="<%=request.getContextPath()%>/cataloguing/cat_biblio.jsp";
     return false;
 }
 function isNumberKey(evt)

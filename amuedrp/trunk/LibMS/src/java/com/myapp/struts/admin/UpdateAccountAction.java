@@ -77,6 +77,17 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
         else{ rtl="RTL";align="right";}
         ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
+        DeptDAO deptdao=new DeptDAO();
+        SubLibraryDAO sublibdao=new SubLibraryDAO();
+        PrivilegeDAO privdao=new PrivilegeDAO();
+        AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+        SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
+        CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+        CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
+        StaffDetailDAO staffdao=new StaffDetailDAO();
+        CreatePrivilege cirprivobj=new CreatePrivilege();
+        AdminRegistrationDAO admindao=new AdminRegistrationDAO();
+
         CreateAccountActionForm caaction=(CreateAccountActionForm)form;
         login_id=caaction.getLogin_id();
         user_name=caaction.getUser_name();
@@ -95,16 +106,16 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
 
       
         sublibrary_id=caaction.getSublibrary_id();
-        Department dept=DeptDAO.getDeptName(library_id, sublibrary_id);
+        Department dept=deptdao.getDeptName(library_id, sublibrary_id);
         String sublibname=null;
         SubLibrary sublib=null;
         if(dept==null)
         {
-                sublib=SubLibraryDAO.getLibName(library_id, sublibrary_id);
+                sublib=sublibdao.getLibName(library_id, sublibrary_id);
                 sublibname=sublib.getSublibName();
                 if(sublibname.equalsIgnoreCase("Main Library"))
                 {
-                AdminRegistration admin=AdminRegistrationDAO.searchInstitute(library_id);
+                AdminRegistration admin=admindao.searchInstitute(library_id);
                 sublibname=admin.getLibraryName();
                 }
 
@@ -185,7 +196,7 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
                     /*mail to user for updatation*/
-                    StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                    StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
                     mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     // request.setAttribute("msg", "Record Updated Successfully");
                    request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
@@ -215,12 +226,12 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
                 if(result==true)
                 {
                       //update the sublibrary is all places
-                    StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                    StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                     temp.setSublibraryId(sublibrary_id);
-                    result=StaffDetailDAO.update1(temp);
+                    result=staffdao.update1(temp);
                      if(result==true)
                     {
-                    result=CreatePrivilege.updateSublibraryId(staff_id,library_id,sublibrary_id);
+                    result=cirprivobj.updateSublibraryId(staff_id,library_id,sublibrary_id);
                     request.setAttribute("user_id", login_id);
                     request.setAttribute("user_name", user_name);
                     request.setAttribute("library_id", library_id);
@@ -228,7 +239,7 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
                     request.setAttribute("role", role);
 
                     /*mail to user for updatation*/
-                    StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                    StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
                     mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                    // request.setAttribute("msg", "Record Updated Successfully");
                     request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
@@ -267,35 +278,35 @@ if(user_role.equals("admin") && role.equals("staff"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
                 if(result==true)
                 {
                  
-                    Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("true");
                     priv.setSystemSetup("true");
                     priv.setUtilities("true");
-                    AcqPrivilege acqpriv=AcqPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    AcqPrivilege acqpriv=acqprivdao.searchStaffLogin(staff_id, library_id);
                     acqpriv.setSublibraryId(sublibrary_id);
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    SerPrivilege serpriv=SerPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    SerPrivilege serpriv=serprivdao.searchStaffLogin(staff_id, library_id);
                     serpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
-                    result=PrivilegeDAO.update(priv);
-                    result=AcqPrivilegeDAO.update(acqpriv);
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
-                    result=SerPrivilegeDAO.update(serpriv);
+                    result=privdao.update(priv);
+                    result=acqprivdao.update(acqpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
+                    result=serprivdao.update(serpriv);
 
                         if(result==true)
                         {
 
-                  //  CreatePrivilege.assignStaffPrivilege(staff_id, library_id, sublibrary_id);
+                  //  cirpriv.assignStaffPrivilege(staff_id, library_id, sublibrary_id);
 
 
                       System.out.println("..............kkkkkkkk");
@@ -306,7 +317,7 @@ if(user_role.equals("admin") && role.equals("staff"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
            
            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     //request.setAttribute("msg", "Record Updated Successfully");
@@ -351,17 +362,17 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("true");
                     priv.setSystemSetup("true");
@@ -471,7 +482,7 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -576,18 +587,18 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -607,7 +618,7 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
                     request.setAttribute("staff_id", staff_id);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     request.setAttribute("role", role);
                    // request.setAttribute("msg", "Record Updated Successfully");
@@ -646,17 +657,17 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("false");
                     priv.setSystemSetup("false");
@@ -766,7 +777,7 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -871,18 +882,18 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -904,7 +915,7 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     //request.setAttribute("msg", "Record Updated Successfully");
              request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
@@ -942,22 +953,22 @@ if(user_role.equals("dept-admin") && role.equals("admin"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                 if(result==true)
                 {
-                   result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
-                   result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result =privdao.DeleteStaff(staff_id,library_id);
+                   result=acqprivdao.DeleteStaff(staff_id, library_id);
+                   result=catprivdao.DeleteStaff(staff_id, library_id);
+                   result=cirprivdao.DeleteStaff(staff_id, library_id);
+                   result=serprivdao.DeleteStaff(staff_id, library_id);
 
                         if(result==true)
                         {
 
-                    CreatePrivilege.assignAdminPrivilege(staff_id, library_id, sublibrary_id);
+                    cirprivobj.assignAdminPrivilege(staff_id, library_id, sublibrary_id);
 
 
                       System.out.println("..............kkkkkkkk");
@@ -968,7 +979,7 @@ if(user_role.equals("dept-admin") && role.equals("admin"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
                     //request.setAttribute("msg", "Record Updated Successfully");
              request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
@@ -1003,19 +1014,19 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                 if(result==true)
                 {
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("true");
                     priv.setSystemSetup("true");
@@ -1125,7 +1136,7 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -1230,18 +1241,18 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -1262,7 +1273,7 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
                    // request.setAttribute("msg", "Record Updated Successfully");
@@ -1302,19 +1313,19 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                 if(result==true)
                 {
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("true");
                     priv.setSystemSetup("true");
@@ -1424,7 +1435,7 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -1529,18 +1540,18 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -1562,7 +1573,7 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
            mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 //                    request.setAttribute("msg", "Record Updated Successfully");
              request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
@@ -1598,22 +1609,22 @@ if(user_role.equals("staff") && role.equals("admin"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                 if(result==true)
                 {
-                   result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
-                   result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result =privdao.DeleteStaff(staff_id,library_id);
+                   result=acqprivdao.DeleteStaff(staff_id, library_id);
+                   result=catprivdao.DeleteStaff(staff_id, library_id);
+                   result=cirprivdao.DeleteStaff(staff_id, library_id);
+                   result=serprivdao.DeleteStaff(staff_id, library_id);
 
                         if(result==true)
                         {
 
-                    CreatePrivilege.assignAdminPrivilege(staff_id, library_id, sublibrary_id);
+                    cirprivobj.assignAdminPrivilege(staff_id, library_id, sublibrary_id);
 
 
                       
@@ -1624,7 +1635,7 @@ if(user_role.equals("staff") && role.equals("admin"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
                                             mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
@@ -1671,19 +1682,19 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                 if(result==true)
                 {
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("false");
                     priv.setSystemSetup("false");
@@ -1793,7 +1804,7 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -1898,18 +1909,18 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -1931,7 +1942,7 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
 
             mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
@@ -1978,19 +1989,19 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                 if(result==true)
                 {
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("true");
                     priv.setSystemSetup("true");
@@ -2100,7 +2111,7 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -2205,18 +2216,18 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -2238,7 +2249,7 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
                  String path = servlet.getServletContext().getRealPath("/");
             mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
@@ -2285,22 +2296,22 @@ if(user_role.equals("dept-staff") && role.equals("admin"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                 if(result==true)
                 {
-                   result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
-                   result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result =privdao.DeleteStaff(staff_id,library_id);
+                   result=acqprivdao.DeleteStaff(staff_id, library_id);
+                   result=catprivdao.DeleteStaff(staff_id, library_id);
+                   result=cirprivdao.DeleteStaff(staff_id, library_id);
+                   result=serprivdao.DeleteStaff(staff_id, library_id);
 
                         if(result==true)
                         {
 
-                    CreatePrivilege.assignAdminPrivilege(staff_id, library_id, sublibrary_id);
+                    cirprivobj.assignAdminPrivilege(staff_id, library_id, sublibrary_id);
 
 
                       System.out.println("..............kkkkkkkk");
@@ -2311,7 +2322,7 @@ if(user_role.equals("dept-staff") && role.equals("admin"))
                     request.setAttribute("role", role);
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
             
             mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
@@ -2371,19 +2382,19 @@ logobj=logindao.searchStaffLogin(staff_id, library_id);
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
  if(result==true)
                 {
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("false");
                     priv.setSystemSetup("false");
@@ -2493,7 +2504,7 @@ logobj=logindao.searchStaffLogin(staff_id, library_id);
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -2598,18 +2609,18 @@ logobj=logindao.searchStaffLogin(staff_id, library_id);
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -2633,7 +2644,7 @@ logobj=logindao.searchStaffLogin(staff_id, library_id);
                     request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
             
             mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
@@ -2676,19 +2687,19 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
 
                 {
                     //update the sublibrary is all places
-                StaffDetail temp=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail temp=staffdao.searchStaffId(staff_id, library_id);
                 temp.setSublibraryId(sublibrary_id);
-                result=StaffDetailDAO.update1(temp);
+                result=staffdao.update1(temp);
 
                if(result==true)
                 {
-                result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                result=acqprivdao.DeleteStaff(staff_id, library_id);
+                result=serprivdao.DeleteStaff(staff_id, library_id);
 
                 if(result==true)
                 {
 
-                      Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                      Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("true");
                     priv.setSystemSetup("true");
@@ -2798,7 +2809,7 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                    result=AcqPrivilegeDAO.insert(acq);
+                    result=acqprivdao.insert(acq);
 
                     SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                     SerPrivilege Ser=new SerPrivilege(serid, temp, sublibrary_id);
@@ -2903,18 +2914,18 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
         Ser.setSer499("true");
 
 
-                    result=SerPrivilegeDAO.insert(Ser);
+                    result=serprivdao.insert(Ser);
 
 
-                    CatPrivilege catpriv=CatPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CatPrivilege catpriv=catprivdao.searchStaffLogin(staff_id, library_id);
                     catpriv.setSublibraryId(sublibrary_id);
-                    CirPrivilege cirpriv=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                    CirPrivilege cirpriv=cirprivdao.searchStaffLogin(staff_id, library_id);
                     cirpriv.setSublibraryId(sublibrary_id);
 
-                    result=PrivilegeDAO.update(priv);
+                    result=privdao.update(priv);
 
-                    result=CirPrivilegeDAO.update(cirpriv);
-                    result=CatPrivilegeDAO.update(catpriv);
+                    result=cirprivdao.update(cirpriv);
+                    result=catprivdao.update(catpriv);
 
 
 
@@ -2938,7 +2949,7 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
 
                 /*mail to user for updatation*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
             
             mailSend(staffobj.getEmailId(),password,"Your Role on LibMS Account Updated","Dear "+user_name+",<br>Your LibMS Account Role has been Changed Successfully with Following Deatils.<br><hr><b> user_name</b> "+login_id+"<br><b> password </b> "+password+"<br><b>LibMS Account Role</b>  "+role+"<br><b> Dept/SubLibrary</b> "+sublibname+"<br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
@@ -3033,11 +3044,11 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
             }
 
     result=logindao.DeleteLogin(staff_id, library_id,sublibrary_id);
-    result=PrivilegeDAO.DeleteStaff(staff_id, library_id, sublibrary_id);
-    result=AcqPrivilegeDAO.DeleteLogin(staff_id, library_id,sublibrary_id);
-    result=CatPrivilegeDAO.DeleteLogin(staff_id, library_id,sublibrary_id);
-    result=CirPrivilegeDAO.DeleteLogin(staff_id, library_id, sublibrary_id);
-    result=SerPrivilegeDAO.DeleteLogin(staff_id, library_id, sublibrary_id);
+    result=privdao.DeleteStaff(staff_id, library_id, sublibrary_id);
+    result=acqprivdao.DeleteLogin(staff_id, library_id,sublibrary_id);
+    result=catprivdao.DeleteLogin(staff_id, library_id,sublibrary_id);
+    result=cirprivdao.DeleteLogin(staff_id, library_id, sublibrary_id);
+    result=serprivdao.DeleteLogin(staff_id, library_id, sublibrary_id);
        
 
         if(result==true)
@@ -3054,7 +3065,7 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error9"));
             /*code for Java Mailing*/
             /*mail to user for deletion of account message*/
-                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
         mailSend(staffobj.getEmailId(),password,"Your Account on LibMS Account Updated","Dear "+user_name+",\nYour LibMS Account Role is removed <br>Thanks,<br>"+session.getAttribute("username")+",<br>"+session.getAttribute("login_role")+"<br>"+session.getAttribute("sublibrary_name")+"<br>"+session.getAttribute("library_name"));
 
 

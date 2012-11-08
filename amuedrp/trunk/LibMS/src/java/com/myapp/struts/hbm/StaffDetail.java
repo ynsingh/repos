@@ -21,10 +21,10 @@ public class StaffDetail  implements java.io.Serializable {
      private String contactNo;
      private String mobileNo;
      private String emailId;
-     private Date dateJoining;
-     private Date dateReleaving;
+     private String dateJoining;
+     private String dateReleaving;
      private String fatherName;
-     private Date dateOfBirth;
+     private String dateOfBirth;
      private String gender;
      private String address1;
      private String city1;
@@ -53,7 +53,7 @@ public class StaffDetail  implements java.io.Serializable {
         this.library = library;
         this.sublibraryId = sublibraryId;
     }
-    public StaffDetail(StaffDetailId id, Library library, String sublibraryId, String title, String firstName, String lastName, String contactNo, String mobileNo, String emailId, Date dateJoining, Date dateReleaving, String fatherName, Date dateOfBirth, String gender, String address1, String city1, String state1, String country1, String zip1, String address2, String city2, String state2, String country2, String zip2, byte[] staffImage, Set privileges, Set acqPrivileges, Set serPrivileges, Set cirPrivileges, Set catPrivileges, Set logins) {
+    public StaffDetail(StaffDetailId id, Library library, String sublibraryId, String title, String firstName, String lastName, String contactNo, String mobileNo, String emailId, String dateJoining, String dateReleaving, String fatherName, String dateOfBirth, String gender, String address1, String city1, String state1, String country1, String zip1, String address2, String city2, String state2, String country2, String zip2, byte[] staffImage, Set privileges, Set acqPrivileges, Set serPrivileges, Set cirPrivileges, Set catPrivileges, Set logins) {
        this.id = id;
        this.library = library;
        this.sublibraryId = sublibraryId;
@@ -150,18 +150,18 @@ public class StaffDetail  implements java.io.Serializable {
     public void setEmailId(String emailId) {
         this.emailId = emailId;
     }
-    public Date getDateJoining() {
+    public String getDateJoining() {
         return this.dateJoining;
     }
     
-    public void setDateJoining(Date dateJoining) {
+    public void setDateJoining(String dateJoining) {
         this.dateJoining = dateJoining;
     }
-    public Date getDateReleaving() {
+    public String getDateReleaving() {
         return this.dateReleaving;
     }
     
-    public void setDateReleaving(Date dateReleaving) {
+    public void setDateReleaving(String dateReleaving) {
         this.dateReleaving = dateReleaving;
     }
     public String getFatherName() {
@@ -171,11 +171,11 @@ public class StaffDetail  implements java.io.Serializable {
     public void setFatherName(String fatherName) {
         this.fatherName = fatherName;
     }
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return this.dateOfBirth;
     }
     
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
     public String getGender() {

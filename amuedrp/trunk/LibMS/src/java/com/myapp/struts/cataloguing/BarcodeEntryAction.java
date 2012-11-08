@@ -5,7 +5,7 @@
 
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.DocumentDetails;
 import java.awt.Color;
 import java.io.File;
@@ -61,6 +61,7 @@ public class BarcodeEntryAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
         BarcodeEntryActionForm beaf=(BarcodeEntryActionForm)form;
         String accession_no=beaf.getAccession_no();
         String list=beaf.getList();
@@ -75,7 +76,7 @@ public class BarcodeEntryAction extends org.apache.struts.action.Action {
         {
           String acc_no=items[i];
           System.out.println("aqeellllllll"+acc_no);
-          dd[i]=BibliopgraphicEntryDAO.searchBook(acc_no, library_id, sub_library_id) ;
+          dd[i]=bibdao.searchBook(acc_no, library_id, sub_library_id) ;
          // System.out.println("aqeellllllll"+dd[i].getAccessionNo());
           if(dd[i]==null)
           {

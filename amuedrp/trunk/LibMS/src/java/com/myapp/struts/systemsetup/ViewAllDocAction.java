@@ -33,10 +33,12 @@ public class ViewAllDocAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-                   HttpSession session=request.getSession();
+        BookCategoryDAO bookdao=new BookCategoryDAO();
+
+        HttpSession session=request.getSession();
         String     library_id=(String)session.getAttribute("library_id");
          String     sub_lib=(String)session.getAttribute("sublibrary_id");
-                List<FineDetailGrid> ll=BookCategoryDAO.ListbookType1(library_id);
+                List<FineDetailGrid> ll=bookdao.ListbookType1(library_id);
        /* ArrayList list2=new ArrayList();
         System.out.println(ll.size());
         Iterator it = ll.iterator();

@@ -27,9 +27,10 @@ public class SubMemberViewAllAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        SubMemberDAO submemdao=new SubMemberDAO();
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
-         List submember=SubMemberDAO.searchSubEmployeeType(library_id);
+         List submember=submemdao.searchSubEmployeeType(library_id);
 
           if(submember.isEmpty() && submember==null){
   String msg="You need to Add Sub Members";

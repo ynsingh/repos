@@ -34,7 +34,14 @@ public class AcqReceiveItem2Action extends org.apache.struts.action.Action {
         if(!list.equals("undefined"))
         {
           items= list.split(delimiter);
-          String value=String.valueOf(Integer.parseInt(items[1])-Integer.parseInt(items[3]));
+          String value=null;
+          System.out.println("LLLLLLLLLLLLLLLLLLLLLLLLLLLLl"+items[3]);
+//          String value=String.valueOf(Integer.parseInt(items[1])-Integer.parseInt(items[3]));
+          if(items[3].equals(""))
+           // value=String.valueOf(Integer.parseInt(items[1])-0);
+              value="0";
+          else
+            value=String.valueOf(Integer.parseInt(items[1])-Integer.parseInt(items[3]));
           request.setAttribute("item1", items[0]);
           request.setAttribute("item2", items[1]);
           if(items[3].equals("0"))

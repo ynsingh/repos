@@ -68,6 +68,18 @@ LoginDAO logindao;
             throws Exception
     {
        logindao=new LoginDAO();
+   
+        SubLibraryDAO sublibdao=new SubLibraryDAO();
+        PrivilegeDAO privdao=new PrivilegeDAO();
+        AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+        SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
+        CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+        CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
+        StaffDetailDAO staffdao=new StaffDetailDAO();
+        CreatePrivilege cirprivobj=new CreatePrivilege();
+        AdminRegistrationDAO admindao=new AdminRegistrationDAO();
+
+
         HttpSession session=request.getSession();
 
        try{
@@ -135,7 +147,7 @@ LoginDAO logindao;
 
         if(staff_id.equals(id) && staff_id.equals(id1)==false)
          {
-              StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
+              StaffDetail staffobj=staffdao.searchStaffId(staff_id,library_id);
 
                      if(staffobj!=null)
                      {
@@ -185,7 +197,7 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
 
 
        /* Use to Update Staff Entry related to Library Table & SubLibrary Table */
-            StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
+            StaffDetail staffobj=staffdao.searchStaffId(staff_id,library_id);
 
 
 
@@ -198,15 +210,15 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
             staffobj.setLastName(last_name);
             staffobj.setEmailId(email_id);
             if(do_joining.equals("")==false)
-            staffobj.setDateJoining(Date.valueOf(do_joining));
+            staffobj.setDateJoining(do_joining);
             else
             staffobj.setDateJoining(null);
             if(do_releaving.equals("")==false)
-            staffobj.setDateReleaving(Date.valueOf(do_releaving));
+            staffobj.setDateReleaving(do_releaving);
             else
             staffobj.setDateReleaving(null);
             if(date_of_birth.equals("")==false)
-            staffobj.setDateOfBirth(Date.valueOf(date_of_birth));
+            staffobj.setDateOfBirth(date_of_birth);
             else
             staffobj.setDateOfBirth(null);
             staffobj.setGender(gender);
@@ -230,7 +242,7 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
 
 
 
-             result=StaffDetailDAO.update1(staffobj);
+             result=staffdao.update1(staffobj);
                 if(result==false)
                 {
                      request.setAttribute("staff_id",staff_id );
@@ -292,25 +304,25 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
             if(log!=null)
             {  role=log.getRole();
 
-                   result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
-                   result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result =privdao.DeleteStaff(staff_id,library_id);
+                   result=acqprivdao.DeleteStaff(staff_id, library_id);
+                   result=catprivdao.DeleteStaff(staff_id, library_id);
+                   result=cirprivdao.DeleteStaff(staff_id, library_id);
+                   result=serprivdao.DeleteStaff(staff_id, library_id);
 
                         if(result==true)
                         {
 
                             if(role.equals("staff"))
-                                    result=CreatePrivilege.assignStaffPrivilege(staff_id, library_id,sublibrary_id);
+                                    result=cirprivobj.assignStaffPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equals("admin"))
-                                    result=CreatePrivilege.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
+                                    result=cirprivobj.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equals("dept-admin"))
-                                   result=CreatePrivilege.assignDepartmentalAdminPrivilege(staff_id, library_id,sublibrary_id);
+                                   result=cirprivobj.assignDepartmentalAdminPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equals("dept-staff"))
-                                   result=CreatePrivilege.assignDepartmentalStaffPrivilege(staff_id, library_id,sublibrary_id);
+                                   result=cirprivobj.assignDepartmentalStaffPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equalsIgnoreCase("insti-admin"))
-                                   result=CreatePrivilege.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
+                                   result=cirprivobj.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
                         }
 
             }
@@ -320,7 +332,7 @@ System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
               //  {
        /* Use to Update AdminRegistration Table */
 
-            AdminRegistration adminobj=AdminRegistrationDAO.searchInstituteAdmin(staff_id,library_id);
+            AdminRegistration adminobj=admindao.searchInstituteAdmin(staff_id,library_id);
 System.out.println("Admin..........."+adminobj);
 if(adminobj!=null)
 {
@@ -349,7 +361,7 @@ if(adminobj!=null)
 
             
 
-             result= AdminRegistrationDAO.update1(adminobj);
+             result= admindao.update1(adminobj);
 
             if(result==false)
                 {
@@ -449,7 +461,7 @@ System.out.println(sublibrary_id);
              {
                     
 
-                result=StaffDetailDAO.DeleteStaff(staff_id,library_id,sublibrary_id);
+                result=staffdao.DeleteStaff(staff_id,library_id,sublibrary_id);
                  if(result==true)
                     {
                     request.setAttribute("staff_id",staff_id);

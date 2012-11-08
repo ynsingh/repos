@@ -1,22 +1,21 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2011 12:18:18 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqBudget" table="acq_budget" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqBudgetId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="budgetheadId" type="string">
-                <column name="budgethead_id" length="10" />
-            </key-property>
-        </composite-id>
-        <property name="budgetheadName" type="string">
-            <column name="budgethead_name" length="500" />
-        </property>
-        <property name="budgetDesc" type="string">
-            <column name="budget_desc" length="2000" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqBudget" table="acq_budget">
+    <composite-id class="com.myapp.struts.hbm.AcqBudgetId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="budgetheadId" type="string">
+        <column length="10" name="budgethead_id"/>
+      </key-property>
+    </composite-id>
+    <property name="budgetheadName" type="string">
+      <column length="500" name="budgethead_name"/>
+    </property>
+    <property name="budgetDesc" type="string">
+      <column length="2000" name="budget_desc"/>
+    </property>
+  </class>
 </hibernate-mapping>

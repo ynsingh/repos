@@ -27,16 +27,8 @@ public class AcqBudgetAllocationEntryAction extends org.apache.struts.action.Act
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     private float bal;
-    
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    BudgetDAO bugdao=new BudgetDAO();
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -49,11 +41,11 @@ public class AcqBudgetAllocationEntryAction extends org.apache.struts.action.Act
         String budgethead_id=lf.getBudgethead_id();
         String budgetheadname;
 
-        AcqBudget budget=BudgetDAO.getBudgetid(library_id,budgethead_id);
+        AcqBudget budget=bugdao.getBudgetid(library_id,budgethead_id);
 
         budgetheadname=budget.getBudgetheadName();
 
-        AcqBudgetAllocation l=BudgetDAO.searchBudgetAllocation(library_id, budgethead_id, fyear);
+        AcqBudgetAllocation l=bugdao.searchBudgetAllocation(library_id, budgethead_id, fyear);
         System.out.println("Button Value="+button+budgethead_id+fyear);
         
         if(button.equals("Add"))
@@ -69,7 +61,7 @@ public class AcqBudgetAllocationEntryAction extends org.apache.struts.action.Act
             lf.setBudgethead_id(budgethead_id);
          
             lf.setFinancial_yr(lf.getFinancial_yr());
-               l=BudgetDAO.searchBudgetAllocation(library_id,budgethead_id,String.valueOf(Integer.parseInt(fyear)-1));
+               l=bugdao.searchBudgetAllocation(library_id,budgethead_id,String.valueOf(Integer.parseInt(fyear)-1));
            
             if(l!=null)
                 lf.setOpening_balance(l.getTotalAmount());
@@ -109,7 +101,7 @@ public class AcqBudgetAllocationEntryAction extends org.apache.struts.action.Act
            lf.setTotal_amount(l.getTotalAmount());
            lf.setTransaction_id(l.getId().getTransactionId());
 
-            String acq=BudgetDAO.getBudgetTransaction(library_id,budgethead_id);
+            String acq=bugdao.getBudgetTransaction(library_id,budgethead_id);
      
 
 if(acq!=null)
@@ -145,7 +137,7 @@ else
            lf.setTotal_amount(l.getTotalAmount());
         lf.setTransaction_id(l.getId().getTransactionId());
 
-        String acq=BudgetDAO.getBudgetTransaction(library_id,budgethead_id);
+        String acq=bugdao.getBudgetTransaction(library_id,budgethead_id);
 
 
 if(acq!=null)
@@ -181,7 +173,7 @@ else
            lf.setTotal_amount(l.getTotalAmount());
 lf.setTransaction_id(l.getId().getTransactionId());
 
- String acq=BudgetDAO.getBudgetTransaction(library_id,budgethead_id);
+ String acq=bugdao.getBudgetTransaction(library_id,budgethead_id);
            
 
 

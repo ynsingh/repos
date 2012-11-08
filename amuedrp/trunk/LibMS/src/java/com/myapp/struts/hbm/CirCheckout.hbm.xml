@@ -1,45 +1,44 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.CirCheckout" table="cir_checkout" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.CirCheckoutId">
-            <key-property name="checkoutId" type="int">
-                <column name="checkout_id" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" unique="true" />
-        </many-to-one>
-        <property name="memid" type="string">
-            <column name="memid" length="70" not-null="true" />
-        </property>
-        <property name="issueDate" type="string">
-            <column name="issue_date" length="50" />
-        </property>
-        <property name="dueDate" type="string">
-            <column name="due_date" length="50" />
-        </property>
-        <property name="documentId" type="string">
-            <column name="document_id" length="25" not-null="true" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="20" />
-        </property>
-        <set name="cirCheckins" inverse="true">
-            <key>
-                <column name="checkout_id" />
-                <column name="library_id" length="20" not-null="true" />
-                <column name="sublibrary_id" length="20" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.CirCheckin" />
-        </set>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.CirCheckout" table="cir_checkout">
+    <composite-id class="com.myapp.struts.hbm.CirCheckoutId" name="id">
+      <key-property name="checkoutId" type="int">
+        <column name="checkout_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true" unique="true"/>
+    </many-to-one>
+    <property name="memid" type="string">
+      <column length="70" name="memid" not-null="true"/>
+    </property>
+    <property name="issueDate" type="string">
+      <column length="50" name="issue_date"/>
+    </property>
+    <property name="dueDate" type="string">
+      <column length="50" name="due_date"/>
+    </property>
+    <property name="documentId" type="string">
+      <column length="25" name="document_id" not-null="true"/>
+    </property>
+    <property name="status" type="string">
+      <column length="20" name="status"/>
+    </property>
+    <set inverse="true" name="cirCheckins">
+      <key>
+        <column name="checkout_id"/>
+        <column length="20" name="library_id" not-null="true"/>
+        <column length="20" name="sublibrary_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.CirCheckin"/>
+    </set>
+  </class>
 </hibernate-mapping>

@@ -611,127 +611,87 @@ switch(x){
       t="<%=resource.getString("admin.header.main4") %>"
       break
       case 201:
-      t="<%=resource.getString("admin.header.cataloguing28") %>"
+      t="<%=resource.getString("admin.header.cataloguing42") %>"
       break
        case 202:
-      t="<%=resource.getString("admin.header.cataloguing10") %>"
-      break
-       case 203:
-      t="<%=resource.getString("admin.header.cataloguing11") %>"
-      break
-       case 204:
-      t="<%=resource.getString("admin.header.cataloguing4") %>"
-      break
-       case 205:
-      t="<%=resource.getString("admin.header.cataloguing5") %>"
-      break
-     case 206:
-      t="<%=resource.getString("admin.header.cataloguing12") %>"
-      break
-      case 207:
-      t="<%=resource.getString("admin.header.cataloguing1") %>"
-      break
-      case 208:
-      t="<%=resource.getString("admin.header.cataloguing2") %>"
-      break
-      case 209:
-      t="<%=resource.getString("admin.header.cataloguing3") %>"
-      break
-      case 210:
-      t="<%=resource.getString("admin.header.cataloguing13") %>"
-      break
-      case 211:
-      t="<%=resource.getString("admin.header.cataloguing14") %>"
-      break
-      case 212:
-      t="<%=resource.getString("admin.header.cataloguing6") %>"
-      break
-       case 213:
-      t="<%=resource.getString("admin.header.cataloguing7") %>"
-      break
-      case 214:
-      t="<%=resource.getString("admin.header.cataloguing15") %>"
-      break
-      case 215:
       t="<%=resource.getString("admin.header.cataloguing8") %>"
       break
-       case 216:
+       case 203:
       t="<%=resource.getString("admin.header.cataloguing9") %>"
       break
-       case 217:
+       case 204:
       t="<%=resource.getString("admin.header.cataloguing37") %>"
       break
-       case 218:
-      t="<%=resource.getString("admin.header.cataloguing16") %>"
+       case 205:
+      t="<%=resource.getString("admin.header.cataloguing41") %>"
       break
-      case 219:
-      t="<%=resource.getString("admin.header.cataloguing29") %>"
+     case 206:
+      t="<%=resource.getString("admin.header.cataloguing42") %>"
       break
-       case 220:
+      case 207:
+      t="<%=resource.getString("admin.header.cataloguing43") %>"
+      break
+      case 208:
+      t="<%=resource.getString("admin.header.cataloguing14") %>"
+      break
+      case 209:
       t="<%=resource.getString("admin.header.cataloguing17") %>"
       break
+      case 210:
+      t="<%=resource.getString("admin.header.cataloguing31") %>"
+      break
+      case 211:
+      t="<%=resource.getString("admin.header.cataloguing10") %>"
+      break
+      case 212:
+      t="<%=resource.getString("admin.header.cataloguing32") %>"
+      break
+       case 213:
+      t="<%=resource.getString("admin.header.cataloguing38") %>"
+      break
+      case 214:
+      t="<%=resource.getString("admin.header.cataloguing39") %>"
+      break
+      case 215:
+      t="<%=resource.getString("admin.header.cataloguing33") %>"
+      break
+       case 216:
+      t="<%=resource.getString("admin.header.cataloguing21") %>"
+      break
+       case 217:
+      t="<%=resource.getString("admin.header.cataloguing22") %>"
+      break
+       case 218:
+      t="<%=resource.getString("admin.header.cataloguing23") %>"
+      break
+      case 219:
+      t="<%=resource.getString("admin.header.cataloguing24") %>"
+      break
+       case 220:
+      t="<%=resource.getString("admin.header.cataloguing25") %>"
+      break
       case 221:
-      t="<%=resource.getString("admin.header.cataloguing18") %>"
+      t="<%=resource.getString("admin.header.cataloguing26") %>"
       break
        case 222:
-      t="<%=resource.getString("admin.header.cataloguing19") %>"
+      t="<%=resource.getString("admin.header.cataloguing27") %>"
       break
        case 223:
-      t="<%=resource.getString("admin.header.cataloguing20") %>"
+      t="<%=resource.getString("admin.header.cataloguing34") %>"
       break
        case 224:
-      t="<%=resource.getString("admin.header.cataloguing30") %>"
+      t="<%=resource.getString("admin.header.cataloguing35") %>"
       break
 
       
        case 225:
-      t="<%=resource.getString("admin.header.cataloguing31") %>"
+      t="<%=resource.getString("admin.header.cataloguing13") %>"
       break
       case 226:
-      t="<%=resource.getString("admin.header.cataloguing32") %>"
+      t="<%=resource.getString("admin.header.cataloguing30") %>"
       break
 
-        case 227:
-      t="<%=resource.getString("admin.header.cataloguing38") %>"
-      break
-       case 228:
-      t="<%=resource.getString("admin.header.cataloguing39") %>"
-      break
-       case 229:
-      t="<%=resource.getString("admin.header.cataloguing33") %>"
-      break
 
-     
-       case 230:
-      t="<%=resource.getString("admin.header.cataloguing21") %>"
-      break
-      case 231:
-      t="<%=resource.getString("admin.header.cataloguing22") %>"
-      break
-      case 232:
-      t="<%=resource.getString("admin.header.cataloguing23") %>"
-      break
-        case 233:
-      t="<%=resource.getString("admin.header.cataloguing24") %>"
-      break
-       case 234:
-      t="<%=resource.getString("admin.header.cataloguing25") %>"
-      break
-      case 235:
-      t="<%=resource.getString("admin.header.cataloguing26") %>"
-      break
-      case 236:
-      t="<%=resource.getString("admin.header.cataloguing27") %>"
-      break
-      case 237:
-      t="<%=resource.getString("admin.header.cataloguing34") %>"
-      break
-      case 238:
-      t="<%=resource.getString("admin.header.cataloguing35") %>"
-      break
-        case 239:
-      t="<%=resource.getString("admin.header.cataloguing36") %>"
-      break
       case 300:
       t="<%=resource.getString("admin.header.main5") %>"
       break
@@ -2798,12 +2758,20 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
 //CatPrivilege cat =(CatPrivilege)session.getAttribute("cat_privilege");
 //CirPrivilege cir =(CirPrivilege)session.getAttribute("cir_privilege");
 //SerPrivilege ser =(SerPrivilege)session.getAttribute("ser_privilege");
+PrivilegeDAO privdao=new PrivilegeDAO();
+AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
+CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
 
- List pri=PrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
- List acq=AcqPrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
- List cat=CatPrivilegeDAO.getPrivilege1(library_id,sublibrary_id, staff_id);
- List cir=CirPrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
- List ser=SerPrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
+
+
+
+ List pri=privdao.getPrivilege1(library_id, sublibrary_id, staff_id);
+ List acq=acqprivdao.getPrivilege1(library_id, sublibrary_id, staff_id);
+ List cat=catprivdao.getPrivilege1(library_id,sublibrary_id, staff_id);
+ List cir=cirprivdao.getPrivilege1(library_id, sublibrary_id, staff_id);
+ List ser=serprivdao.getPrivilege1(library_id, sublibrary_id, staff_id);
 System.out.println("privelege"+pri.toString());
 System.out.println("acquisition"+acq.toString());
                          int iii=0;

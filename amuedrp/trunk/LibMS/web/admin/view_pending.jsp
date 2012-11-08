@@ -1,14 +1,8 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
---%>
-
     <%@page import="com.myapp.struts.admin.RequestDoc"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+    <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.*,com.myapp.struts.hbm.*"%>
-       <%@ page import="java.sql.*"%>
+    <%@ page import="java.sql.*"%>
     <%@ page import="java.io.*"   %>
      <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
 
@@ -31,61 +25,9 @@ else{
 
 %>
 
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-    <title>View Request</title>
-
-
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-
-</head>
-<script>
-    function changerec(){
-        var x=document.getElementById('rec').value;
-    var loc = window.location;
-    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/view_pending.jsp";
-
-    
-        loc = loc + "?pageSize="+x;
-         // alert(loc);
-    window.location = loc;
-  
-
-    }
-
-      document.onkeyup = keyHit
-function keyHit(event) {
-
-  if (event.keyCode == 13) {
-  changerec();
-
-    event.stopPropagation()
-    event.preventDefault()
-  }
-}
-
-function isNumberKey(evt)
-      {
-         var charCode = (evt.which) ? evt.which : event.keyCode
-         if (charCode > 31 && (charCode < 48 || charCode > 57))
-            return false;
-
-         return true;
-      }
-    </script>
-<body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
 <%!
-   
-   
+
+
    RequestDoc Ob;
    AdminRegistration adminReg;
    ArrayList requestList;
@@ -101,9 +43,9 @@ function isNumberKey(evt)
 
    requestList = new ArrayList();
    int tcount =0;
-  
+
    int tpage=0;
- 
+
 if(rs!=null)
 {
    Iterator it = rs.iterator();
@@ -112,7 +54,7 @@ if(rs!=null)
 
    while (it.hasNext())
         {
-	
+
 	System.out.println("it="+(tcount));
         adminReg = (AdminRegistration)rs.get(tcount);
         Ob = new RequestDoc ();
@@ -120,17 +62,19 @@ if(rs!=null)
 	Ob.setInstitute_name(adminReg.getInstituteName());
 	Ob.setUserId(adminReg.getLoginId());
 	Ob.setAdmin_email(adminReg.getAdminEmail());
+        Ob.setAddress(adminReg.getInstituteAddress());
+        Ob.setUser_name(adminReg.getAdminFname()+" "+adminReg.getAdminLname());
         adminReg = null;
         requestList.add(Ob);
         tcount++;
         it.next();
-  
+
 	}
 
 System.out.println("tcount="+tcount);
 
 %>
-       
+
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+perpage) >= requestList.size ())
@@ -139,13 +83,6 @@ System.out.println("tcount="+tcount);
    pageContext.setAttribute("tCount", tcount);
     pageContext.setAttribute("rec",perpage);
 %>
-<br><br>
-<%if(tcount==0)
-{%>
-<p class="err" style="font-size:12px">No Pending Request Found</p>
-<%}
-else
-{%>
 
 <%!
     Locale locale=null;
@@ -185,33 +122,99 @@ locale1=(String)session.getAttribute("locale");
   pageContext.setAttribute("Action",Action);
 
 %>
- View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+    
+
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script>
+    function changerec(){
+        var x=document.getElementById('rec').value;
+    var loc = window.location;
+    loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/view_pending.jsp";
+
+
+        loc = loc + "?pageSize="+x;
+         // alert(loc);
+    window.location = loc;
+
+
+    }
+
+      document.onkeyup = keyHit
+function keyHit(event) {
+
+  if (event.keyCode == 13) {
+  changerec();
+
+    event.stopPropagation()
+    event.preventDefault()
+  }
+}
+
+function isNumberKey(evt)
+      {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+
+         return true;
+      }
+    </script>
+</head>
+
+<body>
+    <table  style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" align="center"  width="80%" >
+        <tr><td colspan="2" width="80%" style="font: arial;font-size: 15px;" valign="bottom">Pending Institute Request</td>
+            <td align="right" style="font: arial;font-size: 15px;">View Next<input class="superadmingridheader" type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td>
+        </tr>
+        <tr><td align="center" colspan="3" style="border:solid 1px cyan">
+<%if(tcount==0)
+{%>
+<p class="err" style="font-size:12px">No Pending Request Found</p>
+<%}
+else
+{%>
+
+
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
-  <columns>
+  <columns >
       
     <column width="100">
-      <header value="${Registration_ID}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <header value="${Registration_ID}" hAlign="left"  styleClass="superadmingridheader"  />
+      <item   value="${doc.registration_id}" hyperLink="./../view1.do?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="250">
-      <header value="${InstituteName}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_name}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
+      <header value="${InstituteName}" hAlign="left" styleClass="superadmingridheader"/>
+      <item   value="${doc.institute_name}" hAlign="left" hyperLink="./../view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
-    <column width="100">
-      <header value="${UserId}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.userId}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
+<column width="200">
+      <header value="Institute Address" hAlign="left" styleClass="superadmingridheader"/>
+      <item   value="${doc.address}" hyperLink="./../view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="200">
+      <header value="Institute AdminName" hAlign="left" styleClass="superadmingridheader"/>
+      <item   value="${doc.user_name}" hyperLink="./../view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+      <column width="100">
+      <header value="${UserId}" hAlign="left" styleClass="superadmingridheader"/>
+      <item   value="${doc.userId}" hAlign="left" hyperLink="./../view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
        
     <column width="150">
-      <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.admin_email}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <header value="${Admin_Email}" hAlign="left" styleClass="superadmingridheader"/>
+      <item   value="${doc.admin_email}" hyperLink="./../view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
        <column width="50">
-      <header value="${Action}" hAlign="left" styleClass="header"/>
-      <item   value="Accept" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <header value="${Action}" hAlign="left" styleClass="superadmingridheader"/>
+      <item   value="Accept" hyperLink="./../view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -221,43 +224,34 @@ locale1=(String)session.getAttribute("locale");
   <paging size="${rec}" count="${tCount}" custom="true" nextUrlVar="next"
        previousUrlVar="previous" pagesVar="pages"/>
  
-  <order imgAsc="up.gif" imgDesc="down.gif"/>
+ 
 </ui:dataGrid>
- <table width="700" style="font-family: arial; font-size: 10pt" >
-<tr>
-<td align="left" width="100px">
+</td></tr><tr class="superadmingridfooter"><td  align="left" colspan="2">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
-</c:if>&nbsp;
-<c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${previous}"/>"><img src="<%=request.getContextPath()%>/images/previous.jpg" height="20px" width="20px"/></a>
 </c:if>
-
-</td><td width="400px" align="center">
-
-<c:forEach items="${pages}" var="page">
-<c:choose>
-  <c:when test="${page.current}">
-    <b><a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a></b>
-  </c:when>
-  <c:otherwise>
-    <a href="<c:out value="${page.url}"/>"><c:out value="${page.index}"/></a>
-  </c:otherwise>
-</c:choose>
-</c:forEach>
-</td><td align="center">
+<c:if test="${previous == null}">
+    <img src="<%=request.getContextPath()%>/images/previous.jpg" height="20px" width="20px"/>
+</c:if>
+<c:if test="${next != null}">
+<a href="<c:out value="${next}"/>"><img src="<%=request.getContextPath()%>/images/next.jpg" height="20px" width="20px"/></a>
+</c:if>
+<c:if test="${next == null}">
+ <img src="<%=request.getContextPath()%>/images/next.jpg" height="20px" width="20px"/>
+</c:if>
+    
+    </td><td align="right">
      Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
     <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
     <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
-</td>
 
-</tr>
-  </table>
+</td></tr>
 <%}}else{
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
- </div>
+    </table>
+
     </body>
 
 </html>

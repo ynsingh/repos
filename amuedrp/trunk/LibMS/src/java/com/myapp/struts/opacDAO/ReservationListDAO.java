@@ -19,7 +19,7 @@ import org.hibernate.Transaction;
 public class ReservationListDAO {
 
 
-    public static  boolean insert(Demandlist obj)
+    public   boolean insert(Demandlist obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -54,7 +54,7 @@ public class ReservationListDAO {
 
    
        
-       public static Reservationlist getRequestDetail(String library_id,String sublibrary_id,String mem_id,String accession_no,String status) {
+       public  Reservationlist getRequestDetail(String library_id,String sublibrary_id,String mem_id,String accession_no,String status) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
         Reservationlist obj=null;
         try {
@@ -83,7 +83,7 @@ return obj;
 
 
 
-     public static List<Reservationlist> getMemberDetail(String library_id,String sublibrary_id,String memid) {
+     public  List<Reservationlist> getMemberDetail(String library_id,String sublibrary_id,String memid) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
         List<Reservationlist>  obj=null;
         try {

@@ -1,41 +1,40 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.Login" table="login" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.LoginId">
-            <key-property name="staffId" type="string">
-                <column name="staff_id" length="100" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
-            <column name="staff_id" length="100" not-null="true" />
-            <column name="library_id" length="20" not-null="true" />
-        </many-to-one>
-        <property name="sublibraryId" type="string">
-            <column name="sublibrary_id" length="20" />
-        </property>
-        <property name="loginId" type="string">
-            <column name="login_id" length="300" not-null="true" />
-        </property>
-        <property name="userName" type="string">
-            <column name="user_name" length="50" />
-        </property>
-        <property name="question" type="string">
-            <column name="question" length="1000" />
-        </property>
-        <property name="ans" type="string">
-            <column name="ans" length="500" />
-        </property>
-        <property name="role" type="string">
-            <column name="role" length="50" />
-        </property>
-        <property name="password" type="string">
-            <column name="password" length="200" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.Login" table="login">
+    <composite-id class="com.myapp.struts.hbm.LoginId" name="id">
+      <key-property name="staffId" type="string">
+        <column length="100" name="staff_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.StaffDetail" fetch="select" insert="false" name="staffDetail" update="false">
+      <column length="100" name="staff_id" not-null="true"/>
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="sublibraryId" type="string">
+      <column length="20" name="sublibrary_id"/>
+    </property>
+    <property name="loginId" type="string">
+      <column length="300" name="login_id" not-null="true"/>
+    </property>
+    <property name="userName" type="string">
+      <column length="50" name="user_name"/>
+    </property>
+    <property name="question" type="string">
+      <column length="1000" name="question"/>
+    </property>
+    <property name="ans" type="string">
+      <column length="500" name="ans"/>
+    </property>
+    <property name="role" type="string">
+      <column length="50" name="role"/>
+    </property>
+    <property name="password" type="string">
+      <column length="200" name="password"/>
+    </property>
+  </class>
 </hibernate-mapping>

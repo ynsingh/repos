@@ -23,6 +23,7 @@ public class ViewAllStaffAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        StaffDetailDAO staffdao=new StaffDetailDAO();
         HttpSession session=request.getSession();
         String login_role=(String)session.getAttribute("login_role");
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
@@ -32,11 +33,11 @@ public class ViewAllStaffAction extends org.apache.struts.action.Action {
 System.out.println(library_id+sublibrary_id);
         if(login_role.equalsIgnoreCase("insti-admin")==true)
         {
-            staffobj=StaffDetailDAO.searchAllStaff(library_id);
+            staffobj=staffdao.searchAllStaff(library_id);
         }
         else
         {
-              staffobj=StaffDetailDAO.searchAllStaff(library_id,sublibrary_id);
+              staffobj=staffdao.searchAllStaff(library_id,sublibrary_id);
               
         }
 System.out.println(staffobj.size());

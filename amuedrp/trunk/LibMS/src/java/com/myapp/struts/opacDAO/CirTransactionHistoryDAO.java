@@ -21,7 +21,7 @@ import org.hibernate.transform.Transformers;
  */
 public class CirTransactionHistoryDAO {
 
-  public static  boolean insert(CirRequestfromOpac obj)
+  public   boolean insert(CirRequestfromOpac obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -56,7 +56,7 @@ public class CirTransactionHistoryDAO {
 
  
 
-     public static CirTransactionHistory getMemberDetail(String library_id,String sublibrary_id,String memid) {
+     public  CirTransactionHistory getMemberDetail(String library_id,String sublibrary_id,String memid) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
         CirTransactionHistory obj=null;
         try {
@@ -82,7 +82,7 @@ public class CirTransactionHistoryDAO {
         return obj;
      }
 
-public static List<MemberFinewithDocument> getMemberFineWithDocumentDetail(String library_id,String sublibrary_id,String memid) {
+public  List<MemberFinewithDocument> getMemberFineWithDocumentDetail(String library_id,String sublibrary_id,String memid) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
        List<MemberFinewithDocument> obj = null;
         Criterion criterion;

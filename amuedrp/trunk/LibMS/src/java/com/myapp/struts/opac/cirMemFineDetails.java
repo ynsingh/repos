@@ -31,7 +31,7 @@ public class cirMemFineDetails extends org.apache.struts.action.Action {
     String sublibrary_id;
 
    String login_role;
-   
+   CirTransactionHistoryDAO cirtransdao=new CirTransactionHistoryDAO();
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -51,7 +51,7 @@ public class cirMemFineDetails extends org.apache.struts.action.Action {
 
 
 System.out.println("memid="+memid+" sublibraryId="+sublibrary_id+" libraryId="+library_id);
-requestList = (List<MemberFinewithDocument>)CirTransactionHistoryDAO.getMemberFineWithDocumentDetail(library_id, sublibrary_id, memid);
+requestList = (List<MemberFinewithDocument>)cirtransdao.getMemberFineWithDocumentDetail(library_id, sublibrary_id, memid);
 System.out.println("size="+requestList.size());
         
 session.setAttribute("memberFineDetails", requestList);

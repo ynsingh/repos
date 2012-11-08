@@ -38,7 +38,7 @@ public class cirMemCheckoutDetails extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+CirRequestfromOpacDAO ciropacdao=new CirRequestfromOpacDAO();
 
 
 
@@ -53,7 +53,7 @@ public class cirMemCheckoutDetails extends org.apache.struts.action.Action {
 String memid = (String)session.getAttribute("memid");
 
 System.out.println("memid="+memid+" sublibraryId="+sublibrary_id+" libraryId="+library_id);
-requestList = (List<CheckoutDeocumentDetails>)CirRequestfromOpacDAO.getCheckOuts(library_id, sublibrary_id, memid);
+requestList = (List<CheckoutDeocumentDetails>)ciropacdao.getCheckOuts(library_id, sublibrary_id, memid);
 System.out.println("size111111="+requestList.size());
         
 session.setAttribute("membercheckoutDetail", requestList);

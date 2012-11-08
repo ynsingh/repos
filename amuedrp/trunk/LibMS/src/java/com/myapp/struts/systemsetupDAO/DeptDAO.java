@@ -21,8 +21,8 @@ public class DeptDAO {
 
 
  
-   static Query query;
-   public static List<SubLibrary> listsub(String library_id,String sublibrary_id) {
+    Query query;
+   public  List<SubLibrary> listsub(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -45,7 +45,7 @@ session.getTransaction().commit();
         return obj;
 }
 
-   public static List<Department> getDeptLibrary(String library_id) {
+   public  List<Department> getDeptLibrary(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<Department> obj=null;
         try {
@@ -65,7 +65,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-   public static List<SubLibrary> listsub1(String library_id) {
+   public  List<SubLibrary> listsub1(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -85,7 +85,7 @@ session.getTransaction().commit();
         }
         return obj;
 }
-public static Department getDeptId(String library_id,String faculty_id,String dept_name) {
+public  Department getDeptId(String library_id,String faculty_id,String dept_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        Department obj=null;
         try {
@@ -107,7 +107,7 @@ public static Department getDeptId(String library_id,String faculty_id,String de
         return obj;
 }
 
-public static Department getDeptName(String library_id,String dept_id) {
+public  Department getDeptName(String library_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Department obj=null;
         try {
@@ -127,7 +127,7 @@ public static Department getDeptName(String library_id,String dept_id) {
         }
         return obj;
 }
-public static Department getDeptByFaculty(String library_id,String faculty_id,String dept_id) {
+public  Department getDeptByFaculty(String library_id,String faculty_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        Department obj=null;
         try {
@@ -148,7 +148,7 @@ public static Department getDeptByFaculty(String library_id,String faculty_id,St
         }
         return obj;
 }
-public static List<Department> getDept(String library_id,String faculty_id) {
+public  List<Department> getDept(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Department> obj=null;
         try {
@@ -169,7 +169,7 @@ public static List<Department> getDept(String library_id,String faculty_id) {
         return obj;
 }
 
-public static List getDeptRecord(String library_id,String faculty_id) {
+public  List getDeptRecord(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List obj=null;
         try {
@@ -196,7 +196,7 @@ public static List getDeptRecord(String library_id,String faculty_id) {
 
 
 
-public static List<Department> searchDept(String library_id) {
+public  List<Department> searchDept(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
       List<Department> obj = null;
         try {
@@ -221,7 +221,7 @@ public static List<Department> searchDept(String library_id) {
         }
         return obj;
 }
-public static List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
+public  List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -241,7 +241,7 @@ List<SubLibrary> obj=null;
         }
         return obj;
 }
-  public static SubLibrary searchLibraryName(String sublibrary_name) {
+  public  SubLibrary searchLibraryName(String sublibrary_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 SubLibrary obj=null;
         try {
@@ -261,7 +261,7 @@ SubLibrary obj=null;
         }
         return obj;
 }
-public static  boolean update(Department obj)
+public   boolean update(Department obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -286,7 +286,7 @@ session.close();
 }
 
 
-public static  boolean Delete(Department obj)
+public   boolean Delete(Department obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -313,7 +313,7 @@ public static  boolean Delete(Department obj)
 
 
 
-public static  boolean insert(Department obj)
+public   boolean insert(Department obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -346,7 +346,7 @@ public static  boolean insert(Department obj)
 
 
 
- public static List getMaxDeptRecordIdNo(String library_id) {
+ public  List getMaxDeptRecordIdNo(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List obj=null;
         try {
@@ -374,7 +374,7 @@ public static  boolean insert(Department obj)
 
 
 
-  public static Department getDeptRecordIdNo(String library_id,String dept_id) {
+  public  Department getDeptRecordIdNo(String library_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
       Department obj=null;
         try {
@@ -403,7 +403,7 @@ public static  boolean insert(Department obj)
 
 
 
-  public static Department getDeptRecordId(String library_id,String dept_name) {
+  public  Department getDeptRecordId(String library_id,String dept_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        Department obj=null;
         try {

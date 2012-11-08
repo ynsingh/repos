@@ -43,15 +43,15 @@ locale1=(String)session.getAttribute("locale");
     </head>
     <body onload="parent.setIframeHeight();">
    
-        <table dir="<%=rtl%>" align="<%=align%>" class="datagrid" width="50%" >
+        <table dir="<%=rtl%>" border="1" align="<%=align%>" class="datagrid" width="50%" >
         <%if(loc.size()==0){%> <%=resource.getString("global.norecordfound")%><%}else{%>
 
-        <tr  dir="<%=rtl%>" class="header1"><td  width="20%" align="center" dir="<%=rtl%>"><b><%=resource.getString("opac.locationview.locid")%></b></td><td><%=resource.getString("opac.locationview.locname")%></td></tr>
+        <tr  dir="<%=rtl%>" class="header1"><td  width="20%" align="left" dir="<%=rtl%>"><b><%=resource.getString("opac.locationview.locid")%></b></td><td align="left"><%=resource.getString("opac.locationview.locname")%></td></tr>
 
          <% for(int i=0;i<loc.size();i++ ){%>
         
         <tr  dir="<%=rtl%>">
-                <td  align="center" dir="<%=rtl%>" class="heading"><p dir="<%=rtl%>" align="justify"><%=loc.get(i).getId().getLocationId()%></p></td>
+                <td width="20%"  align="<%=align%>" dir="<%=rtl%>" class="heading1"><p dir="<%=rtl%>" align="justify"><%=loc.get(i).getId().getLocationId()%></p></td>
                 <td  align="<%=align%>" dir="<%=rtl%>" class="heading"><%=loc.get(i).getLocationName()%></td>
             </tr>
          <%}%>

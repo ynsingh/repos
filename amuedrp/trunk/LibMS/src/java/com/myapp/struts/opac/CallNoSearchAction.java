@@ -2,7 +2,7 @@
  * CALL NO SEARCH ACTION OPAC
  */
 package com.myapp.struts.opac;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.BibliographicDetailsLang;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class CallNoSearchAction extends org.apache.struts.action.Action
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     OpacSearchDAO osdao= new OpacSearchDAO();
-    BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
     private static Logger log4j =LoggerUtils.getLogger();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,

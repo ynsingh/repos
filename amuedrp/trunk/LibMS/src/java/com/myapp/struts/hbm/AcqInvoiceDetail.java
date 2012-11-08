@@ -23,7 +23,7 @@ public class AcqInvoiceDetail  implements java.io.Serializable {
      private String discount;
      private String netTotal;
      private String status;
-     private int recievingItemId;
+    // private int recievingItemId;
     public AcqInvoiceDetail() {
     }
 
@@ -32,7 +32,7 @@ public class AcqInvoiceDetail  implements java.io.Serializable {
         this.id = id;
         this.library = library;
     }
-    public AcqInvoiceDetail(AcqInvoiceDetailId id, Library library, String orderNo, String vendorId, String orderDate, String totalAmount, String discount, String netTotal, String status,int recievingItemId) {
+    public AcqInvoiceDetail(AcqInvoiceDetailId id, Library library, String orderNo, String vendorId, String orderDate, String totalAmount, String discount, String netTotal, String status) {
        this.id = id;
        this.library = library;
        this.orderNo = orderNo;
@@ -47,7 +47,7 @@ public class AcqInvoiceDetail  implements java.io.Serializable {
        this.discount=discount;
        this.netTotal=netTotal;
        this.status=status;
-       this.recievingItemId=recievingItemId;
+    //   this.recievingItemId=recievingItemId;
 
     }
    
@@ -119,13 +119,13 @@ public class AcqInvoiceDetail  implements java.io.Serializable {
         this.status = status;
     }
 
-    public int getRecievingItemId() {
-        return recievingItemId;
-    }
-
-    public void setRecievingItemId(int recievingItemId) {
-        this.recievingItemId = recievingItemId;
-    }
+//    public int getRecievingItemId() {
+//        return recievingItemId;
+//    }
+//
+//    public void setRecievingItemId(int recievingItemId) {
+//        this.recievingItemId = recievingItemId;
+//    }
 
     
     

@@ -23,6 +23,7 @@ public class AcqPaymentRequestProcessAction extends org.apache.struts.action.Act
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    AcquisitionDao acqdao=new AcquisitionDao();
     String value[];
   
     @Override
@@ -39,11 +40,11 @@ public class AcqPaymentRequestProcessAction extends org.apache.struts.action.Act
         {
 
           value=values[i].split(",") ;
-          AcqRequestpaymentDetails acqreqpaymentdetails=AcquisitionDao.ProcessForPrnList(library_id, sub_library_id,value[0],value[1],value[2]);
+          AcqRequestpaymentDetails acqreqpaymentdetails=acqdao.ProcessForPrnList(library_id, sub_library_id,value[0],value[1],value[2]);
           if(acqreqpaymentdetails!=null)
           {
                acqreqpaymentdetails.setStatus("Process");
-               boolean result=AcquisitionDao.processInPaymentRequestDetail(acqreqpaymentdetails);
+               boolean result=acqdao.processInPaymentRequestDetail(acqreqpaymentdetails);
                if(result==false)
                {
                  request.setAttribute("msg1","Row corresponding prn no. ="+value[0]+" not updated");
@@ -54,9 +55,9 @@ public class AcqPaymentRequestProcessAction extends org.apache.struts.action.Act
           }
         }
 
-        AcqRequestpaymentHeader acqreqpaymentheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id,values[0].split(",")[0] );
+        AcqRequestpaymentHeader acqreqpaymentheader=acqdao.searchForPrnNo(library_id, sub_library_id,values[0].split(",")[0] );
         acqreqpaymentheader.setStatus("processing");
-        boolean res=AcquisitionDao.insertInPaymentRequestHeader(acqreqpaymentheader);
+        boolean res=acqdao.insertInPaymentRequestHeader(acqreqpaymentheader);
         if(res==false)
         {
           request.setAttribute("msg1","Request not Processed");

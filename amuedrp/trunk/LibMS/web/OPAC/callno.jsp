@@ -321,7 +321,7 @@ else{
              </td><td>
                  <table>
                           <tr>
-                  <td class="header" dir="<%=rtl%>" colspan="2">
+                  <td class="header1" dir="<%=rtl%>" colspan="2">
            <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>

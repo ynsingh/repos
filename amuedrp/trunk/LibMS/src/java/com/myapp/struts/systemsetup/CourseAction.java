@@ -43,7 +43,9 @@ public class CourseAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-
+CourseDAO coursedao=new CourseDAO();
+FacultyDAO facdao=new FacultyDAO();
+DeptDAO deptdao=new DeptDAO();
          HttpSession session=request.getSession();
           try{
 
@@ -73,7 +75,7 @@ public class CourseAction extends org.apache.struts.action.Action {
        
          if(button.equals("Add"))
         {
-          Courses course=CourseDAO.searchCourseName(library_id,faculty_id,dept_id,course_id);
+          Courses course=coursedao.searchCourseName(library_id,faculty_id,dept_id,course_id);
           
          if(course!=null)
          {
@@ -84,7 +86,7 @@ public class CourseAction extends org.apache.struts.action.Action {
          else
          {
               
-             dept= DeptDAO.getDeptRecord(library_id,faculty_id);
+             dept= deptdao.getDeptRecord(library_id,faculty_id);
              session.setAttribute("dept",dept);
               request.setAttribute("faculty_id",faculty_id);
            request.setAttribute("dept_id", dept_id);
@@ -102,7 +104,7 @@ Courses course;
 
 
 
-                         course=CourseDAO.searchCourseName(library_id,faculty_id,dept_id, course_id);
+                         course=coursedao.searchCourseName(library_id,faculty_id,dept_id, course_id);
                         if(course==null)
                         {
 
@@ -120,9 +122,9 @@ Courses course;
          if(course!=null)
          {
 
- dept= DeptDAO.getDeptRecord(library_id,faculty_id);
+ dept= deptdao.getDeptRecord(library_id,faculty_id);
             session.setAttribute("dept",dept);
-          List<Faculty>   faculty= FacultyDAO.searchFaculty(library_id);
+          List<Faculty>   faculty= facdao.searchFaculty(library_id);
              session.setAttribute("faculty",faculty);
 
           request.setAttribute("button",button);

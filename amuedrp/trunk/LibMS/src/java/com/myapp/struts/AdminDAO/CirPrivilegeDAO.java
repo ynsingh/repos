@@ -19,9 +19,9 @@ import org.hibernate.transform.Transformers;
 public class CirPrivilegeDAO {
 
 
-   static  Integer maxNewRegId;
-   static Query query;
-   public static String getValue(CirPrivilege cir,int i) {
+     Integer maxNewRegId;
+    Query query;
+   public  String getValue(CirPrivilege cir,int i) {
       Session session = HibernateUtil.getSessionFactory().openSession();
 
 
@@ -252,7 +252,7 @@ session.getTransaction().commit();
 return "";
 
 }
-public static boolean DeleteLogin(String staff_id,String library_id,String sublibrary_id) {
+public  boolean DeleteLogin(String staff_id,String library_id,String sublibrary_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -287,7 +287,7 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
 
 
 }
-   public static  boolean update(CirPrivilege obj)
+   public   boolean update(CirPrivilege obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -313,7 +313,7 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
 }
 
 
-public static CirPrivilege searchStaffLogin(String staff_id,String library_id) {
+public  CirPrivilege searchStaffLogin(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirPrivilege cirobj=null;
         try {
@@ -342,7 +342,7 @@ return cirobj;
 
   
 
-public static  boolean insert(CirPrivilege obj)
+public   boolean insert(CirPrivilege obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -373,7 +373,7 @@ public static  boolean insert(CirPrivilege obj)
    return true;
 
 }
- public static  CirPrivilege getPrivilege(String library_id,String sublibrary_id,String staff_id)
+ public   CirPrivilege getPrivilege(String library_id,String sublibrary_id,String staff_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 CirPrivilege cirobj=null;
@@ -398,7 +398,7 @@ session.getTransaction().commit();
         return cirobj;
 
 }
-public static boolean DeleteStaff(String staff_id,String library_id) {
+public  boolean DeleteStaff(String staff_id,String library_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -434,7 +434,7 @@ public static boolean DeleteStaff(String staff_id,String library_id) {
 
 
 }
-public static  List getPrivilege1(String library_id,String sublibrary_id,String staff_id)
+public   List getPrivilege1(String library_id,String sublibrary_id,String staff_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List obj=null;

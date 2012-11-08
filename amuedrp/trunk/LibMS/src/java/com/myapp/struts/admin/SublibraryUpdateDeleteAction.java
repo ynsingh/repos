@@ -13,9 +13,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.AdminDAO.*;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import com.myapp.struts.hbm.HibernateUtil;
 /**
  *
  * @author edrp02
@@ -36,6 +33,7 @@ public class SublibraryUpdateDeleteAction extends org.apache.struts.action.Actio
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        SubLibraryDAO sublibdao=new SubLibraryDAO();
           SublibraryUpdateDeleteActionForm subobj=(SublibraryUpdateDeleteActionForm)form;
           button=subobj.getButton();
           HttpSession session=request.getSession();
@@ -45,7 +43,7 @@ public class SublibraryUpdateDeleteAction extends org.apache.struts.action.Actio
           if(button.equals("Update"))
           {
            
-            SubLibrary sublib=SubLibraryDAO.getLibName(library_id, sublibrary_id);
+            SubLibrary sublib=sublibdao.getLibName(library_id, sublibrary_id);
              if(sublib!=null)
              {
                  sublib.setDeptAddress(subobj.getDepartment_address());
@@ -61,7 +59,7 @@ public class SublibraryUpdateDeleteAction extends org.apache.struts.action.Actio
                      sublib.setSublibName(subobj.getSublib_name1());
                  else
                      sublib.setSublibName(subobj.getSublib_name());
-             result=SubLibraryDAO.update(sublib);
+             result=sublibdao.update(sublib);
              if(result==true)
              {
               String msg="Record Successfully updated";
@@ -74,7 +72,7 @@ public class SublibraryUpdateDeleteAction extends org.apache.struts.action.Actio
           if(button.equals("Delete"))
           {
            
-             result=SubLibraryDAO.Delete(library_id, sublibrary_id);
+             result=sublibdao.Delete(library_id, sublibrary_id);
              if(result==true)
              {
               String msg="Record Successfully Deleted";

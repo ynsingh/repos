@@ -41,7 +41,7 @@ public class AcqApprovalDao {
         }
         return obj;
     }
-public static List<AcqBibliographyDetails> searchBudgetHead(String library_id,String sublibrary_id, String budgetHeadId) {
+public  List<AcqBibliographyDetails> searchBudgetHead(String library_id,String sublibrary_id, String budgetHeadId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqBibliographyDetails> obj=null;
         try {

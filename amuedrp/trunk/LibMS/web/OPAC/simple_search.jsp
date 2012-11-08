@@ -13,7 +13,41 @@
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <link rel="stylesheet" href="/LibMS/css/page.css"/>
-    <script language="javascript" >
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/ajax.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        function search(doc_id,lib,sublib,rate)
+{
+
+
+
+
+     location.href="<%=request.getContextPath()%>/OPAC/ratetitle1.do?doc_id="+doc_id+"&library_id="+lib+"&sublibrary_id="+sublib+"&rate="+rate;
+    
+     
+    return true;
+   
+    
+}
+ function searchmli(doc_id,lib,sublib,rate,mli)
+{
+
+
+
+
+     location.href="<%=request.getContextPath()%>/OPAC/ratetitle1.do?doc_id="+doc_id+"&library_id="+lib+"&sublibrary_id="+sublib+"&rate="+rate+"&mli="+mli;
+
+
+    return true;
+
+
+}
+
+
+
         <%
     String library_id = (String)session.getAttribute("library_id");
     String sublibrary_id = (String)session.getAttribute("memsublib");
@@ -67,6 +101,66 @@ if(sublibrary_id==null)sublibrary_id="all";
     %>
     var loc="<%=request.getContextPath()%>/simple_search.do?page="+<%=previousPage%>+"&flag=true";
     location.href= loc;
+    }
+    function clear1(x)
+    {
+
+
+
+        document.getElementById(x+'a').src= "<%=request.getContextPath()%>/images/star.png";
+        document.getElementById(x+'b').src= "<%=request.getContextPath()%>/images/star.png";
+        document.getElementById(x+'c').src= "<%=request.getContextPath()%>/images/star.png";
+        document.getElementById(x+'d').src= "<%=request.getContextPath()%>/images/star.png";
+        document.getElementById(x+'e').src= "<%=request.getContextPath()%>/images/star.png";
+            
+
+    }
+
+    function rate(id,x)
+    {
+
+        
+        if(x==1)
+        {document.getElementById(id+'a').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'a').title= "You Rate 1";}
+    else if(x==2)
+        {
+            document.getElementById(id+'a').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'b').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'a').title= "You Rate 1";
+            document.getElementById(id+'b').title= "You Rate 2";
+        }
+    else if(x==3)
+        {document.getElementById(id+'a').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'b').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'c').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'a').title= "You Rate 1";
+            document.getElementById(id+'b').title= "You Rate 2";
+            document.getElementById(id+'c').title= "You Rate 3";}
+    else if(x==4)
+        {document.getElementById(id+'a').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'b').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'c').src= "<%=request.getContextPath()%>/images/white.png";
+
+            document.getElementById(id+'d').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'a').title= "You Rate 1";
+            document.getElementById(id+'b').title= "You Rate 2";
+            document.getElementById(id+'c').title= "You Rate 3";
+            document.getElementById(id+'d').title= "You Rate 4";}
+    else if(x==5)
+        {document.getElementById(id+'a').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'b').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'c').src= "<%=request.getContextPath()%>/images/white.png";
+         
+            document.getElementById(id+'d').src= "<%=request.getContextPath()%>/images/white.png";
+         
+            document.getElementById(id+'e').src= "<%=request.getContextPath()%>/images/white.png";
+            document.getElementById(id+'a').title= "You Rate 1";
+            document.getElementById(id+'b').title= "You Rate 2";
+            document.getElementById(id+'c').title= "You Rate 3";
+            document.getElementById(id+'d').title= "You Rate 4";
+            document.getElementById(id).title= "You Rate 5";}
+
     }
 
     </script>
@@ -134,7 +228,13 @@ if(sublibrary_id==null)sublibrary_id="all";
             obj1.setCallno(obj.getCallNo());
             obj1.setRowno(row+1);
             obj1.setLibrary_id(obj.getId().getLibraryId().toUpperCase());
-            obj1.setSublibrary_id(obj.getId().getSublibraryId().toUpperCase());
+            if(obj.getId().getLibraryId().toUpperCase().equalsIgnoreCase(obj.getId().getSublibraryId().toUpperCase()))
+            obj1.setLocation("CL");
+            else
+                obj1.setLocation(obj.getId().getSublibraryId().toUpperCase());
+
+
+                            obj1.setSublibrary_id(obj.getId().getSublibraryId().toUpperCase());
             obj1.setMain_entry(obj.getMainEntry());
             obj1.setPublisher(obj.getPublisherName());
             obj1.setPubplace(obj.getPublicationPlace());
@@ -142,6 +242,7 @@ if(sublibrary_id==null)sublibrary_id="all";
               obj1.setImage(obj.getImage());
              obj1.setDigitaldata(obj.getDigitalData());
             obj1.setComment(obj.getDigitalComment());
+            obj1.setRate(obj.getRating());
 
             j++;
             row++;
@@ -202,7 +303,7 @@ else
                      <td width="10%">
                          <i>Book Cover Page</i></td>
                      <td width="10%">
-                         <i>E-Content</i></td>
+                         <i><img src="<%=request.getContextPath()%>/images/ebook2.jpg" height="30px" width="50px"/></i></td>
                      <td width="10%" >
                          <i>Title</i></td>
               <td   >
@@ -214,9 +315,11 @@ else
               <td   >
                          <i>Publishing Year</i></td>
               <td   >
-                         <i>Library</i></td>
+                         <i>Institute</i></td>
               <td   >
-                         <i>SubLibrary</i></td>
+                         <i>Institute Location</i></td>
+              <td   >
+                         <i>My Rating</i></td>
 
 
                  </tr>
@@ -232,9 +335,9 @@ else
              <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getImage() %>" height="80px" width="80px"></a>
 
             </td>
-            <td width="10%"   style="border-top:dashed 1px cyan;">
+            <td width="10%"   style="border-top:dashed 1px cyan;"><img src="<%=request.getContextPath()%>/images/ebook3.jpg" height="30px" width="50px"/><br>
                 <% if(opacList.get(i).getDigitaldata()!=null){%>
-                <a href="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getDigitaldata() %>" target="_blank"><img src="<%=request.getContextPath()%>/images/econtent.GIF" height="30px" width="100px"/> <br>Comment :<%=opacList.get(i).getComment() %></a>
+                <a href="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getDigitaldata() %>" target="_blank">Click here<br>Comment :<%=opacList.get(i).getComment() %></a>
             <%}else{%>
             Not-available
                 <%}%>
@@ -251,7 +354,13 @@ else
             </td>
             <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getLibrary_id() %></a>
             </td>
-            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getSublibrary_id() %></a>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><%=opacList.get(i).getLocation() %></a>
+            </td>
+            <td   style="border-top:dashed 1px cyan;"><img onclick="search('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','1')" width="20px" height="20px" id="<%=opacList.get(i).getRowno() %>a" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')" onmouseover="rate('<%=opacList.get(i).getRowno() %>',1)" src="<%=request.getContextPath()%>/images/star.png"/><img id="<%=opacList.get(i).getRowno() %>b" onmouseover="rate('<%=opacList.get(i).getRowno() %>',2)" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png" onclick="search('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','2')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')"/>
+                <img onclick="search('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','3')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')"  onmouseover="rate('<%=opacList.get(i).getRowno() %>',3)" id="<%=opacList.get(i).getRowno() %>c" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png"/>
+                <img onclick="search('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','4')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')" onmouseover="rate('<%=opacList.get(i).getRowno() %>',4)"  id="<%=opacList.get(i).getRowno() %>d" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png"/>
+                <img onclick="search('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','5')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')" onmouseover="rate('<%=opacList.get(i).getRowno() %>',5)" id="<%=opacList.get(i).getRowno() %>e" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png"/>
+                <br>Viewer Rating:<i> <%=opacList.get(i).getRate()!=null?opacList.get(i).getRate():"Not Given"%></i>
             </td>
         </tr>
         <%}%>
@@ -354,6 +463,11 @@ else
             obj1.setCallno(obj.getCallNo());
             obj1.setRowno(row+1);
             obj1.setLibrary_id(obj.getId().getLibraryId().toUpperCase());
+            if(obj.getId().getLibraryId().toUpperCase().equalsIgnoreCase(obj.getId().getSublibraryId().toUpperCase()))
+            obj1.setLocation("CL");
+            else
+                obj1.setLocation(obj.getId().getSublibraryId().toUpperCase());
+
             obj1.setSublibrary_id(obj.getId().getSublibraryId().toUpperCase());
             obj1.setMain_entry(obj.getMainEntry());
             obj1.setPublisher(obj.getPublisherName());
@@ -362,7 +476,7 @@ else
                obj1.setImage(obj.getImage());
             obj1.setDigitaldata(obj.getDigitalData());
             obj1.setComment(obj.getDigitalComment());
-
+            obj1.setRate(obj.getRating());
 
             j++;
             row++;
@@ -418,8 +532,8 @@ else
                          <i>Sno</i></td>
                      <td width="10%">
                          <i>Book Cover Page</i></td>
-                     <td width="10%">
-                         <i>E-Content</i></td>
+                    <td width="10%">
+                         <i><img src="<%=request.getContextPath()%>/images/ebook2.jpg" height="30px" width="50px"/></i></td>
                      <td width="10%" >
                          <i>Title</i></td>
               <td   >
@@ -433,7 +547,8 @@ else
               <td   >
                          <i>Library</i></td>
               <td   >
-                         <i>SubLibrary</i></td>
+                         <i>SubLibrary</i></td>  <td   >
+                         <i>My Rating</i></td>
 
 
                  </tr>
@@ -449,7 +564,7 @@ else
             <td width="10%"   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>"><img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getImage() %>" height="80px" width="80px"></a>
 
             </td>
-            <td width="10%"   style="border-top:dashed 1px cyan;">
+            <td width="10%"   style="border-top:dashed 1px cyan;"><img src="<%=request.getContextPath()%>/images/ebook3.jpg" height="30px" width="50px"/><br>
                 <% if(opacList.get(i).getDigitaldata()!=null){%>
                <a href="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=opacList.get(i).getDigitaldata() %>" target="_blank"><img src="<%=request.getContextPath()%>/images/econtent.GIF" height="30px" width="100px"/> <br>Comment :<%=opacList.get(i).getComment() %></a>
             <%}else{%>
@@ -468,7 +583,13 @@ else
             </td>
             <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>&h=t"><%=opacList.get(i).getLibrary_id() %></a>
             </td>
-            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>&h=t"><%=opacList.get(i).getSublibrary_id() %></a>
+            <td   style="border-top:dashed 1px cyan;"><a href="<%=request.getContextPath()%>/OPAC/viewDetails1.do?doc_id=<%=opacList.get(i).getBiblioid()%>&library_id=<%=opacList.get(i).getLibrary_id() %>&sublibrary_id=<%=opacList.get(i).getSublibrary_id() %>&h=t"><%=opacList.get(i).getLocation() %></a>
+            </td>
+             <td   style="border-top:dashed 1px cyan;"><img onclick="searchmli('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','1','t')" width="20px" height="20px" id="<%=opacList.get(i).getRowno() %>a" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')" onmouseover="rate('<%=opacList.get(i).getRowno() %>',1)" src="<%=request.getContextPath()%>/images/star.png"/><img id="<%=opacList.get(i).getRowno() %>b" onmouseover="rate('<%=opacList.get(i).getRowno() %>',2)" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png" onclick="searchmli('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','2','t')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')"/>
+                <img onclick="searchmli('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','3','t')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')"  onmouseover="rate('<%=opacList.get(i).getRowno() %>',3)" id="<%=opacList.get(i).getRowno() %>c" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png"/>
+                <img onclick="searchmli('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','4','t')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')" onmouseover="rate('<%=opacList.get(i).getRowno() %>',4)"  id="<%=opacList.get(i).getRowno() %>d" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png"/>
+                <img onclick="searchmli('<%=opacList.get(i).getBiblioid()%>','<%=opacList.get(i).getLibrary_id() %>','<%=opacList.get(i).getSublibrary_id() %>','5','t')" onmouseout="clear1('<%=opacList.get(i).getRowno() %>')" onmouseover="rate('<%=opacList.get(i).getRowno() %>',5)" id="<%=opacList.get(i).getRowno() %>e" width="20px" height="20px" src="<%=request.getContextPath()%>/images/star.png"/>
+                <br>Viewer Rating:<i> <%=opacList.get(i).getRate()!=null?opacList.get(i).getRate():"Not Given"%></i>
             </td>
         </tr>
         <%}%>

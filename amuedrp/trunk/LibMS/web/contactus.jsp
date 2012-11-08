@@ -11,7 +11,7 @@ This Page is to accept Institute Request and Send to SuperAdmin
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>LibMS : Institute Registration Page</title>
+<title>LibMS : Contact Us </title>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css" type="text/css"/>
 <script language="javascript" type="text/javascript">
@@ -72,7 +72,12 @@ else{
 
 
 <script type="text/javascript" language="javascript">
+function fun()
+        {
 
+            document.form1.action="<%=request.getContextPath()%>/admin/language.jsp";
+            document.form1.submit();
+        }
     function quit()
     {
         window.location="<%=request.getContextPath()%>/login.jsp";
@@ -99,19 +104,54 @@ else{
 </head>
 <body style="margin: 0px 0px 0px 0px" >
  
-      
- <table align="center" height="100%" style="width: 100%;background-color: white;border: solid #ECF1EF 0px;" dir="<%=rtl%>" >
-     <tr><td align="right"><img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0"  dir="<%=rtl%>" id="Image1" style="height:40px;width:150px;"></td></tr>
-     <tr><td style="height: 60px;" class="admintxtStyle" valign="bottom"><img src="<%=request.getContextPath()%>/images/help.jpeg" height="60px" width="100px">
-             Contact Us
+      <form method="post" name="form1">
+ <table align="center" width="100%" height="100%" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" dir="<%=rtl%>" >
+      <tr><td class="homepage" style="background-color: black;color:white;" align="right" colspan="2">
+
+
+
+         <a style="color:white" href="<%=request.getContextPath()%>">Home</a>&nbsp;|&nbsp;     <a style="color:white" href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx">NME-ICT ERP Mission</a>&nbsp;|&nbsp;<a  style="color:white" href="<%=request.getContextPath()%>/contactus.jsp">Contact Us</a>&nbsp;|&nbsp; <a style="color:white" href="<%=request.getContextPath()%>/admin/admin_registration.jsp"><%= resource.getString("login.href.institute.registration") %></a>
+         &nbsp;|&nbsp;            <a style="color:white" href="relnotes.jsp">   Release Notes</a>&nbsp;|&nbsp;  <a style="color:white" href="instantUserManual_LibMS-2012.pdf">UserManual</a>&nbsp;|&nbsp; <a style="color:white" href="<%=request.getContextPath()%>/admin/view_instiapproved.jsp">View All Registered Institutes</a>&nbsp;|&nbsp;<%=resource.getString("login.message.selectlanguage")%><select name="locale" class="selecthome" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select>
+
+
+
+                                         </td>
+
+                                     </tr>
+            <tr><td><table align="center"  width="100%"  style="background-color: white;"   dir="<%=rtl%>" >
+
+   <tr ><td>
+                                     <table width="100%" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;"><tr>
+                                         <td align="left"  style="background-color: white;color:blue;height: 50px;  margin: 0px 0px 0px 0px;font-style: italic;font-size: 18px;valign:bottom" valign="bottom" align="center">
+                                          
+                                             &nbsp;&nbsp;<span style="font-style: italic;font-size: 18px;">LibMS....</span>        "<%=resource.getString("login.message.logo.under")%>"
+
+
+
+
+                            </td>
+                            <td align="right">
+  <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="height:70px;width:160px;">
+
+                            </td>
+
+
+                                         </tr></table>
+                                          <hr color="cyan">
+                                         </td>
+
+           </tr>
+
+     <tr><td style="height: 60px;font-size:25px;color:red;font-family: arial;margin-left: 100px; "  valign="bottom">
+           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  CONTACT US<hr color="cyan">
          </td>           </tr>
      
                
-                <tr><td valign="top" align="left" style="border-bottom: dashed 1px cyan" >
-                        <p style="margin-left: 100px;">
-                    Dr. M. U. Bokhari<br>
-                    Principal Investigator<br>
-                    EdRP Project,NMEICT, Dept of Computer Science<br>
+                <tr><td valign="top" align="left"  >
+                        <p style="margin-left: 100px;line-height: 26px;font-family: arial">
+                    Dr. M. U. Bokhari&nbsp;<i>(Principal Investigator)&nbsp;</i><br>
+                    
+                    EdRP Project, NMEICT, Dept of Computer Science<br>
                     Aligrah Muslium University<br>
                     Aligrah,PIN-202002 UP<br>
                     For General Inquiries<br>
@@ -124,8 +164,8 @@ else{
            
           
  
-
-
+                </td></tr></table>
+</form>
  </body>
 
 

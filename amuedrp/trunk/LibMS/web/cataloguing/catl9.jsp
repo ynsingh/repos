@@ -58,7 +58,7 @@ description[2]='<i>This is tool-tip description 3'
      <jsp:include page="/admin/header.jsp"></jsp:include>
 <body>
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -152,6 +152,7 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
+You are on MARC Page : 9 Tag Page
 <div style="width:100%"><%
 String tag0=(String)session.getAttribute("tag0");
 String tag1=(String)session.getAttribute("tag1");

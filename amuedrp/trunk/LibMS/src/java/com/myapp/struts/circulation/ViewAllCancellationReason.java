@@ -24,7 +24,7 @@ public class ViewAllCancellationReason extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             {
-        
+        CirculationDAO cirdao=new CirculationDAO();
         HttpSession session = request.getSession();
         String        library_id=(String)session.getAttribute("library_id");
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
@@ -32,7 +32,7 @@ public class ViewAllCancellationReason extends org.apache.struts.action.Action {
 
       session.removeAttribute("actlist1");
     
-      session.setAttribute("actlist1", CirculationDAO.searchCancelReason(library_id, sublibrary_id));
+      session.setAttribute("actlist1", cirdao.searchCancelReason(library_id, sublibrary_id));
       return mapping.findForward(SUCCESS);
     }
 }

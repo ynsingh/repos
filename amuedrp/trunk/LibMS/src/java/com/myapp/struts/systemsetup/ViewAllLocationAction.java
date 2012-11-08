@@ -24,23 +24,16 @@ public class ViewAllLocationAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-             HttpSession session=request.getSession();
+        LocationDAO locdao=new LocationDAO();
+        HttpSession session=request.getSession();
         String     library_id=(String)session.getAttribute("library_id");
          String     sub_lib=(String)session.getAttribute("sublibrary_id");
-             List<Location> list=(List<Location>)LocationDAO.listlocation(library_id, sub_lib);
+             List<Location> list=(List<Location>)locdao.listlocation(library_id, sub_lib);
              session.setAttribute("list", list);
         return mapping.findForward(SUCCESS);
     }

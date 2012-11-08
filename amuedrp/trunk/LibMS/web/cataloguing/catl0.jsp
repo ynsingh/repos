@@ -32,6 +32,7 @@
 <%
  String msg1=(String)request.getAttribute("msg1");
  hm1 = (HashMap)session.getAttribute("hsmp");
+ if(hm1!=null){
 
   if(hm1.containsKey("1")){
        bib1=(Biblio)hm1.get("1");
@@ -48,6 +49,7 @@
    if(hm1.containsKey("5")){
        bib5=(Biblio)hm1.get("5");
         }
+  }
 %>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ddtabmenufiles/solidblocksmenu.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/page.css" />
@@ -131,7 +133,7 @@ description[20]='Source of code  <b># - MARC language code, 7 - Source specified
     <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -257,24 +259,8 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-
-                                      <!-- Marc entries Starts from here . -->
-                                     <%-- <%! Biblio marc=new Biblio();
-                                      Biblio marc1=new Biblio();
-                                      Biblio marc2=new Biblio();%>
-                                      <%
-     if(request.getAttribute("020")!=null){
-     marc=(Biblio)request.getAttribute("020");}
-    if(request.getAttribute("022")!=null){
-    marc1=(Biblio)request.getAttribute("022");}
-    if(request.getAttribute("041")!=null){
-     marc2=(Biblio)request.getAttribute("041");}
-     %>  --%>
-<!--                                     <div style="position:absolute;left:80%;top:18%;">
-                                         <table>
-                                     <tr><td></td><td align="right"><a href="<%--<%=request.getContextPath() %>--%>/marccommit.do"><input type="submit" value="Commit Data" /></a></td></tr>
-                                     </table>
-                                     </div>-->
+You are on MARC Page : 0 Tag Page
+                                   
 
 <div>
 
@@ -305,7 +291,7 @@ Canceled or Invalid number(R) <input type="text" value="<% if(bib1.get$z()!=null
 
 <tr><td colspan="2"><hr width="90%" size="2" color="green"/></td></tr>
 <tr>
-    <td>&nbsp;&nbsp;&nbsp;International Stnadard  Serial Number(022) : <a href="javascript:animatedcollapse.toggle('022')">ind</a> <div id="022" style="width: 150px; display:none" >&nbsp;&nbsp;&nbsp;ind1<input type="text" name="in0221" value="<% if(bib2.getIndicator1()!=null){%><%= bib2.getIndicator1() %><%}%>" maxlength="1" size="1" onFocus="statwords(description[18],750,50)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="#" name="in0222" maxlength="1" size="1" onFocus="statwords(description[4],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
+    <td>&nbsp;&nbsp;&nbsp;International Standard  Serial Number(022) : <a href="javascript:animatedcollapse.toggle('022')">ind</a> <div id="022" style="width: 150px; display:none" >&nbsp;&nbsp;&nbsp;ind1<input type="text" name="in0221" value="<% if(bib2.getIndicator1()!=null){%><%= bib2.getIndicator1() %><%}%>" maxlength="1" size="1" onFocus="statwords(description[18],750,50)" onBlur="clearTimeout(openTimer);stopIt()" /> ind2<input type="text" value="#" name="in0222" maxlength="1" size="1" onFocus="statwords(description[4],650,30)" onBlur="clearTimeout(openTimer);stopIt()" /></div></td>
 <td>
 $a ISSN (NR)<input type="text" value="<% if(bib2.get$a()!=null){%><%= bib2.get$a() %><%}%>" name="z022" id="022" onFocus="statwords(description[5],550,30)" onBlur="clearTimeout(openTimer);stopIt()" />
 <font size="2">

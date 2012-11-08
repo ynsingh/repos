@@ -29,13 +29,13 @@
 %>
 <%
  hm1 = (HashMap)session.getAttribute("hsmp");
-
+if(hm1!=null){
   if(hm1.containsKey("26")){
        bib1=(Biblio)hm1.get("6");
         }
    if(hm1.containsKey("27")){
        bib2=(Biblio)hm1.get("7");
-        }
+        }}
 %>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ddtabmenufiles/solidblocksmenu.css" />
@@ -115,7 +115,7 @@ description[15]='MARC code that identifies the source list from which the subjec
     <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -240,7 +240,7 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-
+You are on MARC Page : 6 Tag Page
                                       <!-- Marc entries Starts from here . -->
 
 

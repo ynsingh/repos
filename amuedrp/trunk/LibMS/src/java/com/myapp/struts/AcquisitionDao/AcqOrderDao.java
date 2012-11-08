@@ -185,7 +185,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
 
 
 
-     public static String getApprovalItemId(String library_id,String sublibrary_id,int control_no,String approval_no) {
+     public   String getApprovalItemId(String library_id,String sublibrary_id,int control_no,String approval_no) {
         Session session = null;
             String amount=null;
     int count = 0;
@@ -303,7 +303,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
     }
 
 
- public static AcqOrderHeader search1Orderno(String order_no, String library_id, String sub_library_id) {
+ public   AcqOrderHeader search1Orderno(String order_no, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         AcqOrderHeader obj=null;
         try{
@@ -392,7 +392,7 @@ sql="(select a.recieving_no,a.order_no,a.recieved_by,a.vendor_id,a.recieved_date
         return obj;
     }
 
-public static void updateAcqBibliographyDetails(AcqBibliographyDetails obj) {
+public   void updateAcqBibliographyDetails(AcqBibliographyDetails obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -419,7 +419,7 @@ public static void updateAcqBibliographyDetails(AcqBibliographyDetails obj) {
 
 
 
-public static void updateAcqOrder1(AcqOrder1 obj) {
+public   void updateAcqOrder1(AcqOrder1 obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -441,7 +441,7 @@ finally{
 
     }
 
-public static boolean updateAcqOrderHeader(AcqOrderHeader obj) {
+public   boolean updateAcqOrderHeader(AcqOrderHeader obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -463,7 +463,7 @@ public static boolean updateAcqOrderHeader(AcqOrderHeader obj) {
         return true;
 
     }
-public static boolean updateAcqApproval(AcqApproval obj) {
+public   boolean updateAcqApproval(AcqApproval obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -539,7 +539,7 @@ session.getTransaction().commit();
  return maxbiblio;
     }
 
-      public static boolean  delete1(String library_id,String sub_library_id,String order_no) {
+      public   boolean  delete1(String library_id,String sub_library_id,String order_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {

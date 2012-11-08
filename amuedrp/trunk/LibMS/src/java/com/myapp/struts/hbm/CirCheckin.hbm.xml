@@ -1,42 +1,41 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.CirCheckin" table="cir_checkin" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.CirCheckinId">
-            <key-property name="checkinId" type="string">
-                <column name="checkin_id" length="10" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="cirCheckout" class="com.myapp.struts.hbm.CirCheckout" update="false" insert="false" fetch="select">
-            <column name="checkout_id" />
-            <column name="library_id" length="20" not-null="true" />
-            <column name="sublibrary_id" length="20" not-null="true" />
-        </many-to-one>
-        <property name="memberId" type="string">
-            <column name="member_id" length="100" />
-        </property>
-        <property name="returningDate" type="string">
-            <column name="returning_date" length="15" />
-        </property>
-        <property name="documentId" type="string">
-            <column name="document_id" length="10" />
-        </property>
-        <property name="damagedStatus" type="string">
-            <column name="damaged_status" length="20" />
-        </property>
-        <property name="lossStatus" type="string">
-            <column name="loss_status" length="20" />
-        </property>
-        <property name="reason" type="string">
-            <column name="reason" length="100" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.CirCheckin" table="cir_checkin">
+    <composite-id class="com.myapp.struts.hbm.CirCheckinId" name="id">
+      <key-property name="checkinId" type="string">
+        <column length="10" name="checkin_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.CirCheckout" fetch="select" insert="false" name="cirCheckout" update="false">
+      <column name="checkout_id"/>
+      <column length="20" name="library_id" not-null="true"/>
+      <column length="20" name="sublibrary_id" not-null="true"/>
+    </many-to-one>
+    <property name="memberId" type="string">
+      <column length="100" name="member_id"/>
+    </property>
+    <property name="returningDate" type="string">
+      <column length="15" name="returning_date"/>
+    </property>
+    <property name="documentId" type="string">
+      <column length="10" name="document_id"/>
+    </property>
+    <property name="damagedStatus" type="string">
+      <column length="20" name="damaged_status"/>
+    </property>
+    <property name="lossStatus" type="string">
+      <column length="20" name="loss_status"/>
+    </property>
+    <property name="reason" type="string">
+      <column length="100" name="reason"/>
+    </property>
+  </class>
 </hibernate-mapping>

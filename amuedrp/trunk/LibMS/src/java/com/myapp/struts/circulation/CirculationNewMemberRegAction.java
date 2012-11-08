@@ -50,7 +50,8 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
    String rtl="ltr";
    String align="left";
 
-
+CirculationDAO cirdao=new CirculationDAO();
+SubMemberDAO submemdao=new SubMemberDAO();
 
 
     /**
@@ -151,7 +152,7 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
 
             
 
-            CirculationDAO.insert(cmd);
+            cirdao.insert(cmd);
 
              session1.removeAttribute("filename");
 
@@ -189,7 +190,7 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
 
             cma.setStatus("registered");
 
-    SubEmployeeType book=(SubEmployeeType)SubMemberDAO.searchIssueLimit(library_id,cmdf.getMEMCAT(),cmdf.getMEMSUBCAT());
+    SubEmployeeType book=(SubEmployeeType)submemdao.searchIssueLimit(library_id,cmdf.getMEMCAT(),cmdf.getMEMSUBCAT());
 
     if(book!=null)
     {
@@ -220,7 +221,7 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
 
             cma.setSemester(cmdf.getTXTSEM());
 
-            result=CirculationDAO.insert(cma);
+            result=cirdao.insert(cma);
             }
             if(result==true)
             {
@@ -252,7 +253,7 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
 
 
 
-            CirMemberDetail cmd1=(CirMemberDetail)CirculationDAO.searchCirMemDetails(library_id,  member_id);
+            CirMemberDetail cmd1=(CirMemberDetail)cirdao.searchCirMemDetails(library_id,  member_id);
 
             cmd1.setFname(cmdf.getTXTFNAME());
             cmd1.setMname(cmdf.getTXTMNAME());
@@ -283,13 +284,13 @@ public class CirculationNewMemberRegAction extends org.apache.struts.action.Acti
 //            }
 //          
             
-            result=CirculationDAO.update(cmd1);
+            result=cirdao.update(cmd1);
 
 
             //Account Updation
 
 
-             CirMemberAccount cma = (CirMemberAccount)CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, member_id);
+             CirMemberAccount cma = (CirMemberAccount)cirdao.searchCirMemAccountDetails(library_id, sublibrary_id, member_id);
 
 if(cma!=null)
 {
@@ -307,7 +308,7 @@ if(cma!=null)
             cma.setExpiryDate(cmdf.getTXTEXP_DATE());
 
 
-    SubEmployeeType book=(SubEmployeeType)SubMemberDAO.searchIssueLimit(library_id,cmdf.getMEMCAT(),cmdf.getMEMSUBCAT());
+    SubEmployeeType book=(SubEmployeeType)submemdao.searchIssueLimit(library_id,cmdf.getMEMCAT(),cmdf.getMEMSUBCAT());
 
     if(book!=null)
     {
@@ -331,7 +332,7 @@ if(cma!=null)
 
             cma.setSemester(cmdf.getTXTSEM());
 
-            result=CirculationDAO.updateAccount(cma);
+            result=cirdao.updateAccount(cma);
 
 
 
@@ -374,7 +375,7 @@ if(cma!=null)
 
        sublibrary_id=(String)session1.getAttribute("sublibrary_id");
         System.out.println("Delete Button recieve"+library_id+sublibrary_id+member_id);
-        List<CirMemberAccount> cirmemobj=(List<CirMemberAccount>)CirculationDAO.searchCirMemAccountDetails(library_id,member_id);
+        List<CirMemberAccount> cirmemobj=(List<CirMemberAccount>)cirdao.searchCirMemAccountDetails(library_id,member_id);
 
         System.out.println(cirmemobj.size()+"Account of Member");
         if(cirmemobj.size()>1)
@@ -394,7 +395,7 @@ if(cma!=null)
               return mapping.findForward("Delete");
         }
 System.out.println(library_id+sublibrary_id+member_id+"........................");
-        List<CirCheckout> chkobj=(List<CirCheckout>)CirculationDAO.searchCheckoutMemDetails(library_id,sublibrary_id, member_id);
+        List<CirCheckout> chkobj=(List<CirCheckout>)cirdao.searchCheckoutMemDetails(library_id,sublibrary_id, member_id);
 
         System.out.println(chkobj+"........................");
 
@@ -408,7 +409,7 @@ System.out.println(library_id+sublibrary_id+member_id+"........................"
               request.setAttribute("button",button);
               return mapping.findForward("Delete");
         }
-          result=CirculationDAO.deleteAccount(library_id, sublibrary_id, member_id);
+          result=cirdao.deleteAccount(library_id, sublibrary_id, member_id);
 
 
 

@@ -29,8 +29,7 @@ public class SubLibraryAction extends org.apache.struts.action.Action {
     private String button;
     private String library_id;
     
-    Connection con;
-    PreparedStatement stmt;
+    
     String sql;
      Locale locale=null;
    String locale1="en";
@@ -43,6 +42,9 @@ public class SubLibraryAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
+        FacultyDAO facdao=new FacultyDAO();
+        DeptDAO deptdao=new DeptDAO();
+        SubLibraryDAO sublibdao=new SubLibraryDAO();
          HttpSession session=request.getSession();
           try{
 
@@ -64,15 +66,15 @@ public class SubLibraryAction extends org.apache.struts.action.Action {
        
        
         library_id=(String)session.getAttribute("library_id");
-            List   list2=(List)FacultyDAO.searchFaculty(library_id);
+            List   list2=(List)facdao.searchFaculty(library_id);
             session.setAttribute("list2", list2);
-            List   list3=(List)DeptDAO.searchDept(library_id);
+            List   list3=(List)deptdao.searchDept(library_id);
             session.setAttribute("list3", list3);
        
         if(button.equals("Add"))
         {
          
-         SubLibrary sublibobj=(SubLibrary)SubLibraryDAO.getLibName(library_id, sublibrary_id);
+         SubLibrary sublibobj=(SubLibrary)sublibdao.getLibName(library_id, sublibrary_id);
             
          if(sublibobj!=null)
          {
@@ -110,7 +112,7 @@ SubLibrary sublibobj;
 
             
 
-                         sublibobj=(SubLibrary)SubLibraryDAO.getLibName(library_id, sublibrary_id);
+                         sublibobj=(SubLibrary)sublibdao.getLibName(library_id, sublibrary_id);
                         if(sublibobj==null)
                         {
 
@@ -131,7 +133,7 @@ SubLibrary sublibobj;
          
            request.setAttribute("sublib", sublibobj);
 
-         Department ds= DeptDAO.getDeptName(library_id,sublibobj.getSublibName());
+         Department ds=deptdao.getDeptName(library_id,sublibobj.getSublibName());
         if(ds!=null)
             request.setAttribute("sublib_name",sublibobj.getSublibName());
       

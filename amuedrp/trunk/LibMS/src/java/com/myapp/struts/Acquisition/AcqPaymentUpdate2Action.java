@@ -30,6 +30,7 @@ public class AcqPaymentUpdate2Action extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     List<Integer> list=new ArrayList<Integer>();
+    AcquisitionDao acqdao=new AcquisitionDao();
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -56,10 +57,10 @@ public class AcqPaymentUpdate2Action extends org.apache.struts.action.Action {
             acqforpaymentupdate.get(i).setStatus("processed");
             acqforpaymentupdate.get(i).setPaymentUpdateDate(prn_date);
 
-            AcqInvoiceDetail acqinvdetail=AcquisitionDao.searchByInovoiceDetails(library_id, sub_library_id, invoice_no, recieving_no);
-            int recieving_item_id=acqinvdetail.getRecievingItemId();
+            AcqInvoiceDetail acqinvdetail=acqdao.searchByInovoiceDetails(library_id, sub_library_id, invoice_no, recieving_no);
+            int recieving_item_id=acqinvdetail.getId().getRecievingItemId();
 
-            AcqRecievingDetails acqrecdetails=AcquisitionDao.searchRecievingDetailsByKey(library_id, sub_library_id, recieving_no, recieving_item_id);
+            AcqRecievingDetails acqrecdetails=acqdao.searchRecievingDetailsByKey(library_id, sub_library_id, recieving_no, recieving_item_id);
             int control_no=acqrecdetails.getControlNo();
             int j=0;
             AcqBudgetTransaction acqbudgettranc=null;
@@ -69,13 +70,13 @@ public class AcqPaymentUpdate2Action extends org.apache.struts.action.Action {
                if(list.get(j)!=control_no)
                {
                   list.add(control_no);
-                  acqbudgettranc=AcquisitionDao.acqBudgetTransactionControlNo(library_id,String.valueOf(control_no));
+                  acqbudgettranc=acqdao.acqBudgetTransactionControlNo(library_id,String.valueOf(control_no));
                   acqbudgetheadid=acqbudgettranc.getAcqBudgetHeadId();
                   acqbudgettranc.setExpenseAmount(tot_amt);
                }
                else
                {
-                  acqbudgettranc=AcquisitionDao.acqBudgetTransactionControlNo(library_id,String.valueOf(control_no));
+                  acqbudgettranc=acqdao.acqBudgetTransactionControlNo(library_id,String.valueOf(control_no));
                   acqbudgetheadid=acqbudgettranc.getAcqBudgetHeadId();
                   acqbudgettranc.setExpenseAmount(acqbudgettranc.getExpenseAmount()+","+tot_amt);
                }
@@ -83,14 +84,14 @@ public class AcqPaymentUpdate2Action extends org.apache.struts.action.Action {
             if(j==0)
             {
                  list.add(control_no);
-                 acqbudgettranc=AcquisitionDao.acqBudgetTransactionControlNo(library_id,String.valueOf(control_no));
+                 acqbudgettranc=acqdao.acqBudgetTransactionControlNo(library_id,String.valueOf(control_no));
                  acqbudgetheadid=acqbudgettranc.getAcqBudgetHeadId();
                  acqbudgettranc.setExpenseAmount(tot_amt);
             }
 
 
 
-            AcqBudgetAllocation acqbudgetallocation=AcquisitionDao.acqBudgetAllocationDelete(library_id, acqbudgetheadid,date[0]);
+            AcqBudgetAllocation acqbudgetallocation=acqdao.acqBudgetAllocationDelete(library_id, acqbudgetheadid,date[0]);
             String expense_amount=acqbudgetallocation.getExpenseAmount();
             if(expense_amount==null)
             {
@@ -99,7 +100,7 @@ public class AcqPaymentUpdate2Action extends org.apache.struts.action.Action {
             expense_amount=String.valueOf(Double.parseDouble(expense_amount)+Double.parseDouble(tot_amt));
             acqbudgetallocation.setExpenseAmount(expense_amount);
             
-            boolean result=AcquisitionDao.paymentUpdate(acqforpaymentupdate.get(i), acqbudgettranc, acqbudgetallocation); 
+            boolean result=acqdao.paymentUpdate(acqforpaymentupdate.get(i), acqbudgettranc, acqbudgetallocation);
             if(result==false)
             {
               request.setAttribute("msg","Payment not updated");
@@ -109,16 +110,16 @@ public class AcqPaymentUpdate2Action extends org.apache.struts.action.Action {
            
 
         }
-         AcqRequestpaymentHeader acqreqpaymentheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id, acqforpaymentupdate.get(0).getId().getPrn());
+         AcqRequestpaymentHeader acqreqpaymentheader=acqdao.searchForPrnNo(library_id, sub_library_id, acqforpaymentupdate.get(0).getId().getPrn());
          acqreqpaymentheader.setStatus("processed");
-         boolean result=AcquisitionDao.insertInPaymentRequestHeader(acqreqpaymentheader);
+         boolean result=acqdao.insertInPaymentRequestHeader(acqreqpaymentheader);
          if(result==false)
          {
             request.setAttribute("msg","Payment not updated");
             return mapping.findForward(SUCCESS);
          }
 
-         List<PaymentUpdateClass> acqforpaymentupdate1=AcquisitionDao.getDistinctPrn(library_id, sub_library_id);
+         List<PaymentUpdateClass> acqforpaymentupdate1=acqdao.getDistinctPrn(library_id, sub_library_id);
     //     if(!acqforpaymentupdate1.isEmpty())
          session.setAttribute("acqforpaymentupdate",acqforpaymentupdate1);
          request.setAttribute("msg","Payment updated");

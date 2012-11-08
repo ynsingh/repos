@@ -45,6 +45,14 @@ LoginDAO logindao;
 
 logindao=new LoginDAO();
 
+PrivilegeDAO privdao=new PrivilegeDAO();
+AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
+CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
+StaffDetailDAO staffdao=new StaffDetailDAO();
+CreatePrivilege cirpriv=new CreatePrivilege();
+
 
 
 
@@ -60,7 +68,7 @@ logindao=new LoginDAO();
             staff_id = (String)request.getParameter("staff_id");
         System.out.println("staff_id4="+staff_id);
 
-        StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+        StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
         sublibrary_id=staffobj.getSublibraryId();
 System.out.println(sublibrary_id);
 
@@ -70,11 +78,11 @@ if(staffobj1!=null)
 
 System.out.println(staffobj1.getRole());
 
-        Privilege privobj=PrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
-        AcqPrivilege acqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
-        CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
-        CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
-        SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
+        Privilege privobj=privdao.getPrivilege(library_id, sublibrary_id, staff_id);
+        AcqPrivilege acqprivobj=acqprivdao.getPrivilege(library_id, sublibrary_id, staff_id);
+        CatPrivilege catprivobj=catprivdao.getPrivilege(library_id, sublibrary_id, staff_id);
+        CirPrivilege cirprivobj=cirprivdao.getPrivilege(library_id, sublibrary_id, staff_id);
+        SerPrivilege serprivobj=serprivdao.getPrivilege(library_id, sublibrary_id, staff_id);
 
 
       

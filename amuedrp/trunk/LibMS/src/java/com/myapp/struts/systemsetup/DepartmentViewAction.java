@@ -25,24 +25,16 @@ public class DepartmentViewAction extends org.apache.struts.action.Action {
     String dept_id;
     String library_id;
     String button;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+DeptDAO deptdao=new DeptDAO();
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         dept_id=request.getParameter("id");
-        Department dept=DeptDAO.getDeptName(library_id, dept_id);
+        Department dept=deptdao.getDeptName(library_id, dept_id);
          if(dept!=null)
          {request.setAttribute("button", "View");
                request.setAttribute("sublib", dept);

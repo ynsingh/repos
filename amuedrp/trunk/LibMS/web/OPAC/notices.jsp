@@ -23,7 +23,7 @@ List noticelibray_id=(List)session.getAttribute("noticelibray_id");
      <script language="javascript" type="text/javascript">
          //   reSize Iframe when ever child  calls  it
    function setIframeHeight() {
-       iframe=document.getElementById('f5');
+       iframe=document.getElementById('f4');
 
     if (iframe) {
 
@@ -216,13 +216,13 @@ locale1=(String)session.getAttribute("locale");
         <tr dir="<%=rtl%>" >
             
             
-            <td   dir="<%=rtl%>" valign="top" width="40%">
+            <td  colspan="2"  dir="<%=rtl%>" valign="top" width="40%">
                
-             <IFRAME  src="<%=request.getContextPath()%>/OPAC/notices2.jsp"   frameborder="0" height="0px" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
+             <IFRAME  src="#"   frameborder="0" height="100%" width="100%" scrolling="no" name="f4" id="f4"></IFRAME>
             
       </td>
-      <td dir="<%=rtl%>" ><IFRAME  src="<%=request.getContextPath()%>/OPAC/notices_view.jsp" width="100%"  frameborder="0"   scrolling="no" name="f5" id="f5"></IFRAME>
-      </td>
+     <%-- <td dir="<%=rtl%>"bgcolor="red" ><IFRAME  src="<%=request.getContextPath()%>/OPAC/notices_view.jsp" width="100%"  frameborder="0"   scrolling="no" name="f5" id="f5"></IFRAME>
+      </td>--%>
 
 </tr>
         </table>

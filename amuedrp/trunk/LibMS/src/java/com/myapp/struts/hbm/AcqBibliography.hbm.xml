@@ -1,72 +1,71 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 18, 2011 7:00:14 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqBibliography" table="acq_bibliography" catalog="libms" lazy="false">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqBibliographyId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="subLibraryId" type="string">
-                <column name="sub_library_id" length="20" />
-            </key-property>
-            <key-property name="titleId" type="int">
-                <column name="title_id" />
-            </key-property>
-        </composite-id>
-        <property name="docType" type="string">
-            <column name="doc_type" length="50" />
-        </property>
-        <property name="title" type="string">
-            <column name="title" length="100" />
-        </property>
-        <property name="publisherName" type="string">
-            <column name="publisher_name" length="100" />
-        </property>
-        <property name="author" type="string">
-            <column name="author" length="100" />
-        </property>
-        <property name="lccNo" type="string">
-            <column name="lcc_no" length="20" />
-        </property>
-        <property name="series" type="string">
-            <column name="series" length="20" />
-        </property>
-        <property name="subAuthor" type="string">
-            <column name="sub_author" length="50" />
-        </property>
-         <property name="subAuthor0" type="string">
-            <column name="sub_author0" length="100" />
-        </property>
-         <property name="subAuthor1" type="string">
-            <column name="sub_author1" length="100" />
-        </property>
-         <property name="subAuthor2" type="string">
-            <column name="sub_author2" length="100" />
-        </property>
-        <property name="publishingYr" type="string">
-            <column name="publishing_yr" length="20" />
-        </property>
-        <property name="publishingPlace" type="string">
-            <column name="publishing_place" length="20" />
-        </property>
-        <property name="edition" type="string">
-            <column name="edition" length="100" />
-        </property>
-          <property name="Volume_no" type="string">
-            <column name="volume_no" length="13" />
-        </property>
-        <property name="isbn" type="string">
-            <column name="isbn" length="20" />
-        </property>
-        <set name="acqBibliographyDetailses" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-                <column name="sub_library_id" length="20" not-null="true" />
-                <column name="title_id" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.AcqBibliographyDetails" />
-        </set>
-    </class>
+  <class catalog="libms" lazy="false" name="com.myapp.struts.hbm.AcqBibliography" table="acq_bibliography">
+    <composite-id class="com.myapp.struts.hbm.AcqBibliographyId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="titleId" type="int">
+        <column name="title_id"/>
+      </key-property>
+    </composite-id>
+    <property name="docType" type="string">
+      <column length="50" name="doc_type"/>
+    </property>
+    <property name="title" type="string">
+      <column length="100" name="title"/>
+    </property>
+    <property name="publisherName" type="string">
+      <column length="100" name="publisher_name"/>
+    </property>
+    <property name="author" type="string">
+      <column length="100" name="author"/>
+    </property>
+    <property name="lccNo" type="string">
+      <column length="20" name="lcc_no"/>
+    </property>
+    <property name="series" type="string">
+      <column length="20" name="series"/>
+    </property>
+    <property name="subAuthor" type="string">
+      <column length="50" name="sub_author"/>
+    </property>
+    <property name="subAuthor0" type="string">
+      <column length="100" name="sub_author0"/>
+    </property>
+    <property name="subAuthor1" type="string">
+      <column length="100" name="sub_author1"/>
+    </property>
+    <property name="subAuthor2" type="string">
+      <column length="100" name="sub_author2"/>
+    </property>
+    <property name="publishingYr" type="string">
+      <column length="20" name="publishing_yr"/>
+    </property>
+    <property name="publishingPlace" type="string">
+      <column length="20" name="publishing_place"/>
+    </property>
+    <property name="edition" type="string">
+      <column length="100" name="edition"/>
+    </property>
+    <property name="Volume_no" type="string">
+      <column length="13" name="volume_no"/>
+    </property>
+    <property name="isbn" type="string">
+      <column length="20" name="isbn"/>
+    </property>
+    <set inverse="true" name="acqBibliographyDetailses">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+        <column length="20" name="sub_library_id" not-null="true"/>
+        <column name="title_id"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.AcqBibliographyDetails"/>
+    </set>
+  </class>
 </hibernate-mapping>

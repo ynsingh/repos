@@ -46,6 +46,15 @@ LoginDAO logindao;
         PrivilegeActionForm privilege=(PrivilegeActionForm)form;
 logindao=new LoginDAO();
 
+PrivilegeDAO privdao=new PrivilegeDAO();
+AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
+CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
+StaffDetailDAO staffdao=new StaffDetailDAO();
+CreatePrivilege cirpriv=new CreatePrivilege();
+
+
         library_id=(String)session.getAttribute("library_id");
 
         staff_id=privilege.getStaff_id();
@@ -55,7 +64,7 @@ logindao=new LoginDAO();
 
         System.out.println("....button="+button);
 
-    StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+    StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
         if(staffobj!=null)
         staff_sublibrary_id=staffobj.getSublibraryId();
 
@@ -78,11 +87,11 @@ logindao=new LoginDAO();
 
         /*BackUp the Privilege of Mention User*/
     
-       Privilege backupprivobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       AcqPrivilege backupacqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       CatPrivilege backupcatprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
-        CirPrivilege backupcirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-        SerPrivilege backupserprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       Privilege backupprivobj=privdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       AcqPrivilege backupacqprivobj=acqprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       CatPrivilege backupcatprivobj=catprivdao.getPrivilege(library_id,staff_sublibrary_id, staff_id);
+        CirPrivilege backupcirprivobj=cirprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        SerPrivilege backupserprivobj=serprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
         Login login=logindao.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
 
@@ -97,7 +106,7 @@ logindao=new LoginDAO();
 
 
 
-      result=CreatePrivilege.AssignPrivilege(privilege_list,staff_id, library_id,staff_sublibrary_id);
+      result=cirpriv.AssignPrivilege(privilege_list,staff_id, library_id,staff_sublibrary_id);
 
 
      // privilege_backup_resultset[0].next();
@@ -109,11 +118,11 @@ logindao=new LoginDAO();
 
 
    
-        Privilege privobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       AcqPrivilege acqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
-        CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-        SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        Privilege privobj=privdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       AcqPrivilege acqprivobj=acqprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       CatPrivilege catprivobj=catprivdao.getPrivilege(library_id,staff_sublibrary_id, staff_id);
+        CirPrivilege cirprivobj=cirprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        SerPrivilege serprivobj=serprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
 
 
 
@@ -129,7 +138,7 @@ logindao=new LoginDAO();
 
          //check the privilege of admin role user and degrade it to staff role if administrator privielege
          //not selected
-        privobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        privobj=privdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
 
          if(privobj!=null)
          {
@@ -180,11 +189,11 @@ logindao=new LoginDAO();
 
         String staff_role=staff.getRole();
 
-               Privilege privobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       AcqPrivilege acqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-       CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
-        CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
-        SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+               Privilege privobj=privdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       AcqPrivilege acqprivobj=acqprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       CatPrivilege catprivobj=catprivdao.getPrivilege(library_id,staff_sublibrary_id, staff_id);
+        CirPrivilege cirprivobj=cirprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        SerPrivilege serprivobj=serprivdao.getPrivilege(library_id, staff_sublibrary_id, staff_id);
 
 
 

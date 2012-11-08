@@ -81,6 +81,35 @@ public class DocumentDetails  implements java.io.Serializable {
      private String bindType;
      private String status;
      private int biblioId;
+     private String submittedBy;
+       private String lastModified;
+     private String thesisStatus;
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getThesisStatus() {
+        return thesisStatus;
+    }
+
+    public void setThesisStatus(String thesisStatus) {
+        this.thesisStatus = thesisStatus;
+    }
+   
+
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+
 
     public DocumentDetails() {
     }
@@ -91,7 +120,7 @@ public class DocumentDetails  implements java.io.Serializable {
         this.bibliographicDetails = bibliographicDetails;
       //,BibliographicDetailsLang bibliographicDetailsLang  this.bibliographicDetailsLang=bibliographicDetailsLang;
     }
-    public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails,int biblioId, String documentType,String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String physicalForm, String colour, String typeOfDisc, String fileType, String accessionNo, Integer recordNo, String callNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String status, String bindType) {
+    public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails,int biblioId, String documentType,String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String physicalForm, String colour, String typeOfDisc, String fileType, String accessionNo, Integer recordNo, String callNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String status, String bindType,String submiitedBy,String lastModified,String thesisStatus) {
        this.id = id;
        this.biblioId = biblioId;
        this.bibliographicDetails = bibliographicDetails;
@@ -156,6 +185,9 @@ public class DocumentDetails  implements java.io.Serializable {
        this.physicalWidth = physicalWidth;
        this.bindType = bindType;
        this.status = status;
+       this.submittedBy=submiitedBy;
+       this.thesisStatus=thesisStatus;
+       this.lastModified=lastModified;
     }
    
     public DocumentDetailsId getId() {

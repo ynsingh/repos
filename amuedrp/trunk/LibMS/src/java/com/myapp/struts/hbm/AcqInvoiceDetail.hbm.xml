@@ -16,6 +16,9 @@
       <key-property name="recievingNo" type="string">
         <column length="20" name="recieving_no"/>
       </key-property>
+      <key-property name="recievingItemId" type="int">
+        <column  name="recieving_item_id"/>
+      </key-property>
     </composite-id>
     <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
       <column length="20" name="library_id" not-null="true"/>
@@ -41,9 +44,9 @@
     <property name="status" type="string">
       <column length="10" name="status"/>
     </property>
-    <property name="recievingItemId" type="int">
+   <!-- <property name="recievingItemId" type="int">
       <column name="recieving_item_id"/>
-    </property>
+    </property>-->
     <!-- <property name="overallDiscount" type="string">
             <column name="overall_discount" length="20" />
         </property>

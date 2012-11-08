@@ -18,7 +18,7 @@ import org.hibernate.Query;
  */
 public class CourseDAO {
 
-public static List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
+public  List<SubLibrary> searchSubLib(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubLibrary> obj=null;
         try {
@@ -40,7 +40,7 @@ List<SubLibrary> obj=null;
 
 }
 
-public static Courses searchCourseByName(String library_id,String faculty_id,String dept_id,String name) {
+public  Courses searchCourseByName(String library_id,String faculty_id,String dept_id,String name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Courses obj=null;
         try {
@@ -65,7 +65,7 @@ Courses obj=null;
 
 }
 
-  public static Courses searchCourseName(String library_id,String faculty_id,String dept_id,String course_id) {
+  public  Courses searchCourseName(String library_id,String faculty_id,String dept_id,String course_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Courses obj=null;
         try {
@@ -89,7 +89,7 @@ Courses obj=null;
         return obj;
 
 }
-public static  boolean update(Department obj)
+public   boolean update(Department obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -110,7 +110,7 @@ public static  boolean update(Department obj)
         return true;
 
 }
-public static  boolean update1(Courses obj)
+public   boolean update1(Courses obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -133,7 +133,7 @@ public static  boolean update1(Courses obj)
 }
 
 
-public static  boolean Delete(Courses obj)
+public   boolean Delete(Courses obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -157,7 +157,7 @@ public static  boolean Delete(Courses obj)
 
 
 
-public static  boolean insert(Courses obj)
+public   boolean insert(Courses obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -191,7 +191,7 @@ public static  boolean insert(Courses obj)
 }
 
 
- public static List getMaxCourseRecordIdNo(String library_id) {
+ public  List getMaxCourseRecordIdNo(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         List obj=null;
@@ -214,7 +214,7 @@ public static  boolean insert(Courses obj)
 
 
 
-  public static Department getDeptRecordIdNo(String library_id,String dept_id) {
+  public  Department getDeptRecordIdNo(String library_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        Department obj=null;
         try {
@@ -235,7 +235,7 @@ public static  boolean insert(Courses obj)
         return obj;
 
 }
-public static List<Courses> getCourse(String library_id,String faculty_id,String dept_id) {
+public  List<Courses> getCourse(String library_id,String faculty_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Courses> obj=null;
         try {
@@ -259,7 +259,7 @@ public static List<Courses> getCourse(String library_id,String faculty_id,String
 }
 
 
-public static List<Courses> getCourse(String library_id) {
+public  List<Courses> getCourse(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<Courses> obj=null;
         try {

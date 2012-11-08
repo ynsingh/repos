@@ -31,8 +31,8 @@ String msg=(String)request.getAttribute("msg");
 <%
 String date=DateCalculation.now();
 String year=date.substring(0,4);
-
-BaseCurrency base=AcqCurrencyDao.searchCurrency1(library_id);
+AcqCurrencyDao acqcurr=new AcqCurrencyDao();
+BaseCurrency base=acqcurr.searchCurrency1(library_id);
 //if(base!=null)
 //{
 //session.setAttribute("basecurrencyid", base.getId().getBaseCurrencySymbol());

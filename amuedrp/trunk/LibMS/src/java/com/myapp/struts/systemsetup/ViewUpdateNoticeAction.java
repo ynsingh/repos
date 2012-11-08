@@ -29,20 +29,12 @@ public class ViewUpdateNoticeAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+NoticeDAO notdao=new NoticeDAO();
          HttpSession session=request.getSession();
          try{
 
@@ -64,7 +56,7 @@ public class ViewUpdateNoticeAction extends org.apache.struts.action.Action {
      
       String  library_id=(String)session.getAttribute("library_id");
       String  sub_lib=(String)session.getAttribute("sublibrary_id");
-     Notices notice = NoticeDAO.getNoticeName(library_id, notice_id, sub_lib);
+     Notices notice = notdao.getNoticeName(library_id, notice_id, sub_lib);
 
      System.out.println("Update............."+button);
       if(button.equals("Update"))
@@ -74,7 +66,7 @@ public class ViewUpdateNoticeAction extends org.apache.struts.action.Action {
              notice.setDetail(acn.getDetail());
             // notice.setSot(acn.getSot());
              notice.setSubject(acn.getSubject());
-             result=NoticeDAO.update(notice);
+             result=notdao.update(notice);
              if(result==true)
              {
                  //request.setAttribute("msg", "Record Update Successfully");
@@ -92,7 +84,7 @@ public class ViewUpdateNoticeAction extends org.apache.struts.action.Action {
 
       if(button.equals("Delete"))
         {
-            result=NoticeDAO.Delete(notice);
+            result=notdao.Delete(notice);
              if(result==true)
              {
                  //request.setAttribute("msg", "Record Deleted Successfully");

@@ -65,6 +65,15 @@ public class OpacDoc {
         this.comment = comment;
     }
 private String comment;
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+private String rate;
         protected String author;
 	protected String accessionno;
 	protected String callno;

@@ -44,9 +44,7 @@ public class ApprovalReportAction2 extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     public static final String REPORT_DIRECTORY = "reports";
-    Connection connection=null;
-    Statement statement=null;
-    ResultSet resultSet=null;
+    AcquisitionDao acqdao=new AcquisitionDao();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -70,7 +68,7 @@ System.out.println(path);
             String  sub_lib=(String)session.getAttribute("sublibrary_id");
 
 
-        List<CirculationList_1_1> circheckInlist1=(List<CirculationList_1_1>)AcquisitionDao.approvalReport(library_id, sub_lib);
+        List<CirculationList_1_1> circheckInlist1=(List<CirculationList_1_1>)acqdao.approvalReport(library_id, sub_lib);
         // session.setAttribute("circheckInlist1", circheckInlist1);
         
         //return mapping.findForward(SUCCESS);

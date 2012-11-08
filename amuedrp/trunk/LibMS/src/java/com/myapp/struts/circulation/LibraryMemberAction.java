@@ -37,11 +37,11 @@ public class LibraryMemberAction extends org.apache.struts.action.Action {
         
         library_id = request.getParameter("getLibrary_Id");
       
-       
+       MemberDAO memdao=new MemberDAO();
       
          
        
-        String depts = MemberDAO.getMemberByLibrary(library_id);
+        String depts = memdao.getMemberByLibrary(library_id);
         if (!depts.equals(""))
         {
         response.setContentType("application/xml");

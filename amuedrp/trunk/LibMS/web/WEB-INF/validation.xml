@@ -29,7 +29,7 @@
                 property="username"
                 depends="required,email">
                     <arg key="logonForm.username"/>
-                    <arg key="logonForm.username"/>
+               
             </field>
             <field
                 property="password"
@@ -39,6 +39,7 @@
                         <var-name>mask</var-name>
                         <var-value>^[0-9a-zA-Z]*$</var-value>
                     </var>
+                   
             </field>
         </form>
 
@@ -226,140 +227,8 @@
 	 </field>
 	
         </form>
-     <form name="AdminRegistrationActionForm">
-      
-       <field  property="institute_name"   depends="required,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.institute_name" />
 
-                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
-
-            </field>
-             <field  property="abbreviated_name"   depends="maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.abbreviated_name" />
-
-                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>20</var-value></var>
-
-            </field>
-            <field  property="pin"   depends="maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.pin" />
-
-                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>10</var-value></var>
-
-            </field>
-            <field  property="courtesy"   depends="maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.courtesy" />
-
-                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>5</var-value></var>
-
-            </field>
-            <field  property="admin_designation"   depends="maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.admin_designation" />
-
-                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
-
-            </field>
-             <field  property="land_line_no"   depends="maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.land_line_no" />
-
-                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>12</var-value></var>
-
-            </field>
-
-            <field  property="institute_address"   depends="required,maxlength">
-                	<arg position="0"  key="AdminRegistrationActionForm.institute_address" />
-                           <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
-
-            </field>
-            <field  property="city"   depends="required,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.city" />
-
-                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
-
-            </field>
-            <field  property="state"   depends="required,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.state" />
-<arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
-            </field>
-
-  <field  property="institute_website"   depends="maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.institute_website" />
-<arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
-            </field>
-
-            <field  property="country"   depends="required,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.country" />
-                        <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>30</var-value></var>
-
-            </field>
-
-            <field  property="mobile_no"   depends="mask,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.mobile_no" />
-                        <var>
-                        <var-name>mask</var-name>
-                        <var-value>^[0-9]*$</var-value>
-                    </var>
-                    <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>11</var-value></var>
-
-
-
-            </field>
-
-            
-
-            <field  property="admin_fname"   depends="required,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.admin_fname" />
-                        <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
-
-            </field>
-             <field  property="admin_lname"   depends="required,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.admin_lname" />
-                         <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
-
-
-            </field>
-
-             <field  property="admin_email"   depends="required,email,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.admin_email" />
-                        <arg position="1" key="AdminRegistrationActionForm.admin_email" />
-                        <arg position="2" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
-
-            </field>
-            <!-- <field  property="login_id"   depends="required">
-                	<arg key="AdminRegistrationActionForm.login_id" />
-
-            </field>-->
-             
-
-             <field  property="library_name"   depends="required,maxlength">
-                	<arg position="0" key="AdminRegistrationActionForm.library_name" />
-                        <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
-        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
-
-            </field>
-
-            <field property="gender" depends="required">
-
-                <arg key="AdminRegistrationActionForm.gender" />
-
-
-	 </field>
-
-        </form>
+     
 
 <form name="NewMemberActionForm">
      <field property="CMBLib" depends="select">
@@ -424,7 +293,7 @@
 
             <arg key="NewDemandActionForm.TXTAUTHOR"/>
         </field>
-        <!-- <field property="TXTCOPY" depends="required">
+       <!--  <field property="TXTCOPY" depends="required">
 
             <arg key="NewDemandActionForm.TXTCOPY"/>
         </field>-->
@@ -460,19 +329,9 @@
         </field>
 </form>
 
-
-
-
-
-
-         
-
-
-
-
-<!-- Cataloguing Module Form-->
+<!-- Cataloguing Module Form--> <!-- 
 <form name="BibliographicDetailEntryActionForm">
-    <field  property="title"   depends="required">
+  <field  property="title"   depends="required">
                 	<arg key="BibliographicDetailEntryActionForm.title" />
 
             </field>
@@ -495,45 +354,12 @@
                <field property="main_entry" depends="required">
                 <arg key="BibliographicDetailEntryActionForm.main_entry"/>
             </field>
-</form>
+</form>-->
 
 
 
 
 
     </formset>
-
-
- 
-
-
-    <!-- An example formset for another locale -->
-    <formset language="fr">
-
-        <constant>
-            <constant-name>postalCode</constant-name>
-            <constant-value>^[0-9a-zA-Z]*$</constant-value>
-        </constant>
-
-        <!-- An example form -->
-        <form name="logonForm">
-            <field
-                property="username"
-                depends="required">
-                    <arg key="logonForm.username"/>
-            </field>
-            <field
-                property="password"
-                depends="required,mask">
-                    <arg key="logonForm.password"/>
-                    <var>
-                        <var-name>mask</var-name>
-                        <var-value>^[0-9a-zA-Z]*$</var-value>
-                    </var>
-            </field>
-        </form>
-
-   </formset>
-
   
 </form-validation>

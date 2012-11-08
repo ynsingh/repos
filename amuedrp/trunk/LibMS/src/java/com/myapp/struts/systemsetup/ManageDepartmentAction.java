@@ -29,11 +29,12 @@ public class ManageDepartmentAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+     FacultyDAO facdao=new FacultyDAO();
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
-   list1=(List)FacultyDAO.searchFaculty(library_id);
+   list1=(List)facdao.searchFaculty(library_id);
    
    
   if(list1.isEmpty()==true && list1==null){

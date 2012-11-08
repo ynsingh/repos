@@ -27,15 +27,23 @@ import java.sql.*;
  * @author Dushyant
  */
 public class CreatePrivilege {
-    static public boolean result=true;
+     public boolean result=true;
     
-  static  String  sql;
-   static PreparedStatement stmt;
+
+   StaffDetailDAO staffdao=new StaffDetailDAO();
+     PrivilegeDAO privdao=new PrivilegeDAO();
+AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
+CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
   
-  public static boolean   assignAdminPrivilege(String staff_id,String library_id,String sublibrary_id)
+  public  boolean   assignAdminPrivilege(String staff_id,String library_id,String sublibrary_id)
   {
 
-       StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+     
+
+
+      StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
 
    /* Use to Insert New Entry in Privilege related to Staff Detail Table */
            PrivilegeId privid=new PrivilegeId(staff_id, library_id);
@@ -50,7 +58,7 @@ public class CreatePrivilege {
            priv.setUtilities("false");
            priv.setCirculation("false");
 
-           result=PrivilegeDAO.insert(priv);
+           result=privdao.insert(priv);
 
             if(result==false)
                 {
@@ -161,7 +169,7 @@ public class CreatePrivilege {
                 acq.setAcq198("false");
                 acq.setAcq199("false");
 
-                result=AcqPrivilegeDAO.insert(acq);
+                result=acqprivdao.insert(acq);
 
             if(result==false)
                 {
@@ -274,7 +282,7 @@ public class CreatePrivilege {
             Cat.setCat299("false");
 
 
-            result=CatPrivilegeDAO.insert(Cat);
+            result=catprivdao.insert(Cat);
 
             if(result==false)
                 {
@@ -388,7 +396,7 @@ public class CreatePrivilege {
         Ser.setSer499("false");
 
 
-            result=SerPrivilegeDAO.insert(Ser);
+            result=serprivdao.insert(Ser);
 
             if(result==false)
                 {
@@ -500,7 +508,7 @@ public class CreatePrivilege {
         Cir.setCir399("false");
 
 
-            result=CirPrivilegeDAO.insert(Cir);
+            result=cirprivdao.insert(Cir);
 
             if(result==false)
                 {
@@ -512,16 +520,16 @@ public class CreatePrivilege {
 
 
   }
-   public static boolean   updateSublibraryId(String staff_id,String library_id,String sublibrary_id)
+   public  boolean   updateSublibraryId(String staff_id,String library_id,String sublibrary_id)
   {
 
       
 
    /* Use to Update Entry in Privilege related to Staff Detail Table */
         
-           Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
+           Privilege priv=privdao.searchStaffLogin(staff_id, library_id);
            priv.setSublibraryId(sublibrary_id);
-           result=PrivilegeDAO.update(priv);
+           result=privdao.update(priv);
 
             if(result==false)
                 {
@@ -530,10 +538,10 @@ public class CreatePrivilege {
                 }
 /* Use to Update Entry in AcqPrivilege related to Staff Detail Table */
             
-                AcqPrivilege acq=AcqPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+                AcqPrivilege acq=acqprivdao.searchStaffLogin(staff_id, library_id);
 
                acq.setSublibraryId(sublibrary_id);
-               result=AcqPrivilegeDAO.update(acq);
+               result=acqprivdao.update(acq);
 
             if(result==false)
                 {
@@ -543,9 +551,9 @@ public class CreatePrivilege {
 /* Use to Update Entry in CatPrivilege related to Staff Detail Table */
 
             
-             CatPrivilege Cat=CatPrivilegeDAO.searchStaffLogin(staff_id,library_id);
+             CatPrivilege Cat=catprivdao.searchStaffLogin(staff_id,library_id);
             Cat.setSublibraryId(sublibrary_id);
-            result=CatPrivilegeDAO.update(Cat);
+            result=catprivdao.update(Cat);
             
             if(result==false)
                 {
@@ -557,9 +565,9 @@ public class CreatePrivilege {
 /* Use to Update Entry in SerPrivilege related to Staff Detail Table */
 
       
-        SerPrivilege Ser=SerPrivilegeDAO.searchStaffLogin(staff_id,library_id);
+        SerPrivilege Ser=serprivdao.searchStaffLogin(staff_id,library_id);
         Ser.setSublibraryId(sublibrary_id);
-        result=SerPrivilegeDAO.update(Ser);
+        result=serprivdao.update(Ser);
 
             if(result==false)
                 {
@@ -568,9 +576,9 @@ public class CreatePrivilege {
                 }
 /* Use to Update Entry in CirPrivilege related to Staff Detail Table */
 
-        CirPrivilege Cir=CirPrivilegeDAO.searchStaffLogin(staff_id, library_id);
+        CirPrivilege Cir=cirprivdao.searchStaffLogin(staff_id, library_id);
         Cir.setSublibraryId(sublibrary_id);
-        result=CirPrivilegeDAO.update(Cir);
+        result=cirprivdao.update(Cir);
         
             if(result==false)
                 {
@@ -582,10 +590,10 @@ public class CreatePrivilege {
 
 
   }
-  static public boolean assignStaffPrivilege(String staff_id,String library_id,String sublibrary_id)
+   public boolean assignStaffPrivilege(String staff_id,String library_id,String sublibrary_id)
   {
 
-      StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+      StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
 
        /* Use to Insert New Entry in Privilege related to Staff Detail Table */
            PrivilegeId privid=new PrivilegeId(staff_id, library_id);
@@ -600,7 +608,7 @@ public class CreatePrivilege {
            priv.setCirculation("true");
             priv.setOpac("false");
 
-           result=PrivilegeDAO.insert(priv);
+           result=privdao.insert(priv);
 
             if(result==false)
                 {
@@ -711,7 +719,7 @@ public class CreatePrivilege {
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                result=AcqPrivilegeDAO.insert(acq);
+                result=acqprivdao.insert(acq);
 
             if(result==false)
                 {
@@ -824,7 +832,7 @@ public class CreatePrivilege {
             Cat.setCat299("true");
 
 
-            result=CatPrivilegeDAO.insert(Cat);
+            result=catprivdao.insert(Cat);
 
             if(result==false)
                 {
@@ -938,7 +946,7 @@ public class CreatePrivilege {
         Ser.setSer499("true");
 
 
-            result=SerPrivilegeDAO.insert(Ser);
+            result=serprivdao.insert(Ser);
 
             if(result==false)
                 {
@@ -1049,7 +1057,7 @@ public class CreatePrivilege {
         Cir.setCir398("true");
         Cir.setCir399("true");
 
-            result=CirPrivilegeDAO.insert(Cir);
+            result=cirprivdao.insert(Cir);
 
             if(result==false)
                 {
@@ -1063,10 +1071,10 @@ return true;
 
    
   }
- static public boolean assignDepartmentalStaffPrivilege(String staff_id,String library_id,String sublibrary_id)
+  public boolean assignDepartmentalStaffPrivilege(String staff_id,String library_id,String sublibrary_id)
   {
 
-      StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+      StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
 
        /* Use to Insert New Entry in Privilege related to Staff Detail Table */
            PrivilegeId privid=new PrivilegeId(staff_id, library_id);
@@ -1081,7 +1089,7 @@ return true;
            priv.setCirculation("true");
             priv.setOpac("false");
 
-           result=PrivilegeDAO.insert(priv);
+           result=privdao.insert(priv);
 
             if(result==false)
                 {
@@ -1192,7 +1200,7 @@ return true;
                 acq.setAcq198("true");
                 acq.setAcq199("true");
 
-                result=AcqPrivilegeDAO.insert(acq);
+                result=acqprivdao.insert(acq);
 
             if(result==false)
                 {
@@ -1305,7 +1313,7 @@ return true;
             Cat.setCat299("true");
 
 
-            result=CatPrivilegeDAO.insert(Cat);
+            result=catprivdao.insert(Cat);
 
             if(result==false)
                 {
@@ -1419,7 +1427,7 @@ return true;
         Ser.setSer499("true");
 
 
-            result=SerPrivilegeDAO.insert(Ser);
+            result=serprivdao.insert(Ser);
 
             if(result==false)
                 {
@@ -1530,7 +1538,7 @@ return true;
         Cir.setCir398("true");
         Cir.setCir399("true");
 
-            result=CirPrivilegeDAO.insert(Cir);
+            result=cirprivdao.insert(Cir);
 
             if(result==false)
                 {
@@ -1545,9 +1553,9 @@ return true;
 
   }
 
-  static public boolean assignDepartmentalAdminPrivilege(String staff_id,String library_id,String sublibrary_id)
+   public boolean assignDepartmentalAdminPrivilege(String staff_id,String library_id,String sublibrary_id)
   {
-        StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+        StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
 
    /* Use to Insert New Entry in Privilege related to Staff Detail Table */
            PrivilegeId privid=new PrivilegeId(staff_id, library_id);
@@ -1562,7 +1570,7 @@ return true;
            priv.setUtilities("false");
            priv.setCirculation("false");
 
-           result=PrivilegeDAO.insert(priv);
+           result=privdao.insert(priv);
 
             if(result==false)
                 {
@@ -1674,7 +1682,7 @@ return true;
                 acq.setAcq199("true");
 
 
-                result=AcqPrivilegeDAO.insert(acq);
+                result=acqprivdao.insert(acq);
 
             if(result==false)
                 {
@@ -1788,7 +1796,7 @@ return true;
 
 
 
-            result=CatPrivilegeDAO.insert(Cat);
+            result=catprivdao.insert(Cat);
 
             if(result==false)
                 {
@@ -1903,7 +1911,7 @@ return true;
 
 
 
-            result=SerPrivilegeDAO.insert(Ser);
+            result=serprivdao.insert(Ser);
 
             if(result==false)
                 {
@@ -2015,7 +2023,7 @@ return true;
         Cir.setCir399("false");
 
 
-            result=CirPrivilegeDAO.insert(Cir);
+            result=cirprivdao.insert(Cir);
 
             if(result==false)
                 {
@@ -2030,20 +2038,20 @@ return true;
 
   //privilege
 
-static   String[] substring;
-static String sql1,sql2,sql3,sql4,sql5;
-static  int [] privilege_index;
+   String[] substring;
+ String sql1,sql2,sql3,sql4,sql5;
+  int [] privilege_index;
 /* delimiter */
-static String delimiter = ",";
-static String [] privilege={"true","true","true","true"};
-static String[] acq_privilege=new String[100];
-static String[] cat_privilege=new String[100];
-static String[] cir_privilege=new String[100];
-static String[] ser_privilege=new String[100];
+ String delimiter = ",";
+ String [] privilege={"true","true","true","true"};
+ String[] acq_privilege=new String[100];
+ String[] cat_privilege=new String[100];
+ String[] cir_privilege=new String[100];
+ String[] ser_privilege=new String[100];
 
 
 
-public  static boolean AssignPrivilege(String string,String staff_id,String library_id,String sublibrary_id)
+public   boolean AssignPrivilege(String string,String staff_id,String library_id,String sublibrary_id)
 {
 
 for( int k=0;k<100;k++)
@@ -2092,7 +2100,7 @@ for(int i =0; i < substring.length; i++)
 
 
     //To Delete privilege from all tables for a particular staff in the library
-    result=PrivilegeDAO.DeleteStaffPrivilege(staff_id, library_id, sublibrary_id);
+    result=privdao.DeleteStaffPrivilege(staff_id, library_id, sublibrary_id);
    
    
 LoginDAO logindao=new LoginDAO();
@@ -2113,7 +2121,7 @@ LoginDAO logindao=new LoginDAO();
             logindao.update1(login);
         }
 
-        StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+        StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
     PrivilegeId privid=new PrivilegeId(staff_id, library_id);
     Privilege priv=new Privilege(privid, staffobj);
     priv.setSublibraryId(sublibrary_id);
@@ -2133,7 +2141,7 @@ LoginDAO logindao=new LoginDAO();
     priv.setUtilities("false");
     priv.setOpac("true");
     }
-    result=PrivilegeDAO.insert(priv);
+    result=privdao.insert(priv);
 
     if(result==true){
         System.out.println(".......................");
@@ -2150,9 +2158,9 @@ LoginDAO logindao=new LoginDAO();
     return true;
    }
 
-public static boolean update_acq_priv(String staff_id,String library_id,String sublibrary_id,String acq_arr[])
+public  boolean update_acq_priv(String staff_id,String library_id,String sublibrary_id,String acq_arr[])
 {
-            StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+            StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
             AcqPrivilegeId acqid=new AcqPrivilegeId(staff_id, library_id);
                 AcqPrivilege acq=new AcqPrivilege(acqid, staffobj, sublibrary_id);
 
@@ -2255,7 +2263,7 @@ public static boolean update_acq_priv(String staff_id,String library_id,String s
                 acq.setAcq197(acq_arr[97]);
                 acq.setAcq198(acq_arr[98]);
                 acq.setAcq199(acq_arr[99]);
-            result=AcqPrivilegeDAO.insert(acq);
+            result=acqprivdao.insert(acq);
 
             if(result==false)
                 {
@@ -2269,10 +2277,10 @@ public static boolean update_acq_priv(String staff_id,String library_id,String s
 
 
 }
-public static boolean update_cat_priv(String staff_id,String library_id,String sublibrary_id,String cat_arr[])
+public  boolean update_cat_priv(String staff_id,String library_id,String sublibrary_id,String cat_arr[])
 {
 
-   StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+   StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
             CatPrivilegeId catid=new CatPrivilegeId(staff_id, library_id);
                 CatPrivilege cat=new CatPrivilege(catid , staffobj, sublibrary_id);
 		cat.setCat201(cat_arr[1]);
@@ -2374,7 +2382,7 @@ public static boolean update_cat_priv(String staff_id,String library_id,String s
                 cat.setCat297(cat_arr[97]);
                 cat.setCat298(cat_arr[98]);
                 cat.setCat299(cat_arr[99]);
-                result=CatPrivilegeDAO.insert(cat);
+                result=catprivdao.insert(cat);
 
             if(result==false)
                 {
@@ -2386,10 +2394,10 @@ public static boolean update_cat_priv(String staff_id,String library_id,String s
 
 
 }
-public static boolean update_cir_priv(String staff_id,String library_id,String sublibrary_id,String cir_arr[])
+public  boolean update_cir_priv(String staff_id,String library_id,String sublibrary_id,String cir_arr[])
 {
 
-   StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+   StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
             CirPrivilegeId cirid=new CirPrivilegeId(staff_id, library_id);
                 CirPrivilege cir=new CirPrivilege(cirid, staffobj, sublibrary_id);
 		cir.setCir301(cir_arr[1]);
@@ -2493,7 +2501,7 @@ public static boolean update_cir_priv(String staff_id,String library_id,String s
                 cir.setCir399(cir_arr[99]);
 
              
-             result=CirPrivilegeDAO.insert(cir);
+             result=cirprivdao.insert(cir);
 
             if(result==false)
                 {
@@ -2505,10 +2513,10 @@ public static boolean update_cir_priv(String staff_id,String library_id,String s
 
 
 }
-public static boolean update_ser_priv(String staff_id,String library_id,String sublibrary_id,String ser_arr[])
+public  boolean update_ser_priv(String staff_id,String library_id,String sublibrary_id,String ser_arr[])
 {
 
-   StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+   StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
             SerPrivilegeId serid=new SerPrivilegeId(staff_id, library_id);
                 SerPrivilege ser=new SerPrivilege(serid, staffobj, sublibrary_id);
 
@@ -2612,7 +2620,7 @@ public static boolean update_ser_priv(String staff_id,String library_id,String s
                 ser.setSer498(ser_arr[98]);
                 ser.setSer499(ser_arr[99]);
                 
-                result=SerPrivilegeDAO.insert(ser);
+                result=serprivdao.insert(ser);
 
             if(result==false)
                 {

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import com.myapp.struts.hbm.BibliographicDetails;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import java.util.ArrayList;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -21,7 +21,7 @@ public class browseSearchAction extends org.apache.struts.action.Action {
     
   
     OpacSearchDAO opacSearchDAO=new OpacSearchDAO();
-     BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+     BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
     String phrase,title,author,accno;
     String doc_type,id,callno,publ,loc,place,sort,field,sublib_id,lib_id;
      private static Logger log4j =LoggerUtils.getLogger();
@@ -86,7 +86,7 @@ public class browseSearchAction extends org.apache.struts.action.Action {
 //                  if(sort.equalsIgnoreCase("CallNo"))
 //                sort="call_no";
 
-
+System.out.println(myform.getLanguage()+"******************");
 
                 session.setAttribute("brocheckbox", myform.getCheckbox());
                 browse_search_list=opacSearchDAO.browseLangSearch(lib_id, sublib_id,phrase, doc_type, sort, field,myform.getLanguage().toUpperCase(),pageno);

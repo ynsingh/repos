@@ -5,6 +5,7 @@
 
 package com.myapp.struts.opac;
 
+import com.myapp.struts.hbm.Notices;
 import com.myapp.struts.opacDAO.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class Notice1Action extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     String l_id,s_id;
     OpacSearchDAO osDAO=new OpacSearchDAO();
-    
+    NewDemandDAO newdemanddao=new NewDemandDAO();
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -33,14 +34,15 @@ public class Notice1Action extends org.apache.struts.action.Action {
             HttpSession session=(HttpSession)request.getSession();
             l_id=naf.getCMBLib();
             s_id=naf.getCMBSUBLib();
-            List notices=NewDemandDAO.Notice(l_id, s_id);
-            List noticelibray_id=osDAO.LibrarySearch(l_id);
-            List noticesublib=osDAO.subLibrarySearch(l_id);
+            List<Notices> notices=(List<Notices>)newdemanddao.Notice(l_id, s_id);
+          //  List noticelibray_id=osDAO.LibrarySearch(l_id);
+          //  List noticesublib=osDAO.subLibrarySearch(l_id);
             if(notices!=null)
-            { session.setAttribute("l_id",l_id);
-              session.setAttribute("s_id",s_id);
-              session.setAttribute("noticesublib",noticesublib);
-              session.setAttribute("noticelibray_id",noticelibray_id);
+            {
+               
+              
+          //    session.setAttribute("noticesublib",noticesublib);
+          //    session.setAttribute("noticelibray_id",noticelibray_id);
               session.setAttribute("notices",notices);
               return mapping.findForward("success");
 
@@ -48,7 +50,7 @@ public class Notice1Action extends org.apache.struts.action.Action {
             else
             {
               request.setAttribute("msg", "Record Not Selected");
-              return mapping.findForward("failure");
+              return mapping.findForward("success");
             }
 
         

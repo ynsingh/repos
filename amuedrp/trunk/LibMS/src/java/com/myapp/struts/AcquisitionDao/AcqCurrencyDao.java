@@ -19,7 +19,7 @@ import org.hibernate.Query;
  */
 public class AcqCurrencyDao {
 
-    public static BaseCurrency searchCurrency(String library_id, String base_currency_symbol) {
+    public  BaseCurrency searchCurrency(String library_id, String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 BaseCurrency obj=null;
         try {
@@ -42,7 +42,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-    public static BaseCurrency searchCurrency1(String library_id) {
+    public  BaseCurrency searchCurrency1(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 BaseCurrency obj=null;
         try {
@@ -65,7 +65,7 @@ session.getTransaction().commit();
     }
 
 
-    public static BaseCurrency getCurrencyByName(String library_id,String base_currency_symbol) {
+    public  BaseCurrency getCurrencyByName(String library_id,String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         BaseCurrency obj=null;
@@ -89,7 +89,7 @@ session.getTransaction().commit();
     }
 
 
-public static List<AcqCurrency> getCurrencyList(String library_id,String base_currency_symbol) {
+public  List<AcqCurrency> getCurrencyList(String library_id,String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<AcqCurrency> obj=null;
         try {
@@ -112,7 +112,7 @@ public static List<AcqCurrency> getCurrencyList(String library_id,String base_cu
     }
 
 
-public static List<BaseCurrency> getCurrencyList1(String library_id,String base_currency_symbol) {
+public  List<BaseCurrency> getCurrencyList1(String library_id,String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<BaseCurrency> obj=null;
         try {
@@ -134,7 +134,7 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
         return obj;
     }
 
-    public static void insert(BaseCurrency obj) {
+    public  void insert(BaseCurrency obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -159,7 +159,7 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
     }
 
 
-    public static void update(BaseCurrency obj) {
+    public  void update(BaseCurrency obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -178,7 +178,7 @@ public static List<BaseCurrency> getCurrencyList1(String library_id,String base_
     }
 
 
-    public static boolean delete(String library_id,String base_currency_symbol) {
+    public  boolean delete(String library_id,String base_currency_symbol) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 

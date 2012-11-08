@@ -33,8 +33,8 @@ public class ViewAllDoc extends org.apache.struts.action.Action {
             HttpSession session=request.getSession();
             library_id=(String)session.getAttribute("library_id");
            sublibrary_id=(String)session.getAttribute("sublibrary_id");
-           
-              List<DocumentCategory> docList=(List<DocumentCategory>)DocumentCategoryDAO.listdoccategory(library_id,sublibrary_id);
+           DocumentCategoryDAO docdao=new DocumentCategoryDAO();
+              List<DocumentCategory> docList=(List<DocumentCategory>)docdao.listdoccategory(library_id,sublibrary_id);
               session.setAttribute("docList", docList);
               return mapping.findForward("success");
           

@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
  * @author maqbool
  */
 public class AcqInitiateAcquisitionProcessAction extends org.apache.struts.action.Action {
-    
+
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     AcqBibliographyDetails acqbibdtail1=new AcqBibliographyDetails();
@@ -32,7 +32,7 @@ public class AcqInitiateAcquisitionProcessAction extends org.apache.struts.actio
     AcqBibliographyId acqbibdtailid=new AcqBibliographyId();
     AcquisitionDao acqdao=new AcquisitionDao();
     float total;
-   
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -54,7 +54,7 @@ public class AcqInitiateAcquisitionProcessAction extends org.apache.struts.actio
         String sub_author0=acqbib.getSub_author0();
         String sub_author1=acqbib.getSub_author1();
         String sub_author2=acqbib.getSub_author2();
-        
+
         String gg=String.valueOf(acqbib.getNo_of_copies());
         System.out.println("NOOOOOOOOOOO of CCCCCCCCCCCC"+gg+"Price"+acqbib.getUnit_price());
 int i=Integer.parseInt(gg);
@@ -101,7 +101,7 @@ int title_id=(Integer)session.getAttribute("titleid");
         acqbibdtail1.setRequestedBy(acqbib.getRequested_by());
         acqbibdtail1.setRequestedDate(acqbib.getRequested_date());
         acqbibdtail1.setAcqMode(acqbib.getAcq_mode());
-        acqbibdtail1.setStatus("");
+       // acqbibdtail1.setStatus("");
         acqbibdtail1.setVendor(acqbib.getVendor());
         acqbibdtail1.setTitleId(acqbib.getTitle_id());
 
@@ -109,10 +109,10 @@ int title_id=(Integer)session.getAttribute("titleid");
         String curr=acqbib.getExchange();
         int unitprice=Integer.parseInt(acqbib.getUnit_price());
         int noc=acqbib.getNo_of_copies();
+BudgetDAO buddao=new BudgetDAO();
 
-
-         AcqCurrency acq=(AcqCurrency)BudgetDAO.getConversionRate(library_id,curr);
-        AcqBudgetAllocation allocation=BudgetDAO.getSearchBudgetHead(library_id,budgetHeadId,year);
+         AcqCurrency acq=(AcqCurrency)buddao.getConversionRate(library_id,curr);
+        AcqBudgetAllocation allocation=buddao.getSearchBudgetHead(library_id,budgetHeadId,year);
 
 
         if(!curr.equalsIgnoreCase("Select")){
@@ -133,7 +133,7 @@ int title_id=(Integer)session.getAttribute("titleid");
         }
         else
         {
-               BaseCurrency acq1=(BaseCurrency)BudgetDAO.getBaseCurrency(library_id);
+               BaseCurrency acq1=(BaseCurrency)buddao.getBaseCurrency(library_id);
               acqbibdtail1.setCurrency(acq1.getId().getBaseCurrencySymbol());
 
         total=unitprice*noc;
@@ -156,7 +156,7 @@ int title_id=(Integer)session.getAttribute("titleid");
        budget.setControlNo(String.valueOf(control_no));
        budget.setAmount(Double.parseDouble(String.valueOf(total)));
        budget.setTransactionDate(DateCalculation.now());
-       BudgetDAO.insertTransaction(budget);
+       buddao.insertTransaction(budget);
 
 
 

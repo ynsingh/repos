@@ -1,48 +1,47 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 6 Apr, 2012 6:28:59 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.Library" table="library" catalog="libms">
-        <id name="libraryId" type="string">
-            <column name="library_id" length="20" />
-            <generator class="assigned" />
-        </id>
-        <property name="registrationId" type="java.lang.Integer">
-            <column name="registration_id" />
-        </property>
-        <property name="libraryName" type="string">
-            <column name="library_name" length="100" />
-        </property>
-        <property name="staffId" type="string">
-            <column name="staff_id" length="100" />
-        </property>
-        <property name="workingStatus" type="string">
-            <column name="working_status" length="50" not-null="true" />
-        </property>
-        <set name="bibliographicDetailses" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.BibliographicDetails" />
-        </set>
-        <set name="bibliographicDetailsLangs" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.BibliographicDetailsLang" />
-        </set>
-        <set name="bibliographicDetailses_1" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.BibliographicDetails" />
-        </set>
-        <set name="bibliographicDetailsLangs_1" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.BibliographicDetailsLang" />
-        </set>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.Library" table="library">
+    <id name="libraryId" type="string">
+      <column length="20" name="library_id"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="registrationId" type="java.lang.Integer">
+      <column name="registration_id"/>
+    </property>
+    <property name="libraryName" type="string">
+      <column length="100" name="library_name"/>
+    </property>
+    <property name="staffId" type="string">
+      <column length="100" name="staff_id"/>
+    </property>
+    <property name="workingStatus" type="string">
+      <column length="50" name="working_status" not-null="true"/>
+    </property>
+    <set inverse="true" name="bibliographicDetailses">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.BibliographicDetails"/>
+    </set>
+    <set inverse="true" name="bibliographicDetailsLangs">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.BibliographicDetailsLang"/>
+    </set>
+    <set inverse="true" name="bibliographicDetailses_1">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.BibliographicDetails"/>
+    </set>
+    <set inverse="true" name="bibliographicDetailsLangs_1">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.BibliographicDetailsLang"/>
+    </set>
+  </class>
 </hibernate-mapping>

@@ -30,15 +30,8 @@ public class AcqEditApprovedTitleAction extends org.apache.struts.action.Action 
     AcqBibliographyId acqbibid=new AcqBibliographyId();
     AcqBibliographyDetails acqbibdtail=new AcqBibliographyDetails();
     AcqBibliographyDetailsId acqbibdtailid=new AcqBibliographyDetailsId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    VendorDAO vendao=new VendorDAO();
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -48,7 +41,7 @@ public class AcqEditApprovedTitleAction extends org.apache.struts.action.Action 
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String id= request.getParameter("id");
-        List<AcqVendor> acqvendor=VendorDAO.searchDoc5(library_id, sub_library_id);
+        List<AcqVendor> acqvendor=vendao.searchDoc5(library_id, sub_library_id);
         int ii=Integer.parseInt(id);
         acqbibdtail=ado.BibliobyControlId(library_id, sub_library_id, ii);
        System.out.println("DDDDDDDDDDDDDDDDDDD"+acqbibdtail);

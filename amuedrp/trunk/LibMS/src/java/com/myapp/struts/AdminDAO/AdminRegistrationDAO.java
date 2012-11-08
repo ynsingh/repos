@@ -24,9 +24,9 @@ import org.hibernate.transform.Transformers;
 public class AdminRegistrationDAO {
 
 
-   static  Integer maxNewRegId;
-   static Query query;
-public static  boolean insert1(AdminRegistration obj)
+      Integer maxNewRegId;
+     Query query;
+public    boolean insert1(AdminRegistration obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -369,7 +369,7 @@ return true;
 }
 
 
-    public static Integer maxRegistrationID()
+    public   Integer maxRegistrationID()
     {
          Session session = HibernateUtil.getSessionFactory().openSession();
         
@@ -400,7 +400,7 @@ return true;
 
 
   
-public static  AdminRegistration searchLoginID(String login_id)
+public    AdminRegistration searchLoginID(String login_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AdminRegistration obj=null;
@@ -424,7 +424,7 @@ AdminRegistration obj=null;
         return obj;
 
 }
-public static  AdminRegistration searchInstitute(String library_id)
+public    AdminRegistration searchInstitute(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AdminRegistration obj=null;
@@ -449,7 +449,7 @@ AdminRegistration obj=null;
         return obj;
 
 }
-public static  AdminRegistration searchInstituteAdmin(String staff_id,String library_id)
+public    AdminRegistration searchInstituteAdmin(String staff_id,String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AdminRegistration obj=null;
@@ -474,7 +474,7 @@ session.getTransaction().commit();
         return obj;
 
 }
-public static  AdminRegistration searchInstituteAdmin(String login_id)
+public    AdminRegistration searchInstituteAdmin(String login_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AdminRegistration obj=null;
@@ -498,7 +498,7 @@ AdminRegistration obj=null;
         return obj;
 
 }
-public static  boolean update1(AdminRegistration obj)
+public    boolean update1(AdminRegistration obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

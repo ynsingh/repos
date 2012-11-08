@@ -1,320 +1,319 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.CirPrivilege" table="cir_privilege" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.CirPrivilegeId">
-            <key-property name="staffId" type="string">
-                <column name="staff_id" length="100" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-        </composite-id>
-     <!--   <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
+  <class catalog="libms" name="com.myapp.struts.hbm.CirPrivilege" table="cir_privilege">
+    <composite-id class="com.myapp.struts.hbm.CirPrivilegeId" name="id">
+      <key-property name="staffId" type="string">
+        <column length="100" name="staff_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+    </composite-id>
+    <!--   <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
             <column name="staff_id" length="100" not-null="true" />
             <column name="library_id" length="20" not-null="true" />
         </many-to-one>-->
-        <property name="sublibraryId" type="string">
-            <column name="sublibrary_id" length="20" not-null="true" />
-        </property>
-        <property name="cir301" type="string">
-            <column name="cir_301" length="5" />
-        </property>
-        <property name="cir302" type="string">
-            <column name="cir_302" length="5" />
-        </property>
-        <property name="cir303" type="string">
-            <column name="cir_303" length="5" />
-        </property>
-        <property name="cir304" type="string">
-            <column name="cir_304" length="5" />
-        </property>
-        <property name="cir305" type="string">
-            <column name="cir_305" length="5" />
-        </property>
-        <property name="cir306" type="string">
-            <column name="cir_306" length="5" />
-        </property>
-        <property name="cir307" type="string">
-            <column name="cir_307" length="5" />
-        </property>
-        <property name="cir308" type="string">
-            <column name="cir_308" length="5" />
-        </property>
-        <property name="cir309" type="string">
-            <column name="cir_309" length="5" />
-        </property>
-        <property name="cir310" type="string">
-            <column name="cir_310" length="5" />
-        </property>
-        <property name="cir311" type="string">
-            <column name="cir_311" length="5" />
-        </property>
-        <property name="cir312" type="string">
-            <column name="cir_312" length="5" />
-        </property>
-        <property name="cir313" type="string">
-            <column name="cir_313" length="5" />
-        </property>
-        <property name="cir314" type="string">
-            <column name="cir_314" length="5" />
-        </property>
-        <property name="cir315" type="string">
-            <column name="cir_315" length="5" />
-        </property>
-        <property name="cir316" type="string">
-            <column name="cir_316" length="5" />
-        </property>
-        <property name="cir317" type="string">
-            <column name="cir_317" length="5" />
-        </property>
-        <property name="cir318" type="string">
-            <column name="cir_318" length="5" />
-        </property>
-        <property name="cir319" type="string">
-            <column name="cir_319" length="5" />
-        </property>
-        <property name="cir320" type="string">
-            <column name="cir_320" length="5" />
-        </property>
-        <property name="cir321" type="string">
-            <column name="cir_321" length="5" />
-        </property>
-        <property name="cir322" type="string">
-            <column name="cir_322" length="5" />
-        </property>
-        <property name="cir323" type="string">
-            <column name="cir_323" length="5" />
-        </property>
-        <property name="cir324" type="string">
-            <column name="cir_324" length="5" />
-        </property>
-        <property name="cir325" type="string">
-            <column name="cir_325" length="5" />
-        </property>
-        <property name="cir326" type="string">
-            <column name="cir_326" length="5" />
-        </property>
-        <property name="cir327" type="string">
-            <column name="cir_327" length="5" />
-        </property>
-        <property name="cir328" type="string">
-            <column name="cir_328" length="5" />
-        </property>
-        <property name="cir329" type="string">
-            <column name="cir_329" length="5" />
-        </property>
-        <property name="cir330" type="string">
-            <column name="cir_330" length="5" />
-        </property>
-        <property name="cir331" type="string">
-            <column name="cir_331" length="5" />
-        </property>
-        <property name="cir332" type="string">
-            <column name="cir_332" length="5" />
-        </property>
-        <property name="cir333" type="string">
-            <column name="cir_333" length="5" />
-        </property>
-        <property name="cir334" type="string">
-            <column name="cir_334" length="5" />
-        </property>
-        <property name="cir335" type="string">
-            <column name="cir_335" length="5" />
-        </property>
-        <property name="cir336" type="string">
-            <column name="cir_336" length="5" />
-        </property>
-        <property name="cir337" type="string">
-            <column name="cir_337" length="5" />
-        </property>
-        <property name="cir338" type="string">
-            <column name="cir_338" length="5" />
-        </property>
-        <property name="cir339" type="string">
-            <column name="cir_339" length="5" />
-        </property>
-        <property name="cir340" type="string">
-            <column name="cir_340" length="5" />
-        </property>
-        <property name="cir341" type="string">
-            <column name="cir_341" length="5" />
-        </property>
-        <property name="cir342" type="string">
-            <column name="cir_342" length="5" />
-        </property>
-        <property name="cir343" type="string">
-            <column name="cir_343" length="5" />
-        </property>
-        <property name="cir344" type="string">
-            <column name="cir_344" length="5" />
-        </property>
-        <property name="cir345" type="string">
-            <column name="cir_345" length="5" />
-        </property>
-        <property name="cir346" type="string">
-            <column name="cir_346" length="5" />
-        </property>
-        <property name="cir347" type="string">
-            <column name="cir_347" length="5" />
-        </property>
-        <property name="cir348" type="string">
-            <column name="cir_348" length="5" />
-        </property>
-        <property name="cir349" type="string">
-            <column name="cir_349" length="5" />
-        </property>
-        <property name="cir350" type="string">
-            <column name="cir_350" length="5" />
-        </property>
-        <property name="cir351" type="string">
-            <column name="cir_351" length="5" />
-        </property>
-        <property name="cir352" type="string">
-            <column name="cir_352" length="5" />
-        </property>
-        <property name="cir353" type="string">
-            <column name="cir_353" length="5" />
-        </property>
-        <property name="cir354" type="string">
-            <column name="cir_354" length="5" />
-        </property>
-        <property name="cir355" type="string">
-            <column name="cir_355" length="5" />
-        </property>
-        <property name="cir356" type="string">
-            <column name="cir_356" length="5" />
-        </property>
-        <property name="cir357" type="string">
-            <column name="cir_357" length="5" />
-        </property>
-        <property name="cir358" type="string">
-            <column name="cir_358" length="5" />
-        </property>
-        <property name="cir359" type="string">
-            <column name="cir_359" length="5" />
-        </property>
-        <property name="cir360" type="string">
-            <column name="cir_360" length="5" />
-        </property>
-        <property name="cir361" type="string">
-            <column name="cir_361" length="5" />
-        </property>
-        <property name="cir362" type="string">
-            <column name="cir_362" length="5" />
-        </property>
-        <property name="cir363" type="string">
-            <column name="cir_363" length="5" />
-        </property>
-        <property name="cir364" type="string">
-            <column name="cir_364" length="5" />
-        </property>
-        <property name="cir365" type="string">
-            <column name="cir_365" length="5" />
-        </property>
-        <property name="cir366" type="string">
-            <column name="cir_366" length="5" />
-        </property>
-        <property name="cir367" type="string">
-            <column name="cir_367" length="5" />
-        </property>
-        <property name="cir368" type="string">
-            <column name="cir_368" length="5" />
-        </property>
-        <property name="cir369" type="string">
-            <column name="cir_369" length="5" />
-        </property>
-        <property name="cir370" type="string">
-            <column name="cir_370" length="5" />
-        </property>
-        <property name="cir371" type="string">
-            <column name="cir_371" length="5" />
-        </property>
-        <property name="cir372" type="string">
-            <column name="cir_372" length="5" />
-        </property>
-        <property name="cir373" type="string">
-            <column name="cir_373" length="5" />
-        </property>
-        <property name="cir374" type="string">
-            <column name="cir_374" length="5" />
-        </property>
-        <property name="cir375" type="string">
-            <column name="cir_375" length="5" />
-        </property>
-        <property name="cir376" type="string">
-            <column name="cir_376" length="5" />
-        </property>
-        <property name="cir377" type="string">
-            <column name="cir_377" length="5" />
-        </property>
-        <property name="cir378" type="string">
-            <column name="cir_378" length="5" />
-        </property>
-        <property name="cir379" type="string">
-            <column name="cir_379" length="5" />
-        </property>
-        <property name="cir380" type="string">
-            <column name="cir_380" length="5" />
-        </property>
-        <property name="cir381" type="string">
-            <column name="cir_381" length="5" />
-        </property>
-        <property name="cir382" type="string">
-            <column name="cir_382" length="5" />
-        </property>
-        <property name="cir383" type="string">
-            <column name="cir_383" length="5" />
-        </property>
-        <property name="cir384" type="string">
-            <column name="cir_384" length="5" />
-        </property>
-        <property name="cir385" type="string">
-            <column name="cir_385" length="5" />
-        </property>
-        <property name="cir386" type="string">
-            <column name="cir_386" length="5" />
-        </property>
-        <property name="cir387" type="string">
-            <column name="cir_387" length="5" />
-        </property>
-        <property name="cir388" type="string">
-            <column name="cir_388" length="5" />
-        </property>
-        <property name="cir389" type="string">
-            <column name="cir_389" length="5" />
-        </property>
-        <property name="cir390" type="string">
-            <column name="cir_390" length="5" />
-        </property>
-        <property name="cir391" type="string">
-            <column name="cir_391" length="5" />
-        </property>
-        <property name="cir392" type="string">
-            <column name="cir_392" length="5" />
-        </property>
-        <property name="cir393" type="string">
-            <column name="cir_393" length="5" />
-        </property>
-        <property name="cir394" type="string">
-            <column name="cir_394" length="5" />
-        </property>
-        <property name="cir395" type="string">
-            <column name="cir_395" length="5" />
-        </property>
-        <property name="cir396" type="string">
-            <column name="cir_396" length="5" />
-        </property>
-        <property name="cir397" type="string">
-            <column name="cir_397" length="5" />
-        </property>
-        <property name="cir398" type="string">
-            <column name="cir_398" length="5" />
-        </property>
-        <property name="cir399" type="string">
-            <column name="cir_399" length="5" />
-        </property>
-    </class>
+    <property name="sublibraryId" type="string">
+      <column length="20" name="sublibrary_id" not-null="true"/>
+    </property>
+    <property name="cir301" type="string">
+      <column length="5" name="cir_301"/>
+    </property>
+    <property name="cir302" type="string">
+      <column length="5" name="cir_302"/>
+    </property>
+    <property name="cir303" type="string">
+      <column length="5" name="cir_303"/>
+    </property>
+    <property name="cir304" type="string">
+      <column length="5" name="cir_304"/>
+    </property>
+    <property name="cir305" type="string">
+      <column length="5" name="cir_305"/>
+    </property>
+    <property name="cir306" type="string">
+      <column length="5" name="cir_306"/>
+    </property>
+    <property name="cir307" type="string">
+      <column length="5" name="cir_307"/>
+    </property>
+    <property name="cir308" type="string">
+      <column length="5" name="cir_308"/>
+    </property>
+    <property name="cir309" type="string">
+      <column length="5" name="cir_309"/>
+    </property>
+    <property name="cir310" type="string">
+      <column length="5" name="cir_310"/>
+    </property>
+    <property name="cir311" type="string">
+      <column length="5" name="cir_311"/>
+    </property>
+    <property name="cir312" type="string">
+      <column length="5" name="cir_312"/>
+    </property>
+    <property name="cir313" type="string">
+      <column length="5" name="cir_313"/>
+    </property>
+    <property name="cir314" type="string">
+      <column length="5" name="cir_314"/>
+    </property>
+    <property name="cir315" type="string">
+      <column length="5" name="cir_315"/>
+    </property>
+    <property name="cir316" type="string">
+      <column length="5" name="cir_316"/>
+    </property>
+    <property name="cir317" type="string">
+      <column length="5" name="cir_317"/>
+    </property>
+    <property name="cir318" type="string">
+      <column length="5" name="cir_318"/>
+    </property>
+    <property name="cir319" type="string">
+      <column length="5" name="cir_319"/>
+    </property>
+    <property name="cir320" type="string">
+      <column length="5" name="cir_320"/>
+    </property>
+    <property name="cir321" type="string">
+      <column length="5" name="cir_321"/>
+    </property>
+    <property name="cir322" type="string">
+      <column length="5" name="cir_322"/>
+    </property>
+    <property name="cir323" type="string">
+      <column length="5" name="cir_323"/>
+    </property>
+    <property name="cir324" type="string">
+      <column length="5" name="cir_324"/>
+    </property>
+    <property name="cir325" type="string">
+      <column length="5" name="cir_325"/>
+    </property>
+    <property name="cir326" type="string">
+      <column length="5" name="cir_326"/>
+    </property>
+    <property name="cir327" type="string">
+      <column length="5" name="cir_327"/>
+    </property>
+    <property name="cir328" type="string">
+      <column length="5" name="cir_328"/>
+    </property>
+    <property name="cir329" type="string">
+      <column length="5" name="cir_329"/>
+    </property>
+    <property name="cir330" type="string">
+      <column length="5" name="cir_330"/>
+    </property>
+    <property name="cir331" type="string">
+      <column length="5" name="cir_331"/>
+    </property>
+    <property name="cir332" type="string">
+      <column length="5" name="cir_332"/>
+    </property>
+    <property name="cir333" type="string">
+      <column length="5" name="cir_333"/>
+    </property>
+    <property name="cir334" type="string">
+      <column length="5" name="cir_334"/>
+    </property>
+    <property name="cir335" type="string">
+      <column length="5" name="cir_335"/>
+    </property>
+    <property name="cir336" type="string">
+      <column length="5" name="cir_336"/>
+    </property>
+    <property name="cir337" type="string">
+      <column length="5" name="cir_337"/>
+    </property>
+    <property name="cir338" type="string">
+      <column length="5" name="cir_338"/>
+    </property>
+    <property name="cir339" type="string">
+      <column length="5" name="cir_339"/>
+    </property>
+    <property name="cir340" type="string">
+      <column length="5" name="cir_340"/>
+    </property>
+    <property name="cir341" type="string">
+      <column length="5" name="cir_341"/>
+    </property>
+    <property name="cir342" type="string">
+      <column length="5" name="cir_342"/>
+    </property>
+    <property name="cir343" type="string">
+      <column length="5" name="cir_343"/>
+    </property>
+    <property name="cir344" type="string">
+      <column length="5" name="cir_344"/>
+    </property>
+    <property name="cir345" type="string">
+      <column length="5" name="cir_345"/>
+    </property>
+    <property name="cir346" type="string">
+      <column length="5" name="cir_346"/>
+    </property>
+    <property name="cir347" type="string">
+      <column length="5" name="cir_347"/>
+    </property>
+    <property name="cir348" type="string">
+      <column length="5" name="cir_348"/>
+    </property>
+    <property name="cir349" type="string">
+      <column length="5" name="cir_349"/>
+    </property>
+    <property name="cir350" type="string">
+      <column length="5" name="cir_350"/>
+    </property>
+    <property name="cir351" type="string">
+      <column length="5" name="cir_351"/>
+    </property>
+    <property name="cir352" type="string">
+      <column length="5" name="cir_352"/>
+    </property>
+    <property name="cir353" type="string">
+      <column length="5" name="cir_353"/>
+    </property>
+    <property name="cir354" type="string">
+      <column length="5" name="cir_354"/>
+    </property>
+    <property name="cir355" type="string">
+      <column length="5" name="cir_355"/>
+    </property>
+    <property name="cir356" type="string">
+      <column length="5" name="cir_356"/>
+    </property>
+    <property name="cir357" type="string">
+      <column length="5" name="cir_357"/>
+    </property>
+    <property name="cir358" type="string">
+      <column length="5" name="cir_358"/>
+    </property>
+    <property name="cir359" type="string">
+      <column length="5" name="cir_359"/>
+    </property>
+    <property name="cir360" type="string">
+      <column length="5" name="cir_360"/>
+    </property>
+    <property name="cir361" type="string">
+      <column length="5" name="cir_361"/>
+    </property>
+    <property name="cir362" type="string">
+      <column length="5" name="cir_362"/>
+    </property>
+    <property name="cir363" type="string">
+      <column length="5" name="cir_363"/>
+    </property>
+    <property name="cir364" type="string">
+      <column length="5" name="cir_364"/>
+    </property>
+    <property name="cir365" type="string">
+      <column length="5" name="cir_365"/>
+    </property>
+    <property name="cir366" type="string">
+      <column length="5" name="cir_366"/>
+    </property>
+    <property name="cir367" type="string">
+      <column length="5" name="cir_367"/>
+    </property>
+    <property name="cir368" type="string">
+      <column length="5" name="cir_368"/>
+    </property>
+    <property name="cir369" type="string">
+      <column length="5" name="cir_369"/>
+    </property>
+    <property name="cir370" type="string">
+      <column length="5" name="cir_370"/>
+    </property>
+    <property name="cir371" type="string">
+      <column length="5" name="cir_371"/>
+    </property>
+    <property name="cir372" type="string">
+      <column length="5" name="cir_372"/>
+    </property>
+    <property name="cir373" type="string">
+      <column length="5" name="cir_373"/>
+    </property>
+    <property name="cir374" type="string">
+      <column length="5" name="cir_374"/>
+    </property>
+    <property name="cir375" type="string">
+      <column length="5" name="cir_375"/>
+    </property>
+    <property name="cir376" type="string">
+      <column length="5" name="cir_376"/>
+    </property>
+    <property name="cir377" type="string">
+      <column length="5" name="cir_377"/>
+    </property>
+    <property name="cir378" type="string">
+      <column length="5" name="cir_378"/>
+    </property>
+    <property name="cir379" type="string">
+      <column length="5" name="cir_379"/>
+    </property>
+    <property name="cir380" type="string">
+      <column length="5" name="cir_380"/>
+    </property>
+    <property name="cir381" type="string">
+      <column length="5" name="cir_381"/>
+    </property>
+    <property name="cir382" type="string">
+      <column length="5" name="cir_382"/>
+    </property>
+    <property name="cir383" type="string">
+      <column length="5" name="cir_383"/>
+    </property>
+    <property name="cir384" type="string">
+      <column length="5" name="cir_384"/>
+    </property>
+    <property name="cir385" type="string">
+      <column length="5" name="cir_385"/>
+    </property>
+    <property name="cir386" type="string">
+      <column length="5" name="cir_386"/>
+    </property>
+    <property name="cir387" type="string">
+      <column length="5" name="cir_387"/>
+    </property>
+    <property name="cir388" type="string">
+      <column length="5" name="cir_388"/>
+    </property>
+    <property name="cir389" type="string">
+      <column length="5" name="cir_389"/>
+    </property>
+    <property name="cir390" type="string">
+      <column length="5" name="cir_390"/>
+    </property>
+    <property name="cir391" type="string">
+      <column length="5" name="cir_391"/>
+    </property>
+    <property name="cir392" type="string">
+      <column length="5" name="cir_392"/>
+    </property>
+    <property name="cir393" type="string">
+      <column length="5" name="cir_393"/>
+    </property>
+    <property name="cir394" type="string">
+      <column length="5" name="cir_394"/>
+    </property>
+    <property name="cir395" type="string">
+      <column length="5" name="cir_395"/>
+    </property>
+    <property name="cir396" type="string">
+      <column length="5" name="cir_396"/>
+    </property>
+    <property name="cir397" type="string">
+      <column length="5" name="cir_397"/>
+    </property>
+    <property name="cir398" type="string">
+      <column length="5" name="cir_398"/>
+    </property>
+    <property name="cir399" type="string">
+      <column length="5" name="cir_399"/>
+    </property>
+  </class>
 </hibernate-mapping>

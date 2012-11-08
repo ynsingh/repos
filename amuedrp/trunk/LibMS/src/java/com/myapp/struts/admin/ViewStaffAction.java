@@ -24,16 +24,17 @@ public class ViewStaffAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session=request.getSession();
-     
+     StaffDetailDAO staffdao=new StaffDetailDAO();
+     SubLibraryDAO sublibdao=new SubLibraryDAO();
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
         String library_id=(String)session.getAttribute("library_id");
         String staff_id=request.getParameter("id")  ;
          System.out.println(staff_id+library_id);
-        StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+        StaffDetail staffobj=staffdao.searchStaffId(staff_id, library_id);
         if(staffobj!=null){
              
              // request.setAttribute("button", button);
-             List<SubLibrary>  sublib=SubLibraryDAO.searchSubLib(library_id);
+             List<SubLibrary>  sublib=sublibdao.searchSubLib(library_id);
              if(!sublib.isEmpty())
              {
                 

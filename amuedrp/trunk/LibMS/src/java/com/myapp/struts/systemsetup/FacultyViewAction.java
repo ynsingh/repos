@@ -25,26 +25,18 @@ public class FacultyViewAction extends org.apache.struts.action.Action {
     String faculty_id;
     String button;
     String library_id;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        
+        FacultyDAO facdao=new FacultyDAO();
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
 
          faculty_id=request.getParameter("id");
 
-         Faculty faculty=FacultyDAO.getFacultyName(library_id, faculty_id);
+         Faculty faculty=facdao.getFacultyName(library_id, faculty_id);
          if(faculty!=null)
          {request.setAttribute("button", "View");
                request.setAttribute("sublib", faculty);

@@ -75,7 +75,7 @@
             System.out.println(strLine);
             //String[] RowHeader=UserLog.SeparateFileRow(strLine);
             String data[]=null;
-             BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+             BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
             
          DAO daoobj = new DAO();
          int row=0;
@@ -202,14 +202,14 @@
                             AccessionRegisterId accessionidobj = new AccessionRegisterId();
                             DocumentDetails documentobj = new DocumentDetails();
                             DocumentDetailsId documentIdobj = new DocumentDetailsId();
-
+                           
                                             //Check for Duplicate CallNO/Title/ISBN10/MainEntry Combination
-                                            BibliographicDetails  uniTitle =(BibliographicDetails) DAO.DuplicateTitleCallno(library_id,sublibrary_id,call_no,title,isbn,main_entry);
+                                            BibliographicDetails  uniTitle =(BibliographicDetails) daoobj.DuplicateTitleCallno(library_id,sublibrary_id,call_no,title,isbn,main_entry);
                                              System.out.println(uniTitle);
                                             if(uniTitle!=null)
                                             {
                                                 //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,acc_no);
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,acc_no);
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -290,7 +290,7 @@
                                             {
                                                  System.out.println("jjj");
                                                  //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,acc_no);
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,acc_no);
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -403,7 +403,7 @@
                                                 documentobj.setDateAcquired(date_acq);
                                                 documentobj.setSeries(series);
                                                 //insert in three table jointly
-                                                DAO.insertImport(bibobj,accessionobj,documentobj);
+                                                daoobj.insertImport(bibobj,accessionobj,documentobj);
                                             }
                         }
                         else if((call_no!=null && call_no.isEmpty()==false) && (isbn==null ||  isbn.isEmpty()==true) && (title!=null && title.isEmpty()==false) && (main_entry!=null && main_entry.isEmpty()==false))
@@ -417,11 +417,11 @@
                             DocumentDetailsId documentIdobj = new DocumentDetailsId();
 
                                             //Check for Duplicate CallNO/Title/ISBN10/MainEntry Combination
-                                            List  uniTitle =(List<String>) DAO.DuplicateTitleCallno(library_id,sublibrary_id,call_no,title,isbn,main_entry);
+                                            List  uniTitle =(List<String>) daoobj.DuplicateTitleCallno(library_id,sublibrary_id,call_no,title,isbn,main_entry);
                                             if(uniTitle!=null) if(uniTitle.isEmpty()==false)
                                             {
                                                 //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,acc_no);
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,acc_no);
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -498,7 +498,7 @@
                                             else
                                             {
                                                  //Check for Duplicate Accession No Entry in Accession Register
-                                                List  uniTitle1 =(List) DAO.duplicateAccessionno(library_id,sublibrary_id,acc_no);
+                                                List  uniTitle1 =(List) daoobj.duplicateAccessionno(library_id,sublibrary_id,acc_no);
                                                 if(uniTitle1!=null)
                                                 {if(uniTitle1.isEmpty()==false)
                                                 {
@@ -603,7 +603,7 @@
                                                 documentobj.setDateAcquired(date_acq);
                                                 documentobj.setSeries(series);
                                                 //insert in three table jointly
-                                                DAO.insertImport(bibobj,accessionobj,documentobj);
+                                                daoobj.insertImport(bibobj,accessionobj,documentobj);
                                             }
 
 

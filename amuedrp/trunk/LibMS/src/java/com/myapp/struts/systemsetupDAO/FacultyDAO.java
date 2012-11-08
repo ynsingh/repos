@@ -19,13 +19,13 @@ public class FacultyDAO {
 
 
  
-   static Query query;
+    Query query;
   
 
 
 
 
-public static Faculty getFacultyName(String library_id,String faculty_id) {
+public  Faculty getFacultyName(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Faculty obj = null;
         try {
@@ -47,7 +47,7 @@ public static Faculty getFacultyName(String library_id,String faculty_id) {
 
 }
 
-public static List<CirMemberAccount> searchAccountCourse(String library_id,String course_id) {
+public  List<CirMemberAccount> searchAccountCourse(String library_id,String course_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<CirMemberAccount> obj = null;
         try {
@@ -68,7 +68,7 @@ public static List<CirMemberAccount> searchAccountCourse(String library_id,Strin
         return obj;
 
 }
-public static List<CirMemberAccount> searchAccount(String library_id,String faculty_id,String dept_id) {
+public  List<CirMemberAccount> searchAccount(String library_id,String faculty_id,String dept_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
       List<CirMemberAccount> obj=null;
         try {
@@ -89,7 +89,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String facu
         return obj;
 
 }
-public static List<CirMemberAccount> searchAccount(String library_id,String faculty_id) {
+public  List<CirMemberAccount> searchAccount(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<CirMemberAccount>  obj=null;
         try {
@@ -110,7 +110,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String facu
         return obj;
 
 }
-public static List<Faculty> getFaculty(String library_id,String faculty_id) {
+public  List<Faculty> getFaculty(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<Faculty> obj=null;
         try {
@@ -132,7 +132,7 @@ public static List<Faculty> getFaculty(String library_id,String faculty_id) {
 
 }
 
-public static Faculty getFacultyId(String library_id,String faculty_name) {
+public  Faculty getFacultyId(String library_id,String faculty_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        Faculty obj=null;
         try {
@@ -153,7 +153,7 @@ public static Faculty getFacultyId(String library_id,String faculty_name) {
         return obj;
 
 }
-public static List<Faculty> getFacultyRecord(String library_id) {
+public  List<Faculty> getFacultyRecord(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<Faculty> obj=null;
         try {
@@ -174,7 +174,7 @@ public static List<Faculty> getFacultyRecord(String library_id) {
         return obj;
 
 }
-public static List<Faculty> searchFaculty(String library_id) {
+public  List<Faculty> searchFaculty(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
  List<Faculty> obj=null;
         try {
@@ -202,7 +202,7 @@ public static List<Faculty> searchFaculty(String library_id) {
 
 }
 
-  public static Faculty searchFacultyName(String library_id,String faculty_id) {
+  public  Faculty searchFacultyName(String library_id,String faculty_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Faculty obj=null;
         try {
@@ -222,7 +222,7 @@ public static List<Faculty> searchFaculty(String library_id) {
         return obj;
 
 }
-public static  boolean update(Faculty obj,String library_id)
+public   boolean update(Faculty obj,String library_id)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -257,7 +257,7 @@ e.printStackTrace();
 }
 
 
-public static  boolean Delete(Faculty obj)
+public   boolean Delete(Faculty obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -284,7 +284,7 @@ public static  boolean Delete(Faculty obj)
 
 
 
-public static  boolean insert(Faculty obj)
+public   boolean insert(Faculty obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -318,7 +318,7 @@ public static  boolean insert(Faculty obj)
 }
 
 
- public static List getMaxFacultyRecordIdNo(String library_id) {
+ public  List getMaxFacultyRecordIdNo(String library_id) {
         Session session =HibernateUtil.getSessionFactory().openSession();
       List obj=null;
         try {
@@ -340,7 +340,7 @@ public static  boolean insert(Faculty obj)
 
 
 
-  public static Faculty getFacultyRecordIdNo1(String library_id,String faculty_name) {
+  public  Faculty getFacultyRecordIdNo1(String library_id,String faculty_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
       Faculty obj=null;
         try {
@@ -364,9 +364,9 @@ public static  boolean insert(Faculty obj)
 }
 public String getDeptByFacultyID (String library_id,String faculty_id) {
 StringBuffer dept_ids = new StringBuffer();
-
+DeptDAO objdept=new DeptDAO();
 try {
-List<Department> subemp = (List<Department>)DeptDAO.getDept(library_id, faculty_id);
+List<Department> subemp = (List<Department>)objdept.getDept(library_id, faculty_id);
 Iterator it = subemp.iterator();
 int tcount=0;
 dept_ids.append("<dept_ids>");
@@ -396,9 +396,9 @@ return dept_ids.toString();
 
 public String getCourseByDeptID (String library_id,String faculty_id,String dept_id) {
 StringBuffer dept_ids = new StringBuffer();
-
+CourseDAO coursedao=new CourseDAO();
 try {
-List<Courses> subemp = (List<Courses>)CourseDAO.getCourse(library_id, faculty_id,dept_id);
+List<Courses> subemp = (List<Courses>)coursedao.getCourse(library_id, faculty_id,dept_id);
 Iterator it = subemp.iterator();
 int tcount=0;
 dept_ids.append("<course_ids>");
@@ -430,11 +430,11 @@ return dept_ids.toString();
 
 
 
-public static String getFacultyByLibrary(String library_id) {
+public  String getFacultyByLibrary(String library_id) {
      StringBuffer dept_ids = new StringBuffer();
-
+FacultyDAO facdao=new FacultyDAO();
 try {
-List<Faculty> subemp = (List<Faculty>)FacultyDAO.getFacultyRecord(library_id);
+List<Faculty> subemp = (List<Faculty>)facdao.getFacultyRecord(library_id);
 Iterator it = subemp.iterator();
 System.out.println(subemp.size());
 int tcount=0;

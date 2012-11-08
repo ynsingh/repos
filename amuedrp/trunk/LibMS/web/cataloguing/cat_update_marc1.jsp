@@ -26,7 +26,7 @@ function send()
 
 <body bgcolor="#FFFFFF">
     <div
-   style="  top:150px;
+   style="  top:120px;
    left:100px;
       position: absolute;
 
@@ -93,7 +93,7 @@ tcount = opacList.size();
 %>
 
 <table  border="0" align="center"  dir="<%=rtl %>">
-    <tr><td class="headerStyle" height="30px" align="center">View ALL Bibliographic Details (MARC-21)</td></tr>
+    <tr><td class="headerStyle" align="center" colspan="2">MARC-21 Bibliographic Titles Exist in Catalog</td></tr>
 <div>
 <%
 if(tcount==0)

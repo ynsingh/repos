@@ -4,7 +4,7 @@
  */
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.AccessionRegister;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ import com.myapp.struts.utility.StringRegEx;
  */
 public class AccessionSingleEdit extends org.apache.struts.action.Action {
 
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     AccessionRegister bib=new AccessionRegister();
 
     @Override

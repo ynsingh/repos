@@ -1,9 +1,7 @@
 package com.myapp.struts.opac;
 import com.myapp.struts.AdminDAO.AdminRegistrationDAO;
-import com.myapp.struts.AdminDAO.LibraryDAO;
 import com.myapp.struts.hbm.AdminRegistration;
 import com.myapp.struts.hbm.Department;
-import com.myapp.struts.hbm.Library;
 import com.myapp.struts.hbm.SubLibrary;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.systemsetupDAO.DeptDAO;
@@ -11,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -25,7 +22,8 @@ public class OpacSubLibrarySearchAction extends org.apache.struts.action.Action 
             throws Exception {
         StringBuffer emp_ids = new StringBuffer();
         OpacSearchDAO opacDAO = new OpacSearchDAO();
-
+DeptDAO dept=new DeptDAO();
+AdminRegistrationDAO admindao=new AdminRegistrationDAO();
         String searchText = request.getParameter("getSubLibrary_Id");
         List sublibrary = opacDAO.subLibrarySearch(searchText);
 
@@ -37,7 +35,7 @@ public class OpacSubLibrarySearchAction extends org.apache.struts.action.Action 
 
 //construct the xml string.
             SubLibrary sublibpojo = (SubLibrary)sublibrary.get(tcount);
-            Department deptdao=(Department)DeptDAO.getDeptName(searchText,sublibpojo.getSublibName());
+            Department deptdao=(Department)dept.getDeptName(searchText,sublibpojo.getSublibName());
             emp_ids.append("<sublibrary_id>"+sublibpojo.getId().getSublibraryId()+"</sublibrary_id>");
             if(deptdao!=null)
             {
@@ -45,7 +43,7 @@ public class OpacSubLibrarySearchAction extends org.apache.struts.action.Action 
             }else{
                 if(sublibpojo.getId().getSublibraryId().equalsIgnoreCase(searchText))
                 {
-                      AdminRegistration admin=AdminRegistrationDAO.searchInstitute(searchText);
+                      AdminRegistration admin=admindao.searchInstitute(searchText);
 
                     emp_ids.append("<sublibrary_name>"+admin.getLibraryName()+"/Central Library"+"</sublibrary_name>");
                 }

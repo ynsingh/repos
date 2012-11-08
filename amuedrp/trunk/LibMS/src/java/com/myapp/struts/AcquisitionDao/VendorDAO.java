@@ -66,7 +66,7 @@ public class VendorDAO {
 
 
 
- public static List<AcqVendor> searchDoc5(String library_id, String sub_library_id) {
+ public   List<AcqVendor> searchDoc5(String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqVendor> obj=null;
         try {
@@ -90,7 +90,7 @@ public class VendorDAO {
 
  
 
-  public static List<String> getCurrencyList(String library_id) {
+  public   List<String> getCurrencyList(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<String>  obj=null;
 
@@ -157,7 +157,7 @@ public class VendorDAO {
     }
 
 
-     public static List<AcqVendor> searchVendor(String library_id) {
+     public   List<AcqVendor> searchVendor(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqVendor> obj=null;
         try {

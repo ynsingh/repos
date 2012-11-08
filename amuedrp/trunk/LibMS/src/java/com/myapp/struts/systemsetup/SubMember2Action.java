@@ -54,6 +54,8 @@ public class SubMember2Action extends org.apache.struts.action.Action {
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
     else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+MemberDAO memdao=new MemberDAO();
+SubMemberDAO submemdao=new SubMemberDAO();
 
         SubMember2ActionForm smaf=(SubMember2ActionForm)form;
         sub_emptype_id=smaf.getSub_emptype_id();
@@ -63,7 +65,7 @@ public class SubMember2Action extends org.apache.struts.action.Action {
         
         library_id=(String)session.getAttribute("library_id");
 
-        EmployeeType emp=MemberDAO.getEployeeByName(library_id,emptype_id);
+        EmployeeType emp=memdao.getEployeeByName(library_id,emptype_id);
         if(emp!=null)
             emptype_full_name=emp.getEmptypeFullName();
 
@@ -71,7 +73,7 @@ public class SubMember2Action extends org.apache.struts.action.Action {
         
         if(button.equals("Add"))
         {
-         SubEmployeeType subemployeetype=SubMemberDAO.getSubEployeeName(library_id,emptype_id, sub_emptype_id);
+         SubEmployeeType subemployeetype=submemdao.getSubEployeeName(library_id,emptype_id, sub_emptype_id);
          if(subemployeetype!=null)
          {
              //request.setAttribute("msg1", "SubMember Id : "+sub_emptype_id+" already exists");
@@ -98,7 +100,7 @@ SubEmployeeType subemployeetype;
 
 
 
-                         subemployeetype=SubMemberDAO.getSubEployeeName(library_id,emptype_id, sub_emptype_id);
+                         subemployeetype=submemdao.getSubEployeeName(library_id,emptype_id, sub_emptype_id);
                         if(subemployeetype==null)
                         {
 
@@ -116,7 +118,7 @@ SubEmployeeType subemployeetype;
          {
 
           emptype_id=(String)subemployeetype.getId().getEmptypeId();
-          EmployeeType emptype=MemberDAO.getEployeeName(library_id, emptype_id);
+          EmployeeType emptype=memdao.getEployeeName(library_id, emptype_id);
            request.setAttribute("emptype", emptype);
             request.setAttribute("emptype_id",emptype_id);
            request.setAttribute("button",button);

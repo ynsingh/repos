@@ -1,9 +1,3 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
---%>
-
     <%@page import="com.myapp.struts.admin.RequestDoc"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -31,6 +25,105 @@ else{
 
 %>
 
+
+
+<%!
+
+
+   RequestDoc Ob;
+   AdminRegistration adminReg;
+   ArrayList requestList;
+   int fromIndex=0, toIndex;
+%>
+ <%
+ int perpage=4;
+ List rs = (List)(session.getAttribute("resultset2"));
+
+  if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
+
+
+   requestList = new ArrayList();
+   int tcount =0;
+
+   int tpage=0;
+
+if(rs!=null)
+{
+   Iterator it = rs.iterator();
+
+
+
+   while (it.hasNext())
+        {
+
+	System.out.println("it="+(tcount));
+        adminReg = (AdminRegistration)rs.get(tcount);
+        Ob = new RequestDoc ();
+	Ob.setRegistration_id(adminReg.getRegistrationId());
+	Ob.setInstitute_name(adminReg.getInstituteName());
+	Ob.setUserId(adminReg.getLoginId());
+	Ob.setAdmin_email(adminReg.getAdminEmail());
+           Ob.setStatus(adminReg.getStatus());
+            Ob.setAddress(adminReg.getInstituteAddress());
+        Ob.setUser_name(adminReg.getAdminFname()+" "+adminReg.getAdminLname());
+        adminReg = null;
+        requestList.add(Ob);
+        tcount++;
+        it.next();
+
+	}
+
+System.out.println("tcount="+tcount);
+
+%>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+<%
+  String Registration_ID=resource.getString("admin.viewpending.registrationid");
+  pageContext.setAttribute("Registration_ID", Registration_ID);
+  String InstituteName=resource.getString("admin.viewpending.institutename");
+  pageContext.setAttribute("InstituteName", InstituteName);
+  String UserId=resource.getString("admin.viewpending.userid");
+  pageContext.setAttribute("UserId", UserId);
+  String Admin_Email=resource.getString("admin.viewpending.adminemail");
+  pageContext.setAttribute("Admin_Email",Admin_Email);
+  String Status=resource.getString("admin.viewall.status");
+  pageContext.setAttribute("Status",Status);
+
+%>
+<%
+   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
+   toIndex = requestList.size();
+   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("tCount", tcount);
+    pageContext.setAttribute("rec",perpage);
+%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -76,75 +169,11 @@ function isNumberKey(evt)
       }
     </script>
 <body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
 
-      visibility: show;">
-
-
-      
-
-<%!
-
-
-   RequestDoc Ob;
-   AdminRegistration adminReg;
-   ArrayList requestList;
-   int fromIndex=0, toIndex;
-%>
- <%
- int perpage=4;
- List rs = (List)(session.getAttribute("resultset2"));
-
-  if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
-    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
-
-
-   requestList = new ArrayList();
-   int tcount =0;
-
-   int tpage=0;
-
-if(rs!=null)
-{
-   Iterator it = rs.iterator();
-
-
-
-   while (it.hasNext())
-        {
-
-	System.out.println("it="+(tcount));
-        adminReg = (AdminRegistration)rs.get(tcount);
-        Ob = new RequestDoc ();
-	Ob.setRegistration_id(adminReg.getRegistrationId());
-	Ob.setInstitute_name(adminReg.getInstituteName());
-	Ob.setUserId(adminReg.getLoginId());
-	Ob.setAdmin_email(adminReg.getAdminEmail());
-           Ob.setStatus(adminReg.getStatus());
-        adminReg = null;
-        requestList.add(Ob);
-        tcount++;
-        it.next();
-
-	}
-
-System.out.println("tcount="+tcount);
-
-%>
-
-<%
-   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+perpage) >= requestList.size ())
-   toIndex = requestList.size();
-   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
-    pageContext.setAttribute("rec",perpage);
-%>
-<br><br>
+<table border="1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" align="center"  width="80%" >
+        <tr><td class="headerStyle" align="center">View All  Institute
+            </td></tr>
+        <tr><td align="center">
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Pending Request Found</p>
@@ -152,45 +181,7 @@ System.out.println("tcount="+tcount);
 else
 {%>
 
-<%!
-    Locale locale=null;
-    String locale1="en";
-    String rtl="ltr";
-    boolean page=true;
-    String align="left";
-%>
-<%
-try{
-locale1=(String)session.getAttribute("locale");
-
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
-       // System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
-    else{ rtl="RTL";page=false;align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-
-    %>
-
-<%
-  String Registration_ID=resource.getString("admin.viewpending.registrationid");
-  pageContext.setAttribute("Registration_ID", Registration_ID);
-  String InstituteName=resource.getString("admin.viewpending.institutename");
-  pageContext.setAttribute("InstituteName", InstituteName);
-  String UserId=resource.getString("admin.viewpending.userid");
-  pageContext.setAttribute("UserId", UserId);
-  String Admin_Email=resource.getString("admin.viewpending.adminemail");
-  pageContext.setAttribute("Admin_Email",Admin_Email);
-  String Status=resource.getString("admin.viewall.status");
-  pageContext.setAttribute("Status",Status);
-
-%>
- View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
+ <p align="right" class="txtStyle">View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></p>
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
@@ -210,7 +201,16 @@ locale1=(String)session.getAttribute("locale");
       <item   value="${doc.userId}" hAlign="left" hyperLink="index3.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
-    <column width="150">
+   <column width="200">
+      <header value="Institute Address" hAlign="left" styleClass="header"/>
+      <item   value="${doc.address}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="200">
+      <header value="Institute AdminName" hAlign="left" styleClass="header"/>
+      <item   value="${doc.user_name}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+
+      <column width="150">
       <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
@@ -251,8 +251,8 @@ locale1=(String)session.getAttribute("locale");
 </c:choose>
 </c:forEach>
 </td><td align="center">
-     Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
-    <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
+     Export :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
+   <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="45" border="1" width="45">
     <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
 </td>
 
@@ -262,7 +262,7 @@ locale1=(String)session.getAttribute("locale");
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
- </div>
+  </td></tr></table>
     </body>
 
 </html>

@@ -24,8 +24,8 @@ import org.hibernate.transform.Transformers;
 public class LibraryDAO {
 
 
-   static  Integer maxNewRegId;
-   static Query query;
+     Integer maxNewRegId;
+    Query query;
    public void insert(Library instituteDetails){
     Session session =null;
     Transaction tx = null;
@@ -234,7 +234,7 @@ public Integer getLibraryRequestCount(){
 
 
 
-public static  List<Library> searchAllLibrary()
+public   List<Library> searchAllLibrary()
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List obj=null;
@@ -259,7 +259,7 @@ List obj=null;
 
 
   
-public static  Library searchLibraryID(String library_id)
+public   Library searchLibraryID(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Library obj=null;
@@ -282,7 +282,7 @@ Library obj=null;
 
 }
 
-public static  Library searchBlockLibrary(String library_id)
+public   Library searchBlockLibrary(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Library obj=null;
@@ -305,7 +305,7 @@ session.getTransaction().commit();
 
 }
 
-public static  Library getLibraryName(String library_id)
+public   Library getLibraryName(String library_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Library obj=null;
@@ -328,7 +328,7 @@ session.getTransaction().commit();
 
 }
 
-public static  Library getLibraryNameByID(String library_name)
+public   Library getLibraryNameByID(String library_name)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Library obj=null;
@@ -351,7 +351,7 @@ session.getTransaction().commit();
 
 }
 
-public static  boolean insert1(Library obj)
+public   boolean insert1(Library obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

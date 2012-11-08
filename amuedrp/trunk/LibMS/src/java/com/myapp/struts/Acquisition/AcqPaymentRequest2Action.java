@@ -34,6 +34,7 @@ public class AcqPaymentRequest2Action extends org.apache.struts.action.Action {
     List<String> l=new ArrayList();
     AcqRequestpaymentHeader acqreqpaymentheader=new AcqRequestpaymentHeader();
     AcqRequestpaymentHeaderId acqreqpaymentheaderid=new AcqRequestpaymentHeaderId();
+     AcquisitionDao acqdao=new AcquisitionDao();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -93,9 +94,9 @@ public class AcqPaymentRequest2Action extends org.apache.struts.action.Action {
            acqreqpaymentdetails.setOrderNo(value[1]);
            total_amount=total_amount+Double.parseDouble(value[4]);
            no_of_invoices=no_of_invoices+1;
-           AcqInvoiceDetail acqinvdetails=AcquisitionDao.searchByInovoiceDetails(library_id, sub_library_id, value[0],value[3]);
+           AcqInvoiceDetail acqinvdetails=acqdao.searchByInovoiceDetails(library_id, sub_library_id, value[0],value[3]);
            acqinvdetails.setStatus("rfp");
-           boolean result=AcquisitionDao.insertInPaymentRequestDetail(acqreqpaymentdetails,acqinvdetails);
+           boolean result=acqdao.insertInPaymentRequestDetail(acqreqpaymentdetails,acqinvdetails);
            if(result==false)
            {
               request.setAttribute("msg","Row corresponding invoice no. "+value[0]+" not inserted");
@@ -114,7 +115,7 @@ public class AcqPaymentRequest2Action extends org.apache.struts.action.Action {
             acqreqpaymentheader.setVendorId(values[0].split(",")[2]);
             acqreqpaymentheader.setTotalAmount(String.valueOf(total_amount));
             acqreqpaymentheader.setNoOfInvoices(String.valueOf(no_of_invoices));
-            boolean result=AcquisitionDao.insertInPaymentRequestHeader(acqreqpaymentheader);
+            boolean result=acqdao.insertInPaymentRequestHeader(acqreqpaymentheader);
             if(result==false)
             {
               request.setAttribute("msg","Record not inserted");

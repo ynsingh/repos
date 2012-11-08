@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jun 13, 2011 5:00:08 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="libms" name="com.myapp.struts.hbm.BibliographicDetailsLang" table="bibliographic_details_lang" lazy="false">
+  <class catalog="libms" lazy="false" name="com.myapp.struts.hbm.BibliographicDetailsLang" table="bibliographic_details_lang">
     <composite-id class="com.myapp.struts.hbm.BibliographicDetailsLangId" name="id">
       <key-property name="biblioId" type="int">
         <column name="biblio_id"/>
@@ -161,16 +161,26 @@
     <property name="fileType" type="string">
       <column length="20" name="file_type"/>
     </property>
-
-       <property name="image" type="string">
-            <column name="image" length="200" />
-        </property>
-        <property name="digitalData" type="string">
-            <column name="digital_data" length="200" />
-        </property>
-        <property name="digitalComment" type="string">
-            <column name="digital_comment" length="300" />
-        </property>
-    
+    <property name="image" type="string">
+      <column length="200" name="image"/>
+    </property>
+    <property name="digitalData" type="string">
+      <column length="200" name="digital_data"/>
+    </property>
+    <property name="digitalComment" type="string">
+      <column length="300" name="digital_comment"/>
+    </property>
+    <property name="rating" type="string">
+      <column length="5" name="rating"/>
+    </property>
+      <property name="submittedBy" type="string">
+      <column length="200" name="submitted_by"/>
+    </property>
+    <property name="lastModified" type="string">
+      <column length="200" name="last_modified"/>
+    </property>
+    <property name="thesisStatus" type="string">
+      <column length="100" name="thesis_status"/>
+    </property>
   </class>
 </hibernate-mapping>

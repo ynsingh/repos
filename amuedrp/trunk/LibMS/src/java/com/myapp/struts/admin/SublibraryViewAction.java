@@ -11,10 +11,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import com.myapp.struts.hbm.HibernateUtil;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.AdminDAO.*;
 
@@ -34,13 +30,13 @@ public class SublibraryViewAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-         
+         SubLibraryDAO sublibdao=new SubLibraryDAO();
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
 
     sublibrary_id=request.getParameter("id");
        
-SubLibrary sublib=SubLibraryDAO.getLibName(library_id, sublibrary_id);
+SubLibrary sublib=sublibdao.getLibName(library_id, sublibrary_id);
 if(sublib!=null)
 {request.setAttribute("button", "View");
                request.setAttribute("sublib", sublib);

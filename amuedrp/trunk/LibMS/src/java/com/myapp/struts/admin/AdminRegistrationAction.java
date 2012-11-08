@@ -27,6 +27,7 @@ public class AdminRegistrationAction extends org.apache.struts.action.Action {
     private String login_id;
     boolean result;
     AdminRegistration adminobj;
+    AdminRegistrationDAO admindao=new AdminRegistrationDAO();
     LoginDAO logindao;
     Locale locale=null;
     String locale1="en";
@@ -56,13 +57,13 @@ public class AdminRegistrationAction extends org.apache.struts.action.Action {
             AdminRegistrationActionForm adminRegistrationActionForm=(AdminRegistrationActionForm)form;
             login_id=adminRegistrationActionForm.getAdmin_email();
             adminobj=new AdminRegistration();
-            AdminRegistration tempobj=(AdminRegistration)AdminRegistrationDAO.searchLoginID(login_id);
+            AdminRegistration tempobj=(AdminRegistration)admindao.searchLoginID(login_id);
             Login loginobj=(Login)logindao.searchLoginID(login_id);
               if(tempobj!=null || loginobj!=null)
                 {
                    // request.setAttribute("msg", "User ID is Duplicate");
-                     request.setAttribute("msg",resource.getString("admin.adminregistrationaction.error1"));
-                    return mapping.findForward("duplicate");
+                     request.setAttribute("msg1",resource.getString("admin.adminregistrationaction.error1"));
+                    return mapping.findForward("failure");
                 }
                else
                 {
@@ -83,13 +84,13 @@ public class AdminRegistrationAction extends org.apache.struts.action.Action {
                         adminobj.setAdminEmail(adminRegistrationActionForm.getAdmin_email());
                         adminobj.setLibraryName(adminRegistrationActionForm.getLibrary_name());
                         adminobj.setCourtesy(adminRegistrationActionForm.getCourtesy());
-                        adminobj.setRegistrationId(AdminRegistrationDAO.maxRegistrationID());
+                        adminobj.setRegistrationId(admindao.maxRegistrationID());
                         adminobj.setGender(adminRegistrationActionForm.getGender());
                         adminobj.setLoginId(adminRegistrationActionForm.getAdmin_email());
                         adminobj.setWorkingStatus("OK");
                         adminobj.setInstiLogo("");
                         adminobj.setStatus("NotRegistered");
-                         result=AdminRegistrationDAO.insert1(adminobj);
+                         result=admindao.insert1(adminobj);
                         if(result==false)
                         {
                             String msg="Request for registration failure due to some error";

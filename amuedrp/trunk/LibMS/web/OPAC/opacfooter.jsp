@@ -49,15 +49,35 @@ if(sublibrary_id==null)sublibrary_id="all";
 </head>
 <link rel="StyleSheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <body style="margin: 0px 0px 0px 0px;" >
-    
-        <table align="center" id="tab" border="0" class="datagrid" dir="<%=rtl%>" width="100%" bgcolor="white">
-        <tr><td align="left" class="datagrid" valign="top" colspan="2">
-                          <%=resource.getString("developedby")%>  &copy; <%=resource.getString("login.message.footer")%>
-         &nbsp; follow us : <img src="<%=request.getContextPath()%>/images/blog.jpeg" height="16px" width="20px"/>
-     <img src="<%=request.getContextPath()%>/images/facebook.jpeg" height="16px" width="20px"/>
-     <img src="<%=request.getContextPath()%>/images/twitter.jpeg" height="16px" width="20px"/>
-      <a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="16px" width="40px"/></a>
-            </td></tr>
+    <table width="100%" class="homepage">
+       <tr><td align="center"  valign="top">
+                    
+                    <%=resource.getString("developedby")%>  &copy; <%=resource.getString("login.message.footer")%>
+         &nbsp; <%--follow us : <img src="<%=request.getContextPath()%>/images/blog.jpeg" height="13px" width="18px"/>
+     <img src="<%=request.getContextPath()%>/images/facebook.jpeg" height="13px" width="18px"/>
+     <img src="<%=request.getContextPath()%>/images/twitter.jpeg" height="13px" width="18px"/>
+      --%><%--<a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="13px" width="40px"/></a>
+
+      --%><i>( Best Viewed with 1024 X 768 on Mozilla FireFox Browser)</i> </td></tr>
+            <tr><td align="center" >For reporting bugs, suggestion, feature request, and maintainence support
+send Email to amuedrp@gmail.com<br><%--<a href="<%=request.getContextPath()%>/mem.jsp">View Server Memory Status</a>--%><%--&nbsp;|&nbsp;You are the Visitor, Number >>--%>
+            <%--        <%
+    Integer hitsCount =
+      (Integer)application.getAttribute("hitCounter");
+    if( hitsCount ==null || hitsCount == 0 ){
+       /* First visit */
+
+       hitsCount = 1;
+    }else{
+       /* return visit */
+
+       hitsCount += 1;
+    }
+    application.setAttribute("hitCounter", hitsCount);
+%>
+<%= hitsCount%>--%>
+
+                </td></tr>
         </table>
     
 </body>

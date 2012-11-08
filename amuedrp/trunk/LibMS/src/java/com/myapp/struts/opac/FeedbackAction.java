@@ -25,6 +25,7 @@ public class FeedbackAction extends org.apache.struts.action.Action {
     boolean result;
     Feedback f=new Feedback();
     FeedbackId fid=new FeedbackId();
+    NewDemandDAO newdemanddao=new NewDemandDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -52,7 +53,7 @@ public class FeedbackAction extends org.apache.struts.action.Action {
     f.setEmail(email);
     f.setComments(comments);
     f.setDate(date);
-     result=NewDemandDAO.insert2(f);
+     result=newdemanddao.insert2(f);
         if(result==true)
         {
             request.setAttribute("msg", "Record Inserted Successfully");

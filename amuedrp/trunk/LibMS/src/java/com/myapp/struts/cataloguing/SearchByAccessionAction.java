@@ -4,7 +4,7 @@
  */
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.systemsetupDAO.*;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.DocumentCategory;
@@ -19,12 +19,14 @@ import org.apache.struts.action.ActionMapping;
 
 public class SearchByAccessionAction extends org.apache.struts.action.Action {
 
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
+        LocationDAO locdao=new LocationDAO();
         BibliographicDetailEntryActionForm1 bibform = (BibliographicDetailEntryActionForm1) form;
         HttpSession session1 = request.getSession();
         String library_id = (String) session1.getAttribute("library_id");
@@ -64,7 +66,7 @@ public class SearchByAccessionAction extends org.apache.struts.action.Action {
         bibform.setAccession_type(bib.getAccessionType());
         bibform.setLanguage(bib.getEntryLanguage());
         bibform.setAcc_no1(bib.getAccessionNo());
-        DocumentCategory doc=DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id,bib.getBookType());
+        DocumentCategory doc=doccatdao.searchDocumentCategory(library_id, sub_library_id,bib.getBookType());
         if(doc!=null){
             bibform.setBook_type(doc.getDocumentCategoryName());
         }else{
@@ -82,7 +84,7 @@ public class SearchByAccessionAction extends org.apache.struts.action.Action {
         bibform.setCollation(bib.getCollation1());
         bibform.setIndex_no(bib.getIndexNo());
         bibform.setNo_of_pages(bib.getNoOfPages());
-        List<Location> loc=LocationDAO.listlocation(library_id, sub_library_id);
+        List<Location> loc=locdao.listlocation(library_id, sub_library_id);
         List<MixLocationSublibrary> lmls=new ArrayList<MixLocationSublibrary>();
            for (int j = 0; j < loc.size(); j++) {
             MixLocationSublibrary mls=new MixLocationSublibrary();
@@ -98,9 +100,25 @@ public class SearchByAccessionAction extends org.apache.struts.action.Action {
         bibform.setRecord_no(bib.getRecordNo());
         bibform.setBiblio_id(bib.getBiblioId());
         bibform.setDate_acquired(bib.getDateAcquired());
+        //Entry Related to Disseration
+        bibform.setSubmittedBy(bib.getSubmittedBy());
+        bibform.setSubmitted_on(bib.getSubmittedOn());
+        bibform.setGuide_name(bib.getGuideName());
+        bibform.setAcceptance_year(bib.getAcceptanceYear());
+        bibform.setDegree(bib.getDegree());
+        //Entry Related to Thesis
+        bibform.setThesis_status(bib.getThesisStatus());
+        bibform.setLast_Modified(bib.getLastModified());
         
         request.setAttribute("msg1", msg3);
        session1.setAttribute("mixlist", lmls);
+       if(bib.getDocumentType().equalsIgnoreCase("Book"))
         return mapping.findForward("view");
+       else if(bib.getDocumentType().equalsIgnoreCase("Diss"))
+           return mapping.findForward("viewdiss");
+       else if(bib.getDocumentType().equalsIgnoreCase("Thesis"))
+           return mapping.findForward("viewthesis");
+
+return null;
     }
 }

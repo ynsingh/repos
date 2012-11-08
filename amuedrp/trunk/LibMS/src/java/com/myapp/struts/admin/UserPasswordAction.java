@@ -38,6 +38,7 @@ public class UserPasswordAction extends org.apache.struts.action.Action {
             throws Exception {
             CreateAccountActionForm caaction=(CreateAccountActionForm)form;
 logindao=new LoginDAO();
+AdminRegistrationDAO admindao=new AdminRegistrationDAO();
 
             login_id=caaction.getLogin_id();
             user_name=caaction.getUser_name();
@@ -56,9 +57,9 @@ logindao=new LoginDAO();
         result=logindao.update1(log);
 
 
-        AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin(staff_id, library_id);
+        AdminRegistration admin=admindao.searchInstituteAdmin(staff_id, library_id);
         admin.setAdminPassword(password);
-        result=AdminRegistrationDAO.update1(admin);
+        result=admindao.update1(admin);
 
 
 

@@ -27,11 +27,12 @@ public class SublibraryViewAllAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        SubLibraryDAO sublibdao=new SubLibraryDAO();
             HttpSession session=request.getSession();
             library_id=(String)session.getAttribute("library_id");
            
            
-              List sublibrary=SubLibraryDAO.searchSubLib(library_id);
+              List sublibrary=sublibdao.searchSubLib(library_id);
 
               
               session.setAttribute("sublibrary", sublibrary);

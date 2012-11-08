@@ -39,7 +39,7 @@ public class CirculationCheckoutAction1 extends org.apache.struts.action.Action 
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+CirculationDAO cirdao=new CirculationDAO();
         CirculationCheckoutActionForm ccaf=(CirculationCheckoutActionForm)form;
         memid=ccaf.getMemid();
         accessionno=ccaf.getAccessionno();
@@ -78,7 +78,7 @@ if(documentdetail!=null){
          session.setAttribute("Title",obj);
 
 
-  String total=CirculationDAO.searchTotalCheckOut(documentdetail.getBiblioId(),library_id,sublibrary_id);
+  String total=cirdao.searchTotalCheckOut(documentdetail.getBiblioId(),library_id,sublibrary_id);
 
 
 
@@ -105,11 +105,11 @@ else{
         else{
 
 
-        CirMemberDetail  cirmemberdetail=CirculationDAO.getMemid(library_id,memid);
+        CirMemberDetail  cirmemberdetail=cirdao.getMemid(library_id,memid);
         
         if(cirmemberdetail!=null)
         {
-          CirMemberAccount cma=CirculationDAO.getAccount(library_id,sublibrary_id, memid);
+          CirMemberAccount cma=cirdao.getAccount(library_id,sublibrary_id, memid);
           if(cma!=null)
           {
 

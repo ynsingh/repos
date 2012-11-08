@@ -29,6 +29,8 @@ public class requestCheckOutAction extends org.apache.struts.action.Action {
             throws Exception {
 
         HttpSession session = request.getSession();
+       CirculationDAO cirdao=new CirculationDAO();
+       CirRequestfromOpacDAO cirreq=new CirRequestfromOpacDAO();
         //DocumentDetails dd = (DocumentDetails)request.getAttribute("dd");
         String docId = (String)request.getParameter("docId");
         String libId = (String)request.getParameter("libId");
@@ -52,7 +54,7 @@ System.out.println("Caadddddddddddddd");
         }
         else
         {
-            CirMemberAccount memSubLib = (CirMemberAccount)CirculationDAO.searchCirMemAccountDetails(libId, sublibId, memId);
+            CirMemberAccount memSubLib = (CirMemberAccount)cirdao.searchCirMemAccountDetails(libId, sublibId, memId);
             if(memSubLib==null)
             {
                 request.setAttribute("msg", "You do not have an account in library "+ libId +"-"+sublibId);
@@ -72,12 +74,12 @@ System.out.println("Caadddddddddddddd");
 
 
 
-                 List<CirOpacRequest> check1 = (List<CirOpacRequest>)CirRequestfromOpacDAO.checkDuplicateRequest(libId, sublibId, memId, docId);
+                 List<CirOpacRequest> check1 = (List<CirOpacRequest>)cirreq.checkDuplicateRequest(libId, sublibId, memId, docId);
 
               
                  if(check1.isEmpty()){
                 
-                boolean flag = CirRequestfromOpacDAO.SendCheckOutRequest(memId, libId, sublibId, docId);
+                boolean flag = cirreq.SendCheckOutRequest(memId, libId, sublibId, docId);
                
                 if(flag){
                     request.setAttribute("msg", "Your Request is successfully send");

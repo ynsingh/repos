@@ -12,7 +12,6 @@ import com.myapp.struts.hbm.Courses;
 import com.myapp.struts.hbm.Department;
 import com.myapp.struts.hbm.EmployeeType;
 import com.myapp.struts.hbm.Faculty;
-import com.myapp.struts.hbm.SubEmployeeType;
 import com.myapp.struts.systemsetupDAO.CourseDAO;
 import com.myapp.struts.systemsetupDAO.DeptDAO;
 import com.myapp.struts.systemsetupDAO.FacultyDAO;
@@ -38,7 +37,13 @@ public class GenerateCardAction extends org.apache.struts.action.Action {
    String align="left";
     private String sublibrary_id;
     private String button;
-   
+   CirculationDAO cirdao=new CirculationDAO();
+
+MemberCategoryDAO memdao=new MemberCategoryDAO();
+DeptDAO deptdao=new DeptDAO();
+FacultyDAO facdao=new FacultyDAO();
+CourseDAO coursedao=new CourseDAO();
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -72,9 +77,9 @@ session.removeAttribute("cirmemdetail");
        
         library_id=(String)session.getAttribute("library_id");
          sublibrary_id=(String)session.getAttribute("sublibrary_id");
-        CirMemberDetail memobj=CirculationDAO.searchCirMemDetails(library_id, memid);
+        CirMemberDetail memobj=cirdao.searchCirMemDetails(library_id, memid);
 if(memobj!=null){
-       CirMemberAccount cirmemberaccount=CirculationDAO.getAccount2(library_id, sublibrary_id, memid);
+       CirMemberAccount cirmemberaccount=cirdao.getAccount2(library_id, sublibrary_id, memid);
                    if(cirmemberaccount!=null)
                    {
 
@@ -115,13 +120,11 @@ session.setAttribute("cirmemaccountdetail", cirmemberaccount);
 session.setAttribute("cirmemdetail", memobj);
 
 
+  List<EmployeeType> emp=(List<EmployeeType>)memdao.searchEmpType(library_id);
 
-
-  List<EmployeeType> emp=(List<EmployeeType>)MemberCategoryDAO.searchEmpType(library_id);
-
-        List<Department> dep=(List<Department>)DeptDAO.getDeptLibrary("library_id");
-                List<Faculty> fac =(List<Faculty>)FacultyDAO.searchFaculty(library_id);
-                List<Courses> course =(List<Courses>)CourseDAO.getCourse(library_id);
+        List<Department> dep=(List<Department>)deptdao.getDeptLibrary("library_id");
+                List<Faculty> fac =(List<Faculty>)facdao.searchFaculty(library_id);
+                List<Courses> course =(List<Courses>)coursedao.getCourse(library_id);
 
 session.setAttribute("list",emp);
 session.setAttribute("list2",fac);
@@ -186,9 +189,9 @@ session.setAttribute("cirmemdetail", memobj);
 
 
 
-        List<Department> dep=(List<Department>)DeptDAO.getDeptLibrary("library_id");
-                List<Faculty> fac =(List<Faculty>)FacultyDAO.searchFaculty(library_id);
-                List<Courses> course =(List<Courses>)CourseDAO.getCourse(library_id);
+        List<Department> dep=(List<Department>)deptdao.getDeptLibrary("library_id");
+                List<Faculty> fac =(List<Faculty>)facdao.searchFaculty(library_id);
+                List<Courses> course =(List<Courses>)coursedao.getCourse(library_id);
 
 
              session.setAttribute("departmentname",dep);
@@ -250,9 +253,9 @@ session.setAttribute("cirmemdetail", memobj);
 
 
 
-        List<Department> dep=(List<Department>)DeptDAO.getDeptLibrary("library_id");
-                List<Faculty> fac =(List<Faculty>)FacultyDAO.searchFaculty(library_id);
-                List<Courses> course =(List<Courses>)CourseDAO.getCourse(library_id);
+        List<Department> dep=(List<Department>)deptdao.getDeptLibrary("library_id");
+                List<Faculty> fac =(List<Faculty>)facdao.searchFaculty(library_id);
+                List<Courses> course =(List<Courses>)coursedao.getCourse(library_id);
 
 
              session.setAttribute("departmentname",dep);

@@ -80,21 +80,47 @@ function isNumberKey(evt)
          <script type="text/javascript" language="javascript">
    function submitSave()
 {
-    var buttonvalue="Save";
-    document.getElementById("button1").setAttribute("value", buttonvalue);
-    return true;
+    if( checkdata()==true)
+    {
+        var buttonvalue="Save";
+        document.getElementById("button1").setAttribute("value", buttonvalue);
+        return true;
+    }
+    else
+        return false;
 }
 function submitSaveAccession()
 {
+    if( checkdata()==true)
+    {
     var buttonvalue="Save and go for accessioning";
     document.getElementById("button1").setAttribute("value", buttonvalue);
     return true;
+    }
+    else
+        return false;
 }
 function submitUpdate()
 {
+    if( checkdata()==true)
+    {
     var buttonvalue="Update";
     document.getElementById("button1").setAttribute("value", buttonvalue);
     return true;
+    }
+    else
+        return false;
+}
+function checkdata()
+{
+
+      if(document.getElementById("title1").value=='' || document.getElementById("main").value=='' || document.getElementById("state").value=='' || document.getElementById("call1").value=='')
+     {
+         alert("Please Enter Reocords Mark with *");
+         return false;
+     }
+     return true;
+
 }
  function showdiv(){
 
@@ -590,8 +616,8 @@ function disablecheck()
 </tr>
 
 <tr>
-    <td class="txtStyle" width="15%" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.title")%>:</strong> </td>
-    <td width="15%"><html:text property="title" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="1" />
+    <td class="txtStyle" width="15%" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.title")%>:</strong> *</td>
+    <td width="15%"><html:text property="title" styleId="title1" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="1" />
     </td>
     <td width="15%">
         <div id="ptitle" style="display:none;">
@@ -617,7 +643,7 @@ function disablecheck()
  
 <tr>
       <td class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.mainentry")%><a class="star">*</a>:</strong></td>
-      <td><html:text property="main_entry" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="5" />
+      <td><html:text property="main_entry" styleId="main" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="5" />
       <br><span class="err">   <html:messages id="err_name" property="main_entry">
        <%=resource.getString("cataloguing.catoldtitleentry1.err1")%>
     </html:messages></span>
@@ -631,7 +657,7 @@ function disablecheck()
         </div>
         </td>
         <td class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.statementresponsibility")%><a class="star">*</a>:</strong></td>
-  <td><html:text property="statement_responsibility" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="7" />
+        <td><html:text property="statement_responsibility" styleId="state" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="7" />
       <br><span class="err">   <html:messages id="err_name" property="statement_responsibility">
         <%=resource.getString("cataloguing.catoldtitleentry1.err3")%>
     </html:messages></span>
@@ -792,7 +818,7 @@ function disablecheck()
    </td>
    <td class="txtStyle" align="<%=align%>"><strong><%=resource.getString("cataloguing.catoldtitleentry1.callno")%><a class="star">*</a>:</strong></td>
          <td>
-             <html:text property="call_no" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="33" />
+             <html:text property="call_no" styleId="call1" readonly="<%=read%>" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" tabindex="33" />
         <br><span class="err">   <html:messages id="err_name" property="call_no">
         <%=resource.getString("cataloguing.catoldtitleentry1.err2")%>
     </html:messages></span>

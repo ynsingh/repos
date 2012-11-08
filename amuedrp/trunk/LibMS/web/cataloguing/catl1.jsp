@@ -31,7 +31,7 @@
 <%
  String msg1=(String)request.getAttribute("msg1");
  hm1 = (HashMap)session.getAttribute("hsmp");
-
+if(hm1!=null){
   if(hm1.containsKey("6")){
        bib1=(Biblio)hm1.get("6");
         }
@@ -41,6 +41,7 @@
    if(hm1.containsKey("8")){
        bib3=(Biblio)hm1.get("8");
         }
+  }
 %>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ddtabmenufiles/solidblocksmenu.css" />
@@ -154,7 +155,7 @@ description[33]='ex- Revised Standard.'
      <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -278,7 +279,7 @@ Control Field Entry
 </FONT>
 </DIV>
 
-
+You are on MARC Page : 1 Tag Page
 <div>
     <html:form styleId="cat1" action="/cataction1.do" method="post">
         <table height="400px"><tr><td valign="top" >&nbsp;&nbsp;&nbsp;

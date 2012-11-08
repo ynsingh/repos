@@ -1,28 +1,27 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.SubLibrary" table="sub_library" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.SubLibraryId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-        </many-to-one>
-        <property name="sublibName" type="string">
-            <column name="sublib_name" length="100" not-null="true" />
-        </property>
-        <property name="facultyName" type="string">
-            <column name="faculty_name" length="100" />
-        </property>
-        <property name="deptAddress" type="string">
-            <column name="dept_address" length="200" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.SubLibrary" table="sub_library">
+    <composite-id class="com.myapp.struts.hbm.SubLibraryId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="sublibName" type="string">
+      <column length="100" name="sublib_name" not-null="true"/>
+    </property>
+    <property name="facultyName" type="string">
+      <column length="100" name="faculty_name"/>
+    </property>
+    <property name="deptAddress" type="string">
+      <column length="200" name="dept_address"/>
+    </property>
+  </class>
 </hibernate-mapping>

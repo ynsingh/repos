@@ -11,7 +11,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.opacDAO.*;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.BibliographicDetailsLang;
 import com.myapp.struts.utility.LoggerUtils;
 import java.util.List;
@@ -21,7 +21,7 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action
 {
     private static final String SUCCESS = "success";
     OpacSearchDAO osdao= new OpacSearchDAO();
-    BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
     private static Logger log4j =LoggerUtils.getLogger();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -55,22 +55,26 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action
             if(isbn==null)
                 isbn=(String)session.getAttribute("isbnisbn");
 
-            if(myForm.getCheckbox()==null)
-                myForm.setCheckbox((String)session.getAttribute("isbncheckbox"));
+         //   if(myForm.getCheckbox()==null)
+            //    myForm.setCheckbox((String)session.getAttribute("isbncheckbox"));
 
-          
-                List documentdetail1  =(List)osdao.isbnLangSearch(isbn, lib_id, sublib,myForm.getLanguage().toUpperCase(),pageno);
+        //if(myForm.getCheckbox().equals("Checked"))
+         //{
+                List documentdetail1  =(List)osdao.isbnLangSearch(isbn, lib_id, sublib,pageno);
                 int size=osdao.getSize();
+
                 if(size>=1){
                     session.setAttribute("simple_search_nor",size);
                     session.setAttribute("documentdetail1", documentdetail1);
-                }else{
-                session.setAttribute("isbncheckbox", myForm.getCheckbox());
+                      return mapping.findForward(SUCCESS);
+                }
+        else{
+          System.out.println("OPAC ISBN ##########"+isbn);
                 List<BibliographicDetails> documentdetail  =(List)osdao.isbnSearch(isbn, lib_id, sublib,pageno);
                  size=osdao.getSize();
                 session.setAttribute("simple_search_nor",size);
                 session.setAttribute("documentdetail", documentdetail);
-                }
+               }
         }
         catch(Exception e)
         {

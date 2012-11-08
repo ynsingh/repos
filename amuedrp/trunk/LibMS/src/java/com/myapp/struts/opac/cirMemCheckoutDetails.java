@@ -36,7 +36,7 @@ public class cirMemCheckoutDetails extends org.apache.struts.action.Action {
    
     String library_id;
     String sublibrary_id;
-
+CirRequestfromOpacDAO cirreqopac=new CirRequestfromOpacDAO();
    String login_role;
    
    
@@ -58,7 +58,7 @@ public class cirMemCheckoutDetails extends org.apache.struts.action.Action {
 
 
 System.out.println("memid="+memid+" sublibraryId="+sublibrary_id+" libraryId="+library_id);
-requestList = (List<CheckoutDeocumentDetails>)CirRequestfromOpacDAO.getCheckOuts(library_id, sublibrary_id, memid);
+requestList = (List<CheckoutDeocumentDetails>)cirreqopac.getCheckOuts(library_id, sublibrary_id, memid);
 System.out.println("size="+requestList.size());
         
 session.setAttribute("membercheckoutDetail1", requestList);

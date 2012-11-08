@@ -48,6 +48,12 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session=request.getSession();
+        MemberCategoryDAO memcatdao=new MemberCategoryDAO();
+        FacultyDAO facdao=new FacultyDAO();
+        SubLibraryDAO sublibdao=new SubLibraryDAO();
+        CirculationDAO cirdao=new CirculationDAO();
+        DeptDAO deptdao=new DeptDAO();
+        CourseDAO coursedao=new CourseDAO();
         try{
 
         locale1=(String)session.getAttribute("locale");
@@ -77,11 +83,11 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
 
         
         
-          list1=(List)MemberCategoryDAO.searchEmpType(library_id);
+          list1=(List)memcatdao.searchEmpType(library_id);
           System.out.println(list1.size());
-          list2=(List)FacultyDAO.searchFaculty(library_id);
+          list2=(List)facdao.searchFaculty(library_id);
 
-          list = (List)SubLibraryDAO.searchAccessibleSubLib(library_id,sublibrary_id);
+          list = (List)sublibdao.searchAccessibleSubLib(library_id,sublibrary_id);
 
             session.setAttribute("list",list);
             session.setAttribute("list1",list1);
@@ -103,7 +109,7 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
          
         if(button.equals("Register"))
         {
-         CirMemberDetail memobj=(CirMemberDetail)CirculationDAO.searchCirMemDetails(library_id, mem_id);
+         CirMemberDetail memobj=(CirMemberDetail)cirdao.searchCirMemDetails(library_id, mem_id);
         
          if(memobj!=null)
          {
@@ -124,7 +130,7 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
            
            
 
-             CirMemberDetail memobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+             CirMemberDetail memobj=cirdao.searchCirMemDetails(library_id, mem_id);
       
                 if(memobj==null)
                 {
@@ -146,8 +152,8 @@ public class CirculationMemberAction extends org.apache.struts.action.Action {
 
 
 
-CirMemberAccount cirmem=(CirMemberAccount)CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
-CirMemberDetail cirmemobj=(CirMemberDetail)CirculationDAO.searchCirMemDetails(library_id, mem_id);
+CirMemberAccount cirmem=(CirMemberAccount)cirdao.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
+CirMemberDetail cirmemobj=(CirMemberDetail)cirdao.searchCirMemDetails(library_id, mem_id);
 
 
 System.out.println(cirmemobj+" " +cirmem+ ".........."+button);
@@ -165,9 +171,9 @@ session.setAttribute("cirmemdetail", cirmemobj);
     {
       //  request.setAttribute("cirmemdetail", cirmemobj);
         session.setAttribute("cirmemdetail", cirmemobj);
-        List<Department> dep=(List<Department>)DeptDAO.getDeptLibrary("library_id");
-                List<Faculty> fac =(List<Faculty>)FacultyDAO.searchFaculty(library_id);
-                List<Courses> course =(List<Courses>)CourseDAO.getCourse(library_id);
+        List<Department> dep=(List<Department>)deptdao.getDeptLibrary("library_id");
+                List<Faculty> fac =(List<Faculty>)facdao.searchFaculty(library_id);
+                List<Courses> course =(List<Courses>)coursedao.getCourse(library_id);
 
              request.setAttribute("button", button);
              session.setAttribute("departmentname",dep);

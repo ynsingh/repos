@@ -24,6 +24,7 @@ public class SerAddPublisherAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     SerPublisher sp=new SerPublisher();
     SerPublisherId spid=new SerPublisherId();
+    SerialDAO serialdao=new SerialDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -58,7 +59,7 @@ public class SerAddPublisherAction extends org.apache.struts.action.Action {
           sp.setEmail(email);
           sp.setFax(fax);
           sp.setPubUrl(pub_url);
-          SerialDAO.insert(sp);
+          serialdao.insert(sp);
           request.setAttribute("msg", "Data is saved successfully");
          }
          if(button.equals("Update")){
@@ -76,16 +77,16 @@ public class SerAddPublisherAction extends org.apache.struts.action.Action {
           sp.setEmail(email);
           sp.setFax(fax);
           sp.setPubUrl(pub_url);
-            SerialDAO.update(sp);
+            serialdao.update(sp);
             request.setAttribute("msg", "Data is updated successfully");
             return mapping.findForward(SUCCESS);
 
         }
 
         if(button.equals("Delete")){
-          SerPublisher spcheck=SerialDAO.searchSerialPubisher(library_id, sublibrary_id, pub_id);
+          SerPublisher spcheck=serialdao.searchSerialPubisher(library_id, sublibrary_id, pub_id);
           if(spcheck!=null){
-            SerialDAO.delete(spcheck);
+            serialdao.delete(spcheck);
             request.setAttribute("msg", "Record is deleted successfully");
             return mapping.findForward(SUCCESS);
           }

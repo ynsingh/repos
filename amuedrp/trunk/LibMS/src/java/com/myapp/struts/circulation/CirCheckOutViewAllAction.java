@@ -31,7 +31,7 @@ public class CirCheckOutViewAllAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
             HttpSession session=request.getSession();
-
+CirRequestfromOpacDAO ciropacdao=new CirRequestfromOpacDAO();
 
 
         CirCheckOutViewAllActionForm ccvaaf=(CirCheckOutViewAllActionForm)form;
@@ -48,7 +48,7 @@ public class CirCheckOutViewAllAction extends org.apache.struts.action.Action {
 
 
 
-requestList = (List<CheckoutDeocumentDetails>)CirRequestfromOpacDAO.getCheckOuts(library_id, sublibrary_id, memid,starting_date,end_date,title);
+requestList = (List<CheckoutDeocumentDetails>)ciropacdao.getCheckOuts(library_id, sublibrary_id, memid,starting_date,end_date,title);
 System.out.println("size="+requestList.size());
 
 session.setAttribute("membercheckoutDetail", requestList);

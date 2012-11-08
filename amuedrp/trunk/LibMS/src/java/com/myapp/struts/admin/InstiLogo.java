@@ -26,7 +26,7 @@ public class InstiLogo extends org.apache.struts.action.Action {
             throws Exception {
         HttpSession session = request.getSession();
         String library_id=(String)session.getAttribute("library_id");
-
+AdminRegistrationDAO admindao=new AdminRegistrationDAO();
      System.out.println("Image Update code");
         ImageUploadActionForm form1 = (ImageUploadActionForm)form;
         byte[] img;
@@ -46,7 +46,7 @@ public class InstiLogo extends org.apache.struts.action.Action {
        if(v!=null)iii=v.getFileData();
 
 
-       AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
+       AdminRegistration admin=admindao.searchInstituteAdmin((String)session.getAttribute("login_id"));
 
 String ext=null;
  ext=UserLog.returnextension(v.getFileName());
@@ -69,7 +69,7 @@ if (form1.getImg()!=null)
 //         }
 
        admin.setInstiLogo(admin.getLibraryId()+"."+ext);
-       AdminRegistrationDAO.update1(admin);
+       admindao.update1(admin);
 
 
         return mapping.findForward(SUCCESS);

@@ -1,88 +1,90 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jul 21, 2012 12:34:18 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.Demandlist" table="demandlist" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.DemandlistId">
-            <key-property name="demandId" type="int">
-                <column name="demand_id" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="memId" type="string">
-                <column name="memId" length="70" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-            <key-property name="title" type="string">
-                <column name="title" length="50" />
-            </key-property>
-        </composite-id>
-        <property name="category" type="string">
-            <column name="category" length="50" />
-        </property>
-        <property name="author" type="string">
-            <column name="author" length="50" />
-        </property>
-        <property name="publisher" type="string">
-            <column name="publisher" length="50" />
-        </property>
-        <property name="publishYr" type="string">
-            <column name="publish_yr" length="10" />
-        </property>
-        <property name="isbn" type="string">
-            <column name="isbn" length="50" />
-        </property>
-        <property name="volume" type="string">
-            <column name="volume" length="50" />
-        </property>
-        <property name="edition" type="string">
-            <column name="edition" length="50" />
-        </property>
-        <property name="remark" type="string">
-            <column name="remark" length="50" />
-        </property>
-        <property name="demandDate" type="string">
-            <column name="demand_date" length="50" />
-        </property>
-        <property name="language" type="string">
-            <column name="language" length="20" />
-        </property>
-        <property name="issn" type="string">
-            <column name="issn" length="20" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="100" />
-        </property>
-        <property name="memberType" type="string">
-            <column name="member_type" length="100" />
-        </property>
-        <property name="subMemberType" type="string">
-            <column name="sub_member_type" length="100" />
-        </property>
-        <property name="memName" type="string">
-            <column name="mem_name" length="100" />
-        </property>
-        <property name="subAuthor" type="string">
-            <column name="sub_author" length="50" />
-        </property>
-        <property name="subAuthor0" type="string">
-            <column name="sub_author0" length="50" />
-        </property>
-        <property name="subAuthor1" type="string">
-            <column name="sub_author1" length="50" />
-        </property>
-        <property name="subAuthor2" type="string">
-            <column name="sub_author2" length="50" />
-        </property>
-        <property name="publicationPlace" type="string">
-            <column name="publication_place" length="50" />
-        </property>
-        <property name="lccNo" type="string">
-            <column name="lcc_no" length="50" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.Demandlist" table="demandlist">
+    <composite-id class="com.myapp.struts.hbm.DemandlistId" name="id">
+      <key-property name="demandId" type="int">
+        <column name="demand_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="memId" type="string">
+        <column length="70" name="memId"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+      <key-property name="title" type="string">
+        <column length="50" name="title"/>
+      </key-property>
+    </composite-id>
+    <property name="category" type="string">
+      <column length="50" name="category"/>
+    </property>
+    <property name="author" type="string">
+      <column length="50" name="author"/>
+    </property>
+    <property name="publisher" type="string">
+      <column length="50" name="publisher"/>
+    </property>
+    <property name="publishYr" type="string">
+      <column length="10" name="publish_yr"/>
+    </property>
+    <property name="isbn" type="string">
+      <column length="50" name="isbn"/>
+    </property>
+    <property name="volume" type="string">
+      <column length="50" name="volume"/>
+    </property>
+    <property name="edition" type="string">
+      <column length="50" name="edition"/>
+    </property>
+    <property name="remark" type="string">
+      <column length="50" name="remark"/>
+    </property>
+    <property name="demandDate" type="string">
+      <column length="50" name="demand_date"/>
+    </property>
+    <property name="language" type="string">
+      <column length="20" name="language"/>
+    </property>
+    <property name="issn" type="string">
+      <column length="20" name="issn"/>
+    </property>
+    <property name="status" type="string">
+      <column length="100" name="status"/>
+    </property>
+    <property name="memberType" type="string">
+      <column length="100" name="member_type"/>
+    </property>
+    <property name="subMemberType" type="string">
+      <column length="100" name="sub_member_type"/>
+    </property>
+    <property name="memName" type="string">
+      <column length="100" name="mem_name"/>
+    </property>
+    <property name="subAuthor" type="string">
+      <column length="50" name="sub_author"/>
+    </property>
+    <property name="subAuthor0" type="string">
+      <column length="50" name="sub_author0"/>
+    </property>
+    <property name="subAuthor1" type="string">
+      <column length="50" name="sub_author1"/>
+    </property>
+    <property name="subAuthor2" type="string">
+      <column length="50" name="sub_author2"/>
+    </property>
+    <property name="publicationPlace" type="string">
+      <column length="50" name="publication_place"/>
+    </property>
+    <property name="lccNo" type="string">
+      <column length="50" name="lcc_no"/>
+    </property>
+    <property name="noOfCopy" type="string">
+      <column length="10" name="no_of_copy"/>
+    </property>
+  </class>
 </hibernate-mapping>

@@ -37,7 +37,8 @@ public class NewArrivalAction extends org.apache.struts.action.Action
                NewArrivalActionForm myForm = (NewArrivalActionForm)form;
                 session.removeAttribute("arrivalRs");
                    session.removeAttribute("simple_search_nor");
-
+                NewDemandDAO newdemanddao=new NewDemandDAO();
+                OpacSearchDAO opacdao=new OpacSearchDAO();
                String lib_id=myForm.getCMBLib();
                sublib=myForm.getCMBSUBLib();
                 cat=myForm.getR();
@@ -104,10 +105,12 @@ public class NewArrivalAction extends org.apache.struts.action.Action
                     if(month<10){date1=year+"-0"+month+"-"+day;}
                     if(day<10){date1=year+"-"+month+"-0"+day;}
                 }
-                List  newarrival=NewDemandDAO.NewArrival(lib_id, sublib,date1, date,cat,pageno);
-              
+                List  newarrival=newdemanddao.NewArrival(lib_id, sublib,date1, date,cat,pageno);
+
+                System.out.println(newarrival+date1+"   "+date);
+
                         session.setAttribute("newarrival",newarrival) ;
-                        int size=OpacSearchDAO.getSize();
+                        int size=opacdao.getSize();
                   session.setAttribute("simple_search_nor",size);
 
               

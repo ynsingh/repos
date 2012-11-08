@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.*;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 public class AccessionDeleteAction1 extends org.apache.struts.action.Action {
 
     private static final String SUCCESS = "success";
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
@@ -102,7 +102,7 @@ public class AccessionDeleteAction1 extends org.apache.struts.action.Action {
                     {
 
                     //get the details of AccessionNo
-                    BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+                    BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
                     DocumentDetails doc1=bibdao.searchAccession(library_id, sub_library_id, oldacc);
                     if(doc1!=null && doc1.getStatus().equalsIgnoreCase("available"))
                     {

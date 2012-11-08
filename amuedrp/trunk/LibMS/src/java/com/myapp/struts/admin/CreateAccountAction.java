@@ -43,6 +43,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
     private String role;
     private boolean result;
     LoginDAO logindao;
+    StaffDetailDAO staffdao=new StaffDetailDAO();
     int i;
     private String password1;
    Locale locale=null;
@@ -82,7 +83,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
     
       library_id=(String)session.getAttribute("library_id");
      
-
+        CreatePrivilege cirpriv=new CreatePrivilege();
      
 
       request.setAttribute("user_id", login_id);
@@ -107,12 +108,12 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
 
   /* Use to Update Staff Entry related to Library Table & SubLibrary Table if sublibrary is changed */
-            StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
+            StaffDetail staffobj=staffdao.searchStaffId(staff_id,library_id);
 
 
                     staffobj.setSublibraryId(sublibrary_id);
 
-             result=StaffDetailDAO.update1(staffobj);
+             result=staffdao.update1(staffobj);
                 if(result==false)
                 {
                    // String msg="Request for registration failure due to some error";
@@ -123,7 +124,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
                 }
 
 
-              staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
+              staffobj=staffdao.searchStaffId(staff_id,library_id);
               LoginId loginIdobj=new LoginId(staff_id, library_id);
               Login logobj=new Login(loginIdobj,staffobj,login_id) ;
 
@@ -153,8 +154,8 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
                 }
                 else{
 
- String path = servlet.getServletContext().getRealPath("/");
- System.out.println(path+"  "+staffobj);
+
+ 
              obj=new Email(staffobj.getEmailId(),password,"Your Account on LibMS Created Successfully","Dear "+staffobj.getFirstName()+" "+staffobj.getLastName()+",\nYour Account of LibMS has been Created Successfully for LibMS.\nUser Id="+login_id+"\nPassword:"+password+"\nUser Role:"+role+"Thanks,"+session.getAttribute("username").toString()+"\nInstitute Admin");
 
             executor.submit(new Runnable() {
@@ -168,13 +169,13 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
 
                            if(role.equals("staff"))
-                                    result=CreatePrivilege.assignStaffPrivilege(staff_id, library_id,sublibrary_id);
+                                    result=cirpriv.assignStaffPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equals("admin"))
-                                    result=CreatePrivilege.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
+                                    result=cirpriv.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equals("dept-admin"))
-                                   result=CreatePrivilege.assignDepartmentalAdminPrivilege(staff_id, library_id,sublibrary_id);
+                                   result=cirpriv.assignDepartmentalAdminPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equals("dept-staff"))
-                                   result=CreatePrivilege.assignDepartmentalStaffPrivilege(staff_id, library_id,sublibrary_id);
+                                   result=cirpriv.assignDepartmentalStaffPrivilege(staff_id, library_id,sublibrary_id);
 
 
                            if(result==false)

@@ -1,320 +1,319 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqPrivilege" table="acq_privilege" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqPrivilegeId">
-            <key-property name="staffId" type="string">
-                <column name="staff_id" length="100" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-        </composite-id>
-       <!-- <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqPrivilege" table="acq_privilege">
+    <composite-id class="com.myapp.struts.hbm.AcqPrivilegeId" name="id">
+      <key-property name="staffId" type="string">
+        <column length="100" name="staff_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+    </composite-id>
+    <!-- <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
             <column name="staff_id" length="100" not-null="true" />
             <column name="library_id" length="20" not-null="true" />
         </many-to-one>-->
-        <property name="sublibraryId" type="string">
-            <column name="sublibrary_id" length="20" not-null="true" />
-        </property>
-        <property name="acq101" type="string">
-            <column name="acq_101" length="5" />
-        </property>
-        <property name="acq102" type="string">
-            <column name="acq_102" length="5" />
-        </property>
-        <property name="acq103" type="string">
-            <column name="acq_103" length="5" />
-        </property>
-        <property name="acq104" type="string">
-            <column name="acq_104" length="5" />
-        </property>
-        <property name="acq105" type="string">
-            <column name="acq_105" length="5" />
-        </property>
-        <property name="acq106" type="string">
-            <column name="acq_106" length="5" />
-        </property>
-        <property name="acq107" type="string">
-            <column name="acq_107" length="5" />
-        </property>
-        <property name="acq108" type="string">
-            <column name="acq_108" length="5" />
-        </property>
-        <property name="acq109" type="string">
-            <column name="acq_109" length="5" />
-        </property>
-        <property name="acq110" type="string">
-            <column name="acq_110" length="5" />
-        </property>
-        <property name="acq111" type="string">
-            <column name="acq_111" length="5" />
-        </property>
-        <property name="acq112" type="string">
-            <column name="acq_112" length="5" />
-        </property>
-        <property name="acq113" type="string">
-            <column name="acq_113" length="5" />
-        </property>
-        <property name="acq114" type="string">
-            <column name="acq_114" length="5" />
-        </property>
-        <property name="acq115" type="string">
-            <column name="acq_115" length="5" />
-        </property>
-        <property name="acq116" type="string">
-            <column name="acq_116" length="5" />
-        </property>
-        <property name="acq117" type="string">
-            <column name="acq_117" length="5" />
-        </property>
-        <property name="acq118" type="string">
-            <column name="acq_118" length="5" />
-        </property>
-        <property name="acq119" type="string">
-            <column name="acq_119" length="5" />
-        </property>
-        <property name="acq120" type="string">
-            <column name="acq_120" length="5" />
-        </property>
-        <property name="acq121" type="string">
-            <column name="acq_121" length="5" />
-        </property>
-        <property name="acq122" type="string">
-            <column name="acq_122" length="5" />
-        </property>
-        <property name="acq123" type="string">
-            <column name="acq_123" length="5" />
-        </property>
-        <property name="acq124" type="string">
-            <column name="acq_124" length="5" />
-        </property>
-        <property name="acq125" type="string">
-            <column name="acq_125" length="5" />
-        </property>
-        <property name="acq126" type="string">
-            <column name="acq_126" length="5" />
-        </property>
-        <property name="acq127" type="string">
-            <column name="acq_127" length="5" />
-        </property>
-        <property name="acq128" type="string">
-            <column name="acq_128" length="5" />
-        </property>
-        <property name="acq129" type="string">
-            <column name="acq_129" length="5" />
-        </property>
-        <property name="acq130" type="string">
-            <column name="acq_130" length="5" />
-        </property>
-        <property name="acq131" type="string">
-            <column name="acq_131" length="5" />
-        </property>
-        <property name="acq132" type="string">
-            <column name="acq_132" length="5" />
-        </property>
-        <property name="acq133" type="string">
-            <column name="acq_133" length="5" />
-        </property>
-        <property name="acq134" type="string">
-            <column name="acq_134" length="5" />
-        </property>
-        <property name="acq135" type="string">
-            <column name="acq_135" length="5" />
-        </property>
-        <property name="acq136" type="string">
-            <column name="acq_136" length="5" />
-        </property>
-        <property name="acq137" type="string">
-            <column name="acq_137" length="5" />
-        </property>
-        <property name="acq138" type="string">
-            <column name="acq_138" length="5" />
-        </property>
-        <property name="acq139" type="string">
-            <column name="acq_139" length="5" />
-        </property>
-        <property name="acq140" type="string">
-            <column name="acq_140" length="5" />
-        </property>
-        <property name="acq141" type="string">
-            <column name="acq_141" length="5" />
-        </property>
-        <property name="acq142" type="string">
-            <column name="acq_142" length="5" />
-        </property>
-        <property name="acq143" type="string">
-            <column name="acq_143" length="5" />
-        </property>
-        <property name="acq144" type="string">
-            <column name="acq_144" length="5" />
-        </property>
-        <property name="acq145" type="string">
-            <column name="acq_145" length="5" />
-        </property>
-        <property name="acq146" type="string">
-            <column name="acq_146" length="5" />
-        </property>
-        <property name="acq147" type="string">
-            <column name="acq_147" length="5" />
-        </property>
-        <property name="acq148" type="string">
-            <column name="acq_148" length="5" />
-        </property>
-        <property name="acq149" type="string">
-            <column name="acq_149" length="5" />
-        </property>
-        <property name="acq150" type="string">
-            <column name="acq_150" length="5" />
-        </property>
-        <property name="acq151" type="string">
-            <column name="acq_151" length="5" />
-        </property>
-        <property name="acq152" type="string">
-            <column name="acq_152" length="5" />
-        </property>
-        <property name="acq153" type="string">
-            <column name="acq_153" length="5" />
-        </property>
-        <property name="acq154" type="string">
-            <column name="acq_154" length="5" />
-        </property>
-        <property name="acq155" type="string">
-            <column name="acq_155" length="5" />
-        </property>
-        <property name="acq156" type="string">
-            <column name="acq_156" length="5" />
-        </property>
-        <property name="acq157" type="string">
-            <column name="acq_157" length="5" />
-        </property>
-        <property name="acq158" type="string">
-            <column name="acq_158" length="5" />
-        </property>
-        <property name="acq159" type="string">
-            <column name="acq_159" length="5" />
-        </property>
-        <property name="acq160" type="string">
-            <column name="acq_160" length="5" />
-        </property>
-        <property name="acq161" type="string">
-            <column name="acq_161" length="5" />
-        </property>
-        <property name="acq162" type="string">
-            <column name="acq_162" length="5" />
-        </property>
-        <property name="acq163" type="string">
-            <column name="acq_163" length="5" />
-        </property>
-        <property name="acq164" type="string">
-            <column name="acq_164" length="5" />
-        </property>
-        <property name="acq165" type="string">
-            <column name="acq_165" length="5" />
-        </property>
-        <property name="acq166" type="string">
-            <column name="acq_166" length="5" />
-        </property>
-        <property name="acq167" type="string">
-            <column name="acq_167" length="5" />
-        </property>
-        <property name="acq168" type="string">
-            <column name="acq_168" length="5" />
-        </property>
-        <property name="acq169" type="string">
-            <column name="acq_169" length="5" />
-        </property>
-        <property name="acq170" type="string">
-            <column name="acq_170" length="5" />
-        </property>
-        <property name="acq171" type="string">
-            <column name="acq_171" length="5" />
-        </property>
-        <property name="acq172" type="string">
-            <column name="acq_172" length="5" />
-        </property>
-        <property name="acq173" type="string">
-            <column name="acq_173" length="5" />
-        </property>
-        <property name="acq174" type="string">
-            <column name="acq_174" length="5" />
-        </property>
-        <property name="acq175" type="string">
-            <column name="acq_175" length="5" />
-        </property>
-        <property name="acq176" type="string">
-            <column name="acq_176" length="5" />
-        </property>
-        <property name="acq177" type="string">
-            <column name="acq_177" length="5" />
-        </property>
-        <property name="acq178" type="string">
-            <column name="acq_178" length="5" />
-        </property>
-        <property name="acq179" type="string">
-            <column name="acq_179" length="5" />
-        </property>
-        <property name="acq180" type="string">
-            <column name="acq_180" length="5" />
-        </property>
-        <property name="acq181" type="string">
-            <column name="acq_181" length="5" />
-        </property>
-        <property name="acq182" type="string">
-            <column name="acq_182" length="5" />
-        </property>
-        <property name="acq183" type="string">
-            <column name="acq_183" length="5" />
-        </property>
-        <property name="acq184" type="string">
-            <column name="acq_184" length="5" />
-        </property>
-        <property name="acq185" type="string">
-            <column name="acq_185" length="5" />
-        </property>
-        <property name="acq186" type="string">
-            <column name="acq_186" length="5" />
-        </property>
-        <property name="acq187" type="string">
-            <column name="acq_187" length="5" />
-        </property>
-        <property name="acq188" type="string">
-            <column name="acq_188" length="5" />
-        </property>
-        <property name="acq189" type="string">
-            <column name="acq_189" length="5" />
-        </property>
-        <property name="acq190" type="string">
-            <column name="acq_190" length="5" />
-        </property>
-        <property name="acq191" type="string">
-            <column name="acq_191" length="5" />
-        </property>
-        <property name="acq192" type="string">
-            <column name="acq_192" length="5" />
-        </property>
-        <property name="acq193" type="string">
-            <column name="acq_193" length="5" />
-        </property>
-        <property name="acq194" type="string">
-            <column name="acq_194" length="5" />
-        </property>
-        <property name="acq195" type="string">
-            <column name="acq_195" length="5" />
-        </property>
-        <property name="acq196" type="string">
-            <column name="acq_196" length="5" />
-        </property>
-        <property name="acq197" type="string">
-            <column name="acq_197" length="5" />
-        </property>
-        <property name="acq198" type="string">
-            <column name="acq_198" length="5" />
-        </property>
-        <property name="acq199" type="string">
-            <column name="acq_199" length="5" />
-        </property>
-    </class>
+    <property name="sublibraryId" type="string">
+      <column length="20" name="sublibrary_id" not-null="true"/>
+    </property>
+    <property name="acq101" type="string">
+      <column length="5" name="acq_101"/>
+    </property>
+    <property name="acq102" type="string">
+      <column length="5" name="acq_102"/>
+    </property>
+    <property name="acq103" type="string">
+      <column length="5" name="acq_103"/>
+    </property>
+    <property name="acq104" type="string">
+      <column length="5" name="acq_104"/>
+    </property>
+    <property name="acq105" type="string">
+      <column length="5" name="acq_105"/>
+    </property>
+    <property name="acq106" type="string">
+      <column length="5" name="acq_106"/>
+    </property>
+    <property name="acq107" type="string">
+      <column length="5" name="acq_107"/>
+    </property>
+    <property name="acq108" type="string">
+      <column length="5" name="acq_108"/>
+    </property>
+    <property name="acq109" type="string">
+      <column length="5" name="acq_109"/>
+    </property>
+    <property name="acq110" type="string">
+      <column length="5" name="acq_110"/>
+    </property>
+    <property name="acq111" type="string">
+      <column length="5" name="acq_111"/>
+    </property>
+    <property name="acq112" type="string">
+      <column length="5" name="acq_112"/>
+    </property>
+    <property name="acq113" type="string">
+      <column length="5" name="acq_113"/>
+    </property>
+    <property name="acq114" type="string">
+      <column length="5" name="acq_114"/>
+    </property>
+    <property name="acq115" type="string">
+      <column length="5" name="acq_115"/>
+    </property>
+    <property name="acq116" type="string">
+      <column length="5" name="acq_116"/>
+    </property>
+    <property name="acq117" type="string">
+      <column length="5" name="acq_117"/>
+    </property>
+    <property name="acq118" type="string">
+      <column length="5" name="acq_118"/>
+    </property>
+    <property name="acq119" type="string">
+      <column length="5" name="acq_119"/>
+    </property>
+    <property name="acq120" type="string">
+      <column length="5" name="acq_120"/>
+    </property>
+    <property name="acq121" type="string">
+      <column length="5" name="acq_121"/>
+    </property>
+    <property name="acq122" type="string">
+      <column length="5" name="acq_122"/>
+    </property>
+    <property name="acq123" type="string">
+      <column length="5" name="acq_123"/>
+    </property>
+    <property name="acq124" type="string">
+      <column length="5" name="acq_124"/>
+    </property>
+    <property name="acq125" type="string">
+      <column length="5" name="acq_125"/>
+    </property>
+    <property name="acq126" type="string">
+      <column length="5" name="acq_126"/>
+    </property>
+    <property name="acq127" type="string">
+      <column length="5" name="acq_127"/>
+    </property>
+    <property name="acq128" type="string">
+      <column length="5" name="acq_128"/>
+    </property>
+    <property name="acq129" type="string">
+      <column length="5" name="acq_129"/>
+    </property>
+    <property name="acq130" type="string">
+      <column length="5" name="acq_130"/>
+    </property>
+    <property name="acq131" type="string">
+      <column length="5" name="acq_131"/>
+    </property>
+    <property name="acq132" type="string">
+      <column length="5" name="acq_132"/>
+    </property>
+    <property name="acq133" type="string">
+      <column length="5" name="acq_133"/>
+    </property>
+    <property name="acq134" type="string">
+      <column length="5" name="acq_134"/>
+    </property>
+    <property name="acq135" type="string">
+      <column length="5" name="acq_135"/>
+    </property>
+    <property name="acq136" type="string">
+      <column length="5" name="acq_136"/>
+    </property>
+    <property name="acq137" type="string">
+      <column length="5" name="acq_137"/>
+    </property>
+    <property name="acq138" type="string">
+      <column length="5" name="acq_138"/>
+    </property>
+    <property name="acq139" type="string">
+      <column length="5" name="acq_139"/>
+    </property>
+    <property name="acq140" type="string">
+      <column length="5" name="acq_140"/>
+    </property>
+    <property name="acq141" type="string">
+      <column length="5" name="acq_141"/>
+    </property>
+    <property name="acq142" type="string">
+      <column length="5" name="acq_142"/>
+    </property>
+    <property name="acq143" type="string">
+      <column length="5" name="acq_143"/>
+    </property>
+    <property name="acq144" type="string">
+      <column length="5" name="acq_144"/>
+    </property>
+    <property name="acq145" type="string">
+      <column length="5" name="acq_145"/>
+    </property>
+    <property name="acq146" type="string">
+      <column length="5" name="acq_146"/>
+    </property>
+    <property name="acq147" type="string">
+      <column length="5" name="acq_147"/>
+    </property>
+    <property name="acq148" type="string">
+      <column length="5" name="acq_148"/>
+    </property>
+    <property name="acq149" type="string">
+      <column length="5" name="acq_149"/>
+    </property>
+    <property name="acq150" type="string">
+      <column length="5" name="acq_150"/>
+    </property>
+    <property name="acq151" type="string">
+      <column length="5" name="acq_151"/>
+    </property>
+    <property name="acq152" type="string">
+      <column length="5" name="acq_152"/>
+    </property>
+    <property name="acq153" type="string">
+      <column length="5" name="acq_153"/>
+    </property>
+    <property name="acq154" type="string">
+      <column length="5" name="acq_154"/>
+    </property>
+    <property name="acq155" type="string">
+      <column length="5" name="acq_155"/>
+    </property>
+    <property name="acq156" type="string">
+      <column length="5" name="acq_156"/>
+    </property>
+    <property name="acq157" type="string">
+      <column length="5" name="acq_157"/>
+    </property>
+    <property name="acq158" type="string">
+      <column length="5" name="acq_158"/>
+    </property>
+    <property name="acq159" type="string">
+      <column length="5" name="acq_159"/>
+    </property>
+    <property name="acq160" type="string">
+      <column length="5" name="acq_160"/>
+    </property>
+    <property name="acq161" type="string">
+      <column length="5" name="acq_161"/>
+    </property>
+    <property name="acq162" type="string">
+      <column length="5" name="acq_162"/>
+    </property>
+    <property name="acq163" type="string">
+      <column length="5" name="acq_163"/>
+    </property>
+    <property name="acq164" type="string">
+      <column length="5" name="acq_164"/>
+    </property>
+    <property name="acq165" type="string">
+      <column length="5" name="acq_165"/>
+    </property>
+    <property name="acq166" type="string">
+      <column length="5" name="acq_166"/>
+    </property>
+    <property name="acq167" type="string">
+      <column length="5" name="acq_167"/>
+    </property>
+    <property name="acq168" type="string">
+      <column length="5" name="acq_168"/>
+    </property>
+    <property name="acq169" type="string">
+      <column length="5" name="acq_169"/>
+    </property>
+    <property name="acq170" type="string">
+      <column length="5" name="acq_170"/>
+    </property>
+    <property name="acq171" type="string">
+      <column length="5" name="acq_171"/>
+    </property>
+    <property name="acq172" type="string">
+      <column length="5" name="acq_172"/>
+    </property>
+    <property name="acq173" type="string">
+      <column length="5" name="acq_173"/>
+    </property>
+    <property name="acq174" type="string">
+      <column length="5" name="acq_174"/>
+    </property>
+    <property name="acq175" type="string">
+      <column length="5" name="acq_175"/>
+    </property>
+    <property name="acq176" type="string">
+      <column length="5" name="acq_176"/>
+    </property>
+    <property name="acq177" type="string">
+      <column length="5" name="acq_177"/>
+    </property>
+    <property name="acq178" type="string">
+      <column length="5" name="acq_178"/>
+    </property>
+    <property name="acq179" type="string">
+      <column length="5" name="acq_179"/>
+    </property>
+    <property name="acq180" type="string">
+      <column length="5" name="acq_180"/>
+    </property>
+    <property name="acq181" type="string">
+      <column length="5" name="acq_181"/>
+    </property>
+    <property name="acq182" type="string">
+      <column length="5" name="acq_182"/>
+    </property>
+    <property name="acq183" type="string">
+      <column length="5" name="acq_183"/>
+    </property>
+    <property name="acq184" type="string">
+      <column length="5" name="acq_184"/>
+    </property>
+    <property name="acq185" type="string">
+      <column length="5" name="acq_185"/>
+    </property>
+    <property name="acq186" type="string">
+      <column length="5" name="acq_186"/>
+    </property>
+    <property name="acq187" type="string">
+      <column length="5" name="acq_187"/>
+    </property>
+    <property name="acq188" type="string">
+      <column length="5" name="acq_188"/>
+    </property>
+    <property name="acq189" type="string">
+      <column length="5" name="acq_189"/>
+    </property>
+    <property name="acq190" type="string">
+      <column length="5" name="acq_190"/>
+    </property>
+    <property name="acq191" type="string">
+      <column length="5" name="acq_191"/>
+    </property>
+    <property name="acq192" type="string">
+      <column length="5" name="acq_192"/>
+    </property>
+    <property name="acq193" type="string">
+      <column length="5" name="acq_193"/>
+    </property>
+    <property name="acq194" type="string">
+      <column length="5" name="acq_194"/>
+    </property>
+    <property name="acq195" type="string">
+      <column length="5" name="acq_195"/>
+    </property>
+    <property name="acq196" type="string">
+      <column length="5" name="acq_196"/>
+    </property>
+    <property name="acq197" type="string">
+      <column length="5" name="acq_197"/>
+    </property>
+    <property name="acq198" type="string">
+      <column length="5" name="acq_198"/>
+    </property>
+    <property name="acq199" type="string">
+      <column length="5" name="acq_199"/>
+    </property>
+  </class>
 </hibernate-mapping>

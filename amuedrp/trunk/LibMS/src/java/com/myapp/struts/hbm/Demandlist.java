@@ -32,6 +32,15 @@ public class Demandlist  implements java.io.Serializable {
      private String publicationPlace;
      private String lccNo;
 
+    public String getNoOfCopy() {
+        return noOfCopy;
+    }
+
+    public void setNoOfCopy(String noOfCopy) {
+        this.noOfCopy = noOfCopy;
+    }
+     private String noOfCopy;
+
     public Demandlist() {
     }
 
@@ -39,7 +48,7 @@ public class Demandlist  implements java.io.Serializable {
     public Demandlist(DemandlistId id) {
         this.id = id;
     }
-    public Demandlist(DemandlistId id, String category, String author, String publisher, String publishYr, String isbn, String volume, String edition, String remark, String demandDate, String language, String issn, String status, String memberType, String subMemberType, String memName, String subAuthor, String subAuthor0, String subAuthor1, String subAuthor2, String publicationPlace, String lccNo) {
+    public Demandlist(DemandlistId id, String category, String author, String publisher, String publishYr, String isbn, String volume, String edition, String remark, String demandDate, String language, String issn, String status, String memberType, String subMemberType, String memName, String subAuthor, String subAuthor0, String subAuthor1, String subAuthor2, String publicationPlace, String lccNo,String noc) {
        this.id = id;
        this.category = category;
        this.author = author;
@@ -62,6 +71,7 @@ public class Demandlist  implements java.io.Serializable {
        this.subAuthor2 = subAuthor2;
        this.publicationPlace = publicationPlace;
        this.lccNo = lccNo;
+       this.noOfCopy=noc;
     }
    
     public DemandlistId getId() {

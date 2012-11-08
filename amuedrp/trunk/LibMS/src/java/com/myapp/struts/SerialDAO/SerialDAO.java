@@ -6,6 +6,7 @@
 package com.myapp.struts.SerialDAO;
 
 import com.myapp.struts.hbm.HibernateUtil;
+import com.myapp.struts.hbm.SerBiolioDetails;
 import com.myapp.struts.hbm.SerLanguage;
 import com.myapp.struts.hbm.SerNewEntry;
 import com.myapp.struts.hbm.SerPublisher;
@@ -27,7 +28,7 @@ import org.hibernate.criterion.Restrictions;
 public class SerialDAO {
 
 
-    public static SerNewEntry getSerBiblio(String library_id, String sub_library_id, String new_serial_id) {
+    public   SerNewEntry getSerBiblio(String library_id, String sub_library_id, String new_serial_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        SerNewEntry obj=null;
 
@@ -51,7 +52,7 @@ public class SerialDAO {
         return obj;
     }
 
-public static List getBiblio(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by) {
+public  List getBiblio(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List obj=null;
 
@@ -76,59 +77,15 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
     }
 
 
-    public static List searchSerial(String library_id, String sub_library_id,String title) {
+    
+
+static Integer id=0;
+    public  Integer returnMaxSerialId(String library_id, String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        List obj=null;
-        try {
-             session.beginTransaction();
-            Criteria criteria = session.createCriteria(SerNewEntry.class)
-                    .add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id))
-                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
-                    .add(Restrictions.eq("title",title)));
-           obj= criteria.list();
-           session.getTransaction().commit();
-        }  catch(Exception e)
-        {
-        e.printStackTrace();
-        }
-        finally {
-            session.close();
-        }
-        return obj;
-    }
-
-
-
-    public static SerNewEntry searchSerialTitle(String library_id, String sub_library_id,String title) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-       SerNewEntry obj=null;
-        try {
-              session.beginTransaction();
-            Criteria criteria = session.createCriteria(SerNewEntry.class)
-                    .add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id))
-                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
-                    .add(Restrictions.eq("title",title)));
-            obj=(SerNewEntry) criteria.uniqueResult();
-            session.getTransaction().commit();
-        }  catch(Exception e)
-        {
-        e.printStackTrace();
-        }
-        finally {
-            session.close();
-        }
-        return obj;
-    }
-
-
-  static   Integer id=0;
-    public static Integer returnMaxSerialId(String library_id, String sublibrary_id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-         
-
+        Transaction tx=session.beginTransaction();
 
         try {
-        session.beginTransaction();
+
             Criteria criteria = session.createCriteria(SerNewEntry.class);
             Criterion a = Restrictions.eq("id.libraryId", library_id);
             Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
@@ -151,8 +108,118 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
                 id++;
             }
 
-         session.getTransaction().commit();
-           
+            // Integer maxbiblio = Integer.parseInt((String)criteria.add(le).setProjection(Projections.max("id.newSerialId")).uniqueResult());
+//            if (maxbiblio == null) {
+//                maxbiblio = 1;
+//            } else {
+//                maxbiblio++;
+//            }
+
+            return id;
+        } finally {
+            session.close();
+        }
+
+    }
+  public List searchSerial(String library_id, String sub_library_id,String title) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+         Transaction tx=session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(SerNewEntry.class)
+                    .add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("title",title)));
+            return criteria.list();
+        } finally {
+           // session.close();
+        }
+    }
+
+
+
+   
+
+   public Integer returnMaxControlNo(String library_id, String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+           Integer maxbiblio=null;
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(SerBiolioDetails.class);
+            Criterion a = Restrictions.eq("id.libraryId", library_id);
+            Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
+            LogicalExpression le = Restrictions.and(a, b);
+             maxbiblio = (Integer) criteria.add(le).setProjection(Projections.max("id.serControlNo")).uniqueResult();
+                System.out.println(maxbiblio+"###################");
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+          
+session.getTransaction().commit();
+
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally
+        {
+        session.close();
+        }
+       return maxbiblio;
+    }
+
+
+
+    public  void insert1(SerBiolioDetails bibDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(bibDetails);
+            tx.commit();
+        } catch (Exception e) {
+
+            tx.rollback();
+           e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+        
+public  boolean insertSerialNewEntry(SerNewEntry bibDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(bibDetails);
+            tx.commit();
+        } catch (Exception e) {
+
+            tx.rollback();
+           e.printStackTrace();
+           return false;
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+
+
+
+    
+
+
+    public  SerNewEntry searchSerialTitle(String library_id, String sub_library_id,String title) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+       SerNewEntry obj=null;
+        try {
+              session.beginTransaction();
+            Criteria criteria = session.createCriteria(SerNewEntry.class)
+                    .add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("title",title)));
+            obj=(SerNewEntry) criteria.uniqueResult();
+            session.getTransaction().commit();
         }  catch(Exception e)
         {
         e.printStackTrace();
@@ -160,11 +227,12 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
         finally {
             session.close();
         }
-        return id;
+        return obj;
     }
 
 
-    public static void insert1(SerNewEntry obj) {
+     
+     public  void insert1(SerNewEntry obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -172,15 +240,15 @@ public static List getBiblio(String library_id,String sublibrary_id,String searc
             session.save(obj);
             tx.commit();
         } catch (RuntimeException e) {
-           
+            //if(bibDetails != null)
             tx.rollback();
-            e.printStackTrace();
+            throw e;
         } finally {
             session.close();
         }
     }
 
-    public static SerLanguage searchLanguage(String library_id, String language_id) {
+    public  SerLanguage searchLanguage(String library_id, String language_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 SerLanguage obj=null;
         try {
@@ -205,7 +273,7 @@ SerLanguage obj=null;
 
 
 
-   public static SerPublisher searchSerialPubisher(String library_id, String sub_library_id,String pub_id) {
+   public  SerPublisher searchSerialPubisher(String library_id, String sub_library_id,String pub_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          SerPublisher  obj=null;
 
@@ -228,7 +296,7 @@ SerLanguage obj=null;
     }
 
 
-     public static boolean insert(SerLanguage obj) {
+     public  boolean insert(SerLanguage obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -253,7 +321,7 @@ SerLanguage obj=null;
         return true;
     }
 
-     public static boolean insert(SerPublisher obj) {
+     public  boolean insert(SerPublisher obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -279,7 +347,26 @@ SerLanguage obj=null;
     }
 
 
-     public static boolean update(SerLanguage obj) {
+     public  boolean update1(SerNewEntry obj) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.update(obj);
+            tx.commit();
+        }  catch(Exception e)
+        {
+        e.printStackTrace();
+        tx.rollback();
+        return false;
+        }
+        finally {
+            session.close();
+        }
+        return true;
+    }
+ public  boolean update1(SerLanguage obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -299,8 +386,26 @@ SerLanguage obj=null;
         return true;
     }
 
+  public  boolean update(SerPublisher obj) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
 
-  public static boolean update(SerPublisher obj) {
+        try {
+            tx = session.beginTransaction();
+            session.update(obj);
+            tx.commit();
+        }   catch(Exception e)
+        {
+        e.printStackTrace();
+        tx.rollback();
+        return false;
+        }
+        finally {
+            session.close();
+        }
+        return true;
+    }
+public  boolean update(SerLanguage obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -321,8 +426,7 @@ SerLanguage obj=null;
     }
 
 
-
-    public static boolean update1(SerNewEntry obj) {
+    public   boolean update8(SerBiolioDetails obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -343,7 +447,29 @@ SerLanguage obj=null;
     }
 
 
-     public static boolean delete(SerLanguage obj) {
+
+    public   boolean update3(SerNewEntry obj) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.update(obj);
+            tx.commit();
+        }  catch(Exception e)
+        {
+        e.printStackTrace();
+        tx.rollback();
+        return false;
+        }
+        finally {
+            session.close();
+        }
+        return true;
+    }
+
+
+     public  boolean delete(SerLanguage obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -365,7 +491,7 @@ SerLanguage obj=null;
 
 
 
-     public static boolean delete(SerPublisher obj) {
+     public boolean delete(SerPublisher obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -386,7 +512,7 @@ SerLanguage obj=null;
     }
 
 
-   public static void delete2(String serial_id, String library_id, String sub_library_id) {
+   public void delete2(String serial_id, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
        

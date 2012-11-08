@@ -25,16 +25,8 @@ public class AcqBaseCurrencyEntryAction extends org.apache.struts.action.Action 
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    AcqCurrencyDao acqcurrdao=new AcqCurrencyDao();
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -47,7 +39,7 @@ public class AcqBaseCurrencyEntryAction extends org.apache.struts.action.Action 
         String base_currency_symbol=lf.getBase_currency_symbol();
         
         
-        BaseCurrency l=AcqCurrencyDao.searchCurrency(library_id, base_currency_symbol);
+        BaseCurrency l=acqcurrdao.searchCurrency(library_id, base_currency_symbol);
 
 
 
@@ -62,7 +54,7 @@ public class AcqBaseCurrencyEntryAction extends org.apache.struts.action.Action 
             }
             else
             {
-              BaseCurrency l1=AcqCurrencyDao.searchCurrency1(library_id);
+              BaseCurrency l1=acqcurrdao.searchCurrency1(library_id);
 
               if(l1!=null){
             request.setAttribute("msg1", "Base currency symbol Already Set with Id:"+l1.getId().getBaseCurrencySymbol());

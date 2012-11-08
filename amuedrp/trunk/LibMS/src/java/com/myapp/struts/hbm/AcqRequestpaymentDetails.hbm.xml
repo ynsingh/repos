@@ -38,6 +38,5 @@
     <property name="accessionStatus" type="string">
       <column length="20" name="accession_status"/>
     </property>
-
   </class>
 </hibernate-mapping>

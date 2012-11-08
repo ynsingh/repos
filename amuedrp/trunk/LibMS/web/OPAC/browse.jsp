@@ -269,57 +269,17 @@ function fun()
         <script type="text/javascript" src="<%=request.getContextPath()%>/keyboard/keyboard_002.js" charset="UTF-8"></script>
         <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/keyboard/keyboard.css"/>
     </head>
-    
+    <jsp:include page="opacheader.jsp"></jsp:include>
     <body onload="checkboxClickHandler();search();fun(); setIframeHeight();" bgcolor="cyan" style="margin:0px 0px 0px 0px;">
         <html:form action="/OPAC/browse_search"  styleId="Form1" target="f1" acceptCharset="utf-8">
         <html:hidden property="checkbox" styleId="checkbox" name="browseSearchActionForm"/>
         <html:hidden property="language" styleId="language" name="browseSearchActionForm"/>
+        <table class="header1" width="100%"><tr><td align="left" class="datagrid" dir="<%=rtl%>" width="100%" bgcolor="white" height="100%">
         <table align="center" class="datagrid" dir="<%=rtl%>" width="100%" bgcolor="white" height="100%">
-           <tr  ><td   valign="bottom" height="10%"   >
+          
+               
 
-
-
-
-
-
-
-
-                                <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:40px;width:150px;">
-                                <br>
-                            
-
-                            </td>
-                            <td align="right" >
-                                <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="height:70px;width:160px;">
-                </td>
-            
-            </tr>
-            <tr>
-                <td colspan="2">
-
-
-      
-       <a href="OpacLib.do?name=simple" dir="<%=rtl%>"   style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.simple")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=browse"  dir="<%=rtl%>"  style="font-weight: bold;text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.browse")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=additional" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.additional")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=advance" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.advance")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=isbn" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.isbn")%></a>&nbsp;|&nbsp;<a href="OpacLib.do?name=callno" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.callno")%></a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=accno" dir="<%=rtl%>"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.accessionno")%></a>&nbsp;|&nbsp;<a  href="./OpacLib.do?name=newarrival" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"><%=resource.getString("opacmainframe.mframe.newarrivals")%></a>&nbsp;|&nbsp;<a  href="../OPAC/Notice.do" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" dir="<%=rtl%>"><%=resource.getString("opacmainframe.mframe.notices")%></a>&nbsp;|&nbsp;<a  href="../OPAC/Locations.do" style="text-decoration:none;font-family: Arial;font-size: 11px;color:blue" dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.location")%></a>&nbsp;|&nbsp;<a  href="../OPAC/OpacLib.do?name=feedback" dir="<%=rtl%>" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.mframe.feedback")%></a>&nbsp;|&nbsp;
-        <b style="color:blue;letter-spacing: 1px;text-decoration:none;font-family: Arial;font-size: 11px">
-                  <a href="../OPAC/OpacLib.do?name=newmember" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"   dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.memberregistration")%></a>&nbsp;|&nbsp;<a  href="../OPAC/OpacLib.do?name=myaccount&amp;p=t" style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px"   dir="<%=rtl%>"  >My Account</a>&nbsp;|&nbsp;<a href="../OPAC/OPACmain1.jsp"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><b style="color:blue" dir="<%=rtl%>" > <%=resource.getString("opacmainframe.header.home")%></b></a>&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/help.jsp" dir="<%=rtl%>"  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><b><%=resource.getString("opacmainframe.header.help")%></b></a>&nbsp;|&nbsp;
-                    <%if(library_id==null){%>
-      <a href="<%=request.getContextPath()%>/login.jsp" onclick=""  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opacmainframe.header.exit")%></a>
- <%}else{%><a href="<%=request.getContextPath()%>/admin/main.jsp" onclick=""  style="text-decoration:none;font-family: Arial;color:blue;font-size: 11px" ><%=resource.getString("opacmainframe.header.exit")%></a><%}%>
-
-                    </b>
-      
-
-
-      </td>
-            </tr>
-            
-            <tr   style="background-color: #BFDBFF;height: 50px;  background-image: url('<%=request.getContextPath()%>/images/banner_bg.jpg'); border:  solid 1px black;margin: 0px 0px 0px 0px"><td colspan="2" style="font-style: italic;font-size: 20px;color:white;" valign="middle" align="center">
-           "Online Public Access Catalogue"</td>
-
-             
-            </tr>
-
-            <tr><td style="color:red;border-bottom:  dotted 1px cyan;font-weight: bold;margin: 0px 0px 0px 0px" height="15px" colspan="2" align="center"><p><font color="red" size="3px"><b><%=resource.getString("opac.browse.browsesearch")%></b></font></p></td></tr>
+            <tr><td style="color:red;height: 20px;border-bottom:  dotted 1px cyan;font-weight: bold;margin: 0px 0px 0px 0px"  colspan="2" align="center"><p><font color="red" ><b><%=resource.getString("opac.browse.browsesearch")%></b></font></p></td></tr>
             <tr><td valign="top">
         <table  align="<%=align%>" dir="<%=rtl%>" width="100%">
      
@@ -414,16 +374,10 @@ function fun()
                    
 
                </td></tr>
-           <tr><td align="left" class="datagrid" valign="top" colspan="2">
-                          <%=resource.getString("developedby")%>  &copy; <%=resource.getString("login.message.footer")%>
-         &nbsp; follow us : <img src="<%=request.getContextPath()%>/images/blog.jpeg" height="16px" width="20px"/>
-     <img src="<%=request.getContextPath()%>/images/facebook.jpeg" height="16px" width="20px"/>
-     <img src="<%=request.getContextPath()%>/images/twitter.jpeg" height="16px" width="20px"/>
-      <a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="16px" width="40px"/></a>
-            </td></tr>
+           
 
-        </table>
+        </table> </td></tr></table>
  </html:form>
 </body>
-
+ <jsp:include page="opacfooter.jsp"></jsp:include>
 </html>

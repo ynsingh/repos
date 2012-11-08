@@ -52,12 +52,12 @@ public class CancelReasonAddAction extends org.apache.struts.action.Action {
 
 
 
-     CancellationReason obj=CirculationDAO.searchCancelReason(library_id,sublibrary_id,id.toString());
+     CancellationReason obj=dao.searchCancelReason(library_id,sublibrary_id,id.toString());
      System.out.println("Object..................... "+obj);
 
            if(obj!=null){
            request.setAttribute("msg1", "Cancel Id Already Exist");
-             session.setAttribute("actlist1", CirculationDAO.searchCancelReason(library_id, sublibrary_id));
+             session.setAttribute("actlist1", dao.searchCancelReason(library_id, sublibrary_id));
            return mapping.findForward(SUCCESS);
 
            }
@@ -71,10 +71,10 @@ public class CancelReasonAddAction extends org.apache.struts.action.Action {
        actid.setLibraryId(library_id);
        actid.setSublibraryId(sublibrary_id);
        act.setId(actid);
-       System.out.println("Boooolean"+CirculationDAO.insertCancellation(act));
-       CirculationDAO.insertCancellation(act);
+       System.out.println("Boooolean"+dao.insertCancellation(act));
+       dao.insertCancellation(act);
      
-      session.setAttribute("actlist1", CirculationDAO.searchCancelReason(library_id, sublibrary_id));
+      session.setAttribute("actlist1", dao.searchCancelReason(library_id, sublibrary_id));
       return mapping.findForward(SUCCESS);
     }
    

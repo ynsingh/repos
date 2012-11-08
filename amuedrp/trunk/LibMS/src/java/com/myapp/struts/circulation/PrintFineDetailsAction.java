@@ -44,9 +44,7 @@ public class PrintFineDetailsAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     public static final String REPORT_DIRECTORY = "reports";
-    Connection connection=null;
-    Statement statement=null;
-    ResultSet resultSet=null;
+   CirculationDAO cirdao=new CirculationDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -74,7 +72,7 @@ path=path+"/JasperReport";
            String year1=ccra.getStarting_date();
             String year2=ccra.getEnd_date();
 
-        List circheckInlist1=(List)CirculationDAO.CheckInReport1(library_id, sub_lib, year1, year2, memid);
+        List circheckInlist1=(List)cirdao.CheckInReport1(library_id, sub_lib, year1, year2, memid);
        
 
      if(os.startsWith("Linux"))

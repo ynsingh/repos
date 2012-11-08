@@ -14,8 +14,8 @@ String sublib_name=(String)request.getAttribute("sublib_name");
 session.setAttribute("sublibrary", sublibrary);
 String button=(String)request.getAttribute("button");
 String library_id=(String)session.getAttribute("library_id");
-
-Faculty fac=FacultyDAO.getFacultyName(library_id,sublibrary.getFacultyName());
+FacultyDAO facdao=new FacultyDAO();
+Faculty fac=facdao.getFacultyName(library_id,sublibrary.getFacultyName());
 
 
 

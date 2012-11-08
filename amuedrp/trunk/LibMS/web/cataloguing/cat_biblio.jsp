@@ -114,8 +114,8 @@ function submitDelete()
             <html:option value="diss">Disseration</html:option>
             <html:option value="thesis">Thesis</html:option>
             <html:option value="journal">Journals</html:option>
-            <html:option value="CD"><%=resource.getString("cataloguing.catoldtitle.cd")%></html:option>
-            <html:option value="DVD">DVD</html:option>
+            <html:option value="cd"><%=resource.getString("cataloguing.catoldtitle.cd")%>/DVD</html:option>
+            
   </html:select>
             <br><span class="err">   <html:messages id="err_name" property="document_type">
         <%=resource.getString("cataloguing.catoldtitle.err1")%>

@@ -65,16 +65,16 @@ public class CancellationUpdateAction extends org.apache.struts.action.Action {
        actid.setLibraryId(library_id);
        actid.setSublibraryId(sublibrary_id);
        act.setId(actid);
-       CirculationDAO.insertCancellation(act);
+       dao.insertCancellation(act);
        }
        }
       }
       if(actf.getButton().equals("Delete"))
       {
-      CirculationDAO.deleteCancelReason(library_id, sublibrary_id, id.getFirst().toString());
+      dao.deleteCancelReason(library_id, sublibrary_id, id.getFirst().toString());
       id.removeFirst();
       }
-        session.setAttribute("actlist1", CirculationDAO.searchCancelReason(library_id, sublibrary_id));
+        session.setAttribute("actlist1", dao.searchCancelReason(library_id, sublibrary_id));
       return mapping.findForward(SUCCESS);
     }
 

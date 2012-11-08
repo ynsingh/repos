@@ -35,7 +35,7 @@ public class AcqAcquisitionProcessOfOpacAction extends org.apache.struts.action.
     AcquisitionDao acqdao=new AcquisitionDao();
     NewDemandDAO ndmndao=new NewDemandDAO();
       float total;
-
+  BudgetDAO bugdao=new BudgetDAO();
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -121,8 +121,8 @@ System.out.println("TTTTTTTITTTTTTTTll         "+demand_id);
 
 
 
-         AcqCurrency acq=(AcqCurrency)BudgetDAO.getConversionRate(library_id,curr);
-        AcqBudgetAllocation allocation=BudgetDAO.getSearchBudgetHead(library_id,budgetHeadId,year);
+         AcqCurrency acq=(AcqCurrency)bugdao.getConversionRate(library_id,curr);
+        AcqBudgetAllocation allocation=bugdao.getSearchBudgetHead(library_id,budgetHeadId,year);
 
 
         if(!curr.equalsIgnoreCase("Select")){
@@ -132,7 +132,7 @@ System.out.println("TTTTTTTITTTTTTTTll         "+demand_id);
       total=rate*noc;
 
 
-      String acq1=BudgetDAO.getBudgetTransaction(library_id,budgetHeadId);
+      String acq1=bugdao.getBudgetTransaction(library_id,budgetHeadId);
 
 float bal=0;
 if(acq1!=null)
@@ -160,7 +160,7 @@ if(acq1!=null)
         }
         else
         {
-               BaseCurrency acq1=(BaseCurrency)BudgetDAO.getBaseCurrency(library_id);
+               BaseCurrency acq1=(BaseCurrency)bugdao.getBaseCurrency(library_id);
               acqbibdtail1.setCurrency(acq1.getId().getBaseCurrencySymbol());
 
         total=unitprice*noc;
@@ -183,7 +183,7 @@ if(acq1!=null)
        budget.setControlNo(String.valueOf(control_no));
        budget.setAmount(Double.parseDouble(String.valueOf(total)));
        budget.setTransactionDate(DateCalculation.now());
-       BudgetDAO.insertTransaction(budget);
+       bugdao.insertTransaction(budget);
 
 
 

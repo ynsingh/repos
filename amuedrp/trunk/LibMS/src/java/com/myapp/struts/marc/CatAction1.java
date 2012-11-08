@@ -23,40 +23,26 @@ public class CatAction1 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-      private MarcHibDAO marchib=new MarcHibDAO();
-    
-    MarcHibDAO dao=new MarcHibDAO();
-HashMap hm1 = new HashMap();
-private Biblio bib=new Biblio();
-    private Biblio biblio=new Biblio();
-    private BiblioId biblioid= new BiblioId();
-   /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
-    private Biblio biblio1=new Biblio();
-    private BiblioId biblioid1= new BiblioId();
-
-    private Biblio biblio2=new Biblio();
-    private BiblioId biblioid2= new BiblioId();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+            MarcHibDAO marchib=new MarcHibDAO();
+    
+    MarcHibDAO dao=new MarcHibDAO();
+   
+    Biblio bib=new Biblio();
+    Biblio biblio=new Biblio();
+    BiblioId biblioid= new BiblioId();
+ 
+    Biblio biblio1=new Biblio();
+     BiblioId biblioid1= new BiblioId();
+
+     Biblio biblio2=new Biblio();
+     BiblioId biblioid2= new BiblioId();
+
         System.out.println("I'm now in CatACtion 1 !");
         CatActionForm1 caf1=(CatActionForm1) form;
 
@@ -142,11 +128,13 @@ private Biblio bib=new Biblio();
         biblioid.setBibId(bibid);
            biblio.setId(biblioid);
 //           marchib.insert(biblio);
- hm1 = (HashMap)session.getAttribute("hsmp");
+HashMap hm1 = (HashMap)session.getAttribute("hsmp");
+if(hm1==null)
+    hm1=new HashMap();
 
-  if(hm1.containsKey("6")){
-            hm1.remove("6");
-        }
+ // if(hm1.containsKey("6")){
+    //        hm1.remove("6");
+    //    }
  hm1.put("6", biblio);
      
 
@@ -187,9 +175,9 @@ private Biblio bib=new Biblio();
         biblioid1.setBibId(bibid);
            biblio1.setId(biblioid1);
 //           marchib.insert(biblio1);
-            if(hm1.containsKey("7")){
-            hm1.remove("7");
-        }
+     //       if(hm1.containsKey("7")){
+       //     hm1.remove("7");
+      //  }
  hm1.put("7", biblio1);
 // bib=(Biblio)hm1.get("2");
 // System.out.println("%%%%%%%%%%%% "+bib.get$a());
@@ -232,9 +220,9 @@ private Biblio bib=new Biblio();
         biblioid2.setBibId(bibid);
            biblio2.setId(biblioid2);
 //           marchib.insert(biblio2);
-            if(hm1.containsKey("8")){
-            hm1.remove("8");
-        }
+         //   if(hm1.containsKey("8")){
+         //   hm1.remove("8");
+      //  }
 hm1.put("8", biblio2);
           //insert
      

@@ -31,21 +31,9 @@ else{
 
 %>
 
-<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
-
-</head>
-
-<body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
 <%!
-   
-   
+
+
    RequestDoc Ob;
    ArrayList requestList;
    AdminRegistration adminReg;
@@ -62,20 +50,21 @@ if(rs!=null){
    int tcount =0;
    int perpage=4;
    int tpage=0;
- 
+
  if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
     perpage = Integer.parseInt((String)request.getParameter("pageSize"));
 
 
   while (it.hasNext()) {
-	
+
 	Ob = new RequestDoc();
         adminReg = (AdminRegistration)rs.get(tcount);
 	Ob.setRegistration_id(adminReg.getRegistrationId());
 	Ob.setInstitute_name(adminReg.getInstituteName());
-	
+
 	Ob.setAdmin_email(adminReg.getAdminEmail());
-       // Ob.setInstitute_id(adminReg.)
+        Ob.setAddress(adminReg.getInstituteAddress());
+        Ob.setUser_name(adminReg.getAdminFname()+" "+adminReg.getAdminLname());
         adminReg=null;
    requestList.add(Ob);
    tcount++;
@@ -86,12 +75,22 @@ it.next();
 System.out.println("tcount="+tcount);
 
 %>
+
+
+<%
+   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
+   if ((toIndex = fromIndex + perpage) >= requestList.size ())
+   toIndex = requestList.size();
+   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("tCount", tcount);
+%>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script>
     function changerec(){
         var x=document.getElementById('rec').value;
     var loc = window.location;
     loc = "http://<%=request.getHeader("host")%><%=request.getContextPath()%>/admin/view_approved.jsp";
-    
+
    // alert(loc);
         loc = loc + "?pageSize="+x;
     window.location = loc;
@@ -118,15 +117,14 @@ function isNumberKey(evt)
          return true;
       }
     </script>
-       
-<%
-   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex + perpage) >= requestList.size ())
-   toIndex = requestList.size();
-   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
-%>
-<br><br>
+</head>
+
+<body>
+ 
+<table border="1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" align="center"  width="80%" >
+        <tr><td class="headerStyle" align="center">View All Approved Institute 
+            </td></tr>
+        <tr><td align="center">
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Record Found</p>
@@ -171,7 +169,7 @@ pageContext.setAttribute("rec",perpage);
 
 
 %>
-View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/><br/>
+<p align="right" class="txtStyle">View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></p>
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
@@ -179,19 +177,26 @@ View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" o
    
     <column width="100">
       <header value="${RegistrationID}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.registration_id}" hyperLink="../switch.do?page=/index.jsp&amp;prefix=/admin&amp;id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="250">
       <header value="${InstituteName}" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="index.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
-
-       
-    <column width="200">
+      <column width="200">
+      <header value="Institute Address" hAlign="left" styleClass="header"/>
+      <item   value="${doc.address}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="200">
+      <header value="Institute AdminName" hAlign="left" styleClass="header"/>
+      <item   value="${doc.user_name}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="200">
       <header value="${AdminEmail}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
+     
 
     
 
@@ -226,8 +231,8 @@ View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" o
   </c:otherwise>
 </c:choose>
 </c:forEach>
-   </td><td align="center">
-     Import :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
+   </td><td align="right">
+     Export :<img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25">
     <img src="<%=request.getContextPath()%>/images/xml.jpeg" height="25" border="1" width="25">
     <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
 </td>
@@ -239,7 +244,7 @@ View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" o
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
- </div>
+</td></tr></table>
     </body>
 
 

@@ -29,7 +29,8 @@ public class AcqOrderAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    AcquisitionDao acqdao=new AcquisitionDao();
+    AcqOrderDao acqorderdao=new AcqOrderDao();
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -46,14 +47,14 @@ public class AcqOrderAction extends org.apache.struts.action.Action {
         String t=request.getParameter("orderno");
         if(t!=null)
         {
-            AcqOrderHeader acq= AcquisitionDao.searchOrderHeaderByOrderNo(library_id, sub_library_id, t);
+            AcqOrderHeader acq= acqdao.searchOrderHeaderByOrderNo(library_id, sub_library_id, t);
 
            if(acq!=null)
            {
 
 
 
-             List<AcqOrder1> acq1=AcquisitionDao.searchOrderByOrderNo(library_id, sub_library_id, t);
+             List<AcqOrder1> acq1=acqdao.searchOrderByOrderNo(library_id, sub_library_id, t);
              System.out.println("The List Size in Order no"+acq1.size());
             if(!acq1.isEmpty()){
 
@@ -62,13 +63,13 @@ public class AcqOrderAction extends org.apache.struts.action.Action {
                     int con=acq1.get(i).getControlNo();
                      System.out.println("The List control no in Order no"+con +"....");
 
-                    AcqApproval app=AcquisitionDao.searchApprovalStatus1(library_id, sub_library_id, con,acq1.get(i).getApprovalItemId());
+                    AcqApproval app=acqdao.searchApprovalStatus1(library_id, sub_library_id, con,acq1.get(i).getApprovalItemId());
                     System.out.println("Control No....List"+app);
                     if(app!=null)
                     {
                            System.out.println("The control no is of Approval type"+con +"....");
                     //For On Approval or Approved Deletion
-                        AcqBibliographyDetails st=AcquisitionDao.searchAcqBibByControlNo(library_id, sub_library_id, con);
+                        AcqBibliographyDetails st=acqdao.searchAcqBibByControlNo(library_id, sub_library_id, con);
                         if(st!=null)
                         {
                             if(st.getNoOfCopies()==0)
@@ -82,21 +83,21 @@ public class AcqOrderAction extends org.apache.struts.action.Action {
                                     }
 
                             }
-              boolean   result=AcquisitionDao.updateAcqBib(st);
+              boolean   result=acqdao.updateAcqBib(st);
               app.setStatus("pending");
-              boolean result1=AcquisitionDao.updateApproval(app);
+              boolean result1=acqdao.updateApproval(app);
 
 
        }
        else{
        //for Firm Order Deletion
                           System.out.println("The control is of Firm Order "+con +"....");
-              AcqBibliographyDetails st=AcquisitionDao.searchAcqBibByControlNo(library_id, sub_library_id, con);
+              AcqBibliographyDetails st=acqdao.searchAcqBibByControlNo(library_id, sub_library_id, con);
            if(st!=null){
             st.setAcqMode("Firm Order");
             st.setStatus("");
            }
-            boolean   result=AcquisitionDao.updateAcqBib(st);
+            boolean   result=acqdao.updateAcqBib(st);
 
        }
 
@@ -106,13 +107,13 @@ public class AcqOrderAction extends org.apache.struts.action.Action {
 
        }
            }
- boolean result=   AcqOrderDao.delete1(library_id,sub_library_id, t);
+ boolean result=   acqorderdao.delete1(library_id,sub_library_id, t);
 
 
         }
 
 
-        List<String> acqvendor=AcquisitionDao.searchDoc6(library_id, sub_library_id);
+        List<String> acqvendor=acqdao.searchDoc6(library_id, sub_library_id);
         
 ArrayList list1=new ArrayList();
 for(int i=0;i<acqvendor.size();i++){

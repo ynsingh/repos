@@ -29,7 +29,7 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     private CirMemberDetail cmd = new CirMemberDetail();
     private CirMemberDetailId cmdi = new CirMemberDetailId();
-    private CirRequestfromOpac cro = new CirRequestfromOpac();
+     CirRequestfromOpac cro = new CirRequestfromOpac();
     private String TXTMEMID;
     private String TXTFNAME;
     private String TXTLNAME;
@@ -77,7 +77,9 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+CirculationDAO cirdao=new CirculationDAO();
+SubMemberDAO submemdao=new SubMemberDAO();
+CirRequestfromOpacDAO crodao = new CirRequestfromOpacDAO();
            CirOpacApprovedActionForm cmdf =(CirOpacApprovedActionForm)form;
         HttpSession session1 =request.getSession();
         //ImageUploadActionForm form1 = (ImageUploadActionForm)session1.getAttribute("ImageUploadActionForm");
@@ -89,7 +91,7 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
 
 
         String  member_id = cmdf.getTXTMEMID();
-        CirRequestfromOpac obj=CirculationDAO.searchMemberfromOPAC(library_id, sublibrary_id,member_id);
+        CirRequestfromOpac obj=cirdao.searchMemberfromOPAC(library_id, sublibrary_id,member_id);
         System.out.println(obj+".................");
       String last_name=cmdf.getTXTLNAME();
       String mail_id=cmdf.getTXTEMAILID();
@@ -136,7 +138,7 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
 
             cmd.setImage(iii);
 
-            CirculationDAO.insert(cmd);
+            cirdao.insert(cmd);
             CirMemberAccountId  cmai = new CirMemberAccountId();
             CirMemberAccount cma = new CirMemberAccount();
             cmai.setLibraryId(library_id);
@@ -157,7 +159,7 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
             cma.setExpiryDate(cmdf.getTXTEXP_DATE());
             cma.setStatus("registered");
 
-    SubEmployeeType book=(SubEmployeeType)SubMemberDAO.searchIssueLimit(library_id,cmdf.getMEMCAT(),cmdf.getMEMSUBCAT());
+    SubEmployeeType book=(SubEmployeeType)submemdao.searchIssueLimit(library_id,cmdf.getMEMCAT(),cmdf.getMEMSUBCAT());
 
     if(book!=null)
     {
@@ -188,16 +190,16 @@ public class CirOpacApprovedAction extends org.apache.struts.action.Action {
 
             cma.setSemester(cmdf.getTXTSEM());
 
-            result=CirculationDAO.insert(cma);
+            result=cirdao.insert(cma);
             }
             if(result==true)
             {
 
-                CirRequestfromOpac requestobj=(CirRequestfromOpac)CirRequestfromOpacDAO.getMemberDetail(library_id, sublibrary_id,cmdf.getTXTMEMID());
+                CirRequestfromOpac requestobj=(CirRequestfromOpac)crodao.getMemberDetail(library_id, sublibrary_id,cmdf.getTXTMEMID());
                 if(requestobj!=null)
                 {
                 requestobj.setStatus("Approved");
-                result=CirRequestfromOpacDAO.update(requestobj);
+                result=crodao.update(requestobj);
                 }
 
 

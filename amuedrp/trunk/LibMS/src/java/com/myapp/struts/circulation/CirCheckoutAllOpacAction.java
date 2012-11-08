@@ -37,7 +37,7 @@ public class CirCheckoutAllOpacAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception 
     {
-
+CirculationDAO cirdao=new CirculationDAO();
        HttpSession session=request.getSession();
         try{
 
@@ -56,7 +56,7 @@ public class CirCheckoutAllOpacAction extends org.apache.struts.action.Action {
        library_id=(String)session.getAttribute("library_id");
        sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
-       List<CirOpacRequest> ciropac=(List<CirOpacRequest>)CirculationDAO.getOpacCheckOut(library_id, sublibrary_id,"Pending");
+       List<CirOpacRequest> ciropac=(List<CirOpacRequest>)cirdao.getOpacCheckOut(library_id, sublibrary_id,"Pending");
        System.out.println(ciropac.size());
        if(!ciropac.isEmpty())
        {

@@ -11,7 +11,8 @@
 <%
 
  String locale=request.getParameter("locale");
-
+String url=(String)request.getParameter("returnurl");
+System.out.println(url+"******************");
 if(locale.equals("English")) session.setAttribute("locale", "en");
                     else if(locale.equals("Hindi")) session.setAttribute("locale", "hi");
                     else if(locale.equals("Urdu")) session.setAttribute("locale", "ur");

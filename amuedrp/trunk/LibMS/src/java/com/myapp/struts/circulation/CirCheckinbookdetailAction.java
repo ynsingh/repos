@@ -35,7 +35,7 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+CirculationDAO cirdao=new CirculationDAO();
         CirCheckinActionForm myform = (CirCheckinActionForm)form;
         HttpSession session = request.getSession();
           try{
@@ -66,13 +66,13 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
 
         CirculationDAO cirDAO = new CirculationDAO();
 //getting value from document detail tables and update the status
-        DocumentDetails doc = (DocumentDetails)CirculationDAO.searchDocumentID(library_id, sublibrary_id, accno);
+        DocumentDetails doc = (DocumentDetails)cirdao.searchDocumentID(library_id, sublibrary_id, accno);
         if(doc!=null)
         {
              document_id = String.valueOf(doc.getId().getDocumentId());
              doc.setStatus("available");
 //getting values from checkout table where status is issued and respective document Id
-        CirCheckout circheckout = (CirCheckout)CirculationDAO.searchCheckOutDetailsByStatus(library_id, sublibrary_id, document_id,"issued");
+        CirCheckout circheckout = (CirCheckout)cirdao.searchCheckOutDetailsByStatus(library_id, sublibrary_id, document_id,"issued");
         if(circheckout!=null){
          checkout_id = String.valueOf(circheckout.getId().getCheckoutId());
             circheckout.setStatus("returned");
@@ -95,7 +95,7 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
             circheckin.getCirCheckout().getId().setCheckoutId(circheckout.getId().getCheckoutId());
             
 //setting variables for cir transaction history
-            CirTransactionHistory cirHistory = (CirTransactionHistory)CirculationDAO.searchCirTransactionHistory(library_id, sublibrary_id, Integer.parseInt(checkout_id));
+            CirTransactionHistory cirHistory = (CirTransactionHistory)cirdao.searchCirTransactionHistory(library_id, sublibrary_id, Integer.parseInt(checkout_id));
             cirHistory.setCheckinDate(returnningDate);
             cirHistory.setCheckinId(checkinId);
             cirHistory.setIssueDate(circheckout.getIssueDate());
@@ -103,14 +103,14 @@ public class CirCheckinbookdetailAction extends org.apache.struts.action.Action 
             cirHistory.setFineAmt(i);
             cirHistory.setStatus("returned");
 //setting values for circulation member account table
-            CirMemberAccount cirmemAccount = (CirMemberAccount)CirculationDAO.searchCirMemAccountDetails(library_id,sublibrary_id,memid);
+            CirMemberAccount cirmemAccount = (CirMemberAccount)cirdao.searchCirMemAccountDetails(library_id,sublibrary_id,memid);
             Integer noofissuebook = Integer.parseInt(cirmemAccount.getCurrentIssuedBook())-1;
             cirmemAccount.setCurrentIssuedBook(String.valueOf(noofissuebook));
             float fine1 = Float.parseFloat(cirmemAccount.getFine());
             fine1 += Float.parseFloat(fine);
             cirmemAccount.setFine(String.valueOf(fine1));
 
-boolean check = CirculationDAO.updateCheckin(circheckin, circheckout, cirmemAccount, doc, cirHistory);
+boolean check = cirdao.updateCheckin(circheckin, circheckout, cirmemAccount, doc, cirHistory);
 if (check==true)
 {
    // request.setAttribute("msg", "CheckIn Process Succesfully Completed");

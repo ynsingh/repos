@@ -27,16 +27,9 @@ public class AcqCurrencyConversion2Action extends org.apache.struts.action.Actio
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    AcqExchangeRateDao acqexdao=new AcqExchangeRateDao();
+    AcqCurrencyDao acqcurrdao=new AcqCurrencyDao();
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -51,7 +44,7 @@ public class AcqCurrencyConversion2Action extends org.apache.struts.action.Actio
         String date=lf.getDate();
         
         
-        AcqCurrency l=AcqExchangeRateDao.searchSourceCurrency1(library_id, scurrency,date);
+        AcqCurrency l=acqexdao.searchSourceCurrency1(library_id, scurrency,date);
 
 
 
@@ -65,7 +58,7 @@ public class AcqCurrencyConversion2Action extends org.apache.struts.action.Actio
                        }
             else{
              
-  BaseCurrency base=AcqCurrencyDao.searchCurrency1(library_id);
+  BaseCurrency base=acqcurrdao.searchCurrency1(library_id);
 if(base!=null)
 {
 session.setAttribute("basecurrencyid", base.getId().getBaseCurrencySymbol());
@@ -94,7 +87,7 @@ else{
  else{
 
 
-             BaseCurrency base=AcqCurrencyDao.searchCurrency1(library_id);
+             BaseCurrency base=acqcurrdao.searchCurrency1(library_id);
 if(base!=null)
 {
 session.setAttribute("basecurrencyid", base.getId().getBaseCurrencySymbol());

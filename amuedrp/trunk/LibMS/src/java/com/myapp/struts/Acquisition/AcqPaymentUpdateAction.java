@@ -23,6 +23,7 @@ public class AcqPaymentUpdateAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    AcquisitionDao acqdao=new AcquisitionDao();
     List list= new ArrayList();
     PaymentUpdateClass puc=new PaymentUpdateClass();
     @Override
@@ -34,7 +35,7 @@ public class AcqPaymentUpdateAction extends org.apache.struts.action.Action {
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         puc.setPrn("no prn");
         list.add(puc);
-        List<PaymentUpdateClass> acqforpaymentupdate=AcquisitionDao.getDistinctPrn(library_id, sub_library_id);
+        List<PaymentUpdateClass> acqforpaymentupdate=acqdao.getDistinctPrn(library_id, sub_library_id);
 //        if(!acqforpaymentupdate.isEmpty())
          request.setAttribute("acqforpaymentupdate",acqforpaymentupdate);
 //        else

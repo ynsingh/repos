@@ -34,7 +34,8 @@ public class AcqInvoiceItem1Action extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
-        List<InvoiceList> listforinvoice=(List<InvoiceList>)AcquisitionDao.getReceivedItems(library_id, sub_library_id, receiving_no, order_no);
+        AcquisitionDao acqdao=new AcquisitionDao();
+        List<InvoiceList> listforinvoice=(List<InvoiceList>)acqdao.getReceivedItems(library_id, sub_library_id, receiving_no, order_no);
         session.setAttribute("listforinvoice", listforinvoice);
         return mapping.findForward(SUCCESS);
     }

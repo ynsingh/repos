@@ -19,10 +19,10 @@ import org.hibernate.criterion.Restrictions;
 public class SubMemberDAO {
 
 
-    static Query query;
+     Query query;
 
 
- public static  SubEmployeeType searchIssueLimit(String library_id,String emptype_id,String subemptype_id)
+ public   SubEmployeeType searchIssueLimit(String library_id,String emptype_id,String subemptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 SubEmployeeType obj=null;
@@ -51,7 +51,7 @@ SubEmployeeType obj=null;
 }
 
 
-public static SubEmployeeType getSubEployeeName(String library_id,String emptype_id,String sub_emptype_id) {
+public  SubEmployeeType getSubEployeeName(String library_id,String emptype_id,String sub_emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         SubEmployeeType obj=null;
         try {
@@ -75,7 +75,7 @@ public static SubEmployeeType getSubEployeeName(String library_id,String emptype
 }
 
 
-public static List<SubEmployeeType> searchSubEmployeeType(String library_id) {
+public  List<SubEmployeeType> searchSubEmployeeType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubEmployeeType> obj=null;
         try {
@@ -96,7 +96,7 @@ List<SubEmployeeType> obj=null;
         }
         return obj;
 }
-public static List<SubEmployeeType> searchSubEmployeeType(String library_id,String emptype_id) {
+public  List<SubEmployeeType> searchSubEmployeeType(String library_id,String emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubEmployeeType> obj=null;
         try {
@@ -118,7 +118,7 @@ List<SubEmployeeType> obj=null;
         return obj;
 }
 
-public static  boolean insert(SubEmployeeType obj)
+public   boolean insert(SubEmployeeType obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -144,7 +144,7 @@ public static  boolean insert(SubEmployeeType obj)
            session.close();
         }
 }
-public static  boolean Update(SubEmployeeType obj,List<CirMemberAccount> obj1)
+public   boolean Update(SubEmployeeType obj,List<CirMemberAccount> obj1)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -185,7 +185,7 @@ public static  boolean Update(SubEmployeeType obj,List<CirMemberAccount> obj1)
 
 
 }
-public static  boolean Update(SubEmployeeType obj)
+public   boolean Update(SubEmployeeType obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -222,7 +222,7 @@ public static  boolean Update(SubEmployeeType obj)
 
 
 
-public static  boolean Delete(SubEmployeeType obj)
+public   boolean Delete(SubEmployeeType obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;

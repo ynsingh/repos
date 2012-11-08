@@ -27,7 +27,7 @@ public class DocumentCategoryAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-
+DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -54,7 +54,7 @@ public class DocumentCategoryAction extends org.apache.struts.action.Action {
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String button=lf.getButton();
         String doc_category_id=lf.getDocument_category_id();
-        DocumentCategory l=DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id, doc_category_id);
+        DocumentCategory l=doccatdao.searchDocumentCategory(library_id, sub_library_id, doc_category_id);
         if(button.equals("Add"))
         {
             if(l!=null){

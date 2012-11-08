@@ -1,73 +1,72 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.Reservationlist" table="reservationlist" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.ReservationlistId">
-            <key-property name="requestId" type="string">
-                <column name="request_id" length="20" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-            <key-property name="memid" type="string">
-                <column name="memid" length="70" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" unique="true" />
-        </many-to-one>
-        <property name="accessionno" type="string">
-            <column name="accessionno" length="50" />
-        </property>
-        <property name="cardId" type="string">
-            <column name="card_id" length="50" />
-        </property>
-        <property name="title" type="string">
-            <column name="title" length="100" />
-        </property>
-        <property name="category" type="string">
-            <column name="category" length="25" />
-        </property>
-        <property name="author" type="string">
-            <column name="author" length="100" />
-        </property>
-        <property name="isbn" type="string">
-            <column name="isbn" length="200" />
-        </property>
-        <property name="callno" type="string">
-            <column name="callno" length="50" />
-        </property>
-        <property name="edition" type="string">
-            <column name="edition" length="25" />
-        </property>
-        <property name="volume" type="string">
-            <column name="volume" length="25" />
-        </property>
-        <property name="publication" type="string">
-            <column name="publication" length="50" />
-        </property>
-        <property name="remark" type="string">
-            <column name="remark" length="100" />
-        </property>
-        <property name="requestDate" type="string">
-            <column name="request_date" length="15" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="10" />
-        </property>
-        <property name="issn" type="string">
-            <column name="issn" length="20" />
-        </property>
-        <property name="language" type="string">
-            <column name="language" length="20" />
-        </property>
-        <property name="pubYear" type="string">
-            <column name="pub_year" length="15" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.Reservationlist" table="reservationlist">
+    <composite-id class="com.myapp.struts.hbm.ReservationlistId" name="id">
+      <key-property name="requestId" type="string">
+        <column length="20" name="request_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+      <key-property name="memid" type="string">
+        <column length="70" name="memid"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true" unique="true"/>
+    </many-to-one>
+    <property name="accessionno" type="string">
+      <column length="50" name="accessionno"/>
+    </property>
+    <property name="cardId" type="string">
+      <column length="50" name="card_id"/>
+    </property>
+    <property name="title" type="string">
+      <column length="100" name="title"/>
+    </property>
+    <property name="category" type="string">
+      <column length="25" name="category"/>
+    </property>
+    <property name="author" type="string">
+      <column length="100" name="author"/>
+    </property>
+    <property name="isbn" type="string">
+      <column length="200" name="isbn"/>
+    </property>
+    <property name="callno" type="string">
+      <column length="50" name="callno"/>
+    </property>
+    <property name="edition" type="string">
+      <column length="25" name="edition"/>
+    </property>
+    <property name="volume" type="string">
+      <column length="25" name="volume"/>
+    </property>
+    <property name="publication" type="string">
+      <column length="50" name="publication"/>
+    </property>
+    <property name="remark" type="string">
+      <column length="100" name="remark"/>
+    </property>
+    <property name="requestDate" type="string">
+      <column length="15" name="request_date"/>
+    </property>
+    <property name="status" type="string">
+      <column length="10" name="status"/>
+    </property>
+    <property name="issn" type="string">
+      <column length="20" name="issn"/>
+    </property>
+    <property name="language" type="string">
+      <column length="20" name="language"/>
+    </property>
+    <property name="pubYear" type="string">
+      <column length="15" name="pub_year"/>
+    </property>
+  </class>
 </hibernate-mapping>

@@ -1,103 +1,102 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Oct 20, 2012 11:20:58 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.SerNewEntry" table="ser_new_entry" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.SerNewEntryId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-            <key-property name="newSerialId" type="string">
-                <column name="new_serial_id" length="10" />
-            </key-property>
-        </composite-id>
-        <property name="serialType" type="string">
-            <column name="serial_type" length="15" />
-        </property>
-        <property name="title" type="string">
-            <column name="title" length="15" />
-        </property>
-        <property name="publisher" type="string">
-            <column name="publisher" length="15" />
-        </property>
-        <property name="subPublisher" type="string">
-            <column name="sub_publisher" length="15" />
-        </property>
-        <property name="address" type="string">
-            <column name="address" length="30" />
-        </property>
-        <property name="place" type="string">
-            <column name="place" length="15" />
-        </property>
-        <property name="country" type="string">
-            <column name="country" length="15" />
-        </property>
-        <property name="sponsor" type="string">
-            <column name="sponsor" length="15" />
-        </property>
-        <property name="editor" type="string">
-            <column name="editor" length="15" />
-        </property>
-        <property name="language1" type="string">
-            <column name="language1" length="10" />
-        </property>
-        <property name="language2" type="string">
-            <column name="language2" length="10" />
-        </property>
-        <property name="language3" type="string">
-            <column name="language3" length="10" />
-        </property>
-        <property name="language4" type="string">
-            <column name="language4" length="10" />
-        </property>
-        <property name="type1" type="string">
-            <column name="type1" length="10" />
-        </property>
-        <property name="type2" type="string">
-            <column name="type2" length="10" />
-        </property>
-        <property name="type3" type="string">
-            <column name="type3" length="10" />
-        </property>
-        <property name="startYr" type="string">
-            <column name="start_yr" length="10" />
-        </property>
-        <property name="volume" type="string">
-            <column name="volume" length="10" />
-        </property>
-        <property name="issue" type="string">
-            <column name="issue" length="10" />
-        </property>
-        <property name="coden" type="string">
-            <column name="coden" length="10" />
-        </property>
-        <property name="issn" type="string">
-            <column name="issn" length="15" />
-        </property>
-        <property name="alphaCode" type="string">
-            <column name="alpha_code" length="10" />
-        </property>
-        <property name="recommendedBy" type="string">
-            <column name="recommended_by" length="15" />
-        </property>
-        <property name="date" type="string">
-            <column name="date" length="10" />
-        </property>
-        <property name="shortTitle" type="string">
-            <column name="short_title" length="15" />
-        </property>
-        <property name="approvalReq" type="string">
-            <column name="approval_req" length="15" />
-        </property>
-        <property name="subscriptionYear" type="string">
-            <column name="subscription_year" length="10" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="10" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.SerNewEntry" table="ser_new_entry">
+    <composite-id class="com.myapp.struts.hbm.SerNewEntryId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+      <key-property name="newSerialId" type="string">
+        <column length="10" name="new_serial_id"/>
+      </key-property>
+    </composite-id>
+    <property name="serialType" type="string">
+      <column length="15" name="serial_type"/>
+    </property>
+    <property name="title" type="string">
+      <column length="15" name="title"/>
+    </property>
+    <property name="publisher" type="string">
+      <column length="15" name="publisher"/>
+    </property>
+    <property name="subPublisher" type="string">
+      <column length="15" name="sub_publisher"/>
+    </property>
+    <property name="address" type="string">
+      <column length="30" name="address"/>
+    </property>
+    <property name="place" type="string">
+      <column length="15" name="place"/>
+    </property>
+    <property name="country" type="string">
+      <column length="15" name="country"/>
+    </property>
+    <property name="sponsor" type="string">
+      <column length="15" name="sponsor"/>
+    </property>
+    <property name="editor" type="string">
+      <column length="15" name="editor"/>
+    </property>
+    <property name="language1" type="string">
+      <column length="10" name="language1"/>
+    </property>
+    <property name="language2" type="string">
+      <column length="10" name="language2"/>
+    </property>
+    <property name="language3" type="string">
+      <column length="10" name="language3"/>
+    </property>
+    <property name="language4" type="string">
+      <column length="10" name="language4"/>
+    </property>
+    <property name="type1" type="string">
+      <column length="10" name="type1"/>
+    </property>
+    <property name="type2" type="string">
+      <column length="10" name="type2"/>
+    </property>
+    <property name="type3" type="string">
+      <column length="10" name="type3"/>
+    </property>
+    <property name="startYr" type="string">
+      <column length="10" name="start_yr"/>
+    </property>
+    <property name="volume" type="string">
+      <column length="10" name="volume"/>
+    </property>
+    <property name="issue" type="string">
+      <column length="10" name="issue"/>
+    </property>
+    <property name="coden" type="string">
+      <column length="10" name="coden"/>
+    </property>
+    <property name="issn" type="string">
+      <column length="15" name="issn"/>
+    </property>
+    <property name="alphaCode" type="string">
+      <column length="10" name="alpha_code"/>
+    </property>
+    <property name="recommendedBy" type="string">
+      <column length="15" name="recommended_by"/>
+    </property>
+    <property name="date" type="string">
+      <column length="10" name="date"/>
+    </property>
+    <property name="shortTitle" type="string">
+      <column length="15" name="short_title"/>
+    </property>
+    <property name="approvalReq" type="string">
+      <column length="15" name="approval_req"/>
+    </property>
+    <property name="subscriptionYear" type="string">
+      <column length="10" name="subscription_year"/>
+    </property>
+    <property name="status" type="string">
+      <column length="10" name="status"/>
+    </property>
+  </class>
 </hibernate-mapping>

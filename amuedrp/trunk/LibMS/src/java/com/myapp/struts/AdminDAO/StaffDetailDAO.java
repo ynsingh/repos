@@ -4,6 +4,7 @@
  */
 
 package com.myapp.struts.AdminDAO;
+import com.myapp.struts.admin.StaffExport;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.HibernateUtil;
 import org.hibernate.Transaction;
@@ -22,7 +23,39 @@ import org.hibernate.transform.Transformers;
  */
 public class StaffDetailDAO {
 
-public static boolean DeleteStaff(String staff_id,String library_id,String sublibrary_id) {
+
+     public  List ViewAllTable(String library_id,String sublibrary) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List obj=null;
+        
+        try {
+            session.beginTransaction();
+
+
+              Query        query = session.createSQLQuery("select a.*,b.*,c1.* from staff_detail a, sub_library b,login c1 where a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id and a.sublibrary_id=c1.sublibrary_id and a.library_id=c1.library_id and a.staff_id=c1.staff_id and  a.library_id=:library_id and a.sublibrary_id=:sublibrary_id")
+                .addEntity(StaffDetail.class)
+                             .addEntity(SubLibrary.class)
+                             .addEntity(Login.class)
+
+                        .setResultTransformer(Transformers.aliasToBean(StaffExport.class));
+                      query.setString("library_id", library_id);
+            query.setString("sublibrary_id", sublibrary);
+                    obj=query.list();
+
+            
+
+
+            session.getTransaction().commit();
+        } catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+return obj;
+    }
+
+public  boolean DeleteStaff(String staff_id,String library_id,String sublibrary_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -85,16 +118,17 @@ public static boolean DeleteStaff(String staff_id,String library_id,String subli
 
 
 }
-public static StaffDetail searchLoginID(String login_id) {
+public  StaffDetail searchEmail_id(String login_id)
+{
         Session session = HibernateUtil.getSessionFactory().openSession();
-Query query=null;
-StaffDetail staffobj=null;
+        Query query=null;
+        StaffDetail staffobj=null;
         try {
             session.beginTransaction();
-            query = session.createQuery("FROM  StaffDetail  WHERE loginId =:login_id  ");
+            query = session.createQuery("FROM  StaffDetail  WHERE email_id =:login_id  ");
             query.setString("login_id", login_id);
-staffobj=( StaffDetail) query.uniqueResult();
-           session.getTransaction().commit();
+            staffobj=( StaffDetail) query.uniqueResult();
+            session.getTransaction().commit();
         }
          catch (HibernateException e) {
 
@@ -105,8 +139,7 @@ staffobj=( StaffDetail) query.uniqueResult();
         }
  return staffobj;
 }
-
-public static StaffDetail searchLibraryID(String library_id) {
+public  StaffDetail searchLibraryID(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
  Query query=null;
  StaffDetail staffobj=null;
@@ -126,7 +159,7 @@ staffobj=( StaffDetail) query.uniqueResult();
         }
  return staffobj;
 }
-public static StaffDetail searchStaffId(String staff_id,String library_id) {
+public  StaffDetail searchStaffId(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
  Query query=null;
  StaffDetail staffobj=null;
@@ -148,7 +181,7 @@ public static StaffDetail searchStaffId(String staff_id,String library_id) {
         }
  return staffobj;
 }
-public static List<staffsubLib> searchAllStaff(String library_id) {
+public  List<staffsubLib> searchAllStaff(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Query query=null;
 List<staffsubLib> obj=null;
@@ -173,7 +206,68 @@ List<staffsubLib> obj=null;
         }
  return obj;
 }
-public static List<staffsubLib> searchAllStaff(String library_id,String sublibrary_id) {
+
+/*
+ METHOD TO GET LIST OF ALL STAFF SPECIFIC TO LIBRARY & SUBLIB
+ */
+public  List<staffsubLib1> searchAllStaffRole(String library_id,String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+Query query=null;
+List<staffsubLib1> obj=null;
+       try {
+            session.beginTransaction();
+         query = session.createSQLQuery("select a.*,b.*,d.* from staff_detail a , sub_library b,login d where a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id and b.library_id=d.library_id and b.sublibrary_id=d.sublibrary_id and  a.email_id=d.login_id and  a.library_id=:library_id and a.sublibrary_id=:sublibrary_id")
+                .addEntity(StaffDetail.class)
+                .addEntity(SubLibrary.class)
+                .addEntity(Login.class)
+                .setResultTransformer(Transformers.aliasToBean(staffsubLib1.class));
+
+            query.setString("library_id", library_id);
+            query.setString("sublibrary_id", sublibrary_id);
+    obj=(List<staffsubLib1>)query.list();
+           session.getTransaction().commit();
+        }
+       catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
+        finally {
+           session.close();
+        }
+ return obj;
+}
+
+/*
+ METHOD TO GET LIST OF ALL STAFF SPECIFIC TO LIBRARY 
+ */
+public  List<staffsubLib1> searchAllStaffRole1(String library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+Query query=null;
+List<staffsubLib1> obj=null;
+       try {
+            session.beginTransaction();
+         query = session.createSQLQuery("select a.*,b.*,d.* from staff_detail a , sub_library b,login d where a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id and b.library_id=d.library_id and b.sublibrary_id=d.sublibrary_id and  a.email_id=d.login_id and  a.library_id=:library_id")
+                .addEntity(StaffDetail.class)
+                .addEntity(SubLibrary.class)
+                .addEntity(Login.class)
+                .setResultTransformer(Transformers.aliasToBean(staffsubLib1.class));
+
+            query.setString("library_id", library_id);
+           
+    obj=(List<staffsubLib1>)query.list();
+           session.getTransaction().commit();
+        }
+       catch (HibernateException e) {
+
+	                e.printStackTrace();
+	            }
+        finally {
+           session.close();
+        }
+ return obj;
+}
+
+public  List<staffsubLib> searchAllStaff(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Query query=null;
 List<staffsubLib> obj=null;
@@ -198,7 +292,7 @@ List<staffsubLib> obj=null;
         }
  return obj;
 }
-public static StaffDetail searchStaffId(String staff_id,String library_id,String sublibrary_id) {
+public  StaffDetail searchStaffId(String staff_id,String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Query query=null;
 StaffDetail staffobj=null;
@@ -220,7 +314,7 @@ StaffDetail staffobj=null;
         }
 return staffobj;
 }
-public static  boolean insert1(StaffDetail obj)
+public   boolean insert1(StaffDetail obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -253,7 +347,7 @@ public static  boolean insert1(StaffDetail obj)
 
 }
 
-public static  boolean update1(StaffDetail obj)
+public   boolean update1(StaffDetail obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -372,7 +466,30 @@ public List getStaffDetails(){
         }
          return obj;
 }
+public StaffDetail getStaffDetails1(String staffId,String libraryId){
+ Session session =null;
+    Query query=null;
+    StaffDetail obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+             query= session.createQuery("FROM StaffDetail where id.staffId=:staffId and id.libraryId=:libraryId");
+             query.setString("staffId", staffId);
+             query.setString("libraryId", libraryId);
+         obj= (StaffDetail) query.uniqueResult();
+         session.getTransaction().commit();
+        }
+ catch (HibernateException e) {
 
+
+            e.printStackTrace();
+
+        }
+        finally {
+    session.close();
+        }
+         return obj;
+}
 public List getStaffDetails(String staffId,String libraryId){
  Session session =null;
     Query query=null;

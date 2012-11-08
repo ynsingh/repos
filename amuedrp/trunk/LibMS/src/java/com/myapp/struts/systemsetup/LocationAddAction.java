@@ -37,7 +37,8 @@ public class LocationAddAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-         HttpSession session = request.getSession();
+        LocationDAO locdao=new LocationDAO();
+        HttpSession session = request.getSession();
          try{
 
         locale1=(String)session.getAttribute("locale");
@@ -68,7 +69,7 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         
         
         if(button.equals("Submit")){
-            Location lcheck = (Location)LocationDAO.getLocationByName(library_id, sub_library_id,locName);
+            Location lcheck = (Location)locdao.getLocationByName(library_id, sub_library_id,locName);
         if(lcheck==null){
         l.setLocationDesc(lf.getLocation_description());
         l.setLocationName(lf.getLocation_name());
@@ -76,7 +77,7 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         li.setSublibraryId(sub_library_id);
         li.setLocationId(lf.getLocation_id());
         l.setId(li);
-        LocationDAO.insert(l);
+        locdao.insert(l);
         //request.setAttribute("msg", "Data is saved successfully");
         request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recinsesucc"));
         session.removeAttribute("backlocation");
@@ -88,7 +89,7 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Update")){
-            Location lcheck = (Location)LocationDAO.getLocationByName(library_id, sub_library_id,locName);
+            Location lcheck = (Location)locdao.getLocationByName(library_id, sub_library_id,locName);
         if(lcheck!=null)
             if(!lcheck.getId().getLocationId().equals(location_id))
             {
@@ -102,7 +103,7 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         li.setSublibraryId(sub_library_id);
         li.setLocationId(lf.getLocation_id());
         l.setId(li);
-        LocationDAO.update(l);
+        locdao.update(l);
 
         //request.setAttribute("msg", "Data is updated successfully");
         request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatesucc"));
@@ -116,7 +117,7 @@ public class LocationAddAction extends org.apache.struts.action.Action {
         li.setLocationId(lf.getLocation_id());
         l.setId(li);
 
-       List <DocumentDetails> doc=LocationDAO.Search(library_id,lf.getLocation_id());
+       List <DocumentDetails> doc=locdao.Search(library_id,lf.getLocation_id());
       // System.out.println(doc);
 
        if(!doc.isEmpty()){
@@ -129,7 +130,7 @@ public class LocationAddAction extends org.apache.struts.action.Action {
 
 
 
-        LocationDAO.delete(library_id, sub_library_id, location_id);
+        locdao.delete(library_id, sub_library_id, location_id);
         // request.setAttribute("msg", "Data is deleted successfully");
         request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recdelsucc"));
         return mapping.findForward(SUCCESS);

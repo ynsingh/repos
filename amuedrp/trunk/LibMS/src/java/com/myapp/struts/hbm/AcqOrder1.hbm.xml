@@ -1,43 +1,41 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Jun 12, 2011 11:35:03 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqOrder1" table="acq_order1" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqOrder1Id">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="subLibraryId" type="string">
-                <column name="sub_library_id" length="20" />
-            </key-property>
-            <key-property name="orderNo" type="string">
-                <column name="order_no" length="20" />
-            </key-property>
-            <key-property name="orderItemId" type="string">
-                <column name="order_item_id" length="10" />
-            </key-property>
-
-        </composite-id>
-        <many-to-one name="acqOrderHeader" class="com.myapp.struts.hbm.AcqOrderHeader" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="sub_library_id" length="20" not-null="true" />
-            <column name="order_no" length="20" not-null="true" />
-        </many-to-one>
-        <property name="controlNo" type="java.lang.Integer">
-            <column name="control_no" />
-        </property>
-        <property name="recievingNo" type="string">
-                <column name="recieving_no" length="20" />
-            </property>
-        <property name="approvalItemId" type="java.lang.Integer">
-            <column name="approval_item_id" />
-        </property>
-        <property name="recievingStatus" type="string">
-            <column name="recieving_status" length="20" />
-        </property>
-        <property name="recievingDate" type="string">
-            <column name="recieving_date" length="10" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqOrder1" table="acq_order1">
+    <composite-id class="com.myapp.struts.hbm.AcqOrder1Id" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="orderNo" type="string">
+        <column length="20" name="order_no"/>
+      </key-property>
+      <key-property name="orderItemId" type="string">
+        <column length="10" name="order_item_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.AcqOrderHeader" fetch="select" insert="false" name="acqOrderHeader" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+      <column length="20" name="sub_library_id" not-null="true"/>
+      <column length="20" name="order_no" not-null="true"/>
+    </many-to-one>
+    <property name="controlNo" type="java.lang.Integer">
+      <column name="control_no"/>
+    </property>
+    <property name="recievingNo" type="string">
+      <column length="20" name="recieving_no"/>
+    </property>
+    <property name="approvalItemId" type="java.lang.Integer">
+      <column name="approval_item_id"/>
+    </property>
+    <property name="recievingStatus" type="string">
+      <column length="20" name="recieving_status"/>
+    </property>
+    <property name="recievingDate" type="string">
+      <column length="10" name="recieving_date"/>
+    </property>
+  </class>
 </hibernate-mapping>

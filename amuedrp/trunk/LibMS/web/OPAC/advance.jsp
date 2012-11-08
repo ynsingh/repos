@@ -141,12 +141,12 @@ newOpt.text = ndValue1;
               var z=document.getElementById('TXTPHRASE3').value;
 
 
-        if(x=='' && y=='' && z=='' )
+        <%--if(x=='' && y=='' && z=='' )
             {
                 alert("Please Enter KeyWord No to Search Title");
                 return false;
 
-            }
+            }--%>
 
 
         search();
@@ -445,7 +445,7 @@ else{
         </select>
      </td>
               </tr></table></td></tr>
-   <tr class="header" dir="<%=rtl%>"><td  dir="<%=rtl%>"  align="<%=align%>" style="border-bottom: dashed 1px cyan " ><font color="red"> <%=resource.getString("opac.simplesearch.restrictedby")%></font></td><td align="<%=align%>"  style="border-bottom: dashed 1px cyan;color:red; " dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
+   <tr class="header1" dir="<%=rtl%>"><td  dir="<%=rtl%>"  align="<%=align%>" style="border-bottom: dashed 1px cyan " ><font color="red"> <%=resource.getString("opac.simplesearch.restrictedby")%></font></td><td align="<%=align%>"  style="border-bottom: dashed 1px cyan;color:red; " dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
    <tr dir="<%=rtl%>"><td  width="80%" dir="<%=rtl%>"  align="<%=align%>">
            <table width="100%"  dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
                        <table width="100%">

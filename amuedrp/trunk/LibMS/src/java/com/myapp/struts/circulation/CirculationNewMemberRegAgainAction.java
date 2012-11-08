@@ -93,8 +93,8 @@ public class CirculationNewMemberRegAgainAction extends org.apache.struts.action
         cirmemberac.setSubMemberType(MEMSUBCAT);
         cirmemberac.setStatus(status);
         cirmemberac.setFacultyId(TXTFACULTY);
-
-        SubEmployeeType book=(SubEmployeeType)SubMemberDAO.searchIssueLimit(library_id,MEMCAT,MEMSUBCAT);
+SubMemberDAO submemdao=new SubMemberDAO();
+        SubEmployeeType book=(SubEmployeeType)submemdao.searchIssueLimit(library_id,MEMCAT,MEMSUBCAT);
         if(book!=null)
         {
          no_of_issueable=String.valueOf(book.getNoOfIssueableBook());
@@ -108,8 +108,8 @@ public class CirculationNewMemberRegAgainAction extends org.apache.struts.action
               cirmemberac.setNoOfIssueableBook(no_of_issueable);
               cirmemberac.setCurrentIssuedBook("0");
               cirmemberac.setReservationMade("0");
-
-              result=CirculationDAO.insert(cirmemberac);
+CirculationDAO cirdao=new CirculationDAO();
+              result=cirdao.insert(cirmemberac);
               if(result==true)
               {
                  // String msg="Record Inserted successfully";

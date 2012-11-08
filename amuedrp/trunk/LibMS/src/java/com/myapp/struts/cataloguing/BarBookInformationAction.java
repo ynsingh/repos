@@ -5,7 +5,7 @@
 
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.DocumentDetails;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,13 +29,14 @@ public class BarBookInformationAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         BarBookInformationActionForm bbiaf=(BarBookInformationActionForm)form;
+        BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
         String accession_no=bbiaf.getAccession_no();
 System.out.println("AQeeeeeeeeeeeeeeel");
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
 
-        DocumentDetails dd=BibliopgraphicEntryDAO.searchBook(accession_no, library_id, sub_library_id) ;
+        DocumentDetails dd=bibdao.searchBook(accession_no, library_id, sub_library_id) ;
         if(dd==null)
         {
           request.setAttribute("msg","Book information not exit");

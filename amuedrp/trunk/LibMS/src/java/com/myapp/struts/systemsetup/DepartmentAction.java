@@ -38,7 +38,7 @@ public class DepartmentAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+DeptDAO deptdao=new DeptDAO();
          HttpSession session=request.getSession();
           try{
 
@@ -63,7 +63,7 @@ public class DepartmentAction extends org.apache.struts.action.Action {
 System.out.println(faculty_id);
         if(button.equals("Add"))
         {
-         Department sublibobj=(Department)DeptDAO.getDeptByFaculty(library_id,faculty_id,dept_id);
+         Department sublibobj=(Department)deptdao.getDeptByFaculty(library_id,faculty_id,dept_id);
          if(sublibobj!=null)
          {
             // request.setAttribute("msg1", "Department Id : "+dept_id+" already exists");
@@ -88,7 +88,7 @@ Department sublibobj;
 
 
 
-                         sublibobj=(Department)DeptDAO.getDeptByFaculty(library_id,faculty_id,dept_id);
+                         sublibobj=(Department)deptdao.getDeptByFaculty(library_id,faculty_id,dept_id);
                         if(sublibobj==null)
                         {
 

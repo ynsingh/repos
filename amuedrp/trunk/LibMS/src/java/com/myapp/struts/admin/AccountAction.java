@@ -36,6 +36,8 @@ public class AccountAction extends org.apache.struts.action.Action {
    String rtl="ltr";
    String align="left";
     private String sublibrary_id;
+    StaffDetailDAO staffdao=new StaffDetailDAO();
+    SubLibraryDAO sublibdao=new SubLibraryDAO();
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -80,7 +82,7 @@ Login loginobj;
 
         if(button.equals("Create Account"))
         {
-            StaffDetail staff=StaffDetailDAO.searchStaffId(staff_id, library_id);
+            StaffDetail staff=staffdao.searchStaffId(staff_id, library_id);
             if(staff!=null)
             {
              
@@ -102,7 +104,7 @@ Login loginobj;
                            //  {
                                 List<SubLibrary>  sublib;
                                 
-                                    sublib=SubLibraryDAO.searchSubLib(library_id);
+                                    sublib=sublibdao.searchSubLib(library_id);
                                 
                                 if(!sublib.isEmpty())
                                 {
@@ -206,7 +208,7 @@ Login loginobj;
               
                            List<SubLibrary>  sublib;
                                 
-                                    sublib=SubLibraryDAO.searchSubLib(library_id);
+                                    sublib=sublibdao.searchSubLib(library_id);
                                 
                                 if(!sublib.isEmpty())
                                 {

@@ -39,7 +39,7 @@ public class AcqInvoiceItem3Action extends org.apache.struts.action.Action {
     String sizearraylist1[];
     List<String> l1=new ArrayList();
     List<Integer> l2=new ArrayList();
-
+AcquisitionDao acqdao=new AcquisitionDao();
     AcqInvoiceHeader acqinvoiceheader1=new AcqInvoiceHeader();
     AcqInvoiceHeaderId acqinvoiceheader1id=new AcqInvoiceHeaderId();
     @Override
@@ -110,7 +110,7 @@ public class AcqInvoiceItem3Action extends org.apache.struts.action.Action {
        
         
 
-        List<AcqInvoiceHeader> acqinvoiceheader=(List<AcqInvoiceHeader>)AcquisitionDao.searchByInovoiceHeader(library_id,sub_library_id,invoice_no);
+        List<AcqInvoiceHeader> acqinvoiceheader=(List<AcqInvoiceHeader>)acqdao.searchByInovoiceHeader(library_id,sub_library_id,invoice_no);
         if(!acqinvoiceheader.isEmpty())
         {
            request.setAttribute("msg1", "This invoice No. is already exist");
@@ -121,6 +121,7 @@ public class AcqInvoiceItem3Action extends org.apache.struts.action.Action {
 
         for(i=0;i<items.length;i++)
         {
+            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEeeeeeeeeeeeeeeeeeeeee"+items.length);
            String item[]=items[i].split(delimiter2);
            recieving_no=item[5];
            order_no=item[1];
@@ -132,7 +133,7 @@ public class AcqInvoiceItem3Action extends org.apache.struts.action.Action {
            discount=String.valueOf(l2.get(i));
            
 
-           AcqRecievingDetails acqredetails=AcquisitionDao.searchInRecievingDetails(library_id, sub_library_id, recieving_no, pending_copies);
+           AcqRecievingDetails acqredetails=acqdao.searchInRecievingDetails(library_id, sub_library_id, recieving_no, pending_copies);
            acqredetails.setStatus("Invoice");
            int tamount=Integer.parseInt(recieved_copies)*Integer.parseInt(unit_price);
            net_amt=String.valueOf(tamount-.01*l2.get(i)*tamount);
@@ -142,14 +143,15 @@ public class AcqInvoiceItem3Action extends org.apache.struts.action.Action {
            acqindetailid.setSubLibraryId(sub_library_id);
            acqindetailid.setInvoiceNo(invoice_no);
            acqindetailid.setRecievingNo(recieving_no);
+           acqindetailid.setRecievingItemId(acqredetails.getId().getRecievingItemId());
            acqindetail.setId(acqindetailid);
            acqindetail.setOrderNo(order_no);
            acqindetail.setVendorId(vendor_id);
            acqindetail.setDiscount(discount);
            acqindetail.setNetTotal(net_amt);
            acqindetail.setTotalAmount(String.valueOf(tamount));
-           acqindetail.setRecievingItemId(acqredetails.getId().getRecievingItemId());
-           boolean result=AcquisitionDao.insertInInovoiceDetails(acqindetail,acqredetails);
+           
+           boolean result=acqdao.insertInInovoiceDetails(acqindetail,acqredetails);
            if(result==false)
            {
              request.setAttribute("msg1", "Receiving No.="+recieving_no+" not inserted");
@@ -162,7 +164,7 @@ public class AcqInvoiceItem3Action extends org.apache.struts.action.Action {
         }
         l2=new ArrayList();
         
-        AcqOrderHeader acqoheader=AcquisitionDao.searchOrderHeaderByOrderNo(library_id, sub_library_id,l1.get(0));
+        AcqOrderHeader acqoheader=acqdao.searchOrderHeaderByOrderNo(library_id, sub_library_id,l1.get(0));
         acqinvoiceheader1id.setLibraryId(library_id);
         acqinvoiceheader1id.setSublibraryId(sub_library_id);
         acqinvoiceheader1id.setInvoiceNo(invoice_no);
@@ -186,7 +188,7 @@ public class AcqInvoiceItem3Action extends org.apache.struts.action.Action {
            if(!tex.equals(""))all=all+Integer.parseInt(tex);
 
         acqinvoiceheader1.setMiscCharges(String.valueOf(all));
-        boolean result=AcquisitionDao.insertInInovoiceHeader(acqinvoiceheader1);
+        boolean result=acqdao.insertInInovoiceHeader(acqinvoiceheader1);
         if(result)
         {
               l1=new ArrayList();

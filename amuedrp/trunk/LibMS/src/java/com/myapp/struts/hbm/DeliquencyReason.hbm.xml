@@ -1,22 +1,21 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Oct 20, 2012 11:20:58 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.DeliquencyReason" table="deliquency_reason" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.DeliquencyReasonId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="id" type="string">
-                <column name="id" length="50" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-        </composite-id>
-        <property name="details" type="string">
-            <column name="details" length="200" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.DeliquencyReason" table="deliquency_reason">
+    <composite-id class="com.myapp.struts.hbm.DeliquencyReasonId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="id" type="string">
+        <column length="50" name="id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+    </composite-id>
+    <property name="details" type="string">
+      <column length="200" name="details"/>
+    </property>
+  </class>
 </hibernate-mapping>

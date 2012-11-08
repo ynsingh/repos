@@ -1522,14 +1522,15 @@ public List<DocumentDetails> searchDoc3(String call_no, String library_id, Strin
      * @param sort_by
      * @return List
      */
-  public List getAccession(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by,int pageNumber) {
+  public List getAccession(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by,int pageNumber,String doc_type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List obj=new ArrayList();
         session.beginTransaction();
         try {
             Criteria criteria = session.createCriteria(DocumentDetails.class)
                     .add(Restrictions.eq("id.libraryId", library_id))
-                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id));
+                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
+                    .add(Restrictions.eq("documentType", doc_type));
             if(search_by!=null && search_by.isEmpty()==false)
                     criteria.add(Restrictions.ilike(search_by,search_keyword+"%"));
             if(sort_by==null || sort_by.isEmpty()==true)

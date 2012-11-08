@@ -34,7 +34,8 @@ public class AcqBudgetHeadAddAction1 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    BudgetDAO bugdao=new BudgetDAO();
+    AcqApprovalDao acqdao=new AcqApprovalDao();
   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -58,10 +59,10 @@ public class AcqBudgetHeadAddAction1 extends org.apache.struts.action.Action {
         l.setTotalAmount(lf.getTotal_amount());       
         l.setBudgetheadId(budgethead_id);
         li.setLibraryId(library_id);
-        Integer transactionid=BudgetDAO.returnMaxBiblioId(library_id);
+        Integer transactionid=bugdao.returnMaxBiblioId(library_id);
         li.setTransactionId(transactionid);
         l.setId(li);
-        BudgetDAO.insert1(l);
+        bugdao.insert1(l);
         request.setAttribute("msg", "Data is saved successfully");
         session.removeAttribute("backlocation");
         return mapping.findForward(SUCCESS);
@@ -78,14 +79,14 @@ public class AcqBudgetHeadAddAction1 extends org.apache.struts.action.Action {
         int trid=lf.getTransaction_id();
         li.setTransactionId(trid);
         l.setId(li);
-        BudgetDAO.update1(l);
+        bugdao.update1(l);
         request.setAttribute("msg", "data is updated successfully");
         session.removeAttribute("backlocation");
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Delete")){
 
-           List<AcqBibliographyDetails> acq= (List<AcqBibliographyDetails>)AcqApprovalDao.searchBudgetHead(library_id, sublibrary_id, budgethead_id);
+           List<AcqBibliographyDetails> acq= (List<AcqBibliographyDetails>)acqdao.searchBudgetHead(library_id, sublibrary_id, budgethead_id);
            if(!acq.isEmpty()){
             request.setAttribute("msg1", "BudgetHead Id Used for Approval List cannot Delete");
 
@@ -94,7 +95,7 @@ public class AcqBudgetHeadAddAction1 extends org.apache.struts.action.Action {
 
            }
 
-            BudgetDAO.delete1(library_id, lf.getTransaction_id());
+            bugdao.delete1(library_id, lf.getTransaction_id());
         request.setAttribute("msg", "data is deleted successfully");
         session.removeAttribute("backlocation");
         return mapping.findForward(SUCCESS);

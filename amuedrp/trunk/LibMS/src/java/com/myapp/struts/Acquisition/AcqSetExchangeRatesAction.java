@@ -5,18 +5,9 @@
 
 package com.myapp.struts.Acquisition;
 
-import com.myapp.struts.AcquisitionDao.AcqCurrencyDao;
 import com.myapp.struts.AcquisitionDao.AcqExchangeRateDao;
-import com.myapp.struts.AcquisitionDao.BudgetDAO;
-import com.myapp.struts.hbm.AcqBudget;
-import com.myapp.struts.hbm.AcqBudgetId;
 import com.myapp.struts.hbm.AcqCurrency;
 import com.myapp.struts.hbm.AcqCurrencyId;
-import com.myapp.struts.hbm.BaseCurrency;
-import com.myapp.struts.hbm.BaseCurrencyId;
-import com.myapp.struts.hbm.Location;
-import com.myapp.struts.hbm.LocationId;
-import com.myapp.struts.systemsetupDAO.LocationDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -66,7 +57,7 @@ public class AcqSetExchangeRatesAction extends org.apache.struts.action.Action {
         
         
         l.setId(li);
-        AcqExchangeRateDao.insert(l);
+        acqexchngdao.insert(l);
         request.setAttribute("msg", "Data is saved successfully");
         session.removeAttribute("backlocation");
        // }else
@@ -89,14 +80,14 @@ public class AcqSetExchangeRatesAction extends org.apache.struts.action.Action {
         l.setSystemDate(date);
         li.setConversionId(lf.getConid());
         l.setId(li);
-        AcqExchangeRateDao.update(l);
+        acqexchngdao.update(l);
         request.setAttribute("msg", "Data is updated successfully");
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Delete")){
 
        System.out.println(lf.getConid());
-        AcqExchangeRateDao.delete(library_id, lf.getConid());
+        acqexchngdao.delete(library_id, lf.getConid());
         request.setAttribute("msg", "Data is deleted successfully");
         return mapping.findForward(SUCCESS);
         }

@@ -22,7 +22,7 @@ public class AcqReceiveItem1Action extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    AcquisitionDao acqdao=new AcquisitionDao();
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -37,7 +37,7 @@ public class AcqReceiveItem1Action extends org.apache.struts.action.Action {
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
        // int maxreceivingid=AcquisitionDao.returnReceivingItemId(library_id, sub_library_id);
-        List<PlacedOrderList> placedorderlist=AcquisitionDao.getOrderPlaced1(library_id, sub_library_id,order_no,checkbox,sname);
+        List<PlacedOrderList> placedorderlist=acqdao.getOrderPlaced1(library_id, sub_library_id,order_no,checkbox,sname);
         session.setAttribute("placedorderlist",placedorderlist);
         
         return mapping.findForward(SUCCESS);

@@ -29,11 +29,13 @@ public class ManageCourseAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+       FacultyDAO facdao=new FacultyDAO();
+       DeptDAO deptdao=new DeptDAO();
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
-   list1=(List)FacultyDAO.searchFaculty(library_id);
+   list1=(List)facdao.searchFaculty(library_id);
    
    
   if(list1.isEmpty() && list1==null){
@@ -43,7 +45,7 @@ public class ManageCourseAction extends org.apache.struts.action.Action {
   }
 System.out.println("In Faculty ");
 
-  list2=(List)DeptDAO.searchDept(library_id);
+  list2=(List)deptdao.searchDept(library_id);
 
 
   if(list2.isEmpty()){

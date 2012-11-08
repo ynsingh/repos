@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.BibliographicDetails;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class PrintCardBiblioListAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao=new BibliographicEntryDAO();
     
     /**
      * This is the action called from the Struts framework.

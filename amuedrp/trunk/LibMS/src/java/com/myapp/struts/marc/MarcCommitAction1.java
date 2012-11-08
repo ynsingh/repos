@@ -21,26 +21,30 @@ import java.util.ArrayList;
 import org.marc4j.marc.MarcFactory;
 import org.apache.commons.lang.StringUtils;
 import org.marc4j.marc.Leader;
-    import org.marc4j.marc.Record;
-    import org.marc4j.marc.DataField;
-    import com.myapp.struts.hbm.BibliographicDetails;
-    import com.myapp.struts.hbm.BibliographicDetailsId;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import org.marc4j.marc.Record;
+import org.marc4j.marc.DataField;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
+import com.myapp.struts.hbm.BibliographicDetails;
+import com.myapp.struts.hbm.BibliographicDetailsId;
+import java.util.Map;
 public class MarcCommitAction1 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-    private MarcHibDAO marchib=new MarcHibDAO();
-    HashMap hm1=new HashMap();
-      BibliographicDetails bibd=new BibliographicDetails();
-   BibliographicDetailsId biblid=new BibliographicDetailsId();
-   BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
-   private MarcHibDAO mhd=new MarcHibDAO();
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-            HttpSession session=request.getSession();
+    
+     MarcHibDAO marchib=new MarcHibDAO();
+    HashMap hm1=new HashMap();
+  BibliographicDetails bibd=new BibliographicDetails();
+   BibliographicDetailsId biblid=new BibliographicDetailsId();
+
+   BibliographicEntryDAO dao=new BibliographicEntryDAO();
+   MarcHibDAO mhd=new MarcHibDAO();
+
+        HttpSession session=request.getSession();
             Object b=session.getAttribute("biblio_id");
             String library_id = (String) session.getAttribute("library_id");
             String sub_library_id = (String) session.getAttribute("sublibrary_id");
@@ -50,58 +54,84 @@ public class MarcCommitAction1 extends org.apache.struts.action.Action {
             bibid =(Integer)b;
             }catch(Exception e){
             bibid=Integer.parseInt((String)b);
-            }       
-            hm1=(HashMap) session.getAttribute("hsmp");    
+            }
 
-                Set set1=hm1.keySet();
-            Iterator is1=set1.iterator();  
+        
+            hm1=(HashMap) session.getAttribute("hsmp");    
+            Biblio leaderobj=new Biblio();
+            Set set1=hm1.keySet();
+            Iterator is1=set1.iterator();
             while(is1.hasNext())
             {
-              
+
                 String key=(String)is1.next();
                 Biblio bib=new Biblio();
                 bib=(Biblio)hm1.get(key);
-                System.out.println(hm1+"........................New Changes"+key);
+                System.out.println(key+"  ############ "+bib.get$a());
+    if(key.equalsIgnoreCase("Leader"))
+    {
+    leaderobj=(Biblio)hm1.get("Leader");
+    if(leaderobj==null)
+    {
+      request.setAttribute("msg1","Please Select Control Field Data");
+      boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
+      return mapping.findForward("controltag");
+    }
+    }
+
                 if(key.equals("5")&& bib.get$a()==null){
-                                 
+                
+
                     request.setAttribute("msg1","Please Enter Value in 082 $a Field");
-                   
+
                       boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
 
                 return mapping.findForward("forward0");
                 }
                 else if(key.equals("5")&& bib.get$a()!=null){
+                    System.out.println("........................New Changes"+key+bib.get$a());
                 Biblio bnbb=marchib.searchMarcCall(bibid, library_id, sub_library_id, bib.get$a());
+
                 if(bnbb!=null)
                 {
+                   
                 request.setAttribute("msg1","Please enter different value in 082 $a field");
                   boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
                 return mapping.findForward("forward0");
                 }
+
                 }
                 else if(key.equals("6")&& bib.get$a()==null){
+                   
                     request.setAttribute("msg1","Please Enter Value in 100 $a Field");
                       boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
                 return mapping.findForward("forward1");
                 }
                 else if(key.equals("10")&& bib.get$a()==null){
+             
                     request.setAttribute("msg1","Please Enter Value in 245 $a Field");
-                      boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
+                     boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
                 return mapping.findForward("forward2");
                 }
                 else if(key.equals("10")&& bib.get$c()==null){
+              
                     request.setAttribute("msg1","Please Enter Value in 245 $c Field");
                       boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
                 return mapping.findForward("forward2");
                 }
-            }    
-            Set set=hm1.keySet();
-            Iterator is=set.iterator();           
+
+
+
+            }
+//
+            Set set=hm1.entrySet();
+            Iterator is=set.iterator();
+          List<Biblio> finalmarcdata=new ArrayList<Biblio>();
             while(is.hasNext())
             {
-                String key=(String)is.next();
+                Map.Entry me = (Map.Entry)is.next();
                 Biblio bib=new Biblio();
-                bib=(Biblio)hm1.get(key);
+                bib=(Biblio)hm1.get(me.getKey());
                 if(bib.getId().getMarctag().equals("001")){
                 bibd.setLccNo(bib.get$a());
                 }
@@ -138,23 +168,36 @@ public class MarcCommitAction1 extends org.apache.struts.action.Action {
                 String call_no=bib.get$a();
                 BibliographicDetails bbd=dao.searchcall(call_no, library_id, sub_library_id);
                 if(bbd!=null){
-              
+                        request.setAttribute("msg1","Please enter different value in 082 $a field");
+                        boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
+                        return mapping.findForward("forward0");
                 }
                 else{
                 biblid.setBiblioId(dao.returnMaxBiblioId(library_id, sub_library_id));
                 biblid.setLibraryId(library_id);
                 biblid.setSublibraryId(sub_library_id);
                 bibd.setDocumentType("Book");
-                
+
                 bibd.setId(biblid);
                 dao.insert(bibd);
                 }
                 }
-                
-                marchib.insert(bib);
+              System.out.println(bib.getId().getMarctag()+" At First "+me.getKey());
+           finalmarcdata.add(bib);
+              
+
             }
+System.out.println(finalmarcdata.size()+"Total Record");
+if(finalmarcdata.isEmpty()==false)
+{
+    
+for(int i=0;i<finalmarcdata.size();i++)
+{System.out.println(" List Has"+finalmarcdata.get(i).getId().getMarctag());
+    
+    marchib.insert(finalmarcdata.get(i));
+}
 
-
+}
              
 
             // create a factory instance
@@ -402,8 +445,13 @@ while(high>0)
     high/=10;
 }
 //System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"+total_length[0]+total_length[1]+total_length[2]+total_length[3]+total_length[4]);
-Biblio bbn=(Biblio)hm1.get("Leader");
-String leader1=(String)bbn.get$a();
+
+if(leaderobj==null){
+      request.setAttribute("msg1","Please Select Control Field Data");
+      boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
+      return mapping.findForward("controltag");
+}
+String leader1=(String)leaderobj.get$a();
 //***********************************************Check of Control Field Entry**************************//
 if(leader1==null)
 {
@@ -411,7 +459,6 @@ if(leader1==null)
       boolean m=mhd.deleteMarcBiblio(String.valueOf(bibid),library_id,sub_library_id);
       return mapping.findForward("controltag");
 }
-
 
 char leader[]=new char[24];
 for(int ii=0;ii<24;ii++){
@@ -455,7 +502,10 @@ bibr.setSublibraryId(sub_library_id);
 bibr.set$a(ll.toString());
 marchib.update(bibr);
 
- //session.removeAttribute("hsmp");
+
+
+ 
+ 
 
          HashMap t=(HashMap)session.getAttribute("hsmp");
         if(t!=null && t.isEmpty()==false)
@@ -465,13 +515,52 @@ marchib.update(bibr);
           System.out.println("Get Value"+t.size());
           session.setAttribute("hsmp",t);
          }
-
+        hm1=null;
         System.out.println(session.getAttribute("hsmp")+".....................");
+        session.removeAttribute("controltag");
+        session.removeAttribute("st");
+        session.removeAttribute("data");
+        session.removeAttribute("editlist");
+        session.removeAttribute("tag0");
+        session.removeAttribute("tag1");
+        session.removeAttribute("tag2");
+        session.removeAttribute("tag3");
+        session.removeAttribute("tag4");
+        session.removeAttribute("tag5");
+        session.removeAttribute("tag6");
+        session.removeAttribute("tag7");
+        session.removeAttribute("tag8");
 
+        session.removeAttribute("data");
+        session.removeAttribute("st");
+        session.removeAttribute("controltag");
+        session.removeAttribute("tag0");
+        session.removeAttribute("tag1");
+        session.removeAttribute("tag2");
+        session.removeAttribute("tag3");
+        session.removeAttribute("tag4");
+        session.removeAttribute("tag5");
+        session.removeAttribute("tag6");
+        session.removeAttribute("tag7");
+        session.removeAttribute("tag8");
+        session.removeAttribute("hsmp");
+        session.removeAttribute("marcbutton");
+                session.removeAttribute("biblio_id");
+                session.removeAttribute("title");
+  session.removeAttribute("opacList");
+        request.removeAttribute("BiblioActionForm");
+         request.removeAttribute("CatControlActionForm");
+          request.removeAttribute("CatActionForm1");
+           request.removeAttribute("CatActionForm2");
+            request.removeAttribute("CatActionForm2");
+             request.removeAttribute("CatActionForm3");
+              request.removeAttribute("CatActionForm4");
+               request.removeAttribute("CatActionForm5");
+request.removeAttribute("CatActionForm6");
+request.removeAttribute("CatActionForm7");
+request.removeAttribute("CatActionForm8");
 
-
-
-   return mapping.findForward(SUCCESS);
+   return mapping.findForward("success");
      
     }
 

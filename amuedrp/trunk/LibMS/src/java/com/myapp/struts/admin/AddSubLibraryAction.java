@@ -40,6 +40,8 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
+   SubLibraryDAO sublibdao=new SubLibraryDAO();
+   LibraryDAO libdao=new LibraryDAO();
 
    
     @Override
@@ -80,7 +82,7 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
 
 
 
-        Library lib=LibraryDAO.searchLibraryID(library_id);
+        Library lib=libdao.searchLibraryID(library_id);
 
         //if sublibrary name is already used return false
 
@@ -90,12 +92,12 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
          if(sublib_name1.equals("Select")==true)
         {
 
-       searchsubobj=SubLibraryDAO.getSubLibraryId(library_id, sublib_name);
+       searchsubobj=sublibdao.getSubLibraryId(library_id, sublib_name);
         }
         else
         {
 
-            searchsubobj=SubLibraryDAO.getSubLibraryId(library_id, sublib_name1);
+            searchsubobj=sublibdao.getSubLibraryId(library_id, sublib_name1);
         }
 
 
@@ -127,7 +129,7 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
             subobj.setFacultyName(faculty);
 
         subobj.setDeptAddress(department_address);
-        result=SubLibraryDAO.insert(subobj);
+        result=sublibdao.insert(subobj);
 
         if(result==true)
         {

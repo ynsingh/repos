@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import fr.improve.struts.taglib.layout.suggest.SuggestAction;
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import javax.servlet.http.HttpSession;
 /**
  *
@@ -20,16 +20,8 @@ public class SuggestTitleAction extends SuggestAction {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    BibliographicEntryDAO dao=new BibliographicEntryDAO();
+    
 
     @Override
     public Collection getSuggestionList(HttpServletRequest hsr, String string) {

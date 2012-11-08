@@ -37,6 +37,7 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         AcqReceiveItemActionForm ariaf=(AcqReceiveItemActionForm)form;
+            AcquisitionDao acqdao=new AcquisitionDao();
         recieving_no=ariaf.getRecieving_no();
         recieved_date=ariaf.getRecieved_date();
         recieved_by=ariaf.getRecieved_by();
@@ -67,7 +68,7 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
        
 
 
-        AcqRecievingHeader acqrec= AcquisitionDao.searchByRecievingNo(library_id, sub_library_id, recieving_no);
+        AcqRecievingHeader acqrec= acqdao.searchByRecievingNo(library_id, sub_library_id, recieving_no);
         if(acqrec==null)
         {
           acqrecheaderid.setLibraryId(library_id);
@@ -126,7 +127,7 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
 //        }
 //        else
 //        {
-          int maxreceivingid=AcquisitionDao.returnReceivingItemId(library_id, sub_library_id);
+          int maxreceivingid=acqdao.returnReceivingItemId(library_id, sub_library_id);
           acqrecdetailsid.setLibraryId(library_id);
           acqrecdetailsid.setSubLibraryId(sub_library_id);
           acqrecdetailsid.setRecievingNo(recieving_no);
@@ -145,17 +146,17 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
 
 
 
-        AcqOrder1 acqorder1=AcquisitionDao.searchAcqOrder1(library_id, sub_library_id, order_no, con_no);
+        AcqOrder1 acqorder1=acqdao.searchAcqOrder1(library_id, sub_library_id, order_no, con_no);
         acqorder1.setRecievingDate(recieved_date);
         acqorder1.setRecievingNo(recieving_no);
         if(n-(pr+r)==0)
           acqorder1.setRecievingStatus("Received");
         else
           acqorder1.setRecievingStatus("Partially Received");
-        AcquisitionDao.updateOrder1table(acqorder1);
+        acqdao.updateOrder1table(acqorder1);
 
         int i;
-        List<AcqOrder1> acqorder1list=AcquisitionDao.searchListAcqOrder1(library_id, sub_library_id, order_no);
+        List<AcqOrder1> acqorder1list=acqdao.searchListAcqOrder1(library_id, sub_library_id, order_no);
 
         for(i=0;i<acqorder1list.size();i++)
         {
@@ -164,9 +165,9 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
           if(!acqorder1list.get(i).getRecievingStatus().equals("Received"))
              break;
         }
-
+AcqOrderDao dao=new AcqOrderDao();
         AcqOrderHeader acqorderheader=null;
-        acqorderheader=AcqOrderDao.search1Orderno(order_no, library_id, sub_library_id);
+        acqorderheader=dao.search1Orderno(order_no, library_id, sub_library_id);
         if(i==0)
           acqorderheader.setOrderStatus("PC");
         if(acqorder1list.size()==i+1)
@@ -177,7 +178,7 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
         else
             acqorderheader.setOrderStatus("PC");
 
-        AcqBibliographyDetails acqbibdetails=AcquisitionDao.BibliobyControlIdonApproval(library_id, sub_library_id, con_no);
+        AcqBibliographyDetails acqbibdetails=acqdao.BibliobyControlIdonApproval(library_id, sub_library_id, con_no);
         if(n-(pr+r)==0)
             acqbibdetails.setStatus("Received");
         else
@@ -185,7 +186,7 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
 
         boolean statement=false;
         if(acqrec==null)
-          statement=AcquisitionDao.insertReceiveOrder(acqrecheader,acqrecdetails,acqorder1,acqorderheader,acqbibdetails) ;
+          statement=acqdao.insertReceiveOrder(acqrecheader,acqrecdetails,acqorder1,acqorderheader,acqbibdetails) ;
         else
         {
            if(!acqrec.getOrderNo().equals(order_no))
@@ -195,7 +196,7 @@ public class AcqReceiveItem3Action extends org.apache.struts.action.Action {
                return mapping.findForward(SUCCESS);
            }
            else
-              statement=AcquisitionDao.insertReceiveOrder1(acqrecdetails,acqorder1,acqorderheader,acqbibdetails) ;
+              statement=acqdao.insertReceiveOrder1(acqrecdetails,acqorder1,acqorderheader,acqbibdetails) ;
 
         }
         if(statement)

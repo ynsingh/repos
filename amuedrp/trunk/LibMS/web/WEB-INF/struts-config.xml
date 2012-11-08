@@ -14,11 +14,12 @@
 
 
 
-        <!-- Serial Form Naming-->
+       <!-- Serial Form Naming-->
         <form-bean name="SerLanguageActionForm" type="com.myapp.struts.Serial.SerLanguageActionForm"/>
         <form-bean name="SerAddLanguageActionForm" type="com.myapp.struts.Serial.SerAddLanguageActionForm"/>
         <form-bean name="SerBiblioActionForm" type="com.myapp.struts.Serial.SerBiblioActionForm"/>
         <form-bean name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerPublisherActionForm"/>
+           <form-bean name="SerInitiateAcqActionForm" type="com.myapp.struts.Serial.SerInitiateAcqActionForm"/>
         <!--End Serial Form Naming-->
 
 
@@ -139,9 +140,7 @@
       <!--LogActionForm-->
       <form-bean name="LogActionForm" type="com.myapp.struts.admin.LogActionForm"/>
       <form-bean name="LogGridActionForm" type="com.myapp.struts.admin.LogGridActionForm"/>
-      <!--SUPERADMIN MAIL SETTING-->
-      <form-bean name="MailSettingActionForm" type="com.myapp.struts.admin.MailSettingActionForm"/>
-
+    
 
     <!-- Cataloguing Form Naming-->
         <form-bean name="BibliographicDetailEntryActionForm" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm"/>
@@ -171,16 +170,28 @@
 
     </form-beans>
     <action-mappings>
+    <!--SWICTHACTION for SWITCHING BETWEEN MORE THAN ONE STRUTS FILES-->
+    <action path="/switch" type="org.apache.struts.actions.SwitchAction"/>
 
-        <!--GENERATE BARCODE OF BOOK-->
+      <!--RELEASE NOTES LINK-->
+      <action path="/relnotes" type="org.apache.struts.actions.ForwardAction" parameter="/relnotes.jsp"/>
+
+      <!--HEADER INCLUDE LINK-->
+      <action path="/OPAC/header"  type="org.apache.struts.actions.IncludeAction"  parameter="/OPAC/opacheader.jsp"/>
+
+      <!-- MAIL SETTING LINK-->
+      <action path="/mailsetting1" type="org.apache.struts.actions.ForwardAction" parameter="/switch.do?page=/admin/mail.do&amp;prefix=/admin"/>
+
+
+
+
+
+      <!--GENERATE BARCODE OF BOOK-->
         <action  path="/cataloguing/barcodeentry" scope="request" name="BarcodeEntryActionForm"   input="/barcode_entry.jsp" type="com.myapp.struts.cataloguing.BarcodeEntryAction">
            <forward name="success" path="/cataloguing/barcode_entry.jsp" />
      </action>
 
-         <!--Mail Setting IN SUPERADMIN INTERFACE-->
-        <action input="/admin/mailsetting.jsp" name="MailSettingActionForm" path="/mailsetting" type="com.myapp.struts.admin.MailSettingAction">
-                    <forward name="success" path="/admin/mailsetting.jsp"/>
-        </action>
+        
 
         <!--PRINT CATALOG CARD-->
         <action  path="/cataloguing/cataloguecardentry" scope="request" name="BarcodeEntryActionForm"   input="/listcataloguecard.jsp" type="com.myapp.struts.cataloguing.CatalogueCardEntryAction">
@@ -196,7 +207,50 @@
            <forward name="fail" path="/cataloguing/barcode_book_information.jsp" />
         </action>
 
-        <!--Serial Action Setting-->
+       <!--Serial Action Setting-->
+
+         <action  path="/ser_new_entry" scope="request" name="SerBiblioActionForm" input="/serial/ser_new_entry.jsp" type="com.myapp.struts.Serial.SerBiblioEntryAction" validate="true">
+       <forward name="new" path="/serial/ser_bibliographic_details.jsp" />
+       <forward name="update" path="/serial/ser_bibliographic_update_details.jsp" />
+       <forward name="delete" path="/serial/ser_bibliographic_delete.jsp" />
+       <forward name="view" path="/serial/ser_view_biblio.jsp" />
+       <forward name="duplicatetitle" path="/serial/ser_duplicate_titlegrid.jsp" />
+       <forward name="duplicatetitle1" path="/serial/ser_update_titlegrid.jsp" />
+       <forward name="duplicatetitleview" path="/serial/ser_view_titlegrid.jsp" />
+       <forward name="duplicatetitledelete" path="/serial/ser_delete_titledatagrid.jsp" />
+       <forward name="fail" path="/serial/ser_new_entry.jsp" />
+   </action>
+      <action  path="/ser_biblio" scope="request" name="SerBiblioActionForm" input="/serial/ser_bibliographic_details.jsp" type="com.myapp.struts.Serial.SerBiblioNewEntryAction">
+       <forward name="success" path="/serial/ser_new_entry.jsp" />
+       <forward name="fail" path="/serial/ser_bibliographic_details.jsp" />
+        <forward name="intacq" path="/serial/ser_update_titles1.jsp" />
+
+  </action>
+<action  path="/ser_update_biblio" scope="request" name="SerBiblioActionForm" input="/serial/ser_bibliographic_update_details.jsp" type="com.myapp.struts.Serial.SerBiblioUpdateAction">
+       <forward name="update" path="/serial/ser_new_entry.jsp" />
+       <forward name="fail" path="/serial/acq_new_entry.jsp" />
+   </action>
+
+<action  path="/serial/viewOwn2" scope="request" name="SerBiblioActionForm" input="/serial/ser_update_titlegrid.jsp" type="com.myapp.struts.Serial.SerBibliographicDetail2Action">
+       <forward name="update1" path="/serial/ser_bibliographic_update_details.jsp" />
+   </action>
+<action  path="/serial/viewOwn1" scope="request" name="SerBiblioActionForm" input="/serial/ser_view_titlegrid.jsp" type="com.myapp.struts.Serial.SerBibliographicDetail1Action">
+       <forward name="view" path="/serial/ser_view_biblio1.jsp" />
+   </action>
+
+   <action  path="/serial/viewOwn3" scope="request" name="SerBiblioActionForm" input="/serial/ser_delete_titledatagrid.jsp" type="com.myapp.struts.Serial.SerBibliographicDetail3Action">
+       <forward name="delete" path="/serial/ser_bibliographic_delete.jsp" />
+   </action>
+
+   <action  path="/ser_biblio_delete" scope="request" name="SerBiblioActionForm" input="/serial/ser_bibliographic_delete.jsp" type="com.myapp.struts.Serial.SerBiblioDeleteAction">
+       <forward name="delete" path="/serial/ser_new_entry.jsp" />
+       <forward name="fail" path="/serial/ser_new_entry.jsp" />
+   </action>
+   <action  path="/sermerge" scope="request" name="SerBiblioActionForm" input="/acquisition/acq_duplicate_titlegrid.jsp" type="com.myapp.struts.Serial.SerMergeAction">
+       <forward name="merge" path="/serial/ser_bibliographic_details.jsp" />
+   </action>
+
+
        <action path="/ser_lang" input="/serial/ser_language.jsp" scope="request" name="SerLanguageActionForm" type="com.myapp.struts.Serial.SerLanguageAction">
             <forward name="add" path="/serial/ser_addlanguage.jsp"/>
             <forward name="duplicate" path="/serial/ser_language.jsp"/>
@@ -212,17 +266,73 @@
         <action path="/add_pub" input="/serial/ser_addpublisher.jsp" scope="request" name="SerPublisherActionForm" type="com.myapp.struts.Serial.SerAddPublisherAction">
             <forward name="success" path="/serial/ser_publisher.jsp"/>
         </action>
+
+     
+     <action  path="/serial/ser_initiate_acquisition" scope="request" name="SerInitiateAcqActionForm" input="/serial/ser_update_titles1.jsp" type="com.myapp.struts.Serial.SerInitiateAcquisitionProcess1Action">
+                      <forward name="success" path="/serial/ser_new_entry.jsp" />
+                      <forward name="fail" path="/serial/ser_update_titles1.jsp" />
+                    </action>
+
+
        <!--End Serial Action Setting-->
   
 
         <!--Institute Logo-->
-        <action path="/admin/instilogo" input="/admin/main.jsp" name="ImageUploadActionForm" scope="session" type="com.myapp.struts.admin.InstiLogo">
+        <action path="/instilogo" input="/admin/main.jsp" name="ImageUploadActionForm" scope="session" type="com.myapp.struts.admin.InstiLogo">
             <forward name="success" path="/admin/changelogo.jsp"/>
             <forward name="failure" path="/admin/changelogo.jsp"/>
+        </action>
+        <!--XML EXPORT IN ADMIN MODULE-->
+        <action path="/xmlexport" input="/admin/viewsatff.jsp"  scope="session" type="com.myapp.struts.admin.XMLExportAction">
+            <forward name="success" path="/admin/viewstaff.jsp"/>
+        
+        </action>
+        <!--XLS EXPORT IN ADMIN MODULE-->
+        <action path="/xlsexport" input="/admin/viewsatff.jsp"  scope="session" type="com.myapp.struts.admin.XLSExportAction">
+            <forward name="success" path="/admin/viewstaff.jsp"/>
+
+        </action>
+    <!--CSV EXPORT IN ADMIN MODULE-->
+        <action path="/csvexport" input="/admin/viewsatff.jsp"  scope="session" type="com.myapp.struts.admin.XLSExportAction">
+            <forward name="success" path="/admin/viewstaff.jsp"/>
+
         </action>
 
 
         <!--Acquisition Action Mapping-->
+
+<action  path="/acquisition/acqOrderProcessReport" input="/acquisition/acq_order_process_report.jsp" scope="request"  name="AcqReceiveItemActionForm"  type="com.myapp.struts.Acquisition.AcqOrderProcessReportAction">
+                <forward name="search" path="/acquisition/acq_order_process_report.jsp" />
+                <forward name="allorder" path="/acquisition/acq_orderProcessReport.jsp" />
+        </action>
+
+
+
+
+<action path="/acq_book_accessioning"  name="AcqInvoiceItemActionForm"  scope="request" type="com.myapp.struts.Acquisition.AcqBookAccessioningAction" >
+            <forward name="success" path="/acquisition/acq_accessioning.jsp"/>
+        </action>
+        <action path="/acquisition/acq_book_accessioning1"  scope="request" type="com.myapp.struts.Acquisition.AcqBookAccessioning1Action" >
+            <forward name="success" path="/acq_book_accessioning2.do"/>
+        </action>
+        <action path="/acq_book_accessioning2"  scope="request" type="com.myapp.struts.Acquisition.AcqBookAccessioning2Action" >
+            <forward name="new" path="/acquisition/acq_accessioning2.jsp"/>
+            <forward name="grid" path="/cataloguing/cat_viewall_title_grid.jsp"/>
+        </action>
+        <action path="/acq_new_entry_biblio" input="/acquisition/acq_accessioning3.jsp" name="BibliographicDetailEntryActionForm" scope="request" type="com.myapp.struts.Acquisition.AcqNewEntryBiblioAction" >
+                      <forward name="failure" path="/acquisition/acq_accessioning2.jsp"/>
+                      <forward name="accession" path="/acquisition/acq_accessioning3.jsp"/>
+                      <forward name="fail" path="/acquisition/acq_accessioning2.jsp"/>
+                      <forward name="success" path="/acquisition/acq_accessioning.jsp"/>
+        </action>
+
+        <action attribute="BibliographicDetailEntryActionForm" path="/AcqaccessionEntry" input="/acquisition/acq_accessioning3.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.Acquisition.AcqAccessionEntryAction">
+                      <forward name="failure" path="/acquisition/acq_accessioning.jsp"/>
+                      <forward name="accession" path="/acquisition/acq_accessioning3.jsp"/>
+                      <forward name="fail" path="/acquisition/acq_accessioning2.jsp"/>
+                      <forward name="success" path="/acquisition/acq_accessioning3.jsp"/>
+     </action>
+
 
 
 
@@ -329,7 +439,7 @@
                       <forward name="search" path="/acquisition/acq_search_opac.jsp" />
                     </action>
 
-
+<action  path="/printlog" scope="request"   type="com.myapp.struts.admin.ReportAction"/>
             <action  path="/print1" scope="request"   type="com.myapp.struts.Acquisition.ReportAction"/>
             <action path="/budget1" input="/acquisition/acq_add_budget_allocation.jsp" scope="request" name="AcqBudgetActionForm" type="com.myapp.struts.Acquisition.AcqBudgetAllocationEntryAction">
                        <forward name="add" path="/acquisition/acq_add_budgetlocation.jsp"/>
@@ -558,6 +668,8 @@
             <!-- View Single Accession Record for update-->
             <action  path="/cataloguing/updateacc" scope="request" name="BibliographicDetailEntryActionForm1" input="/cataloguing/cat_viewAll_acc.jsp" type="com.myapp.struts.cataloguing.SearchByAccessionAction">
                       <forward name="view" path="/cataloguing/cat_accession_view_out.jsp" />
+                      <forward name="viewdiss" path="/cataloguing/cat_accession_view_outdiss.jsp" />
+                       <forward name="viewthesis" path="/cataloguing/cat_accession_view_outthesis.jsp" />
             </action>
 
 
@@ -592,8 +704,32 @@
             <action attribute="BibliographicDetailEntryActionForm" path="/catNewTitle" input="/cataloguing/cat_biblio.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction1">
                       <forward name="fail" path="/cataloguing/cat_biblio.jsp"/>
                       <forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>
-                      <forward name="grid" path="/cataloguing/cat_view_own_biblio_grid.jsp"/>
+                       <forward name="newdis" path="/cataloguing/cat_disseration_entry.jsp"/>
+                        <forward name="newcd" path="/cataloguing/cat_cd_entry.jsp"/>
+                       <forward name="thesis" path="/cataloguing/cat_thesis_entry.jsp"/>
+                       <forward name="grid" path="/cataloguing/cat_view_own_biblio_grid.jsp"/>
+                       <forward name="griddiss" path="/cataloguing/cat_view_own_biblio_grid1.jsp"/>
+                       <forward name="gridthesis" path="/cataloguing/cat_view_own_biblio_grid2.jsp"/>
+                       <forward name="gridcd" path="/cataloguing/cat_view_own_cd_grid.jsp"/>
                        <forward name="main" path="/admin/main.jsp" />
+            </action>
+             <!--thesis view -->
+            <action  path="/cataloguing/viewOwnLangthesis" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid2.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_thesis_entry_lang_delete.jsp"/>
+            </action>
+             <!--cd view -->
+            <action  path="/cataloguing/viewOwnLangcd" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_cd_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_single_cd_update.jsp"/>
+            </action>
+           <!--thesis duplicate new -->
+            <action  path="/cataloguing/viewOwnLangNewThesis" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid2.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_thesis_entry_lang_delete.jsp"/>
+                      <forward name="new" path="/cataloguing/cat_thesis_entry.jsp"/>
+            </action>
+             <!--cd duplicate new -->
+            <action  path="/cataloguing/viewOwnLangNewCD" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_cd_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_single_cd_update.jsp"/>
+                      <forward name="new" path="/cataloguing/cat_cd_entry.jsp"/>
             </action>
             <action attribute="BibliographicDetailEntryActionForm" path="/catMultiLang" input="/cataloguing/cat_biblio_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction1">
                       <forward name="failure" path="/cataloguing/cat_biblio_entry.jsp"/>
@@ -601,20 +737,54 @@
                       <forward name="fail" path="/cataloguing/cat_biblio_entry.jsp"/>
                       <forward name="success" path="/cataloguing/cat_biblio.jsp"/>
             </action>
+            <!--ENTRY FOR MEDICAL DISSERATION-->
+             <action attribute="BibliographicDetailEntryActionForm" path="/catMultiLang1" input="/cataloguing/cat_disseration_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction1">
+                      <forward name="failure" path="/cataloguing/cat_disseration_entry.jsp"/>
+                      <forward name="accession" path="/cataloguing/cat_accession_entry.jsp"/>
+                      <forward name="accessiondiss" path="/cataloguing/cat_accessiondiss_entry.jsp"/>
+                      <forward name="fail" path="/cataloguing/cat_biblio_entry.jsp"/>
+                      <forward name="failDiss" path="/cataloguing/cat_disseration_entry.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_biblio.jsp"/>
+            </action>
+        <!--ENTRY FOR THESIS-->
+             <action attribute="BibliographicDetailEntryActionForm" path="/catMultiLang2" input="/cataloguing/cat_thesis_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction1">
+                      <forward name="failthesis" path="/cataloguing/cat_thesis_entry.jsp"/>
+                      <forward name="accessionthesis" path="/cataloguing/cat_accessionthesis_entry.jsp"/>
+                      <forward name="fail" path="/cataloguing/cat_biblio_entry.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_biblio.jsp"/>
+            </action>
+        <!--thesis acceessioning -->
+            <action attribute="BibliographicDetailEntryActionForm" path="/accessionEntryThesis" input="/cataloguing/cat_accessionthesis_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
+                      
+                      <forward name="success" path="/cataloguing/cat_accessionthesis_entry.jsp"/>
+            </action>
+
             <action  path="/cataloguing/viewOwnLang" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
                       <forward name="success" path="/cataloguing/cat_biblio_entry_lang_delete.jsp"/>
                       <forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>
+            </action>
+            <!--disseration view -->
+            <action  path="/cataloguing/viewOwnLangdiss" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid1.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_disseration_entry_lang_delete.jsp"/>
+                      <!--<forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>-->
             </action>
             <action  path="/cataloguing/viewOwnLangNew" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
                       <forward name="success" path="/cataloguing/cat_biblio_entry_lang_delete.jsp"/>
                       <forward name="new" path="/cataloguing/cat_biblio_entry.jsp"/>
             </action>
+            <action  path="/cataloguing/viewOwnLangNewDiss" scope="request" name="BibliographicDetailEntryActionForm" input="/cataloguing/cat_view_own_biblio_grid1.jsp" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="success" path="/cataloguing/cat_biblio_entry_lang_delete.jsp"/>
+                      <forward name="new" path="/cataloguing/cat_disseration_entry.jsp"/>
+            </action>
+
             <action path="/catAccession" attribute="BibliographicDetailEntryActionForm"  input="/cataloguing/cat_accession.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntry">
                       <forward name="new" path="/cataloguing/cat_accession_entry.jsp"/>
                       <forward name="cd" path="/cataloguing/cat_accession_disc_entry.jsp"/>
+                      <forward name="disseration" path="/cataloguing/cat_accessiondiss_entry.jsp"/>
                       <forward name="cdaccession" path="/cataloguing/cat_accession_disc_entry.jsp"/>
                       <forward name="fail" path="/cataloguing/cat_accession.jsp"/>
                       <forward name="grid" path="/cataloguing/cat_view_accession_grid.jsp"/>
+                      <forward name="griddiss" path="/cataloguing/cat_view_accessiondiss_grid.jsp"/>
                       <forward name="main" path="/admin/main.jsp" />
             </action>
             <action attribute="BibliographicDetailEntryActionForm" path="/accessionEntry" input="/cataloguing/cat_accession_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
@@ -623,16 +793,21 @@
                       <forward name="fail" path="/cataloguing/cat_old_title_entry1.jsp"/>
                       <forward name="success" path="/cataloguing/cat_accession_entry.jsp"/>
             </action>
+           
+            <action attribute="BibliographicDetailEntryActionForm" path="/accessionEntry1" input="/cataloguing/cat_accessiondiss_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
+                      <forward name="success" path="/cataloguing/cat_accessiondiss_entry.jsp"/>
+            </action>
             <action attribute="BibliographicDetailEntryActionForm" path="/DiscAccessionEntry" input="/cataloguing/cat_accession_disc_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.DiscAccessionEntryAction">
-                      <forward name="failure" path="/cataloguing/cat_old_title.jsp"/>
-                      <forward name="accession" path="/cataloguing/cat_accession_disc_entry.jsp"/>
+                      
                       <forward name="success" path="/cataloguing/cat_accession_disc_entry.jsp"/>
+                      
             </action>
             <action attribute="BibliographicDetailEntryActionForm" path="/cataloguing/accessiongrid" input="/cataloguing/cat_view_accession_grid.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEditAction">
                       <forward name="show" path="/cataloguing/cat_accession_update.jsp"/>
                       <forward name="cd" path="/cataloguing/cat_accession_disc_entry.jsp"/>
                       <forward name="cdupdate" path="/cataloguing/cat_accession_cd_update.jsp"/>
                       <forward name="add" path="/cataloguing/cat_accession_entry.jsp"/>
+                      <forward name="diss" path="/cataloguing/cat_accessiondiss_entry.jsp"/>
             </action>
             <action attribute="BibliographicDetailEntryActionForm" path="/ownaccessionEntry1" input="/cataloguing/cat_accession_update.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.AccessionEntryAction">
                       <forward name="show" path="/cataloguing/cat_accession_update.jsp"/>
@@ -713,7 +888,7 @@
 <!--    ****************************************************************************************************************************    -->
 <action path="/datetimecal" scope="request" type="com.myapp.struts.marc.DateTimeAction"/>
     <action input="/cataloguing/cat_new_MARC.jsp" path="/biblio" name="BiblioActionForm" scope="session" type="com.myapp.struts.marc.BiblioStrutsAction" >
-            <forward name="success" path="/cataloguing/catlcontrol.jsp"/>
+            <forward name="success" path="/cataloguing/duplicatemarc.do"/>
             <forward name="failure" path="/cataloguing/cat_new_MARC.jsp"/>
             <forward name="update" path="/cataloguing/cat_update_marc1.jsp"/>
             <forward name="update1" path="/cataloguing/cat_update_marc2.jsp"/>
@@ -731,11 +906,11 @@
 </action>
 
 
-    <action input="/cataloguing/cat_dup_marc.jsp" path="/cataloguing/duplicatemarc" name="BiblioActionForm" scope="session" type="com.myapp.struts.marc.DuplicateMarcAction" >
+    <action input="/cataloguing/cat_dup_marc.jsp" path="/cataloguing/duplicatemarc" name="BiblioActionForm" scope="request" type="com.myapp.struts.marc.DuplicateMarcAction" >
             <forward name="success" path="/cataloguing/catlcontrol.jsp"/>
     </action>
-    <action path="/cataloguing/marchome" scope="session" type="com.myapp.struts.marc.MarcHomeAction" >
-            <forward name="success" path="/cataloguing/cat_new_MARC.jsp"/>
+    <action path="/cataloguing/marchome" scope="request"   type="com.myapp.struts.marc.MarcHomeAction" >
+                  <forward name="success" path="/cataloguing/cat_new_MARC.jsp"/>
     </action>
   <!--       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   |   MARC entry Fixed  |    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%      -->
      <action input="/cataloguing/catl0.jsp" name="BiblioActionForm" path="/catl0" scope="session" type="com.myapp.struts.marc.Catl0Action">
@@ -863,7 +1038,7 @@
                 <forward name="forward9" path="/cataloguing/catl9.jsp"/>
                 <forward name="forward10" path="/cataloguing/catlcontrol.jsp"/>
        </action>
-<action input="/cataloguing/catlcontrol.jsp" name="CatControlActionForm" path="/catcontrolaction" scope="request" type="com.myapp.struts.marc.CatControlAction" validate="false">
+<action input="/cataloguing/catlcontrol.jsp" name="CatControlActionForm" path="/catcontrolaction" scope="session" type="com.myapp.struts.marc.CatControlAction" validate="false">
                 <forward name="forward0" path="/cataloguing/catl0.jsp"/>
                 <forward name="forward1" path="/cataloguing/catl1.jsp"/>
                 <forward name="forward2" path="/cataloguing/catl2.jsp"/>
@@ -1216,7 +1391,29 @@
 
 
 <!--Circulation Action Mapping-->
-<!--Circulation Action Mapping-->
+
+<action path="/uploadExcelmember" name="StrutsUploadForm" input="/circulation/member_data_import.jsp"   scope="session" type="com.myapp.struts.circulation.Uploadactionmember">
+            <forward name="success" path="/circulation/member_data_import_map_table.jsp"/>
+            <forward name="Back" path="/circulation/member_data_import.jsp"/>
+
+</action>
+<action input="/circulation/member_data_import_map_table.jsp" name="StrutsUploadForm" path="/insertmember" scope="session" type="com.myapp.struts.circulation.ExeltoDatabaseActionMember" validate="false">
+            <forward name="success" path="/circulation/member_data_import.jsp"/>
+            <forward name="Back" path="/circulation/member_data_import.jsp"/>
+</action>
+
+
+ <action path="/PaymentSlip" input="/circulation/cir_fine_detail.jsp" name="CirCheckInReportActionForm"   scope="request" type="com.myapp.struts.circulation.PaymentSlipReportAction" >
+  <forward name="success" path="/circulation/cir_fine_grid.jsp"/>
+  </action>
+
+
+ <action path="/insertfine_details" input="/circulation/cir_fine_grid.jsp" name="CirCheckInReportActionForm"   scope="request" type="com.myapp.struts.circulation.InsertFineDetailsAction" >
+  <forward name="success" path="/PaymentSlip.do"/>
+  </action>
+
+
+
 
 <action path="/PrintFineDetails" input="/circulation/cir_fine_detail.jsp" name="CirCheckInReportActionForm"   scope="request" type="com.myapp.struts.circulation.PrintFineDetailsAction" >
   <forward name="success" path="/circulation/cir_fine_grid.jsp"/>
@@ -1532,7 +1729,16 @@
                        <forward name="success" path="/admin/log.jsp"/>
                     </action>
 
-    
+     <action path="/uploadExcelstaff" name="StrutsUploadForm" input="/admin/cat_data_import_read.jsp"   scope="session" type="com.myapp.struts.admin.Uploadaction">
+            <forward name="success" path="/admin/cat_data_import_map_table.jsp"/>
+            <forward name="Back" path="/admin/cat_data_import_read.jsp"/>
+            
+
+        </action>
+        <action input="/admin/cat_data_import_map_table.jsp" name="StrutsUploadForm" path="/insertstaff" scope="session" type="com.myapp.struts.admin.ExeltoDatabaseAction" validate="false">
+            <forward name="success" path="/admin/cat_data_import_read.jsp"/>
+            <forward name="Back" path="/admin/cat_data_import_read.jsp"/>
+        </action>
 
 
 
@@ -1637,7 +1843,7 @@
 
                </action>
 
-                <action path="/admin/block_institute" scope="request" type="com.myapp.struts.admin.BlockLibraryAction">
+                <action path="/block_institute" scope="request" type="com.myapp.struts.admin.BlockLibraryAction">
                        <forward name="success" path="/admin/admin_blocked.jsp"/>
 
                 </action>
@@ -1666,12 +1872,12 @@
                        <forward name="closed" path="/login.jsp"/>
                 </action>
 
-                   <action  path="/admin/showstaff"  scope="session" type="com.myapp.struts.admin.ViewStaffAction">
+                   <action  path="/showstaff"  scope="session" type="com.myapp.struts.admin.ViewStaffAction">
                       <forward name="success" path="/admin/update_staff.jsp"/>
 
                     </action>
 
-                      <action  path="/admin/showaccount"  scope="session" type="com.myapp.struts.admin.ViewStaffAccountAction">
+                      <action  path="/showaccount"  scope="session" type="com.myapp.struts.admin.ViewStaffAccountAction">
                       <forward name="success" path="/admin/view_staff_account.jsp"/>
                       <forward name="fail" path="/admin/view_staff_account.jsp"/>
                     </action>
@@ -1700,7 +1906,7 @@
                          <forward name="skip" path="/loginsucess.do"/>
                     </action>
 
-                <action  path="/admin/changeuserpassword"    scope="request" type="com.myapp.struts.admin.LoginPasswordAction">
+                <action  path="/changeuserpassword"    scope="request" type="com.myapp.struts.admin.LoginPasswordAction">
                         <forward name="success" path="/admin/changepassword.jsp"/>
                         <forward name="failure" path="/loginsucess.do"/>
                 </action>
@@ -1730,18 +1936,18 @@
                         <forward name="duplicate" path="/admin/duplicate_message.jsp"/>
                 </action>
 
-                 <action path="/admin/staffupdate" name="StaffDetailActionForm"     scope="request" type="com.myapp.struts.admin.UserStaffAction">
+                 <action path="/staffupdate" name="StaffDetailActionForm"     scope="request" type="com.myapp.struts.admin.UserStaffAction">
                         <forward name="update" path="/admin/update_staff.jsp"/>
 
                 </action>
 
 
-                <action path="/admin/viewall" scope="request" type="com.myapp.struts.admin.ViewAllStaffAction">
+                <action path="/viewall" scope="request" type="com.myapp.struts.admin.ViewAllStaffAction">
                       <forward name="success" path="/admin/viewstaff.jsp" />
                       <forward name="fail" path="/admin/viewstaff.jsp" />
                     </action>
 
-                     <action path="/admin/viewallaccount" scope="request" type="com.myapp.struts.admin.ViewAllStaffAccountAction">
+                     <action path="/viewallaccount" scope="request" type="com.myapp.struts.admin.ViewAllStaffAccountAction">
                       <forward name="success" path="/admin/viewstaffaccount.jsp" />
                       <forward name="fail" path="/admin/viewstaffaccount.jsp" />
                     </action>
@@ -1762,29 +1968,29 @@
                         <forward name="success1" path="/admin/accept_message1.jsp"/>
                     </action>
 
-                <action path="/admin/view" type="com.myapp.struts.admin.AdminViewAction" scope="request">
+                <action path="/view" type="com.myapp.struts.admin.AdminViewAction" scope="request">
                         <forward name="success" path="/admin/admin_approved.jsp"/>
                 </action>
 
-                <action path="/admin/view2" type="com.myapp.struts.admin.StaffViewAction" scope="request">
+                <action path="/view2" type="com.myapp.struts.admin.StaffViewAction" scope="request">
                         <forward name="success" path="/admin/view_staff_detail.jsp"/>
                 </action>
 
 
-                <action path="/admin/view4" type="com.myapp.struts.admin.LoginViewAction" scope="request">
+                <action path="/view4" type="com.myapp.struts.admin.LoginViewAction" scope="request">
                         <forward name="success" path="/admin/view_staff_account.jsp"/>
                 </action>
 
-                <action path="/admin/view5" type="com.myapp.struts.admin.AdminViewAction" scope="request">
+                <action path="/view5" type="com.myapp.struts.admin.AdminViewAction" scope="request">
                         <forward name="success" path="/admin/update_admin_detail.jsp"/>
                 </action>
 
 
 
-                <action path="/admin/view3" type="com.myapp.struts.admin.AdminUpdateAction" scope="request">
+                <action path="/view3" type="com.myapp.struts.admin.AdminUpdateAction" scope="request">
                         <forward name="success" path="/admin/admin_approved.jsp"/>
                 </action>
-                <action path="/admin/view1" type="com.myapp.struts.admin.AdminPendingAction" scope="request">
+                <action path="/view1" type="com.myapp.struts.admin.AdminPendingAction" scope="request">
                         <forward name="success" path="/admin/admin_pending.jsp"/>
                 </action>
 
@@ -1839,19 +2045,19 @@
                         <forward name="view_account/delete_account/change_password" path="/admin/createaccount2.jsp"/>
                </action>
 
-                <action input="/admin/ask_for_create_account.jsp" name="AccountActionForm" path="/admin/account2" scope="request" type="com.myapp.struts.admin.StaffAccountAction">
+                <action input="/admin/ask_for_create_account.jsp" name="AccountActionForm" path="/account2" scope="request" type="com.myapp.struts.admin.StaffAccountAction">
                        <forward name="error" path="/admin/error.jsp"/>
                        <forward name="register" path="/admin/createaccount1.jsp"/>
 
                </action>
 
 
-               <action path="/admin/CheckedPrivilege" scope="request" type="com.myapp.struts.admin.ShowCheckedPrivilegeAction">
+               <action path="/CheckedPrivilege" scope="request" type="com.myapp.struts.admin.ShowCheckedPrivilegeAction">
                        <forward name="success" path="/admin/privilege_tree.jsp"/>
 
                </action>
 
-               <action input="/admin/search_admin.jsp" name="SearchInstituteActionForm" path="/admin/search_institute" scope="request" type="com.myapp.struts.admin.SearchInstituteAction">
+               <action input="/admin/search_admin.jsp" name="SearchInstituteActionForm" path="/search_institute" scope="request" type="com.myapp.struts.admin.SearchInstituteAction">
                         <forward name="institute_search"  path="/admin/search_admin_grid.jsp"/>
                </action>
 
@@ -1871,6 +2077,25 @@
 
 
      <!--OPAC Action Setting-->
+
+       <action path="/OPAC/ratetitle1" type="com.myapp.struts.opac.rateTitle">
+           <forward name="success" path="/OPAC/simple.jsp"/>
+           </action>
+
+
+
+     <action path="/OPAC/uploadExcel" name="StrutsUploadForm" input="/OPAC/cat_data_import_read.jsp"   scope="session" type="com.myapp.struts.opac.Uploadaction">
+            <forward name="success" path="/OPAC/cat_data_import_map_table.jsp"/>
+            <forward name="Back" path="/OPAC/cat_data_import_read.jsp"/>
+            <forward name="ExportDatabaseToExcell" path="/OPAC/cat_exportDatabaseToExcell.jsp"/>
+
+        </action>
+        <action input="/OPAC/cat_data_import_map_table.jsp" name="StrutsUploadForm" path="/opac/insert" scope="session" type="com.myapp.struts.opac.ExeltoDatabaseAction" validate="false">
+            <forward name="success" path="/OPAC/cat_data_import_read.jsp"/>
+            <forward name="Back" path="/OPAC/cat_data_import_read.jsp"/>
+        </action>
+
+
      <action  path="/opac/cir_memcheckout_details"    scope="request" type="com.myapp.struts.opac.cirMemCheckoutDetails">
                       <forward name="success" path="/OPAC/view_checkoutdetails.jsp"/>
 
@@ -2134,6 +2359,7 @@
                </action>
 
               <action path="/memberRegistration" input="/systemsetup/manage_member.jsp" scope="request" name="Member2ActionForm" type="com.myapp.struts.systemsetup.Member2Action">
+
                        <forward name="success" path="/systemsetup/add_member.jsp"/>
                        <forward name="duplicate" path="/systemsetup/manage_member.jsp"/>
                       <forward name="update/view/delete" path="/systemsetup/member_view_update.jsp"/>
@@ -2271,16 +2497,26 @@
               </action>
 
 
+<controller>
+<set-property property="processorClass"
+value="com.myapp.struts.CheckLogin"/>
+</controller>
     </action-mappings>
 
     <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
 
-  
+ 
+          
 
-    
-    <message-resources
-		parameter="com.myapp.struts.validation" />
 
+    <message-resources  parameter="com.myapp.struts.validation" />
+    <message-resources key="hi" parameter="com.myapp.struts.validation_hi" />
+    <message-resources key="ar" parameter="com.myapp.struts.validation_ar" />
+    <message-resources key="ur" parameter="com.myapp.struts.validation_ur" />
+                 
+                <!--       <message-resources key="ur" parameter="com.myapp.struts.validation_ur" />
+                             <message-resources key="ar" parameter="com.myapp.struts.validation_ar" />
+-->
     <!-- ========================= Tiles plugin ===============================-->
     <!--
     This plugin initialize Tiles definition factory. This later can takes some
@@ -2309,7 +2545,7 @@
     Paths found in Tiles definitions are relative to the main context.
     -->
     <plug-in className="org.apache.struts.tiles.TilesPlugin" >
-        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml,/admin/admin-tiles-defs.xml" />
         <set-property property="moduleAware" value="true" />
     </plug-in>
 
@@ -2317,7 +2553,7 @@
     <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
         <set-property
             property="pathnames"
-            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml,/WEB-INF/admin_validation.xml"/>
     </plug-in>
 
 </struts-config>

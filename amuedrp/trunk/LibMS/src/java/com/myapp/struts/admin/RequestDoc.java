@@ -20,6 +20,15 @@ public class RequestDoc {
      private String sublibrary_id;
      private String user_name;
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+     private String address;
+
     public String getLogo() {
         return logo;
     }

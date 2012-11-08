@@ -26,11 +26,16 @@
          Courses course=null;
        String library_id=(String)session.getAttribute("library_id");
        if(cmaccount!=null){
-         empobj=MemberCategoryDAO.searchMemberType(library_id,cmaccount.getMemType());
-       subempobj=MemberCategoryDAO.searchSubMemberType(library_id, cmaccount.getMemType(),cmaccount.getSubMemberType());
-       faculty=FacultyDAO.getFacultyName(library_id, cmaccount.getFacultyId());
-       dept=DeptDAO.getDeptByFaculty(library_id, cmaccount.getFacultyId(), cmaccount.getDeptId());
-       course=CourseDAO.searchCourseName(library_id, cmaccount.getFacultyId(), cmaccount.getDeptId(), cmaccount.getCourseId());
+
+MemberCategoryDAO memdao=new MemberCategoryDAO();
+FacultyDAO facdao=new FacultyDAO();
+DeptDAO deptdao=new DeptDAO();
+CourseDAO coursedao=new CourseDAO();
+        empobj=memdao.searchMemberType(library_id,cmaccount.getMemType());
+       subempobj=memdao.searchSubMemberType(library_id, cmaccount.getMemType(),cmaccount.getSubMemberType());
+       faculty=facdao.getFacultyName(library_id, cmaccount.getFacultyId());
+       dept=deptdao.getDeptByFaculty(library_id, cmaccount.getFacultyId(), cmaccount.getDeptId());
+       course=coursedao.searchCourseName(library_id, cmaccount.getFacultyId(), cmaccount.getDeptId(), cmaccount.getCourseId());
 }
 %>
 

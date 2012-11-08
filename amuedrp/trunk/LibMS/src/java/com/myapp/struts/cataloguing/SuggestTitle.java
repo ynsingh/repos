@@ -5,7 +5,7 @@
 
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  */
 public class SuggestTitle {
   public List<String> getSuggestionList(String string) {
-  BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
+  BibliographicEntryDAO dao=new BibliographicEntryDAO();
   HttpServletRequest hsr=null;
   HttpSession session = hsr.getSession();
         String library_id = (String) session.getAttribute("library_id");

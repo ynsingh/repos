@@ -20,7 +20,7 @@ import org.hibernate.Query;
  */
 public class AcqExchangeRateDao {
 
-   public static AcqCurrency searchSourceCurrency1(String library_id, String scurrency,String date) {
+   public  AcqCurrency searchSourceCurrency1(String library_id, String scurrency,String date) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AcqCurrency obj=null;
         try {
@@ -44,7 +44,7 @@ session.getTransaction().commit();
         return obj;
     }
  
-    public static AcqCurrency searchSourceCurrency(String library_id, int convrsion_id) {
+    public  AcqCurrency searchSourceCurrency(String library_id, int convrsion_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AcqCurrency obj=null;
         try {
@@ -69,7 +69,7 @@ session.getTransaction().commit();
 
 
 
-    public static AcqCurrency searchSourceCurrency1(String library_id, String scurrency) {
+    public  AcqCurrency searchSourceCurrency1(String library_id, String scurrency) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AcqCurrency obj=null;
         try {
@@ -92,7 +92,7 @@ session.getTransaction().commit();
     }
 
 
-   public static AcqCurrency searchCurrency1(String library_id) {
+   public  AcqCurrency searchCurrency1(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AcqCurrency obj=null;
         try {
@@ -114,7 +114,7 @@ session.getTransaction().commit();
         return obj;
     }
 
- public static AcqCurrency getCurrencyBySourceName(String library_id,int convrsion_id ) {
+ public  AcqCurrency getCurrencyBySourceName(String library_id,int convrsion_id ) {
         Session session = HibernateUtil.getSessionFactory().openSession();
       AcqCurrency obj=null;
         try {
@@ -138,7 +138,7 @@ session.getTransaction().commit();
 
 
 
-  public static AcqCurrency getCurrencyBySourceName1(String library_id,String scurrency ) {
+  public  AcqCurrency getCurrencyBySourceName1(String library_id,String scurrency ) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         AcqCurrency obj=null;
         try {
@@ -161,7 +161,7 @@ session.getTransaction().commit();
     }
 
 
-  public static void insert(AcqCurrency obj) {
+  public  void insert(AcqCurrency obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -185,7 +185,7 @@ session.getTransaction().commit();
     }
 
 
-   public static void update(AcqCurrency obj) {
+   public  void update(AcqCurrency obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -203,7 +203,7 @@ session.getTransaction().commit();
      
     }
 
-    public static boolean delete(String library_id,int conversion_id) {
+    public  boolean delete(String library_id,int conversion_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 

@@ -1,40 +1,38 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 23, 2011 12:33:02 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqApproval" table="acq_approval" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqApprovalId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="subLibraryId" type="string">
-                <column name="sub_library_id" length="20" />
-            </key-property>
-            <key-property name="approvalItemId" type="int">
-                <column name="approval_item_id"  />
-            </key-property>
-        </composite-id>
-        <many-to-one name="acqApprovalHeader" class="com.myapp.struts.hbm.AcqApprovalHeader" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="sub_library_id" length="20" not-null="true" />
-            <column name="approval_no" length="20" />
-        </many-to-one>
-        <property name="controlNo" type="int">
-            <column name="control_no" />
-        </property>
-              <property name="noOfCopies" type="java.lang.Integer">
-            <column name="no_of_copies" />
-        </property>
-        <property name="orderNo" type="string">
-            <column name="order_no" length="20"/>
-        </property>
-            <property name="approvalNo" type="string">
-            <column name="approval_no" length="20"/>
-        </property>
-        <property name="status" type="string">
-           <column name="status" length="50"/>
-        </property>
-        
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqApproval" table="acq_approval">
+    <composite-id class="com.myapp.struts.hbm.AcqApprovalId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="approvalItemId" type="int">
+        <column name="approval_item_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.AcqApprovalHeader" fetch="select" insert="false" name="acqApprovalHeader" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+      <column length="20" name="sub_library_id" not-null="true"/>
+      <column length="20" name="approval_no"/>
+    </many-to-one>
+    <property name="controlNo" type="int">
+      <column name="control_no"/>
+    </property>
+    <property name="noOfCopies" type="java.lang.Integer">
+      <column name="no_of_copies"/>
+    </property>
+    <property name="orderNo" type="string">
+      <column length="20" name="order_no"/>
+    </property>
+    <property name="approvalNo" type="string">
+      <column length="20" name="approval_no"/>
+    </property>
+    <property name="status" type="string">
+      <column length="50" name="status"/>
+    </property>
+  </class>
 </hibernate-mapping>

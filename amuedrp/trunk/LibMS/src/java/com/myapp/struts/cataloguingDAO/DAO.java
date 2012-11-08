@@ -30,6 +30,8 @@ public class DAO {
 
      Query query;
 
+     
+
        public List columnname2(String table_name) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List obj=null;

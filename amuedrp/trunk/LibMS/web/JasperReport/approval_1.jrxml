@@ -18,76 +18,60 @@
 		<groupHeader>
 			<band height="60" splitType="Stretch">
 				<textField>
-					<reportElement x="64" y="1" width="47" height="20"/>
+					<reportElement x="72" y="19" width="47" height="20"/>
 					<textElement>
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression class="java.lang.String"><![CDATA[$F{vendor_id}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="1" width="54" height="20"/>
+					<reportElement x="16" y="17" width="54" height="20"/>
 					<textElement>
-						<font />
+						<font isUnderline="true"/>
 					</textElement>
 					<text><![CDATA[vendor id]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="101" y="40" width="64" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="100" y="40" width="64" height="20"/>
+					<textElement/>
 					<text><![CDATA[Control No]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="165" y="40" width="77" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="156" y="40" width="77" height="20"/>
+					<textElement/>
 					<text><![CDATA[Approval No]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="242" y="40" width="91" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="221" y="40" width="91" height="20"/>
+					<textElement/>
 					<text><![CDATA[Approval Item Id]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="333" y="40" width="35" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="307" y="40" width="35" height="20"/>
+					<textElement/>
 					<text><![CDATA[Title]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="368" y="40" width="64" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="380" y="40" width="64" height="20"/>
+					<textElement/>
 					<text><![CDATA[Author]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="432" y="39" width="59" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="463" y="40" width="59" height="20"/>
+					<textElement/>
 					<text><![CDATA[ISBN]]></text>
 				</staticText>
 				<line>
 					<reportElement x="101" y="59" width="565" height="1"/>
 				</line>
 				<staticText>
-					<reportElement x="491" y="39" width="74" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="509" y="40" width="74" height="20"/>
+					<textElement/>
 					<text><![CDATA[NO Of Copies]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="575" y="39" width="100" height="20"/>
-					<textElement>
-						<font />
-					</textElement>
+					<reportElement x="584" y="40" width="100" height="20"/>
+					<textElement/>
 					<text><![CDATA[Acquisition Mode]]></text>
 				</staticText>
 			</band>
@@ -103,7 +87,7 @@
 					<text><![CDATA[Total]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="575" y="0" width="100" height="15"/>
+					<reportElement x="584" y="0" width="100" height="15"/>
 					<textElement/>
 					<textFieldExpression class="java.lang.String"><![CDATA[$V{vendor_id_COUNT}]]></textFieldExpression>
 				</textField>
@@ -116,9 +100,9 @@
 	<title>
 		<band height="21" splitType="Stretch">
 			<staticText>
-				<reportElement x="196" y="0" width="137" height="20"/>
+				<reportElement x="264" y="0" width="168" height="20"/>
 				<textElement>
-					<font  size="12"/>
+					<font size="14" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[APPROVAL REPORT]]></text>
 			</staticText>
@@ -131,54 +115,54 @@
 		<band height="1" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="22" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="101" y="0" width="64" height="20"/>
+				<reportElement x="100" y="0" width="64" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{control_no}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="165" y="0" width="77" height="20"/>
+				<reportElement x="158" y="0" width="77" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{approval_no}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="242" y="0" width="91" height="20"/>
+				<reportElement x="229" y="0" width="78" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{approval_item_id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="333" y="0" width="35" height="20"/>
+				<reportElement x="300" y="0" width="82" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="368" y="0" width="64" height="20"/>
+				<reportElement x="381" y="0" width="84" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{author}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="491" y="0" width="74" height="20"/>
+				<reportElement x="527" y="0" width="52" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{no_of_copies}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="575" y="0" width="100" height="20"/>
+				<reportElement x="585" y="0" width="83" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{acq_mode}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="432" y="2" width="59" height="20"/>
+				<reportElement x="465" y="0" width="63" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{isbn}]]></textFieldExpression>
 			</textField>
@@ -198,7 +182,7 @@
 				<text><![CDATA[Grand Total]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="575" y="0" width="100" height="18"/>
+				<reportElement x="584" y="0" width="100" height="18"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>

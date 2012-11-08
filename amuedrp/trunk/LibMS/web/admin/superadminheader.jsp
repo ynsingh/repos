@@ -1,82 +1,87 @@
-<%-- 
-    Document   : header
-    Created on : Nov 13, 2010, 4:45:02 PM
-    Author     : System Administrator
---%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN "http://www.w3.org/TR/html4/strict.dtd">
-<%@page import="java.util.*,java.io.*,java.net.*"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+
+<%@page pageEncoding="UTF-8"%>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
+<html>
+<head >
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/cupertino/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ui.datepicker.min.js"></script>
+<style type="text/css">
+
+body
+{
+   background-color: #FFFFFF;
+   color: #000000;
+}
+</style>
+
 
 <%!
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
     String align="left";
 %>
 <%
 try{
 locale1=(String)session.getAttribute("locale");
-
     if(session.getAttribute("locale")!=null)
     {
         locale1 = (String)session.getAttribute("locale");
-       // System.out.println("locale="+locale1);
+        System.out.println("locale="+locale1);
     }
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
-    else{ rtl="RTL";page=false;align="right";}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<%
-try{
-if(session.getAttribute("library_id")!=null){
-System.out.println("library_id"+session.getAttribute("library_id"));
-}
-else{
-    request.setAttribute("msg", "Your Session Expired: Please Login Again");
-    %><script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
-    }
-}catch(Exception e){
-    request.setAttribute("msg", "Your Session Expired: Please Login Again");
-    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
-    }
-
-String user=(String)session.getAttribute("username");
-
- session.setAttribute("pass","t");
-
+    <%
+    String library_id = (String)session.getAttribute("library_id");
+    String sublibrary_id = (String)session.getAttribute("memsublib");
+     if(sublibrary_id==null)sublibrary_id=   (String)session.getAttribute("sublibrary_id");
+if(sublibrary_id==null)sublibrary_id="all";
 %>
 
-<table width="100%" height="75px"  border="0px" style="margin:0px 0px 0px 0px" dir="<%=rtl%>">
 
-    <tr dir="<%=rtl%>">
+</head>
+<link rel="StyleSheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<body style="margin: 0px 0px 0px 0px;">
 
-        <td valign="bottom" align="left" width="10%">
+               <table align="center" width="100%" height="100%" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;background-color:black;color:white " dir="<%=rtl%>" >
+                   <tr><td class="homepage"  align="left" valign="top"><b>      &nbsp;      Library Management System
+               &nbsp; EdRP Mission , NMEICT Project</b></td><td class="homepage" align="right" valign="top">
 
+                    <a style="color: white;font-weight: bold;">Welcome WebAdmin &nbsp|&nbsp;</a><a style="color: white;font-weight: bold;" href="./logout.do">Signout</a>&nbsp;
+
+               </td></tr>
+                 <%--  <tr ><td class="homepage" style="color:blue;" align="center" height="60px" width="40%"  >
+
+
+
+              <b><font size="+4">WebAdmin Module</font></b>
+
+          </td><td valign="center" class="homepage" style="border-left: solid 1px cyan;color:black;" align="left">
+              
+          </td>
+          <td >
+             
           
-           <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="No Image" height="50px" width="130px" border="0" align="top" id="Image1" style="">
-         
-
-        </td>
-                   
-
-                    <td align="center" width="*" valign="bottom" dir="<%=rtl%>">
-          <span style="color:Black;font-size: 20px;font-family: arial;font-weight: bold"> SuperAdmin Module</span>
-                     </td>
-
-                     <td valign="top"  dir="<%=rtl%>" align="right" width="15%">
-                         <span  dir="<%=rtl%>" style="font:8pt Verdana;"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></span>
-                         <br/>
-                         <img src="<%=request.getContextPath()%>/images/logo.png" alt="no" height="50px" width="130px" border="0" align="top" id="Image1" style=""></td>
-                </tr>
-
-
-
-
-                </table>
-
+          </td>
+                                     </tr>--%>
+                                    
+            
+        </table>
+</body>
+</html>

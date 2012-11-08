@@ -1,67 +1,66 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Oct 20, 2012 11:20:58 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.SerBiolioDetails" table="ser_biolio_details" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.SerBiolioDetailsId">
-            <key-property name="serControlNo" type="string">
-                <column name="ser_control_no" length="10" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-        </composite-id>
-        <property name="newSerialId" type="string">
-            <column name="new_serial_id" length="10" not-null="true" />
-        </property>
-        <property name="noOfCopies" type="java.lang.Integer">
-            <column name="no_of_copies" />
-        </property>
-        <property name="issueNo" type="string">
-            <column name="issue_no" length="10" />
-        </property>
-        <property name="volumeNo" type="string">
-            <column name="volume_no" length="10" />
-        </property>
-        <property name="periodicity" type="string">
-            <column name="periodicity" length="10" />
-        </property>
-        <property name="issueYr" type="string">
-            <column name="issue_yr" length="10" />
-        </property>
-        <property name="issueMonth" type="string">
-            <column name="issue_month" length="10" />
-        </property>
-        <property name="issueDetails" type="string">
-            <column name="issue_details" length="200" />
-        </property>
-        <property name="subject" type="string">
-            <column name="subject" length="20" />
-        </property>
-        <property name="unitPrice" type="java.lang.Integer">
-            <column name="unit_price" />
-        </property>
-        <property name="currency" type="string">
-            <column name="currency" length="20" />
-        </property>
-        <property name="primaryBudget" type="string">
-            <column name="primary_budget" length="20" />
-        </property>
-        <property name="requestedBy" type="string">
-            <column name="requested_by" length="20" />
-        </property>
-        <property name="requestedDate" type="string">
-            <column name="requested_date" length="12" />
-        </property>
-        <property name="vendor" type="string">
-            <column name="vendor" length="20" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="10" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.SerBiolioDetails" table="ser_biolio_details">
+    <composite-id class="com.myapp.struts.hbm.SerBiolioDetailsId" name="id">
+      <key-property name="serControlNo" type="java.lang.Integer">
+        <column  name="ser_control_no"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+    </composite-id>
+    <property name="newSerialId" type="string">
+      <column length="10" name="new_serial_id" not-null="true"/>
+    </property>
+    <property name="noOfCopies" type="java.lang.Integer">
+      <column name="no_of_copies"/>
+    </property>
+    <property name="issueNo" type="string">
+      <column length="10" name="issue_no"/>
+    </property>
+    <property name="volumeNo" type="string">
+      <column length="10" name="volume_no"/>
+    </property>
+    <property name="periodicity" type="string">
+      <column length="10" name="periodicity"/>
+    </property>
+    <property name="issueYr" type="string">
+      <column length="10" name="issue_yr"/>
+    </property>
+    <property name="issueMonth" type="string">
+      <column length="10" name="issue_month"/>
+    </property>
+    <property name="issueDetails" type="string">
+      <column length="200" name="issue_details"/>
+    </property>
+    <property name="subject" type="string">
+      <column length="20" name="subject"/>
+    </property>
+    <property name="unitPrice" type="java.lang.Integer">
+      <column name="unit_price"/>
+    </property>
+    <property name="currency" type="string">
+      <column length="20" name="currency"/>
+    </property>
+    <property name="primaryBudget" type="string">
+      <column length="20" name="primary_budget"/>
+    </property>
+    <property name="requestedBy" type="string">
+      <column length="20" name="requested_by"/>
+    </property>
+    <property name="requestedDate" type="string">
+      <column length="12" name="requested_date"/>
+    </property>
+    <property name="vendor" type="string">
+      <column length="20" name="vendor"/>
+    </property>
+    <property name="status" type="string">
+      <column length="10" name="status"/>
+    </property>
+  </class>
 </hibernate-mapping>

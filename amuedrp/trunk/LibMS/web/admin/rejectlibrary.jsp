@@ -31,6 +31,62 @@ else{
     }
 
 %>
+
+<%!
+
+
+   RequestDoc Ob;
+   ArrayList requestList;
+   int fromIndex=0, toIndex;
+%>
+ <%
+
+
+AdminRegistrationDAO admindao = new AdminRegistrationDAO();
+List rs =(List) session.getAttribute("rejected");
+AdminRegistration adminReg= new AdminRegistration();
+
+   requestList = new ArrayList();
+   int tcount =0;
+   int perpage=4;
+   int tpage=0;
+ if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
+    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
+
+if (!rs.isEmpty())
+{
+Iterator it = rs.iterator();
+
+   while (it.hasNext()) {
+        adminReg = (AdminRegistration)rs.get(tcount);
+       tcount++;
+	Ob = new RequestDoc ();
+	Ob.setRegistration_id(adminReg.getRegistrationId());
+	Ob.setInstitute_name(adminReg.getInstituteName());
+	//Ob.setLibrary_name(rs.getString(21));
+	Ob.setAdmin_email(adminReg.getAdminEmail());
+         Ob.setAddress(adminReg.getInstituteAddress());
+        Ob.setUser_name(adminReg.getAdminFname()+" "+adminReg.getAdminLname());
+        Ob.setStatus(adminReg.getStatus());
+   requestList.add(Ob);
+adminReg=null;
+it.next();
+
+		     }
+}
+System.out.println("tcount="+tcount);
+
+%>
+
+<%
+   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
+   if ((toIndex = fromIndex+perpage) >= requestList.size ())
+   toIndex = requestList.size();
+   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("tCount", tcount);
+   pageContext.setAttribute("pagecontext", request.getContextPath());
+   pageContext.setAttribute("rec",perpage);
+%>
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  <script>
     function changerec(){
@@ -68,81 +124,25 @@ function isNumberKey(evt)
 </head>
 
 <body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
-<%!
-   
-   
-   RequestDoc Ob;
-   ArrayList requestList;
-   int fromIndex=0, toIndex;
-%>
- <%
-
  
-AdminRegistrationDAO admindao = new AdminRegistrationDAO();
-List rs =(List) session.getAttribute("rejected");
-AdminRegistration adminReg= new AdminRegistration();
+<body>
 
-   requestList = new ArrayList();
-   int tcount =0;
-   int perpage=4;
-   int tpage=0;
- if(request.getParameter("pageSize")!=null && request.getParameter("pageSize")!="")
-    perpage = Integer.parseInt((String)request.getParameter("pageSize"));
-
-if (!rs.isEmpty())
-{
-Iterator it = rs.iterator();
-
-   while (it.hasNext()) {
-        adminReg = (AdminRegistration)rs.get(tcount);
-       tcount++;
-	Ob = new RequestDoc ();
-	Ob.setRegistration_id(adminReg.getRegistrationId());
-	Ob.setInstitute_name(adminReg.getInstituteName());
-	//Ob.setLibrary_name(rs.getString(21));
-	Ob.setAdmin_email(adminReg.getAdminEmail());
-        Ob.setStatus(adminReg.getStatus());
-   requestList.add(Ob);
-adminReg=null;
-it.next();
- 
-		     }
-}
-System.out.println("tcount="+tcount);
-
-%>
-       
-<%
-   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+perpage) >= requestList.size ())
-   toIndex = requestList.size();
-   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
-   pageContext.setAttribute("pagecontext", request.getContextPath());
-   pageContext.setAttribute("rec",perpage);
-%>
-<br><br>
+<table border="1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" align="center"  width="80%" >
+        <tr><td class="headerStyle" align="center">View All Rejected Institute 
+            </td></tr>
+        <tr><td align="center">
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Record Found</p>
 <%}
 else
 {%>
-View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/><br/>
+<p align="right" class="txtStyle">View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></p>
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
       
-    <column width="50">
-      <header value="" hAlign="left" styleClass="header"/>
-    </column>
+   
 
     <column width="100">
       <header value="Registration_ID" hAlign="left" styleClass="header"/>
@@ -153,7 +153,14 @@ View Next<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" o
       <header value="Institute Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="${pagecontext}/admin/index3.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
-
+ <column width="200">
+      <header value="Institute Address" hAlign="left" styleClass="header"/>
+      <item   value="${doc.address}" hyperLink="${pagecontext}/admin/index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+<column width="200">
+      <header value="Institute AdminName" hAlign="left" styleClass="header"/>
+      <item   value="${doc.user_name}" hyperLink="${pagecontext}/admin/index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
        
     <column width="100">
       <header value="Admin_Email" hAlign="left" styleClass="header"/>
@@ -220,7 +227,7 @@ if(msg!=null)
     </td></tr>
 </table>
 <%}%>
- </div>
+</td></tr></table>
     </body>
 
 

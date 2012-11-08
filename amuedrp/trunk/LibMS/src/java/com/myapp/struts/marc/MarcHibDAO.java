@@ -35,7 +35,7 @@ public class MarcHibDAO {
         catch (RuntimeException e) {
             if(biblio != null)
                 tx.rollback();
-            throw e;
+          //  throw e;
         }
         finally {
             session.close();

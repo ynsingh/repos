@@ -28,7 +28,7 @@ public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-
+   BudgetDAO bugdao=new BudgetDAO();
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -48,7 +48,7 @@ public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
 
 
         if(button.equals("Submit")){
-            AcqBudget lcheck = (AcqBudget)BudgetDAO.getLocationByName(library_id,budegetheadname);
+            AcqBudget lcheck = (AcqBudget)bugdao.getLocationByName(library_id,budegetheadname);
         if(lcheck==null){
         l.setBudgetDesc(lf.getBudgethead_description());
         l.setBudgetheadName(lf.getBudget_name());
@@ -56,7 +56,7 @@ public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
 
         li.setBudgetheadId(lf.getBudgethead_id());
         l.setId(li);
-        BudgetDAO.insert(l);
+        bugdao.insert(l);
         request.setAttribute("msg", "Data is saved successfully");
         session.removeAttribute("backlocation");
         }
@@ -67,7 +67,7 @@ public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Update")){
-            AcqBudget lcheck = (AcqBudget)BudgetDAO.getLocationByName(library_id,budegetheadname);
+            AcqBudget lcheck = (AcqBudget)bugdao.getLocationByName(library_id,budegetheadname);
         if(lcheck!=null)
             if(!lcheck.getId().getBudgetheadId().equals(budgethead_id))
             {
@@ -80,12 +80,12 @@ public class AcqBudgetHeadAddAction extends org.apache.struts.action.Action {
 
         li.setBudgetheadId(lf.getBudgethead_id());
         l.setId(li);
-        BudgetDAO.update(l);
+        bugdao.update(l);
         request.setAttribute("msg", "Data is updated successfully");
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Delete")){
-        List<AcqBudgetAllocation> acqalloc=(List<AcqBudgetAllocation>)BudgetDAO.getSearchBudgetHead1(library_id, budgethead_id);
+        List<AcqBudgetAllocation> acqalloc=(List<AcqBudgetAllocation>)bugdao.getSearchBudgetHead1(library_id, budgethead_id);
 
 if(!acqalloc.isEmpty()){
  request.setAttribute("msg1", "BudgetHead Income Already Allocated Cannot Delete");
@@ -95,7 +95,7 @@ if(!acqalloc.isEmpty()){
 }
 
 
-        BudgetDAO.delete(library_id,budgethead_id);
+        bugdao.delete(library_id,budgethead_id);
         request.setAttribute("msg", "Data is deleted successfully");
         return mapping.findForward(SUCCESS);
         }

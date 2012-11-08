@@ -13,9 +13,11 @@ div.yuimenu {
 
     z-index:1;
     visibility:hidden;
-    background-color:#f6f7ee;
+    /*background-color:#f6f7ee;*/
+    
     border:solid 1px #c4c4be;
     padding:1px;
+    text-decoration: none;background-color: #E0E8F5;
     
 }
 
@@ -24,8 +26,14 @@ div.yuimenu {
 
 div.yuimenubar {
 
-    background-color:#f6f7ee;
+    /*background-color:#f6f7ee;*/
     
+    text-decoration: none;
+    
+    font-family: arial;
+    font-weight: bold;
+    font-size: 12px;border:solid 1px #c4c4be;
+    background-color: #E0E8F5;
 }
 
 /*
@@ -34,8 +42,8 @@ div.yuimenubar {
 */
 div.yuimenubar div.bd {
 
-    zoom:1;
-
+    zoom:1;text-decoration: none;
+background-color: #E0E8F5;
 }
 
 /*
@@ -47,7 +55,7 @@ div.yuimenubar div.bd:after {
     display:block;
     clear:both;
     visibility:hidden;
-    height:0;
+    height:0;text-decoration: none;background-color: #E0E8F5;
 
 }
 
@@ -60,8 +68,8 @@ div.yuimenubar h6 {
     font-size:100%;
     font-weight:normal;    
     margin:0;
-    border:solid 1px #c4c4be;
-    color:#b9b9b9;    
+    border:solid 1px #c4c4be;background-color: #E0E8F5;
+    text-decoration: none;
 
 }
 
@@ -70,8 +78,8 @@ div.yuimenubar h6 {
     float:left;
     display:inline; /* Prevent margin doubling in IE */
     padding:4px 12px;
-    border-width:0 1px 0 0;
-    
+    border-width:0 1px 0 0;text-decoration: none;
+  background-color: #E0E8F5;
 }
 
 div.yuimenu h6 {
@@ -79,8 +87,8 @@ div.yuimenu h6 {
     float:none;
     display:block;
     border-width:1px 0 0 0;
-    padding:5px 10px 0 10px;
-
+    padding:5px 10px 0 10px;text-decoration: none;
+background-color: #E0E8F5;
 }
 
 
@@ -90,8 +98,8 @@ div.yuimenubar ul {
 
     list-style-type:none;
     margin:0;
-    padding:0;
-
+    padding:0;text-decoration: none;
+background-color: #E0E8F5;
 }
 
 div.yuimenu ul {
@@ -100,8 +108,8 @@ div.yuimenu ul {
     border:solid 1px #c4c4be;
     border-width:1px 0 0 0;
     margin:0;
-    padding:10px 0;
-
+    padding:10px 0;text-decoration: none;
+background-color: #E0E8F5;
 }
 
 
@@ -109,7 +117,7 @@ div.yuimenu ul.first-of-type,
 div.yuimenu ul.hastitle,
 div.yuimenu h6.first-of-type {
 
-    border-width:0;
+    border-width:0;text-decoration: none;background-color: #E0E8F5;
 
 }
 
@@ -122,21 +130,21 @@ div.yuimenubar li {
     font-size:85%;
     cursor:pointer;
     cursor:hand;
-    white-space:nowrap;
-    text-align:left;
+    white-space:nowrap;background-color: #E0E8F5;
+    text-align:left;text-decoration: none;
 
 }
 
 div.yuimenu li.yuimenuitem {
 
-    padding:2px 24px;
+    padding:2px 20px;text-decoration: none;background-color: #E0E8F5;
     
 }
 
 div.yuimenu li li,
 div.yuimenubar li li {
-
-    font-size:100%;
+background-color: #E0E8F5;
+    font-size:100%;text-decoration: none;
 
 }
 
@@ -144,16 +152,16 @@ div.yuimenubar li li {
 /* Matches the help text for a menu item */
 
 div.yuimenu li em {
-
+background-color: #E0E8F5;
     font-style:normal;
     margin:0 0 0 40px;
-
+text-decoration: none;
 }
 
 div.yuimenu li a em {
-
+background-color: #E0E8F5;
     margin:0;
-
+text-decoration: none;
 }
 
 div.yuimenu li a,
@@ -163,25 +171,25 @@ div.yuimenubar li a {
         "zoom:1" triggers "haslayout" in IE to ensure that the mouseover and 
         mouseout events bubble to the parent LI in IE.
     */
-    zoom:1;
-    color:#000;
+    zoom:1;background-color: #E0E8F5;
+    text-decoration: none;
     text-decoration:none;
     
 }
 
 div.yuimenu li.hassubmenu,
 div.yuimenu li.hashelptext {
-
-    text-align:right;
+background-color: #E0E8F5;
+    text-align:right;text-decoration: none;
 
 }
 
 div.yuimenu li.hassubmenu a.hassubmenu,
 div.yuimenu li.hashelptext a.hashelptext {
-
+background-color: #E0E8F5;
     float:left;
     display:inline; /* Prevent margin doubling in IE */
-    text-align:left;
+    text-align:left;text-decoration: none;
 
 }
 
@@ -190,15 +198,15 @@ div.yuimenu li.hashelptext a.hashelptext {
 
 div.yuimenu li.selected,
 div.yuimenubar li.selected {
-
-    background-color:#8c8ad0;
+background-color: #E0E8F5;
+    text-decoration: none;
 
 }
 
 div.yuimenu li.selected a.selected,
 div.yuimenubar li.selected a.selected {
-
-    text-decoration:underline;
+background-color: #E0E8F5;
+    text-decoration:none;
 
 }
 
@@ -206,7 +214,7 @@ div.yuimenu li.selected a.selected,
 div.yuimenu li.selected em.selected, 
 div.yuimenubar li.selected a.selected {
 
-    color:#fff;
+    
 
 }
 
@@ -215,7 +223,7 @@ div.yuimenubar li.selected a.selected {
 
 div.yuimenu li.disabled, 
 div.yuimenubar li.disabled {
-
+background-color: #E0E8F5;
     cursor:default;
 
 }
@@ -223,26 +231,26 @@ div.yuimenubar li.disabled {
 div.yuimenu li.disabled a.disabled,
 div.yuimenu li.disabled em.disabled,
 div.yuimenubar li.disabled a.disabled {
-
+background-color: #E0E8F5;
     color:#b9b9b9;
     cursor:default;
     
 }
 
 div.yuimenubar li.yuimenubaritem {
-
+background-color: #E0E8F5;
     float:left;
     display:inline; /* Prevent margin doubling in IE */
     border-width:0 0 0 1px;
     border-style:solid;
     border-color:#c4c4be;
-    padding:4px 24px;
+    padding:4px 20px;
     margin:0;
 
 }
 
 div.yuimenubar li.yuimenubaritem.first-of-type {
-
+background-color: #E0E8F5;
     border-width:0;
 
 }
@@ -251,7 +259,7 @@ div.yuimenubar li.yuimenubaritem.first-of-type {
 /* Matches the submenu indicator for menu items */
 
 div.yuimenubar li.yuimenubaritem img {
-
+background-color: #E0E8F5;
     height:8px;
     width:8px;
     margin:0 0 0 10px;
@@ -260,22 +268,19 @@ div.yuimenubar li.yuimenubaritem img {
 }
 
 div.yuimenu li.yuimenuitem img {
-
+background-color: #E0E8F5;
     height:8px;
     width:8px;
     margin:0 -16px 0 10px;
     border:0;
 
-    *margin-left:0;
-    *border-left-width:10px;
-    *border-style:solid;
-    *border-color:#f6f7ee;
+
 
 }
 
 div.yuimenu li.yuimenuitem.selected img.selected {
 
-    *border-color:#8c8ad0;
+    
 
 }
 

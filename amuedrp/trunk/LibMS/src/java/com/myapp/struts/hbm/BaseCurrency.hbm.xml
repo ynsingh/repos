@@ -1,22 +1,21 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 21, 2011 1:22:24 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.BaseCurrency" table="base_currency" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.BaseCurrencyId">
-            <key-property name="baseCurrencySymbol" type="string">
-                <column name="base_currency_symbol" length="20" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-        </composite-id>
-        <property name="formalName" type="string">
-            <column name="Formal_Name" length="20" />
-        </property>
-        <property name="direction" type="string">
-            <column name="direction" length="3" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.BaseCurrency" table="base_currency">
+    <composite-id class="com.myapp.struts.hbm.BaseCurrencyId" name="id">
+      <key-property name="baseCurrencySymbol" type="string">
+        <column length="20" name="base_currency_symbol"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+    </composite-id>
+    <property name="formalName" type="string">
+      <column length="20" name="Formal_Name"/>
+    </property>
+    <property name="direction" type="string">
+      <column length="3" name="direction"/>
+    </property>
+  </class>
 </hibernate-mapping>

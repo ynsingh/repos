@@ -50,7 +50,7 @@ public class catImageUploadAction1 extends org.apache.struts.action.Action {
        byte[] iii=null;
        if(v!=null)iii=v.getFileData();
 
-BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
        BibliographicDetails bib=bibdao.getBiblio(library_id, sublibrary_id, bibid);
 
 String ext=null;

@@ -28,7 +28,7 @@ public class ViewStaffAccountAction extends org.apache.struts.action.Action {
             throws Exception {
         HttpSession session=request.getSession();
         logindao=new LoginDAO();
-     
+     SubLibraryDAO sublibdao=new SubLibraryDAO();
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
         String library_id=(String)session.getAttribute("library_id");
@@ -41,7 +41,7 @@ public class ViewStaffAccountAction extends org.apache.struts.action.Action {
         if(loginobj!=null){
              
              // request.setAttribute("button", button);
-             List<SubLibrary>  sublib=SubLibraryDAO.searchSubLib(library_id);
+             List<SubLibrary>  sublib=sublibdao.searchSubLib(library_id);
              if(!sublib.isEmpty())
              {
                 request.setAttribute("data",loginobj);

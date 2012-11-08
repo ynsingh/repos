@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.DocumentDetails;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -56,7 +56,7 @@ public class PrintCardItemListAction6 extends org.apache.struts.action.Action {
 
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-      BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
+      BibliographicEntryDAO dao=new BibliographicEntryDAO();
       AcquisitionDao dao1=new AcquisitionDao();
     private HashMap SIMPLE_DATA;
   

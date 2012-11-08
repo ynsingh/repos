@@ -9,24 +9,24 @@ package com.myapp.struts.hbm;
 public class SerBiolioDetailsId  implements java.io.Serializable {
 
 
-     private String serControlNo;
+     private int serControlNo;
      private String sublibraryId;
      private String libraryId;
 
     public SerBiolioDetailsId() {
     }
 
-    public SerBiolioDetailsId(String serControlNo, String sublibraryId, String libraryId) {
+    public SerBiolioDetailsId(int serControlNo, String sublibraryId, String libraryId) {
        this.serControlNo = serControlNo;
        this.sublibraryId = sublibraryId;
        this.libraryId = libraryId;
     }
    
-    public String getSerControlNo() {
+    public int getSerControlNo() {
         return this.serControlNo;
     }
     
-    public void setSerControlNo(String serControlNo) {
+    public void setSerControlNo(int serControlNo) {
         this.serControlNo = serControlNo;
     }
     public String getSublibraryId() {
@@ -45,27 +45,26 @@ public class SerBiolioDetailsId  implements java.io.Serializable {
     }
 
 
-   public boolean equals(Object other) {
+  public boolean equals(Object other) {
          if ( (this == other ) ) return true;
 		 if ( (other == null ) ) return false;
 		 if ( !(other instanceof SerBiolioDetailsId) ) return false;
-		 SerBiolioDetailsId castOther = ( SerBiolioDetailsId ) other; 
-         
-		 return ( (this.getSerControlNo()==castOther.getSerControlNo()) || ( this.getSerControlNo()!=null && castOther.getSerControlNo()!=null && this.getSerControlNo().equals(castOther.getSerControlNo()) ) )
+		 SerBiolioDetailsId castOther = ( SerBiolioDetailsId ) other;
+
+		 return ( (String.valueOf(this.getSerControlNo())==String.valueOf(castOther.getSerControlNo())) || ( String.valueOf(this.getSerControlNo())!=null &&String.valueOf( castOther.getSerControlNo())!=null && String.valueOf(this.getSerControlNo()).equals(castOther.getSerControlNo()) ) )
  && ( (this.getSublibraryId()==castOther.getSublibraryId()) || ( this.getSublibraryId()!=null && castOther.getSublibraryId()!=null && this.getSublibraryId().equals(castOther.getSublibraryId()) ) )
  && ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) );
    }
-   
+
    public int hashCode() {
          int result = 17;
-         
-         result = 37 * result + ( getSerControlNo() == null ? 0 : this.getSerControlNo().hashCode() );
+
+         result = 37 * result + ( String.valueOf(getSerControlNo()) == null ? 0 : String.valueOf(this.getSerControlNo()).hashCode() );
          result = 37 * result + ( getSublibraryId() == null ? 0 : this.getSublibraryId().hashCode() );
          result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
          return result;
-   }   
+   }
 
 
 }
-
 

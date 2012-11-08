@@ -23,6 +23,7 @@ public class AcqPaymentUpdate3Action extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    AcquisitionDao acqdao=new AcquisitionDao();
     
     
     @Override
@@ -38,11 +39,11 @@ public class AcqPaymentUpdate3Action extends org.apache.struts.action.Action {
         String prn_no[]=list.split(";");
         for(int i=0;i<prn_no.length;i++)
         {
-          List<AcqRequestpaymentDetails> listforupdatedate=AcquisitionDao.searchForPrnList1(library_id, sub_library_id, prn_no[i]);
+          List<AcqRequestpaymentDetails> listforupdatedate=acqdao.searchForPrnList1(library_id, sub_library_id, prn_no[i]);
           for(int j=0;j<listforupdatedate.size();j++)
           {
               listforupdatedate.get(j).setPaymentUpdateDate(prn_date);
-              boolean result=AcquisitionDao.processInPaymentRequestDetail(listforupdatedate.get(j));
+              boolean result=acqdao.processInPaymentRequestDetail(listforupdatedate.get(j));
               if(result==false)
               {
                 request.setAttribute("msg","Date not Updated");
@@ -52,7 +53,7 @@ public class AcqPaymentUpdate3Action extends org.apache.struts.action.Action {
 
         }
 
-       List<PaymentUpdateClass> acqforpaymentupdate1=AcquisitionDao.getDistinctPrn(library_id, sub_library_id);
+       List<PaymentUpdateClass> acqforpaymentupdate1=acqdao.getDistinctPrn(library_id, sub_library_id);
       // if(!acqforpaymentupdate1.isEmpty())
        session.setAttribute("acqforpaymentupdate",acqforpaymentupdate1);
        request.setAttribute("msg","Date Updated");

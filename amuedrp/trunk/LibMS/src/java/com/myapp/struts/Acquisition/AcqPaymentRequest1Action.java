@@ -22,6 +22,7 @@ public class AcqPaymentRequest1Action extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    AcquisitionDao acqdao=new AcquisitionDao();
   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -35,7 +36,7 @@ public class AcqPaymentRequest1Action extends org.apache.struts.action.Action {
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         System.out.println("INVOICE NO="+invoice_no+"ORDER NO="+order_no+"VENDOR ID="+vendor_id);
-        List<AllInvoiceList> allinvoice=AcquisitionDao.getAllInvoice(library_id, sub_library_id,invoice_no,order_no,vendor_id);
+        List<AllInvoiceList> allinvoice=acqdao.getAllInvoice(library_id, sub_library_id,invoice_no,order_no,vendor_id);
         session.setAttribute("allinvoice",allinvoice);
         
         return mapping.findForward(SUCCESS);

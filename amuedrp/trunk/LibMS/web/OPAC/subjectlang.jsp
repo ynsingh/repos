@@ -63,7 +63,8 @@ session.removeAttribute("MLIdocumentDetail");
             if(phy_width==null)phy_width="";
             if(status==null)status="";
             if(accno==null)accno="";
-            DocumentCategory docc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(lib_id, sublib_id, booktype);
+            DocumentCategoryDAO docdao=new DocumentCategoryDAO();
+            DocumentCategory docc = (DocumentCategory)docdao.searchDocumentCategory(lib_id, sublib_id, booktype);
 
             String issuetype ="";
 

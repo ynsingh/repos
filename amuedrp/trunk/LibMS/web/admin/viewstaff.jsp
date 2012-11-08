@@ -58,21 +58,7 @@ locale1=(String)session.getAttribute("locale");
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  
 </head>
-<div
-   style="  top:15%;
-   left:5px;
-   right:5px;
-      position: absolute;
 
-      visibility: show;">
-
-        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS-><%
-        String p=request.getParameter("p");
-         String data=Traker.getActivity(p,(String)session.getAttribute("locale"));
-        out.println(data);
-
-        %></font>
-</div>
 <div
    style="  top:150px;
    left:5px;
@@ -215,17 +201,36 @@ else
 </c:choose>
 </c:forEach>
 </td>
+<td align="right">
+     Export : <a href="<%=request.getContextPath()%>/xlsexport.do"><img src="<%=request.getContextPath()%>/images/excel.jpeg" border="1" height="25" width="25"></a>
 
+    <a href="<%=request.getContextPath()%>/xmlexport.do"> <img src="<%=request.getContextPath()%>/images/xml.jpeg" border="1" height="25" width="25" ></a>
+    <img src="<%=request.getContextPath()%>/images/pdf.jpeg" height="25"border="1" width="25">
+    <a href="<%=request.getContextPath()%>/csvexport.do?format=csv"><img src="<%=request.getContextPath()%>/images/csv.jpg" height="25"border="1" width="25"></a>
+</td>
 </tr>
 </table>
   <%}%>
-  <br><br><br>
+  <%
+String msg=(String)request.getAttribute("msg");
+if(msg!=null){out.println(msg);
+%>
+
+<%
+String login=(String)session.getAttribute("login_id");
+String filename=(String)request.getAttribute("filename");
+ if(login.indexOf(".")>0)
+            login=login.substring(0,login.indexOf("."));
+%>
+<a href="<%=request.getContextPath()%>/export/<%=filename%>" target="_blank">Download it</a>
+<%}%>
+
   </td></tr>
   <tr><td align="center" width="400px">
 <form name="f">
 
     <input type="button" name="b1" value="<%=resource.getString("opac.accountdetails.back")%>" onclick="b1click()" class="txt2">
-   
+  
 </form>
 
       </td></tr></table>

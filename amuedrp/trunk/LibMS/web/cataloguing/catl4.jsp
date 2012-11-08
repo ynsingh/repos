@@ -28,10 +28,11 @@
 %>
 <%
  hm1 = (HashMap)session.getAttribute("hsmp");
-
+if(hm1!=null){
   if(hm1.containsKey("19")){
        bib1=(Biblio)hm1.get("19");
         }
+  }
 %>
 
 
@@ -87,7 +88,7 @@ description[5]='Part of the described materials to which the field applies.ex- <
      <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -211,7 +212,7 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-
+You are on MARC Page : 4 Tag Page
                                       <!-- Marc entries Starts from here . -->
 
 

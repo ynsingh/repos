@@ -23,44 +23,37 @@ import org.apache.struts.action.ActionMapping;
 public class CatAction5 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-    HashMap hm1=new HashMap();
-     private MarcHibDAO marchib=new MarcHibDAO();
+   
+ 
     
-    MarcHibDAO dao=new MarcHibDAO();
-
-    private Biblio biblio=new Biblio();
-    private BiblioId biblioid= new BiblioId();
-
-    private Biblio biblio1=new Biblio();
-    private BiblioId biblioid1= new BiblioId();
-
-    private Biblio biblio2=new Biblio();
-    private BiblioId biblioid2= new BiblioId();
-
-    private Biblio biblio3=new Biblio();
-    private BiblioId biblioid3= new BiblioId();
-
-    private Biblio biblio4=new Biblio();
-    private BiblioId biblioid4= new BiblioId();
-
-
-    private Biblio biblio5=new Biblio();
-    private BiblioId biblioid5= new BiblioId();
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+          HashMap hm1=new HashMap();
+     MarcHibDAO marchib=new MarcHibDAO();
+    
+    MarcHibDAO dao=new MarcHibDAO();
+
+     Biblio biblio=new Biblio();
+     BiblioId biblioid= new BiblioId();
+
+     Biblio biblio1=new Biblio();
+     BiblioId biblioid1= new BiblioId();
+
+     Biblio biblio2=new Biblio();
+     BiblioId biblioid2= new BiblioId();
+
+     Biblio biblio3=new Biblio();
+     BiblioId biblioid3= new BiblioId();
+
+    Biblio biblio4=new Biblio();
+     BiblioId biblioid4= new BiblioId();
+
+
+    Biblio biblio5=new Biblio();
+     BiblioId biblioid5= new BiblioId();
         System.out.println("inside cataction5 !");
         CatActionForm5 caf5=(CatActionForm5)form;
 
@@ -140,6 +133,9 @@ public class CatAction5 extends org.apache.struts.action.Action {
            biblio.setId(biblioid);
 //           marchib.insert(biblio);
 hm1=(HashMap)session.getAttribute("hsmp");
+if(hm1==null)
+    hm1=new HashMap();
+
 if(hm1.containsKey("20")){
             hm1.remove("20");
         }
@@ -290,7 +286,9 @@ if(hm1.containsKey("25")){
  hm1.put("25", biblio5);
 
         System.out.println("All six objects saved now NAvigating to page "+t);
- //code for mapping forwards......
+ session.setAttribute("hsmp", hm1);
+
+        //code for mapping forwards......
          if(t.equals("0"))
         {
             return mapping.findForward("forward0");

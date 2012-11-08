@@ -27,10 +27,10 @@ public class MemberViewAllAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+MemberDAO memdao=new MemberDAO();
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
-         List member=MemberDAO.searchEmployeeType(library_id);
+         List member=memdao.searchEmployeeType(library_id);
 
           if(member.isEmpty() && member==null){
   String msg="You need to Add Members";

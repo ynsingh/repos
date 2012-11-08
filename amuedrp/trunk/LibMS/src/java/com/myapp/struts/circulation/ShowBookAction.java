@@ -48,8 +48,10 @@ public class ShowBookAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 Calendar cal=Calendar.getInstance();
+CirculationDAO cirdao=new CirculationDAO();
+BookCategoryDAO bookdao=new BookCategoryDAO();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
-SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 
 date=sdf.format(cal.getTime());
          HttpSession session=request.getSession();
@@ -85,17 +87,17 @@ date=sdf.format(cal.getTime());
              accession_no=request.getParameter("id1");
 
 System.out.println(memid+"   "+accession_no);
-         DocumentDetails docdetail=CirculationDAO.getBook(library_id,sublibrary_id, accession_no);
+         DocumentDetails docdetail=cirdao.getBook(library_id,sublibrary_id, accession_no);
          if(docdetail!=null)
          {
-         DocumentDetails docdetail1=CirculationDAO.getBookStatus(library_id,sublibrary_id, accession_no);
+         DocumentDetails docdetail1=cirdao.getBookStatus(library_id,sublibrary_id, accession_no);
 
                  if(docdetail1!=null){
-                    CirOpacRequest opacReq = (CirOpacRequest)CirculationDAO.searchCirOpacRequestByMemId(library_id, sublibrary_id, memid, accession_no);
+                    CirOpacRequest opacReq = (CirOpacRequest)cirdao.searchCirOpacRequestByMemId(library_id, sublibrary_id, memid, accession_no);
                 if(opacReq!=null)
                 {
                     opacReq.setStatus("Rejected");
-                   boolean result= CirculationDAO.updateCheckOut(opacReq);
+                   boolean result= cirdao.updateCheckOut(opacReq);
                 }
                  
                 // request.setAttribute("msg1","Item already checked out, Request for Checkout is rejected.");   
@@ -106,7 +108,7 @@ System.out.println(memid+"   "+accession_no);
 
              book_type=docdetail.getBookType();
 
-             CirMemberAccount cmd=(CirMemberAccount)CirculationDAO.getAccount(library_id,sublibrary_id, memid);
+             CirMemberAccount cmd=(CirMemberAccount)cirdao.getAccount(library_id,sublibrary_id, memid);
 
              if(cmd!=null)
              {
@@ -118,7 +120,7 @@ System.out.println(memid+"   "+accession_no);
 
 
 
-             BookCategory membook=(BookCategory)BookCategoryDAO.getMemid(library_id, memtype, sub_memtype,book_type);
+             BookCategory membook=(BookCategory)bookdao.getMemid(library_id, memtype, sub_memtype,book_type);
              if(membook!=null){
              limit=membook.getIssueDaysLimit();}
              else{
@@ -138,11 +140,11 @@ System.out.println(memid+"   "+accession_no);
                return  mapping.findForward("success");
              }
          }else{
-                CirOpacRequest opacReq = (CirOpacRequest)CirculationDAO.searchCirOpacRequestByMemId(library_id, sublibrary_id, memid, accession_no);
+                CirOpacRequest opacReq = (CirOpacRequest)cirdao.searchCirOpacRequestByMemId(library_id, sublibrary_id, memid, accession_no);
                 if(opacReq!=null)
                 {
                     opacReq.setStatus("Rejected");
-                   boolean result= CirculationDAO.updateCheckOut(opacReq);
+                   boolean result= cirdao.updateCheckOut(opacReq);
                 }
 
                // request.setAttribute("msg1","Request for checkout is cancelled due to unavailabilty of document.");

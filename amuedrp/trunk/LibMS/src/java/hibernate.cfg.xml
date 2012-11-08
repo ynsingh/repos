@@ -5,9 +5,9 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-     <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>
- 
-   <mapping resource="com/myapp/struts/hbm/EmployeeType.hbm.xml"/>
+   <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>
+    <property name="show_sql">true</property>
+    <mapping resource="com/myapp/struts/hbm/EmployeeType.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/CirCheckin.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqPrivilege.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqFinalDemandList.hbm.xml"/>
@@ -71,5 +71,5 @@
     <mapping resource="com/myapp/struts/hbm/SerBiolioDetails.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/CancellationReason.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/SerPublisher.hbm.xml"/>
-     </session-factory>
+  </session-factory>
 </hibernate-configuration>

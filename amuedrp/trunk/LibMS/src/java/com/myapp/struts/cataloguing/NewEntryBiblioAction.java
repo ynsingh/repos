@@ -4,7 +4,7 @@
  */
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.BibliographicDetailsId;
 import com.myapp.struts.hbm.DocumentCategory;
@@ -35,7 +35,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
     BibliographicDetails bib2 = new BibliographicDetails();
     BibliographicDetails bib3 = new BibliographicDetails();
     BibliographicDetails bib1 = new BibliographicDetails();
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     DocumentDetails dd = new DocumentDetails();
     DocumentDetailsId ddid = new DocumentDetailsId();
     Locale locale=null;
@@ -46,6 +46,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
         BibliographicDetailEntryActionForm bibform = (BibliographicDetailEntryActionForm) form;
         String button = bibform.getButton();
         System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"+button);
@@ -179,7 +180,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
                 request.setAttribute("msg1", msg2);
                 String msg1 = "";
                 request.setAttribute("msg2", msg1);
-                DocumentCategory doc=(DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id, bib.getBookType());
+                DocumentCategory doc=(DocumentCategory)doccatdao.searchDocumentCategory(library_id, sub_library_id, bib.getBookType());
                         if(doc!=null)
                             bibform.setBook_type(doc.getDocumentCategoryName());
                request.setAttribute("fromjsp", "cat_old_entry1");
@@ -267,7 +268,7 @@ public class NewEntryBiblioAction extends org.apache.struts.action.Action {
         dd.setTitle(bibform.getTitle());
         dd.setDateAcquired(bibform.getDate_acquired1());
         dd.setBibliographicDetails(bib);
-        DocumentCategory dc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bibform.getBook_type());
+        DocumentCategory dc = (DocumentCategory)doccatdao.searchDocumentCategoryByName(library_id, sub_library_id, bibform.getBook_type());
                     if(dc!=null)
                         dd.setBookType(dc.getId().getDocumentCategoryId());
                     else

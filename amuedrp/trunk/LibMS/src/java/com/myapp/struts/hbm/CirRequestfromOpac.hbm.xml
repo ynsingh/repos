@@ -1,144 +1,143 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.CirRequestfromOpac" table="cir_requestfrom_opac" catalog="libms">
-        <id name="registrationId" type="java.lang.Integer">
-            <column name="registration_id" />
-            <generator class="identity" />
-        </id>
-        <property name="libraryId" type="string">
-            <column name="library_id" length="50" not-null="true" />
-        </property>
-        <property name="memId" type="string">
-            <column name="memId" length="70" not-null="true" />
-        </property>
-        <property name="subMemberType" type="string">
-            <column name="sub_member_type" length="25" />
-        </property>
-        <property name="fname" type="string">
-            <column name="fname" length="50" />
-        </property>
-        <property name="mname" type="string">
-            <column name="mname" length="40" />
-        </property>
-        <property name="lname" type="string">
-            <column name="lname" length="40" />
-        </property>
-        <property name="address1" type="string">
-            <column name="address1" length="200" />
-        </property>
-        <property name="address2" type="string">
-            <column name="address2" length="200" />
-        </property>
-        <property name="city1" type="string">
-            <column name="city1" length="50" />
-        </property>
-        <property name="state1" type="string">
-            <column name="state1" length="50" />
-        </property>
-        <property name="pin1" type="string">
-            <column name="pin1" length="15" />
-        </property>
-        <property name="country1" type="string">
-            <column name="country1" length="60" />
-        </property>
-        <property name="city2" type="string">
-            <column name="city2" length="50" />
-        </property>
-        <property name="state2" type="string">
-            <column name="state2" length="50" />
-        </property>
-        <property name="pin2" type="string">
-            <column name="pin2" length="15" />
-        </property>
-        <property name="country2" type="string">
-            <column name="country2" length="60" />
-        </property>
-        <property name="email" type="string">
-            <column name="email" length="100" />
-        </property>
-        <property name="fax" type="string">
-            <column name="fax" length="100" />
-        </property>
-        <property name="phone1" type="string">
-            <column name="phone1" length="15" />
-        </property>
-        <property name="phone2" type="string">
-            <column name="phone2" length="15" />
-        </property>
-        <property name="memGroup" type="string">
-            <column name="mem_group" length="20" />
-        </property>
-        <property name="altGroup" type="string">
-            <column name="alt_group" length="20" />
-        </property>
-        <property name="accessLevel" type="string">
-            <column name="access_level" length="20" />
-        </property>
-        <property name="supervisior" type="string">
-            <column name="supervisior" length="20" />
-        </property>
-        <property name="manager" type="string">
-            <column name="manager" length="20" />
-        </property>
-        <property name="remainder" type="string">
-            <column name="remainder" length="20" />
-        </property>
-        <property name="location" type="string">
-            <column name="location" length="70" />
-        </property>
-        <property name="memType" type="string">
-            <column name="mem_type" length="20" />
-        </property>
-        <property name="requestdate" type="string">
-            <column name="requestdate" length="15" />
-        </property>
-        <property name="facultyId" type="string">
-            <column name="faculty_id" length="20" />
-        </property>
-        <property name="deptId" type="string">
-            <column name="dept_id" length="20" />
-        </property>
-        <property name="rollno" type="string">
-            <column name="rollno" length="40" />
-        </property>
-        <property name="category" type="string">
-            <column name="category" length="20" />
-        </property>
-        <property name="course" type="string">
-            <column name="course" length="20" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="10" />
-        </property>
-        <property name="password" type="string">
-            <column name="password" length="15" />
-        </property>
-        <property name="regDate" type="string">
-            <column name="reg_date" length="20" />
-        </property>
-        <property name="expDate" type="string">
-            <column name="exp_date" length="20" />
-        </property>
-          <property name="image" type="string">
-            <column name="image"  length="200"/>
-        </property>
-        <property name="courseYear" type="string">
-            <column name="Course_Year" length="10" />
-        </property>
-        <property name="semester" type="string">
-            <column name="semester" length="10" />
-        </property>
-        <property name="office" type="string">
-            <column name="office" length="100" />
-        </property>
-        <property name="desg" type="string">
-            <column name="desg" length="100" />
-        </property>
-        <property name="sublibraryId" type="string">
-            <column name="sublibrary_id" length="20" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.CirRequestfromOpac" table="cir_requestfrom_opac">
+    <id name="registrationId" type="java.lang.Integer">
+      <column name="registration_id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="libraryId" type="string">
+      <column length="50" name="library_id" not-null="true"/>
+    </property>
+    <property name="memId" type="string">
+      <column length="70" name="memId" not-null="true"/>
+    </property>
+    <property name="subMemberType" type="string">
+      <column length="25" name="sub_member_type"/>
+    </property>
+    <property name="fname" type="string">
+      <column length="50" name="fname"/>
+    </property>
+    <property name="mname" type="string">
+      <column length="40" name="mname"/>
+    </property>
+    <property name="lname" type="string">
+      <column length="40" name="lname"/>
+    </property>
+    <property name="address1" type="string">
+      <column length="200" name="address1"/>
+    </property>
+    <property name="address2" type="string">
+      <column length="200" name="address2"/>
+    </property>
+    <property name="city1" type="string">
+      <column length="50" name="city1"/>
+    </property>
+    <property name="state1" type="string">
+      <column length="50" name="state1"/>
+    </property>
+    <property name="pin1" type="string">
+      <column length="15" name="pin1"/>
+    </property>
+    <property name="country1" type="string">
+      <column length="60" name="country1"/>
+    </property>
+    <property name="city2" type="string">
+      <column length="50" name="city2"/>
+    </property>
+    <property name="state2" type="string">
+      <column length="50" name="state2"/>
+    </property>
+    <property name="pin2" type="string">
+      <column length="15" name="pin2"/>
+    </property>
+    <property name="country2" type="string">
+      <column length="60" name="country2"/>
+    </property>
+    <property name="email" type="string">
+      <column length="100" name="email"/>
+    </property>
+    <property name="fax" type="string">
+      <column length="100" name="fax"/>
+    </property>
+    <property name="phone1" type="string">
+      <column length="15" name="phone1"/>
+    </property>
+    <property name="phone2" type="string">
+      <column length="15" name="phone2"/>
+    </property>
+    <property name="memGroup" type="string">
+      <column length="20" name="mem_group"/>
+    </property>
+    <property name="altGroup" type="string">
+      <column length="20" name="alt_group"/>
+    </property>
+    <property name="accessLevel" type="string">
+      <column length="20" name="access_level"/>
+    </property>
+    <property name="supervisior" type="string">
+      <column length="20" name="supervisior"/>
+    </property>
+    <property name="manager" type="string">
+      <column length="20" name="manager"/>
+    </property>
+    <property name="remainder" type="string">
+      <column length="20" name="remainder"/>
+    </property>
+    <property name="location" type="string">
+      <column length="70" name="location"/>
+    </property>
+    <property name="memType" type="string">
+      <column length="20" name="mem_type"/>
+    </property>
+    <property name="requestdate" type="string">
+      <column length="15" name="requestdate"/>
+    </property>
+    <property name="facultyId" type="string">
+      <column length="20" name="faculty_id"/>
+    </property>
+    <property name="deptId" type="string">
+      <column length="20" name="dept_id"/>
+    </property>
+    <property name="rollno" type="string">
+      <column length="40" name="rollno"/>
+    </property>
+    <property name="category" type="string">
+      <column length="20" name="category"/>
+    </property>
+    <property name="course" type="string">
+      <column length="20" name="course"/>
+    </property>
+    <property name="status" type="string">
+      <column length="10" name="status"/>
+    </property>
+    <property name="password" type="string">
+      <column length="15" name="password"/>
+    </property>
+    <property name="regDate" type="string">
+      <column length="20" name="reg_date"/>
+    </property>
+    <property name="expDate" type="string">
+      <column length="20" name="exp_date"/>
+    </property>
+    <property name="image" type="string">
+      <column length="200" name="image"/>
+    </property>
+    <property name="courseYear" type="string">
+      <column length="10" name="Course_Year"/>
+    </property>
+    <property name="semester" type="string">
+      <column length="10" name="semester"/>
+    </property>
+    <property name="office" type="string">
+      <column length="100" name="office"/>
+    </property>
+    <property name="desg" type="string">
+      <column length="100" name="desg"/>
+    </property>
+    <property name="sublibraryId" type="string">
+      <column length="20" name="sublibrary_id"/>
+    </property>
+  </class>
 </hibernate-mapping>

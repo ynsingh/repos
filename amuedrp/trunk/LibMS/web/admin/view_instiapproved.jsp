@@ -14,12 +14,36 @@
 
     <title>View All Registered Institute List: LibMS</title>
 
+    <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 </head>
 
-<body>
+<body style="margin: 0px 0px 0px 0px" >
  
 <%!
    
@@ -71,6 +95,15 @@ System.out.println("tcount="+tcount);
 
 %>
 <script>
+    function fun()
+        {
+
+            document.form1.action="<%=request.getContextPath()%>/admin/language.jsp";
+            document.form1.submit();
+        }
+
+
+
     function changerec(){
         var x=document.getElementById('rec').value;
     var loc = window.location;
@@ -102,67 +135,7 @@ function isNumberKey(evt)
          return true;
       }
     </script>
-       
-<%
-   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex + perpage) >= requestList.size ())
-   toIndex = requestList.size();
-   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
-%>
-<table align="center" width="100%"   dir="<%=rtl%>" >
-       <tr  ><td  valign="bottom" height="10%"   colspan="2" >
 
-
-
-
-
-    <img src="<%=request.getContextPath()%>/images/bp.PNG" alt="banner space"  border="0" align="<%=align%>" dir="<%=rtl%>" id="Image1" style="height:50px;width:200px;">
-                                <br>
-
-
-                            </td>
-                            <td align="right" valign="bottom" >
-                                <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="">
-                </td>
-
-            </tr>
-            <tr><td colspan="3" align="center">Registered Institute List</td></tr>
-</table><hr>
- Total Institute [<%=rs.size()%>]
-<br><br>
-<%if(tcount==0)
-{%>
-<p class="err" style="font-size:12px">No Record Found</p>
-<%}
-else
-{%>
-
-
-<%!
-    Locale locale=null;
-    String locale1="en";
-    String rtl="ltr";
-    boolean page=true;
-    String align="left";
-%>
-<%
-try{
-locale1=(String)session.getAttribute("locale");
-
-    if(session.getAttribute("locale")!=null)
-    {
-        locale1 = (String)session.getAttribute("locale");
-       // System.out.println("locale="+locale1);
-    }
-    else locale1="en";
-}catch(Exception e){locale1="en";}
-     locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
-    else{ rtl="RTL";page=false;align="right";}
-    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-
-    %>
 
 <%
   String RegistrationID=resource.getString("admin.viewpending.registrationid");
@@ -175,19 +148,71 @@ pageContext.setAttribute("rec",perpage);
 
 
 %>
-  <table class="datagrid" width="100%" style="border:dashed 1px cyan;">
-            <tr class="header">
-                <td>Logo</td>
+       
+<%
+   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
+   if ((toIndex = fromIndex + perpage) >= requestList.size ())
+   toIndex = requestList.size();
+   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("tCount", tcount);
+%>
+ <form name="form1" method="post">
+<table align="center" width="100%" height="100%" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" dir="<%=rtl%>" >
+      <tr><td class="homepage" style="background-color: black;color:white;height: 10px;" align="right" colspan="2">
+
+
+
+         <a style="color:white" href="<%=request.getContextPath()%>">Home</a>&nbsp;|&nbsp;     <a style="color:white" href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx">NME-ICT ERP Mission</a>&nbsp;|&nbsp;<a  style="color:white" href="<%=request.getContextPath()%>/contactus.jsp">Contact Us</a>&nbsp;|&nbsp; <a style="color:white" href="<%=request.getContextPath()%>/admin/admin_registration.jsp"><%= resource.getString("login.href.institute.registration") %></a>
+         &nbsp;|&nbsp;            <a style="color:white" href="<%=request.getContextPath()%>/relnotes.jsp">   Release Notes</a>&nbsp;|&nbsp;  <a style="color:white" href="instantUserManual_LibMS-2012.pdf">UserManual</a>&nbsp;|&nbsp; <a style="color:white" href="<%=request.getContextPath()%>/admin/view_instiapproved.jsp">View All Registered Institutes</a>&nbsp;|&nbsp;<%=resource.getString("login.message.selectlanguage")%><select name="locale" class="selecthome" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select>
+
+
+
+                                         </td>
+
+                                     </tr>
+                                     <tr ><td height="25px;">
+                                     <table width="100%" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;"><tr>
+                                         <td align="left"  style="background-color: white;color:blue;height: 50px;  margin: 0px 0px 0px 0px;font-style: italic;font-size: 18px;valign:bottom" valign="bottom" align="center">
+
+                                             &nbsp;&nbsp;<span style="font-style: italic;font-size: 18px;">LibMS....</span>        "<%=resource.getString("login.message.logo.under")%>"
+
+
+
+
+                            </td>
+                            <td align="right">
+  <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="height:70px;width:160px;">
+
+                            </td>
+
+
+                                         </tr></table>
+                                          <hr color="cyan">
+                                         </td>
+
+           </tr>
+          
+<tr><td colspan="2" height="20px"  align="center" valign="top">
+
+Registered Institute List : Total Institute [<%=rs.size()%>]<br>
+
+
+
+
+                </td></tr>
+ 
+<tr><td colspan="2" valign="top" align="center">
+  <table   width="50%" style="border:dashed 1px cyan;font-family: arial;">
+      
+            <tr >
+                
+                <td>Sno</td>
+
               <td   >
                   <i>Institute Name</i></td>
-              <td   >
-                         <i>Library Name</i></td>
-              <td   >
-                         <i>Address</i></td>
+              
               <td   >
                          <i>Institute Admin</i></td>
-              <td   >
-                         <i>Email Id</i></td>
               
 
 
@@ -198,32 +223,40 @@ pageContext.setAttribute("rec",perpage);
 
         <tr>
             <%}else{%>
-        <tr class="alternaterows">
+        <tr >
             <%}%>
-            <td><img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=requestList.get(i).getLogo() %>" alt="no image selected" width="120" height="120" border="1" /></td>
-            <td    style="border-top:dashed 1px cyan;"><%=requestList.get(i).getInstitute_name() %></td>
-            <td   style="border-top:dashed 1px cyan;"><%=requestList.get(i).getLibrary_name() %></td>
-            <td    style="border-top:dashed 1px cyan;"><%=requestList.get(i).getCity() %></td>
-            <td    style="border-top:dashed 1px cyan;"><%=requestList.get(i).getUser_name() %></td>
-            <td    style="border-top:dashed 1px cyan;"><%=requestList.get(i).getAdmin_email() %></td>
+            <td valign="middle" style="border-top:dashed 1px cyan;"><%=i+1%>.</td>
+            
+            <td valign="top"    style="border-top:dashed 1px cyan;">
+                <table><tr><td>
+                <img src="<%=request.getContextPath()%>/admin/logo1.jsp?x=<%=requestList.get(i).getLogo() %>" alt="no image selected" width="80" height="80" border="1" />
+                        </td><td>
+                <b><%=requestList.get(i).getInstitute_name() %></b><br>
+            <%=requestList.get(i).getLibrary_name() %><br>
+            <%=requestList.get(i).getCity() %>
+                        </td></tr></table>
+            </td>
+            
+            <td valign="middle"   style="border-top:dashed 1px cyan;"><%=requestList.get(i).getUser_name() %>
+            <br><%=requestList.get(i).getAdmin_email() %></td>
             
         </tr>
         <%}%>
     </table>
 
-
-<table align="center" width="100%"   dir="<%=rtl%>" ><tr><td align="center">
-  </td></tr></table>
+    </td></tr></table>
 
 
-<%}}else{
+
+<%}else{
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
- 
+
+</form>
     </body>
 
-
+<jsp:include page="/OPAC/opacfooter.jsp"/>
 
 </html>
 

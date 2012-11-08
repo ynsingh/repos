@@ -6,6 +6,7 @@
 
 
 }
+
 .homepage a{
     text-decoration: none;
     color:black;
@@ -376,8 +377,32 @@ font-weight:bold;
      .hiliterows    { background-color: white; color: black; font-weight: bold;height:30px; }
      .alternaterows { background-color: #efefef;height:30px; }
      .header        { 
-                     background-color: blue;
-                     color: white;font-weight: bold;padding-left: 5px;height:30px;}
+                     /*background-color: blue;
+                     color: white;font-weight: bold;padding-left: 5px;height:30px;*/
+      color: white;font-weight: bold;text-align:center;height:20px;background-color: blue;
+ border-top:dashed 1px cyan;border-bottom: dashed 1px cyan;border-right: dashed 1px cyan;
+     }
+     .superadmingridheader        {
+              background-color: cyan;
+              line-height: 18px;
+     }
+     .superadmingridfooter        {
+              border:solid 1px cyan;
+              line-height: 13px;
+              font-family: arial;
+              font-size: 12px;
+              font-weight: bold;
+     }
+     .superadmingridpage{
+              border:solid 2px cyan;
+              line-height: 16px;
+              font-family: arial;
+              font-size: 12px;
+              font-weight: bold;
+              color:black;
+              text-decoration: none;
+              
+}
  .header1        {
 
                      color: black;font-weight: bold;text-align:center;height:20px;

@@ -37,7 +37,8 @@ public class DocumentCategoryAddAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
+CirculationDAO cirdao=new CirculationDAO();
          HttpSession session=request.getSession();
           try{
 
@@ -64,7 +65,7 @@ public class DocumentCategoryAddAction extends org.apache.struts.action.Action {
         DocumentCategoryId li=new DocumentCategoryId();
         if(button.equals("Submit"))
         {
-        DocumentCategory dcheck=DocumentCategoryDAO.searchDocumentCategoryByName(library_id,sub_library_id,docname);
+        DocumentCategory dcheck=doccatdao.searchDocumentCategoryByName(library_id,sub_library_id,docname);
         if(dcheck==null){
         l.setDocumentCategoryName(docname);
         l.setIssueCheck(lf.getIssue_check());
@@ -72,7 +73,7 @@ public class DocumentCategoryAddAction extends org.apache.struts.action.Action {
         li.setSublibraryId(sub_library_id);
         li.setDocumentCategoryId(doc_category_id);
         l.setId(li);
-        DocumentCategoryDAO.insert(l);
+        doccatdao.insert(l);
 
         //request.setAttribute("msg", "Data is saved successfully");
         request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recinsesucc"));
@@ -90,7 +91,7 @@ public class DocumentCategoryAddAction extends org.apache.struts.action.Action {
 
             if(lf.getIssue_check().equals("NotIssuable"))
             {
-            List<MixDocumentType> checkout=CirculationDAO.getDocument_Cat_Details(library_id, sub_library_id,lf.getDocument_category_id());
+            List<MixDocumentType> checkout=cirdao.getDocument_Cat_Details(library_id, sub_library_id,lf.getDocument_category_id());
             if(!checkout.isEmpty())
             {
                 System.out.println("Not Working..................");
@@ -120,14 +121,14 @@ public class DocumentCategoryAddAction extends org.apache.struts.action.Action {
         li.setSublibraryId(sub_library_id);
         li.setDocumentCategoryId(doc_category_id);
         l.setId(li);
-        DocumentCategoryDAO.update(l);
+        doccatdao.update(l);
         // request.setAttribute("msg", "Data is updated successfully");
         request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatesucc"));
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Delete")){
 
-        List<DocumentDetails> doc=(List<DocumentDetails>)DocumentCategoryDAO.searchDocumentDetailByDocumentCategory(library_id, sub_library_id, doc_category_id);
+        List<DocumentDetails> doc=(List<DocumentDetails>)doccatdao.searchDocumentDetailByDocumentCategory(library_id, sub_library_id, doc_category_id);
         if(!doc.isEmpty()){
          System.out.println("Not Working..................");
 
@@ -138,7 +139,7 @@ public class DocumentCategoryAddAction extends org.apache.struts.action.Action {
 
         }
 
-            List<MixDocumentType> checkout=CirculationDAO.getDocument_Cat_Details(library_id, sub_library_id,lf.getDocument_category_id());
+            List<MixDocumentType> checkout=cirdao.getDocument_Cat_Details(library_id, sub_library_id,lf.getDocument_category_id());
             if(!checkout.isEmpty())
             {
                 System.out.println("Not Working..................");
@@ -166,7 +167,7 @@ public class DocumentCategoryAddAction extends org.apache.struts.action.Action {
         li.setSublibraryId(sub_library_id);
         li.setDocumentCategoryId(doc_category_id);
         l.setId(li);
-        DocumentCategoryDAO.delete(library_id, sub_library_id,doc_category_id);
+        doccatdao.delete(library_id, sub_library_id,doc_category_id);
 
         // request.setAttribute("msg", "Data is deleted successfully");
         request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recdelsucc"));

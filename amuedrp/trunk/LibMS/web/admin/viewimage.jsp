@@ -2,7 +2,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
-AdminRegistration admin=AdminRegistrationDAO.searchInstitute((String)session.getAttribute("library_id"));
+AdminRegistrationDAO admindao=new AdminRegistrationDAO();
+AdminRegistration admin=admindao.searchInstitute((String)session.getAttribute("library_id"));
 
 byte[] bytes=UserLog.getBytesFromFile(AppPath.getProjectPropertiesImagePath()+admin.getInstiLogo());
 if(bytes==null)

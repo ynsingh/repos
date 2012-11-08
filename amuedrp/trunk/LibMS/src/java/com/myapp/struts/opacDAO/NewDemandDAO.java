@@ -93,7 +93,7 @@ session.getTransaction().commit();
     }
 
 
-  public static Notices ViewNotice(String library_id,String sublibrary_id,String notice_id) {
+  public  Notices ViewNotice(String library_id,String sublibrary_id,String notice_id) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
        Notices obj = null;
         System.out.println("LibraryID="+library_id+" SublibraryId="+sublibrary_id+" noticeId="+notice_id);
@@ -119,9 +119,9 @@ return obj;
 }
 
 
-    public static List Notice(String library_id,String sub_lib)
+    public  List<Notices> Notice(String library_id,String sub_lib)
     {
-        List obj=null;
+        List<Notices> obj=null;
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -156,45 +156,58 @@ return obj;
 
 
 
-    public static List NewArrival(String library_id,String sub_lib,String year1,String year2,String cat,int pageNumber)
+    public  List NewArrival(String library_id,String sub_lib,String year1,String year2,String cat,int pageNumber)
     {
        List obj=null;
+       OpacSearchDAO opac=new OpacSearchDAO();
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
          hsession.beginTransaction();
-           Criteria criteria = hsession.createCriteria(BibliographicDetails.class, "aliasOfTableA");
+            String query="select distinct a from BibliographicDetails as a right join a.documentDetailses as l where  (a.entryLanguage is null or a.entryLanguage='') ";
 
-                    if(!library_id.equalsIgnoreCase("all"))
-                        criteria.add(Restrictions.eq("aliasOfTableA.id.libraryId",library_id ));
-                    if(!sub_lib.equalsIgnoreCase("all"))
-                        criteria.add(Restrictions.eq("aliasOfTableA.id.sublibraryId",sub_lib ));
 
-                  
-         if(!cat.equalsIgnoreCase("all"))
-         criteria.add(Restrictions.eq("aliasOfTableA.documentType",cat));
+
+            query+=" and  a.documentType='"+cat+"'";
+
+
+         if(!library_id.equalsIgnoreCase("all"))
+            query+=" and   a.id.libraryId='"+library_id+"' ";
+
+
+             if(!sub_lib.equalsIgnoreCase("all"))
+                   query+=" and a.id.sublibraryId='"+sub_lib+"' ";
+            
+
             System.out.println(year1  +  " <  "+year2+library_id+sub_lib);
          if(year1!=null){
 
-         criteria.add(Restrictions.ge("aliasOfTableA.dateAcquired",year1));
+                query+=" and a.dateAcquired>="+year1;
          }
-        //  get Total Size
-            OpacSearchDAO.setSearchSize(criteria.list());
 
 
-            
-            
-              if(pageNumber==0)
+
+System.out.println(query);
+
+           Query simple=hsession.createQuery(query);
+
+
+             //Total Number of Record Found View in OPAC
+            opac.setSearchSize(simple.list());
+             if(pageNumber==0)
                 {
-                    criteria = criteria.setFirstResult(0);
-                    criteria.setMaxResults(100);
-                    obj=criteria.list();
+                    simple = simple.setFirstResult(0);
+                    simple.setMaxResults(100);
+                    obj=(List)simple.list();
                 }
                 else
                 {
-                    CriteriaPagingAction o=new CriteriaPagingAction(criteria,pageNumber,100);
-                    obj=o.getList();
+                    PagingAction o=new PagingAction(simple,pageNumber,100);
+                    obj=(List)o.getList();
                 }
+
+
+      
 hsession.getTransaction().commit();
         }
         catch(Exception e)
@@ -210,7 +223,7 @@ hsession.getTransaction().commit();
    }
 
 
-  public static  boolean insert2(Feedback obj)
+  public   boolean insert2(Feedback obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -244,7 +257,7 @@ hsession.getTransaction().commit();
 }
 
 
-    public static  boolean insert(Demandlist obj)
+    public   boolean insert(Demandlist obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -253,7 +266,7 @@ hsession.getTransaction().commit();
         try
         {
             tx = (Transaction) session.beginTransaction();
-
+System.out.println("In Insert Case DAO");
             session.save(obj);
             tx.commit();
 
@@ -277,7 +290,7 @@ hsession.getTransaction().commit();
 
 }
 
-       public static  boolean insert1(Reservationlist obj)
+       public   boolean insert1(Reservationlist obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -309,7 +322,7 @@ hsession.getTransaction().commit();
 
 
 }
-     public static Demandlist getDemandList(String library_id,String sublibrary_id,String memid,String title,String status) {
+     public  Demandlist getDemandList(String library_id,String sublibrary_id,String memid,String title,String status) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
         Demandlist obj=null;
        
@@ -336,7 +349,7 @@ return obj;
      }
 
 
-       public static List getMaxReservationId(String library_id,String sublibrary_id,String memId) {
+       public  List getMaxReservationId(String library_id,String sublibrary_id,String memId) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
         List obj=null;
         try {

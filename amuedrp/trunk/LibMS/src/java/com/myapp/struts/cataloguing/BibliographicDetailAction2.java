@@ -4,7 +4,7 @@
  */
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.systemsetupDAO.*;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.DocumentCategory;
@@ -21,12 +21,13 @@ import org.apache.struts.action.ActionMapping;
  */
 public class BibliographicDetailAction2 extends org.apache.struts.action.Action {
 
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
         BibliographicDetailEntryActionForm1 bibform = (BibliographicDetailEntryActionForm1) form;
         HttpSession session1 = request.getSession();
         String library_id = (String) session1.getAttribute("library_id");
@@ -64,7 +65,7 @@ public class BibliographicDetailAction2 extends org.apache.struts.action.Action 
         bibform.setSer_note(bib.getSeries());
         bibform.setAccession_type(bib.getAccessionType());
         bibform.setLanguage(bib.getEntryLanguage());
-        DocumentCategory doc=DocumentCategoryDAO.searchDocumentCategory(library_id, sub_library_id,bib.getBookType());
+        DocumentCategory doc=doccatdao.searchDocumentCategory(library_id, sub_library_id,bib.getBookType());
 
 if(doc!=null){
         bibform.setBook_type(doc.getDocumentCategoryName());

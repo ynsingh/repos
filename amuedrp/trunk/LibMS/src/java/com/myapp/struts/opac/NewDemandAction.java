@@ -36,7 +36,7 @@ public class NewDemandAction extends org.apache.struts.action.Action {
 
 
    HttpSession session=request.getSession();
-
+NewDemandDAO newdemanddao=new NewDemandDAO();
    NewDemandActionForm myform = (NewDemandActionForm)form;
 
    Calendar cal = new GregorianCalendar();
@@ -55,7 +55,7 @@ public class NewDemandAction extends org.apache.struts.action.Action {
         title=myform.getTXTTITLE();
 
 
-        Demandlist demandobj=(Demandlist)NewDemandDAO.getDemandList(library_id,sublibrary_id,memid,title,"pending");
+        Demandlist demandobj=(Demandlist)newdemanddao.getDemandList(library_id,sublibrary_id,memid,title,"pending");
         if(demandobj!=null){
 
             request.setAttribute("msg", "Demand List For Given Title Already Send and Is Under Processing");
@@ -123,13 +123,13 @@ req_date=date;
         {
 
 
-            request.setAttribute("msg", "Record Inserted Successfully");
+            request.setAttribute("msg", "Demand List Successfully send to circulation Division for further processing");
             return mapping.findForward("success");
 
         }
         else
         {
-            request.setAttribute("msg", "Record Not Inserted");
+            request.setAttribute("msg", "Sorry Activity as some problem");
             return mapping.findForward("error");
         }
 

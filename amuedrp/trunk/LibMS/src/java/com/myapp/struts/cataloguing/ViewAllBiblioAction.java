@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 /**
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
  */
 public class ViewAllBiblioAction extends org.apache.struts.action.Action {
     
-    BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao=new BibliographicEntryDAO();
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,

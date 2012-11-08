@@ -5,8 +5,6 @@
 
 package com.myapp.struts.circulation;
 
-import com.myapp.struts.systemsetupDAO.BookCategoryDAO;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,13 +12,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.myapp.struts.CirDAO.CirculationDAO;
-import com.myapp.struts.hbm.BookCategory;
-import com.myapp.struts.hbm.CirMemberAccount;
-import com.myapp.struts.hbm.DocumentCategory;
-import com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;
-import com.myapp.struts.utility.DateCalculation;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 /**
  *
@@ -43,6 +35,8 @@ public class SearchCallnoForBookAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+
+     
         HttpSession session=request.getSession();
 
           String call_no = request.getParameter("getCallNo");
@@ -73,10 +67,12 @@ public class SearchCallnoForBookAction extends org.apache.struts.action.Action {
        
     }
     public String getCallNo (String library_id,String sublibrary_id,String call_no) {
-StringBuffer dept_ids = new StringBuffer();
+   CirculationDAO cirdao=new CirculationDAO();
+
+        StringBuffer dept_ids = new StringBuffer();
 
 try {
- String document_category=CirculationDAO.DistinctDocType(library_id, sublibrary_id, call_no);
+ String document_category=cirdao.DistinctDocType(library_id, sublibrary_id, call_no);
 
 
 dept_ids.append("<course_ids>");

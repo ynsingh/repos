@@ -6,16 +6,10 @@
 package com.myapp.struts.Acquisition;
 
 import com.myapp.struts.AcquisitionDao.AcqCurrencyDao;
-import com.myapp.struts.AcquisitionDao.BudgetDAO;
-import com.myapp.struts.hbm.AcqBudget;
-import com.myapp.struts.hbm.AcqBudgetId;
 import com.myapp.struts.hbm.BaseCurrency;
 import com.myapp.struts.hbm.AcqCurrency;
 
 import com.myapp.struts.hbm.BaseCurrencyId;
-import com.myapp.struts.hbm.Location;
-import com.myapp.struts.hbm.LocationId;
-import com.myapp.struts.systemsetupDAO.LocationDAO;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +26,7 @@ public class AcqUpdateBaseCurrency extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    AcqCurrencyDao acqcurrdao=new AcqCurrencyDao();
   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -54,7 +48,7 @@ public class AcqUpdateBaseCurrency extends org.apache.struts.action.Action {
         
         
         if(button.equals("Submit")){
-            BaseCurrency lcheck = (BaseCurrency)AcqCurrencyDao.getCurrencyByName(library_id,base_currency_symbol);
+            BaseCurrency lcheck = (BaseCurrency)acqcurrdao.getCurrencyByName(library_id,base_currency_symbol);
         if(lcheck==null){
         l.setDirection(lf.getDirection());
         l.setFormalName(lf.getFormal_name());
@@ -63,7 +57,7 @@ public class AcqUpdateBaseCurrency extends org.apache.struts.action.Action {
         
         
         l.setId(li);
-        AcqCurrencyDao.insert(l);
+        acqcurrdao.insert(l);
         request.setAttribute("msg", "Data is saved successfully");
         session.removeAttribute("backlocation");
         }else
@@ -73,7 +67,7 @@ public class AcqUpdateBaseCurrency extends org.apache.struts.action.Action {
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Update")){
-            BaseCurrency lcheck = (BaseCurrency)AcqCurrencyDao.getCurrencyByName(library_id, base_currency_symbol);
+            BaseCurrency lcheck = (BaseCurrency)acqcurrdao.getCurrencyByName(library_id, base_currency_symbol);
         if(lcheck!=null)
             if(!lcheck.getId().getBaseCurrencySymbol().equals(base_currency_symbol))
             {
@@ -86,21 +80,21 @@ public class AcqUpdateBaseCurrency extends org.apache.struts.action.Action {
         
         li.setBaseCurrencySymbol(lf.getBase_currency_symbol());
         l.setId(li);
-        AcqCurrencyDao.update(l);
+        acqcurrdao.update(l);
         request.setAttribute("msg", "Data is updated successfully");
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Delete"))
         {
 
-        List<AcqCurrency> curr=(List<AcqCurrency>)AcqCurrencyDao.getCurrencyList(library_id, base_currency_symbol);
+        List<AcqCurrency> curr=(List<AcqCurrency>)acqcurrdao.getCurrencyList(library_id, base_currency_symbol);
         if(!curr.isEmpty()){
          request.setAttribute("msg1", "Exchnage Rate Set For Base Currency Data cannot deleted");
         return mapping.findForward(SUCCESS);
 
         }
 
-        AcqCurrencyDao.delete(library_id, base_currency_symbol);
+        acqcurrdao.delete(library_id, base_currency_symbol);
         request.setAttribute("msg", "Data is deleted successfully");
         return mapping.findForward(SUCCESS);
         }

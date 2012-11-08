@@ -13,15 +13,17 @@ public class AcqInvoiceDetailId  implements java.io.Serializable {
      private String libraryId;
      private String subLibraryId;
      private String recievingNo;
+     private int recievingItemId;
 
     public AcqInvoiceDetailId() {
     }
 
-    public AcqInvoiceDetailId(String invoiceNo, String libraryId, String subLibraryId, String recievingNo) {
+    public AcqInvoiceDetailId(String invoiceNo, String libraryId, String subLibraryId, String recievingNo,int recievingItemId) {
        this.invoiceNo = invoiceNo;
        this.libraryId = libraryId;
        this.subLibraryId = subLibraryId;
        this.recievingNo = recievingNo;
+       this.recievingItemId=recievingItemId;
     }
    
     public String getInvoiceNo() {
@@ -52,6 +54,15 @@ public class AcqInvoiceDetailId  implements java.io.Serializable {
     public void setRecievingNo(String recievingNo) {
         this.recievingNo = recievingNo;
     }
+
+    public int getRecievingItemId() {
+        return recievingItemId;
+    }
+
+    public void setRecievingItemId(int recievingItemId) {
+        this.recievingItemId = recievingItemId;
+    }
+
 
 
    public boolean equals(Object other) {

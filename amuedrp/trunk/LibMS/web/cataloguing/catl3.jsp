@@ -33,7 +33,7 @@
 %>
 <%
  hm1 = (HashMap)session.getAttribute("hsmp");
-
+if(hm1!=null){
   if(hm1.containsKey("15")){
        bib1=(Biblio)hm1.get("15");
         }
@@ -43,6 +43,7 @@
    if(hm1.containsKey("18")){
        bib3=(Biblio)hm1.get("18");
         }
+  }
 %>
 
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/ddtabmenufiles/solidblocksmenu.css" />
@@ -113,7 +114,7 @@ description[12]='Part of the described materials to which the field applies. ex-
      <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -237,7 +238,7 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-
+You are on MARC Page : 3 Tag Page
                                       <!-- Marc entries Starts from here . -->
 
 <div>

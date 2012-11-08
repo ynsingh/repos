@@ -24,7 +24,7 @@ String institute_id=(String)session.getAttribute("library_id");
 if(institute_id!=null){
 out.println(id);
 %>
-<jsp:forward page="view3.do">
+<jsp:forward page="./../view3.do">
     <jsp:param name="id" value="<%=id%>"/>
 </jsp:forward>
 

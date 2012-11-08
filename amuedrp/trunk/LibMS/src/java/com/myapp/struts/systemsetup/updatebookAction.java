@@ -33,7 +33,7 @@ public class updatebookAction extends org.apache.struts.action.Action {
             throws Exception {
      BookCategoryDecideActionForm1 bcda  =(BookCategoryDecideActionForm1)form;
      HttpSession session=request.getSession();
-
+BookCategoryDAO bookdao=new BookCategoryDAO();
          try{
 
         locale1=(String)session.getAttribute("locale");
@@ -62,8 +62,8 @@ public class updatebookAction extends org.apache.struts.action.Action {
 
 /*get the id of member and sub member type*/
 
-EmployeeType memtype=BookCategoryDAO.searchMemTypeId(library_id,emptype_id);
-SubEmployeeType submemtype=BookCategoryDAO.searchSubMemTypeId(library_id,emptype_id,subemptype_id);
+EmployeeType memtype=bookdao.searchMemTypeId(library_id,emptype_id);
+SubEmployeeType submemtype=bookdao.searchSubMemTypeId(library_id,emptype_id,subemptype_id);
 
 if(memtype!=null)
     emptype_id=memtype.getId().getEmptypeId();
@@ -76,14 +76,14 @@ System.out.println(button+"....................Emp Type.........."+emptype_id+".
         if(button.equalsIgnoreCase("Update"))
         {
 
-           BookCategory book=(BookCategory)BookCategoryDAO.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
+           BookCategory book=(BookCategory)bookdao.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
            System.out.println(book);
            if(book!=null){
 
            book.setFine(Float.parseFloat(fine));
            book.setIssueDaysLimit(Integer.parseInt(issue_days));
            book.setDetail(full_name);
-           result=BookCategoryDAO.update(book);
+           result=bookdao.update(book);
            if(result==true){
               //request.setAttribute("msg", "Record Successfully Updated");
                request.setAttribute("msg", resource.getString("circulation.circulationnewmemberregAction.recupdatesucc"));
@@ -98,11 +98,11 @@ System.out.println(button+"....................Emp Type.........."+emptype_id+".
         if(button.equalsIgnoreCase("Delete"))
         {
 
-           BookCategory book=(BookCategory)BookCategoryDAO.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
+           BookCategory book=(BookCategory)bookdao.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
           
            if(book!=null)
            {
-            result=BookCategoryDAO.DeleteBook(library_id,emptype_id,subemptype_id,book_type);
+            result=bookdao.DeleteBook(library_id,emptype_id,subemptype_id,book_type);
             if(result==true)
             {
                 //  request.setAttribute("msg", "Record Successfully Deleted");

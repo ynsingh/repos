@@ -24,15 +24,7 @@ public class AcqBudgetEntryAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   BudgetDAO bugdao=new BudgetDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -43,7 +35,7 @@ public class AcqBudgetEntryAction extends org.apache.struts.action.Action {
         //String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String button=lf.getButton();
         String budgethead_id=lf.getBudgethead_id();
-        AcqBudget l=BudgetDAO.searchBudget(library_id, budgethead_id);
+        AcqBudget l=bugdao.searchBudget(library_id, budgethead_id);
         //request.setAttribute("back", request.getAttribute("back"));
        // System.out.println("In Addition location process.."+request.getAttribute("back"));
         if(button.equals("Add"))

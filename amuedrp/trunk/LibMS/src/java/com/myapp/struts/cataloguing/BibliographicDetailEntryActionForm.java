@@ -8,7 +8,6 @@ import org.apache.struts.upload.FormFile;
  * This Bean Form is used to get and set the bibliographic details of documents irrespective of the type of document.
  * All the document type fields are defined here.
  * Accession No, Call No, Record No, Location are for holding management.
- * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
  */
 public class BibliographicDetailEntryActionForm extends org.apache.struts.validator.ValidatorForm {
 
@@ -63,13 +62,122 @@ public class BibliographicDetailEntryActionForm extends org.apache.struts.valida
 //  Thesis
     private String author_name;
     private String guide_name;//teacher name for thesis
+    private String guide_name1;//teacher name for thesis
+
+    public String getGuide_name1() {
+        return guide_name1;
+    }
+
+    public void setGuide_name1(String guide_name1) {
+        this.guide_name1 = guide_name1;
+    }
     private String university_faculty;//thesis
     private String degree;
+    private String degree1;
+
+    public String getDegree1() {
+        return degree1;
+    }
+
+    public void setDegree1(String degree1) {
+        this.degree1 = degree1;
+    }
     private String submitted_on;
+     private String submitted_on1;
+
+   
     private String acceptance_year;
+     private String acceptance_year1;
+
+    public String getAcceptance_year1() {
+        return acceptance_year1;
+    }
+
+    public void setAcceptance_year1(String acceptance_year1) {
+        this.acceptance_year1 = acceptance_year1;
+    }
     private String collation;
+    private String collation1;
+
+    public String getCollation1() {
+        return collation1;
+    }
+
+    public void setCollation1(String collation1) {
+        this.collation1 = collation1;
+    }
     private String notes;
     private String thesis_abstract;
+    private String submittedBy;
+       private String thesis_status;
+    private String thesis_status1;
+    private String last_Modified;
+    private String last_Modified1;
+
+    public String getLast_Modified() {
+        return last_Modified;
+    }
+
+    public void setLast_Modified(String last_Modified) {
+        this.last_Modified = last_Modified;
+    }
+
+    public String getLast_Modified1() {
+        return last_Modified1;
+    }
+
+    public void setLast_Modified1(String last_Modified1) {
+        this.last_Modified1 = last_Modified1;
+    }
+
+    public String getThesis_status() {
+        return thesis_status;
+    }
+
+    public void setThesis_status(String thesis_status) {
+        this.thesis_status = thesis_status;
+    }
+
+    public String getThesis_status1() {
+        return thesis_status1;
+    }
+
+    public void setThesis_status1(String thesis_status1) {
+        this.thesis_status1 = thesis_status1;
+    }
+
+
+    
+
+   
+
+    
+
+    public String getSubmittedBy1() {
+        return submittedBy1;
+    }
+
+    public void setSubmittedBy1(String submittedBy1) {
+        this.submittedBy1 = submittedBy1;
+    }
+     private String submittedBy1;
+   
+
+    
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+     public String getSubmitted_on1() {
+        return submitted_on1;
+    }
+
+    public void setSubmitted_on1(String submitted_on1) {
+        this.submitted_on1 = submitted_on1;
+    }
 //  Bound Volume
     private String address;
     private String state;

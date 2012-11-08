@@ -103,7 +103,9 @@ String path= request.getContextPath();
  List<CheckInDocumentDetails>  requestList=(List<CheckInDocumentDetails>)session.getAttribute("finedetails");
  List<FineDetails> finedetaillist=(List<FineDetails>)session.getAttribute("finedetaillist");
  double tfine=((Double)session.getAttribute("fine")).doubleValue();
+ tfine=Math.round(tfine);
  double paid=((Double)session.getAttribute("paid")).doubleValue();
+ paid=Math.round(paid);
  double remain;
  String slpno,paymod,cheque,bankname,issuedate;
  if(finedetaillist==null){
@@ -372,7 +374,9 @@ else
                <tr><td dir="<%=rtl%>">Name of Bank</td><td dir="<%=rtl%>"><input type="text" name="bankname" id="bankname"  disabled /></td></tr>
                <tr><td dir="<%=rtl%>">Issue Date</td><td dir="<%=rtl%>"><input type="text" name="date" id="date"  disabled /></td></tr>
               <tr><td dir="<%=rtl%>">Slip No.</td><td dir="<%=rtl%>"><input type="text" name="slipno" id="slipno" /></td></tr>
-              <tr><td dir="<%=rtl%>"><input type="button" name="Pay" id="pay"  value="Pay Now" onclick="return validation();"/></td></tr>
+              <tr><td dir="<%=rtl%>"><input type="button" name="Pay" id="pay"  value="Pay Now" onclick="return validation();"/></td><td dir="<%=rtl%>"><input type="submit" name="FineTransaction" id="FineTransaction"  value="Generate Fine Payment Report" onclick="return finetransaction();"/><br/>
+                  
+                  </td></tr>
 
                             </table></td></tr>
  </table>
@@ -383,7 +387,7 @@ else
 </html>
 <script language="javascript" type="text/javascript">
 
-    function calculation()
+  function calculation()
     {
         <%--var tf=parseFloat(document.getElementById('tf').value);
         var p1=parseFloat(document.getElementById('pd1').value);
@@ -392,16 +396,16 @@ else
         var p4=parseFloat(document.getElementById('pd4').value);
         var pt=p1+p2+p3+p4;
         document.getElementById('pf').value=pt;--%>
-                
+
         var pf=document.getElementById('pf').value;
         var rf=document.getElementById('rf').value;
         var cf=rf-pf;
-        var ff=Math.round(cf*1000)/1000;
-        
-        document.getElementById('rf').value=ff;
+       // var ff=Math.round((cf*1000)/1000);
+
+        document.getElementById('rf').value=cf;
         return true;
 
-        
+
     }
 
     function display(input)
@@ -435,6 +439,16 @@ function insert()
     document.getElementById("form1").target="f1";
     document.getElementById("form1").submit();
  
+ parent.location.href="<%=request.getContextPath()%>/circulation/cir_fine_detail.jsp";
+}
+function finetransaction()
+{
+
+    document.getElementById("form1").action = "<%=request.getContextPath()%>/PrintFineDetails.do"
+    document.getElementById("form1").method="post";
+    document.getElementById("form1").target="f1";
+    document.getElementById("form1").submit();
+
  parent.location.href="<%=request.getContextPath()%>/circulation/cir_fine_detail.jsp";
 }
 

@@ -1,90 +1,89 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AdminRegistration" table="admin_registration" catalog="libms">
-        <id name="registrationId" type="java.lang.Integer">
-            <column name="registration_id" />
-            <generator class="identity" />
-        </id>
-        <property name="instituteName" type="string">
-            <column name="institute_name" length="200" />
-        </property>
-        <property name="abbreviatedName" type="string">
-            <column name="abbreviated_name" length="20" />
-        </property>
-        <property name="instituteAddress" type="string">
-            <column name="Institute_address" length="100" />
-        </property>
-        <property name="city" type="string">
-            <column name="city" length="40" />
-        </property>
-        <property name="state" type="string">
-            <column name="state" length="50" />
-        </property>
-        <property name="country" type="string">
-            <column name="Country" length="30" />
-        </property>
-        <property name="pin" type="string">
-            <column name="pin" length="20" />
-        </property>
-        <property name="landLineNo" type="string">
-            <column name="land_line_no" length="20" />
-        </property>
-        <property name="mobileNo" type="string">
-            <column name="mobile_no" length="20" />
-        </property>
-        <property name="domain" type="string">
-            <column name="domain" length="20" />
-        </property>
-        <property name="loginId" type="string">
-            <column name="login_id" length="300" />
-        </property>
-        <property name="typeOfInstitute" type="string">
-            <column name="type_of_institute" length="20" />
-        </property>
-        <property name="website" type="string">
-            <column name="website" length="50" />
-        </property>
-        <property name="adminFname" type="string">
-            <column name="admin_fname" length="50" />
-        </property>
-        <property name="adminLname" type="string">
-            <column name="admin_lname" length="50" />
-        </property>
-        <property name="adminDesignation" type="string">
-            <column name="admin_designation" length="50" />
-        </property>
-        <property name="adminEmail" type="string">
-            <column name="admin_email" length="300" />
-        </property>
-        <property name="adminPassword" type="string">
-            <column name="admin_password" length="200" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="20" />
-        </property>
-        <property name="libraryId" type="string">
-            <column name="library_id" length="50" />
-        </property>
-        <property name="libraryName" type="string">
-            <column name="library_name" length="500" />
-        </property>
-        <property name="courtesy" type="string">
-            <column name="courtesy" length="30" />
-        </property>
-        <property name="gender" type="string">
-            <column name="gender" length="10" />
-        </property>
-        <property name="staffId" type="string">
-            <column name="staff_id" length="100" />
-        </property>
-        <property name="workingStatus" type="string">
-            <column name="working_status" length="50" not-null="true" />
-        </property>
-        <property name="instiLogo" type="string">
-            <column name="insti_logo"  length="200"/>
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.AdminRegistration" table="admin_registration">
+    <id name="registrationId" type="java.lang.Integer">
+      <column name="registration_id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="instituteName" type="string">
+      <column length="200" name="institute_name"/>
+    </property>
+    <property name="abbreviatedName" type="string">
+      <column length="20" name="abbreviated_name"/>
+    </property>
+    <property name="instituteAddress" type="string">
+      <column length="100" name="Institute_address"/>
+    </property>
+    <property name="city" type="string">
+      <column length="40" name="city"/>
+    </property>
+    <property name="state" type="string">
+      <column length="50" name="state"/>
+    </property>
+    <property name="country" type="string">
+      <column length="30" name="Country"/>
+    </property>
+    <property name="pin" type="string">
+      <column length="20" name="pin"/>
+    </property>
+    <property name="landLineNo" type="string">
+      <column length="20" name="land_line_no"/>
+    </property>
+    <property name="mobileNo" type="string">
+      <column length="20" name="mobile_no"/>
+    </property>
+    <property name="domain" type="string">
+      <column length="20" name="domain"/>
+    </property>
+    <property name="loginId" type="string">
+      <column length="300" name="login_id"/>
+    </property>
+    <property name="typeOfInstitute" type="string">
+      <column length="20" name="type_of_institute"/>
+    </property>
+    <property name="website" type="string">
+      <column length="50" name="website"/>
+    </property>
+    <property name="adminFname" type="string">
+      <column length="50" name="admin_fname"/>
+    </property>
+    <property name="adminLname" type="string">
+      <column length="50" name="admin_lname"/>
+    </property>
+    <property name="adminDesignation" type="string">
+      <column length="50" name="admin_designation"/>
+    </property>
+    <property name="adminEmail" type="string">
+      <column length="300" name="admin_email"/>
+    </property>
+    <property name="adminPassword" type="string">
+      <column length="200" name="admin_password"/>
+    </property>
+    <property name="status" type="string">
+      <column length="20" name="status"/>
+    </property>
+    <property name="libraryId" type="string">
+      <column length="50" name="library_id"/>
+    </property>
+    <property name="libraryName" type="string">
+      <column length="500" name="library_name"/>
+    </property>
+    <property name="courtesy" type="string">
+      <column length="30" name="courtesy"/>
+    </property>
+    <property name="gender" type="string">
+      <column length="10" name="gender"/>
+    </property>
+    <property name="staffId" type="string">
+      <column length="100" name="staff_id"/>
+    </property>
+    <property name="workingStatus" type="string">
+      <column length="50" name="working_status" not-null="true"/>
+    </property>
+    <property name="instiLogo" type="string">
+      <column length="200" name="insti_logo"/>
+    </property>
+  </class>
 </hibernate-mapping>

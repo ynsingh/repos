@@ -28,8 +28,8 @@
 <jsp:include page="header.jsp" flush="true" />
 <div
    style="
-      top: 14%;
-   left:5px;
+      top: 20%;
+   left:10%;
    right:5px;
       position: absolute;
 
@@ -41,23 +41,19 @@
 
 
     <table width="100%" height="600px" valign="top" style="" >
+        
         <tr><td valign="top" width="90%" style="">
-                <br/>  <a href="#" onclick="javascript:showdiv();"> Add Insti Logo</a>
- <div id="image1"
-   style="  top:130px;background: red;
-   left:30%;
-   overflow: hidden;
-      position: absolute;
-      display: none;"
-
-      >
+                
+ 
 
 
-   <html:form action="/admin/instilogo" method="post" styleId="form1" enctype="multipart/form-data">
+
+   <html:form action="/instilogo" method="post" styleId="form1" enctype="multipart/form-data">
 
 
-    <table class="table" style="border:5px solid cyan;" align="center" height="150px" width="500px">
-           <tr><td width="250px" laign="center">Select Image(.jpg/.png file only):
+    <table class="table" style="border:1px solid black;" align="center" height="150px" width="500px">
+        <tr><td class="headerStyle" align="center" height="30px">Upload Institute Logo</td></tr>
+        <tr><td width="250px" laign="center">Select Image(.jpg/.png file only):
  
 <html:file  property="img" name="ImageUploadActionForm" styleId="img"    />
       <input type="hidden" name="filename" tabindex="16" id="filename" />
@@ -72,7 +68,7 @@
                         <%}%>
 
                </td>--%></tr></table>
-         </div>
+         
 
                      
 

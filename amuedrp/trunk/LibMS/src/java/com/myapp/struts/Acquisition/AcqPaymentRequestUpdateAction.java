@@ -22,6 +22,7 @@ public class AcqPaymentRequestUpdateAction extends org.apache.struts.action.Acti
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    AcquisitionDao acqdao=new AcquisitionDao();
       
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -36,9 +37,9 @@ public class AcqPaymentRequestUpdateAction extends org.apache.struts.action.Acti
     
         if(!prn_date.equals(""))
         {
-         AcqRequestpaymentHeader acqreqpaymentheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id, prn);
+         AcqRequestpaymentHeader acqreqpaymentheader=acqdao.searchForPrnNo(library_id, sub_library_id, prn);
          acqreqpaymentheader.setPrnDate(prn_date);
-         boolean result=AcquisitionDao.insertInPaymentRequestHeader(acqreqpaymentheader);
+         boolean result=acqdao.insertInPaymentRequestHeader(acqreqpaymentheader);
          if(result==false)
          {
                request.setAttribute("msg","prn date not updated");

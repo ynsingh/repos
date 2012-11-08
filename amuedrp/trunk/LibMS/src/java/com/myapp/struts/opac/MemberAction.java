@@ -30,11 +30,12 @@ public class MemberAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-       
-       
+       CirTransactionHistoryDAO cirtdao=new CirTransactionHistoryDAO();
+       ReservationListDAO resdao=new ReservationListDAO();
+       CirRequestfromOpacDAO cirreq=new CirRequestfromOpacDAO();
         HttpSession session = request.getSession();
         MemberActionForm myForm =(MemberActionForm)form; 
-        
+        CirculationDAO cirdao=new CirculationDAO();
         ID = myForm.getTXTMEMID();
         password=myForm.getTXTPASS();
         password = PasswordEncruptionUtility.password_encrupt(password);
@@ -55,12 +56,12 @@ public class MemberAction extends org.apache.struts.action.Action {
 
        
        
-        CirMemberAccount cirmem=(CirMemberAccount)CirculationDAO.searchCirMemAccountDetails(lib_id,sublibrary_id, ID,password);
+        CirMemberAccount cirmem=(CirMemberAccount)cirdao.searchCirMemAccountDetails(lib_id,sublibrary_id, ID,password);
 
 
        if(cirmem!=null)
        {
-           CirMemberAccount cirmem2=(CirMemberAccount)CirculationDAO.searchCirMemAccountDetails1(lib_id,sublibrary_id, ID,password);
+           CirMemberAccount cirmem2=(CirMemberAccount)cirdao.searchCirMemAccountDetails1(lib_id,sublibrary_id, ID,password);
 
            if(cirmem2==null){
                String msg = "Your Membership is expired!" +
@@ -89,7 +90,7 @@ public class MemberAction extends org.apache.struts.action.Action {
 
 
 
-        CirMemberDetail cirmem1=(CirMemberDetail)CirculationDAO.searchCirMemDetails(lib_id, ID);
+        CirMemberDetail cirmem1=(CirMemberDetail)cirdao.searchCirMemDetails(lib_id, ID);
         if(cirmem1!=null)
         {
          session.setAttribute("mem_name",cirmem1.getFname()+" "+cirmem1.getMname()+" "+cirmem1.getLname());
@@ -101,12 +102,12 @@ public class MemberAction extends org.apache.struts.action.Action {
             return mapping.findForward("notfound");
         }
 
-         List<MemberFinewithDocument> cirtrans=(List<MemberFinewithDocument>)CirTransactionHistoryDAO.getMemberFineWithDocumentDetail(lib_id, sublibrary_id, ID);
+         List<MemberFinewithDocument> cirtrans=(List<MemberFinewithDocument>)cirtdao.getMemberFineWithDocumentDetail(lib_id, sublibrary_id, ID);
         if(cirtrans!=null)
         {session.setAttribute("fine_details",cirtrans);
         }
       
-       List<Reservationlist> cirreservation=(List<Reservationlist>)ReservationListDAO.getMemberDetail(lib_id, sublibrary_id, ID);
+       List<Reservationlist> cirreservation=(List<Reservationlist>)resdao.getMemberDetail(lib_id, sublibrary_id, ID);
           
        if(cirreservation!=null)
         {
@@ -120,7 +121,7 @@ public class MemberAction extends org.apache.struts.action.Action {
            String sublibId = (String)session.getAttribute("checkoutRequestSubLibId");
             String docId = (String)session.getAttribute("checkoutRequestDocId" );
 
-            CirMemberAccount memSubLib = (CirMemberAccount)CirculationDAO.searchCirMemAccountDetails1(libId, sublibId, memId,password);
+            CirMemberAccount memSubLib = (CirMemberAccount)cirdao.searchCirMemAccountDetails1(libId, sublibId, memId,password);
             System.out.println(memSubLib);
             if(memSubLib==null)
             {
@@ -130,10 +131,10 @@ public class MemberAction extends org.apache.struts.action.Action {
             else
             {
 
-            List<CirOpacRequest> check1 = (List<CirOpacRequest>)CirRequestfromOpacDAO.checkDuplicateRequest(libId, sublibId, memId, docId);
+            List<CirOpacRequest> check1 = (List<CirOpacRequest>)cirreq.checkDuplicateRequest(libId, sublibId, memId, docId);
             System.out.println("check1 = "+ check1.isEmpty());
             if(check1.isEmpty()){
-            boolean flag = CirRequestfromOpacDAO.SendCheckOutRequest(memId, libId, sublibId, docId);
+            boolean flag = cirreq.SendCheckOutRequest(memId, libId, sublibId, docId);
             if(flag)
             {
                 session.removeAttribute("checkoutRequestMemId");

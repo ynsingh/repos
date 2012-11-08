@@ -44,7 +44,8 @@ public class AddFacultyAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-         HttpSession session=request.getSession();
+FacultyDAO facdao=new FacultyDAO();
+        HttpSession session=request.getSession();
          try{
 
         locale1=(String)session.getAttribute("locale");
@@ -66,7 +67,7 @@ public class AddFacultyAction extends org.apache.struts.action.Action {
         
         library_id=(String)session.getAttribute("library_id");
         
-            Faculty fcheck=FacultyDAO.getFacultyId(library_id, faculty_name);
+            Faculty fcheck=facdao.getFacultyId(library_id, faculty_name);
         System.out.println("faculty"+fcheck);
             if(fcheck==null)
             {
@@ -75,7 +76,7 @@ public class AddFacultyAction extends org.apache.struts.action.Action {
         f.setId(fid);
        
         f.setFacultyName(faculty_name);
-        result=FacultyDAO.insert(f);
+        result=facdao.insert(f);
         if(result==true)
         {
            //request.setAttribute("msg", "Record Inserted Successfully");

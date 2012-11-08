@@ -22,22 +22,14 @@ public class MarcHomeAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session = request.getSession();
-
-       // session.removeAttribute("hsmp");
+        
+       
            HashMap t=(HashMap)session.getAttribute("hsmp");
         if(t!=null && t.isEmpty()==false)
         {System.out.println("Get Value"+t.size());
@@ -48,7 +40,11 @@ public class MarcHomeAction extends org.apache.struts.action.Action {
          }
 
         System.out.println(session.getAttribute("hsmp")+".....................");
-session.removeAttribute("controltag");
+        session.removeAttribute("hsmp");
+        session.removeAttribute("controltag");
+        session.removeAttribute("st");
+        session.removeAttribute("data");
+         session.removeAttribute("editlist");
         session.removeAttribute("tag0");
         session.removeAttribute("tag1");
         session.removeAttribute("tag2");
@@ -58,6 +54,12 @@ session.removeAttribute("controltag");
         session.removeAttribute("tag6");
         session.removeAttribute("tag7");
         session.removeAttribute("tag8");
+        session.removeAttribute("opacList");
+        request.removeAttribute("BiblioActionForm");
+        session.removeAttribute("biblio_id");
+        session.removeAttribute("title");
+        session.removeAttribute("marcbutton");
+
 
 
         return mapping.findForward(SUCCESS);

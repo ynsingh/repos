@@ -52,7 +52,7 @@ public class CirCheckoutAllAction extends org.apache.struts.action.Action {
     CirCheckoutId ccid=new CirCheckoutId();
     CirTransactionHistory cth=new CirTransactionHistory();
     CirTransactionHistoryId cthid=new CirTransactionHistoryId();
-
+CirculationDAO cirdao=new CirculationDAO();
 
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -89,10 +89,10 @@ public class CirCheckoutAllAction extends org.apache.struts.action.Action {
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         memid=ccaaf.getMemid();
-        CirCheckout circheck = (CirCheckout)CirculationDAO.searchCheckOutDetails1(library_id, sublibrary_id, String.valueOf(document_id),"issued");
+        CirCheckout circheck = (CirCheckout)cirdao.searchCheckOutDetails1(library_id, sublibrary_id, String.valueOf(document_id),"issued");
         if(circheck==null)
         {
-        control_list=CirculationDAO.getMaxChkoutId(library_id,sublibrary_id);
+        control_list=cirdao.getMaxChkoutId(library_id,sublibrary_id);
                if(control_list.get(0)!=null)
                {
                 max_id=(Integer) control_list.get(0) ;
@@ -104,7 +104,7 @@ public class CirCheckoutAllAction extends org.apache.struts.action.Action {
                }
         checkout_id=max_id;
 
-        control_list1=CirculationDAO.getMaxTransId(library_id);
+        control_list1=cirdao.getMaxTransId(library_id);
                if(control_list1.get(0)!=null)
                {
                 max_id1=(Integer) control_list1.get(0) ;
@@ -139,16 +139,16 @@ System.out.println(checkout_id+"..............................");
         cth.setCheckoutId(checkout_id);
         cth.setCheckoutDate(issue_date);
         
-        result=CirculationDAO.insertCirCheckout(cc);
-            boolean result1 = CirculationDAO.insertCirTransHistory(cth);
+        result=cirdao.insertCirCheckout(cc);
+            boolean result1 = cirdao.insertCirTransHistory(cth);
             if(result==true && result1==true)
             {
-        DocumentDetails docdetail=CirculationDAO.getDocument(library_id, sublibrary_id, document_id);
+        DocumentDetails docdetail=cirdao.getDocument(library_id, sublibrary_id, document_id);
         if(docdetail!=null)
             docdetail.setStatus(status);
 
 
-        CirMemberAccount cirmemac=CirculationDAO.getCirMem(library_id, sublibrary_id, memid);
+        CirMemberAccount cirmemac=cirdao.getCirMem(library_id, sublibrary_id, memid);
 
         result=false;
         if(cirmemac!=null){
@@ -164,17 +164,17 @@ System.out.println(checkout_id+"..............................");
 
 
 
-        result=CirculationDAO.update(cirmemac, docdetail) ;
+        result=cirdao.update(cirmemac, docdetail) ;
         }
         if(result==true)
         {
 
-           CirOpacRequest ciropac=(CirOpacRequest)CirculationDAO.searchCirOpacRequest(library_id, sublibrary_id,String.valueOf(document_id), accession_no);
+           CirOpacRequest ciropac=(CirOpacRequest)cirdao.searchCirOpacRequest(library_id, sublibrary_id,String.valueOf(document_id), accession_no);
 
            if(ciropac!=null)
            {
                ciropac.setStatus("processed");
-               result=CirculationDAO.updateCheckOut(ciropac);
+               result=cirdao.updateCheckOut(ciropac);
                if(result==true)
                {
                    
@@ -194,12 +194,12 @@ System.out.println(checkout_id+"..............................");
 
            }
 
-           CirOpacRequest ciropac1=(CirOpacRequest)CirculationDAO.searchCirOpacRequest(library_id, sublibrary_id,String.valueOf(document_id), accession_no);
+           CirOpacRequest ciropac1=(CirOpacRequest)cirdao.searchCirOpacRequest(library_id, sublibrary_id,String.valueOf(document_id), accession_no);
 
            if(ciropac1!=null)
            {
                ciropac1.setStatus("processed");
-               result=CirculationDAO.updateCheckOut(ciropac1);
+               result=cirdao.updateCheckOut(ciropac1);
                
 
 
@@ -230,12 +230,12 @@ System.out.println(checkout_id+"..............................");
         }
         }else
            {
-            CirOpacRequest ciropac=(CirOpacRequest)CirculationDAO.searchCirOpacRequest1(library_id, sublibrary_id,String.valueOf(document_id), accession_no);
+            CirOpacRequest ciropac=(CirOpacRequest)cirdao.searchCirOpacRequest1(library_id, sublibrary_id,String.valueOf(document_id), accession_no);
 System.out.println("CirOpac="+ciropac+" Lib="+library_id+" sublib="+sublibrary_id+" accession="+accession_no+ " docId="+ document_id);
            if(ciropac!=null)
            {
                ciropac.setStatus("Rejected");
-               result=CirculationDAO.updateCheckOut(ciropac);
+               result=cirdao.updateCheckOut(ciropac);
            }
             
              //  request.setAttribute("msg1", "Item already checked out.");

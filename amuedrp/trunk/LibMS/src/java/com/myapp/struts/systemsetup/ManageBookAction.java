@@ -36,7 +36,8 @@ public class ManageBookAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session=request.getSession();
-
+MemberCategoryDAO memdao=new MemberCategoryDAO();
+DocumentCategoryDAO docdao=new DocumentCategoryDAO();
           try{
 
         locale1=(String)session.getAttribute("locale");
@@ -54,9 +55,9 @@ public class ManageBookAction extends org.apache.struts.action.Action {
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
-   list1=(List)MemberCategoryDAO.searchEmpType(library_id);
-   list2=(List)MemberCategoryDAO.searchSubEmpType(library_id);
-   list3=(List)DocumentCategoryDAO.listdoccategory1(library_id,sublibrary_id);
+   list1=(List)memdao.searchEmpType(library_id);
+   list2=(List)memdao.searchSubEmpType(library_id);
+   list3=(List)docdao.listdoccategory1(library_id,sublibrary_id);
   if((list1.isEmpty() && list1==null)||(list2.isEmpty() && list2==null)){
   // String msg="You need to set member and submembers";
   String msg=resource.getString("systemsetup.managebookaction.youneedtosetmember");

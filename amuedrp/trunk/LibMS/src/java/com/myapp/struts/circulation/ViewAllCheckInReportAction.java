@@ -29,6 +29,7 @@ public class ViewAllCheckInReportAction extends org.apache.struts.action.Action 
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirRequestfromOpacDAO ciropacdao=new CirRequestfromOpacDAO();
            CirCheckInReportActionForm ccra   =(CirCheckInReportActionForm)form;
            HttpSession session=request.getSession();
            String  library_id=(String)session.getAttribute("library_id");
@@ -47,7 +48,7 @@ public class ViewAllCheckInReportAction extends org.apache.struts.action.Action 
 
 
 
-requestList = (List<CheckInDocumentDetails>)CirRequestfromOpacDAO.getCheckIn(library_id, sub_lib, memid, year1, year2);
+requestList = (List<CheckInDocumentDetails>)ciropacdao.getCheckIn(library_id, sub_lib, memid, year1, year2);
 System.out.println("size="+requestList.size());
 
 session.setAttribute("circheckInlist1", requestList);

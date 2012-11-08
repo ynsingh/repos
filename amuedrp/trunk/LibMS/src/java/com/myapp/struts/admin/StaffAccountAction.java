@@ -38,7 +38,8 @@ public class StaffAccountAction extends org.apache.struts.action.Action {
    
         staff_id=request.getParameter("staff_id");
         
-       
+       StaffDetailDAO staffdao=new StaffDetailDAO();
+       SubLibraryDAO sublibdao=new SubLibraryDAO();
         
          HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
@@ -65,12 +66,12 @@ public class StaffAccountAction extends org.apache.struts.action.Action {
          {
 
             //create account code
-                 StaffDetail staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 StaffDetail staffobj=(StaffDetail)staffdao.searchStaffId(staff_id, library_id);
                         
 
                             if(staffobj!=null)
                              {
-                                 List<SubLibrary>  sublib=SubLibraryDAO.searchSubLib(library_id);
+                                 List<SubLibrary>  sublib=sublibdao.searchSubLib(library_id);
                                 if(!sublib.isEmpty())
                                 {
                                 session.setAttribute("sublib",sublib);

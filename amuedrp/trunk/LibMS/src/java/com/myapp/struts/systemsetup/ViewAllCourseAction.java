@@ -24,23 +24,16 @@ public class ViewAllCourseAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CourseDAO coursedao=new CourseDAO();
         HttpSession session=request.getSession();
         String     library_id=(String)session.getAttribute("library_id");
          String     sub_lib=(String)session.getAttribute("sublibrary_id");
-             List<Courses> list=(List<Courses>)CourseDAO.getCourse(library_id);
+             List<Courses> list=(List<Courses>)coursedao.getCourse(library_id);
              session.setAttribute("list", list);
         return mapping.findForward(SUCCESS);
     }

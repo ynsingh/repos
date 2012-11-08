@@ -95,7 +95,7 @@ if(tcount==0)
 <%}
 else
 {%>
-<tr><td class="headerStyle" align="center" colspan="2">TITLE EXIST IN LIBRARY</td></tr>
+<tr><td class="headerStyle" align="center" colspan="2">MARC-21 Bibliographic Titles Exist in Catalog</td></tr>
 <tr><td colspan="2">
 <ui:dataGrid items="${opacList}" var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid" >
 
@@ -162,6 +162,18 @@ else
 <tr>
     
     <td align="left" width="100px">
+         
+<c:set var="BiblioActionForm" value="${null}"/>
+<c:set var="CatControlActionForm" value="${null}"/>
+<c:set var="CatActionForm1" value="${null}"/>
+<c:set var="CatActionForm2" value="${null}"/>
+<c:set var="CatActionForm3" value="${null}"/>
+<c:set var="CatActionForm4" value="${null}"/>
+<c:set var="CatActionForm5" value="${null}"/>
+<c:set var="CatActionForm6" value="${null}"/>
+<c:set var="CatActionForm7" value="${null}"/>
+<c:set var="CatActionForm8" value="${null}"/>
+
         <html:form action="/cataloguing/duplicatemarc" method="post">
             <input type="submit"  name="button" value="New Entry of Title" />
                  </html:form> </td><td align="left">

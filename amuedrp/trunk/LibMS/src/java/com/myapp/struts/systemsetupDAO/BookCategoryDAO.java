@@ -22,7 +22,7 @@ import org.hibernate.transform.Transformers;
  */
 public class BookCategoryDAO {
 
-public static Integer returnIssueLimit(String library_id,String document_category,String mem_type,String submem_type) {
+public  Integer returnIssueLimit(String library_id,String document_category,String mem_type,String submem_type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        Integer maxbiblio=null;
         try {
@@ -45,7 +45,7 @@ public static Integer returnIssueLimit(String library_id,String document_categor
 
 }
 
- public static List bookList(String library_id) {
+ public  List bookList(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List obj=null;
         try {
@@ -65,7 +65,7 @@ session.getTransaction().commit();
 
 }
    
- public static List<BookCategory> ListbookType(String library_id) {
+ public  List<BookCategory> ListbookType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<BookCategory>  obj=null;
         try {
@@ -85,7 +85,7 @@ session.getTransaction().commit();
         return obj;
 
 }
-  public static List<FineDetailGrid> ListbookType1(String library_id) {
+  public  List<FineDetailGrid> ListbookType1(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<FineDetailGrid> obj=null;
         try {
@@ -111,7 +111,7 @@ session.getTransaction().commit();
 
 }
 
-    public static  BookCategory searchBookTypeDetails(String library_id,String emptype_id,String subemptype_id,String book_type)
+    public   BookCategory searchBookTypeDetails(String library_id,String emptype_id,String subemptype_id,String book_type)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 BookCategory obj=null;
@@ -139,7 +139,7 @@ BookCategory obj=null;
 
 }
 
-  public static  EmployeeType searchMemTypeId(String library_id,String emptype_id)
+  public   EmployeeType searchMemTypeId(String library_id,String emptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
  EmployeeType obj=null;
@@ -164,7 +164,7 @@ BookCategory obj=null;
         return obj;
 
 }
-   public static  SubEmployeeType searchSubMemTypeId(String library_id,String emp_id,String subemptype_id)
+   public   SubEmployeeType searchSubMemTypeId(String library_id,String emp_id,String subemptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 SubEmployeeType obj=null;
@@ -192,7 +192,7 @@ session.getTransaction().commit();
   
 
 
-   public static  List<BookCategory> searchBookCategoryBySubMemberId(String library_id,String emptype_id,String subemptype_id)
+   public   List<BookCategory> searchBookCategoryBySubMemberId(String library_id,String emptype_id,String subemptype_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<BookCategory> obj=null;
@@ -219,7 +219,7 @@ session.getTransaction().commit();
 }
 
 
-public static  boolean insert(BookCategory obj)
+public   boolean insert(BookCategory obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -247,7 +247,7 @@ public static  boolean insert(BookCategory obj)
 
 }
 
-public static  boolean update(BookCategory obj)
+public   boolean update(BookCategory obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -269,7 +269,7 @@ public static  boolean update(BookCategory obj)
 
 }
 
-public static boolean DeleteBook(String library_id,String emptype_id,String subemptype_id,String book_type) {
+public  boolean DeleteBook(String library_id,String emptype_id,String subemptype_id,String book_type) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 

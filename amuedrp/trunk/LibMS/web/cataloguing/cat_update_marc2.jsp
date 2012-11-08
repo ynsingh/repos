@@ -103,6 +103,7 @@ tcount = opacList.size();
 %>
 
 <table  border="0"  dir="<%=rtl %>">
+    <tr><td class="headerStyle" align="center" colspan="2">MARC-21 Bibliographic Titles Exist in Catalog</td></tr>
 <div>
 <%
 if(tcount==0)

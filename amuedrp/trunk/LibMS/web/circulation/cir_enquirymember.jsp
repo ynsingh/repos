@@ -248,7 +248,8 @@ total=Integer.parseInt((String)session.getAttribute("noofchk"));
             if(phy_width==null)phy_width="";
             if(status==null)status="";
             if(accno==null)accno="";
-            DocumentCategory docc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(lib_id, sublib_id, booktype);
+            DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
+            DocumentCategory docc = (DocumentCategory)doccatdao.searchDocumentCategory(lib_id, sublib_id, booktype);
             String issuetype ="";
             if(docc!=null)
                 issuetype=docc.getIssueCheck();

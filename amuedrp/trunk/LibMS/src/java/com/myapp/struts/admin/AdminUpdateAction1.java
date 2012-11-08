@@ -53,7 +53,7 @@ private String staff_id;
 private String user_id;
 private String working_status;
 private boolean result;
-
+  
 String msg;
 int i=0;
     /* forward name="success" path="" */
@@ -121,7 +121,7 @@ Locale locale=null;
               ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
 
-         AdminRegistration adminobj = AdminRegistrationDAO.searchInstituteAdmin(user_id);
+         AdminRegistration adminobj = admindao.searchInstituteAdmin(user_id);
          if(adminobj.getStatus().equals("NotRegistered"))
          {
 
@@ -150,7 +150,7 @@ Locale locale=null;
 
 
 
-          result= AdminRegistrationDAO.update1(adminobj);
+          result= admindao.update1(adminobj);
 if(result==true){
          System.out.println("Here");
          System.out.println("@@@@@@@@@"+locale);
@@ -243,7 +243,7 @@ if(status.equalsIgnoreCase("Registered"))
 
                       
                           
-            StaffDetail staffdetail =StaffDetailDAO.searchStaffId(staff_id, institute_id);
+            StaffDetail staffdetail =staffdetaildao.searchStaffId(staff_id, institute_id);
             
             staffdetail.setTitle(courtesy);
             staffdetail.setFirstName(admin_fname);
@@ -258,7 +258,7 @@ if(status.equalsIgnoreCase("Registered"))
             staffdetail.setZip1(pin);
             
 
-            result=StaffDetailDAO.update1(staffdetail);
+            result=staffdetaildao.update1(staffdetail);
 
          System.out.println(user_id+"............");
 

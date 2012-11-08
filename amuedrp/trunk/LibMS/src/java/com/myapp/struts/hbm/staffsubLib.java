@@ -5,11 +5,13 @@
 
 package com.myapp.struts.hbm;
 
+import java.io.Serializable;
+
 /**
  *
  * @author System Administrator
  */
-public class staffsubLib {
+public class staffsubLib implements Serializable {
     private StaffDetail staffDetail;
     private SubLibrary subLibrary;
 

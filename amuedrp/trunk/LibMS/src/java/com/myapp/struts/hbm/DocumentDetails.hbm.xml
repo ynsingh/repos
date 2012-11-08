@@ -1,207 +1,215 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 11, 2011 5:57:04 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.DocumentDetails" table="document_details" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.DocumentDetailsId">
-            <key-property name="documentId" type="int">
-                <column name="document_id" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="bibliographicDetails" class="com.myapp.struts.hbm.BibliographicDetails" update="false" insert="false" fetch="select">
-            <column name="biblio_id" />
-            <column name="library_id" length="20" not-null="true" />
-            <column name="sublibrary_id" length="20" not-null="true" />
-        </many-to-one>
-        <property name="biblioId" type="java.lang.Integer">
-            <column name="biblio_id" />
-        </property>
-        <property name="documentType" type="string">
-            <column name="document_type" length="20" />
-        </property>
-        <property name="accessionType" type="string">
-            <column name="accession_type" length="20" />
-        </property>
-        <property name="dateAcquired" type="string">
-            <column name="date_acquired" length="20" />
-        </property>
-        <property name="title" type="string">
-            <column name="title" length="200" />
-        </property>
-        <property name="subtitle" type="string">
-            <column name="subtitle" length="200" />
-        </property>
-        <property name="altTitle" type="string">
-            <column name="alt_title" length="200" />
-        </property>
-        <property name="statementResponsibility" type="string">
-            <column name="statement_responsibility" length="200" />
-        </property>
-        <property name="mainEntry" type="string">
-            <column name="main_entry" length="200" />
-        </property>
-        <property name="bookType" type="string">
-            <column name="book_type" length="20" />
-        </property>
-       <property name="addedEntry" type="string">
-            <column name="added_entry" length="200" />
-        </property>
-        <property name="addedEntry1" type="string">
-            <column name="added_entry1" length="200" />
-        </property>
-        <property name="addedEntry2" type="string">
-            <column name="added_entry2" length="200" />
-        </property>
-        <property name="addedEntry3" type="string">
-            <column name="added_entry3" length="200" />
-        </property>
-        <property name="publisherName" type="string">
-            <column name="publisher_name" length="200" />
-        </property>
-        <property name="publicationPlace" type="string">
-            <column name="publication_place" length="200" />
-        </property>
-        <property name="publishingYear" type="string">
-            <column name="publishing_year" length="20" />
-        </property>
-        <property name="partsNo" type="java.lang.Integer">
-            <column name="parts_no" />
-        </property>
-        <property name="subject" type="string">
-            <column name="subject" length="200" />
-        </property>
-        <property name="entryLanguage" type="string">
-            <column name="entry_language" length="200" />
-        </property>
-        <property name="isbn10" type="string">
-            <column name="isbn10" length="20" />
-        </property>
-        <property name="isbn13" type="string">
-            <column name="isbn13" length="20" />
-        </property>
-        <property name="lccNo" type="string">
-            <column name="LCC_no" length="30" />
-        </property>
-        <property name="edition" type="string">
-            <column name="edition" length="20" />
-        </property>
-        <property name="noOfCopies" type="java.lang.Integer">
-            <column name="no_of_copies" />
-        </property>
-        <property name="authorName" type="string">
-            <column name="author_name" length="200" />
-        </property>
-        <property name="guideName" type="string">
-            <column name="guide_name" length="200" />
-        </property>
-        <property name="universityFaculty" type="string">
-            <column name="university_faculty" length="200" />
-        </property>
-        <property name="degree" type="string">
-            <column name="degree" length="200" />
-        </property>
-        <property name="submittedOn" type="string">
-            <column name="submitted_on" length="20" />
-        </property>
-        <property name="acceptanceYear" type="string">
-            <column name="acceptance_year" length="20" />
-        </property>
-        <property name="collation1" type="string">
-            <column name="collation1" length="20" />
-        </property>
-        <property name="notes" type="string">
-            <column name="notes" length="2000" />
-        </property>
-        <property name="abstract_" type="string">
-            <column name="abstract" length="2000" />
-        </property>
-        <property name="address" type="string">
-            <column name="address" length="20" />
-        </property>
-        <property name="state1" type="string">
-            <column name="state1" length="100" />
-        </property>
-        <property name="country" type="string">
-            <column name="country" length="100" />
-        </property>
-        <property name="email" type="string">
-            <column name="email" length="200" />
-        </property>
-        <property name="frmrFrq" type="string">
-            <column name="frmr_frq" length="20" />
-        </property>
-        <property name="frqDate" type="string">
-            <column name="frq_date" length="20" />
-        </property>
-        <property name="issn" type="string">
-            <column name="issn" length="20" />
-        </property>
-        <property name="volumeLocation" type="string">
-            <column name="volume_location" length="20" />
-        </property>
-        <property name="productionYear" type="java.lang.Integer">
-            <column name="production_year" />
-        </property>
-        <property name="source1" type="string">
-            <column name="source1" length="20" />
-        </property>
-        <property name="duration" type="string">
-            <column name="duration" length="20" />
-        </property>
-        <property name="series" type="string">
-            <column name="series" length="1000" />
-        </property>
-        <property name="physicalForm" type="string">
-            <column name="physical_form" length="200" />
-        </property>
-        <property name="colour" type="string">
-            <column name="colour" length="20" />
-        </property>
-        <property name="typeOfDisc" type="string">
-            <column name="type_of_disc" length="20" />
-        </property>
-        <property name="fileType" type="string">
-            <column name="file_type" length="20" />
-        </property>
-        <property name="accessionNo" type="string">
-            <column name="accession_no" length="40" />
-        </property>
-        <property name="recordNo" type="java.lang.Integer">
-            <column name="record_no" />
-        </property>
-        <property name="callNo" type="string">
-            <column name="call_no" length="30" />
-        </property>
-        <property name="volumeNo" type="string">
-            <column name="volume_no" length="20" />
-        </property>
-        <property name="location" type="string">
-            <column name="location" length="200" />
-        </property>
-        <property name="shelvingLocation" type="string">
-            <column name="shelving_location" length="200" />
-        </property>
-        <property name="indexNo" type="string">
-            <column name="index_no" length="20" />
-        </property>
-        <property name="noOfPages" type="string">
-            <column name="no_of_pages" length="20" />
-        </property>
-        <property name="physicalWidth" type="string">
-            <column name="physical_width" length="20" />
-        </property>
-        <property name="bindType" type="string">
-            <column name="bind_type" length="20" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="50" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.DocumentDetails" table="document_details">
+    <composite-id class="com.myapp.struts.hbm.DocumentDetailsId" name="id">
+      <key-property name="documentId" type="int">
+        <column name="document_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.BibliographicDetails" fetch="select" insert="false" name="bibliographicDetails" update="false">
+      <column name="biblio_id"/>
+      <column length="20" name="library_id" not-null="true"/>
+      <column length="20" name="sublibrary_id" not-null="true"/>
+    </many-to-one>
+    <property name="biblioId" type="java.lang.Integer">
+      <column name="biblio_id"/>
+    </property>
+    <property name="documentType" type="string">
+      <column length="20" name="document_type"/>
+    </property>
+    <property name="accessionType" type="string">
+      <column length="20" name="accession_type"/>
+    </property>
+    <property name="dateAcquired" type="string">
+      <column length="20" name="date_acquired"/>
+    </property>
+    <property name="title" type="string">
+      <column length="200" name="title"/>
+    </property>
+    <property name="subtitle" type="string">
+      <column length="200" name="subtitle"/>
+    </property>
+    <property name="altTitle" type="string">
+      <column length="200" name="alt_title"/>
+    </property>
+    <property name="statementResponsibility" type="string">
+      <column length="200" name="statement_responsibility"/>
+    </property>
+    <property name="mainEntry" type="string">
+      <column length="200" name="main_entry"/>
+    </property>
+    <property name="bookType" type="string">
+      <column length="20" name="book_type"/>
+    </property>
+    <property name="addedEntry" type="string">
+      <column length="200" name="added_entry"/>
+    </property>
+    <property name="addedEntry1" type="string">
+      <column length="200" name="added_entry1"/>
+    </property>
+    <property name="addedEntry2" type="string">
+      <column length="200" name="added_entry2"/>
+    </property>
+    <property name="addedEntry3" type="string">
+      <column length="200" name="added_entry3"/>
+    </property>
+    <property name="publisherName" type="string">
+      <column length="200" name="publisher_name"/>
+    </property>
+    <property name="publicationPlace" type="string">
+      <column length="200" name="publication_place"/>
+    </property>
+    <property name="publishingYear" type="string">
+      <column length="20" name="publishing_year"/>
+    </property>
+    <property name="partsNo" type="java.lang.Integer">
+      <column name="parts_no"/>
+    </property>
+    <property name="subject" type="string">
+      <column length="200" name="subject"/>
+    </property>
+    <property name="entryLanguage" type="string">
+      <column length="200" name="entry_language"/>
+    </property>
+    <property name="isbn10" type="string">
+      <column length="20" name="isbn10"/>
+    </property>
+    <property name="isbn13" type="string">
+      <column length="20" name="isbn13"/>
+    </property>
+    <property name="lccNo" type="string">
+      <column length="30" name="LCC_no"/>
+    </property>
+    <property name="edition" type="string">
+      <column length="20" name="edition"/>
+    </property>
+    <property name="noOfCopies" type="java.lang.Integer">
+      <column name="no_of_copies"/>
+    </property>
+    <property name="authorName" type="string">
+      <column length="200" name="author_name"/>
+    </property>
+    <property name="guideName" type="string">
+      <column length="200" name="guide_name"/>
+    </property>
+    <property name="universityFaculty" type="string">
+      <column length="200" name="university_faculty"/>
+    </property>
+    <property name="degree" type="string">
+      <column length="200" name="degree"/>
+    </property>
+    <property name="submittedOn" type="string">
+      <column length="20" name="submitted_on"/>
+    </property>
+    <property name="acceptanceYear" type="string">
+      <column length="20" name="acceptance_year"/>
+    </property>
+    <property name="collation1" type="string">
+      <column length="20" name="collation1"/>
+    </property>
+    <property name="notes" type="string">
+      <column length="2000" name="notes"/>
+    </property>
+    <property name="abstract_" type="string">
+      <column length="2000" name="abstract"/>
+    </property>
+    <property name="address" type="string">
+      <column length="20" name="address"/>
+    </property>
+    <property name="state1" type="string">
+      <column length="100" name="state1"/>
+    </property>
+    <property name="country" type="string">
+      <column length="100" name="country"/>
+    </property>
+    <property name="email" type="string">
+      <column length="200" name="email"/>
+    </property>
+    <property name="frmrFrq" type="string">
+      <column length="20" name="frmr_frq"/>
+    </property>
+    <property name="frqDate" type="string">
+      <column length="20" name="frq_date"/>
+    </property>
+    <property name="issn" type="string">
+      <column length="20" name="issn"/>
+    </property>
+    <property name="volumeLocation" type="string">
+      <column length="20" name="volume_location"/>
+    </property>
+    <property name="productionYear" type="java.lang.Integer">
+      <column name="production_year"/>
+    </property>
+    <property name="source1" type="string">
+      <column length="20" name="source1"/>
+    </property>
+    <property name="duration" type="string">
+      <column length="20" name="duration"/>
+    </property>
+    <property name="series" type="string">
+      <column length="1000" name="series"/>
+    </property>
+    <property name="physicalForm" type="string">
+      <column length="200" name="physical_form"/>
+    </property>
+    <property name="colour" type="string">
+      <column length="20" name="colour"/>
+    </property>
+    <property name="typeOfDisc" type="string">
+      <column length="20" name="type_of_disc"/>
+    </property>
+    <property name="fileType" type="string">
+      <column length="20" name="file_type"/>
+    </property>
+    <property name="accessionNo" type="string">
+      <column length="40" name="accession_no"/>
+    </property>
+    <property name="recordNo" type="java.lang.Integer">
+      <column name="record_no"/>
+    </property>
+    <property name="callNo" type="string">
+      <column length="30" name="call_no"/>
+    </property>
+    <property name="volumeNo" type="string">
+      <column length="20" name="volume_no"/>
+    </property>
+    <property name="location" type="string">
+      <column length="200" name="location"/>
+    </property>
+    <property name="shelvingLocation" type="string">
+      <column length="200" name="shelving_location"/>
+    </property>
+    <property name="indexNo" type="string">
+      <column length="20" name="index_no"/>
+    </property>
+    <property name="noOfPages" type="string">
+      <column length="20" name="no_of_pages"/>
+    </property>
+    <property name="physicalWidth" type="string">
+      <column length="20" name="physical_width"/>
+    </property>
+    <property name="bindType" type="string">
+      <column length="20" name="bind_type"/>
+    </property>
+    <property name="status" type="string">
+      <column length="50" name="status"/>
+    </property>
+     <property name="submittedBy" type="string">
+      <column length="200" name="submitted_by"/>
+    </property>
+     <property name="lastModified" type="string">
+      <column length="200" name="last_modified"/>
+    </property>
+    <property name="thesisStatus" type="string">
+      <column length="100" name="thesis_status"/>
+    </property>
+  </class>
 </hibernate-mapping>

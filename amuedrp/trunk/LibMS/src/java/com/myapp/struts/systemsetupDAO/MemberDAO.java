@@ -18,12 +18,12 @@ import org.hibernate.Transaction;
 public class MemberDAO {
 
 
-    static Query query;
+     Query query;
 
 
 
 
-public static EmployeeType getEployeeName(String library_id,String emptype_id) {
+public  EmployeeType getEployeeName(String library_id,String emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        EmployeeType obj=null;
         try {
@@ -48,7 +48,7 @@ public static EmployeeType getEployeeName(String library_id,String emptype_id) {
 return obj;
 }
 
-public static List<CirMemberAccount> searchAccount(String library_id,String emptype_id) {
+public  List<CirMemberAccount> searchAccount(String library_id,String emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<CirMemberAccount> obj=null;
         try {
@@ -73,7 +73,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String empt
 return obj;
 }
 
-public static List<CirMemberAccount> searchAccount(String library_id,String emptype_id,String subemp_id) {
+public  List<CirMemberAccount> searchAccount(String library_id,String emptype_id,String subemp_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<CirMemberAccount> obj=null;
         try {
@@ -98,7 +98,7 @@ public static List<CirMemberAccount> searchAccount(String library_id,String empt
 return obj;
 }
 
-public static EmployeeType getEployeeByName(String library_id,String emptype_id) {
+public  EmployeeType getEployeeByName(String library_id,String emptype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        EmployeeType obj=null;
         try {
@@ -125,7 +125,7 @@ return obj;
 
 
 
-public static EmployeeType getEmployeeByName(String library_id,String empname) {
+public  EmployeeType getEmployeeByName(String library_id,String empname) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         EmployeeType obj=null;
         try {
@@ -151,7 +151,7 @@ return obj;
 }
 
 
-public static SubEmployeeType getSubEmployeeByName(String library_id,String emptype_id,String empname) {
+public  SubEmployeeType getSubEmployeeByName(String library_id,String emptype_id,String empname) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        SubEmployeeType obj=null;
         try {
@@ -177,7 +177,7 @@ public static SubEmployeeType getSubEmployeeByName(String library_id,String empt
 return obj;
 }
 
-public static List<EmployeeType> searchEmployeeType(String library_id) {
+public  List<EmployeeType> searchEmployeeType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
  List<EmployeeType> obj=null;
         try {
@@ -202,7 +202,7 @@ public static List<EmployeeType> searchEmployeeType(String library_id) {
 return obj;
 }
 
-public static  boolean insert(EmployeeType obj)
+public   boolean insert(EmployeeType obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -236,7 +236,7 @@ return false;
 
 
 
-public static  boolean update(EmployeeType obj,String library_id,String emptype_full_name)
+public   boolean update(EmployeeType obj,String library_id,String emptype_full_name)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -274,7 +274,7 @@ else
 
 
 
-public static  boolean Delete(EmployeeType obj)
+public   boolean Delete(EmployeeType obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -300,11 +300,11 @@ public static  boolean Delete(EmployeeType obj)
 }
 
 
-public static String getMemberByLibrary(String library_id) {
+public  String getMemberByLibrary(String library_id) {
      StringBuffer dept_ids = new StringBuffer();
-
+MemberDAO memdao=new MemberDAO();
 try {
-List<EmployeeType> subemp = (List<EmployeeType>)MemberDAO.searchEmployeeType(library_id);
+List<EmployeeType> subemp = (List<EmployeeType>)memdao.searchEmployeeType(library_id);
 Iterator it = subemp.iterator();
 System.out.println(subemp.size());
 int tcount=0;

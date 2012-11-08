@@ -34,86 +34,186 @@ sessionId = session.getId().toString();
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
+    <link rel="stylesheet" href="/LibMS/css/page.css"/>
+    <script>
+        function fun()
+        {
+
+            document.form1.action="<%=request.getContextPath()%>/admin/language.jsp";
+            document.form1.submit();
+        }
+        </script>
     <body style="margin: 0px 0px 0px 0px;">
-        <jsp:include page="header.jsp"></jsp:include>
-<table height="50px" style="border:solid 2px red;font-family: arial;font-size: 12px;" align="center" width="50%" >
-<link rel="stylesheet" href="/LibMS/css/page.css"/>
+        <form name="form1">
+  <table align="center" width="100%" height="100%" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" dir="<%=rtl%>" >
+      <tr><td class="homepage" style="background-color: black;color:white;" align="right" colspan="2">
+
+
+
+         <a style="color:white" href="<%=request.getContextPath()%>">Home</a>&nbsp;|&nbsp;     <a style="color:white" href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx">NME-ICT ERP Mission</a>&nbsp;|&nbsp;<a  style="color:white" href="<%=request.getContextPath()%>/contactus.jsp">Contact Us</a>&nbsp;|&nbsp; <a style="color:white" href="<%=request.getContextPath()%>/admin/admin_registration.jsp"><%= resource.getString("login.href.institute.registration") %></a>
+         &nbsp;|&nbsp;            <a style="color:white" href="<%=request.getContextPath()%>/relnotes.jsp">   Release Notes</a>&nbsp;|&nbsp;  <a style="color:white" href="instantUserManual_LibMS-2012.pdf">UserManual</a>&nbsp;|&nbsp; <a style="color:white" href="<%=request.getContextPath()%>/admin/view_instiapproved.jsp">View All Registered Institutes</a>&nbsp;|&nbsp;<%=resource.getString("login.message.selectlanguage")%><select name="locale" class="selecthome" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select>
+
+
+
+                                         </td>
+
+                                     </tr>
+            <tr><td><table align="center"  width="100%"     dir="<%=rtl%>" >
+
+   <tr ><td>
+                                     <table width="100%" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;"><tr>
+                                         <td align="left"  style="background-color: white;color:blue;height: 50px;  margin: 0px 0px 0px 0px;font-style: italic;font-size: 18px;valign:bottom" valign="bottom" align="center">
+
+                                             &nbsp;&nbsp;<span style="font-style: italic;font-size: 18px;">LibMS....</span>        "<%=resource.getString("login.message.logo.under")%>"
+
+
+
+
+                            </td>
+                            <td align="right">
+  <img src="<%=request.getContextPath()%>/images/logo.png" alt=""  border="0" align="top" id="Image1" style="height:70px;width:160px;">
+
+                            </td>
+
+
+                                         </tr></table>
+                                          <hr color="cyan">
+                                         </td>
+
+           </tr>
+           <tr><td align="center"><table class="homepage" width="70%">
                <tr ><td  valign="top">
-        Release Notes<br>
-        Product Name : LibMS Version: 1.0<br>
+        RELEASE NOTES&nbsp;&nbsp;      Product Name : LibMS Version: 1.0<br>
 
 
 
     </td></tr>
                  <tr ><td  valign="top"><hr>
-        Published By EdRP Team @AMU on 19-July-2012 &nbsp;<i>(Recent Server Updation on : 19-July-2012)</i>
+        Published By EdRP Team @AMU on 12- Sept -2012 &nbsp;<i>(Recent Server Updation on : 12-Sept-2012)</i>
 
 
     </td></tr>
-                <tr><td><hr>    <ul style="line-height: 20px;"><li> Additions <br>1. Add .mrc(MARC-21) file import facility in MARC repository.
+                <tr><td>
+<pre>
+	Core Module of LibMS:
+
+1.Web Administration
+2.Administration & Security
+3.Utility & System SetUp
+4.OPAC
+5.Acquisition
+6.Cataloguing
+7.Serial
+8.Circulation
+                              
+Administration Module
+
+    In Administration Module Following Activities are Integrated & functional.
+    1.Register Library Staff's  (Add/Update/View/Delete)
+    2.Upload Library Staff Data in XLS Sheet
+    3.Activate/Deactivate Staff Account
+    4.Upload Institute Logo
+    5.Export Library Staff Data in XLS/XML/CSV Format.
+
+System SetUp Module
+
+    In System Setup Module Following Activities are Integrated & functional.
+    1.Add Location
+    2.Add General Notices
+    3.Add Faculty/Courses/Dept
+    4.Add Member/Sub Member Types
+    5.Add Dept Libraries
+    6.Configure Fine Details
+    7.Add Document Types
+
+Utility & Help Module
+
+    1. Provide UserManual of LibMS in PDF Format
+
+Acquisition Module :
+
+    In Acquisition Module Following Activities are Integrated & functional.
+    1.Enter Title Refer from Demand List & Direct Entry
+    2.Initiate Acquisition
+    3.Approval Process
+    4.Order Process
+    5.Invoicing Process
+    6.Receiving Documents
+    7.Payment Process
+    8.Accessioning of Documents
+    9.Reports ( Pending Documents, Approved Document List)
+    10.Set Budget Head/Budget Head Allocation, Vendor Setting, Base Currency Setting
+
+Cataloguing Module:
+
+    In Cataloguing Module Following Activities are Integrated & functional.
+    1.Cataloguing of retrospective documents.
+    2.Cataloguing of new documents (multilingual data entry) of books in AACR2 Format.
+    3.Accessioning of documents in AACR2 Format.
+    4.Generate Catalog Card
+    5.Generate Bar Code
+    6.Import Bibliographic Details Entry in XLS File format.
+    7.Export Bibliographic Details Entry in XLS File format.
+    8.Import .mrc file from Library of Congress (Copy Catalog Activity)
+    9.Upload Digital Data like PDF/Video File & Book Cover Page related to documents.
+    10.Bibliographic Detail Entry in Dissertation Document Type
+    11.Accessioning in Dissertation Document Type
+    12.Bibliographic Detail Entry in CD Document Type (Insert Activity)
+    13.Bibliographic Detail Entry in Journal Document Type
+    14.Accessioning in Journal Document Type
 
 
-                            </li>
-                           <li> Removals&nbsp; -&nbsp;None.</li>
-                           <li> Changes<br></li>
-                           <li> Fixes<br>1.Fix Bug in Export Catalog Data in XLS & Flat Files Format.</li>
-                       </ul>
+Circulation Module
+
+    In Circulation Module Following Activities are Integrated & functional.
+    1.Member Registration ( Direct Data Entry/ Import from XLS File)
+    2.Request Approval coming from OPAC.
+    3.Delinquent Member
+    4.Check In Activity
+    5.Check Out Activity
+    6.Report on CheckIn/CheckOut
+    7.Fine Management Activity
+    8.Report on Fine Management (View All OverDue Members/ Generate Payment Slip)
+    9.Generate Library Card Activity.
+
+OPAC Module:
+
+    In OPAC Module Following Activities are Integrated & functional.
+    1.	Narrow Down Searching from different Searching options i.e
+	   a) Simple Search
+	   b) Browse Search
+	   c) Additional Search
+	   d) Advanced Search
+	   e) ISBN Search
+	   f) Accession No Search
+	   h) Call No Search
+    2.View Digital Content in All Search Result if available
+    3.Send Request for Check Out From OPAC.
+    4.New Arrival Link to View/Search Book recently acquired in Library.
+    5.View Notices
+    6.View Location
+    7.Send FeedBack
+    8.Send Member Registration request
+    9.My Account Section to View Registered Library Staff CheckIn/CheckOut Details.
+    10.Rate the Book in Simple Search Link.
+
+Serial Module
+
+    1.Set Budget Head/Budget Head Allocation, Vendor Setting, Base Currency Setting
+    2.Language Setting
+    3.Serial New Entry for New Paper type periodicals.
+    4.Report in Pending/Rejected/OnApproval & Firm Order Items
+
+Web Administration
+
+    Once Any User Download the System & have a local installation they need to login into the system & Use this module. It has following features
+    1.Approval Process of Institute Request
+    2.SMTP Mail Setting
+    3.Block Institute
+    4.Change Any User Password.
+</pre>
 </td></tr>
-               <tr ><td  valign="top"><hr>
-        Published By EdRP Team @AMU on 14-July-2012 &nbsp;<i>(Recent Server Updation on : 14-July-2012)</i>
-
-
-    </td></tr>
-                <tr><td><hr>    <ul style="line-height: 20px;"><li> Additions <br>1. Add Book Title Page Image Upload in Cataloguing Module.
-                                <br>2. Add Book E-Content Upload in Cataloguing Module.
-                                <br>3. View E-Content Uploaded from OPAC Simple & Browse Search.
-
-                            </li>
-                           <li> Removals&nbsp; -&nbsp;None.</li>
-                           <li> Changes<br></li>
-                           <li> Fixes<br>1.Fix Bug in Simple & Browse Search in Multilingual Data.</li>
-                       </ul>
-</td></tr>
-               <tr ><td  valign="top"><hr>
-        Published By EdRP Team @AMU on 13-July-2012 &nbsp;<i>(Recent Server Updation on : 13-July-2012)</i>
-
-
-    </td></tr>
-                <tr><td><hr>    <ul style="line-height: 20px;"><li> Additions <br>1. View Institute Logo in WebAdmin Module.
-
-                            </li>
-                           <li> Removals&nbsp; -&nbsp;None.</li>
-                           <li> Changes<br></li>
-                           <li> Fixes<br>1. Bug fixing from Member Registration Image Upload problem.<br>1.Bug Fixing in Image Upload problem in Circulation->Member Registration. </li>
-                       </ul>
-</td></tr>
-                <tr ><td  valign="top"><hr>
-        Published By EdRP Team @AMU on 12-July-2012 &nbsp;<i>(Recent Server Updation on : 12-July-2012)</i>
-
-
-    </td></tr>
-                <tr><td><hr>    <ul style="line-height: 20px;"><li> Additions<br>1. Add View All Institute List from home page of LibMS along with institute logo in jpg & png format only.
-                                <br>2. Add OPAC help from opac section.<br> 3. Add link for Change Staff Password, Member Upload Activities.
-                            </li>
-                           <li> Removals&nbsp; -&nbsp;None.</li>
-                           <li> Changes<br>1. Bug fixing from institute logo upload activity. </li>
-                           <li> Fixes<br>1. Modify the css of SuperAdmin Module to view all header of grid.</li>
-                       </ul>
-</td></tr>
-                <tr ><td  valign="top"><hr>
-        Published By EdRP Team @AMU on 09-July-2012 &nbsp;<i>(Recent Server Updation on : 09-July-2012)</i>
-
-
-    </td></tr>
-                <tr><td><hr>    <ul style="line-height: 20px;"><li> Additions<br>1. Add View All Institute List from home page of LibMS.<br>2.Add Set Reservation Priority Link in System Setup.</li>
-                           <li> Removals&nbsp; -&nbsp;None.</li>
-                           <li> Changes<br>1. Modify home page of LibMS.<br>2.Add Expected arrival date of book in OPAC view Page. </li>
-                           <li> Fixes<br>1. Modify the css of SuperAdmin Module to view all header of grid.<br>2. Resolved Bugs in Admin update staff activity.<br> 3. Remove Fixed Data of Courstey from Create Staff Activity.</li>
-                       </ul>
-</td></tr>
-  <%--             <tr><td>
-      <a href="http://www.youtube.com/user/DrAasimZafar?blend=15&ob=5#p/u/0/COwssqRU9Ao"><img src="<%=request.getContextPath()%>/images/youtube.jpeg" height="16px" width="40px"/></a>
-    </td>
-     </tr>--%>
-                </table>
+  
+                   </table></td></tr></table></td></tr></table></form>
+<jsp:include page="/OPAC/opacfooter.jsp"/>
     </body>

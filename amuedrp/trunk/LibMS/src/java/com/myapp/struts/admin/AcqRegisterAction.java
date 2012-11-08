@@ -34,7 +34,8 @@ public class AcqRegisterAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-    
+    StaffDetailDAO staffdao=new StaffDetailDAO();
+    SubLibraryDAO sublibdao=new SubLibraryDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -67,7 +68,7 @@ public class AcqRegisterAction extends org.apache.struts.action.Action {
         if(button.equals("Register"))
         {
          
-         StaffDetail staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id,library_id);
+         StaffDetail staffobj=(StaffDetail)staffdao.searchStaffId(staff_id,library_id);
            
 
          if(staffobj!=null)
@@ -78,7 +79,7 @@ public class AcqRegisterAction extends org.apache.struts.action.Action {
          }
          else
          {
-             List<SubLibrary>  sublib=SubLibraryDAO.searchSubLib(library_id);
+             List<SubLibrary>  sublib=sublibdao.searchSubLib(library_id);
              if(!sublib.isEmpty())
              {
                  session.setAttribute("sublib",sublib);
@@ -118,7 +119,7 @@ StaffDetail staffobj;
              {
 
 
-                         staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id,library_id);
+                         staffobj=(StaffDetail)staffdao.searchStaffId(staff_id,library_id);
                         if(staffobj==null)
                         {
                         //request.setAttribute("msg1", "Staff Id: "+staff_id+" doesn't exists");
@@ -128,7 +129,7 @@ StaffDetail staffobj;
              }
              else
              {
-                        staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id,library_id,sublibrary_id);
+                        staffobj=(StaffDetail)staffdao.searchStaffId(staff_id,library_id,sublibrary_id);
                         if(staffobj==null)
                         {
 
@@ -203,7 +204,7 @@ StaffDetail staffobj;
             session.setAttribute("updateresultset",staffobj);
 
             request.setAttribute("button", button);
-             List<SubLibrary>  sublib=SubLibraryDAO.searchSubLib(library_id);
+             List<SubLibrary>  sublib=sublibdao.searchSubLib(library_id);
              if(!sublib.isEmpty())
              {
                  request.setAttribute("sublib",sublib);

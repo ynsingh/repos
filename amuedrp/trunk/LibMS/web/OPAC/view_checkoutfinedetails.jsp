@@ -70,7 +70,8 @@ ResultSet rs=null,rs1=null;
            String memId = (String)session.getAttribute("mem_id");
            if(memId==null)memId = (String)session.getAttribute("id");
  String name=(String)session.getAttribute("mem_name");
- List<MemberFineWithCheckoutDetails> rs = (List<MemberFineWithCheckoutDetails>)CirculationDAO.searchfineDetailsByMemId(library_id,sub_library_id,memId);
+ CirculationDAO cirdao=new CirculationDAO();
+ List<MemberFineWithCheckoutDetails> rs = (List<MemberFineWithCheckoutDetails>)cirdao.searchfineDetailsByMemId(library_id,sub_library_id,memId);
 
 System.out.println(rs.size());
    requestList = new ArrayList ();
@@ -140,7 +141,7 @@ System.out.println(year+"-"+month+"-"+day);
             System.out.println("Days"+diffDays);
 
 
-                BookCategory bookCat = (BookCategory)CirculationDAO.searchfineDetailsByType(library_id,sub_library_id,DocId);
+                BookCategory bookCat = (BookCategory)cirdao.searchfineDetailsByType(library_id,sub_library_id,DocId);
                 if(diffDays>0){
                     fine1 = bookCat.getFine()*diffDays;
                     tcount++;
@@ -197,7 +198,12 @@ System.out.println("tcount="+tcount);
 	&nbsp;&nbsp;
                 <a href="accountdetails.jsp"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
             <a href="newdemand2.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-   <%-- |&nbsp;<a href="reservationrequest1.jsp" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>--%>
+     |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
+
+ &nbsp;
+    |&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=changepassword"  style="text-decoration: none;"> Change Password</a>
+|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/uploadExcel.do"  style="text-decoration: none;"> Bulk Import</a>
+
 
 
 
@@ -320,6 +326,11 @@ else
             <a href="./OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
     |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
+
+
+ &nbsp;
+    |&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=changepassword"  style="text-decoration: none;"> Change Password</a>
+|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/uploadExcel.do"  style="text-decoration: none;"> Bulk Import</a>
 
 
 

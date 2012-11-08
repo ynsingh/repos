@@ -4,6 +4,8 @@
  */
 
 package com.myapp.struts.AcquisitionDao;
+import com.myapp.struts.Acquisition.AcqAccession;
+import com.myapp.struts.Acquisition.AcqForOrderProcessReport;
 import com.myapp.struts.Acquisition.AllInvoiceList;
 import com.myapp.struts.Acquisition.ApprovalList;
 import com.myapp.struts.Acquisition.CirculationList_1_1;
@@ -25,15 +27,117 @@ import org.hibernate.criterion.Restrictions;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Property;
 import org.hibernate.transform.Transformers;
-/**
- *
- * @author maqbool
- */
 public class AcquisitionDao {
 
-public static List<AcqVendor> searchDoc7(String library_id, String sub_library_id) {
+    public static List<AcqForOrderProcessReport> orderProcessReport(String library_id, String sub_library_id,String order_no){
+     Session session =null;
+     List<AcqForOrderProcessReport> obj = null;
+     try {
+            session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String sql="";
+            sql="select ab.title,m.recieving_no,m.control_no,m.recieved_copies,m.pending_copies,m.vendor_id,m.order_no from acq_bibliography ab,(select ard.recieving_item_id,ard.recieving_no,ard.control_no,ard.title_id,ard.recieved_copies,ard.pending_copies,arh.vendor_id,arh.order_no from  acq_recieving_header arh,acq_recieving_details ard where ard.recieving_no=arh.recieving_no and ard.library_id='"+library_id+"' and ard.sub_library_id='"+sub_library_id+"' and arh.order_no='"+order_no+"') m where ab.title_id=m.title_id and ab.library_id='"+library_id+"' and ab.sub_library_id='"+sub_library_id+"'";
+            Query query =  session.createSQLQuery(sql)
+                    .setResultTransformer(Transformers.aliasToBean(AcqForOrderProcessReport.class));
+            obj=(List<AcqForOrderProcessReport>) query.list();
+            session.getTransaction().commit();
+        }
+         catch(Exception e){
+        e.printStackTrace();
+        }
+        finally
+        {
+        session.close();
+        }
+        return obj;
+    }
+
+  public static List<AcqOrder1> orderProcessReport2(String library_id,String sub_library_id,String recieving_no,String order_no) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+  List<AcqOrder1> obj=null;
+        try {
+            session.beginTransaction();
+
+            Criteria criteria = session.createCriteria(AcqOrder1.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.subLibraryId", sub_library_id))
+                    .add(Restrictions.eq("id.orderNo", order_no))
+                    .add(Restrictions.eq("recievingNo",recieving_no )));
+                  obj= criteria.list();
+                  session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+  }
+
+
+   public static List allOrderList(String library_id,String sub_library_id ) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List obj=null;
+        try {
+            session.beginTransaction();
+
+            Criteria criteria = session.createCriteria(AcqOrderHeader.class,"aliasOfTableA");
+            criteria.createAlias("aliasOfTableA.acqOrder1s","aliasOfTableB",CriteriaSpecification.INNER_JOIN);
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+            //        if(!library_id.equalsIgnoreCase("all"))
+                      criteria.add(Restrictions.eq("aliasOfTableA.id.libraryId",library_id ));
+                //    if(!sub_library_id.equalsIgnoreCase("all"))
+                      criteria.add(Restrictions.eq("aliasOfTableA.id.subLibraryId",sub_library_id ));
+                      Criterion a = Restrictions.eq("aliasOfTableB.recievingStatus", "Received");
+                      Criterion b = Restrictions.eq("aliasOfTableB.recievingStatus", "Partially Received");
+                      LogicalExpression le = Restrictions.or(a, b);
+                      criteria.add(le);
+                 //   criteria.add(Restrictions.eq("aliasOfTableB.recievingStatus", "Received"));
+                      obj= criteria.list();
+                      session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally {
+            session.close();
+        }
+        return obj;
+  }
+
+
+
+
+    public   List<AcqAccession> getBookForAccession(String library_id, String sub_library_id){
+    Session session =null;
+    List<AcqAccession> obj = null;
+    try {
+          session= HibernateUtil.getSessionFactory().openSession();
+          session.beginTransaction();
+          String sql="";
+          sql="select nnnt.prn,nnnt.invoice_no,nnnt.recieving_no,nnnt.control_no,nnnt.recieved_copies,nnnt.title_id,ab.title,ab.doc_type,ab.publisher_name,ab.author,ab.lcc_no,ab.sub_author,ab.publishing_yr,ab.publishing_place,ab.edition,ab.isbn,ab.volume_no,ab.sub_author0,ab.sub_author1,ab.sub_author2 from (select nnt.prn,nnt.invoice_no,nnt.recieving_no,nnt.recieved_copies,nnt.control_no,abd.title_id,nnt.library_id,nnt.sub_library_id  from (select areqdet.prn,nt.invoice_no,nt.recieving_no,nt.recieved_copies,nt.control_no,nt.library_id,nt.sub_library_id from (select aid.invoice_no,ared.recieving_no,ared.recieved_copies,ared.control_no,ared.library_id,ared.sub_library_id from acq_recieving_details ared, acq_invoice_detail aid where ared.library_id='"+library_id+"' and ared.sub_library_id='"+sub_library_id+"' and ared.recieving_item_id=aid.recieving_item_id and ared.status='invoice' and aid.status='rfp' ) nt,acq_requestpayment_details areqdet where areqdet.library_id='"+library_id+"' and areqdet.sub_library_id='"+sub_library_id+"' and areqdet.invoice_no=nt.invoice_no and areqdet.recieving_no=nt.recieving_no and areqdet.status='Processed' and areqdet.accession_status is null) nnt,acq_bibliography_details abd where abd.control_no=nnt.control_no and abd.library_id='"+library_id+"' and abd.sub_library_id='"+sub_library_id+"') nnnt,acq_bibliography ab where ab.title_id=nnnt.title_id and ab.library_id='"+library_id+"' and ab.sub_library_id='"+sub_library_id+"'";
+          Query query =  session.createSQLQuery(sql)
+                    .setResultTransformer(Transformers.aliasToBean(AcqAccession.class));
+          obj=(List<AcqAccession>) query.list();
+          session.getTransaction().commit();
+        }
+        catch(Exception e){
+        e.printStackTrace();
+        }
+        finally
+        {
+        session.close();
+        }
+        return obj;
+    }
+
+
+public   List<AcqVendor> searchDoc7(String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqVendor> obj=null;
         try {
@@ -58,7 +162,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-    public static List<AcqOrderHeader> searchOrderHeader(String library_id,String sublibrary_id) {
+    public   List<AcqOrderHeader> searchOrderHeader(String library_id,String sublibrary_id) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqOrderHeader> obj=null;
 
@@ -88,7 +192,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-  public static List<PlacedOrderList> getOrderPlaced(String library_id, String sub_library_id){
+ public  List<PlacedOrderList> getOrderPlaced(String library_id, String sub_library_id){
   Session session =null;
     List<PlacedOrderList> obj = null;
     try {
@@ -98,7 +202,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-          sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no, s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where  a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
+          sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no, s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where  a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and d.order_no=k.order_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Fully Approved' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
 
           Query query =  session.createSQLQuery(sql)
                     .setResultTransformer(Transformers.aliasToBean(PlacedOrderList.class));
@@ -117,7 +221,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-   public static List<PlacedOrderList> getOrderPlaced1(String library_id, String sub_library_id,String order_no,String checkbox,String vendor_id){
+   public  List<PlacedOrderList> getOrderPlaced1(String library_id, String sub_library_id,String order_no,String checkbox,String vendor_id){
      Session session =null;
      List<PlacedOrderList> obj = null;
      try {
@@ -126,21 +230,21 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
             String sql="";
 
              if(order_no!=null && !order_no.equals("onumber"))
-             {    sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"' and b.order_no='"+order_no+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no ) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"' and b.order_no='"+order_no+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
+             {    sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"' and b.order_no='"+order_no+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no ) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"' and b.order_no='"+order_no+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and d.order_no=k.order_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Fully Approved' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
                   System.out.println("i am in order_no");
              }
              if(checkbox!=null)
-             {    sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
+             {    sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and d.order_no=k.order_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Fully Approved' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
                   System.out.println("i am in checkbox");
              }
              if(vendor_id!=null && !vendor_id.equals("all"))
              {
-                 sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.vendor_id='"+vendor_id+"' and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id  and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.vendor_id='"+vendor_id+"'  and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
+                 sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.vendor_id='"+vendor_id+"' and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id  and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.vendor_id='"+vendor_id+"'  and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and d.order_no=k.order_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Fully Approved' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
                  System.out.println("i am in vendor_id");
              }
              if(vendor_id.equals("all") && order_no.equals("onumber") && checkbox==null )
              {
-                sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Ordered') and (e.acq_mode='On Approval' or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
+                sql="(select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies ,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, e.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from acq_bibliography_details e,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a ,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no  and ((e.status='Ordered' or e.status='Partially Received') and e.acq_mode='Firm Order') and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"' ORDER BY g.order_no ASC) union all (select f.title,f.publisher_name,f.author,f.isbn,g.no_of_copies,g.control_no,g.recieved_copies,g.pending_copies,g.order_no,g.title_id,g.unit_price,g.acq_mode,g.vendor_id from acq_bibliography f,(select e.title_id, k.no_of_copies,e.control_no,e.status,e.unit_price,e.acq_mode,d.recieved_copies,d.pending_copies,d.order_no,d.vendor_id from  acq_bibliography_details e,acq_approval k,(select a.order_no,a.vendor_id,b.control_no,s.recieved_copies,s.pending_copies from acq_order_header a,acq_order1 b left outer join (select  recieved_copies,pending_copies,control_no,`time` from acq_recieving_details a  where time =(select max(`time`) from acq_recieving_details b where a.control_no=b.control_no)) s on (b.control_no =s.control_no) where a.order_no=b.order_no and a.library_id='"+library_id+"' and a.sub_library_id='"+sub_library_id+"') d where e.control_no=d.control_no and e.control_no=k.control_no and  k.control_no=d.control_no and d.order_no=k.order_no and ((e.status='Partially Approved' or e.status='Partially Received' or e.status='Fully Approved' or e.status='Ordered') and (e.acq_mode='On Approval'  or e.acq_mode='Approved')) and k.status='Ordered' and e.library_id='"+library_id+"' and e.sub_library_id='"+sub_library_id+"') g where f.title_id=g.title_id and f.library_id='"+library_id+"' and f.sub_library_id='"+sub_library_id+"'  ORDER BY g.order_no ASC)";
                 System.out.println("i am in simple");
              }
             Query query =  session.createSQLQuery(sql)
@@ -159,7 +263,11 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
       }
 
 
-    public static boolean insertReceiveOrder(AcqRecievingHeader acqrecheader,AcqRecievingDetails acqrecdetails,AcqOrder1 acqorder1,AcqOrderHeader acqorderheader,AcqBibliographyDetails acqbibdetails) {
+
+  
+
+
+    public   boolean insertReceiveOrder(AcqRecievingHeader acqrecheader,AcqRecievingDetails acqrecdetails,AcqOrder1 acqorder1,AcqOrderHeader acqorderheader,AcqBibliographyDetails acqbibdetails) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -183,7 +291,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static boolean insertReceiveOrder1(AcqRecievingDetails acqrecdetails,AcqOrder1 acqorder1,AcqOrderHeader acqorderheader,AcqBibliographyDetails acqbibdetails) {
+    public   boolean insertReceiveOrder1(AcqRecievingDetails acqrecdetails,AcqOrder1 acqorder1,AcqOrderHeader acqorderheader,AcqBibliographyDetails acqbibdetails) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -206,7 +314,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static Integer returnReceivingItemId(String library_id, String sublibrary_id) {
+    public   Integer returnReceivingItemId(String library_id, String sublibrary_id) {
 
           Integer maxreceivingitemid =null;
           Session session = HibernateUtil.getSessionFactory().openSession();
@@ -239,7 +347,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-    public static AcqOrder1 searchAcqOrder1( String library_id, String sub_library_id,String order_no,int control_no) {
+    public   AcqOrder1 searchAcqOrder1( String library_id, String sub_library_id,String order_no,int control_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         AcqOrder1 obj=null;
         try{
@@ -257,7 +365,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-     public static boolean updateOrder1table(AcqOrder1 obj) {
+     public   boolean updateOrder1table(AcqOrder1 obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -276,7 +384,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static List<AcqOrder1> searchListAcqOrder1( String library_id, String sub_library_id,String order_no) {
+    public   List<AcqOrder1> searchListAcqOrder1( String library_id, String sub_library_id,String order_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<AcqOrder1> obj=null;
         try{
@@ -295,7 +403,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-     public static AcqRecievingHeader searchByRecievingNo(String library_id,String sublibrary_id,String recieving_no) {
+     public   AcqRecievingHeader searchByRecievingNo(String library_id,String sublibrary_id,String recieving_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqRecievingHeader obj=null;
 
@@ -323,7 +431,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-     public static AcqRecievingDetails searchRecievingDetails(String library_id,String sublibrary_id,int control_no) {
+     public   AcqRecievingDetails searchRecievingDetails(String library_id,String sublibrary_id,int control_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqRecievingDetails obj=null;
 
@@ -350,7 +458,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-    public static List<AcqRecievingDetails> searchRecievingDetailsByReceivingNo(String library_id,String sublibrary_id,String Recieving_no) {
+    public   List<AcqRecievingDetails> searchRecievingDetailsByReceivingNo(String library_id,String sublibrary_id,String Recieving_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRecievingDetails> obj=null;
 
@@ -378,7 +486,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-       public static AcqRecievingDetails searchRecievingDetailsByKey(String library_id,String sublibrary_id,String recieving_no,int recieving_item_id) {
+       public   AcqRecievingDetails searchRecievingDetailsByKey(String library_id,String sublibrary_id,String recieving_no,int recieving_item_id) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqRecievingDetails obj=null;
 
@@ -407,7 +515,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-    public static List<AcqRecievingHeader> searchForReceivinggNo(String library_id,String sublibrary_id) {
+    public   List<AcqRecievingHeader> searchForReceivinggNo(String library_id,String sublibrary_id) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRecievingHeader> obj=null;
 
@@ -432,7 +540,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static List<InvoiceList> getReceivedItems(String library_id, String sub_library_id,String receiving_no,String order_no){
+    public   List<InvoiceList> getReceivedItems(String library_id, String sub_library_id,String receiving_no,String order_no){
     Session session =null;
     List<InvoiceList> obj = null;
     try {
@@ -490,7 +598,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-     public static List<AcqInvoiceHeader> searchByInovoiceHeader(String library_id,String sublibrary_id,String invoice_no) {
+     public   List<AcqInvoiceHeader> searchByInovoiceHeader(String library_id,String sublibrary_id,String invoice_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqInvoiceHeader> obj=null;
 
@@ -517,7 +625,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static List<AcqInvoiceHeader> allByInovoiceHeader(String library_id,String sublibrary_id) {
+    public   List<AcqInvoiceHeader> allByInovoiceHeader(String library_id,String sublibrary_id) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqInvoiceHeader> obj=null;
 
@@ -543,7 +651,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-   public static AcqInvoiceDetail searchByInovoiceDetails(String library_id,String sublibrary_id,String invoice_no,String receiving_no) {
+   public   AcqInvoiceDetail searchByInovoiceDetails(String library_id,String sublibrary_id,String invoice_no,String receiving_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqInvoiceDetail obj=null;
 
@@ -570,7 +678,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-   public static List<AcqInvoiceDetail> searchInovoiceDetails(String library_id,String sublibrary_id,String invoice_no) {
+   public   List<AcqInvoiceDetail> searchInovoiceDetails(String library_id,String sublibrary_id,String invoice_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqInvoiceDetail> obj=null;
 
@@ -597,7 +705,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-     public static boolean insertInInovoiceDetails(AcqInvoiceDetail acqindetail,AcqRecievingDetails acqredetails) {
+     public   boolean insertInInovoiceDetails(AcqInvoiceDetail acqindetail,AcqRecievingDetails acqredetails) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -616,7 +724,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         }
     }
 
-    public static boolean insertInInovoiceHeader(AcqInvoiceHeader obj) {
+    public   boolean insertInInovoiceHeader(AcqInvoiceHeader obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -635,7 +743,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-   public static AcqRecievingDetails searchInRecievingDetails(String library_id,String sublibrary_id,String recieving_no,String pending_copies) {
+   public   AcqRecievingDetails searchInRecievingDetails(String library_id,String sublibrary_id,String recieving_no,String pending_copies) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqRecievingDetails obj=null;
 
@@ -663,7 +771,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static List<AllInvoiceList> getAllInvoice(String library_id, String sub_library_id,String invoice_no,String order_no,String vendor_id){
+    public   List<AllInvoiceList> getAllInvoice(String library_id, String sub_library_id,String invoice_no,String order_no,String vendor_id){
     Session session =null;
     List<AllInvoiceList> obj = null;
     try {
@@ -731,7 +839,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-    public static List<AcqRequestpaymentHeader> searchForPrn(String library_id,String sublibrary_id,String prn) {
+    public   List<AcqRequestpaymentHeader> searchForPrn(String library_id,String sublibrary_id,String prn) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRequestpaymentHeader> obj=null;
 
@@ -757,7 +865,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-     public static List<AcqRequestpaymentHeader> searchForAllPrn(String library_id,String sublibrary_id) {
+     public   List<AcqRequestpaymentHeader> searchForAllPrn(String library_id,String sublibrary_id) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRequestpaymentHeader> obj=null;
 
@@ -783,7 +891,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-    public static List<AcqRequestpaymentHeader> searchForAllPrn1(String library_id,String sublibrary_id) {
+    public   List<AcqRequestpaymentHeader> searchForAllPrn1(String library_id,String sublibrary_id) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRequestpaymentHeader> obj=null;
 
@@ -809,7 +917,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-     public static List<AcqRequestpaymentHeader> searchForAllPrn2(String library_id,String sublibrary_id) {
+     public   List<AcqRequestpaymentHeader> searchForAllPrn2(String library_id,String sublibrary_id) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRequestpaymentHeader> obj=null;
 
@@ -836,7 +944,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static AcqRequestpaymentHeader searchForPrnNo(String library_id,String sublibrary_id,String prn) {
+    public   AcqRequestpaymentHeader searchForPrnNo(String library_id,String sublibrary_id,String prn) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqRequestpaymentHeader obj=null;
 
@@ -862,7 +970,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-    public static List<AcqRequestpaymentDetails> searchForPrnList(String library_id,String sublibrary_id,String prn) {
+    public   List<AcqRequestpaymentDetails> searchForPrnList(String library_id,String sublibrary_id,String prn) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRequestpaymentDetails> obj=null;
 
@@ -888,7 +996,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-    public static List<AcqRequestpaymentDetails> searchForPrnList1(String library_id,String sublibrary_id,String prn) {
+    public   List<AcqRequestpaymentDetails> searchForPrnList1(String library_id,String sublibrary_id,String prn) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqRequestpaymentDetails> obj=null;
 
@@ -916,7 +1024,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-    public static AcqRequestpaymentDetails ProcessForPrnList(String library_id,String sublibrary_id,String prn,String invoice_no,String recieving_no) {
+    public   AcqRequestpaymentDetails ProcessForPrnList(String library_id,String sublibrary_id,String prn,String invoice_no,String recieving_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqRequestpaymentDetails obj=null;
 
@@ -946,7 +1054,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-     public static boolean insertInPaymentRequestDetail(AcqRequestpaymentDetails obj,AcqInvoiceDetail obj2) {
+     public   boolean insertInPaymentRequestDetail(AcqRequestpaymentDetails obj,AcqInvoiceDetail obj2) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -966,7 +1074,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-     public static boolean insertInPaymentRequestHeader(AcqRequestpaymentHeader obj) {
+     public   boolean insertInPaymentRequestHeader(AcqRequestpaymentHeader obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -985,7 +1093,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-     public static List<RequestForPayment> getViewPrn(String library_id, String sub_library_id,String prn){
+     public   List<RequestForPayment> getViewPrn(String library_id, String sub_library_id,String prn){
      Session session =null;
      List<RequestForPayment> obj = null;
      try {
@@ -1008,7 +1116,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-     public static List<PaymentUpdateClass> getDistinctPrn(String library_id, String sub_library_id){
+     public   List<PaymentUpdateClass> getDistinctPrn(String library_id, String sub_library_id){
      Session session =null;
      List<PaymentUpdateClass> obj = null;
      try {
@@ -1031,7 +1139,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-     public static List<PaymentUpdateClass2> getDistinctPrnProcessed(String library_id, String sub_library_id){
+     public   List<PaymentUpdateClass2> getDistinctPrnProcessed(String library_id, String sub_library_id){
      Session session =null;
      List<PaymentUpdateClass2> obj = null;
      try {
@@ -1054,7 +1162,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-    public static boolean deleteInPaymentRequestDetail(AcqRequestpaymentDetails obj,AcqInvoiceDetail obj2) {
+    public   boolean deleteInPaymentRequestDetail(AcqRequestpaymentDetails obj,AcqInvoiceDetail obj2) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -1073,7 +1181,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         }
     }
 
-      public static boolean processInPaymentRequestDetail(AcqRequestpaymentDetails obj) {
+      public   boolean processInPaymentRequestDetail(AcqRequestpaymentDetails obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -1093,7 +1201,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
 
 
 
-     public static AcqBudgetTransaction acqBudgetTransactionControlNo(String library_id,String control_no) {
+     public   AcqBudgetTransaction acqBudgetTransactionControlNo(String library_id,String control_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqBudgetTransaction obj=null;
 
@@ -1118,7 +1226,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-    public static AcqBudgetAllocation acqBudgetAllocationDelete(String library_id,String budgetheadid,String financial_yr) {
+    public   AcqBudgetAllocation acqBudgetAllocationDelete(String library_id,String budgetheadid,String financial_yr) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqBudgetAllocation obj=null;
 
@@ -1144,7 +1252,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
         return obj;
     }
 
-     public static boolean paymentUpdate(AcqRequestpaymentDetails obj1,AcqBudgetTransaction obj2,AcqBudgetAllocation obj3) {
+     public   boolean paymentUpdate(AcqRequestpaymentDetails obj1,AcqBudgetTransaction obj2,AcqBudgetAllocation obj3) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -1165,7 +1273,7 @@ public static List<AcqVendor> searchDoc7(String library_id, String sub_library_i
     }
 
 
-//    public static List<AcqAccession> getBookForAccession(String library_id, String sub_library_id){
+//    public   List<AcqAccession> getBookForAccession(String library_id, String sub_library_id){
 //    Session session =null;
 //    List<AcqAccession> obj = null;
 //    try {
@@ -1338,7 +1446,7 @@ List<AcqBudgetTransaction> obj=null;
         return obj;
     }
 
-    public static AcqBibliographyDetails BibliobyControlIdonApproval(String library_id,String sub_library_id,int con_no) {
+    public   AcqBibliographyDetails BibliobyControlIdonApproval(String library_id,String sub_library_id,int con_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AcqBibliographyDetails obj=null;
         try {
@@ -1505,7 +1613,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-    public static List  CheckInReport2(String library_id,String sub_lib)
+    public   List  CheckInReport2(String library_id,String sub_lib)
     {
        
     Session session=null;
@@ -1540,7 +1648,7 @@ session.getTransaction().commit();
         }
         return obj;
     }
- public static List  approvalReport(String library_id,String sub_lib)
+ public   List  approvalReport(String library_id,String sub_lib)
     {
       
     Session session=null;
@@ -1637,7 +1745,7 @@ public void updateApprovalHeader(AcqApprovalHeader bibDetails) {
         }
     }
 
-public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
+public   boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         try {
@@ -1744,7 +1852,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
     }
 
 
-   public static boolean updateApproval(AcqApproval app) {
+   public   boolean updateApproval(AcqApproval app) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -1765,7 +1873,7 @@ public static boolean updateAcqBib(AcqBibliographyDetails bibDetails) {
 
 
 
-    public static boolean updateBudget(AcqBudgetAllocation app) {
+    public   boolean updateBudget(AcqBudgetAllocation app) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -1905,7 +2013,7 @@ session.getTransaction().commit();
         }
        return maxbiblio;
     }
-           public static AcqApproval searchApproval(String library_id,String sublibrary_id,String approval_no,int control_no) {
+           public   AcqApproval searchApproval(String library_id,String sublibrary_id,String approval_no,int control_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          AcqApproval obj=null;
 
@@ -1929,7 +2037,7 @@ session.getTransaction().commit();
         }
         return obj;
     }
-               public static AcqVendor searchVendor(String library_id,String vendor_id) {
+               public   AcqVendor searchVendor(String library_id,String vendor_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          AcqVendor obj=null;
         try {
@@ -1952,7 +2060,7 @@ session.getTransaction().commit();
         }
         return obj;
     }
- public static AcqCurrency searchVendorCurrency(String library_id,String SourceCurrency)
+ public   AcqCurrency searchVendorCurrency(String library_id,String SourceCurrency)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         AcqCurrency obj=null;
@@ -1977,7 +2085,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-             public static List<AcqApproval> searchApproval2(String library_id,String sublibrary_id,String approval_no) {
+             public   List<AcqApproval> searchApproval2(String library_id,String sublibrary_id,String approval_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqApproval> obj=null;
         try {
@@ -1999,7 +2107,7 @@ session.getTransaction().commit();
         }
         return obj;
     }
-             public static List<AcqApproval> searchApprovalStatus(String library_id,String sublibrary_id,int control_no) {
+             public   List<AcqApproval> searchApprovalStatus(String library_id,String sublibrary_id,int control_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<AcqApproval> obj=null;
         try {
@@ -2024,7 +2132,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-             public static AcqApproval searchApprovalStatus1(String library_id,String sublibrary_id,int control_no,int approval_item_id) {
+             public   AcqApproval searchApprovalStatus1(String library_id,String sublibrary_id,int control_no,int approval_item_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         AcqApproval obj=null;
         try {
@@ -2050,7 +2158,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-               public static AcqApproval searchAcqApproval(String library_id,String sublibrary_id,int approval_id)
+               public   AcqApproval searchAcqApproval(String library_id,String sublibrary_id,int approval_id)
                {        Session session = HibernateUtil.getSessionFactory().openSession();
        AcqApproval obj=null;
 
@@ -2077,7 +2185,7 @@ session.getTransaction().commit();
     }
 
 
-     public static List<AcqOrder1> searchAcqOrder(String library_id,String sublibrary_id,int control_no,String order_no) {
+     public   List<AcqOrder1> searchAcqOrder(String library_id,String sublibrary_id,int control_no,String order_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<AcqOrder1>  obj=null;
         try {
@@ -2127,7 +2235,7 @@ session.getTransaction().commit();
         }
         return obj;
     }
-  public static AcqBibliographyDetails searchAcqBibByControlNo(String library_id,String sublibrary_id,int control_no) {
+  public   AcqBibliographyDetails searchAcqBibByControlNo(String library_id,String sublibrary_id,int control_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqBibliographyDetails obj=null;
         try {
@@ -2155,7 +2263,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-   public static AcqBibliographyDetails searchAcqBibPartialByControlNo(String library_id,String sublibrary_id,int control_no) {
+   public   AcqBibliographyDetails searchAcqBibPartialByControlNo(String library_id,String sublibrary_id,int control_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
         AcqBibliographyDetails obj=null;
         try {
@@ -2187,7 +2295,7 @@ session.getTransaction().commit();
 
 
 
-     public static AcqRecievingHeader searchOrderHeaderByRecievingNo(String library_id,String sublibrary_id,String recieving_no) {
+     public   AcqRecievingHeader searchOrderHeaderByRecievingNo(String library_id,String sublibrary_id,String recieving_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
        AcqRecievingHeader obj=null;
         try {
@@ -2244,7 +2352,7 @@ session.getTransaction().commit();
         return obj;
     }
 
-    public static AcqApprovalHeader searchApprovalHeaderByOrderNo(String library_id,String sublibrary_id,String order_no) {
+    public   AcqApprovalHeader searchApprovalHeaderByOrderNo(String library_id,String sublibrary_id,String order_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqApprovalHeader obj=null;
         try {
@@ -2739,7 +2847,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
     }
   
 
-     public static List<String> searchDoc6(String library_id, String sub_library_id) {
+     public   List<String> searchDoc6(String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
          List<String> obj=null;
         try {
@@ -2991,7 +3099,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
     }
     
 
-     public static boolean deleteApprovalHeader(String library_id, String sub_library_id,String approval_no) {
+     public   boolean deleteApprovalHeader(String library_id, String sub_library_id,String approval_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         
@@ -3019,7 +3127,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
         }
       return true;
     }
-     public static boolean deleteApproval(String library_id, String sub_library_id,String approval_no) {
+     public   boolean deleteApproval(String library_id, String sub_library_id,String approval_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         
@@ -3048,7 +3156,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
        return true;
     }
 
-     public static AcqOrderHeader searchOrderHeaderByOrderNo(String library_id,String sublibrary_id,String order_no) {
+     public   AcqOrderHeader searchOrderHeaderByOrderNo(String library_id,String sublibrary_id,String order_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          AcqOrderHeader obj=null;
 
@@ -3077,7 +3185,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
     }
 
 
-      public static ArrayList<AcqRecievingDetails> searchRecieveByRecievingNo(String library_id,String sublibrary_id,String recieving_no) {
+      public   ArrayList<AcqRecievingDetails> searchRecieveByRecievingNo(String library_id,String sublibrary_id,String recieving_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          ArrayList<AcqRecievingDetails> obj=null;
 
@@ -3105,7 +3213,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
     }
 
 
-  public static ArrayList<AcqOrder1> searchOrderByOrderNo(String library_id,String sublibrary_id,String order_no) {
+  public   ArrayList<AcqOrder1> searchOrderByOrderNo(String library_id,String sublibrary_id,String order_no) {
          Session session = HibernateUtil.getSessionFactory().openSession();
          ArrayList<AcqOrder1> obj=null;
 
@@ -3131,7 +3239,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
         }
         return obj;
     }
-  public static List<ApprovalList> getViewApprovalList(String library_id, String sub_library_id,String orderno){
+  public   List<ApprovalList> getViewApprovalList(String library_id, String sub_library_id,String orderno){
   Session session =null;
   List<ApprovalList> obj=null;
     
@@ -3166,7 +3274,7 @@ public ApprovalList getApprovalListbySelectionA(String library_id, String sub_li
         return obj;
     }
 
- public static List<ApprovalList> getViewApprovalList1(String library_id, String sub_library_id,String orderno){
+ public   List<ApprovalList> getViewApprovalList1(String library_id, String sub_library_id,String orderno){
   Session session =null;
     List<ApprovalList> obj=null;
     try {

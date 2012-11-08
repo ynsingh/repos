@@ -23,12 +23,13 @@ public class CirShowSingleMemberAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         mem_id=(String)request.getParameter("id");
         
-        CirMemberDetail cmemdetail=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+        CirMemberDetail cmemdetail=cirdao.searchCirMemDetails(library_id, mem_id);
           System.out.println("@@@@@@@@@@"+cmemdetail.getFname());
 
         if(cmemdetail!=null)

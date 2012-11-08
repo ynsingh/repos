@@ -48,7 +48,7 @@ public class AddCourseAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+CourseDAO coursedao=new CourseDAO();
 
          HttpSession session=request.getSession();
           try{
@@ -76,7 +76,7 @@ public class AddCourseAction extends org.apache.struts.action.Action {
 
       //  System.out.println(library_id+" "+faculty_id+dept_id+course_id+course_name);
        
-      Courses course = CourseDAO.searchCourseByName(library_id, faculty_id, dept_id, course_name);
+      Courses course = coursedao.searchCourseByName(library_id, faculty_id, dept_id, course_name);
     //    System.out.println("courses"+course);
          if(course!=null)
          {
@@ -107,7 +107,7 @@ public class AddCourseAction extends org.apache.struts.action.Action {
     
     
 
-        result=CourseDAO.insert(c);
+        result=coursedao.insert(c);
         if(result==true)
         {
 

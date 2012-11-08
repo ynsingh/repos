@@ -50,6 +50,7 @@ public class ViewAllCheckInReportAction1 extends org.apache.struts.action.Action
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
             List list=null;
              String library_id;
         String path = servlet.getServletContext().getRealPath("/");
@@ -74,7 +75,7 @@ path=path+"/JasperReport";
             String year2=ccra.getEnd_date();
 
 //List circheckInlist1=(List)CirculationDAO.CheckoutReport1(library_id,sub_lib, year1,year2, memid);
-        List circheckInlist1=(List)CirculationDAO.CheckInReport1(library_id, sub_lib, year1, year2, memid);
+        List circheckInlist1=(List)cirdao.CheckInReport1(library_id, sub_lib, year1, year2, memid);
         // session.setAttribute("circheckInlist1", circheckInlist1);
        // System.out.println("@@@@@@@@@@@@+///////////////////////////////////////////////////////////////////////////////////////"+circheckInlist1.size());
         //return mapping.findForward(SUCCESS);

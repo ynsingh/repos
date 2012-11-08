@@ -35,8 +35,10 @@ public class AcqInitiateOrderAction extends org.apache.struts.action.Action {
   AcqOrderDao acqodao=new AcqOrderDao();
   AcqOrderHeader acqordrhr=new AcqOrderHeader();
   AcqOrderHeaderId acqorderhid =new AcqOrderHeaderId();
+  VendorDAO vendao=new VendorDAO();
+  AcquisitionDao  acqudao=new AcquisitionDao();
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+    
      public static final String REPORT_DIRECTORY = "reports";
 
     
@@ -78,7 +80,7 @@ public class AcqInitiateOrderAction extends org.apache.struts.action.Action {
         String due_date=acqorder.getDue_date();
         String order_status=acqorder.getOrder_status();
         String cancel_reason=acqorder.getCancel_reason();
-        List<AcqVendor> acqvendor=VendorDAO.searchDoc5(library_id, sub_library_id);
+        List<AcqVendor> acqvendor=vendao.searchDoc5(library_id, sub_library_id);
 System.out.println(vendor);
 
         List<ApprovalList> aa=ado.getApprovalList(library_id, sub_library_id,vendor);
@@ -139,18 +141,18 @@ System.out.println(vendor);
                 }
                 else
                 {
-                  AcqVendor acqVendor=AcquisitionDao.searchVendor(library_id,acqordrhr.getVendorId()) ;
+                  AcqVendor acqVendor=acqudao.searchVendor(library_id,acqordrhr.getVendorId()) ;
                   List<ApprovalList> acq=null;
                   if(acqVendor!=null)
                   {
-                  AcqCurrency demo=AcquisitionDao.searchVendorCurrency(library_id,acqVendor.getVendorCurrency());
+                  AcqCurrency demo=acqudao.searchVendorCurrency(library_id,acqVendor.getVendorCurrency());
 
 if(demo!=null)
 {
-    acq=(List<ApprovalList>)AcquisitionDao.getViewApprovalList(library_id, sub_library_id, order_no);
+    acq=(List<ApprovalList>)acqudao.getViewApprovalList(library_id, sub_library_id, order_no);
 }
 else{
-    acq=(List<ApprovalList>)AcquisitionDao.getViewApprovalList1(library_id, sub_library_id, order_no);
+    acq=(List<ApprovalList>)acqudao.getViewApprovalList1(library_id, sub_library_id, order_no);
 }
         
                   }
@@ -190,11 +192,11 @@ if(button.equals("Print Order"))
                 {
 try
 {
- AcqVendor acqVendor=AcquisitionDao.searchVendor(library_id,acqordrhr.getVendorId()) ;
+ AcqVendor acqVendor=acqudao.searchVendor(library_id,acqordrhr.getVendorId()) ;
                   List<ApprovalList> acq=null;
                   if(acqVendor!=null)
                   {
-                  AcqCurrency demo=AcquisitionDao.searchVendorCurrency(library_id,acqVendor.getVendorCurrency());
+                  AcqCurrency demo=acqudao.searchVendorCurrency(library_id,acqVendor.getVendorCurrency());
 
 if(demo!=null)
 {
@@ -229,7 +231,7 @@ newlib7=ReportDao.getList2(order_no);
 newlib8=ReportDao.getList2(order_no);
 
 
-newlib9=(List<ApprovalList>)AcquisitionDao.getViewApprovalList(library_id, sub_library_id, order_no);
+newlib9=(List<ApprovalList>)acqudao.getViewApprovalList(library_id, sub_library_id, order_no);
 
 
 HashMap parameterMap = new HashMap();
@@ -311,7 +313,7 @@ newlib7=ReportDao.getList2(order_no);
 newlib8=ReportDao.getList2(order_no);
 
 
-newlib9=(List<ApprovalList>)AcquisitionDao.getViewApprovalList1(library_id, sub_library_id, order_no);
+newlib9=(List<ApprovalList>)acqudao.getViewApprovalList1(library_id, sub_library_id, order_no);
 
 
 HashMap parameterMap = new HashMap();

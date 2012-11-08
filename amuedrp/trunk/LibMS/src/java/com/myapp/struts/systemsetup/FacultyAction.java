@@ -37,7 +37,8 @@ public class FacultyAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
          HttpSession session=request.getSession();
-          try{
+         FacultyDAO facdao=new FacultyDAO();
+         try{
 
         locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
@@ -59,7 +60,7 @@ public class FacultyAction extends org.apache.struts.action.Action {
 
         if(button.equals("Add"))
         {
-         Faculty sublibobj=FacultyDAO.getFacultyName(library_id, faculty_id);
+         Faculty sublibobj=facdao.getFacultyName(library_id, faculty_id);
          if(sublibobj!=null)
          {
             //request.setAttribute("msg1", "Faculty Id : "+faculty_id+" already exists");
@@ -83,7 +84,7 @@ Faculty sublibobj;
 
 
 
-                         sublibobj=FacultyDAO.getFacultyName(library_id, faculty_id);
+                         sublibobj=facdao.getFacultyName(library_id, faculty_id);
                         if(sublibobj==null)
                         {
 

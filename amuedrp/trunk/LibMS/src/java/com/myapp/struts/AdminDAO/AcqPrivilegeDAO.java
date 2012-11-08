@@ -19,9 +19,9 @@ import org.hibernate.transform.Transformers;
 public class AcqPrivilegeDAO {
 
 
-   static  Integer maxNewRegId;
-   static Query query;
-public static boolean DeleteLogin(String staff_id,String library_id,String sublibrary_id) {
+      Integer maxNewRegId;
+     Query query;
+public   boolean DeleteLogin(String staff_id,String library_id,String sublibrary_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -56,7 +56,7 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
 
 
 }
-public static String getValue(AcqPrivilege acq,int i) {
+public   String getValue(AcqPrivilege acq,int i) {
       Session session = HibernateUtil.getSessionFactory().openSession();
 
 
@@ -288,7 +288,7 @@ session.getTransaction().commit();
 return null;
 
 }
-public static  boolean update(AcqPrivilege obj)
+public    boolean update(AcqPrivilege obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -313,7 +313,7 @@ public static  boolean update(AcqPrivilege obj)
 }
 
   
-public static AcqPrivilege searchStaffLogin(String staff_id,String library_id) {
+public   AcqPrivilege searchStaffLogin(String staff_id,String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AcqPrivilege acqobj=null;
         try {
@@ -337,7 +337,7 @@ AcqPrivilege acqobj=null;
 
   
 
-public static  boolean insert(AcqPrivilege obj)
+public    boolean insert(AcqPrivilege obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -370,7 +370,7 @@ public static  boolean insert(AcqPrivilege obj)
    return true;
 
 }
-public static  AcqPrivilege getPrivilege(String library_id,String sublibrary_id,String staff_id)
+public    AcqPrivilege getPrivilege(String library_id,String sublibrary_id,String staff_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 AcqPrivilege acqobj=null;
@@ -395,7 +395,7 @@ session.getTransaction().commit();
         return acqobj;
 
 }
-public static boolean DeleteStaff(String staff_id,String library_id) {
+public   boolean DeleteStaff(String staff_id,String library_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -432,7 +432,7 @@ public static boolean DeleteStaff(String staff_id,String library_id) {
 
 }
 
-public static  List getPrivilege1(String library_id,String sublibrary_id,String staff_id)
+public    List getPrivilege1(String library_id,String sublibrary_id,String staff_id)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List obj=null;

@@ -32,9 +32,9 @@ public class CirStatistics extends org.apache.struts.action.Action {
               HttpSession session=request.getSession();
             String library_id =(String)session.getAttribute("library_id");
            String sublibrary_id =(String)session.getAttribute("sublibrary_id");
+CirculationDAO cirdao=new CirculationDAO();
 
-
-  HashMap obj=CirculationDAO.searchCirMemberStatistics(library_id,sublibrary_id);
+  HashMap obj=cirdao.searchCirMemberStatistics(library_id,sublibrary_id);
 
         
          

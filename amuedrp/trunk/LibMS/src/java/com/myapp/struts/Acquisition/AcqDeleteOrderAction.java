@@ -30,6 +30,8 @@ public class AcqDeleteOrderAction extends org.apache.struts.action.Action {
   
   AcqOrderHeader acqordrhr=new AcqOrderHeader();
   AcqOrderHeaderId acqorderhid =new AcqOrderHeaderId();
+  AcquisitionDao acqudao=new AcquisitionDao();
+  AcqOrderDao acqorderdao=new AcqOrderDao();
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     private boolean result;
@@ -53,17 +55,17 @@ public class AcqDeleteOrderAction extends org.apache.struts.action.Action {
 System.out.println(order_no+".........................");
 
         
-       AcqOrderHeader acq= AcquisitionDao.searchOrderHeaderByOrderNo(library_id, sub_library_id, order_no);
+       AcqOrderHeader acq= acqudao.searchOrderHeaderByOrderNo(library_id, sub_library_id, order_no);
 
            if(acq!=null)
            {
 System.out.println(order_no+"....3523523.....................");
-               List<ApprovalList> acq2=(List<ApprovalList>)AcquisitionDao.getViewApprovalList(library_id, sub_library_id, order_no);
+               List<ApprovalList> acq2=(List<ApprovalList>)acqudao.getViewApprovalList(library_id, sub_library_id, order_no);
 
                System.out.println(acq2.size()+"///////////////////");
                for(int i=0;i<acq2.size();i++){
 
-                   List<AcqOrder1> app=AcquisitionDao.searchAcqOrder(library_id, sub_library_id, acq2.get(i).getControl_no(),order_no);
+                   List<AcqOrder1> app=acqudao.searchAcqOrder(library_id, sub_library_id, acq2.get(i).getControl_no(),order_no);
                         if(!app.isEmpty()){
                         for(int j=0;j<app.size();j++){
                             if(app.get(j).getApprovalItemId()==0){
@@ -72,11 +74,11 @@ System.out.println(order_no+"....3523523.....................");
                             }
                             else
                             {
-                                AcqApproval obj=AcquisitionDao.searchAcqApproval(library_id, sub_library_id, app.get(j).getApprovalItemId());
+                                AcqApproval obj=acqudao.searchAcqApproval(library_id, sub_library_id, app.get(j).getApprovalItemId());
                         System.out.println(obj);
                                  obj.setStatus("pending");
                              
-                                result=AcquisitionDao.updateApproval(obj);
+                                result=acqudao.updateApproval(obj);
                              }
                         }
                         
@@ -84,7 +86,7 @@ System.out.println(order_no+"....3523523.....................");
                         
                         }
                     //For On Approval or Approved Deletion
-                        AcqBibliographyDetails st=AcquisitionDao.searchAcqBibByControlNo(library_id, sub_library_id, acq2.get(i).getControl_no());
+                        AcqBibliographyDetails st=acqudao.searchAcqBibByControlNo(library_id, sub_library_id, acq2.get(i).getControl_no());
                         if(st!=null)
                         {
                             if(st.getNoOfCopies()==0)
@@ -102,12 +104,12 @@ System.out.println(order_no+"....3523523.....................");
 
 
                         }
-                      boolean   result=AcquisitionDao.updateAcqBib(st);
+                      boolean   result=acqudao.updateAcqBib(st);
                }
 
 
     acq.setOrderStatus("cancel");
-  result= AcqOrderDao.updateAcqOrderHeader(acq);
+  result= acqorderdao.updateAcqOrderHeader(acq);
       if(result==true)
          {
 

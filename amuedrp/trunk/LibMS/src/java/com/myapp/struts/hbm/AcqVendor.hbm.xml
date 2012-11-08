@@ -1,63 +1,62 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 18, 2011 7:00:14 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqVendor" table="acq_vendor" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqVendorId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="subLibraryId" type="string">
-                <column name="sub_library_id" length="20" />
-            </key-property>
-            <key-property name="vendorId" type="string">
-                <column name="vendor_id" length="50" />
-            </key-property>
-        </composite-id>
-        <property name="vendor" type="string">
-            <column name="vendor" length="100" />
-        </property>
-        <property name="address" type="string">
-            <column name="address" length="50" />
-        </property>
-        <property name="city" type="string">
-            <column name="city" length="10" />
-        </property>
-        <property name="state" type="string">
-            <column name="state" length="20" />
-        </property>
-        <property name="country" type="string">
-            <column name="country" length="20" />
-        </property>
-        <property name="pin" type="string">
-            <column name="pin" length="10" />
-        </property>
-        <property name="phone" type="string">
-            <column name="phone" length="10" />
-        </property>
-        <property name="fax" type="string">
-            <column name="fax" length="10" />
-        </property>
-        <property name="email" type="string">
-            <column name="email" length="20" />
-        </property>
-        <property name="entryDate" type="string">
-            <column name="entry_date" length="20" />
-        </property>
-        <property name="vendorCurrency" type="string">
-            <column name="vendor_currency" length="50" />
-        </property>
-        <property name="contactPerson" type="string">
-            <column name="contact_person" length="50" />
-        </property>
-        <set name="acqApprovalHeaders" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-                <column name="sub_library_id" length="20" not-null="true" />
-                <column name="vendor_id" length="50" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.AcqApprovalHeader" />
-        </set>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqVendor" table="acq_vendor">
+    <composite-id class="com.myapp.struts.hbm.AcqVendorId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="vendorId" type="string">
+        <column length="50" name="vendor_id"/>
+      </key-property>
+    </composite-id>
+    <property name="vendor" type="string">
+      <column length="100" name="vendor"/>
+    </property>
+    <property name="address" type="string">
+      <column length="50" name="address"/>
+    </property>
+    <property name="city" type="string">
+      <column length="10" name="city"/>
+    </property>
+    <property name="state" type="string">
+      <column length="20" name="state"/>
+    </property>
+    <property name="country" type="string">
+      <column length="20" name="country"/>
+    </property>
+    <property name="pin" type="string">
+      <column length="10" name="pin"/>
+    </property>
+    <property name="phone" type="string">
+      <column length="10" name="phone"/>
+    </property>
+    <property name="fax" type="string">
+      <column length="10" name="fax"/>
+    </property>
+    <property name="email" type="string">
+      <column length="20" name="email"/>
+    </property>
+    <property name="entryDate" type="string">
+      <column length="20" name="entry_date"/>
+    </property>
+    <property name="vendorCurrency" type="string">
+      <column length="50" name="vendor_currency"/>
+    </property>
+    <property name="contactPerson" type="string">
+      <column length="50" name="contact_person"/>
+    </property>
+    <set inverse="true" name="acqApprovalHeaders">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+        <column length="20" name="sub_library_id" not-null="true"/>
+        <column length="50" name="vendor_id"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.AcqApprovalHeader"/>
+    </set>
+  </class>
 </hibernate-mapping>

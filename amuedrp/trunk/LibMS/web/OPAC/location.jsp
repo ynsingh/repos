@@ -184,7 +184,7 @@ locale1=(String)session.getAttribute("locale");
     <body onload="search();fun()">
        <html:form method="post" action="/Locationview" target="f4" styleId="form1">
            <table dir="<%=rtl%>" align="center" width="80%" class="datagrid" style="border: dashed 1px cyan">
-               <tr><td class="header" align="center">Location</td></tr>
+               <tr><td class="header1" align="center">Location</td></tr>
                <tr><td>
                        <table>
         <tr><td dir="<%=rtl%>"  align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%></td>

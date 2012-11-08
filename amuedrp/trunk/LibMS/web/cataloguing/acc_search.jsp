@@ -56,7 +56,7 @@ document.Form1.submit();
     <table dir="<%=rtl%>"  align="center" width="90%" border="1px" height="100%">
       <tr class="headerStyle"><td  width="100%"  height="25px" align="center" colspan="2">View All Accession Records
       </td></tr>
-        <tr><td width="80%" height="40px" valign="middle" >
+        <tr><td width="60%" height="40px" valign="middle" >
           <table>
               <tr><td ><%= resource.getString("cataloguing.catsearch.enterkeyword")%>&nbsp;&nbsp;</td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
               <td>
@@ -75,6 +75,16 @@ document.Form1.submit();
                           <option value="mainEntry"><%= resource.getString("cataloguing.catoldtitleentry1.mainentry")%></option>
                       </select>
                     </td>
+                <td>&nbsp;&nbsp;Document Type </td>    <td rowspan="2" valign="top">
+                    &nbsp;&nbsp;  <select name="document_type" onChange="fun()" id="db_cat" size="1">
+                          <option value="book">Book</option>
+                          <option value="thesis">Thesis</option>
+                          <option value="Diss">Dissertation</option>
+                          <option value="cd">CD/DVD</option>
+                          <option value="econtent">E-Document</option>
+                      </select>
+                    </td>
+
               </tr></table></td></tr>
             <tr bgcolor="#7697BC"><td align="<%=align%>" colspan="2"><font color="white"> <b><%= resource.getString("cataloguing.catsearch.sortby")%> </b></font></td></tr>
             <tr style="background-color:#e0e8f5;">

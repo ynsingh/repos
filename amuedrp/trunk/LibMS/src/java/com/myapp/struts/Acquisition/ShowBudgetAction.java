@@ -26,15 +26,7 @@ public class ShowBudgetAction extends org.apache.struts.action.Action {
     String dept_id;
     String library_id;
     String button;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    BudgetDAO buddao=new BudgetDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -43,7 +35,7 @@ public class ShowBudgetAction extends org.apache.struts.action.Action {
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
        
-     List<AcqBudget> budget=BudgetDAO.getBudget(library_id);
+     List<AcqBudget> budget=buddao.getBudget(library_id);
       session.setAttribute("budgets", budget);
          if(!budget.isEmpty())
          {

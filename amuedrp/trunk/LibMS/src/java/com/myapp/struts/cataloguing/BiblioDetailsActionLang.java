@@ -5,7 +5,7 @@
 
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.BibliographicDetailsId;
 import com.myapp.struts.hbm.BibliographicDetailsLang;
@@ -37,26 +37,19 @@ public class BiblioDetailsActionLang extends org.apache.struts.action.Action {
     BibliographicDetails bib1=new BibliographicDetails();
     BibliographicDetailsLang biblang=new BibliographicDetailsLang();
     BibliographicDetailsLangId biblangid=new BibliographicDetailsLangId();
-    BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao=new BibliographicEntryDAO();
     DocumentDetailsId ddid=new DocumentDetailsId();
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
     String align="left";
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
     BibliographicDetailEntryActionForm bibform=(BibliographicDetailEntryActionForm)form;
         HttpSession session1=request.getSession();
         String library_id=(String)session1.getAttribute("library_id");
@@ -211,7 +204,7 @@ public class BiblioDetailsActionLang extends org.apache.struts.action.Action {
         dd.setTitle(bibform.getTitle());
         dd.setEntryLanguage(bibform.getLanguage());
         dd.setBibliographicDetails(bib);
-        DocumentCategory dc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategoryByName(library_id, sub_library_id, bibform.getBook_type());
+        DocumentCategory dc = (DocumentCategory)doccatdao.searchDocumentCategoryByName(library_id, sub_library_id, bibform.getBook_type());
                     if(dc!=null)
                         dd.setBookType(dc.getId().getDocumentCategoryId());
                     else

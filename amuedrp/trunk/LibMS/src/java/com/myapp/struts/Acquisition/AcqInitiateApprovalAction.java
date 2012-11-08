@@ -29,16 +29,8 @@ public class AcqInitiateApprovalAction extends org.apache.struts.action.Action {
     AcqBibliographyDetails acqb=new AcqBibliographyDetails();
     AcqApprovalHeader acqaph=new AcqApprovalHeader();
     AcqApprovalHeaderId  acqaphid=new AcqApprovalHeaderId();
-
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+VendorDAO vendao=new VendorDAO();
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -49,7 +41,7 @@ public class AcqInitiateApprovalAction extends org.apache.struts.action.Action {
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String button=aiaaf.getButton();
         String approval_no=aiaaf.getApproval_no();
-        List<AcqVendor> acqvendor=VendorDAO.searchDoc5(library_id, sub_library_id);
+        List<AcqVendor> acqvendor=vendao.searchDoc5(library_id, sub_library_id);
         List<ApprovalList> aa=acqdao.searchOnApprovalList(library_id, sub_library_id);
         request.setAttribute("button", button);
  if(button.equals("New")){

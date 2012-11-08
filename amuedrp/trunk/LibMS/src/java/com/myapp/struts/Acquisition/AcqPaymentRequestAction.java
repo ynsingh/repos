@@ -23,7 +23,7 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    AcquisitionDao acqdao=new AcquisitionDao();
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -41,10 +41,10 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
         
         if(button.equals("Process"))
         {
-            List<RequestForPayment> acqprn=AcquisitionDao.getViewPrn(library_id, sub_library_id, prn) ;
+            List<RequestForPayment> acqprn=acqdao.getViewPrn(library_id, sub_library_id, prn) ;
             if(acqprn.isEmpty())
             {
-              AcqRequestpaymentHeader acqreqheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id, prn);
+              AcqRequestpaymentHeader acqreqheader=acqdao.searchForPrnNo(library_id, sub_library_id, prn);
               if(acqreqheader!=null)
               {
                   if(acqreqheader.getStatus().equals("processed"))
@@ -68,7 +68,7 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
 
         if(button.equals("New"))
         {
-           List<AcqRequestpaymentHeader> acqprn=AcquisitionDao.searchForPrn(library_id, sub_library_id, prn);
+           List<AcqRequestpaymentHeader> acqprn=acqdao.searchForPrn(library_id, sub_library_id, prn);
            if(!acqprn.isEmpty())
            {
              request.setAttribute("msg1", "This prn is already exist");
@@ -76,7 +76,7 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
            }
            else
            {
-             List<AllInvoiceList> allinvoice=AcquisitionDao.getAllInvoice(library_id, sub_library_id,invoice_no,order_no,vendor_id);
+             List<AllInvoiceList> allinvoice=acqdao.getAllInvoice(library_id, sub_library_id,invoice_no,order_no,vendor_id);
              session.setAttribute("allinvoice",allinvoice);
              request.setAttribute("prn", prn);
              return mapping.findForward(SUCCESS);
@@ -86,10 +86,10 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
 
          if(button.equals("View"))
         {
-            List<RequestForPayment> acqprn=AcquisitionDao.getViewPrn(library_id, sub_library_id, prn) ;
+            List<RequestForPayment> acqprn=acqdao.getViewPrn(library_id, sub_library_id, prn) ;
             if(acqprn.isEmpty())
             {
-              AcqRequestpaymentHeader acqreqheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id, prn);
+              AcqRequestpaymentHeader acqreqheader=acqdao.searchForPrnNo(library_id, sub_library_id, prn);
               if(acqreqheader!=null)
               {
                   if(acqreqheader.getStatus().equals("processed"))
@@ -114,10 +114,10 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
 
          if(button.equals("Update"))
         {
-            List<RequestForPayment> acqprn=AcquisitionDao.getViewPrn(library_id, sub_library_id, prn) ;
+            List<RequestForPayment> acqprn=acqdao.getViewPrn(library_id, sub_library_id, prn) ;
             if(acqprn.isEmpty())
             {
-              AcqRequestpaymentHeader acqreqheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id, prn);
+              AcqRequestpaymentHeader acqreqheader=acqdao.searchForPrnNo(library_id, sub_library_id, prn);
               if(acqreqheader!=null)
               {
                   if(acqreqheader.getStatus().equals("processed"))
@@ -143,10 +143,10 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
 
          if(button.equals("Delete"))
         {
-            List<RequestForPayment> acqprn=AcquisitionDao.getViewPrn(library_id, sub_library_id, prn) ;
+            List<RequestForPayment> acqprn=acqdao.getViewPrn(library_id, sub_library_id, prn) ;
             if(acqprn.isEmpty())
             {
-              AcqRequestpaymentHeader acqreqheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id, prn);
+              AcqRequestpaymentHeader acqreqheader=acqdao.searchForPrnNo(library_id, sub_library_id, prn);
               if(acqreqheader!=null)
               {
                   if(acqreqheader.getStatus().equals("processed"))
@@ -171,7 +171,7 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
 
          if(button.equals("Process List"))
         {
-            List<AcqRequestpaymentHeader> acqprn=AcquisitionDao.searchForAllPrn1(library_id, sub_library_id);
+            List<AcqRequestpaymentHeader> acqprn=acqdao.searchForAllPrn1(library_id, sub_library_id);
             if(acqprn.isEmpty())
             {
               request.setAttribute("msg1", "No prn list exist");
@@ -186,7 +186,7 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
 
           if(button.equals("UnProcess List"))
         {
-            List<AcqRequestpaymentHeader> acqprn=AcquisitionDao.searchForAllPrn2(library_id, sub_library_id);
+            List<AcqRequestpaymentHeader> acqprn=acqdao.searchForAllPrn2(library_id, sub_library_id);
             if(acqprn.isEmpty())
             {
               request.setAttribute("msg1", "No prn list exist");
@@ -201,7 +201,7 @@ public class AcqPaymentRequestAction extends org.apache.struts.action.Action {
 
          if(button.equals("View All"))
         {
-            List<AcqRequestpaymentHeader> acqprn=AcquisitionDao.searchForAllPrn(library_id, sub_library_id);
+            List<AcqRequestpaymentHeader> acqprn=acqdao.searchForAllPrn(library_id, sub_library_id);
             if(acqprn.isEmpty())
             {
               request.setAttribute("msg1", "No prn list exist");

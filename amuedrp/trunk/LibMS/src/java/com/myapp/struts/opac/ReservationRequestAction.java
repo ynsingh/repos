@@ -33,7 +33,9 @@ public class ReservationRequestAction extends org.apache.struts.action.Action {
     int max_id;
     Reservationlist rl=new Reservationlist();
     ReservationlistId rlid=new ReservationlistId();
-   
+   ReservationListDAO resdao=new ReservationListDAO();
+   NewDemandDAO newdemanddao=new NewDemandDAO();
+   CirculationDAO cirdao=new CirculationDAO();
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
@@ -51,7 +53,7 @@ public class ReservationRequestAction extends org.apache.struts.action.Action {
             accessionno=myForm.getAccessionno();
 
 
-            Reservationlist resobj=(Reservationlist)ReservationListDAO.getRequestDetail(library_id,sublibrary_id,memid,accessionno,"pending");
+            Reservationlist resobj=(Reservationlist)resdao.getRequestDetail(library_id,sublibrary_id,memid,accessionno,"pending");
 
             if(resobj!=null){
              request.setAttribute("msg", "Reservation request Already Given");
@@ -81,7 +83,7 @@ public class ReservationRequestAction extends org.apache.struts.action.Action {
             pub_year=myForm.getPub_year();
 
 
-            control_list=NewDemandDAO.getMaxReservationId(library_id,sublibrary_id,memid);
+            control_list=newdemanddao.getMaxReservationId(library_id,sublibrary_id,memid);
                if(control_list.get(0)!=null)
                {
                 max_id=Integer.parseInt((String)control_list.get(0)) ;
@@ -116,11 +118,11 @@ public class ReservationRequestAction extends org.apache.struts.action.Action {
             rl.setLanguage(lang);
             rl.setPubYear(pub_year);
             rl.setStatus("pending");
-            result=NewDemandDAO.insert1(rl);
+            result=newdemanddao.insert1(rl);
              // System.out.println(String.valueOf(CirculationDAO.getMaxReservationId(library_id, memid)));
         if(result==true)
         {
-         CirMemberAccount cirobj=(CirMemberAccount)CirculationDAO.searchCirMemAccountDetails(library_id,memsublib, memid);
+         CirMemberAccount cirobj=(CirMemberAccount)cirdao.searchCirMemAccountDetails(library_id,memsublib, memid);
             if(cirobj!=null)
             {
                 Integer researvation_made = Integer.parseInt(cirobj.getReservationMade());
@@ -128,7 +130,7 @@ public class ReservationRequestAction extends org.apache.struts.action.Action {
               System.out.println();
 
             cirobj.setReservationMade(researvation_made.toString());
-            result=CirculationDAO.updateAccount(cirobj);
+            result=cirdao.updateAccount(cirobj);
 
            // if(result==true)
           //  {

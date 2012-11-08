@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  * @author edrp01
  */
 public class CirViewAllLoadAction extends org.apache.struts.action.Action {
-    
+    CirculationDAO cirdao=new CirculationDAO();
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     
@@ -37,7 +37,7 @@ public class CirViewAllLoadAction extends org.apache.struts.action.Action {
            
 
 
-           List faculty   = (List<Faculty>)CirculationDAO.LoadFaculty(library_id);
+           List faculty   = (List<Faculty>)cirdao.LoadFaculty(library_id);
 
         
          
@@ -46,16 +46,16 @@ public class CirViewAllLoadAction extends org.apache.struts.action.Action {
          
 
         
-         List dept   = (List<Department>)CirculationDAO.LoadDepartment(library_id);
+         List dept   = (List<Department>)cirdao.LoadDepartment(library_id);
                  session.setAttribute("dept",dept);
       
-      List  courses =(List<Courses>)CirculationDAO.LoadCourses(library_id);
+      List  courses =(List<Courses>)cirdao.LoadCourses(library_id);
       
             session.setAttribute("courses",courses);
 
       
       
-       List  sublibrary = (List<SubLibrary>)CirculationDAO.LoadSublibrary(library_id);
+       List  sublibrary = (List<SubLibrary>)cirdao.LoadSublibrary(library_id);
            session.setAttribute("sublibrary", sublibrary);
      
 

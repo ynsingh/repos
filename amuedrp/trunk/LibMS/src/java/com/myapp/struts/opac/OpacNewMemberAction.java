@@ -31,7 +31,7 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
 
     private static String SUCCESS = "success";
     private CirRequestfromOpac cro = new CirRequestfromOpac();
-
+CirRequestfromOpacDAO cirreqopacdao=new CirRequestfromOpacDAO();
     private String TXTMEMID;
     private String TXTFNAME;
     private String TXTLNAME;
@@ -116,7 +116,7 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
       //      Transaction tx=null;
 
 
-              CirRequestfromOpac test=(CirRequestfromOpac)CirRequestfromOpacDAO.getMemberDetail(cmdf.getCMBLib(),cmdf.getCmdSubLibrary(),cmdf.getTXTMEMID());
+              CirRequestfromOpac test=(CirRequestfromOpac)cirreqopacdao.getMemberDetail(cmdf.getCMBLib(),cmdf.getCmdSubLibrary(),cmdf.getTXTMEMID());
          
          if(test!=null)
          {
@@ -125,7 +125,7 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
             return mapping.findForward("failure");
          }
 
-          CirMemberDetail   test1=(CirMemberDetail)CirRequestfromOpacDAO.getMemberId(cmdf.getCMBLib(),cmdf.getTXTMEMID());
+          CirMemberDetail   test1=(CirMemberDetail)cirreqopacdao.getMemberId(cmdf.getCMBLib(),cmdf.getTXTMEMID());
 
 
          if(test1!=null)
@@ -220,7 +220,7 @@ public class OpacNewMemberAction extends org.apache.struts.action.Action {
 
        cro.setImage(cmdf.getCMBLib()+cmdf.getCmdSubLibrary()+cmdf.getTXTMEMID()+"."+ext);
         }
-                 boolean result= CirRequestfromOpacDAO.insert(cro);
+                 boolean result= cirreqopacdao.insert(cro);
           if(result==true){
            //String msg="Request for Member Registration sent successfully to Circulation Division";
             String msg=resource.getString("circulation.opacnewmem.reqsendtocirdiv");

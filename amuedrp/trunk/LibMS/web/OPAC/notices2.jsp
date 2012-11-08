@@ -20,8 +20,9 @@ int modvalue;
 String index;
 %>
 <%
- List<Notices> notices=(List<Notices>)session.getAttribute("notices");
- index = request.getParameter("pageIndex");
+ ArrayList<Notices> notices=(ArrayList<Notices>)session.getAttribute("notices");
+ System.out.println(notices.size()+"kkkkkkkkkkkkkkkkkkkkkk");
+/* index = request.getParameter("pageIndex");
  if(index!=null){
      pageIndex = Integer.parseInt(index);
   }
@@ -46,7 +47,7 @@ toIndex = fromIndex + pagesize;
 if(toIndex>size)toIndex=size;
 fromIndex++;
 
-
+*/
 
 %>
 <html>
@@ -77,106 +78,29 @@ locale1=(String)session.getAttribute("locale");
 
     %>
     </head>
-    <body>
-        <table  align="center" dir="<%=rtl%>" width="100%" class="datagrid" >
-<%if(size==0){%>
-<p class="err"> <%=resource.getString("global.norecordfound")%></p>
-<%}else{%>
+  
+         <body onload="parent.setIframeHeight();" class="header1">
 
-     <% for(;fromIndex<=toIndex;fromIndex++){%>
-     
+        <table dir="<%=rtl%>"  align="<%=align%>" class="datagrid" width="50%" >
+        <%if(notices.size()==0){%> <%=resource.getString("global.norecordfound")%><%}else{%>
 
-     <tr dir="<%=rtl%>" align="left"><td>
-     <table dir="<%=rtl%>" align="left" class="datagrid" width="50%">
+        <tr  dir="<%=rtl%>" class="header1"><td width="5px" >Sno</td><td   align="left" dir="<%=rtl%>"><b>Notices</b></td></tr>
 
-      <tr dir="<%=rtl%>" align="<%=align%>">
-          <td  align="<%=align%>" dir="<%=rtl%>" class="heading"><p dir="<%=rtl%>" align="justify" align="<%=align%>">Notices Id :<a dir="<%=rtl%>" href="<%=request.getContextPath()%>/viewnotices.do?name=<%=notices.get(fromIndex-1).getId().getNoticeId()%>" target="f5"><%=notices.get(fromIndex-1).getSubject()%></a></p></td></tr>
+         <% for(int i=0;i<notices.size();i++ ){%>
 
-      <tr dir="<%=rtl%>" align="<%=align%>"><td dir="<%=rtl%>" align="<%=align%>">
-              <%
-       String str_date=notices.get(fromIndex-1).getDate();
-       String  year=str_date.substring(0,str_date.indexOf("-"));
+        <tr  dir="<%=rtl%>">
+            <td valign="top"><%=i+1%>.</td>
+                <td  align="<%=align%>" dir="<%=rtl%>" class="heading1">
+                    <b>Subject</b>&nbsp;&nbsp:<i><%=notices.get(i).getSubject() %></i><br>
+                    <ul><b><i>Details</i></b>&nbsp;&nbsp:<i><%=notices.get(i).getDetail() %></i><br>
+                        <b><i>Date</i></b>&nbsp;&nbsp:<i><%=notices.get(i).getDate() %></i><br>
+                        </ul>
+                </td>
+            </tr>
+         <%}%>
+         <%}%>
+         </table>
 
-
-        String    month=str_date.substring(str_date.indexOf("-")+1,str_date.indexOf("-", str_date.indexOf("-")+1));
-
-
-        String    day=str_date.substring(str_date.lastIndexOf("-")+1,str_date.length());
-
-String txtmonth="";
-int month1=Integer.parseInt(month);
-switch(month1)
-        {
-
-case 1:
-        txtmonth="January";
-        break;
-case 2:
-        txtmonth="Feb";
-        break;
-
-case 3:
-        txtmonth="March";
-        break;
-
-case 4:
-        txtmonth="April";
-        break;
-
-case 5:
-        txtmonth="May";
-        break;
-
-case 6:
-        txtmonth="June";
-        break;
-
-case 7:
-        txtmonth="July";
-        break;
-
-case 8:
-        txtmonth="August";
-        break;
-
-case 9:
-        txtmonth="Sept";
-        break;
-
-case 10:
-        txtmonth="October";
-        break;
-
-case 11:
-        txtmonth="November";
-        break;
-
-case 12:
-        txtmonth="December";
-        break;
-
-}
-
-
-
-
-
-                    %>Date :&nbsp;<%=day%>&nbsp;<%=txtmonth%>&nbsp;,&nbsp;<%=year%></td></tr>
-      <tr dir="<%=rtl%>" align="<%=align%>"><td dir="<%=rtl%>" align="<%=align%>"><a dir="<%=rtl%>" href="<%=request.getContextPath()%>/viewnotices.do?name=<%=notices.get(fromIndex-1).getId().getNoticeId()%>" target="f5"><font size="3" color="blue"><i>Click for Details</i></font></a></td></tr>
-     <tr dir="<%=rtl%>" align="<%=align%>"><td dir="<%=rtl%>" align="<%=align%>"></td></tr>
-     </table>
-         </td>
- </tr>
-     
-    <% }%>
-    <tr><td>
-    <p class="datagrid"> Pages&nbsp;&nbsp;
-        <%for(int i=1;i<=noofpages;i++){%>
-        <a dir="<%=rtl%>" href="<%=request.getContextPath()%>/OPAC/notices2.jsp?pageIndex=<%=i%>"><%=i%></a>&nbsp;&nbsp;
-        <%}%>
-    </p>
-        </td></tr>
-    <%}%>
-</table>
+    </body>
     </body>
 </html>

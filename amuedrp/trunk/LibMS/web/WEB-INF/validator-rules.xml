@@ -67,6 +67,22 @@
 
     <global>
 
+
+<validator name="mobile"
+            classname="com.myapp.struts.utility.RegistrationValidator"
+               method="validateMobile"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+              depends=""
+                  msg="errors.mobile"/>
+
+
+
+
         <validator name="required"
                    classname="org.apache.struts.validator.FieldChecks"
                    method="validateRequired"

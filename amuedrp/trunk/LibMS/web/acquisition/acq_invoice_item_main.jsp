@@ -49,9 +49,9 @@ function send()
                         </td>
                     </tr>
                     <tr><td width="40"></td><td><input type="Submit" name="button" value="New" Class="txt1" onclick="return check();"/></td></tr>
-                    <tr><td width="40"></td><td><input type="Submit" name="button" value="Update" Class="txt1" onclick="return check();"/></td></tr>
+                    <tr><td width="40"></td><td><input type="button" name="button" value="Update" Class="txt1" onclick="return check();"/></td></tr>
                     <tr><td width="40"></td><td><input type="Submit" name="button" value="View" Class="txt1" onclick="return check();"/></td></tr>
-                    <tr><td width="40"></td><td><input type="Submit" name="button" value="Delete" Class="txt1" onclick="return check();"/></td></tr>
+                    <tr><td width="40"></td><td><input type="button" name="button" value="Delete" Class="txt1" onclick="return check();"/></td></tr>
                     <tr><td width="40"></td><td><input type="Submit" name="button" value="View All" Class="txt1"/></td></tr>
                     <tr><td width="40"></td><td><input type="button" name="button" value="Back" Class="txt1" onclick="return send();"/></td></tr>
                         <tr><td height="20px;"></td></tr>

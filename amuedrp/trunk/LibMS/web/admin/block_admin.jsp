@@ -38,13 +38,10 @@ else{
 </head>
 
 <body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
+<table border="1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" align="center"  width="80%" >
+        <tr><td class="headerStyle" align="center">Block  Institute Details
+            </td></tr>
+        <tr><td align="center">
 <%!
    
    
@@ -98,7 +95,7 @@ System.out.println("tcount="+tcount);
    pageContext.setAttribute("tCount", tcount);
    pageContext.setAttribute("pagecontext", request.getContextPath());
 %>
-<br><br>
+
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Record Found</p>
@@ -190,8 +187,8 @@ if(msg!=null)
     </td></tr>
 </table>
 <%}%>
- </div>
-    </body>
+ 
+  </td></tr></table>   </body>
 
 
 

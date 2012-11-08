@@ -33,15 +33,8 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
     AcqBibliography acqbibdtail=new AcqBibliography();
     AcqBibliographyId acqbibdtailid=new AcqBibliographyId();
     AcquisitionDao acqdao=new AcquisitionDao();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    VendorDAO vendao=new VendorDAO();
+   BudgetDAO buddao=new BudgetDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -101,13 +94,13 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Initiate Acquisition")){
-             List<AcqVendor> acqvendor=VendorDAO.searchDoc5(library_id, sub_library_id);
+             List<AcqVendor> acqvendor=vendao.searchDoc5(library_id, sub_library_id);
              if(acqvendor.isEmpty()){
              String msg1="You need to set vendors list";
              request.setAttribute("msg1", msg1);
              return mapping.findForward("fail");
              }
-             List<String> exchangerate=VendorDAO.getCurrencyList(library_id);
+             List<String> exchangerate=vendao.getCurrencyList(library_id);
 
 
             // if(exchangerate.isEmpty()){
@@ -117,7 +110,7 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
             // }
             session.setAttribute("exchangerate", exchangerate);
 
-             BaseCurrency cur=BudgetDAO.getBaseCurrency(library_id);
+             BaseCurrency cur=buddao.getBaseCurrency(library_id);
            
              if(cur==null){
              String msg1="You need to set Library Base Currency";
@@ -127,7 +120,7 @@ public class AcqBiblioNewEntryAction extends org.apache.struts.action.Action {
   session.setAttribute("base", cur.getFormalName());
          session.setAttribute("vendors", acqvendor);
 
-          List<MixBudgetAllocation> acqbudget1=BudgetDAO.getMixBudgetAllocation(library_id);
+          List<MixBudgetAllocation> acqbudget1=buddao.getMixBudgetAllocation(library_id);
           if(acqbudget1.isEmpty()){
           String msg1="You need to set Income budget head list";
              request.setAttribute("msg1", msg1);

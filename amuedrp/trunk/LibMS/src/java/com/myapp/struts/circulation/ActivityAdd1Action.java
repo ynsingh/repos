@@ -7,8 +7,6 @@ package com.myapp.struts.circulation;
 
 import com.myapp.struts.hbm.DeliquencyReason;
 import com.myapp.struts.hbm.DeliquencyReasonId;
-import java.util.Arrays;
-import java.util.LinkedList;
 //import java.util.List;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -51,10 +49,10 @@ public class ActivityAdd1Action extends org.apache.struts.action.Action {
        details=actf.getDetails();
 
 
-             DeliquencyReason obj=CirculationDAO.searchDeliReason(library_id,sublibrary_id,id.toString());
+             DeliquencyReason obj=dao.searchDeliReason(library_id,sublibrary_id,id.toString());
            if(obj!=null){
            request.setAttribute("msg1", "Deliquency  Id Already Exist");
-             session.setAttribute("actlist", CirculationDAO.searchDelReason(library_id, sublibrary_id));
+             session.setAttribute("actlist", dao.searchDelReason(library_id, sublibrary_id));
           return mapping.findForward(SUCCESS);
 
            }
@@ -68,10 +66,10 @@ public class ActivityAdd1Action extends org.apache.struts.action.Action {
        actid.setSublibraryId(sublibrary_id);
        act.setId(actid);
 
-       System.out.println("Boooolean"+CirculationDAO.insertDelinquencyout(act));
-       CirculationDAO.insertDelinquencyout(act);
+       System.out.println("Boooolean"+dao.insertDelinquencyout(act));
+       dao.insertDelinquencyout(act);
        
-      session.setAttribute("actlist", CirculationDAO.searchDelReason(library_id, sublibrary_id));
+      session.setAttribute("actlist", dao.searchDelReason(library_id, sublibrary_id));
       return mapping.findForward(SUCCESS);
            }
             

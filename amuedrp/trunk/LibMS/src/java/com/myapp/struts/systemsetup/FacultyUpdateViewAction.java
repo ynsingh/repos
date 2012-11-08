@@ -34,20 +34,15 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
          HttpSession session = request.getSession();
+         FacultyDAO facdao=new FacultyDAO();
+         DeptDAO deptdao=new DeptDAO();
+     
          try{
 
         locale1=(String)session.getAttribute("locale");
@@ -70,12 +65,12 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
         library_id=(String)session.getAttribute("library_id");
        // Faculty fac=(Faculty)session.getAttribute("faculty");
        
-        Faculty faculty=FacultyDAO.searchFacultyName(library_id, faculty_id);
+        Faculty faculty=facdao.searchFacultyName(library_id, faculty_id);
         if(button.equals("Update"))
         {
              faculty.getId().setFacultyId(faculty_id);
              faculty.setFacultyName(faculty_name);
-             result=FacultyDAO.update(faculty,library_id);
+             result=facdao.update(faculty,library_id);
              if(result==true)
              {
                // request.setAttribute("msg", "Record Update Successfully");
@@ -93,7 +88,7 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
         if(button.equals("Delete"))
         {
 
-               List<Department> dept=(List<Department>)DeptDAO.getDept(library_id, faculty_id);
+               List<Department> dept=(List<Department>)deptdao.getDept(library_id, faculty_id);
                if(!dept.isEmpty())
                {
 
@@ -106,7 +101,7 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
 
 
 
-            List<CirMemberAccount> cir=   (List<CirMemberAccount>)FacultyDAO.searchAccount(library_id,faculty_id);
+            List<CirMemberAccount> cir=   (List<CirMemberAccount>)facdao.searchAccount(library_id,faculty_id);
            if(!cir.isEmpty()){
 
              //   request.setAttribute("msg1", "Account Created With This faculty,Cannot Deleted");
@@ -114,7 +109,7 @@ public class FacultyUpdateViewAction extends org.apache.struts.action.Action {
               return mapping.findForward("success");
            }
 
-            result=FacultyDAO.Delete(faculty);
+            result=facdao.Delete(faculty);
              if(result==true)
              {
                 //request.setAttribute("msg", "Record Deleted Successfully");

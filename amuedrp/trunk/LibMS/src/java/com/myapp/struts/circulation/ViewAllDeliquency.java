@@ -24,7 +24,7 @@ public class ViewAllDeliquency extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             {
-        
+        CirculationDAO cirdao=new CirculationDAO();
         HttpSession session = request.getSession();
         String        library_id=(String)session.getAttribute("library_id");
         String sublibrary_id=(String)session.getAttribute("sublibrary_id");
@@ -32,7 +32,7 @@ public class ViewAllDeliquency extends org.apache.struts.action.Action {
 
       
     
-      session.setAttribute("actlist", CirculationDAO.searchDelReason(library_id, sublibrary_id));
+      session.setAttribute("actlist", cirdao.searchDelReason(library_id, sublibrary_id));
       return mapping.findForward(SUCCESS);
     }
 }

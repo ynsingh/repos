@@ -22,7 +22,7 @@ public class SerPublisherAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    SerialDAO serialdao=new SerialDAO();
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -34,7 +34,7 @@ public class SerPublisherAction extends org.apache.struts.action.Action {
        HttpSession session = request.getSession();
        String library_id = (String) session.getAttribute("library_id");
        String sublibrary_id = (String) session.getAttribute("sublibrary_id");
-       SerPublisher sp=SerialDAO.searchSerialPubisher(library_id, sublibrary_id, pub_id);
+       SerPublisher sp=serialdao.searchSerialPubisher(library_id, sublibrary_id, pub_id);
 
         if(button.equals("Add"))
         {

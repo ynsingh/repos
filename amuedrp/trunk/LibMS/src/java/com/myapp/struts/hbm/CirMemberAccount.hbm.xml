@@ -1,110 +1,108 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.CirMemberAccount" table="cir_member_account" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.CirMemberAccountId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-            <key-property name="memid" type="string">
-                <column name="memid" length="70" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="cirMemberDetail" class="com.myapp.struts.hbm.CirMemberDetail" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="memid" length="70" not-null="true" />
-        </many-to-one>
-        <property name="noOfIssueableBook" type="string">
-            <column name="no_of_issueable_book" length="10" />
-        </property>
-        <property name="currentIssuedBook" type="string">
-            <column name="current_issued_book" length="10" />
-        </property>
-        <property name="totalIssuedBook" type="string">
-            <column name="total_issued_book" length="10" />
-        </property>
-        <property name="fine" type="string">
-            <column name="fine" length="10" />
-        </property>
-        <property name="noOfChkout" type="string">
-            <column name="no_of_chkout" length="10" />
-        </property>
-        <property name="reservationMade" type="string">
-            <column name="reservation_made" length="10" />
-        </property>
-        <property name="lastchkoutdate" type="string">
-            <column name="lastchkoutdate" length="15" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="100" />
-        </property>
-        <property name="password" type="string">
-            <column name="password" length="50" />
-        </property>
-        <property name="cardId" type="string">
-            <column name="card_id" length="20" />
-        </property>
-        <property name="reqDate" type="string">
-            <column name="req_date" length="15" />
-        </property>
-        <property name="expiryDate" type="string">
-            <column name="expiry_date" length="15" />
-        </property>
-        <property name="memType" type="string">
-            <column name="mem_type" length="20" />
-        </property>
-        <property name="subMemberType" type="string">
-            <column name="sub_member_type" length="25" />
-        </property>
-        <property name="desg" type="string">
-            <column name="desg" length="100" />
-        </property>
-        <property name="office" type="string">
-            <column name="office" length="100" />
-        </property>
-        <property name="facultyId" type="string">
-            <column name="faculty_id" length="20" />
-        </property>
-        <property name="deptId" type="string">
-            <column name="dept_id" length="20" />
-        </property>
-        <property name="courseId" type="string">
-            <column name="course_id" length="20" />
-        </property>
-        <property name="semester" type="string">
-            <column name="semester" length="10" />
-        </property>
-        <property name="approvedBy" type="string">
-            <column name="ApprovedBy" length="50" />
-        </property>
-        <property name="remark" type="string">
-            <column name="remark" length="1000" />
-        </property>
-         <property name="cardStatus" type="string">
-            <column name="card_status" length="20" />
-        </property>
-         <property name="cardIssueDate" type="string">
-            <column name="cardIssueDate" length="15" />
-        </property>
-          <property name="LostDate" type="string">
-            <column name="LostDate" length="15" />
-        </property>
-          <property name="DuplicateIssueDate" type="string">
-            <column name="DuplicateIssueDate" length="15" />
-        </property>
-
-        <set name="demandlists" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-                <column name="sublibrary_id" length="20" not-null="true" />
-                <column name="memId" length="70" not-null="true" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.Demandlist" />
-        </set>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.CirMemberAccount" table="cir_member_account">
+    <composite-id class="com.myapp.struts.hbm.CirMemberAccountId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+      <key-property name="memid" type="string">
+        <column length="70" name="memid"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.CirMemberDetail" fetch="select" insert="false" name="cirMemberDetail" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+      <column length="70" name="memid" not-null="true"/>
+    </many-to-one>
+    <property name="noOfIssueableBook" type="string">
+      <column length="10" name="no_of_issueable_book"/>
+    </property>
+    <property name="currentIssuedBook" type="string">
+      <column length="10" name="current_issued_book"/>
+    </property>
+    <property name="totalIssuedBook" type="string">
+      <column length="10" name="total_issued_book"/>
+    </property>
+    <property name="fine" type="string">
+      <column length="10" name="fine"/>
+    </property>
+    <property name="noOfChkout" type="string">
+      <column length="10" name="no_of_chkout"/>
+    </property>
+    <property name="reservationMade" type="string">
+      <column length="10" name="reservation_made"/>
+    </property>
+    <property name="lastchkoutdate" type="string">
+      <column length="15" name="lastchkoutdate"/>
+    </property>
+    <property name="status" type="string">
+      <column length="100" name="status"/>
+    </property>
+    <property name="password" type="string">
+      <column length="50" name="password"/>
+    </property>
+    <property name="cardId" type="string">
+      <column length="20" name="card_id"/>
+    </property>
+    <property name="reqDate" type="string">
+      <column length="15" name="req_date"/>
+    </property>
+    <property name="expiryDate" type="string">
+      <column length="15" name="expiry_date"/>
+    </property>
+    <property name="memType" type="string">
+      <column length="20" name="mem_type"/>
+    </property>
+    <property name="subMemberType" type="string">
+      <column length="25" name="sub_member_type"/>
+    </property>
+    <property name="desg" type="string">
+      <column length="100" name="desg"/>
+    </property>
+    <property name="office" type="string">
+      <column length="100" name="office"/>
+    </property>
+    <property name="facultyId" type="string">
+      <column length="20" name="faculty_id"/>
+    </property>
+    <property name="deptId" type="string">
+      <column length="20" name="dept_id"/>
+    </property>
+    <property name="courseId" type="string">
+      <column length="20" name="course_id"/>
+    </property>
+    <property name="semester" type="string">
+      <column length="10" name="semester"/>
+    </property>
+    <property name="approvedBy" type="string">
+      <column length="50" name="ApprovedBy"/>
+    </property>
+    <property name="remark" type="string">
+      <column length="1000" name="remark"/>
+    </property>
+    <property name="cardStatus" type="string">
+      <column length="20" name="card_status"/>
+    </property>
+    <property name="cardIssueDate" type="string">
+      <column length="15" name="cardIssueDate"/>
+    </property>
+    <property name="LostDate" type="string">
+      <column length="15" name="LostDate"/>
+    </property>
+    <property name="DuplicateIssueDate" type="string">
+      <column length="15" name="DuplicateIssueDate"/>
+    </property>
+    <set inverse="true" name="demandlists">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+        <column length="20" name="sublibrary_id" not-null="true"/>
+        <column length="70" name="memId" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.Demandlist"/>
+    </set>
+  </class>
 </hibernate-mapping>

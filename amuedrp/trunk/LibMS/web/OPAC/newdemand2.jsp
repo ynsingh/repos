@@ -199,11 +199,12 @@ String card_id,mem_id,mem_type,sub_member_type;
    
    
    sub_member_type=(String)session.getAttribute("sub_member_type");
-  
+  MemberDAO memdao=new MemberDAO();
+  SubMemberDAO submemdao=new SubMemberDAO();
 
-   EmployeeType obj=MemberDAO.getEployeeByName(lib_id, mem_type);
+   EmployeeType obj=memdao.getEployeeByName(lib_id, mem_type);
    String mem_type1=obj.getEmptypeFullName();
-   SubEmployeeType obj1=SubMemberDAO.getSubEployeeName(lib_id,mem_type,sub_member_type);
+   SubEmployeeType obj1=submemdao.getSubEployeeName(lib_id,mem_type,sub_member_type);
    String sub_member_type1=obj1.getSubEmptypeFullName();
 //Retrieving the values of NewMember form in variables.
 card_id=(String)session.getAttribute("card_id");
@@ -237,7 +238,9 @@ String sublibrary_id=(String)session.getAttribute("sublibrary_id");
             <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
     |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
-
+&nbsp;
+    |&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=changepassword"  style="text-decoration: none;"> Change Password</a>
+|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/uploadExcel.do"  style="text-decoration: none;"> Bulk Import</a>
 
 
           </b>

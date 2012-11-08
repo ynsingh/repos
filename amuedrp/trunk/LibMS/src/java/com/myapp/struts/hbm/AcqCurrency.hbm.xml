@@ -1,28 +1,27 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 18, 2011 8:57:34 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqCurrency" table="acq_currency" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqCurrencyId">
-            <key-property name="conversionId" type="int">
-                <column name="conversion_id" />
-            </key-property>
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-        </composite-id>
-        <property name="sourceCurrency" type="string">
-            <column name="source_currency" length="20" />
-        </property>
-        <property name="targetCurrency" type="string">
-            <column name="target_currency" length="20" />
-        </property>
-        <property name="conversionRate" type="java.lang.Float">
-            <column name="conversion_rate" precision="12" scale="0" />
-        </property>
-        <property name="systemDate" type="string">
-            <column name="system_date" length="10" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqCurrency" table="acq_currency">
+    <composite-id class="com.myapp.struts.hbm.AcqCurrencyId" name="id">
+      <key-property name="conversionId" type="int">
+        <column name="conversion_id"/>
+      </key-property>
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+    </composite-id>
+    <property name="sourceCurrency" type="string">
+      <column length="20" name="source_currency"/>
+    </property>
+    <property name="targetCurrency" type="string">
+      <column length="20" name="target_currency"/>
+    </property>
+    <property name="conversionRate" type="java.lang.Float">
+      <column name="conversion_rate" precision="12" scale="0"/>
+    </property>
+    <property name="systemDate" type="string">
+      <column length="10" name="system_date"/>
+    </property>
+  </class>
 </hibernate-mapping>

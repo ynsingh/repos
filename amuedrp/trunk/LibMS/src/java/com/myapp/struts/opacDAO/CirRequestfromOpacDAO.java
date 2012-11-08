@@ -29,7 +29,7 @@ public class CirRequestfromOpacDAO {
 
 
 
-    public static List<CheckInDocumentDetails> getCheckIn(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date) {
+    public  List<CheckInDocumentDetails> getCheckIn(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
       List<CheckInDocumentDetails> obj=null;
         Transaction tx = null;
@@ -75,7 +75,7 @@ obj= (List<CheckInDocumentDetails>)query1.list();
      }
 
 
-public static CirMemberDetail getMemberId(String library_id,String memid) {
+public  CirMemberDetail getMemberId(String library_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         CirMemberDetail obj=null;
         try {
@@ -97,7 +97,7 @@ public static CirMemberDetail getMemberId(String library_id,String memid) {
          return obj;
      }
 
-  public static  boolean insert(CirRequestfromOpac obj)
+  public   boolean insert(CirRequestfromOpac obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -132,7 +132,7 @@ public static CirMemberDetail getMemberId(String library_id,String memid) {
 
  
 
-     public static CirRequestfromOpac getMemberDetail(String library_id,String sublibrary_id,String memid) {
+     public  CirRequestfromOpac getMemberDetail(String library_id,String sublibrary_id,String memid) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
         CirRequestfromOpac obj=null;
         try {
@@ -162,7 +162,7 @@ session.getTransaction().commit();
 
 
 
-public static  boolean update(CirRequestfromOpac obj)
+public   boolean update(CirRequestfromOpac obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -185,7 +185,7 @@ session.close();
 
 }
   
-public static List<CirOpacRequest> checkDuplicateRequest(String library_id,String sublibrary_id,String memid,String docId) {
+public  List<CirOpacRequest> checkDuplicateRequest(String library_id,String sublibrary_id,String memid,String docId) {
         Session session =  HibernateUtil.getSessionFactory().openSession();
         List<CirOpacRequest> obj=null;
         try {
@@ -212,7 +212,7 @@ session.close();
      }
       
 
-public static Integer returnMaxRequestId(String library_id, String sublibrary_id) {
+public  Integer returnMaxRequestId(String library_id, String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
                  Integer maxrequestId =null;
         session.beginTransaction();
@@ -239,8 +239,11 @@ public static Integer returnMaxRequestId(String library_id, String sublibrary_id
   return maxrequestId;
     }
 
-public static boolean SendCheckOutRequest(String memId,String libId, String sublibId, String docId)
+public  boolean SendCheckOutRequest(String memId,String libId, String sublibId, String docId)
 {
+    CirRequestfromOpacDAO ciropacdao=new CirRequestfromOpacDAO();
+    CirculationDAO cirdao=new CirculationDAO();
+
 boolean flag=false;
 try{
     
@@ -248,9 +251,9 @@ try{
                 CirOpacRequest ciropacReq = new CirOpacRequest();
 
                 //getting next value for request Id corresponding to library Id and SubLibrary Id
-                Integer rId = CirRequestfromOpacDAO.returnMaxRequestId(libId, sublibId);
-                CirMemberDetail memDetail = (CirMemberDetail)CirculationDAO.searchCirMemDetails(libId, memId);
-                DocumentDetails dd = (DocumentDetails)CirculationDAO.getDocument(libId, sublibId, Integer.parseInt(docId));
+                Integer rId = ciropacdao.returnMaxRequestId(libId, sublibId);
+                CirMemberDetail memDetail = (CirMemberDetail)cirdao.searchCirMemDetails(libId, memId);
+                DocumentDetails dd = (DocumentDetails)cirdao.getDocument(libId, sublibId, Integer.parseInt(docId));
                 ciropacReqId.setRid(rId);
                 ciropacReqId.setLibraryId(libId);
                 ciropacReqId.setSublibraryId(sublibId);
@@ -272,7 +275,7 @@ try{
                 ciropacReq.setTitle(title);
                 ciropacReq.setStatus("Pending");
 		ciropacReq.setCirMemberDetail(memDetail);
-                 flag = CirculationDAO.insert(ciropacReq);
+                 flag = cirdao.insert(ciropacReq);
 
 
 }
@@ -287,7 +290,7 @@ finally{
 return flag;
 }
 
-public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid) {
+public  List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<CheckoutDeocumentDetails> obj=null;
         try {
@@ -315,7 +318,7 @@ public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,Stri
 return obj;
      }
 
-public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date,String title) {
+public  List<CheckoutDeocumentDetails> getCheckOuts(String library_id,String sublibrary_id,String memid,String  starting_date,String end_date,String title) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<CheckoutDeocumentDetails> obj=null;
         try {

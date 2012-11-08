@@ -87,6 +87,7 @@ ImageUploadActionForm form1 = (ImageUploadActionForm)session1.getAttribute("Imag
         library_name=(String)session.getAttribute("library_name");
 String mainlib=(String)session.getAttribute("mainsublibrary");
         StaffDetailActionForm staff=(StaffDetailActionForm)form;
+        StaffDetailDAO staffdao=new StaffDetailDAO();
 
 sublibrary_id=(String)session.getAttribute("sublibrary_id");
 if(sublibrary_id.equalsIgnoreCase(mainlib)==true){
@@ -153,20 +154,20 @@ else{
 
             if(do_joining.equals("")==false)
             {
-               staffobj.setDateJoining(Date.valueOf(do_joining));
+               staffobj.setDateJoining(do_joining);
 
             }
 
             if(do_releaving.equals("")==false)
             {
-                staffobj.setDateReleaving(Date.valueOf(do_releaving));
+                staffobj.setDateReleaving(do_releaving);
             }
             if(father_name!=null)
              staffobj.setFatherName(father_name);
 
             if(date_of_birth.equals("")==false)
             {
-             staffobj.setDateOfBirth(Date.valueOf(date_of_birth));
+             staffobj.setDateOfBirth(date_of_birth);
              }
 
             if(gender.equals("Select")==false)
@@ -200,7 +201,7 @@ else{
 
 
 
-             result=StaffDetailDAO.insert1(staffobj);
+             result=staffdao.insert1(staffobj);
                 if(result==false)
                 {
                    // String msg="Request for registration failure due to some error";

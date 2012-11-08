@@ -30,7 +30,8 @@ if(user_name==null)
 String sublibrary_id=rst.getSublibraryId();
 if(sublibrary_id==null)
     sublibrary_id="";
-SubLibrary temp=SubLibraryDAO.getLibName(rst.getId().getLibraryId(), sublibrary_id);
+SubLibraryDAO sublibdao=new SubLibraryDAO();
+SubLibrary temp=sublibdao.getLibName(rst.getId().getLibraryId(), sublibrary_id);
 String sublibrary_name=null;
 if(temp!=null)
 sublibrary_name=temp.getSublibName();

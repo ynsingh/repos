@@ -27,10 +27,10 @@ public class SubMember1Action extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-             
+             MemberDAO memdao=new MemberDAO();
              HttpSession session=request.getSession();
              library_id=(String)session.getAttribute("library_id");
-             List list1=MemberDAO.searchEmployeeType(library_id);
+             List list1=memdao.searchEmployeeType(library_id);
 
               if(list1.isEmpty() && list1==null){
   String msg="You need to set Member";

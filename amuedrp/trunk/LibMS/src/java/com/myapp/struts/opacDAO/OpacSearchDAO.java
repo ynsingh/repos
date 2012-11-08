@@ -26,8 +26,8 @@ import org.hibernate.criterion.CriteriaSpecification;
 public class OpacSearchDAO {
     Criterion criterion;
     Criterion criterion1,criterion2,criterion3;
-    static int size;
-    private static Logger log4j =LoggerUtils.getLogger();
+     int size;
+    private  Logger log4j =LoggerUtils.getLogger();
 
 
     public BibliographicDetails DocumentSearch2(int doc_id,String library_id,String sub_lib)
@@ -55,7 +55,7 @@ public class OpacSearchDAO {
         }
       return obj;
     }
-      public static List searchVol(String library_id,String sub_lib,int biblio_id)
+      public  List searchVol(String library_id,String sub_lib,int biblio_id)
     {
           SQLQuery query=null;
           List obj=null;
@@ -121,17 +121,17 @@ public class OpacSearchDAO {
 //                    if(!sub_lib.equalsIgnoreCase("all"))
 //                        criteria.add(Restrictions.eq("aliasOfTableA.id.sublibraryId",sub_lib ));
 
-      String query="select distinct a from BibliographicDetails as a left join a.documentDetailses as l";
+      String query="select distinct a from BibliographicDetails as a right join a.documentDetailses as l where  (a.entryLanguage is null or a.entryLanguage='') ";
 
 
 
         if(!doc_type.equalsIgnoreCase("combined") && !library_id.equalsIgnoreCase("all"))
         {
-            query+=" where  a.docType='"+doc_type+"' and a.id.libraryId='"+library_id+"' and a.entryLanguage='"+"'";
+            query+=" and  a.docType='"+doc_type+"' and a.id.libraryId='"+library_id+"'";
 
         }
         else if(doc_type.equalsIgnoreCase("combined")==true &&  !library_id.equalsIgnoreCase("all"))
-            query+=" where   a.id.libraryId='"+library_id+"' and a.entryLanguage='"+"'";
+            query+=" and   a.id.libraryId='"+library_id+"' ";
        
 
              if(!sub_lib.equalsIgnoreCase("all"))
@@ -238,10 +238,10 @@ public class OpacSearchDAO {
 //
 //            }
 //            criteria.addOrder(Order.asc(sortby));
-                 if(doc_type.equalsIgnoreCase("combined")==true &&  library_id.equalsIgnoreCase("all")==true)
-                    query+=" where a.entryLanguage='"+"' and ";
-                  else
-                      query+=" and a.entryLanguage='"+"' and ";
+//                 if(doc_type.equalsIgnoreCase("combined")==true &&  library_id.equalsIgnoreCase("all")==true)
+//                    query+="  and ";
+//                  else
+//                      query+="  and ";
 
 
         /*
@@ -254,7 +254,7 @@ public class OpacSearchDAO {
                     {
                         for(int count=0;count<searching_word.length;count++)
                         {
-                            query+="  (a.title like '%"+searching_word[count]+"%' or a.mainEntry like '%"+searching_word[count]+"%' or a.publisherName like '%"+searching_word[count]+"%') ";
+                            query+=" and  (a.title like '%"+searching_word[count]+"%' or a.mainEntry like '%"+searching_word[count]+"%' or a.publisherName like '%"+searching_word[count]+"%') ";
                         }
                     }
                     /*
@@ -265,7 +265,7 @@ public class OpacSearchDAO {
 
                           if(searching_word.length>0&& !searching_word[0].isEmpty())
                           {
-                              query+="  (";
+                              query+=" and  (";
                                query+=" (a.title like '%"+searching_word[0]+"%' or a.mainEntry like '%"+searching_word[0]+"%' or a.publisherName like '%"+searching_word[0]+"%') ";
                                 for(int count=1;count<searching_word.length;count++)
                                 {
@@ -285,7 +285,7 @@ public class OpacSearchDAO {
                 {
                     for(int count=0;count<searching_word.length;count++)
                     {
-                     query+="   a."+searching_field+" like '%"+searching_word[count]+"%' ";
+                     query+=" and   a."+searching_field+" like '%"+searching_word[count]+"%' ";
                     }
                 }
                 /*
@@ -295,7 +295,7 @@ public class OpacSearchDAO {
                 {
                     if(searching_word.length>0)
                     {
-                        query+="  (";
+                        query+=" and  (";
                        query+="  (a."+searching_field+" like '%"+searching_word[0]+"%') ";
                         for(int count=1;count<searching_word.length;count++)
                         {
@@ -378,7 +378,7 @@ System.out.println(query);
         return obj;
         }
     // GET THE TOTAL NO OF RECORD FOUND FROM SIMPLE SEARCH IN ENGLISH
-    public static void setSearchSize(List simpleSearch)
+    public  void setSearchSize(List simpleSearch)
     {
         if(simpleSearch!=null)
             if(simpleSearch.isEmpty()==false)
@@ -391,7 +391,7 @@ System.out.println(query);
     }
 
      // GET THE TOTAL NO OF RECORD FROM DAO METHOD
-    public static int getSize()
+    public  int getSize()
     {
         return size;
 
@@ -840,7 +840,7 @@ System.out.println(query);
 //                }
 //
 
-      String query="select distinct t from BibliographicDetails as t left join t.documentDetailses as l";
+      String query="select distinct t from BibliographicDetails as t right join t.documentDetailses as l where (t.entryLanguage is null or t.entryLanguage='')  ";
 
       /*
           * Searching Criteria for searching words are connected as AND clause
@@ -848,9 +848,9 @@ System.out.println(query);
          if(searching_field.equalsIgnoreCase("any field") && searching_word.isEmpty()==false)
          {
 
-            query+=" where  l.title like '%"+searching_word+"%' or l.mainEntry like '%"+searching_word+"%' or l.publisherName like '%"+searching_word+"%' ";
+            query+=" and  l.title like '%"+searching_word+"%' or l.mainEntry like '%"+searching_word+"%' or l.publisherName like '%"+searching_word+"%' ";
                 if(!library_id.equalsIgnoreCase("all"))
-               {  query+=" and l.id.libraryId='"+library_id+"'  and t.entryLanguage='"+"'";}
+               {  query+=" and l.id.libraryId='"+library_id+"' ";}
 
             if(!sub_lib.equalsIgnoreCase("all"))
                    query+=" and l.id.sublibraryId='"+sub_lib+"'";
@@ -868,9 +868,9 @@ System.out.println(query);
 
          else if(searching_field.isEmpty()==false && searching_word.isEmpty()==false)
          {
-               query+=" where l."+searching_field+" like '%"+searching_word+"%'";
+               query+=" and l."+searching_field+" like '%"+searching_word+"%'";
                       if(!library_id.equalsIgnoreCase("all"))
-               {  query+=" and l.id.libraryId='"+library_id+"'  and t.entryLanguage='"+"'";}
+               {  query+=" and l.id.libraryId='"+library_id+"' ";}
 
                if(!sub_lib.equalsIgnoreCase("all"))
                    query+=" and l.id.sublibraryId='"+sub_lib+"'";
@@ -883,7 +883,7 @@ System.out.println(query);
          }
          else{
                              if(!library_id.equalsIgnoreCase("all"))
-               {  query+=" where l.id.libraryId='"+library_id+"'  and t.entryLanguage='"+"'";}
+               {  query+=" and l.id.libraryId='"+library_id+"' ";}
 
                if(!sub_lib.equalsIgnoreCase("all"))
                    query+=" and l.id.sublibraryId='"+sub_lib+"'";
@@ -891,7 +891,7 @@ System.out.println(query);
              if(!library_id.equalsIgnoreCase("all") && !doc_type.equalsIgnoreCase("combined"))
                    query+=" and l.documentType='"+doc_type+"'";
              else if(!doc_type.equalsIgnoreCase("combined"))
-                    query+=" where l.documentType='"+doc_type+"'";
+                    query+=" and l.documentType='"+doc_type+"'";
 
                           
          }
@@ -1006,7 +1006,7 @@ hsession.close();
 // BROWSE SEARCH IN OPAC IN MLI LANG
     public List browseLangSearch(String library_id,String sub_lib,String searching_word,String doc_type,String sortby,String searching_field,String language,int pageNumber)
     {
-       List obj=null;
+       List obj=new ArrayList();
         Session hsession=HibernateUtil.getSessionFactory().openSession();
         try
         {
@@ -1126,7 +1126,7 @@ String query="select  a from BibliographicDetailsLang a where a.id.biblioId in (
          String sortby,String year1,String year2,int pageNumber,String cmbyr)
     {
         Session hsession=HibernateUtil.getSessionFactory().openSession();
-        List obj=null;
+        List obj=new ArrayList();
         try
         {
             hsession.beginTransaction();
@@ -1148,7 +1148,7 @@ String query="select  a from BibliographicDetailsLang a where a.id.biblioId in (
            if(!doc_type.equalsIgnoreCase("combined"))
                         criteria.add(Restrictions.eq("aliasOfTableA.documentType",doc_type));
 */
-              String query="select distinct a from BibliographicDetails as a left join a.documentDetailses as l";
+              String query="select distinct a from BibliographicDetails as a right join a.documentDetailses as l";
 
 
 
@@ -1584,7 +1584,14 @@ String query="select  a from BibliographicDetailsLang a where a.id.biblioId in (
      *
      *
      */
-              query+="  order by a."+sortby;
+
+               int intIndex = query.indexOf("where");
+      if(intIndex == - 1){
+              query+=" where (a.entryLanguage is null or a.entryLanguage='')   order by a."+sortby;
+      }else{
+         query+=" and (a.entryLanguage is null or a.entryLanguage='')   order by a."+sortby;
+      }
+      
 
 
 
@@ -2220,7 +2227,7 @@ System.out.println("searchText1="+searchText1[count]);
          else if(sortby.equals("subject"))
               criteria.addOrder(Order.asc("aliasOfTableA.subject"));
 */
-           String query="select distinct a from BibliographicDetails as a left join a.documentDetailses as l";
+           String query="select distinct a from BibliographicDetails as a right join a.documentDetailses as l";
 
 
 
@@ -2663,6 +2670,14 @@ log4j.error("searchText1="+searchText1[count]);
                 }
 
             }
+
+   int intIndex = query.indexOf("where");
+      if(intIndex == - 1){
+              query+=" where (a.entryLanguage is null or a.entryLanguage='')  ";
+      }else{
+         query+=" and (a.entryLanguage is null or a.entryLanguage='')  ";
+      }
+
 
 
 
@@ -3224,37 +3239,60 @@ log4j.error("searchText1="+searchText1[count]);
       try
         {
           hsession.beginTransaction();
-           Criteria criteria = hsession.createCriteria(BibliographicDetails.class, "aliasOfTableA");
-        criteria.createAlias("aliasOfTableA.documentDetailses","aliasOfTableB",CriteriaSpecification.LEFT_JOIN);
-        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-                    if(!library_id.equalsIgnoreCase("all"))
-                        criteria.add(Restrictions.eq("aliasOfTableA.id.libraryId",library_id ));
-                    if(!sub_lib.equalsIgnoreCase("all"))
-                        criteria.add(Restrictions.eq("aliasOfTableA.id.sublibraryId",sub_lib ));
-
-//                    criteria.createCriteria("aliasOfTableA.documentDetailses" , "aliasOfTableB");
+//           Criteria criteria = hsession.createCriteria(BibliographicDetails.class, "aliasOfTableA");
+//        criteria.createAlias("aliasOfTableA.documentDetailses","aliasOfTableB",CriteriaSpecification.LEFT_JOIN);
+//        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+//
 //                    if(!library_id.equalsIgnoreCase("all"))
-//                        criteria.add(Restrictions.eq("aliasOfTableB.bibliographicDetails.id.libraryId",library_id));
+//                        criteria.add(Restrictions.eq("aliasOfTableA.id.libraryId",library_id ));
 //                    if(!sub_lib.equalsIgnoreCase("all"))
-//                        criteria.add(Restrictions.eq("aliasOfTableB.bibliographicDetails.id.sublibraryId",sub_lib ));
+//                        criteria.add(Restrictions.eq("aliasOfTableA.id.sublibraryId",sub_lib ));
+//
+////                    criteria.createCriteria("aliasOfTableA.documentDetailses" , "aliasOfTableB");
+////                    if(!library_id.equalsIgnoreCase("all"))
+////                        criteria.add(Restrictions.eq("aliasOfTableB.bibliographicDetails.id.libraryId",library_id));
+////                    if(!sub_lib.equalsIgnoreCase("all"))
+////                        criteria.add(Restrictions.eq("aliasOfTableB.bibliographicDetails.id.sublibraryId",sub_lib ));
+//
+//           if (!StringUtils.isEmpty(isbn)||!StringUtils.isBlank(isbn)) {
+//          criteria.add(Restrictions.eq("aliasOfTableA.isbn10",isbn));
+//        }
 
-           if (!StringUtils.isEmpty(isbn)||!StringUtils.isBlank(isbn)) {
-          criteria.add(Restrictions.eq("aliasOfTableA.isbn10",isbn));
-        }
-         //Total Number of Record Found View in OPAC
-            setSearchSize(criteria.list());
+                String query="select distinct a from BibliographicDetails as a right join a.documentDetailses as l where (a.entryLanguage is null or a.entryLanguage='') ";
+
+                if(!library_id.equalsIgnoreCase("all"))
+                {
+                    query+=" and   a.id.libraryId='"+library_id+"' ";
+
+                }
+
+
+             if(!sub_lib.equalsIgnoreCase("all"))
+                   query+=" and a.id.sublibraryId='"+sub_lib+"' ";
+
+                   if (!StringUtils.isEmpty(isbn)||!StringUtils.isBlank(isbn)) {
+                 query+=" and a.isbn10='"+isbn+"' ";
+            }
+             query+=" order by a.title ";
+
+
+   Query simple=hsession.createQuery(query);
+
+        //Total Number of Record Found View in OPAC
+            setSearchSize(simple.list());
               if(pageNumber==0)
                 {
-                    criteria = criteria.setFirstResult(0);
-                    criteria.setMaxResults(100);
-                    obj=criteria.list();
+                    simple = simple.setFirstResult(0);
+                    simple.setMaxResults(100);
+                    obj=(List<BibliographicDetails>)simple.list();
                 }
                 else
                 {
-                    CriteriaPagingAction o=new CriteriaPagingAction(criteria,pageNumber,100);
-                    obj=o.getList();
+                    PagingAction o=new PagingAction(simple,pageNumber,100);
+                    obj=(List<BibliographicDetails>)o.getList();
                 }
+
+         //Total Number of Record Found View in OPAC
             hsession.getTransaction().commit();
         }
       catch(Exception e)
@@ -3269,7 +3307,7 @@ log4j.error("searchText1="+searchText1[count]);
       return obj;
     }
 
-public List isbnLangSearch(String isbn,String library_id,String sub_lib,String language,int pageNumber)
+public List isbnLangSearch(String isbn,String library_id,String sub_lib,int pageNumber)
     {
 
 List obj=null;
@@ -3278,12 +3316,13 @@ List obj=null;
       try
         {
           hsession.beginTransaction();
-              String query="select * from bibliographic_details_lang a,document_details b where a.library_id=b.library_id and a.sublibrary_id=b.sublibrary_id and a.biblio_id=b.biblio_id ";
+
+          String query="select  a from BibliographicDetailsLang a where a.id.biblioId in ( select b.biblioId from DocumentDetails b where a.id.libraryId=b.id.libraryId and a.id.sublibraryId=b.id.sublibraryId and a.id.biblioId=b.biblioId) ";
                if(!library_id.equalsIgnoreCase("all"))
-                  query+=" and  a.library_id='"+library_id+"' ";
+                  query+=" and  a.id.libraryId='"+library_id+"' ";
 
              if(!sub_lib.equalsIgnoreCase("all"))
-                   query+=" and a.sublibrary_id='"+sub_lib+"' ";
+                   query+=" and a.id.sublibraryId='"+sub_lib+"' ";
 
 
 
@@ -3291,10 +3330,10 @@ List obj=null;
                  query+=" and a.isbn10='"+isbn+"' ";
             }
              query+=" order by a.title ";
-             Query simple=hsession.createSQLQuery(query)
-                                 .addEntity(BibliographicDetailsLang.class)
-                                 .addEntity(DocumentDetails.class)
-                                 .setResultTransformer(Transformers.aliasToBean(SearchPOJO.class));
+
+             System.out.println(isbn+query);
+             Query simple=hsession.createQuery(query);
+                             
 
             setSearchSize(simple.list());
               if(pageNumber==0)
@@ -3383,23 +3422,24 @@ List obj=null;
       try
         {
           hsession.beginTransaction();
-              String query="select * from bibliographic_details_lang a,document_details b where a.library_id=b.library_id and a.sublibrary_id=b.sublibrary_id and a.biblio_id=b.biblio_id ";
-               if(!library_id.equalsIgnoreCase("all"))
-                  query+=" and  a.library_id='"+library_id+"' ";
+              String query="select a from BibliographicDetailsLang a where a.id.biblioId in ( select b.biblioId from DocumentDetails b where a.id.libraryId=b.id.libraryId and a.id.sublibraryId=b.id.sublibraryId and a.id.biblioId=b.biblioId) ";
+
+              if(!library_id.equalsIgnoreCase("all"))
+                  query+=" and  a.id.libraryId='"+library_id+"' ";
 
              if(!sub_lib.equalsIgnoreCase("all"))
-                   query+=" and a.sublibrary_id='"+sub_lib+"' ";
+                   query+=" and a.id.sublibraryId='"+sub_lib+"' ";
 
 //          query+=" and a.entry_language='"+language+"' ";
 
             if (!StringUtils.isEmpty(call_no)||!StringUtils.isBlank(call_no)) {
-                 query+=" and a.call_no='"+call_no+"' ";
+                 query+=" and a.callNo='"+call_no+"' ";
             }
              query+=" order by a.title ";
-               Query simple=hsession.createSQLQuery(query)
-                                 .addEntity(BibliographicDetailsLang.class)
-                                 .addEntity(DocumentDetails.class)
-                                 .setResultTransformer(Transformers.aliasToBean(SearchPOJO.class));
+               Query simple=hsession.createQuery(query);
+                            //     .addEntity(BibliographicDetailsLang.class)
+                             //    .addEntity(DocumentDetails.class)
+                              //   .setResultTransformer(Transformers.aliasToBean(SearchPOJO.class));
        //Total Number of Record Found View in OPAC
             setSearchSize(simple.list());
                 if(pageNumber==0)
@@ -3733,7 +3773,7 @@ public List<BibliographicDetails> DocumentSearch1(int doc_id,String library_id,S
       return obj;
     }
 
-public static List<MemberSubLibrary> MembersubLibrarySearch(String library_id,String memid)
+public  List<MemberSubLibrary> MembersubLibrarySearch(String library_id,String memid)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
        List<MemberSubLibrary> obj=null;

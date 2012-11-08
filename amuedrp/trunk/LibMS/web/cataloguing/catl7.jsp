@@ -29,13 +29,14 @@
 %>
 <%
  hm1 = (HashMap)session.getAttribute("hsmp");
-
+if(hm1!=null){
   if(hm1.containsKey("28")){
        bib1=(Biblio)hm1.get("28");
         }
    if(hm1.containsKey("29")){
        bib2=(Biblio)hm1.get("29");
         }
+  }
 %>
 
 
@@ -130,7 +131,7 @@ description[24]=''
    <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -253,7 +254,7 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-
+You are on MARC Page : 7 Tag Page
                                       <!-- Marc entries Starts from here . -->
 
 <div>

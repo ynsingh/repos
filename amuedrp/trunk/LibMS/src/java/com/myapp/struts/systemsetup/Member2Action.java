@@ -31,21 +31,13 @@ public class Member2Action extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
          HttpSession session=request.getSession();
-
+MemberDAO memdao=new MemberDAO();
          try{
 
         locale1=(String)session.getAttribute("locale");
@@ -68,7 +60,7 @@ public class Member2Action extends org.apache.struts.action.Action {
 
         if(button.equals("Add"))
         {
-         EmployeeType employeetype=MemberDAO.getEployeeName(library_id, emptype_id);
+         EmployeeType employeetype=memdao.getEployeeName(library_id, emptype_id);
          if(employeetype!=null)
          {
             // request.setAttribute("msg1", "Member Id : "+emptype_id+" already exists");
@@ -93,7 +85,7 @@ EmployeeType employeetype;
 
 
 
-                         employeetype=MemberDAO.getEployeeName(library_id, emptype_id);
+                         employeetype=memdao.getEployeeName(library_id, emptype_id);
                         if(employeetype==null)
                         {
 

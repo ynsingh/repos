@@ -1,55 +1,54 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.CirTransactionHistory" table="cir_transaction_history" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.CirTransactionHistoryId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="transactionId" type="int">
-                <column name="transaction_id" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-        </many-to-one>
-        <property name="memid" type="string">
-            <column name="memid" length="70" not-null="true" />
-        </property>
-        <property name="transactionDate" type="string">
-            <column name="transaction_date" length="50" />
-        </property>
-        <property name="documentId" type="string">
-            <column name="document_id" length="25" not-null="true" />
-        </property>
-        <property name="status" type="string">
-            <column name="status" length="100" />
-        </property>
-        <property name="checkoutId" type="java.lang.Integer">
-            <column name="checkout_id" />
-        </property>
-        <property name="checkoutDate" type="string">
-            <column name="checkout_date" length="25" />
-        </property>
-        <property name="checkinId" type="java.lang.Integer">
-            <column name="checkin_id" />
-        </property>
-        <property name="checkinDate" type="string">
-            <column name="checkin_date" length="25" />
-        </property>
-        <property name="fineAmt" type="java.lang.Float">
-            <column name="fine_amt" precision="12" scale="0" />
-        </property>
-        <property name="lostItemId" type="string">
-            <column name="lost_item_id" length="25" />
-        </property>
-         <property name="issueDate" type="string">
-            <column name="issue_date" length="50" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.CirTransactionHistory" table="cir_transaction_history">
+    <composite-id class="com.myapp.struts.hbm.CirTransactionHistoryId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="transactionId" type="int">
+        <column name="transaction_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="memid" type="string">
+      <column length="70" name="memid" not-null="true"/>
+    </property>
+    <property name="transactionDate" type="string">
+      <column length="50" name="transaction_date"/>
+    </property>
+    <property name="documentId" type="string">
+      <column length="25" name="document_id" not-null="true"/>
+    </property>
+    <property name="status" type="string">
+      <column length="100" name="status"/>
+    </property>
+    <property name="checkoutId" type="java.lang.Integer">
+      <column name="checkout_id"/>
+    </property>
+    <property name="checkoutDate" type="string">
+      <column length="25" name="checkout_date"/>
+    </property>
+    <property name="checkinId" type="java.lang.Integer">
+      <column name="checkin_id"/>
+    </property>
+    <property name="checkinDate" type="string">
+      <column length="25" name="checkin_date"/>
+    </property>
+    <property name="fineAmt" type="java.lang.Float">
+      <column name="fine_amt" precision="12" scale="0"/>
+    </property>
+    <property name="lostItemId" type="string">
+      <column length="25" name="lost_item_id"/>
+    </property>
+    <property name="issueDate" type="string">
+      <column length="50" name="issue_date"/>
+    </property>
+  </class>
 </hibernate-mapping>

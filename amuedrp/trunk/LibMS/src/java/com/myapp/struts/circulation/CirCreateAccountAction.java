@@ -56,6 +56,7 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
              HttpSession session1 = request.getSession();
         try{
 
@@ -80,7 +81,7 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
 
 
         if (button.equals("Submit")) {
-            CirMemberAccount cma = (CirMemberAccount) CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, cca.getMem_id());
+            CirMemberAccount cma = (CirMemberAccount) cirdao.searchCirMemAccountDetails(library_id, sublibrary_id, cca.getMem_id());
 
 
 
@@ -100,10 +101,10 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
 
                 cma.setPassword(password1);
 
-                result = CirculationDAO.updateAccount(cma);
+                result = cirdao.updateAccount(cma);
 
                 if (result == true) {
-                    CirMemberDetail cma1 = (CirMemberDetail) CirculationDAO.searchCirMemDetails(library_id, cca.getMem_id());
+                    CirMemberDetail cma1 = (CirMemberDetail) cirdao.searchCirMemDetails(library_id, cca.getMem_id());
                     //"Member Account Created Successfully for LibMS OPAC Login", "Login Id=" + cca.getMem_id() + " Your Password for LibMS OPAC Login is=" + password
                       String path = servlet.getServletContext().getRealPath("/");
                       obj=new Email(cma1.getEmail(),password,"Congruation,Your are Registered as Library Member","Dear "+cca.getMem_name()+",\nYou Have been registered as a valid Library member for Library Name"+session1.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+cca.getMem_id()+"\nPassword:"+password+".\nThanks,\n"+session1.getAttribute("username")+",\n"+"Institute Admin");
@@ -115,13 +116,13 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
                         }
                     });
 
-                    List<CirMemberAccount> lst = (List<CirMemberAccount>) CirculationDAO.searchCirMemAccountDetailsLst(library_id, sublibrary_id, cca.getMem_id());
+                    List<CirMemberAccount> lst = (List<CirMemberAccount>) cirdao.searchCirMemAccountDetailsLst(library_id, sublibrary_id, cca.getMem_id());
                     Iterator it = lst.iterator();
                     while (it.hasNext()) {
                         CirMemberAccount cirmemac = (CirMemberAccount) it.next();
                         cirmemac.setReqDate("");
                         cirmemac.setExpiryDate("");
-                        boolean result1 = CirculationDAO.updateAccount(cirmemac);
+                        boolean result1 = cirdao.updateAccount(cirmemac);
                     }
 
                     //Account For Member Id:" + cma.getId().getMemid() + " Created and confirmation mail sent successfully
@@ -135,7 +136,7 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
                 String[] lm = (String[]) session1.getAttribute("noofaccount");
 
                 for (int i = 0; i < lm.length; i++) {
-                    CirMemberAccount cma1 = (CirMemberAccount) CirculationDAO.searchCirMemAccountDetails(library_id, lm[i], cca.getMem_id());
+                    CirMemberAccount cma1 = (CirMemberAccount) cirdao.searchCirMemAccountDetails(library_id, lm[i], cca.getMem_id());
                     cma1.setCardId(cca.getCard_id());
                     cma1.setStatus("Active");
 
@@ -148,12 +149,12 @@ public class CirCreateAccountAction extends org.apache.struts.action.Action {
 
 
                     cma1.setPassword(password1);
-                    result = CirculationDAO.updateAccount(cma1);
+                    result = cirdao.updateAccount(cma1);
 
                 }
                 if (result == true) {
                     session1.removeAttribute("noofaccount");
-                    CirMemberDetail cma1 = (CirMemberDetail) CirculationDAO.searchCirMemDetails(library_id, cca.getMem_id());
+                    CirMemberDetail cma1 = (CirMemberDetail) cirdao.searchCirMemDetails(library_id, cca.getMem_id());
                //Member Account Created Successfully for LibMS OPAC Login", "Login Id=" + cca.getMem_id() + " Your Password for LibMS OPAC Login is=" + password
                        String path = servlet.getServletContext().getRealPath("/");
                    obj=new Email(cma1.getEmail(),password,"Congruation,Your are Registered as Library Member","Dear "+cca.getMem_name()+",\nYou Have been registered as a valid Library member for Library Name"+session1.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+cca.getMem_id()+"\nPassword:"+password+".\nThanks,\n"+session1.getAttribute("username")+",\n"+"Institute Admin");

@@ -5,7 +5,7 @@
 
 package com.myapp.struts.cataloguing;
 
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.utility.AppPath;
 import java.io.File;
@@ -47,7 +47,7 @@ public class CatalogueCardEntryAction extends org.apache.struts.action.Action {
     
     String msg=" ";
     int i;
-    BibliopgraphicEntryDAO dao=new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao=new BibliographicEntryDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -70,7 +70,7 @@ public class CatalogueCardEntryAction extends org.apache.struts.action.Action {
         for(i=0;i<items.length;i++)
         {
           String acc_no=items[i];
-          DocumentDetails docdetails=BibliopgraphicEntryDAO.searchBook(acc_no, library_id, sub_library_id) ;
+          DocumentDetails docdetails=dao.searchBook(acc_no, library_id, sub_library_id) ;
           if(docdetails!=null)
           {
           int doc_id1=docdetails.getId().getDocumentId();

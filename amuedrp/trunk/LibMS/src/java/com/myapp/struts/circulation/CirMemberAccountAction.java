@@ -34,6 +34,7 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
          HttpSession session=request.getSession();
         try{
 
@@ -66,7 +67,7 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
 
         if(button.equals("Create"))
         {
-           CirMemberDetail cirmemberdetail=CirculationDAO.getMemberDetail(library_id, mem_id);
+           CirMemberDetail cirmemberdetail=cirdao.getMemberDetail(library_id, mem_id);
            if(cirmemberdetail!=null)
            {
 
@@ -74,14 +75,14 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
                                   
                   request.setAttribute("mem_id",mem_id);
                   System.out.println(mem_id);
-                 List<EmployeeType> list1 = (List<EmployeeType>)CirculationDAO.getAllEmployeeTypes(library_id);
-                  List<Faculty> list3 = (List<Faculty>)CirculationDAO.getAllFaculty(library_id);
-                  List<SubEmployeeType> list2 = (List<SubEmployeeType>)CirculationDAO.getAllSubEmployeeTypes(library_id);
+                 List<EmployeeType> list1 = (List<EmployeeType>)cirdao.getAllEmployeeTypes(library_id);
+                  List<Faculty> list3 = (List<Faculty>)cirdao.getAllFaculty(library_id);
+                  List<SubEmployeeType> list2 = (List<SubEmployeeType>)cirdao.getAllSubEmployeeTypes(library_id);
                   List<SubLibrary> libRs=null;
                   if(sublibrary_id.equals(library_id))
-                    libRs = (List<SubLibrary>)CirculationDAO.getAllSubLibrary(library_id,sublibraryId,mem_id);
+                    libRs = (List<SubLibrary>)cirdao.getAllSubLibrary(library_id,sublibraryId,mem_id);
                   else
-                      libRs = (List<SubLibrary>)CirculationDAO.getAllSubLibrary1(library_id,sublibrary_id,mem_id);
+                      libRs = (List<SubLibrary>)cirdao.getAllSubLibrary1(library_id,sublibrary_id,mem_id);
                   if(libRs!=null && !libRs.isEmpty()){
                   session.setAttribute("list3",list3);
                   session.setAttribute("list1",list1);
@@ -117,23 +118,23 @@ public class CirMemberAccountAction extends org.apache.struts.action.Action {
                   session.removeAttribute("list1");
                   session.removeAttribute("list2");
                   session.removeAttribute("list");
-             CirMemberDetail cirmemberdetail=CirculationDAO.getMemberDetail(library_id, mem_id);
+             CirMemberDetail cirmemberdetail=cirdao.getMemberDetail(library_id, mem_id);
              if(cirmemberdetail!=null)
              {
 
-                   CirMemberAccount cirmemberaccount=CirculationDAO.getAccount2(library_id, sublibrary_id, mem_id);
+                   CirMemberAccount cirmemberaccount=cirdao.getAccount2(library_id, sublibrary_id, mem_id);
                    if(cirmemberaccount!=null)
                    {
 
                        if(cirmemberaccount.getStatus().equals("Active"))
                        {
                            
-                               List<EmployeeType> list1 = (List<EmployeeType>)CirculationDAO.getAllEmployeeTypes(library_id);
-                                  List<Faculty> list3 = (List<Faculty>)CirculationDAO.getAllFaculty(library_id);
-                                  List<SubEmployeeType> list2 = (List<SubEmployeeType>)CirculationDAO.getAllSubEmployeeTypes(library_id);
+                               List<EmployeeType> list1 = (List<EmployeeType>)cirdao.getAllEmployeeTypes(library_id);
+                                  List<Faculty> list3 = (List<Faculty>)cirdao.getAllFaculty(library_id);
+                                  List<SubEmployeeType> list2 = (List<SubEmployeeType>)cirdao.getAllSubEmployeeTypes(library_id);
                                   List<SubLibrary> libRs=null;
                                   
-                                      libRs = (List<SubLibrary>)CirculationDAO.getAllSubLibrary2(library_id,sublibrary_id);
+                                      libRs = (List<SubLibrary>)cirdao.getAllSubLibrary2(library_id,sublibrary_id);
                   if(libRs!=null && !libRs.isEmpty()){
                   
                   System.out.println("button="+button);

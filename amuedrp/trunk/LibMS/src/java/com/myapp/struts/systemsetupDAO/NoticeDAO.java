@@ -16,9 +16,9 @@ import org.hibernate.Query;
  */
 public class NoticeDAO {
     
-    static Query query;
+     Query query;
 
-    public static  boolean insert(Notices obj)
+    public   boolean insert(Notices obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -51,7 +51,7 @@ public class NoticeDAO {
 
 }
 
-public static Notices getNoticeName(String library_id,String notice_id,String sub_lib) {
+public  Notices getNoticeName(String library_id,String notice_id,String sub_lib) {
         Session session = HibernateUtil.getSessionFactory().openSession();
        Notices obj=null;
         try {
@@ -77,7 +77,7 @@ return obj;
 }
 
 
-public static  boolean update(Notices obj)
+public   boolean update(Notices obj)
 {
          Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -101,7 +101,7 @@ public static  boolean update(Notices obj)
 
 }
 
-public static  boolean Delete(Notices obj)
+public   boolean Delete(Notices obj)
 {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -125,7 +125,7 @@ public static  boolean Delete(Notices obj)
    return true;
 
 }
-public static List<Notices> searchNotices(String library_id,String sub_lib) {
+public  List<Notices> searchNotices(String library_id,String sub_lib) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<Notices> obj=null;
         try {

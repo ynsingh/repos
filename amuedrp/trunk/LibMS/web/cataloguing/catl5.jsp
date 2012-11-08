@@ -33,7 +33,7 @@
 %>
 <%
  hm1 = (HashMap)session.getAttribute("hsmp");
-
+if(hm1!=null){
   if(hm1.containsKey("20")){
        bib1=(Biblio)hm1.get("20");
         }
@@ -51,7 +51,7 @@
         }
    if(hm1.containsKey("25")){
        bib6=(Biblio)hm1.get("25");
-        }
+        }}
  %>
 
 
@@ -158,7 +158,7 @@ description[28]='Part of the described materials to which the language note appl
     <jsp:include page="/admin/header.jsp"></jsp:include>
 <body onload="loadHelp()">
     <div
-   style="  top:15%;
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -283,7 +283,7 @@ Control Field Entry
 </FONT>
 </DIV>
 
-                                      <!-- Marc entries Starts from here . -->
+You are on MARC Page : 5 Tag Page                                      <!-- Marc entries Starts from here . -->
 
 <div>
 <html:form styleId="cat5" action="/cataction5.do" method="post">

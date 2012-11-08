@@ -32,7 +32,8 @@ public class BookCategoryDecideAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+BookCategoryDAO bookdao=new BookCategoryDAO();
+DocumentCategoryDAO docdao=new DocumentCategoryDAO();
          HttpSession session=request.getSession();
 
         try{
@@ -63,8 +64,8 @@ sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
 /*get the id of member and sub member type*/
 
-EmployeeType memtype=BookCategoryDAO.searchMemTypeId(library_id,emptype_id);
-SubEmployeeType submemtype=BookCategoryDAO.searchSubMemTypeId(library_id,emptype_id,subemptype_id);
+EmployeeType memtype=bookdao.searchMemTypeId(library_id,emptype_id);
+SubEmployeeType submemtype=bookdao.searchSubMemTypeId(library_id,emptype_id,subemptype_id);
 
 if(memtype!=null)
 { emptype_id=memtype.getId().getEmptypeId();
@@ -75,7 +76,7 @@ if(submemtype!=null)
 { subemptype_id=submemtype.getId().getSubEmptypeId();
 subemptype_name=submemtype.getSubEmptypeFullName();
 }
-DocumentCategory doc=(DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(library_id, sublibrary_id, book_type);
+DocumentCategory doc=(DocumentCategory)docdao.searchDocumentCategory(library_id, sublibrary_id, book_type);
 if(doc!=null)
   request.setAttribute("book_typefullname",doc.getDocumentCategoryName());
 
@@ -89,7 +90,7 @@ System.out.println(emptype_fullname+"   "+subemptype_name+ "  "+doc.getDocumentC
         if(button.equalsIgnoreCase("Add"))
         {
 
-           BookCategory book=(BookCategory)BookCategoryDAO.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
+           BookCategory book=(BookCategory)bookdao.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
            System.out.println(book);
            if(book==null)
            {
@@ -113,7 +114,7 @@ System.out.println(emptype_fullname+"   "+subemptype_name+ "  "+doc.getDocumentC
         if(button.equalsIgnoreCase("Update") || button.equalsIgnoreCase("View") || button.equalsIgnoreCase("Delete"))
         {
 //BookCategoryDecideActionForm1 obj=new BookCategoryDecideActionForm1();
-           BookCategory book=(BookCategory)BookCategoryDAO.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
+           BookCategory book=(BookCategory)bookdao.searchBookTypeDetails(library_id, emptype_id, subemptype_id, book_type);
            System.out.println(book);
            if(book!=null)
            {

@@ -31,15 +31,7 @@ public class AddNotice1Action extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   NoticeDAO notdao=new NoticeDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -78,7 +70,7 @@ public class AddNotice1Action extends org.apache.struts.action.Action {
       // n.setSot(sot);
        n.setSubject(subject);
 
-       result=NoticeDAO.insert(n);
+       result=notdao.insert(n);
         if(result==true)
         {
            //request.setAttribute("msg", "Record Inserted Successfully");

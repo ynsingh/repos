@@ -7,7 +7,6 @@ package com.myapp.struts.admin;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
 
-import java.sql.*;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +35,8 @@ public class UserStaffAction extends org.apache.struts.action.Action {
             throws Exception
     {
       
-        
+        StaffDetailDAO staffdao=new StaffDetailDAO();
+        SubLibraryDAO sublibdao=new SubLibraryDAO();
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
@@ -54,7 +54,7 @@ public class UserStaffAction extends org.apache.struts.action.Action {
              {
 
 
-                         staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id,library_id);
+                         staffobj=(StaffDetail)staffdao.searchStaffId(staff_id,library_id);
                         if(staffobj==null)
                         {
 
@@ -64,7 +64,7 @@ public class UserStaffAction extends org.apache.struts.action.Action {
              }
              else
              {
-                        staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id,library_id,sublibrary_id);
+                        staffobj=(StaffDetail)staffdao.searchStaffId(staff_id,library_id,sublibrary_id);
                         if(staffobj==null)
                         {
 
@@ -138,7 +138,7 @@ public class UserStaffAction extends org.apache.struts.action.Action {
             session.setAttribute("updateresultset",staffobj);
 
             request.setAttribute("button", button);
-             List<SubLibrary>  sublib=SubLibraryDAO.searchSubLib(library_id);
+             List<SubLibrary>  sublib=sublibdao.searchSubLib(library_id);
              if(!sublib.isEmpty())
              {
                  request.setAttribute("sublib",sublib);

@@ -39,7 +39,10 @@ import com.myapp.struts.utility.Email;
 public class AdminViewAction1 extends org.apache.struts.action.Action {
     
       private final ExecutorService executor=Executors.newFixedThreadPool(1);
+      LibraryDAO libdao=new LibraryDAO();
+      SubLibraryDAO sublibdao=new SubLibraryDAO();
   Email obj;
+  StaffDetailDAO staffdao=new StaffDetailDAO();
     boolean result;
     LoginDAO logindao;
    
@@ -69,7 +72,12 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     boolean page=true;
     String align="left";
 
-
+PrivilegeDAO privdao=new PrivilegeDAO();
+AcqPrivilegeDAO acqprivdao=new AcqPrivilegeDAO();
+SerPrivilegeDAO serprivdao=new SerPrivilegeDAO();
+CirPrivilegeDAO cirprivdao=new CirPrivilegeDAO();
+CatPrivilegeDAO catprivdao=new CatPrivilegeDAO();
+AdminRegistrationDAO admindao=new AdminRegistrationDAO();
     
     
     
@@ -121,7 +129,7 @@ logindao=new LoginDAO();
      if(button.equalsIgnoreCase("accept"))  {
 
 /*Use to Check whether the Entered Library Exist or not */
-        Library tempobj=(Library)LibraryDAO.searchLibraryID(library_id);
+        Library tempobj=(Library)libdao.searchLibraryID(library_id);
         
 
             if(tempobj!=null)
@@ -144,7 +152,7 @@ logindao=new LoginDAO();
 
 
 
-             result=LibraryDAO.insert1(libobj);
+             result=libdao.insert1(libobj);
                 if(result==false)
                 {
                     String msg=resource.getString("admin.acceptmesg.msg2");
@@ -164,7 +172,7 @@ logindao=new LoginDAO();
 
               
               
-                result=SubLibraryDAO.insert(subobj);
+                result=sublibdao.insert(subobj);
                 if(result==false)
                 {
                     String msg=resource.getString("admin.acceptmesg.msg2");
@@ -200,7 +208,7 @@ logindao=new LoginDAO();
             staffobj.setCountry1(admin.getCountry());
 
 
-             result=StaffDetailDAO.insert1(staffobj);
+             result=staffdao.insert1(staffobj);
                 if(result==false)
                 {
                     String msg=resource.getString("admin.acceptmesg.msg2");
@@ -250,7 +258,7 @@ logindao=new LoginDAO();
            priv.setUtilities("false");
            priv.setCirculation("false");
 
-           result=PrivilegeDAO.insert(priv);
+           result=privdao.insert(priv);
 
             if(result==false)
                 {
@@ -363,7 +371,7 @@ logindao=new LoginDAO();
                 acq.setAcq198("false");
                 acq.setAcq199("false");
 
-                result=AcqPrivilegeDAO.insert(acq);
+                result=acqprivdao.insert(acq);
 
             if(result==false)
                 {
@@ -478,7 +486,7 @@ logindao=new LoginDAO();
             Cat.setCat299("false");
 
 
-            result=CatPrivilegeDAO.insert(Cat);
+            result=catprivdao.insert(Cat);
 
             if(result==false)
                 {
@@ -594,7 +602,7 @@ logindao=new LoginDAO();
         Ser.setSer499("false");
 
 
-            result=SerPrivilegeDAO.insert(Ser);
+            result=serprivdao.insert(Ser);
 
             if(result==false)
                 {
@@ -708,7 +716,7 @@ logindao=new LoginDAO();
         Cir.setCir399("false");
 
 
-            result=CirPrivilegeDAO.insert(Cir);
+            result=cirprivdao.insert(Cir);
 
             if(result==false)
                 {
@@ -722,13 +730,13 @@ logindao=new LoginDAO();
 
     /* Use to Update AdminRegistration Table if status is approved */
 
-            AdminRegistration adminobj=(AdminRegistration)AdminRegistrationDAO.searchInstituteAdmin(login_id);
+            AdminRegistration adminobj=(AdminRegistration)admindao.searchInstituteAdmin(login_id);
             adminobj.setStatus("Registered");
             adminobj.setLibraryId(library_id);
            adminobj.setStaffId(staff_id);
        
 
-             result= AdminRegistrationDAO.update1(adminobj);
+             result= admindao.update1(adminobj);
 
             if(result==false)
                 {
@@ -773,7 +781,7 @@ logindao=new LoginDAO();
        {
                      /* Use to Update AdminRegistration Table if status is rejected */
 
-            AdminRegistration      adminobj=(AdminRegistration)AdminRegistrationDAO.searchInstituteAdmin(login_id);
+            AdminRegistration      adminobj=(AdminRegistration)admindao.searchInstituteAdmin(login_id);
 
             adminobj.setStatus("rejected");
 
@@ -781,7 +789,7 @@ logindao=new LoginDAO();
 
 
 
-             result= AdminRegistrationDAO.update1(adminobj);
+             result= admindao.update1(adminobj);
 
             if(result==false)
                 {

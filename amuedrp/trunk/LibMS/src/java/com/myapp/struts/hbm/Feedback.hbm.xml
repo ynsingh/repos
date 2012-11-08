@@ -1,31 +1,30 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.Feedback" table="feedback" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.FeedbackId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-        </many-to-one>
-        <property name="name" type="string">
-            <column name="name" length="100" />
-        </property>
-        <property name="email" type="string">
-            <column name="email" length="100" />
-        </property>
-        <property name="comments" type="string">
-            <column name="comments" length="65535" />
-        </property>
-        <property name="date" type="string">
-            <column name="date" length="15" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.Feedback" table="feedback">
+    <composite-id class="com.myapp.struts.hbm.FeedbackId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="name" type="string">
+      <column length="100" name="name"/>
+    </property>
+    <property name="email" type="string">
+      <column length="100" name="email"/>
+    </property>
+    <property name="comments" type="string">
+      <column length="65535" name="comments"/>
+    </property>
+    <property name="date" type="string">
+      <column length="15" name="date"/>
+    </property>
+  </class>
 </hibernate-mapping>

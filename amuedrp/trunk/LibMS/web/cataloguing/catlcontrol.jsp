@@ -57,6 +57,8 @@ responseXmlHandler(req.responseXML);
 }
 }
 }
+
+
 function search() {
 // availableSelectList.innerHTML = "";
     var keyValue = document.getElementById("d_t_l_t").value;
@@ -87,10 +89,7 @@ document.getElementById("d_t_l_t").value=x;
 <script type="text/javascript" src="<%=request.getContextPath()%>/jquery-1.4.2.min.js"></script>
 <link rel="shortcut icon" type="image/x-icon" href="<%=request.getContextPath()%>/images/marci.gif">
         <script language="JavaScript">
-<!-- Idea by:  Nic Wolfe -->
-<!-- This script and many more are available free online at -->
-<!-- The JavaScript Source!! http://javascript.internet.com -->
-<!-- Begin
+
 function popUp(URL) {
 day = new Date();
 id = day.getTime();
@@ -142,6 +141,7 @@ function keyHit(event) {
 </script>
       <script language="javascript" type="text/javascript">
 function leader(){
+   
     var a=document.getElementById("rs").value;
     var b=document.getElementById("tr").value;
     var c=document.getElementById("bl").value;
@@ -156,17 +156,16 @@ function leader(){
     document.getElementById("catch").value=z;
     
    $("#layer1").hide();
+    document.getElementById("catcontrol").action="<%=request.getContextPath()%>/catcontrolaction.do?st="+z;
     document.getElementById("catcontrol").submit();
-   
-<%
-      if(request.getParameter("zclick")!=null)
-        session.setAttribute("data",(String)request.getParameter("catch"));
-      
-     // System.out.println(request.getParameter("zclick"));
-   %>
-       
-   
 }
+<%
+      if(session.getAttribute("st")!=null)
+        session.setAttribute("data",(String)session.getAttribute("st"));
+
+    System.out.println((String)session.getAttribute("st")+"............................");
+   %>
+
 function fixedfield(){
     var a=document.getElementById("vo").value;
     var b=document.getElementById("vp").value;
@@ -203,7 +202,7 @@ var a=document.getElementById("sr").value;
 %>
 <%
  hm1 = (HashMap)session.getAttribute("hsmp");
-System.out.println(hm1+"...........in jsp page");
+if(hm1!=null){
   if(hm1.containsKey("Leader")){
            bib1=(Biblio)hm1.get("Leader");
          
@@ -223,6 +222,7 @@ System.out.println(hm1+"...........in jsp page");
    if(hm1.containsKey("008")){
        bib6=(Biblio)hm1.get("008");
         }
+  }
  %>
 
 <title>LibMS</title>
@@ -406,8 +406,9 @@ System.out.println(hm1+"...........in jsp page");
 	</script>
     </head>
     <jsp:include page="/admin/header.jsp"></jsp:include>
-    <body onload="search()"><div
-   style="  top:15%;
+
+    <body onload="search();"><div
+   style="  top:20%;
    left:10%;
    right:10%;border: solid 1px black;
       position: absolute;
@@ -471,15 +472,17 @@ Control Field Entry
 </div>
 </FONT>
 </DIV>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<html:form method="post" action="/catcontrolaction" styleId="catcontrol" >
+ &nbsp;&nbsp;&nbsp;You are on MARC Page : Control Tag Page<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>  <br/>
+    <br>&nbsp; <br> &nbsp;&nbsp;&nbsp;
+
+<html:form method="post"  action="/catcontrolaction" styleId="catcontrol" >
   
 <input type="hidden" value="" name="zclick" id="zclick" />
     <div id="content" style="position: absolute; left: 5%;top: 20%">
     <b>    LEADER:</b>
     <br>    
     
-    <input type="text"  name="leader" value="<%if(request.getParameter("data")!=null) { %><%=(String)request.getParameter("data")%> <%}%><% if(bib1.get$a()!=null){%><%= bib1.get$a() %><%}%>"  id="catch"/>
+    <input type="text"  name="leader" value="<%if(session.getAttribute("data")!=null) { %><%=(String)session.getAttribute("data")%> <%}%><% if(bib1.get$a()!=null){%><%= bib1.get$a() %><%}%>"  id="catch"/>
         <input type="button" id="preferences"  value="Leader Structure"/>
     </div>
     <br>
@@ -801,6 +804,10 @@ Parking
 			</div>
 		</div>
 	</div>
+        
+
         </div>
+
+  
 </body>
     </html>

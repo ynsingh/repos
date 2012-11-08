@@ -30,6 +30,8 @@ public class AcqAcquisitionOfopacAction extends org.apache.struts.action.Action 
     Demandlist dmnd=new Demandlist();
     int demand_id;
     NewDemandDAO ndmndao=new NewDemandDAO();
+    VendorDAO vendao=new VendorDAO();
+    BudgetDAO bugdao=new BudgetDAO();
    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -63,14 +65,14 @@ public class AcqAcquisitionOfopacAction extends org.apache.struts.action.Action 
         acqbiblio.setEdition(dmnd.getEdition());
         acqbiblio.setDemand_id(demand_id);
 
-           List<AcqVendor> acqvendor=VendorDAO.searchDoc5(library_id, sub_library_id);
+           List<AcqVendor> acqvendor=vendao.searchDoc5(library_id, sub_library_id);
              if(acqvendor.isEmpty()){
              String msg1="You need to set vendors list";
              request.setAttribute("msg1", msg1);
              return mapping.findForward("fail");
              }
 
- List<String> exchangerate=VendorDAO.getCurrencyList(library_id);
+ List<String> exchangerate=vendao.getCurrencyList(library_id);
 
 
             // if(exchangerate.isEmpty()){
@@ -80,7 +82,7 @@ public class AcqAcquisitionOfopacAction extends org.apache.struts.action.Action 
             // }
             session.setAttribute("exchangerate", exchangerate);
 
-             BaseCurrency cur=BudgetDAO.getBaseCurrency(library_id);
+             BaseCurrency cur=bugdao.getBaseCurrency(library_id);
            if(cur==null){
              String msg1="You need to set Library Base Currency";
              request.setAttribute("msg1", msg1);
@@ -89,7 +91,7 @@ public class AcqAcquisitionOfopacAction extends org.apache.struts.action.Action 
    session.setAttribute("base", cur.getFormalName());
          session.setAttribute("vendors", acqvendor);
 
-          List<MixBudgetAllocation> acqbudget1=BudgetDAO.getMixBudgetAllocation(library_id);
+          List<MixBudgetAllocation> acqbudget1=bugdao.getMixBudgetAllocation(library_id);
           if(acqbudget1.isEmpty()){
           String msg1="You need to set Income budget head list";
              request.setAttribute("msg1", msg1);

@@ -3,7 +3,7 @@
 // ADDITIONAL SEARCH ACTION
 package com.myapp.struts.opac;
 import com.myapp.struts.hbm.BibliographicDetails;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.utility.LoggerUtils;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     String authors[],titles[],subjects[],other_fields[]; /* array of fields*/
     OpacSearchDAO opacSearchDAO=new OpacSearchDAO();
-    BibliopgraphicEntryDAO bibdao=new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO bibdao=new BibliographicEntryDAO();
     private static Logger log4j =LoggerUtils.getLogger();
     String yr1,yr2;
     @Override

@@ -1,44 +1,42 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated May 19, 2011 12:40:57 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqBudgetAllocation" table="acq_budget_allocation" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqBudgetAllocationId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="transactionId" type="int">
-                <column name="transaction_id" />
-            </key-property>
-        </composite-id>
-        <property name="budgetheadId" type="string">
-            <column name="budgethead_id" length="10" not-null="true" unique="true" />
-        </property>
-        <property name="openingBalance" type="string">
-            <column name="opening_balance" length="50" />
-        </property>
-        <property name="recievedAmount" type="string">
-            <column name="recieved_amount" length="50" />
-        </property>
-        <property name="totalAmount" type="string">
-            <column name="total_amount" length="20" />
-        </property>
-        <property name="financialYr1" type="string">
-            <column name="financial_yr1" length="20" />
-        </property>
-        <property name="financialYr2" type="string">
-            <column name="financial_yr2" length="20" />
-        </property>
-        <property name="remarks" type="string">
-            <column name="remarks" length="20" />
-        </property>
-        <property name="reqdate" type="string">
-            <column name="reqdate" length="10" />
-        </property>
-            <property name="expenseAmount" type="string">
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqBudgetAllocation" table="acq_budget_allocation">
+    <composite-id class="com.myapp.struts.hbm.AcqBudgetAllocationId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="transactionId" type="int">
+        <column name="transaction_id"/>
+      </key-property>
+    </composite-id>
+    <property name="budgetheadId" type="string">
+      <column length="10" name="budgethead_id" not-null="true" unique="true"/>
+    </property>
+    <property name="openingBalance" type="string">
+      <column length="50" name="opening_balance"/>
+    </property>
+    <property name="recievedAmount" type="string">
+      <column length="50" name="recieved_amount"/>
+    </property>
+    <property name="totalAmount" type="string">
+      <column length="20" name="total_amount"/>
+    </property>
+    <property name="financialYr1" type="string">
+      <column length="20" name="financial_yr1"/>
+    </property>
+    <property name="financialYr2" type="string">
+      <column length="20" name="financial_yr2"/>
+    </property>
+    <property name="remarks" type="string">
+      <column length="20" name="remarks"/>
+    </property>
+    <property name="reqdate" type="string">
+      <column length="10" name="reqdate"/>
+    </property>
+    <property name="expenseAmount" type="string">
       <column length="11" name="expense_amount"/>
     </property>
-
-    </class>
+  </class>
 </hibernate-mapping>

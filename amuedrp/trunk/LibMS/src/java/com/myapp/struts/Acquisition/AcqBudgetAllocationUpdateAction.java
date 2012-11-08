@@ -8,9 +8,6 @@ package com.myapp.struts.Acquisition;
 import com.myapp.struts.AcquisitionDao.BudgetDAO;
 import com.myapp.struts.hbm.AcqBudget;
 import com.myapp.struts.hbm.AcqBudgetId;
-import com.myapp.struts.hbm.Location;
-import com.myapp.struts.hbm.LocationId;
-import com.myapp.struts.systemsetupDAO.LocationDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,7 +23,7 @@ public class AcqBudgetAllocationUpdateAction extends org.apache.struts.action.Ac
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    BudgetDAO bugdao=new BudgetDAO();
   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -48,7 +45,7 @@ public class AcqBudgetAllocationUpdateAction extends org.apache.struts.action.Ac
         
         
         if(button.equals("Submit")){
-            AcqBudget lcheck = (AcqBudget)BudgetDAO.getLocationByName(library_id,budegetheadname);
+            AcqBudget lcheck = (AcqBudget)bugdao.getLocationByName(library_id,budegetheadname);
         if(lcheck==null){
         l.setBudgetDesc(lf.getBudgethead_description());
         l.setBudgetheadName(lf.getBudget_name());
@@ -56,7 +53,7 @@ public class AcqBudgetAllocationUpdateAction extends org.apache.struts.action.Ac
         
         li.setBudgetheadId(lf.getBudgethead_id());
         l.setId(li);
-        BudgetDAO.insert(l);
+        bugdao.insert(l);
         request.setAttribute("msg", "Data is saved successfully");
         session.removeAttribute("backlocation");
         }else
@@ -66,7 +63,7 @@ public class AcqBudgetAllocationUpdateAction extends org.apache.struts.action.Ac
         return mapping.findForward(SUCCESS);
         }
         if(button.equals("Update")){
-            AcqBudget lcheck = (AcqBudget)BudgetDAO.getLocationByName(library_id,budegetheadname);
+            AcqBudget lcheck = (AcqBudget)bugdao.getLocationByName(library_id,budegetheadname);
         if(lcheck!=null)
             if(!lcheck.getId().getBudgetheadId().equals(budgethead_id))
             {
@@ -79,7 +76,7 @@ public class AcqBudgetAllocationUpdateAction extends org.apache.struts.action.Ac
         
         li.setBudgetheadId(lf.getBudgethead_id());
         l.setId(li);
-        BudgetDAO.update(l);
+        bugdao.update(l);
         request.setAttribute("msg", "Data is updated successfully");
         return mapping.findForward(SUCCESS);
         }
@@ -90,7 +87,7 @@ public class AcqBudgetAllocationUpdateAction extends org.apache.struts.action.Ac
         
         li.setBudgetheadId(lf.getBudgethead_id());
         l.setId(li);
-        BudgetDAO.delete(library_id,budgethead_id);
+        bugdao.delete(library_id,budgethead_id);
         request.setAttribute("msg", "Data is deleted successfully");
         return mapping.findForward(SUCCESS);
         }

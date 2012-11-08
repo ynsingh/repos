@@ -24,15 +24,7 @@ public class ViewAllNoticeAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
      String library_id;
       String sub_lib;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   NoticeDAO notdao=new NoticeDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +32,7 @@ public class ViewAllNoticeAction extends org.apache.struts.action.Action {
              HttpSession session=request.getSession();
              library_id=(String)session.getAttribute("library_id");
               sub_lib=(String)session.getAttribute("sublibrary_id");
-             List<Notices> list=(List<Notices>)NoticeDAO.searchNotices(library_id, sub_lib);
+             List<Notices> list=(List<Notices>)notdao.searchNotices(library_id, sub_lib);
              session.setAttribute("list", list);
         return mapping.findForward(SUCCESS);
     }

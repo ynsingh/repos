@@ -5,6 +5,9 @@
 
 package com.myapp.struts.marc;
 
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.action.ActionMapping;
+
 /**
  *
  * @author EdRP-05
@@ -74,6 +77,19 @@ private String zclick;
     public void setZclick(String zclick) {
         this.zclick = zclick;
     }
-
-  
+//@Override
+//   public void reset(ActionMapping mapping,
+//		HttpServletRequest request) {
+//		System.out.println("LoginForm::reset()");
+//	   fix_data=null;
+//phy_desc=null;
+//d_t_l_t=null;
+//control_no_id=null;
+//control_no=null;
+//leader=null;
+//zclick=null;
+//
+//
+//	}
+//  
 }

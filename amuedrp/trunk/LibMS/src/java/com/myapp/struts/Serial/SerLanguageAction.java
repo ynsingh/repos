@@ -22,7 +22,7 @@ public class SerLanguageAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    SerialDAO serialdao=new SerialDAO();
     
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -34,7 +34,7 @@ public class SerLanguageAction extends org.apache.struts.action.Action {
         request.setAttribute("button", button);
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
-        SerLanguage sl=SerialDAO.searchLanguage(library_id, lan_id);
+        SerLanguage sl=serialdao.searchLanguage(library_id, lan_id);
 
         if(button.equals("Add"))
         {

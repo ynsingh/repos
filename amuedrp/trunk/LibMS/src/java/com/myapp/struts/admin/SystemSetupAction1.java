@@ -4,7 +4,6 @@
  */
 
 package com.myapp.struts.admin;
-import com.myapp.struts.opac.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -13,15 +12,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.util.List;
 import com.myapp.struts.hbm.*;
-import  com.myapp.struts.AdminDAO.*;
-import  com.myapp.struts.systemsetupDAO.*;
-import com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.systemsetupDAO.*;
-
-/**
- *
- * @author Faraz
- */
 public class SystemSetupAction1 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
@@ -41,13 +32,16 @@ public class SystemSetupAction1 extends org.apache.struts.action.Action {
     String user_name=(String) request.getAttribute("user_name");
     String staff_id=(String) request.getAttribute("staff_id");
     String staff_name=(String) request.getAttribute("staff_name");
+LocationDAO locdao=new LocationDAO();
+MemberDAO memdao=new MemberDAO();
+SubMemberDAO submemdao=new SubMemberDAO();
+DocumentCategoryDAO doccatdao=new DocumentCategoryDAO();
 
 
-
-List<Location> locobj=(List<Location>)LocationDAO.getLocation(library_id, sublibrary_id);
-List<EmployeeType> empobj=(List<EmployeeType>)MemberDAO.searchEmployeeType(library_id);
-List<SubEmployeeType> subempobj=(List<SubEmployeeType>)SubMemberDAO.searchSubEmployeeType(library_id);
-List<DocumentCategory> docobj=(List<DocumentCategory>)DocumentCategoryDAO.searchDocumentCategory(library_id, sublibrary_id);
+List<Location> locobj=(List<Location>)locdao.getLocation(library_id, sublibrary_id);
+List<EmployeeType> empobj=(List<EmployeeType>)memdao.searchEmployeeType(library_id);
+List<SubEmployeeType> subempobj=(List<SubEmployeeType>)submemdao.searchSubEmployeeType(library_id);
+List<DocumentCategory> docobj=(List<DocumentCategory>)doccatdao.searchDocumentCategory(library_id, sublibrary_id);
             request.setAttribute("login_id", login_id);
             request.setAttribute("user_name", user_name);
             request.setAttribute("library_id", library_id);

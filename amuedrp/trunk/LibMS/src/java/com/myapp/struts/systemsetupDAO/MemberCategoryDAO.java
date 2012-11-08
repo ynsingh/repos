@@ -16,7 +16,7 @@ import org.hibernate.Session;
  * @author edrp01
  */
 public class MemberCategoryDAO {
-    public static List<EmployeeType> searchEmpType(String library_id) {
+    public  List<EmployeeType> searchEmpType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<EmployeeType> obj=null;
         try {
@@ -41,7 +41,7 @@ List<EmployeeType> obj=null;
 return obj;
 }
 
-            public static SubEmployeeType searchSubMemberType(String library_id,String memtype_id,String submemtype_id) {
+            public  SubEmployeeType searchSubMemberType(String library_id,String memtype_id,String submemtype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 SubEmployeeType obj=null;
         try {
@@ -69,7 +69,7 @@ return obj;
 
 
 
-     public static List<SubEmployeeType> searchSubEmpType(String library_id) {
+     public  List<SubEmployeeType> searchSubEmpType(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubEmployeeType> obj=null;
         try {
@@ -93,7 +93,7 @@ List<SubEmployeeType> obj=null;
         }
 return obj;
 }
-public static EmployeeType searchMemberType(String library_id,String memtype_id) {
+public  EmployeeType searchMemberType(String library_id,String memtype_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 EmployeeType obj=null;
         try {
@@ -120,7 +120,7 @@ return obj;
 
 
 
-     public static List<SubEmployeeType> searchSubEmpTypeByEmpId(String library_id,String empTypeId) {
+     public  List<SubEmployeeType> searchSubEmpTypeByEmpId(String library_id,String empTypeId) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 List<SubEmployeeType> obj=null;
         try {

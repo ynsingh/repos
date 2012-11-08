@@ -180,23 +180,23 @@ else
 
     <column width="100">
       <header value="${staffId}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.staff_id}" hyperLink="${path}/admin/showaccount.do?id=${doc.staff_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.staff_id}" hyperLink="${path}/showaccount.do?id=${doc.staff_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
  <column width="150">
       <header value="${fname} ${lname}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.user_name}" hAlign="left" hyperLink="${path}/admin/showaccount.do?id=${doc.staff_id}"  styleClass="item"/>
+      <item   value="${doc.user_name}" hAlign="left" hyperLink="${path}/showaccount.do?id=${doc.staff_id}"  styleClass="item"/>
     </column>
 
   
    
        <column width="200">
       <header value="${library}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.sublibName}" hyperLink="${path}/admin/showaccount.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.sublibName}" hyperLink="${path}/showaccount.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
         <column width="200">
       <header value="${role}" hAlign="left" styleClass="admingridheader"/>
-      <item   value="${doc.role}" hyperLink="${path}/admin/showaccount.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.role}" hyperLink="${path}/showaccount.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 

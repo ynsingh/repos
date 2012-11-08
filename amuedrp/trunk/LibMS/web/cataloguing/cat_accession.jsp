@@ -99,6 +99,8 @@ function submitDelete()
        <html:option value=""><%=resource.getString("cataloguing.catoldtitle.select")%></html:option>
             <html:option value="Book"><%=resource.getString("cataloguing.catoldtitle.book")%></html:option>
             <html:option value="CD"><%=resource.getString("cataloguing.catoldtitle.cd")%></html:option>
+            <html:option value="Diss">Disseration</html:option>
+            <html:option value="Thesis">Thesis</html:option>
   </html:select>
             <br><span class="err">   <html:messages id="err_name" property="document_type">
          <%=resource.getString("cataloguing.catoldtitle.err1")%>
@@ -113,7 +115,7 @@ function submitDelete()
                             <div class="mandatory">   <a class="star">*</a><%=resource.getString("cataloguing.catoldtitle.mandatory")%></div>
                         </td></tr>
                    <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.new")%>" Class="btn" onclick="return submitNew();"/></td></tr>
-                  <%--  <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.update")%>" Class="btn"  onclick="return submitUpdate();"/></td></tr>
+                  <%--<tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.update")%>" Class="btn"  onclick="return submitUpdate();"/></td></tr>
                     <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.view")%>" Class="btn"  onclick="return submitView();"/></td></tr>
                     <tr><td width="40"></td><td><input type="Submit" name="button1" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.delete")%>" Class="btn"  onclick="return submitDelete();"/></td></tr>
                   --%>  <tr><td width="40"></td><td><input type="button" name="button" dir="<%=rtl%>" value="<%=resource.getString("cataloguing.catoldtitle.back")%>" Class="btn"  onclick="back();"/></td></tr>

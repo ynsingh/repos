@@ -27,13 +27,14 @@ public class CirShowSingleMemberChkOutReportAction extends org.apache.struts.act
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
          HttpSession session=request.getSession();
          String   library_id=(String)session.getAttribute("library_id");
        String sublibrary_id=(String)session.getAttribute("sublibrary_id");
       String  mem_id=(String)request.getParameter("id");
       String CheckOutId=(String)request.getParameter("ch");
 
-        CirCheckout checkoutdetail=CirculationDAO.searchCheckoutMemDetails(library_id,sublibrary_id, mem_id,CheckOutId);
+        CirCheckout checkoutdetail=cirdao.searchCheckoutMemDetails(library_id,sublibrary_id, mem_id,CheckOutId);
       //    System.out.println("@@@@@@@@@@"+cmemdetail.getMemberId());
 
         if(checkoutdetail!=null)

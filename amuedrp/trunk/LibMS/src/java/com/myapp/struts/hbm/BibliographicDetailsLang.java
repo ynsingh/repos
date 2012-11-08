@@ -15,6 +15,24 @@ public class BibliographicDetailsLang  implements java.io.Serializable {
 
      private BibliographicDetailsLangId id;
      private Library library;
+
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+     private String submittedBy;
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+     private String rating;
      private String documentType;
      private String bookType;
      private String accessionType;
@@ -63,6 +81,15 @@ public class BibliographicDetailsLang  implements java.io.Serializable {
      private String series;
      private String typeOfDisc;
      private String fileType;
+
+    public String getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(String lastModified) {
+        this.lastModified = lastModified;
+    }
+     private String lastModified;
 public String getDigitalComment() {
         return digitalComment;
     }
@@ -92,6 +119,15 @@ private String image;
 private String digitalData;
 private String digitalComment;
 
+    public String getThesisStatus() {
+        return thesisStatus;
+    }
+
+    public void setThesisStatus(String thesisStatus) {
+        this.thesisStatus = thesisStatus;
+    }
+private String thesisStatus;
+
 
     public BibliographicDetailsLang() {
     }
@@ -101,7 +137,7 @@ private String digitalComment;
         this.id = id;
         this.library = library;
     }
-    public BibliographicDetailsLang(BibliographicDetailsLangId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType,String image,String digital_data,String digital_comment) {
+    public BibliographicDetailsLang(BibliographicDetailsLangId id, Library library, String documentType, String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, String callNo, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String typeOfDisc, String fileType,String image,String digital_data,String digital_comment,String last,String tstatus) {
        this.id = id;
        this.library = library;
        this.documentType = documentType;
@@ -155,6 +191,8 @@ private String digitalComment;
        this.image=image;
        this.digitalData=digital_data;
        this.digitalComment=digital_comment;
+       this.lastModified=last;
+       this.thesisStatus=tstatus;
     }
    
     public BibliographicDetailsLangId getId() {

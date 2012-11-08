@@ -12,7 +12,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-    <title>View Reservation Detail</title>
+    <title>View Checkout Detail</title>
 
 </head>
 <jsp:include page="opacheader.jsp"></jsp:include>
@@ -82,7 +82,10 @@ locale1=(String)session.getAttribute("locale");
             <a href="<%=request.getContextPath()%>/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
     |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
-
+ &nbsp;
+    |&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=changepassword"  style="text-decoration: none;"> Change Password</a>
+|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/uploadExcel.do"  style="text-decoration: none;"> Bulk Import</a>
+  
 
 
           </b>
@@ -209,6 +212,10 @@ else
             <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=newdemand"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
     |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
 
+ &nbsp;
+    |&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=changepassword"  style="text-decoration: none;"> Change Password</a>
+|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/uploadExcel.do"  style="text-decoration: none;"> Bulk Import</a>
+
 
 
 
@@ -230,38 +237,43 @@ else
 {%>
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="2" cellSpacing="0" styleClass="datagrid">
 
-  <columns>
+<columns>
 
     <column width="10">
       <header value="" hAlign="left" styleClass="header"/>
     </column>
 
     <column width="100">
-      <header value="Title" hAlign="left" styleClass="header"/>
-      <item   value="${doc.title}"  hAlign="left"    styleClass="item"/>
+      <header value="Document Id" hAlign="left" styleClass="header"/>
+      <item   value="${doc.documentDetails.id.documentId}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
       <header value="Author" hAlign="left" styleClass="header"/>
-      <item   value="${doc.author}" hAlign="left"   styleClass="item"/>
+      <item   value="${doc.documentDetails.mainEntry}" hAlign="left"   styleClass="item"/>
     </column>
 
     <column width="200">
       <header value="CallNo" hAlign="left" styleClass="header"/>
-      <item   value="${doc.callno}"   hAlign="left" styleClass="item"/>
+      <item   value="${doc.documentDetails.callNo}"   hAlign="left" styleClass="item"/>
+    </column>
+
+      <column width="100">
+      <header value="Issue Date" hAlign="left" styleClass="header"/>
+      <item   value="${doc.cirCheckout.issueDate}" hAlign="left" styleClass="item"/>
     </column>
 
     <column width="100">
-      <header value="Date" hAlign="left" styleClass="header"/>
-      <item   value="${doc.date}" hAlign="left" styleClass="item"/>
+      <header value="Due Date" hAlign="left" styleClass="header"/>
+      <item   value="${doc.cirCheckout.dueDate}" hAlign="left" styleClass="item"/>
     </column>
        <column width="100">
       <header value="Edition" hAlign="left" styleClass="header"/>
-      <item   value="${doc.ed}"   hAlign="left" styleClass="item"/>
+      <item   value="${doc.documentDetails.edition}"   hAlign="left" styleClass="item"/>
     </column>
         <column width="100">
       <header value="Status" hAlign="left" styleClass="header"/>
-      <item   value="${doc.status}"   hAlign="left" styleClass="item"/>
+      <item   value="${doc.cirCheckout.status}"   hAlign="left" styleClass="item"/>
     </column>
  </columns>
 

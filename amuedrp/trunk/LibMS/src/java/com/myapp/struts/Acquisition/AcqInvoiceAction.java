@@ -53,10 +53,10 @@ public class AcqInvoiceAction extends org.apache.struts.action.Action {
         String t1=request.getParameter("recievingno");
         if(t1!=null)
         {
-            AcqRecievingHeader acqrhrdr=AcquisitionDao.searchOrderHeaderByRecievingNo(library_id, sub_library_id,t1);
+            AcqRecievingHeader acqrhrdr=ado.searchOrderHeaderByRecievingNo(library_id, sub_library_id,t1);
        
              if(acqrhrdr!=null){
-            List<AcqRecievingDetails> acq2=AcquisitionDao.searchRecieveByRecievingNo(library_id, sub_library_id, t1);
+            List<AcqRecievingDetails> acq2=ado.searchRecieveByRecievingNo(library_id, sub_library_id, t1);
             if(!acq2.isEmpty())
             {
                 for(int i=0;i<acq2.size();i++)
@@ -143,7 +143,7 @@ public class AcqInvoiceAction extends org.apache.struts.action.Action {
         }*/
 
 
-        List<String> acqvendor=AcquisitionDao.searchDoc6(library_id, sub_library_id);
+        List<String> acqvendor=ado.searchDoc6(library_id, sub_library_id);
         
 ArrayList list1=new ArrayList();
 for(int i=0;i<acqvendor.size();i++){

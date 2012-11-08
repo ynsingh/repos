@@ -28,10 +28,11 @@ public class CirViewAllAccountAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        CirculationDAO cirdao=new CirculationDAO();
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
-        List cirmemacclist=CirculationDAO.searchCirMemAccount1(library_id,sublibrary_id);
+        List cirmemacclist=cirdao.searchCirMemAccount1(library_id,sublibrary_id);
         if(!cirmemacclist.isEmpty())
         {
           session.setAttribute("cirmemacclist", cirmemacclist);

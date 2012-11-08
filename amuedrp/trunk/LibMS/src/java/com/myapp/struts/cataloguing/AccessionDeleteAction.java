@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import com.myapp.struts.cataloguingDAO.BibliopgraphicEntryDAO;
+import com.myapp.struts.cataloguingDAO.BibliographicEntryDAO;
 import com.myapp.struts.hbm.*;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 public class AccessionDeleteAction extends org.apache.struts.action.Action {
 
     private static final String SUCCESS = "success";
-    BibliopgraphicEntryDAO dao = new BibliopgraphicEntryDAO();
+    BibliographicEntryDAO dao = new BibliographicEntryDAO();
     BibliographicDetails bib = new BibliographicDetails();
     BibliographicDetailsId bid = new BibliographicDetailsId();
     DocumentDetails doc = new DocumentDetails();

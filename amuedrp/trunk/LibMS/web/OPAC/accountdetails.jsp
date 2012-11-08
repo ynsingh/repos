@@ -15,8 +15,10 @@
     String locale1="en";
     String rtl="ltr";
   String align="";
+
 %>
 <%
+CirculationDAO cirdao=new CirculationDAO();;
 try{
 locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
@@ -51,7 +53,7 @@ String DATE_FORMAT_NOW = "yyyy-MM-dd";
            String sub_library_id = (String)session.getAttribute("memsublib");
            String memId = (String)session.getAttribute("mem_id");
            if(memId==null)memId = (String)session.getAttribute("id");
-            List<CirCheckout> lst = (List<CirCheckout>)CirculationDAO.searchCheckOutListByStatus(library_id, sub_library_id, memId,"issued");
+            List<CirCheckout> lst = (List<CirCheckout>)cirdao.searchCheckOutListByStatus(library_id, sub_library_id, memId,"issued");
            // session.setAttribute("CheckoutGrid", lst);
            Calendar ca1 = Calendar.getInstance();
             Calendar ca2 = Calendar.getInstance();
@@ -109,7 +111,7 @@ System.out.println(year+"-"+month+"-"+day);
             System.out.println("Days"+diffDays);
             
             
-                BookCategory bookCat = (BookCategory)CirculationDAO.searchfineDetailsByType(library_id,sub_library_id,DocId);
+                BookCategory bookCat = (BookCategory)cirdao.searchfineDetailsByType(library_id,sub_library_id,DocId);
                 if(diffDays>0)
                     fine1 += bookCat.getFine()*diffDays;
             
@@ -148,7 +150,7 @@ System.out.println(year+"-"+month+"-"+day);
     |&nbsp;<a href="#"  style="text-decoration: none;"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
   &nbsp;
     |&nbsp;<a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=changepassword"  style="text-decoration: none;"> Change Password</a>
-
+|&nbsp;<a href="<%=request.getContextPath()%>/OPAC/uploadExcel.do"  style="text-decoration: none;"> Bulk Import</a>
             
 
 
@@ -166,9 +168,9 @@ System.out.println(year+"-"+month+"-"+day);
         </td></tr>
                 <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.finedue")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTFINE" name="TXTFINE" value="<%=fine%>" disabled="disabled"><a href="<%=request.getContextPath()%>/opac/cir_memfine_details.do" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
                 <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.checkouts")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTCHECKOUT"  name="TXTCHECKOUT" value="<%=no_of_chkout%>" disabled="disabled"><a href="<%=request.getContextPath()%>/opac/cir_memcheckout_details.do" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
-                <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.reservation")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTRESERVATION" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled"><a href="view_reservation.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
+                <%--<tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.reservation")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTRESERVATION" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled"><a href="view_reservation.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>--%>
                 <tr><td dir="<%=rtl%>" align="<%=align%>"><b><%=resource.getString("opac.accountdetails.lastcheckoutdate")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTCHKDATE" name="TXTCHKDATE" value="<%=lastchkoutdate%>" disabled="disabled"></td></tr>
-                <tr><td dir="<%=rtl%>" align="<%=align%>"><b>Probable <%=resource.getString("opac.accountdetails.finedue")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTProbFine" name="TXTPROBFINE" value="<%=fine1%>" disabled="disabled"><a href="view_checkoutfinedetails.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
+                <tr><td dir="<%=rtl%>" align="<%=align%>"><b>Probable <%=resource.getString("opac.accountdetails.finedue")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><input type="text" id="TXTProbFine" name="TXTPROBFINE" value="<%=fine1%>" disabled="disabled"><a href="<%=request.getContextPath()%>/OPAC/view_checkoutfinedetails.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
                 <tr><td dir="<%=rtl%>" colspan="2" align="<%=align%>"><br><br><br>
             <%
     String message=(String)request.getAttribute("msg");
@@ -179,12 +181,12 @@ System.out.println(year+"-"+month+"-"+day);
     session.removeAttribute("msg");
     String type = (String)session.getAttribute("type");
     if(message!=null){
-       %> 
-	 <script type="text/javascript">
-		alert("<%=message%>");
-         </script>
+       
+	
+		out.println("<font color=blue>"+message+"</font>");
+        
 
-   <% }else
+   }else
         message="";
     if(type!=null){
     %>

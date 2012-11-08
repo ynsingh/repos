@@ -84,7 +84,7 @@ function Send(value)
 <body>
  
     <html:form method="post"  action="/staffRegistration" onsubmit="return check1();">
-<div
+<%--<div
    style="  top:15%;
    left:5px;
    right:5px;
@@ -100,7 +100,7 @@ function Send(value)
 
         %></font>
 </div>
-<div
+--%><div
    style="  top:200px;
    left:5px;
    right:5px;

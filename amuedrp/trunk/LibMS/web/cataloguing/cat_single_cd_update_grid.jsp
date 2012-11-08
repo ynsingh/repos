@@ -20,7 +20,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+       
            <script>
             function send()
 {
@@ -133,7 +133,7 @@ List obj1;
 <%
 int i=0;
  int j=0;
-List<AccessionRegister> l11=(List<AccessionRegister>)session.getAttribute("opacList");
+List<AccessionRegister> l11=(List<AccessionRegister>)session.getAttribute("opacLista");
  index = request.getParameter("pageIndex");
  if(index!=null){
      pageIndex = Integer.parseInt(index);
@@ -166,7 +166,7 @@ if(toIndex>size)toIndex=size;
         <table style="position:absolute; left: 5%; top: 5%;" dir="<%=rtl %>">
             <tr bgcolor="#E0E888"><td colspan="8" align="center"><b><%= resource.getString("cataloguing.cataccessionentry.accessionheader")%></b></td></tr>
             <tr bgcolor="#E0E8F5"><td width="100"><%= resource.getString("cataloguing.catsingleviewgrid.recordno")%></td><td width="200"><%= resource.getString("cataloguing.cataccessionentry.accessionno")%></td><td width="100"><%= resource.getString("cataloguing.cataccessionentry.location")%></td><td width="100"><%= resource.getString("cataloguing.catviewownbibliogrid.action")%></td></tr>
-        <logic:iterate id="AccessionRegister" name="opacList" offset="<%=String.valueOf(fromIndex)%>" length="15">
+        <logic:iterate id="AccessionRegister" name="opacLista" offset="<%=String.valueOf(fromIndex)%>" length="15">
           <html:form action="/cataloguing/accessioncdedit">
                 <html:hidden property="main_entry" name="BibliographicDetailEntryActionForm" value="Old"/>
                 <html:hidden property="statement_responsibility" name="BibliographicDetailEntryActionForm" value="Old"/>

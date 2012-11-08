@@ -38,7 +38,8 @@ public class MemberUpdateViewAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+MemberDAO memdao=new MemberDAO();
+SubMemberDAO submemdao=new SubMemberDAO();
         HttpSession session=request.getSession();
          try{
 
@@ -60,12 +61,12 @@ public class MemberUpdateViewAction extends org.apache.struts.action.Action {
        button=muvaf.getButton();
        
        library_id=(String)session.getAttribute("library_id");
-       EmployeeType emptype=MemberDAO.getEployeeName(library_id, emptype_id);
+       EmployeeType emptype=memdao.getEployeeName(library_id, emptype_id);
        
         if(button.equals("Update"))
         {
           request.setAttribute("bt", "nodirecttosetup");
-             result=MemberDAO.update(emptype,library_id,emptype_full_name);
+             result=memdao.update(emptype,library_id,emptype_full_name);
              if(result==true)
              {
                  // request.setAttribute("msg", "Record Update Successfully");
@@ -83,7 +84,7 @@ public class MemberUpdateViewAction extends org.apache.struts.action.Action {
         if(button.equals("Delete"))
         {
          request.setAttribute("bt", "nodirecttosetup");
-            List<CirMemberAccount> cir=   (List<CirMemberAccount>)MemberDAO.searchAccount(library_id,emptype_id);
+            List<CirMemberAccount> cir=   (List<CirMemberAccount>)memdao.searchAccount(library_id,emptype_id);
            if(!cir.isEmpty()){
 
             //  request.setAttribute("msg1", "Account Created With This Member,Cannot Deleted");
@@ -92,7 +93,7 @@ public class MemberUpdateViewAction extends org.apache.struts.action.Action {
            }
 
 
-            result=MemberDAO.Delete(emptype);
+            result=memdao.Delete(emptype);
              if(result==true)
              {
                // request.setAttribute("msg", "Record Deleted Successfully");
@@ -102,7 +103,7 @@ public class MemberUpdateViewAction extends org.apache.struts.action.Action {
              else
              {
 
-                List<SubEmployeeType> sub=(List<SubEmployeeType>)SubMemberDAO.searchSubEmployeeType(library_id,emptype_id);
+                List<SubEmployeeType> sub=(List<SubEmployeeType>)submemdao.searchSubEmployeeType(library_id,emptype_id);
                 if(!sub.isEmpty())
                 {
 

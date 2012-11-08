@@ -28,15 +28,7 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -56,14 +48,14 @@ public class LocationEntryAction extends org.apache.struts.action.Action {
     if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
     else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
-
+LocationDAO locdao=new LocationDAO();
         LocationActionForm lf=(LocationActionForm)form;
        
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
         String button=lf.getButton();
         String location_id=lf.getLocation_id();
-        Location l=LocationDAO.searchLocation(library_id, sub_library_id, location_id);
+        Location l=locdao.searchLocation(library_id, sub_library_id, location_id);
         //request.setAttribute("back", request.getAttribute("back"));
        // System.out.println("In Addition location process.."+request.getAttribute("back"));
         if(button.equals("Add"))

@@ -1,46 +1,45 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Oct 20, 2012 11:20:58 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.SerPublisher" table="ser_publisher" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.SerPublisherId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="sublibraryId" type="string">
-                <column name="sublibrary_id" length="20" />
-            </key-property>
-            <key-property name="pubId" type="string">
-                <column name="pub_id" length="20" />
-            </key-property>
-        </composite-id>
-        <property name="pubName" type="string">
-            <column name="`pub-name`" length="15" />
-        </property>
-        <property name="pubAdd" type="string">
-            <column name="pub_add" length="30" />
-        </property>
-        <property name="city" type="string">
-            <column name="city" length="15" />
-        </property>
-        <property name="state" type="string">
-            <column name="state" length="15" />
-        </property>
-        <property name="country" type="string">
-            <column name="country" length="15" />
-        </property>
-        <property name="pubUrl" type="string">
-            <column name="pub_url" length="15" />
-        </property>
-        <property name="pubPhone" type="string">
-            <column name="pub_phone" length="15" />
-        </property>
-        <property name="fax" type="string">
-            <column name="fax" length="15" />
-        </property>
-        <property name="email" type="string">
-            <column name="email" length="15" />
-        </property>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.SerPublisher" table="ser_publisher">
+    <composite-id class="com.myapp.struts.hbm.SerPublisherId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="sublibraryId" type="string">
+        <column length="20" name="sublibrary_id"/>
+      </key-property>
+      <key-property name="pubId" type="string">
+        <column length="20" name="pub_id"/>
+      </key-property>
+    </composite-id>
+    <property name="pubName" type="string">
+      <column length="15" name="`pub-name`"/>
+    </property>
+    <property name="pubAdd" type="string">
+      <column length="30" name="pub_add"/>
+    </property>
+    <property name="city" type="string">
+      <column length="15" name="city"/>
+    </property>
+    <property name="state" type="string">
+      <column length="15" name="state"/>
+    </property>
+    <property name="country" type="string">
+      <column length="15" name="country"/>
+    </property>
+    <property name="pubUrl" type="string">
+      <column length="15" name="pub_url"/>
+    </property>
+    <property name="pubPhone" type="string">
+      <column length="15" name="pub_phone"/>
+    </property>
+    <property name="fax" type="string">
+      <column length="15" name="fax"/>
+    </property>
+    <property name="email" type="string">
+      <column length="15" name="email"/>
+    </property>
+  </class>
 </hibernate-mapping>

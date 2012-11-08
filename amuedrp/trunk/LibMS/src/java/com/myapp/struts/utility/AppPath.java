@@ -4,6 +4,8 @@
  */
 
 package com.myapp.struts.utility;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import javax.naming.*;
 import java.util.Locale;
@@ -23,6 +25,18 @@ public class AppPath
   static  String locale1 = "en";
   static  String rtl = "ltr";
   static   boolean page = true;
+
+  public  static String getCurrentDate()
+  {
+    Calendar cal = new GregorianCalendar();
+           int     month = cal.get(Calendar.MONTH);
+             month=month+1;
+           int    year = cal.get(Calendar.YEAR);
+           int     day = cal.get(Calendar.DAY_OF_MONTH);
+           String     date=year+"-"+month+"-"+day;
+        return date;
+  }
+
       private static final Logger log=LoggerUtils.getLogger();
     public static String getEnvPath()
     {
@@ -104,6 +118,26 @@ String projectPath = getEnvPath();
 
 
 }
+public static String getProjectExportPath(){
+    String os=System.getProperty("os.name");
+String projectPath = getEnvPath();
+
+
+    if(os.equalsIgnoreCase("linux"))
+    {
+        projectPath=projectPath+"/export/";
+    return projectPath;
+    }
+    else
+    {
+    projectPath=projectPath+"\\export\\";
+    return projectPath;
+    }
+
+
+
+}
+
 public static String getProjectPropertiesImagePath(){
     String os=System.getProperty("os.name");
 String projectPath = getEnvPath();

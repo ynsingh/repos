@@ -23,6 +23,7 @@ public class AcqPaymentUpdate1Action extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
+    AcquisitionDao acqdao=new AcquisitionDao();
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -37,14 +38,14 @@ public class AcqPaymentUpdate1Action extends org.apache.struts.action.Action {
 
         if(button.equals("Process"))
         {
-          List<AcqRequestpaymentDetails> acqforpaymentupdate=AcquisitionDao.searchForPrnList(library_id, sub_library_id, prn);
+          List<AcqRequestpaymentDetails> acqforpaymentupdate=acqdao.searchForPrnList(library_id, sub_library_id, prn);
           session.setAttribute("acqforpaymentupdate", acqforpaymentupdate);
           return mapping.findForward("processed");
         }
 
         if(button.equals("Processed List"))
         {
-           List<PaymentUpdateClass2> processedprn=AcquisitionDao.getDistinctPrnProcessed(library_id, sub_library_id);
+           List<PaymentUpdateClass2> processedprn=acqdao.getDistinctPrnProcessed(library_id, sub_library_id);
 //           if(!processedprn.isEmpty())
 //           {
               session.setAttribute("processedprn", processedprn);

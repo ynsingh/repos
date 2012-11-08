@@ -152,9 +152,11 @@ dd = (List<DocumentDetails>)session.getAttribute("documentDetail");
             lib_id=(String)dd.get(0).getId().getLibraryId();
             sublib_id1 = (String)dd.get(0).getId().getSublibraryId();
             booktype=dd.get(0).getBookType();
-             obj=CirculationDAO.searchCheckOutDetails(lib_id, sublib_id1, String.valueOf(dd.get(0).getId().getDocumentId()));
+            CirculationDAO cirdao=new CirculationDAO();
+             obj=cirdao.searchCheckOutDetails(lib_id, sublib_id1, String.valueOf(dd.get(0).getId().getDocumentId()));
 }
- DocumentCategory docc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(lib_id, sublib_id1, booktype);
+DocumentCategoryDAO docdao=new DocumentCategoryDAO();
+ DocumentCategory docc = (DocumentCategory)docdao.searchDocumentCategory(lib_id, sublib_id1, booktype);
             String issuetype ="";
             if(docc!=null)
                 issuetype=docc.getIssueCheck();
@@ -209,7 +211,7 @@ if(c>pagesize)
 </tr>
  <%}%>
        
-       
+    
        
 </table>
     </body>

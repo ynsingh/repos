@@ -66,7 +66,7 @@ function send1()
       position: absolute;
 
       visibility: show;">
-     <iframe scrolling="no" src="./acq_approved.do"  frameborder="0" height="200px" width="800px"/>
+     <iframe scrolling="no" src="./acq_approved.do"  frameborder="0" height="300px" width="800px"/>
 <%--<%!  ArrayList opacList;
    int fromIndex, toIndex;
 %>

@@ -2,12 +2,12 @@
 <%@page pageEncoding="UTF-8"%>
 <html><head>
     </head>
-    <body  >
+    <body>
 
 <jsp:include page="header.jsp" flush="true" />
-<!--<div
+<div
    style="
-      top: 16%;
+      top: 19%;
    left:5px;
    right:5px;
       position: absolute;
@@ -15,18 +15,7 @@
       visibility: show;">
 
 
-        <font size="-2"><br/>&nbsp;&nbsp;<i>You are here : </i>LibMS->Welcome Page</font>
 
-
-
-    <table width="100%" height="600px" valign="top" style="" >
-        <tr><td valign="top" width="90%" style="">
-                <br/><%--<p class="mess">
-    Request for Opac MemberShip Pending, View Details<br>
-    Request for CheckOut Pending, View Details
-
-
-</p>--%>
            
 
 
@@ -41,15 +30,10 @@ if (msg!=null)
 <%}%>
 
 
-            </td>               <td   valign="top"> 
-          
-            </td> </tr>
-
-                </table>
+       
 
 
-                </div>-->
-
+                </div>
 
       </body>
 </html>

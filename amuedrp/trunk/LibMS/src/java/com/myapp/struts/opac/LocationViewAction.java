@@ -23,7 +23,7 @@ public class LocationViewAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     String library_id,sublibrary_id;
-    
+    LocationDAO locdao=new LocationDAO();
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -31,7 +31,7 @@ public class LocationViewAction extends org.apache.struts.action.Action {
         library_id=lvaf.getCMBLib();
         sublibrary_id=lvaf.getCMBSUBLib();
 
-        List<Location>  loc=(List<Location>)LocationDAO.getLocation(library_id, sublibrary_id);
+        List<Location>  loc=(List<Location>)locdao.getLocation(library_id, sublibrary_id);
         if(!loc.isEmpty())
         {
            request.setAttribute("loc", loc);

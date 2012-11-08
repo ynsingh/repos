@@ -5,6 +5,7 @@
 
 package com.myapp.struts.marc;
 
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,15 +22,7 @@ public class DuplicateMarcAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     private MarcHibDAO marchib=new MarcHibDAO();
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -43,6 +36,46 @@ public class DuplicateMarcAction extends org.apache.struts.action.Action {
 
 
            session.setAttribute("biblio_id", bibid);
+             HashMap t=(HashMap)session.getAttribute("hsmp");
+        if(t!=null && t.isEmpty()==false)
+        {System.out.println("Get Value"+t.size());
+
+          t.clear();
+          System.out.println("Get Value"+t.size());
+          session.setAttribute("hsmp",t);
+         }
+//hm1=null;
+        System.out.println(session.getAttribute("hsmp")+".....................");
+ session.removeAttribute("controltag");
+        session.removeAttribute("st");
+        session.removeAttribute("data");
+         session.removeAttribute("editlist");
+        session.removeAttribute("tag0");
+        session.removeAttribute("tag1");
+        session.removeAttribute("tag2");
+        session.removeAttribute("tag3");
+        session.removeAttribute("tag4");
+        session.removeAttribute("tag5");
+        session.removeAttribute("tag6");
+        session.removeAttribute("tag7");
+        session.removeAttribute("tag8");
+
+        session.removeAttribute("data");
+        session.removeAttribute("st");
+        session.removeAttribute("controltag");
+        session.removeAttribute("tag0");
+        session.removeAttribute("tag1");
+        session.removeAttribute("tag2");
+        session.removeAttribute("tag3");
+        session.removeAttribute("tag4");
+        session.removeAttribute("tag5");
+        session.removeAttribute("tag6");
+        session.removeAttribute("tag7");
+        session.removeAttribute("tag8");
+        session.removeAttribute("hsmp");
+       
+                
+
         return mapping.findForward(SUCCESS);
     }
 }

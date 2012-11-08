@@ -61,6 +61,18 @@ List list1,list2;
 
   String date="";
   String time="";
+ SubLibraryDAO sublibdao=new SubLibraryDAO();
+ MemberCategoryDAO memdao=new MemberCategoryDAO();
+ FacultyDAO facdao=new FacultyDAO();
+ StaffDetailDAO staffdetaildao=new StaffDetailDAO();
+ AdminRegistrationDAO admindao=new AdminRegistrationDAO();
+ DeptDAO deptdao=new DeptDAO();
+ LibraryDAO libdao=new LibraryDAO();
+ PrivilegeDAO privdao=new PrivilegeDAO();
+ AcqPrivilegeDAO acqprevdao=new AcqPrivilegeDAO();
+ SerPrivilegeDAO serprevdao=new SerPrivilegeDAO();
+ CirPrivilegeDAO cirprevdao=new CirPrivilegeDAO();
+ CatPrivilegeDAO catprevdao=new CatPrivilegeDAO();
  
 
 
@@ -143,22 +155,20 @@ else{
     tempobj=(Login)logindao.searchUser(login_id,password);
 }
 
-session.removeAttribute("remoteauth");
-
               /*  If the Entered User and Password in Valid */
               if(tempobj!=null)
               {
 
-                list=(List)SubLibraryDAO.getAllSubLibrary( tempobj.getId().getLibraryId());
-                   list1=(List)MemberCategoryDAO.searchEmpType( tempobj.getId().getLibraryId());
+                list=(List)sublibdao.getAllSubLibrary( tempobj.getId().getLibraryId());
+                   list1=(List)memdao.searchEmpType( tempobj.getId().getLibraryId());
          
-          list2=(List)FacultyDAO.searchFaculty( tempobj.getId().getLibraryId());
+          list2=(List)facdao.searchFaculty( tempobj.getId().getLibraryId());
 
                 session.setAttribute("sublibrary",list);
                
             session.setAttribute("list1",list1);
             session.setAttribute("list2",list2);
-            StaffDetail staff=StaffDetailDAO.searchStaffId(tempobj.getId().getStaffId(),  tempobj.getId().getLibraryId());
+            StaffDetail staff=staffdetaildao.searchStaffId(tempobj.getId().getStaffId(),  tempobj.getId().getLibraryId());
                
                           session.setAttribute("library_id", tempobj.getId().getLibraryId());
                           session.setAttribute("username",staff.getTitle()+" "+ tempobj.getUserName());
@@ -167,7 +177,7 @@ session.removeAttribute("remoteauth");
                         session.setAttribute("login_id",tempobj.getLoginId());
 
 
-                         AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin((String)session.getAttribute("login_id"));
+                         AdminRegistration admin=admindao.searchInstituteAdmin((String)session.getAttribute("login_id"));
                           session.setAttribute("AdminDetail",admin);
 
                     String lib_id=tempobj.getId().getLibraryId();
@@ -175,7 +185,7 @@ session.removeAttribute("remoteauth");
 
                           session.setAttribute("sublibrary_id",tempobj.getSublibraryId());
                             System.out.println("before sublib ");
-                          SubLibrary sub1=SubLibraryDAO.getMainSubLibraryId(lib_id,sublib_id);
+                          SubLibrary sub1=sublibdao.getMainSubLibraryId(lib_id,sublib_id);
                        System.out.println("After sublib "+sub1);
 
                           if(sub1!=null)
@@ -189,7 +199,7 @@ session.removeAttribute("remoteauth");
                           session.setAttribute("staff_id",staff_id);
 
 
-                          Department dept=DeptDAO.getDeptName(library_id, sublibrary_id);
+                          Department dept=deptdao.getDeptName(library_id, sublibrary_id);
                           if(dept!=null)
                           {
                         
@@ -227,7 +237,7 @@ session.removeAttribute("remoteauth");
 
         /* Check Whether The Library is Blocked or Not */
 
-              Library libobj=(Library)LibraryDAO.searchBlockLibrary(library_id);
+              Library libobj=(Library)libdao.searchBlockLibrary(library_id);
               if(libobj!=null)
               {
             
@@ -241,8 +251,8 @@ session.removeAttribute("remoteauth");
             {
 
                         sublibrary_id=tempobj.getSublibraryId();
-                 Library  libobj1=(Library)LibraryDAO.getLibraryName(library_id);
-                 AdminRegistration admin1=AdminRegistrationDAO.searchInstitute(library_id);
+                 Library  libobj1=(Library)libdao.getLibraryName(library_id);
+                 AdminRegistration admin1=admindao.searchInstitute(library_id);
 
      /* Check Whether Its First Time Login of the User
       *
@@ -259,20 +269,20 @@ session.removeAttribute("remoteauth");
                             session.setAttribute("library_name", libobj1.getLibraryName());
                              session.setAttribute("library_add",admin1.getInstituteAddress() );
 
-                            Privilege priv=PrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            Privilege priv=privdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("privilege_resultset", priv);
 
-                           AcqPrivilege acq_priv=AcqPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                           AcqPrivilege acq_priv=acqprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("acq_privilege_resultset", acq_priv);
 
-                            CatPrivilege cat_priv=CatPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            CatPrivilege cat_priv=catprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("cat_privilege_resultset", cat_priv);
 
 
-                            CirPrivilege cir_priv=CirPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            CirPrivilege cir_priv=cirprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("cir_privilege_resultset", cir_priv);
 
-                            SerPrivilege ser_priv=SerPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            SerPrivilege ser_priv=serprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("ser_privilege_resultset", ser_priv);
                            
                      
@@ -289,21 +299,21 @@ session.removeAttribute("remoteauth");
                             session.setAttribute("library_name", libobj1.getLibraryName());
                             session.setAttribute("library_add",admin1.getInstituteAddress() );
 
-                            Privilege priv=PrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            Privilege priv=privdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("privilege_resultset", priv);
 
 
-                           AcqPrivilege acq_priv=AcqPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                           AcqPrivilege acq_priv=acqprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("acq_privilege_resultset", acq_priv);
 
-                            CatPrivilege cat_priv=CatPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            CatPrivilege cat_priv=catprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("cat_privilege_resultset", cat_priv);
 
 
-                            CirPrivilege cir_priv=CirPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            CirPrivilege cir_priv=cirprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("cir_privilege_resultset", cir_priv);
 
-                            SerPrivilege ser_priv=SerPrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
+                            SerPrivilege ser_priv=serprevdao.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("ser_privilege_resultset", ser_priv);
 
                             if(tempobj.getRole().contains("admin") || tempobj.getRole().contains("Admin"))

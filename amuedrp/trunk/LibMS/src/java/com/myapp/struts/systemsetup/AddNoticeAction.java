@@ -29,7 +29,7 @@ public class AddNoticeAction extends org.apache.struts.action.Action {
    String locale1="en";
    String rtl="ltr";
    String align="left";
-   
+   NoticeDAO notdao=new NoticeDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -58,7 +58,7 @@ public class AddNoticeAction extends org.apache.struts.action.Action {
          if(button.equals("Add"))
         {
             
-         Notices notice=NoticeDAO.getNoticeName(library_id, notice_id, sub_lib);
+         Notices notice=notdao.getNoticeName(library_id, notice_id, sub_lib);
          if(notice!=null)
          {
             //request.setAttribute("msg1", "Notice Id : "+notice_id+" already exists");
@@ -81,7 +81,7 @@ public class AddNoticeAction extends org.apache.struts.action.Action {
 
 
 
-                          notice=NoticeDAO.getNoticeName(library_id, notice_id, sub_lib);
+                          notice=notdao.getNoticeName(library_id, notice_id, sub_lib);
                         if(notice==null)
                         {
 

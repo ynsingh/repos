@@ -6,13 +6,11 @@
 package com.myapp.struts.circulation;
 import com.myapp.struts.CirDAO.CirculationDAO;
 import com.myapp.struts.circulation.CirCheckOutViewAllActionForm;
-import com.myapp.struts.hbm.HibernateUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 
 import java.sql.*;
@@ -26,13 +24,10 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.data.ListOfArrayDataSource;
-import net.sf.jasperreports.engine.data.*;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import javax.servlet.http.HttpSession;
-import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporter;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -51,9 +46,7 @@ public class ReportAction1 extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     public static final String REPORT_DIRECTORY = "reports";
-    Connection connection=null;
-    Statement statement=null;
-    ResultSet resultSet=null;
+    CirculationDAO cirdao=new CirculationDAO();
     private JRBeanCollectionDataSource dataSource1;
     private CirculationList cir_checkout_report1;
      private CirculationList image1;
@@ -84,7 +77,7 @@ System.out.println(path+" .....");
   library_id=(String)session1.getAttribute("library_id");
         sublibrary_id=(String)session1.getAttribute("sublibrary_id");
 
-   List cir_checkout_report=CirculationDAO.CheckoutReport1(library_id,sublibrary_id, starting_date,end_date, memid);
+   List cir_checkout_report=cirdao.CheckoutReport1(library_id,sublibrary_id, starting_date,end_date, memid);
     //   System.out.println("@@@@@@@@"+cir_checkout_report.size());
         if(cir_checkout_report!=null)
         {

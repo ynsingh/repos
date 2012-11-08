@@ -42,7 +42,9 @@ public class CourseUpdateViewAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-         HttpSession session=request.getSession();
+        CourseDAO coursedao=new CourseDAO();
+        FacultyDAO facdao=new FacultyDAO();
+        HttpSession session=request.getSession();
           try{
 
         locale1=(String)session.getAttribute("locale");
@@ -74,7 +76,7 @@ public class CourseUpdateViewAction extends org.apache.struts.action.Action {
             // dept.setDeptId(dept_id);
             if(!course.getCourseName().equals(course_name))
             {
-            Courses course1 = CourseDAO.searchCourseByName(library_id, faculty_id, dept_id, course_name);
+            Courses course1 = coursedao.searchCourseByName(library_id, faculty_id, dept_id, course_name);
         
          if(course1!=null)
          {
@@ -84,7 +86,7 @@ public class CourseUpdateViewAction extends org.apache.struts.action.Action {
          }
             }
             course.setCourseName(course_name);
-             result=CourseDAO.update1(course);
+             result=coursedao.update1(course);
              if(result==true)
              {
 
@@ -105,7 +107,7 @@ public class CourseUpdateViewAction extends org.apache.struts.action.Action {
         {
 
 
-              List<CirMemberAccount> cir=   (List<CirMemberAccount>)FacultyDAO.searchAccountCourse(library_id,course_id);
+              List<CirMemberAccount> cir=   (List<CirMemberAccount>)facdao.searchAccountCourse(library_id,course_id);
            if(!cir.isEmpty()){
 
            //  request.setAttribute("msg1", "Account Created With This Course,Cannot Deleted");
@@ -117,7 +119,7 @@ public class CourseUpdateViewAction extends org.apache.struts.action.Action {
 
 
 
-            result=CourseDAO.Delete(course);
+            result=coursedao.Delete(course);
              if(result==true)
              {
 

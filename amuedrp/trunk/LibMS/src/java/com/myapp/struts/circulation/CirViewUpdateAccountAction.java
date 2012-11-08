@@ -57,7 +57,10 @@ private final ExecutorService executor=Executors.newFixedThreadPool(1);
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-         HttpSession session=request.getSession();
+
+        CirculationDAO cirdao=new CirculationDAO();
+        SubMemberDAO submemdao=new SubMemberDAO();
+        HttpSession session=request.getSession();
          try{
 
         locale1=(String)session.getAttribute("locale");
@@ -100,7 +103,7 @@ private final ExecutorService executor=Executors.newFixedThreadPool(1);
 
 
 
-        CirMemberAccount cirmemberaccount=CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
+        CirMemberAccount cirmemberaccount=cirdao.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
        System.out.println("Updated.....................");
 
         if(button.equals("Update"))
@@ -119,7 +122,7 @@ private final ExecutorService executor=Executors.newFixedThreadPool(1);
           cirmemberaccount.setReqDate(TXTREG_DATE);
           cirmemberaccount.setExpiryDate(TXTEXP_DATE);
 
- SubEmployeeType book=(SubEmployeeType)SubMemberDAO.searchIssueLimit(library_id,MEMCAT,MEMSUBCAT);
+ SubEmployeeType book=(SubEmployeeType)submemdao.searchIssueLimit(library_id,MEMCAT,MEMSUBCAT);
 
     if(book!=null)
     {
@@ -148,7 +151,7 @@ System.out.println(no_of_issueable+"...................");
 
 
 
- CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+ CirMemberDetail cirobj=cirdao.searchCirMemDetails(library_id, mem_id);
     //"Update Circulation Member Account :Password Reset Successfully from LibMS","User Id="+mem_id+" Your Password for LibMS OPAC Login is="+password
     String path = servlet.getServletContext().getRealPath("/");
  obj=new Email(cirobj.getEmail(),password,"Update Circulation Member Account as Library Member","Dear "+cirobj.getFname()+" "+cirobj.getMname()+" "+cirobj.getLname()+"Your Account is Updated for Library member for Library Name "+session.getAttribute("library_name").toString()+"\nYour Member Account as Follows \nUser Id:"+mem_id+"\nPassword:"+password+"\nThanks,\n"+session.getAttribute("username")+",\n"+"Institute Admin");
@@ -160,7 +163,7 @@ System.out.println(no_of_issueable+"...................");
                 }
             });
 
-          result=CirculationDAO.updateAccount(cirmemberaccount);
+          result=cirdao.updateAccount(cirmemberaccount);
           if(result==true)
           {
              
@@ -183,7 +186,7 @@ System.out.println(no_of_issueable+"...................");
         if(button.equals("Delete"))
         {
 System.out.println("hggggggggggggggg");
-         List<CirCheckout> chkobj=(List<CirCheckout>)CirculationDAO.searchCheckoutMemDetails(library_id,sublibrary_id, mem_id);
+         List<CirCheckout> chkobj=(List<CirCheckout>)cirdao.searchCheckoutMemDetails(library_id,sublibrary_id, mem_id);
 
        
 
@@ -196,10 +199,10 @@ System.out.println("hggggggggggggggg");
 
         }
 
-            CirMemberDetail cirobj=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+            CirMemberDetail cirobj=cirdao.searchCirMemDetails(library_id, mem_id);
             //Delete Circulation Member Account Successfully from LibMS","Your Account is Successfully deleted from LibMS OPAC Login"
            
-           result=CirculationDAO.deleteAccount(library_id, sublibrary_id, mem_id);
+           result=cirdao.deleteAccount(library_id, sublibrary_id, mem_id);
 
            if(result==true)
            {

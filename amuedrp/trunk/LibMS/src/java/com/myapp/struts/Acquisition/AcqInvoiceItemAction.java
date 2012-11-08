@@ -40,13 +40,14 @@ public class AcqInvoiceItemAction extends org.apache.struts.action.Action {
         HttpSession session = request.getSession();
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
-
+AcquisitionDao acqdao=new AcquisitionDao();
         if(button.equals("New"))
         {
-          List<AcqInvoiceHeader> acqinvh=AcquisitionDao.searchByInovoiceHeader(library_id, sub_library_id, invoice_no);
+          List<AcqInvoiceHeader> acqinvh=acqdao.searchByInovoiceHeader(library_id, sub_library_id, invoice_no);
+      System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWw"+acqinvh);
           if(acqinvh.isEmpty())
           {
-           List<InvoiceList> listforinvoice=(List<InvoiceList>)AcquisitionDao.getReceivedItems(library_id, sub_library_id, receiving_no, order_no);
+           List<InvoiceList> listforinvoice=(List<InvoiceList>)acqdao.getReceivedItems(library_id, sub_library_id, receiving_no, order_no);
            session.setAttribute("listforinvoice", listforinvoice);
            int i=0,j=0;
            for(i=0;i<listforinvoice.size();i++)
@@ -85,14 +86,14 @@ public class AcqInvoiceItemAction extends org.apache.struts.action.Action {
 
         if(button.equals("View All"))
         {
-            List<AcqInvoiceHeader> acqinvoiceheader=AcquisitionDao.allByInovoiceHeader(library_id, sub_library_id);
+            List<AcqInvoiceHeader> acqinvoiceheader=acqdao.allByInovoiceHeader(library_id, sub_library_id);
             request.setAttribute("acqinvoiceheader", acqinvoiceheader);
             return mapping.findForward("viewall");
         }
 
         if(button.equals("View"))
         {
-            List<AcqInvoiceDetail> acqinvoicedetails=AcquisitionDao.searchInovoiceDetails(library_id, sub_library_id, invoice_no);
+            List<AcqInvoiceDetail> acqinvoicedetails=acqdao.searchInovoiceDetails(library_id, sub_library_id, invoice_no);
             request.setAttribute("acqinvoicedetails", acqinvoicedetails);
             return mapping.findForward("view");
         }

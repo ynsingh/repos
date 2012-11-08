@@ -1,48 +1,46 @@
-<?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 23, 2011 12:33:02 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AcqApprovalHeader" table="acq_approval_header" catalog="libms">
-        <composite-id name="id" class="com.myapp.struts.hbm.AcqApprovalHeaderId">
-            <key-property name="libraryId" type="string">
-                <column name="library_id" length="20" />
-            </key-property>
-            <key-property name="subLibraryId" type="string">
-                <column name="sub_library_id" length="20" />
-            </key-property>
-            <key-property name="approvalNo" type="string">
-                <column name="approval_no" length="20" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="acqVendor" class="com.myapp.struts.hbm.AcqVendor" update="false" insert="false" fetch="select">
-            <column name="library_id" length="20" not-null="true" />
-            <column name="sub_library_id" length="20" not-null="true" />
-            <column name="vendor_id" length="50" />
-        </many-to-one>
-        <property name="approvedBy" type="string">
-            <column name="approved_by" length="50" />
-        </property>
-        <property name="approvalDate" type="string">
-            <column name="approval_date" length="20" />
-        </property>
-        <property name="acqMode" type="string">
-            <column name="acq_mode" length="20" />
-        </property>
-        <property name="vendorId" type="string">
-            <column name="vendor_id" length="50" />
-        </property>
-        <property name="recommendedBy" type="string">
-            <column name="recommended_by" length="20" />
-        </property>
-
-        <set name="acqApprovals" inverse="true">
-            <key>
-                <column name="library_id" length="20" not-null="true" />
-                <column name="sub_library_id" length="20" not-null="true" />
-                <column name="approval_no" length="20" />
-            </key>
-            <one-to-many class="com.myapp.struts.hbm.AcqApproval" />
-        </set>
-    </class>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqApprovalHeader" table="acq_approval_header">
+    <composite-id class="com.myapp.struts.hbm.AcqApprovalHeaderId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="subLibraryId" type="string">
+        <column length="20" name="sub_library_id"/>
+      </key-property>
+      <key-property name="approvalNo" type="string">
+        <column length="20" name="approval_no"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.AcqVendor" fetch="select" insert="false" name="acqVendor" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+      <column length="20" name="sub_library_id" not-null="true"/>
+      <column length="50" name="vendor_id"/>
+    </many-to-one>
+    <property name="approvedBy" type="string">
+      <column length="50" name="approved_by"/>
+    </property>
+    <property name="approvalDate" type="string">
+      <column length="20" name="approval_date"/>
+    </property>
+    <property name="acqMode" type="string">
+      <column length="20" name="acq_mode"/>
+    </property>
+    <property name="vendorId" type="string">
+      <column length="50" name="vendor_id"/>
+    </property>
+    <property name="recommendedBy" type="string">
+      <column length="20" name="recommended_by"/>
+    </property>
+    <set inverse="true" name="acqApprovals">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+        <column length="20" name="sub_library_id" not-null="true"/>
+        <column length="20" name="approval_no"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.AcqApproval"/>
+    </set>
+  </class>
 </hibernate-mapping>

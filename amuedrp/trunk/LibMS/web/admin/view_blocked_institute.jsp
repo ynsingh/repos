@@ -1,9 +1,3 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Azam/Faraz
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
  
     <%@page import="com.myapp.struts.admin.RequestDoc,com.myapp.struts.hbm.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -45,13 +39,10 @@ else{
 </head>
 
 <body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
+ <table border="1" style="margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px;border-collapse: collapse;  border-spacing: 0;" align="center"  width="80%" >
+        <tr><td class="headerStyle" align="center">Block  Institute Details
+            </td></tr>
+        <tr><td align="center">
 <%
    
    
@@ -108,7 +99,7 @@ System.out.println("tcount="+tcount);
 %>
 
 
-<br><br>
+
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px">No Record Found</p>
@@ -160,10 +151,7 @@ locale1=(String)session.getAttribute("locale");
     
   <columns>
       
-    <column width="50">
-      <header value="" hAlign="left" styleClass="header"/>
-    </column>
-
+    
     <column width="100">
       <header value="${RegistrationID}" hAlign="left" styleClass="header"/>
       <item   value="${doc.registration_id}" hyperLink="block_institute_index.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
@@ -232,7 +220,7 @@ else{
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
- </div>
+  </td></tr></table>
     </body>
 
 

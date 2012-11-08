@@ -23,29 +23,10 @@ import org.apache.struts.action.ActionMapping;
 public class CatAction3 extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-     private MarcHibDAO marchib=new MarcHibDAO();
-   HashMap hm1=new HashMap();
-    MarcHibDAO dao=new MarcHibDAO();
+   
+  
 
-    private Biblio biblio=new Biblio();
-    private BiblioId biblioid= new BiblioId();
-
-    private Biblio biblio1=new Biblio();
-    private BiblioId biblioid1= new BiblioId();
-
-    private Biblio biblio2=new Biblio();
-    private BiblioId biblioid2= new BiblioId();
-
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -54,7 +35,18 @@ public class CatAction3 extends org.apache.struts.action.Action {
         CatActionForm3 caf3=(CatActionForm3)form;
         HttpSession session = request.getSession();
        int bibid = (Integer)session.getAttribute("biblio_id");
+   MarcHibDAO marchib=new MarcHibDAO();
+   HashMap hm1=new HashMap();
+    MarcHibDAO dao=new MarcHibDAO();
 
+   Biblio biblio=new Biblio();
+   BiblioId biblioid= new BiblioId();
+
+     Biblio biblio1=new Biblio();
+     BiblioId biblioid1= new BiblioId();
+
+    Biblio biblio2=new Biblio();
+     BiblioId biblioid2= new BiblioId();
         System.out.println("************************************************  "+bibid);
         String library_id = (String) session.getAttribute("library_id");
         String sub_library_id = (String) session.getAttribute("sublibrary_id");
@@ -120,9 +112,11 @@ if(StringUtils.isNotBlank(z300c)&&StringUtils.isNotEmpty(z300c))
                    biblio.setId(biblioid);
 //                   marchib.insert(biblio);
 hm1 =(HashMap)session.getAttribute("hsmp");
-if(hm1.containsKey("15")){
-            hm1.remove("15");
-        }
+if(hm1==null)
+    hm1=new HashMap();
+//if(hm1.containsKey("15")){
+      //      hm1.remove("15");
+      //  }
  hm1.put("15", biblio);
 
             
@@ -144,9 +138,9 @@ if(hm1.containsKey("15")){
                    biblio1.setId(biblioid1);
 //                   marchib.insert(biblio1);
 
-if(hm1.containsKey("16")){
-            hm1.remove("16");
-        }
+//if(hm1.containsKey("16")){
+          //  hm1.remove("16");
+       // }
  hm1.put("16", biblio1);
 
             
@@ -173,14 +167,15 @@ if(hm1.containsKey("16")){
                 biblioid2.setBibId(bibid);
                    biblio2.setId(biblioid2);
 //                   marchib.insert(biblio2);
-if(hm1.containsKey("18")){
-            hm1.remove("18");
-        }
+//if(hm1.containsKey("18")){
+          //  hm1.remove("18");
+      //  }
  hm1.put("18", biblio2);
 
              
             System.out.println("All three objects saved now NAvigating to page "+t);
- //code for mapping forwards......
+ session.setAttribute("hsmp", hm1);
+            //code for mapping forwards......
          if(t.equals("0"))
         {
             return mapping.findForward("forward0");

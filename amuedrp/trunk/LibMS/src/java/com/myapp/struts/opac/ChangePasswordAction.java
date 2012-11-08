@@ -44,7 +44,7 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
             CreateAccountActionForm caaction=(CreateAccountActionForm)form;
-
+            CirculationDAO cirdao=new CirculationDAO();
 
             
             user_name=caaction.getUser_name();
@@ -58,19 +58,14 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
 
       
 
-     CirMemberDetail staffobj=CirculationDAO.getCirMemdtail(library_id, mem_id);
+     CirMemberDetail staffobj=cirdao.getCirMemdtail(library_id, mem_id);
      
-       
-      //  StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
-        //Login  log=LoginDAO.searchRole(staff_id, library_id);
-     CirMemberAccount cirmem=CirculationDAO.cirMemdetail(mem_id, library_id,sub_library_id);
+     CirMemberAccount cirmem=cirdao.cirMemdetail(mem_id, library_id,sub_library_id);
 
 
-     System.out.println(cirmem+mem_id+library_id+sub_library_id);
-     password=PasswordEncruptionUtility.password_encrupt(password);
+         password=PasswordEncruptionUtility.password_encrupt(password);
         cirmem.setPassword(password);
-        result=CirculationDAO.update1(cirmem);
-        //System.out.println(login_id+"................"+password);
+        result=cirdao.update1(cirmem);
 
         
 
@@ -82,14 +77,17 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
             request.setAttribute("mem_id", mem_id);
             request.setAttribute("user_name", user_name);
             request.setAttribute("library_id", library_id);
-           // request.setAttribute("staff_id", staff_id);
-            //request.setAttribute("staff_name", user_name);
-          //  if(log.getRole().contains("admin")||log.getRole().contains("Admin"))
+            request.setAttribute("msg","Password Changed Successfully");
             return mapping.findForward("success");
-           // else
-               // return mapping.findForward("success1");
+        }else{
+            request.setAttribute("mem_id", mem_id);
+            request.setAttribute("user_name", user_name);
+            request.setAttribute("library_id", library_id);
+            request.setAttribute("msg","Password not Changed Successfully");
+            return mapping.findForward("success");
+
         }
 
-            return mapping.findForward("failure");
+            
     }
 }

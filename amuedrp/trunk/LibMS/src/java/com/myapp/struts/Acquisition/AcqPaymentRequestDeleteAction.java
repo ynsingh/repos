@@ -27,6 +27,7 @@ public class AcqPaymentRequestDeleteAction extends org.apache.struts.action.Acti
     private static final String SUCCESS = "success";
     String value[];
     int no_of_invoices=0;double total_amount=0,total_amt=0;
+    AcquisitionDao acqdao=new AcquisitionDao();
     
    
     @Override
@@ -55,9 +56,9 @@ public class AcqPaymentRequestDeleteAction extends org.apache.struts.action.Acti
           acqreqpaymentdetailsid.setRecievingNo(value[3]);
           acqreqpaymentdetails.setId(acqreqpaymentdetailsid);
           acqreqpaymentdetails.setOrderNo(value[2]);
-          AcqInvoiceDetail acqinvdetails=AcquisitionDao.searchByInovoiceDetails(library_id, sub_library_id, value[1],value[3]);
+          AcqInvoiceDetail acqinvdetails=acqdao.searchByInovoiceDetails(library_id, sub_library_id, value[1],value[3]);
           acqinvdetails.setStatus(" ");
-          boolean result=AcquisitionDao.deleteInPaymentRequestDetail(acqreqpaymentdetails,acqinvdetails);
+          boolean result=acqdao.deleteInPaymentRequestDetail(acqreqpaymentdetails,acqinvdetails);
            if(result==false)
            {
               request.setAttribute("msg","Row corresponding invoice no. "+value[0]+" not inserted");
@@ -66,12 +67,12 @@ public class AcqPaymentRequestDeleteAction extends org.apache.struts.action.Acti
 
         }
         total_amount=total_amount-total_amt;
-        AcqRequestpaymentHeader acqreqpaymentheader=AcquisitionDao.searchForPrnNo(library_id, sub_library_id, values[0].split(",")[0]);
+        AcqRequestpaymentHeader acqreqpaymentheader=acqdao.searchForPrnNo(library_id, sub_library_id, values[0].split(",")[0]);
         String noi=acqreqpaymentheader.getNoOfInvoices();
         noi=String.valueOf(Integer.parseInt(noi)-no_of_invoices);
         acqreqpaymentheader.setTotalAmount(String.valueOf(total_amount));
         acqreqpaymentheader.setNoOfInvoices(noi);
-        boolean result=AcquisitionDao.insertInPaymentRequestHeader(acqreqpaymentheader);
+        boolean result=acqdao.insertInPaymentRequestHeader(acqreqpaymentheader);
             if(result==false)
             {
               request.setAttribute("msg","Record not inserted");

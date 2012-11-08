@@ -80,7 +80,7 @@ locale1=(String)session.getAttribute("locale");
 <script language="javascript" type="text/javascript">
     function show()
     {
-        location.href="<%=request.getContextPath()%>/admin/account2.do?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>";
+        location.href="<%=request.getContextPath()%>/account2.do?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>";
     }
     </script>
 

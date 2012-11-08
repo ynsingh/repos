@@ -19,7 +19,7 @@ import com.myapp.struts.CirDAO.CirculationDAO;
  * @author edrp02
  */
 public class CirShowSingleAccountAction extends org.apache.struts.action.Action {
-    
+    CirculationDAO cirdao=new CirculationDAO();
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     String library_id,sublibrary_id,mem_id;
@@ -32,8 +32,8 @@ public class CirShowSingleAccountAction extends org.apache.struts.action.Action 
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         mem_id=(String)request.getParameter("id");
-        CirMemberAccount cmaccount=CirculationDAO.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
-        CirMemberDetail cmemdetail=CirculationDAO.searchCirMemDetails(library_id, mem_id);
+        CirMemberAccount cmaccount=cirdao.searchCirMemAccountDetails(library_id, sublibrary_id, mem_id);
+        CirMemberDetail cmemdetail=cirdao.searchCirMemDetails(library_id, mem_id);
         System.out.println("#######"+cmaccount+"%%%%%%%%%%%%%%%"+cmemdetail);
         if(cmaccount!=null)
         {

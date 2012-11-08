@@ -59,7 +59,7 @@ else{
 <script language="javascript">
 function fun()
 {
-document.Form1.action="search_institute.do";
+document.Form1.action="./../search_institute.do";
 document.Form1.method="post";
 document.Form1.target="f1";
 document.Form1.submit();

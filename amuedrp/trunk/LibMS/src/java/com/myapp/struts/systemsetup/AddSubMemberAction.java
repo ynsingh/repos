@@ -38,7 +38,8 @@ public class AddSubMemberAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+MemberDAO memdao=new MemberDAO();
+SubMemberDAO submemdao=new SubMemberDAO();
         HttpSession session=request.getSession();
          try{
 
@@ -63,7 +64,7 @@ public class AddSubMemberAction extends org.apache.struts.action.Action {
         
         library_id=(String)session.getAttribute("library_id");
 
-        SubEmployeeType emptype1=MemberDAO.getSubEmployeeByName(library_id,emptype_id, sub_emptype_full_name);
+        SubEmployeeType emptype1=memdao.getSubEmployeeByName(library_id,emptype_id, sub_emptype_full_name);
         System.out.println("SubMemberType="+emptype1);
         if(emptype1==null){
         satid.setLibraryId(library_id);
@@ -72,7 +73,7 @@ public class AddSubMemberAction extends org.apache.struts.action.Action {
         sat.setId(satid);
         sat.setSubEmptypeFullName(sub_emptype_full_name);
         sat.setNoOfIssueableBook( Integer.parseInt(no_of_issueable_book));
-        result=SubMemberDAO.insert(sat);
+        result=submemdao.insert(sat);
         if(result==true)
         {
            //request.setAttribute("msg", "Record Inserted Successfully");

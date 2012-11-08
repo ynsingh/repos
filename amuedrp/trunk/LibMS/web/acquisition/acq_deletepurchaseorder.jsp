@@ -22,11 +22,11 @@ List<AcqOrder1> listordered=(List<AcqOrder1>)session.getAttribute("orderlist");
 
 VendorDAO ven=new VendorDAO();
 AcqVendor acqvendor=(AcqVendor)ven.search2VendorId(orderheader.getVendorId(),library_id,sub_library_id);
-
- BaseCurrency cur=BudgetDAO.getBaseCurrency(library_id);
+BudgetDAO buddao=new BudgetDAO();
+ BaseCurrency cur=buddao.getBaseCurrency(library_id);
  AcqCurrency acq=null;
  if(cur.getId().getBaseCurrencySymbol().equalsIgnoreCase(acqvendor.getVendorCurrency())==false){
- acq=(AcqCurrency)BudgetDAO.getConversionRate(library_id,acqvendor.getVendorCurrency());
+ acq=(AcqCurrency)buddao.getConversionRate(library_id,acqvendor.getVendorCurrency());
  }
  
 String button=(String)request.getAttribute("button");

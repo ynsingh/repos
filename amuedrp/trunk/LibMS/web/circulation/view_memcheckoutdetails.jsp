@@ -89,13 +89,14 @@ pageContext.setAttribute("Edition",Edition);
 
            String document_category= doc.getDocumentDetails().getBookType();
            //  System.out.println(document_category);
-           CirMemberAccount cma=com.myapp.struts.CirDAO.CirculationDAO.getAccount(doc.getCirCheckout().getId().getLibraryId(),doc.getCirCheckout().getId().getSublibraryId(), doc.getCirCheckout().getMemid());
+           com.myapp.struts.CirDAO.CirculationDAO cirdao=new com.myapp.struts.CirDAO.CirculationDAO();
+           CirMemberAccount cma=cirdao.getAccount(doc.getCirCheckout().getId().getLibraryId(),doc.getCirCheckout().getId().getSublibraryId(), doc.getCirCheckout().getMemid());
 
             String mem_type=cma.getMemType();
         String submem_type=cma.getSubMemberType();
         
-
-      BookCategory bookobj=BookCategoryDAO.searchBookTypeDetails(doc.getCirCheckout().getId().getLibraryId(), mem_type, submem_type, document_category);
+BookCategoryDAO bookdao=new BookCategoryDAO();
+      BookCategory bookobj=bookdao.searchBookTypeDetails(doc.getCirCheckout().getId().getLibraryId(), mem_type, submem_type, document_category);
 //System.out.println(bookobj.getFine().toString());
 
 long f=(long)(bookobj.getFine()*DateCalculation.getDifference( DateCalculation.now(),doc.getCirCheckout().getDueDate()));

@@ -53,7 +53,7 @@ locale1=(String)session.getAttribute("locale");
     <tr>
 
       <%--<td dir="<%=rtl%>"  align="<%=align%>"><p class="txt2"><%=resource.getString("circulation.showcirreqopac.callno")%><a class="star"></a> :</p></td>--%>
-      <%--<td dir="<%=rtl%>">--%><html:hidden property="call_no" styleId="call_no"  value="" styleClass="textBoxWidth"/>
+      <%--<td dir="<%=rtl%>">--%><%--<html:hidden property="call_no" styleId="call_no"  value="" styleClass="textBoxWidth"/>--%>
 
 <%--    </td>--%>
   </tr>
@@ -108,7 +108,7 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-    var sublib_name=document.getElementById('call_no');
+ //   var sublib_name=document.getElementById('call_no');
   var keyValue1 = document.getElementById('accessionno');
 
 
@@ -123,10 +123,10 @@ var str="<%=resource.getString("circulation.cir_newmember.enterfollowingvalues")
 
 
 
-    if(sublib_name.value=="" && keyValue1.value=="")
-        {str+="\n Please Enter AccessionNo/CallNo ";
+    if( keyValue1.value=="")
+        {str+="\n Please Enter AccessionNo ";
              alert(str);
-             document.getElementById('call_no').focus();
+             document.getElementById('accessionno').focus();
             return false;
 
         }
@@ -141,9 +141,9 @@ top.document.getElementById("section1").innerHTML = framevalue;
   //  search();
 
 
-var keyValue = document.getElementById('call_no').value;
-var framevalue = "<iframe align=center name=section1 id=section1 height=300px width=500px scrolling=no src=<%=request.getContextPath()%>/cir_callno.do?callno="+ keyValue +" frameborder=0 />";
-top.document.getElementById("section1").innerHTML = framevalue;
+//var keyValue = document.getElementById('call_no').value;
+//var framevalue = "<iframe align=center name=section1 id=section1 height=300px width=500px scrolling=no src=<%=request.getContextPath()%>/cir_callno.do?callno="+ keyValue +" frameborder=0 />";
+//top.document.getElementById("section1").innerHTML = framevalue;
 
 
 

@@ -21,16 +21,8 @@ public class CirShowSingleMemberReportAction extends org.apache.struts.action.Ac
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+    CirculationDAO cirdao=new CirculationDAO();
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -41,7 +33,7 @@ public class CirShowSingleMemberReportAction extends org.apache.struts.action.Ac
       String  mem_id=(String)request.getParameter("id");
       String  checkIn=(String)request.getParameter("checkIn");
 
-        CirCheckin checkindetail=CirculationDAO.searchCheckinMemDetails(library_id,sublibrary_id,mem_id,checkIn);
+        CirCheckin checkindetail=cirdao.searchCheckinMemDetails(library_id,sublibrary_id,mem_id,checkIn);
       //    System.out.println("@@@@@@@@@@"+cmemdetail.getMemberId());
 
         if(checkindetail!=null)

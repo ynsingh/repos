@@ -25,6 +25,7 @@ public class SerAddLanguageAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
     SerLanguage sl=new SerLanguage();
     SerLanguageId slid=new SerLanguageId();
+    SerialDAO serialdao=new SerialDAO();
     
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -42,29 +43,29 @@ public class SerAddLanguageAction extends org.apache.struts.action.Action {
           slid.setLibraryId(library_id);
           sl.setLanName(lan_name);
           sl.setId(slid);
-          SerialDAO.insert(sl);
+          serialdao.insert(sl);
           request.setAttribute("msg", "Data is saved successfully");
          }
 
         if(button.equals("Update")){
-          SerLanguage slcheck=SerialDAO.searchLanguage(library_id, lan_id);
+          SerLanguage slcheck=serialdao.searchLanguage(library_id, lan_id);
           if(slcheck!=null){
 //            slcheck.getId().setLibraryId(library_id);
 //            slcheck.getId().setLanguageId(lan_id);
             slcheck.setLanName(lan_name);
-            SerialDAO.update(slcheck);
+            serialdao.update(slcheck);
             request.setAttribute("msg", "Data is updated successfully");
             return mapping.findForward(SUCCESS);
           }
         }
         
         if(button.equals("Delete")){
-          SerLanguage slcheck=SerialDAO.searchLanguage(library_id, lan_id);
+          SerLanguage slcheck=serialdao.searchLanguage(library_id, lan_id);
           if(slcheck!=null){
 //            slcheck.getId().setLibraryId(library_id);
 //            slcheck.getId().setLanguageId(lan_id);
             slcheck.setLanName(lan_name);
-            SerialDAO.delete(slcheck);
+            serialdao.delete(slcheck);
             request.setAttribute("msg", "Record is deleted successfully");
             return mapping.findForward(SUCCESS);
           }

@@ -16,7 +16,7 @@ import org.hibernate.Query;
  */
 public class BookCategoryDAO {
 
-public static BookCategory getMemid(String library_id,String memtype,String sub_memtype,String book_type) {
+public  BookCategory getMemid(String library_id,String memtype,String sub_memtype,String book_type) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         BookCategory obj=null;
         

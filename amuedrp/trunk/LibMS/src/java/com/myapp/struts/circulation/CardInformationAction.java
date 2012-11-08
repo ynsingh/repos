@@ -24,6 +24,7 @@ public class CardInformationAction extends org.apache.struts.action.Action {
     private static final String SUCCESS = "success";
      private String memid,library_id,sublibrary_id;
     private String button;
+    CirculationDAO cirdao=new CirculationDAO();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -42,12 +43,12 @@ if(button.equalsIgnoreCase("Generate Card")){
         
         return mapping.findForward(SUCCESS);
 }else if(button.equalsIgnoreCase("Lost Card")){
-  CirMemberAccount cirmemberaccount=CirculationDAO.getAccount2(library_id, sublibrary_id, memid);
+  CirMemberAccount cirmemberaccount=cirdao.getAccount2(library_id, sublibrary_id, memid);
   if(cirmemberaccount!=null){
       cirmemberaccount.setCardStatus("Losts");
       cirmemberaccount.setLostDate(DateCalculation.now());
 
-  CirculationDAO.update2(cirmemberaccount);
+  cirdao.update2(cirmemberaccount);
   request.setAttribute("msg", "Losts Card Status Updated Successfully");
 
    return mapping.findForward("success1");
@@ -55,12 +56,12 @@ if(button.equalsIgnoreCase("Generate Card")){
 
 
 }else if(button.equalsIgnoreCase("Duplicate Card")){
-  CirMemberAccount cirmemberaccount=CirculationDAO.getAccount2(library_id, sublibrary_id, memid);
+  CirMemberAccount cirmemberaccount=cirdao.getAccount2(library_id, sublibrary_id, memid);
   if(cirmemberaccount!=null){
       cirmemberaccount.setCardStatus("DuplicateCard");
       cirmemberaccount.setDuplicateIssueDate(DateCalculation.now());
 
-  CirculationDAO.update2(cirmemberaccount);
+  cirdao.update2(cirmemberaccount);
   request.setAttribute("msg", "Duplicate Card Status Updated Successfully");
 
    return mapping.findForward("success");

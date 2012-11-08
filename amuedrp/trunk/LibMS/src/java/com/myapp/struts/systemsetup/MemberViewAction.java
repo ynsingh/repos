@@ -29,11 +29,11 @@ public class MemberViewAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+MemberDAO memdao=new MemberDAO();
          HttpSession session=request.getSession();
          library_id=(String)session.getAttribute("library_id");
          emptype_id=request.getParameter("id");
-         EmployeeType employeetype=MemberDAO.getEployeeName(library_id,emptype_id);
+         EmployeeType employeetype=memdao.getEployeeName(library_id,emptype_id);
          if(employeetype!=null)
          {     request.setAttribute("button", "View");
                request.setAttribute("employeetype", employeetype);

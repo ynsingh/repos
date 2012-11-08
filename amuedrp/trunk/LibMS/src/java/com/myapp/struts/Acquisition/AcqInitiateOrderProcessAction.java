@@ -29,6 +29,7 @@ public class AcqInitiateOrderProcessAction extends org.apache.struts.action.Acti
     private static final String SUCCESS = "success";
     AcquisitionDao ado=new AcquisitionDao();
     AcqOrderDao aordrdao=new AcqOrderDao();
+    
     String delimeter1=";";
     String delimeter2=",";
     String items[];
@@ -161,7 +162,7 @@ public class AcqInitiateOrderProcessAction extends org.apache.struts.action.Acti
 
 
                 //get the approval item id from acq_approval table based on control no
-                String acq=AcqOrderDao.getApprovalItemId(library_id,sub_library_id,con_no,approval_no);
+                String acq=aordrdao.getApprovalItemId(library_id,sub_library_id,con_no,approval_no);
 
 
             if(acq!=null)
@@ -186,7 +187,7 @@ public class AcqInitiateOrderProcessAction extends org.apache.struts.action.Acti
 
                     ac.setStatus("Ordered");
                     ac.setOrderNo(order_no);
-                    AcqOrderDao.updateAcqApproval(ac);
+                    aordrdao.updateAcqApproval(ac);
                 
                 
                 List<AcqApproval> ac1=ado.searchApprovalStatus(library_id, sub_library_id, con_no);
@@ -212,7 +213,7 @@ public class AcqInitiateOrderProcessAction extends org.apache.struts.action.Acti
 
                 }
                 
-AcqOrderDao.updateAcqBibliographyDetails(acqbib);
+aordrdao.updateAcqBibliographyDetails(acqbib);
 
                 
 

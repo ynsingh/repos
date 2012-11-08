@@ -42,7 +42,9 @@ public class DepartmentUpdateViewAction extends org.apache.struts.action.Action 
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-
+CourseDAO coursedao=new CourseDAO();
+FacultyDAO facdao=new FacultyDAO();
+DeptDAO deptdao=new DeptDAO();
          HttpSession session = request.getSession();
          try{
 
@@ -65,13 +67,13 @@ public class DepartmentUpdateViewAction extends org.apache.struts.action.Action 
         button=duvaf.getButton();
        
         library_id=(String)session.getAttribute("library_id");
-      Department dept=(Department)DeptDAO.getDeptByFaculty(library_id, faculty_id, dept_id);
+      Department dept=(Department)deptdao.getDeptByFaculty(library_id, faculty_id, dept_id);
         if(button.equals("Update"))
         {   
         
              dept.setDeptName(dept_name);
 
-             result=DeptDAO.update(dept);
+             result=deptdao.update(dept);
              if(result==true)
              {
                 // request.setAttribute("msg", "Record Update Successfully");
@@ -89,7 +91,7 @@ public class DepartmentUpdateViewAction extends org.apache.struts.action.Action 
         if(button.equals("Delete"))
         {
 
-             List<Courses> course=(List<Courses>)CourseDAO.getCourse(library_id, faculty_id,dept_id);
+             List<Courses> course=(List<Courses>)coursedao.getCourse(library_id, faculty_id,dept_id);
                if(!course.isEmpty())
                {
                 
@@ -99,7 +101,7 @@ public class DepartmentUpdateViewAction extends org.apache.struts.action.Action 
                }
 
 
-              List<CirMemberAccount> cir=   (List<CirMemberAccount>)FacultyDAO.searchAccount(library_id,faculty_id,dept_id);
+              List<CirMemberAccount> cir=   (List<CirMemberAccount>)facdao.searchAccount(library_id,faculty_id,dept_id);
            if(!cir.isEmpty()){
 
             //  request.setAttribute("msg1", "Account Created With This Dept,Cannot Deleted");
@@ -107,7 +109,7 @@ public class DepartmentUpdateViewAction extends org.apache.struts.action.Action 
               return mapping.findForward("success");
            }
 
-            result=DeptDAO.Delete(dept);
+            result=deptdao.Delete(dept);
              if(result==true)
              {
 

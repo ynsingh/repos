@@ -20,7 +20,7 @@ import org.hibernate.criterion.Restrictions;
  * @author EdRP-05
  */
 public class LocationDAO {
-     public static List<Location> getLocation(String library_id,String sublibrary_id) {
+     public  List<Location> getLocation(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
       List<Location> obj = null;
         try {
@@ -42,7 +42,7 @@ public class LocationDAO {
 
 }
 
-      public static List<DocumentDetails> Search(String library_id,String loc) {
+      public  List<DocumentDetails> Search(String library_id,String loc) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         List<DocumentDetails> obj = null;
         try {
@@ -64,7 +64,7 @@ public class LocationDAO {
 
 }
 
-public static Location getLocationByName(String library_id,String sublibrary_id,String locName) {
+public  Location getLocationByName(String library_id,String sublibrary_id,String locName) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Location obj=null;
         try {
@@ -86,7 +86,7 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
         return obj;
 
 }
-    public static boolean insert(Location obj) {
+    public  boolean insert(Location obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -111,7 +111,7 @@ public static Location getLocationByName(String library_id,String sublibrary_id,
         return true;
 
     }
-        public static boolean update(Location obj) {
+        public  boolean update(Location obj) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -129,7 +129,7 @@ e.printStackTrace();
         return true;
 
     }
-        public static boolean delete(String library_id,String sublibrary_id,String location_id) {
+        public  boolean delete(String library_id,String sublibrary_id,String location_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -158,7 +158,7 @@ e.printStackTrace();
         return true;
 
     }
-    public static Location searchLocation(String library_id, String sublibrary_id, String location_id) {
+    public  Location searchLocation(String library_id, String sublibrary_id, String location_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 Location obj=null;
         try {
@@ -181,7 +181,7 @@ Location obj=null;
         return obj;
 
 }
-    public static List<Location> listlocation(String library_id, String sublibrary_id) {
+    public  List<Location> listlocation(String library_id, String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
  List<Location> obj=null;
         try {
