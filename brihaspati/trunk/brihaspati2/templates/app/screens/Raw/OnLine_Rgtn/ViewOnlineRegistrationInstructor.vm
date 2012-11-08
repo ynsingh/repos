@@ -2,7 +2,6 @@
  * @(#) ViewOnlineRegistrationInstructor.vm 
  * Copyright (c) 2008, 2009,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
- *
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>	
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
@@ -10,22 +9,23 @@
  * @modify 20-03-2009, 20-10-2010, 23-12-2010
 *#
 
-
-
 $page.setTitle("Home | $course | Student Management | View Online Registration ")
-
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 <table  bgcolor="$ui.menuColor" width=100%>
 <tr>
- <td>	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+	 <td>
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
 	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1")>$brih_student $brih_mgmt</a> |$brih_view $online_online $brih_reg
-</td>
+	</td>
 </tr>
 </table>
+
 <body>
+<div class="scroll">
 <form name="frm" method="post" action="$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").setAction("OnlineRegistration_Instructor")">
 <table bgcolor="$ui.tableColor" width=100%>
 <tr>
@@ -34,7 +34,7 @@ $!data.getMessage()
         #elseif($tdcolor == "1")
         <td bgcolor="#AFDCEC">
         #end
-       <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1")>$brih_add $brih_students</a>
+        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1")>$brih_add $brih_students</a>
         </td>
         #if($tdcolor != "2")
         <td>
@@ -47,25 +47,21 @@ $!data.getMessage()
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC" colspan=2>
         #end
-    <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3")>$brih_add $brih_multiple1 $brih_students</a></td>
+ 	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3")>$brih_add $brih_multiple1 $brih_students</a></td>
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
- <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4")>$brih_listOfStudent</a></td>
+        <a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4")>$brih_listOfStudent</a></td>
         #if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5")>$online_online $brih_reg</a></td>
-        </tr>
-##</table>
-##$courseID
+</tr>
 #if($entry.size() !=0)
-
-##<table border=1 bgcolor="$ui.tableColor" cellpadding="5">
 
        <tr bgcolor="$ui.menuColor">
                 <td align=center>
@@ -157,8 +153,8 @@ $!data.getMessage()
 ##</table>
 #end
 </table>
-
 </form>
+</div>
 </body>
 
 <SCRIPT LANGUAGE="javascript">
