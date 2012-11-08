@@ -51,6 +51,7 @@ import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.TurbineSecurity;
@@ -110,15 +111,16 @@ public class MailSendMessage extends SecureAction
 			RomanToUnicode romanToUni = new RomanToUnicode();
 			cerMsg = pp.getString("hexaStr");
 			String lang = (String)user.getTemp("lang");
-
+/*
 			//if(!(user.getTemp("lang").equals("english")))
 			 if( lang.equals("hindi") || lang.equals("marathi"))
 			{
 				
-				message= romanToUni.getstrUnicode(cerMsg,lang);
+				message= romanToUni.getstrUnicode(cerMsg,lang).trim();
 			}
 			else
-				message = pp.getString("hexaStr");
+*/
+			message = pp.getString("hexaStr").trim();
 			if(!Add_SndList.equals(""))
 			{
 				AddList=Add_FstList+","+Add_SndList;
@@ -346,6 +348,8 @@ public class MailSendMessage extends SecureAction
                                         TurbineUser element=(TurbineUser)v.get(0);
                                         mailId=element.getEmail();
 				}
+				String instId =  (String) data.getUser().getTemp("Institute_id","");
+				boolean bl = StringUtils.isBlank(instId);
 				if(mailId != null && mailId != ""){ //if s1 start
                                 	/////////////////////////////////////
                                         /**
@@ -427,7 +431,10 @@ public class MailSendMessage extends SecureAction
 	                		if( (fileItem.getSize() == 0) && (mailId != null && mailId != "") ){
 						// mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, LangFile);
 						//mailMsg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
-						mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, "","");//last parameter added by Priyanka	
+						if(!bl)
+							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, instId,"");//last parameter added by Priyanka
+						else	
+							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, "","");//last parameter added by Priyanka	
 					}
 	                		if((fileItem!=null) && (fileItem.getSize()!=0))
                                 	{

@@ -287,6 +287,8 @@ public class CommonUtility{
 				grpLeader();
 				//Call method removeNonce();
 				boolean nonce = removeNonce();
+				//Calling Emailspooling file to send Failure mail
+				 MailNotificationThread.getController().emailXMLRead();
 				
 				//Call method removeNupdateEmailUser();
 				boolean rmvNupdt = removeNupdateEmailUser();	

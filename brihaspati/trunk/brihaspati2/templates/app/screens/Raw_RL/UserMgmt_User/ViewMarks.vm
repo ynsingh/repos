@@ -7,6 +7,8 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
 *#
 
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("View Marks")
 

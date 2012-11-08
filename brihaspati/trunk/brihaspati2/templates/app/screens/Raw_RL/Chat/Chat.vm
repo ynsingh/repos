@@ -59,7 +59,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "1")
                         <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+                <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_local $brih_mail</a></td>
 
                 #if($tdcolor!="2")
                         <td>
@@ -74,9 +74,21 @@ $!data.getMessage()
                 #end
                	##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
 		#if( $data.getUser().getTemp("role") == "student")
-                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
+			#foreach($msg in $unreadMsg)
+	                        #if($msg!="0")
+        	                	#BlinkingText("New")
+                	        #end
+                        #end
+			</td>
                #else
-                        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+                        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices
+			 #foreach($msg in $unreadMsg)
+                                #if($msg!="0")
+                                        #BlinkingText("New")
+                                #end
+                        #end
+		</td>
                 #end
 
                 #if($tdcolor!="4")
@@ -84,7 +96,11 @@ $!data.getMessage()
                 #elseif($tdcolor == "4")
                         <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>
+			#if($unreadm!="0")
+                        	#BlinkingText("New")
+                        #end
+			$DiscussionBoard</td>
 		#if( $data.getUser().getTemp("role") != "student")
                 	#if($tdcolor!="5")
                         	<td>

@@ -126,7 +126,7 @@ $!data.getMessage()
 </table>
 <div style="overflow:auto;  height:180px;">
         <table  bgcolor="$ui.tableColor" width="98%"  align="right">
-                <tr><td align="center" bgcolor="$ui.menuColor"><b> ($brih_active $brih_usr $brih_Of $brih_list &nbsp;&nbsp;($uList.size()</b></td></tr>
+                <tr><td align="center" bgcolor="$ui.menuColor"><b> $brih_active $brih_usr $brih_Of $brih_list -&nbsp;&nbsp;($uList.size())</b></td></tr>
 
                         #foreach($element in $uList)
                         #if($velocityCount%2==0)

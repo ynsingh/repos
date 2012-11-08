@@ -13,7 +13,6 @@
 
 #set($lang = $data.getUser().getTemp("lang").toString())
 
-#if ($lang != "english" || $lang != "french" )
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 ## This scripts is used for autosearch EmailId in compose mail. 
@@ -31,16 +30,6 @@
 	<script type="text/javascript">/*<![CDATA[*/
 	var wgIsArticle = false;
 	        /*]]>*/</script>
-	<script type="text/javascript" src="../../../../../scrpts/index"> </script>
-	##<link rel="stylesheet" href="../../../../../scrpts/matthew" type="text/css">
-#end
-#if ($lang == "bangla")
-	<script type="text/javascript" src="../../../../../scrpts/bangla_002" &action="raw"></script>
-#end
-
-#if ($lang == "hindi" ||  $lang == "marathi")
-	<script type="text/javascript" src="../../../../../scrpts/hindiMarathi_002" &action="raw"></script>
-#end
 </head>
 <body onload="initEditor()">
 
@@ -48,13 +37,12 @@ $page.setTitle("Admin Home | Communication | Local Mail | Compose Message")
 $page.setBgColor($ui.bgcolor)
 $!data.getmessage()
 <table bgcolor="$ui.menuColor" width=100% >
-<tr>
+<tr align="right">
         <td>
         <font face="$ui.sansSerifFonts" ><b>
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
         <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a> |
-        ##<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail") style=text-decoration:none>$brih_localmail</a> | 
-        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4") style=text-decoration:none>$brih_localmail</a> | 
+        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4") style=text-decoration:none>$brih_local $brih_mail</a> | 
 	#if($status!="reply") 
 		$LocalMail_MailContent_msg1
 	#else
@@ -64,21 +52,14 @@ $!data.getmessage()
 	</td>
 </tr>
 </table>
-##if ( $lang == "english")
 	<form name ="editform" method = "post" enctype="multipart/form-data" action="$link.setAction("MailSendMessage").setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail")">
-#*
-#else
-	<div id="bodyContent">
-	<form id="editform" name="editform" method="post" enctype="multipart/form-data" action="$link.setAction("MailSendMessage").setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail")">
-#end	
-*#
 <table align="left" width=100% cellpadding=3>
 ##if(($status!="reply")&& ($mode1!="grpmgmt"))
 #if($status!="reply")
-<tr bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.tableColor" align="right">
 	<td colspan=2>
 	#if($stat1=="")
-	<a href=$link.setPage("call,Local_Mail,MailCompose.vm").addPathInfo("stat1","insertcc") style=text-decoration:none>$brih_add $LocalMail_CC</a> |
+	<a href=$link.setPage("call,Local_Mail,MailCompose.vm").addPathInfo("stat1","insertcc") style=text-decoration:none> $LocalMail_CC</a> |
         ##<a href=$link.setPage("call,Local_Mail,viewall.vm").addPathInfo("mode","NotAll").addPathInfo("mod","adminmail") style=text-decoration:none>$brih_adb  </a>
         <a href=$link.setPage("call,Local_Mail,viewall.vm").addPathInfo("mode","NotAll").addPathInfo("mod","adminmail").addPathInfo("count","4") style=text-decoration:none>$brih_adb  </a>
 	#else
@@ -87,58 +68,55 @@ $!data.getmessage()
 	</td>
 </tr>
 #end
-<tr bgcolor="$ui.menuColor"> 
+<tr bgcolor="$ui.menuColor" align="right"> 
 	#*if($mode1 == "grpmgmt")
         	#formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!val")
         #else*#
 		#if($checkVector == "AddressBook")
 		##	#formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!userVector")
-			<td>$LocalMail_MailTestMessage_To<font color=Red>*</font></td>
                         <td><textarea name="addressNames" cols="60">$!userVector</textarea></td>
+			<td>$LocalMail_MailTestMessage_To<font color=Red>*</font></td>
 
 		#else
 	##		#formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!toAddress")
-			<td>$LocalMail_MailTestMessage_To<font color=Red>*</font></td>
 			<td><textarea name="addressNames" id="suggest" cols="60">$!toAddress</textarea> <img class ="loading" id="loading-image" src="$content.getURI("/images/loader.gif")" alt="Loading..." /> 
+			<td>$LocalMail_MailTestMessage_To<font color=Red>*</font></td>
 			</td>
 		#end	
 	##end
 </tr>
 
 #if($stat1=="insertcc")
-<tr bgcolor="$ui.tableColor" > 
+<tr bgcolor="$ui.tableColor" align="right"> 
 ##	#formCell("$LocalMail_CC" "addressNames1" "")
-	<td>$LocalMail_CC<font color=Red>*</font></td>
         <td><textarea name="addressNames1" id="suggest1" cols="60"></textarea> <img class ="loading1" id="loading-image" src="$content.getURI("/images/loader.gif")" alt="Loading..." /></td>
+	<td>$LocalMail_CC<font color=Red>*</font></td>
 </tr>
 #end
-<tr bgcolor="$ui.tableColor"> 
-	#formCell("$Notice_Subject" "subject" "$!subject")
+<tr bgcolor="$ui.tableColor" align="right"> 
+	###formCell("$Notice_Subject" "subject" "$!subject")
+	<td> <input type="text" name="subject" value="$!subject"> </td>
+	<td> $Notice_Subject </td>
 </tr>
 <input type="hidden" name="hexaStr" value="">
-<tr bgcolor="$ui.menuColor">
-<td>$brih_msg2 </td>
-<td width="2">
-##if ( $lang == "english")
-	<textarea id="ta" name="wpTextbox1" rows=14 cols=80>$!message</textarea >
-#*
-#else
-	<textarea tabindex="1" accesskey="," name="wpTextbox1" id="wpTextbox1" rows="10" cols="80">$!message</textarea>
-	<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
-#end
-*#
-</td>
+<tr bgcolor="$ui.menuColor"  align="right">
+	<td width="2">
+		<textarea id="ta" name="wpTextbox1" rows=14 cols=80>$!message</textarea >
+	</td>
+	<td>$brih_msg2 </td>
 </tr>
-<tr bgcolor="$ui.tableColor">
-	#fileUpload("$brih_at_file" "file")
+<tr bgcolor="$ui.tableColor"  align="right">
+	##fileUpload("$brih_at_file" "file")
+	<td> <input type="file" class="browse" size="20" name="file"> </td>
+	<td> $brih_at_file </td>
 </tr>
-<tr bgcolor="$ui.menuColor">
-<td align="left" colspan=2>
+<tr bgcolor="$ui.menuColor" align="right">
+<td colspan=2>
 <font face="$ui.sansserifFonts">
-  <input type="button" class="button-ftextstyle" name="eventSubmit_doSend" value="$Notice_Send"  onClick="checkValue(document.editform,this);"/>
   #if($status!="reply")
   	<input type="reset" class="button-ftextstyle" value="$brih_clear"> 
   #end
+  <input type="button" class="button-ftextstyle" name="eventSubmit_doSend" value="$Notice_Send"  onClick="checkValue(document.editform,this);"/>
         <input type="hidden" name="mode1" value="$mode1">
 	<input type="hidden" name="val" value="$val">
 	<input type="hidden" name="actionName">
@@ -182,7 +160,7 @@ function checkValue(editform,field){
 			{
 				if(confirm("Your message is empty and Click this [<>] button!!"))
 				{
-					if (editform.lang.value == "english")
+					//if (editform.lang.value == "english")
 						editform.hexaStr.value = editform.wpTextbox1.value;
 					if(editform.repStat.value == "reply")
 						editform.hexaStr.value = editform.sentMessage.value + editform.hexaStr.value;
@@ -198,7 +176,7 @@ function checkValue(editform,field){
 			}
 			else
 			{
-				if (editform.lang.value == "english")
+				//if (editform.lang.value == "english")
 					editform.hexaStr.value = editform.wpTextbox1.value;
 				if(editform.repStat.value == "reply")
 					editform.hexaStr.value = editform.sentMessage.value + editform.hexaStr.value;
