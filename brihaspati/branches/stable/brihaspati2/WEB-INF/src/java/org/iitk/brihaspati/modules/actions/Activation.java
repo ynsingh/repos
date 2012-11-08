@@ -57,7 +57,7 @@ import java.io.File;
  * Action class for updating the activation status 
  * of user, when user clicks activation link.
  *  @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- *  modified date : 01-10-2012, 15-10-2012
+ *  modified date : 01-10-2012, 15-10-2012,06-11-2012(Priyanka)
  */
 
 public class Activation extends VelocityAction{
@@ -72,7 +72,6 @@ public class Activation extends VelocityAction{
  	 */
 	public void doPerform(RunData rundata,Context context) throws Exception
         {
-               // ErrorDumpUtil.ErrorLog("INSIDE ACTIVATION ACTION------------------->> ");
                 System.gc();
                 String u_mode=rundata.getParameters().getString("mode");         
 		
@@ -104,11 +103,10 @@ public class Activation extends VelocityAction{
 		int cmpid=-1;
 	        int uid=UserUtil.getUID(e_mail);
 	        boolean Result= uid == cmpid;
-              //  ErrorDumpUtil.ErrorLog("GETTING USER ID.....INSIDE ACTIVATION ACTION" +uid +" "+ Result);
-
+              
 		if(Result){
                           String url1=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm";
-                //          ErrorDumpUtil.ErrorLog("I am in result uid compare second "+url1);
+              
                           try{
        				str=MultilingualUtil.ConvertedString("usr_doesntExist",LangFile);
                                 data.setMessage(str);
@@ -130,7 +128,7 @@ public class Activation extends VelocityAction{
 			crit.add(UserPrefPeer.USER_ID,uid);
 			List list = UserPrefPeer.doSelect(crit);
 			String d_key =((UserPref)list.get(0)).getActivation();
-		//	ErrorDumpUtil.ErrorLog("GETTING ACTIVATION KEY..... " +d_key);		
+		
 				if ((a_key == d_key) || (a_key.equalsIgnoreCase(d_key)))
 				{
 					//Update the database to set Activation field
@@ -138,7 +136,6 @@ public class Activation extends VelocityAction{
 					crit.add(UserPrefPeer.USER_ID,uid);
 					crit.add(UserPrefPeer.ACTIVATION,"ACTIVATE");
 					UserPrefPeer.doUpdate(crit);
-		//			ErrorDumpUtil.ErrorLog("INSIDE 1ST IF.....");
 	
 					try{
 						str=MultilingualUtil.ConvertedString("act_login",LangFile);
@@ -155,7 +152,6 @@ public class Activation extends VelocityAction{
 				else
 				{
 		
-		//			ErrorDumpUtil.ErrorLog("INSIDE 2ND IF.....");
 					try{
 					      str=MultilingualUtil.ConvertedString("oopsAct_msg",LangFile);
                                               data.setMessage(str);
@@ -200,35 +196,18 @@ public class Activation extends VelocityAction{
 			String filePath=TurbineServlet.getRealPath("/InstituteRegistration");
 			filePath=filePath+"/InstituteRegistrationList.xml";
 			set = XMLWriter_InstituteRegistration.SetFlag(filePath,e_mail,a_key);
-		//	String LangFile = MultilingualUtil.LanguageSelectionForScreenMessage("english");	
 	
 			if(set)
 			{
-			//	String mode="act";
 				ParameterParser pp = data.getParameters();
-			//	pp.add("mode","act");
 				pp.setString("mode","act");
-		//		ErrorDumpUtil.ErrorLog("activation      "+pp.getString("mode"));
 				InstituteRegistration instituteregister = new InstituteRegistration();
 				instituteregister.InstituteRegister(data,context);
 		
-				try{
-					msg = mu.ConvertedString("brih_Institue", LangFile)+" "+mu.ConvertedString("brih_registration", LangFile)+" "+mu.ConvertedString("brih_successful", LangFile)+" "+mu.ConvertedString("brih_waitForApprove", LangFile);
-					 data.setMessage(msg);
-                                	//data.setMessage("Institute registered successfully. Message is in queue, please wait for approval.");
-                                 	data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+msg);
-                           	}
-                        	catch (Exception ex){
-                                	  msg = "ERROR IN ACCOUNT ACTIVATION ";
-                                  	  ErrorDumpUtil.ErrorLog("User's account  not activated inside 2nd catch "+ex);
-                                  	  throw new RuntimeException(msg,ex);
-                          	}
-			
 			}
 			else
 			{
-		//		 ErrorDumpUtil.ErrorLog("INSIDE ELSE.....");
-                        	 try{
+	                       	 try{
 					str=MultilingualUtil.ConvertedString("oopsCnfrm_msg",LangFile);
                                         data.setMessage(str);
                                 	//data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
@@ -271,9 +250,7 @@ public class Activation extends VelocityAction{
                         {
                                // String mode="act";
                                 ParameterParser pp = data.getParameters();
-                              //  pp.add("mode","act");
                                 pp.setString("mode","act");
-		//		ErrorDumpUtil.ErrorLog("activation      "+pp.getString("mode"));
 				OnlineRegistration onlineregister = new OnlineRegistration();
                                 onlineregister.CourseRegister(data,context);
                                 String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
@@ -283,8 +260,7 @@ public class Activation extends VelocityAction{
                         }
                         else
                         {
-                  //               ErrorDumpUtil.ErrorLog("INSIDE ELSE.....");
-                  		 str=MultilingualUtil.ConvertedString("oopsCnfrm_msg",LangFile);
+                      		 str=MultilingualUtil.ConvertedString("oopsCnfrm_msg",LangFile);
                                  data.setMessage(str); 
                                  //data.setMessage("Oops ! Your email id could not be confirmed. Please recheck the Confirmation link.");
                                  data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);

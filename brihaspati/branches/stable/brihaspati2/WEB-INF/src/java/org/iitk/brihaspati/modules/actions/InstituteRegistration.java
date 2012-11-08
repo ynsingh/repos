@@ -35,12 +35,11 @@ package org.iitk.brihaspati.modules.actions;
 import java.util.List;
 import java.io.File;
 import java.util.Properties;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
 import org.apache.turbine.services.servlet.TurbineServlet;
-
+import java.util.Vector;
 import org.apache.torque.util.Criteria;
 
 import org.apache.velocity.context.Context;
@@ -59,6 +58,7 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
 
 /**
  * @author <a href="mailto:palseema@rediffmail.com">Seema Pal </a>23April2012
@@ -68,7 +68,8 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
  * @modified date: 22-11-2010, 16-06-2011
  * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
  * @modified date: 22-11-2010, 08-08-2012(Shaista)
- *@author modified date 09-08-2012, 25-09-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author modified date 09-08-2012, 25-09-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modified date 02-11-2012, 06-11-2012 (Priyanka)
  */
 /**
 * class for registration of a new institute as well institute admin information
@@ -88,8 +89,9 @@ public class InstituteRegistration extends VelocitySecureAction
          String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", confirmationMail="";
          String Mailmsg=new String();
          String message=new String();
-	 String mode="";
-	
+	 String mode="", filepath, reg_msg, key, str2;
+	 InstituteFileEntry InstfileEntry=new InstituteFileEntry();
+	 Vector v=new Vector();
 
 	/** boolean return true because anybody can make request for registration*/
 
@@ -128,8 +130,8 @@ public class InstituteRegistration extends VelocitySecureAction
         		 String lang="";
 			 lang=parameterparser.getString("lang","english");
                          String Lang=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
-
-		// Following checking added by Priyanka
+			
+		// Following check added by Priyanka
 			if(mode == "cnfrm_i" || (mode.equalsIgnoreCase("cnfrm_i")))
 			{
 				String flag1;
@@ -162,9 +164,9 @@ public class InstituteRegistration extends VelocitySecureAction
                                 instituteaffiliation = parameterparser.getString("IAFFILIATION");
                                 institutewebsite = parameterparser.getString("IWEBSITE");
 
-                                instituteadminfname = parameterparser.getString("IADMINFNAME");
-                                instituteadminlname = parameterparser.getString("IADMINLNAME");
-                                instituteadminemail = parameterparser.getString("IADMINEMAIL");
+                               instituteadminfname = parameterparser.getString("IADMINFNAME");
+                               instituteadminlname = parameterparser.getString("IADMINLNAME");
+                               instituteadminemail = parameterparser.getString("IADMINEMAIL");
                                 instituteadmindesignation = parameterparser.getString("IADMINDESIGNATION");
                                 String adminusername = instituteadminemail;
                                 String instpassword = parameterparser.getString("IADMINPASSWORD");
@@ -176,7 +178,7 @@ public class InstituteRegistration extends VelocitySecureAction
 
                         	/** getting path for creating InstituteRegistration directory*/
 
-                        	String filepath=TurbineServlet.getRealPath("/InstituteRegistration");
+                        	filepath=TurbineServlet.getRealPath("/InstituteRegistration");
                         	File f=new File(filepath);
                         	if(!f.exists())
                         	f.mkdirs();
@@ -200,7 +202,7 @@ public class InstituteRegistration extends VelocitySecureAction
 						int cmpid=-1;
 			                        int uid=UserUtil.getUID(instituteadminemail);
                         			boolean Result= uid == cmpid;
-                        			ErrorDumpUtil.ErrorLog("GETTING USER ID....." +uid +" "+ Result);
+                        			//ErrorDumpUtil.ErrorLog("GETTING USER ID....." +uid +" "+ Result);
 						
 					   if(Result)
 					   {
@@ -227,11 +229,14 @@ public class InstituteRegistration extends VelocitySecureAction
                                 		msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", instituteadminemail);
                                 		msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
                                 		msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+						reg_msg=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+						msgRegard=msgRegard+reg_msg;
                                 		subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
                                 		messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
                                 		confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
                                 		confirmationMail=MailNotification.getMessage(confirmationMail, instituteadminemail, a_key, mode, lang);
                                 		confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
+						confirmationMail=MailNotification.getMessage(confirmationMail, institutedomain, "");
                                 		messageFormate = messageFormate+confirmationMail;
                                 		Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", instituteadminemail, subject, "", Lang, "", "");
 				
@@ -247,32 +252,9 @@ public class InstituteRegistration extends VelocitySecureAction
 						/**Get email of Sysadmin for sending email
 	                                         *regarding to the registration of a new Institute.
                                                  */
-						String server_name=TurbineServlet.getServerName();
-	                                        String srvrPort=TurbineServlet.getServerPort();
-        	                                String subject="",  info_Opt="";
-                	                        Criteria criteria=new Criteria();
-                        	                criteria.add(TurbineUserPeer.USER_ID,1);
-                                	        List adminemail=TurbineUserPeer.doSelect(criteria);
-                                        	String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
-                                        	String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                                        	pr=MailNotification.uploadingPropertiesFile(fileName);
-                                        	if(srvrPort.equals("8080")){
-                                               		subject="newInstituteRegister";
-                                                	info_Opt = "newUser";
-                                        	}
-                                        	else {
-                                                	subject="newInstituteRegisterhttps";
-                                                 	info_Opt = "newUserhttps";
-                                        	}
-                                        	String subj = MailNotification.subjectFormate(subject, "", pr);
-                                        	String messageFormate = MailNotification.getMessage(subject, institutename, "", "", "", pr);
-                                        	messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
-                                        	String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                        	msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-                                        	String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, "", EMAIL, subj, "", Lang, "","");//last parameter added by Priyanka
-
-
-						rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
+						String Mail_msg=sendMail(instituteadminemail, instituteadminfname, instituteadminlname, institutename, Lang);
+						if(!Mail_msg.equals("unsuccessfull"))
+							rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
 					   }//else
 
 					}//flag
@@ -295,35 +277,59 @@ public class InstituteRegistration extends VelocitySecureAction
 		//Following check added by Priyanka
 			if(mode == "act" || (mode.equalsIgnoreCase("act")))
 			{
-                                        /**Get email of Sysadmin for sending email
-					 *regarding to the registration of a new Institute.
+					boolean c=false;
+					String e_mail=rundata.getParameters().getString("email");
+					String d_name=rundata.getParameters().getString("domain");
+					filepath=TurbineServlet.getRealPath("/InstituteRegistration/InstituteRegistrationList.xml");
+					v = XMLWriter_InstituteRegistration.ReadInstDomainDeatils(filepath, d_name);
+					
+					/**
+ 					 * Getting the institute details
+ 					 * on the basis of domain and email id
+ 					 * fetched from the mail
+ 					 */				
+					if(v.size()>0)
+					{
+						InstfileEntry=(InstituteFileEntry)v.get(0);
+						instituteadminemail = InstfileEntry.getInstituteEmail();
+						institutename = InstfileEntry.getInstituteName();
+				        	instituteadminfname = InstfileEntry.getInstituteFName();
+						instituteadminlname = InstfileEntry.getInstituteLName();
+					}						
+					
+					/**
+ 					 * When entry corresponding to the
+ 					 * email and domain exist in the xml.
 					 */
-                                        String server_name=TurbineServlet.getServerName();
-                                        String srvrPort=TurbineServlet.getServerPort();
-                                        String subject="",  info_Opt="";
-                                        Criteria criteria=new Criteria();
-                                        criteria.add(TurbineUserPeer.USER_ID,1);
-                                        List adminemail=TurbineUserPeer.doSelect(criteria);
-                                        String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
-                                        String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                                        pr=MailNotification.uploadingPropertiesFile(fileName);
-                                        if(srvrPort.equals("8080")){
-                                                subject="newInstituteRegister";
-						info_Opt = "newUser";
-                                        }
-                                        else {
-                                                subject="newInstituteRegisterhttps";
-						 info_Opt = "newUserhttps";
-                                        }
-                                       	String subj = MailNotification.subjectFormate(subject, "", pr);
-					String messageFormate = MailNotification.getMessage(subject, institutename, "", "", "", pr);
-					messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
-					String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-					String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, "", EMAIL, subj, "", Lang, "","");//last parameter added by Priyanka
-                                        rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
-                                        //"Institute Registeration Successfull"
-				}// if mode act
+					
+					if(!institutename.equals("") && !instituteadminfname.equals("") && !instituteadminlname.equals("") && instituteadminemail.equals(e_mail))
+					{
+						/**Get email of Sysadmin for sending email
+                	                       	 *regarding to the registration of a new Institute.
+                                         	 */
+						String Mail_msg = sendMail(instituteadminemail, instituteadminfname, instituteadminlname, institutename, Lang);
+						if(!Mail_msg.equals("unsuccessfull"))
+                                        		rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
+                                        	//"Institute Registeration Successfull"
+					}
+					else
+					{	
+						/**
+ 					 	 * When entry corresponding to the
+ 					 	 * email and domain doesn't exist in the xml.
+ 					 	 */
+						try{
+                	                                str2=mu.ConvertedString("oopsCnfrm_msg",Lang);
+                        	                        rundata.setMessage(str2);
+							rundata.getResponse().sendRedirect(rundata.getServerScheme()+"://"+rundata.getServerName()+":"+rundata.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str2);
+                                                }
+        	                                catch (Exception ex){
+                                        	        String msg1 = "ERROR IN EMAIL VERIFICATION";
+                                                	ErrorDumpUtil.ErrorLog("User's email could not be verified "+ex);
+                                                	throw new RuntimeException(msg1,ex);
+                                        	}
+					}
+			}// if mode act
 		}
 		catch (Exception e)
 		{
@@ -331,6 +337,43 @@ public class InstituteRegistration extends VelocitySecureAction
 		}
 	}//method
 
+	/**
+	 * Sending mail to institute admin
+	 */
+	String sendMail(String instituteadminemail, String instituteadminfname, String instituteadminlname, String institutename, String Lang)
+	{
+		String Mail_msg="unsuccessfull";
+		try{
+			String server_name=TurbineServlet.getServerName();
+                	String srvrPort=TurbineServlet.getServerPort();
+                	String subject="",  info_Opt="";
+                	Criteria criteria=new Criteria();
+                	criteria.add(TurbineUserPeer.USER_ID,1);
+                	List adminemail=TurbineUserPeer.doSelect(criteria);
+                	String EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
+                	String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                	pr=MailNotification.uploadingPropertiesFile(fileName);
+                	if(srvrPort.equals("8080")){
+	                	subject="newInstituteRegister";
+                        	info_Opt = "newUser";
+                	}
+                	else {
+                        	subject="newInstituteRegisterhttps";
+                        	info_Opt = "newUserhttps";
+                	}
+                	String subj = MailNotification.subjectFormate(subject, "", pr);
+                	String messageFormate = MailNotification.getMessage(subject, "("+instituteadminemail+")", pr);
+                	messageFormate=MailNotification.getMessage_new(messageFormate, instituteadminfname+" "+instituteadminlname ,"" ,institutename,"");
+                	String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                	msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                	Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, "", EMAIL, subj, "", Lang, "","");//last parameter added by Priyanka
+		}	
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Error while sending mail to institute admin");
+		}
+		return Mail_msg;
+	}
 }//class
 
 

@@ -107,6 +107,7 @@ import babylon.babylonPasswordEncryptor;
  * @modified date: 08-07-2010, 20-10-2010, 3-11-2010, 26-12-2010
  * @modified date: 27-07-2011, 05-08-2011(Richa), 09-08-2012(Priyanka)
  * @modified date: 16-08-2012(Sunil Yadav), 25-09-2012 (Priyanka), 30-10-2012(Richa)
+ * @modified date: 02-11-2012 (Priyanka)
  */
 
 public class UserManagement
@@ -138,7 +139,7 @@ public class UserManagement
 		Criteria crit=new Criteria();
 		java.sql.Date expdate=null;
 		String instituteid="";
-		int instIdint = 0,Auid=0;
+		int instIdint = 0,Auid=0, check=0;
 		/**
 		 * Below  check is added by Shaista
 		 * In admin case iname is recieved null 
@@ -552,9 +553,14 @@ public class UserManagement
                                                  * @see MailNotification in utils
                                                  */
 						pr =MailNotification.uploadingPropertiesFile(fileName);
+						if(!mode.equals("cnfrm_i"))
+						{
+							msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
+                                                	msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
+						}
 						msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
-                                                msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
-                                                msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
+                                                //msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
+                                                //msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
                                                 msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
                                                 msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
                                                 subject = MailNotification.subjectFormate(NewUser, "", pr );
@@ -594,14 +600,7 @@ public class UserManagement
 						         crit.add(UserPrefPeer.ACTIVATION,"ACTIVATE");
 						         UserPrefPeer.doUpdate(crit);
 						}
-				
-				/*		if(mode.equals(""))
-						{
-							MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,mode);
-
-						}
-				*/
-				//...............
+						
 						subject = ""; messageFormate =""; msgBrihAdmin="";
 						//ErrorDumpUtil.ErrorLog("to test----------------->else3 part");
 						if(Role.equals("author") || Role.equals("institute_admin"))
@@ -627,12 +626,12 @@ public class UserManagement
                                                         msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
                                                 }
 						//ErrorDumpUtil.ErrorLog("to test----------------->else4 part");
+						//if(!(mode.equals("cnfrm_i")&&(check>0)))
                                                	subject = MailNotification.subjectFormate(userRole, "", pr );
 						if(Role.equals("author"))
 						{
 							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
                                                		messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
-							//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
 							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
 							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 							 Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka
@@ -640,8 +639,10 @@ public class UserManagement
 						else
 						{
                                                		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
-							//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
-							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
+							if(mode.equals("cnfrm_i"))
+								messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,"");
+							else
+								messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
 							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 							Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka							
 						}

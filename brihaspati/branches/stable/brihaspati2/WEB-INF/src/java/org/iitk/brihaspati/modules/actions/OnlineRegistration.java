@@ -70,7 +70,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 //import org.iitk.brihaspati.modules.utils.CourseManagement;
-import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+//import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
@@ -93,7 +93,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a>3May2012
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modified date: 20-10-2010,23-12-2010, 16-06-2011,20-04-2012
- * @modified date: 09-08-2012, 25-09-2012 (Priyanka)
+ * @modified date: 09-08-2012, 25-09-2012, 06-11-2012 (Priyanka)
  */
 
 
@@ -121,7 +121,7 @@ public class OnlineRegistration extends VelocitySecureAction
         String mssg=new String();
 	int cmpid;
         int u_id;
-        boolean Result;
+        boolean Result, stat;
 	String str;
 
         protected boolean isAuthorized( RunData data ) throws Exception
@@ -167,6 +167,12 @@ public class OnlineRegistration extends VelocitySecureAction
                 passwd=starr[0];
 		}
 		gname=pp.getString("group","");
+
+		//Generate MD5 hash
+		String randm_n = PasswordUtil.randmPass();
+                String str1=randm_n+email;
+                String a_key=EncryptionUtil.createDigest("MD5",str1);
+
 		//Get onlinecong value of the course added by sharad on 02022011
 		Criteria crit = new Criteria();
 		crit.add(CoursesPeer.GROUP_NAME,gname);
@@ -307,7 +313,7 @@ public class OnlineRegistration extends VelocitySecureAction
 	                                else  //else 4
         	                        {
 						server_name= TurbineServlet.getServerName();
-						ErrorDumpUtil.ErrorLog(server_name);
+						//ErrorDumpUtil.ErrorLog(server_name);
 	        	                	srvrPort= TurbineServlet.getServerPort();
 						MsgForExpireTime = "forUser "; 
 						indexList = sendMail_MoreThanSevenDays(userlist, MsgForExpireTime, uname, server_name, srvrPort, LangFile, instAdminName, instituteid);
@@ -323,40 +329,13 @@ public class OnlineRegistration extends VelocitySecureAction
 						cmpid=-1;
                                                 u_id=UserUtil.getUID(uname);
                                                 Result= u_id == cmpid;
-                                                ErrorDumpUtil.ErrorLog("GETTING USER ID....." +u_id +" "+ Result);
+                                                ErrorDumpUtil.ErrorLog("GETTING USER ID IN ONLINE REG....." +u_id );
 
 	                                        if(Result)
         	                                {
 						flag1="0";
-				     
+				     		stat = sendMail(email, a_key, u_mode, data, lang);
 						
-						/**
-		                                 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
-                                                 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
-                                                 */
-							if(srvrPort.equals("8080"))
-                                      				info_Opt = "newUser";
-                                			else
-                                      				info_Opt = "newUserhttps";
-							//GENERATE MD5 HASH
-							String randm_n = PasswordUtil.randmPass();
-			                                String str1=randm_n+email;
-                        			        String a_key=EncryptionUtil.createDigest("MD5",str1);
-                             				fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                              				pr =MailNotification.uploadingPropertiesFile(fileName);
-                            				msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
-   				                        msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
-  			                                msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                         			        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-          			                        sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
-        			                        messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
-   			                                confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-   			                                confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
-      				                        confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
-                               			        messageFormate = messageFormate+confirmationMail;
-                        			        Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
-						//ADD HASH AND FLAG TO XML	
-					//.............
 							TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);//last two parameters added by Priyanka
 							xmlWriter.writeXmlFile();
 
@@ -378,7 +357,7 @@ public class OnlineRegistration extends VelocitySecureAction
 				else //else 3
 				{
 					server_name= TurbineServlet.getServerName();
-                                        ErrorDumpUtil.ErrorLog(server_name);
+                                        //ErrorDumpUtil.ErrorLog(server_name);
                                         srvrPort= TurbineServlet.getServerPort();
 					indexList.add(-1);
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
@@ -392,39 +371,13 @@ public class OnlineRegistration extends VelocitySecureAction
 					cmpid=-1;
                                         u_id=UserUtil.getUID(uname);
                                         Result= u_id == cmpid;
-                                        ErrorDumpUtil.ErrorLog("GETTING USER ID....." +u_id +" "+ Result);
+                                        ErrorDumpUtil.ErrorLog("GETTING USER ID IN ONLINE REG....." +u_id);
 
                                          if(Result)
                                          {
                                          flag1="0";
+					stat = sendMail(email, a_key, u_mode, data, lang);
 
-
-					/**
-                                         * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
-                                         * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
-                                         */
-					if(srvrPort.equals("8080"))
-                                                info_Opt = "newUser";
-                                        else
-                                        	info_Opt = "newUserhttps";
-                                        //GENERATE MD5 HASH
-                                            String randm_n = PasswordUtil.randmPass();
-                                             String str1=randm_n+email;
-                                             String a_key=EncryptionUtil.createDigest("MD5",str1);
-                                             fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                                             pr =MailNotification.uploadingPropertiesFile(fileName);
-                                             msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
-                                             msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
-                                             msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                             msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-                                             sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
-                                             messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
-                                             confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                                             confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
-                                             confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
-                                             messageFormate = messageFormate+confirmationMail;
-                                             Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
-                                                //ADD HASH AND FLAG TO XML      
 					       	TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program, instName,a_key,flag1);
         		        		xmlWriter.writeXmlFile();
 					}//if
@@ -519,8 +472,7 @@ public class OnlineRegistration extends VelocitySecureAction
         	if(u_mode.equals("cnfrm_c"))
                 {
 		String flag2;
-		
-        
+		        
 	        /**
                  * store details from the page where user has entered them
                  */
@@ -545,6 +497,12 @@ public class OnlineRegistration extends VelocitySecureAction
 		String []starr=email.split("@");
                 passwd=starr[0];
 		}
+	
+		//Generate MD5 hash
+		String randm_n = PasswordUtil.randmPass();
+                String str1=randm_n+email;
+                String a_key=EncryptionUtil.createDigest("MD5",str1);
+
 		/**
 		 * Below line added by Shaista 
 		 * Getting institute admin's First n Last Name according to instituteId
@@ -653,11 +611,8 @@ public class OnlineRegistration extends VelocitySecureAction
 				{
 					MsgForExpireTime = "forCourse";
 					server_name= TurbineServlet.getServerName();
-					ErrorDumpUtil.ErrorLog("server name "+server_name);
         	                	srvrPort= TurbineServlet.getServerPort();
-					ErrorDumpUtil.ErrorLog("server name "+srvrPort);
-
-				//following lines added by Priyanka
+					//following lines added by Priyanka
 					cmpid=-1;
                                         u_id=UserUtil.getUID(uname);
                                         Result= u_id == cmpid;
@@ -665,34 +620,8 @@ public class OnlineRegistration extends VelocitySecureAction
 					if(Result)
 					{
 					flag2="0";
-					/**
-                                         * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
-                                         * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
-                                         */
 
-					 if(srvrPort.equals("8080"))
-                                                info_Opt = "newUser";
-                                         else
-                                                info_Opt = "newUserhttps";
-		
-					//Generate MD5 hash
-					String randm_n = PasswordUtil.randmPass();
-                                        String str1=randm_n+email;
-                                        String a_key=EncryptionUtil.createDigest("MD5",str1);
-                                        fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                                        pr =MailNotification.uploadingPropertiesFile(fileName);
-                                        msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
-                                        msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
-                                        msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-                                        sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
-                                        messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
-                                        confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                                        confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
-                                        confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
-                                        messageFormate = messageFormate+confirmationMail;
-                                        Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
-					
+					stat = sendMail(email, a_key, u_mode, data, lang);
 					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile, instAdminName, InstituteId);
                                         xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
 					TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
@@ -713,10 +642,8 @@ public class OnlineRegistration extends VelocitySecureAction
 			{
 				indexList.add(-1);
 				server_name= TurbineServlet.getServerName();
-                                ErrorDumpUtil.ErrorLog("server name "+server_name);
                                 srvrPort= TurbineServlet.getServerPort();
-
-  			//following lines added by Priyanka
+	  			//following lines added by Priyanka
   				cmpid=-1;
                                 u_id=UserUtil.getUID(uname);
                                 Result= u_id == cmpid;
@@ -724,34 +651,8 @@ public class OnlineRegistration extends VelocitySecureAction
                                 if(Result)
                                 {
                                 flag2="0";
-
-				/**
-                                 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
-                                 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
-                                 */
-
-				if(srvrPort.equals("8080"))
-                                        info_Opt = "newUser";
-                                 else
-                                        info_Opt = "newUserhttps";
-
-				//Generate Md5 hash
-				 String randm_n = PasswordUtil.randmPass();
-                                 String str1=randm_n+email;
-                                 String a_key=EncryptionUtil.createDigest("MD5",str1);
-                                 fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                                 pr =MailNotification.uploadingPropertiesFile(fileName);
-                                 msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
-                                 msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
-                                 msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                 msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-                                 sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
-                                 messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
-                                 confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                                 confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
-                                 confirmationMail=MailNotification.replaceServerPort(confirmationMail, server_name, srvrPort);
-                                 messageFormate = messageFormate+confirmationMail;
-                                 Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
+				
+				stat = sendMail(email, a_key, u_mode, data, lang);
                                 xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
                                 TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate,InstituteId,a_key,flag2);
                                 xmlWriter.writeXmlFile();
@@ -1006,6 +907,7 @@ public class OnlineRegistration extends VelocitySecureAction
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in Exipiration of onLineRegReq"+e);}
 		return indexList;              
 	}
+
         public void doSearch(RunData data, Context context) throws Exception
         {
 		/**
@@ -1024,6 +926,68 @@ public class OnlineRegistration extends VelocitySecureAction
 		Vector courseList=CourseManagement.getCrsOnlinDetails(Integer.toString(instituteId));	
 		context.put("courseList",courseList);
 	}
+
+/**
+ * Method to send confirmation mail
+ * in case of user registration and course registration
+ * @param email  User's email id
+ * @param u_mode user mode
+ * @param a_key MD5 hash string
+ * @param data RunData
+ * @param lang language to be stored in xml file
+ * @return boolean
+ */
+
+private boolean sendMail(String email, String a_key, String u_mode, RunData data, String lang){
+
+        String serverName=data.getServerName();
+	int srvrPort=data.getServerPort();
+        String serverPort=Integer.toString(srvrPort);
+	String Mailmsg=new String();
+
+        try{
+                /**
+                 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+                 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+                 */
+		if(serverPort.equals("8080"))
+                        info_Opt = "newUser";
+                else
+                        info_Opt = "newUserhttps";
+	        fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                pr =MailNotification.uploadingPropertiesFile(fileName);
+                msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+                msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                sbjct=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_subject");
+                messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".c_message"); // get a_key
+                confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
+                confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
+                messageFormate = messageFormate+confirmationMail;
+                Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbjct, "", "", "","");//last parameter added by Priyanka
+		if(!Mailmsg.equals(""))
+                	return true; 
+		else
+          		return false;
+	}//try
+	catch(Exception e)
+	{
+		String message = "Error occurred while sending confirmation mail!";
+                 log.error(message, e);
+                 String str=MultilingualUtil.ConvertedString("oops_msg",LangFile);
+                 try{
+                          data.setMessage(str);
+                 }
+                 catch (Exception ex){
+                          ErrorDumpUtil.ErrorLog("Error while sending confirmation mail"+ex);
+                  }
+	}
+	return false;
+}//method
+
+
 	/**
 	 * This is the default method called when the button is not found
 	 * @param data RunData

@@ -28,64 +28,61 @@ $page.setTitle("View Marks")
 <br>
 $!data.getMessage()
 <form enctype="multipart/form-data" >
-    <table align="center" bgcolor="$ui.bgcolor" cellpadding="0">
-    #if($status != "Blank")	
-      <tr>
-	<td>
-      	<b><u>$brih_marks $brih_in $course</u><b><br>
-	</td>
-      </tr>
-      <tr>
-	      	<table  cellpadding="0" cellspacing="1" align="center">
-
-
-					#set($count=0)
-      						#foreach($headings in $markHeading)
-						#set($count=$count+1)
-						<tr height="25px"><td align="center">
-                                #set($ct=0)
-                                #foreach($ali in $alias)
-                                #set($ct=$ct+1)
-                                #if($ct==$count)#if($ct!=1)</br></br>#end
+	<table align="center" bgcolor="$ui.bgcolor" cellpadding="0">
+    	#if($status != "Blank")	
+      		<tr>
+		<td>
+      		<b><u>$brih_marks $brih_in $course</u><b><br>
+		</td>
+      		</tr>
+	      	<tr>
+		<table  cellpadding="0" cellspacing="1" align="center">
+		#set($count=0)
+      		#foreach($headings in $markHeading)
+			#set($count=$count+1)
+			<tr height="25px"><td align="center">
+                       	#set($ct=0)
+                      	#foreach($ali in $alias)
+                      		#set($ct=$ct+1)
+                       		#if($ct==$count)
+                       			#if($ct!=1)</br></br>
+                       			#end
                                         <a style="font-weight:bold; background:$ui.headerColor;"><b>$brih_alias $brih_name : $ali</b></a>
                                 #end
-                                #end
-                                </td></tr>
-						<div>
-					<tr>
-                                                #foreach($heading in $headings)
-                                                        <th bgcolor="$ui.menuColor">&nbsp;&nbsp;$heading&nbsp;&nbsp;</th>
-                                                #end
-                                        </tr>
-				#set($counter=0)
-                                #foreach($marks in $markDetail)
+                       	#end
+                        </td></tr>
+			<div>
+			<tr>
+                        #foreach($heading in $headings)
+                             	<th bgcolor="$ui.menuColor">&nbsp;&nbsp;$heading&nbsp;&nbsp;</th>
+                        #end
+                        </tr>
+			#set($counter=0)
+                        #foreach($marks in $markDetail)
 				#set($counter=$counter+1)
 				#if($counter==$count)
-                                <tr>
-                                                #foreach($mark in $marks)
-                                                        <td align="center" bgcolor="$ui.tableColor">$mark</td>
-                                                #end
-                                </tr>
+                                	<tr>
+                                        #foreach($mark in $marks)
+                                               	<td align="center" bgcolor="$ui.tableColor">$mark</td>
+                                        #end
+                                	</tr>
 				#end
-				#end
-				</div>
-
-				#end
-
-
+			#end
+			</div>
+		#end
       		</table>
-      </tr>
+	      	</tr>
     	#end
-      <tr>
-		#if($marksDSize == "0")
-			<td colspan=3> $brih_MarksMsg2 '$data.getUser().getUserName()'!!	</td>
-		#end
-		#if($Exp == "MExp")
-			<td colspan=3> $brih_MarksMsg3 </td>
-		#end
-		#if($Exp == "Exp")
-			<td colspan=3> $brih_MarksMsg4 	</td>
-		#end
-      </tr>	
-    </table>
+      	<tr>
+	#if($marksDSize == "0")
+		<td colspan=3> $brih_MarksMsg2 '$data.getUser().getUserName()'!!	</td>
+	#end
+	#if($Exp == "MExp")
+		<td colspan=3> $brih_MarksMsg3 </td>
+	#end
+	#if($Exp == "Exp")
+		<td colspan=3> $brih_MarksMsg4 	</td>
+	#end
+      	</tr>	
+    	</table>
 </form>

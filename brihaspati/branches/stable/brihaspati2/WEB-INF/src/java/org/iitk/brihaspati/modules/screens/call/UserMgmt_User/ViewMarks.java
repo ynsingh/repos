@@ -54,6 +54,9 @@ import org.iitk.brihaspati.om.StudentRollno;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.XMLWriter_Marks;
+import org.iitk.brihaspati.modules.utils.MarksFileEntry;
+
  /** 
   * In this class, View Marks from Marks file uploading by group instructor
   * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
@@ -100,8 +103,8 @@ public class ViewMarks extends SecureScreen_Student
 	                        	rollno1=element.getRollNo();
 					rollno2="";
 					/**
-	 				 * Vector size greater than 1 shows that user have more than 1 rollno
- 					 * then get another rollno 
+	 				 * Vector size greater than 1 shows that user have more 
+	 				 * than 1 rollno then get another rollno 
  					 */ 
 					if(v.size()>1)
 					{
@@ -115,68 +118,79 @@ public class ViewMarks extends SecureScreen_Student
 				ErrorDumpUtil.ErrorLog("Error inside getting value in view marks"+e);
 			}
 			ErrorDumpUtil.ErrorLog("The value of roll no select vector is "+ v.toString() + " and roll no is "+ rollno1 +" ==== "+ rollno2);
+
+			//Get Marks file name and alias information from xml file @Marks.xml
+			String xmlPath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks.xml";
+                        Vector marksfile = XMLWriter_Marks.ReadMarksDeatils(xmlPath);
+
 			String tempfilePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks";
 			File MarksDir=new File(tempfilePath);
 			String[] listOfFiles = MarksDir.list();
+
 			Vector markDetail=new Vector();
 			Vector heading=new Vector();
-			Vector alias = new Vector();
-			// this block of code is responsible to read all files from Marks directory and checks if user's 
-			// roll number exists or not ,if exists then show their results according to alias name
+			Vector Alias = new Vector();
+			// this block of code is responsible to read all files 
+			// from Marks directory and checks if user's 
+			// roll number exists or not ,if exists then show their 
+			// results according to alias name
 			if(v.size()>0){
-			for (int i=0; i<listOfFiles.length; i++){
-				String filename=listOfFiles[i];
-				String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/"+filename;
+				for (int i=0; i<marksfile.size(); i++){
+					MarksFileEntry MarksfileEntry=(MarksFileEntry)marksfile.get(i);
+	                                String alias=MarksfileEntry.getAlias().toString();
+        	                        String tempfilename=MarksfileEntry.getFileName().toString();
+                	                String filename=alias+"-"+tempfilename;
+					String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/"+filename;
 
-				FileReader fr=new FileReader(filePath);
-				BufferedReader br=new BufferedReader(fr);
-				String line;
-				StringTokenizer sTokenizer;
-				while((line=br.readLine())!=null)
-				{
-					sTokenizer=new StringTokenizer(line,",");
-					try{
-						String userName=sTokenizer.nextToken().trim();
-						if(rollno1.equals(userName)||rollno2.equals(userName)){
-							String str = StringUtils.substringBeforeLast(filename,"-");
-							//String str[] = filename.split("-");
-				                        alias.add(str);
+					FileReader fr=new FileReader(filePath);
+					BufferedReader br=new BufferedReader(fr);
+					String line;
+					StringTokenizer sTokenizer;
+					while((line=br.readLine())!=null)
+					{
+						sTokenizer=new StringTokenizer(line,",");
+						try{
+							String userName=sTokenizer.nextToken().trim();
+							if(rollno1.equals(userName)||rollno2.equals(userName)){
+							//	String str = StringUtils.substringBeforeLast(filename,"-");
+								//String str[] = filename.split("-");
+				        	                Alias.add(alias);
 
-							FileReader freader1 = null;
-  							LineNumberReader lnreader1 = null;
-						 	File   file1 = new File(filePath);
-							freader1 = new FileReader(file1);
-							lnreader1 = new LineNumberReader(freader1);
-							String line1 = "";
-							while ((line1 = lnreader1.readLine()) != null){
-								StringTokenizer Tokenizer=new StringTokenizer(line1,",");
-                                        		        Vector heading1=new Vector();
-		                                                Tokenizer.nextToken();
-                		                                while(Tokenizer.hasMoreTokens())
-                                		                {
-                                                		        heading1.addElement(Tokenizer.nextToken());
-		                                                }
-                		                                heading.add(heading1);
+								FileReader freader1 = null;
+  								LineNumberReader lnreader1 = null;
+							 	File   file1 = new File(filePath);
+								freader1 = new FileReader(file1);
+								lnreader1 = new LineNumberReader(freader1);
+								String line1 = "";
+								while ((line1 = lnreader1.readLine()) != null){
+									StringTokenizer Tokenizer=new StringTokenizer(line1,",");
+                                        			        Vector heading1=new Vector();
+		                                        	        Tokenizer.nextToken();
+                		                                	while(Tokenizer.hasMoreTokens())
+                                		                	{
+                                                		        	heading1.addElement(Tokenizer.nextToken());
+		                                                	}
+                		                                	heading.add(heading1);
 
+									break;
+								}
+								Vector markDetail1=new Vector();
+								while(sTokenizer.hasMoreTokens())
+								{
+									markDetail1.addElement(sTokenizer.nextToken());
+								}
+								br.close();
+								markDetail.add(markDetail1);
 								break;
 							}
-							Vector markDetail1=new Vector();
-							while(sTokenizer.hasMoreTokens())
-							{
-								markDetail1.addElement(sTokenizer.nextToken());
-							}
-							br.close();
-							markDetail.add(markDetail1);
-							break;
+						}
+						catch(Exception e){
+							ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
 						}
 					}
-					catch(Exception e){
-						ErrorDumpUtil.ErrorLog("The Error in View marks Part "+e);
-					}
 				}
-			}
 				ErrorDumpUtil.ErrorLog("The value of marks detail vector is "+ markDetail.toString());
-				context.put("alias",alias);
+				context.put("alias",Alias);
 				context.put("markHeading",heading);
 				context.put("markDetail",markDetail);
 				context.put("marksDSize",Integer.toString(markDetail.size()));
@@ -195,4 +209,3 @@ public class ViewMarks extends SecureScreen_Student
 		}
 	}
 }
-

@@ -243,7 +243,7 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 			{
 				Criteria crit=new Criteria();
 	                        crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-	                        crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
+	                        crit.add("TURBINE_USER",str,(Object)("%"+valueString+"%"),crit.LIKE);
 				if((mode.equals("sclist"))){
 	                        	crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
 				}

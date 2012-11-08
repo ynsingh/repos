@@ -858,15 +858,17 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 	               	String Program= ((StudentRollno)rollnolist.get(0)).getProgram();
 	                               	String pgname = InstituteIdUtil.getPrgName(Program);
         	                       	String rollno= ((StudentRollno)rollnolist.get(0)).getRollNo();
-	                               	map = new HashMap();
-        	                       	map.put("confuname",usrname);
-                	               	map.put("confProgram",pgname);
-	                               	map.put("confRollno",rollno);
-        	                       	map.put("uname",uname);
-                	               	map.put("Program",confPrg);
-	                       	       	map.put("Rollno",rollno);
-        	                       	list.add(map);
-					flag=false;
+					if(!uname.equals(usrname)){
+		                               	map = new HashMap();
+        		                       	map.put("confuname",usrname);
+                		               	map.put("confProgram",pgname);
+	                	               	map.put("confRollno",rollno);
+        	                	       	map.put("uname",uname);
+                	               		map.put("Program",confPrg);
+		                       	       	map.put("Rollno",rollno);
+        		                       	list.add(map);
+						flag=false;
+					}
 	                	        context.put("Rollnolist",list);
 	                        }
         		        else

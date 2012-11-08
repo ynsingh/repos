@@ -190,7 +190,7 @@ public class StudentList extends SecureScreen_Instructor{
 			{
 				crit=new Criteria();
 				crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-				crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
+				crit.add("TURBINE_USER",str,(Object)("%"+valueString+"%"),crit.LIKE);
 				crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
 				crit.add(TurbineUserGroupRolePeer.GROUP_ID,g_id);
 				crit.setDistinct();			
