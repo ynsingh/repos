@@ -60,6 +60,8 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_EmailUpdation;
 import java.io.File;
 import java.util.Vector;
 import java.util.Iterator;
+import org.iitk.brihaspati.modules.utils.StringUtil;
+
 
 /**
  * Action class to resend activation for direct registration
@@ -82,7 +84,6 @@ public class ResendActivation extends VelocityAction{
                 Criteria crit = null;
                 String e_mail=data.getParameters().getString("email");
 		String lang=data.getParameters().getString("lang","english");
-		ErrorDumpUtil.ErrorLog("Language "+lang);
 		//Properties pr ;
 		//String fileName=new String();
 		//String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";	
@@ -98,6 +99,18 @@ public class ResendActivation extends VelocityAction{
 		MultilingualUtil mu = new MultilingualUtil();		
 		String hash="", emai_l="", u_name="";	
 		int user = 0;
+
+		if(StringUtil.checkString(e_mail) != -1)
+                {
+                     data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
+                     return;
+                }
+		if(e_mail.indexOf("@") == -1)
+                {
+                     data.addMessage(MultilingualUtil.ConvertedString("malformed_email",LangFile));
+                     return;
+                }
+
 
 		try{	
 		//Check, if email exists in InstituteRegistrationList.xml
@@ -438,7 +451,6 @@ private boolean sendMail(String email, String a_key, String u_mode, String LangF
         String serverPort=Integer.toString(srvrPort);
 
 	try{
-		ErrorDumpUtil.ErrorLog("i m here 4");
 	 /**
           * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
           * instAdmin/ brihaspatiAdmin defined in brihasapti.properties

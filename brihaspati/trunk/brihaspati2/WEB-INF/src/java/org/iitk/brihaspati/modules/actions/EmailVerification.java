@@ -66,7 +66,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * This class is responsible for veification of email
  * during profile updation.
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modified date: 15-10-2012 
+ * @modified date: 15-10-2012,08-11-2012 
  */
 
 public class EmailVerification
@@ -76,7 +76,7 @@ public class EmailVerification
         String fileName=new String();
         String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", confirmationMail="";
         String Mailmsg=new String();
-	String serverName, serverPort;
+	String serverName, serverPort, current_date;
 	ParameterParser parameterparser;
 	int srvrport;
 	MultilingualUtil mu = new MultilingualUtil();
@@ -103,6 +103,7 @@ public class EmailVerification
 	 */
 	public String profileDetails(String email, String uname, String Lang, boolean photo)
 	{
+		XMLWriter_EmailUpdation exml=new XMLWriter_EmailUpdation();
 	   try
 	   {
 		//check if email already exists in database
@@ -121,8 +122,9 @@ public class EmailVerification
 		{
 			//If email doesn't exist in database
 			String mode="cnfrm_mail";
-			java.util.Date current_date= new java.util.Date();
-                	MultilingualUtil mu = new MultilingualUtil();
+			//java.util.Date current_date= new java.util.Date();
+			current_date = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
+                	//MultilingualUtil mu = new MultilingualUtil();
 
 			/** getting path for creating EmailUpdation directory*/
 			String filepath=TurbineServlet.getRealPath("/EmailUpdation");
@@ -130,6 +132,9 @@ public class EmailVerification
 			if(!f.exists())
                 	f.mkdirs();
                 	filepath=filepath+"/EmailUpdation.xml";
+			//delete expired profile
+	                int cnt=exml.deleteExpiredProfile(filepath, serverName, serverPort);         	
+
 			/** check for existence of entry
                  	* @see XMLWriter_EmailUpdation (method-mailExist)in Utils
                  	*/
@@ -252,7 +257,7 @@ public class EmailVerification
 					user.setEmail(email);
                         		TurbineSecurity.saveUser(user);
 					uid=UserUtil.getUID(u_name);
-				
+					
 					//Update email in TURBINE_USER
 					crit = new Criteria();
 					crit.add(TurbineUserPeer.USER_ID,uid);
@@ -261,7 +266,6 @@ public class EmailVerification
 			
 					if(photo.equals("nexist"))
 					{
-						ErrorDumpUtil.ErrorLog("Updating Telephone Directory");
 						//Update email in TELEPHONE_DIRECTORY
 						List li=null;
                                 		Criteria tele = new Criteria();
@@ -280,13 +284,11 @@ public class EmailVerification
 						if(li.size()==0)
 	                                        {
         	                                        TelephoneDirectoryPeer.doInsert(tele);
-                	                                ErrorDumpUtil.ErrorLog("i m here 2");
-                        	                }
+                	                        }
                                 	        else
                                         	{
                                                 	TelephoneDirectoryPeer.doUpdate(tele);
-                                                 	ErrorDumpUtil.ErrorLog("i m here 20");
-                                        	}
+                                                }
 
 					}
 
@@ -295,7 +297,6 @@ public class EmailVerification
 					String res = XMLWriter_EmailUpdation.removeElement(filePath, email);
 					if(res.equals("UnSuccessfull"))
 					{
-						ErrorDumpUtil.ErrorLog("ERROR IN class:EmailVerification method:profileUpdation(), EMAIL:"+email+" UPDATED IN DATABASE BUT ENTRY NOT REMOVED FROM XML.");
 						XMLWriter_EmailUpdation.setHash(filePath, email);		
 					}
 					try{
