@@ -40,6 +40,7 @@ package org.iitk.brihaspati.modules.screens.call.Bookmarks;
  *This class contains code for Manage Bookmarks
  *@author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  *@author: <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar shukla</a>
+ *@author: <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
  */
 
 import java.util.Vector;
@@ -48,7 +49,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
-
+import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
@@ -87,6 +88,11 @@ public class ManageBookmarks extends SecureScreen
 			String filePath=data.getServletContext().getRealPath("/Bookmarks"+"/"+username);
                         File f=new File(filePath+"/BookmarksList.xml");
 			String Mode=new String();
+			 
+			 //Help Video Configuration
+                         String h_Video=data.getServletContext().getRealPath("/resources")+"/youTubeLinks"+"/"+"help_Video.properties";
+                         String v_Id = CommonUtility.GetBrihVideoId(h_Video,"book_Marks");
+                         context.put("vid",v_Id);
 
 			/**
                         *Reading the BookmarksList.xml for getting the details

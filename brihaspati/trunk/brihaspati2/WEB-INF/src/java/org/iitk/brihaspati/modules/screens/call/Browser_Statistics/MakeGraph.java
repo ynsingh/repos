@@ -59,6 +59,8 @@ import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.iitk.brihaspati.om.CourseTimedayPeer;
@@ -97,6 +99,11 @@ public class MakeGraph extends SecureScreen
                         context.put("mname",mname);
 			String value=pp.getString("value","");
 			context.put("value",value);
+			 //Help Video Configuration
+                         String h_Video=data.getServletContext().getRealPath("/resources")+"/youTubeLinks"+"/"+"help_Video.properties";
+                         String v_Id = CommonUtility.GetBrihVideoId(h_Video,"browser_Statistics");
+                         context.put("vid",v_Id);
+
 			int uid=UserUtil.getUID(usrname);
 			Vector userList1=new Vector();
 			Vector userList2=new Vector();
