@@ -792,7 +792,7 @@ public class XMLWriter_InstituteRegistration {
                 {
                         ErrorDumpUtil.ErrorLog("Error in util XMLWriter_InstituteRegistration method name:(getActivationKey)"+e);
                 }//catch			
-		return null;
+		return "Not exist";
 	 }//method
 
 	/**
