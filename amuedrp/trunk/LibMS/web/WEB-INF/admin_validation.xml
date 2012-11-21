@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE form-validation PUBLIC
+          "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1.3//EN"
+          "http://jakarta.apache.org/commons/dtds/validator_1_1_3.dtd">
+
+<form-validation>
+<!--
+     This is a minimal Validator form file with a couple of examples.
+-->
+    <global>
+
+      <!--  An example global constant
+        <constant>
+            <constant-name>postalCode</constant-name>
+            <constant-value>^\d{5}\d*$</constant-value>
+        </constant>
+        end example-->
+
+    </global>
+
+    <formset>
+<form name="AdminRegistrationActionForm">
+      
+       <field  property="institute_name"   depends="required,maxlength">
+                	
+                          <msg name="required"   key="errors.required"/>
+                           
+                        <arg position="0"   key="AdminRegistrationActionForm.institute_name" />
+
+                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
+  
+            </field>
+
+
+
+             <field  property="abbreviated_name"   depends="maxlength">
+              
+                  <msg name="required"  key="errors.maxlength"/>
+                        <arg position="0" key="AdminRegistrationActionForm.abbreviated_name" />
+
+                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>20</var-value></var>
+
+            </field>
+            <field  property="pin"   depends="maxlength">
+                	   <msg name="required"  key="errors.maxlength"/>
+                        <arg position="0" key="AdminRegistrationActionForm.pin" />
+
+                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>10</var-value></var>
+
+            </field>
+            <field  property="courtesy"   depends="maxlength">
+                	   <msg name="required"  key="errors.maxlength"/>
+                        <arg position="0" key="AdminRegistrationActionForm.courtesy" />
+
+                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>5</var-value></var>
+
+            </field>
+            <field  property="admin_designation"   depends="maxlength">
+                	   <msg name="required" key="errors.maxlength"/>
+                        <arg position="0" key="AdminRegistrationActionForm.admin_designation" />
+
+                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
+
+            </field>
+             <field  property="land_line_no"   depends="maxlength">
+                   <msg name="required" key="errors.maxlength"/>
+                <arg position="0" key="AdminRegistrationActionForm.land_line_no" />
+
+                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>12</var-value></var>
+
+            </field>
+
+            <field  property="institute_address"   depends="required,maxlength">
+                	   <msg name="required"  key="errors.required"/>
+                        <arg position="0"  key="AdminRegistrationActionForm.institute_address" />
+                           <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
+
+            </field>
+            <field  property="city"   depends="required,maxlength">
+                	   <msg name="required" key="errors.required"/>
+                           <msg name="required"  key="errors.maxlength"/>
+                        <arg position="0" key="AdminRegistrationActionForm.city" />
+
+                            <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
+
+            </field>
+            <field  property="state"   depends="required,maxlength">
+                	<arg position="0" key="AdminRegistrationActionForm.state" />
+<arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
+            </field>
+
+  <field  property="institute_website"   depends="maxlength">
+                	<arg position="0" key="AdminRegistrationActionForm.institute_website" />
+<arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
+            </field>
+
+            <field  property="country"   depends="required,maxlength">
+                	<arg position="0" key="AdminRegistrationActionForm.country" />
+                        <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>30</var-value></var>
+
+            </field>
+
+            <field  property="mobile_no"   depends="mobile">
+                	<arg position="0" key="AdminRegistrationActionForm.mobile_no" />
+                        
+
+            </field>
+
+            
+
+            <field  property="admin_fname"   depends="required,maxlength">
+                	<arg position="0" key="AdminRegistrationActionForm.admin_fname" />
+                        <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
+
+            </field>
+             <field  property="admin_lname"   depends="required,maxlength">
+                	<arg position="0" key="AdminRegistrationActionForm.admin_lname" />
+                         <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
+
+
+            </field>
+
+             <field  property="admin_email"   depends="required,email,maxlength">
+                	<arg position="0" key="AdminRegistrationActionForm.admin_email" />
+                        <arg position="1" key="AdminRegistrationActionForm.admin_email" />
+                        <arg position="2" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>50</var-value></var>
+
+            </field>
+            <!-- <field  property="login_id"   depends="required">
+                	<arg key="AdminRegistrationActionForm.login_id" />
+
+            </field>-->
+             
+
+             <field  property="library_name"   depends="required,maxlength">
+                	<arg position="0" key="AdminRegistrationActionForm.library_name" />
+                        <arg position="1" name="maxlength" key="${var:maxlength}" resource="false"/>
+        <var><var-name>maxlength</var-name><var-value>100</var-value></var>
+
+            </field>
+
+            <field property="gender" depends="required">
+
+                <arg key="AdminRegistrationActionForm.gender" />
+
+
+	 </field>
+
+        </form>
+    </formset>
+  
+</form-validation>
