@@ -291,7 +291,7 @@ public class XMLWriter_EmailSpooling{
                                                  */
                                                 String valueEmail =getTagValue("EMAIL_ID",element).trim();
                                                 String valueMsg =getTagValue("MESSAGE",element).trim();
-						ErrorDumpUtil.ErrorLog("\n\nXML REMOVE=============valueEmail="+valueEmail+"\nvalueMsg ="+valueMsg+"\t msg="+msg);
+	//					ErrorDumpUtil.ErrorLog("\n\nXML REMOVE=============valueEmail="+valueEmail+"\nvalueMsg ="+valueMsg+"\t msg="+msg);
                                                 if(valueEmail.equals(emailId) && valueMsg.equals((msg))){
                                                         doc.getDocumentElement().removeChild(element);
                                                         saveXML(doc,filePath);
