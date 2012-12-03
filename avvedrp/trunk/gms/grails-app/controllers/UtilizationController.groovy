@@ -25,11 +25,9 @@ class UtilizationController extends GmsController {
 
     def list = {
 		GrailsHttpSession gh = getSession()
-		println "partyid"+gh.getValue("Party")
 		def utilizationInstanceListbyparty
 		utilizationInstanceListbyparty = Utilization.findAll("from Utilization U where U.projects.id in (select GA.projects.id from GrantAllocation GA where GA.granter='"+gh.getValue("Party")+"')")
-		println"...params....."+params	
-        [ utilizationInstanceList: utilizationInstanceListbyparty ]
+		[ utilizationInstanceList: utilizationInstanceListbyparty ]
     }
 
     def show = {
@@ -43,9 +41,14 @@ class UtilizationController extends GmsController {
     }
 
     def delete = {
-    		println";;;;;;params;;;;"+params
-        def utilizationInstance = Utilization.get( params.id )
+		def grantExpenseService = new GrantExpenseService()
+		def expenseInstanceList = []
+    	def utilizationInstance = Utilization.get( params.id )
         if(utilizationInstance) {
+			expenseInstanceList = grantExpenseService.getGrantExpenseListByProjectsAndExpenseDateRange(utilizationInstance.projects,utilizationInstance.startDate,utilizationInstance.endDate)
+			if(expenseInstanceList){
+				grantExpenseService.setExpenseAsUtilizationNotSubmitted(expenseInstanceList)
+			}
             utilizationInstance.delete()
             flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
@@ -89,7 +92,6 @@ class UtilizationController extends GmsController {
     def create = {
         def utilizationInstance = new Utilization()
         GrailsHttpSession gh = getSession()
-        println "projectid=="+params.id
         def projectInstance = Projects.get(params.id)
         def utilizationInstanceCheck = Utilization.findAll("from Utilization U where U.projects.id="+projectInstance.id)
         utilizationInstance.properties = params
@@ -100,14 +102,17 @@ class UtilizationController extends GmsController {
 
     def save = {
 		GrailsHttpSession gh=getSession()
-		println "uti"+params
+		def grantExpenseService = new GrantExpenseService()
 		def projectInstance = Projects.get(params.id)
         def utilizationInstance = new Utilization(params)
+		def expenseInstanceList = []
         utilizationInstance.projects= Projects.get(params.id)
         utilizationInstance.submittedDate=new Date()
 		utilizationInstance.grantee=Party.get(gh.getValue("Party"))
 		def utilizationInstanceList = Utilization.findAll("from Utilization U where U.projects="+projectInstance.id)
-		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy")
+		Date startDate = df.parse(params.startDate_value)
+		Date endDate = df.parse(params.endDate_value)
 		   if(utilizationInstanceList)
 		   {
 			  
@@ -145,14 +150,12 @@ class UtilizationController extends GmsController {
 			         
 			          String edDate = sdfDestination.format(attr);
 			          
-			          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+			         
 			          Date strtingDate = df.parse(strDate)
 			         
 			          Date endingDate = df.parse(edDate)
 			         
-			          Date startDate = df.parse(params.startDate_value)
 			          
-			          Date endDate = df.parse(params.endDate_value)
 		        
 			   if((( strtingDate <= startDate) && (endingDate >= endDate)) || (( strtingDate <= startDate) && (endingDate >= startDate))
 					   || (( strtingDate <= endDate) && (endingDate >= endDate)))
@@ -167,7 +170,10 @@ class UtilizationController extends GmsController {
 	
 			if(!utilizationInstance.hasErrors() && utilizationInstance.save()) 
 			{
-				
+				expenseInstanceList = grantExpenseService.getGrantExpenseListByProjectsAndExpenseDateRange(projectInstance,startDate,endDate)
+				if(expenseInstanceList){
+					grantExpenseService.setExpenseAsUtilizationSubmitted(expenseInstanceList)
+				}
 				flash.message = "${message(code: 'default.Utilizationcertificatesubmitted.label')}"
 				redirect(action:'create',id:params.id)
 			}
@@ -181,7 +187,10 @@ class UtilizationController extends GmsController {
 		   {
 			   if(!utilizationInstance.hasErrors() && utilizationInstance.save()) 
 				{
-					
+					expenseInstanceList = grantExpenseService.getGrantExpenseListByProjectsAndExpenseDateRange(projectInstance,startDate,endDate)
+					if(expenseInstanceList){
+						grantExpenseService.setExpenseAsUtilizationSubmitted(expenseInstanceList)
+					}
 					flash.message = "${message(code: 'default.Utilizationcertificatesubmitted.label')}"
 					redirect(action:'create',id:params.id)
 				}
@@ -310,7 +319,6 @@ class UtilizationController extends GmsController {
 		
     def download ={
     		def utilizationInstance=Utilization.get(params.id)
-    		println "utilizationid="+utilizationInstance.attachmentPath
     		String fileName = utilizationInstance.attachmentPath
     		def file = new File("grails-app/views/appForm/"+fileName)
     		response.setContentType("application/octet-stream") 

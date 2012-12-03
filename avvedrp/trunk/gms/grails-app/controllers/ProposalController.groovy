@@ -31,6 +31,7 @@ class ProposalController {
     def grantAllocationService 
     def projectTypeService
     def grantAllocationSplitService
+    def proposalCategoryService
     
     
     def list = 
@@ -394,16 +395,16 @@ class ProposalController {
     			def proposalApplicationInstance = proposalService.getProposalApplicationByControllerIdAndNotification(params.controllerId,gh.getValue("NotificationId"))
     			if(proposalApplicationInstance)
         		{
-        			if(proposalApplicationInstance.proposal.lockedYN=='Y')
+        				if(proposalApplicationInstance.proposal.lockedYN=='Y')
         			{
-    				gh.putValue("ProposalId",proposalApplicationInstance.proposal.id)
+        				gh.putValue("ProposalId",proposalApplicationInstance.proposal.id)
         				if(proposalApplicationInstance.proposal.proposalVersion>0)
         				{
         					redirect(controller:"proposalApplication",action:'proposalAppPreview',params:['proposalApplication.id':proposalApplicationInstance?.id])
         				}
         				else
         				{
-        					redirect(controller:"proposalApplication",action:"proposalAppPart1PersonalDetails",
+        						redirect(controller:"proposalApplication",action:"proposalAppPart1PersonalDetails",
         							params:['proposalId':proposalApplicationInstance.proposal.id])
         				}
         			}
@@ -542,7 +543,8 @@ class ProposalController {
     		GrailsHttpSession gh=getSession() 
 			gh.removeValue("Help")
 			gh.putValue("Help","ProposalApplication_List.htm")//putting help pages in session
-    		/*method to get proposal application of each reviewer using user id and party id*/
+			def userInstance =gh.getValue("UserId")
+			/*method to get proposal application of each reviewer using user id and party id*/
     		def proposalInstanceList = proposalService.getProposalApplicationListForReviewer(gh.getValue("UserId"),gh.getValue("Party"))
     		/*Geting attachment type of cv*/
     		def attachmentsTypeInstanceCV=attachmentsService.getAttachmentTypesByDocumentTypeAndType("CV","Proposal")
@@ -616,7 +618,8 @@ class ProposalController {
     def updateProposal = 
     {
     		def proposalApplicationInstance = proposalService.getProposalApplicationById(params.id)
-    		[proposalApplicationInstance:proposalApplicationInstance]
+    		def partyProposalFormInstance = proposalService.getactiveProposalFormByNotification(proposalApplicationInstance.proposal.notification.id)
+			[proposalApplicationInstance:proposalApplicationInstance,partyProposalFormInstance:partyProposalFormInstance]
     }
     def notificationList = 
     {
@@ -746,10 +749,19 @@ class ProposalController {
     		def notificationAmountInstance
     		def data
     		def value
+    		def proposalTitle
     		def grantAllocationForSubProjectInstanceList = []
     		def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(params.id)
-    		def proposalApplicationExtProjectInstance = proposalService.getProposalApplicationExtByFieldAndProposalAppId('TitleOfTheResearchProject_2',proposalApplicationInstance?.id)
-    		
+    		def partyproposalInstance = proposalService.getactiveProposalFormByNotification(proposalApplicationInstance.proposal.notification.id)
+    		if(partyproposalInstance)
+    		{
+    		proposalTitle=proposalApplicationInstance.projectTitle
+    		}
+    		else
+    		{
+	    		def proposalApplicationExtProjectInstance = proposalService.getProposalApplicationExtByFieldAndProposalAppId('TitleOfTheResearchProject_2',proposalApplicationInstance?.id)
+	    		proposalTitle=proposalApplicationExtProjectInstance.value
+    		}
             def projectTypeInstance = projectTypeService.getAllProjectType()
             def proposalInstance = proposalService.getProposalById(params.id)
             def notificationAward =proposalService.getAwardListByProposalNotificationId(proposalInstance.notification.id)
@@ -765,18 +777,17 @@ class ProposalController {
 	            ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 	        	NumberFormat formatter = new DecimalFormat("#0.00");
 	        	
-	            ['proposalTitle':proposalApplicationExtProjectInstance.value,'proposalApplicationInstance':proposalApplicationInstance,'projectTypeInstance':projectTypeInstance,'attachmentTypeList':attachmentTypeList,'projectInstance':projectsInstance, 'notificationAmount':value,'currencyFormat':currencyFormatter,'balanceAmountValue':formatter.format(data)]
+	            ['proposalTitle':proposalTitle,'proposalApplicationInstance':proposalApplicationInstance,'projectTypeInstance':projectTypeInstance,'attachmentTypeList':attachmentTypeList,'projectInstance':projectsInstance, 'notificationAmount':value,'currencyFormat':currencyFormatter,'balanceAmountValue':formatter.format(data)]
             }	
             else
             {
             	def proposalForNotificationInstance = Proposal.get(params.id)
             	notificationAmountInstance = Notification.executeQuery("select amount from Notification N where N.id = "+proposalForNotificationInstance.notification.id)
-            	println"notificationAmountInstance------------------>"+notificationAmountInstance[0]
             	value = notificationAmountInstance[0]
                ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         	   NumberFormat formatter = new DecimalFormat("#0.00");
         	
-            ['proposalTitle':proposalApplicationExtProjectInstance.value,'proposalApplicationInstance':proposalApplicationInstance,'projectTypeInstance':projectTypeInstance,'attachmentTypeList':attachmentTypeList,'projectInstance':projectsInstance, 'notificationAmount':value,'currencyFormat':currencyFormatter]
+            ['proposalTitle':proposalTitle,'proposalApplicationInstance':proposalApplicationInstance,'projectTypeInstance':projectTypeInstance,'attachmentTypeList':attachmentTypeList,'projectInstance':projectsInstance, 'notificationAmount':value,'currencyFormat':currencyFormatter]
             }
     }
     /*
@@ -788,7 +799,6 @@ class ProposalController {
      */
     def saveAward=
     {
-    	
     		GrailsHttpSession gh=getSession()
     		
     		def ctx = AH.application.mainContext
@@ -814,7 +824,7 @@ class ProposalController {
      		}
      	    if(proposalAward.size() == 0)
      		{
-     	    	projectsInstance = new Projects(params['Projects'])
+     			projectsInstance = new Projects(params['Projects'])
      	    	if(((projectsService.checkDuplicateProject(projectsInstance)) == 0)&&(personDuplicateInstance.size() == 0))
      	    	{
      	    	//method to get award by notification id 
@@ -876,7 +886,6 @@ class ProposalController {
      			}
      			else
      			{
-     				
      					//assign parent project
          				  projectsInstance.parent=notificationAward[0].projects.parent	
                    	
@@ -887,7 +896,7 @@ class ProposalController {
      		
      			if(!proposalInstance.party)
      			{
-    	 			//intializing party instance
+     				//intializing party instance
     	 			partyInstance=new Party()
     	 			//generate random party code start
     	 			def codeValue =proposalService.generateCode()
@@ -908,7 +917,7 @@ class ProposalController {
     	     		personInstance.email=proposalApplicationInstance.email
     				personInstance.userRealName=proposalApplicationInstance.name
     				personInstance.userSurName=proposalApplicationInstance.name
-    				
+    				personInstance.activeYesNo="Y"
     				personInstance.enabled=false
     				personInstance.accountExpired=false
     				personInstance.accountLocked=false
@@ -917,7 +926,6 @@ class ProposalController {
     				partyInstance=partyService.saveParty(partyInstance)
     			    if((personInstance?.id==null)||(partyInstance.saveMode != null) && (partyInstance.saveMode.equals("Duplicate")))
     				{
-    						
     				}
     				else
     				{
@@ -933,7 +941,7 @@ class ProposalController {
      			}
      			else
      			{
-    	 			partyInstance=proposalInstance.party
+     				partyInstance=proposalInstance.party
     	 			//def userRole = UserRole.find("from UserRole UR where UR.role.authority='ROLE_SITEADMIN' and UR.user.id in (select UM.user.id from UserMap UM where UM.party.id="+proposalInstance.party.id+")")
     	 			//find the site admin of recipient party
     	 			def userRole=userService.getUserRoleByAuthorityAndParty('ROLE_SITEADMIN',proposalInstance?.party?.id)
@@ -950,6 +958,7 @@ class ProposalController {
     	     		
     	     		grantAllocationInstance.granter=proposalInstance.notification.party
     	     		grantAllocationInstance.party=partyInstance
+    	     		
     	     		grantAllocationInstance.DateOfAllocation = projectsInstance.projectStartDate
     	     		grantAllocationInstance.remarks = params.description
     	     		//create a grant allocation
@@ -959,7 +968,6 @@ class ProposalController {
     	 		}
     	 		else
     	 		{
-    	 			
     	 		}
      		
      		
@@ -973,7 +981,6 @@ class ProposalController {
     	 		}
     	 		else
     	 		{
-    	 		
     	 		}
     	 		def downloadedfile = request.getFile("attachmentPath");
      	 		if(params.attachmentType)
@@ -985,7 +992,6 @@ class ProposalController {
     	 		}
     	 		else
     	 		{
-    	 			
     	 		}
         		//mail
         		def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
@@ -1024,7 +1030,6 @@ class ProposalController {
      * method to allocate fund for awarded project
      */
      def projectFundAllocation={
-    		 println"params------"+params
     		 double balanceAmount
     		 def projectsInstance = Projects.get(params.id)
     		 def grantAllocationInstanceList = grantAllocationService.getAllGrantAllocationOfProject(projectsInstance.id)
@@ -1056,7 +1061,6 @@ class ProposalController {
      */
      def saveProjectFundAllocation=
      {
-    		 println"params..........."+params
     		 double balanceAmount
     		 def grantAllocationSplitInstance = new GrantAllocationSplit(params)
     		 def grantAllocationInstance = grantAllocationService.getGrantAllocationByProjects(params.projectId)
@@ -1085,7 +1089,6 @@ class ProposalController {
     	            }
     	            else
     	            {
-    	            	println"jjjjjjjjjjjjj"
     	            if((!params.subAccountHead) && (params.subAccountHead == "null") )
     	        	{
     	            	 grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.accountHead.id))
@@ -1103,7 +1106,6 @@ class ProposalController {
     	        	}
     	        	else
     	        	{
-    	        		println"dgdfgdf"
     	        	grantAllocationSplitInstance =grantAllocationSplitService.saveGrantAllocationSplit(grantAllocationSplitInstance,new Integer(params.projectId)) 
     	        	println"grantAllocationSplitInstance"+grantAllocationSplitInstance
     	            flash.message = "${message(code: 'default.GrantAllocated.label')}"
@@ -1183,9 +1185,11 @@ class ProposalController {
 			gh.putValue("Help","Add_New_Proposal.htm")//putting help pages in session
         	def proposalInstance = new Proposal()
     		def proposalApplicationInstance = new ProposalApplication()
-    		def proposalApplicationForm = gmsSettingsService.getGmsSettingsValue("ProposalForm")
-            def proposalApplicationPath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
-            proposalInstance.properties = params
+    		//def proposalApplicationForm = gmsSettingsService.getGmsSettingsValue("ProposalForm")
+     		def partyInstance = Party.find("from Party P where P.id="+gh.getValue("Party")) 
+	        def partyProposalFormOldInstance = PartyProposalForm.find("from PartyProposalForm PPF where  PPF.activeYesNo='Y' and PPF.formType='PreProposal' and PPF.party.id="+partyInstance.id)
+	        def proposalApplicationPath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
+	         proposalInstance.properties = params
         	proposalApplicationInstance.properties = params
                 	
     		 def webRootDir
@@ -1197,8 +1201,8 @@ class ProposalController {
             	{
             		webRootDir = "grails-app/views/proposal/"
             	}
-            	def srcFile = new File(proposalApplicationPath+proposalApplicationForm)
-            	def targetFile = new File(webRootDir+proposalApplicationForm)
+            	def srcFile = new File(proposalApplicationPath+partyProposalFormOldInstance.name)
+            	def targetFile = new File(webRootDir+partyProposalFormOldInstance.name)
             	try
             	{
             		org.apache.commons.io.FileUtils.copyFile(srcFile, targetFile)
@@ -1207,7 +1211,7 @@ class ProposalController {
             	{
             		
             	}
-            return [proposalInstance: proposalInstance,proposalApplicationInstance: proposalApplicationInstance,proposalApplicationForm:proposalApplicationForm]
+            return [proposalInstance: proposalInstance,proposalApplicationInstance: proposalApplicationInstance,proposalApplicationForm:partyProposalFormOldInstance.name]
         }
     /*
      * Method to Save PreProposal
@@ -1247,12 +1251,15 @@ class ProposalController {
     		GrailsHttpSession gh=getSession()
     		gh.putValue("Proposal",params.id)
     		def proposalInstance=proposalService.getPrePropsalById(params.id)
-    		[proposalApplicationForm:proposalInstance.proposalDocumentationPath]
+			[proposalApplicationForm:proposalInstance.proposalDocumentationPath]
+
+    		[proposalApplicationForm:proposalInstance.proposalDocumentationPath,proposalInstance:proposalInstance]
+
     	}
     
     def getForm = 
 	{
-    	GrailsHttpSession gh = getSession()
+	 	GrailsHttpSession gh = getSession()
 		def proposalApplicationExtInstance = proposalService.getAllPreProposalAppExtByPreProposalId(gh.getValue("ProposalId"))
 		if(proposalApplicationExtInstance)
 		{
@@ -1320,7 +1327,7 @@ class ProposalController {
         	def proposalInstance = proposalService.getPreProposalById(new Integer( params.id ))
         	/*method to get proposal Title*/
         	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(proposalInstance.id)
-    		GrailsHttpSession gh=getSession()
+        	GrailsHttpSession gh=getSession()
             gh.putValue("ProposalId",proposalInstance.id);
             if (!proposalInstance) {
                 flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), params.id])}"
@@ -1346,7 +1353,7 @@ class ProposalController {
 		gh.putValue("ProposalId",proposalInstance.id);
 		/*method to get proposal Title*/
     	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(proposalInstance.id)
-		[proposalInstance:proposalInstance,proposalApplicationForm:proposalInstance.proposalDocumentationPath,proposalApplicationInstance:proposalApplicationInstance]
+    	[proposalInstance:proposalInstance,proposalApplicationForm:proposalInstance.proposalDocumentationPath,proposalApplicationInstance:proposalApplicationInstance]
 	}
     
     /*
@@ -1354,7 +1361,7 @@ class ProposalController {
      */
     def preProposalUpdate =
     {
-    	def proposalService = new ProposalService()
+   	def proposalService = new ProposalService()
     	def proposalInstance = proposalService.getPreProposalById(new Integer( params.id ))
     	if (proposalInstance) 
     	  {
@@ -1378,7 +1385,7 @@ class ProposalController {
 	  {
     			  
     			  proposalInstance = proposalService.updatePreProposal(params,proposalInstance)
-    			 if( proposalInstance.saveMode.equals( "Updated")) 
+    			  if( proposalInstance.saveMode.equals( "Updated")) 
     			  {
     				 def proposalApplicationInstance = proposalService.getProposalApplicationByProposalId(proposalInstance.id)
     		   		 proposalApplicationInstance.projectTitle=params.projectTitle
@@ -1752,15 +1759,19 @@ def uploadProposalForm =
 	GrailsHttpSession gh=getSession()
 	gh.removeValue("Help")
 	gh.putValue("Help","upload_Proposal_Form.htm")//putting help pages in session
+	def partyInstance = Party.find("from Party P where P.id="+gh.getValue("Party"))
+	def partyProposalFormOldInstanceList = proposalService.getAllFormByPartyAndFormType('PreProposal',partyInstance.id)
+	return['partyProposalFormOldInstanceList':partyProposalFormOldInstanceList]
 }
 def saveUploadedProposalForm =
 {
-	//def proposalApplicationPath = proposalSettingsService.getProposalSettingsValue("ProposalApplicationPath")
-	//def proposalApplicationForm = proposalSettingsService.getProposalSettings("ProposalForm")
-	 def proposalApplicationForm = gmsSettingsService.getGmsSettings("ProposalForm")
-    def proposalApplicationPath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
-	def proposalSettingsInstance = new GmsSettings()     	
-     def webRootDir
+	GrailsHttpSession gh=getSession()
+	def proposalApplicationPath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
+	def partyProposalFormInstance = new PartyProposalForm()
+	def partyInstance = Party.find("from Party P where P.id="+gh.getValue("Party")) 
+	def partyPreProposalFormOldInstance = proposalService.getFormByPartyAndFormType(params.formType,partyInstance.id)
+	
+	def webRootDir
      if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
      {
      	webRootDir = proposalApplicationPath
@@ -1770,42 +1781,88 @@ def saveUploadedProposalForm =
      	webRootDir = proposalApplicationPath
      }
      	def downloadedfile = request.getFile("attachmentPath");
-     if(!downloadedfile.empty) {
+     if(!downloadedfile.empty) 
+     {
      	//String fileName=downloadedfile.getOriginalFilename()
      	String fileName=downloadedfile.getOriginalFilename().toString().substring(0,downloadedfile.getOriginalFilename().toString().indexOf("."))
+     	String institutionCode = partyInstance.code
      	if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
+		{
+			if(params.formType=="PreProposal")
 			{
-     		new File( webRootDir ).mkdirs()
-        	downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName+".gsp") )
-     		
-     		proposalSettingsInstance.name="ProposalForm"
-     		proposalSettingsInstance.value=fileName+".gsp"
-     		proposalSettingsInstance.activeYesNo='Y'
-     		if (proposalSettingsInstance.save(flush: true)) {
-     			if(proposalApplicationForm)
-     			{
-     			proposalApplicationForm.activeYesNo='N'
-     			proposalApplicationForm.save()
-     			}
-                 flash.message = "File uploaded successfully"
+				new File( webRootDir ).mkdirs()
+	        	downloadedfile.transferTo( new File( webRootDir + File.separatorChar+"PRE-"+fileName+institutionCode+".gsp") )
+	     		partyProposalFormInstance.name="PRE-"+fileName+institutionCode+".gsp"
+	     		partyProposalFormInstance.value=fileName+".gsp"
+	     		partyProposalFormInstance.formType="PreProposal"
+	     		partyProposalFormInstance.notification=null
+	     		partyProposalFormInstance.activeYesNo='Y'
+	     		partyProposalFormInstance.party=partyInstance
+	     		if (partyProposalFormInstance.save(flush: true))
+	     		{
+		     		if(partyPreProposalFormOldInstance)
+	     			{
+	     				partyPreProposalFormOldInstance.activeYesNo='N'
+		     			partyPreProposalFormOldInstance.save()
+	     			}
+		     			
+	                 flash.message = "File uploaded successfully"
                  
-             }
-             else {
-             	println "error ="
-             	//redirect(action: "create", id: attachmentsInstance.domainId)//, model: [attachmentsInstance: attachmentsInstance])
-             }
-			}
+            	 }
+	             else 
+	             {
+	             	println "error== ="
+	             	//redirect(action: "create", id: attachmentsInstance.domainId)//, model: [attachmentsInstance: attachmentsInstance])
+	             }
+	     	}
+	     	else
+	     	{
+		     	def partyProposalFormOldInstance =proposalService.getOldFormByPartyAndFormType(params.formType,partyInstance.id,params.notification.id)
+				if(partyProposalFormOldInstance)
+	 			{
+	 				partyProposalFormOldInstance.activeYesNo='N'
+	     			partyProposalFormOldInstance.save()
+	 			}
+	 				def notificationInstance = Notification.get(params.notification.id)
+		     		new File( webRootDir ).mkdirs()
+		        	downloadedfile.transferTo( new File( webRootDir + File.separatorChar +"PROP-"+fileName+institutionCode+"-"+notificationInstance.id+".gsp") )
+		     		partyProposalFormInstance.name="PROP-"+fileName+institutionCode+"-"+notificationInstance.id+".gsp"
+		     		partyProposalFormInstance.value=fileName+".gsp"
+		     		partyProposalFormInstance.formType="Proposal"
+		     		partyProposalFormInstance.notification=notificationInstance
+		     		partyProposalFormInstance.activeYesNo='Y'
+		     		partyProposalFormInstance.party=partyInstance
+		     		
+		     		if (partyProposalFormInstance.save(flush: true)) 
+		     		{
+		     		   flash.message = "File uploaded successfully"
+		           }
+	               else 
+	               {
+	             	 //redirect(action: "create", id: attachmentsInstance.domainId)//, model: [attachmentsInstance: attachmentsInstance])
+	               }
+         }
+	     	
+		}
      	else 
          {
          	flash.message = "Cannot upload a .exe file"	
          	
          }
      }
-     else {
+     else 
+     {
          flash.message = "file cannot be empty"
          
       }
-     redirect(action: "uploadProposalForm")
+     if(params.formType=="PreProposal")
+	 {
+     	redirect(action: "uploadProposalForm")
+     }
+     else
+     {
+     	redirect(action: "uploadForm")
+     }
 }
 def searchNotification = {
 	NotificationQuery notificationQuery = new NotificationQuery()
@@ -1832,5 +1889,120 @@ def searchNotification = {
 	
 	}
 
-    
+    def uploadForm = 
+    {
+	    GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		 String subQuery ="";
+		gh.putValue("Help","upload_Proposal_Form.htm")//putting help pages in session
+		def partyInstance = Party.find("from Party P where P.id="+gh.getValue("Party"))
+		def notificationInstanceList=notificationService.getAllNotifications(subQuery,gh.getValue("Party"))
+		def partyProposalFormOldInstanceList = proposalService.getAllFormByPartyAndFormType('Proposal',partyInstance.id)  
+		
+		return['partyProposalFormOldInstanceList':partyProposalFormOldInstanceList,'notificationInstanceList':notificationInstanceList]
+    }
+    def proposalFormDetails =
+	{
+	GrailsHttpSession gh = getSession()
+	def notificationInstance = Notification.get(params.notificationId)
+	def partyInstance
+	if(params.party!='null')
+	{
+	partyInstance = Party.get(params.party)
+	gh.putValue("partyId",partyInstance.id)
+	}
+	else
+	{
+	gh.putValue("partyId","null")
+	}
+	gh.putValue("notificationId",notificationInstance.id)
+	def proposalCategoryList=proposalCategoryService.getProposalCategoryList()
+	def partyProposalFormInstance = proposalService.getactiveProposalFormByNotification(notificationInstance.id)
+	def proposalInstance = new Proposal()
+    def proposalApplicationInstance = new ProposalApplication()
+	def proposalApplicationPath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
+    proposalInstance.properties = params
+	proposalApplicationInstance.properties = params
+        	gh.putValue("proposalForm","partyProposalFormInstance.name")//putting form in session
+	 def webRootDir
+ 		if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+ 		{
+ 			webRootDir = servletContext.getRealPath("/")+"WEB-INF/grails-app/views/proposal/"
+ 		}
+    	if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+    	{
+    		webRootDir = "grails-app/views/proposal/"
+    	}
+    	def srcFile = new File(proposalApplicationPath+partyProposalFormInstance.name)
+    	def targetFile = new File(webRootDir+partyProposalFormInstance.name)
+    	try
+    	{
+    		org.apache.commons.io.FileUtils.copyFile(srcFile, targetFile)
+    	}
+    	catch(Exception e)
+    	{
+    		
+    	}
+    	 return [partyInstance:partyInstance,proposalInstance: proposalInstance,proposalApplicationInstance: proposalApplicationInstance,proposalApplicationForm:partyProposalFormInstance.name,notificationInstance:notificationInstance,proposalCategoryList:proposalCategoryList]
+	}
+	
+	def getProposalForm = 
+	{
+	 		GrailsHttpSession gh = getSession()
+    		def notificationInstance = Notification.get(gh.getValue("notificationId"))
+    		def partyInstance = (gh.getValue("partyId"))
+    		if(partyInstance == "null")
+    		{
+    		gh.putValue("partyId","null")
+    		}
+    		else
+    		{
+    		gh.putValue("partyId",partyInstance)
+    		}
+    		def partyProposalFormInstance = proposalService.getactiveProposalFormByNotification(notificationInstance.id)
+    		gh.putValue("proposalForm",partyProposalFormInstance.name)
+    		gh.putValue("notificationId",notificationInstance.id)
+    		if(partyProposalFormInstance)
+    		{
+    		 	render partyProposalFormInstance as JSON
+    		}
+	}
+	
+    def saveProposalForm = 
+	{
+	  GrailsHttpSession gh=getSession()
+	  def proposalFormInstance = gh.getValue("proposalForm")
+	  def partyInstance = (gh.getValue("partyId")) 
+	  def notificationInstance = Notification.get(gh.getValue("notificationId"))
+	  def proposalInstance = new Proposal(params)
+      def proposalApplicationInstance = new ProposalApplication(params)
+      
+      proposalInstance  = proposalService.saveDynamicProposal(params,notificationInstance.id,gh.getValue("partyId"),proposalFormInstance)
+      def proposalDetailsSaveStatus=proposalService.saveformDetailsPreProposal(params,proposalInstance.id)
+	   if(proposalDetailsSaveStatus)
+	  	{
+		  proposalInstance.lockedYN='N'
+		  proposalInstance.proposalStatus = "Submitted"
+		  proposalInstance.save()
+	  
+     	def proposalApprovalAuthorityMapInstanceByNotificationId = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByProposalIdAndType(proposalInstance.notification.id,"Notification")
+     	if(proposalApprovalAuthorityMapInstanceByNotificationId)
+    	{
+    	def proposalApprovalAuthorityMapInstance=proposalApprovalAuthorityMapService.saveProposalApprovalAuthorityMapForProposalApplication(proposalApprovalAuthorityMapInstanceByNotificationId.approvalAuthority,proposalInstance.id,"Proposal")
+    	}
+    	else
+    	{
+    		def approvalAuthorityInstanceList = approvalAuthorityService.getDefaultActiveApprovalAuthority(proposalInstance.notification.party.id)
+        	for(approvalAuthorityInstance in approvalAuthorityInstanceList)
+        	{
+        		def proposalApprovalAuthorityMapInstance=proposalApprovalAuthorityMapService.saveProposalApprovalAuthorityMapForProposalApplication(approvalAuthorityInstance,proposalInstance.id,"Proposal")
+        	}
+    	}
+    	flash.message = "${message(code: 'default.ProposalSibmitted.label')}"
+        redirect(action:'notificationList')
+	 
+	  }
+	}
+	
+	
 }

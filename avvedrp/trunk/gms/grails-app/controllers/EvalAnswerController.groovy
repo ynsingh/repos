@@ -83,15 +83,16 @@ class EvalAnswerController {
     	def proposalInstance = proposalService.getProposalById(proposalApplicationInstance.proposal.id)
     	def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplication(proposalApplicationInstance.id)
     	def attachmentsInstanceGetCV=attachmentsService.getAttachmentsByDomainAndType("Proposal","CV",proposalInstance.id)
-        def attachmentsInstanceGetDPR=attachmentsService.getAttachmentsByDomainAndType("Proposal","DPR",proposalInstance.id)
+    	def attachmentsInstanceGetDPR=attachmentsService.getAttachmentsByDomainAndType("Proposal","DPR",proposalInstance.id)
         def evalItemService = new EvalItemService()  
     	def proposalId = proposalInstance.id
     	def notificationId = proposalInstance.notification.id
+    	def partyProposalFormInstance = proposalService.getactiveProposalFormByNotification(notificationId)
     	char personStatus
     	char reviewalStatus
     	GrailsHttpSession gh=getSession()
     	def userInstance = Person.get(gh.getValue("UserId"));
-    	
+    	gh.putValue("ProposalId",proposalInstance.id);
     	def evalAnswerInstanceList = evalItemService.getEvalAnswerList(userInstance,proposalId)
     	def evalItemInstanceList = evalItemService.getevalItemList(proposalInstance.notification.id)
     	def evalScaleOptionsList = []
@@ -107,24 +108,23 @@ class EvalAnswerController {
     	if(proposalInstance.person)
     	{
     	def propoNotInstance = Proposal.findAll("from Proposal P where P.notification.id="+proposalInstance.notification.id+"and P.id="+proposalInstance.id)
-    	if(propoNotInstance[0].person.id != userInstance.id)
-    	{
-    		personStatus = 'Y'
+    	 	if(propoNotInstance[0].person.id != userInstance.id)
+	    	{
+	    		personStatus = 'Y'
+	    	}
+	    	else
+	    	{
+	    		personStatus = 'N'
+	    	}
+	    	if(approvalAuthorityDetailInstance.size() == evalScoreInstance.noOfReviewers)
+	    	{
+	    		reviewalStatus = 'Y'
+	    	}
+	    	else
+	    	{
+	    		reviewalStatus = 'N'
     	}
-    	else
-    	{
-    		personStatus = 'N'
-    	}
-    	if(approvalAuthorityDetailInstance.size() == evalScoreInstance.noOfReviewers)
-    	{
-    		reviewalStatus = 'Y'
-    	}
-    	else
-    	{
-    		reviewalStatus = 'N'
-    	}
-    	println"personStatus;;;;;;;;;;;;"+personStatus
-    	return [evalItemInstanceList:evalItemInstanceList,evalScaleOptionsList:evalScaleOptionsList,
+    	return [proposalApplicationForm:proposalInstance.proposalDocumentationPath,partyProposalFormInstance:partyProposalFormInstance,evalItemInstanceList:evalItemInstanceList,evalScaleOptionsList:evalScaleOptionsList,
     	        proposalId:proposalId,notificationId:notificationId,
     	        evalAnswerInstanceList:evalAnswerInstanceList,
     	        proposalApplicationExtInstance:proposalApplicationExtInstance,
@@ -134,7 +134,7 @@ class EvalAnswerController {
     	}
     	else
     	{
-    		return [evalItemInstanceList:evalItemInstanceList,evalScaleOptionsList:evalScaleOptionsList,
+    		return [proposalApplicationForm:proposalInstance.proposalDocumentationPath,partyProposalFormInstance:partyProposalFormInstance,evalItemInstanceList:evalItemInstanceList,evalScaleOptionsList:evalScaleOptionsList,
         	        proposalId:proposalId,notificationId:notificationId,
         	        evalAnswerInstanceList:evalAnswerInstanceList,
         	        proposalApplicationExtInstance:proposalApplicationExtInstance,
@@ -161,21 +161,16 @@ class EvalAnswerController {
     	def evalAnswerList = evalItemService.getEvalAnswerList(userInstance,paramId)
     	def evalScoreInstance = evalItemService.getEvalScore(proposalValInstance)
     	def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.id ="+paramId)
-    	println"params.personStatus-----------"+params.personStatus
-    	println"params.reviewalStatus..........."+params.reviewalStatus
     	/*Update the evaluation result*/
  	   	if(evalAnswerList && evalScoreInstance && proposalValInstance.proposalStatus == "Reviewed" )
  	   	{
- 	   		println"bbbbbbbbbbbb"
  	   		if(params.personStatus == 'N')
  	   		{
- 	   		println"ffffffffffffff"
  	   		flash.message = "Already submitted"
  	   		redirect(controller:"proposal",action:"proposalApplicationList",id:proposalApplicationInstance.id)
  	   		}
  		   	else if(params.personStatus == 'N' && params.reviewalStatus == 'Y')
  	 	   		{
- 	 	   		println"llllllllllllll"
  	 	   		flash.message = "Already submitted"
  	 	 	   		redirect(controller:"proposal",action:"proposalApplicationList",id:proposalApplicationInstance.id)
  	 	   		}
@@ -183,13 +178,11 @@ class EvalAnswerController {
  	 	   	{
  	 	   	    if(evalAnswerList)
  	 	   	    	{
- 	 	   	    println"mmmmmmmmmmmm"
  	 	   	    	evalSaved = evalItemService.updateEvalAnswer(params,evalSaved)
  	 	   	    	}
  	        	else
  	 	   			{
- 	        		println"jjjjjjjjjj"
- 	 	   			evalSaved = evalItemService.saveEvalAnswer(params,evalSaved,userInstance)
+ 	        		evalSaved = evalItemService.saveEvalAnswer(params,evalSaved,userInstance)
  	 	   			}
  	    	if(evalSaved)
  	    	
@@ -224,9 +217,6 @@ class EvalAnswerController {
  		    	if(isSaved)
  		    	{
  		    		
- 		    		println"kkkkkkkkkkkkkk"
- 		    	    println"userInstance"+userInstance
- 		    	    println"proposalInstance.person"+proposalInstance.person
  		    		proposalInstance.proposalStatus = "Reviewed"
 
  		    		if(evalScoreNewInstance)
@@ -258,13 +248,11 @@ class EvalAnswerController {
  	   	{
  	   	    if(evalAnswerList)
  	   	    	{
- 	   	    println"mmmmmmmmmmmm"
  	   	    	evalSaved = evalItemService.updateEvalAnswer(params,evalSaved)
  	   	    	}
         	else
  	   			{
-        		println"jjjjjjjjjj"
- 	   			evalSaved = evalItemService.saveEvalAnswer(params,evalSaved,userInstance)
+        		evalSaved = evalItemService.saveEvalAnswer(params,evalSaved,userInstance)
  	   			}
     	if(evalSaved)
     	
@@ -298,9 +286,6 @@ class EvalAnswerController {
  		    	
 	    	if(isSaved)
 	    	{
-	    		println"kkkkkkkkkkkkkk"
-	    	    println"userInstance"+userInstance
-	    	    println"proposalInstance.person"+proposalInstance.person
 	    		proposalInstance.proposalStatus = "Reviewed"
 	    			if(evalScoreNewInstance)
 	    			evalScoreNewInstance.activeYesNo = 'Y'

@@ -947,6 +947,9 @@ class ProjectsService{
 		}
 		else
 		{
+		if(projectsCOPIMapInstancedelete != null)
+		{
+		
 			projectsCOPIMapInstancedelete.activeYesNo="N"
 			if(checkFordeleteProjectAccessPermissionOfPiMap(projectsCOPIMapInstancedelete.projects.id,projectsCOPIMapInstancedelete.investigator.id))
 			{	
@@ -958,6 +961,11 @@ class ProjectsService{
 			else
 			{
 				checkPiInstance=false
+			}
+			}
+			else
+			{
+			checkPiInstance=true
 			}
 		}
 	}

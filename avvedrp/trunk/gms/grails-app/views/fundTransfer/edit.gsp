@@ -60,7 +60,7 @@
                         	</tr>  
                         	<tr class="prop">
                         		<td valign="top" class="name">
-                                    <label for="amount"><g:message code="fundTransfer.amounttransferred.label" />:</label>
+                                    <label for="amount"><g:message code="default.fundTransfer.amounttransferred.label" />:</label>
                                     <label for="amount" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="name">
@@ -69,7 +69,7 @@
                         	</tr>                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="dateOfTransfer"><g:message code="fundTransfer.dateOfTransfer.label" default="Date Of Transfer" /></label>
+                                  <label for="dateOfTransfer"><g:message code="default.fundTransfer.dateOfTransfer.label" default="Date Of Transfer" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: fundTransferInstance, field: 'dateOfTransfer', 'errors')}">
                                 	<calendar:datePicker name="dateOfTransfer" defaultValue="${new Date()}" value="${fundTransferInstance?.dateOfTransfer}" dateFormat= "%d/%m/%Y"/>

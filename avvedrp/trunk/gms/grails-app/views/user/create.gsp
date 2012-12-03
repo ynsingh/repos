@@ -72,7 +72,16 @@
 							<input type="text" id="email" name="email" value="${person.email?.encodeAsHTML()}"/>
 						</td>
 	               	</tr>	
-	               	
+	               	 <tr class="prop">
+                                <td valign="top" class="name">
+                                     <label for="department"><g:message code="default.Department.label"/>:</label>
+                                     <label for="department" style="color:red;font-weight:bold"> * </label>
+                                </td>
+                                 
+                                <td valign="top" class="value ${hasErrors(bean:person,field:'department','errors')}">
+                                   <g:select optionKey="id" optionValue="departmentCode" from="${departmentList}" name="department.id" value="${person?.department?.id}" noSelection="['null':'-Select-']"></g:select>
+                                </td>
+                            </tr> 
 	               	<tr class="prop">
 
 						<td valign="top" class="name">
@@ -80,7 +89,8 @@
 						</td>
 
 						<td valign="top" class="value ${hasErrors(bean:person,field:'userDesignation','errors')}">
-							<input type="text" id="userDesignation" name="userDesignation" value="${person?.userDesignation?.encodeAsHTML()}"/>
+						<g:select optionKey="Designation" optionValue="Designation" from="${employeeDesignationInstanceList}" name="userDesignation" value="${person?.userDesignation?.Designation}" noSelection="['null':'-Select-']"></g:select>
+							<!--<input type="text" id="userDesignation" name="userDesignation" value="${person?.userDesignation?.encodeAsHTML()}"/> -->
 						</td>
 					</tr>   
 					
@@ -93,7 +103,18 @@
 						<td valign="top" class="value ${hasErrors(bean:person,field:'phNumber','errors')}">
 							<input type="text" id="phNumber" name="phNumber" value="${person?.phNumber?.encodeAsHTML()}"/>
 						</td>
-					</tr>    
+					</tr>  
+					
+					<tr class="prop">
+
+						<td valign="top" class="name">
+						<label for="phNumber"><g:message code="default.aadhaarNo.label"/>:</label>
+						</td>
+
+						<td valign="top" class="value ${hasErrors(bean:person,field:'aadhaarNo','errors')}">
+							<input type="text" id="aadhaarNo" name="aadhaarNo" value="${person?.aadhaarNo?.encodeAsHTML()}"/>
+						</td>
+					</tr>      
 	               	
 	               	<tr class="prop">
 						<td valign="top" class="name" align="left">

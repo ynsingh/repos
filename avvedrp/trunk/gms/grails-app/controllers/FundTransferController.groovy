@@ -83,7 +83,7 @@ class FundTransferController {
         	   def grantAllocationTackingInstance = GrantAllocationTracking.find("from GrantAllocationTracking GT where GT.grantAllocation="+grantAllocationInstance.id)
         	   if(grantAllocationTackingInstance)
         	   {
-	        	   if(grantAllocationTackingInstance.grantAllocationStatus=='Closed')
+	        	   if(grantAllocationTackingInstance.grantAllocationStatus=='Withdrawal')
 	        	   {
 	        	   		flash.message = "${message(code: 'default.Canttranferfundfromthisprojectasitisalreadyclosed.label')}"
 	    		  		redirect(action: "create",id:grantAllocationInstance.id , params:[subMenu:params.subMenu])

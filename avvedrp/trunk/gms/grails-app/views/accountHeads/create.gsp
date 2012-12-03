@@ -64,7 +64,10 @@
                    	        <g:sortableColumn property="name" title="${message(code: 'default.Name.label')}" />
                    	        <g:sortableColumn property="code" title="${message(code: 'default.Code.label')}" />
                    	        <th><g:message code="default.SubAccountHeads.label"/></th>
-                   	        <th><g:message code="default.Edit.label"/></th>
+                   	        <g:if test="${flag == 0}"></g:if>	
+				            <g:else> 
+                   	        	<th><g:message code="default.Edit.label"/></th>
+                            </g:else>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,8 +79,11 @@
                            <td>${fieldValue(bean:accountHeadsInstance, field:'name')}</td>
                            <td>${fieldValue(bean:accountHeadsInstance, field:'code')}</td>
                            <td><g:link  action="showSubAccountHeads"  id="${accountHeadsInstance.id}"><g:message code="default.AddSubAccountHeads.label"/></g:link></td>
-                           <td><g:link action="edit" id="${accountHeadsInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
-                     </tr>
+                           <g:if test="${flag == 0}"></g:if>	
+				            <g:else> 
+                   	        	<td><g:link action="edit" id="${accountHeadsInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
+                            </g:else>
+                      </tr>
                      </g:each>
                     </tbody>
                 </table>

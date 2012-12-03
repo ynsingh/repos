@@ -37,7 +37,7 @@
                         <td valign="top" >
                          	<strong>
                              	<g:message code="default.Rs.label" />
-                             	${currencyFormat.ConvertToIndainRS(grantAllocationInstance.balanceAmount)}
+                             	${currencyFormat.ConvertToIndainRS(balance)}
                              </strong>
                         </td>
                      </tr> 
@@ -63,7 +63,7 @@
             <g:form method="post" action="updateProAllot" >
             <input type="hidden" name="projects.id" value="${grantAllocationInstance?.projects?.id}" />
                 <input type="hidden" name="id" value="${grantAllocationInstance?.id}" />
-                 <input type="hidden" id="balance" name="balance" value="${grantAllocationInstance.balanceAmount}"/>
+                 <input type="hidden" id="balance" name="balance" value="${balance}"/>
                 <div class="dialog">
                   <table>
                     <tbody>
@@ -133,7 +133,7 @@
                                     <label for="investigator"><g:message code="default.COPI.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'copi','errors')}">
-                                 <g:select id="copi.id" optionKey="id" optionValue="fullName" from="${investigatorInstanceList}" name="copi.id" value="${projectsInstance?.copi?.id}"></g:select>
+                                 <g:select id="copi.id" optionKey="id" optionValue="fullName" from="${investigatorInstanceList}" name="copi.id" value="${projectsInstance?.copi?.id}" noSelection="['null':'-Select-']"></g:select>
 	                            </td>
                          </tr>   
                             
@@ -176,7 +176,7 @@
                                 	value="${amount}" style="text-align: right" />
                                <input type="hidden" id="totAllAmount" name="totAllAmount" 
                                		value="${projectInstance.totAllAmount}"/>
-                               <input type="hidden" id="amount" name="amount" value="${grantAllocationInstance.totAllAmount}"/>
+                              
                             </td>
                         </tr> 
                     	<tr class="prop">

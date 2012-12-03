@@ -258,4 +258,74 @@ class AttachmentsController {
  		response.outputStream << file.newInputStream() // Performing a binary stream copy 
  		
 	}}
+	
+	
+	
+	def downloadUploadProposalForm = {
+		
+					def partyProposalFormInstance = PartyProposalForm.get(params.id) 
+			
+					String fileName
+					def file
+					if(partyProposalFormInstance)
+					{
+					def gmsSettingsService = new GmsSettingsService()
+			 		def attachmentsName='ProposalApplicationPath'
+			 		def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
+			 		def webRootDir
+			 		fileName = partyProposalFormInstance.name
+			 		
+			 		 if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+			        {
+			 			webRootDir = gmsSettingsInstance.value
+			        }
+			        if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+			        {
+			        	webRootDir = gmsSettingsInstance.value
+			        }
+			 		file = new File(webRootDir+fileName) 
+			 		def fname=file.getName()
+			 		
+			 		if (fname.indexOf(".gif")>-1) {
+				         response.setContentType("image/gif");
+				      } else if (fname.indexOf(".pdf")>-1) {
+				         response.setContentType("application/pdf");
+				      } else if (fname.indexOf(".doc")>-1) {
+				         response.setContentType("application/msword");
+				      }else if (fname.indexOf(".xls")>-1){
+				    	 response.setContentType("application/vnd.ms-excel");
+				      }else if (fname.indexOf(".xlsx")>-1){
+				    	 response.setContentType("application/vnd.ms-excel");
+				      }else if(fname.indexOf(".docx")>-1) {
+				    	 response.setContentType("application/msword");
+				      }else if(fname.indexOf(".ppt")>-1) {
+				    	 response.setContentType("application/ppt");
+				      }else if(fname.indexOf(".pptx")>-1) {
+				    	 response.setContentType("application/ppt");
+				      }
+			 		
+			 		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
+			 		 
+			 		response.outputStream << file.newInputStream() // Performing a binary stream copy 
+			 		
+				}
+				
+				else
+				{
+					file=new File("nofile"); 
+					response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
+					 
+			 		response.outputStream << file.newInputStream() // Performing a binary stream copy 
+			 		
+				} 
+	
+ 
+ 
+ }
+	
+	
+	
+	
+	
+	
 }

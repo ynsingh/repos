@@ -3,7 +3,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
         
-        <title>Upload Proposal Form</title>
+        <title><g:message code="default.UploadProposalForm.head"/></title>
     </head>
     <body>
     	<div class="wrapper">
@@ -37,6 +37,7 @@
 						                                 <td valign="top" class="value">
 						                                    <input type="file" name="attachmentPath" id="attachmentPath"  /><g:message code="default.ApplicationFormat.label"/> 
 						                                 </td>
+						                                 <input type="hidden" name="formType" value="PreProposal" />
 						                             </tr>
                     							  </tbody>
                     							</table>
@@ -44,12 +45,42 @@
 							                <div class="buttons">
 							                    <span class="button">
 								                    <g:submitButton name="create" class="save" onClick="return validateUploadProposalForm()"
-								                    	value="${message(code: 'default.Create.button',default: 'Create')}" />
+								                   value="${message(code: 'default.Create.button',default: 'Create')}" />
 							                    </span>
 							                </div>
 							            </g:form>
 							        </div>
 						        </div>
+						        
+						     <g:if test="${partyProposalFormOldInstanceList}">
+						        <div class="body">
+									            <h1><g:message code="default.UploadPreProposalFormDetails.head"/></h1>
+									           
+									            <div class="list">
+									                <table>
+									                    <thead>
+									                        <tr>
+									                    	    <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
+																<g:sortableColumn property="name" title="Pre Proposal Form" />
+									                   	        <g:sortableColumn property="activeYesNo" title="Active Status" />
+									                        </tr>
+									                    </thead>
+									                    <tbody>
+									                    <g:each in="${partyProposalFormOldInstanceList}" status="i" var="partyProposalFormOldInstance">
+									                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+									                        
+									                        	<td>${i+1}</td>
+									                        	<td><g:link action="downloadUploadProposalForm" controller="attachments" id="${partyProposalFormOldInstance.id}">${fieldValue(bean:partyProposalFormOldInstance, field:'value')}</g:link></td>
+									                            <td>${fieldValue(bean:partyProposalFormOldInstance, field:'activeYesNo')}</td>
+															                        	
+									                        </tr> 
+									                    </g:each>
+									                    </tbody>
+									                </table>
+									            </div>
+									            
+								</div>
+						       </g:if>  
 				              </td>
 						  </tr>
 						  

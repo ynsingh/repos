@@ -3,43 +3,45 @@
  <Cube name="projectAllocationAcc">
  <Table name="Project_allocation_acc"/> 
  	 
- 	 <Dimension name="Parent Project" hasAll="true">
-            <Hierarchy hasAll="true" >
-            	<Level name="Parent" column="Parent_project" type="String" uniqueMembers="false"/> 
-                              
-    		</Hierarchy>
+ 	    <Dimension name="Institution">
+            <Hierarchy hasAll="true">
+                <Level name="Institution" column="Inst" type="String" uniqueMembers="false"/>
+                 
+            </Hierarchy>
      </Dimension>
      
-     <Dimension name="Project" hasAll="true">
+     <Dimension name="ProjectName">
             <Hierarchy hasAll="true">
-            			<Level name="Project ID" column="project_code" type="String" uniqueMembers="false"/> 
-                      <Level name="ProjectName" column="project_name" type="String" uniqueMembers="false"/> 
+            		 <Level name="ProjectName" column="ProjectName" type="String" uniqueMembers="false"/> 
                                
             </Hierarchy>
      </Dimension>
-     <Dimension name="Partner Institute" hasAll="false">
-            <Hierarchy hasAll="true" >
-            	<Level name="Institute"  column="partner_inst" type="String" uniqueMembers="false"/>
-                       
-    		</Hierarchy>
-     </Dimension>
-     <Dimension name="Account Head" hasAll="false">
-            <Hierarchy hasAll="true" >
-            	<Level name="AccountHead"  column="acchead" type="String" uniqueMembers="false"/>
-                       
-    		</Hierarchy>
-     </Dimension>
-     <Dimension name="PIName" hasAll="false">
-            <Hierarchy hasAll="true" >
-            	<Level name="PIName"  column="PI_name" type="String" uniqueMembers="false"/>
-                       
-    		</Hierarchy>
-     </Dimension>
      
+     <Dimension name="Amount Allocated">
+            <Hierarchy hasAll="true">
+            		 <Level name="Amount Allocated" column="AmountAllocated" type="String" uniqueMembers="false"/> 
+                               
+            </Hierarchy>
+     </Dimension>
+        
+     
+     <Dimension name="AccountHead">
+            <Hierarchy hasAll="true" >
+            	<Level name="AccountHead"  column="AcHead" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
     
-         <Measure name="Amount Allocated" column="amt_allocated" aggregator="sum" formatString="#,###"/>
-         <Measure name="Amount Utilized" column="amt_utilized" aggregator="sum" formatString="#,###"/>
-         <Measure name="Amount Available" column="Amt_available" aggregator="sum" formatString="#,###"/>
+       <Measure name="AccoundHead Allocated" column="AccAmt" aggregator="sum" formatString="#,###0.00"/>
+         <Measure name="Amount Utilized" column="ExpAmt" aggregator="sum" formatString="#,###0.00"/>
+          <Measure name="Amount Received" column="AmtRecvd" aggregator="sum" formatString="#,###0.00"/>
+         <Measure name="Amount Allocated" column="AmountAllocated" aggregator="sum" formatString="#,###0.00"/>
+          <Measure name="Transferred Amount" column="FundAmt" aggregator="sum" formatString="#,###0.00"/>
+       <CalculatedMember name="Balance On Hand" dimension="Measures">
+	   		<Formula>([Measures].[Amount Allocated] - [Measures].[Amount Utilized])+[Measures].[Amount Received]+[Measures].[Transferred Amount]</Formula>
+	   		<CalculatedMemberProperty name="FORMAT_STRING" value="#,##0.00"/>
+	   </CalculatedMember>
+       
        
     </Cube>
     </Schema>

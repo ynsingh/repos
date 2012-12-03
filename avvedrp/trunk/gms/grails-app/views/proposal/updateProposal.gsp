@@ -52,7 +52,12 @@
 		    <tr class="prop">
 		    
 		    <td>
+		    <g:if test="${partyProposalFormInstance}">
+		     <g:link controller="proposalApplication" action="submittedProposal" id="${proposalApplicationInstance?.id}"><label for="name"><g:message code="default.DetailsFilledByYou.label"/></label></g:link>
+		    </g:if>
+		    <g:else>
 		     <g:link controller="proposalApplication" action="proposalApplicationDetailsView" id="${proposalApplicationInstance?.id}"><label for="name"><g:message code="default.DetailsFilledByYou.label"/></label></g:link>
+		     </g:else>
 		       </td> 
 		       </tr>
 		       <tr class="prop">

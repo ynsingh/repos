@@ -22,6 +22,14 @@ class AccountHeadsController
     	
 		//putting help pages in session
 		gh.putValue("Help","Create_Account_Head.htm")
+		def flag = 0;
+		def userID = gh.getValue("UserId")
+		def userRoleInstance = userService.getUserRoleByUserId(userID)
+           if(userRoleInstance[0].authority == 'ROLE_SUPERADMIN')
+              flag++
+           else
+              flag = 0
+	
 		accountHeadsInstance.properties = params
         String subQuery ="";
         if(params.sort != null && !params.sort.equals(""))
@@ -33,7 +41,7 @@ class AccountHeadsController
        	def accountHeadsInstanceList = accountHeadsService.getActiveAccountHeads(subQuery)
 
         return ['accountHeadsInstance':accountHeadsInstance,
-                'accountHeadsInstanceList': accountHeadsInstanceList]
+                'accountHeadsInstanceList': accountHeadsInstanceList, 'flag':flag]
     }
     
     /**

@@ -4,30 +4,27 @@
  <Table name="Resources"/> 
  	 
  	     
-     <Dimension name="Project" hasAll="true">
+     <Dimension name="ProjectName">
             <Hierarchy hasAll="true">
-            			<Level name="Project ID" column="project_code" type="String" uniqueMembers="false"/> 
-                      <Level name="ProjectName" column="project_name" type="String" uniqueMembers="false"/> 
+            		 <Level name="ProjectName" column="ProjectName" type="String" uniqueMembers="false"/> 
                                
             </Hierarchy>
      </Dimension>
-     <Dimension name="Institute" hasAll="false">
-            <Hierarchy hasAll="true" allMemberName="All Institute">
-            	<Level name="Institute"  column="institute" type="String" uniqueMembers="false"/>
+     <Dimension name="Institute">
+      <Hierarchy hasAll="true">
+           	<Level name="Institute"  column="Inst" type="String" uniqueMembers="false"/>
                        
     		</Hierarchy>
      </Dimension>
-     <Dimension name="Resource Type" hasAll="false">
-            <Hierarchy hasAll="true" >
-            	<Level name="ResourceType"  column="Resource_Type" type="String" uniqueMembers="false"/>
+     
+     <Dimension name="Resource Type">
+      <Hierarchy hasAll="true" >
+            	<Level name="ResourceType"  column="designation" type="String" uniqueMembers="false"/>
                        
-    		</Hierarchy>
+     </Hierarchy>
      </Dimension>
-    
-         
-    	<Measure name="No Of Resources" column="No_of_resources" aggregator="sum" formatString="#,###"/>
-         <Measure name="Cost" column="Cost" aggregator="sum" formatString="#,###"/>
-         
-       
+  		<Measure name="No of Resources" column="EmpNmbr" aggregator="count" formatString="#,###"/>
+  		
+        
     </Cube>
     </Schema>

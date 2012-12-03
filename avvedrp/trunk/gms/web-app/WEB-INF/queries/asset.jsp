@@ -3,6 +3,8 @@
 <%@ page import="grails.util.GrailsUtil" %>
  <%@ taglib uri="http://www.tonbeller.com/jpivot" prefix="jp" %>
  <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+ <%@ page import="mondrian.rolap.*;" %>
+ <% mondrian.rolap.RolapSchema.clearCache(); %>
  <%
 HttpSession sess=request.getSession();
 int party=Integer.parseInt(sess.getAttribute("Party").toString());
@@ -14,23 +16,23 @@ int party=Integer.parseInt(sess.getAttribute("Party").toString());
     if(GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION))
     {
             String tomcat_path=System.getProperty("catalina.base");
-            String propertiesFileName = tomcat_path+"/conf/BIDb.properties";
+            String propertiesFileName = tomcat_path+"/conf/gmsDb.properties";
             java.io.FileInputStream fis = new java.io.FileInputStream( propertiesFileName );
             java.util.Properties props = new java.util.Properties();
             props.load( fis );
             // getting the properties
-                         db_url = props.getProperty("BIdbUrl");
-            db_usr = props.getProperty("BIdbUSer");
-            db_pswd = props.getProperty("BIdbPassword");
-            jdbc_url=db_url+"?user="+db_usr+"&password="+db_pswd; 
-    }     
+            db_url = props.getProperty("gmsDbUrl");
+            db_usr = props.getProperty("gmsDbUSer");
+            db_pswd = props.getProperty("gmsDbPassword");
+            jdbc_url=db_url+"?user="+db_usr+"&password="+db_pswd;
+    }
     else
     {
              String propertiesFileName = request.getRealPath( "/" ) +
                                                 System.getProperty( "file.separator" ) +
                                                 "images" +
                                                 System.getProperty( "file.separator" ) +
-                                                "gmsDb.properties";
+                                                "masterDb.properties";
              java.io.FileInputStream fis = new java.io.FileInputStream( propertiesFileName );
              java.util.Properties props = new java.util.Properties();
              props.load(fis);
@@ -40,15 +42,14 @@ int party=Integer.parseInt(sess.getAttribute("Party").toString());
              db_pswd = props.getProperty("masterDbPassword");
              jdbc_url=db_url+"?user="+db_usr+"&password="+db_pswd;            
     }
-    System.out.println("jdbc_url"+jdbc_url);
 
 %>
  <jp:mondrianQuery id="query01" jdbcDriver="com.mysql.jdbc.Driver"
 jdbcUrl="<%=jdbc_url%>"
 catalogUri="/WEB-INF/queries/asset.xml">
 
-SELECT {([Measures].[Value])} ON COLUMNS,
-  NON EMPTY {([Parent Project],[Project],[Partner Institute],[PIName],[AccountHhead],[Date],[AssetName])} ON ROWS
+SELECT {[Measures].[Cost]} ON COLUMNS,
+  NON EMPTY {([Institute],[ProjectName],[AssetName])} ON ROWS
 FROM [Asset]
  </jp:mondrianQuery>
  <c:set var="title01" scope="session">Asset details using Mondrian OLAP</c:set>

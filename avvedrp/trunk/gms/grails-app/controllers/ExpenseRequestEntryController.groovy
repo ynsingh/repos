@@ -329,7 +329,7 @@ class ExpenseRequestEntryController {
     	
     	def approvalAuthorityInstance =ApprovalAuthority.get(new Integer(params.approvalAuthority.id).intValue())
     	def userInstance = Person.get(gh.getValue("UserId"))
-    	def userMapInstance = UserMap.get(userInstance.id)
+    	def userMapInstance = UserMap.find("from UserMap  UM where UM.user.id= "+userInstance.id)
     	def proposalApprovalAuthorityMapInstance
     	def approveOrder = 0
     	
@@ -618,10 +618,10 @@ class ExpenseRequestEntryController {
 	    	 proposalApprovalDetailInstanceList:proposalApprovalDetailInstanceList,
 	    	 approvalAuthorityDetailList:approvalAuthorityDetailList]
     
- }
-
- else
-  {
+		 }
+		
+		 else
+		  {
  	    	def approvalAuthorityInstanceList = []
 	    	def proposalApprovalInstanceList = []
 	    	int s=0
@@ -905,7 +905,7 @@ class ExpenseRequestEntryController {
 	    Date date = new Date();
 	    def requestDate = dateFormat.format(date)
     
-    	def userMapInstance = UserMap.get(userInstance.id)
+    	def userMapInstance = UserMap.find("from UserMap  UM where UM.user.id= "+userInstance.id)
      
     	if(order > (proposalApprovalAuthorityMapInstance.approveOrder))
     	{
@@ -1153,17 +1153,18 @@ class ExpenseRequestEntryController {
     def saveExpense = {
     	GrailsHttpSession gh=getSession()
 		def grantExpenseService = new GrantExpenseService()
+		def grantAllocationSplitService = new GrantAllocationSplitService()
 		def userInstance = Person.get(gh.getValue("UserId"))
 		params.createdBy=userInstance.username
 		params.createdDate = new Date()
         def grantExpenseInstance = new GrantExpense(params)
+		grantExpenseInstance.utilizationSubmitted = 'N'
 		def grantAllocationInstance = GrantAllocation.get( grantExpenseInstance.grantAllocation.id )
 		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(grantAllocationInstance.projects.id,gh.getValue("PartyID"))
 		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
 		double balanceAmnt
 		def totalpaid = grantExpenseInstance. expenseAmount
 		def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryByRequestCode(params.expenseRequestCode)
-		println"expenseRequestEntryInstance.expenseAmount"+expenseRequestEntryInstance.expenseAmount
 		def grantExpenseInstanceList = grantExpenseService.getGrantExpenseByRequestCode(params.expenseRequestCode)
 		if(grantExpenseInstanceList)
 		{
@@ -1196,17 +1197,21 @@ class ExpenseRequestEntryController {
 	    }
 	    else
 	    {
-		   def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
-		   def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
-		   double headBalance
-		   if (headExpAmnt[0])
-		   {
-		     headBalance = headAllcnAmnt[0]-headExpAmnt[0]
-		   }
-		   else
-		   {
-			 headBalance = headAllcnAmnt[0] 
-		   }
+			def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
+			def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
+			def headSplitAmtChilds = grantAllocationSplitService.getTotalSubGrantSplit(grantExpenseInstance.projects.id,grantExpenseInstance.grantAllocationSplit.accountHead.id, grantExpenseInstance.grantAllocationSplit.grantPeriod.id)
+			double headBalance
+			if (headExpAmnt[0])
+			{
+			  headBalance = headAllcnAmnt[0]-headExpAmnt[0]
+			}
+			else
+			{
+			  headBalance = headAllcnAmnt[0]
+			}
+			if(headSplitAmtChilds){
+				headBalance = headBalance-headSplitAmtChilds
+			}
 		   if(grantExpenseInstance.expenseAmount > headBalance)
 		   {
 			   flash.error = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"
@@ -1279,6 +1284,7 @@ class ExpenseRequestEntryController {
     	def grantExpenseService = new GrantExpenseService()
     	def grantExpenseOrginalInstance = grantExpenseService.getGrantExpenseById(new Integer(params.id))
     	def grantExpenseInstance = new GrantExpense(params)
+		grantExpenseInstance.utilizationSubmitted = 'N'
 		def grantExpenseWithOutSave = grantExpenseInstance
 		def grantAllocationInstance = GrantAllocation.get( grantExpenseInstance.grantAllocation.id )
 		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(grantAllocationInstance.projects.id,gh.getValue("PartyID"))		
@@ -1312,17 +1318,23 @@ class ExpenseRequestEntryController {
 	    }
 	    else
 	    {
-		   def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
-		   def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
-		   double headBalance
-		   if (headExpAmnt[0])
-		   {
-			     headBalance = (headAllcnAmnt[0]+grantExpenseOrginalInstance.expenseAmount)-headExpAmnt[0]
-		   }
+		   	def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
+			def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
+			double headBalance
+			if (headExpAmnt[0])
+			{
+				if(grantExpenseOrginalInstance.grantAllocationSplit.id == (new Integer(params.grantAllocationSplit.id)))
+				{
+					headBalance = headAllcnAmnt[0]-(headExpAmnt[0] - grantExpenseOrginalInstance.expenseAmount)
+						//(headAllcnAmnt[0]+grantExpenseOrginalInstance.expenseAmount)-headExpAmnt[0]
+				}
+				else
+				 headBalance = headAllcnAmnt[0]-headExpAmnt[0]
+			}
 		   else
-		   {
-			 headBalance = headAllcnAmnt[0] 
-		   }
+			{
+			  headBalance = headAllcnAmnt[0]
+			}
 		   if(grantExpenseInstance.expenseAmount > headBalance)
 		   {
 			   flash.error = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"

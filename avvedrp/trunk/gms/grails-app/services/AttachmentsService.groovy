@@ -119,9 +119,8 @@ class AttachmentsService {
     /*Function to save a attachments */ 
     public def saveAttachments(def domain,def domainId,def fileName,def attachmentsTypeInstance)
    {
-	   println "save attachments---"
-    	def attachmentInstanceStatus = false
-    	def attachmentsInstance=new Attachments()
+	   def attachmentInstanceStatus = false
+       def attachmentsInstance=new Attachments()
 	   attachmentsInstance.domain=domain
 	   attachmentsInstance.domainId=domainId
 	   attachmentsInstance.openedYesNo='N'
@@ -129,7 +128,6 @@ class AttachmentsService {
 	   attachmentsInstance.attachmentType=attachmentsTypeInstance
 	   if(attachmentsInstance.save())
 	   {
-		   println "save attachments--- saved"
 		   attachmentInstanceStatus=true
 	   }
 	   return attachmentInstanceStatus
@@ -146,11 +144,9 @@ class AttachmentsService {
  */
     public def updateAttachments(def attachmentsInstance)
     {
- 	   println "save attachments---"
  	  def attachmentInstanceStatus = false
  	   if(attachmentsInstance.save())
  	   {
- 		   println "save attachments--- saved"
  		  attachmentInstanceStatus=true
  	   }
  	   return attachmentInstanceStatus
@@ -209,6 +205,27 @@ class AttachmentsService {
             
          }
         return attachmentsInstance
+	}
+	
+	public List getMessageAttachmentListbyProject(def projectsInstance){
+		def attachmentList = []
+		attachmentList = MessageAttachments.findAllByProjects(projectsInstance)
+		return attachmentList
+	}
+	
+	public List getMessageAttachmentListbyGrantAllocation(grantAllocationInstanceList){
+		def messageAttachmentList = []
+		for(grantAllocationInstance in grantAllocationInstanceList){
+			def projectsInstance = Projects.get(grantAllocationInstance.projects.id)
+			def attachmentList = getMessageAttachmentListbyProject(projectsInstance)
+			if(attachmentList){
+				for(attachmentsInstance in attachmentList){
+					messageAttachmentList.add(attachmentsInstance)
+				}
+			}
+			
+		}
+		return messageAttachmentList
 	}
 
 }

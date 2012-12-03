@@ -2,7 +2,7 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 
 class GrantAllocationTrackingController {
 	def grantAllocationService
-    
+    def checkListService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -68,10 +68,10 @@ class GrantAllocationTrackingController {
     }
 
     def create = {
-    	GrailsHttpSession gh=getSession()
-	gh.removeValue("Help")
-	gh.putValue("Help","GrantWithdrawl_Closure.htm")//putting help pages in session
-	def grantAllocationService = new GrantAllocationService()
+   		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","GrantWithdrawl_Closure.htm")//putting help pages in session
+		def grantAllocationService = new GrantAllocationService()
 	
 		/* Get grant allocation details. */
     	def grantAllocationInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id)) 
@@ -90,41 +90,36 @@ class GrantAllocationTrackingController {
                 'grantAllocationTrackingInstance':grantAllocationTrackingInstance]
     }
 
-    def save = {
-    		
+    def save = 
+    {
+   		GrailsHttpSession gh=getSession()
 		def grantAllocationService = new GrantAllocationService()	
 		params.modifiedBy = "admin"
     	params.modifiedDate = new Date()
-		if(params.grantAllocationStatus != "null")
-		{
-		def grantAllocationTrackingInstance = grantAllocationService.saveOrUpdateGrantAllocationTracking(params)
-		if(grantAllocationTrackingInstance){
-			if(grantAllocationTrackingInstance.saveMode != null){
-				flash.message = "${message(code: 'default.GrantAllocation.label')}" +grantAllocationTrackingInstance.grantAllocationStatus 
-				redirect(action:create,id:grantAllocationTrackingInstance.grantAllocation.id,params:[trackType:params.trackType])
-			}
-			else{
-				redirect(action:create,id:grantAllocationTrackingInstance.grantAllocation.id,params:[trackType:params.trackType])
-			}
-		}
-		}
-		else
-		{
-			flash.message = "${message(code: 'default.GrantAllocationStatusEnter.label')}"
-			redirect(action:create,id:params.grantAllocation.id,params:[trackType:params.trackType])
-		}
-   
+    	def grantAllocationInstance = GrantAllocation.get(params.grantAllocation.id)
+    	def projectTrackingCheck=ProjectTracking.findAll("from ProjectTracking P where P.projects.id= '"+grantAllocationInstance.projects.id+"'")
+    	if(projectTrackingCheck)
+    	{
+    		flash.message ="${message(code: 'default.projectisAlready.label')}" +" "+projectTrackingCheck.projectStatus 
+  			redirect(action:create,id:grantAllocationInstance.id)
+    	}
+    	else
+    	{
+    		def grantAllocationTrackingInstance = new GrantAllocationTracking(params)
+			gh.putValue("TrackingStatus",grantAllocationTrackingInstance.grantAllocationStatus)
+	    	gh.putValue("Trackingremarks",grantAllocationTrackingInstance.remarks)
+	    	gh.putValue("TrackingDate",grantAllocationTrackingInstance.dateOfTracking)
+    		redirect(action:statusDetails,params:[id:grantAllocationTrackingInstance.grantAllocation.id,projectStatus:grantAllocationTrackingInstance.grantAllocationStatus,remarks:grantAllocationTrackingInstance.remarks,dateOfTracking:grantAllocationTrackingInstance.dateOfTracking])
+       }
 	}
     
     def grantAllocationTrackingReports = {
 		def dataSecurityService = new DataSecurityService()
 		GrailsHttpSession gh=getSession()
 		def grantAllocationInstanceList=[]
-		println "**************grantAllocationInstanceList 1 "+grantAllocationInstanceList  
-        try{
+		try{
         	grantAllocationInstanceList = grantAllocationService.getAll()
-        	println "**************grantAllocationInstanceList 222222 "+grantAllocationInstanceList 
-		}
+        }
 		  catch(Exception e)
 		{
 			
@@ -133,20 +128,89 @@ class GrantAllocationTrackingController {
         
         for(int i=0;i<grantAllocationInstanceList.size();i++)
         {
-        
+			if(grantAllocationInstanceList[i].projects.activeYesNo == 'Y'){
         	projectsList.add(grantAllocationInstanceList[i].projects)
+			}
         }
-			
-			
-			
-			
-		
-		
-	    return[projectInstanceList:projectsList]
+		return[projectInstanceList:projectsList]
     }
     
     def showReport = {
     		println "showReport params "+params
     		return['reportListInstance':params]
     }
+    
+    def statusDetails =
+	{
+		GrailsHttpSession gh=getSession()
+		def grantAllocationInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id)) 
+		def checklistmap = ChecklistMap.findAll("from ChecklistMap CM where CM.projects.id="+grantAllocationInstance.projects.id+" and CM.activeYesNo='Y'")
+		return ['grantAllocationInstance':grantAllocationInstance,checklistmap:checklistmap]
+		
+	}
+	
+	def withdrawProject =
+	{
+	 	GrailsHttpSession gh=getSession()
+		def projectsInstance =Projects.get(params.prjctId)
+		def grantAllocationInstance =GrantAllocation.get(params.grantAllotId)
+		def mapList = params.chkselt.toString()
+		def mapPrjtList = []
+    	def chkMapList=mapList.split(',')
+    	if (chkMapList.length ==1) 
+    	{
+    		mapPrjtList.add(params.chkselt.toString())
+			params.chkselt =  mapPrjtList
+		}
+		def checkcompulsoryList = checkListService.getCheckListBySatifiedInstnce(projectsInstance.id)
+		def chkList
+		def instance
+		def compulsoryList = []
+		for(int i=0;i<params.chkselt.size();i++)
+		{
+			chkList = checkListService.getAllCheckListByParamsId(params.chkselt[i])
+			for(int j=0;j<chkList.size();j++ )
+	 	    {
+				instance = chkList[j]
+                compulsoryList.add(instance)
+	 	    }
+ 	    }
+ 	    def commons = compulsoryList.intersect(checkcompulsoryList)
+		if(commons.size()<checkcompulsoryList.size)
+		{
+			flash.error ="${message(code: 'default.Mustselectcomplsoryfields.label')}"
+			redirect(action:statusDetails,params:[id:grantAllocationInstance.id])
+		}
+		else
+		{
+			if(params.chkselt[0]!= 'null')
+			{
+				 	for(int i=0;i<params.chkselt.size();i++)
+					{
+						def checklistMapInstance = new ChecklistMap()
+						checklistMapInstance = ChecklistMap.get(params.chkselt[i])
+						checklistMapInstance.satisfied = 'Y'
+						checklistMapInstance.save()
+					}
+					def grantAllocationTrackingInstance = new GrantAllocationTracking()
+					grantAllocationTrackingInstance.grantAllocation = grantAllocationInstance
+					grantAllocationTrackingInstance.grantAllocationStatus =(gh.getValue("TrackingStatus"))
+					grantAllocationTrackingInstance.remarks =(gh.getValue("Trackingremarks"))
+					grantAllocationTrackingInstance.dateOfTracking =(gh.getValue("TrackingDate"))
+					grantAllocationTrackingInstance.createdBy = "admin"
+			    	grantAllocationTrackingInstance.createdDate = new Date()
+					grantAllocationTrackingInstance.modifiedBy = "admin"
+			    	grantAllocationTrackingInstance.modifiedDate = new Date()
+					grantAllocationTrackingInstance.save()
+					flash.message = projectsInstance.name +" "+"${message(code: 'default.withdrawalsuccesfully.label')}"
+					redirect(controller: "grantAllocation", action: "subGrantAllot",params:[id:projectsInstance.parent.id])
+					
+			}
+			else
+			{
+				flash.error ="${message(code: 'default.PleaseselectanychecklistOtherwiseucantgoforfurtherchecking.label')}"
+				redirect(action:statusDetails,params:[id:grantAllocationInstance.id])
+			}
+		}
+	}
 }

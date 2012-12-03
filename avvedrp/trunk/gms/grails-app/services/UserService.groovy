@@ -399,6 +399,17 @@ class UserService{
 		return userId
 	}
 	
+		/**
+	 * Getting user by Aadhaar No:.
+	 */
+	public Integer getUserByaadaarno(String aadhaarNo){
+		Integer aadhaarId = null;
+		def person  = Person.find("from Person U where U.aadhaarNo='"+aadhaarNo+"' and U.activeYesNo='Y'");
+		if(person)
+			aadhaarId = person.id
+		return aadhaarId
+	}
+	
 	/**
 	 * Getting user by email.
 	 */
@@ -725,4 +736,26 @@ class UserService{
 		  menuRoleMapParentList.removeAll(parentList)
 		  return menuRoleMapParentList
 	  }
+	  
+	  
+	 /* Method to get site admin using party id*/
+	 
+	 
+	 public getSiteAdminUsingPartyId(def partyId)
+	 {
+	   def userInstance = UserMap.executeQuery("select UM.user.id from UserMap UM where UM.user.id IN (select UR.user.id from UserRole UR where UR.role.id IN (select A.id from Authority A where A.authority = 'ROLE_SITEADMIN' ))and UM.party.id = "+partyId)
+	   return userInstance
+	 
+	 }
+	  
+	   /* Method to get super admin using party id*/
+	 
+	 
+	 public getSuperAdminUsingPartyId(def partyId)
+	 {
+	   def userInstance = UserMap.executeQuery("select UM.user.id from UserMap UM where UM.user.id IN (select UR.user.id from UserRole UR where UR.role.id IN (select A.id from Authority A where A.authority = 'ROLE_SUPERADMIN' ))and UM.party.id = "+partyId)
+	   return userInstance
+	 
+	 }
+	  
 }

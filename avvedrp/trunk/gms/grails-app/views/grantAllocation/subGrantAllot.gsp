@@ -55,6 +55,9 @@
 				            <g:if test="${flash.message}">
 				            	<div class="message">${flash.message}</div>
 				            </g:if>
+				            <g:if test="${flash.error}">
+				            	<div class="errors">${flash.error}</div>
+			            	</g:if>
 				            <g:hasErrors bean="${grantAllocationInstance}">
 					            <div class="errors">
 					                <g:renderErrors bean="${grantAllocationInstance}" as="list" />
@@ -220,7 +223,7 @@
 				                                
 				                                <td valign="top" class="name">
 					                                <label for="investigators"><g:message code="default.COPI.label"/>:</label>
-					                                <label for="investigators" style="color:red;font-weight:bold"> * </label>
+					                             
 					                            </td>
 					                            <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'copi','errors')}">
 					                            	<div id="listcopi">
@@ -315,9 +318,9 @@
 	                            <g:message code="default.Attachments.label"/>
                             </g:link>
                         </td>
-	                    <%def projectTrackingInstanceCheck=GrantAllocationTracking.find("from GrantAllocationTracking PT where PT.grantAllocationStatus='Closed' and PT.grantAllocation.id= '"+grantAllocationInstance.id+"'")%>
+	                    <%def projectTrackingInstanceCheck=GrantAllocationTracking.find("from GrantAllocationTracking PT where PT.grantAllocationStatus='Withdrawal' and PT.grantAllocation.id= '"+grantAllocationInstance.id+"'")%>
 	                    <g:if test="${projectTrackingInstanceCheck}">
-	                       <td><g:message code="default.Closed.label"/></td>
+	                       <td><g:message code="default.Withdrew.label"/></td>
 						</g:if>
 						<g:else>
 						<td>
@@ -333,7 +336,7 @@
                         	</g:link>
                         </td>
                         <td>
-                        	<g:link action="editProAllot" id="${grantAllocationInstance.id}">
+                        	<g:link action="editProAllot" id="${grantAllocationInstance.id}" params="[balanceAmount:balance]">
                      			<g:message code="default.Edit.label"/> 
                      		</g:link>
                  		</td>

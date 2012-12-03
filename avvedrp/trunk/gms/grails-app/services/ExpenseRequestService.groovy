@@ -56,5 +56,11 @@ class ExpenseRequestService {
 			def expenseRequestEntryInstance = ExpenseRequestEntry.find("from ExpenseRequestEntry ERE where ERE.projects.id="+ProjectId)
 			return expenseRequestEntryInstance
 		}
+		
+		public getPendingRequestEntryByProjectId(def ProjectId)
+		{
+			def expenseRequestEntryInstance = ExpenseRequestEntry.findAll("from ExpenseRequestEntry ERE where ERE.status='Pending' and ERE.projects.id="+ProjectId)
+			return expenseRequestEntryInstance
+		}
 }
 

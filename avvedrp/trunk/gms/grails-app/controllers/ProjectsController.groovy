@@ -426,7 +426,6 @@ class ProjectsController extends GmsController
     	
     	projectsInstance.projectType=parentProjectsInstance.projectType
     	GrailsHttpSession gh=getSession()
-    	
     	projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
     	
     	if(projectsInstance.saveMode != null)
@@ -637,5 +636,217 @@ class ProjectsController extends GmsController
 	             render receivedInstanceList as JSON
 	        }
        }
-   	}   
+   	}
+   	
+   	def deactivate = 
+   	{
+   		GrailsHttpSession gh=getSession()
+		gh.removeValue("Help")
+		gh.putValue("Help","Create_Role_Privileges.htm")//putting help pages in session
+		def projectsInstance = Projects.findAll("from Projects P ")
+		println"------projectsInstance-----------"+projectsInstance
+		return[projectsInstance:projectsInstance]
+   	
+   	}  
+   	
+   	def savedeactivate =
+	{
+	    def projectInstance = Projects.get(params.projects.id)
+	    if(projectInstance)
+	    {
+		   	if(projectInstance.activeYesNo == 'N' && params.activeYesNo == 'N')
+		   	{
+		   	   	flash.message = "${message(code: 'default.ThisProjectAlreadyDeactivated.label')}"
+			   	redirect(action:deactivate)
+		   	}
+		   	else
+		   	{
+		   	   	projectInstance.createdDate =  new Date();
+				projectInstance.modifiedBy = "user";
+				projectInstance.createdBy = "user";
+				projectInstance.projectType = projectInstance.projectType
+			    projectInstance.modifiedDate =  new Date();
+			    projectInstance.name = projectInstance.name
+			    projectInstance.code = projectInstance.code
+			   	projectInstance.activeYesNo=params.activeYesNo
+			    if(projectInstance.save())
+		   		{
+			   		if(projectInstance.activeYesNo == 'Y')
+			   		{
+				   		flash.message = "${message(code: 'default.Projectactivated.label')}"
+				   		redirect(action:deactivate)
+			   		}
+			   		else
+			   		{
+				   		flash.message = "${message(code: 'default.ProjectDeactivated.label')}"
+				   		redirect(action:deactivate)
+			   		}
+		   		}
+		   	}
+	   	}
+   	}
+	
+	def messageAttach = {
+		
+		def messageAttachmentsInstance = new MessageAttachments()
+		def attachmentsService = new AttachmentsService()
+        GrailsHttpSession gh=getSession()
+		def projectsInstance = Projects.get(gh.getValue("ProjectID"))
+        def messageAttachmentsInstanceList = []
+		messageAttachmentsInstanceList =attachmentsService.getMessageAttachmentListbyProject(projectsInstance)
+		
+        return [messageAttachmentsInstance: messageAttachmentsInstance,
+                messageAttachmentsInstanceList:messageAttachmentsInstanceList,
+                projectsInstance:projectsInstance]
+		
+	} 
+	
+	def saveMessage = {
+		def messageAttachmentsInstance = new MessageAttachments()
+		def attachmentsName='Attachments'
+		def gmsSettingsService = new GmsSettingsService()
+		GrailsHttpSession gh=getSession()
+		def projectsInstance = Projects.get(gh.getValue("ProjectID"))
+		def userInstanse = Person.get(gh.getValue("UserId"))
+		def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
+		def webRootDir
+		if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION))
+		{
+			webRootDir = gmsSettingsInstance.value
+		}
+		if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT))
+		{
+			webRootDir = gmsSettingsInstance.value
+		}
+			def downloadedfile = request.getFile("attachmentPath");
+		if(!downloadedfile.empty) {
+			String fileName=downloadedfile.getOriginalFilename()
+			if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
+			{
+				downloadedfile.transferTo(new File(webRootDir+fileName))
+				
+				messageAttachmentsInstance.attachmentPath=fileName
+				messageAttachmentsInstance.projects = projectsInstance
+				messageAttachmentsInstance.viewedYesNo = 'N'
+				messageAttachmentsInstance.createdBy = userInstanse.username
+				messageAttachmentsInstance.createdDate = new Date()
+				if (messageAttachmentsInstance.save(flush: true)) {
+					flash.message = "${message(code: 'default.Fileuploaded.label')}"
+				}
+				else {
+					println "error ="
+					//redirect(action: "create", id: attachmentsInstance.domainId)//, model: [attachmentsInstance: attachmentsInstance])
+				}
+			}
+			else
+			{
+				flash.message = "${message(code: 'default.ExeFile.label')}"
+			}
+		}
+		else {
+			flash.message = "${message(code: 'default.fileEmpty.label')}"
+		 }
+		redirect(action: "messageAttach")
+	}
+	
+	def downloadAttachments = {
+		def partyService = new PartyService()
+		GrailsHttpSession gh=getSession()
+		def messageAttachmentsInstance  = MessageAttachments.get( params.id )
+		String fileName
+		def file
+		if(messageAttachmentsInstance)
+		{
+		def gmsSettingsService = new GmsSettingsService()
+		 def attachmentsName='Attachments'
+		 def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
+		 def webRootDir
+		 fileName = messageAttachmentsInstance.attachmentPath
+		 def partyInstance = Party.get(gh.getValue("Party"))
+		 def projectsInstance = Projects.get(messageAttachmentsInstance.projects.id)
+		 def granterPartyInstance = partyService.getGranterByProjects(projectsInstance)
+		  if(partyInstance == granterPartyInstance){
+			 if(messageAttachmentsInstance.viewedYesNo == 'N'){
+				 messageAttachmentsInstance.viewedYesNo = 'Y'
+				 messageAttachmentsInstance.save()
+			 }
+		 }
+		  if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION))
+		{
+			 webRootDir = gmsSettingsInstance.value
+		}
+		if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT))
+		{
+			webRootDir = gmsSettingsInstance.value
+		}
+		 file = new File(webRootDir+fileName)
+		 def fname=file.getName()
+		 
+		 if (fname.indexOf(".gif")>-1) {
+			 response.setContentType("image/gif");
+		  } else if (fname.indexOf(".pdf")>-1) {
+			 response.setContentType("application/pdf");
+		  } else if (fname.indexOf(".doc")>-1) {
+			 response.setContentType("application/msword");
+		  }else if (fname.indexOf(".xls")>-1){
+			 response.setContentType("application/vnd.ms-excel");
+		  }else if (fname.indexOf(".xlsx")>-1){
+			 response.setContentType("application/vnd.ms-excel");
+		  }else if(fname.indexOf(".docx")>-1) {
+			 response.setContentType("application/msword");
+		  }else if(fname.indexOf(".ppt")>-1) {
+			 response.setContentType("application/ppt");
+		  }else if(fname.indexOf(".pptx")>-1) {
+			 response.setContentType("application/ppt");
+		  }
+		 
+		 response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}")
+		  
+		 response.outputStream << file.newInputStream() // Performing a binary stream copy
+		 
+	}
+	
+	else
+	{
+		file=new File("nofile");
+		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}")
+		 
+		 response.outputStream << file.newInputStream() // Performing a binary stream copy
+		 
+	}
+	}
+	
+	def deleteMessageAttach = {
+		def messageAttachmentsInstance  = MessageAttachments.get( params.id )
+		if (messageAttachmentsInstance) {
+			try {
+				messageAttachmentsInstance.delete(flush: true)
+				flash.message = "${message(code: 'default.deleted.label')}"
+				redirect(action: "messageAttach")
+			}
+			catch (org.springframework.dao.DataIntegrityViolationException e) {
+				flash.message = "${message(code: 'default.Fileinuse.label')}"
+				redirect(action: "messageAttach")
+			}
+		}
+		else {
+			flash.message = "${message(code: 'default.FilenotFound.label')}"
+			redirect(action: "messageAttach")
+		}
+	}
+	
+	def messagesList = {
+		def grantAllocationService = new GrantAllocationService()
+		def attachmentsService = new AttachmentsService()
+		def messageAttachmentsInstanceList = []
+		GrailsHttpSession gh=getSession()
+		def partyInstance = Party.get(gh.getValue("Party"))
+		def grantAllocationInstanceList = grantAllocationService.getGrantAllocationByGranterIdGroupByProjects(partyInstance.id)
+		if(grantAllocationInstanceList){
+			messageAttachmentsInstanceList = attachmentsService.getMessageAttachmentListbyGrantAllocation(grantAllocationInstanceList)
+		}
+		return ['messageAttachmentsInstanceList':messageAttachmentsInstanceList]
+	}
+	
+	
 }

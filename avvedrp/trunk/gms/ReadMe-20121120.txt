@@ -1,0 +1,23 @@
+1. Copy gms.diff file from Patch folder to gms application folder.
+
+2. Then execute the scripts from Script.sql and View.sql.
+
+3. Apply the patch file(gms.diff).
+
+4. Copy the jxl.jar from Patch folder to gms/lib.
+
+5. Copy the .jrxml files from Patch/jrxml to gms/reports.
+
+6. Copy the .jasper files from Patch/jasper to gms/web-app/reports.
+
+7. Then do grails clean.
+
+8. Finally create war file.
+
+
+
+
+
+
+
+

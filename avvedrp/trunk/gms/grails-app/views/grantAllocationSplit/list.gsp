@@ -41,8 +41,14 @@
     <body>
     	<div class="wrapper"> 
   			<g:subMenuList/>
-
+			
 	    	<div class="proptable"> 
+	    	<g:if test="${flash.message}">
+              <div class="message">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.error}">
+            	<div class="errors">${flash.error}</div>
+           	</g:if>
 				<table border="0" cellspacing="0" cellpadding="0" width="70%" align="left">
              		<tr>
                 		<td valign="top">
@@ -107,45 +113,11 @@
 		                        def unallocateAmt
 		                        if(totalGrantAlloctedAmt[0]==null)
 		                        {
-		                        	if(subAllocatedAmount)
-		                        	  {
-			                        	  	if(grantAllocationInstanceListSize>0)
-			                        	  	{
-			                        	  		if(flag>0)
-					                        	  		unallocateAmt=grantAllocationInstanceList.amountAllocated
-			                                    else
-				                                     {
-				                        	  		    unallocateAmt=grantAllocationInstanceList.amountAllocated-subAllocatedAmount
-				                           	  		    flag++
-				                           	  		 }
-			                        	  	}
-			                        	  	else
-			                        	  	{
-			                        	  	   unallocateAmt=grantAllocationInstanceList.amountAllocated-subAllocatedAmount
-			                        	  	}
-			                         }
-		                              
-		                            else
-		                        	  unallocateAmt=grantAllocationInstanceList.amountAllocated
+		                        	unallocateAmt=grantAllocationInstanceList.amountAllocated
 		                        }
 		                        else
 		                        {
-		                           if(subAllocatedAmount)
-		                           {
-		                                if(grantAllocationInstanceListSize>0)
-			                        	  	{
-			                        	  		
-			                        	  		if(flag>0)
-					                        	  		unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
-			                                    else
-				                                     {
-				                        	  		    unallocateAmt=grantAllocationInstanceList.amountAllocated-(totalGrantAlloctedAmt[0]+subAllocatedAmount)
-				                           	  		    flag++
-				                           	  		 }
-			                        	  	}
-		                           }
-		                           else
-		                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
+		                            unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
 		                        }
                            %>
   							<tr>

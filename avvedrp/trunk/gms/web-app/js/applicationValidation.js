@@ -329,7 +329,31 @@ function validateProject(){
 		    document.getElementById("code").focus();
 		    return false;
     	}
-    	
+    	  if( ( (document.getElementById("amountAllocated").value) == 'null') || ( (document.getElementById("amountAllocated").value) == '') )
+    	    {
+    	       alert("Invalid Amount  ");
+    		    document.getElementById("amountAllocated").focus();
+    		    return false;
+    	    }
+    	    if((document.getElementById("amountAllocated").value)==0)
+    	    {
+    		    alert("Please enter the Amount Allocated  ");
+    		    document.getElementById("amountAllocated").focus();
+    		    return false;
+    	    }
+    	    
+    	    if(eval(document.getElementById("amountAllocated").value)<=0)
+    	    {
+    		    alert("Please enter the Amount Allocated   ");
+    		    document.getElementById("amountAllocated").focus();
+    		    return false;
+    	    } 
+    	    if( ( (document.getElementById("sanctionOrderNo").value) == 'null') || ( (document.getElementById("sanctionOrderNo").value) == '') )
+    	    {
+    	        alert("Please enter the Sanction Order No  ");
+    		    document.getElementById("sanctionOrderNo").focus();
+    		    return false;
+    	    }    
     
     	//Sub Project Start Date
     	var projectStartDateYear = document.getElementById("projectStartDate_year").value;
@@ -410,33 +434,7 @@ function validateProject(){
 	    document.getElementById("investigator.id").focus();
 	    return false;
     }
-    
-    if(isNaN(document.getElementById("amountAllocated").value))
-    {
-	    alert("Invalid Amount  ");
-	    document.getElementById("amountAllocated").focus();
-	    return false;
-    }
-    if((document.getElementById("amountAllocated").value)==0)
-    {
-	    alert("Please enter the Amount Allocated  ");
-	    document.getElementById("amountAllocated").focus();
-	    return false;
-    }
-    
-    if(eval(document.getElementById("amountAllocated").value)<=0)
-    {
-	    alert("Please enter the Amount Allocated   ");
-	    document.getElementById("amountAllocated").focus();
-	    return false;
-    } 
-    
-       if((LTrim(document.getElementById("sanctionOrderNo").value))=='')
-    {
-	    alert("Please enter the Sanction Order No  ");
-	    document.getElementById("sanctionOrderNo").focus();
-	    return false;
-    }    
+  
     
    	return true;
 
@@ -1107,6 +1105,25 @@ function validatePI()
 	    return false;
     }
 	
+	 
+	 if( ( (LTrim(document.getElementById("aadhaarNo").value)) == 'null') || ( (document.getElementById("aadhaarNo").value) == '') )
+	    {
+		 	alert("Please enter Aadhaar Number");
+		    document.getElementById("aadhaarNo").focus();
+		    return false;
+	    }
+	   var str = document.getElementById('aadhaarNo').value;
+	    var oneDecimal = false;
+	    var oneChar = 0;
+	    str = str.toString();
+	   if(str.length>12)  
+	      {
+	      
+	            alert("Please enter Aadhaar Number  less than or equal to 12 digits");
+	            str.focus;
+	            return false;
+	      }
+	    
 	if(LTrim(document.getElementById('email').value) == '')
 	{
 		alert("Please Enter the email");
@@ -1382,10 +1399,19 @@ function validateParty()
 	
 	return true;
 }
-function validateProjectTracking()
+function validateProjectTracking(prjctId)
 {
-  if( ( (LTrim(document.getElementById("projectStatus").value)) == 'null') || ( (document.getElementById("projectStatus").value) == '') )
-	  
+	if((document.statusDet.fundAdvnce.checked==false) || (document.statusDet.subPrjt.checked==false) || (document.statusDet.expnseRequst.checked==false) || (document.statusDet.utilizationDet.checked==false))
+	{
+		alert("You can't go to check the fund details as this projects status details are not checked.");
+	    return false;
+	}
+
+}
+function validateProjectClosure()
+{
+	if( ( (LTrim(document.getElementById("projectStatus").value)) == 'null') || ( (document.getElementById("projectStatus").value) == '') )
+		  
 	{
 		alert("Please Enter Project Status");
 	    document.getElementById("projectStatus").focus();
@@ -1398,41 +1424,19 @@ function validateProjectTracking()
 	    return false;
 	}
 	if(eval(document.getElementById("percOfCompletion").value)<=0)
-    {
+	{
 	    alert("Please enter Proper Percentage");
 	   	document.getElementById("percOfCompletion").focus(); 
 	    return false;
-    }
-    if(eval(document.getElementById("percOfCompletion").value)>100)
-    {
+	}
+	if(eval(document.getElementById("percOfCompletion").value)>100)
+	{
 	    alert("Please enter Proper Percentage");
 	   	document.getElementById("percOfCompletion").focus(); 
 	    return false;
-    }
-     var projectStartDate = document.getElementById("projectStartDate").value;
-    var projectStartDateYear=projectStartDate.substring(0,projectStartDate.indexOf("-"));
-    var projectStartDateMonth=projectStartDate.substring(projectStartDate.indexOf("-")+1,projectStartDate.lastIndexOf("-"));
-    var projectStartDateDate=projectStartDate.substring(projectStartDate.lastIndexOf("-")+1,projectStartDate.lastIndexOf(" "));		
-    var ProjectStartDate = new Date(projectStartDateYear,projectStartDateMonth-1,projectStartDateDate);
-	
-	var projectEndDate = document.getElementById("projectEndDate").value;
-    var projectEndDateYear=projectEndDate.substring(0,projectEndDate.indexOf("-"));
-    var projectEndDateMonth=projectEndDate.substring(projectEndDate.indexOf("-")+1,projectEndDate.lastIndexOf("-"));
-    var projectEndDateDate=projectEndDate.substring(projectEndDate.lastIndexOf("-")+1,projectEndDate.lastIndexOf(" "));		
-    var ProjectEndDate = new Date(projectEndDateYear,projectEndDateMonth-1,projectEndDateDate);
-    
-    var projectclosureDateYear = document.getElementById("dateOfTracking_year").value;
-	var projectclosureDateMonth = document.getElementById("dateOfTracking_month").value;
-	var projectclosureDateDate = document.getElementById("dateOfTracking_day").value;
-	var newprojectclosureDateDate = new Date(projectclosureDateYear,projectclosureDateMonth-1,projectclosureDateDate);
-    
-    if((newprojectclosureDateDate < ProjectStartDate)||(newprojectclosureDateDate > ProjectEndDate))
-   	{
-   		alert("Project Closure Date should be in between Project Start Date and Project End Date ");
-   		document.getElementById("projectEndDate").focus(); 
-   		return false;
-   	}  	
-   	return true;   
+	}
+	 	
+		return true;   
 }
 function validateProposal()
 {
@@ -1516,6 +1520,7 @@ function breakOut()
        		top.frames['right'].location.href=self.document.href;
 	}
 }
+
 function validatePassword()
 {
 	if(document.getElementById("oldPasswd").value == "" || document.getElementById("oldPasswd").value == null )
@@ -1699,6 +1704,26 @@ function validateUser()
             return false;
          }
       } 
+    
+	 if( ( (LTrim(document.getElementById("aadhaarNo").value)) == 'null') || ( (document.getElementById("aadhaarNo").value) == '') )
+	    {
+		 	alert("Please enter Aadhaar Number");
+		    document.getElementById("aadhaarNo").focus();
+		    return false;
+	    }
+	   var str = document.getElementById('aadhaarNo').value;
+	    var oneDecimal = false;
+	    var oneChar = 0;
+	    str = str.toString();
+	   if(str.length>12)  
+	      {
+	      
+	            alert("Please enter Aadhaar Number  less than or equal to 12 digits");
+	            str.focus;
+	            return false;
+	      }
+	    
+    
 	if(document.getElementById("authorities").value == "Select"){
 		alert("Please Select Role");
 	    document.getElementById("authorities").focus();
@@ -1766,7 +1791,23 @@ function validateEditUser()
     	}
  
 	  }
-	
+	 if( ( (LTrim(document.getElementById("aadhaarNo").value)) == 'null') || ( (document.getElementById("aadhaarNo").value) == '') )
+	    {
+		 	alert("Please enter Aadhaar Number");
+		    document.getElementById("aadhaarNo").focus();
+		    return false;
+	    }
+	   var str = document.getElementById('aadhaarNo').value;
+	    var oneDecimal = false;
+	    var oneChar = 0;
+	    str = str.toString();
+	   if(str.length>12)  
+	      {
+	      
+	            alert("Please enter Aadhaar Number  less than or equal to 12 digits");
+	            str.focus;
+	            return false;
+	      }
 	var str = document.getElementById('phNumber').value;
     var oneDecimal = false;
     var oneChar = 0;
@@ -1786,7 +1827,8 @@ function validateEditUser()
             return false;
          }
       }
-      
+   
+    
 	if(LTrim(document.getElementById("email").value) == ""){
 		alert("Please enter email");
 	    document.getElementById("email").focus();
@@ -3847,7 +3889,150 @@ function validateEvalItemNotificationMap(firstInstance,ms,instance,msg)
 		return userCheck;
 	  }
  }
-  
+  function validateSubPrjt(prjctId) 
+	{
+	  var userCheck=true;
+	  jQuery.ajax({
+      url:'/gms/projectTracking/trackingdetails',
+      data: {id: prjctId},
+      dataType: "json",
+      async: false,
+      success: function(data){
+      var result = eval(data);
+      if(result != null)
+      {
+    	  alert("Sub-Project "+result+" is not yet withdrawal or surrendered,so this can't checked");
+    	  if(document.statusDet.subPrjt.checked==true)
+      	  {
+    		document.statusDet.subPrjt.checked=false;
+	  	  }
+      }
+      else
+      {
+      }
+      },
+      error: function(errorThrown)
+      {
+	  }
+	  });
+	  if(!userCheck)
+	  {
+		return userCheck;
+	  }
+	  else
+	  {
+		return userCheck;
+	  }
+	}
+
+	function validateAdvnceDetails(prjctId) 
+	{
+	  var userCheck=true;
+	  jQuery.ajax({
+      url:'/gms/projectTracking/advanceDetails',
+      data: {id: prjctId},
+      dataType: "json",
+      async: false,
+      success: function(data){
+      var result = eval(data);
+      if(result != null)
+      {
+    	  alert("Fund Advance is not yet closed,so this can't checked");
+    	  if(document.statusDet.fundAdvnce.checked==true)
+      	  {
+    		document.statusDet.fundAdvnce.checked=false;
+	  	  }
+      }
+      else
+      {
+      }
+      },
+      error: function(errorThrown)
+      {
+	  }
+	  });
+	  if(!userCheck)
+	  {
+		return userCheck;
+	  }
+	  else
+	  {
+		return userCheck;
+	  }
+	}
+	
+	function validateExpenseReqstDetails(prjctId) 
+	{
+	  var userCheck=true;
+	  jQuery.ajax({
+      url:'/gms/projectTracking/expenseDetails',
+      data: {id: prjctId},
+      dataType: "json",
+      async: false,
+      success: function(data){
+      var result = eval(data);
+      if(result != null)
+      {
+    	  alert("Expense Requst Status is not yet Approved,so this can't checked");
+    	  if(document.statusDet.expnseRequst.checked==true)
+      	  {
+    		document.statusDet.expnseRequst.checked=false;
+	  	  }
+      }
+      else
+      {
+      }
+      },
+      error: function(errorThrown)
+      {
+	  }
+	  });
+	  if(!userCheck)
+	  {
+		return userCheck;
+	  }
+	  else
+	  {
+		return userCheck;
+	  }
+	}
+	
+	function validateUtilizationDetails(prjctId) 
+	{
+	  var userCheck=true;
+	  jQuery.ajax({
+      url:'/gms/projectTracking/utilizedDetails',
+      data: {id: prjctId},
+      dataType: "json",
+      async: false,
+      success: function(data){
+      var result = eval(data);
+      if(result != null)
+      {
+    	  alert("Utilization report is not yet submitted,so this can't checked");
+    	  if(document.statusDet.utilizationDet.checked==true)
+      	  {
+    		document.statusDet.utilizationDet.checked=false;
+	  	  }
+      }
+      else
+      {
+      }
+      },
+      error: function(errorThrown)
+      {
+	  }
+	  });
+	  if(!userCheck)
+	  {
+		return userCheck;
+	  }
+	  else
+	  {
+		return userCheck;
+	  }
+	}
+	
   function validateMaster()
   {
        if( ( (document.getElementById("financialYear.id").value) == 'null') || ( (document.getElementById("financialYear.id").value) == '') )
@@ -4814,6 +4999,27 @@ function validateUniversityMaster()
 			return false;
 		}
 	}
+
+	var str = document.getElementById('phoneNo').value;
+    var oneDecimal = false;
+    var oneChar = 0;
+    str = str.toString();
+
+    for (var i = 0; i < str.length; i++)
+     {
+
+        oneChar = str.charAt(i).charCodeAt(0);
+       // characters outside of 0 through 9 not OK
+
+        if (oneChar < 48 || oneChar > 57)
+         {
+
+            alert("Enter only valid numbers into the Phone No: Field.");
+            document.getElementById('phoneNo').focus();
+            return false;
+         }
+      }    
+    
 }
 
 function validateUniversityInstitutionMap()
@@ -5082,6 +5288,30 @@ function validateMenuRoleMap(role,instance,msg)
    return true;
 }
 
+function validateCheckList(projects,instance,msg)
+{ 
+	
+	if(projects.value == 'null')
+	{
+		alert("Please Select a Projects");
+		projects.focus();
+		return false;
+	}
+	
+	if(!validateCheckBox(instance,msg))
+	{
+		return false;
+	}
+	docclick++;
+		if(docclick>1)
+		{
+			return false;
+		}
+			setTimeout('docclick=0', 2000);
+	
+   return true;
+}
+
 function combineAlertAndValidateAuthority() 
 {
 	var retvalue;
@@ -5095,4 +5325,168 @@ function msgForreviewer()
 {
 	alert("Review can be started only after proposal submission last date.");
 	return false;
+}
+
+function validateGrantAllocationTracking()
+{
+	if( ( (LTrim(document.getElementById("grantAllocationStatus").value)) == 'null') || ( (document.getElementById("grantAllocationStatus").value) == '') )
+		  
+	{
+		alert("Please Enter Grant Allocation Status");
+	    document.getElementById("grantAllocationStatus").focus();
+	    return false;
+	}
+}
+
+function breakOutofFrame() 
+{
+	if (top.frames['top'].length!=0) 
+	{
+    	if (window.location.href.replace)
+        	top.frames['top'].location.replace(self.location.href);
+        else
+       		top.frames['top'].location.href=self.document.href;
+	}
+}
+
+function validateAssetTracking()
+{
+	if( ( (LTrim(document.getElementById("assetName").value)) == 'null') || ( (document.getElementById("assetName").value) == '') )
+		  
+	{
+		alert("Please Enter Asset Name");
+	    document.getElementById("assetName").focus();
+	    return false;
+	}
+	
+	if( ( (LTrim(document.getElementById("assetCode").value)) == 'null') || ( (document.getElementById("assetCode").value) == '') )
+		  
+	{
+		alert("Please Enter Asset Code");
+	    document.getElementById("assetCode").focus();
+	    return false;
+	}
+	
+	if( ( (LTrim(document.getElementById("cost").value)) == 'null') || ( (document.getElementById("cost").value) == '') )
+		  
+	{
+		alert("Please Enter Cost");
+	    document.getElementById("cost").focus();
+	    return false;
+	}
+
+	if(isNaN(document.getElementById("cost").value))
+    {
+	    alert("Invalid Cost  ");
+	    document.getElementById("cost").focus();
+	    return false;
+    }
+    if((document.getElementById("cost").value)==0)
+    {
+	    alert("Please enter the Cost  ");
+	    document.getElementById("cost").focus();
+	    return false;
+    }
+    
+    if(eval(document.getElementById("cost").value)<=0)
+    {
+	    alert("Please enter the Cost   ");
+	    document.getElementById("cost").focus();
+	    return false;
+    } 
+    
+}
+
+function validateAssetDepreciation()
+{
+	if(LTrim(document.getElementById("depreciateValue").value) == 'null'){
+		alert("Please enter Depreciate Value");
+	    document.getElementById("depreciateValue").focus();
+	    return false;
+	}
+	
+	else if(isNaN(document.getElementById("depreciateValue").value) )
+	{
+		alert("Please Enter Numeric Value For Depreciate Value");
+	    document.getElementById("depreciateValue").focus();
+	    return false;
+	}
+	if(eval(document.getElementById("depreciateValue").value)<=0)
+	{
+	    alert("Please enter a valid Depreciate Value");
+	   	document.getElementById("depreciateValue").focus(); 
+	    return false;
+	}
+	if(eval(document.getElementById("depreciateValue").value)>100)
+	{
+	    alert("Please enter a valid Depreciate Value");
+	   	document.getElementById("depreciateValue").focus(); 
+	    return false;
+	}
+	return true;
+}
+function validateCheckLists()
+{
+
+	if( ( (LTrim(document.getElementById("field").value)) == 'null') || ( (document.getElementById("field").value) == '') )
+		  
+	{
+		alert("Please Enter Field");
+	    document.getElementById("field").focus();
+	    return false;
+	}
+}
+
+
+function validateSalaryReportViewConfirmPrint()
+{
+    var answer = confirm("Do you want to view report?")
+	if (answer)
+	{
+		document.viewStatementOfAccounts.target="_blank";
+		return true;
+	}
+	else
+	{
+		return false;
+	} 
+	document.viewStatementOfAccounts.target="_blank";
+  return true;
+}
+
+function validateSendMessage()
+{
+	  if( ( (document.getElementById("fromEmail").value) == 'null') || ( (document.getElementById("fromEmail").value) == '') )
+	    {
+		    alert("Please enter the From address");
+		    document.getElementById("fromEmail").focus();
+		    return false;
+	    }
+
+	  var email = document.getElementById('fromEmail');
+		var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+		if(email.value != "")
+		{
+			if (!filter.test(email.value))
+			{
+				alert('Please provide a valid email address in From address');
+				email.focus();
+				return false;
+			}
+		}
+		
+		  var toEmail = document.getElementById('email');
+			var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+			if(toEmail.value != "")
+			{
+				if (!filter.test(toEmail.value))
+				{
+					alert('Invalid email address in To address');
+					email.focus();
+					return false;
+				}
+			}
+		
+		
+
 }

@@ -6,6 +6,16 @@ import org.codehaus.groovy.grails.commons.ControllerArtefactHandler
 import org.springframework.beans.BeanWrapper
 import org.springframework.beans.PropertyAccessorFactory
 import org.apache.commons.validator.EmailValidator
+
+import java.io.File;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import jxl.read.biff.*;
+import jxl.CellType;
+import jxl.biff.formula.FormulaException;
+
 /**
  * User controller.
  */
@@ -20,6 +30,9 @@ class UserController extends GmsController {
     def userService
     def gmsSettingsService
     def projectsService
+    def partyDepartmentService
+    def employeeDesignationService
+    def proposalService
 	// the delete, save and update actions only accept POST requests
 	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
@@ -165,74 +178,82 @@ class UserController extends GmsController {
 		EmailValidator emailValidator = EmailValidator.getInstance()
 		if (emailValidator.isValid(params.email))
 		{
-		def userService = new UserService()
-		def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
-		def ctx = AH.application.mainContext
-		def springSecurityService=ctx.springSecurityService
-		Integer userId  = userService.getUserByUserName(params.email)
-		Integer userEmailId = userService.getUserByEmail(params.email)
-        if((userId && userId != new Integer(params.id)) || (userEmailId && userEmailId != new Integer(params.id)))
-        {
-               	flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
-        		redirect action: edit, id: params.id
-        }
-        else
-        {
-			long version = params.version.toLong()
-			if (person.version > version) {
-				person.errors.rejectValue 'version', "person.optimistic.locking.failure",
-					"Another user has updated this User while you were editing."
-					render view: 'edit', model: buildPersonModel(person)
-				return
-			}
-			//def oldPassword = person.password
-			person.properties = params
-			if(params.Passwd)
-				person.password = params.Passwd
-				//person.password = springSecurityService.encodePassword(params.Passwd)
-			//if (!params.password.equals(oldPassword)) {
-			//	person.password = springSecurityService.encodePassword(params.password)
-			//}
-			
-			Integer personId = userService.updateUser(person,params)
-			if (!personId) {
-				flash.message ="${message(code: 'default.notfond.label')}"
-				redirect action: edit, id: params.id
-			}
-				else
-				{
-					if(personRoleInstance.authority == 'ROLE_SUPERADMIN')
-					{
-						if(params.Passwd)
-						{
-							
-							def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
-					    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
-					    	//mail content
-					    	String mailMessage="";
-					        mailMessage="Dear "+params.userRealName+" "+params.userSurName+", \n \n Your GMS user account has been updated with following details.";
-					        mailMessage+="\n \n LoginName    : "+params.email;
-					        mailMessage+="\n Password     : "+params.Passwd;
-					        // mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
-					    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
-						    flash.message = "${message(code: 'default.UpdatedUser.label')}"
-							redirect action:list,id:params.id
-						}
+			def userService = new UserService()
+			def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
+			def ctx = AH.application.mainContext
+			def springSecurityService=ctx.springSecurityService
+			Integer userId  = userService.getUserByUserName(params.email)
+			Integer userEmailId = userService.getUserByEmail(params.email)
+			Integer aadhaarId  = userService.getUserByaadaarno(params.aadhaarNo)
+	        if((userId && userId != new Integer(params.id)) || (userEmailId && userEmailId != new Integer(params.id)))
+	        {
+	               	flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
+	        		redirect action: edit, id: params.id
+	        }
+	        else
+	        {
+		        if(aadhaarId && aadhaarId != new Integer(params.id))
+		        {
+		               	flash.message = "${message(code: 'default.aadhaarIdalreadyexists.label')}"
+		        		redirect action: edit, id: params.id
+		        }
+		        else
+		        {
+					long version = params.version.toLong()
+					if (person.version > version) {
+						person.errors.rejectValue 'version', "person.optimistic.locking.failure",
+							"Another user has updated this User while you were editing."
+							render view: 'edit', model: buildPersonModel(person)
+						return
+					}
+					//def oldPassword = person.password
+					person.properties = params
+					if(params.Passwd)
+						person.password = params.Passwd
+						//person.password = springSecurityService.encodePassword(params.Passwd)
+					//if (!params.password.equals(oldPassword)) {
+					//	person.password = springSecurityService.encodePassword(params.password)
+					//}
+					
+					Integer personId = userService.updateUser(person,params)
+					if (!personId) {
+						flash.message ="${message(code: 'default.notfond.label')}"
+						redirect action: edit, id: params.id
+					}
 						else
 						{
-							flash.message = "${message(code: 'default.updated.label')}"
-							redirect action:list,id:params.id
+							if(personRoleInstance.authority == 'ROLE_SUPERADMIN')
+							{
+								if(params.Passwd)
+								{
+									
+									def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+							    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
+							    	//mail content
+							    	String mailMessage="";
+							        mailMessage="Dear "+params.userRealName+" "+params.userSurName+", \n \n Your GMS user account has been updated with following details.";
+							        mailMessage+="\n \n LoginName    : "+params.email;
+							        mailMessage+="\n Password     : "+params.Passwd;
+							        // mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
+							    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
+								    flash.message = "${message(code: 'default.UpdatedUser.label')}"
+									redirect action:list,id:params.id
+								}
+								else
+								{
+									flash.message = "${message(code: 'default.updated.label')}"
+									redirect action:list,id:params.id
+								}
+							}
+							else
+							{
+								flash.message = "${message(code: 'default.updated.label')}"
+								redirect action:list,id:params.id
+							}
 						}
 					}
-					else
-					{
-						flash.message = "${message(code: 'default.updated.label')}"
-						redirect action:list,id:params.id
-					}
 				}
-			
-			}
-		}
+		 }
 		else
 		{
 			    flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
@@ -242,17 +263,21 @@ class UserController extends GmsController {
     }
 
 	def create = {
+		GrailsHttpSession gh=getSession()
 		def userService = new UserService()
 		def partyService = new PartyService()
 		def authorityList = userService.getRoles()
 		def authorityInstance = userService.getActiveRoles()
 		def institutionList = partyService.getAllActiveParties()
     	def personRoleInstance = userService.getUserRoleByUserId(session.UserId)
-		GrailsHttpSession gh=getSession()
+    	 def partyinstance=Party.get(gh.getValue("Party"))
+    	def departmentList = PartyDepartment.findAll("from PartyDepartment PD where PD.party.id="+partyinstance.id+"and PD.activeYesNo='Y'")
+    	 def employeeDesignationInstanceList =employeeDesignationService.getemployeeDesignationList()
 		gh.removeValue("Help")
 				//putting help pages in session
 			gh.putValue("Help","New_User.htm")	
-		[person: new Person(params), authorityList: authorityList,authorityInstance:authorityInstance ,institutionList:institutionList,personRoleInstance:personRoleInstance[0]]
+		[person: new Person(params), authorityList: authorityList,authorityInstance:authorityInstance ,institutionList:institutionList,
+		personRoleInstance:personRoleInstance[0],departmentList:departmentList,employeeDesignationInstanceList:employeeDesignationInstanceList]
 
 	}
 	
@@ -261,54 +286,72 @@ class UserController extends GmsController {
 	 * Person save action.
 	 */
 	def save = {
+	println"---------------"+params
 		EmailValidator emailValidator = EmailValidator.getInstance()
 		if (emailValidator.isValid(params.email))
 		{
-		def userService = new UserService()
-		def ctx = AH.application.mainContext
-		def springSecurityService=ctx.springSecurityService
-		Integer userId  = userService.getUserByUserName(params.email)
-		if(userId)
-		{
-			flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
-			redirect(action:create)
-			
-		}
-		else{
-			def person = new Person()
-			//person.properties = params
-			person.username=params.email
-			person.userRealName=params.userRealName
-			person.userSurName=params.userSurName
-			person.email=params.email
-			person.password=params.password
-			//person.password = springSecurityService.encodePassword(params.password)
-			person.password = params.password
-			person.enabled=false
-			person.activeYesNo='Y'
-			person.userDesignation = params.userDesignation
-			person.phNumber = params.phNumber
-			if(params.get("party.id")==null)
-			params.put("party.id",getUserPartyID())
-		    Integer personId = userService.saveUser(person,params)
-		    if(personId != null){
-		        def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
-		    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
-		    	//mail content
-		    	String mailMessage="";
-		        mailMessage="Dear "+params.userRealName+" "+params.userSurName+", \n \n "+mailContent+".";
-		        mailMessage+="\n \n LoginName    : "+params.email;
-		        mailMessage+="\n Password     : "+params.password;
-		        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
-		    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
-		    	flash.message = "${message(code: 'default.UserCreated.label')}"
-				redirect action: list, id: personId
-				}
-			else {
-				def authorityList = userService.getRoles()
-				render view: 'create', model: [authorityList: authorityList, person: person]
+			def userService = new UserService()
+			def ctx = AH.application.mainContext
+			def springSecurityService=ctx.springSecurityService
+			Integer userId  = userService.getUserByUserName(params.email)
+			Integer aadhaarId  = userService.getUserByaadaarno(params.aadhaarNo)
+			if(userId)
+			{
+				println"-----userId---------"
+				flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
+				redirect(action:create)
+				
 			}
-		}
+			else
+			{
+				if(aadhaarId)
+				{
+					flash.message = "${message(code: 'default.aadhaarIdalreadyexists.label')}"
+					redirect(action:create)
+					
+				}
+				else
+				{
+					def person = new Person()
+					//person.properties = params
+					def departmentInstance = PartyDepartment.get(params.department.id)
+					person.username=params.email
+					person.userRealName=params.userRealName
+					person.userSurName=params.userSurName
+					person.email=params.email
+					person.password=params.password
+					//person.password = springSecurityService.encodePassword(params.password)
+					person.password = params.password
+					person.enabled=false
+					person.activeYesNo='Y'
+					person.userDesignation = params.userDesignation
+					person.phNumber = params.phNumber
+					person.aadhaarNo = params.aadhaarNo
+					person.department =departmentInstance
+					if(params.get("party.id")==null)
+					params.put("party.id",getUserPartyID())
+				    Integer personId = userService.saveUser(person,params)
+				    if(personId != null)
+				    {
+				        def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+				    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
+				    	//mail content
+				    	String mailMessage="";
+				        mailMessage="Dear "+params.userRealName+" "+params.userSurName+", \n \n "+mailContent+".";
+				        mailMessage+="\n \n LoginName    : "+params.email;
+				        mailMessage+="\n Password     : "+params.password;
+				        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
+				    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
+				    	flash.message = "${message(code: 'default.UserCreated.label')}"
+						redirect action: list, id: personId
+					}
+					else
+				    {
+						def authorityList = userService.getRoles()
+						render view: 'create', model: [authorityList: authorityList, person: person]
+					}
+				}
+			}
 		}
 		else
 		{
@@ -967,4 +1010,75 @@ class UserController extends GmsController {
 	     }
 	}
 	
+	def uploadxls = 
+	{
+	GrailsHttpSession gh=getSession()
+	def partyInstance = Party.find("from Party P where P.id="+gh.getValue("Party"))
+		def partyProposalFormOldInstanceList = proposalService.getAllFormByPartyAndFormType('Excel',partyInstance.id)
+		return['partyProposalFormOldInstanceList':partyProposalFormOldInstanceList]
+	}
+	
+	def saveUploadedxls = 
+	{
+		GrailsHttpSession gh=getSession()
+		def proposalApplicationPath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
+		def partyProposalFormInstance = new PartyProposalForm()
+		def partyInstance = Party.find("from Party P where P.id="+gh.getValue("Party")) 
+		def webRootDir
+	     if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+	     {
+	     	webRootDir = proposalApplicationPath
+	     }
+	     if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+	     {
+	     	webRootDir = proposalApplicationPath
+	     }
+	     	def downloadedfile = request.getFile("attachmentPath");
+	     	def contentType = downloadedfile.contentType 
+	     if(!downloadedfile.empty) 
+	     {
+	     		//String fileName=downloadedfile.getOriginalFilename()
+	     		String fileName=downloadedfile.getOriginalFilename().toString().substring(0,downloadedfile.getOriginalFilename().toString().indexOf("."))
+	     	  	downloadedfile.transferTo( new File( webRootDir + File.separatorChar+"Excel-"+fileName+".xls") )
+	     	  		partyProposalFormInstance.name="Excel-"+fileName+".xls"
+		     		partyProposalFormInstance.value=fileName+".xls"
+		     		partyProposalFormInstance.formType="Excel"
+		     		partyProposalFormInstance.notification=null
+		     		partyProposalFormInstance.activeYesNo='Y'
+		     		partyProposalFormInstance.party=partyInstance
+		     		if (partyProposalFormInstance.save(flush: true))
+		     		{
+				     	flash.message = "File uploaded successfully"
+				     	redirect(action: "uploadxls")
+		     		}
+		     	 else {
+	                	//redirect(action: "create", id: attachmentsInstance.domainId)//, model: [attachmentsInstance: attachmentsInstance])
+	                }
+		}
+		}
+		
+		def importExcel =
+		{
+			String filePath = gmsSettingsService.getGmsSettingsValue("ProposalApplicationPath")
+			def partyExcelInstance = PartyProposalForm.get(params.id)
+			//String fileName = "StudentAdmissionData.xls"
+			def fileName =  new File(filePath+partyExcelInstance.name)
+			File excelFile = new File(filePath+System.getProperty("file.separator")+partyExcelInstance.name);
+			/* Get details from excel. */
+			Workbook  workbook = Workbook.getWorkbook(excelFile);
+			def sheet = workbook.getSheet(0) 
+			def  rows = sheet.getRows()
+			for(int i=1;i<rows;i++)
+			{
+				def proposalCategoryInstance = new ProposalCategory()
+				proposalCategoryInstance.name = (sheet.getCell(0,i).getContents());
+				println"--------getCell(0,i)-------"+proposalCategoryInstance.name 
+				proposalCategoryInstance.remarks = (sheet.getCell(1,i).getContents());
+				proposalCategoryInstance.activeYesNo = 'Y'
+				proposalCategoryInstance.save()
+				
+			}
+			redirect(action: "uploadxls")
+		}
+			
 }

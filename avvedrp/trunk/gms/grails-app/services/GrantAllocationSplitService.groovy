@@ -207,5 +207,47 @@ println"....accountHeadList..."+accountHeadList
 	{
 	def subAllocatedAmount = GrantAllocation.executeQuery("select sum(GA.amountAllocated) from GrantAllocation GA where GA.projects.parent.id="+projectsInstance.id)
 	return subAllocatedAmount
-}
+	}
+	
+	public List checkGrantAllocationSplit(def grantAllocationSplitInstance,def projectId,def grantAllocationId)
+	{
+	   def grantAllocationSplitInstanceCheck = GrantAllocationSplit.findAll("from GrantAllocationSplit GAS where GAS.accountHead.id='"+grantAllocationSplitInstance.accountHead.id+"' and GAS.grantPeriod.id= '"+grantAllocationSplitInstance.grantPeriod.id+"' and GAS.projects.id="+projectId+"and GAS.grantAllocation.id="+grantAllocationId)
+	   return grantAllocationSplitInstanceCheck
+	}
+	
+	/**
+	 * method to get total Grant Allocation Split amount for a Grant Allocation
+	 */
+	 public getTotalGrantSplit(def grantAllocationId)
+	 {
+		 double sumSplitGrantAllot = 0.0
+		 def sumSplitGrant = GrantAllocationSplit.executeQuery("select sum(GAS.amount) as total from GrantAllocationSplit GAS where GAS.grantAllocation.id ="+grantAllocationId)
+		 if(sumSplitGrant[0]!=null)
+			 sumSplitGrantAllot = new Double(sumSplitGrant[0]).doubleValue()
+			
+		 return sumSplitGrantAllot
+	 }
+	 
+	 /**
+	  * method to get total Grant Allocation Split amount for an Account Head for subAllocated projects
+	  */
+	  public getTotalSubGrantSplit(def parentProjectId, def accountHeadId, def grantPeroidId)
+	  {
+		  double childSplitTotal = 0.0
+		  def sumSplitGrant = GrantAllocationSplit.executeQuery("select sum(GS.amount) from GrantAllocationSplit GS where GS.projects.parent.id ="+parentProjectId+"and GS.accountHead.id="+accountHeadId+"and GS.grantPeriod.id="+grantPeroidId)
+		  if(sumSplitGrant[0]!=null)
+			  childSplitTotal = new Double(sumSplitGrant[0]).doubleValue()
+			 
+		  return childSplitTotal
+	  }
+	  
+	  /**
+	   * method to get Grant Allocation Split Instance for an Account Head and projects
+	   */
+	   public getSubGrantSplitByAccHead(def ProjectId, def accountHeadId, def grantPeriodId)
+	   {
+		   
+		   def grantAllocationSplitInstance = GrantAllocationSplit.find("from GrantAllocationSplit GS where GS.projects.id ="+ProjectId+"and GS.accountHead.id="+accountHeadId+"and GS.grantPeriod.id="+grantPeriodId)
+		   return grantAllocationSplitInstance
+	   }
 }

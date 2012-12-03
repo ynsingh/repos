@@ -33,7 +33,7 @@
 						                                    	<g:message code="default.GrantAllocationStatus.label"/>:</label>
 						                               	</td>
 						                                <td valign="top" class="value ${hasErrors(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus','errors')}">
-						                                    <g:select name="grantAllocationStatus" from="${['Open', 'Surrender', 'Withdrawal','Closed']}" onChange="setValue()"  
+						                                    <g:select name="grantAllocationStatus" from="${['Withdrawal']}" onChange="setValue()"  
 						                                    	value="${fieldValue(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus')}">
 						                                     </g:select> 
 						                                </td>
@@ -41,8 +41,8 @@
 						                                    <label for="projectStatus"><g:message code="default.GrantAllocationTrackingReports.ProjectStatus.label"/>:</label>
 						                               	</td>
 						                                <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'projectStatus','errors')}">
-						                                	<g:select name="projectStatus" from="${['Open','Deadline Passed','Grant Funded','Closed']}" 
-						                                		noSelection="['\'Open\',\'Deadline Passed\',\'Grant Funded\',\'Closed\'':'All']" onChange="setValue()"  
+						                                	<g:select name="projectStatus" from="${['Completed','Surrender']}" 
+						                                		noSelection="['\'Completed\',\'Surrender\'':'All']" onChange="setValue()"  
 						                                		value="${fieldValue(bean:projectTrackingInstance,field:'projectStatus')}">
 						                                     </g:select> 
 						                                </td>

@@ -26,7 +26,6 @@
 								</g:else>
 							</g:if>
 							<g:else> 
-							
 								<g:if test="${menuRoleMapChildInstance.menu.menuPath == 'grantAllocationSplit/list'}">
 									<g:if test="${projectsInstance.parent}">
 										<a href="${createLinkTo(dir:menuRoleMapChildInstance.menu.menuPath)}?id=${session.ProjectID}"><g:message code="${menuRoleMapChildInstance.menu.menuName}"/></a> |
@@ -36,7 +35,16 @@
 									</g:else>
 								</g:if>
 								<g:else>
+									<g:if test="${menuRoleMapChildInstance.menu.menuName == 'default.UploadMessageDocs.label'}">
+										<g:if test="${projectsInstance.parent}">
+											<a href="${createLinkTo(dir:menuRoleMapChildInstance.menu.menuPath)}?id=${session.ProjectID}"><g:message code="${menuRoleMapChildInstance.menu.menuName}"/></a>
+										</g:if>
+										<g:else> 
+										</g:else>
+									</g:if>
+									<g:else> 
 										<a href="${createLinkTo(dir:menuRoleMapChildInstance.menu.menuPath)}?id=${session.ProjectID}"><g:message code="${menuRoleMapChildInstance.menu.menuName}"/></a> |
+									</g:else>
 								</g:else>
 							</g:else>
 						</g:each>

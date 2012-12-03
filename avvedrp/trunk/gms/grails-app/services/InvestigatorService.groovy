@@ -76,6 +76,13 @@ class InvestigatorService {
 	   def chkUniqueNameInstance = Investigator.findAll("from Investigator I where I.name= '" + params.name + "'")
 	   return chkUniqueNameInstance
    }
+   
+    public List getUniqueaadar(def params)
+   {
+	   def chkUniqueaadhaarNoInstance = Investigator.findAll("from Investigator I where I.aadhaarNo= '" + params.aadhaarNo + "'")
+	   return chkUniqueaadhaarNoInstance
+   }
+   
    /**
     * Function to get investigator by department
     */

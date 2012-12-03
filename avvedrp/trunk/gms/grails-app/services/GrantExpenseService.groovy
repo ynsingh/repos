@@ -451,16 +451,16 @@ class GrantExpenseService {
 		 return totalAdvance
 	}
 	 
-	 /*
-	 	 * Method To list All GrantAllocation By project Id That Grant AllocationAlso in ExternalFundAllocation 
-	 	 */
+	 /**
+	  *Method To list All GrantAllocation By project Id That Grant AllocationAlso in ExternalFundAllocation 
+	 */
 	 	public List getgrantAllocationByProjectIdInExternalFundAllocation(def params)
 	 	{
 	 		def grantAllocationInstanceInExternalFundList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id='"+params.id+"' and GA.id IN (SELECT EF.grantAllocation.id from ExternalFundAllocation EF)")
 		 	return grantAllocationInstanceInExternalFundList
 	 	}
 	 
-	 	/*
+	 	/**
 	 	 * Method To sum of receivedAmount By GrantAllocation Id In External Fund
 	 	 */
 	 	public  getsumReceivedAmountByGrantAllotId(grantAllocationInstanceInExternalFundList)
@@ -480,6 +480,101 @@ class GrantExpenseService {
 			 return totalExpense
 		}
 		 
+		 /**
+		  * Get sum of Expense for a Grant Allocation Split
+		  */
+		  public double getTotalExpenseBySplit(def grantAllocationSplitId){
+			  double totalExpense = 0.0
+			  def totExpense = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.grantAllocationSplit.id ="+grantAllocationSplitId)
+			  if(totExpense[0]!=null)
+				  totalExpense = new Double(totExpense[0]).doubleValue()
+			  return totalExpense
+		 }
+		  
+		  /**
+		   * Function to get total sub-project expense by parent project and range of expense date.
+		   */
+		  public getTotalSubProjectExpenseByParentProjectsAndExpenseDateRange(def utilizationInstance){
+			  def sdf1 = new SimpleDateFormat('yyyy/MM/dd')
+			  def totExp = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.projects.id = "+utilizationInstance.projects.id+" and DATE_FORMAT(GE.dateOfExpense,'%Y/%m/%d')  "+
+					  "between '"+sdf1.format(utilizationInstance.startDate)+"' and '"+sdf1.format(utilizationInstance.endDate)+"'")
+			 if(totExp[0] == null)
+			 	totExp[0] = 0
+			  return totExp[0]
+		  }
+		  
+		  
+		  /**
+		   * Function to get total sub-project expense shown in submitted utilization by parent project and range of expense date.
+		   */
+		 public getTotalChildExpense(def projectInstance){
+			 def subProjectInstanceList = []
+			 def subProjectInstancesList = []
+			 def childExpnseSum = 0
+			 subProjectInstanceList = getSubProjectList(projectInstance,subProjectInstancesList)
+			 for(subProjectInstance in subProjectInstanceList){
+				 def childUtilizationInstance = Utilization.find("from Utilization U where U.projects.id="+subProjectInstance.id)
+				 if(childUtilizationInstance){
+					 def childSum = getTotalSubProjectExpenseByParentProjectsAndExpenseDateRange(childUtilizationInstance)
+					 childExpnseSum = childExpnseSum + childSum
+				 }
+			 }
+			 return childExpnseSum
+		 }
+		 
+		 /**
+		  * Recursive function to get all child projects upto n-th level
+		  */
+		 public List getSubProjectList(def projectInstance, def subProjectInstancesList){
+			 def subInstanceList = Projects.findAll("from Projects  P where  P.parent.id="+projectInstance.id)
+			 if(subInstanceList){
+				 for(subProjectInstance in subInstanceList){
+					 subProjectInstancesList.add(subProjectInstance)
+					 getSubProjectList(subProjectInstance,subProjectInstancesList)
+					 
+				 }
+			 }
+			 return subProjectInstancesList
+		 }
+		 
+		 
+		 /**
+		  * Function to get grant expense List by grant allocation and range of expense date.
+		  */
+		 public GrantExpense[] getGrantExpenseListByProjectsAndExpenseDateRange(def projectInstance,def dateFrom,def dateTo){
+			 def grantExpenseInstanceList
+			 def sdf1 = new SimpleDateFormat('yyyy/MM/dd')
+			 
+				 String query = "from GrantExpense GE where GE.projects.id = "+projectInstance.id+" and DATE_FORMAT(GE.dateOfExpense,'%Y/%m/%d')  "+
+					 "between '"+sdf1.format(dateFrom)+"' and '"+sdf1.format(dateTo)+"'order by GE.dateOfExpense"
+				 grantExpenseInstanceList = GrantExpense.findAll(query)
+			 
+			return grantExpenseInstanceList
+		 }
+		 
+		 /**
+		  * Function to save grant expense as utilization submitted
+		  */
+		 public setExpenseAsUtilizationSubmitted(def expenseInstanceList){
+			if(expenseInstanceList){
+			  for(grantExpenseInstance in expenseInstanceList){
+				 grantExpenseInstance.utilizationSubmitted = 'Y'
+				 grantExpenseInstance.save()
+			  }
+			}
+		 }
+		 
+		 /**
+		  * Function to save grant expense as utilization Not submitted
+		  */
+		 public setExpenseAsUtilizationNotSubmitted(def expenseInstanceList){
+			if(expenseInstanceList){
+			  for(grantExpenseInstance in expenseInstanceList){
+				 grantExpenseInstance.utilizationSubmitted = 'N'
+				 grantExpenseInstance.save()
+			  }
+			}
+		 }
 }
 
 

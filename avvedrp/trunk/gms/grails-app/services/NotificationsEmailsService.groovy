@@ -2,6 +2,7 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import java.util.Properties;
 import javax.mail.internet.*;
 import javax.mail.*;
+import javax.activation.*;
 class NotificationsEmailsService {
 	def gmsSettingsService
     boolean transactional = true
@@ -406,5 +407,77 @@ class NotificationsEmailsService {
 	      } 
 	      return mailServerStatus;
     }
-   
+    
+     def getGmsSettingsValueForMessage(def nameInstance)
+    {
+    	def gmsSettingsInstance = GmsSettings.find("from GmsSettings where name='"+nameInstance+"' and activeYesNo='Y'")
+    	return gmsSettingsInstance?.value
+    }
+    
+  public boolean sendEmailToSiteAdmin(def emailId,def fromEmailId,def mailMessage,def mailSubject,def contentType)
+    {
+      
+    	def mailContent=getGmsSettingsValueForMessage("MailContent")
+        String host = getGmsSettingsValueForMessage("MailHost")
+        String username = getGmsSettingsValueForMessage("MailUserName") // your authsmtp username
+        String password = getGmsSettingsValueForMessage("MailPassword") // your authsmtp password
+        String port = getGmsSettingsValueForMessage("MailPort")
+        String isSSL = getGmsSettingsValueForMessage("isSSL")
+     
+            String[] to={emailId};
+     
+            Properties props = new Properties();
+	        props.put("mail.smtp.user", username);
+	        props.put("mail.smtp.host", host);
+                if(!"".equals(port))
+       				 props.put("mail.smtp.port", port);
+	     
+	            if(!"false".equals(isSSL))
+		       				  {
+		       				    props.put("mail.smtp.starttls.enable","true");  
+		       				    props.put("mail.smtp.socketFactory.port", port);
+		       				    props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+ 		       				    props.put("mail.smtp.socketFactory.fallback", "false");
+		       					   }
+	       	    		             props.put("mail.smtp.auth", "true");
+	       	    		                if(true){
+	       	    		                   props.put("mail.smtp.debug", "true");
+	       	    		                }else{
+	       	    		                   props.put("mail.smtp.debug", "false");          
+	       	    		                }
+			                
+	               
+	               
+	               
+	                 props.put("mail.smtp.auth", "true");
+           
+		        try
+		        {
+		               Session session = Session.getDefaultInstance(props, null);
+		               session.setDebug(true); 
+		               MimeMessage msg = new MimeMessage(session);
+	                   msg.setContent(mailMessage, contentType);
+		               msg.setSubject(mailSubject);
+	                   msg.setFrom(new InternetAddress(fromEmailId));
+		                  for(int i=0;i<to.length;i++){
+		            					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailId));
+		                        }
+		                         Transport transport = session.getTransport("smtp");
+		                         transport.connect(host, username, password);
+		                         transport.sendMessage(msg, msg.getAllRecipients());
+		                         transport.close();
+		                       return true;
+		        }
+		       catch (Exception mex)
+		        {
+		            mex.getCause() 
+		            mex.printStackTrace();
+		                        return false;
+	       } 
+       
+        return mailServerStatus;
+    
+    }  
+ 
+ 
 }

@@ -46,23 +46,199 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
 
 
  function getForm(){
- 	parent.right.frames['editframe'].document.forms[0].action="getForm";
+	parent.right.frames['editframe'].document.forms[0].action="getForm";
  	parent.right.frames['editframe'].document.forms[0].submit();
  }  
 
 
+ function getProposalForm(){
+	 parent.top.frames['editframe'].document.forms[0].action="getProposalForm";
+	 parent.top.frames['editframe'].document.forms[0].submit();
+ }  
 
+
+ function submitProposalForm(projectTitle,organisation,name,emailId,phone,projectCategory)
+ {
+	 if( ( (document.getElementById("projectTitle").value) == 'null') || ( (document.getElementById("projectTitle").value) == '') )
+		    {
+			    alert("Please enter the ProjectTitle");
+			    document.getElementById("projectTitle").focus();
+			    return false;
+		    }
+		     var speclChars = "!@#$%^&*()+=-_[]\\\';,./{}|\":<>?0123456789";
+			
+			if(document.getElementById("projectTitle").value != "")
+			 {
+		    	for (var i = 5; i < (document.getElementById("projectTitle").value.length); i++) 
+		    	{
+		   	 		if (speclChars.indexOf(document.getElementById("projectTitle").value.charAt(i)) != -1) 
+		  			{
+		  			alert ("Special characters and numbers are not allowed in ProjectTitle");
+		  			document.getElementById("projectTitle").focus();
+		  			return false;
+		  			}
+		    	}
+		    }
+    	
+    	 if( ( (document.getElementById("organisation").value) == 'null') || ( (document.getElementById("organisation").value) == '') )
+		    {
+			    alert("Please enter the Organisation");
+			    document.getElementById("organisation").focus();
+			    return false;
+		    }
+		     var speclChars = "!@#$%^&*()+=-_[]\\\';,./{}|\":<>?0123456789";
+			
+			if(document.getElementById("organisation").value != "")
+			 {
+		    	for (var i = 5; i < (document.getElementById("organisation").value.length); i++) 
+		    	{
+		   	 		if (speclChars.indexOf(document.getElementById("organisation").value.charAt(i)) != -1) 
+		  			{
+		  			alert ("Special characters and numbers are not allowed in Organisation");
+		  			document.getElementById("organisation").focus();
+		  			return false;
+		  			}
+		    	}
+		    }
+		    
+			 if( ( (document.getElementById("name").value) == 'null') || ( (document.getElementById("name").value) == '') )
+			    {
+				    alert("Please enter the Full Name");
+				    document.getElementById("name").focus();
+				    return false;
+			    }
+			     var speclChars = "!@#$%^&*()+=-_[]\\\';,./{}|\":<>?0123456789";
+				
+				if(document.getElementById("name").value != "")
+				 {
+			    	for (var i = 5; i < (document.getElementById("name").value.length); i++) 
+			    	{
+			   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+			  			{
+			  			alert ("Special characters and numbers are not allowed in Full Name");
+			  			document.getElementById("name").focus();
+			  			return false;
+			  			}
+			    	}
+			    }
+				
+			 if( ( (document.getElementById("email").value) == 'null') || ( (document.getElementById("email").value) == '') )
+			    {
+				    alert("Please enter valid E-mail ID");
+				    document.getElementById("email").focus();
+				    return false;
+			    }
+			    var email = document.getElementById('email');
+			    
+				var filter =/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+				if(email.value != "")
+				{
+					if (!filter.test(email.value))
+					{
+						alert('Please provide a valid email address');
+						email.focus;
+						return false;
+					}
+					
+				}
+			
+			   if( ( (document.getElementById("phone").value) == 'null') || ( (document.getElementById("phone").value) == '') )
+			    {
+				    alert("Please enter numeric values for  Phone No (upto 7 digits)");
+				    document.getElementById("phone").focus();
+				    return false;
+			    }
+			     var str = document.getElementById('phone').value;
+			    var oneDecimal = false;
+			    var oneChar = 0;
+			    str = str.toString();
+			
+			    for (var i = 0; i < str.length; i++)
+			     {
+			
+			        oneChar = str.charAt(i).charCodeAt(0);
+			       // characters outside of 0 through 9 not OK
+			
+			        if (oneChar < 48 || oneChar > 57)
+			         {
+			
+			            alert("Please enter numeric values for Phone No (upto 7 digits)");
+			            document.getElementById('phone').focus;
+			            return false;
+			         }
+			      }   
+			   
+			    if( ( (document.getElementById("ProjectCategory").value) == 'null') || ( (document.getElementById("ProjectCategory").value) == '') )
+			    {
+				    alert("Please enter Proposal Category");
+				    document.getElementById("ProjectCategory").focus();
+				    return false;
+			    }
+			       
+			      
+					
+	 	for(var i=0;i< parent.top.frames['editframe'].document.forms[0].elements.length;i++)
+             {
+               var element= parent.top.frames['editframe'].document.forms[0].elements[i];
+               	if(element.id==1)
+            		{
+                   if(element.value=='')
+ 		             {
+ 		             alert ("Please enter the "+element.name);
+ 		             element.focus();
+ 		                 //element.readOnly=true;
+ 		              return false;
+ 		             }
+ 		        }
+            }
+   parent.top.frames['editframe'].document.forms[0].action="saveProposalForm?projectTitle=value";
+   var input = document.createElement("input");
+   input.setAttribute("type", "hidden");
+   input.setAttribute("name", "ProjectsTitle");
+   input.setAttribute("value", projectTitle);
+   parent.top.frames['editframe'].document.forms[0].appendChild(input);
+   
+   var input = document.createElement("input");
+   input.setAttribute("type", "hidden");
+   input.setAttribute("name", "Organisation");
+   input.setAttribute("value", organisation);
+   parent.top.frames['editframe'].document.forms[0].appendChild(input);
+    
+   var input = document.createElement("input");
+   input.setAttribute("type", "hidden");
+   input.setAttribute("name", "FullName");
+   input.setAttribute("value", name);
+   parent.top.frames['editframe'].document.forms[0].appendChild(input);
+   
+   var input = document.createElement("input");
+   input.setAttribute("type", "hidden");
+   input.setAttribute("name", "email");
+   input.setAttribute("value", emailId);
+   parent.top.frames['editframe'].document.forms[0].appendChild(input);
+   
+   var input = document.createElement("input");
+   input.setAttribute("type", "hidden");
+   input.setAttribute("name", "Phone");
+   input.setAttribute("value", phone);
+   parent.top.frames['editframe'].document.forms[0].appendChild(input);
+   
+   var input = document.createElement("input");
+   input.setAttribute("type", "hidden");
+   input.setAttribute("name", "ProjectCategory");
+   input.setAttribute("value", projectCategory);
+   parent.top.frames['editframe'].document.forms[0].appendChild(input);
+  
+ 
+   //parent.top.frames['editframe'].document.forms[0].innerHTML = document.record.innerHTML + "<input type='hidden' name='submit' value='" + action +"'>";
+ 	parent.top.frames['editframe'].document.forms[0].submit();
+
+
+ }
 
  function returnResult(e)
  {
-           
-         
-         
-              var result = eval("("+e.responseText+")"); // evaluate the JSON
+           var result = eval("("+e.responseText+")"); // evaluate the JSON
             
-             
-             
-           
             for(var i=0;i< parent.right.frames['editframe'].document.forms[0].elements.length;i++)
             {
               var element= parent.right.frames['editframe'].document.forms[0].elements[i];
@@ -104,10 +280,8 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
    }
    function returnFormResult(data)
  {
-           
-         
-         
-               // evaluate the JSON
+     
+	   // evaluate the JSON
             
            result = eval(data);
                   
@@ -194,7 +368,7 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
     	field.style.textDecoration = 'none';
     	return true;
     }
-   
+
     function validateApplicationForm()
 	{
 			if( ( (document.getElementById("FirstName").value) == 'null') || ( (document.getElementById("FirstName").value) == '') )

@@ -16,12 +16,7 @@
     	<g:if test="${projectInstance.status=='Closed'}">
     	</g:if>
     	<g:else>
-    	<%@ page import="org.springframework.security.acls.domain.BasePermission" %>
-    	<sec:notPermitted className='Projects' id='${projectInstance.id}' permission='${BasePermission.WRITE}'>
-<g:subMenuList/>
-
-</sec:notPermitted>
-    		
+    		<g:subMenuList/>
     	</g:else>
     	
         	
@@ -137,7 +132,7 @@
 								    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								    						: <g:message code="default.Rs.label"/>
 								    					</strong> 
-								    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue())}
+								    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue() + childExpnseSum)}
 								    					<br>
 								    					
 								    					<strong><g:message code="default.CurrentBalance.label" />
@@ -145,7 +140,7 @@
 								    						: <g:message code="default.Rs.label"/> 
 							    						</strong> 
 							    						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue()-
-								    						sumAmount[0].doubleValue()-fundTransferInstance)}
+								    						sumAmount[0].doubleValue() + refundAmt.doubleValue()-childExpnseSum)}
 								    					<br>
 							     					</div>
 		     									</td>

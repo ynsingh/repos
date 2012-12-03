@@ -113,8 +113,15 @@ class InvestigatorController {
     			investigatorInstance.properties = params
     			def chkUniqueNameInstance = investigatorService.getUniqueName(params)
     			def chkUniqueEmailInstance = investigatorService.getUniqueEmail(params)
-    			
-    			
+    			def chkUniqueaadhaarNoInstance = investigatorService.getUniqueaadar(params)
+        		Integer aadhaarId  = userService.getUserByaadaarno(params.aadhaarNo)
+        		if((chkUniqueaadhaarNoInstance && chkUniqueaadhaarNoInstance[0].id != Long.parseLong(params.id))|| (aadhaarId && aadhaarId != new Integer(params.id)))
+				{
+					flash.message = "${message(code: 'default.aadhaarIdalreadyexists.label')}"
+					redirect(action:edit,id:investigatorInstance.id)
+				}
+				else
+				{
     				if(chkUniqueEmailInstance && chkUniqueEmailInstance[0].id != Long.parseLong(params.id))
     				{
     					flash.message ="${message(code: 'default.UserNamealreadyexists.label')}"
@@ -162,10 +169,10 @@ class InvestigatorController {
     					}
     		         
     				
-    					
-    					
     				}
+    					
     			}
+    		}
     		
     		else 
     		{
@@ -225,8 +232,9 @@ class InvestigatorController {
         investigatorInstance.party = partyinstance
         def chkUniqueNameInstance = investigatorService.getUniqueName(params)
         def chkUniqueEmailInstance = investigatorService.getUniqueEmail(params)
+        def chkUniqueaadhaarNoInstance = investigatorService.getUniqueaadar(params)
         Integer userId  = userService.getUserByUserName(params.email)
-        
+        Integer aadhaarId  = userService.getUserByaadaarno(params.aadhaarNo)
          /*if(chkUniqueNameInstance || userId != null)
         {
         	println"chkUniqueNameInstance "+chkUniqueNameInstance 
@@ -236,6 +244,14 @@ class InvestigatorController {
         else
         {
         */
+        if(chkUniqueaadhaarNoInstance || aadhaarId != null)
+		{
+			flash.message = "${message(code: 'default.aadhaarIdalreadyexists.label')}"
+			redirect(action:create,id:investigatorInstance.id)
+					
+		}
+		else
+		{
           if(chkUniqueEmailInstance || userId != null)
          {
           flash.message ="${message(code: 'default.UserNamealreadyexists.label')}"
@@ -259,10 +275,13 @@ class InvestigatorController {
             
         			userInstance.userRealName = investigatorInstance.name
         			userInstance.userSurName = investigatorInstance.userSurName
-        			userInstance.password = springSecurityService.encodePassword(userName)
+        			userInstance.password = userName
         			userInstance.email = investigatorInstance.email
         			userInstance.activeYesNo = "Y"
         			userInstance.enabled=false
+        			userInstance.aadhaarNo = investigatorInstance.aadhaarNo
+        			userInstance.department = investigatorInstance.department
+        			userInstance.userDesignation = investigatorInstance.Designation
         			//userInstance.save()
         			def userService = new UserService()
         			def userPiInstance = userService.saveNewPi(userInstance)
@@ -283,7 +302,8 @@ class InvestigatorController {
         		        mailMessage="Dear "+investigatorInstance.name+", \n \n "+mailContent+".";
         		        mailMessage+="\n \n LoginName    : "+investigatorInstance.email;
         		        mailMessage+="\n Password     : "+userName;
-        		        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+userInstance.id;
+        		        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+userInstance.id+" \n";
+        		        mailMessage=mailMessage+" \n\n" 
         				mailMessage+=mailFooter;
         		        def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,mailMessage,"text/plain")
             	
@@ -318,7 +338,7 @@ class InvestigatorController {
 				render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance,departmentList:departmentList,investigatorInstanceList:investigatorInstanceList])
 			}
          }
-        
+        }
     }
     def updateSelect = 
     {

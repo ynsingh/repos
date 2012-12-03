@@ -199,7 +199,6 @@ class PartyService{
 	{
 		
 		def partyDepartmentInstance =  PartyDepartment.findAll("from PartyDepartment P where P.party.id = " +partyId+ "and P.activeYesNo='Y'")
-		println "=====partyDepartmentInstance====== " + partyDepartmentInstance 
 		return partyDepartmentInstance
 	}
 	/**
@@ -351,6 +350,14 @@ class PartyService{
 			 return chkUniversityInstitutioMapInstance
 		}
 			
-		 
+		/**
+		 * Get Granter based on Projects
+		 */
+		public getGranterByProjects(def projectsInstance)
+		{
+			def grantAllocationInstance = GrantAllocation.findAll("from GrantAllocation ga where ga.projects.id="+projectsInstance.id+"group by ga.projects")
+			def partyInstance = getPartyById(grantAllocationInstance[0].granter.id)
+			return partyInstance
+		}
 		
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+ <Schema name="Projects">
+ <Cube name="Projects">
+ <Table name="project_expense_view"/> 
+ 	 
+     <Dimension name="Party">
+            <Hierarchy hasAll="true">
+                      <Level name="Party" column="Party" type="Numeric" uniqueMembers="false"/>             
+            </Hierarchy>
+     </Dimension>
+     
+          <Dimension name="Institution">
+            <Hierarchy hasAll="true">
+                <Level name="Institution" column="Inst" type="String" uniqueMembers="false"/>
+                 
+            </Hierarchy>
+     </Dimension>
+     
+     <Dimension name="ProjectName">
+            <Hierarchy hasAll="true">
+                <Level name="ProjectName" column="ProjectName" type="String" uniqueMembers="false"/>
+                 
+            </Hierarchy>
+     </Dimension>
+
+<Dimension name="AccountHhead">
+            <Hierarchy hasAll="true" >
+            	<Level name="AccountHhead"  column="AcHead" type="String" uniqueMembers="false"/>
+                       
+    		</Hierarchy>
+     </Dimension>
+        
+        <Measure name="AccountHead Allocated" column="AccAmt" aggregator="sum" formatString="#,###0.00"/>
+        <Measure name="Expense Amount" column="ExpAmt" aggregator="sum" formatString="#,###0.00"/>
+      
+   
+   </Cube>
+    </Schema>

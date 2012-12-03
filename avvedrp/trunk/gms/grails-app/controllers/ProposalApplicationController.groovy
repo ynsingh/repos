@@ -149,11 +149,11 @@ class ProposalApplicationController {
     		}
     }
     def getForm = {
-			GrailsHttpSession gh = getSession()
+    		GrailsHttpSession gh = getSession()
     		def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
     		if(proposalApplicationInstance)
     		{
-    			def proposalApplicationExtResult =proposalService.getProposalApplicationExtByProposalApplication(proposalApplicationInstance.id) 
+    			def proposalApplicationExtResult =proposalService.getProposalApplicationExtByProposalApplication(proposalApplicationInstance.id)
     			render proposalApplicationExtResult as JSON
     		}
     		
@@ -176,7 +176,6 @@ class ProposalApplicationController {
 	 * and send mail to PI while first time creating the proposal 
 	 */
 	def saveProposalAppPart={
-			
 			def proposalInstance
 			def proposalApplicationValueInstance
 			def proposalApplicationId
@@ -324,15 +323,14 @@ class ProposalApplicationController {
 	}
 	def proposalAppPart1PersonalDetails = 
     {
-		GrailsHttpSession gh = getSession()
+    	GrailsHttpSession gh = getSession()
 		gh.putValue("PartyId",params.party)
 		def notificationInstance = notificationService.getNotificationById(gh.getValue("NotificationId"))
-	
 	 if(params.party) 
 	  {
-		if(params.party!='null')
+	 	if(params.party!='null')
 	    {
-			if(notificationInstance.party.id == new Integer(params.party))
+	    	if(notificationInstance.party.id == new Integer(params.party))
 		    {
 				flash.error = "${message(code: 'default.Owninstitutionshouldnotapply.label')}"
 				redirect(controller:"proposal",action:"notificationList")
@@ -362,8 +360,8 @@ class ProposalApplicationController {
 	  }
 	  else
 	  {
-		  def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
-	    	def total=2
+	  	    def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
+		 	def total=2
 	    	def page=1
 	    	def proposalCategoryList=proposalCategoryService.getProposalCategoryList()
 	    	def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplicationId(proposalApplicationInstance?.id)
@@ -589,23 +587,32 @@ class ProposalApplicationController {
 	 */
 	def proposalApplicationDetailsView =
 	{
-			
 			def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplication(params.id)
 			/*method used to get attachment instance of document CV for the proposal*/
 			def attachmentsInstanceGetCV=attachmentsService.getAttachmentsByDomainAndType("Proposal","CV",proposalApplicationExtInstance[0].proposalApplication.proposal.id)
         	/*method used to get attachment instance of document DPR for the proposal*/
 			def attachmentsInstanceGetDPR=attachmentsService.getAttachmentsByDomainAndType("Proposal","DPR",proposalApplicationExtInstance[0].proposalApplication.proposal.id)
-	    	[proposalApplicationExtInstance:proposalApplicationExtInstance,proposalApplicationInstance:proposalApplicationExtInstance[0].proposalApplication,attachmentsInstanceGetCV:attachmentsInstanceGetCV,attachmentsInstanceGetDPR:attachmentsInstanceGetDPR]
+	    	[proposalApplicationExtInstance:proposalApplicationExtInstance,proposalApplicationInstance:proposalApplicationExtInstance[0].proposalApplication,attachmentsInstanceGetCV:attachmentsInstanceGetCV,attachmentsInstanceGetDPR:attachmentsInstanceGetDPR,partyProposalFormInstance:partyProposalFormInstance]
 	}
 	def revisionOfProposal = 
 	{
-		
 		def proposalApplicationInstance = proposalService.getProposalApplicationById(params.id)
 		[proposalApplicationInstance:proposalApplicationInstance]
 	}
 	def revisionStatus = 
 	{
+		def partyInstance
 		def proposalApplicationInstance = proposalService.getProposalApplicationById(params.id)
+		def proposalInstance = proposalService.getPreProposalById(proposalApplicationInstance.proposal.id )
+		def partyProposalFormInstance = proposalService.getactiveProposalFormByNotification(proposalApplicationInstance.proposal.notification.id)
+		if(proposalApplicationInstance.proposal.party == null)
+		{
+		partyInstance = "null"
+		}
+		else
+		{
+		partyInstance = Party.get(proposalApplicationInstance.proposal.party.id)
+		}
 		def proposalInstanceStatus
 		if(params.revisionStatus=='Y')
 		{
@@ -618,7 +625,15 @@ class ProposalApplicationController {
 			proposalInstanceStatus=proposalService.updateProposal(proposalApplicationInstance.proposal)
 			if(proposalInstanceStatus)
 			{
-				redirect(action:'proposalAppPreview',params:['proposalApplication.id':proposalApplicationInstance?.id])
+				if(partyProposalFormInstance)
+				{
+				render(view: "submittedProposal" ,model: [proposalInstance: proposalInstance,proposalApplicationInstance:proposalApplicationInstance,proposalApplicationForm:proposalInstance.proposalDocumentationPath,party:partyInstance,notificationId:proposalApplicationInstance.proposal.notification.id])
+					//redirect(action:'submittedProposal',controller:'proposal',params:[id:proposalApplicationInstance?.proposal.id,'proposalApplication.id':proposalApplicationInstance?.id,party:partyInstance,notificationId:proposalApplicationInstance.proposal.notification.id])
+				}
+				else
+				{
+					redirect(action:'proposalAppPreview',params:['proposalApplication.id':proposalApplicationInstance?.id])
+				}
 			}
 			else
 			{
@@ -635,10 +650,27 @@ class ProposalApplicationController {
 	}
     def proposalApplicationPartyList =
     {
+    	GrailsHttpSession gh = getSession()
     	def partyInstanceList
     	def partyService = new PartyService()
     	partyInstanceList = partyService.getAllActiveParties()
-    	render(view:'proposalApplicationPartyList',model:[partyInstanceList:partyInstanceList])
+    	def notificationInstance = Notification.get(gh.getValue("NotificationId"))
+    	def partyProposalFormInstance = proposalService.getactiveProposalFormByNotification(notificationInstance.id)
+    	render(view:'proposalApplicationPartyList',model:[partyInstanceList:partyInstanceList,partyProposalFormInstance:partyProposalFormInstance,notificationInstance:notificationInstance])
     }
 	
+	def submittedProposal =
+	{
+		def proposalInstance = Proposal.get(params.id)
+		GrailsHttpSession gh=getSession()
+		gh.putValue("ProposalId",proposalInstance.id);
+		return[proposalInstance:proposalInstance,proposalApplicationForm:proposalInstance.proposalDocumentationPath]
+	}
+	
+	def dynamicProposalApplicationReview = 
+	{
+			def proposalApplicationExtInstance = proposalService.getProposalApplicationExtByProposalApplication(params.id)
+			[proposalApplicationExtInstance:proposalApplicationExtInstance,proposalApplicationInstance:proposalApplicationExtInstance[0].proposalApplication]
+	}
+
 }

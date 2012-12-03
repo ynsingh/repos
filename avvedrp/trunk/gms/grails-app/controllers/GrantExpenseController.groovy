@@ -100,12 +100,15 @@ class GrantExpenseController extends GmsController {
     	  }
  		  else
  		  {
- 		   def fundAdvaneClosure = FundAdvance.find("from FundAdvance FA where FA.fundAdvanceCode='"+params.code+"' and FA.grantAllocation.id="+params.grantAllocation.id)
- 		  	if(fundAdvaneClosure.status=='Closed')
+ 		  def fundAdvaneClosure = FundAdvance.find("from FundAdvance FA where FA.fundAdvanceCode='"+params.code+"' and FA.grantAllocation.id="+params.grantAllocation.id)
+ 		  if(fundAdvaneClosure !=null)
  		  	{
- 		  		flash.message = "${message(code: 'default.AdvanceFundisAlreadyclosedsocantdeleteenteredExpense.label')}"
-				redirect(action:create,id:grantExpenseInstance.projects.id)
- 		  	}
+ 		  	  	if(fundAdvaneClosure.status=='Closed')
+	 		  	{
+	 		  		flash.message = "${message(code: 'default.AdvanceFundisAlreadyclosedsocantdeleteenteredExpense.label')}"
+					redirect(action:create,id:grantExpenseInstance.projects.id)
+	 		  	}
+	 		}
  		  	else
  		  	{
 	 			 Integer grantAllocationId = grantExpenseService.deleteGrantExpense(new Integer(params.id))
@@ -185,6 +188,7 @@ class GrantExpenseController extends GmsController {
     	def grantAllocationService = new GrantAllocationService()
 		def grantExpenseOrginalInstance = grantExpenseService.getGrantExpenseById(new Integer(params.id))
     	def grantExpenseInstance = new GrantExpense(params)
+		grantExpenseInstance.utilizationSubmitted = 'N'
     	def grantExpenseWithOutSave = grantExpenseInstance
 		GrailsHttpSession gh=getSession()  
     		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
@@ -300,12 +304,15 @@ class GrantExpenseController extends GmsController {
  			  else
  	    		{
  	    	def fundAdvaneClosure = FundAdvance.find("from FundAdvance FA where FA.fundAdvanceCode='"+params.code+"' and FA.grantAllocation.id="+params.grantAllocation.id)
- 		  	if(fundAdvaneClosure.status=='Closed')
+ 		  	if(fundAdvaneClosure !=null)
  		  	{
- 		  	 	flash.message = "${message(code: 'default.AdvanceFundisAlreadyclosedsocantupdateenteredExpense.label')}"
-				redirect(action:create,id:grantExpenseInstance.projects.id)
- 		  	}
- 		  	else
+ 		  	  	if(fundAdvaneClosure.status=='Closed')
+	 		  	{
+	 		  	 	flash.message = "${message(code: 'default.AdvanceFundisAlreadyclosedsocantupdateenteredExpense.label')}"
+					redirect(action:create,id:grantExpenseInstance.projects.id)
+	 		  	}
+	 		}
+	 		else
  		  	{
  	    			grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
  	    			if(grantExpenseInstance.isSaved)
@@ -318,7 +325,7 @@ class GrantExpenseController extends GmsController {
  	    			{
  	                render(view:'edit',model:[grantExpenseInstance:grantExpenseInstance])
  	            	}
- 	    		}
+ 	            	}
  	    		}
  		   }
     			}
@@ -454,15 +461,20 @@ class GrantExpenseController extends GmsController {
 		GrailsHttpSession gh=getSession()
 		def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
+		def grantAllocationSplitService = new GrantAllocationSplitService()
+		def fundTransferService = new FundTransferService()
 		params.createdBy="admin"
 		params.createdDate = new Date()
         def grantExpenseInstance = new GrantExpense(params)
+		grantExpenseInstance.utilizationSubmitted = 'N'
 		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
 		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
-	    double balanceAmnt
+		def fundTransferAmnt = fundTransferService.getFundTransferTotal(grantExpenseInstance)
+		double balanceAmnt
 	    def projectsInstance = Projects.get(new Integer(gh.getValue("ProjectID")))
 	    ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-		if(expenseTotal[0])
+		
+		if(expenseTotal[0] != null)
 		{
 			balanceAmnt= allocatedAmount- expenseTotal[0]
 		}
@@ -470,7 +482,10 @@ class GrantExpenseController extends GmsController {
 		{
 			balanceAmnt= allocatedAmount
 		}
-		if(grantExpenseInstance.expenseAmount > balanceAmnt)
+		if(fundTransferAmnt[0] != null){
+			balanceAmnt = balanceAmnt - fundTransferAmnt[0]
+		}
+		if(grantExpenseInstance.expenseAmount > allocatedAmount)
 	    {
 	    	flash.message = "${message(code: 'default.ExpenseAmountValidationAgainstAllocatedAmount.label')}"
 	    		 redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
@@ -479,133 +494,148 @@ class GrantExpenseController extends GmsController {
 	    		                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
 	    		                                     			                   description:grantExpenseInstance.description])
 	    }
-	    else
-	    {
-		   def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
-		   def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
-		   double headBalance
-		   if (headExpAmnt[0])
-		   {
-		     headBalance = headAllcnAmnt[0]-headExpAmnt[0]
-		   }
-		   else
-		   {
-			 headBalance = headAllcnAmnt[0] 
-		   }
-		   if(grantExpenseInstance.expenseAmount > headBalance)
-		   {
-			   flash.message = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"
-			   redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
-			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
-			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
-			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
-			                   description:grantExpenseInstance.description])
-		   }
-		   else
-		   {
-		   if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
-	    	{
-	    		flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
-	    			 redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
-	    			                                     			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
-	    			                                     			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
-	    			                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
-	    			                                     			                   description:grantExpenseInstance.description])
-	    	}
-		 
-		   else
-		   {
-			   def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
-			   if(utilizationInstance)
-			   {
-				   
-				   Date temp;
-				   Date attr;
-				   for(int i=0;i<utilizationInstance.size(); i++)
+		else{
+			if(grantExpenseInstance.expenseAmount > balanceAmnt)
+		    {
+		    	flash.message = "${message(code: 'default.NotEnoughBalance.label')}"
+		    		 redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+		    		                                     			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
+		    		                                     			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
+		    		                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
+		    		                                     			                   description:grantExpenseInstance.description])
+		    }
+			 else
+			    {
+				   def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
+				   def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
+				   def headSplitAmtChilds = grantAllocationSplitService.getTotalSubGrantSplit(grantExpenseInstance.projects.id,grantExpenseInstance.grantAllocationSplit.accountHead.id, grantExpenseInstance.grantAllocationSplit.grantPeriod.id)
+				   double headBalance
+				   if (headExpAmnt[0])
 				   {
-					  
-					   temp = utilizationInstance[i].startDate
-					   for (int j=1;j<utilizationInstance.size();j++ )
-					   {
-					   if(utilizationInstance[i].startDate > utilizationInstance[j].startDate)
-					   {
-						   temp = utilizationInstance[j].startDate
-					   }
-					   }
+				     headBalance = headAllcnAmnt[0]-headExpAmnt[0]
 				   }
-				   
-				   for(int j=0;j<utilizationInstance.size(); j++)
+				   else
 				   {
-					   
-					   attr = utilizationInstance[j].endDate
-					   for (int k=1;k<utilizationInstance.size();k++ )
-					   {
-					   if(utilizationInstance[j].endDate < utilizationInstance[k].endDate)
-					   {
-						   attr = utilizationInstance[k].endDate
-					   }
-					   }
+					 headBalance = headAllcnAmnt[0] 
 				   }
-					   
-					  
-					   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
-					     
-				          
-				          String strDate = sdfDestination.format(temp);
-				          
-				          String edDate = sdfDestination.format(attr);
-				          
-				          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-				          Date strtingDate = df.parse(strDate)
-				          
-				          Date endingDate = df.parse(edDate)
-				          
-				          Date expenseDate = df.parse(params.dateOfExpense_value)
-				        
-				   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
+				   if(headSplitAmtChilds){
+					   headBalance = headBalance-headSplitAmtChilds
+				   }
+				   if(grantExpenseInstance.expenseAmount > headBalance)
 				   {
-					   
-					
-						  flash.message="${message(code: 'default.expenseUtilizationCertificate.label')}"
-						  redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+					   flash.message = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"
+					   redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+					                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
+					                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
+					                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
+					                   description:grantExpenseInstance.description])
+				   }
+				   else
+				   {
+				   if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
+			    	{
+			    		flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
+			    			 redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
 			    			                                     			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
 			    			                                     			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
 			    			                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
 			    			                                     			                   description:grantExpenseInstance.description])
+			    	}
+				 
+				   else
+				   {
+					   def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
+					   if(utilizationInstance)
+					   {
+						   
+						   Date temp;
+						   Date attr;
+						   for(int i=0;i<utilizationInstance.size(); i++)
+						   {
+							  
+							   temp = utilizationInstance[i].startDate
+							   for (int j=1;j<utilizationInstance.size();j++ )
+							   {
+							   if(utilizationInstance[i].startDate > utilizationInstance[j].startDate)
+							   {
+								   temp = utilizationInstance[j].startDate
+							   }
+							   }
+						   }
+						   
+						   for(int j=0;j<utilizationInstance.size(); j++)
+						   {
+							   
+							   attr = utilizationInstance[j].endDate
+							   for (int k=1;k<utilizationInstance.size();k++ )
+							   {
+							   if(utilizationInstance[j].endDate < utilizationInstance[k].endDate)
+							   {
+								   attr = utilizationInstance[k].endDate
+							   }
+							   }
+						   }
+							   
+							  
+							   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
+							     
+						          
+						          String strDate = sdfDestination.format(temp);
+						          
+						          String edDate = sdfDestination.format(attr);
+						          
+						          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+						          Date strtingDate = df.parse(strDate)
+						          
+						          Date endingDate = df.parse(edDate)
+						          
+						          Date expenseDate = df.parse(params.dateOfExpense_value)
+						        
+						   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
+						   {
+							   
+							
+								  flash.message="${message(code: 'default.expenseUtilizationCertificate.label')}"
+								  redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+					    			                                     			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
+					    			                                     			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
+					    			                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
+					    			                                     			                   description:grantExpenseInstance.description])
+						   }
+						          
+						else
+			    	    {
+			    		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
+				
+			    		if(grantExpenseInstance.isSaved)
+			    		{
+			    			flash.message = "${message(code: 'default.created.label')}"
+			    			redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
+			    		}
+			    		else 
+			    		{
+			    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
+			    		}
+			    	}
 				   }
-				          
-				else
-	    	    {
-	    		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
-		
-	    		if(grantExpenseInstance.isSaved)
-	    		{
-	    			flash.message = "${message(code: 'default.created.label')}"
-	    			redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
-	    		}
-	    		else 
-	    		{
-	    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
-	    		}
-	    	}
-		   }
-			   else
-	    	    {
-	    		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
-		
-	    		if(grantExpenseInstance.isSaved)
-	    		{
-	    			flash.message = "${message(code: 'default.created.label')}"
-	    			redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
-	    		}
-	    		else 
-	    		{
-	    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance,'currencyFormat':currencyFormatter,projectsInstance:projectsInstance])
-	    		}
-	    	} 
-		   }
-	    }
-    }
+					   else
+			    	    {
+			    		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
+				
+			    		if(grantExpenseInstance.isSaved)
+			    		{
+			    			flash.message = "${message(code: 'default.created.label')}"
+			    			redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
+			    		}
+			    		else 
+			    		{
+			    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance,'currencyFormat':currencyFormatter,projectsInstance:projectsInstance])
+			    		}
+			    	} 
+				   }
+			    }
+		    }
+		}
     }
     
     def listExpenses = {

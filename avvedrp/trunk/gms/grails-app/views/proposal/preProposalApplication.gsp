@@ -34,8 +34,14 @@
 				</table>
 				
 					<div class="buttons">
+      					<g:if test="${proposalInstance.version == 0}">
+      						<g:submitButton name="create" class="save" value="${message(code: 'button.create.label', default: 'Create')}" onclick="submitForm()"/>
+      					</g:if>
       					
-      					<g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" onclick="submitForm()"/>
+      					<g:else>
+      						<g:submitButton name="create" class="save" value="${message(code: 'button.update.label', default: 'Update')}" onclick="submitForm()"/>
+      					</g:else>
+      					
       				</div>
      
 			</div>

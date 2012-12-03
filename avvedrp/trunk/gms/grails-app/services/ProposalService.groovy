@@ -282,7 +282,7 @@ class ProposalService {
     {
     	/*method to get proposalApprovalAuthorityMapInstance of each user using approval authority of user*/
     	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(user,'Proposal')
-    	def proposalApplicationInstanceList = []
+    	 def proposalApplicationInstanceList = []
     	if(proposalApprovalAuthorityMapInstance)
     	{
     		for(proposalId in proposalApprovalAuthorityMapInstance.proposalId)
@@ -524,7 +524,7 @@ class ProposalService {
      */
      public savePreProposal(def params,def userId,def partyId)
      {
-    	 def dateValue = new Date()
+      	 def dateValue = new Date()
     	def userService = new UserService()
      	def userInstance=Person.get(userId)
      	//def userMapInstance=UserMap.find("from UserMap UM where UM.user="+userId)
@@ -573,11 +573,10 @@ class ProposalService {
   	 */
       public def saveformDetailsPreProposal(def params,def proposalId)
       {
-     	 def proposalApplicationExtSavedInstance
+      	 def proposalApplicationExtSavedInstance
      	 def proposalInstance=getPrePropsalById(proposalId)
      	 def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal="+proposalId)
-     	
-	  	 Set keyList=params.keySet()
+     	 Set keyList=params.keySet()
  		def saveStatusList = true
  		Iterator itr=keyList.iterator()
  			while(itr.hasNext())
@@ -843,8 +842,87 @@ class ProposalService {
        	  */
        	 def getMaxProposalApplicationId(def proposalType)
        	 {
-       		 def proposalApplicationInstance=ProposalApplication.executeQuery("select MAX(PA.id) from ProposalApplication PA where PA.proposal.proposalType='"+proposalType+"'")
+       		 def proposalApplicationInstance=ProposalApplication.executeQuery("select MAX(PA.id) from ProposalApplication PA where PA.controllerId<>'null' and PA.proposal.proposalType='"+proposalType+"'")
        		 return proposalApplicationInstance[0]
        	 }
 
+	 /*
+	  * Get to get all form by party and Form Type
+	  */ 
+	 public getAllFormByPartyAndFormType(def formType,def partyId)
+	 { 
+	 	def partyPreProposalFormOldInstance = PartyProposalForm.findAll("from PartyProposalForm PPF where  PPF.formType='"+formType+"' and PPF.party.id="+partyId)
+	 	return partyPreProposalFormOldInstance
+	 }
+	 
+	 	 /*
+	  * Get to get old form by party and Form Type
+	  */ 
+	 public getFormByPartyAndFormType(def formType,def partyId)
+	 { 
+	 	def partyPreProposalFormOldInstance = PartyProposalForm.find("from PartyProposalForm PPF where  PPF.formType='"+formType+"' and PPF.activeYesNo='Y' and PPF.party.id="+partyId)
+	 	return partyPreProposalFormOldInstance
+	 }
+	 
+	 	 /*
+	  * Get to get old form by party and Form Type
+	  */ 
+	 public getOldFormByPartyAndFormType(def formType,def partyId,def notificationId)
+	 { 
+		 def partyProposalFormOldInstance = PartyProposalForm.find("from PartyProposalForm PPF where  PPF.notification ="+notificationId+" and PPF.formType='"+formType+"' and PPF.activeYesNo='Y' and PPF.party.id="+partyId)
+		 return partyProposalFormOldInstance
+	 }
+	 /*
+	  * To get Active PRoposal Form by Notification Id
+	  */ 
+	 public getactiveProposalFormByNotification(def notificationId)
+	 {
+		def partyProposalFormInstance = PartyProposalForm.find("from PartyProposalForm PPF where  PPF.notification ="+notificationId+" and PPF.formType='Proposal' and PPF.activeYesNo='Y'")
+		return partyProposalFormInstance
+	 }
+	/*
+	* Method to save Dynamic Proposal form
+	*/ 
+	public saveDynamicProposal(def params,def notification,def partyId,proposalFormInstance)
+     {
+     	  def proposalInstance = new Proposal()
+ 	   def dateValue = new Date()
+ 	   def notificationInstance=notificationService.getNotificationById(notification)
+ 	   def projectTitle = params.ProjectsTitle
+ 	   def name= params.FullName
+ 	   def email = params.email
+ 	   def proposalCategory = params.ProjectCategory
+ 	   def partyInstance
+ 	   if(partyId == "null")
+ 	   {
+ 		  partyInstance=null
+ 	   }
+ 	   else
+ 	   {
+ 	      partyInstance = partyService.getPartyById(partyId)
+ 	    }
+	 	 proposalInstance.party=partyInstance
+	 	  proposalInstance.code="PR-"+dateValue.getYear()+dateValue.getMonth()+1+dateValue.getDate()+dateValue.getSeconds()+dateValue.getMinutes()+dateValue.getHours()   
+	 	  proposalInstance.notification=notificationInstance
+	 	  proposalInstance.proposalDocumentationPath=proposalFormInstance
+	 	  proposalInstance.proposalSubmitteddate=dateValue
+	 	  proposalInstance.lockedYN='Y'
+	 	  proposalInstance.proposalVersion=new Integer(0);
+	 	  proposalInstance.proposalType='Proposal'
+	 	  if(proposalInstance.save(flush: true))
+     	{
+     	
+     		def proposalApplicationInstance = new ProposalApplication(params)
+         	proposalApplicationInstance.proposal=proposalInstance
+         	proposalApplicationInstance.projectTitle=projectTitle
+         	proposalApplicationInstance.name=name
+         	proposalApplicationInstance.email=email
+         	proposalApplicationInstance.proposalCategory=ProposalCategory.find("from ProposalCategory PC where PC.name='"+params.ProjectCategory+"'")
+         	proposalApplicationInstance.applicationSubmitDate=new Date()
+     		proposalApplicationInstance.save()
+      		
+     	}
+     	return  proposalInstance
+        
+     }
 }

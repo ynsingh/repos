@@ -2,11 +2,14 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="layout" content="main" />
-        <title><g:message code="default.Proposal.ProposalList.head"/></title>
-        
+    <g:javascript library="applicationValidation" />
+    <g:javascript library="jquery"/>
+    <title><g:message code="default.Proposal.ProposalList.head"/></title>
+	 <script type="text/javascript">
+     breakOutofFrame();
+    </script>
     </head>
+
     <body>
     <g:javascript library="application" /> 
 		<modalbox:modalIncludes />
@@ -146,7 +149,7 @@
                            	</td>-->
                            	<td>
 							    <g:form controller="proposal" action="save" id="${notificationInstanceList.id}">
-							    <g:link action="uploadProposalApplication" controller="proposal" id="${notificationInstanceList.id}" onClick="return validateProposalsubmit('${notificationInstanceList.proposalSubmissionLastDate}')"><g:message code="${message(code: 'default.Apply.label')}"/></g:link>  
+							    <g:link action="uploadProposalApplication" controller="proposal" id="${notificationInstanceList.id}" ><g:message code="${message(code: 'default.Apply.label')}"/></g:link>  
                      			</g:form>
 							</td>                        
                         </tr>

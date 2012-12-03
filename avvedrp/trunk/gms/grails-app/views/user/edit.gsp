@@ -78,6 +78,17 @@
 							</td>
 						</tr>
 						
+						<tr class="prop">
+
+							<td valign="top" class="name">
+							<label for="phNumber"><g:message code="default.aadhaarNo.label"/>:</label>
+							</td>
+	
+							<td valign="top" class="value ${hasErrors(bean:person,field:'aadhaarNo','errors')}">
+								<input type="text" id="aadhaarNo" name="aadhaarNo" value="${person?.aadhaarNo?.encodeAsHTML()}"/>
+							</td>
+					    </tr>   
+					  
 					<g:if test="${personRoleInstance.authority == 'ROLE_SUPERADMIN'}">
 					    <tr class="prop">	
 							<td valign="top" class="name">

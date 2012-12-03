@@ -120,7 +120,6 @@ class GrantAllocationService {
 			 def accessInstance = projectsService.deleteProjectAccessPermission(grantAllocationId)
 	            
 			 def projectInstance=Projects.get(grantAllocationInstance.projects.id)
-			 println "grantAllocationId  "+grantAllocationId
 			 grantAllocationInstance.delete()
            if(getGrantAllocationsByProject(projectInstance.id).size()==0)
         	  projectInstance.delete();
@@ -289,7 +288,6 @@ class GrantAllocationService {
 		 for(int i=0;i<grantAllocationInstanceList.size();i++)
 		 {
 			 String s=grantAllocationInstanceList[i].projects.code;
-			 println"***********s**********"+s
 			 def numformatter = new DecimalFormat("#0.00");
 			  println numformatter.format(grantAllocationInstanceList[i].amountAllocated)
 
@@ -304,7 +302,6 @@ class GrantAllocationService {
 	 */
 	public Integer checkDuplicateFundAllot(def grantAllocationInstance){
 		def fundAllotId = 0
-    	System.out.println("DuplicateFundAllot__Projid  "+grantAllocationInstance.projects.id+"  partyid "+grantAllocationInstance.party.id)
     	def chkFundAllotInstance = GrantAllocation.find("from GrantAllocation GA where GA.projects= "+grantAllocationInstance.projects.id)
     	if(chkFundAllotInstance)
     		fundAllotId = chkFundAllotInstance.id
@@ -404,9 +401,7 @@ class GrantAllocationService {
 	 */
 	public ArrayList checkGrantAllotted(def params)
 	{
-		println "+++++++++++++++++++++++inside checkGrantAllotted++++++++++++++++++++++++"
 		def grantAllocation = GrantAllocation.find("from GrantAllocation GA,Projects P where P.parent.id = "+params.get("projects.id") + " and P.id = GA.projects.id");
-		println "+++++++++++++++++++++++ grantAllocation++++++++++++++++++++++++" + grantAllocation
 		return grantAllocation;
 	}
 	/**
@@ -415,9 +410,7 @@ class GrantAllocationService {
 	public GrantAllocationSplit getGrantAllocationSplit(def grantAllocationInstance){
 		
 		def grantAllocationSplitInstance=GrantAllocationSplit.find("from GrantAllocationSplit GS where GS.grantAllocation="+grantAllocationInstance.id)
-		println"*********grantAllocationSplitInstance***********"+grantAllocationSplitInstance
-		
-	    return grantAllocationSplitInstance    
+		return grantAllocationSplitInstance    
 		
 	}
 	/**
@@ -426,7 +419,6 @@ class GrantAllocationService {
 	public GrantExpense getExpenseForGrantAllocation(def grantAllocationInstance){
 		
 		def grantExpenseInstance=GrantExpense.find("from GrantExpense GE where GE.grantAllocation="+grantAllocationInstance.id)
-		println"*********grantAllocationSplitInstance***********"+grantExpenseInstance
 		
 	    return grantExpenseInstance    
 		
@@ -437,7 +429,6 @@ class GrantAllocationService {
 	public GrantReceipt getGrantReceiptForGrantAllocation(def grantAllocationInstance){
 		
 		def grantReceiptInstance=GrantReceipt.find("from GrantReceipt GR where GR.grantAllocation="+grantAllocationInstance.id)
-		println"*********grantAllocationSplitInstance***********"+grantReceiptInstance
 		
 	    return grantReceiptInstance    
 		
@@ -475,7 +466,6 @@ class GrantAllocationService {
 	 public GrantAllocation checkGrantAllocationSplitByProjectId(def grantAllocationInstance){
 			
 			def chkhdallocinstance=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects="+grantAllocationInstance.projects.parent.id)
-			println"*********chkhdallocinstance***********"+chkhdallocinstance[0]
 			if(chkhdallocinstance[0])
 			{
 			
@@ -498,6 +488,15 @@ class GrantAllocationService {
 		  def projectTrackingInstanceCheck=ProjectTracking.find("from ProjectTracking PT where PT.projectStatus='Closed'and PT.projects.id="+projectId)
 		  return projectTrackingInstanceCheck
 	 }
+	 
+	   public getStatusofdProject(def projectId)
+	 {
+	 	def projectTrackingInstanceCheck = ProjectTracking.findAll("from ProjectTracking PT where PT.projects.id="+projectId)
+	 	return projectTrackingInstanceCheck
+	 }
+	 
+	 
+	 
 	/*
 	 * Getting grantAllocation list using Party Id.
 	 */
@@ -588,7 +587,7 @@ class GrantAllocationService {
  	 */
  	public List getgrantAllocationListByGranterId(def granterInstance,def externalFundAllocationInst)
  	{
- 		def grantAllocationList = GrantAllocation.findAll ("from GrantAllocation GA where GA.granter="+granterInstance.id+" and GA.id="+externalFundAllocationInst)
+ 		def grantAllocationList = GrantAllocation.findAll ("from GrantAllocation GA where GA.granter="+granterInstance.id+" and GA.id="+externalFundAllocationInst+" and GA.projects.activeYesNo='Y'")
  		return grantAllocationList
  	}
  	
@@ -788,5 +787,26 @@ class GrantAllocationService {
 	  {
 	  	def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id="+partyInstance.id)
 	  	return grantAllocationInstanceList 
+	  }
+	  
+	  public getAllFundAdvanceByGrantAllocation(def grantAllotId)
+	  {
+		  def advanceFundList = FundAdvance.findAll("from FundAdvance FA where FA.grantAllocation.id="+grantAllotId)
+		  return advanceFundList
+	  }
+	  
+	  public getAllClosedFundAdvanceByGrantAllocation(def grantAllotId)
+	  {
+	  		def advanceInstance = FundAdvance.findAll("from FundAdvance FA where FA.status is null and FA.grantAllocation.id="+grantAllotId)
+	  		return advanceInstance
+	  }
+	  
+	  /*
+	   * Getting grantAllocation list using Granter Id.
+	   */
+	  public getGrantAllocationByGranterIdGroupByProjects(def GranterID)
+	  {
+		  def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.granter.id="+GranterID+"GROUP BY GA.projects")
+		  return grantAllocationInstanceList
 	  }
 }

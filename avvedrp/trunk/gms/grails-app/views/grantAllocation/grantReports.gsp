@@ -45,7 +45,7 @@
 				                                <td valign="top" ><label for="projectType">
 				                                	<g:message code="default.StatisticalReports.ProjectType.label"/></label></td>
 				                                <td valign="top" class="value ${hasErrors(bean:projectInstance,field:'projectType','errors')}">
-				                                    <g:select optionKey="type" optionValue="type" from="${ProjectType.list()}" onChange="setValue()" 
+				                                    <g:select optionKey="type" optionValue="type" from="${projectTypeList}" onChange="setValue()" 
 				                                    	name="projectType" value="type" >
 			                                    	</g:select>
 				                                    <input type="hidden" id="typeHidden" name="typeHidden" 

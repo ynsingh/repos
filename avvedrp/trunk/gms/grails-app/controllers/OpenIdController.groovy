@@ -299,6 +299,63 @@ response.sendRedirect(resp);
 		}
 	}
 	
+	   def institutionsList =
+	{
+	  
+	  	GrailsHttpSession gh=getSession()
+		def userService = new UserService()
+		def dataSecurityService = new DataSecurityService()
+		def partyService = new PartyService()
+		
+		def activepartyInstanceList
+		def userInstance
+		activepartyInstanceList = partyService.getAllActiveParties()
+		for(int i=0;i<activepartyInstanceList.size();i++)
+		{
+		   userInstance = userService.getSuperAdminUsingPartyId(activepartyInstanceList[i].id)
+		     if(userInstance)
+		     	activepartyInstanceList.remove(activepartyInstanceList[i]);
+		}
+		
+		
+		[ activepartyInstanceList:activepartyInstanceList ] 
+	  		
+	}
+	
+	def sendMessage =
+	{
+
+	 def partyService = new PartyService()
+	 def userService = new UserService()
+	 def partyInstance = partyService.getPartyBasedOnId(new Integer(params.id))
+  	 def userInstance = userService.getSiteAdminUsingPartyId(partyInstance[0].id)
+	 def personInstance = Person.find("from Person P where P.id="+userInstance[0])
+
+		[personInstance:personInstance]
+	}
+	
+	def sendMessageToSiteAdmin =
+	{
+		
+		def notificationsEmailsService = new NotificationsEmailsService()
+		def partyService = new PartyService()	    	
+    	//mail content
+        String mailMessage="";
+        mailMessage=params.message;
+		mailMessage= mailMessage.replaceAll( "</?p[^>]*>", "" );
+			       
+	    def emailId = notificationsEmailsService.sendEmailToSiteAdmin(params.toEmail,params.fromEmail,mailMessage,params.subject,"text/plain")
+	      if(emailId){
+			def activepartyInstanceList = partyService.getAllActiveParties()
+	      flash.message = "${message(code: 'default.Institution.MessageConfirmation.label')}"	
+	      render(view: "institutionsList", model: [activepartyInstanceList: activepartyInstanceList])
+	      
+	     
+	      }
+	
+	}
+	
+	
 }
 
 class OpenIdRegisterCommand {

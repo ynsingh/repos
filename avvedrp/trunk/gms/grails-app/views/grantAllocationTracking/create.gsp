@@ -57,15 +57,9 @@
 			                                 </td>
 			                                 <td valign="top" 
 			                                 	class="value ${hasErrors(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus','errors')}">
-			                                	<g:if test="${grantAllocationTrackingInstance.trackType == 'surrender' }">
-			                                    	<g:select name="grantAllocationStatus" from="${['Surrender','Closed']}"  
-	                                    				value="${fieldValue(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus')}" />
-			                                    </g:if>
-			                                    <g:if test="${grantAllocationTrackingInstance.trackType == 'withdraw' }">
-			                                    	<g:select name="grantAllocationStatus" from="${['Withdrawal','Closed']}"  
+			                                	<g:select name="grantAllocationStatus" from="${['Withdrawal']}"  
 			                                    	value="${fieldValue(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus')}" noSelection="['null':'-Select-']"/>
-			                                    </g:if>
-                                    			<g:hiddenField name="grantAllocation.id" 
+			                                   <g:hiddenField name="grantAllocation.id" 
                                     				value="${grantAllocationTrackingInstance?.grantAllocation?.id}" />
 				                                    <input type="hidden" name="id" value="${grantAllocationTrackingInstance?.id}" />
 				                                    <g:hiddenField name="trackType" value="${grantAllocationTrackingInstance.trackType}" />
@@ -98,7 +92,7 @@
                     				</table>
                 				</div>
 				                <div class="buttons">
-				                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Save.button')}" /></span>
+				                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Save.button')}" onclick="return validateGrantAllocationTracking()" /></span>
 				                </div>
 				            </g:form>
         				</div>

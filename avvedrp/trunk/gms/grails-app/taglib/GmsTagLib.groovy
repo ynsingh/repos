@@ -20,7 +20,7 @@ class GmsTagLib {
 	  menuRoleMapParentList = userService.getAllParentListMappedToRolesForHMenu(roleIds)
 	  
 	  out << g.render(template: '/subMenuList',model:
-		       [projectsInstance:  Projects.get(session.ProjectID),menuRoleMapParentList:menuRoleMapParentList,roleIds:roleIds])
+		       [projectsInstance:  Projects.get(gh.getValue("ProjectID")),menuRoleMapParentList:menuRoleMapParentList,roleIds:roleIds])
   }
          
  def subMenuProjects = {attrs ->

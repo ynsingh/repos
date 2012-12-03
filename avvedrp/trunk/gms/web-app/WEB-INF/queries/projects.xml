@@ -14,9 +14,9 @@
                  
             </Hierarchy>
      </Dimension>
-       <Measure name="Amount Allocated" column="AmountAllocated" aggregator="sum" formatString="#,###"/>
-       <Measure name="Receipt Amount" column="RecievedAmount" aggregator="sum" formatString="#,###"/> 
-       <Measure name="Expense Amount" column="ExpenseAmt" aggregator="sum" formatString="#,###"/>
-       <Measure name="Amount Transferred" column="FundTransferAmount" aggregator="sum" formatString="#,###"/>  
+       <Measure name="Amount Allocated" column="AmountAllocated" aggregator="sum" formatString="#,###0.00"/>
+       <Measure name="Receipt Amount" column="RecievedAmount" aggregator="sum" formatString="#,###0.00"/> 
+       <Measure name="Expense Amount" column="ExpenseAmt" aggregator="sum" formatString="#,###0.00"/>
+       <Measure name="Amount Transferred" column="FundTransferAmount" aggregator="sum" formatString="#,###0.00"/>  
     </Cube>
     </Schema>

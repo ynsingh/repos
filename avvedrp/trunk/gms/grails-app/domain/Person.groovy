@@ -21,7 +21,8 @@ class Person {
 	char activeYesNo
 	String userDesignation
 	String phNumber
-	
+	String aadhaarNo
+	PartyDepartment department;
 	static constraints = {
 		username(blank: false)
 		userRealName(blank: false)
@@ -30,7 +31,9 @@ class Person {
 		password blank: false
 		userDesignation(nullable:true)
 		phNumber(nullable:true)
-	}
+		aadhaarNo(nullable:true)
+		department(nullable:true)
+		}
 	
 	static hasMany = [openIds: OpenID]
 	def beforeInsert() {

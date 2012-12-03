@@ -61,12 +61,18 @@
 			                    <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 			                    
 			                        <td>${i+1}</td>
-			                        <% def proposalApplicationExtProjectInstance = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.field='TitleOfTheResearchProject_2' and PE.proposalApplication.id="+proposalApplicationInstance?.id)%>
-			                         
-			                         
-			                         <td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}">${proposalApplicationExtProjectInstance?.value}</g:link>
+			                        <% def partyProposalInstance = PartyProposalForm.find("from PartyProposalForm PF where PF.notification="+proposalApplicationInstance.proposal.notification.id)%>
+			                        
+			                          <g:if test="${partyProposalInstance}">
+			                          		<!--<td>${proposalApplicationInstance?.projectTitle}</td> -->
+			                          		 <td><g:link action="dynamicProposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}">${proposalApplicationInstance?.projectTitle}</g:link>
+			                          </g:if>
+			                          <g:else>
+			                    	   	 <% def proposalApplicationExtProjectInstance = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.field='TitleOfTheResearchProject_2' and PE.proposalApplication.id="+proposalApplicationInstance?.id)%> 
+			                    	   	 <td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}">${proposalApplicationExtProjectInstance?.value}</g:link>
 			                         </td>
-			                         <td>${proposalApplicationInstance?.name}</td>
+			                    	  </g:else>
+			                    	 <td>${proposalApplicationInstance?.name}</td>
 			                         <td>${proposalApplicationInstance?.organisation}</td>
 			                         
 			                        <!--<td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}"><g:message code="default.View.label"/></g:link></td>-->

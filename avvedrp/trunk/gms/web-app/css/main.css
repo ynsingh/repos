@@ -786,9 +786,15 @@ background-color: #FFFFFF
 
 
 
+#adjustNav{
+				height:35px;
+			}
 
-
-
+.tbleft{
+padding-left:2px;
+width:116px;
+padding-right:15px;
+}
 
 
 

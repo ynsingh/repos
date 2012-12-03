@@ -220,7 +220,9 @@ class ExternalFundAllocationController {
         for(int i=0;i<grantAllocationInstanceList.size();i++)
 	    {
 	    	def projectsInstance = grantAllocationService.getprojectsByGrantAllocationInstanceList(grantAllocationInstanceList[i].projects.id)
-	    	projectList.add(projectsInstance)
+	    	if(projectsInstance.activeYesNo == 'Y'){
+				projectList.add(projectsInstance)
+	    	}
 	    }
 	    render (template:"projectSelect", model : ['projectList' : projectList])
 	 }

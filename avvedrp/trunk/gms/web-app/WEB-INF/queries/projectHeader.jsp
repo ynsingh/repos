@@ -3,6 +3,8 @@
 <%@ page import="grails.util.GrailsUtil" %>
  <%@ taglib uri="http://www.tonbeller.com/jpivot" prefix="jp" %>
  <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+ <%@ page import="mondrian.rolap.*;" %>
+ <% mondrian.rolap.RolapSchema.clearCache(); %>
  <%
 HttpSession sess=request.getSession();
 int party=Integer.parseInt(sess.getAttribute("Party").toString());
@@ -13,16 +15,16 @@ int party=Integer.parseInt(sess.getAttribute("Party").toString());
     String db_pswd=new String("");
     if(GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION))
     {
-          String tomcat_path=System.getProperty("catalina.base");
-	             String propertiesFileName = tomcat_path+"/conf/BIDb.properties";
-	             java.io.FileInputStream fis = new java.io.FileInputStream( propertiesFileName );
-	             java.util.Properties props = new java.util.Properties();
-	             props.load( fis );
-	             // getting the properties
-	                          db_url = props.getProperty("BIdbUrl");
-	             db_usr = props.getProperty("BIdbUSer");
-	             db_pswd = props.getProperty("BIdbPassword");
-            jdbc_url=db_url+"?user="+db_usr+"&password="+db_pswd; 
+            String tomcat_path=System.getProperty("catalina.base");
+            String propertiesFileName = tomcat_path+"/conf/gmsDb.properties";
+            java.io.FileInputStream fis = new java.io.FileInputStream( propertiesFileName );
+            java.util.Properties props = new java.util.Properties();
+            props.load( fis );
+            // getting the properties
+            db_url = props.getProperty("gmsDbUrl");
+            db_usr = props.getProperty("gmsDbUSer");
+            db_pswd = props.getProperty("gmsDbPassword");
+            jdbc_url=db_url+"?user="+db_usr+"&password="+db_pswd;
     }
     else
     {
@@ -30,7 +32,7 @@ int party=Integer.parseInt(sess.getAttribute("Party").toString());
                                                 System.getProperty( "file.separator" ) +
                                                 "images" +
                                                 System.getProperty( "file.separator" ) +
-                                                "gmsDb.properties";
+                                                "masterDb.properties";
              java.io.FileInputStream fis = new java.io.FileInputStream( propertiesFileName );
              java.util.Properties props = new java.util.Properties();
              props.load(fis);
@@ -46,8 +48,9 @@ int party=Integer.parseInt(sess.getAttribute("Party").toString());
 jdbcUrl="<%=jdbc_url%>"
 catalogUri="/WEB-INF/queries/projectHeader.xml">
 
-SELECT {[Measures].[Amount Allocated],[Measures].[Amount Recieved],[Measures].[Amount On Hand],[Measures].[Amount Pending]} ON COLUMNS,
-  NON EMPTY {([Parent Project],[Project],[Fund Agency],[Project Institute],[PIName],[Duration],[Start Date],[End Date])} ON ROWS
-FROM [ProjectHeader]
+SELECT {[Measures].[Amount Allocated],[Measures].[Amount Utilized],[Measures].[Balance On Hand]} ON COLUMNS,
+NON EMPTY {([Institution],[ProjectName],[AccountHead])} ON ROWS
+FROM [projectHeader]
+
  </jp:mondrianQuery>
  <c:set var="title01" scope="session">Project Header details using Mondrian OLAP</c:set>
