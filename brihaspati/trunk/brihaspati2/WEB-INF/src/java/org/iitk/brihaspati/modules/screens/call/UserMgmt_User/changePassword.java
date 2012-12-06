@@ -62,6 +62,7 @@ public class changePassword extends SecureScreen{
 		String userName=user.getName();
 		String course_id=(String)user.getTemp("course_id");
 		String stat=data.getParameters().getString("status","");
+		String lang=data.getParameters().getString("lang","english");
 		String mode2=data.getParameters().getString("mode2","");
 		context.put("mode",data.getParameters().getString("mode",""));
 		if(!mode2.equals("") && mode2.equals("instituteWise"))
@@ -72,7 +73,7 @@ public class changePassword extends SecureScreen{
 		 /*
                  *Code for timeCalcultion in this page.
                  */
-		if(course_id.equals(" ")){
+		/*if(course_id.equals(" ")){
 		
                 	String Role = (String)data.getUser().getTemp("role");
                 	int uid=UserUtil.getUID(userName);
@@ -83,7 +84,7 @@ public class changePassword extends SecureScreen{
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                 	}
-		}
+		}*/
 	}
 }
 

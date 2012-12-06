@@ -84,6 +84,11 @@ public class AdminParam extends SecureScreen{
 		 context.put("AdminConf",new Integer(AdminConf));
 		 String CrsExp = AdminProperties.getValue(path,"brihaspati.admin.courseExpiry");
 		 context.put("CrsExp",new Integer(CrsExp));
+		 String PassExp = AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
+		if(PassExp.equals("")){
+			PassExp="180";
+		}
+                 context.put("PassExp",PassExp);
 		 String mserv = AdminProperties.getValue(path,"brihaspati.mail.server");
 		 context.put("mServer",mserv);
 		 String mServerPort = AdminProperties.getValue(path,"brihaspati.mail.smtp.port");

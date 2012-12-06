@@ -1,6 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
 
+
 /*@(#)LoginUtils.java
  *  Copyright (c) 2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
@@ -60,7 +61,8 @@ import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import com.workingdogs.village.Record;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
-
+//import org.apache.turbine.Turbine;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
  * This class is used for call the method in mylogin 
@@ -284,4 +286,40 @@ public class LoginUtils{
                         }
 
 		}
+	/**
+	*Method for Check Users PassWord Date is Today.
+	**/
+	public static void getChangePasswordtemp(Date date,int uid,RunData data)
+	{
+		try{
+			if(uid!=0 && uid!=1)
+			{
+				Criteria crit=new Criteria();
+				crit.add(UserPrefPeer.USER_ID,uid);	
+				List v=UserPrefPeer.doSelect(crit);
+				UserPref element=(UserPref)v.get(0);
+				Date Expirydate=element.getPasswordExpiry();
+				if(Expirydate!=null)
+				{
+					if(Expirydate.equals(date) || Expirydate.before(date))
+                                	{
+                                        	data.setScreenTemplate("call,UserMgmt_User,changePassword.vm");
+                                	}
+				}
+				else{	
+					Date expdate=UserManagement.getExpirydate();
+					crit=new Criteria();
+					crit.add(UserPrefPeer.USER_ID,uid);
+					crit.add(UserPrefPeer.PASSWORD_EXPIRY,expdate);
+					UserPrefPeer.doUpdate(crit);
+				}
+
+			}
+		}catch(Exception e)
+			{
+			data.setMessage("Error in get changePassword template is :- "+e);
+			}
+
+	}
+
 }//end of class

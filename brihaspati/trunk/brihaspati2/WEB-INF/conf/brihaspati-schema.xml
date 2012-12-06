@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+
 <!DOCTYPE database SYSTEM "database_3_1.dtd">
 
 <!-- ==================================================================== -->
@@ -581,6 +581,7 @@
 	<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
 	<column name="USER_LANG" required="true" size="32" type="VARCHAR" default="english"/>
 	<column name="ACTIVATION" required="true" size="32" type="VARCHAR" default="NULL"/>
+	 <column name="PASSWORD_EXPIRY" required="true" type="TIMESTAMP" default="0000-00-00"/>
 	<unique>
         	<unique-column name="USER_ID"/>
 	</unique>

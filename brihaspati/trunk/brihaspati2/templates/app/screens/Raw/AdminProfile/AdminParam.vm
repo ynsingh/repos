@@ -55,69 +55,74 @@ $!data.getMessage()
 	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_course $brih_expiry </font></td>	
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminCrsExp" value="$!CrsExp"> </font></td>
     </tr>
-    <tr bgcolor="$ui.menuColor">
+	 <tr bgcolor="$ui.menuColor">
+        ##formCell("Password Expiry Time(in days)" "AdminPassExp" "$!PassExp")        
+        <td width="30"> <font face="$ui.sansSerifFonts"> $brih_pwd $brih_expiry </font></td>
+        <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminPassExp" value="$!PassExp"> </font></td>
+	</tr>
+    <tr bgcolor="$ui.tableColor">
       ##formCell("Mail Server Name" "mailServ" "$!mServer")	
 	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang != "english") $LocalMail_mail $brih_server $brih_Of1 $brih_name #else $LocalMail_mail $brih_server $brih_name #end </font></td>
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailServ" value="$!mServer"> </font></td>
     </tr>
-    <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
 	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang != "english") $LocalMail_mail $brih_server $brih_Of1 $brih_port #else $LocalMail_mail $brih_server $brih_port #end </font></td>
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailServPort" value="$!mServerPort"> </font></td>
     </tr>
 
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.tableColor">
       ##formCell("Mail From" "mailFrom" "$!mFrom")	
 	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang == "hindi") $brih_from  $LocalMail_mail #else $LocalMail_mail $brih_from #end </font></td>
         <td width="50"> <font face="$ui.sansSerifFonts">  <input type="text" size="30" name="mailFrom" value="$!mFrom"> </font></td>
     </tr>
-    <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
       ##formCell("$RemoteLocal Domain $brih_name" "mailDomain" "$!dName")	
 	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang != "english") $RemoteLocal $brih_domain $brih_Of1 $brih_name #else  $RemoteLocal $brih_domain $brih_name #end </font></td>
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailDomain" value="$!dName"> </font> </td>
     </tr>
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.tableColor">
       ##formCell("Mail $brih_usr $brih_name" "muName" "$!muname")	
 	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang !="english") $LocalMail_mail $brih_Of2 $brih_usr $brih_Of1 $brih_name #else  $LocalMail_mail $brih_usr $brih_name #end </font></td>
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="muName" value="$!muname"> </font> </td>
     </tr>
-    <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
       ##formPasswordCell("Mail $brih_pwd" "mPass" "$!mPassword")	
 	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang !="english") $LocalMail_mail $brih_Of1 $brih_pwd #else $LocalMail_mail $brih_pwd #end</font></td>	
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="password" size="30" name="mPass" value="$!mPassword"> </font></td>
     </tr>
 	## formEmailCell("admin email")
-   <tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.tableColor">
         <td width=30><font face="$ui.sansSerifFonts"> $brih_ad $brih_email  </td>             
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
    </tr>
-   <tr bgcolor="$ui.tableColor">
+   <tr bgcolor="$ui.menuColor">
         <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($brih_qsizegb)</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="iquota" value="$!iquota"></font></td>
     </tr>
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
     </tr>
-    <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
    </tr>
 ##--------------------------------------FAQ---------------------
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.tableColor">
         <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
     </tr>
 ##--------------------------------------FAQ---------------------
-   <tr bgcolor="$ui.tableColor">
+   <tr bgcolor="$ui.menuColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
    </tr>
-   <tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_upload $brih_size </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="upldsze" value="$!upldsze"></font></td>
    </tr>
   
-	<tr>
+	<tr"$ui.menuColor">
 
                                 <td>$brih_officeno</td>
                                 <td><select class="drop" name="Offprefix">
@@ -145,7 +150,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-	<tr bgcolor="$ui.menuColor">
+	<tr bgcolor="$ui.tableColor">
                                 <td>$brih_mobileno</td>
                                 <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
@@ -172,7 +177,7 @@ $!data.getMessage()
                                 #end
                                 </td>
                         </tr>
-                        <tr>
+                        <tr bgcolor="$ui.menuColor">
                                 <td>$brih_homeno</td>
                                 <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
@@ -199,7 +204,7 @@ $!data.getMessage()
                                 #end
 			</td>
                         </tr>
-                        <tr bgcolor="$ui.menuColor">
+                        <tr bgcolor="$ui.tableColor">
                                 <td>$brih_otherno</td>
                                 <td><select class="drop" name="Othprefix">
                                         #if($!othprefix=="+")
@@ -227,22 +232,25 @@ $!data.getMessage()
                                 </td>
                         </tr>
  
-	<tr>
+	<tr bgcolor="$ui.menuColor">
 		#formCell("$brih_address" "address" "$!address")
 	</tr>
-	<tr bgcolor="$ui.menuColor">
+	##<tr bgcolor="$ui.menuColor">
+	<tr>
         	#formCell("$Inst_state" "state" "$!state")
         </tr>
-	<tr>
+	<tr bgcolor="$ui.menuColor">
         	#formCell("$brih_country" "country" "$!country")
         </tr>
-	<tr bgcolor="$ui.menuColor">
+	##<tr bgcolor="$ui.menuColor">
+	<tr>
         	#formCell("$brih_dept" "department" "$!department")
         </tr>
-        <tr>
+        <tr bgcolor="$ui.menuColor">
         	#formCell("$Inst_designation" "designation" "$!designation")
         </tr>
-	<tr bgcolor="$ui.menuColor">
+	##<tr bgcolor="$ui.menuColor">
+	<tr>
         <td>
                 $brih_spring $brih_port $brih_No
         </td>
@@ -250,7 +258,7 @@ $!data.getMessage()
                 <input type="text" id="port" title="Please use port like 80XX" name="port" value="$!port" maxlength="4" onkeypress="return isNumberKey(event)" >
         </td>
         </tr>
-	<tr>
+	<tr bgcolor="$ui.menuColor">
 	<td> $brih_data $brih_storage $brih_option</td>
 	<td> 
 
@@ -269,7 +277,8 @@ $!data.getMessage()
 		#end
 	</td>
 	</tr>
-   <tr bgcolor="$ui.menuColor">
+   ##<tr bgcolor="$ui.menuColor">
+     <tr>
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName"/>
           <input type="button" class="button-ftextstyle" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
@@ -292,13 +301,13 @@ function checkValues(frm,field)
 				if(isNumberString(frm.cquota.value))
                         	{
 					if(isNumberString(frm.uquota.value))
-		                        {
+		                       	{
 						if(isNumberString(frm.AdminFaqExp.value))
 						{
-                                                	frm.actionName.value=field.name;
-	                                                frm.submit();
+                                               		frm.actionName.value=field.name;
+	                                               	frm.submit();
 						}
-                        		}
+					}
                         	}
 			}
 		}	
@@ -354,3 +363,4 @@ function remove(name)
                 }
 }
 </SCRIPT>
+

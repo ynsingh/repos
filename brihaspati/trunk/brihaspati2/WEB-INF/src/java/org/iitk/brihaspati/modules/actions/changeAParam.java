@@ -97,6 +97,7 @@ public class changeAParam extends SecureAction_Admin{
 		String ALName=pp.getString("ALName","");
 	 	String AdminConf = pp.getString("AdminConf","");	
 	 	String AdminCrsExp = pp.getString("AdminCrsExp","");	
+		String AdminPassExp = pp.getString("AdminPassExp","");
 	 	String mailServ = pp.getString("mailServ","");
 		String mailServPort = pp.getString("mailServPort","");	
 	 	String mailFrom = pp.getString("mailFrom","");	
@@ -221,6 +222,7 @@ public class changeAParam extends SecureAction_Admin{
 		 	(new File(path)).delete();
 			AdminProperties.setValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
 			AdminProperties.setValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
+			AdminProperties.setValue(path,AdminPassExp,"brihaspati.admin.passwordExpiry");
 			AdminProperties.setValue(path,mailServ,"brihaspati.mail.server");
 			AdminProperties.setValue(path,mailServPort,"brihaspati.mail.smtp.port");
 			AdminProperties.setValue(path,mailFrom,"brihaspati.mail.smtp.from");

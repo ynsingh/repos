@@ -32,6 +32,11 @@ package org.iitk.brihaspati.modules.utils;
  */
 
 //JDK
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.text.DateFormat;
 import java.util.Date;
 import java.io.File;
 import java.util.List;
@@ -485,9 +490,11 @@ public class UserManagement
 						/**
                                  		* Here we set the user preference ( Lang) 
                                  		*/
+						Date passExpdate=getExpirydate();
 						crit=new Criteria();
 						crit.add(UserPrefPeer.USER_ID,u1);
 						crit.add(UserPrefPeer.USER_LANG,"english");
+						crit.add(UserPrefPeer.PASSWORD_EXPIRY,passExpdate);
 						UserPrefPeer.doInsert(crit);
 
                                 		/**
@@ -1688,5 +1695,25 @@ public class UserManagement
              throwable.printStackTrace(printWriter);
              return writer.toString();
 }*/
+	public static Date getExpirydate()
+	{
+		Date expdate=null;
+		try{
+			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+	                String pasExpday=AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
+			int pex=180;
+			if(!pasExpday.equals(""))
+	        	        pex=Integer.parseInt(pasExpday);
+			Date date=new Date();
+                        Calendar now = Calendar.getInstance();
+                        now.add(Calendar.DATE,pex);
+                        String Strexpdat=now.get(Calendar.YEAR)+"-"+(now.get(Calendar.MONTH)+1) + "-" + now.get(Calendar.DATE);
+			DateFormat formatter=new SimpleDateFormat("yyyy-MM-dd");
+                        expdate=formatter.parse(Strexpdat);
+
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in getExpiarydate in UserManagement---"+e);}
+		return expdate;
+	}
 
 }

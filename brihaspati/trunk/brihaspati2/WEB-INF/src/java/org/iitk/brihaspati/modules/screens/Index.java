@@ -34,11 +34,10 @@ package org.iitk.brihaspati.modules.screens;
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  */
-
 import java.util.Date;
 import java.util.Vector;
 import java.util.List;
-import java.text.DateFormat;
+//import java.text.DateFormat;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -59,10 +58,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.turbine.services.session.TurbineSession;
 import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
-import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
-import org.iitk.brihaspati.modules.utils.GraphUtil;
-//import org.apache.turbine.services.session.SessionTool;
+import org.iitk.brihaspati.modules.utils.LoginUtils;
 
 /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
@@ -264,8 +261,9 @@ public class Index extends SecureScreen{
                         String LangFile=(String)data.getUser().getTemp("LangFile");
                         String Mssg = CommonUtility.CheckData(username,LangFile);
                         context.put("message",Mssg);
+			Date date=new Date();
+			LoginUtils.getChangePasswordtemp(date,uid,data);
 			try{
-				Date date=new Date();
         	                /*entry id fron USAGE_DETAILS*/
                 	        int eid1=UsageDetailsUtil.getentryId(uid);
                        		 /*entry id from COURSE_TIME */
