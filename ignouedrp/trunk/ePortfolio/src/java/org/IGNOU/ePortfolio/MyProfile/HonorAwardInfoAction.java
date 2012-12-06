@@ -32,31 +32,22 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.HonorAwardDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileHonorAward;
+import org.IGNOU.ePortfolio.DAO.HonorAwardDao;
+import org.IGNOU.ePortfolio.Model.ProfileHonorAward;
 
 /**
  * @version 1
  * @since 13-Oct-2011 (Created & Functional)
- * @author Vinay
+ * @author IGNOU Team
  */
 public class HonorAwardInfoAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
     private HonorAwardDao dao = new HonorAwardDao();
     private ProfileHonorAward ProHonor = new ProfileHonorAward();
     private String user_id = new UserSession().getUserInSession();
@@ -67,6 +58,9 @@ public class HonorAwardInfoAction extends ActionSupport {
     private String haDate;
     private String haDescription;
     private List<ProfileHonorAward> HonorAwardList;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public HonorAwardInfoAction() {
     }
@@ -87,12 +81,21 @@ public class HonorAwardInfoAction extends ActionSupport {
 
     public String UpdateHonorInfo() throws Exception {
         getDao().UpdateInfo(honorAwardId, userId, haTitle, issuer, haDate, haDescription);
+        msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteHonorInfo() throws Exception {
-       getDao().DeleteInfo(honorAwardId);
-       return SUCCESS;
+        getDao().DeleteInfo(honorAwardId);
+        msg = infoDeleted;
+        return SUCCESS;
+    }
+
+    /**
+     * @return the serialVersionUID
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     /**
@@ -233,5 +236,47 @@ public class HonorAwardInfoAction extends ActionSupport {
      */
     public void setHonorAwardList(List<ProfileHonorAward> HonorAwardList) {
         this.HonorAwardList = HonorAwardList;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the infoUpdated
+     */
+    public String getInfoUpdated() {
+        return infoUpdated;
+    }
+
+    /**
+     * @param infoUpdated the infoUpdated to set
+     */
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

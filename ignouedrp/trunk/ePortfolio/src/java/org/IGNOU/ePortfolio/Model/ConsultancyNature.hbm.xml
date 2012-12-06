@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 15, 2012 3:14:42 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.ConsultancyNature" table="consultancy_nature" catalog="eportfolio">
+        <id name="CNatureId" type="java.lang.Long">
+            <column name="c_nature_Id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="consultancy" class="org.IGNOU.ePortfolio.Model.Consultancy" fetch="select" update="true">
+            <column name="consultancyId" not-null="true" />
+        </many-to-one>
+        <property name="nameConsultancy" type="string">
+            <column name="name_consultancy" length="65535" />
+        </property>
+        <property name="natureWork" type="string">
+            <column name="nature_work" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

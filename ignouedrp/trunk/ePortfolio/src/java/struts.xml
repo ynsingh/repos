@@ -2,56 +2,137 @@
 <!--
     Document   : struts.xml
     Created on : August 10, 2011, 11:23 AM
-    Author     : Vinay
-    Edited by amit on 2 nov 2011
+    Author     : IGNOU Team
+    Edited by IGNOU Team on 2 nov 2011
     Description:
         Action Controller.
+     
 -->
 <!DOCTYPE struts PUBLIC
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="false" />
+    <constant name="struts.configuration.xml.reload" value="true" />
+    <constant name="struts.i18n.reload" value="true" /> 	
+    <constant name="struts.ui.theme" value="xhtml" />	
+    <constant name="struts.custom.i18n.resources" value="RemoteAccess" />
+    <!--Include XML files-->
     <include file="Struts-MyPlan.xml"/>
     <include file="Struts-MyProfile.xml"/>
     <include file="Struts-MyResources.xml"/>
-    <include file="Struts-MyResume.xml"/>
+    <include file="Struts-MyRBuilder.xml"/>
     <include file="Struts-MyConnections.xml"/>
     <include file="Struts-MyWorkspace.xml"/>
     <include file="Struts-Registration.xml"/>
-    
+    <include file="Struts-Administrator.xml"/>
+    <include file="Struts-Evidence.xml"/>
+    <include file="Struts-ExamEvaluation.xml"/>
+    <include file="Struts-Events.xml"/>
+    <include file="Struts-Requests.xml"/>
+    <include file="Struts-MyGroups.xml"/>
     <!-- Configuration for the default package. -->
+    <package name="Dropdown" extends="struts-default,json-default" namespace="/Dropdown">
+        <action name="getMailTo" class="org.IGNOU.ePortfolio.Dropdown.TestimonialRequest">
+            <result name="success" type="json"/>
+        </action>
+        
+        <action name="UniversityAct" class="org.IGNOU.ePortfolio.Dropdown.UnivProgAction">
+            <result name="success" type="json"/>
+        </action> 
+        <action name="RegUniversity" class="org.IGNOU.ePortfolio.Dropdown.RegUserInstituteAction">
+            <result name="success" type="json"/>
+        </action>         
+        <action name="DeptAct" class="org.IGNOU.ePortfolio.Dropdown.DepartmentAction">
+            <result name="success" type="json"/>
+        </action>
+        
+        <action name="DeptProgramAct" class="org.IGNOU.ePortfolio.Dropdown.InstituteDeptProgrammeAction">
+            <result name="success" type="json"/>
+        </action>
+        
+        <action name="ProgramAct" class="org.IGNOU.ePortfolio.Dropdown.ProgrammAction">
+            <result name="success" type="json"/>
+        </action>
+        
+        <action name="ProgramCourseAct" class="org.IGNOU.ePortfolio.Dropdown.CourseAction">
+            <result name="success" type="json"/>
+        </action>
+        
+        <action name="CountryAction" class="org.IGNOU.ePortfolio.Dropdown.CountryAction">
+            <result name="success" type="json"/>
+        </action> 
+        
+        <action name="CityAction" class="org.IGNOU.ePortfolio.Dropdown.CityAction">
+            <result name="success" type="json"/>
+        </action> 
+        
+        <action name="getProDetails" class="org.IGNOU.ePortfolio.Dropdown.ProgrammeInfoAction">
+            <result name="success" type="json"/>
+        </action>        
+    </package>
+    
+    <package name="Evidence" extends="struts-default,json-default" namespace="/Evidence">
+        <action name="GradeMasterAct" class="org.IGNOU.ePortfolio.Evidence.GradeMasterListAction">
+            <result name="success" type="json"/>
+        </action>
+        <action name="CourseGradeSetuped" class="org.IGNOU.ePortfolio.Evidence.CourseGradeSetupListJAction">
+            <result name="success" type="json"/>
+        </action>
+        <action name="GradeSetuped" class="org.IGNOU.ePortfolio.Evidence.GradeTypeListJAction">
+            <result name="success" type="json"/>
+        </action>
+    </package>
+    
     <package name="org.IGNOU.ePortfolio.Action" namespace="/" extends="struts-default"> 
-               
         <action name="Login" class="org.IGNOU.ePortfolio.Action.LoginAction" method="LoginCheck">
-            <result name="success">./Student-Index.jsp</result>
-            <result name="error">./login.jsp</result>
-            <result name="none">./login.jsp</result>
+            <interceptor-ref name="token" />
+            <interceptor-ref name="basicStack" />
+            <result name="success">./Welcome-Index.jsp</result>
+            <result name="error">./Login.jsp</result>
+            <result name="none">./Login.jsp</result>
+            <result name="input">./Login.jsp</result>
+            <result name="invalid.token">/ErrorPage/error.jsp</result>
         </action>
            
         <action name="logout" class="org.IGNOU.ePortfolio.Action.LogoutAction">
-            <result name="success">login.jsp</result>
+            <result name="success">Login.jsp</result>
+            <result name="input">Login.jsp</result>
             <result name="error">error.jsp</result>
         </action>
        
         <action name="feedback" class="org.IGNOU.ePortfolio.Action.FeedbackAction">
-            <result name="success" >login.jsp</result>
+            <result name="success" >Login.jsp</result>
             <result name="error">error.jsp</result>
-            <result name="input">feedback.jsp</result>
+            <result name="input">Feedback.jsp</result>
         </action>
-       <action name="passwordRecovery" class="org.IGNOU.ePortfolio.Action.ForgotPasswordAction">
-            <result name="success" type="redirectAction">SendMail</result>    
-            <result name="error" type="redirectAction">ForgotPassword.jsp</result>  
-            <result name="input">ForgotPassword.jsp</result> 
-        </action>
-        
-        <action name="SendMail" class="org.IGNOU.ePortfolio.Action.SendMailAction">
-            <result name="success">ForgotPasword.jsp</result>    
-            <result name="error">./ErrorPage/error.jsp</result>  
-            <result name="input">ForgotPassword.jsp</result> 
+        <!-- Done on 27 Dec 2011(Mail functionality  working-->
+        <action name="passwordRecovery" class="org.IGNOU.ePortfolio.Action.ForgotPasswordAction" method="CheckRegisteredUser">
+            <result name="success">PasswordConfirmation.jsp</result>    
+            <result name="error">ForgotPassword.jsp</result>  
+            <result name="none">ForgotPassword.jsp</result> 
         </action>
         
+        <action name="remoteLogin" class="org.IGNOU.ePortfolio.Action.RemoteLoginAction" method="RemoteLoginIDCheck">
+            <result name="success">./remote_success.jsp</result>
+            <result name="error">./remote_error.jsp</result>
+            <result name="input">./remote_Login.jsp</result>
+        </action>
+        <action name="PassAuth" class="org.IGNOU.ePortfolio.Action.RemotePassAuth" method="RemoteValueVarification">
+            <result name="success">./Welcome-Index.jsp</result>
+            <result name="error">./remote_error.jsp</result>
+            <result name="input">./remote_Login.jsp</result>
+        </action>
+        <!-- Reset Login Password Start-->
+        <action name="getMyPassword" class="org.IGNOU.ePortfolio.Action.ResetLoginPasswordAction" method="ResetOldPassword">
+            <result name="success" type="redirectAction">logout</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ChangeLoginPassword.jsp</result>
+        </action>
         
+        <!-- Reset Login Password End-->
+               
     </package> 
-    
 </struts>

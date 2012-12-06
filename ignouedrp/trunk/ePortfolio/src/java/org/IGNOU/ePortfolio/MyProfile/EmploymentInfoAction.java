@@ -32,37 +32,41 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
-import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.AddInfoDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileEmployment;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.AddInfoDao;
+import org.IGNOU.ePortfolio.Model.ProfileEmployment;
 
 /**
  * Created on 13-Sep-2011.
- * @author Vinay
+ *
+ * @author IGNOU Team
  */
-public class EmploymentInfoAction extends ActionSupport implements ModelDriven<Object>
-{
+public class EmploymentInfoAction extends ActionSupport implements ModelDriven<Object> {
+    
     private static final long serialVersionUID = 1L;
     private String user_id = new UserSession().getUserInSession();
-    private ProfileEmployment PE=new ProfileEmployment();
-    private AddInfoDao dao=new AddInfoDao();
+    private ProfileEmployment PE = new ProfileEmployment();
+    private AddInfoDao dao = new AddInfoDao();
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
     
     public EmploymentInfoAction() {
     }
+    
     @Override
-    public Object getModel() { 
+    public Object getModel() {
         getPE().setUserId(user_id);
         return PE;
     }
+    
     @Override
     public String execute() throws Exception {
         dao.saveEmpInfo(getPE());
+        msg = infoSaved;
         return SUCCESS;
     }
 
@@ -78,5 +82,33 @@ public class EmploymentInfoAction extends ActionSupport implements ModelDriven<O
      */
     public void setPE(ProfileEmployment PE) {
         this.PE = PE;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

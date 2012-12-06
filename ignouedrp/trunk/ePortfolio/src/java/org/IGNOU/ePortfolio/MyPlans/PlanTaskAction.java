@@ -1,9 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
+
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -36,95 +34,78 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
 package org.IGNOU.ePortfolio.MyPlans;
 
-import org.IGNOU.ePortfolio.MyPlans.Dao.PlanTaskDAO;
-import org.IGNOU.ePortfolio.MyPlans.Model.MyPlanList;
-import org.IGNOU.ePortfolio.MyPlans.Model.PlanTaskList;
 import com.opensymphony.xwork2.ActionSupport;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import org.IGNOU.ePortfolio.DAO.PlanTaskDAO;
+import org.IGNOU.ePortfolio.Model.UserPlan;
+import org.IGNOU.ePortfolio.Model.UserPlanTask;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
+ * @version 2 Last Modified on 12-07-2012 by IGNOU Team
  */
 public class PlanTaskAction extends ActionSupport {
 
-    private static long serialVersionUID = 1L;
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    /**
-     * @param aSerialVersionUID the serialVersionUID to set
-     */
-    public static void setSerialVersionUID(long aSerialVersionUID) {
-        serialVersionUID = aSerialVersionUID;
-    }
-    private PlanTaskList myplantasklist;
+    private UserPlanTask myplantasklist;
     private PlanTaskDAO dao = new PlanTaskDAO();
-    private List<PlanTaskList> tasklist;
-    private List<PlanTaskList> EditTask;
-    private MyPlanList myplanlist;
-    private List<MyPlanList> planlist;
-    private Long plan_id;
-    private Long task_id;
-    private String t_title;
-    private String t_description;
-    private int status;
-    private String p_title;
-    private String p_description;
+    private List<UserPlanTask> tasklist;
+    private List<UserPlanTask> EditTask;
+    private UserPlan myplanlist;
+    private List<UserPlan> planlist;
+    private long planId;
+    private long taskId;
+    private String TTitle;
+    private String TDescription;
+    private String TDate;
+    private Integer status;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     @Override
     public String execute() throws Exception {
-       // planlist=dao.PlanTasklist(plan_id);
-        tasklist=dao.TaskList(plan_id);
+        setTasklist(getDao().TaskList(planId));
         return SUCCESS;
     }
 
-    /** Added on 24 Aug, 2011*/
-    public String EditTask() {
-        setEditTask(getDao().EditTaskList(getTask_id()));
-        return SUCCESS;
-    }
     /**
-     * Calculating System Current Date Start
+     * Added on 24 Aug, 2011
      */
-    private Calendar c_Date = Calendar.getInstance();
-    private SimpleDateFormat f = new SimpleDateFormat("dd MMM, yyyy");
-    private String t_date = f.format(c_Date.getTime());
+    public String EditTask() {
+        setEditTask(getDao().EditTaskList(taskId));
+        return SUCCESS;
+    }
 
     /**
-     *  Calculating System Current Date End
+     * Calculating System Current Date End
      */
     public String UpdateTask() {
-        getDao().UpdateTask(getTask_id(), getT_title(), getT_description(), getStatus(), getT_date());
+        getDao().UpdateTask(taskId, TTitle, TDescription, new Date().toString(), status);
+        msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteTask() {
-        getDao().DeletePlanTask(getTask_id());
+        getDao().DeletePlanTask(taskId);
+        msg = infoDeleted;
         return SUCCESS;
     }
 
     /**
      * @return the myplantasklist
      */
-    public PlanTaskList getMyplantasklist() {
+    public UserPlanTask getMyplantasklist() {
         return myplantasklist;
     }
 
     /**
      * @param myplantasklist the myplantasklist to set
      */
-    public void setMyplantasklist(PlanTaskList myplantasklist) {
+    public void setMyplantasklist(UserPlanTask myplantasklist) {
         this.myplantasklist = myplantasklist;
     }
 
@@ -145,196 +126,182 @@ public class PlanTaskAction extends ActionSupport {
     /**
      * @return the tasklist
      */
-    public List<PlanTaskList> getTasklist() {
+    public List<UserPlanTask> getTasklist() {
         return tasklist;
     }
 
     /**
      * @param tasklist the tasklist to set
      */
-    public void setTasklist(List<PlanTaskList> tasklist) {
+    public void setTasklist(List<UserPlanTask> tasklist) {
         this.tasklist = tasklist;
     }
 
     /**
      * @return the EditTask
      */
-    public List<PlanTaskList> getEditTask() {
+    public List<UserPlanTask> getEditTask() {
         return EditTask;
     }
 
     /**
      * @param EditTask the EditTask to set
      */
-    public void setEditTask(List<PlanTaskList> EditTask) {
+    public void setEditTask(List<UserPlanTask> EditTask) {
         this.EditTask = EditTask;
     }
 
     /**
      * @return the myplanlist
      */
-    public MyPlanList getMyplanlist() {
+    public UserPlan getMyplanlist() {
         return myplanlist;
     }
 
     /**
      * @param myplanlist the myplanlist to set
      */
-    public void setMyplanlist(MyPlanList myplanlist) {
+    public void setMyplanlist(UserPlan myplanlist) {
         this.myplanlist = myplanlist;
     }
 
     /**
      * @return the planlist
      */
-    public List<MyPlanList> getPlanlist() {
+    public List<UserPlan> getPlanlist() {
         return planlist;
     }
 
     /**
      * @param planlist the planlist to set
      */
-    public void setPlanlist(List<MyPlanList> planlist) {
+    public void setPlanlist(List<UserPlan> planlist) {
         this.planlist = planlist;
     }
 
     /**
-     * @return the plan_id
+     * @return the planId
      */
-    public Long getPlan_id() {
-        return plan_id;
+    public long getPlanId() {
+        return planId;
     }
 
     /**
-     * @param plan_id the plan_id to set
+     * @param planId the planId to set
      */
-    public void setPlan_id(Long plan_id) {
-        this.plan_id = plan_id;
+    public void setPlanId(long planId) {
+        this.planId = planId;
     }
 
     /**
-     * @return the task_id
+     * @return the taskId
      */
-    public Long getTask_id() {
-        return task_id;
+    public long getTaskId() {
+        return taskId;
     }
 
     /**
-     * @param task_id the task_id to set
+     * @param taskId the taskId to set
      */
-    public void setTask_id(Long task_id) {
-        this.task_id = task_id;
+    public void setTaskId(long taskId) {
+        this.taskId = taskId;
     }
 
     /**
-     * @return the t_title
+     * @return the TTitle
      */
-    public String getT_title() {
-        return t_title;
+    public String getTTitle() {
+        return TTitle;
     }
 
     /**
-     * @param t_title the t_title to set
+     * @param TTitle the TTitle to set
      */
-    public void setT_title(String t_title) {
-        this.t_title = t_title;
+    public void setTTitle(String TTitle) {
+        this.TTitle = TTitle;
     }
 
     /**
-     * @return the t_description
+     * @return the TDescription
      */
-    public String getT_description() {
-        return t_description;
+    public String getTDescription() {
+        return TDescription;
     }
 
     /**
-     * @param t_description the t_description to set
+     * @param TDescription the TDescription to set
      */
-    public void setT_description(String t_description) {
-        this.t_description = t_description;
+    public void setTDescription(String TDescription) {
+        this.TDescription = TDescription;
+    }
+
+    /**
+     * @return the TDate
+     */
+    public String getTDate() {
+        return TDate;
+    }
+
+    /**
+     * @param TDate the TDate to set
+     */
+    public void setTDate(String TDate) {
+        this.TDate = TDate;
     }
 
     /**
      * @return the status
      */
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
     /**
      * @param status the status to set
      */
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
     /**
-     * @return the p_title
+     * @return the msg
      */
-    public String getP_title() {
-        return p_title;
+    public String getMsg() {
+        return msg;
     }
 
     /**
-     * @param p_title the p_title to set
+     * @param msg the msg to set
      */
-    public void setP_title(String p_title) {
-        this.p_title = p_title;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     /**
-     * @return the p_description
+     * @return the infoDeleted
      */
-    public String getP_description() {
-        return p_description;
+    public String getInfoDeleted() {
+        return infoDeleted;
     }
 
     /**
-     * @param p_description the p_description to set
+     * @param infoDeleted the infoDeleted to set
      */
-    public void setP_description(String p_description) {
-        this.p_description = p_description;
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
     }
 
     /**
-     * @return the c_Date
+     * @return the infoUpdated
      */
-    public Calendar getC_Date() {
-        return c_Date;
+    public String getInfoUpdated() {
+        return infoUpdated;
     }
 
     /**
-     * @param c_Date the c_Date to set
+     * @param infoUpdated the infoUpdated to set
      */
-    public void setC_Date(Calendar c_Date) {
-        this.c_Date = c_Date;
-    }
-
-    /**
-     * @return the f
-     */
-    public SimpleDateFormat getF() {
-        return f;
-    }
-
-    /**
-     * @param f the f to set
-     */
-    public void setF(SimpleDateFormat f) {
-        this.f = f;
-    }
-
-    /**
-     * @return the t_date
-     */
-    public String getT_date() {
-        return t_date;
-    }
-
-    /**
-     * @param t_date the t_date to set
-     */
-    public void setT_date(String t_date) {
-        this.t_date = t_date;
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

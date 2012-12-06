@@ -1,0 +1,42 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: Vinay Kr. Sharma -->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    <package name="org.IGNOU.ePortfolio.Requests" namespace="/Requests" extends="struts-default">
+        <action name="reqtoChangePIDs" class="org.IGNOU.ePortfolio.Requests.ChangeRequestAction">
+            <result name="success">RequestIndex.jsp</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+            <result name="input">ChangePersonalId.jsp</result>
+        </action>
+        <action name="UserReqList" class="org.IGNOU.ePortfolio.Requests.RequestAction" method="UserRequestList">
+            <result name="success">RequestIndex.jsp</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+            <result name="input">ChangePersonalId.jsp</result>
+        </action>
+        <action name="UserReqUpdated" class="org.IGNOU.ePortfolio.Requests.RequestAction" method="UserRequestUpdatedList">
+            <result name="success">RequestIndex.jsp</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+            <result name="input">ChangePersonalId.jsp</result>
+        </action>
+        <action name="EditUserPerInfo" class="org.IGNOU.ePortfolio.Requests.RequestAction" method="EditUserDetails">
+            <result name="success">EditPersonalDetails.jsp</result>
+            <result name="error">../Error/error.jsp</result>
+        </action>
+        <action name="UpdateUserPerInfo" class="org.IGNOU.ePortfolio.Requests.RequestAction" method="UpdateUserDetials">
+            <result name="success" type="redirectAction">UserReqList</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+            <result name="input">EditPersonalDetails.jsp</result>
+        </action>
+        <action name="DownloadProof" class="org.IGNOU.ePortfolio.Action.FileUploadCommon" method="DownloadFile">
+            <result name="success" type="stream">
+                <param name="inputName">fis</param>
+                <param name="bufferSize">1024</param>
+                <param name="contentDisposition">inline;filename="recordProof"</param>
+            </result>
+        </action>
+    </package>
+</struts>

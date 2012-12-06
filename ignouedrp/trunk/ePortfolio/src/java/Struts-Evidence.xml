@@ -1,0 +1,309 @@
+ <!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: IGNOU Team -->
+ 
+<struts>
+   
+    <!-- Add your configuration elements here -->
+    <package name="org.IGNOU.ePortfolio.Evidence" namespace="/Evidence" extends="struts-default">
+        <!--IGNOU Team-->
+        <action name="AddEvidence" class="org.IGNOU.ePortfolio.Evidence.EvidenceAction" method="EvidenceSave">
+            <result name="success" type="redirectAction">FacultyTaskShow</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./AddEvidence.jsp</result>
+        </action>        
+        <action name="EvSubmision" class="org.IGNOU.ePortfolio.Evidence.EvidenceSubmissionAction" method="EvidSubmissionSave">
+            <result name="success" type="redirectAction">
+                <param name="actionName">StudentTaskList</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Submit_as_student.jsp</result>
+        </action>  
+        <action name="Activ_SubList" class="org.IGNOU.ePortfolio.Evidence.GradingAction" method="ActivitiesSubmitedList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./Submit_as_student.jsp</result>
+            <result name="error" type="redirectAction">StudentTaskList</result>
+        </action> 
+        <action name="CmtDetList" class="org.IGNOU.ePortfolio.Evidence.CommentListAction" method="EvidenceCommentList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./CommentAdd.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>        
+        <action name="AddComment" class="org.IGNOU.ePortfolio.Evidence.CommentAction" method="CommentAdd">
+            <result name="success" type="redirectAction">
+                <param name="actionName">CmtDetList</param>
+                <param name="evidenceId">${evidenceId}</param>
+                <param name="userId">${userId}</param>
+                <param name="msg">${msg}</param>     
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./CommentAdd.jsp</result>
+        </action> 
+        <action name="ReplyonComment" class="org.IGNOU.ePortfolio.Evidence.CommentAction" method="CommentAdd">
+            <result name="success" type="redirectAction">
+                <param name="actionName">CmtDetList</param>
+                <param name="evidenceId">${evidenceId}</param>
+                <param name="userId">${userId}</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./CommentAdd.jsp</result>
+        </action>
+
+        <action name="downnloadAttach" class="org.IGNOU.ePortfolio.Evidence.DownloadAction" method="downloadAssignment">
+            <result name="success" type="stream">
+                <param name="inputName">fis</param>
+                <param name="bufferSize">1024</param>
+                <param name="contentDisposition">attachment;filename="attachFile${filetype}"</param>
+            </result>
+        </action>      
+        <action name="downloadStuAtt" class="org.IGNOU.ePortfolio.Evidence.DownloadAction" method="downloadStuAtt">
+            <result name="success" type="stream">
+                <param name="inputName">fis</param>
+                <param name="bufferSize">1024</param>
+                <param name="contentDisposition">inline;filename="attachFile${filetype}"</param>
+            </result>
+        </action> 
+        <action name="downloadCmtAtth" class="org.IGNOU.ePortfolio.Evidence.DownloadAction" method="downloadCmtAttachment">
+            <result name="success" type="stream">
+                <param name="inputName">fis</param>
+                <param name="bufferSize">1024</param>
+                <param name="contentDisposition">attachment;filename="attachFile${filetype}"</param>
+            </result>
+        </action> 
+        <action name="StudentPop" class="org.IGNOU.ePortfolio.Administrator.Action.InstituteInfoAction" method="StudentList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./AllowComment.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="AllowedStudent" class="org.IGNOU.ePortfolio.Evidence.AllowCommentAction" method="AddStudentListToEvSub">
+            <result name="success" type="redirectAction">
+                <param name="actionName">ActivSubList</param>
+                <param name="evidenceId">${evidenceId}</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./AllowComment.jsp</result>
+        </action>       
+        <action name="GradeType" class="org.IGNOU.ePortfolio.Evidence.GradeTypeAction" method="GradeType">
+            <result name="success">GradeSetup.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>        
+        <action name="setVal" class="org.IGNOU.ePortfolio.Evidence.GradeTypeAction" method="GradeTypeDetails">
+            <result name="success">ValueSetup.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">GradeSetup.jsp</result>          
+        </action>
+        
+        <action name="AddGradeValue" class="org.IGNOU.ePortfolio.Evidence.GradeValueAction" method="AddGradeValue">
+            <result name="success" type="redirectAction">
+                <param name="actionName">GetGradeSetupList</param>
+                <param name="msg">${msg}</param>      
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ValueSetup.jsp</result>
+        </action>         
+        <action name="StudentTaskList" class="org.IGNOU.ePortfolio.Evidence.EvidenceListAction" method="StudentEvidenceList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">EvidenceIndex.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>        
+        <action name="FacultyTaskShow" class="org.IGNOU.ePortfolio.Evidence.EvidenceListAction" method="FacultyEvidenceList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">EvidenceIndex.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ActivSubList" class="org.IGNOU.ePortfolio.Evidence.GradingAction" method="UserActivitySubmitedList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">Grading.jsp</result>
+            <result name="null">
+                <param name="actionName">Grading.jsp</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ActivityGrade" class="org.IGNOU.ePortfolio.Evidence.GradingAction" method="ActivitiesEvaluateList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">GradingValue.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">GradingValue.jsp</result>
+        </action>
+        <action name="UpdateMarks" class="org.IGNOU.ePortfolio.Evidence.GradingAction" method="UpdateMarks">
+            <result name="success" type="redirectAction">
+                <param name="actionName">ActivSubList</param>
+                <param name="evidenceId">${evidenceId}</param>
+                <param name="msg">${msg}</param>                
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">GradingValue.jsp</result>
+        </action>
+        <action name="PeerGList" class="org.IGNOU.ePortfolio.Evidence.PeerGroupAction" method="PeerGroupEviList">
+            <result name="success">./PeerGroup.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="TaskSubmited" class="org.IGNOU.ePortfolio.Evidence.TaskSubmittedListAction" method="TaskSubStudentList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./CommentsonPeerGroup.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ViewComments" class="org.IGNOU.ePortfolio.Evidence.PeerCommentAction" method="ShowComments">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./CommentsView.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ViewCommentsGrade" class="org.IGNOU.ePortfolio.Evidence.PeerCommentAction" method="ShowViewComments">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./CommentsView.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ReplyComment" class="org.IGNOU.ePortfolio.Evidence.CommentListAction" method="ReplyCommentList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./CommentReply.jsp</result>
+            <result name="error">./error.jsp</result>            
+        </action> 
+        <action name="EviReview" class="org.IGNOU.ePortfolio.Evidence.EvidenceListAction" method="EvidenceReview">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./EvidenceReview.jsp</result>
+            <result name="error">./error.jsp</result>  
+        </action>
+        <action name="EviDraftList" class="org.IGNOU.ePortfolio.Evidence.EvidenceListAction" method="StudentEvidenceDraftList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">EvidenceDraft.jsp</result>
+            <result name="error">./error.jsp</result>  
+        </action>
+        <action name="EditEvidence" class="org.IGNOU.ePortfolio.Evidence.EvidenceEditUpdateAction" method="EditEvidenceInfo">
+            <result name="success">./EvidenceEdit.jsp</result>
+            <result name="error">./error.jsp</result>  
+        </action>
+        <action name="UpdateEvidInfo" class="org.IGNOU.ePortfolio.Evidence.EvidenceEditUpdateAction" method="UpdateEvidence">
+            <result name="success" type="redirectAction">
+                <param name="actionName">FacultyTaskShow</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>  
+            <result name="input" type="redirectAction">FacultyTaskShow</result>
+        </action>  
+        <action name="SubmitedEvi" class="org.IGNOU.ePortfolio.Evidence.EvidenceListAction" method="EvidenceSubmittedList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">EvidenceSubmited.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="null">
+                <param name="actionName">EvidenceSubmited.jsp</param>
+                <param name="msg">${msg}</param>
+            </result>
+        </action> 
+        <action name="GetGradeSetupList" class="org.IGNOU.ePortfolio.Evidence.GradeValueAction" method="GetGradeSetupInfo">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">GradeSetupIndex.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="EditGradeSetup" class="org.IGNOU.ePortfolio.Evidence.GradeSetupAction" method="EditGradeSetup">
+            <result name="success">GradingSetupEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="EditsetVal" class="org.IGNOU.ePortfolio.Evidence.GradeTypeAction" method="GradeTypeEditDetails">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">GradeValueEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateGradeValue" class="org.IGNOU.ePortfolio.Evidence.GradeValueAction" method="UpdateGradeSetupValue">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success"  type="redirectAction">GetGradeSetupList</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ValueSetupEdit.jsp</result>
+        </action>
+        <action name="SaveLike" class="org.IGNOU.ePortfolio.Evidence.LikeAction" method="SaveLike">
+            <result name="success" type="redirectAction">countLike</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        <action name="UndoLike" class="org.IGNOU.ePortfolio.Evidence.UnlikeUndoAction" method="Unlike">
+            <result name="success" type="redirectAction">countLike</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        <action name="SaveDislike" class="org.IGNOU.ePortfolio.Evidence.DislikeAction" method="SaveDislike">
+            <result name="success" type="redirectAction">countLike</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        <action name="UndoDislike" class="org.IGNOU.ePortfolio.Evidence.UnlikeUndoAction" method="UndoDislike">
+            <result name="success" type="redirectAction">countLike</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        <action name="countLike" class="org.IGNOU.ePortfolio.Evidence.CountLikeDislikeAction" method="CountLikeDislike">
+            <result name="success">LikeDislikeCounter.jsp</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        
+    </package>    
+</struts>
+  

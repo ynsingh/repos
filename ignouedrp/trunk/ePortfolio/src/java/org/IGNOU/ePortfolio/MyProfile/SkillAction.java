@@ -32,19 +32,18 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
-import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.MyProfileDAO;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileSkill;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
+import org.IGNOU.ePortfolio.Model.ProfileSkill;
 
 /**
- *Created On 14-Sep-2011.
- * @author Vinay
+ * Created On 14-Sep-2011.
+ *
+ * @author IGNOU Team
  */
 public class SkillAction extends ActionSupport {
 
@@ -61,26 +60,44 @@ public class SkillAction extends ActionSupport {
     private String ttype = "Technical";
     private String ptype = "Personal";
     private String otype = "Others";
+    private String msg, permsg, techmsg, othmsg, acdmsg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String recordNotFound = getText("recordNotFound");
 
     public SkillAction() {
     }
 
     public String ShowSkillInfo() throws Exception {
         PersonalList = dao.ShowSkill(user_id, ptype);
+        if (PersonalList.isEmpty()) {
+            permsg = recordNotFound;
+        }
         AcademicList = dao.ShowSkill(user_id, atype);
+        if (AcademicList.isEmpty()) {
+            acdmsg = recordNotFound;
+        }
         TechnicalList = dao.ShowSkill(user_id, ttype);
+        if (TechnicalList.isEmpty()) {
+            techmsg = recordNotFound;
+        }
         OtherList = dao.ShowSkill(user_id, otype);
+        if (OtherList.isEmpty()) {
+            othmsg = recordNotFound;
+        }
         return SUCCESS;
     }
 
     /**
      * Added on 15-Sep-2011
-     *@return  SUCCESS
-     * @throws Exception 
-     * @author Vinay
-     **/
+     *
+     * @return SUCCESS
+     * @throws Exception
+     * @author IGNOU Team
+     *
+     */
     public String DeleteSkillInfo() throws Exception {
         dao.DeleteSkilInfo(getSkillId());
+        msg = infoDeleted;
         return SUCCESS;
     }
 
@@ -126,7 +143,9 @@ public class SkillAction extends ActionSupport {
         this.skil = skil;
     }
 
-    /** Added on 15-Sep-2011
+    /**
+     * Added on 15-Sep-2011
+     *
      * @return the skillId
      */
     public long getSkillId() {
@@ -194,5 +213,103 @@ public class SkillAction extends ActionSupport {
      */
     public void setOtherList(List<ProfileSkill> OtherList) {
         this.OtherList = OtherList;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the recordNotFound
+     */
+    public String getRecordNotFound() {
+        return recordNotFound;
+    }
+
+    /**
+     * @param recordNotFound the recordNotFound to set
+     */
+    public void setRecordNotFound(String recordNotFound) {
+        this.recordNotFound = recordNotFound;
+    }
+
+    /**
+     * @return the permsg
+     */
+    public String getPermsg() {
+        return permsg;
+    }
+
+    /**
+     * @param permsg the permsg to set
+     */
+    public void setPermsg(String permsg) {
+        this.permsg = permsg;
+    }
+
+    /**
+     * @return the techmsg
+     */
+    public String getTechmsg() {
+        return techmsg;
+    }
+
+    /**
+     * @param techmsg the techmsg to set
+     */
+    public void setTechmsg(String techmsg) {
+        this.techmsg = techmsg;
+    }
+
+    /**
+     * @return the othmsg
+     */
+    public String getOthmsg() {
+        return othmsg;
+    }
+
+    /**
+     * @param othmsg the othmsg to set
+     */
+    public void setOthmsg(String othmsg) {
+        this.othmsg = othmsg;
+    }
+
+    /**
+     * @return the acdmsg
+     */
+    public String getAcdmsg() {
+        return acdmsg;
+    }
+
+    /**
+     * @param acdmsg the acdmsg to set
+     */
+    public void setAcdmsg(String acdmsg) {
+        this.acdmsg = acdmsg;
     }
 }

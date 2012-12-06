@@ -42,12 +42,12 @@ package org.IGNOU.ePortfolio.MyConnection
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyConnection.Dao.MySocialInfoDao;
-import org.IGNOU.ePortfolio.MyConnection.Model.ProfileSocial;
+import org.IGNOU.ePortfolio.DAO.MySocialInfoDao;
+import org.IGNOU.ePortfolio.Model.ProfileSocial;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  */
 public class SocialInfoAction extends ActionSupport {
 

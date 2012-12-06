@@ -1,4 +1,4 @@
-/*
+/**
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -34,27 +34,30 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
-
 import org.IGNOU.ePortfolio.Model.User;
 import java.util.Iterator;
+import org.IGNOU.ePortfolio.Model.PersonalInfo;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory object.
  *
- * @author amit
+ * @author IGNOU Team
+ * @version 1
+ * @since 
  */
 public class LoginDao {
-
+    
     public boolean FindUser(String email_id, String password, String role) {
         SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
         Session session = sf.openSession();
         //Transaction t = session.beginTransaction();
-
-        Query qr = session.createQuery("from User  where email_id='" + email_id + "' and password='" + password + "' and role='" + role + "'");
+         Query qr = session.createQuery("from User  where email_id='" + email_id + "' and password='" + password + "' and role='" + role + "'");
         @SuppressWarnings("unchecked")
         Iterator<User> it = qr.iterate();
         while (it.hasNext()) {
@@ -65,8 +68,48 @@ public class LoginDao {
         }
         session.close();
         sf.close();
-       //t.commit();
+        //t.commit();
         return false;
     }
-    
+
+    /**
+     * Remote Authentication and Storing Value
+     * @author IGNOU Team
+     * @version 1
+     * @since 21-06-2012
+     */
+    @SuppressWarnings("unchecked")
+    public User saveUserInfo(String emailId, String role, String fname, String lname, int InstituteId, int ProgrammeId) {
+        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session s = sf.openSession();
+        Transaction t = null;
+        try {
+            t = s.beginTransaction();
+            User u = new User();
+            /*Setting Value in User*/
+            u.setEmailId(emailId);
+            u.setFname(fname);
+            u.setLname(lname);
+            u.setRole(role);
+            u.setInstituteId(InstituteId);
+            u.setProgrammeId(ProgrammeId);
+            s.save(u);
+            /*Setting Value in Personal Information*/
+            PersonalInfo pi = new PersonalInfo();
+            pi.setFirstName(fname);
+            pi.setLastName(lname);
+            pi.setEmailId(emailId);
+            s.save(pi);
+            t.commit();
+            return u;
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sf.close();
+        }
+    }
 }

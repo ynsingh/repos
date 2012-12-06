@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 6, 2012 1:22:58 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Events" table="events" catalog="eportfolio">
+        <id name="eventsId" type="java.lang.Long">
+            <column name="Events_id" />
+            <generator class="increment" />
+        </id>
+        <property name="eventTitle" type="string">
+            <column name="event_title" length="65535" />
+        </property>
+        <property name="eventDateFrom" type="date">
+            <column name="event_date_from" length="10" />
+        </property>
+        <property name="eventDateTo" type="date">
+            <column name="event_date_to" length="10" />
+        </property>
+        <property name="createDate" type="date">
+            <column name="create_date" length="10" />
+        </property>
+        <property name="eventDisplayDate" type="date">
+            <column name="event_display_date" length="10" />
+        </property>
+        <property name="venue" type="string">
+            <column name="venue" length="65535" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="65535" />
+        </property>
+        <property name="city" type="string">
+            <column name="city" length="100" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="100" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" length="100" />
+        </property>
+        <property name="pincode" type="java.lang.Integer">
+            <column name="pincode" />
+        </property>
+        <property name="phone" type="java.lang.Long">
+            <column name="phone" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="email_id" length="100" />
+        </property>
+        <property name="website" type="string">
+            <column name="website" length="65535" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" />
+        </property>
+        <property name="postponed" type="java.lang.Boolean">
+            <column name="postponed" />
+        </property>
+        <property name="postponedReason" type="string">
+            <column name="postponed_reason" length="65535" />
+        </property>
+        <property name="creator" type="string">
+            <column name="creator" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

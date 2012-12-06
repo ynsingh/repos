@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- @author IGNOU Team
+ * @version 2
+ * @since 25 December 2011 Modified by IGNOU Team at 15 February 2012 -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Consultancy" table="consultancy" catalog="eportfolio">
+        <id name="consultancyId" type="java.lang.Long">
+            <column name="consultancy_id" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" not-null="true" />
+        </property>
+        <property name="clientName" type="string">
+            <column name="client_name" length="100" />
+        </property>
+        <property name="DFrom" type="string">
+            <column name="d_from" length="25" />
+        </property>
+        <property name="DTo" type="string">
+            <column name="d_to" length="25" />
+        </property>
+        <property name="noOfConsultancy" type="java.lang.Integer">
+            <column name="no_of_consultancy" />
+        </property>
+        <property name="revenue" type="string">
+            <column name="revenue" length="100" />
+        </property>
+        <property name="service" type="string">
+            <column name="service" length="65535" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="summary" type="string">
+            <column name="summary" length="65535" />
+        </property>
+        <set name="consultancyNatures" table="consultancy_nature" inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="consultancyId" not-null="true"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ConsultancyNature"/>
+        </set>        
+    </class>
+</hibernate-mapping>

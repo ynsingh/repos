@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+ <!-- Generated Feb 17, 2012 12:12:14 PM by Hibernate Tools 3.2.1.GA 
+ Author IGNOU Team
+ Version 1
+ Since 17-02-2012
+ -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.ReviewCommittee" table="review_committee" catalog="eportfolio">
+        <id name="reviewCommitteeId" type="long">
+            <column name="review_committeeId" />
+            <generator class="increment" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="committeeType" type="string">
+            <column name="committee_type" length="100" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="100" />
+        </property>
+        <property name="committeeName" type="string">
+            <column name="committee_name" length="65535" />
+        </property>
+        <property name="date" type="string">
+            <column name="date" length="25" />
+        </property>
+        <property name="frequency" type="string">
+            <column name="frequency" length="50" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="review" type="string">
+            <column name="review" length="65535" />
+        </property>
+        <property name="minutesFile" type="binary">
+            <column name="minutes_file" />
+        </property>
+    </class>
+</hibernate-mapping>

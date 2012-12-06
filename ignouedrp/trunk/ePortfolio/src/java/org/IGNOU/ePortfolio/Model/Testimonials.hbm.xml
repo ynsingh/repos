@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 8, 2012 10:59:54 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Testimonials" table="testimonials" catalog="eportfolio">
+        <id name="testiReqId" type="java.lang.Integer">
+            <column name="testi_req_id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="userByTestiReqTo" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false">
+            <column name="testi_req_to" length="100" />
+        </many-to-one>
+        <many-to-one name="userByTestiRequestor" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false">
+            <column name="testi_requestor" length="100" />
+        </many-to-one>
+        <property name="testiReqCc" type="string">
+            <column name="testi_req_cc" length="100" />
+        </property>
+        <property name="testiReqBcc" type="string">
+            <column name="testi_req_bcc" length="100" />
+        </property>
+        <property name="testiType" type="string">
+            <column name="testi_type" length="45" />
+        </property>
+        <property name="testiReqMessage" type="string">
+            <column name="testi_req_message" length="65535" />
+        </property>
+        <property name="testiReqFile" type="string">
+            <column name="testi_req_file" length="65535" />
+        </property>
+        <property name="testiForName" type="string">
+            <column name="testi_for_name" length="100" />
+        </property>
+        <property name="testiForEmail" type="string">
+            <column name="testi_for_email" length="100" />
+        </property>
+        <property name="testiForAddress" type="string">
+            <column name="testi_for_address" length="100" />
+        </property>
+        <property name="testiReqDate" type="date">
+            <column name="testi_req_date" length="10" />
+        </property>
+        <property name="draft" type="java.lang.Boolean">
+            <column name="draft" />
+        </property>
+        <property name="readStatus" type="java.lang.Boolean">
+            <column name="read_status" />
+        </property>
+        <property name="createDate" type="date">
+            <column name="create_date" length="10" />
+        </property>
+        <property name="sentDate" type="date">
+            <column name="sent_date" length="10" />
+        </property>
+        <property name="sent" type="java.lang.Boolean">
+            <column name="sent" />
+        </property>
+        <property name="report" type="string">
+            <column name="report" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

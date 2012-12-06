@@ -1,0 +1,24 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- 
+Author: IGNOU Team
+Version: 1
+Created on: 05-07-2012
+-->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    <package name="org.IGNOU.ePortfolio.ExamEvaluation" namespace="/ExamEvaluation" extends="struts-default">
+        <action name="getScore" class="org.IGNOU.ePortfolio.ExamEvaluation.TaskActivityScoreAction" method="GetScore">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./TaskActivityScore.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+    </package>
+</struts>

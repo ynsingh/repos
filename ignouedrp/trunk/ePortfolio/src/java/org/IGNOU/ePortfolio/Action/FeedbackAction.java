@@ -1,10 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-package org.IGNOU.ePortfolio.Action;
-/*
- * 
+
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -37,6 +34,8 @@ package org.IGNOU.ePortfolio.Action;
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
+package org.IGNOU.ePortfolio.Action;
+
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.IGNOU.ePortfolio.DAO.FeedbackDao;
@@ -44,7 +43,7 @@ import org.IGNOU.ePortfolio.Model.Feedback;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  */
 public class FeedbackAction extends ActionSupport implements ModelDriven<Object> {
 
@@ -52,12 +51,13 @@ public class FeedbackAction extends ActionSupport implements ModelDriven<Object>
     private Feedback f = new Feedback();
     private FeedbackDao dao = new FeedbackDao();
     private String feedbackmsg;
-     private String name;
+    private String name;
     private String occupation;
     private String organization;
     private String emailId;
     private Long phone;
-    private String comment;
+    private String comment, FSubject;
+    private Boolean archive;
 
     public FeedbackAction() {
     }
@@ -65,12 +65,13 @@ public class FeedbackAction extends ActionSupport implements ModelDriven<Object>
     @Override
     public String execute() throws Exception {
         dao.addInfo(getF());
-        feedbackmsg="Feedback Submitted Successfully";
+        feedbackmsg = "Feedback Submitted Successfully";
         return SUCCESS;
     }
 
     @Override
     public Object getModel() {
+        f.setArchive(Boolean.FALSE);
         return getF();
     }
 
@@ -184,5 +185,33 @@ public class FeedbackAction extends ActionSupport implements ModelDriven<Object>
      */
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    /**
+     * @return the FSubject
+     */
+    public String getFSubject() {
+        return FSubject;
+    }
+
+    /**
+     * @param FSubject the FSubject to set
+     */
+    public void setFSubject(String FSubject) {
+        this.FSubject = FSubject;
+    }
+
+    /**
+     * @return the archive
+     */
+    public Boolean getArchive() {
+        return archive;
+    }
+
+    /**
+     * @param archive the archive to set
+     */
+    public void setArchive(Boolean archive) {
+        this.archive = archive;
     }
 }

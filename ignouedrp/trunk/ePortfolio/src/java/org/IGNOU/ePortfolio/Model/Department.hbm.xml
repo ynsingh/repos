@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 6, 2012 1:18:53 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Department" table="department" catalog="eportfolio">
+        <id name="departmentId" type="java.lang.Integer">
+            <column name="department_id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="institute" class="org.IGNOU.ePortfolio.Model.Institute" fetch="select" lazy="false" cascade="merge">
+            <column name="institute_id" />
+        </many-to-one>
+        <property name="departmentName" type="string">
+            <column name="department_name" length="65535" />
+        </property>
+        <property name="departmentCode" type="string">
+            <column name="department_code" length="50" />
+        </property>
+        <property name="introduction" type="string">
+            <column name="introduction" length="65535" />
+        </property>
+        <property name="postalAddress" type="string">
+            <column name="postal_address" length="65535" />
+        </property>
+        <property name="phoneCode" type="java.lang.Integer">
+            <column name="phone_code" />
+        </property>
+        <property name="phoneNo" type="java.lang.Integer">
+            <column name="phone_no" />
+        </property>
+        <property name="mobileNo" type="long">
+            <column name="mobile_no" />
+        </property>
+        
+        <property name="fax" type="java.lang.Integer">
+            <column name="fax" />
+        </property>
+        <property name="deptEmailId" type="string">
+            <column name="dept_email_id" length="100" />
+        </property>
+        <property name="dateRegister" type="date">
+            <column name="date_register" length="10" />
+        </property>
+       
+    </class>
+</hibernate-mapping>

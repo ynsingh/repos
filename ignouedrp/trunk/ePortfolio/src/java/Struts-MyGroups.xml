@@ -1,0 +1,45 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: Vinay -->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    <package name="org.IGNOU.ePortfolio.Group.Action" namespace="/MyGroups" extends="struts-default">
+        <result-types>
+            <result-type name="imageResult" class="org.IGNOU.ePortfolio.Action.customResult" default="false"/>
+        </result-types>
+        <action name="ImageAction" class="org.IGNOU.ePortfolio.Action.ImageToByteAction">
+            <result name="success" type="imageResult">
+            </result>
+        </action>
+        <action name="myPeerGroup" class="org.IGNOU.ePortfolio.Group.Action.MyPeerGroupAction" method="PeerGroupList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">MyPeerGroup.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
+        </action>
+        <action name="ProfileDetails" class="org.IGNOU.ePortfolio.Group.Action.ProfileDetailsAction" method="PeerGroupProfileDetails">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">ProfileDetails.jsp</result>
+            <result name="error">../ErrorPage/error.jsp</result>
+        </action>
+        <action name="myFacultyGroup" class="org.IGNOU.ePortfolio.Group.Action.MyFacultyAction" method="MyFacultyList">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">MyPeerGroup.jsp</result>
+            <result name="error">/ErrorPage/error.jsp</result>
+        </action>
+    </package>
+</struts>

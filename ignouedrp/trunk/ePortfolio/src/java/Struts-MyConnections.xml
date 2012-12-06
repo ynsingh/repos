@@ -2,7 +2,7 @@
 "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
-<!-- Author: Vinay
+<!-- Author: IGNOU Team
 Version :   1
  -->
  
@@ -11,20 +11,35 @@ Version :   1
     <package name="org.IGNOU.ePortfolio.MyConnection" namespace="/MyConnection" extends="struts-default">
     
         <action name="ShowSocialInfo" class="org.IGNOU.ePortfolio.MyConnection.SocialInfoAction" method="ShowSocialInfo">
-            <result name="success">./MySocialInfo.jsp</result>
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./MySocialInfo.jsp</result>
             <result name="input">./SocialInfoAdd.jsp</result>
         </action>
         <action name="updateSocialInfo" class="org.IGNOU.ePortfolio.MyConnection.SocialInfoAction" method="UpdateSocialInfo">
+            <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
             <result name="success" type="redirectAction">ShowSocialInfo</result>
             <result name="error">./error.jsp</result>
             <result name="input">./SocialInfoEdit.jsp</result>
         </action>
         <action name="EditSocialInfo" class="org.IGNOU.ePortfolio.MyConnection.SocialInfoAction" method="ShowSocialInfo">
-            <result name="success">SocialInfoEdit.jsp</result>
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">SocialInfoEdit.jsp</result>
             <result name="error">./error.jsp</result>
         </action>	        
         <action name="AddSocialInfo" class="org.IGNOU.ePortfolio.MyConnection.SocialAddAction">
-            <result name="success" type="redirectAction">ShowSocialInfo</result>
+             <result name="success" type="redirectAction">ShowSocialInfo</result>
             <result name="error">./error.jsp</result>
             <result name="input">./SocialInfoAdd.jsp</result>
         </action>

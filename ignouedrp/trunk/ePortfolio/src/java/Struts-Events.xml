@@ -1,0 +1,73 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<!-- Author: IGNOU Team -->
+ 
+<struts>
+    <!-- Add your configuration elements here -->
+    <package name="org.IGNOU.ePortfolio.Events" namespace="/Events" extends="struts-default"> 
+        <action name="AddNewEvent" class="org.IGNOU.ePortfolio.Events.EventAction">
+            <result name="success" type="redirectAction">ShowEventInfo</result>
+            <result name="error">./ErrorPage/error.jsp</result>
+            <result name="input">./AddNewEvent.jsp</result>
+        </action>
+        <action name="ShowEventInfo" class="org.IGNOU.ePortfolio.Events.EventListAction" method="ShowEventInfo">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./EventShow.jsp</result>
+            <result name="error">./ErrorPage/error.jsp</result>
+            <result name="input">./AddNewEvent.jsp</result>
+        </action>
+        <action name="eShowEventInfo" class="org.IGNOU.ePortfolio.Events.EventListAction" method="ShowEventInfo">
+             <result name="success">./Event.jsp</result>
+            <result name="error">./ErrorPage/error.jsp</result>
+            
+        </action>
+        <action name="postponedEventList" class="org.IGNOU.ePortfolio.Events.EventListAction" method="ShowPostponedEventLists">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./EventShow.jsp</result>
+            <result name="error">./ErrorPage/error.jsp</result>
+            <result name="input">./AddNewEvent.jsp</result>
+        </action>
+        <action name="ArchivedEventList" class="org.IGNOU.ePortfolio.Events.EventListAction" method="ShowArchivedEventLists">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./EventShow.jsp</result>
+            <result name="error">./ErrorPage/error.jsp</result>
+            <result name="input">./AddNewEvent.jsp</result>
+        </action>        
+        <action name="EditEvent" class="org.IGNOU.ePortfolio.Events.EventListAction" method="EditEventsInfo">
+            <interceptor-ref name="defaultStack"/>
+            <interceptor-ref name="execAndWait">
+                <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+            <result name="wait">../Processing.jsp</result>
+            <result name="success">./EventEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateEvent" class="org.IGNOU.ePortfolio.Events.EventListAction" method="UpdateEventInfo">
+            <result name="success" type="redirectAction">ShowEventInfo</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">/EventEdit.jsp</result>
+        </action>
+        <action name="DeleteEvent" class="org.IGNOU.ePortfolio.Events.EventListAction" method="DeleteEventInfo">
+            <result name="success" type="redirectAction">ShowEventInfo</result>
+            <result name="error">./error.jsp</result>
+        </action>  
+        <action name="allEvents" class="org.IGNOU.ePortfolio.Events.EventListAction" method="AllEventsList">
+            <result name="success">EventIndex.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>    
+    </package>
+</struts>

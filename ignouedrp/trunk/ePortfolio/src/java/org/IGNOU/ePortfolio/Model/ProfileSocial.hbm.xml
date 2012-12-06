@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 13, 2011 10:57:45 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ProfileSocial" table="profile_social">
+    <id name="socialInfoId" type="long">
+      <column name="socialInfo_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="gtalk" type="string">
+      <column length="65535" name="gtalk"/>
+    </property>
+    <property name="skype" type="string">
+      <column length="65535" name="skype"/>
+    </property>
+    <property name="msn" type="string">
+      <column length="65535" name="msn"/>
+    </property>
+    <property name="aim" type="string">
+      <column length="65535" name="aim"/>
+    </property>
+    <property name="yahoo" type="string">
+      <column length="65535" name="yahoo"/>
+    </property>
+    <property name="facebook" type="string">
+      <column length="65535" name="facebook"/>
+    </property>
+    <property name="orkut" type="string">
+      <column length="65535" name="orkut"/>
+    </property>
+    <property name="twitter" type="string">
+      <column length="65535" name="twitter"/>
+    </property>
+    <property name="blog" type="string">
+      <column length="65535" name="blog"/>
+    </property>
+  </class>
+</hibernate-mapping>

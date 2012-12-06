@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 3, 2011 12:32:07 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.InstituteRegistration" table="institute_registration">
+    <id name="instRegId" type="long">
+      <column name="inst_reg_id"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="name" type="string">
+      <column length="50" name="Name"/>
+    </property>
+    <property name="collegeName" type="string">
+      <column length="100" name="college_name"/>
+    </property>
+    <property name="address1" type="string">
+      <column length="100" name="address1"/>
+    </property>
+    <property name="address2" type="string">
+      <column length="100" name="address2"/>
+    </property>
+    <property name="city" type="string">
+      <column length="100" name="city"/>
+    </property>
+    <property name="state" type="string">
+      <column length="100" name="state"/>
+    </property>
+    <property name="country" type="string">
+      <column length="100" name="country"/>
+    </property>
+    <property name="pin" type="java.lang.Integer">
+      <column name="pin"/>
+    </property>
+    <property name="phone" type="java.lang.Long">
+      <column name="phone"/>
+    </property>
+    <property name="fax" type="java.lang.Long">
+      <column name="fax"/>
+    </property>
+    <property name="website" type="string">
+      <column length="65535" name="website"/>
+    </property>
+    <property name="emailId" type="string">
+      <column length="100" name="email_id"/>
+    </property>
+  </class>
+</hibernate-mapping>

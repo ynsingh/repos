@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 6, 2012 1:18:53 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Institute" table="institute" catalog="eportfolio">
+        <id name="instituteId" type="java.lang.Integer">
+            <column name="institute_id" />
+            <generator class="increment" />
+        </id>
+        <property name="instituteName" type="string">
+            <column name="institute_name" length="100" />
+        </property>
+        <property name="shortName" type="string">
+            <column name="short_name" length="50" />
+        </property>
+        <property name="logo" type="binary">
+            <column name="logo" />
+        </property>
+        <property name="address1" type="string">
+            <column name="address1" length="75" />
+        </property>
+        <property name="address2" type="string">
+            <column name="address2" length="75" />
+        </property>
+        <property name="cityPlace" type="string">
+            <column name="city_place" length="100" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="100" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" length="3" />
+        </property>
+        <property name="pinzip" type="java.lang.Integer">
+            <column name="pinzip" />
+        </property>
+        <property name="phone1" type="java.lang.Long">
+            <column name="phone1" />
+        </property>
+        <property name="phone2" type="java.lang.Long">
+            <column name="phone2" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="email_id" length="100" />
+        </property>
+        <property name="aboutus" type="string">
+            <column name="aboutus" length="65535" />
+        </property>
+        <property name="website" type="string">
+            <column name="website" length="65535" />
+        </property>
+       
+    </class>
+</hibernate-mapping>

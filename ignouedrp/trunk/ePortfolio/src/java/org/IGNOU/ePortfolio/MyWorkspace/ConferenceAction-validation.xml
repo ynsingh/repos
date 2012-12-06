@@ -1,0 +1,111 @@
+
+<!--
+    Document   : ConferenceAction-validation.xml
+    Created on : March 9, 2012, 4:25 PM
+    Author     : IGNOU Team
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+ 
+<validators>
+    <field name="confType">
+        <field-validator type="requiredstring">
+            <message key="Please Select Conference Type" />
+        </field-validator>
+    </field>
+    
+    <field name="researchArea">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Research Expertise Area" />
+        </field-validator>
+    </field>
+    
+    <field name="assoProject">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Associated Project" />
+        </field-validator>
+    </field>
+    
+    <field name="projectName">
+        <field-validator type="requiredstring">
+            <message key="Please EnterProject Name" />
+        </field-validator>
+    </field>
+    
+    <field name="role">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Your Role" />
+        </field-validator>
+    </field>
+    
+   <field name="presentationType">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Presentation Type" />
+        </field-validator>
+    </field>
+    
+    <field name="paperTitle">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Paper Tittle" />
+        </field-validator>
+    </field>
+    
+    <field name="conferenceName">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Conference Name" />
+        </field-validator>
+    </field>
+    
+    <field name="orgName">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Organization name" />
+        </field-validator>
+    </field>
+    
+    <field name="venue">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Venue" />
+        </field-validator>
+    </field>
+      <field name="state">
+        <field-validator type="requiredstring">
+            <message key="Please Enter State" />
+        </field-validator>
+    </field>
+    <field name="country">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Country" />
+        </field-validator>
+    </field>
+    <field name="language">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Language" />
+        </field-validator>
+    </field>
+    <field name="url">
+         <field-validator type="required" short-circuit="true">
+            <message>You must enter a value.</message>
+        </field-validator>
+        <field-validator type="url">
+            <message key="Please Enter Url" />
+        </field-validator>
+    </field>
+    <field name="affiliation">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Affilation" />
+        </field-validator>
+    </field>
+    <field name="abstract_">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Abstract" />
+        </field-validator>
+    </field>
+    <field name="key1">
+        <field-validator type="requiredstring">
+            <message key="Please Enter KeyWord" />
+        </field-validator>
+    </field>
+ </validators>

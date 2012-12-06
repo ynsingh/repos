@@ -3,7 +3,7 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <!-- 
-Author  :   Vinay
+Author  :   IGNOU Team
 Created :   on 19-Oct-2011
 Version :   1
 -->
@@ -12,27 +12,891 @@ Version :   1
     <!-- Add your configuration elements here -->
     <package name="org.IGNOU.ePortfolio.MyWorkspace" namespace="/MyWorkspace" extends="struts-default">
         <action name="ProjectInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="ShowProjectInfo">
+            <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
             <result name="success">ProjectInfo.jsp</result>
             <result name="error">./error.jsp</result>
             <result name="input">./ProjectInfoAdd.jsp</result>
         </action>
         <action name="AddProjInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectAction">
-            <result name="success" type="redirectAction">ProjectInfo</result>            
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ProjectInfo</param>
+                <param name="msg">${msg}</param>
+            </result>   
+            <result name="wait">../Processing.jsp</result>
+ 
             <result name="error">./error.jsp</result>
             <result name="input">./ProjectInfoAdd.jsp</result>
         </action>
         <action name="editProject" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="EditProjectInfo">
-            <result name="success">ProjectInfoEdit.jsp</result>
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+           <result name="success">ProjectInfoEdit.jsp</result>
             <result name="error">./error.jsp</result>
         </action>
         <action name="UpdateProjInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="UpdateProjectInfo">
-            <result name="success" type="redirectAction">ProjectInfo</result>
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ProjectInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
             <result name="error">./error.jsp</result>
             <result name="input">./ProjectInfoAdd.jsp</result>
         </action>
         <action name="deleteProject" class="org.IGNOU.ePortfolio.MyWorkspace.ProjectInfoAction" method="DeleteProjectInfo">
-            <result name="success" type="redirectAction">ProjectInfo</result>            
+            <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">ProjectInfo</param>
+                <param name="msg">${msg}</param>
+            </result>            
             <result name="error">./error.jsp</result>
         </action>
+     <!--
+     * Created on 1-Dec-2011
+     * Version  1.2
+     *@Author IGNOU Team
+     *-->
+        <action name="AddNote" class="org.IGNOU.ePortfolio.MyWorkspace.MyNotesAction">
+          <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+          <result name="success" type="redirectAction">
+                <param name="actionName">ShowNotesInfo</param>
+                <param name="msg">${msg}</param>
+           </result>
+            <result name="input">./MyNotesAdd.jsp</result>
+      </action>
+        <action name="ShowNotesInfo" class="org.IGNOU.ePortfolio.MyWorkspace.MyNotesInfoAction" method="ShowNotesInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+           <result name="success" >./MyNotesInfoShow.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./MyNotesAdd.jsp</result>
+        </action>
+        <action name="EditNotesInfo" class="org.IGNOU.ePortfolio.MyWorkspace.MyNotesInfoAction" method="EditNoteInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+           <result name="success" >MyNotesInfoEdit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteNotesInfo" class="org.IGNOU.ePortfolio.MyWorkspace.MyNotesInfoAction" method="DeleteNotesInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowNotesInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateNotesInfo" class="org.IGNOU.ePortfolio.MyWorkspace.MyNotesInfoAction" method="UpdateNotesInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+           
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowNotesInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="wait">../Processing.jsp</result>
+ 
+            <result name="error">./error.jsp</result>
+            <result name="input">EmployeeInfoEdit.jsp</result>
+        </action>    
+     <!--
+     * Added on 25-December-2011
+     * Version  1
+     * Author IGNOU Team
+     *-->
+        <action name="AddConsultancy" class="org.IGNOU.ePortfolio.MyWorkspace.ConsultancyAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowConsultancy</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">Consultancy-Add.jsp</result>
+        </action>
+        <action name="ShowConsultancy" class="org.IGNOU.ePortfolio.MyWorkspace.ConsultancyInfoAction" method="ShowConsultInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./ConsultancyInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Consultancy-Add.jsp</result>
+        </action>
+        <action name="deleteConsultancy" class="org.IGNOU.ePortfolio.MyWorkspace.ConsultancyInfoAction" method="DeleteConsultInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowConsultancy</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>    
+        <action name="editConsultancy" class="org.IGNOU.ePortfolio.MyWorkspace.ConsultancyInfoAction" method="EditConsult">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Consultancy-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="updateConsultancy" class="org.IGNOU.ePortfolio.MyWorkspace.ConsultancyInfoAction" method="UpdateConsult">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowConsultancy</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Consultancy-Edit.jsp</result>
+        </action>
+        <action name="AddGovernance" class="org.IGNOU.ePortfolio.MyWorkspace.GovernanceAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowGovernance</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">Governance-Add.jsp</result>
+        </action>
+        <action name="ShowGovernance" class="org.IGNOU.ePortfolio.MyWorkspace.GovernanceInfoAction" method="ShowGovernanceInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./GovernanceInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">Governance-Add.jsp</result>
+        </action>
+         <!--
+     * Added on 26-December-2011
+     * Version  1
+     * Author IGNOU Team
+     *-->
+        <action name="deleteGovernance" class="org.IGNOU.ePortfolio.MyWorkspace.GovernanceInfoAction" method="DeleteGovernanceInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowGovernance</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="editGovernance" class="org.IGNOU.ePortfolio.MyWorkspace.GovernanceInfoAction" method="EditGovernanceInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Governance-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateGovernance" class="org.IGNOU.ePortfolio.MyWorkspace.GovernanceInfoAction" method="UpdateGovernanceInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowGovernance</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>              
+     <!--
+     * Added on 28-December-2011
+     * Version  1
+     * Author IGNOU Team
+     *-->
+        <action name="AddExchangeInfo" class="org.IGNOU.ePortfolio.MyWorkspace.StudentExchangeAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowExchangePro</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">Student-Exchange-Add.jsp</result>
+        </action>        
+        <action name="ShowExchangePro" class="org.IGNOU.ePortfolio.MyWorkspace.StudentExchangeInfoAction" method="ShowInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Student-ExchangeInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Student-Exchange-Add.jsp</result>
+        </action>
+        <action name="deleteExchangeInfo" class="org.IGNOU.ePortfolio.MyWorkspace.StudentExchangeInfoAction" method="DeleteInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction"> 
+                <param name="actionName">ShowExchangePro</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="editExchangeInfo" class="org.IGNOU.ePortfolio.MyWorkspace.StudentExchangeInfoAction" method="EditInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Student-Exchange-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateExchangeInfo" class="org.IGNOU.ePortfolio.MyWorkspace.StudentExchangeInfoAction" method="UpdateInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction"> 
+                <param name="actionName">ShowExchangePro</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <!--
+     * Added on 18-January-2012
+     * Version  1
+     * Author IGNOU Team
+     *-->
+        <action name="AddPatent" class="org.IGNOU.ePortfolio.MyWorkspace.PatentAddAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction"> 
+                <param name="actionName">ShowPatent</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Patent-Add.jsp</result>
+        </action>
+        <action name="ShowPatent" class="org.IGNOU.ePortfolio.MyWorkspace.PatentAction" method="ShowPatentInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./PatentsInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Patent-Add.jsp</result>
+        </action>
+        <action name="deletePatent" class="org.IGNOU.ePortfolio.MyWorkspace.PatentAction" method="DeletePatentInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowPatent</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="editPatent" class="org.IGNOU.ePortfolio.MyWorkspace.PatentAction" method="EditPatentInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Patent-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdatePatent" class="org.IGNOU.ePortfolio.MyWorkspace.PatentAction" method="UpdaPatentInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowPatent</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Patent-Add.jsp</result>
+        </action>
+        <action name="AddMedia" class="org.IGNOU.ePortfolio.MyWorkspace.MediaAddAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showMP</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Media-Add.jsp</result>
+        </action>
+        <action name="showMP" class="org.IGNOU.ePortfolio.MyWorkspace.MediaInfoAction" method="ShowMedia">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./MediaPublicationInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Media-Add.jsp</result>
+        </action>
+        <action name="EditMP" class="org.IGNOU.ePortfolio.MyWorkspace.MediaInfoAction" method="EditMedia">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Media-Edit.jsp</result>
+           <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateMedia" class="org.IGNOU.ePortfolio.MyWorkspace.MediaInfoAction" method="UpdateMedia">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showMP</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Media-Add.jsp</result>
+        </action>
+        <action name="DeleteMP" class="org.IGNOU.ePortfolio.MyWorkspace.MediaInfoAction" method="DeleteMedia">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showMP</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="AddRCInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ReviewCommitteeAddAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showRCInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ReviewCommitties-Add.jsp</result>
+        </action>
+        <action name="showRCInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ReviewCommitteeAction" method="ShowRCInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./ReviewCommitteeInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ReviewCommitties-Add.jsp</result>
+        </action>
+        <action name="EditRCInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ReviewCommitteeAction" method="EditRCInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./ReviewCommittee-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteRCInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ReviewCommitteeAction" method="DeleteRCInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showRCInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateRCInfo" class="org.IGNOU.ePortfolio.MyWorkspace.ReviewCommitteeAction" method="UpdateRCInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showRCInfo</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="AddTL" class="org.IGNOU.ePortfolio.MyWorkspace.TalkLectureAddAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showTL</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ReviewCommitties-Add.jsp</result>
+        </action>
+        <action name="showTL" class="org.IGNOU.ePortfolio.MyWorkspace.TalkLectureInfoAction" method="ShowTLInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./InvitedTalksInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Invited-Talks-Add.jsp</result>
+        </action>         
+        <action name="EditTL" class="org.IGNOU.ePortfolio.MyWorkspace.TalkLectureInfoAction" method="EditTLInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Invited-Talks-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="UpdateTL" class="org.IGNOU.ePortfolio.MyWorkspace.TalkLectureInfoAction" method="UpdateTLInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showTL</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteTL" class="org.IGNOU.ePortfolio.MyWorkspace.TalkLectureInfoAction" method="DeleteTLInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showTL</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>        
+        <!-- 
+            Author  :   IGNOU Team
+            Added on :  21-Feb-2012 , 22-02-2012
+            Version :   1
+        -->              
+        <action name="AddTD" class="org.IGNOU.ePortfolio.MyWorkspace.ThesisDissertationAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showTD</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ThesisDissertation-Add.jsp</result>
+        </action>
+        <action name="showTD" class="org.IGNOU.ePortfolio.MyWorkspace.ThesisDissertationInfoAction" method="ShowInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./ThesisDissertationInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ThesisDissertation-Add.jsp</result>
+        </action>         
+        <action name="EditTD" class="org.IGNOU.ePortfolio.MyWorkspace.ThesisDissertationInfoAction" method="EditInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./ThesisDissertation-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="UpdateTD" class="org.IGNOU.ePortfolio.MyWorkspace.ThesisDissertationInfoAction" method="UpdateInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showTD</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteTD" class="org.IGNOU.ePortfolio.MyWorkspace.ThesisDissertationInfoAction" method="DeleteInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">showTD</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <!--
+        23-02-2012
+        Mopdified on 24-02-2012
+        -->
+        <action name="AddBookChapter" class="org.IGNOU.ePortfolio.MyWorkspace.BookChapterAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowBookChapter</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Books-Chapter-Add.jsp</result>
+        </action>
+        <action name="ShowBookChapter" class="org.IGNOU.ePortfolio.MyWorkspace.BookChapterInfoAction" method="ShowBCInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Books-ChapterInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Books-Chapter-Add.jsp</result>
+        </action>         
+        <action name="EditBookChapter" class="org.IGNOU.ePortfolio.MyWorkspace.BookChapterInfoAction" method="EditBCInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Books-Chapter-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="UpdateBookChapter" class="org.IGNOU.ePortfolio.MyWorkspace.BookChapterInfoAction" method="UpdateBCInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowBookChapter</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteBookChapter" class="org.IGNOU.ePortfolio.MyWorkspace.BookChapterInfoAction" method="DeleteBCInfo">
+            <result name="success" type="redirectAction">
+                <param name="actionName">ShowBookChapter</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        
+        <!-- Modified by IGNOU Team on 24-02-2012
+        -->
+        <action name="AddSW" class="org.IGNOU.ePortfolio.MyWorkspace.SeminarsWorkshopsAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowSW</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Seminars-Workshops-Add.jsp</result>
+        </action>
+        <action name="ShowSW" class="org.IGNOU.ePortfolio.MyWorkspace.SeminarsWorkshopsInfoAction" method="ShowSWInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./SeminarWorkshopInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Seminars-Workshops-Add.jsp</result>
+        </action>         
+        <action name="EditSW" class="org.IGNOU.ePortfolio.MyWorkspace.SeminarsWorkshopsInfoAction" method="EditSWInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Seminars-Workshops-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="UpdateSW" class="org.IGNOU.ePortfolio.MyWorkspace.SeminarsWorkshopsInfoAction" method="UpdateSWInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowSW</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteSW" class="org.IGNOU.ePortfolio.MyWorkspace.SeminarsWorkshopsInfoAction" method="DeleteSWInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowSW</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        
+        <!--Modified by IGNOU Team on 27-02-2012-->
+        <action name="AddJournal" class="org.IGNOU.ePortfolio.MyWorkspace.JournalAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowJournal</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Journal-Add.jsp</result>
+        </action>
+        <action name="ShowJournal" class="org.IGNOU.ePortfolio.MyWorkspace.JournalInfoAction" method="ShowJournalInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./JournalInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Journal-Add.jsp</result>
+        </action>
+        <action name="EditJournal" class="org.IGNOU.ePortfolio.MyWorkspace.JournalInfoAction" method="EditJournalInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Journal-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="UpdateJournal" class="org.IGNOU.ePortfolio.MyWorkspace.JournalInfoAction" method="UpdateJournalInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowJournal</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteJournal" class="org.IGNOU.ePortfolio.MyWorkspace.JournalInfoAction" method="DeleteJournalInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowJournal</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        
+        <!--Modified by IGNOU Team on 28-02-2012-->
+        <action name="AddConference" class="org.IGNOU.ePortfolio.MyWorkspace.ConferenceAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowConference</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Conference-Add.jsp</result>
+        </action>
+        <action name="ShowConference" class="org.IGNOU.ePortfolio.MyWorkspace.ConferenceInfoAction" method="ShowConfInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./ConferenceInfo.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./Conference-Add.jsp</result>
+        </action>
+        <action name="EditConference" class="org.IGNOU.ePortfolio.MyWorkspace.ConferenceInfoAction" method="EditConfInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">./Conference-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action> 
+        <action name="UpdateConference" class="org.IGNOU.ePortfolio.MyWorkspace.ConferenceInfoAction" method="UpdateConfInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowConference</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteConference" class="org.IGNOU.ePortfolio.MyWorkspace.ConferenceInfoAction" method="DeleteConfInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction">
+                <param name="actionName">ShowConference</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+<!--Modified by IGNOU Team on 29-02-2012-->
+        <action name="AddExt" class="org.IGNOU.ePortfolio.MyWorkspace.ExtraActivitiesAction">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+           <result name="success" type="redirectAction"> 
+                <param name="actionName">ShowExt</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ExtraActivities-Add.jsp</result>
+        </action>
+<!--Modified by IGNOU Team on 01-03-2012-->
+        <action name="ShowExt" class="org.IGNOU.ePortfolio.MyWorkspace.ExtraActivitiesInfoAction" method="ShowExtInfo">
+            <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+            <result name="success">./ExtraActivities.jsp</result>
+            <result name="error">./error.jsp</result>
+            <result name="input">./ExtraActivities-Add.jsp</result>
+        </action>
+        <action name="EditExt" class="org.IGNOU.ePortfolio.MyWorkspace.ExtraActivitiesInfoAction" method="EditExtInfo">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+           <result name="success">./ExtraActivities-Edit.jsp</result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="UpdateExt" class="org.IGNOU.ePortfolio.MyWorkspace.ExtraActivitiesInfoAction" method="UpdateExtInfo">
+          <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+          <result name="success" type="redirectAction"> 
+                <param name="actionName">ShowExt</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="DeleteExt" class="org.IGNOU.ePortfolio.MyWorkspace.ExtraActivitiesInfoAction" method="DeleteExtInfo">
+            <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+	    <result name="wait">../Processing.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="actionName">ShowExt</param>
+                <param name="msg">${msg}</param>
+            </result>
+            <result name="error">./error.jsp</result>
+        </action>                  
+        <!-- eProfile view -->
+       
     </package>
 </struts>

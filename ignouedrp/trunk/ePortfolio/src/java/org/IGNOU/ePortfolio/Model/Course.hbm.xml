@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 15, 2012 12:26:58 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.Course" table="course">
+        <id name="courseId" type="int">
+            <column name="course_id"/>
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="programme" class="org.IGNOU.ePortfolio.Model.Programme" fetch="select" lazy="false" cascade="merge">
+            <column name="programme_id" />
+        </many-to-one>
+        <property name="instituteId" type="java.lang.Integer">
+            <column name="institute_id" />
+        </property>
+        <property name="courseCode" type="string">
+            <column name="course_code" length="50" />
+        </property>
+        <property name="courseName" type="string">
+            <column name="course_name" length="65535" />
+        </property>
+         
+    </class>
+</hibernate-mapping>

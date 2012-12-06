@@ -1,36 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <!--
-    Document   : hibernate.cfg.xml
-    Created on : August 15, 2011, 10:23 AM
-    Author     : Vinay
-    Version    : 20
-    Description:
-        Database Configration.
+Document : hibernate.cfg.xml
+Created on : August 15, 2011, 10:23 AM
+Author : IGNOU Team
+Version : 22
+Description:
+Database Configration.
 -->
 <hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-     <property name="hibernate.connection.datasource">java:comp/env/jdbc/myeportdatasource</property>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+         <property name="hibernate.connection.datasource">java:comp/env/jdbc/myeportdatasource</property>
    
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/Profile.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyPlans/Model/MyPlan.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyResources/Model/MyResources.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/Model/User.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileAcademic.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileEmployment.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfilePublication.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileSkill.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/Model/Feedback.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/Registration/Model/StudentRegistration.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/Registration/Model/FacultyRegistration.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/Registration/Model/InstituteRegistration.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileTest.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileProAffiliation.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileCertification.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileHonorAward.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyProfile/Model/ProfileReferences.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyConnection/Model/ProfileSocial.hbm.xml"/>
-    <mapping resource="org/IGNOU/ePortfolio/MyWorkspace/Model/Projects.hbm.xml"/>
-  </session-factory>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Userdocs.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/User.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/UserList.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileAcademic.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileEmployment.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileSkill.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Feedback.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileTest.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileProAffiliation.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileCertification.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileHonorAward.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileReferences.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Projects.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileInterest.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/MyNotes.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfilePicture.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Consultancy.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Governance.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/StudentExchange.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileContact.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Patent.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Inventor.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ConsultancyNature.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/MediaPublication.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ReviewCommittee.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/TalkLecture.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ThesisDissertation.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Resume.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ResumeList.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/BookChapter.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/BookChapterAuthor.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/SeminarsWorkshopsAuthor.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/SeminarsWorkshops.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/JournalAuthor.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Journal.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ConferenceAuthors.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Conference.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ExtraActivities.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Course.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Programme.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Department.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/PersonalInfo.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/GradeTypeMaster.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/GradeTypeDetailsMaster.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/GradeValue.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Evidence.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/EvidenceSubmission.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Institute.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ActivitiesComments.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Allowcomment.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/UserPlan.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/UserPlanTask.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Events.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/LikeDislike.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/UserPersonalRequest.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Country.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/City.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Countrylanguage.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/ProfileSocial.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Testimonials.hbm.xml"/>
+        <mapping resource="org/IGNOU/ePortfolio/Model/Vistingcard.hbm.xml"/>
+    </session-factory>
 </hibernate-configuration>

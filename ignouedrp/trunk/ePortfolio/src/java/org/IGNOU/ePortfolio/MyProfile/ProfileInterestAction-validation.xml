@@ -1,0 +1,38 @@
+<!--
+    Document   : ProfileInterestAction-validation.xml
+    Created on : March 9, 2012, 12:07 PM
+    Author     : IGNOU Team
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+  
+<validators>
+    <field name="acadInterest">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Academic Interest" />
+        </field-validator>
+    </field>
+    <field name="persInterest">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Personal Interest" />
+        </field-validator>
+    </field>
+    <field name="techInterest">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Technical Interest"/>
+        </field-validator>
+    </field>
+    <field name="reserInterst">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Research Interest"/>
+        </field-validator>
+    </field>
+    <field name="myHobbies">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Your Hobbies"/>
+        </field-validator>
+    </field>
+ </validators>

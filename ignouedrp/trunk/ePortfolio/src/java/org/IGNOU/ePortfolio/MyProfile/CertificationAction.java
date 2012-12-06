@@ -32,30 +32,21 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.MyProfileDAO;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileCertification;
+import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
+import org.IGNOU.ePortfolio.Model.ProfileCertification;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  */
 public class CertificationAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
     private String user_id = new UserSession().getUserInSession();
     private MyProfileDAO dao = new MyProfileDAO();
     private ProfileCertification Certificate;
@@ -67,34 +58,45 @@ public class CertificationAction extends ActionSupport {
     private String license;
     private String certificationDate;
     private String validDate;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public CertificationAction() {
     }
 
     @Override
     public String execute() throws Exception {
-         CertificateList = dao.ShowCertificateInfo(user_id);    
-          if (CertificateList.isEmpty()) {
-           return INPUT;
+        CertificateList = dao.ShowCertificateInfo(user_id);
+        if (CertificateList.isEmpty()) {
+            return INPUT;
         } else {
             return SUCCESS;
         }
     }
-    
-    public String editCertificateInfo() throws Exception
-    {
+
+    public String editCertificateInfo() throws Exception {
         CertificateList = dao.ShowCertificateEditInfo(certificationId);
         return SUCCESS;
     }
-    public String UpdateCertificateInfo() throws Exception
-    {
+
+    public String UpdateCertificateInfo() throws Exception {
         dao.UpdateCertificate(certificationId, user_id, certificationName, certificationAuthority, license, certificationDate, validDate);
+        msg = infoUpdated;
         return SUCCESS;
     }
-    public String deleteCertificateInfo() throws Exception
-    {
+
+    public String deleteCertificateInfo() throws Exception {
         dao.DeleteCertificate(certificationId);
+        msg = infoDeleted;
         return SUCCESS;
+    }
+
+    /**
+     * @return the serialVersionUID
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     /**
@@ -249,5 +251,47 @@ public class CertificationAction extends ActionSupport {
      */
     public void setValidDate(String validDate) {
         this.validDate = validDate;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the infoUpdated
+     */
+    public String getInfoUpdated() {
+        return infoUpdated;
+    }
+
+    /**
+     * @param infoUpdated the infoUpdated to set
+     */
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

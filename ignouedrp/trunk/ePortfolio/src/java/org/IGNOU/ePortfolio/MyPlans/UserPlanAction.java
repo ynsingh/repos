@@ -1,8 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
+
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -36,55 +35,37 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
 package org.IGNOU.ePortfolio.MyPlans;
 
-import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyPlans.Model.UserPlanModel;
-import org.IGNOU.ePortfolio.MyPlans.Dao.PlanTaskDAO;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.PlanTaskDAO;
+import org.IGNOU.ePortfolio.Model.UserPlan;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  */
-public class UserPlanAction extends ActionSupport implements ModelDriven<UserPlanModel> {
+public class UserPlanAction extends ActionSupport implements ModelDriven<UserPlan> {
+
     private static final long serialVersionUID = 1L;
-
     private PlanTaskDAO hu = new PlanTaskDAO();
-    private UserPlanModel upModel;
-    private String user_id=new UserSession().getUserInSession();
-
-    @Override
-    public String execute() throws Exception {
-        return SUCCESS;
-    }
+    private UserPlan upModel = new UserPlan();
+    private String user_id = new UserSession().getUserInSession();
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public String DataInsert() {
-        upModel.setUser_id(user_id);
-        getHu().saveInfo(getUpModel());
+        hu.saveInfo(upModel);
+        msg = infoSaved;
         return SUCCESS;
     }
 
     @Override
-    public UserPlanModel getModel() {
-        setUpModel(new UserPlanModel());
-        return getUpModel();
-    }
-
-    /**
-     * @return the upModel
-     */
-    public UserPlanModel getUpModel() {
+    public UserPlan getModel() {
+        upModel.setUserId(user_id);
         return upModel;
-    }
-
-    /**
-     * @param upModel the upModel to set
-     */
-    public void setUpModel(UserPlanModel upModel) {
-        this.upModel = upModel;
     }
 
     /**
@@ -113,5 +94,33 @@ public class UserPlanAction extends ActionSupport implements ModelDriven<UserPla
      */
     public void setHu(PlanTaskDAO hu) {
         this.hu = hu;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

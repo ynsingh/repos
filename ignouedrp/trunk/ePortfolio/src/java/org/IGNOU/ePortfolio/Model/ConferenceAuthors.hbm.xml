@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 28, 2012 10:51:30 AM by Hibernate Tools 3.2.1.GA
+Author  :   IGNOU Team
+Version :   1
+Last Modified on  : 28-02-2012
+-->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.ConferenceAuthors" table="conference_authors" catalog="eportfolio">
+        <id name="conferenceAuthorsId" type="java.lang.Long">
+            <column name="conference_authors_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="conference" class="org.IGNOU.ePortfolio.Model.Conference" fetch="select">
+            <column name="conf_id" not-null="true" />
+        </many-to-one>
+        <property name="fname" type="string">
+            <column name="fname" length="100" />
+        </property>
+        <property name="lname" type="string">
+            <column name="lname" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

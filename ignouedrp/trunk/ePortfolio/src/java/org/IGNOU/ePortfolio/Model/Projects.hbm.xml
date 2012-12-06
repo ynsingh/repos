@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 2, 2011 12:57:42 PM by Hibernate Tools 3.2.1.GA 
+// Generated Oct 20, 2011 10:01:44 AM by Hibernate Tools 3.2.1.GA-->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Projects" table="projects" catalog="eportfolio">
+        <id name="projectId" type="long">
+            <column name="project_id" />
+            <generator class="increment" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" not-null="true" />
+        </property>
+        <property name="proName" type="string">
+            <column name="pro_name" length="65535" not-null="true" />
+        </property>
+        <property name="teamSize" type="java.lang.Integer">
+            <column name="team_size" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="65535" />
+        </property>
+        <property name="proUrl" type="string">
+            <column name="pro_URL" length="65535" />
+        </property>
+        <property name="startDate" type="string">
+            <column name="start_date" length="50" />
+        </property>
+        <property name="endDate" type="string">
+            <column name="end_date" length="50" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" />
+        </property>
+        <property name="agency" type="string">
+            <column name="agency" length="100" />
+        </property>
+        <property name="budget" type="java.lang.Long">
+            <column name="budget" />
+        </property>
+    </class>
+</hibernate-mapping>

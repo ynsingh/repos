@@ -32,21 +32,19 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.ProfAffiliationDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileProAffiliation;
+import org.IGNOU.ePortfolio.DAO.ProfAffiliationDao;
+import org.IGNOU.ePortfolio.Model.ProfileProAffiliation;
 import org.hibernate.HibernateException;
 
 /**
  * @version 1
  * @since 14-Oct-2011
- * @author Vinay
+ * @author IGNOU Team
  */
 public class ProfAffiliationAction extends ActionSupport implements ModelDriven<Object> {
 
@@ -54,12 +52,14 @@ public class ProfAffiliationAction extends ActionSupport implements ModelDriven<
     private String user_id = new UserSession().getUserInSession();
     private ProfileProAffiliation ProfAffili = new ProfileProAffiliation();
     private ProfAffiliationDao dao = new ProfAffiliationDao();
-     private String role;
+    private String role;
     private String orgBody;
     private String vfrom;
     private String place;
     private String country;
     private String summary;
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public ProfAffiliationAction() {
     }
@@ -71,6 +71,7 @@ public class ProfAffiliationAction extends ActionSupport implements ModelDriven<
         } catch (HibernateException HE) {
             return HE.toString();
         }
+        msg = infoSaved;
         return SUCCESS;
     }
 
@@ -176,5 +177,33 @@ public class ProfAffiliationAction extends ActionSupport implements ModelDriven<
      */
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

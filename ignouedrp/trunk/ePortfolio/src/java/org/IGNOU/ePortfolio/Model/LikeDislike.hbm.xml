@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Aug 14, 2012 11:45:13 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.LikeDislike" table="like_dislike" catalog="eportfolio">
+        <id name="likeDislikeId" type="int">
+            <column name="like_dislike_id" />
+            <generator class="increment"/>
+        </id>
+        <property name="evidenceSubId" type="java.lang.Integer">
+            <column name="evidence_subId" />
+        </property>
+        <property name="commentId" type="java.lang.Integer">
+            <column name="comment_id" />
+        </property>
+        <property name="likeCount" type="java.lang.Integer">
+            <column name="like_count" />
+        </property>
+        <property name="dislikeCount" type="java.lang.Integer">
+            <column name="dislike_count" />
+        </property>
+        <property name="userDetail" type="string">
+            <column name="user_detail" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

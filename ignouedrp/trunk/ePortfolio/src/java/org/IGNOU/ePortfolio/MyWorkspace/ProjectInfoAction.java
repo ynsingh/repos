@@ -36,20 +36,18 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-package org.IGNOU.ePortfolio.MyWorkspace
-;
+package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyWorkspace.Dao.ProjectDao;
-import org.IGNOU.ePortfolio.MyWorkspace.Model.Projects;
+import org.IGNOU.ePortfolio.DAO.ProjectDao;
+import org.IGNOU.ePortfolio.Model.Projects;
 
-/**  
- * @author Vinay
+/**
+ * @author IGNOU Team
  * @version 2
- * @since 20-Oct-2011
- * Modified by Vinay on 02-Nov-2011
+ * @since 20-Oct-2011 Modified by IGNOU Team on 02-Nov-2011
  */
 public class ProjectInfoAction extends ActionSupport {
 
@@ -76,6 +74,9 @@ public class ProjectInfoAction extends ActionSupport {
     private String endDate;
     private String description;
     private List<Projects> ProList = null;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public ProjectInfoAction() {
     }
@@ -96,11 +97,13 @@ public class ProjectInfoAction extends ActionSupport {
 
     public String UpdateProjectInfo() throws Exception {
         dao.UpdateProjectInfo(projectId, userId, proName, teamSize, role, proUrl, startDate, endDate, description, agency, budget);
+        msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteProjectInfo() throws Exception {
         dao.DeleteProjectInfo(projectId);
+        msg = infoDeleted;
         return SUCCESS;
     }
 
@@ -313,5 +316,47 @@ public class ProjectInfoAction extends ActionSupport {
      */
     public void setBudget(Long budget) {
         this.budget = budget;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the infoUpdated
+     */
+    public String getInfoUpdated() {
+        return infoUpdated;
+    }
+
+    /**
+     * @param infoUpdated the infoUpdated to set
+     */
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

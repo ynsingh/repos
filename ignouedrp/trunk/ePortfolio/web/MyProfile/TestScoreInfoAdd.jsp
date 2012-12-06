@@ -2,98 +2,120 @@
     Document   : TestScoreInfoAdd
     Created on : Oct 12, 2011, 12:42:51 PM
     Version    : 1
-Author     : Vinay
+Author     : IGNOU Team
 Version      : 1
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
+<%@taglib prefix="sjr" uri="/struts-jquery-richtext-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>My References</title>
-       <script type="text/javascript" src="<s:url value="/JS/jquery-latest.js"/>"></script>
-
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#accordion > li > div").click(function(){
- 
-                    if(false == $(this).next().is(':visible')) {
-                        $('#accordion ul').slideUp(300);
-                    }
-                    $(this).next().slideToggle(300);
-                });
- 
-                $('#accordion ul:eq(0)').show();
-
-            });
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('fieldset.jcalendar').jcalendar();
-            });
-        </script>
-        <script src="<s:url value="/JS/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-        <script src="<s:url value="/JS/jcalendar-source.js"/>" type="text/javascript"></script>
-        <link href="<s:url value="/JS/jcalendar.css"/>" rel="stylesheet" type="text/css" />
-        <link href="<s:url value="/theme1/style.css"/>" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="../JS/jquery-ui.min.js"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="../JS/jquery-ui.css"/>
-
-        <style>
-            .ui-datepicker-calendar {
-                display: none;
-            }
-        </style>
-        <script type="text/javascript">
+        <title>Add Test Score</title>
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
+        <sj:head />        
+        <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
+        <script type="text/javascript" src="<s:url value="/js/gen_validatorv4.js"/>"></script>
+        <script>
             $(function() {
-                $('.date-picker').datepicker( {
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: '1950:2011',
-                    showButtonPanel: true,
-                    dateFormat: 'MM yy',
-                    onClose: function(dateText, inst) { 
-                        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                        $(this).datepicker('setDate', new Date(year, month, 1));
-                    }
-                });
+                $( "#accordion" ).accordion();
             });
-        </script></head>
-    <body><%        
-           if (session.getAttribute("user_id") == null) {
-                pageContext.forward("../login.jsp");
+        </script>
+        <script type="text/javascript">
+            if(window.history.forward(1) != null)
+                window.history.forward(1);
+        </script>
+    </head>
+    <body>
+        <%
+            if (session.getAttribute("user_id") == null) {
+                response.sendRedirect("../Login.jsp");
             }
-                   
         %>
-        <jsp:include page="../Header.jsp"/>
-        <div id="container">
-            <div class="wrapper">
-                <jsp:include page="../Left-Nevigation.jsp"/>
-                <div id="col2">
-                    <h3>Add Test Score</h3>
-                    <br/><br/>
-                    <s:form action="AddTestInfo" method="post" namespace="/MyProfile">
-
-                        <table align="center" width="75%" cellpadding="4" border="0" cellspacing="0">   
-                            <s:textfield cssClass="width250" name="tname" label="Test Name"/>
-                            <s:textfield cssClass="width250" name="score" label="Score"/>
-                            <s:textfield cssClass="width250 date-picker" name="tdate" label="Date"/>
-                            <s:textarea cssClass="width250" name="tdescription" label="Description"/>
-                        </table>
-                        <br/>
-                        <s:submit cssClass="floatL buttonsMiddle" value="Save" />
-                        <s:reset cssClass="floatL" value="Cancel" onClick="history.go(-1);" />
-
-                    </s:form>
-                    <br/><br/><br/><br/>
+        <div class="w100 fl-l">
+            <div class="w990p mar0a">
+                <!--Header Starts Here-->
+                <s:include  value="/Header.jsp"/>
+                <!--Header Ends Here-->
+                <!--Middle Section Starts Here-->
+                <div class="w100 fl-l">
+                    <div class="middle_bg">
+                        <!--Left box Starts Here-->
+                        <s:include value="/Left-Nevigation.jsp"/>
+                        <!--Left box Ends Here-->
+                        <!--Right box Starts Here-->
+                        <div class="right_box">
+                            <div class="my_account_bg">Add Test Score</div>
+                            <div class="v_gallery">
+                                <div class="w98 mar0a">
+                                    <div class="w100 fl-l mart10">
+                                        <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a> > <a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > <a href="ShowScore">Test Score</a> > Add Test Score </div>
+                                    </div>
+                                    <div class="w100 fl-l mart10">
+                                        <div class="w100 fl-l tc fbld fcgreen">
+                                            <s:property value="msg"/>
+                                        </div>
+                                        <div class="w100 fl-l mart5">
+                                            <fieldset class="w600p mar0a">
+                                                <legend class="fbld">Add Test Score</legend>
+                                                <s:form action="AddTestInfo" method="post" namespace="/MyProfile" name="myform">
+                                                    <table width="80%" class="mar0a" cellpadding="4" border="0" cellspacing="0">
+                                                        <s:textfield name="tname" label="Test Name"/>
+                                                        <s:textfield name="score" label="Score"/>
+                                                        <sj:datepicker id="date0" label="Date" maxDate="-1d" name="tdate" changeMonth="true" changeYear="true"/>
+                                                        <sjr:tinymce
+                                                            id="richtextTinymceAdvancedEditor"
+                                                            name="tdescription"
+                                                            label="Description"
+                                                            rows="10"
+                                                            cols="10"
+                                                            value="%{tdescription}"
+                                                            editorLocal="en"
+                                                            editorTheme="advanced"
+                                                            editorSkin="o2k7"
+                                                            toolbarAlign="left"
+                                                            toolbarLocation="top"
+                                                            toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
+                                                            toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
+                                                            toolbarButtonsRow3=" "
+                                                            />
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td><s:submit value="Save" theme="simple" />
+                                                                <s:reset value="Cancel" theme="simple" onClick="history.go(-1);" /></td>
+                                                        </tr>
+                                                    </table>
+                                                </s:form>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Right box End Here-->
+                    </div>
                 </div>
-                <jsp:include page="../Right-Nevigation.jsp"/>
-                <div class="clear"></div>
+                <!--Middle Section Ends Here-->
             </div>
         </div>
-        <jsp:include page="../Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>
+        <script type="text/javascript">
+            var frmvalidator  = new Validator("myform");
+            frmvalidator.addValidation("tname","req","Please enter Test Name");
+            frmvalidator.addValidation("tname","maxlen=20","Max length is 20");
+            frmvalidator.addValidation("tname","alpha_s","Alphabetic chars only");
+    
+            frmvalidator.addValidation("score","req","Please enter your Score");
+            frmvalidator.addValidation("score","maxlen=20", "Max length is 20");
+            frmvalidator.addValidation("score","numeric","Numeric only");
+  
+            frmvalidator.addValidation("tdate","req","Please enter Date");
+  
+        </script>
     </body>
 </html>

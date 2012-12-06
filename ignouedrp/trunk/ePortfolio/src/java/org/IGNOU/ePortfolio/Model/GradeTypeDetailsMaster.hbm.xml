@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 12, 2012 12:30:51 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.GradeTypeDetailsMaster" table="grade_type_details_master" catalog="eportfolio">
+        <id name="gtdId" type="int">
+            <column name="gtd_id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="gradeTypeMaster" class="org.IGNOU.ePortfolio.Model.GradeTypeMaster" fetch="select" lazy="false" cascade="merge">
+            <column name="gt_id" />
+        </many-to-one>
+        <property name="details" type="string">
+            <column name="details" length="100" />
+        </property>
+        <set name="gradeValues" inverse="true" lazy="false">
+            <key>
+                <column name="gtd_id" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.GradeValue" />
+        </set>
+    </class>
+</hibernate-mapping>

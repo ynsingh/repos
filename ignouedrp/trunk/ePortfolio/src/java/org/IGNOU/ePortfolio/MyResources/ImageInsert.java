@@ -1,8 +1,6 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -36,49 +34,44 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-package org.IGNOU.ePortfolio.MyResources
-;
+package org.IGNOU.ePortfolio.MyResources;
 
-import java.io.IOException;
-import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyResources.Dao.ImageInfoDAO;
-import org.IGNOU.ePortfolio.MyResources.Model.FolderModel;
-import org.IGNOU.ePortfolio.MyResources.Model.ImageModel;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.ImageInfoDAO;
+import org.IGNOU.ePortfolio.Model.Userdocs;
 
 /**
  *
- * @author Amit
- * * @version 1 on 19 aug 2011
+ * @author IGNOU Team
+ * * @version 1.0 on 19 aug 2011
  */
-public class ImageInsert extends ActionSupport implements
-        ModelDriven<ImageModel> {
+public class ImageInsert extends ActionSupport implements ModelDriven<Userdocs> {
 
-    ImageInfoDAO obInfoDAO = new ImageInfoDAO();
-    ImageModel obModel = new ImageModel();
-    FolderModel fModel = new FolderModel();
-    private String filepath = "c:/MyResources/UserDocs/";
-    Calendar c_Date = Calendar.getInstance();
-    SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+    private String user_id = new UserSession().getUserInSession();
+    private ImageInfoDAO obInfoDAO = new ImageInfoDAO();
+    private Userdocs obModel = new Userdocs();
+    private String filepath = getText("evidenceFilePath") + "/" + user_id + "/";
+    private Calendar c_Date = Calendar.getInstance();
+    private SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
     private String filedate = f.format(c_Date.getTime());
-    private String user_id=new UserSession().getUserInSession();
-   
-    @Override
-    public String execute() throws Exception {
-        return SUCCESS;
-    }
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public String dataInsert() throws IOException {
-        obInfoDAO.saveInfo(obModel);   
-       System.out.println("inserted");
+        obInfoDAO.saveInfo(obModel);
+        System.out.println("inserted");
+        msg = infoSaved;
         return SUCCESS;
     }
 
     @Override
-    public ImageModel getModel() {
+    public Userdocs getModel() {
+
         obModel.setUser_id(user_id);
         obModel.setFilepath(filepath);
         obModel.setFiledate(filedate);
@@ -111,5 +104,33 @@ public class ImageInsert extends ActionSupport implements
      */
     public void setFiledate(String filedate) {
         this.filedate = filedate;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

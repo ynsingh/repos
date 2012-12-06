@@ -1,8 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
+
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -36,82 +35,56 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
 package org.IGNOU.ePortfolio.MyPlans;
 
-import org.IGNOU.ePortfolio.MyPlans.Dao.PlanTaskDAO;
-import org.IGNOU.ePortfolio.MyPlans.Model.NewTask;
 import com.opensymphony.xwork2.ActionSupport;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import javax.persistence.Id;
+import com.opensymphony.xwork2.ModelDriven;
+import java.util.Date;
+import org.IGNOU.ePortfolio.DAO.PlanTaskDAO;
+import org.IGNOU.ePortfolio.Model.UserPlan;
+import org.IGNOU.ePortfolio.Model.UserPlanTask;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team Last Modified on 12-07-2012 by IGNOU Team
  */
-public class NewTaskAction extends ActionSupport {
-    private static final long serialVersionUID = 1L;
+public class NewTaskAction extends ActionSupport implements ModelDriven<Object> {
 
-    private NewTask nt = new NewTask();
-    private List<NewTask> tasklist;
+    private UserPlanTask nt = new UserPlanTask();
     private PlanTaskDAO dao = new PlanTaskDAO();
-    @Id
-    private Long task_id;
-    private int plan_id;
-    private String t_title;
-    private String t_description;
-    private int status;
-    /**
-     * Start Calculating System Current Date
-     */
-    private Calendar c_Date = Calendar.getInstance();
-    private SimpleDateFormat f = new SimpleDateFormat("dd MMM, yyyy");
-    private String t_date = f.format(c_Date.getTime());
+    private UserPlan up = new UserPlan();
+    private int planId;
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
-    /**
-     * End Calculating System Current Date
-     */
     @Override
     public String execute() {
-        getNt().setTask_id(getTask_id());
-        getNt().setT_title(getT_title());
-        getNt().setT_description(getT_description());
-        getNt().setPlan_id(getPlan_id());
-        getNt().setStatus(0);
-        getNt().setT_date(getT_date());
-        getDao().saveTaskInfo(getNt());
-        //  this.addActionMessage("Task is successfully insert.");
+        up.setPlanId(planId);
+        nt.setUserPlan(up);
+        dao.saveTaskInfo(nt);
+        msg = infoSaved;
         return SUCCESS;
+    }
+
+    @Override
+    public Object getModel() {
+        nt.setTDate(new Date().toString());
+        nt.setStatus(0);
+        return nt;
     }
 
     /**
      * @return the nt
      */
-    public NewTask getNt() {
+    public UserPlanTask getNt() {
         return nt;
     }
 
     /**
      * @param nt the nt to set
      */
-    public void setNt(NewTask nt) {
+    public void setNt(UserPlanTask nt) {
         this.nt = nt;
-    }
-
-    /**
-     * @return the tasklist
-     */
-    public List<NewTask> getTasklist() {
-        return tasklist;
-    }
-
-    /**
-     * @param tasklist the tasklist to set
-     */
-    public void setTasklist(List<NewTask> tasklist) {
-        this.tasklist = tasklist;
     }
 
     /**
@@ -129,114 +102,58 @@ public class NewTaskAction extends ActionSupport {
     }
 
     /**
-     * @return the task_id
+     * @return the up
      */
-    public Long getTask_id() {
-        return task_id;
+    public UserPlan getUp() {
+        return up;
     }
 
     /**
-     * @param task_id the task_id to set
+     * @param up the up to set
      */
-    public void setTask_id(Long task_id) {
-        this.task_id = task_id;
+    public void setUp(UserPlan up) {
+        this.up = up;
     }
 
     /**
-     * @return the plan_id
+     * @return the planId
      */
-    public int getPlan_id() {
-        return plan_id;
+    public int getPlanId() {
+        return planId;
     }
 
     /**
-     * @param plan_id the plan_id to set
+     * @param planId the planId to set
      */
-    public void setPlan_id(int plan_id) {
-        this.plan_id = plan_id;
+    public void setPlanId(int planId) {
+        this.planId = planId;
     }
 
     /**
-     * @return the t_title
+     * @return the msg
      */
-    public String getT_title() {
-        return t_title;
+    public String getMsg() {
+        return msg;
     }
 
     /**
-     * @param t_title the t_title to set
+     * @param msg the msg to set
      */
-    public void setT_title(String t_title) {
-        this.t_title = t_title;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     /**
-     * @return the t_description
+     * @return the infoSaved
      */
-    public String getT_description() {
-        return t_description;
+    public String getInfoSaved() {
+        return infoSaved;
     }
 
     /**
-     * @param t_description the t_description to set
+     * @param infoSaved the infoSaved to set
      */
-    public void setT_description(String t_description) {
-        this.t_description = t_description;
-    }
-
-    /**
-     * @return the status
-     */
-    public int getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    /**
-     * @return the c_Date
-     */
-    public Calendar getC_Date() {
-        return c_Date;
-    }
-
-    /**
-     * @param c_Date the c_Date to set
-     */
-    public void setC_Date(Calendar c_Date) {
-        this.c_Date = c_Date;
-    }
-
-    /**
-     * @return the f
-     */
-    public SimpleDateFormat getF() {
-        return f;
-    }
-
-    /**
-     * @param f the f to set
-     */
-    public void setF(SimpleDateFormat f) {
-        this.f = f;
-    }
-
-    /**
-     * @return the t_date
-     */
-    public String getT_date() {
-        return t_date;
-    }
-
-    /**
-     * @param t_date the t_date to set
-     */
-    public void setT_date(String t_date) {
-        this.t_date = t_date;
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

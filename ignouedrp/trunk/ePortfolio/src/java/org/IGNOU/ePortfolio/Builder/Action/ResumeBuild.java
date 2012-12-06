@@ -1,0 +1,104 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.IGNOU.ePortfolio.Builder.Action;
+
+import com.opensymphony.xwork2.ActionSupport;
+import java.util.List;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.PeerGroupDao;
+import org.IGNOU.ePortfolio.Model.UserList;
+
+/**
+ *
+ * @author IGNOU Team
+ */
+public class ResumeBuild extends ActionSupport {
+    private String resumeTitle;
+    private String resumeObjective;
+    private PeerGroupDao bdao=new PeerGroupDao();
+    private List<UserList> userDetaillist;
+    private String user_id=new UserSession().getUserInSession();
+ 
+    public String MakeResume(){
+        userDetaillist=bdao.ProfileDetailsDao(user_id);
+    
+    return SUCCESS;
+    }
+     public List<UserList> MakeResumes(){
+        userDetaillist=bdao.ProfileDetailsDao(user_id);
+    
+    return userDetaillist;
+    }
+    /**
+     * @return the resumeTitle
+     */
+    public String getResumeTitle() {
+        return resumeTitle;
+    }
+
+    /**
+     * @param resumeTitle the resumeTitle to set
+     */
+    public void setResumeTitle(String resumeTitle) {
+        this.resumeTitle = resumeTitle;
+    }
+
+    /**
+     * @return the resumeObjective
+     */
+    public String getResumeObjective() {
+        return resumeObjective;
+    }
+
+    /**
+     * @param resumeObjective the resumeObjective to set
+     */
+    public void setResumeObjective(String resumeObjective) {
+        this.resumeObjective = resumeObjective;
+    }
+
+    /**
+     * @return the bdao
+     */
+    public PeerGroupDao getBdao() {
+        return bdao;
+    }
+
+    /**
+     * @param bdao the bdao to set
+     */
+    public void setBdao(PeerGroupDao bdao) {
+        this.bdao = bdao;
+    }
+
+    /**
+     * @return the userDetaillist
+     */
+    public List<UserList> getUserDetaillist() {
+        return userDetaillist;
+    }
+
+    /**
+     * @param userDetaillist the userDetaillist to set
+     */
+    public void setUserDetaillist(List<UserList> userDetaillist) {
+        this.userDetaillist = userDetaillist;
+    }
+
+    /**
+     * @return the user_id
+     */
+    public String getUser_id() {
+        return user_id;
+    }
+
+    /**
+     * @param user_id the user_id to set
+     */
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+    
+}

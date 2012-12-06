@@ -32,20 +32,19 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.MyProfileDAO;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileReferences;
+import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
+import org.IGNOU.ePortfolio.Model.ProfileReferences;
 
 /**
  * Created on 11-Oct-2011
+ *
  * @version 1
- * @author Vinay
+ * @author IGNOU Team
  */
 public class ReferenceAction extends ActionSupport {
 
@@ -70,18 +69,21 @@ public class ReferenceAction extends ActionSupport {
     private String city;
     private String state;
     private String country;
-    private long  phoneno;
+    private long phoneno;
     private Long mobileno;
     private String emailId;
     private String website;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public ReferenceAction() {
     }
 
     public String ShowInfo() throws Exception {
         RefList = dao.ShowReferenceInfo(getUser_id());
-          if (RefList.isEmpty()) {
-           // return SUCCESS;
+        if (RefList.isEmpty()) {
+            // return SUCCESS;
             return INPUT;
         } else {
             //return ERROR;
@@ -96,11 +98,13 @@ public class ReferenceAction extends ActionSupport {
 
     public String UpdateRefInfo() throws Exception {
         dao.UpdateReferenceInfo(referencesId, user_id, name, designation, orgUniv, place, city, state, country, phoneno, mobileno, emailId, website);
+        msg = infoUpdated;
         return SUCCESS;
     }
-    
-    public String DeleteRefInfo() throws Exception{
+
+    public String DeleteRefInfo() throws Exception {
         dao.DeleteReference(referencesId);
+        msg = infoDeleted;
         return SUCCESS;
     }
 
@@ -289,14 +293,14 @@ public class ReferenceAction extends ActionSupport {
     /**
      * @return the phoneno
      */
-    public long  getPhoneno() {
+    public long getPhoneno() {
         return phoneno;
     }
 
     /**
      * @param phoneno the phoneno to set
      */
-    public void setPhoneno(long  phoneno) {
+    public void setPhoneno(long phoneno) {
         this.phoneno = phoneno;
     }
 
@@ -340,5 +344,47 @@ public class ReferenceAction extends ActionSupport {
      */
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the infoUpdated
+     */
+    public String getInfoUpdated() {
+        return infoUpdated;
+    }
+
+    /**
+     * @param infoUpdated the infoUpdated to set
+     */
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

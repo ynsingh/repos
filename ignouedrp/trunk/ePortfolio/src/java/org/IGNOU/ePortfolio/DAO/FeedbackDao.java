@@ -1,8 +1,7 @@
-/*
+/**
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
+
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -38,17 +37,18 @@
  */
 package org.IGNOU.ePortfolio.DAO;
 
-
+import java.util.List;
 import org.IGNOU.ePortfolio.Model.Feedback;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
  * Hibernate Utility class with a convenient method to get Session Factory object.
  * @version 1
- * @author Vinay
+ * @author IGNOU Team
  */
 public class FeedbackDao {
 
@@ -62,7 +62,7 @@ public class FeedbackDao {
      * 
      */
     public Feedback addInfo(Feedback FeedbackModel) {
-         sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
+        sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
         Session s = sessionFactory.openSession();
         Transaction t = null;
         try {
@@ -84,9 +84,138 @@ public class FeedbackDao {
             sessionFactory.close();
         }
     }
+    @SuppressWarnings({"unchecked"})
+    public List<Feedback> FeedbackList() {
+        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session s = sf.openSession();
+        Transaction t = null;
+        try {
+            t = s.beginTransaction();
+
+            List<Feedback> FeedbackListList = null;
+            try {
+                FeedbackListList = s.createQuery("from Feedback where archive='0'").list();
+            } catch (HibernateException HE) {
+                System.out.println(HE);
+            }
+            t.commit();
+            return FeedbackListList;
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sf.close();
+        }
+    } 
+   
+   @SuppressWarnings({"unchecked"})
+    public List<Feedback> ArchiveFeedbackList() {
+        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session s = sf.openSession();
+        Transaction t = null;
+        try {
+            t = s.beginTransaction();
+
+            List<Feedback> FeedbackListList = null;
+            try {
+                FeedbackListList = s.createQuery("from Feedback where archive='1'").list();
+            } catch (HibernateException HE) {
+                System.out.println(HE);
+            }
+            t.commit();
+            return FeedbackListList;
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sf.close();
+        }
+    } 
+    @SuppressWarnings("unchecked")
+    public Feedback DeleteFeedback(long feedbackId) {
+        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session s = sf.openSession();
+        Transaction t = null;
+        try {
+            t = s.beginTransaction();
+            Feedback DeleteFeedback = (Feedback) s.load(Feedback.class, feedbackId);
+            if (DeleteFeedback != null) {
+                s.delete(DeleteFeedback);
+            }
+            t.commit();
+            return DeleteFeedback;
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sf.close();
+        }
+    }
+   
+   @SuppressWarnings("unchecked")
+    public List<Feedback> ReplyFeedback(long feedbackId) {
+        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session s = sf.openSession();
+        Transaction t = null;
+        try {
+            t = s.beginTransaction();
+
+            List<Feedback> replyfeedbacklist = null;
+            try {
+                replyfeedbacklist = s.createQuery("from Feedback where feedbackId='" + feedbackId + "'").list();
+            } catch (HibernateException HE) {
+                System.out.println(HE);
+            }
+            t.commit();
+            return replyfeedbacklist;
+        } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sf.close();
+        }
+    }
+   
+   @SuppressWarnings("unchecked")
+    public Feedback ArchiveFeedback(long feedbackId ) {
+        SessionFactory sf = new AnnotationConfiguration().configure().buildSessionFactory();
+        Session s = sf.openSession();
+        Transaction t = null;
+        Feedback fb=new Feedback();
+        
+        try {
+            t = s.beginTransaction();
+             Feedback fbList = (Feedback) s.load(Feedback.class, feedbackId);
+             fbList.setArchive(true);
+             s.update(fbList);
+             t.commit();
+             return fb;
+            } catch (Throwable ex) {
+            //Log the Exception
+            t.rollback();
+            System.err.println("Initial SessionFactory creation failed." + ex);
+            throw new ExceptionInInitializerError(ex);
+        } finally {
+            s.close();
+            sf.close();
+        }
+    }
     /*
      * This function used to get Session factory object
-    */
+     */
+
     public SessionFactory getSessionFactory() {
         return sessionFactory;
     }

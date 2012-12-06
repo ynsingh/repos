@@ -1,8 +1,7 @@
-/*
+/**
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
+ 
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -38,17 +37,16 @@
  */
 package org.IGNOU.ePortfolio.MyConnection;
 
-import org.IGNOU.ePortfolio.Action.UserSession;
-
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-import org.IGNOU.ePortfolio.MyConnection.Dao.MySocialInfoDao;
-import org.IGNOU.ePortfolio.MyConnection.Model.ProfileSocial;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.Model.ProfileSocial;
+import org.IGNOU.ePortfolio.DAO.MySocialInfoDao;
 
 /**
  * @version 1.1
  * @since 04-Sep-2011
- * @author Vinay
+ * @author IGNOU Team
  */
 public class SocialAddAction extends ActionSupport implements ModelDriven<Object> {
 

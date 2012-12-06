@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 11, 2011 11:42:27 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ProfileCertification" table="profile_certification">
+    <id name="certificationId" type="long">
+      <column name="certification_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="certificationName" type="string">
+      <column length="65535" name="certificationName"/>
+    </property>
+    <property name="certificationAuthority" type="string">
+      <column length="65535" name="certificationAuthority"/>
+    </property>
+    <property name="license" type="string">
+      <column length="65535" name="license"/>
+    </property>
+    <property name="certificationDate" type="string">
+      <column length="50" name="certificationDate"/>
+    </property>
+    <property name="validDate" type="string">
+      <column length="50" name="validDate"/>
+    </property>
+  </class>
+</hibernate-mapping>

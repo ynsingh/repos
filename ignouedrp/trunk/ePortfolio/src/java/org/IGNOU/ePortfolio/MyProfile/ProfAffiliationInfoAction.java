@@ -32,32 +32,22 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.ProfAffiliationDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileProAffiliation;
+import org.IGNOU.ePortfolio.DAO.ProfAffiliationDao;
+import org.IGNOU.ePortfolio.Model.ProfileProAffiliation;
 
 /**
  * @version 1
  * @since 14-Oct-2011
- * @author Vinay
- * ID is Modified by Vinay on 17-Oct-2011.
+ * @author IGNOU Team ID is Modified by IGNOU Team on 17-Oct-2011.
  */
 public class ProfAffiliationInfoAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @return the serialVersionUID
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
     private String user_id = new UserSession().getUserInSession();
     private ProfileProAffiliation ProfAffili = new ProfileProAffiliation();
     private ProfAffiliationDao dao = new ProfAffiliationDao();
@@ -71,6 +61,9 @@ public class ProfAffiliationInfoAction extends ActionSupport {
     private String country;
     private String summary;
     private List<ProfileProAffiliation> AffiliationList = null;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public ProfAffiliationInfoAction() {
     }
@@ -91,12 +84,21 @@ public class ProfAffiliationInfoAction extends ActionSupport {
 
     public String UpdateAffiliationInfo() throws Exception {
         getDao().UpdateInfo(proAffiliationId, userId, role, orgBody, vfrom, vupto, place, country, summary);
+        msg = infoUpdated;
         return SUCCESS;
     }
 
     public String DeleteAffiliationInfo() throws Exception {
         dao.DeleteAffiliation(proAffiliationId);
+        msg = infoDeleted;
         return SUCCESS;
+    }
+
+    /**
+     * @return the serialVersionUID
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     /**
@@ -279,5 +281,47 @@ public class ProfAffiliationInfoAction extends ActionSupport {
      */
     public void setAffiliationList(List<ProfileProAffiliation> AffiliationList) {
         this.AffiliationList = AffiliationList;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the infoUpdated
+     */
+    public String getInfoUpdated() {
+        return infoUpdated;
+    }
+
+    /**
+     * @param infoUpdated the infoUpdated to set
+     */
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

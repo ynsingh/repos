@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 17, 2011 2:53:02 PM by Hibernate Tools 3.2.1.GA
+author  :   IGNOU Team
+since   :   14-Oct-2011
+version :   1.1
+proAffiliationId's data type is Modified by IGNOU Team on 17-Oct-2011.
+ *
+-->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ProfileProAffiliation" table="profile_pro_affiliation">
+    <id name="proAffiliationId" type="long">
+      <column name="pro_affiliation_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="role" type="string">
+      <column length="100" name="role"/>
+    </property>
+    <property name="orgBody" type="string">
+      <column length="65535" name="orgBody"/>
+    </property>
+    <property name="vfrom" type="string">
+      <column length="100" name="vFrom"/>
+    </property>
+    <property name="vupto" type="string">
+      <column length="100" name="vUpto"/>
+    </property>
+    <property name="place" type="string">
+      <column length="100" name="place"/>
+    </property>
+    <property name="country" type="string">
+      <column length="100" name="country"/>
+    </property>
+    <property name="summary" type="string">
+      <column length="65535" name="summary"/>
+    </property>
+  </class>
+</hibernate-mapping>

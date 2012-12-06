@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 17, 2012 3:51:23 PM by Hibernate Tools 3.2.1.GA 
+Author IGNOU Team
+Version 1
+Since 17-02-2012
+ -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.TalkLecture" table="talk_lecture" catalog="eportfolio">
+        <id name="talkLectureId" type="long">
+            <column name="talk_lectureId" />
+            <generator class="increment" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="eventType" type="string">
+            <column name="event_type" length="20" />
+        </property>
+        <property name="nameUniversity" type="string">
+            <column name="name_university" length="100" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="65535" />
+        </property>
+        <property name="nameEvent" type="string">
+            <column name="name_event" length="65535" />
+        </property>
+        <property name="lectureTopic" type="string">
+            <column name="lecture_topic" length="65535" />
+        </property>
+        <property name="deleveredOn" type="string">
+            <column name="delevered_on" length="25" />
+        </property>
+        <property name="timeFrom" type="string">
+            <column name="time_from" length="10" />
+        </property>
+        <property name="timeTo" type="string">
+            <column name="time_to" length="10" />
+        </property>
+        <property name="level" type="string">
+            <column name="level" length="25" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

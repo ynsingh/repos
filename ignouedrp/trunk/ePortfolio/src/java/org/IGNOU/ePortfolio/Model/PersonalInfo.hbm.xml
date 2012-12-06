@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 7, 2012 4:49:13 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.PersonalInfo" table="personal_info">
+    <id name="personalInfoId" type="long">
+      <column name="Personal_Info_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="emailId" type="string">
+      <column length="100" name="email_id"/>
+    </property>
+    <property name="firstName" type="string">
+      <column length="100" name="first_name"/>
+    </property>
+    <property name="lastName" type="string">
+      <column length="100" name="last_name"/>
+    </property>
+    <property name="fatherName" type="string">
+      <column length="100" name="father_name"/>
+    </property>
+    <property name="motherName" type="string">
+      <column length="100" name="mother_name"/>
+    </property>
+    <property name="otherGuardian" type="string">
+      <column length="100" name="other_guardian"/>
+    </property>
+    <property name="gender" type="string">
+      <column length="7" name="gender"/>
+    </property>
+    <property name="dateOfBirth" type="date">
+      <column length="10" name="date_of_birth"/>
+    </property>
+    <property name="pbirth" type="string">
+      <column length="100" name="pBirth"/>
+    </property>
+    <property name="mstatus" type="string">
+      <column length="15" name="mStatus"/>
+    </property>
+    <property name="aadhaarNo" type="java.lang.Long">
+      <column name="aadhaar_no"/>
+    </property>
+    <property name="passportNo" type="string">
+      <column length="15" name="passport_no"/>
+    </property>
+    <property name="panNo" type="string">
+      <column length="15" name="pan_no"/>
+    </property>
+    <property name="activeStatus" type="java.lang.Integer">
+      <column name="active_status"/>
+    </property>
+    <property name="castCategory" type="string">
+      <column length="10" name="cast_category"/>
+    </property>
+    <property name="religion" type="string">
+      <column length="50" name="religion"/>
+    </property>
+    <property name="nationality" type="string">
+      <column length="100" name="nationality"/>
+    </property>
+    <property name="languageKnown" type="string">
+      <column length="100" name="language_known"/>
+    </property>
+  </class>
+</hibernate-mapping>

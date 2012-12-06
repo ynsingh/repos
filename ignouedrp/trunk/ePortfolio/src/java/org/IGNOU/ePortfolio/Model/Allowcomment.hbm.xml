@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 29, 2012 3:41:20 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Allowcomment" table="allowcomment" catalog="eportfolio">
+        <id name="idAllowComment" type="java.lang.Integer">
+            <column name="idAllowComment" />
+            <generator class="identity" />
+        </id>
+        <property name="facultyId" type="string">
+            <column name="faculty_id" length="80" />
+        </property>
+        <property name="canComment" type="java.lang.Boolean">
+            <column name="can_comment" />
+        </property>
+        <property name="listStudent" type="string">
+            <column name="list_student" length="65535" />
+        </property>
+        <property name="evId" type="java.lang.Integer">
+            <column name="evId" />
+        </property>
+    </class>
+</hibernate-mapping>

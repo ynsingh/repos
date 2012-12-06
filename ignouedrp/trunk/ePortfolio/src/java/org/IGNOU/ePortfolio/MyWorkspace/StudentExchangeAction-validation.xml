@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<!-- Generated Dec 28, 2011 12:32:47 PM by Hibernate Tools 3.2.1.GA
+Auther : IGNOU Team
+Version :1
+-->
+<validators> 
+   
+    <field name="programmeType">
+        <field-validator type="requiredstring">
+            <message key="Please Choose Exchange Programme type."/>
+        </field-validator>
+    </field>
+   
+    <field name="venue">
+        <field-validator type="required">
+            <message key="Please enter venue."/>
+        </field-validator>
+    </field>  
+    <field name="state">
+        <field-validator type="required">
+            <message key="Please enter host state."/>
+        </field-validator>
+    </field>   
+    <field name="country">
+        <field-validator type="required">
+            <message key="Please enter host country."/>
+        </field-validator>
+    </field>
+    
+</validators>

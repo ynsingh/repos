@@ -1,0 +1,16 @@
+/* 
+    Document   : MonthYearPicker
+    Created on : Jul 24, 2012, 11:50:34 AM
+    Author     : Amit
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.ui-datepicker-calendar{display:none;}
+.ui-timepicker-div{display: none;}
+.ui_tpicker_time{display: none;}

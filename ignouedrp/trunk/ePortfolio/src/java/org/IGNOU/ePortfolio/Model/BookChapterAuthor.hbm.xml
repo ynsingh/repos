@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 24, 2012 11:44:18 AM by Hibernate Tools 3.2.1.GA 
+Author      : IGNOU Team
+Version     : 1
+Since       : 23-02-2012
+Last Modified on : 24-02-2012-->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.BookChapterAuthor" table="book_chapter_author" catalog="eportfolio">
+        <id name="authorId" type="java.lang.Long">
+            <column name="author_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="bookChapter" class="org.IGNOU.ePortfolio.Model.BookChapter" fetch="select">
+            <column name="bc_id" not-null="true" />
+        </many-to-one>
+        <property name="fname" type="string">
+            <column name="fname" length="100" />
+        </property>
+        <property name="lname" type="string">
+            <column name="lname" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,36 @@
+
+<!--
+    Document   : PersonalAction-validation.xml
+    Created on : March 7, 2012, 3:51 PM
+    Author     : IGNOU Team
+    Description:
+        Purpose of the document follows.
+-->
+
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+ 
+<validators>
+    <field name="fbook">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Book Name" />
+        </field-validator>
+    </field>
+   
+    <field name="ftvshow">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Favourite Tv Show" />
+        </field-validator>
+    </field>
+    
+    <field name="fmovie">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Favourite Movie" />
+        </field-validator>
+    </field>
+   <field name="fquote">
+        <field-validator type="requiredstring">
+            <message key="Please Enter a Favourite Quote" />
+        </field-validator>
+    </field>
+</validators>

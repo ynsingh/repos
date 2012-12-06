@@ -1,0 +1,24 @@
+<!--
+    Document   : LoginAction-validation.xml
+    Created on : January 04, 2012, 1:05 PM
+    Author     : IGNOU Team
+    Description:
+        Purpose of the document follows.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="email_id">
+         <field-validator type="required"> 
+            <message>You cannot leave the email address field empty.</message> 
+        </field-validator> 
+        <field-validator type="required">
+            <message key="Please Enter a Email Id" />
+        </field-validator>
+    </field>
+      <field name="password">
+        <field-validator type="required">
+            <message key="Please Enter a Password" />
+        </field-validator>
+    </field>
+  </validators>

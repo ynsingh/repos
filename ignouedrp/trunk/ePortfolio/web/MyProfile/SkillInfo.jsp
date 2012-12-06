@@ -1,30 +1,25 @@
 <%-- 
     Document   : SkillInfo
     Created on : Sep 13, 2011, 5:16:32 PM
-Author     : Vinay
+Author     : IGNOU Team
 Version      : 1
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Home</title>
-        <script type="text/javascript" src="<s:url value="/JS/jquery-latest.js"/>"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#accordion > li > div").click(function(){
- 
-                    if(false == $(this).next().is(':visible')) {
-                        $('#accordion ul').slideUp(300);
-                    }
-                    $(this).next().slideToggle(300);
-                });
- 
-                $('#accordion ul:eq(0)').show();
+        <title>Skills Set</title>
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
 
+        <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
+        <script>
+            $(function() {
+                $( "#accordion" ).accordion();
             });
         </script>
         <script type="text/javascript">
@@ -35,119 +30,150 @@ Version      : 1
                 {
                     alert("You can't add Null or Blank Value. Please Enter your Skill.");
                     return false;
-                }
-               
+                }               
             }
         </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('fieldset.jcalendar').jcalendar();
-            });
-        </script>
-        <script src="<s:url value="/JS/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-        <script src="<s:url value="/JS/jcalendar-source.js"/>" type="text/javascript"></script>
-        <link href="<s:url value="/JS/jcalendar.css"/>" rel="stylesheet" type="text/css" />
-        <link href="<s:url value="/theme1/style.css"/>" rel="stylesheet" type="text/css" />
     </head>
-    <body><%
-        if (session.getAttribute("user_id") == null) {
-            pageContext.forward("../login.jsp");
-        }
+    <body>
+        <%
+            if (session.getAttribute("user_id") == null) {
+                response.sendRedirect("../Login.jsp");
+            }
 
         %>
-        <jsp:include page="../Header.jsp"/>
+        <div class="w100 fl-l">
+            <div class="w990p mar0a">
+                <!--Header Starts Here-->
+                <s:include  value="/Header.jsp"/>
+                <!--Header Ends Here-->
+                <!--Middle Section Starts Here-->
+                <div class="w100 fl-l">
+                    <div class="middle_bg">
+                        <!--Left box Starts Here-->
+                        <s:include value="/Left-Nevigation.jsp"/>
+                        <!--Left box Ends Here-->
+                        <!--Right box Starts Here-->
+                        <div class="right_box">
+                            <div class="my_account_bg">My Skills Set</div>
+                            <div class="v_gallery">
+                                <div class="w98 mar0a">
+                                    <div class="w100 fl-l mart10">
+                                        <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Skills Set </div>
+                                        <div class="w100 fl-l mart10">
+                                            <s:form action="AddSkill" method="post" namespace="/MyProfile" name="SkillForm" onsubmit="return validatePlanForm()" theme="simple">
+                                                <fieldset class="w400p mar0a">
+                                                    <legend class="fbld"> Skills Set</legend>
+                                                    <table width="70%" class="mar0a" cellpadding="4" border="0" cellspacing="0" theme="simple">
+                                                        <tr>
+                                                            <td width="30%">Skills Set Type</td>
+                                                            <td width="40%"><s:select name="type"  list="{'Personal','Technical','Others'}" headerKey="-1" headerValue="-- Select Skill Type --"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Skill</td>
+                                                            <td><s:textfield name="skills"  /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td><s:submit value="Add Skill" />
+                                                                <s:reset value="Cancel" onClick="history.go(-1);" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </fieldset>
+                                            </s:form>
+                                            <div class="w50 mar0a tc fbld fcgreen">
+                                                <s:property value="msg"/>
+                                            </div>
+                                            <div class="w100 fl-l">
+                                                <!--     <tr>
+                                                        <th colspan="3" align="left">Academic Skills Set</th>
+                                                    </tr>
+                                                <s:iterator value="AcademicList" var="Skil" status="stat">
+                                                    <tr><td valign="top"><s:property value="#stat.count"/></td>
+                                                        <td><s:property value="skills"/></td>
+                                                        <td><a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record')"> <img class="fl-l marl10" src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/></a></td>
+                                                    </tr>
+                                                </s:iterator>
+                                                -->  
+                                                <fieldset class="w400p mar0a">
+                                                    <legend class="fbld">Personal Skills Set</legend> 
+                                                    <table width="70%" class="mar0a" cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <div class="w50 mar0a tc fbld fcgreen">
+                                                                    <s:property value="permsg"/>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <s:iterator value="PersonalList" var="Skil" status="stat">
+                                                            <tr><td valign="top"><s:property value="#stat.count"/></td>
+                                                                <td><s:property value="skills"/></td>
+                                                                <td><a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a>
+                                                                </td>
+                                                            </tr>
+                                                        </s:iterator>
+                                                    </table>
+                                                </fieldset>
+                                                <fieldset class="w400p mar0a">
+                                                    <legend class="fbld">Technical Skills Set</legend> 
+                                                    <table width="70%" class="mar0a" cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td colspan="2"> 
+                                                                <div class="w50 mar0a tc fbld fcgreen">
+                                                                    <s:property value="techmsg"/>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <s:iterator value="TechnicalList" var="Skil" status="stat">
+                                                            <tr>
+                                                                <td valign="top"><s:property value="#stat.count"/></td>
+                                                                <td><s:property value="skills"/></td>
+                                                                <td><a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/></a></td>
+                                                            </tr>
+                                                        </s:iterator></table>
+                                                </fieldset>
+                                                <fieldset class="w400p mar0a">
+                                                    <legend class="fbld">Other Skills Set</legend> 
+                                                    <table width="70%" class="mar0a" cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td colspan="2">
+                                                                <div class="w50 mar0a tc fbld fcgreen">
+                                                                    <s:property value="othmsg"/>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <s:iterator value="OtherList" var="Skil" status="stat">
+                                                            <tr>
+                                                                <td valign="top"><s:property value="#stat.count"/></td>
+                                                                <td><s:property value="skills"/></td>
+                                                                <td><a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record ?')"> <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/> </a>
+                                                                </td>
+                                                            </tr>               
+                                                        </s:iterator>
+                                                    </table>    </fieldset>
 
-        <div id="container">
-            <div class="wrapper">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Right box End Here-->
+                        </div>
 
-                <jsp:include page="../Left-Nevigation.jsp"/>
-                <div id="col2">
-                    <h3>My Skills Set</h3>
-
-                    <br/><br/>
-                    <s:form action="AddSkill" method="post" namespace="/MyProfile" name="SkillForm" onsubmit="return validatePlanForm()">
-                        <table align="center" width="75%" cellpadding="4" border="0" cellspacing="0">
-                            <tr><td>Skill Type:</td>
-                                <td>
-                                    <select name="type">
-                                        <option value="#">Select Skill Type</option>
-                                        <option value="Personal">Personal Skills Set</option>
-                                        <option value="Academic">Academic  Skills Set</option>
-                                        <option value="Technical">Technical  Skills Set</option>
-                                        <option value="Others">Others  Skills Set</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <s:textfield name="skills" cssClass="width250" label="Skill" />      
-                        </table>
-                        <s:submit cssClass="floatL buttonsMiddle" value="Add Skill" />
-                        <s:reset cssClass="floatL" value="Cancel" onClick="history.go(-1);" />
-                    </s:form>
-                    <br/><br/><br/>
-                    <div>
-                        <p><strong>Academic Skills Set</strong></p>
-                        <ol class="default1">
-                            <s:iterator value="AcademicList" var="Skil">  
-                                <li>
-                                    <span style="float:right; width:40px;"> 
-                                        <a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record')">
-                                            <img src="../icons/delete.gif" title="Delete Record"/>
-                                        </a>
-                                    </span>
-
-                                    <s:property value="skills"/>
-                                </li>
-                            </s:iterator>
-                        </ol>
-                        <p><strong>Technical Skills Set</strong></p>
-                        <ol class="default1">
-                            <s:iterator value="TechnicalList" var="Skil">  
-                                <li>
-                                    <span style="float:right; width:40px;"> 
-                                        <a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record')">
-                                            <img src="../icons/delete.gif" title="Delete Record"/>
-                                        </a>
-                                    </span>
-
-                                    <s:property value="skills"/>
-                                </li>
-                            </s:iterator>
-                        </ol>
-                        <p><strong>Personal Skills Set</strong></p>
-                        <ol class="default1">
-                            <s:iterator value="PersonalList" var="Skil">  
-                                <li>
-                                    <span style="float:right; width:40px;"> 
-                                        <a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record')">
-                                            <img src="../icons/delete.gif" title="Delete Record"/>
-                                        </a>
-                                    </span>
-
-                                    <s:property value="skills"/>
-                                </li>
-                            </s:iterator>
-                        </ol>
-                        <p><strong>Other Skills Set</strong></p>
-                        <ol class="default1">
-                            <s:iterator value="OtherList" var="Skil">  
-                                <li>
-                                    <span style="float:right; width:40px;"> 
-                                        <a href="deleteSkill?skillId=<s:property value="skillId"/>" onclick="return confirm('Are you sure you want to delete this record')">
-                                            <img src="../icons/delete.gif" title="Delete Record"/>
-                                        </a>
-                                    </span>
-
-                                    <s:property value="skills"/>
-                                </li>
-                            </s:iterator>
-                        </ol>
                     </div>
-
+                    <!--Middle Section Ends Here-->
                 </div>
-                <jsp:include page="../Right-Nevigation.jsp"/>
-                <div class="clear"></div>
             </div>
         </div>
-        <jsp:include page="../Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>
+        <script type="text/javascript">
+            var frmvalidator  = new Validator("SkillForm");
+            frmvalidator.addValidation("type","dontselect=-1","Please enter your Skills Set Type");
+    
+            frmvalidator.addValidation("skills","req","Please enter Skill");
+            frmvalidator.addValidation("skills","maxlen=50", "Max length is 50");
+            frmvalidator.addValidation("skills","alpha_s","Alphabetic chars only");
+  
+        </script>
     </body>
 </html>

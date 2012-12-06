@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 19, 2012 1:12:30 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Vistingcard" table="vistingcard" catalog="eportfolio">
+        <id name="visitcardId" type="java.lang.Integer">
+            <column name="visitcard_id" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="70" />
+        </property>
+        <property name="displayName" type="string">
+            <column name="display_name" length="70" />
+        </property>
+        <property name="designation" type="string">
+            <column name="designation" length="45" />
+        </property>
+        <property name="company" type="string">
+            <column name="company" length="100" />
+        </property>
+        <property name="mobile" type="java.lang.Long">
+            <column name="mobile" />
+        </property>
+        <property name="officePh" type="java.lang.Long">
+            <column name="office_ph" />
+        </property>
+        <property name="fax" type="java.lang.Integer">
+            <column name="fax" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="60" />
+        </property>
+        <property name="websiteOff" type="string">
+            <column name="website_off" length="80" />
+        </property>
+        <property name="websitePer" type="string">
+            <column name="website_per" length="80" />
+        </property>
+    </class>
+</hibernate-mapping>

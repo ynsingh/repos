@@ -1,0 +1,4 @@
+Cerate ePortfolio Folder in /home/user/
+Place user.png file in /home/user/ePortfolio/
+Place the brihaspati3-remote-access.properties, dei-remote-access.properties and remote-user.txt into /home/user/remote_auth/
+

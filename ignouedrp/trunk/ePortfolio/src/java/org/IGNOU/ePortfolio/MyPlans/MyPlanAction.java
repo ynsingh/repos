@@ -1,8 +1,6 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -36,66 +34,86 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
 package org.IGNOU.ePortfolio.MyPlans;
 
-import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyPlans.Dao.PlanTaskDAO;
-import org.IGNOU.ePortfolio.MyPlans.Model.MyPlanList;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.PlanTaskDAO;
+import org.IGNOU.ePortfolio.Model.UserPlan;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  */
 public class MyPlanAction extends ActionSupport {
 
-    private static final long serialVersionUID = 1L;
-    private MyPlanList myplanlist;
+    private String user_id = new UserSession().getUserInSession();
+    private UserPlan myplanlist;
     private PlanTaskDAO dao = new PlanTaskDAO();
-    private List<MyPlanList> planlist;
-    private List<MyPlanList> editPlanList;
-    private Long plan_id;
-    private String p_title;
-    private String p_description;
-    
-    private String user_id=new UserSession().getUserInSession();
+    private List<UserPlan> planlist;
+    private List<UserPlan> editPlanList;
+    private long planId;
+    private String PTitle;
+    private String PDescription;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     @Override
     public String execute() {
-        planlist = dao.Planlist(user_id);
+        planlist = dao.Planlist(getUser_id());
         return SUCCESS;
     }
 
     /**
      * editPlan This is the function to call DAO to show editable Plan details.
      * Added on 23/08/2011
-     * @author Vinay
+     *
+     * @author IGNOU Team
      */
     public String editPlan() {
-        editPlanList = dao.EditPlanlist(plan_id);
+        setEditPlanList(getDao().EditPlanlist(planId));
         return SUCCESS;
     }
 
     public String UpdatePlan() throws Exception {
-        dao.UpdatePlanInfo(plan_id, p_title, p_description);
+        getDao().UpdatePlanInfo(planId, user_id, PTitle, PDescription);
+        msg = infoUpdated;
         return SUCCESS;
     }
 
-    public String DeletePlan() {
-        dao.DeletePlan(plan_id);
+    public String DeletePlan() throws Exception {
+        getDao().DeletePlan(planId);
+        msg = infoDeleted;
         return SUCCESS;
     }
 
-    public MyPlanList getMyplanlist() {
+    /**
+     * @return the user_id
+     */
+    public String getUser_id() {
+        return user_id;
+    }
+
+    /**
+     * @param user_id the user_id to set
+     */
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    /**
+     * @return the myplanlist
+     */
+    public UserPlan getMyplanlist() {
         return myplanlist;
     }
 
     /**
      * @param myplanlist the myplanlist to set
      */
-    public void setMyplanlist(MyPlanList myplanlist) {
+    public void setMyplanlist(UserPlan myplanlist) {
         this.myplanlist = myplanlist;
     }
 
@@ -116,81 +134,112 @@ public class MyPlanAction extends ActionSupport {
     /**
      * @return the planlist
      */
-    public List<MyPlanList> getPlanlist() {
+    public List<UserPlan> getPlanlist() {
         return planlist;
     }
 
     /**
      * @param planlist the planlist to set
      */
-    public void setPlanlist(List<MyPlanList> planlist) {
+    public void setPlanlist(List<UserPlan> planlist) {
         this.planlist = planlist;
     }
 
     /**
      * @return the editPlanList
      */
-    public List<MyPlanList> getEditPlanList() {
+    public List<UserPlan> getEditPlanList() {
         return editPlanList;
     }
 
     /**
      * @param editPlanList the editPlanList to set
      */
-    public void setEditPlanList(List<MyPlanList> editPlanList) {
+    public void setEditPlanList(List<UserPlan> editPlanList) {
         this.editPlanList = editPlanList;
     }
 
     /**
-     * @return the p_title
+     * @return the msg
      */
-    public String getP_title() {
-        return p_title;
+    public String getMsg() {
+        return msg;
     }
 
     /**
-     * @param p_title the p_title to set
+     * @param msg the msg to set
      */
-    public void setP_title(String p_title) {
-        this.p_title = p_title;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     /**
-     * @return the p_description
+     * @return the planId
      */
-    public String getP_description() {
-        return p_description;
+    public long getPlanId() {
+        return planId;
     }
 
     /**
-     * @param p_description the p_description to set
+     * @param planId the planId to set
      */
-    public void setP_description(String p_description) {
-        this.p_description = p_description;
-    }
-
-    public Long getPlan_id() {
-        return plan_id;
+    public void setPlanId(long planId) {
+        this.planId = planId;
     }
 
     /**
-     * @param plan_id the plan_id to set
+     * @return the PTitle
      */
-    public void setPlan_id(Long plan_id) {
-        this.plan_id = plan_id;
+    public String getPTitle() {
+        return PTitle;
     }
 
     /**
-     * @return the user_id
+     * @param PTitle the PTitle to set
      */
-    public String getUser_id() {
-        return user_id;
+    public void setPTitle(String PTitle) {
+        this.PTitle = PTitle;
     }
 
     /**
-     * @param user_id the user_id to set
+     * @return the PDescription
      */
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public String getPDescription() {
+        return PDescription;
+    }
+
+    /**
+     * @param PDescription the PDescription to set
+     */
+    public void setPDescription(String PDescription) {
+        this.PDescription = PDescription;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the infoUpdated
+     */
+    public String getInfoUpdated() {
+        return infoUpdated;
+    }
+
+    /**
+     * @param infoUpdated the infoUpdated to set
+     */
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

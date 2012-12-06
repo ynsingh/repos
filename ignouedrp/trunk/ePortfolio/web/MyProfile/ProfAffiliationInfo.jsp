@@ -1,99 +1,134 @@
 <%-- 
     Document   : ProfAffiliationInfo
     Created on : Oct 14, 2011, 11:08:40 AM
-Author     : Vinay
+Author     : IGNOU Team
 Version      : 1
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="sj" uri="/struts-jquery-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>My Professional Affiliation</title>
-        <script type="text/javascript" src="<s:url value="/JS/jquery-latest.js"/>"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#accordion > li > div").click(function(){
- 
-                    if(false == $(this).next().is(':visible')) {
-                        $('#accordion ul').slideUp(300);
-                    }
-                    $(this).next().slideToggle(300);
-                });
- 
-                $('#accordion ul:eq(0)').show();
-
+        <title>Professional Affiliation</title>
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
+        <sj:head />
+        <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
+        <script>
+            $(function() {
+                $( "#accordion" ).accordion();
             });
         </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('fieldset.jcalendar').jcalendar();
-            });
-        </script>
-        <script src="<s:url value="/JS/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-        <script src="<s:url value="/JS/jcalendar-source.js"/>" type="text/javascript"></script>
-        <link href="<s:url value="/JS/jcalendar.css"/>" rel="stylesheet" type="text/css" />
-        <link href="theme1/style.css" rel="stylesheet" type="text/css" />
     </head>
-    <body><%        
-           if (session.getAttribute("user_id") == null) {
-                pageContext.forward("../login.jsp");
+    <body>
+        <%
+            if (session.getAttribute("user_id") == null) {
+                response.sendRedirect("../Login.jsp");
             }
-                   
         %>
-        <jsp:include page="../Header.jsp"/>
-        <div id="container">
-            <div class="wrapper">
-                <jsp:include page="../Left-Nevigation.jsp"/>
-                <div id="col2">
-                    <h3>My Professional Affiliation</h3>
+        <div class="w100 fl-l">
+            <div class="w990p mar0a">
+                <!--Header Starts Here-->
+                <s:include  value="/Header.jsp"/>
+                <!--Header Ends Here-->
 
-                    <a href="<s:url value="ProfAffiliationInfoAdd.jsp"/>">
-                        <img src="<s:url value="/icons/add.gif"/>" align="right" title="Add Professional Affiliation"/>
-                    </a>
-                    <table width="100%" class="defaulttab1" cellpadding="0" cellspacing="0">
-                        <tr>
-                            <th>Role</th>
-                            <th>Organization/Body</th>
-                            <th width="200">Duration</th>
-                            <th>Place</th>
-                            <th>Country</th>
-                            <th  width="250">Summary</th>
-                            <th>Edit,&nbsp;Delete</th>                                                        
-                        </tr>
-                        <s:iterator value="AffiliationList" var="ProfAffili">
-                            <tr>  
-                                <td>
-                                    <s:property value="role"/>
-                                </td><td>
-                                    <s:property value="orgBody"/>
-                                </td><td>
-                                    <s:property value="vfrom"/>-<s:property value="vupto"/>
-                                </td><td>
-                                    <s:property value="place"/>
-                                </td><td>
-                                    <s:property value="country"/>
-                                </td><td>
-                                    <s:property value="summary"/>
-                                </td>
-                                <td valign="middle" style="vertical-align:middle;" align="center">
-                                    <a href="editAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>">
-                                        <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/>
-                                    </a>&nbsp;&nbsp;
-                                    <a href="deleteAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>" onclick="return confirm('Are you sure you want to delete this record')">
-                                        <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/>
-                                    </a></td>                                                        
-                            </tr>
-                        </s:iterator>
-                    </table>
-                    <br/><br/><br/><br/>
+                <!--Middle Section Starts Here-->
+                <div class="w100 fl-l">
+                    <div class="middle_bg">
+                        <!--Left box Starts Here-->
+                        <s:include value="/Left-Nevigation.jsp"/> 
+                        <!--Left box Ends Here-->
+
+                        <!--Right box Starts Here-->
+                        <div class="right_box">
+                            <div class="my_account_bg">Professional Affiliation</div>
+                            <div class="v_gallery">
+                                <div class="w100 fl-l mart10">
+                                    <div class="bradcum">  
+                                        <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyPortfolio.jsp"/>">My Portfolio</a>&nbsp;>&nbsp;<a href="<s:url value="/MyProfile/MyProfile.jsp"/>">My Profile</a> > Professional Affiliation
+                                    </div>
+                                    <div class="w100 fl-l mart10">
+                                        <div class="w98 mar0a tr">
+                                            <a href="ProfAffiliationInfoAdd.jsp">
+                                                <img src=" <s:url value="/icons/add.gif"/>" title="Add Qualification"/>
+                                            </a>
+                                        </div>
+                                        <div class="w100 fl-l tc fbld fcgreen"><s:property value="msg"/></div>
+                                        <div class="w100 fl-l mart5">
+                                            <table width="98%" class="mar0a" cellpadding="4" border="1" cellspacing="0"> 
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Role</th>
+                                                    <th>Organization/Body</th>
+                                                    <th >Duration</th>
+                                                    <th>Place</th>
+                                                    <th>Country</th>
+                                                    <th >Summary</th>
+                                                    <th>Edit</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                                <s:iterator value="AffiliationList" var="ProfAffili" status="stat">
+                                                    <tr>  
+                                                        <td align="center"><s:property value="%{#stat.count}"/></td>
+                                                        <td>
+                                                            <s:property value="role"/>
+                                                        </td><td>
+                                                            <s:property value="orgBody"/>
+                                                        </td><td>
+                                                            <s:property value="vfrom"/>&nbsp;-&nbsp;<s:property value="vupto"/>
+                                                        </td><td>
+                                                            <s:property value="place"/>
+                                                        </td><td>
+                                                            <s:property value="country"/>
+                                                        </td><td>
+                                                            <s:generator separator=" " val="%{summary}" count="8">
+                                                                <s:iterator >
+                                                                    <s:property/>
+                                                                </s:iterator>
+                                                            </s:generator>
+                                                            <sj:dialog  id="%{#stat.count}" 
+                                                                        autoOpen="false" 
+                                                                        modal="true" 
+                                                                        width="300"
+                                                                        height="175"
+                                                                        >
+                                                                <s:property value="summary" escape="false"/>
+                                                            </sj:dialog>
+                                                            <sj:a 
+                                                                openDialog="%{#stat.count}" 
+                                                                button="false"
+                                                                cssClass="cursor"
+                                                                >
+                                                                more...
+                                                            </sj:a>
+                                                            </td>
+                                                        <td valign="middle" style="vertical-align:middle;" align="center">
+                                                            <a href="editAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>">
+                                                                <img src="<s:url value="/icons/edit.gif"/>" title="Edit Record"/>
+                                                            </a></td>
+                                                        <td><a href="deleteAffiliationInfo?proAffiliationId=<s:property value="proAffiliationId"/>" onclick="return confirm('Are you sure you want to delete this record')">
+                                                                <img src="<s:url value="/icons/delete.gif"/>" title="Delete Record"/>
+                                                            </a></td>                                                        
+                                                    </tr>
+                                                </s:iterator>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Right box End Here-->
+                        </div>
+
+                    </div>
+                    <!--Middle Section Ends Here-->
                 </div>
-                <jsp:include page="../Right-Nevigation.jsp"/>
-                <div class="clear"></div>
             </div>
         </div>
-        <jsp:include page="../Footer.jsp"/>
+        <s:include value="/Footer.jsp"/>  
     </body>
 </html>

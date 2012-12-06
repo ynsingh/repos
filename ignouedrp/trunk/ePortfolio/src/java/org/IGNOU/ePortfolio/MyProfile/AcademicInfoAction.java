@@ -32,45 +32,66 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
-import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.AddInfoDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileAcademic;
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.ModelDriven;
+import java.util.List;
+import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.AddInfoDao;
+import org.IGNOU.ePortfolio.Model.ProfileAcademic;
 
 /**
- * Created on 09-Sep-2011
- * Edited on 12-Sep-2011
- * @author Vinay
+ * Created on 09-Sep-2011 Edited on 12-Sep-2011
+ *
+ * @author IGNOU Team
  */
-public class AcademicInfoAction extends ActionSupport implements ModelDriven<Object> {
+public class AcademicInfoAction extends ActionSupport {
 
-    private static final long serialVersionUID = 1L;
     private String user_id = new UserSession().getUserInSession();
-    private ProfileAcademic PAM = new ProfileAcademic();    
+    private ProfileAcademic PAM = new ProfileAcademic();
     private AddInfoDao dao = new AddInfoDao();
+    private List<String> degree;
+    private List<String> university;
+    private List<String> location;
+    private List<String> fstudy;
+    private List<String> pyear;
+    private List<Integer> percent;
+    private List<String> division;
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
+
+    public AcademicInfoAction(List<String> degree, List<String> university, List<String> location, List<String> fstudy, List<String> pyear, List<Integer> percent, List<String> division) {
+        this.degree = degree;
+        this.university = university;
+        this.location = location;
+        this.fstudy = fstudy;
+        this.pyear = pyear;
+        this.percent = percent;
+        this.division = division;
+    }
 
     public AcademicInfoAction() {
     }
 
-    /**
-     * 
-     * @return Model(AcademicInfoModel)
-     */
-    @Override
-    public Object getModel() {
-        getPAM().setUserId(user_id);
-        return getPAM();
-    }
-
     @Override
     public String execute() {
-        dao.saveInfo(getPAM());
+        dao.saveInfo(user_id, degree, university, location, fstudy, pyear, percent, division);
+        msg = infoSaved;
         return SUCCESS;
+    }
+
+    /**
+     * @return the user_id
+     */
+    public String getUser_id() {
+        return user_id;
+    }
+
+    /**
+     * @param user_id the user_id to set
+     */
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     /**
@@ -85,5 +106,145 @@ public class AcademicInfoAction extends ActionSupport implements ModelDriven<Obj
      */
     public void setPAM(ProfileAcademic PAM) {
         this.PAM = PAM;
+    }
+
+    /**
+     * @return the dao
+     */
+    public AddInfoDao getDao() {
+        return dao;
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(AddInfoDao dao) {
+        this.dao = dao;
+    }
+
+    /**
+     * @return the degree
+     */
+    public List<String> getDegree() {
+        return degree;
+    }
+
+    /**
+     * @param degree the degree to set
+     */
+    public void setDegree(List<String> degree) {
+        this.degree = degree;
+    }
+
+    /**
+     * @return the university
+     */
+    public List<String> getUniversity() {
+        return university;
+    }
+
+    /**
+     * @param university the university to set
+     */
+    public void setUniversity(List<String> university) {
+        this.university = university;
+    }
+
+    /**
+     * @return the location
+     */
+    public List<String> getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(List<String> location) {
+        this.location = location;
+    }
+
+    /**
+     * @return the fstudy
+     */
+    public List<String> getFstudy() {
+        return fstudy;
+    }
+
+    /**
+     * @param fstudy the fstudy to set
+     */
+    public void setFstudy(List<String> fstudy) {
+        this.fstudy = fstudy;
+    }
+
+    /**
+     * @return the pyear
+     */
+    public List<String> getPyear() {
+        return pyear;
+    }
+
+    /**
+     * @param pyear the pyear to set
+     */
+    public void setPyear(List<String> pyear) {
+        this.pyear = pyear;
+    }
+
+    /**
+     * @return the percent
+     */
+    public List<Integer> getPercent() {
+        return percent;
+    }
+
+    /**
+     * @param percent the percent to set
+     */
+    public void setPercent(List<Integer> percent) {
+        this.percent = percent;
+    }
+
+    /**
+     * @return the division
+     */
+    public List<String> getDivision() {
+        return division;
+    }
+
+    /**
+     * @param division the division to set
+     */
+    public void setDivision(List<String> division) {
+        this.division = division;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

@@ -32,22 +32,19 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.AddInfoDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileCertification;
+import org.IGNOU.ePortfolio.DAO.AddInfoDao;
+import org.IGNOU.ePortfolio.Model.ProfileCertification;
 
 /**
  * @version 1.1
- * @since 11-Oct-2011 
- * @author Vinay
- * Modified by Vinay on 14-Oct2011.
- * XML Validation are implemented.
+ * @since 11-Oct-2011
+ * @author IGNOU Team Modified by IGNOU Team on 14-Oct2011. XML Validation are
+ * implemented.
  */
 public class CertificationAddAction extends ActionSupport implements ModelDriven<Object> {
 
@@ -60,6 +57,8 @@ public class CertificationAddAction extends ActionSupport implements ModelDriven
     private String license;
     private String certificationDate;
     private String validDate;
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public CertificationAddAction() {
     }
@@ -67,6 +66,7 @@ public class CertificationAddAction extends ActionSupport implements ModelDriven
     @Override
     public String execute() throws Exception {
         dao.saveCertificationInfo(pc);
+        msg = infoSaved;
         return SUCCESS;
     }
 
@@ -158,5 +158,33 @@ public class CertificationAddAction extends ActionSupport implements ModelDriven
      */
     public void setValidDate(String validDate) {
         this.validDate = validDate;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

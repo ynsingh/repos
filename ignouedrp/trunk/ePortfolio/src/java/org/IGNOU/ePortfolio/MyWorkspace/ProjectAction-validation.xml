@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
 <!-- Generated Oct 20, 2011 10:01:47 AM by Hibernate Tools 3.2.1.GA
-Auther : Vinay
+Auther : IGNOU Team
 Version :2
-Modified on 02-November 2011 by Vinay
+Modified on 02-November 2011 by IGNOU Team
 -->
- 
 <validators>
+
     <field name="proName">
         <field-validator type="requiredstring">
             <message key="Please Enter a Project Title" />

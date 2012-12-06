@@ -1,7 +1,7 @@
 <%-- 
     Document   : pagenotfound
     Created on : Aug 26, 2011, 3:05:29 PM
-Author     : Vinay
+Author     : IGNOU Team
 Version      : 1
     Version: 1
 --%>
@@ -12,11 +12,12 @@ Version      : 1
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+   
     </head>
     <body>
         <%        
            if (session.getAttribute("user_id") == null) {
-                pageContext.forward("../login.jsp");
+                response.sendRedirect("../Login.jsp");
             }
                    
         %>

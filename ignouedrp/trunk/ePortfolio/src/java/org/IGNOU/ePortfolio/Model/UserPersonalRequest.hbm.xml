@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 29, 2012 1:31:39 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.UserPersonalRequest" table="user_personal_request" catalog="eportfolio">
+        <id name="requestId" type="java.lang.Integer">
+            <column name="request_id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="user" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" cascade="merge" lazy="false">
+            <column name="requestor_id" length="100" />
+        </many-to-one>
+        <property name="requestType" type="string">
+            <column name="request_type" length="100" />
+        </property>
+        <property name="reason" type="string">
+            <column name="reason" length="65535" />
+        </property>
+        <property name="newRecord" type="string">
+            <column name="new_record" length="65535" />
+        </property>
+        <property name="requestDate" type="date">
+            <column name="request_date" length="10" />
+        </property>
+        <property name="updatedDate" type="date">
+            <column name="Updated_date" length="10" />
+        </property>
+        <property name="recordArchive" type="string">
+            <column name="record_archive" length="65535" />
+        </property>
+        <property name="recordProof" type="string">
+            <column name="record_proof" length="65535" />
+        </property>
+        <property name="status" type="java.lang.Boolean">
+            <column name="status" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,8 +1,8 @@
+package org.IGNOU.ePortfolio.Action;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
+
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -36,26 +36,60 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-
+import java.io.File;
 import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.struts2.ServletActionContext;
 
 /**
  *
- * @author amit
+ * @author IGNOU Team
  */
 @SuppressWarnings("serial")
-public class LogoutAction extends  ActionSupport{
-    
+public class LogoutAction extends ActionSupport {
+
+    HttpServletResponse resp = ServletActionContext.getResponse();
+    final Logger logger = Logger.getLogger(this.getClass());
+
     @Override
-    public String execute() throws Exception{
-    Map session = ActionContext.getContext().getSession();
-    session.remove("user_id");
-    session.remove("logged-in");
-    return SUCCESS;
+    public String execute() throws Exception {
+
+        PropertyConfigurator.configure("log4j.properties");
+        Map session = ActionContext.getContext().getSession();
+        if (session.isEmpty()) {
+            return INPUT;
+        }
+        String picpath = session.get("appPath").toString();
+        String picname = session.get("picname").toString();
+        String user = session.get("user_id").toString();
+        File ecardt = new File(picpath + "/" + user.substring(0, 4) + "Ecard.png");
+        if (ecardt.isFile()) {
+            ecardt.delete();
+        } else {
+
+            logger.warn("Nothing to delete");
+        }
+
+        if (picname.equals("images/user.png")) {
+            System.out.println("Nothing to delete");
+        } else {
+            new File(picpath + picname).delete();
+            session.remove("appPath");
+            session.remove("picname");
+        }
+        session.remove("user_id");
+        session.remove("appPath");
+        session.remove("picname");
+        session.remove("role");
+        session.remove("uName");
+        session.clear();
+
+        logger.warn("user Logged Out with userid   " + user);
+        return SUCCESS;
     }
-   
 }

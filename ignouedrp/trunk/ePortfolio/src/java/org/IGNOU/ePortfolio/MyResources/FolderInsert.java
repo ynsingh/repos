@@ -36,13 +36,12 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-package org.IGNOU.ePortfolio.MyResources
-;
+package org.IGNOU.ePortfolio.MyResources;
 
 import java.io.IOException;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyResources.Dao.FolderInfoDAO;
-import org.IGNOU.ePortfolio.MyResources.Model.FolderModel;
+import org.IGNOU.ePortfolio.DAO.FolderInfoDAO;
+import org.IGNOU.ePortfolio.Model.UserdocsFolder;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import java.text.SimpleDateFormat;
@@ -50,37 +49,32 @@ import java.util.Calendar;
 
 /**
  *
- * @author Amit
- * * @version 1 on 18  aug 2011
+ * @author IGNOU Team
+ * * @version 1 on 18 aug 2011
  */
-public class FolderInsert  extends ActionSupport implements
-        ModelDriven<FolderModel> {
-    private static final long serialVersionUID = 1L;
+public class FolderInsert extends ActionSupport implements ModelDriven<UserdocsFolder> {
 
-   FolderInfoDAO finfodao =new FolderInfoDAO();
-    FolderModel fModel = new FolderModel();
-    private String filepath = "c:/MyResources/UserDocs/";
+    private static final long serialVersionUID = 1L;
+    private String user_id = new UserSession().getUserInSession();
+    private FolderInfoDAO finfodao = new FolderInfoDAO();
+    private UserdocsFolder fModel = new UserdocsFolder();
+    private String filepath = getText("evidenceFilePath") + "/" + user_id + "/";
     private String filetype;
     private String name;
     Calendar c_Date = Calendar.getInstance();
-     SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-     private String filedate = f.format(c_Date.getTime());
-     private String user_id=new UserSession().getUserInSession();
-
-    @Override
-    public String execute() throws Exception {
-        return SUCCESS;
-    }
-
-    
+    SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+    private String filedate = f.format(c_Date.getTime());
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public String folderinsert() throws IOException {
         finfodao.saveInfo(getModel());
-        
+        msg = infoSaved;
         return SUCCESS;
     }
- @Override
-    public FolderModel getModel() {
+
+    @Override
+    public UserdocsFolder getModel() {
         fModel.setUser_id(user_id);
         fModel.setSize(0);
         fModel.setFilepath(getFilepath());
@@ -88,8 +82,7 @@ public class FolderInsert  extends ActionSupport implements
         fModel.setFiledate(filedate);
         return fModel;
     }
-      
-   
+
     /**
      * @return the name
      */
@@ -117,8 +110,6 @@ public class FolderInsert  extends ActionSupport implements
     public void setFiledate(String filedate) {
         this.filedate = filedate;
     }
-
-   
 
     /**
      * @return the filepath
@@ -161,7 +152,32 @@ public class FolderInsert  extends ActionSupport implements
     public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
- 
 
-    
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
+    }
 }

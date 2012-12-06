@@ -32,20 +32,18 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.AddInfoDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileReferences;
+import org.IGNOU.ePortfolio.DAO.AddInfoDao;
+import org.IGNOU.ePortfolio.Model.ProfileReferences;
 
 /**
- * Created on 11-Oct-2011
- * Version 1.1
- * @author Vinay
+ * Created on 11-Oct-2011 Version 1.1
+ *
+ * @author IGNOU Team
  */
 public class ReferenceAddAction extends ActionSupport implements ModelDriven<Object> {
 
@@ -64,6 +62,8 @@ public class ReferenceAddAction extends ActionSupport implements ModelDriven<Obj
     private Long mobileno;
     private String emailId;
     private String website;
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public ReferenceAddAction() {
     }
@@ -71,6 +71,7 @@ public class ReferenceAddAction extends ActionSupport implements ModelDriven<Obj
     @Override
     public String execute() throws Exception {
         dao.SaveReferenceInfo(Ref);
+        msg = infoSaved;
         return SUCCESS;
     }
 
@@ -246,5 +247,33 @@ public class ReferenceAddAction extends ActionSupport implements ModelDriven<Obj
      */
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

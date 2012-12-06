@@ -32,93 +32,74 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
-import org.IGNOU.ePortfolio.MyProfile.Dao.MyProfileDAO;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileAcademic;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileBasic;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileContact;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileEmployment;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfilePersonal;
+import org.IGNOU.ePortfolio.Model.ProfileAcademic;
+import org.IGNOU.ePortfolio.Model.ProfileEmployment;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
+import org.IGNOU.ePortfolio.DAO.MyProfileDAO;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  */
 public class MyProfileAction extends ActionSupport {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * @return the serialVersionUID
+     */
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
     private String user_id = new UserSession().getUserInSession();
     private MyProfileDAO dao = new MyProfileDAO();
-    private ProfileBasic ProfileBasic;
-    private List<ProfileBasic> basicListList;
-    private ProfileContact ProfileContact;
-    private List<ProfileContact> contactListList;
     private ProfileAcademic ProfileAcademic;
     private List<ProfileAcademic> academicListList;
     private List<ProfileAcademic> editAcademicList;
-    private Long academicInfoId;
-    private String degree, university, location, fstudy, pyear, division;
-    private int percentage;
+//    private Long academicInfoId;
+    // private int percentage;
+//    private String degree, university, location, fstudy, pyear, division;
+    /* START 04-04-2012 by IGNOU Team*/
+    private List<Long> academicInfoId;
+    private List<String> degree;
+    private List<String> university;
+    private List<String> location;
+    private List<String> fstudy;
+    private List<String> pyear;
+    private List<Integer> percent;
+    private List<String> division;
+    /*End*/
     //private String university, degree, fstudy, adate, cdate, activities, additionalNote;
     private ProfileEmployment ProfileEmployment;
     private List<ProfileEmployment> employmentListList;
     private List<ProfileEmployment> empListList;
     private long employmentInfoId;
     private String jtitle, orgName, oaddress, ocity, ostate, ocountry, jdate, ldate, description;
-    private ProfilePersonal ProfilePersonal;
-    private List<ProfilePersonal> personalListList;
-    private Long basicInfoId;
     private String userId, fname, mname, lname, gender, dateOfBirth, pbirth, mstatus, aboutMe;
-    private long contactInfoId, htelephone, otelephone, mobile, fax;
-    private Integer pin;
-    private String address1, address2, city, state, country, email1, email2, email3, owebsite, pwebsite;
     private long personalInfo;
-    private String fbook, ftvshow, fmovie, fquote, oinfo;
+    // private String fbook, ftvshow, fmovie, fquote, oinfo;
+    //  private long contactInfoId, htelephone, otelephone, mobile, fax;
+//    private long contactInfoId;
+//    private Long HTelephone;
+//    private Long OTelephone;
+//    private Long mobileNo;
+//    private Long faxNo;
+//    private Integer pin;
+//    private String address1, address2, city, state, country, email1, email2, email3, owebsite, pwebsite;
+    private String msg;
+    private String deleteInfo = getText("msg.infoDeleted");
+    private String updateInfo = getText("msg.infoUpdated");
 
     /*
      * Show and Update Methods begin....
      */
-    public String ShowBasicInfo() {
-        setBasicListList(getDao().BasicList(getUser_id()));
-        if (basicListList.isEmpty()) {
-            // return SUCCESS;
-            return INPUT;
-        } else {
-            //return ERROR;
-            return SUCCESS;
-        }
-    }
-
-    public String UpdateBasicInfo() {
-        dao.UpdateBasic(getBasicInfoId(), getUserId(), getFname(), getMname(), getLname(), getGender(), getDateOfBirth(), getPbirth(), getMstatus(), getAboutMe());
-        return SUCCESS;
-    }
-
-    public String ShowContactInfo() {
-        setContactListList(getDao().ContactList(getUser_id()));
-        if (contactListList.isEmpty()) {
-            // return SUCCESS;
-            return INPUT;
-        } else {
-            //return ERROR;
-            return SUCCESS;
-        }
-    }
-
-    public String UpdateContactInfo() {
-        dao.UpdateContact(getContactInfoId(), getUserId(), getAddress1(), getAddress2(), getCity(), getState(), getCountry(), getPin(), getHtelephone(), getOtelephone(), getMobile(), getFax(), getEmail1(), getEmail2(), getEmail3(), getOwebsite(), getPwebsite());
-        return SUCCESS;
-    }
-
     public String ShowAcademicInfo() {
         setAcademicListList(getDao().AcademicList(getUser_id()));
-        if (academicListList.isEmpty()) {
+        if (getAcademicListList().isEmpty()) {
             // return SUCCESS;
             return INPUT;
         } else {
@@ -128,29 +109,31 @@ public class MyProfileAction extends ActionSupport {
     }
 
     public String EditAcademicInfo() {
-        setEditAcademicList(dao.EditAcademic(getAcademicInfoId()));
+        setEditAcademicList(getDao().EditAcademic(getUser_id()));
         return SUCCESS;
     }
 
     public String UpdateAcademicInfo() {
         //dao.UpdateAcademic(getAcademicInfoId(), getUserId(), getUniversity(), getDegree(), getFstudy(), getAdate(), getCdate(), getActivities(), getAdditionalNote());
-        dao.UpdateAcademic(getAcademicInfoId(), getUserId(), getDegree(), getUniversity(), getLocation(), getFstudy(), getPyear(), getPercentage(), getDivision());
-        return SUCCESS;
-    }
-
-    public String DeleteAcademicInfo() {
-        dao.DeleteAcademicInformation(academicInfoId);
+        /**
+         * Added on 04-04-2012 by IGNOU Team
+         *
+         * @Version 2
+         */
+        getDao().UpdateAcademic(getAcademicInfoId(), getDegree(), getDegree(), getUniversity(), getLocation(), getFstudy(), getPyear(), getPercent(), getDivision());
+        msg = updateInfo;
         return SUCCESS;
     }
 
     /**
      * Created on 13-Sep-2011
-     *@author Vinay
+     *
+     * @author IGNOU Team
      * @return SUCCESS
      */
     public String ShowEmploymentInfo() {
         setEmploymentListList(getDao().EmploymentList(getUser_id()));
-        if (employmentListList.isEmpty()) {
+        if (getEmploymentListList().isEmpty()) {
             // return SUCCESS;
             return INPUT;
         } else {
@@ -161,99 +144,60 @@ public class MyProfileAction extends ActionSupport {
 
     /**
      * Created on 13-Sep-2011
-     *@author Vinay
+     *
+     * @author IGNOU Team
      * @return SUCCESS
-     * @throws Exception  
+     * @throws Exception
      */
     public String EditEmploymentInfo() throws Exception {
-        setEmpListList(dao.empList(getEmploymentInfoId()));
+        setEmpListList(getDao().empList(getEmploymentInfoId()));
         return SUCCESS;
     }
 
     /**
      * Created on 13-Sep-2011
-     *@author Vinay
-     *@return SUCCESS
-     *@throws Exception  
+     *
+     * @author IGNOU Team
+     * @return SUCCESS
+     * @throws Exception
      */
     public String UpdateEmploymentInfo() throws Exception {
-        dao.UpdateEmp(getEmploymentInfoId(), getUserId(), getJtitle(), getOrgName(), getOaddress(), getOcity(), getOstate(), getOcountry(), getJdate(), getLdate(), getDescription());
+        getDao().UpdateEmp(getEmploymentInfoId(), getUserId(), getJtitle(), getOrgName(), getOaddress(), getOcity(), getOstate(), getOcountry(), getJdate(), getLdate(), getDescription());
+        msg = updateInfo;
         return SUCCESS;
     }
 
     /**
      * Created on 13-Sep-2011
-     *@author Vinay
+     *
+     * @author IGNOU Team
      * @return SUCCESS
-     * @throws Exception  
+     * @throws Exception
      */
     public String DeleteEmploymentInfo() throws Exception {
-        dao.DeleteEmpInfo(employmentInfoId);
+        getDao().DeleteEmpInfo(getEmploymentInfoId());
+        msg = deleteInfo;
         return SUCCESS;
     }
-
-    public String ShowPersonalInfo() {
-        setPersonalListList(getDao().PersonalList(getUser_id()));
-        if (personalListList.isEmpty()) {
-            // return SUCCESS;
-            return INPUT;
-        } else {
-            //return ERROR;
-            return SUCCESS;
-        }
-    }
-
-    public String UpdatePersonalInfo() {
-        dao.UpdatePersonal(getPersonalInfo(), getUserId(), getFbook(), getFtvshow(), getFmovie(), getFquote(), getOinfo());
-        return SUCCESS;
-    }
+//
+//    public String ShowContactInfo() {
+//        setContactListList(getCdao().ContactList(getUser_id()));
+//        if (getContactListList().isEmpty()) {
+//            return INPUT;
+//        } else {
+//            return SUCCESS;
+//        }
+//    }
+//
+//    public String UpdateContactInfo() {
+//        getCdao().UpdateContact(getContactInfoId(), getUser_id(), getAddress1(), getAddress2(), getCity(), getState(), getCountry(), getPin(), getHTelephone(), getHTelephone(), getMobileNo(), getFaxNo(), getEmail1(), getEmail2(), getEmail3(), getOwebsite(), getPwebsite());
+//        msg = updateInfo;
+//        return SUCCESS;
+//    }
 
     /*
      * Setter And Getter Methods Begin.....
-     */
-    /**
-     * @return the dao
-     */
-    public MyProfileDAO getDao() {
-        return dao;
-    }
-
-    /**
-     * @param dao the dao to set
-     */
-    public void setDao(MyProfileDAO dao) {
-        this.dao = dao;
-    }
-
-    /**
-     * @return the ProfileBasic
-     */
-    public ProfileBasic getProfileBasic() {
-        return ProfileBasic;
-    }
-
-    /**
-     * @param ProfileBasic the ProfileBasic to set
-     */
-    public void setProfileBasic(ProfileBasic ProfileBasic) {
-        this.ProfileBasic = ProfileBasic;
-    }
-
-    /**
-     * @return the basicListList
-     */
-    public List<ProfileBasic> getBasicListList() {
-        return basicListList;
-    }
-
-    /**
-     * @param basicListList the basicListList to set
-     */
-    public void setBasicListList(List<ProfileBasic> basicListList) {
-        this.basicListList = basicListList;
-    }
-
-    /**
+     *
      * @return the user_id
      */
     public String getUser_id() {
@@ -268,31 +212,17 @@ public class MyProfileAction extends ActionSupport {
     }
 
     /**
-     * @return the ProfileContact
+     * @return the dao
      */
-    public ProfileContact getProfileContact() {
-        return ProfileContact;
+    public MyProfileDAO getDao() {
+        return dao;
     }
 
     /**
-     * @param ProfileContact the ProfileContact to set
+     * @param dao the dao to set
      */
-    public void setProfileContact(ProfileContact ProfileContact) {
-        this.ProfileContact = ProfileContact;
-    }
-
-    /**
-     * @return the contactListList
-     */
-    public List<ProfileContact> getContactListList() {
-        return contactListList;
-    }
-
-    /**
-     * @param contactListList the contactListList to set
-     */
-    public void setContactListList(List<ProfileContact> contactListList) {
-        this.contactListList = contactListList;
+    public void setDao(MyProfileDAO dao) {
+        this.dao = dao;
     }
 
     /**
@@ -324,6 +254,132 @@ public class MyProfileAction extends ActionSupport {
     }
 
     /**
+     * @return the editAcademicList
+     */
+    public List<ProfileAcademic> getEditAcademicList() {
+        return editAcademicList;
+    }
+
+    /**
+     * @param editAcademicList the editAcademicList to set
+     */
+    public void setEditAcademicList(List<ProfileAcademic> editAcademicList) {
+        this.editAcademicList = editAcademicList;
+    }
+
+    /**
+     * @return the academicInfoId
+     */
+    public List<Long> getAcademicInfoId() {
+        return academicInfoId;
+    }
+
+    /**
+     * @param academicInfoId the academicInfoId to set
+     */
+    public void setAcademicInfoId(List<Long> academicInfoId) {
+        this.academicInfoId = academicInfoId;
+    }
+
+    /**
+     * @return the degree
+     */
+    public List<String> getDegree() {
+        return degree;
+    }
+
+    /**
+     * @param degree the degree to set
+     */
+    public void setDegree(List<String> degree) {
+        this.degree = degree;
+    }
+
+    /**
+     * @return the university
+     */
+    public List<String> getUniversity() {
+        return university;
+    }
+
+    /**
+     * @param university the university to set
+     */
+    public void setUniversity(List<String> university) {
+        this.university = university;
+    }
+
+    /**
+     * @return the location
+     */
+    public List<String> getLocation() {
+        return location;
+    }
+
+    /**
+     * @param location the location to set
+     */
+    public void setLocation(List<String> location) {
+        this.location = location;
+    }
+
+    /**
+     * @return the fstudy
+     */
+    public List<String> getFstudy() {
+        return fstudy;
+    }
+
+    /**
+     * @param fstudy the fstudy to set
+     */
+    public void setFstudy(List<String> fstudy) {
+        this.fstudy = fstudy;
+    }
+
+    /**
+     * @return the pyear
+     */
+    public List<String> getPyear() {
+        return pyear;
+    }
+
+    /**
+     * @param pyear the pyear to set
+     */
+    public void setPyear(List<String> pyear) {
+        this.pyear = pyear;
+    }
+
+    /**
+     * @return the percent
+     */
+    public List<Integer> getPercent() {
+        return percent;
+    }
+
+    /**
+     * @param percent the percent to set
+     */
+    public void setPercent(List<Integer> percent) {
+        this.percent = percent;
+    }
+
+    /**
+     * @return the division
+     */
+    public List<String> getDivision() {
+        return division;
+    }
+
+    /**
+     * @param division the division to set
+     */
+    public void setDivision(List<String> division) {
+        this.division = division;
+    }
+
+    /**
      * @return the ProfileEmployment
      */
     public ProfileEmployment getProfileEmployment() {
@@ -350,623 +406,6 @@ public class MyProfileAction extends ActionSupport {
     public void setEmploymentListList(List<ProfileEmployment> employmentListList) {
         this.employmentListList = employmentListList;
     }
-
-    /**
-     * @return the ProfilePersonal
-     */
-    public ProfilePersonal getProfilePersonal() {
-        return ProfilePersonal;
-    }
-
-    /**
-     * @param ProfilePersonal the ProfilePersonal to set
-     */
-    public void setProfilePersonal(ProfilePersonal ProfilePersonal) {
-        this.ProfilePersonal = ProfilePersonal;
-    }
-
-    /**
-     * @return the personalListList
-     */
-    public List<ProfilePersonal> getPersonalListList() {
-        return personalListList;
-    }
-
-    /**
-     * @param personalListList the personalListList to set
-     */
-    public void setPersonalListList(List<ProfilePersonal> personalListList) {
-        this.personalListList = personalListList;
-    }
-
-    /**
-     * @return the basicInfoId
-     */
-    public long getBasicInfo_ID() {
-        return getBasicInfoId();
-    }
-
-    /**
-     * @param basicInfo_ID 
-     */
-    public void setBasicInfo_ID(long basicInfo_ID) {
-        this.setBasicInfoId((Long) basicInfo_ID);
-    }
-
-    public String getAboutMe() {
-        return aboutMe;
-    }
-
-    /**
-     * @param aboutMe the aboutMe to set
-     */
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
-    }
-
-    /**
-     * @return the basicInfoId
-     */
-    public Long getBasicInfoId() {
-        return basicInfoId;
-    }
-
-    /**
-     * @param basicInfoId the basicInfoId to set
-     */
-    public void setBasicInfoId(Long basicInfoId) {
-        this.basicInfoId = basicInfoId;
-    }
-
-    /**
-     * @return the userId
-     */
-    public String getUserId() {
-        return userId;
-    }
-
-    /**
-     * @param userId the userId to set
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * @return the fname
-     */
-    public String getFname() {
-        return fname;
-    }
-
-    /**
-     * @param fname the fname to set
-     */
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    /**
-     * @return the mname
-     */
-    public String getMname() {
-        return mname;
-    }
-
-    /**
-     * @param mname the mname to set
-     */
-    public void setMname(String mname) {
-        this.mname = mname;
-    }
-
-    /**
-     * @return the lname
-     */
-    public String getLname() {
-        return lname;
-    }
-
-    /**
-     * @param lname the lname to set
-     */
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
-
-    /**
-     * @return the gender
-     */
-    public String getGender() {
-        return gender;
-    }
-
-    /**
-     * @param gender the gender to set
-     */
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    /**
-     * @return the dateOfBirth
-     */
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    /**
-     * @param dateOfBirth the dateOfBirth to set
-     */
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    /**
-     * @return the pbirth
-     */
-    public String getPbirth() {
-        return pbirth;
-    }
-
-    /**
-     * @param pbirth the pbirth to set
-     */
-    public void setPbirth(String pbirth) {
-        this.pbirth = pbirth;
-    }
-
-    /**
-     * @return the mstatus
-     */
-    public String getMstatus() {
-        return mstatus;
-    }
-
-    /**
-     * @param mstatus the mstatus to set
-     */
-    public void setMstatus(String mstatus) {
-        this.mstatus = mstatus;
-    }
-
-    /**
-     * @return the contactInfoId
-     */
-    public long getContactInfoId() {
-        return contactInfoId;
-    }
-
-    /**
-     * @param contactInfoId the contactInfoId to set
-     */
-    public void setContactInfoId(long contactInfoId) {
-        this.contactInfoId = contactInfoId;
-    }
-
-    /**
-     * @return the htelephone
-     */
-    public long getHtelephone() {
-        return htelephone;
-    }
-
-    /**
-     * @param htelephone the htelephone to set
-     */
-    public void setHtelephone(long htelephone) {
-        this.htelephone = htelephone;
-    }
-
-    /**
-     * @return the otelephone
-     */
-    public long getOtelephone() {
-        return otelephone;
-    }
-
-    /**
-     * @param otelephone the otelephone to set
-     */
-    public void setOtelephone(long otelephone) {
-        this.otelephone = otelephone;
-    }
-
-    /**
-     * @return the mobile
-     */
-    public long getMobile() {
-        return mobile;
-    }
-
-    /**
-     * @param mobile the mobile to set
-     */
-    public void setMobile(long mobile) {
-        this.mobile = mobile;
-    }
-
-    /**
-     * @return the fax
-     */
-    public long getFax() {
-        return fax;
-    }
-
-    /**
-     * @param fax the fax to set
-     */
-    public void setFax(long fax) {
-        this.fax = fax;
-    }
-
-    /**
-     * @return the pin
-     */
-    public Integer getPin() {
-        return pin;
-    }
-
-    /**
-     * @param pin the pin to set
-     */
-    public void setPin(Integer pin) {
-        this.pin = pin;
-    }
-
-    /**
-     * @return the address1
-     */
-    public String getAddress1() {
-        return address1;
-    }
-
-    /**
-     * @param address1 the address1 to set
-     */
-    public void setAddress1(String address1) {
-        this.address1 = address1;
-    }
-
-    /**
-     * @return the address2
-     */
-    public String getAddress2() {
-        return address2;
-    }
-
-    /**
-     * @param address2 the address2 to set
-     */
-    public void setAddress2(String address2) {
-        this.address2 = address2;
-    }
-
-    /**
-     * @return the city
-     */
-    public String getCity() {
-        return city;
-    }
-
-    /**
-     * @param city the city to set
-     */
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    /**
-     * @return the state
-     */
-    public String getState() {
-        return state;
-    }
-
-    /**
-     * @param state the state to set
-     */
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    /**
-     * @return the country
-     */
-    public String getCountry() {
-        return country;
-    }
-
-    /**
-     * @param country the country to set
-     */
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    /**
-     * @return the email1
-     */
-    public String getEmail1() {
-        return email1;
-    }
-
-    /**
-     * @param email1 the email1 to set
-     */
-    public void setEmail1(String email1) {
-        this.email1 = email1;
-    }
-
-    /**
-     * @return the email2
-     */
-    public String getEmail2() {
-        return email2;
-    }
-
-    /**
-     * @param email2 the email2 to set
-     */
-    public void setEmail2(String email2) {
-        this.email2 = email2;
-    }
-
-    /**
-     * @return the email3
-     */
-    public String getEmail3() {
-        return email3;
-    }
-
-    /**
-     * @param email3 the email3 to set
-     */
-    public void setEmail3(String email3) {
-        this.email3 = email3;
-    }
-
-    /**
-     * @return the owebsite
-     */
-    public String getOwebsite() {
-        return owebsite;
-    }
-
-    /**
-     * @param owebsite the owebsite to set
-     */
-    public void setOwebsite(String owebsite) {
-        this.owebsite = owebsite;
-    }
-
-    /**
-     * @return the pwebsite
-     */
-    public String getPwebsite() {
-        return pwebsite;
-    }
-
-    /**
-     * @param pwebsite the pwebsite to set
-     */
-    public void setPwebsite(String pwebsite) {
-        this.pwebsite = pwebsite;
-    }
-
-    /**
-     * @return the personalInfo
-     */
-    public long getPersonalInfo() {
-        return personalInfo;
-    }
-
-    /**
-     * @param personalInfo the personalInfo to set
-     */
-    public void setPersonalInfo(long personalInfo) {
-        this.personalInfo = personalInfo;
-    }
-
-    /**
-     * @return the fbook
-     */
-    public String getFbook() {
-        return fbook;
-    }
-
-    /**
-     * @param fbook the fbook to set
-     */
-    public void setFbook(String fbook) {
-        this.fbook = fbook;
-    }
-
-    /**
-     * @return the ftvshow
-     */
-    public String getFtvshow() {
-        return ftvshow;
-    }
-
-    /**
-     * @param ftvshow the ftvshow to set
-     */
-    public void setFtvshow(String ftvshow) {
-        this.ftvshow = ftvshow;
-    }
-
-    /**
-     * @return the fmovie
-     */
-    public String getFmovie() {
-        return fmovie;
-    }
-
-    /**
-     * @param fmovie the fmovie to set
-     */
-    public void setFmovie(String fmovie) {
-        this.fmovie = fmovie;
-    }
-
-    /**
-     * @return the fquote
-     */
-    public String getFquote() {
-        return fquote;
-    }
-
-    /**
-     * @param fquote the fquote to set
-     */
-    public void setFquote(String fquote) {
-        this.fquote = fquote;
-    }
-
-    /**
-     * @return the oinfo
-     */
-    public String getOinfo() {
-        return oinfo;
-    }
-
-    /**
-     * @param oinfo the oinfo to set
-     */
-    public void setOinfo(String oinfo) {
-        this.oinfo = oinfo;
-    }
-
-    /**
-     * Setter & Getter Methods of Academic is Begin...
-     * @return the academicInfoId
-     */
-    public Long getAcademicInfoId() {
-        return academicInfoId;
-    }
-
-    /**
-     * @param academicInfoId the academicInfoId to set
-     */
-    public void setAcademicInfoId(Long academicInfoId) {
-        this.academicInfoId = academicInfoId;
-    }
-
-    /**
-     * @return the editAcademicList
-     */
-    public List<ProfileAcademic> getEditAcademicList() {
-        return editAcademicList;
-    }
-
-    /**
-     * @param editAcademicList the editAcademicList to set
-     */
-    public void setEditAcademicList(List<ProfileAcademic> editAcademicList) {
-        this.editAcademicList = editAcademicList;
-    }
-
-    /**
-     * @return the university
-     */
-    public String getUniversity() {
-        return university;
-    }
-
-    /**
-     * @param university the university to set
-     */
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-
-    /**
-     * @return the degree
-     */
-    public String getDegree() {
-        return degree;
-    }
-
-    /**
-     * @param degree the degree to set
-     */
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-    /**
-     * @return the fstudy
-     */
-    public String getFstudy() {
-        return fstudy;
-    }
-
-    /**
-     * @param fstudy the fstudy to set
-     */
-    public void setFstudy(String fstudy) {
-        this.fstudy = fstudy;
-    }
-
-    /**
-     * @return the location
-     */
-    public String getLocation() {
-        return location;
-    }
-
-    /**
-     * @param location the location to set
-     */
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    /**
-     * @return the pyear
-     */
-    public String getPyear() {
-        return pyear;
-    }
-
-    /**
-     * @param pyear the pyear to set
-     */
-    public void setPyear(String pyear) {
-        this.pyear = pyear;
-    }
-
-    /**
-     * @return the division
-     */
-    public String getDivision() {
-        return division;
-    }
-
-    /**
-     * @param division the division to set
-     */
-    public void setDivision(String division) {
-        this.division = division;
-    }
-
-    /**
-     * @return the percentage
-     */
-    public int getPercentage() {
-        return percentage;
-    }
-
-    /**
-     * @param percentage the percentage to set
-     */
-    public void setPercentage(int percentage) {
-        this.percentage = percentage;
-    }
-    /*
-     * Profile Academic Setter & Getter Method's End.
-     */
 
     /**
      * @return the empListList
@@ -1121,7 +560,410 @@ public class MyProfileAction extends ActionSupport {
     public void setDescription(String description) {
         this.description = description;
     }
+
     /**
-     *   Social Networking's Setter & Getter Methods End.
+     * @return the userId
      */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * @return the fname
+     */
+    public String getFname() {
+        return fname;
+    }
+
+    /**
+     * @param fname the fname to set
+     */
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    /**
+     * @return the mname
+     */
+    public String getMname() {
+        return mname;
+    }
+
+    /**
+     * @param mname the mname to set
+     */
+    public void setMname(String mname) {
+        this.mname = mname;
+    }
+
+    /**
+     * @return the lname
+     */
+    public String getLname() {
+        return lname;
+    }
+
+    /**
+     * @param lname the lname to set
+     */
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    /**
+     * @return the gender
+     */
+    public String getGender() {
+        return gender;
+    }
+
+    /**
+     * @param gender the gender to set
+     */
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * @return the dateOfBirth
+     */
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    /**
+     * @param dateOfBirth the dateOfBirth to set
+     */
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    /**
+     * @return the pbirth
+     */
+    public String getPbirth() {
+        return pbirth;
+    }
+
+    /**
+     * @param pbirth the pbirth to set
+     */
+    public void setPbirth(String pbirth) {
+        this.pbirth = pbirth;
+    }
+
+    /**
+     * @return the mstatus
+     */
+    public String getMstatus() {
+        return mstatus;
+    }
+
+    /**
+     * @param mstatus the mstatus to set
+     */
+    public void setMstatus(String mstatus) {
+        this.mstatus = mstatus;
+    }
+
+    /**
+     * @return the aboutMe
+     */
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    /**
+     * @param aboutMe the aboutMe to set
+     */
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
+    /**
+     * @return the personalInfo
+     */
+    public long getPersonalInfo() {
+        return personalInfo;
+    }
+
+    /**
+     * @param personalInfo the personalInfo to set
+     */
+    public void setPersonalInfo(long personalInfo) {
+        this.personalInfo = personalInfo;
+    }
+//
+//    /**
+//     * @return the contactInfoId
+//     */
+//    public long getContactInfoId() {
+//        return contactInfoId;
+//    }
+//
+//    /**
+//     * @param contactInfoId the contactInfoId to set
+//     */
+//    public void setContactInfoId(long contactInfoId) {
+//        this.contactInfoId = contactInfoId;
+//    }
+//
+//    /**
+//     * @return the HTelephone
+//     */
+//    public Long getHTelephone() {
+//        return HTelephone;
+//    }
+//
+//    /**
+//     * @param HTelephone the HTelephone to set
+//     */
+//    public void setHTelephone(Long HTelephone) {
+//        this.HTelephone = HTelephone;
+//    }
+//
+//    /**
+//     * @return the OTelephone
+//     */
+//    public Long getOTelephone() {
+//        return OTelephone;
+//    }
+//
+//    /**
+//     * @param OTelephone the OTelephone to set
+//     */
+//    public void setOTelephone(Long OTelephone) {
+//        this.OTelephone = OTelephone;
+//    }
+//
+//    /**
+//     * @return the mobileNo
+//     */
+//    public Long getMobileNo() {
+//        return mobileNo;
+//    }
+//
+//    /**
+//     * @param mobileNo the mobileNo to set
+//     */
+//    public void setMobileNo(Long mobileNo) {
+//        this.mobileNo = mobileNo;
+//    }
+//
+//    /**
+//     * @return the faxNo
+//     */
+//    public Long getFaxNo() {
+//        return faxNo;
+//    }
+//
+//    /**
+//     * @param faxNo the faxNo to set
+//     */
+//    public void setFaxNo(Long faxNo) {
+//        this.faxNo = faxNo;
+//    }
+//
+//    /**
+//     * @return the pin
+//     */
+//    public Integer getPin() {
+//        return pin;
+//    }
+//
+//    /**
+//     * @param pin the pin to set
+//     */
+//    public void setPin(Integer pin) {
+//        this.pin = pin;
+//    }
+//
+//    /**
+//     * @return the address1
+//     */
+//    public String getAddress1() {
+//        return address1;
+//    }
+//
+//    /**
+//     * @param address1 the address1 to set
+//     */
+//    public void setAddress1(String address1) {
+//        this.address1 = address1;
+//    }
+//
+//    /**
+//     * @return the address2
+//     */
+//    public String getAddress2() {
+//        return address2;
+//    }
+//
+//    /**
+//     * @param address2 the address2 to set
+//     */
+//    public void setAddress2(String address2) {
+//        this.address2 = address2;
+//    }
+//
+//    /**
+//     * @return the city
+//     */
+//    public String getCity() {
+//        return city;
+//    }
+//
+//    /**
+//     * @param city the city to set
+//     */
+//    public void setCity(String city) {
+//        this.city = city;
+//    }
+//
+//    /**
+//     * @return the state
+//     */
+//    public String getState() {
+//        return state;
+//    }
+//
+//    /**
+//     * @param state the state to set
+//     */
+//    public void setState(String state) {
+//        this.state = state;
+//    }
+//
+//    /**
+//     * @return the country
+//     */
+//    public String getCountry() {
+//        return country;
+//    }
+//
+//    /**
+//     * @param country the country to set
+//     */
+//    public void setCountry(String country) {
+//        this.country = country;
+//    }
+//
+//    /**
+//     * @return the email1
+//     */
+//    public String getEmail1() {
+//        return email1;
+//    }
+//
+//    /**
+//     * @param email1 the email1 to set
+//     */
+//    public void setEmail1(String email1) {
+//        this.email1 = email1;
+//    }
+//
+//    /**
+//     * @return the email2
+//     */
+//    public String getEmail2() {
+//        return email2;
+//    }
+//
+//    /**
+//     * @param email2 the email2 to set
+//     */
+//    public void setEmail2(String email2) {
+//        this.email2 = email2;
+//    }
+//
+//    /**
+//     * @return the email3
+//     */
+//    public String getEmail3() {
+//        return email3;
+//    }
+//
+//    /**
+//     * @param email3 the email3 to set
+//     */
+//    public void setEmail3(String email3) {
+//        this.email3 = email3;
+//    }
+//
+//    /**
+//     * @return the owebsite
+//     */
+//    public String getOwebsite() {
+//        return owebsite;
+//    }
+//
+//    /**
+//     * @param owebsite the owebsite to set
+//     */
+//    public void setOwebsite(String owebsite) {
+//        this.owebsite = owebsite;
+//    }
+//
+//    /**
+//     * @return the pwebsite
+//     */
+//    public String getPwebsite() {
+//        return pwebsite;
+//    }
+//
+//    /**
+//     * @param pwebsite the pwebsite to set
+//     */
+//    public void setPwebsite(String pwebsite) {
+//        this.pwebsite = pwebsite;
+//    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the deleteInfo
+     */
+    public String getDeleteInfo() {
+        return deleteInfo;
+    }
+
+    /**
+     * @param deleteInfo the deleteInfo to set
+     */
+    public void setDeleteInfo(String deleteInfo) {
+        this.deleteInfo = deleteInfo;
+    }
+
+    /**
+     * @return the updateInfo
+     */
+    public String getUpdateInfo() {
+        return updateInfo;
+    }
+
+    /**
+     * @param updateInfo the updateInfo to set
+     */
+    public void setUpdateInfo(String updateInfo) {
+        this.updateInfo = updateInfo;
+    }
 }

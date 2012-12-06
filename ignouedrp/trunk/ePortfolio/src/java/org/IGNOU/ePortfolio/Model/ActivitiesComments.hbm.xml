@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 3, 2012 3:45:21 PM by Hibernate Tools 3.2.1.GA
+@author IGNOU Team
+@version 1
+@since 03-06-2012
+-->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.ActivitiesComments" table="activities_comments" catalog="eportfolio">
+        <id name="commentId" type="long">
+            <column name="comment_id" />
+            <generator class="increment" />
+        </id>
+        <many-to-one name="evidence" class="org.IGNOU.ePortfolio.Model.Evidence" fetch="select" lazy="false" cascade="merge">
+            <column name="activity_id" />
+        </many-to-one>
+        <many-to-one name="userBySubmitorId" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
+            <column name="submitor_id" length="100" />
+        </many-to-one>
+        <many-to-one name="userByCommentorId" class="org.IGNOU.ePortfolio.Model.UserList" fetch="select" lazy="false" cascade="merge">
+            <column name="commentor_id" length="100" />
+        </many-to-one>
+        <many-to-one name="evidenceSubmission" class="org.IGNOU.ePortfolio.Model.EvidenceSubmission" fetch="select" lazy="false" cascade="merge">
+            <column name="activity_submition_id" />
+        </many-to-one>
+        <property name="comment" type="string">
+            <column name="comment" length="65535" />
+        </property>
+        <property name="commentorFilePath" type="string">
+            <column name="commentor_file_path" length="100" />
+        </property>
+        <property name="rating" type="java.lang.Double">
+            <column name="rating" precision="22" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

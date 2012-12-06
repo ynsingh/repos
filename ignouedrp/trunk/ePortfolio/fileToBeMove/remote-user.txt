@@ -1,0 +1,2 @@
+vinay@egyankosh.ac.in;002r8t48;http://202.141.40.215:8080/brihaspati/servlet/brihaspati/template/remPass.vm/lang/english
+ukanjilal@ignou.ac.in;h28ldp64;http://202.141.40.215:8080/brihaspati/servlet/brihaspati/template/remPass.vm/lang/english

@@ -1,7 +1,7 @@
 <!--
     Document   : SocialAddAction-validation.xml
     Created on : October 14, 2011, 03:12 PM
-    Author     : Vinay
+    Author     : IGNOU Team
     Version    : 1
     Description:
         The Purpose is to validate My Social Connection Form.
@@ -15,7 +15,7 @@
             <message key="Please Enter your gTalk ID" />
         </field-validator>
     </field>
-   
+   <!--
     <field name="skype">
         <field-validator type="requiredstring">
             <message key="Please Enter your Skype ID" />
@@ -42,4 +42,5 @@
             <message key="Please Enter Blog Profile URL" />
         </field-validator>
     </field>
+    -->
 </validators>

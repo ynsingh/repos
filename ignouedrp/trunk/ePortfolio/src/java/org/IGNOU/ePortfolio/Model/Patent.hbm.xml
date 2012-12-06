@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 3, 2012 2:27:31 PM by Hibernate Tools 3.2.1.GA 
+@author IGNOU Team
+@version 1
+ -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Patent" table="patent" catalog="eportfolio">
+        <id name="patentId" type="java.lang.Long">
+            <column name="patentId" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="string">
+            <column name="userId" length="100" />
+        </property>
+        <property name="patentType" type="string">
+            <column name="patentType" length="15" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" length="45" />
+        </property>
+        <property name="patentTitle" type="string">
+            <column name="patentTitle" length="65535" />
+        </property>
+        <property name="assignee" type="string">
+            <column name="assignee" length="65535" />
+        </property>
+        <property name="applNo" type="java.lang.Integer">
+            <column name="appl_No" />
+        </property>
+        <property name="field" type="string">
+            <column name="field" length="25" />
+        </property>
+        <property name="patentDate" type="string">
+            <column name="patentDate" length="25" />
+        </property>
+        <property name="patentNo" type="java.lang.Integer">
+            <column name="patentNo" />
+        </property>
+        <property name="affiliation" type="string">
+            <column name="affiliation" length="100" />
+        </property>
+        <property name="language" type="string">
+            <column name="language" length="100" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="abstract_" type="string">
+            <column name="abstract" length="65535" />
+        </property>
+        <property name="api" type="java.lang.Integer">
+            <column name="api" />
+        </property>
+        <set name="inventors" table="inventor" inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="PatentId" not-null="true" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Inventor" />
+        </set>
+    </class>
+</hibernate-mapping>

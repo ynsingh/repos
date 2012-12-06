@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 27, 2012 12:35:26 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Journal" table="journal" catalog="eportfolio">
+        <id name="journalId" type="long">
+            <column name="journal_id" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="confType" type="string">
+            <column name="conf_type" length="25" />
+        </property>
+        <property name="researchArea" type="string">
+            <column name="research_area" length="65535" />
+        </property>
+        <property name="asssProject" type="string">
+            <column name="asss_project" length="5" />
+        </property>
+        <property name="projectName" type="string">
+            <column name="project_name" length="65535" />
+        </property>
+        <property name="paperTitle" type="string">
+            <column name="paper_title" length="65535" />
+        </property>
+        <property name="noCoauthor" type="java.lang.Integer">
+            <column name="no_coauthor" />
+        </property>
+        <property name="journalName" type="string">
+            <column name="journal_name" length="65535" />
+        </property>
+        <property name="volumeNo" type="java.lang.Integer">
+            <column name="volume_no" />
+        </property>
+        <property name="serialNo" type="java.lang.Integer">
+            <column name="serial_no" />
+        </property>
+        <property name="issnNo" type="string">
+            <column name="issn_no" length="15" />
+        </property>
+        <property name="pfrom" type="java.lang.Integer">
+            <column name="pfrom" />
+        </property>
+        <property name="pto" type="java.lang.Integer">
+            <column name="pto" />
+        </property>
+        <property name="date" type="string">
+            <column name="date" length="25" />
+        </property>
+        <property name="impactFactor" type="string">
+            <column name="impact_factor" length="100" />
+        </property>
+        <property name="avgCitagtionIndex" type="string">
+            <column name="avg_citagtion_index" length="100" />
+        </property>
+        <property name="scopus" type="string">
+            <column name="scopus" length="65535" />
+        </property>
+        <property name="language" type="string">
+            <column name="language" length="50" />
+        </property>
+        <property name="affiliation" type="string">
+            <column name="affiliation" length="65535" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="summary" type="string">
+            <column name="summary" length="65535" />
+        </property>
+        <property name="key1" type="string">
+            <column name="key1" length="50" />
+        </property>
+        <property name="key2" type="string">
+            <column name="key2" length="50" />
+        </property>
+        <property name="key3" type="string">
+            <column name="key3" length="50" />
+        </property>
+        <property name="key4" type="string">
+            <column name="key4" length="50" />
+        </property>
+        <property name="key5" type="string">
+            <column name="key5" length="50" />
+        </property>
+        <property name="key6" type="string">
+            <column name="key6" length="50" />
+        </property>
+        <set name="journalAuthors" table="journal_author" inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="j_id" not-null="true"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.JournalAuthor" />
+        </set>
+    </class>
+</hibernate-mapping>

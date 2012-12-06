@@ -1,7 +1,7 @@
 <!--
     Document   : Student Registration-validation.xml
     Created on : Nov 04, 2011, 1:05 PM
-    Author     : Amit
+    Author     : IGNOU Team
     Description:
         Purpose of the document follows.
 -->
@@ -9,7 +9,7 @@
     "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
 <validators>
     <field name="emailId">
-        <field-validator type="requiredstring">
+        <field-validator type="email">
             <message key="Please Enter a E-Mail Id." />
         </field-validator>
     </field>
@@ -18,19 +18,6 @@
             <message key="Please Enter a password" />
         </field-validator>
     </field>
-    
-    <field name="rePassword">
-        <field-validator type="requiredstring">
-            <message key="Please Re-Enter The Password" />
-        </field-validator>
-    </field>
-    
-    <field name="role">
-        <field-validator type="requiredstring">
-            <message key="Please Choose a Role" />
-        </field-validator>
-    </field>
-    
     <field name="fname">
         <field-validator type="requiredstring">
             <message key="Please Enter First Name" />
@@ -41,27 +28,21 @@
             <message key="Please Enter Last Name" />
         </field-validator>
     </field>
-     <field name="occupation">
-        <field-validator type="requiredstring">
-            <message key="Please Enter Your Occupation" />
-        </field-validator>
-    </field>
-    
-     <field name="univName">
-        <field-validator type="requiredstring">
-            <message key="Please Enter University Name" />
+      <field name="instituteId">
+        <field-validator type="required">
+            <message key="Please Select University Name" />
         </field-validator>
     </field>
     
      <field name="univRegNo">
-        <field-validator type="requiredstring">
+        <field-validator type="required">
             <message key="Please Enter University Registration No." />
         </field-validator>
     </field>
     
-    <field name="programe">
-        <field-validator type="requiredstring">
-            <message key="Please Enter Programe" />
+    <field name="programmeId">
+        <field-validator type="required">
+            <message key="Please Select Programe" />
         </field-validator>
     </field>
   </validators>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 11, 2012 4:35:31 PM by Hibernate Tools 3.2.1.GA 
+Last Modified on 12-03-2012 by IGNOU Team
+-->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ProfileContact" table="profile_contact">
+    <id name="contactInfoId" type="long">
+      <column name="contactInfo_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="address1" type="string">
+      <column length="100" name="address1"/>
+    </property>
+    <property name="address2" type="string">
+      <column length="100" name="address2"/>
+    </property>
+    <property name="city" type="string">
+      <column length="50" name="city"/>
+    </property>
+    <property name="state" type="string">
+      <column length="50" name="state"/>
+    </property>
+    <property name="country" type="string">
+      <column length="100" name="country"/>
+    </property>
+    <property name="pin" type="java.lang.Integer">
+      <column name="pin"/>
+    </property>
+    <property name="HTelephone" type="java.lang.Long">
+      <column name="h_telephone"/>
+    </property>
+    <property name="OTelephone" type="java.lang.Long">
+      <column name="o_telephone"/>
+    </property>
+    <property name="mobileNo" type="java.lang.Long">
+      <column name="mobile_no"/>
+    </property>
+    <property name="faxNo" type="java.lang.Long">
+      <column name="fax_no"/>
+    </property>
+    <property name="email1" type="string">
+      <column length="100" name="email1"/>
+    </property>
+    <property name="email2" type="string">
+      <column length="100" name="email2"/>
+    </property>
+    <property name="email3" type="string">
+      <column length="100" name="email3"/>
+    </property>
+    <property name="owebsite" type="string">
+      <column length="65535" name="oWebsite"/>
+    </property>
+    <property name="pwebsite" type="string">
+      <column length="65535" name="pWebsite"/>
+    </property>
+  </class>
+</hibernate-mapping>

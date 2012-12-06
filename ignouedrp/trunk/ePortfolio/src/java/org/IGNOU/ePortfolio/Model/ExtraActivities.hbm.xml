@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 29, 2012 5:07:36 PM by Hibernate Tools 3.2.1.GA 
+Author  :   IGNOU Team
+Version :   1
+Last Modified on  : 29-02-2012
+-->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.ExtraActivities" table="extra_activities" catalog="eportfolio">
+        <id name="activitiesId" type="java.lang.Long">
+            <column name="activities_id" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="organizationName" type="string">
+            <column name="organization_name" length="65535" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="100" />
+        </property>
+        <property name="tfrom" type="string">
+            <column name="tfrom" length="25" />
+        </property>
+        <property name="tto" type="string">
+            <column name="tto" length="25" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" />
+        </property>
+        <property name="cause" type="string">
+            <column name="cause" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,57 @@
+
+<!--
+    Document   : ProfileEmployment-validation.xml
+    Created on : March 9, 2012, 11:43 AM
+    Author     : IGNOU Team
+    Description:
+        Purpose of the document follows.
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+  
+<validators>
+    <field name="jtitle">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Job Title" />
+        </field-validator>
+    </field>
+   
+   <field name="orgName">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Organization Name" />
+        </field-validator>
+    </field>
+    <field name="oaddress">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Office Address" />
+        </field-validator>
+    </field>
+    <field name="ocity">
+        <field-validator type="requiredstring">
+            <message key="Please Enter City " />
+        </field-validator>
+    </field>
+    
+    
+    <field name="ostate">
+        <field-validator type="requiredstring">
+            <message key="Please Enter State " />
+        </field-validator>
+    </field>
+    <field name="ocountry">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Country" />
+        </field-validator>
+    </field>
+    <field name="jdate">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Joining Date" />
+        </field-validator>
+    </field>
+    
+    <field name="description">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Description" />
+        </field-validator>
+    </field>
+</validators>

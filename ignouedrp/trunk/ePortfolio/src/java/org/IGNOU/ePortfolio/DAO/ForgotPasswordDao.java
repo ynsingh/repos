@@ -1,8 +1,6 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
  * 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
@@ -49,7 +47,7 @@ import org.hibernate.cfg.AnnotationConfiguration;
 
 /**
  *
- * @author amit
+ * @author IGNOU Team
  */
 public class ForgotPasswordDao {
     
@@ -61,15 +59,16 @@ public class ForgotPasswordDao {
         Query qr = session.createQuery("from User  where email_id='" + email_id + "'");
         @SuppressWarnings("unchecked")
         Iterator<User> it = qr.iterate();
-        while (it.hasNext()) {
-            session.close();
+        while (it.hasNext()) {        
             sf.close();
             t.commit();
-            return true;
-        }
-        session.close();
+            session.close();
+            return true;        
+        }  
         sf.close();
         t.commit();
+         session.close();
         return false;
     }
+   
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Sep 17, 2012 3:57:47 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.Country" table="country">
+    <id name="code" type="string">
+      <column length="3" name="Code"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="name" type="string">
+      <column length="52" name="Name" not-null="true"/>
+    </property>
+    <property name="continent" type="string">
+      <column length="13" name="Continent" not-null="true"/>
+    </property>
+    <property name="region" type="string">
+      <column length="26" name="Region" not-null="true"/>
+    </property>
+    <property name="surfaceArea" type="float">
+      <column name="SurfaceArea" not-null="true" precision="10"/>
+    </property>
+    <property name="indepYear" type="java.lang.Short">
+      <column name="IndepYear"/>
+    </property>
+    <property name="population" type="int">
+      <column name="Population" not-null="true"/>
+    </property>
+    <property name="lifeExpectancy" type="java.lang.Float">
+      <column name="LifeExpectancy" precision="3" scale="1"/>
+    </property>
+    <property name="gnp" type="java.lang.Float">
+      <column name="GNP" precision="10"/>
+    </property>
+    <property name="gnpold" type="java.lang.Float">
+      <column name="GNPOld" precision="10"/>
+    </property>
+    <property name="localName" type="string">
+      <column length="45" name="LocalName" not-null="true"/>
+    </property>
+    <property name="governmentForm" type="string">
+      <column length="45" name="GovernmentForm" not-null="true"/>
+    </property>
+    <property name="headOfState" type="string">
+      <column length="60" name="HeadOfState"/>
+    </property>
+    <property name="capital" type="java.lang.Integer">
+      <column name="Capital"/>
+    </property>
+    <property name="code2" type="string">
+      <column length="2" name="Code2" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

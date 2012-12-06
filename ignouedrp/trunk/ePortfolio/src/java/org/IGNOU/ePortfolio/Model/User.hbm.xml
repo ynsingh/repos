@@ -1,17 +1,70 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Sep 7, 2011 4:15:45 PM by Hibernate Tools 3.2.1.GA -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 17, 2012 1:11:50 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.User" table="user">
-    <id name="emailId" type="string">
-      <column length="100" name="email_id"/>
-      <generator class="assigned"/>
-    </id>
-    <property name="password" type="string">
-      <column length="15" name="password"/>
-    </property>
-    <property name="role" type="string">
-      <column length="45" name="role"/>
-    </property>
-  </class>
+    <class name="org.IGNOU.ePortfolio.Model.User" table="user" catalog="eportfolio">
+        <id name="registrationId" type="long">
+            <column name="registration_id" not-null="true" />
+            <generator class="increment" />
+        </id>
+        <property name="emailId" type="string">
+            <column name="email_id" length="100" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="50" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="45" />
+        </property>
+        <property name="regTime" type="timestamp">
+            <column name="reg_time" length="19" />
+        </property>
+        <property name="activTime" type="timestamp">
+            <column name="activ_time" length="19" />
+        </property>
+        <property name="lastLogin" type="timestamp">
+            <column name="last_login" length="19" />
+        </property>
+        <property name="deleted" type="java.lang.Boolean">
+            <column name="deleted" />
+        </property>
+        <property name="activStatus" type="java.lang.Boolean">
+            <column name="Activ_status" />
+        </property>
+        <property name="fname" type="string">
+            <column name="fname" length="50" />
+        </property>
+        <property name="lname" type="string">
+            <column name="lname" length="50" />
+        </property>
+        <property name="accessIp" type="string">
+            <column name="access_ip" length="15" />
+        </property>
+        <property name="theme" type="string">
+            <column name="theme" length="10" />
+        </property>
+        <property name="picture" type="string">
+            <column name="Picture" length="65535" />
+        </property>
+        <property name="filetype" type="string">
+            <column name="filetype" length="10" />
+        </property>
+        <property name="univName" type="string">
+            <column name="univ_name" length="65535" />
+        </property>
+        <property name="univRegNo" type="string">
+            <column name="univ_reg_no" length="45" />
+        </property>
+        <property name="programe" type="string">
+            <column name="programe" length="65535" />
+        </property>
+        <property name="instituteId" type="java.lang.Integer">
+            <column name="institute_id" />
+        </property>
+        <property name="programmeId" type="java.lang.Integer">
+            <column name="programme_id" />
+        </property>
+        
+    </class>
 </hibernate-mapping>

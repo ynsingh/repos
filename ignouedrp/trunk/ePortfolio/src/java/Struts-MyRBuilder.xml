@@ -1,0 +1,99 @@
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+
+<struts>
+    <!-- Add your configuration elements here
+    IGNOU Team
+    14-02-2012
+    Version 1
+    -->
+    <package name="org.IGNOU.ePortfolio.Builder.Action" namespace="/Builder" extends="struts-default">
+    
+        <action name="ShowEvCard" class="org.IGNOU.ePortfolio.Builder.Action.MyEvisitingCardAction" method="ShowEcard">
+           <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+           <result name="success">ShowEvisitingCard.jsp</result>
+            <result name="input" type="redirectAction">eCardRedirect.jsp</result>
+        </action>
+        <action name="vcardAction"  class="org.IGNOU.ePortfolio.Builder.Action.VisitingCardAction" method="VisitingCardAdd">
+            <result name="success">./eVisitingCard.jsp</result>
+            <result name="input">./VisitingCardAddData.jsp</result>
+        </action>
+        <action name="VisitingRedirect" class="org.IGNOU.ePortfolio.Builder.Action.VisitingCardInfoAction" method="VisitingcardDetail">
+            <result name="success">./eVisitingCard.jsp</result>
+            <result name="input">./VisitingCardAddData.jsp</result>
+        </action>
+        <action name="EditVisiCard" class="org.IGNOU.ePortfolio.Builder.Action.VisitingCardInfoAction" method="VisitingCardEdit">
+            <result name="success">./VisitingCardEditData.jsp</result>
+            <result name="input">./eVisitingCard.jsp</result>
+        </action>
+        <action name="UpdateVisiCard" class="org.IGNOU.ePortfolio.Builder.Action.VisitingCardInfoAction" method="VisitingCardUpdate">
+            <result name="success">./eVisitingCard.jsp</result>
+            <result name="input">./VisitingCardEditData.jsp</result>
+        </action>
+        
+        <action name="UploadResume" class="org.IGNOU.ePortfolio.Builder.Action.UploadResumeAction" method="UploadResume">
+            <interceptor-ref name="fileUpload">
+                <param name="maximumSize">500000</param>
+                <param name="allowedTypes">
+                   application/msword
+                </param>
+            </interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+          <result name="success" type="redirectAction">showResumes</result>
+            <result name="input" >./ResumeUpload.jsp</result>
+        </action>
+        <action name="showResumes" class="org.IGNOU.ePortfolio.Builder.Action.ResumeInfoAction" method="ListResume">
+          <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+          <result name="success" >./ResumeUpload.jsp</result>
+            <result name="input">./ResumeUpload.jsp</result>
+        </action>
+        <action name="deleteResume" class="org.IGNOU.ePortfolio.Builder.Action.ResumeInfoAction" method="ResumeDelete">
+          <interceptor-ref name="defaultStack"/>
+             <interceptor-ref name="execAndWait">
+                 <param name="excludeMethods">input,back,cancel</param>
+            </interceptor-ref>
+		<result name="wait">../Processing.jsp</result>
+          <result name="success" type="redirectAction">showResumes</result>
+            <result name="error">./ResumeUpload.jsp</result>
+            <result name="input">./ResumeUpload.jsp</result>
+        </action>
+    
+        <action name="downloadResume" class="org.IGNOU.ePortfolio.Builder.Action.ResumeInfoAction" method="DownloadResume">
+               
+            <result name="success" type="stream">
+                <param name="inputName">fis</param>
+                <param name="bufferSize">1024</param>
+                <param name="contentDisposition">attachment;filename="theFile${resumeType}"</param>
+            </result>
+        </action>   
+        
+         <action name="CompleteResume" class="org.IGNOU.ePortfolio.Builder.Action.ResumeBuild" method="MakeResume">
+            <result name="success">./AddResumeContent.jsp</result>
+            <result name="input">./AddResumeContent.jsp</result>    
+            <result name="error">./error.jsp</result>
+        </action>
+        
+         <action name="CompletePortfolio" class="org.IGNOU.ePortfolio.Builder.Action.ResumeBuild" method="MakeResume">
+            <result name="success">./viewEportfolio.jsp</result>    
+            <result name="error">./error.jsp</result>
+        </action>
+        <action name="ExportAct" class="org.IGNOU.ePortfolio.Builder.Action.ExportAction" method="ResumeExport">
+             <result name="success" type="stream">
+                <param name="inputName">fps</param>
+                <param name="bufferSize">1024</param>
+                <param name="contentDisposition">attachment;filename="Resume.pdf"</param>
+            </result>
+         </action>
+          
+    </package>
+</struts>

@@ -32,21 +32,19 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.TestScoreDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileTest;
+import org.IGNOU.ePortfolio.DAO.TestScoreDao;
+import org.IGNOU.ePortfolio.Model.ProfileTest;
 
 /**
  * @version 1.1
  * @since 12-Oct-2011
- * @author Vinay
- * XML Validation are implemented by Vinay on 14-Oct-2011
+ * @author IGNOU Team XML Validation are implemented by IGNOU Team on
+ * 14-Oct-2011
  */
 public class TestScoreAction extends ActionSupport implements ModelDriven<Object> {
 
@@ -58,7 +56,8 @@ public class TestScoreAction extends ActionSupport implements ModelDriven<Object
     private Integer score;
     private String tdate;
     private String tdescription;
-
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public TestScoreAction() {
     }
@@ -67,8 +66,10 @@ public class TestScoreAction extends ActionSupport implements ModelDriven<Object
     public String execute() throws Exception {
         try {
             dao.AddTestInfo(test);
+            msg = infoSaved;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            msg = "Data has not been Saved Successfully, Error: " + e.toString();
+
         }
         return SUCCESS;
     }
@@ -148,5 +149,33 @@ public class TestScoreAction extends ActionSupport implements ModelDriven<Object
      */
     public void setTdescription(String tdescription) {
         this.tdescription = tdescription;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

@@ -32,23 +32,20 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.HonorAwardDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileHonorAward;
+import org.IGNOU.ePortfolio.DAO.HonorAwardDao;
+import org.IGNOU.ePortfolio.Model.ProfileHonorAward;
 import org.hibernate.HibernateException;
 
 /**
  * @version 1.1
- * @author Vinay
- * @since 13-Oct-2011
- * Modified by Vinay on 14-Oct-2011
- * XML Validation are implemented.
+ * @author IGNOU Team
+ * @since 13-Oct-2011 Modified by IGNOU Team on 14-Oct-2011 XML Validation are
+ * implemented.
  */
 public class HonorAwardAction extends ActionSupport implements ModelDriven<Object> {
 
@@ -60,6 +57,8 @@ public class HonorAwardAction extends ActionSupport implements ModelDriven<Objec
     private String issuer;
     private String haDate;
     private String haDescription;
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     public HonorAwardAction() {
     }
@@ -68,8 +67,9 @@ public class HonorAwardAction extends ActionSupport implements ModelDriven<Objec
     public String execute() throws Exception {
         try {
             dao.AddHonorInfo(ProHonor);
+            msg = infoSaved;
         } catch (HibernateException HE) {
-            return HE.toString();
+            msg = "Data has not been Saved Successfully. The Error is : " + HE.toString();
         }
         return SUCCESS;
     }
@@ -148,5 +148,33 @@ public class HonorAwardAction extends ActionSupport implements ModelDriven<Objec
      */
     public void setHaDescription(String haDescription) {
         this.haDescription = haDescription;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

@@ -1,106 +1,176 @@
 <%-- 
     Document   : ProjectInfoEdit
     Created on : Oct 19, 2011, 3:26:21 PM
-Author     : Vinay
-Version      : 1
+    Author     : IGNOU Team
+    Version      : 1
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
+<%@ taglib prefix="sj" uri="/struts-jquery-tags"%>
+<%@taglib prefix="sjr" uri="/struts-jquery-richtext-tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>My Project</title>
-        <script type="text/javascript" src="<s:url value="/JS/jquery-latest.js"/>"></script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $("#accordion > li > div").click(function(){
- 
-                    if(false == $(this).next().is(':visible')) {
-                        $('#accordion ul').slideUp(300);
-                    }
-                    $(this).next().slideToggle(300);
-                });
- 
-                $('#accordion ul:eq(0)').show();
-
-            });
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('fieldset.jcalendar').jcalendar();
-            });
-        </script>
-        <script src="<s:url value="/JS/jquery-1.6.4.min.js"/>" type="text/javascript"></script>
-        <script src="<s:url value="/JS/jcalendar-source.js"/>" type="text/javascript"></script>
-        <link href="<s:url value="/JS/jcalendar.css"/>" rel="stylesheet" type="text/css" />
-        <link href="<s:url value="/theme1/style.css"/>" rel="stylesheet" type="text/css" />
-
-        <%
-            if (session.getAttribute("user_id") == null) {
-                pageContext.forward("../login.jsp");
-            }
-
-        %>
-
-        <script type="text/javascript" src="<s:url value="/JS/jquery-ui.min.js"/>"></script>
-        <link rel="stylesheet" type="text/css" media="screen" href="<s:url value="/JS/jquery-ui.css"/>"/>
-        <style type="text/css">
-            .ui-datepicker-calendar {
-                display: none;
-            }
-        </style>
-        <script type="text/javascript">
+        <title>Edit Project</title>
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
+        <sj:head />
+        <link href="<s:url value="/css/MonthYearPicker.css"/>" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
+        <script>
             $(function() {
-                $('.date-picker').datepicker( {
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: '1950:2011',
-                    showButtonPanel: true,
-                    dateFormat: 'MM yy',
-                    onClose: function(dateText, inst) { 
-                        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                        $(this).datepicker('setDate', new Date(year, month, 1));
-                    }
-                });
+                $( "#accordion" ).accordion();
             });
+        </script>
+        <script type="text/javascript">
+            if(window.history.forward(1) != null)
+                window.history.forward(1);
         </script>
     </head>
     <body>
-
-        <s:include value="../Header.jsp"/>
-        <div id="container">
-            <div class="wrapper">
-                <s:include value="/Left-Nevigation.jsp"/>
-                <div id="col2">
-                    <h3>Edit Project</h3>
-                    <br/>
-                    <br/>
-                    <s:form action="UpdateProjInfo" method="post" namespace="/MyProfile" name="AcademicForm" onsubmit="return validatePlanForm()">
-                        <table align="center" width="80%" cellpadding="4" border="0" cellspacing="0">
-                            <s:iterator value="ProList" var="pro">
-                                <s:hidden name="projectId"/><s:hidden name="userId"/>
-                                <s:textfield cssClass="width250" name="proName" label="Project Name"/>
-                                <s:textfield cssClass="width250" name="teamSize" label="Team Size"/>
-                                <s:textfield cssClass="width250" name="role" label="Role"/>
-                                <s:textfield cssClass="width250" name="agency" label="Funding Agency (If Any)"/>
-                                <s:textfield cssClass="width250" name="budget" label="Budget (If Any)"/>
-                                <s:textfield cssClass="width250" name="proUrl" label="Project URL"/>
-                                <s:textfield cssClass="width250 date-picker" name="startDate" label="Duration (From)"/>
-                                <s:textfield cssClass="width250 date-picker" name="endDate" label="Upto"/>
-                                <s:textarea cssClass="width250" name="description" label="Discription"/>
-                            </s:iterator>
-                        </table>
-                        <br/>
-                        <s:submit cssClass="floatL buttonsMiddle" value="Save" />
-                        <s:reset cssClass="floatL" value="Cancel" onClick="history.go(-1);" />
-                    </s:form>
+        <%
+            if (session.getAttribute("user_id") == null) {
+                response.sendRedirect("../Login.jsp");
+            }
+        %>
+        <div class="w100 fl-l">
+            <div class="w990p mar0a">
+                <!--Header Starts Here-->
+                <s:include  value="/Header.jsp"/>
+                <!--Header Ends Here-->
+                <!--Middle Section Starts Here-->
+                <div class="w100 fl-l">
+                    <div class="middle_bg">
+                        <!--Left box Starts Here-->
+                        <s:include value="/Left-Nevigation.jsp"/>
+                        <!--Left box Ends Here-->
+                        <!--Right box Starts Here-->
+                        <div class="right_box">
+                            <div class="my_account_bg">Edit Project</div>
+                            <div class="v_gallery">
+                                <div class="w98 mar0a">
+                                    <div class="bradcum"> <a href="<s:url value="/Welcome-Index.jsp"/>">Home</a>&nbsp;>&nbsp;<a href="<s:url value="/MyEdudation-Workspace.jsp"/>">My Education and Work</a>&nbsp;> <a href="<s:url value="/MyWorkspace/MyWorkspace.jsp"/>">My Workspace</a> &nbsp;><a href="ProjectInfo">My Projects</a> &nbsp;> Edit Project </div>
+                                    <div class="w100 fl-l mart10">
+                                        <fieldset class="w600p mar0a">
+                                            <legend><strong>Edit Project</strong></legend>
+                                            <s:form action="UpdateProjInfo" method="post" theme="simple" namespace="/MyProfile" name="AcademicForm" onsubmit="return validatePlanForm()">
+                                                <table width="95%" border="0" class="mar0a" cellpadding="0" cellspacing="2">
+                                                    <s:iterator value="ProList" var="pro">
+                                                        <s:hidden name="projectId"/>
+                                                        <s:hidden name="userId"/>
+                                                        <tr>
+                                                            <td width="25%">Project Name: </td>
+                                                            <td width="70%"><s:textfield name="proName"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Team Size: </td>
+                                                            <td><s:textfield name="teamSize" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Role: </td>
+                                                            <td><s:textfield name="role" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Funding Agency (if any): </td>
+                                                            <td><s:textfield name="agency" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Budget (if any): </td>
+                                                            <td><s:textfield name="budget" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Project URL: </td>
+                                                            <td><s:textfield name="proUrl" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Start Date: </td>
+                                                            <td><sj:datepicker id="date0" label="Month and Year of Start" 
+                                                                           name="startDate" value="%{startDate}"
+                                                                           displayFormat="MM, yy"                                                            
+                                                                           changeMonth="true" changeYear="true"
+                                                                           onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
+                                                                           />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>End Date: </td>
+                                                            <td><sj:datepicker id="date1" name="endDate" value="%{endDate}" 
+                                                                           displayFormat="MM, yy"                                                            
+                                                                           changeMonth="true" changeYear="true"
+                                                                           onChangeMonthYearTopics="true" timepicker="true" timepickerFormat=" "
+                                                                           />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td valign="top">Description: </td>
+                                                            <td><sjr:tinymce
+                                                                    id="richtextTinymceAdvancedEditor"
+                                                                    name="description"
+                                                                    label="Description"
+                                                                    rows="10"
+                                                                    cols="10"
+                                                                    value="%{description}"
+                                                                    editorLocal="en"
+                                                                    editorTheme="advanced"
+                                                                    editorSkin="o2k7"
+                                                                    toolbarAlign="left"
+                                                                    toolbarLocation="top"
+                                                                    toolbarButtonsRow1="bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,link,unlink,anchor,image,|,formatselect,|,sub,sup"
+                                                                    toolbarButtonsRow2="bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,insertdate,inserttime,preview,|,forecolor,backcolor,|,fontselect,fontsizeselect"
+                                                                    toolbarButtonsRow3=" "
+                                                                    />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td><s:submit value="Save Changes" />
+                                                                <s:reset value="Cancel" onClick="history.go(-1);" />
+                                                            </td>
+                                                        </tr>
+                                                    </s:iterator>
+                                                </table>
+                                            </s:form>
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Right box End Here-->
+                        </div>
+                    </div>
+                    <!--Middle Section Ends Here-->
                 </div>
-                <s:include value="/Right-Nevigation.jsp"/>
-                <div class="clear"></div>
             </div>
         </div>
         <s:include value="/Footer.jsp"/>
+        <script type="text/javascript">
+            var frmvalidator  = new Validator("AcademicForm");
+            frmvalidator.addValidation("proName","req","Please enter Project Name");
+            frmvalidator.addValidation("proName","maxlen=20","Max length is 20");
+            frmvalidator.addValidation("proName","alpha_s","Alphabetic chars only");        
+            
+            frmvalidator.addValidation("teamSize","req","Please enter Team Size");
+            frmvalidator.addValidation("teamSize","maxlen=20","Max length is 20");
+            frmvalidator.addValidation("teamSize","numeric","Numeric only");     
+            
+            frmvalidator.addValidation("role","req","Please enter Role");
+            frmvalidator.addValidation("role","maxlen=20","Max length is 20");
+            frmvalidator.addValidation("role","alpha_s","Alphabetic chars only");      
+                        
+            frmvalidator.addValidation("budget","req","Please enter Budget");
+            frmvalidator.addValidation("budget","maxlen=20","Max length is 20");
+            frmvalidator.addValidation("budget","numeric","Numeric chars only");      
+  
+            frmvalidator.addValidation("startDate","req","Please enter Start Date");
+            
+            frmvalidator.addValidation("endDate","req","Please enter End Date");
+            
+            frmvalidator.addValidation("description","req","Please enter Description");
+            frmvalidator.addValidation("description","maxlen=200","Max length is 200");
+            frmvalidator.addValidation("description","alpha_s","Alphabetic chars only");      
+  
+        </script>
     </body>
 </html>

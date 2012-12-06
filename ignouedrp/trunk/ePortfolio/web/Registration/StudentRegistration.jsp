@@ -1,122 +1,214 @@
 <%-- 
     Document   : StudentRegistration
     Created on : Oct 3, 2011, 11:59:57 AM
-Author     : Vinay
-Version      : 1
+    Author     : IGNOU Team
+    Version       : 1
 --%>
 
-<%@taglib prefix="s" uri="/struts-tags"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="sx" uri="/struts-dojo-tags" %>
+<%@taglib prefix="sj" uri="/struts-jquery-tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Welcome to ePortfolio</title>
-        <script type="text/javascript" src="<s:url value="/JS/jquery-latest.js"/>"></script>
+        <title>Student Registration</title>
+        <link href="<s:url value="/css/master.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/collapse.css"/>" rel="stylesheet" type="text/css" />
+        <link href="<s:url value="/css/skin.css"/>" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="<s:url value="/js/jquery-1.6.4.min.js"/>"></script>
         <script type="text/javascript">
-            $(document).ready(function(){
-                $("#accordion > li > div").click(function(){
-
-                    if(false == $(this).next().is(':visible')) {
-                        $('#accordion ul').slideUp(300);
+            $().ready(function() {
+                // validate signup form on keyup and submit
+                $("#StudentReg").validate({
+                    rules: {
+                        password: {
+                            required: true,
+                            minlength: 5
+                        },
+                        rePassword: {
+                            required: true,
+                            minlength: 5,
+                            equalTo: "#StudentReg_password"
+                        },
+                        agree: "required"
+                    },
+                    messages: {
+                        password: {
+                            required: "Please provide a password",
+                            minlength: "Your password must be at least 5 characters long"
+                        },
+                        rePassword: {
+                            required: "Please provide a password",
+                            minlength: "Your password must be at least 5 characters long",
+                            equalTo: "Please enter the same password as above"
+                        }
                     }
-                    $(this).next().slideToggle(300);
                 });
-
-                $('#accordion ul:eq(0)').show();
-
+                // newsletter topics are optional, hide at first
+                var inital = newsletter.is(":checked");
+                var topics = $("#newsletter_topics")[inital ? "removeClass" : "addClass"]("gray");
+                var topicInputs = topics.find("input").attr("disabled", !inital);
+                // show when newsletter is checked
+                newsletter.click(function() {
+                    topics[this.checked ? "removeClass" : "addClass"]("gray");
+                    topicInputs.attr("disabled", !this.checked);
+                });
+            });
+        </script>      
+        <sj:head/>
+        <sx:head/>
+        <script type="text/javascript" src="<s:url value="/js/expand.js"/>"></script>
+        <script type="text/javascript" src="<s:url value="/js/jquery.validate.js"/>"></script>
+        <script>
+            $(function() {
+                $( "#accordion" ).accordion();
             });
         </script>
-        <link href="../theme1/style.css" rel="stylesheet" type="text/css" />
+        <!-- user name availability script -->
+        <style type="text/css">
+            .flable{
+                color:gray;
+            }
+            .status{
+                font-family:verdana;
+                font-size:12px;
+            }
+            .emailId{
+                color:blue;
+            }
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $(".emailId").change(function(){
+                    var emailId = $(this).val();
+                    if(emailId.length > 3){
+                        $(".status").html("<img src='../images/loading.gif'/><font color='gray'> Checking availability...</font>");
+                        $.ajax({
+                            type: "GET",
+                            url: "CheckAvail",
+                            data: "emailId=" + emailId,
+                            success: function(msg){
+                                $(".status").ajaxComplete (function(event , request, settings){
+                                    $(".status").html(msg);
+
+                                });
+                            }
+                        }); 
+                    }
+                    else{
+                         
+                        $(".status").html("<font color='red'>Username should be greater than<b>5</b> characters</font>");
+                    }
+                    
+                });
+            });
+        </script>
     </head>
     <body>
-        <div id="header">
-            <div class="wrapper">
-                <div id="logo">
-                    <a href="<s:url value="/Index.jsp"/>">
-                        <img src="<s:url value="/theme1/images/logo.png"/>"/>
-                    </a>
-                </div>
-                <div id="accountinfo">
-                    &nbsp;<br/>
-                    <img src="<s:url value="/theme1/images/ignou-logo.jpg"/>"/>
-                    <div id="profilelinks">
 
-                    </div></div>
-                <div id="changecolors">
-                    <a href="#">
-                        <img src="<s:url value="/theme1/images/theme-red.gif"/>"  alt="Red"/></a>
-                    <a href="#">
-                        <img src="<s:url value="/theme1/images/theme-green.gif"/>" alt="Green" />
-                    </a><a href="#">
-                        <img src="<s:url value="/theme1/images/theme-yellow.gif"/>" alt="Yellow" />
-                    </a><a href="#">
-                        <img src="<s:url value="/theme1/images/theme-blue.gif"/>" alt="Blue" />
-                    </a>
+        <div class="w100 fl-l">
+            <div class="w990p mar0a">
+                <!--Header Starts Here-->
+                <div class="w100 fl-l">
+                    <div class="header">
+                        <div class="w100 fl-l"><img src="<s:url value="/images/header.png"/>" alt="" width="980" height="100" /></div>
+                    </div>
+                    <div class="menu_bg">
+                        <div class="wau fl-l"><img src="<s:url value="/images/blank.gif"/>" alt="" width="20" height="10" /></div>
+                        <div class="eportfolio_txt">ePORTFOLIO</div>
+                        <div class="menu"> 
+                            <a href="<s:url value="/Login.jsp"/>">Home</a>
+                        </div>
+                        <div class="menu_arrow_img">&nbsp;</div>
+                        <div class="img_panel">
+                            <div class="my_profile">
+                                &nbsp;
+                            </div>
+                            <div class="profile_img">&nbsp;</div>
+                        </div>
+                    </div>
+                    <!--Header Ends Here-->
+                </div>
+                <!--Middle Section Starts Here-->
+                <div class="w100 fl-l">
+                    <div class="middle_bg">
+                        <!--Right box Starts Here-->
+                        <div class="middle_cont">
+                            <div class="my_account_bg">Student Registration</div>
+                            <div class="v_gallery">
+                                <div class="w100 fl-l mart10">
+                                    <fieldset class="w450p mar0a">
+                                        <legend class="fbld">Student Registration</legend>
+                                        <s:url id="Univer" action="UniversityAct" namespace="/Dropdown"/> 
+                                        <s:url id="program" action="ProgramAct" namespace="/Dropdown"/> 
+                                        <s:form action="StudentReg"  method="post" name="Student">
+                                            <table width="90%" class="mar0a" cellpadding="2" cellspacing="2" border="0" align="center">
+                                                <td width="30%">&nbsp;</td><td width="70%"><span class="status"></span></td>
+                                                <s:textfield cssClass="width220 emailId" name="emailId" label="Email Id"/>
+                                                <s:password cssClass="width220" name="password" label="Create a Password"/>
+                                                <s:password cssClass="width220" name="rePassword" label="Confirm Password" />
+                                                <s:hidden name="role" value="student" />
+                                                <s:textfield cssClass="width220" name="fname" label="First Name"/>
+                                                <s:textfield cssClass="width220" name="mname" label="Middle Name"/>
+                                                <s:textfield cssClass="width220" name="lname" label="Last Name" />
+                                                <s:hidden value="occupation"/>
+                                                <sj:select 
+                                                    href="%{Univer}" 
+                                                    id="univCode" 
+                                                    onChangeTopics="reloadprogrammlist" 
+                                                    name="instituteId" 
+                                                    list="univList" 
+                                                    emptyOption="false" 
+                                                    headerKey="-1" 
+                                                    headerValue="Please Select University"
+                                                    label="University"
+                                                    sortable="false"
+                                                    />
+
+                                                <sj:select 
+                                                    href="%{program}" 
+                                                    id="programe" 
+                                                    formIds="StudentReg" 
+                                                    reloadTopics="reloadprogrammlist" 
+                                                    name="programmeId" 
+                                                    list="programmeL" 
+                                                    emptyOption="false" 
+                                                    headerKey="-1" 
+                                                    headerValue="Please Select Programme"
+                                                    label="Programme"
+                                                    />
+                                                <s:textfield cssClass="width220" name="univRegNo" label="Registration/Enrollment No." />
+                                                <tr><td colspan="2" align="center">
+                                                        <s:submit  theme="simple" value="Submit"  />
+                                                        <s:reset theme="simple" value="Reset"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </s:form>
+                                    </fieldset>
+                                </div>                           
+                            </div>
+                            <!--Right box End Here-->
+                        </div>
+                    </div>
+                    <!--Middle Section Ends Here-->
                 </div>
             </div>
         </div>
-        <div id="container">
-            <div class="wrapper">
-
-                <div id="col1">
-                    <ul id="accordion">
-                        <li style="background:none;"><div><a style="color:#000; font-size:16px;" href="#"></a></div></li>
-                    </ul>
-                </div>
-                <div id="col2">
-                    <h3>Student Registration</h3>
-                    <br/><br/>
-                    <s:form action="StudentReg" method="post">
-                        <table cellpadding="2" cellspacing="2" border="0" align="center">
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="emailId" label="Email Id"/>
-                                </td></tr>
-                            <tr><td>
-                                    <s:password cssClass="width250" name="password" label="Password"/>
-                                </td></tr>
-                            <tr><td>
-                                    <s:password cssClass="width250" name="rePassword" label="Re-Password" />
-                                </td></tr>
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="role" label="Role" />
-                                </td></tr> 
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="fname" label="First Name"/>
-                                </td></tr>
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="mname" label="Middle Name"/>
-                                </td></tr>
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="lname" label="Last Name" />
-                                </td></tr> 
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="occupation" label="Occupation"/>
-                                </td></tr>
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="univName" label="University, Institute"/>
-                                </td></tr>
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="univRegNo" label="Registration No." />
-                                </td></tr> 
-                            <tr><td>
-                                    <s:textfield cssClass="width250" name="programe" label="Programme"/>
-                                </td></tr>
-                        </table>
-                        <br/>
-                        <s:submit cssClass="floatL buttonsMiddle" value="Submit"/>
-                        <s:reset value="Reset" align="left"/>
-                    </s:form>
-                    <br/>
-                </div>
-                <div id="col3">  
-                        <h3>Upcoming Events</h3>
-                        <s:include value="/Event.jsp"/>
-                    <div class="more"><a href="<s:url value="/Events/"/>" target="_blank">more...</a></div>
-                                        
-                </div>
-                <div class="clear"></div>
+        <!--Footer Section Starts Here-->
+        <div class="footer">
+            <div class="f_menu"> 
+                <a href="<s:url value="/About.jsp"/>" target="_Blank">About</a> | <a href="<s:url value="/Feedback.jsp"/>" target="_Blank">Feedback</a> | <a href="<s:url value="/Help.jsp"/>" target="_Blank">Help</a> | <a href="#">Sitemap</a> | <a href="<s:url value="/Contact.jsp"/>" target="_Blank">Contact Us</a>
             </div>
         </div>
-        <jsp:include page="../Footer.jsp"/>
+        <div class="footer_panel">
+            <div class="footer_txt">
+                <div class="wau fl-l tl">&COPY; 2011-12, MHRD. All Rights are Reserved</div>
+                <div class="wau fl-r tr">Designed and Developed by eGyanKosh,Indira Gandhi National Open University</div>
+            </div>
+            <!--Footer Section Ends Here-->
+        </div>
     </body>
 </html>

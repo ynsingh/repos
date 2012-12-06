@@ -32,19 +32,17 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-
-
 package org.IGNOU.ePortfolio.MyProfile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.List;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyProfile.Dao.TestScoreDao;
-import org.IGNOU.ePortfolio.MyProfile.Model.ProfileTest;
+import org.IGNOU.ePortfolio.DAO.TestScoreDao;
+import org.IGNOU.ePortfolio.Model.ProfileTest;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  */
 public class TestScoreInfoAction extends ActionSupport {
 
@@ -66,6 +64,9 @@ public class TestScoreInfoAction extends ActionSupport {
     private Integer score;
     private String tdate;
     private String tdescription;
+    private String msg;
+    private String infoDeleted = getText("msg.infoDeleted");
+    private String infoUpdated = getText("msg.infoUpdated");
 
     public TestScoreInfoAction() {
     }
@@ -88,11 +89,13 @@ public class TestScoreInfoAction extends ActionSupport {
 
     public String UpdateInfo() throws Exception {
         dao.UpdateTestInfo(testId, userId, tname, score, tdate, tdescription);
+        msg = infoUpdated;
         return SUCCESS;
     }
-    public String DeleteInfo() throws Exception
-    {
+
+    public String DeleteInfo() throws Exception {
         dao.DeleteTestInfo(getTestId());
+        msg = infoDeleted;
         return SUCCESS;
     }
 
@@ -118,7 +121,7 @@ public class TestScoreInfoAction extends ActionSupport {
     }
 
     /**
-     * @param test 
+     * @param test
      */
     public void setTest(ProfileTest test) {
         this.Score = test;
@@ -234,5 +237,47 @@ public class TestScoreInfoAction extends ActionSupport {
      */
     public void setScoreList(List<ProfileTest> ScoreList) {
         this.ScoreList = ScoreList;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoDeleted
+     */
+    public String getInfoDeleted() {
+        return infoDeleted;
+    }
+
+    /**
+     * @param infoDeleted the infoDeleted to set
+     */
+    public void setInfoDeleted(String infoDeleted) {
+        this.infoDeleted = infoDeleted;
+    }
+
+    /**
+     * @return the infoUpdated
+     */
+    public String getInfoUpdated() {
+        return infoUpdated;
+    }
+
+    /**
+     * @param infoUpdated the infoUpdated to set
+     */
+    public void setInfoUpdated(String infoUpdated) {
+        this.infoUpdated = infoUpdated;
     }
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 24, 2012 11:44:18 AM by Hibernate Tools 3.2.1.GA 
+Author      : IGNOU Team
+Version     : 1
+Since       : 23-02-2012
+Last Modified on : 24-02-2012-->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.BookChapter" table="book_chapter" catalog="eportfolio">
+        <id name="bookChapterId" type="java.lang.Long">
+            <column name="book_chapter_id" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="string">
+            <column name="user_id" length="100" />
+        </property>
+        <property name="bcType" type="string">
+            <column name="bc_type" length="45" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="15" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="65535" />
+        </property>
+        <property name="noCoauthor" type="java.lang.Integer">
+            <column name="no_coauthor" />
+        </property>
+        <property name="publisher" type="string">
+            <column name="publisher" length="65535" />
+        </property>
+        <property name="isbn" type="string">
+            <column name="isbn" length="20" />
+        </property>
+        <property name="publishedOn" type="string">
+            <column name="published_on" length="25" />
+        </property>
+        <property name="PFrom" type="java.lang.Integer">
+            <column name="p_from" />
+        </property>
+        <property name="PTo" type="java.lang.Integer">
+            <column name="p_to" />
+        </property>
+        <property name="language" type="string">
+            <column name="language" length="50" />
+        </property>
+        <property name="affiliation" type="string">
+            <column name="affiliation" length="65535" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="summary" type="string">
+            <column name="summary" length="65535" />
+        </property>
+        <set name="bookChapterAuthors" table="book_chapter_author" inverse="true" lazy="false" fetch="select">
+            <key>
+                <column name="bc_id" not-null="true"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.BookChapterAuthor" />
+        </set>
+    </class>
+</hibernate-mapping>

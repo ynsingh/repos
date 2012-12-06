@@ -35,13 +35,17 @@
 package org.IGNOU.ePortfolio.Action;
 
 import com.opensymphony.xwork2.ActionContext;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 /**
  *
- * @author amit
+ * @author IGNOU Team
  */
 public class UserSession {
     
@@ -49,14 +53,23 @@ public class UserSession {
     private ActionContext ctx;
     private HttpServletRequest req;
     private HttpSession session;
+     HttpServletResponse resp = ServletActionContext.getResponse();
+   
     public String getUserInSession()
     {    
      ctx=ActionContext.getContext();
-    req=(HttpServletRequest)ctx.get(ServletActionContext.HTTP_REQUEST);
+     req=(HttpServletRequest)ctx.get(ServletActionContext.HTTP_REQUEST);
      session=req.getSession();
+    try{
      user_id =session.getAttribute("user_id").toString();
-     return user_id;
     }
-    
-    
+    catch(Exception e){
+            try {
+                resp.sendRedirect("../Login.jsp");
+            } catch (IOException ex) {
+                Logger.getLogger(UserSession.class.getName()).log(Level.WARNING, "Session Expired of user"+user_id, ex);
+            }
+    }
+    return user_id;
+    }
 }

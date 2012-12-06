@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 28, 2011 12:22:58 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.StudentExchange" table="student_exchange" catalog="eportfolio">
+        <id name="studentExchangeId" type="long">
+            <column name="student_exchangeId" />
+            <generator class="increment" />
+        </id>
+        <property name="programmeType" type="string">
+            <column name="programmeType" length="25" />
+        </property>
+        <property name="nameUniversity" type="string">
+            <column name="nameUniversity" length="65535" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="50" />
+        </property>
+        <property name="programmeTheme" type="string">
+            <column name="programmeTheme" length="65535" />
+        </property>
+        <property name="venue" type="string">
+            <column name="venue" length="65535" />
+        </property>
+        <property name="state" type="string">
+            <column name="state" length="65535" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" length="65535" />
+        </property>
+        <property name="durationFrom" type="string">
+            <column name="durationFrom" length="15" />
+        </property>
+        <property name="durationTo" type="string">
+            <column name="durationTo" length="15" />
+        </property>
+        <property name="degreeLevel" type="string">
+            <column name="degreeLevel" length="15" />
+        </property>
+        <property name="degraeeName" type="string">
+            <column name="degraeeName" length="65535" />
+        </property>
+        <property name="researchColl" type="string">
+            <column name="researchColl" length="65535" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" />
+        </property>
+        <property name="userId" type="string">
+            <column name="userId" length="100" />
+        </property>
+        <property name="ifOther" type="string">
+            <column name="ifOther" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

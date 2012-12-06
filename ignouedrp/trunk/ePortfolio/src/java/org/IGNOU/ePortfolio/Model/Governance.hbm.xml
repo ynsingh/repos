@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 25 Dec, 2011 7:18:18 PM by Hibernate Tools 3.2.1.GA 
+    author IGNOU Team
+    version 1
+    since 25 December 2011
+    /-->
+<hibernate-mapping>
+    <class name="org.IGNOU.ePortfolio.Model.Governance" table="governance" catalog="eportfolio">
+        <id name="governanceId" type="long">
+            <column name="governanceId" />
+            <generator class="increment" />
+        </id>
+        <property name="userId" type="string">
+            <column name="userId" length="100" />
+        </property>
+        <property name="nameCommittee" type="string">
+            <column name="nameCommittee" length="65535" />
+        </property>
+        <property name="nameUniversity" type="string">
+            <column name="nameUniversity" length="65535" />
+        </property>
+        <property name="durationFrom" type="string">
+            <column name="durationFrom" length="15" />
+        </property>
+        <property name="durationTo" type="string">
+            <column name="durationTo" length="15" />
+        </property>
+        <property name="responsibility" type="string">
+            <column name="responsibility" length="65535" />
+        </property>
+        <property name="url" type="string">
+            <column name="url" length="65535" />
+        </property>
+        <property name="summary" type="string">
+            <column name="summary" length="65535" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

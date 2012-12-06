@@ -1,9 +1,7 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
- */
-/*
- * 
+ 
  *  Copyright (c) 2011 eGyankosh, IGNOU, New Delhi.
  *  All Rights Reserved.
  *
@@ -36,18 +34,17 @@
  *  Contributors: Members of eGyankosh, IGNOU, New Delhi.
  *
  */
-package org.IGNOU.ePortfolio.MyWorkspace
-;
+package org.IGNOU.ePortfolio.MyWorkspace;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 import org.IGNOU.ePortfolio.Action.UserSession;
-import org.IGNOU.ePortfolio.MyWorkspace.Dao.ProjectDao;
-import org.IGNOU.ePortfolio.MyWorkspace.Model.Projects;
+import org.IGNOU.ePortfolio.DAO.ProjectDao;
+import org.IGNOU.ePortfolio.Model.Projects;
 
 /**
  *
- * @author Vinay
+ * @author IGNOU Team
  * @version 1
  */
 public class ProjectAction extends ActionSupport implements ModelDriven<Object> {
@@ -65,10 +62,13 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Object> 
     private String description;
     private String agency;
     private Long budget;
+    private String msg;
+    private String infoSaved = getText("msg.infoSaved");
 
     @Override
     public String execute() throws Exception {
         dao.AddProjectInfo(p);
+        msg = infoSaved;
         return SUCCESS;
     }
 
@@ -230,5 +230,33 @@ public class ProjectAction extends ActionSupport implements ModelDriven<Object> 
      */
     public void setBudget(Long budget) {
         this.budget = budget;
+    }
+
+    /**
+     * @return the msg
+     */
+    public String getMsg() {
+        return msg;
+    }
+
+    /**
+     * @param msg the msg to set
+     */
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    /**
+     * @return the infoSaved
+     */
+    public String getInfoSaved() {
+        return infoSaved;
+    }
+
+    /**
+     * @param infoSaved the infoSaved to set
+     */
+    public void setInfoSaved(String infoSaved) {
+        this.infoSaved = infoSaved;
     }
 }

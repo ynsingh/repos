@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 11, 2011 11:42:27 AM by Hibernate Tools 3.2.1.GA 
+Auther : IGNOU Team
+Version :1
+-->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ProfileHonorAward" table="profile_honor_award">
+    <id name="honorAwardId" type="long">
+      <column name="honor_award_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="haTitle" type="string">
+      <column length="65535" name="haTitle"/>
+    </property>
+    <property name="issuer" type="string">
+      <column length="65535" name="Issuer"/>
+    </property>
+    <property name="haDate" type="string">
+      <column length="50" name="haDate"/>
+    </property>
+    <property name="haDescription" type="string">
+      <column length="65535" name="haDescription"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,102 @@
+<!--
+    Document   : ProfileContactAction-validation.xml
+    Created on : march 07, 2012, 10:50 AM
+    Author     : IGNOU Team
+    Version    : 1
+   
+-->
+<!DOCTYPE validators PUBLIC "-//OpenSymphony Group//XWork Validator 1.0.2//EN"
+    "http://www.opensymphony.com/xwork/xwork-validator-1.0.2.dtd">
+   
+<validators>
+    <field name="address1">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Address" />
+        </field-validator>
+    </field>
+   
+    <field name="address2">
+        <field-validator type="requiredstring">
+            <message key="Please Enter Address" />
+        </field-validator>
+    </field>
+    
+    <field name="city">
+        <field-validator type="requiredstring">
+            <message key="Please Enter City" />
+        </field-validator>
+    </field>
+    <field name="state">
+        <field-validator type="requiredstring">
+            <message key="Please Enter State" />
+        </field-validator>
+    </field>
+    <field name="country">
+        <field-validator type="requiredstring">
+            <message key="Please Select Country" />
+        </field-validator>
+    </field> 
+   
+    <field name="pin">
+        <field-validator type="required">
+            <message>You must enter a value for Pincode.</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">1</param>
+            <param name="max">999999</param>
+            <message key="Please Enter Number" />
+        </field-validator>
+    </field> 
+    
+    <field name="HTelephone">
+        <field-validator type="required">
+            <message>You must enter a value Telephone</message>
+        </field-validator>
+        <field-validator type="long">
+            <param name="min">1</param>
+            <param name="max">99999999</param>
+            <message key="Please Enter Number" />
+        </field-validator>
+    </field>
+    
+    <field name="OTelephone">
+        <field-validator type="required">
+            <message>You must enter a value Telephone</message>
+        </field-validator>
+        <field-validator type="long">
+            <param name="min">1</param>
+            <param name="max">99999999</param>
+            <message key="Please Enter Number" />
+        </field-validator>
+    </field>
+    
+    
+    <field name="mobileNo">
+        <field-validator type="required" short-circuit="true">
+            <message>You must enter a Mobile Number</message>
+        </field-validator>
+        <field-validator type="long">
+            <param name="min">7000000000</param>
+            <param name="max">9999999999</param>
+            <message key="Please Enter Number" />
+        </field-validator>
+    </field>
+    
+    <field name="email1">
+        <field-validator type="required" short-circuit="true">
+            <message>You must enter a Email.</message>
+        </field-validator>
+        <field-validator type="email">
+            <message key="Please Enter Email" />
+        </field-validator>
+    </field>
+    
+    <field name="owebsite">
+        <field-validator type="required" short-circuit="true">
+            <message>You must enter a value.</message>
+        </field-validator>
+        <field-validator type="url">
+            <message key="Please Enter Office Website" />
+        </field-validator>
+    </field>
+</validators>

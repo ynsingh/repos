@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 17, 2012 1:11:50 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.UserList" table="user">
+        <id name="emailId" type="string">
+            <column length="100" name="email_id"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="registrationId" type="long">
+            <column name="registration_id" not-null="true"/>
+        </property>
+        <property name="password" type="string">
+            <column length="15" name="password"/>
+        </property>
+        <property name="role" type="string">
+            <column length="45" name="role"/>
+        </property>
+        <property name="regTime" type="timestamp">
+            <column length="19" name="reg_time"/>
+        </property>
+        <property name="activTime" type="timestamp">
+            <column length="19" name="activ_time"/>
+        </property>
+        <property name="lastLogin" type="timestamp">
+            <column length="19" name="last_login"/>
+        </property>
+        <property name="deleted" type="java.lang.Boolean">
+            <column name="deleted"/>
+        </property>
+        <property name="activStatus" type="java.lang.Boolean">
+            <column name="Activ_status"/>
+        </property>
+        <property name="fname" type="string">
+            <column length="50" name="fname"/>
+        </property>
+        <property name="lname" type="string">
+            <column length="50" name="lname"/>
+        </property>
+        <property name="accessIp" type="string">
+            <column length="15" name="access_ip"/>
+        </property>
+        <property name="theme" type="string">
+            <column length="10" name="theme"/>
+        </property>
+        <property name="picture" type="string">
+            <column length="65535" name="Picture"/>
+        </property>
+        <property name="filetype" type="string">
+            <column length="10" name="filetype"/>
+        </property>
+        <property name="univName" type="string">
+            <column length="65535" name="univ_name"/>
+        </property>
+        <property name="univRegNo" type="string">
+            <column length="45" name="univ_reg_no"/>
+        </property>
+        <property name="programe" type="string">
+            <column length="65535" name="programe"/>
+        </property>
+        <property name="instituteId" type="java.lang.Integer">
+            <column name="institute_id"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="false" name="profileEmployments">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileEmployment"/>
+        </set>
+        <set inverse="true" lazy="false" name="projectses">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Projects"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileProAffiliations">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileProAffiliation"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileCertifications">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileCertification"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileSkills">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileSkill"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileContacts">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileContact"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileReferenceses">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileReferences"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileAcademics">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileAcademic"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileInterests">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileInterest"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileHonorAwards">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileHonorAward"/>
+        </set>
+        <set fetch="select" inverse="true" lazy="false" name="myNoteses">
+            <key>
+                <column length="100" name="user_id" not-null="true"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.MyNotes"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileSocials">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileSocial"/>
+        </set>
+        <set inverse="true" lazy="false" name="profileTests">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ProfileTest"/>
+        </set>
+        <set inverse="true" lazy="false" name="patents">
+            <key>
+                <column length="100" name="userId"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Patent"/>
+        </set>
+        <set inverse="true" lazy="false" name="journals">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Journal"/>
+        </set>
+        <set inverse="true" lazy="false" name="conferences">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Conference"/>
+        </set>
+        <set inverse="true" lazy="false" name="consultancies">
+            <key>
+                <column length="100" name="user_id" not-null="true"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Consultancy"/>
+        </set>
+        <set inverse="true" lazy="false" name="extraActivitieses">
+            <key>
+                <column length="100" name="user_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ExtraActivities"/>
+        </set>
+        <set inverse="true" lazy="false" name="studentExchanges">
+            <key>
+                <column length="100" name="userId"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.StudentExchange"/>
+        </set>
+        <set inverse="true" lazy="false" name="persi">
+            <key>
+                <column length="100" name="email_id"/>
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.PersonalInfo"/>
+        </set>
+        <many-to-one class="org.IGNOU.ePortfolio.Model.Programme" fetch="select" name="programme" lazy="false" cascade="merge">
+            <column name="programme_id"/>
+        </many-to-one>
+        <set name="testimonialsesForTestiReqTo" inverse="true" lazy="false">
+            <key>
+                <column name="testi_req_to" length="100" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Testimonials" />
+        </set>
+        <set name="testimonialsesForTestiRequestor" inverse="true" lazy="false">
+            <key>
+                <column name="testi_requestor" length="100" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Testimonials" />
+        </set>
+        <set name="gradeValues" inverse="true" lazy="false">
+            <key>
+                <column name="faculty_id" length="100" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.GradeValue" />
+        </set>
+        <set name="evidenceSubmissions" inverse="true" lazy="false">
+            <key>
+                <column name="user_id" length="100" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.EvidenceSubmission" />
+        </set>
+        <set name="evidences" inverse="true" lazy="false">
+            <key>
+                <column name="faculty_id" length="100" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.Evidence" />
+        </set>
+        <set name="activitiesCommentsesForSubmitorId" inverse="true" lazy="false">
+            <key>
+                <column name="submitor_id" length="100" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ActivitiesComments" />
+        </set>
+        <set name="activitiesCommentsesForCommentorId" inverse="true" lazy="false">
+            <key>
+                <column name="commentor_id" length="100" />
+            </key>
+            <one-to-many class="org.IGNOU.ePortfolio.Model.ActivitiesComments" />
+        </set>
+    </class>
+</hibernate-mapping>

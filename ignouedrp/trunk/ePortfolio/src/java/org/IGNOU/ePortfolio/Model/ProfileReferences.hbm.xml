@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 1, 2011 3:24:37 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="eportfolio" name="org.IGNOU.ePortfolio.Model.ProfileReferences" table="profile_references">
+    <id name="referencesId" type="long">
+      <column name="references_id"/>
+      <generator class="increment"/>
+    </id>
+    <property name="userId" type="string">
+      <column length="100" name="user_id"/>
+    </property>
+    <property name="name" type="string">
+      <column length="100" name="name"/>
+    </property>
+    <property name="designation" type="string">
+      <column length="100" name="designation"/>
+    </property>
+    <property name="orgUniv" type="string">
+      <column length="65535" name="org_univ"/>
+    </property>
+    <property name="place" type="string">
+      <column length="100" name="place"/>
+    </property>
+    <property name="city" type="string">
+      <column length="100" name="city"/>
+    </property>
+    <property name="state" type="string">
+      <column length="100" name="state"/>
+    </property>
+    <property name="country" type="string">
+      <column length="100" name="country"/>
+    </property>
+    <property name="phoneno" type="java.lang.Long">
+      <column name="phoneno"/>
+    </property>
+    <property name="mobileno" type="java.lang.Long">
+      <column name="mobileno"/>
+    </property>
+    <property name="emailId" type="string">
+      <column length="100" name="email_id"/>
+    </property>
+    <property name="website" type="string">
+      <column length="65535" name="website"/>
+    </property>
+    <property name="department" type="string">
+      <column length="100" name="department"/>
+    </property>
+  </class>
+</hibernate-mapping>
