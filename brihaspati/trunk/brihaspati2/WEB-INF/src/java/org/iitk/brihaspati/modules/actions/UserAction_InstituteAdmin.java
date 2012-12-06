@@ -687,64 +687,6 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 }
         }
 
-	public void doDeleteRollno(RunData data, Context context)
-        {
-                try{
-			ParameterParser pp=data.getParameters();
-			String msg="";
-			String ProgramList=data.getParameters().getString("deleteFileNames","");
-                	ErrorDumpUtil.ErrorLog("inside do update method in action file"+ProgramList);
-			if(!ProgramList.equals("")){
-                                StringTokenizer st=new StringTokenizer(ProgramList,"^");
-                                for(int i=0;st.hasMoreTokens();i++){
-                                        String s=st.nextToken();
-                                        ErrorDumpUtil.ErrorLog("Token inside string---"+s);
-                                        String rlno=StringUtils.substringAfterLast(s,":");
-                                        ErrorDumpUtil.ErrorLog("rollno after ---"+rlno);
-                                        String Prgname=StringUtils.substringBeforeLast(s,":");
-                                        ErrorDumpUtil.ErrorLog("prg before---"+Prgname);
-
-					String  InstId=(data.getUser().getTemp("Institute_id")).toString();
-					String uname = pp.getString("username");
-					//String rlno = pp.getString("rollno");
-					//String Prgname = pp.getString("Prg");
-					String Pgcode = InstituteIdUtil.getPrgCode(Prgname);
-					//CourseProgramUtil.DeleteCoursePrg(uname,"");
-					Criteria crit=new Criteria();
-					crit.add(CourseProgramPeer.EMAIL_ID,uname);
-		                        crit.and(CourseProgramPeer.PROGRAM_CODE,Pgcode);
-		                        List v=CourseProgramPeer.doSelect(crit);
-					if(v.isEmpty()==false){
-						crit=new Criteria();
-						crit.add(CourseProgramPeer.EMAIL_ID,uname);
-		        	                crit.and(CourseProgramPeer.PROGRAM_CODE,Pgcode);
-                			        CourseProgramPeer.doDelete(crit);
-					}
-					crit=new Criteria();
-                		        crit.add(StudentRollnoPeer.EMAIL_ID,uname);
-		                        crit.and(StudentRollnoPeer.INSTITUTE_ID,InstId);
-		                        crit.and(StudentRollnoPeer.ROLL_NO,rlno);
-		                        crit.and(StudentRollnoPeer.PROGRAM,Pgcode);
-		                        List ve=StudentRollnoPeer.doSelect(crit);
-					if(ve.isEmpty()==false){
-						crit=new Criteria();
-		        	                crit.add(StudentRollnoPeer.EMAIL_ID,uname);
-		                	        crit.and(StudentRollnoPeer.INSTITUTE_ID,InstId);
-						crit.and(StudentRollnoPeer.ROLL_NO,rlno);
-						crit.and(StudentRollnoPeer.PROGRAM,Pgcode);
-        			                StudentRollnoPeer.doDelete(crit);	
-					}
-				}
-			}
-                        else{
-                               msg="Program is not selected.";
-                	}
-			data.setMessage(msg);
-		}
-		catch(Exception e){
-			ErrorDumpUtil.ErrorLog("Exception in deleting rollno (UserAction_InstituteAdmin)!! "+e);
-		}
-	}
 	public void doUpdateRollno(RunData data, Context context)
 	{
 		try{
@@ -1117,8 +1059,6 @@ public class UserAction_InstituteAdmin extends SecureAction{
                         setTemplate(data,"call,ListMgmt_InstituteAdmin,InstAdminviewall.vm");
 		else if(action.equals("eventSubmit_doUploadMultiUserZip"))
                         doUploadMultiUserZip(data,context);
-		else if(action.equals("eventSubmit_doDeleteRollno"))
-			doDeleteRollno(data,context);
 		else if(action.equals("eventSubmit_doUpdateRollno"))
 			doUpdateRollno(data,context);
 		else if(action.equals("eventSubmit_doUpdateConflictRollno"))

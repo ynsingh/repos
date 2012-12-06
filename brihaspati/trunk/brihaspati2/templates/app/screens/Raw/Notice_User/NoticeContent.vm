@@ -109,6 +109,7 @@ $!data.getMessage()
                 <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")> $Notice_NoticeContent_msg1 </a></td>
 
 	#elseif($user_role=="student")
+	#if($Rec_size!="0")
 		#if($tdcolor1 != "2")
                         <td>
                 #elseif($tdcolor1 == "2")
@@ -116,7 +117,7 @@ $!data.getMessage()
                 #end
                 ##<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","2")> Read Notice </a></td>
                 <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")> $Notice_NoticeContent_msg1 </a></td>
-
+	#end
 	#else	
 		#if($tdcolor1 != "1")
         		<td>

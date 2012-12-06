@@ -178,7 +178,7 @@ public class ListManagement
 				for(int i=0;i<list.size();i++)
         	                {
 	                                String rollno=((StudentRollno)list.get(i)).getRollNo();
-					//ErrorDumpUtil.ErrorLog("rollno inside util=="+rollno);
+					ErrorDumpUtil.ErrorLog("rollno inside util=="+rollno);
 	                                String loginname=((StudentRollno)list.get(i)).getEmailId();
 	                                String Instid=((StudentRollno)list.get(i)).getInstituteId();
 					if(Instid.equals(Instituteid) && !lnamelist.contains(loginname)){

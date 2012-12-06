@@ -36,6 +36,10 @@ package org.iitk.brihaspati.modules.utils;
 
 import java.util.List;
 import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.ListIterator;
 import java.util.Vector;
 import com.workingdogs.village.Record;
@@ -151,13 +155,21 @@ public class CourseProgramUtil
 			{
 				if(!uname.equals("")&&!Prg.equals("Select Program")&&!Instid.equals("")&&!Instid.equals("0")&&!CourseId.equals("Select Course")&&!Prg.equals("")&&!CourseId.equals("")&&!Rollno.equals(""))
         	                {
-					crit = new Criteria();
-                        	        crit.add(StudentRollnoPeer.EMAIL_ID,uname);
-	                               	crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
-        	                        crit.add(StudentRollnoPeer.PROGRAM,Prg);
-                	                crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
-	                                StudentRollnoPeer.doInsert(crit);
-        	                        InsertCourseProgram(uname,CourseId,Prg);
+					List chkuser=CheckDuplicateRollno(Rollno,Prg,Instid);
+					if(chkuser.size()!=0)
+		                        {	
+                		                Msg =MultilingualUtil.ConvertedString("rollno_msg",File);
+        		                }
+					else
+					{
+						crit = new Criteria();
+	                        	        crit.add(StudentRollnoPeer.EMAIL_ID,uname);
+		                               	crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
+        		                        crit.add(StudentRollnoPeer.PROGRAM,Prg);
+                		                crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+	                        	        StudentRollnoPeer.doInsert(crit);
+        	                        	InsertCourseProgram(uname,CourseId,Prg);
+					}
 				}
 				else
 				{
@@ -294,7 +306,7 @@ public class CourseProgramUtil
                                                         prgname = InstituteIdUtil.getPrgName(progm);
                                                 }
 						List lst = getCourseRollnoDetail(email,Instid);
-						ErrorDumpUtil.ErrorLog("lst--"+lst);
+						//ErrorDumpUtil.ErrorLog("lst--"+lst);
 						if(lst.size()>0)
 			                        {
 			                                for(ListIterator k = lst.listIterator();k.hasNext();)
@@ -421,38 +433,86 @@ public class CourseProgramUtil
 	{
 		try
 		{
+			/**
+ 			* Get list of registered program of the user 
+ 			*/ 
 			Criteria crit = new Criteria();
 			crit.add(StudentRollnoPeer.EMAIL_ID,username);
 			List v=StudentRollnoPeer.doSelect(crit);
 			//ErrorDumpUtil.ErrorLog("existance from courseprgutil---"+v.isEmpty());
 			if(v.isEmpty()==false)
 			{
-				for(int i=0;i<v.size();i++)
+				/**
+ 				* If courseid is not null this shows delete perticular course of user from
+ 				* COURSE_PROGRAM table
+ 				* else delete all entry of user from COURSE_PROGRAM table 
+ 				*/ 
+				if(!CourseId.equals(""))
 				{
-					String prg = ((StudentRollno)v.get(i)).getProgram();
-					crit = new Criteria();
-					if(!CourseId.equals("")){
+					/**
+ 					*Get one program from list and check existence of user with this program and course in database.
+					*If (exist) 
+					* then check is this last entry of user with this program or not?
+					* If entry is last then delete entry of course and program from COURSE_PROGRAM table
+					* 	and set expiry of user in STUDENT_ROLLNO table   
+					* else
+					* 	delete entry from COURSE_PROGRAM table
+ 					*/	 
+					for(int i=0;i<v.size();i++)
+					{
+						String prg = ((StudentRollno)v.get(i)).getProgram();
+						String Instid = StringUtils.substringAfterLast(CourseId,"_");
+						crit = new Criteria();
 						crit.add(CourseProgramPeer.EMAIL_ID,username);
                                                 crit.and(CourseProgramPeer.COURSE_ID,CourseId);
                                                 crit.and(CourseProgramPeer.PROGRAM_CODE,prg);
                                                 List ve=CourseProgramPeer.doSelect(crit);
 						if(ve.isEmpty()==false){
-							crit=new Criteria();
+							crit = new Criteria();
 							crit.add(CourseProgramPeer.EMAIL_ID,username);
-							crit.and(CourseProgramPeer.COURSE_ID,CourseId);
 							crit.and(CourseProgramPeer.PROGRAM_CODE,prg);
-							CourseProgramPeer.doDelete(crit);
+							List crslist=CourseProgramPeer.doSelect(crit);
+							if(crslist.size()==1)
+							{
+								int id = ((StudentRollno)v.get(i)).getId();	
+								DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+								Calendar cal = Calendar.getInstance();
+								cal.add(Calendar.DATE,180);
+								String Stdexpdate=cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH)+1)+ "-" + cal.get(Calendar.DATE);
+								//ErrorDumpUtil.ErrorLog("------------Strx--------"+Stdexpdate);
+								crit=new Criteria();
+								crit.add(StudentRollnoPeer.ID,id);
+                                                                crit.add(StudentRollnoPeer.EMAIL_ID,username);
+                                                                crit.add(StudentRollnoPeer.EXPIRY_DATE,sdf.parse(Stdexpdate));
+                                                                crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+                                                                StudentRollnoPeer.doUpdate(crit);
+
+								crit=new Criteria();
+								crit.add(CourseProgramPeer.EMAIL_ID,username);
+								crit.and(CourseProgramPeer.COURSE_ID,CourseId);
+								crit.and(CourseProgramPeer.PROGRAM_CODE,prg);
+								CourseProgramPeer.doDelete(crit);
+							}
+							else	
+							{
+								crit=new Criteria();
+								crit.add(CourseProgramPeer.EMAIL_ID,username);
+								crit.and(CourseProgramPeer.COURSE_ID,CourseId);
+								crit.and(CourseProgramPeer.PROGRAM_CODE,prg);
+								CourseProgramPeer.doDelete(crit);
+							}
 						}
 					}
-					else
-					{
+				}
+				else
+				{
+					crit = new Criteria();
+					crit.add(CourseProgramPeer.EMAIL_ID,username);
+					List ve=CourseProgramPeer.doSelect(crit);
+					if(ve.isEmpty()==false){
+						crit=new Criteria();
 						crit.add(CourseProgramPeer.EMAIL_ID,username);
-						List ve=CourseProgramPeer.doSelect(crit);
-						if(ve.isEmpty()==false){
-							crit=new Criteria();
-							crit.add(CourseProgramPeer.EMAIL_ID,username);
-							CourseProgramPeer.doDelete(crit);
-						}
+						CourseProgramPeer.doDelete(crit);
 					}
 				}
 			}

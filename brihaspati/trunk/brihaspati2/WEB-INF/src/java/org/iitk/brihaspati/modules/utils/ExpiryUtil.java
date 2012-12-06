@@ -65,6 +65,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.StudentExpiry;
+import org.iitk.brihaspati.om.StudentRollno;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.util.RunData;
 import org.iitk.brihaspati.om.TurbineUserPeer;
@@ -83,7 +85,8 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date: 26-02-2011,08May2012,10-10-2012
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 26-02-2011,08May2012,10-10-2012,30-Nov-2012(Richa)
  */
 
 public class ExpiryUtil{
@@ -502,6 +505,20 @@ public class ExpiryUtil{
 						log.info("this is user deletion message after completed their expiry date. User Information is --> User Email="+uname+" | User Id="+usid+" | CourseName ="+c_name+" | Group Id= "+gid);
 						}
 					}
+					//These lines added by Richa to expire rollno 
+					crit=new Criteria();
+                                        crit.add(StudentRollnoPeer.EXPIRY_DATE,(Object)cur_date,crit.LESS_EQUAL);
+                                        crit.and(StudentRollnoPeer.EXPIRY_DATE,(Object)newdate,crit.GREATER_THAN);
+                                        List rlnolist=StudentRollnoPeer.doSelect(crit);
+                                        for(int j=0;j<rlnolist.size();j++)
+                                        {
+						StudentRollno rlno=(StudentRollno)rlnolist.get(j);
+						int id=rlno.getId();
+						crit=new Criteria();
+                                                crit.add(StudentRollnoPeer.ID,id);
+                                                StudentRollnoPeer.doDelete(crit);
+					}
+
                                 }
 			}
 			success=true;
