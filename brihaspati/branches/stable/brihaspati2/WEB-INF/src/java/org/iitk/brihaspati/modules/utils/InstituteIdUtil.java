@@ -72,6 +72,7 @@ public class InstituteIdUtil
 		try{
 			crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
         	        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
+			crit.addAscendingOrderByColumn(InstituteAdminRegistrationPeer.INSTITUTE_NAME);
 	                instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
 		}
 		catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in getInstList() - Institute Id Util class !!"+ex);}
@@ -113,6 +114,7 @@ public class InstituteIdUtil
 					crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
                                 	crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
                         }
+			crit.addAscendingOrderByColumn(InstituteAdminRegistrationPeer.INSTITUTE_NAME);
                         instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
 		}
 		catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in searchInst() - Institute Id Util class !!"+ex);}
@@ -483,7 +485,7 @@ public class InstituteIdUtil
                                         instidlist.add(InsId);
                         }
                 }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getInstructorInstId() method --[InstituteIdUtil]"+ex);}
-        ErrorDumpUtil.ErrorLog("Inst id in InstituteIdUtil======>"+instidlist.size());
+//        ErrorDumpUtil.ErrorLog("Inst id in InstituteIdUtil======>"+instidlist.size());
         return instidlist;
         }
 

@@ -53,7 +53,7 @@ $!data.getMessage()
         #elseif($tdcolor == "3")        
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a></td>
+        <a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> $brih_multiple1 $brih_student $brih_add</a></td>
 #if($tdcolor != "2")
         <td>
         #elseif($tdcolor == "2")        
@@ -65,7 +65,7 @@ $!data.getMessage()
         #elseif($tdcolor == "1")        
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi" || $lang == "gujarati") $brih_student $brih_add #else $brih_add $brih_students #end </a>
+        <a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> $brih_student $brih_add </a>
         </td>
 </tr>
 ##</table>
@@ -100,7 +100,7 @@ $!data.getMessage()
       </tr>
       #end
       	<tr align="right"><td colspan=6><b>$brih_multiStuRegist<b></td></tr>
-	<tr align="right" bgcolor="$ui.menuColor"><td colspan=6> #if($lang =="hindi") $brih_course $brih_Of1 $brih_name #else $brih_course $brih_name #end &nbsp;&nbsp;&nbsp;$course</td></tr>
+	<tr align="right" bgcolor="$ui.menuColor"><td colspan=6> $brih_course $brih_Of1 $brih_name &nbsp;&nbsp;&nbsp;$course</td></tr>
   	##</tr>
    	
           <tr align="right" bgcolor="$ui.tableColor" width="100%">

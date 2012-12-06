@@ -60,6 +60,8 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_EmailUpdation;
 import java.io.File;
 import java.util.Vector;
 import java.util.Iterator;
+import org.iitk.brihaspati.modules.utils.StringUtil;
+
 
 /**
  * Action class to resend activation for direct registration
@@ -82,7 +84,6 @@ public class ResendActivation extends VelocityAction{
                 Criteria crit = null;
                 String e_mail=data.getParameters().getString("email");
 		String lang=data.getParameters().getString("lang","english");
-		ErrorDumpUtil.ErrorLog("Language "+lang);
 		//Properties pr ;
 		//String fileName=new String();
 		//String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";	
@@ -99,36 +100,49 @@ public class ResendActivation extends VelocityAction{
 		String hash="", emai_l="", u_name="";	
 		int user = 0;
 
+		if(StringUtil.checkString(e_mail) != -1)
+                {
+                     data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
+                     return;
+                }
+		if(e_mail.indexOf("@") == -1)
+                {
+                     data.addMessage(MultilingualUtil.ConvertedString("malformed_email",LangFile));
+                     return;
+                }
+
+
 		try{	
 		//Check, if email exists in InstituteRegistrationList.xml
 		path=TurbineServlet.getRealPath("/InstituteRegistration/InstituteRegistrationList.xml");
                 File f=new File(path);
 		if(f.exists()){
-			a_key = XMLWriter_InstituteRegistration.getActivationKey(path,e_mail);			
-			domain = XMLWriter_InstituteRegistration.getDomain(path,e_mail,a_key);
-			//ErrorDumpUtil.ErrorLog("ACTIVATION KEY 1....." +a_key);
-			if(!a_key.equals(null) && !domain.equals(null))
+			a_key = XMLWriter_InstituteRegistration.getActivationKey(path,e_mail);
+			if(!a_key.equals("Not exist"))			
 			{
-				if(a_key.equals("Email confirmed"))
+				domain = XMLWriter_InstituteRegistration.getDomain(path,e_mail,a_key);
+				//if(!a_key.equals(null) && !domain.equals(null))
+				if(!domain.equals(null))
 				{
-					try{
-						sent=true;
-		                        	str=MultilingualUtil.ConvertedString("ac_cnfrm",LangFile);
-                		        	data.setMessage(str);
+					if(a_key.equals("Email confirmed"))
+					{
+						try{
+							sent=true;
+		                        		str=MultilingualUtil.ConvertedString("ac_cnfrm",LangFile);
+                		        		data.setMessage(str);
+						}
+						catch (Exception ex){
+                        				String msg3 = "Error in activation      ";
+                       					ErrorDumpUtil.ErrorLog("Activation mail sending  "+ex);
+                		        		throw new RuntimeException(msg3);
+		                		}
+					}			
+					else{
+						sent = sendMail(e_mail,a_key,"cnfrm_i",LangFile,data,lang,domain);
 					}
-					catch (Exception ex){
-                        			String msg3 = "Error in activation      ";
-                       				ErrorDumpUtil.ErrorLog("Activation mail sending  "+ex);
-                		        	throw new RuntimeException(msg3);
-		                	}
-				}			
-				else{
-					sent = sendMail(e_mail,a_key,"cnfrm_i",LangFile,data,lang,domain);
-					//ErrorDumpUtil.ErrorLog("SENT VALUE 1....."+sent);
 				}
 			}
 		}
-
 		if(!sent){
 			//Check, if email exists in courses.xml
 			path=data.getServletContext().getRealPath("/OnlineUsers/courses.xml");
@@ -146,15 +160,12 @@ public class ResendActivation extends VelocityAction{
 							if(flag.equals("0"))
 							{
 								a_key = ((CourseUserDetail)userList.get(i)).getActivation();
-								//ErrorDumpUtil.ErrorLog("ACTIVATION KEY 2....." +a_key);
 								if(a_key!=null){
 				                                	sent = sendMail(e_mail,a_key,"cnfrm_c",LangFile,data, lang,"");
-									//ErrorDumpUtil.ErrorLog("SENT VALUE 2....."+sent);
                         					}//if 5
 							}//if 4
 							else
 							{
-								//ErrorDumpUtil.ErrorLog("FLAG 1....."+flag);
 								try{
 									sent=true;
 			                                                str=MultilingualUtil.ConvertedString("ac_cnfrm",LangFile);
@@ -190,15 +201,12 @@ public class ResendActivation extends VelocityAction{
                                                         if(flag.equals("0"))
                                                         {
 								a_key = ((CourseUserDetail)userList1.get(i)).getActivation();
-								//ErrorDumpUtil.ErrorLog("ACTIVATION KEY 3....." +a_key);
                                                         	if(a_key!=null){
                                                                 	sent = sendMail(e_mail,a_key,"cnfrm_u",LangFile,data, lang,"");
-									//ErrorDumpUtil.ErrorLog("SENT VALUE 3....."+sent);
                                                         	}//if 5
 							}//if 4
 							else
 							{
-								//ErrorDumpUtil.ErrorLog("FLAG....."+flag);	
 								try{
 									sent=true;
                                                 			str=MultilingualUtil.ConvertedString("ac_cnfrm",LangFile);
@@ -255,7 +263,6 @@ public class ResendActivation extends VelocityAction{
 						{
 							//confirmation mail sent successfully
 							sent = sendMail(e_mail,hash,"cnfrm_mail",LangFile,data,lang,"");
-                                        		//ErrorDumpUtil.ErrorLog("SENT VALUE 3....."+sent);			
 						}
                                 	}	
 				}//if
@@ -288,7 +295,6 @@ public class ResendActivation extends VelocityAction{
 				}//else
 			}//if
 		}//if
-
 		}//try
 		catch(Exception ex){
                      String msg5 = "Error in activation   ";
@@ -302,7 +308,6 @@ public class ResendActivation extends VelocityAction{
 			int cmpid=-1;
                 	int uid=UserUtil.getUID(e_mail);
                 	boolean Result= uid == cmpid;
-                	//ErrorDumpUtil.ErrorLog("GETTING USER ID....." +uid +" "+ Result);
 		
                 	if(Result){
 	                	  try{
@@ -323,10 +328,8 @@ public class ResendActivation extends VelocityAction{
                           		crit.add(UserPrefPeer.USER_ID,uid);
                           		List list = UserPrefPeer.doSelect(crit);
                           		a_key =((UserPref)list.get(0)).getActivation();
-					//ErrorDumpUtil.ErrorLog("ACTIVATION KEY INSIDE RESEND ACTIVATION	"+a_key);
 			  		if (a_key == null || a_key.equalsIgnoreCase("NULL"))
 			  		{
-						//ErrorDumpUtil.ErrorLog("i m here 1");
 						try{
 							str=MultilingualUtil.ConvertedString("usr_queries",LangFile);
                               				data.setMessage(str);
@@ -339,7 +342,6 @@ public class ResendActivation extends VelocityAction{
 			  		}//if 2
 					else if(a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
 			   		{
-						//ErrorDumpUtil.ErrorLog("i m here 2");
 							try{
 								str=MultilingualUtil.ConvertedString("ac_activate",LangFile);
 	                              				data.setMessage(str);
@@ -352,7 +354,6 @@ public class ResendActivation extends VelocityAction{
 			   		}//if 3
 					else if(!(a_key.equalsIgnoreCase("ACTIVATE")) && !(a_key.equalsIgnoreCase("NULL")))
 			     		{
-						//ErrorDumpUtil.ErrorLog("INSIDE 4TH IF");
 						//sending activation link in the mail
 				
 						/**
@@ -438,7 +439,6 @@ private boolean sendMail(String email, String a_key, String u_mode, String LangF
         String serverPort=Integer.toString(srvrPort);
 
 	try{
-		ErrorDumpUtil.ErrorLog("i m here 4");
 	 /**
           * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
           * instAdmin/ brihaspatiAdmin defined in brihasapti.properties

@@ -121,35 +121,21 @@ $page.setBgColor($ui.bgcolor)
 		<input type=hidden name="flag" value="$flag">
 		<tr align="right"><td colspan=4 align="right">$brih_guestMsg2</td></tr>
 </form>
-<tr align="right"><td colspan=4 align="right"><b>
-<font face="$ui.sansSerifFonts">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; OR
-<br>Sign in with:
-</font>
-<br>
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo") shape="circle"><img src="$content.getURI("/images/yahoo.png")" border="0" height="50" width="100"></a>
-&nbsp;&nbsp;
-<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google") shape="rect"><img src="$content.getURI("/images/google.png")" border="0" height="50" width="100"></a>
-<br>
+<tr align="right"><td colspan=4 align="right"> 
+	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Yahoo")><img src="$content.getURI("/images/yahoo.png")" border="0" alt="Yahoo" align="middle" title="The email can be your Login Id or Email"></a>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href=$link.setAction("OpenIdRequest").addPathInfo("lang",$lang).addPathInfo("openid_identifier","Google")><img src="$content.getURI("/images/google.png")" border="0" alt="Google" align="middle" title="The email can be your Login Id or Email"></a>
+	<font face="$ui.sansSerifFonts">
+		<br> $brih_signin -
+	</font>
+	<br>
 </td></tr>
 #*
-<table bgcolor="#d8d9ec">
-<tr><td>
-<font face="$ui.sansSerifFonts">
-$brih_openid_msg<br><br>
-$brih_openid_msg1<br>
-$brih_openid_msg2<br>
-$brih_openid_msg3
-</font>
-<br>
-<a href="http://openid.net/what/">$brih_learn_more &raquo;</a><br>
-</td></tr>
-</table>
 *#
 ##<table align="right">
-		<tr align="right"><td colspan=4 align="right"><b>
-			<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
-			<img src="$content.getURI("/images/orange_sq_but.gif")">
+	<tr align="right"><td colspan=4 align="right"><b>
+		<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
+		<img src="$content.getURI("/images/orange_sq_but.gif")">
 		</b></td></tr>
 		<tr align="right"><td colspan=4 align="right"><b>
 			<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang)>$brih_reg2 $brih_course $brih_list</a>
@@ -160,7 +146,7 @@ $brih_openid_msg3
 			<img src="$content.getURI("/images/orange_sq_but.gif")">
 		</b></td></tr>
 
-		<tr align="right"><td colspan=3 align="right"><b>
+		<tr align="right"><td colspan=4 align="right"><b>
 			<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang)> $brih_open $brih_access $brih_course</a>
 			<td><img src="$content.getURI("/images/orange_sq_but.gif")"> <td>
 		</b></td></tr>
@@ -181,11 +167,11 @@ $brih_openid_msg3
 			
 		</b></td></tr>
 		##Add ResendActivation link in login page
-		<tr align="right"><td colspan="3" align="right"> <b>
+		<tr align="right"><td colspan="4" align="right"> <b>
 			<a href=$link.setPage("ResendActivation.vm").addPathInfo("lang",$lang)><b> $brih_act $brih_key $brih_resend </b></a>
 			<td> <img src="$content.getURI("/images/orange_sq_but.gif")"> </td>
 		</b></td></tr>
-		<tr align="right"><td colspan=3 align="right"><b>
+		<tr align="right"><td colspan=4 align="right"><b>
 			<a href=$link.setPage("RemoteAuthenticate.vm").addPathInfo("lang",$lang) > $brih_brihaspati $brih_server $brih_from1  $brih_auth </a>
 			<td><img src="$content.getURI("/images/orange_sq_but.gif")"> <td>
 		</b></td></tr>

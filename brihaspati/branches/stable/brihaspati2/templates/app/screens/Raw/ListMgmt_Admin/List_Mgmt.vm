@@ -20,7 +20,8 @@ $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
-<table bgcolor="$ui.tableColor" width=100%>
+<div class="scroll">
+<table bgcolor="$ui.tableColor" width="100%">
 <tr bgcolor="$ui.menuColor">
 	<td>
 	<font face="$ui.sansSerifFonts" size=3>
@@ -53,7 +54,7 @@ $!data.getMessage()
 	#end
 </tr>
 </table>
-<table width=100% align=left bgcolor="$ui.tableColor">
+<table width="100%" align="left" bgcolor="$ui.tableColor">
 <tr>
 #if($tdcolor != "1")
 	<td width="50%"> 
@@ -72,13 +73,13 @@ $!data.getMessage()
 ##  </table>
 #if($listcourse =="listcourse")
 <form name="frm" method="post" action="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm")">
-<table width=100% align=left bgcolor="$ui.tableColor">
+<table width="100%" align="left" bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor">
 ## **************** Search By Institute *****************
 	
                 <td><b> #if($lang == "hindi" || $lang == "gujarati") $RemoteInstitute $brih_searchBy #else $brih_searchBy $RemoteInstitute #end </b></td>
                 <td align=left>
-			<select class="drop" name="ciname" size="1" onChange="Changename(document.frm,this);" style="width:300px;">
+			<select class="drop" name="ciname" size="1" onChange="Changename(document.frm,this);" style="width:250px;">
 				#if($mode != "All")
                                 <option value="$ciid">$cinme</option>
 				#end
@@ -115,9 +116,8 @@ $!data.getMessage()
 	#else
 		#set($headings = ["","$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
 	#end
-<table bgcolor="$ui.tableColor" align="left" width="100%">
-  <tr><td>
-      ##<table cellspacing="1" cellpadding="1">
+<table bgcolor="$ui.tableColor" align="center" width="100%" >
+  <tr>
         <tr>
           #foreach($heading in $headings)
                   #headerCell($heading)
@@ -206,6 +206,7 @@ $!data.getMessage()
     </td>
  </tr>
 </table>
+</div>
 #end
 </form>
 <br>

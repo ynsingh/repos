@@ -34,8 +34,10 @@ package org.iitk.brihaspati.modules.utils;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.File;
-//import java.util.Vector;
+import java.util.Date;
+import java.util.Vector;
 import java.util.Properties;
+
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.Email;
 import org.apache.turbine.Turbine;
@@ -248,7 +250,8 @@ public class MailNotification{
 		
 		String email_new="";
 		String msg = "";
-		//ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
+		boolean flag = false;
+	//	ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
 		try{ //try 1
 			 if(!mail_id.equals("")){
 				email_new=mail_id;
@@ -318,12 +321,20 @@ public class MailNotification{
 							l_mbp.setContent(message, "text/html");
                                                        	l_mp.addBodyPart(l_mbp);
 							// Create the Multipart and add bodyparts to it
-							if( (attachedFile.length() > 0 )) {
-								MimeBodyPart attachment_Bp = new MimeBodyPart();
-                                                                DataSource source = new FileDataSource(attachedFile);
-                                                                attachment_Bp.setDataHandler(new DataHandler(source));
-                                                                attachment_Bp.setFileName(attachedFile);
-                                                        	l_mp.addBodyPart(attachment_Bp);
+							if( !attachedFile.equals("tmp")&&(attachedFile.length() > 0 )) {
+								String tmpStr [] = attachedFile.split(",");
+								if(tmpStr.length >0){
+									for( int k=0; k < tmpStr.length; k++) {
+										MimeBodyPart attachment_Bp = new MimeBodyPart();
+                        		                                        //DataSource source = new FileDataSource(attachedFile);
+                        		                                        DataSource source = new FileDataSource(tmpStr[k]);
+                		                                                attachment_Bp.setDataHandler(new DataHandler(source));
+        		                                                        attachment_Bp.setFileName(attachedFile);
+		                                                        	l_mp.addBodyPart(attachment_Bp);
+										//attachment_Bp = null;
+										//source = null;
+									}
+								}
                                                         }
 							l_msg.setContent(l_mp);
 							// Set the Date: header
@@ -356,15 +367,14 @@ public class MailNotification{
 							
 						} catch (MessagingException mex) { // Trap the MessagingException Error
                                                 // If here, then error in sending Mail. Display Error message.
-                                                	msg=msg+"The error in sending Mail Message "+mex.toString();
+
+                                                msg=msg+"The error in sending Mail Message "+mex.toString();
+						flag = true;
                                                 }
-						catch (Exception ex) { // Trap the MessagingException Error
-                                                // If here, then error in sending Mail. Display Error message.
-                                                         msg=msg+"The error in sending Mail Message Exception "+ex.toString();
-                                                }
-                                               
                                                 //msg="Mail send succesfully!!";
-                                                msg=msg + MultilingualUtil.ConvertedString("mail_msg2",LangFile);
+						if(!flag)
+	                                                msg= MultilingualUtil.ConvertedString("mail_msg2",LangFile);
+
                                         }
                                         else{
                                                 //msg="Mail can't send since your mail id is null!!";
@@ -379,7 +389,63 @@ public class MailNotification{
                 catch(Exception ex)
                 {
                         msg=msg+"The error in mail send !!!"+ex;
+			flag = true;
                 }
+
+
+		mail_id.trim();
+		// msg is a message comes from BrihLang_en.properteis 
+		// message param is real message which is composed by a user.
+		message.trim();
+		/** getting path for creating EmailSpooling  directory*/
+	
+       		String filePath = TurbineServlet.getRealPath("/EmailSpooling");
+		File f = new File(filePath);
+		String writeinxml = "", searchMailId = "", searchMsg = "";
+		Vector  mailDetail1 = new Vector();
+		Vector mailDetail = new Vector();
+		InstituteFileEntry ifdetail;
+		if(flag){
+			/**
+                          * @see ExpiryUtil in Utils
+                         */
+			LangFile.trim();
+                        String curdate = ExpiryUtil.getCurrentDate("-");
+			Long longTime = new Date().getTime();
+			String time = longTime.toString();
+
+			/** This is executed while Langfile is nt coming properly to read message from conf */
+
+			if(org.apache.commons.lang.StringUtils.isBlank(LangFile) || LangFile.equals("english") )  
+				LangFile = TurbineServlet.getRealPath("/conf")+"BrihLang_en.properties/";
+			WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, curdate, time, LangFile);
+		}
+		if(!flag){
+			if(f.exists())
+				mailDetail = XMLWriter_EmailSpooling.getEmailSpoolDetails(filePath+"/EmailSpoolFile.xml");
+			if( mailDetail.size() != 0){
+				for(int k=0;k<  mailDetail.size();k++) {
+					ifdetail=(InstituteFileEntry) mailDetail.elementAt(k);
+					searchMailId =  ifdetail.getInstituteEmail().trim();
+                                        searchMsg = ifdetail.getMessage().trim();
+					String searchAttachFile = ifdetail.getAttachFile().trim();
+					if( mail_id.equals(searchMailId) && message.equals(searchMsg) ){
+					
+						//ErrorDumpUtil.ErrorLog("\ninside======mail_id="+mail_id+"\t searchMailId="+searchMailId+"\n  message=="+message+"\t searchMsg=="+searchMsg);
+						 XMLWriter_EmailSpooling.RemoveElement(filePath+"/EmailSpoolFile.xml", mail_id, message);		
+						 if(searchAttachFile.length() >0)
+							if(!searchAttachFile.equals("tmp"))
+		                                                deletingAttachedFile(searchAttachFile);
+
+					}
+				}
+			}
+			if(attachedFile.length()>0)
+				if(!attachedFile.equals("tmp"))
+					deletingAttachedFile(attachedFile);
+		}
+			 mailDetail = null;
+
                 return(msg);
 
 	}// sendMailClose

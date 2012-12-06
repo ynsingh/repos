@@ -41,6 +41,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_Admin;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
  * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>1Nov2012
  * @author <a href="mailto:palseema@rediffmail.com">Manorama Pal</a> 
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+ * @modified date:30-Nov-2012(Richa)
  */
 import java.util.List;
 import java.util.Vector;
@@ -61,7 +63,10 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.StudentRollno;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 
 public class UserManagement_Admin extends SecureScreen_Admin
@@ -128,6 +133,7 @@ public class UserManagement_Admin extends SecureScreen_Admin
                        			file=(String)data.getUser().getTemp("LangFile");
                         		ParameterParser pp=data.getParameters();
 					List v=null;
+
                         		Vector userList=new Vector();
                         		String query=pp.getString("queryList");
                         		if(query.equals(""))
@@ -147,15 +153,28 @@ public class UserManagement_Admin extends SecureScreen_Admin
                                 		str="LOGIN_NAME";
                         		else if(query.equals("Email"))
                                 		str="EMAIL";
+					else if(query.equals("RollNo"))
+		                                str="ROLL_NO";
+                		        if(query.equals("RollNo"))
+		                        {
+                		                Criteria crit = new Criteria();
+		                                crit.add("STUDENT_ROLLNO",str,(Object)("%"+valueString+"%"),crit.LIKE);
+                		                crit.addAscendingOrderByColumn(StudentRollnoPeer.ROLL_NO);
+		                                v=StudentRollnoPeer.doSelect(crit);
+					}
+
 					/** Get the list of student according to query
  					*add in vector v 			
 					*/
-                        		Criteria crit=new Criteria();
-                        		crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-                        		crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
-                        		crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
-                        		crit.setDistinct();
-                        		v=TurbineUserPeer.doSelect(crit);
+					else
+					{
+	                        		Criteria crit=new Criteria();
+        	                		crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+                	        		crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+                        			crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
+                        			crit.setDistinct();
+	                        		v=TurbineUserPeer.doSelect(crit);
+					}
 					/** If User exists then search the detail of user
  					*according to the institute.
 					*@see ListManagement in utils.
@@ -163,10 +182,17 @@ public class UserManagement_Admin extends SecureScreen_Admin
 					*/
 					String insname=data.getParameters().getString("institutename","");
 					context.put("slctdinstname",insname);
+					List rusrlist=CourseProgramUtil.getInstituteUserRollnoList((Integer.toString(InstituteIdUtil.getIst_Id(insname))));
+		                        context.put("rollnolist",rusrlist);
                         		if(v.size()!=0)
                                 	{
-					
-                                		userList=ListManagement.getInstituteUDetails(v,"User",Integer.toString(InstituteIdUtil.getIst_Id(insname)));
+						if(query.equals("RollNo")){
+                                 		       userList=ListManagement.getInstituteUDetails(v,"RollNo",Integer.toString(InstituteIdUtil.getIst_Id(insname)));
+			                        }
+						else
+						{
+	                                		userList=ListManagement.getInstituteUDetails(v,"User",Integer.toString(InstituteIdUtil.getIst_Id(insname)));
+						}
 						if(userList.size()==0)
 							data.setMessage("The String"+" "+"'"+valueString+"'"+" "+"not matched in the Institute"+" "+insname);
 						/** Get the path of Admin.properties file

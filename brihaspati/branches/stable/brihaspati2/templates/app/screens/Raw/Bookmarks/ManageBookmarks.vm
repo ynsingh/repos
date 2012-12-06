@@ -7,7 +7,8 @@
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  *  @author <a href="mailto:smita37uiet@gmail.com ">Smita pal</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- *  @modified date:27-09-2010
+ *  @author <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
+ *  @modified date:27-09-2010,19-10-2012
  *  @modified date: 07-12-2010 dirTemp is added, & language sequencing is done
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
@@ -20,6 +21,15 @@ $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in the corresponding screen class.
 #set($lang=$data.getUser().getTemp("lang").toString())
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/brih_Helpvideo.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.js")"></script>
+<link type="text/css" href="$content.getURI("/scrpts/youtubeplugin/youtube_Helplink.css")" rel="stylesheet"></script>
+<script type="text/javascript">
+        $(function () {
+            $("a.youtube").YouTubePopup({ autoplay: 0 });
+        });
+ </script>
 
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
         <tr> <td><b>
@@ -54,7 +64,8 @@ $!data.getMessage()
                 <a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All")> #if($lang == "hindi") $brih_Bookmark $brih_Of1 $brih_Manage #else $brih_Manage $brih_Bookmark #end </a></b>&nbsp;&nbsp;&nbsp;&nbsp;
 		</td>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td lign="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin2("/brihaspati2/docs/ManageBookmarks.html","newWin");>$brih_help</a>
-                </td>
+		 <a class="youtube" href="#" rel="$vid" style=text-decoration:none><font size="3">| $brih_VideoHelp</font></a>
+		</td>
         </tr>
 </table>
 <br>

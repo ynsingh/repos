@@ -40,6 +40,8 @@ package org.iitk.brihaspati.modules.utils;
  * @author: <a href="mailto:sharad23nov@gmail.com">Sharad Singh</a>
  * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 09-11-2012
  */
 public class InstituteFileEntry
 {
@@ -63,6 +65,58 @@ public class InstituteFileEntry
 	private String password;
 	private int status;
 	private int Id; 
+	private String subject;
+	private String message;
+	private String date;
+	private String attempt;
+	private String langFile;
+	private String attachFile;
+
+	public void setSubject(String subject)
+        {
+                this.subject=subject;
+        }
+        public String getSubject()
+        {
+                return subject;
+        }
+
+	public void setMessage(String message)
+        {
+                this.message=message;
+        }
+        public String getMessage()
+        {
+                return message;
+        }
+
+	public void setDate(String date)
+        {
+                this.date=date;
+        }
+
+        public String getDate()
+        {
+                return date;
+        }
+	
+	public void setAttempt(String attempt){
+		this.attempt = attempt;
+	}
+	
+	public String getAttempt(){
+		return attempt;
+	}
+
+	public void setLangFile(String langFile)
+        {
+                this.langFile=langFile;
+        }
+
+        public String getLangFile()
+        {
+                return langFile;
+        }
 
 	public void setInstituteEmail(String email)
         {
@@ -215,6 +269,15 @@ public class InstituteFileEntry
         public int getID()
         {
                 return Id;
+        }
+
+	public void setAttachFile(String attachFile)
+        {
+                this.attachFile=attachFile;
+        }
+        public String getAttachFile()
+        {
+                return attachFile;
         }
 	public void setInstituteAdminStatus(int status)
         {

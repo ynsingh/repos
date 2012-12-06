@@ -384,7 +384,7 @@
         <column name="ROLL_NO" required="true" type="VARCHAR" size="255" />
         <column name="PROGRAM" required="true" type="VARCHAR" size="255"/>
         <column name="INSTITUTE_ID" required="true" type="VARCHAR" size="255"/> 
-	<column name="EXPIRY_DATE" default="0" required="true" type="TIMESTAMP"/>
+	<column name="EXPIRY_DATE" default="0000-00-00" required="true" type="TIMESTAMP"/>
 	<unique>
 	   	<unique-column name="ROLL_NO"/>
 	   	<unique-column name="PROGRAM"/>
