@@ -1702,7 +1702,7 @@ public class UserManagement
 			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 	                String pasExpday=AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
 			int pex=180;
-			if(!pasExpday.equals(""))
+			if(!(org.apache.commons.lang.StringUtils.isBlank(pasExpday)))
 	        	        pex=Integer.parseInt(pasExpday);
 			Date date=new Date();
                         Calendar now = Calendar.getInstance();

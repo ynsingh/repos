@@ -45,6 +45,7 @@ import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import java.util.List;
 import org.apache.torque.util.Criteria;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author <a href="mailto:chitvesh@yahoo.com ">Chitvesh Dutta</a> 
@@ -85,7 +86,7 @@ public class AdminParam extends SecureScreen{
 		 String CrsExp = AdminProperties.getValue(path,"brihaspati.admin.courseExpiry");
 		 context.put("CrsExp",new Integer(CrsExp));
 		 String PassExp = AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
-		if(PassExp.equals("")){
+		if(StringUtils.isBlank(PassExp)){
 			PassExp="180";
 		}
                  context.put("PassExp",PassExp);
