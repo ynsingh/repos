@@ -9,28 +9,33 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
-
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+
+#set($lang = $data.getUser().getTemp("lang" ).toString())
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
 <font face="$ui.sansSerifFonts">
-<table bgcolor="$ui.menuColor" width=100% cellspacing=0>
-           <td align="right">
-           <font face="$ui.sansSerifFonts" size=3>
-        <b>
-        #if($st == "ins")
-        $brih_backup |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString() </a> |  <a href=$link.setPage("call,IndexHome.vm")>$brih_home </a>
-        #else
-        <a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home </a> | <a href=$link.setPage("call,Backups,Backups.vm")> $brih_backup </a> | $brih_backup $brih_list
-        #end
-       </td>
 
+<table bgcolor="$ui.menuColor" width=100% cellspacing=0>
+<tr>
+        <td>
+        <b>
+	#if($st == "ins")
+	<a href=$link.setPage("call,IndexHome.vm")>$brih_home </a> |
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString() </a> |  
+	<a href=$link.setPage("call,Backups,BackupIns.vm").addPathInfo("count","1")> $brih_backup </a> | $brih_backup $brih_list
+	#else
+        <a href=$link.setPage("Index.vm")>$brih_ad $brih_home </a> | 
+	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1")> $brih_backup </a> | $brih_backup $brih_list
+	#end
+        </td>
+</tr>
 </table>
 
 #if(!($list=="navil"))
-	<table align="right" bgcolor="$ui.tableColor" width=100%>
+	<table align="left" bgcolor="$ui.tableColor" width=100%>
 		#*<tr>
 			<td colspan="4"><b> #if($lang!="english") $QuestionBank_available $brih_backup $brih_Of $brih_list #else $brih_listOf $QuestionBank_available $brih_backup #end </b></td>
 		</tr>*#
@@ -66,8 +71,8 @@ $!data.getMessage()
 		#if($st != "ins")
 			<td> $brih_serialNo </td>
 		#end
-		<td align="right" colspan=2>$brih_availableAction</td>
-		<td align="right" width=30%> #if($lang!="english") $brih_backup $brih_Of2 $brih_file $brih_Of1 $brih_name #else $brih_name $brih_of $brih_backup $brih_file #end </td>
+		<td width=30%> #if($lang!="english") $brih_backup $brih_Of2 $brih_file $brih_Of1 $brih_name #else $brih_name $brih_of $brih_backup $brih_file #end </td>
+		<td colspan=2>$brih_availableAction</td>
 	</tr>
 	#set ($i=0)
 	#foreach($lst in $list)
@@ -84,8 +89,8 @@ $!data.getMessage()
 							## Commented By Shaista 
 			                ##<td>$lst.getName()</td>
 			                ##<td><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName())">$brih_download</a></td>
-			                <td align="right"><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$list.get($i))">$brih_download</a></td>
-			                <td align="right" colspan=3>$list.get($i)</td>
+			                <td>$list.get($i)</td>
+			                <td><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$list.get($i))">$brih_download</a></td>
 			        </tr>
 			##end
 		#else

@@ -57,7 +57,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date: 13-Feb-2011 (Shaista),05-09-12
+ * @modified date: 13-Feb-2011 (Shaista), 05-09-12, 07-12-2012 (Shaista)
  */
 
 public class MailCompose extends SecureScreen
@@ -193,6 +193,7 @@ public class MailCompose extends SecureScreen
 			{
 				topicDesc=topicDesc+ "\n"+str[j];
 			}
+/*
 			try{
 				j = 0; 
 				str = new String[1000]; 
@@ -221,6 +222,7 @@ public class MailCompose extends SecureScreen
 				typedCharDesc = typedCharDesc+str[j];
 			}
 				context.put("sentMess",typedCharDesc);
+*/
 			String subject1 = "Re:"+subject;
 			screenMessage = username+" wrote: "+"\n"+topicDesc;	
 			context.put("toAddress",username);	

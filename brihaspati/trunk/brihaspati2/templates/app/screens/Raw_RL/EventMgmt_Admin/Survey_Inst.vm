@@ -1,12 +1,10 @@
 
 #*
  * @(#) Survey_Inst.vm
- * Copyright (c) 2006, 2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2006-2008 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author  <a href="nagendrakumarpal@yahoo.co.in">Nagendra kumar singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
- *  @modify <a href="mailto:shaistashekh@hotmail.com"> Shaista </a>
- *  @modify 13-05-09
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -19,23 +17,31 @@ $page.setBgColor($ui.bgcolor)
 ## Representation of TOP BAR
 
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
-        <tr align="right">
+        <tr>
                 <td>
                 <font face="$ui.sansSerifFonts" size=3><b>
 				$page.setTitle("Survey")
 				#if($mode=="adphase")
-					<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> |
-					<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm")>$brih_emgmt</a> |  $brih_ins $brih_for $brih_survey $WikiCreate & $brih_post 
+					<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_home</a> |
+					#if($lang=="hindi")
+					<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm")>$brih_emgmt</a> | $brih_ins $brih_for $brih_survey $brih_create & $brih_post
+					#else
+					<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm")>$brih_emgmt</a> | Create & Post $brih_survey $brih_for $brih_ins 
+					#end
 				#elseif($mode=="sresult") 
-					<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | 
-					<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm")>$brih_emgmt</a> | $brih_survey $brih_Of1 $brih_result
+					<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_home</a> | 
+					<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm")>$brih_emgmt</a> | $brih_survey $brih_result
 
 				#elseif($mode=="update") 
-					<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | 
-					<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm")>$brih_emgmt</a> | $brih_survey $brih_Of $brih_update
+					<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_home</a> | 
+					<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm")>$brih_emgmt</a> | $brih_survey $brih_update
 				#else
-					$brih_for $brih_survey $cname |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> | 
-					<a href=$link.setPage("call,IndexHome.vm")> $brih_home</a>  
+					<a href=$link.setPage("call,IndexHome.vm")> $brih_home</a> | 
+					#if($lang=="hindi")
+						<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> | $cname $brih_for $brih_survey  
+					#else
+						<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> | $brih_survey $brih_for $cname 
+					#end
 				#end
 		</b></font>
                 </td>
@@ -45,11 +51,11 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <table width=100%>
         <tr>
-                <td align=left>
+                <td align=right>
 		#if(($mode=="adphase")||($mode=="sresult")||($mode=="update"))
-                <a href=javascript:popupWin("/brihaspati2/docs/Survey.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Survey.html","newWin");>$brih_help</a>
 		#else
-                	<a href=javascript:popupWin("/brihaspati2/docs/SurveyStud.html","newWin");>$brih_help</a> <img src="$content.getURI("/images/Lefthand.gif")">
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/SurveyStud.html","newWin");>$brih_help</a>
 		#end
                 </td>
         </tr>
@@ -69,20 +75,26 @@ $!data.getMessage()
 <table border=1 align=center bgcolor="$ui.tableColor" width=50%>
 	<tr><td  width=100% align="center" bgcolor="$ui.menuColor"> <font color="#000000 "><I><b>
 	#if($mode=="adphase")	
-		-: $brih_survey $brih_for
+		$brih_survey $brih_for:-
 	#elseif($mode=="stphase")
-		-: $brih_survey $brih_for $cname
+		#if($lang=="hindi") $cname :- $brih_for $brih_survey #else $brih_survey $brih_for:-$cname #end
 	#elseif($mode=="sresult")
-		-: $brih_survey $brih_Of2 $brih_result $brih_for
+	#if($lang=="hindi") $brih_survey $brih_Of2 $brih_result $brih_for:-	#else $brih_survey $brih_result $brih_for:- #end
 	#elseif($mode=="update")
 		$brih_survey $brih_update
 	#end
 	</b></I></td></tr>
 		#if(($mode=="adphase")||($mode=="sresult") ||($mode=="update"))	
 		<tr><td width=100% align="center">
-			<select name="g" class="drop">
-				<option value="$!value">$!value	</option>
+			<select name="group1" onChange="checkoption(document.frm,this)"; class="drop">
+				<option>$brih_select</option>
+					#foreach($gname in $glist)
+						#if(($gname.getName()!="author") && ($gname.getName()!="global"))
+							<option value="$!gname.getName()"">$!gname.getName()	</option>
+						#end
+					#end
 			</select>
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search"/>
 			<select name="uname" class="drop">
 			#foreach($n in $ul)
 				#foreach($u in $n)
@@ -90,14 +102,8 @@ $!data.getMessage()
 				#end
 			#end
 			</select>
-			<input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search"/>
-			<select name="group1" class="drop" onChange="checkoption(document.frm,this)";>
-				<option>$brih_select</option>
-					#foreach($gname in $glist)
-						#if(($gname.getName()!="author") && ($gname.getName()!="global"))
-							<option value="$!gname.getName()"">$!gname.getName()	</option>
-						#end
-					#end
+			<select name="g" class="drop">
+				<option value="$!value">$!value	</option>
 			</select>
 		</td></tr>
 		#end
@@ -115,7 +121,8 @@ $!data.getMessage()
 
 <table border=1 align=center bgcolor="$ui.tableColor" width=50%>
 	#if($mode == "adphase")
-		<tr align="right" >
+		<tr>
+			<td bgcolor="$ui.tableColor"> <b>$brih_publish $brih_Da</b></td>
 			<td colspan=2><select name="Start_year" class="drop">
                 	<option value="$cyear">$cyear
                 	#foreach($year in $year_list)
@@ -143,34 +150,23 @@ $!data.getMessage()
 			#end
 			</select>
 			</td>
-			<td bgcolor="$ui.tableColor" align="right" > <b>$brih_publish $brih_Of $brih_Da</b></td>
 		</tr>
-		<tr align="right" >
-			###formCell("$brih_ques1*" "q1" "")
-			<td> <input type="text" size="30" name="q1" value=""></td>
-			<td colspan="2">$brih_ques1* </td>
+		<tr>
+			#formCell("$brih_ques1*" "q1" "")
 		</tr>
-		<tr align="right" >
-			##formCell("$brih_ques2*" "q2" "")
-			<td> <input type="text" size="30" name="q2" value=""></td>
-			<td colspan="2" > $brih_ques2*</td>
+		<tr>
+			#formCell("$brih_ques2*" "q2" "")
 		</tr>
-		<tr align="right" >
-			##formCell("$brih_ques3*" "q3" "")
-			<td> <input type="text" size="30" name="q3" value=""></td>
-			<td colspan="2"> $brih_ques3*</td>
+		<tr>
+			#formCell("$brih_ques3*" "q3" "")
 		</tr>
-		<tr align="right" >
-			##formCell("$brih_ques4*" "q4" "")
-			<td> <input type="text" size="30" name="q4" value=""></td>
-			<td colspan="2"> $brih_ques4*</td>
+		<tr>
+			#formCell("$brih_ques4*" "q4" "")
 		</tr>
-		<tr align="right" >
-			##formCell("$brih_ques5*" "q5" "")
-			<td> <input type="text" size="30" name="q5" value=""></td>
-			<td colspan="2"> $brih_ques5*</td>
+		<tr>
+			#formCell("$brih_ques5*" "q5" "")
 		</tr>
-		<tr align="right" >
+		<tr>
                         <td align=center colspan=3 bgcolor="$ui.menuColor">
                         <font face="$ui.sanSerifFonts">
 
@@ -179,45 +175,35 @@ $!data.getMessage()
 		</td></tr>
 	#elseif($mode=="stphase") 
 			#foreach($detail in $sdetail)
-			<tr align="right">
-				##formCell("$brih_ques1" "" "$sdetail.get(0).getQues1()")
+			<tr>
+				#formCell("$brih_ques1" "" "$sdetail.get(0).getQues1()")
 				<td><select name="marks1" class="drop">
 					#ls()
 				</select></td>		
-				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues1()"></td>
-				<td> $brih_ques1 </td>
 			</tr>
-			<tr align="right">
-				###formCell("$brih_ques2" "" "$sdetail.get(0).getQues2()")
+			<tr>
+				#formCell("$brih_ques2" "" "$sdetail.get(0).getQues2()")
 				<td><select name="marks2" class="drop">
 					#ls()
 				</select></td>		
-				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues2()"></td>
-				<td> $brih_ques2 </td>
 			</tr>
-			<tr align="right">
-				##formCell("$brih_ques3" "" "$sdetail.get(0).getQues3()")
+			<tr>
+				#formCell("$brih_ques3" "" "$sdetail.get(0).getQues3()")
 				<td><select name="marks3" class="drop">
 					#ls()
 				</select></td>		
-				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues3()"></td>
-				<td> $brih_ques3 </td>
 			</tr>
-			<tr align="right">
-				##formCell("$brih_ques4" "" "$sdetail.get(0).getQues4()")
+			<tr>
+				#formCell("$brih_ques4" "" "$sdetail.get(0).getQues4()")
 				<td><select name="marks4" class="drop">
 					#ls()
 				</select></td>		
-				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues4()"></td>
-				<td> $brih_ques4 </td>
 			</tr>
-			<tr align="right" >
-				##formCell("$brih_ques5" "" "$sdetail.get(0).getQues5()")
+			<tr>
+				#formCell("$brih_ques5" "" "$sdetail.get(0).getQues5()")
 				<td><select name="marks5" class="drop">
 					#ls()
 				</select></td>
-				<td> <input type="text" size="30" name="" value="$sdetail.get(0).getQues5()"></td>
-				<td> $brih_ques5 </td>
 			</tr>
 		##check iname is required or not
                 	<input type="hidden" name="iname" value=$sdetail.get(0).getInstId()>
@@ -237,35 +223,23 @@ $!data.getMessage()
 			</td></tr>
 	#elseif($mode=="update")
 			#foreach($detail in $list)
-			<tr  align="right">
-				##formCell("$brih_publish $brih_Da" "pdate" "$list.get(0).getPdate()")
-				<td> <input type="text" size="30" name="pdate" value="$list.get(0).getPdate()"> </td>
-				<td> $brih_publish $brih_Of $brih_Da </td>
+			<tr>
+				#formCell("$brih_publish $brih_Da" "pdate" "$list.get(0).getPdate()")
 			</tr>
-			<tr  align="right">
-				##formCell("$brih_ques1" "q1" "$list.get(0).getQues1()")
-				<td> <input type="text" size="30" name="q1" value="$list.get(0).getQues1()"> </td>
-				<td> $brih_ques1 </td>
+			<tr>
+				#formCell("$brih_ques1" "q1" "$list.get(0).getQues1()")
 			</tr>
-			<tr align="right">
-				##formCell("$brih_ques2" "q2" "$list.get(0).getQues2()")
-				<td> <input type="text" size="30" name="q2" value="$list.get(0).getQues2()"> </td>
-				<td> $brih_ques2 </td>
+			<tr>
+				#formCell("$brih_ques2" "q2" "$list.get(0).getQues2()")
 			</tr>
-			<tr align="right">
-				##formCell("$brih_ques3" "q3" "$list.get(0).getQues3()")
-				<td> <input type="text" size="30" name="q3" value="$list.get(0).getQues3()"> </td>
-				<td> $brih_ques3 </td>
+			<tr>
+				#formCell("$brih_ques3" "q3" "$list.get(0).getQues3()")
 			</tr>
-			<tr align="right">
-				##formCell("$brih_ques4" "q4" "$list.get(0).getQues4()")
-				<td> <input type="text" size="30" name="q4" value="$list.get(0).getQues4()"> </td>
-				<td> $brih_ques4 </td>
+			<tr>
+				#formCell("$brih_ques4" "q4" "$list.get(0).getQues4()")
 			</tr>
-			<tr  align="right">
-				##formCell("$brih_ques5" "q5" "$list.get(0).getQues5()")
-				<td> <input type="text" size="30" name="q5" value="$list.get(0).getQues5()"> </td>
-				<td> $brih_ques5 </td>
+			<tr>
+				#formCell("$brih_ques5" "q5" "$list.get(0).getQues5()")
 			</tr>
 
 			<tr>
@@ -280,21 +254,23 @@ $!data.getMessage()
 			#end
 	#elseif($mode=="sresult")
 
-		#set($headings = ["$brih_grade","$brih_course $brih_Of1 $brih_name"])
+		#if($lang == "hindi") #set($headings = ["$brih_course $brih_Of1 $brih_name","$brih_grade"]) #else	#set($headings = ["$brih_course $brih_name","$brih_grade"]) #end
 		#if($lst.size() !=0)
-			<tr align="right">
+			<tr>
+                	<td bgcolor="$ui.menuColor">
+                                $brih_select 
+                	</td>
                    		#foreach ($heading in $headings)
                                 	<font> #headerCell ($heading)</font>
 				#end
-                	<td bgcolor="$ui.menuColor"> $brih_select </td>
 			</tr>	
 		#end
 		#set ( $count=1 )
 		#foreach($detail in $lst)
 		#set ( $seqno= $count - 1 )
                         <input type="hidden" name="$detail.getSurveyId()" value=$seqno>
-			<tr align="right">
-				<td>$detail.getGrade()</td>
+			<tr>
+				<td bgcolor="$ui.menuColor"><input type="checkbox" name="$detail.getSurveyId()" onClick="addDeleteList(this,document.frm);"></td>
 			#set ($cnt=1)
 			#foreach ($cn in $clist)
 				#if($cnt==$count)
@@ -302,7 +278,7 @@ $!data.getMessage()
 				#end
 			#set($cnt= $cnt+1)
 			#end
-				<td bgcolor="$ui.menuColor"><input type="checkbox" name="$detail.getSurveyId()" onClick="addDeleteList(this,document.frm);"></td>
+				<td>$detail.getGrade()</td>
 			</tr>
 		#set($count=$count+1)	
 		#end
@@ -354,7 +330,7 @@ $!data.getMessage()
         function ValueUpdate(frm,field)
         {
 		if((frm.pdate.value!="") &&(frm.q1.value!="") &&(frm.q2.value!="") && (frm.q3.value!="") && (frm.q4.value!="") &&(frm.q5.value!=""))
-		{
+		{ 
 			frm.actionName.value=field.name;
 			frm.submit();
 		}
