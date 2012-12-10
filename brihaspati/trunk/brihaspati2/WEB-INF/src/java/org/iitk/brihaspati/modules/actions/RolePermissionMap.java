@@ -38,6 +38,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.security.torque.om.TurbineRolePeer;
 import org.apache.turbine.services.security.torque.om.TurbinePermissionPeer;
 import org.apache.turbine.services.security.torque.om.TurbineRolePermissionPeer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 //import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
@@ -54,6 +56,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 public class RolePermissionMap extends SecureAction_Admin{
  MultilingualUtil m_u=new MultilingualUtil(); 
         String msg="";
+	private Log log = LogFactory.getLog(this.getClass());
 /**
 * Add new role in Brihaspati LMS 
 * @param data RunData 
@@ -154,6 +157,7 @@ public class RolePermissionMap extends SecureAction_Admin{
 //			ErrorDumpUtil.ErrorLog("I am Here ");
 			msg=m_u.ConvertedString("c_msg5",LangFile);
                         data.setMessage(msg);
+			log.info("Role of "+rId+" Deleted by Admin");
                 	}//end of try 
                 	catch(Exception e)
                 	{

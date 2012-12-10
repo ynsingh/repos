@@ -81,6 +81,8 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * In this class,we send notice and delete self copy or all(Only Sender) notices
@@ -104,6 +106,7 @@ public class Notice_Send_Delete extends SecureAction
 	*/
 	private String notice_message="";
 	private String msg1=null;
+	private Log log = LogFactory.getLog(this.getClass());
 	public void doSend(RunData data, Context context)
 	{
 		try{
@@ -163,6 +166,12 @@ public class Notice_Send_Delete extends SecureAction
 			Date current_date=Date.valueOf(c_date);
 			String E_date=ExpiryUtil.getExpired(c_date,notice_expiry);
 			Date Expiry_date=Date.valueOf(E_date);
+			// Maintain Log file
+			java.util.Date date = new java.util.Date();
+			String Role=(String)user.getTemp("role");
+			String role;
+			if(Role.equals("")) role = "Admin";else role = Role;
+			log.info("User Name --> "+UserName +" | Role --> "+role +"| Operation --> Send Notice | course type -->"+courses[0] +" | Send to --> "+notice_role +"| Time of operation --> "+date+ "| IP Address --> "+data.getRemoteAddr());
 
 			for(int num=0;num<rec_no;num++){
 		
@@ -381,7 +390,6 @@ public class Notice_Send_Delete extends SecureAction
                         NoticeReceivePeer.doInsert(crit);
 			//String lang=data.getUser().getTemp("lang").toString();
 			String lang=data.getUser().getTemp("LangFile").toString();
-			ErrorDumpUtil.ErrorLog("lang============"+lang);
 			String server_name=TurbineServlet.getServerName();
                         String srvrPort=TurbineServlet.getServerPort();
 			String groupName = GroupUtil.getGroupName(group_id);
@@ -508,6 +516,7 @@ public class Notice_Send_Delete extends SecureAction
 					
 					String msg2=MultilingualUtil.ConvertedString("notice_msg3",LangFile);
                                 	data.setMessage(msg2);
+					log.info(msg2+" with name "+noticeList+" by "+userName);
                         	}
 				}//end for Loop
 			}//end outer if

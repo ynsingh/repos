@@ -39,14 +39,15 @@ import java.util.Date;
 import java.util.List;
 //Turbine classes
 import org.apache.turbine.Turbine;
-import org.apache.commons.logging.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.actions.VelocityAction;
+import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati class
 import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
@@ -56,6 +57,7 @@ import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils. MailNotificationThread;
+
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  **/
@@ -125,7 +127,16 @@ public class myLogout extends VelocityAction{
                                 	{
 						MailNotificationThread.getController().CourseTimeSystem(uid,eid2);
                         		}
-
+				/**
+				* Create log file for user
+				* Parameters are user name, Role, Time and IP address
+				**/
+				String server=data.getRemoteAddr() ;
+				User user1=data.getUser();
+                                String Role=(String)user1.getTemp("role");	
+				String role;
+				if(Role.equals("")) role = "Admin";else role = Role;
+				log.info("User Name --> "+username +"| Role --> "+role +"| Logout time --> "+date+"| IP Address --> "+server);
                 		}
 		/*  Invalidate session */
 				data.setACL(null);

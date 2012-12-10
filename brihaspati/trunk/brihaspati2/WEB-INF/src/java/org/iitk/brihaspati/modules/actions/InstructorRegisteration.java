@@ -40,6 +40,11 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.turbine.om.security.User;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This class is responsible for adding a secondary instructor to the system.
@@ -65,6 +70,7 @@ public class InstructorRegisteration extends SecureAction
  * @return nothing
  */
 	private String LangFile=null;
+	private Log log = LogFactory.getLog(this.getClass());
 	public void doRegister(RunData data, Context context)
 	{	
 		MultilingualUtil m_u=new MultilingualUtil();
@@ -76,7 +82,7 @@ public class InstructorRegisteration extends SecureAction
                  * According to selection of Language.
                  **/  
 		LangFile=(String)data.getUser().getTemp("LangFile");
-		
+		User user = data.getUser();
 		ParameterParser pp = data.getParameters();
 		/**
 		 * Retreiving details entered by the user
@@ -119,6 +125,9 @@ public class InstructorRegisteration extends SecureAction
 		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program, "act"); //modified by Shikha
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
+		// Maintain Log
+		if(msg.equals("Registration Successful !!  Message is in queue !!"))
+                log.info("Secondary Course Instructor Registered by "+user.getName() +" on "+gName + " with mailid "+email +" | IP Address --> "+data.getRemoteAddr());
 
 		}
 		catch(Exception ex)

@@ -50,6 +50,8 @@ import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
@@ -63,7 +65,8 @@ public class changePW_User extends SecureAction
 	 * @param context Context
 	 * @return nothing
 	 */
-	 private String LangFile=null;
+	private String LangFile=null;
+	private Log log = LogFactory.getLog(this.getClass());
 	public void doUpdate(RunData data, Context context) 
 	{     
 		try{
@@ -98,6 +101,8 @@ public class changePW_User extends SecureAction
 			if(!user.getName().equals("guest")){
 				PasswordUtil.passwordFromUtil(data.getServerName(), serverPort);
 				msg=PasswordUtil.doChangepassword(user,oldPW,newPW,LangFile);
+				// Maintain Log
+		                log.info("User Name --> "+user.getName()+" | Operation --> Change password | IP Address --> "+data.getRemoteAddr());
 			}
 			else{
 			 msg="Password can not be Modified for guest";

@@ -45,6 +45,10 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 //public class changePW extends SecureAction_Admin{
 public class changePW extends SecureAction{
@@ -56,6 +60,7 @@ public class changePW extends SecureAction{
 	 * @return nothing
 	 */
 	private String LangFile=null;
+	private Log log = LogFactory.getLog(this.getClass());
 	public void doUpdate(RunData data, Context context) throws Exception{
 		/**
                  * Getting the value of file from temporary variable
@@ -90,6 +95,8 @@ public class changePW extends SecureAction{
                 PasswordUtil.passwordFromUtil(data.getServerName(), Integer.toString(data.getServerPort()));
 		String msg=PasswordUtil.doChangepassword(user,oldPW,newPW,LangFile);
 		data.setMessage(msg);
+		// Maintain Log
+                log.info("User Name --> Admin| Operation --> Change password | IP Address --> "+data.getRemoteAddr());	
 		
 	}	
 

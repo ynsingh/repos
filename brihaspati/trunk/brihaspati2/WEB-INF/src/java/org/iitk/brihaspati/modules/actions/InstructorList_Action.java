@@ -54,6 +54,10 @@ import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This class is responsible for removing secondary instructor and changing their permission to the system.
@@ -68,10 +72,12 @@ public class InstructorList_Action extends SecureAction
  	 * @param context Context instance
  	 */
 	private String LangFile=null;
+	private Log log = LogFactory.getLog(this.getClass());
 	public void doRemoveUser(RunData data, Context context)
 	{
 		User user=data.getUser();
 		ParameterParser pp=data.getParameters();
+		String username="";
 		String mid_delete = pp.getString("deleteFileNames","");
 		String mode = pp.getString("mode","");
 		String institudeName=data.getParameters().getString("institudeName","");
@@ -89,7 +95,7 @@ public class InstructorList_Action extends SecureAction
 			if(!mid_delete.equals("")) {
 				java.util.StringTokenizer st=new java.util.StringTokenizer(mid_delete,"^");
 				for(int j=0;st.hasMoreTokens();j++)  {
-					String username=st.nextToken();
+					username=st.nextToken();
 					String inst_id=(data.getUser().getTemp("Institute_id")).toString();
 					int uid=UserUtil.getUID(username);
 					int GID=GroupUtil.getGID(gName);
@@ -103,6 +109,15 @@ public class InstructorList_Action extends SecureAction
 				msg=MultilingualUtil.ConvertedString("brih_remsec",LangFile);
 			}
 			data.addMessage(msg);
+			//Maintain Log
+			 User user1 = TurbineSecurity.getUser(username);
+                         String mailId=user1.getEmail();
+
+			String loginName = user.getName();
+			String strInstId =  (String)user.getTemp("Institute_id","");
+                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+                        log.info("Secondry Instructor removed by -->"+loginName+ " | Institute Name -->"+instName+ " | Instructor's Email --> "+mailId+ "| Course Name --> "+gName+ " | IP Address --> "+data.getRemoteAddr());
+
 		}catch (Exception ex){ data.setMessage("Error in Removing Secondary Instructor !!  " +ex); }
 		context.put("mode",mode);
 	}
@@ -141,6 +156,13 @@ public class InstructorList_Action extends SecureAction
                                 	crit=new Criteria();
 					crit.add(InstructorPermissionsPeer.ID,id);
 					InstructorPermissionsPeer.doDelete(crit);
+					//Maintain Log
+                        		User user1 = TurbineSecurity.getUser(username);
+                        		String mailId=user1.getEmail();
+                        		String loginName = user.getName();
+                        		String strInstId =  (String)user.getTemp("Institute_id","");
+                        		String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+                        		log.info("Grant of Instructor's Disable Permission by -->"+loginName+ " | Institute Name -->"+instName+ " | Instructor's Email --> "+mailId +"| Course Name --> "+gName+ " | IP Address --> "+data.getRemoteAddr());
 			    	}
 			 }else{
 				crit=new Criteria();
@@ -149,14 +171,25 @@ public class InstructorList_Action extends SecureAction
 				crit.add(InstructorPermissionsPeer.INSTITUTE_ID,inst_id);
 				crit.add(InstructorPermissionsPeer.PERMISSION_STATUS,permission);
 				InstructorPermissionsPeer.doInsert(crit);
+				ErrorDumpUtil.ErrorLog("Permission Disable");
+				//Maintain Log
+                        	User user1 = TurbineSecurity.getUser(username);
+                        	String mailId=user1.getEmail();
+                        	String loginName = user.getName();
+                        	String strInstId =  (String)user.getTemp("Institute_id","");
+                        	String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+                        	log.info("Grant of Instructor's Enable Permission by -->"+loginName+ " | Institute Name -->"+instName+ " | Instructor's Email --> "+mailId +" | Course Name --> "+gName+ " | IP Address --> "+data.getRemoteAddr());
+
 			}
 			String msg=MultilingualUtil.ConvertedString("brih_secperm",LangFile);	
 			data.addMessage(msg);
+
 		}catch(Exception ex){data.setMessage("Error in Grant of Instructor's Permission !!  " +ex); }
 	}			
 
 	public void doPerform(RunData data,Context context) throws Exception
 	{
+		User user=data.getUser();
 		LangFile=(String)data.getUser().getTemp("LangFile");
 		String action=data.getParameters().getString("actionName","");
 		 if(action.equals("eventSubmit_doRemoveUser")){
@@ -166,6 +199,7 @@ public class InstructorList_Action extends SecureAction
 		}else {
 			String c_msg=MultilingualUtil.ConvertedString("c_msg",LangFile);
                         data.setMessage(c_msg);
+
 		}
 	}
 }

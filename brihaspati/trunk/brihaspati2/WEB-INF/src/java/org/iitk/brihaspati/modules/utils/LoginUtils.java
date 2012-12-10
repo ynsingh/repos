@@ -61,6 +61,8 @@ import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import com.workingdogs.village.Record;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 //import org.apache.turbine.Turbine;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
@@ -69,6 +71,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * like Create index for Search, Clean the system 
  * 
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
  * @version 1.0
  * @since 1.0
  */
@@ -78,6 +81,7 @@ public class LoginUtils{
           *  @param username String
           *  @return 
           **/
+	private static Log log = LogFactory.getLog(LoginUtils.class);
 	public static void CheckSession(String username){
 
                         try{
@@ -115,10 +119,17 @@ public class LoginUtils{
 	 *  @return String
 	 **/
 	public static String SetUserData(String username, String password, String flag, String lang, RunData data){
-		User user=null;		
+		User user=null;
         	String userLanguage = "";
 		String page=new String();
 		Criteria crit = null;
+		String msg = "";
+                String[] temp=TurbineServlet.getServerName().split("\\.");
+                if(temp[0].equals("172") || temp[0].equals("10") || temp[0].equals("192")){
+                	msg = "Behind Firewall";
+                }else{
+                	msg = "Public IP address";
+                }
 		 try{
 			if(StringUtils.isBlank(username)) {
                         	username = data.getMessage();
@@ -149,6 +160,11 @@ public class LoginUtils{
 				// Mark the user as being logged in.
 				user.setHasLoggedIn(new Boolean(true));
         	                Date date=new Date();
+				/**
+                                  *create log file for user login
+                                  *Parameters are user name, login time and IP address
+                                  */
+				log.info("User Name --> "+username + "| Succesfull Login | Login Time --> "+date +"| IP Address --> "+data.getRemoteAddr() +"/"+msg);
 				try{
 					// Set the last_login date in the database.
 					user.updateLastLogin();
@@ -209,7 +225,8 @@ public class LoginUtils{
 			String msg1=MultilingualUtil.ConvertedString("t_msg",MultilingualUtil.LanguageSelectionForScreenMessage(lang));
 			data.setMessage(msg1);
                         data.setScreenTemplate("BrihaspatiLogin.vm");
-   //                     log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility"+e);
+			Date dt=new Date();
+			log.info("User Name --> "+username + "| Unsuccesfull Login Attempt | Login Time --> "+dt +"| IP Address --> "+data.getRemoteAddr() +"/"+msg);
                         ErrorDumpUtil.ErrorLog("This TurbineSecurityException comes in the Login Utils-SetUserData Facility"+e);
                 }
                 catch (NoSuchAlgorithmException e){

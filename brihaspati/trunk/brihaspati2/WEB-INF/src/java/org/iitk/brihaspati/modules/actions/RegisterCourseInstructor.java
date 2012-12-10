@@ -30,6 +30,7 @@ package org.iitk.brihaspati.modules.actions;
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
@@ -37,6 +38,10 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  *
  * This Action class for Registering a particular course with Instructor(Primary) 
@@ -54,6 +59,7 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 {
 	
 	private String LangFile=new String();
+	private Log log = LogFactory.getLog(this.getClass());
 	/**
  	  * This method actually registers a new course along with the instructor 
 	  * in the system
@@ -113,6 +119,10 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 		 		//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha
 		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,""); //modified by Shaista passing institute id and institute name. Last parameter added by Priyanka
 		 		data.setMessage(msg);
+				// Maintain Log
+                                java.util.Date date= new java.util.Date();
+				log.info("Course Instructor Registration by Admin on "+instName +" with name "+gname +"| Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
+
 		}
 		catch(Exception e)
 		{

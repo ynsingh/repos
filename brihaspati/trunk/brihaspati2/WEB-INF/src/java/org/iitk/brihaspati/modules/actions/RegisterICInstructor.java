@@ -42,6 +42,9 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.QuotaUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  *
  * This Action class for Registering a particular course with Instructor(Primary) 
@@ -50,12 +53,14 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @author <a href="mailto:vipulk@iitk.ac.in">vipul pal</a>
  * @modify date: 09-08-2012 (Priyanka)
  */
 public class RegisterICInstructor extends SecureAction_Institute_Admin
 {
 	
 	private String LangFile=new String();
+	private Log log = LogFactory.getLog(this.getClass());
 	/**
  	  * This method actually registers a new course along with the instructor 
 	  * in the system
@@ -73,7 +78,7 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
           		*Replacing the value from Property file
          		**/
 				//get Institute Name(iname)
-			         
+			        User user = data.getUser();
 				String iname=data.getParameters().getString("iname","");
 		                context.put("iname",iname);
 	 		        LangFile=(String)data.getUser().getTemp("LangFile");
@@ -124,6 +129,8 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 					data.setMessage(MultilingualUtil.ConvertedString("qmgmt_msg7",LangFile));
 					//data.setMessage("For Register new Course ,the Space is not enough,so contact to Sysadmin");
 				}
+				// Maintain Log
+                                log.info("User Name --> "+user.getName()+" | Operation --> New course Registration | Course Name-->"+cname+" |  IP Address --> "+data.getRemoteAddr());
 		}
 		catch(Exception e)
 		{	

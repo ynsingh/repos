@@ -77,6 +77,8 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
 import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
 import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author <a href="mailto:palseema@rediffmail.com">Seema Pal </a>23April2012
@@ -101,7 +103,8 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 public class Institute_RootAdmin extends SecureAction_Admin
 {
 	private String LangFile=new String();
-
+	java.util.Date date= new java.util.Date();
+	private Log log = LogFactory.getLog(this.getClass());
 	/** 
 	*  Method for giving approval to a institute by sysadmin.
 	*/
@@ -139,6 +142,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
 					*@see XMLWriter_InstituteRegistration (method:ReadInstDomainDeatils) in utils.
                                         */
 					String instdomain= st.nextToken();
+					// Maintain Log
+					log.info("User Name --> Admin| Operation --> Approval of Institube Admin with domain = "+institutelist+"| Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
                                         if(mode.equals("pendinglist")){
                                            institutedetail=XMLWriter_InstituteRegistration.ReadInstDomainDeatils(filePath+"/InstituteRegistrationList.xml",instdomain);
                                         }
@@ -342,7 +347,10 @@ public class Institute_RootAdmin extends SecureAction_Admin
 					XMLWriter_InstituteRegistration.UpdateRejectxml(filepathdest,instdomain,expdate);
 					String msg=MultilingualUtil.ConvertedString("instAreg_msg6",LangFile);
 					//data.setMessage("Institute as well as institute admin has been rejected");							
-					data.setMessage(msg);								
+					data.setMessage(msg);
+					// Maintain Log
+                                        java.util.Date date= new java.util.Date();
+					log.info("User Name --> Admin| Operation --> Rejection of Institube Admin with domain= "+institutelist+"| Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
 					
 				}
 			}//if	
@@ -448,6 +456,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
 							UserManagement usermanagement = new UserManagement();
 							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program,"");// last parameter added by Priyanka
 							data.setMessage(usermgmt +" "+ mail_msg);
+							// Maintain Log
+							log.info("Addition of Secondary Institute Admin by Admin with email "+adminemail +" in " +instName +" | Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
 						}//if
 					}//charif
 					else{
@@ -491,6 +501,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
                  */
                 String DelInstAdmin=DeleteInstituteUtil.DeleteInstAdmin(username,instituteid,LangFile,file);
                 data.setMessage(DelInstAdmin);
+		// Maintain Log
+		log.info("Deletion of Institute Admin by Admin with email "+username +" in " +InstituteIdUtil.getIstName(Integer.parseInt(instituteid)) +" | Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
 	}
 	/**
 	*This method called when Sysadmin update the detail of Institute admin
@@ -550,6 +562,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
 			
 			/** set the template for the same form*/
 			data.setScreenTemplate("call,Root_Admin,InstituteList.vm");
+			// Maintain Log
+			log.info("Updation of Institute by Admin on userid --> "+instadname +id +" | Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
 		}
 
 		/**check status for the institute admin updation
@@ -572,6 +586,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
 			crit.add(TurbineUserPeer.EMAIL,email);
 			TurbineUserPeer.doUpdate(crit);
 			data.setScreenTemplate("call,Root_Admin,AddAdmin.vm");
+			// Maintain Log
+			log.info("Updation of Institute Admin by Admin on userid --> "+uid +" | Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
 		}	
 		String msg=MultilingualUtil.ConvertedString("instAreg_msg4",LangFile);
 		data.setMessage(msg);
@@ -612,6 +628,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
                          */
                         String delinst=DeleteInstituteUtil.DeleteInstitute(instid,LangFile,file,gname);
 			data.setMessage(MultilingualUtil.ConvertedString("brih_Institue",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
+		        // Maintain Log
+			log.info("Deletion of Institute by Admin name --> "+InstituteIdUtil.getIstName(Integer.parseInt(instid)) +" | Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());
                 }//try
                 catch(Exception ex){data.setMessage("Error in Institute_RootAdmin method doDeleteInstitute"+ex);}
         }

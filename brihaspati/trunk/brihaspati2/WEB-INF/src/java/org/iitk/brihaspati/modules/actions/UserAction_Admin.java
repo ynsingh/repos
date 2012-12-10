@@ -75,6 +75,9 @@ import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /** 
  * This class contains code for registration, updation profile and password or
  * removal of user in the system
@@ -96,6 +99,7 @@ public class UserAction_Admin extends SecureAction_Admin{
 	  * @see RegisterMultiUser from Utils
      	  * @return nothing
      	  */
+	private Log log = LogFactory.getLog(this.getClass());
 	String LangFile="";
 	
 	public void doUploadMultiUser(RunData data, Context context){
@@ -181,6 +185,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 		String insid=pp.getString("InstName","");
 		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program,insid,CId);
 	 	data.setMessage(msg);
+		// Maintain Log
+		Date date = new Date();
+		log.info("Updation of User detail by Admin on username --> "+uname +" | Date --> "+date+ " | IP Address --> "+data.getRemoteAddr());
 	}
     	/**
      	  * ActionEvent responsible for updating user password in the system
@@ -214,6 +221,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 			PasswordUtil.passwordFromUtil(serverName, serverPort);
 			String msg=PasswordUtil.doChangepassword(user,"",newPW,LangFile);
 			data.setMessage(msg);
+			// Maintain Log
+	                Date date = new Date();
+			log.info("Updation of User Password by Admin on username --> "+userName +" | Date --> "+date+ " | IP Address --> "+data.getRemoteAddr());
 		}
 		catch(Exception ex)
 		{

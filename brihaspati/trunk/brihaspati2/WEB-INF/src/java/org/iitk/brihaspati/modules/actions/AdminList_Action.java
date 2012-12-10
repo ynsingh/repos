@@ -26,6 +26,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 //import babylon.babylonUserTool;
 
@@ -39,6 +41,7 @@ import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
 	public class AdminList_Action extends SecureAction_Institute_Admin   {
         		
 		private String LangFile=new String();
+		private Log log = LogFactory.getLog(this.getClass());
 		  
 			
 	public void AddAdmin(RunData data, Context context)
@@ -114,6 +117,8 @@ import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
                                                         UserManagement usermanagement = new UserManagement();
                                                         usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,"","","act");// Last parameter added by Priyanka
                                                         data.setMessage(usermgmt +" "+ mail_msg);
+							// maintain log
+							log.info("Secondary Admin Added with mailid "+adminemail+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
                                                 }//if
                                         }//charif
                                         else{
@@ -196,6 +201,7 @@ import org.iitk.brihaspati.modules.utils.DeleteInstituteUtil;
 		                */
                 		String DelInstAdmin=DeleteInstituteUtil.DeleteInstAdmin(uname,Institute_Id,LangFile,file);
 		                data.setMessage(DelInstAdmin);
+				log.info("Secondary Admin deleted with username "+uname+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
 					
 		                }catch (Exception ex){ data.setMessage("Error in Removing Secondary Admin !!  " +ex); }
 

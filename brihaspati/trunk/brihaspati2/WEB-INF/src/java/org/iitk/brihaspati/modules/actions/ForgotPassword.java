@@ -59,6 +59,9 @@ import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.HintQuestionPeer;
 import org.iitk.brihaspati.om.HintQuestion;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * This class have different methods for using forgot password procedure
  * @author <a href="singhsatyapal@rediffmail.com">Satyapal Singh</a>
@@ -73,6 +76,7 @@ public class ForgotPassword extends VelocitySecureAction
 	String LangFile=new String();
 	String lang=new String();
 	String msg=new String();
+	private Log log = LogFactory.getLog(this.getClass());
 	protected boolean isAuthorized( RunData data ) throws Exception
 	{
 		return true;
@@ -165,6 +169,7 @@ public class ForgotPassword extends VelocitySecureAction
 			String loginName=pp.getString("username");
 			String uid=pp.getString("uid");
 			String ansOfInput=pp.getString("HintAns");
+			java.util.Date date = new java.util.Date();
 			/** 
 	  		* Matching the hint answer from 
 	  		* the database table.
@@ -230,7 +235,8 @@ public class ForgotPassword extends VelocitySecureAction
 						msg=MultilingualUtil.ConvertedString("forgotPwd_msg3",LangFile);
 						data.setMessage(msg1);
 						data.addMessage(msg);
-
+						// Maintain Log File
+						log.info("Successfully Forget Password Operation called by --> "+loginName +" | Time of operation --> "+date+ " | IP Address --> "+data.getRemoteAddr());
 					}
 					catch(Exception e)
 					{
@@ -248,6 +254,8 @@ public class ForgotPassword extends VelocitySecureAction
 		 	{
 				msg=MultilingualUtil.ConvertedString("forgotPwd_msg6",LangFile);
 				data.setMessage(msg);
+				// Maintain Log File
+				log.info("Forget Password Operation failed due to wrong hint question answered By --> "+loginName +" | Time of operation --> "+date+ " | IP Address --> "+data.getRemoteAddr());
 			}
 		}
 		catch(Exception ex)

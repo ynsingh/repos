@@ -44,6 +44,8 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.CoursesPeer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -52,6 +54,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
 
 public class  QuotaAction extends SecureAction
 {
+	private Log log = LogFactory.getLog(this.getClass());
 	/**
 	 * In this method, Updation of Quota
 	 * @param data RunData
@@ -68,7 +71,6 @@ public class  QuotaAction extends SecureAction
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 			int instid=Integer.parseInt(instituteId);
                         long LsValue=QuotaUtil.getFileSystemSpace(instid);
-			ErrorDumpUtil.ErrorLog("value from util in FileSystemSpace============"+LsValue);
 			String LangFile=data.getUser().getTemp("LangFile").toString();
 			ParameterParser pp=data.getParameters();
 			String mode=pp.getString("mode");
@@ -94,7 +96,6 @@ public class  QuotaAction extends SecureAction
 				String cquota=pp.getString("cquota");
 				String gname=pp.getString("grName");
 				long USpace=Long.valueOf(cquota).longValue();
-				ErrorDumpUtil.ErrorLog("qt value by parameter parser========"+USpace);
 				crt=new Criteria();
 				crt.add(CoursesPeer.GROUP_NAME,gname);
 				crt.add(CoursesPeer.QUOTA,cquota);
@@ -109,6 +110,7 @@ public class  QuotaAction extends SecureAction
 			}
 			msg=MultilingualUtil.ConvertedString("c_msg5",LangFile);
                         data.setMessage(msg);	
+			log.info("Course Quota Successfully updated to "+pp.getString("cname")+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
 		}
 		catch(Exception ex)
 		{data.setMessage("The Error in updating the quota"+ex);}

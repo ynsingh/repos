@@ -43,6 +43,8 @@ import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.Program;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
 *@author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
@@ -55,6 +57,7 @@ public class AddProgram extends SecureAction_Institute_Admin
   * @param context Context instance
   */
         private String LangFile=null;
+	private Log log = LogFactory.getLog(this.getClass());
 
         public void doInsert(RunData data, Context context) 
         {
@@ -94,6 +97,7 @@ public class AddProgram extends SecureAction_Institute_Admin
 				String Program = MultilingualUtil.ConvertedString("brih_program",LangFile);
 				String success = MultilingualUtil.ConvertedString("brih_successfully",LangFile);
 				data.setMessage(Add+" "+Program+" "+success);
+				log.info("Program added successfully with name "+prgname+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
 				
 			}
 			/**
@@ -164,6 +168,7 @@ public class AddProgram extends SecureAction_Institute_Admin
 				String Instmsg = MultilingualUtil.ConvertedString("brih_instprg",LangFile);
 				String Slmsg= MultilingualUtil.ConvertedString("brih_successfully",LangFile);
 				data.setMessage(Instmsg+" "+Slmsg);
+				log.info("Program maped successfully with name "+ProgramList+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
 			}
 			
 		}
@@ -200,6 +205,7 @@ public class AddProgram extends SecureAction_Institute_Admin
 				String delmsg = MultilingualUtil.ConvertedString("brih_instdel",LangFile);
 				data.setMessage(delmsg);
 				setTemplate(data,"call,Program,ProgramList.vm");
+				log.info("Program deleted successfully with code "+prgcode+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
 			}
 			else
 			{
@@ -213,6 +219,7 @@ public class AddProgram extends SecureAction_Institute_Admin
 				String Dlmsg = MultilingualUtil.ConvertedString("brih_instdel",LangFile);
 				String msg = MultilingualUtil.ConvertedString("brih_instremove",LangFile);
 				data.setMessage(Dlmsg+" "+msg);
+				log.info("Program deleted successfully with code "+prgcode+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
 				setTemplate(data,"call,Program,ProgramList.vm");
 			}
 		}

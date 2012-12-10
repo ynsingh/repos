@@ -57,6 +57,8 @@ import org.apache.torque.util.Criteria;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.Date;
 import org.iitk.brihaspati.om.CoursesPeer;
@@ -68,6 +70,7 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.TotalFileCount;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
@@ -75,6 +78,8 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.HDFSClient;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+
+
 /**
  * Class responsible for Upload files in particuler Area
  *
@@ -98,7 +103,8 @@ public class UploadAction extends SecureAction
     * @param data Rundata
     * @param context Context
     */
-    private String LangFile=null; 
+    private String LangFile=null;
+    private Log log = LogFactory.getLog(this.getClass());
 
     public void doUpload(RunData data, Context context)
     {
@@ -396,6 +402,12 @@ public class UploadAction extends SecureAction
 			}//ifflag1
 			else
 			data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg2",LangFile));
+			//Maintain Log
+			String loginName = user.getName();
+                        String strInstId =  (String)user.getTemp("Institute_id","");
+                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+                        String gName=data.getUser().getTemp("course_id").toString();
+                        log.info("Course content has been uploaded by --> "+loginName +" | Institute Name -->"+instName +" | Course Name -->"+gName + " | IP Address --> "+data.getRemoteAddr());
 
 		}//try
 		catch(FileUploadException ex)
@@ -445,7 +457,7 @@ public class UploadAction extends SecureAction
 //////////////////////////////////////////////////////////////////////
 	public void updateLastModified(String courseId,Date lastMod) throws Exception
         {
-		ErrorDumpUtil.ErrorLog("tttttttttt======update last modified");
+		//ErrorDumpUtil.ErrorLog("tttttttttt======update last modified");
                 Criteria crit=new Criteria();
                 crit.add(CoursesPeer.GROUP_NAME,courseId);
                 crit.add(CoursesPeer.LASTMODIFIED,lastMod);
