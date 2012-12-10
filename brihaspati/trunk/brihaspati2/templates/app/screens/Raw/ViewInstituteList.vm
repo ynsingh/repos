@@ -6,6 +6,8 @@
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
+ * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ * @modifyDate : 10-12-2012 (Priyanka) 
  *#
 
 $page.setTitle("Registered Institute List")
@@ -13,27 +15,43 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/big-link.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery-1.6.min.js")"></script>
+<script type="text/javascript"  src="$content.getURI("/scrpts/jquery/jquery.reveal.js")"></script>
 </head>
 
 <table bgcolor="$ui.menuColor" width=100%>
-<tr><td width="250">
+<tr>
+	##<td width="250">
+	<td width=30%>
 	<font face="$ui.sansSerifFonts" size=3>
 	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_login $WikiPage</a> |
 	$brih_reg2 $RemoteInstitute
 	</font>
 	</td>
-	<td width="180">$brih_total $RemoteInstitute [$institutenum] </td><td width="280"><b><font color="red">* </font>$brih_adnotexist</b></td>
-	<td width="300"><b>$brih_admin $brih_email:$!adminemail</b></td>
+	##<td width="180">
+	<td width=20%>
+		$brih_total $RemoteInstitute [$institutenum] 
+	</td>
+	##<td width="280">
+	<td width=20%>
+		<b><font color="red">* </font>$brih_adnotexist</b>
+	</td>
+	##<td width="300">
+	<td>
+		<b>$brih_admin $brih_email : $!adminemail</b>
+	</td>
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setPage("ViewInstituteList.vm")">
 <table width=100% align=left bgcolor="$ui.tableColor">
         <tr>
-	<td><b>$brih_searchBy</b></td>
-                <td align=left>
+	<td width=30%><b>$brih_searchBy</b>&nbsp;&nbsp;
+	##</td>
+                ##<td align=left>
                         <select name="queryList" class="drop">
 				#if($query!="")
-				<option value="$query">$query</option>
+				##<option value="$query">$query</option>
                                 <option value="InstituteName"> $RemoteInstitute $brih_name</option>
                                 <option value="InstituteAddress"> $RemoteInstitute  $brih_address</option>
 				#else
@@ -42,31 +60,69 @@ $!data.getMessage()
 				#end
                         </select>
                 </td>
-                <td align=left><b>$brih_match_str</b></td>
-                <td align=left>
+                <td align=left><b>$brih_match_str</b>&nbsp;&nbsp;
+		##</td>
+                ##<td align=left>
 			#if($valueString=="")
                         <input align=center type="text" name="valueString" value="">
 			#else
                         <input align=center type="text" name="valueString" value="$valueString">
 			#end
-                </td>
-                <td>
+                ##</td>
+                ##<td>
+                &nbsp;&nbsp;
                         <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);" class="button-ftextstyle">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="count" value="$tdcolor">
               </td>
-        </tr>
+	</tr>
 </table>
 
 </form>
-#set($headings = ["$RemoteInstitute $brih_name","$RemoteInstitute $RemoteAddress","$brih_ad $brih_name","$brih_ad $brih_email"] )
+#set($headings = ["$RemoteInstitute $brih_name","$RemoteInstitute $RemoteAddress","$brih_ad $brih_name"] )
 <table align="left" bgcolor="$ui.menuColor" width=100%>
 <tr>
-	<td><b>$brih_reg2 $RemoteInstitute</b></font></td>
+	##<td><b>$brih_reg2 $RemoteInstitute</b></font></td>
+	<td width=30%><a href="#" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none" title="Send Email to Institute Admin"><img align="left" border=0 src="$content.getURI("/images/ml.gif")">&nbsp;<b>$Notice_Send $brih_email $brih_to $RemoteInstitute $brih_admin</b></a>
+                        <input type="hidden" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none">
+                        <div id="myModal" class="reveal-modal" >
+                                <div class="frameBorderless p10">
+                                <form name="send_mail" method="post" action="$link.setPage("ViewInstituteList.vm").setAction("InstituteAdminMail")">
+                                        <h2 class="underline mb10">Send e-mail to Institute Admin</h2>
+                                        <label class="mt10"><span class="required">To:</span></label>
+                                        <div><select name="inst"><option>Select Institute</option>
+                                        #foreach($ent in $entry1)
+                                        <option value="$ent.getInstituteName()~??~$!ent.getInstituteEmail()">$ent.getInstituteName()</option>
+                                        #end
+					</select>
+                                        </div>
+                                        <label class="mt10"><span class="required">From:</span></label>
+                                        <div><input class="w99p mt10 h75 text" type="text" name="from" value="" required="required"></div>
+                                        <label class="mt10"><span class="required">Subject:</span></label>
+                                        <div><input class="w99p mt10 h75 text" type="text" name="subject" value=""></div>
+                                        <label class="mt10"><span class="required">Message:</span></label>
+                                        <div><textarea name="message" rows="10" cols="50" class="w99p mt10 h150 text" required="required"></textarea></div>
+                                        <div class="right pt10">
+                                        <button class="button w100"  type="submit"  title="Send">
+                                                <span class="ico ico-confirm">Send</span>
+                                        </button>
+                                        <button class="button w100"  type="button"  title="Cancel" onclick="self.parent.location.reload();"/>
+                                                <span class="ico ico-cancel">Cancel</span>
+                                        </button>
+                                        </div>
+                                        <input type="hidden" name="lang" value=$lang>
+                                        <input type="hidden" name="mode" value="store">
+
+                                </form>
+                                </div>
+                        </div>
+        </td>
+
 </tr>
-</table>
-<table align="left" width=100% bgcolor="$ui.tableColor">
-	<tr width=100%>
+##</table>
+
+##<table align="left" width=100% bgcolor="$ui.tableColor">
+	<tr width=100% bgcolor="$ui.tableColor">
 	#foreach ($heading in $headings)
 		<td><b>$heading</b></td>
 	#end
@@ -89,12 +145,11 @@ $!data.getMessage()
 			#if($ent.getInstituteUserName()=="noAdminExist")
 			<b><font color="red">*</b></font></td>
 			#end
-			<td><a href=mailto:$!ent.getInstituteEmail() style=text-decoration:none>$!ent.getInstituteEmail()</a></td>
-			</tr>
+			##<td><a href=mailto:$!ent.getInstituteEmail() style=text-decoration:none>$!ent.getInstituteEmail()</a></td>
 			#end
 	</td>
 	</tr>
-	<tr><td>	
+	<tr><td colspan=3>	
 	#if($total_size <= $userConf)
         <font color="white">$brih_first</font> &nbsp;
         <font color="white">$brih_pre</font> &nbsp;
@@ -128,6 +183,9 @@ $!data.getMessage()
                 Win1=window.open(url,popupName,"resizable,height=200,width=400");
         }
 	function checkNull(frm,field){
+		if(frm.valueString.value=="")
+			alert("Value for field Match String should not be null");
+		else
                         frm.submit();
         }
 
