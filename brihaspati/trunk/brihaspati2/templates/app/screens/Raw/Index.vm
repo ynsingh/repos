@@ -18,6 +18,9 @@
  * @modified date: 11-08-2011 Add general and institutewise discussion group
  * @author <a href="sunil0711@gmail.com">Sunil Yadav</a>
  * @modified date: 23-08-2012 
+ * @author <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @modified date: 21-11-2012
+
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -26,6 +29,17 @@ $page.setBgColor("bgcolor")
 $!data.getMessage()
 <head>
 <link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.min.js")"></script>
+<script type="text/javascript" language="javascript">
+
+function toggleViewAll(x) {
+                if ($('#'+x).is(":hidden")) {
+                        $('#'+x).fadeIn(500);
+                } else {
+                        $('#'+x).fadeOut(500);
+                }
+}
+</script>
 </head>
 
 <body onload="doLoad();">
@@ -52,10 +66,14 @@ $!data.getMessage()
         </tr>
 	#end
 #end
+#if($userid.toString()=="1")
+<div class="scroll">
+#end
+
 <table>
-<td valign="top" width="20%">
-<div style="overflow:auto;  height:180px;">
-        <table  bgcolor="$ui.tableColor">
+<td valign="top">
+<div style="overflow:auto; height:auto; ">
+        <table  bgcolor="$ui.tableColor" style="width:310px;">
                 <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr #if($lang== "hindi") $brih_Of #end $brih_list &nbsp;&nbsp;($uList.size())</b></td></tr>
 
                         #foreach($element in $uList)
@@ -70,9 +88,25 @@ $!data.getMessage()
                         #end
         </table>
 </div>
+##iframe is use to show brihaspati Twitter
+<div style="background:$ui.menuColor;" class="tweet_header">$brih_bri $brih_twitter</div>
+<iframe height="480" width="310px" style="margin:46px auto;overflow:hidden;" src="http://$ip:$port/brihaspatiSpring/index.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
+
+<a onclick="refreshIframe(); return false" onmousedown="javascript:toggleViewAll('view');" class="viwlink" style="position:absolute; z-index:100; margin:490px -80px auto;cursor:pointer;">$brih_view_all</a>
 </td>
+
+<div class="container" id="view" style="overflow:hidden; background:$ui.menuColor;">
+
+<a onClick="return false" onMouseDown="javascript:toggleViewAll('view');" style="text-decoration:none; cursor:pointer; color:#000; font-weight:bold; font-size:18px;">$LocalMail_Close</a>
+
+<iframe id="frame" name="frame" height="420" width="330px" style="margin:-10px auto;" src="http://$ip:$port/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username&name=$name" frameborder="0"></iframe>
+
+</div>
+
 <td width="80%" valign="top">
-<div class="indexscroll">
+#if($userid.toString()!="1")
+<div class="indexhomescroll">
+#end
 <table bgcolor="$ui.tableColor" width="100%">
 <tr bgcolor="$ui.menuColor"><td align=center colspan="7">
 #if(( $data.getUser().getTemp("lang" ).toString())!="english")
@@ -180,11 +214,9 @@ function doLoad()
 {
 setTimeout( "refresh()", 5*60*1000 );
 }
-
-function refresh()
-{
-window.location = '$link.setPage("Index.vm")';
-refresh='true';
+function refreshIframe() {
+    var ifr = document.getElementsByName('frame')[0];
+    ifr.src = ifr.src;
 }
 
 </SCRIPT >

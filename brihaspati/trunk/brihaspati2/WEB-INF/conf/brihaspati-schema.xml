@@ -621,4 +621,12 @@
         </unique>
 </table>
 
+<!-- ========================================== TWEETS==================================================== -->
+<table name="TWEETS" idMethod="idbroker" description="User Tweets">
+        <column name="ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+        <column name="USER_NAME" Type="VARCHAR" size="255"/>
+        <column name="TWEET" Type="VARCHAR" size="255"/>
+        <column name="TWEET_DATE" Type="VARCHAR" size="255"/>
+</table>
+
 </database>
