@@ -1,0 +1,83 @@
+#*
+ * @(#)index.vm
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author<a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
+ * @modified date: 11-06-2012 (vipul kumar pal)
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+
+*#
+
+<link href="css/profile_css.css" rel="stylesheet" type="text/css" />
+<link href="css/color.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/Jquery.js"></script>
+<script type="text/javascript" src="js/script.js"></script>
+<script type="text/javascript" language="javascript">
+$(document).ready(function(){
+ $("#button").hide();
+  $("#tweets").click(function(){
+    $('#tweets').animate({ height: "60px" }, 500);
+        var qrcontainer = $(this).next("#button");
+        qrcontainer.show();
+   });
+});
+
+function limitText(limitField, limitCount, limitNum) {
+       
+	   if (limitField.value.length > limitNum) {
+                limitField.value = limitField.value.substring(0, limitNum);
+        } else {
+                limitCount.value = limitNum - limitField.value.length;
+        }
+}
+
+</script>
+
+<body class="bg menuColor">
+
+<div style="width:220px; margin:0px auto;">
+
+<form name="registerfile" method="POST" >
+<div style="width:290px; max-height:210px auto; margin-top:5px; margin-left:-15px;" class="bgd">
+<span style=" margin:0px 15px auto;" class="span_text">#springMessage("brih_tweets")<br><center>$model.tweets.size()</center></span>
+<hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:0px 75px auto;">
+<span style="margin:-40px 105px auto;" class="span_text">#springMessage("brih_following")<br><center>$model.fing.size()</center></span>
+<hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:-40px 200px auto;">
+<span style="margin:-40px 210px auto;" class="span_text">#springMessage("brih_followers")<br><center>$model.fls.size()</center></span>
+<hr style="width:290px; height:1px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin-top:0px;">
+
+<textarea name="tweets" id="tweets" onKeyDown="limitText(this.form.tweets,this.form.countdown,100);"
+onKeyUp="limitText(this.form.tweets,this.form.countdown,100);" placeholder="Compose New Tweet..." ></textarea>
+
+<input type="button" id="button" class="button-ftextstyle" value="tweet now" style="margin-top:-10px; margin-left:180px;" onclick="check(document.registerfile,this);"/>
+</div>
+</form>
+<br>
+<br>
+<div class="gadget">
+
+<iframe src="#springUrl("/tweetsmsg.vm?username=${model.username}")" frameborder="0" height="300px" class="bgd"></iframe>
+
+</div>
+</div>
+
+<script>
+        function check(registerfile,field)
+        {
+                if(!registerfile.tweets.value=="")
+                {
+                registerfile.submit();
+                }
+                else{
+                         alert("Write something to TWEET :) !!!");
+                }
+        }
+</script>
+<script>
+function reloadPage()
+  {
+  location.reload()
+  }
+</script>
+

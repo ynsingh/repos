@@ -1,0 +1,34 @@
+#*
+ * @(#)tweetmsg.vm
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author<a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ * @modified date: 11-06-2012 (vipul kumar pal)
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+
+*#
+<style type="text/css">
+.test {
+	word-wrap:break-word;
+	width:24em;
+}
+</style>
+
+<body>
+
+<form name="registerfile" method="POST" >
+<center><span style="font: 14px Helvetica, Arial, sans-serif"><b><h3>#springMessage("brih_tweets")</h3></b><span></center>
+<hr class="hr_tweet">
+#foreach ($tweet in ${model.tweets})
+        <b><span style="float:left;color:#333;margin-left:5px; font: 14px Helvetica, Arial, sans-serif;">$!tweet.getUserName()</span><span style="float:right;color:#333;font: 14px Helvetica, Arial, sans-serif;">$!tweet.getTweetDate()</span><br></b>
+        <span style="margin-left:5px;font: 14px Helvetica, Arial, sans-serif;color:blue" class="test">$!tweet.getTweet()   $!tweet.getID()</span><br>
+#if($!tweet.getUserName()==${model.username})
+	<a href="#springUrl("/tweetsmsg.vm")?Id=$!tweet.getId()&username=${model.username}"><img src="images/delete.png" style="float:right; margin-top:-16px;"onclick="javascript:return confirm('Do you want to delete this Tweet')" ></a>
+#end
+        <hr style="opacity:0.4;" class="hr_tweet">
+#end
+
+</form>
+
+</html>
