@@ -75,6 +75,11 @@ import org.iitk.brihaspati.modules.utils.LoginUtils;
 public class Index extends SecureScreen{
 	public void doBuildTemplate( RunData data, Context context ){
 		try{
+			String ip=data.getServerName();
+			int port=data.getServerPort();
+			context.put("ip",ip);
+			context.put("port",port);
+
                         /*
                          * getting the current user 
 			 * & check current user is superAdmin,InsAdmin,Instructor,student or guest
@@ -185,13 +190,14 @@ public class Index extends SecureScreen{
 			        crt.add(UserConfigurationPeer.USER_ID,uid);
 			        List qu=UserConfigurationPeer.doSelect(crt);
 				context.put("Image",qu);
-
+			String flname=UserUtil.getFullName(uid);
 			String fname=user.getFirstName();
 			String lname=user.getLastName();
-			String lang=user.getTemp("lang").toString();
                         context.put("username",username);
                         context.put("firstname",fname);
                         context.put("lastname",lname);
+			context.put("fullname",fname+lname);
+			String lang=user.getTemp("lang").toString();
                         context.put("lang",lang);
 			lang = "";
 			user.setTemp("role","");

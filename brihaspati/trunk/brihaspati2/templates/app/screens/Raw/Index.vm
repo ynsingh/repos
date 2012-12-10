@@ -44,16 +44,8 @@ function toggleViewAll(x) {
 
 <body onload="doLoad();">
 #macro(UNAME)
-       <font color="blue">
-	#if($firstname!="")
-  		#if($lastname!="")
-  		<b> $firstname $lastname</b>
-  		#else
-  		<b> $firstname</b>
-  		#end
-	#else
-  	<b>$username</b>
-	#end
+       	<font color="blue">
+  		<b>$flname</b>
 	</font>
 #end
 ## if message have any value then show 

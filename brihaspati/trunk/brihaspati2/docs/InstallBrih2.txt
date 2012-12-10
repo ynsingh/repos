@@ -92,11 +92,13 @@ Step 9: Installing BRIHASPATI (after moving into home directory of brihaspati lo
 	Create directory in tdk-2.3_01
 		$mkdir webapps
 	# cd tdk-2.3_01/webapps/ 
-	Copy brihaspati2-xxxxxxx.tar.gz	to this directory. (or get the
-latest source from CVS repository at this location)
+	Copy brihaspati2-xxxxxxx.tar.gz	to this directory. 
 
 	# gunzip brihaspati2-xxxxxxxx.tar.gz
 	# tar -xvf brihaspati2-xxxxxxxx.tar
+
+or get the latest source from  SVN repository at this location
+svn co http://202.141.40.215/repos/brihaspati/trunk/brihaspati2
 
 Step 10: Configuring brihaspati2.
 
@@ -213,6 +215,17 @@ Step 15:
 	Open BrihaspatiEditor.jnlp, change codebase eg. 172.28.44.17(Server IP
 Address)
 
+Step 16:Installing BRIHASPATI Spring Module (Directory, Twitter etc)
+
+        # cd tdk-2.3_01/webapps
+
+	get the latest source from  SVN repository at this location
+	svn co http://202.141.40.215/repos/brihaspati/trunk/brihaspatiSpring
+
+	# cd brihaspatiSpring
+	# ant project-om
+	# ant compile
+
 
 START BRIHASPATI
 ----------------
@@ -253,5 +266,5 @@ http://home.iitk.ac.in/~ynsingh/tool/brihaspati.html
 
 See notes.txt if you are upgrading the build.
 -----------------------------------------------------------------------
-Last modified on 04 July 2008, 16:35 hrs IST
+Last modified on 10 December 2012, 15:00 hrs IST
 

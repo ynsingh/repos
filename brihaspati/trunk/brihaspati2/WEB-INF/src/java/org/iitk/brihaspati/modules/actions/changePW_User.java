@@ -112,8 +112,9 @@ public class changePW_User extends SecureAction
                         crit.add(UserPrefPeer.USER_ID,uid);
                         crit.add(UserPrefPeer.PASSWORD_EXPIRY,expdate);
                         UserPrefPeer.doUpdate(crit);
-			data.getSession().invalidate();	
+		//	data.getSession().invalidate();	
 			data.setMessage(msg);
+			data.setScreenTemplate("Index.vm");
 		}
 		catch(Exception ex)
 		{
