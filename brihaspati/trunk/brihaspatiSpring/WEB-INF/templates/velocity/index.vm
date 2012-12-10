@@ -40,11 +40,11 @@ function limitText(limitField, limitCount, limitNum) {
 
 <form name="registerfile" method="POST" >
 <div style="width:290px; max-height:210px auto; margin-top:5px; margin-left:-15px;" class="bgd">
-<span style=" margin:0px 15px auto;" class="span_text">#springMessage("brih_tweets")<br><center>$model.tweets.size()</center></span>
+<span style=" margin:0px 15px auto;" class="span_text">#springMessage("brih_tweets")<br><center>$!model.tweets.size()</center></span>
 <hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:0px 75px auto;">
-<span style="margin:-40px 105px auto;" class="span_text">#springMessage("brih_following")<br><center>$model.fing.size()</center></span>
+<span style="margin:-40px 105px auto;" class="span_text">#springMessage("brih_following")<br><center>$!model.fing.size()</center></span>
 <hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:-40px 200px auto;">
-<span style="margin:-40px 210px auto;" class="span_text">#springMessage("brih_followers")<br><center>$model.fls.size()</center></span>
+<span style="margin:-40px 210px auto;" class="span_text">#springMessage("brih_followers")<br><center>$!model.fls.size()</center></span>
 <hr style="width:290px; height:1px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin-top:0px;">
 
 <textarea name="tweets" id="tweets" onKeyDown="limitText(this.form.tweets,this.form.countdown,100);"
