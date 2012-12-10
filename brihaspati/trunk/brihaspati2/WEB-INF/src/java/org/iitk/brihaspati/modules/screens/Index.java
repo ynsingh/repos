@@ -197,6 +197,7 @@ public class Index extends SecureScreen{
                         context.put("firstname",fname);
                         context.put("lastname",lname);
 			context.put("fullname",fname+lname);
+			context.put("flname",flname);
 			String lang=user.getTemp("lang").toString();
                         context.put("lang",lang);
 			lang = "";
