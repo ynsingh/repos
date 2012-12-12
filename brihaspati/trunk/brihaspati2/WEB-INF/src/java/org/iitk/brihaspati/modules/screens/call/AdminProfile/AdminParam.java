@@ -115,6 +115,17 @@ public class AdminParam extends SecureScreen{
                  context.put("port",port);
 		 String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
 		 context.put("dstore",dstore);
+		 String mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
+                 if(!StringUtils.isBlank(mailSpoolingExpiry))
+
+                         context.put("mailSpoolingExpiry",mailSpoolingExpiry);
+                else
+                         context.put("mailSpoolingExpiry","3");
+                String mailResendTime =  AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
+                if(!StringUtils.isBlank(mailResendTime))
+                        context.put("spoolingMailResendTime", mailResendTime);
+                else
+                        context.put("spoolingMailResendTime","60");
 
 		// --------------------------------Telephone Directory------------------
 	Criteria crt=new Criteria();

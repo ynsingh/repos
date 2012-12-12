@@ -213,6 +213,8 @@ public class changeAParam extends SecureAction_Admin{
 		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
+		String mailSpoolResendTime = pp.getString("spoolMailResendTime","");
+		String mailSpoolExpiryDay = pp.getString("mailSpoolingExpiry","");
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
 			user.setFirstName(AFName);
 			user.setLastName(ALName);
@@ -238,6 +240,8 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
 			AdminProperties.setValue(path,port,"brihaspati.spring.port");
 			AdminProperties.setValue(path,dstore,"brihaspati.admin.datastore.value");
+			AdminProperties.setValue(path, mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
+			AdminProperties.setValue(path, mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
 
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
