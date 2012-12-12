@@ -18,6 +18,7 @@ $!data.getMessage()
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/big-link.css")" media="screen"/>
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery-1.6.min.js")"></script>
 <script type="text/javascript"  src="$content.getURI("/scrpts/jquery/jquery.reveal.js")"></script>
+<script type="text/javascript"  src="$content.getURI("/scrpts/jquery/ViewInstituteList.js")"></script>
 </head>
 
 <table bgcolor="$ui.menuColor" width=100%>
@@ -87,21 +88,22 @@ $!data.getMessage()
                         <input type="hidden" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none">
                         <div id="myModal" class="reveal-modal" >
                                 <div class="frameBorderless p10">
-                                <form name="send_mail" method="post" action="$link.setPage("ViewInstituteList.vm").setAction("InstituteAdminMail")">
-                                        <h2 class="underline mb10">Send e-mail to Institute Admin</h2>
-                                        <label class="mt10"><span class="required">To:</span></label>
+                                <form name="send_mail" method="post" action="$link.setPage("ViewInstituteList.vm").setAction("InstituteAdminMail")" onsubmit="return validateForm(this)">
+                                        ##<h2 class="underline mb10">Send e-mail to Institute Admin</h2>
+					<label class="mt10"><font color="red">* </font><b>All fields are compulsory</b></label><br><br>
+                                        <div><label class="mt10">To:</label><div>
                                         <div><select name="inst"><option>Select Institute</option>
-                                        #foreach($ent in $entry1)
-                                        <option value="$ent.getInstituteName()~??~$!ent.getInstituteEmail()">$ent.getInstituteName()</option>
+                                        #foreach($iid in $iidvector1)
+                                        <option value="$iid.getInstituteName()~??~$!iid.getInstituteEmail()">$iid.getInstituteName()</option>
                                         #end
 					</select>
                                         </div>
-                                        <label class="mt10"><span class="required">From:</span></label>
-                                        <div><input class="w99p mt10 h75 text" type="text" name="from" value="" required="required"></div>
-                                        <label class="mt10"><span class="required">Subject:</span></label>
+                                        <div><label class="mt10">From:</label></div>
+                                        <div><input class="w99p mt10 h75 text" type="text" name="from" value=""</div>
+                                        <div><label class="mt10">Subject:</label></div>
                                         <div><input class="w99p mt10 h75 text" type="text" name="subject" value=""></div>
-                                        <label class="mt10"><span class="required">Message:</span></label>
-                                        <div><textarea name="message" rows="10" cols="50" class="w99p mt10 h150 text" required="required"></textarea></div>
+                                        <div><label class="mt10">Message:</label></div>
+                                        <div><textarea name="message" rows="10" cols="50" class="w99p mt10 h150 text"></textarea></div>
                                         <div class="right pt10">
                                         <button class="button w100"  type="submit"  title="Send">
                                                 <span class="ico ico-confirm">Send</span>

@@ -86,6 +86,7 @@ public class ViewInstituteList extends VelocityScreen
 			  */
 			Vector iidvector=InstAdminDetail(mode, query, valueString);
 			//for page listing
+			context.put("iidvector1",iidvector);
 			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                         String adminemail =AdminProperties.getValue(path,"brihaspati.mail.email");

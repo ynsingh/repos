@@ -188,7 +188,7 @@ public class InstituteAdminMail extends VelocityAction{
 			 if(update.equals("Successfull"))
 			 {
 				Mailmsg = mailForward("","","sourceMailVerify",msg,instName,senderEmail,a_key,lang);
-                	 	msg1=MultilingualUtil.ConvertedString("cnfrm_mail",LangFile);
+                	 	msg1=MultilingualUtil.ConvertedString("mail_confirm",LangFile);
 			 }
 			 else
 				msg1=MultilingualUtil.ConvertedString("sourceVerify",LangFile);

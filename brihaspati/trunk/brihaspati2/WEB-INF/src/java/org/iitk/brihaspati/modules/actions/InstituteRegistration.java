@@ -245,7 +245,7 @@ public class InstituteRegistration extends VelocitySecureAction
 				
 						//...............
 						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,a_key,flag1);
-						rundata.setMessage(mu.ConvertedString("mail_confirm",Lang));
+						rundata.setMessage(mu.ConvertedString("cnfrm_mail",Lang));
 					   }//if
 					   else
 					   {
