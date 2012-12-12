@@ -15,6 +15,7 @@ $page.setTitle("Backups")
 $!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 </head>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
@@ -30,7 +31,11 @@ $!data.getMessage()
 	$brih_system $brih_backup
 	#elseif($actionName == "eventSubmit_doGlossaryBackup")
 	$Glossary $brih_backup
-	#end
+#end
+
+
+<tr><td><font size=4></font></td><td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/AdminBackup.html","newWin");>$brih_help</a></td></tr>
+
 	</td>
 </tr>
 </table>

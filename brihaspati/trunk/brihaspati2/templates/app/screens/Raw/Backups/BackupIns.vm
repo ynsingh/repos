@@ -13,6 +13,7 @@ $page.setTitle("Instructor Backup")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/PopWin.js")"></script>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
         <td><b><a href=$link.setPage("call,IndexHome.vm")>$brih_home </a> |<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$data.getUser().getTemp("course_name" ).toString() </a> |  $brih_backup 
@@ -41,6 +42,8 @@ $!data.getMessage()
 	#else 
 	$brih_course $brih_Of1 $brih_backup</b> 
 	#end 
+<tr><td><font size=4></font></td><td align="right"><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Backup.html","newWin");>$brih_help</a></td></tr>
+
 </td></tr>
 <tr bgcolor="$ui.menuColor" >
 <td><input type="text" name="courses" value="$data.getUser().getTemp("course_id" ).toString()" readonly /></td>
