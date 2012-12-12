@@ -132,48 +132,50 @@ $!data.getMessage()
 	      <td>
 	 #if($mode!="Search")
 	 #if($total_size<= $AdminConf)
-	 <u><font color="white">$brih_first</font></u> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-	 <u><font color="white">$brih_pre</font></u> &nbsp;
-	 <u><font color="white">$brih_last</font></u> &nbsp;
-	  #elseif($startIndex== $AdminConf_str)
-	  <u><font color="white">$brih_first</font></u> &nbsp;
-	  <u><font color="white">$brih_pre</font></u> &nbsp;
-	  <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-	  <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
-	 #elseif($endIndex == $total_size || $endIndex > $total_size)
-         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
- 	 <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
-	  #else
-	   <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-	   <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-	   <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-	    <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+		<img src="$content.getURI("images/First_blank.png")">
+                <img src="$content.getURI("images/Next_blank.png")">
+                <img src="$content.getURI("images/Previous_blank.png")">
+                <img src="$content.getURI("images/Last_blank.png")">
+
+        #elseif($startIndex== $AdminConf_str)
+          <img src="$content.getURI("images/First_blank.png")">
+          <img src="$content.getURI("images/Previous_blank.png")">
+          <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+          <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
+         #elseif($endIndex == $total_size || $endIndex > $total_size)
+         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+           <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+           <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+           <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+            <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
      #end
      #else
-	 #if($total_size<= $AdminConf)
-	 <u><font color="white">$brih_first</font></u> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-	 <u><font color="white">$brih_pre</font></u> &nbsp;
-	 <u><font color="white">$brih_last</font></u> &nbsp;
-	  #elseif($startIndex== $AdminConf_str)
-	  <u><font color="white">$brih_first</font></u> &nbsp;
-	  <u><font color="white">$brih_pre</font></u> &nbsp;
-	  <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-	  <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
-	 #elseif($endIndex == $total_size || $endIndex > $total_size)
-         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
- 	 <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-	 <u><font color="white">$brih_nxt</font></u> &nbsp;
-         <u><font color="white">$brih_last</font></u> &nbsp;
-	  #else
-	   <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-	   <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-	   <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-	    <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
-     #end
+         #if($total_size<= $AdminConf)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #elseif($startIndex== $AdminConf_str)
+         <img src="$content.getURI("images/First_blank.png")">
+         <img src="$content.getURI("images/Previous_blank.png")">
+          <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+          <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
+         #elseif($endIndex == $total_size || $endIndex > $total_size)
+         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+         <img src="$content.getURI("images/Next_blank.png")">
+         <img src="$content.getURI("images/Last_blank.png")">
+          #else
+           <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+           <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+           <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+            <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
+
+	#end
     #end
     </td>
  </tr>

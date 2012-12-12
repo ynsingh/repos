@@ -179,25 +179,26 @@ $!data.getMessage()
 	#if($mode=="alllist" && $mode!="add" && $mode!="edit" && $status!="blank")
 		<tr bgcolor="$ui.menuColor"><td colspan="5">
                 	#if($total_size <= $userConf)
-                        <u><font color="white">$brih_first</font></u> &nbsp;
-                        <u><font color="white">$brih_pre</font></u> &nbsp;
-                        <u><font color="white">$brih_nxt</font></u> &nbsp;
-                        <u><font color="white">$brih_last</font></u> &nbsp;
-                        #elseif($startIndex == $userConf_string)
-                        <u><font color="white">$brih_first</font></u> &nbsp;
-                        <u><font color="white">$brih_pre</font></u> &nbsp;
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode)">$brih_nxt</a> &nbsp;
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode)">$brih_last</a> &nbsp;
+                        <img src="$content.getURI("images/First_blank.png")">
+	                <img src="$content.getURI("images/Next_blank.png")">
+        	        <img src="$content.getURI("images/Previous_blank.png")">
+                	<img src="$content.getURI("images/Last_blank.png")">
+
+			#elseif($startIndex == $userConf_string)
+                        <img src="$content.getURI("images/First_blank.png")">
+                        <img src="$content.getURI("images/Previous_blank.png")">
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode)"><img src="$content.getURI("images/Next.png")"></a>
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode)"><img src="$content.getURI("images/Last.png")"></a>
                         #elseif($endIndex == $total_size || $endIndex > $total_size)
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode)">$brih_first</a>&nbsp;
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode)">$brih_pre</a> &nbsp;
-                        <u><font color="white">$brih_nxt</font></u> &nbsp;
-                        <u><font color="white">$brih_last</font></u> &nbsp;
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode)"><img src="$content.getURI("images/First.png")"></a>
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode)"><img src="$content.getURI("images/Previous.png")"></a> &nbsp;
+                        <img src="$content.getURI("images/Next_blank.png")">
+                        <img src="$content.getURI("images/Last_blank.png")">
                         #else
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode)">$brih_first</a>&nbsp;
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode)">$brih_pre</a> &nbsp;
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode)">$brih_nxt</a> &nbsp;
-                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode)">$brih_last</a> &nbsp;
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode)"><img src="$content.getURI("images/First.png")"></a>
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode)"><img src="$content.getURI("images/Previous.png")"></a>
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode)"><img src="$content.getURI("images/Next.png")"></a>
+                        <a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode)"><img src="$content.getURI("images/Last.png")"></a>
                         #end
                 </td></tr>
         #end

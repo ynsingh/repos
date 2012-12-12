@@ -63,7 +63,7 @@
 #macro (fileUploadField $name)
   <td bgcolor="$ui.formFieldColor">
     <font face="$ui.sansSerifFonts">
-      <input type="file" class="button-ftextstyle" size="20" name="$name">
+      <input type="file" size="20" name="$name">
     </font>
   </td>
 #end

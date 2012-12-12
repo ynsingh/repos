@@ -214,7 +214,8 @@ $page.setBgColor($ui.bgcolor)
 		<font color=Red>* $Remotemandatory</font>
 	</td></tr>
 			<tr bgcolor ="$ui.menuColor">
-			<td> $RemoteInstitute $RemoteIP $RemoteAddress</td><td> <input type="text" name="iip" value="$!url">
+			<td> $RemoteInstitute $RemoteIP $RemoteAddress <input type="text" name="iip" value="$!url"></td>
+			<td>
                                 &nbsp;$RemoteInstitute $brih_name
                                 <select name="inm" class="drop" style="width:200px;">
                                 #if($ivalue=="")
@@ -226,7 +227,7 @@ $page.setBgColor($ui.bgcolor)
                                 <option value="$instname" title="$instname" style="width:275px;">$instname
                                 #end
                                 </select>
-                                &nbsp;&nbsp;&nbsp;&nbsp;$brih_course $brih_ID
+                                &nbsp;$brih_course $brih_ID
                                 <select name="cid" class="drop" onChange="ChangeCname(document.frm,this);" style="width:200px;">
                                 #if($cvalue=="")
                                 <option value="">Select Course</option>

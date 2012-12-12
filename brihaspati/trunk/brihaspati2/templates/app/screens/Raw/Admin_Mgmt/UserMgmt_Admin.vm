@@ -194,27 +194,27 @@ $!data.getMessage()
         #if($mode == "instadminlist")
         <tr><td align=left bgcolor="$ui.tableColor" colspan=7>
         #if($total_size <= $AdminConf)
-        <font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <font color="white">$brih_nxt</font>&nbsp;
-        <font color="white">$brih_last</font> &nbsp;
+        <img src="$content.getURI("images/First_blank.png")">
+        <img src="$content.getURI("images/Previous_blank.png")">
+        <img src="$content.getURI("images/Next_blank.png")">
+        <img src="$content.getURI("images/Last_blank.png")">
         #elseif($startIndex == $AdminConf_str)
-        <font color="white">$brih_first</font> &nbsp;
-        <font color="white">$brih_pre</font> &nbsp;
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$startIndex) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
+        <img src="$content.getURI("images/First_blank.png")">
+        <img src="$content.getURI("images/Previous_blank.png")">
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$startIndex) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_last) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
 
         #elseif($endIndex == $total_size || $endIndex > $total_size)
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_pre) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <font color="white">$brih_nxt</font> &nbsp;
-        <font color="white">$brih_last</font> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_first) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_pre) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+        <img src="$content.getURI("images/Next_blank.png")">
+        <img src="$content.getURI("images/Last_blank.png")">
 
         #else
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_pre) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_first) style=text-decoration:none><img src="$content.getURI("images/First.png")"></a>
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_pre) style=text-decoration:none><img src="$content.getURI("images/Previous.png")"></a>
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex) style=text-decoration:none><img src="$content.getURI("images/Next.png")"></a>
+        <a href=$link.setPage("call,Admin_Mgmt,UserMgmt_Admin.vm").addPathInfo("count",$tdcolor).addPathInfo("mode","instadminlist").addPathInfo("startIndex",$check_last) style=text-decoration:none><img src="$content.getURI("images/Last.png")"></a>
         #end
         </td>
         </tr>
