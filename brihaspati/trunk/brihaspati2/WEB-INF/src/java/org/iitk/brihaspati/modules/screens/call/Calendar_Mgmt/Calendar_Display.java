@@ -394,6 +394,10 @@ public class Calendar_Display extends SecureScreen{
 			*/
 			String key = instituteId+"."+dmonth + "."+year;
 			context.put("key",key);
+
+			hday=new Hashtable();
+                        acal=new Hashtable();
+
 			Holiday(key,path1);
 			Holiday(key,path2);
 			/**
