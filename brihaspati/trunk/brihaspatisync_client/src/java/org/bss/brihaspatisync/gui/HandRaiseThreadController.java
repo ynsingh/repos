@@ -24,26 +24,15 @@ import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 public class HandRaiseThreadController implements Runnable{
 
         private Thread runner = null;
-	private boolean startgetscreeflag=false;
-        private boolean startpostscreeflag=false;
-        private boolean starthraudioflag=false;
-        private boolean stophraudioflag=false;
+        private boolean rec_Flag=false;
+        private boolean stopallpermission=false;
+        private boolean startgetpermission=false;
+	private boolean startpostpermission=false;
+		
+	private boolean stopsharescreen=false;
+	private boolean startgetsharescreen=false;
+	private boolean startpostsharescreen=false;
 
-        private boolean stopgetscreeflag=false;
-        private boolean stoppostscreeflag=false;
-        private boolean startpostpptflag=false;
-        private boolean startgetpptflag=false;
-	private boolean rec_Flag = false;
-	private boolean starthraudio = false;
-	private boolean stophraudio = false;
-	
-	private boolean start_pres_audio_transmit = false;
-	private boolean stop_pres_audio_transmit = false;
-
-	private boolean start_pres_audio_rec = false;
-        private boolean stop_pres_audio_rec = false;
-
-	private boolean pres_mic_flag=false;
         private static HandRaiseThreadController thread_controll=null;
 	private String username=ClientObject.getController().getUserName();;
         private String role=ClientObject.getController().getUserRole();
@@ -87,200 +76,92 @@ public class HandRaiseThreadController implements Runnable{
 	public void run(){
 		while(rec_Flag && ThreadController.getController().getThreadFlag()){
 			try{
-				//Start audio handraise controll for student
-				if(starthraudioflag){
-					starthraudioflag=false;
-					{	
-						VideoPanel.getController().addStudentPanel();
-					}
-					org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
-				}
-		
-				//Stop audio handraise controll for student
-				if(stophraudioflag){
-					stophraudioflag=false;
-					org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
-					{
-						VideoPanel.getController().removeStudentPanel();
-					}
-				}
-				
-				if(role.equals("student")) {
-					// Start get share screen controll for student
-					if(startgetscreeflag) {
-						startgetscreeflag=false;
-                                       		try {
-							Post_GetSharedScreen.getController().start(true);
-                	                        }catch(Exception sp) {System.out.println("Error in starting GetSharedScreen"+sp.getMessage());}
-
-					}
+				if(startpostpermission){ 
+					try {
+						startpostpermission=false;
+						org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);	
+						org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw.getController().allowDrawforStudent();
+						Post_GetSharedScreen.getController().start(false);
 					
-					// Stop get share screen controll for student				
-					if(stopgetscreeflag) {
-						stopgetscreeflag=false;
-                                                try{
-							Post_GetSharedScreen.getController().stop();
-							StatusPanel.getController().setdestopClient("no");
-                                                }catch(Exception sp){System.out.println("Error in stopping GetSharedScreen"+sp.getMessage());}
-                                        }
-
-					// Start post share screen controll for student
-					if(startpostscreeflag) {	
-						try {
-                                                        Post_GetSharedScreen.getController().start(false);
-                	                        } catch(Exception sp) {System.out.println("Error in starting Post_GetSharedScreen "+sp.getMessage());}
-
-						startpostscreeflag=false;
-					}
-
-					// Start post share screen controll for student
-					if(stoppostscreeflag) {          
-						stoppostscreeflag=false;
-						try{
-	                                	        Post_GetSharedScreen.getController().stop();
-							StatusPanel.getController().setdestopClient("no");
-	                                	}catch(Exception sp){System.out.println("Error in stopping Post_GetSharedScreen"+sp.getMessage());}
-					}
-
-					//start post PPT Presentation controll for student
-					if(startpostpptflag) {
-						startpostpptflag=false;
-						org.bss.brihaspatisync.tools.presentation.PresentationPanel.getController().setEnable_Decable(true);		
-						GetAndPostPPT.getController().startFTPClient("POST");
-					}
-
-					//start get PPT Presentation controll for student
-					if(startgetpptflag) {
-						GetPPTScreen.getController().start();
-						startgetpptflag=false;
-					}
-					// Starting Audio mic capture for student to ask question or clear doubts from instructor.
-					if(starthraudio){
-						starthraudio=false;
+						VideoPanel.getController().addStudentPanel();					
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(false);
-					}
-					//Stop Handraise Audio transmission.
-					if(stophraudio){
-						stophraudio=false;
-						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
-                                                org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
-					}
-					//Stop Presentation Audio transmission.
-					if(stop_pres_audio_transmit){
-                                                stop_pres_audio_transmit=false;
-                                                try{
-                                                        //pres_audio.stop();
-                                                        //pres_audio=null;
-                                                } catch(Exception error){System.out.println("Error in stopping Handraise Audio Transmit");}
-                                        }
-
+					}catch(Exception e){System.out.println("Error in startpostpermission ");}
 				}
-				if(role.equals("instructor")) {	
-					// Start post screen sharing controll for instructor.
-					if(startpostscreeflag) {
-						try{
-        	                                	Post_GetSharedScreen.getController().start(false);
-							startpostscreeflag=false;
-						}catch(Exception sp){System.out.println("  Error in start post screen for instructor :"+sp.getMessage());}
-					}
-					//Stop post screen sharing controll for instructor
-					if(stoppostscreeflag) {
-						Post_GetSharedScreen.getController().stop();
-						stoppostscreeflag=false;
-						StatusPanel.getController().setdestopClient("no");	
-					}
-										
-					//Start get screen sharing controll for instructor
-					if(startgetscreeflag) {
-						startgetscreeflag=false;
-						try{
-							Post_GetSharedScreen.getController().start(true);
-                                              	}catch(Exception sp){System.out.println("  Error in start get screen for instructor :"+sp.getMessage());}
-					}
+				if(startgetpermission){
+					try {
+						startgetpermission=false;
+						Post_GetSharedScreen.getController().start(true);
+						VideoPanel.getController().addStudentPanel();	
+						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
+					}catch(Exception e){System.out.println("Error in startgetpermission ");}
+                                }
+				if(stopallpermission){
+					try {
+						stopallpermission=false;
+						if(!(role.equals("instructor"))){
+							org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw.getController().denieDrawforStudent();
+							org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(false);
+						}
+						
+						Post_GetSharedScreen.getController().stop();		
+						StatusPanel.getController().setdestopClient("no");
+						
+						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
+                        	                org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
+						
+					}catch(Exception e){System.out.println("Error in stopallpermission ");}
+                                }
 				
-					//Stop get screen sharing controll for instructor
-					if(stopgetscreeflag) {
-						stopgetscreeflag=false;
-                                        	//GetSharedScreen.getController().stop();
+				if(startpostsharescreen){
+					try {
+						startpostsharescreen=false;
+						Post_GetSharedScreen.getController().start(false);
+					}catch(Exception e){System.out.println("Error in startpostsharescreen ");}
+				}
+				if(startgetsharescreen){
+					try {
+	                                        startgetsharescreen=false;
+						Post_GetSharedScreen.getController().start(true);
+					}catch(Exception e){System.out.println("Error in startgetsharescreen ");}
+                                }
+				if(stopsharescreen){
+					try {
+                                        	stopsharescreen=false;
 						Post_GetSharedScreen.getController().stop();
 						StatusPanel.getController().setdestopClient("no");
-					}
-					//Start post PPT Presentation controll for instructor.
-					if(startpostpptflag) {
-						startpostpptflag=false;
-						org.bss.brihaspatisync.tools.presentation.PresentationPanel.getController().setEnable_Decable(true);	
-                                                GetAndPostPPT.getController().startFTPClient("POST");
-                                        }
-					
-					//Start get PPT Presentation controll for instructor.
-					if(startgetpptflag) {
-						GetPPTScreen.getController().start();
-						startgetpptflag=false;
-                                        }
-				}	
+					}catch(Exception e){System.out.println("Error in stopsharescreen ");}
+                                }
 				runner.yield();
-				runner.sleep(100);
+				runner.sleep(500);
 			}catch(Exception e){}
 		}	
 	}
-	
-
-
-	protected void startgetpptFlag(boolean flag) {
-                startgetpptflag=flag;
-        }
-
-        protected void startpostpptFlag(boolean flag) {
-                startpostpptflag=flag;
-        }
-
-	protected void startGetScreenFlag(boolean flag) {
-		startgetscreeflag=flag;
-	}
-	
-	protected void startPostScreenFlag(boolean flag) {
-                startpostscreeflag=flag;
+		
+	protected void startPostPermission(boolean flag) {
+                startpostpermission=flag;
         }
 	
-	protected void stopGetScreenFlag(boolean flag) {
-                stopgetscreeflag=flag;
-        }
-
-        protected void stopPostScreenFlag(boolean flag) {
-                stoppostscreeflag=flag;
+	protected void startGetPermission(boolean flag) {
+                startgetpermission=flag;
         }
 	
-	protected void starthraudioflag(boolean flag) {
-                starthraudioflag=flag;
-        }
-
-	protected void stophraudioflag(boolean flag) {
-                stophraudioflag=flag;
+	protected void stopAllPermission(boolean flag) {
+		stopallpermission=flag;	
         }
 	
-	protected void starthandraiseraudioflag(boolean flag) {
-                starthraudio=flag;
-        }
-
-        protected void stophandraiseraudioflag(boolean flag) {
-                stophraudio=flag;
-        }
+	/***********  instructor ********/
 	
-	protected void startpresaudioflag(boolean flag) {
-                start_pres_audio_transmit=flag;
+	protected void startPostShareScreen(boolean flag) {
+                startpostsharescreen=flag;
+        }	
+
+	protected void startGetShareScreen(boolean flag) {
+                startgetsharescreen=flag;
         }
 
-        protected void stoppresaudioflag(boolean flag) {
-                stop_pres_audio_transmit=flag;
-        }
-
-	protected void startPresAudioRec(boolean flag) {
-                start_pres_audio_rec=flag;
-        }
-
-        protected void stopPresAudioRec(boolean flag) {
-                stop_pres_audio_rec=flag;
-        }
-	
+        protected void stopShareScreen(boolean flag) {
+                stopsharescreen=flag;
+        }	
+	/************ end instructor ********************/
 }

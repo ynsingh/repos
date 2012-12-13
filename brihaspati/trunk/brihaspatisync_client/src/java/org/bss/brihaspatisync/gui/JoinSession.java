@@ -112,6 +112,7 @@ public class JoinSession {
 		try {
 			//remove CourseSessionWindow and add gui for view all tools activities.
 	                MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
+			ShareScreenAndPPT.getController().setEnable_Decable();
         	        MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
 			MainWindow.getController().getMenuItem7().setEnabled(true);
 			MainWindow.getController().getContainer().validate();
@@ -145,7 +146,6 @@ public class JoinSession {
 		try {
 			String v_status=client_obj.getVideoStatus();
 			if((client_obj.getUserRole()).equals("instructor")) {
-				ShareScreenAndPPT.getController().setEnable_Decable();
 				if(v_status.equals("1")){	
                         		org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 					org.bss.brihaspatisync.network.video_capture.PostVideoCapture.getController().start(false);

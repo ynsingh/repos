@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.Language;
-import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.gui.LoginWindow;
 import org.bss.brihaspatisync.gui.MailLogin;

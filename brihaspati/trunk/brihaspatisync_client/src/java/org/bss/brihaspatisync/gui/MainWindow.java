@@ -74,13 +74,10 @@ public class MainWindow  extends JFrame implements ActionListener{
                 content.setBackground(new Color(24,116,205));
                 setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 		setIconImage(new ImageIcon(clr.getResource("resources/images/mainwindow.gif")).getImage());
-                //setJMenuBar(createJMenuBar());
 
 		desktop = new JDesktopPane();
                 desktop.setBackground(new Color(220,220,220));
 
-                //north_Panel=new JPanel();
-                //north_Panel.setBackground(new Color(24,116,205));
                 content.add(createJMenuBar(),BorderLayout.NORTH);
 
                 south_Panel=StatusPanel.getController();

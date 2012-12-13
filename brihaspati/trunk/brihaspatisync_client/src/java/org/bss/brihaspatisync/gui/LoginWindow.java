@@ -137,9 +137,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		titlePane.add(imageLabel);
 		titlePane.setSize(301,200);
 		titlePane.setBackground(Color.WHITE);
-		//titlePane.setBorder(BorderFactory.createCompoundBorder(BorderFactory
-		//		.createBevelBorder(BevelBorder.LOWERED), BorderFactory
-		//		.createLineBorder(new Color(0, 150, 150), 1)));
     	
     		panel.add(titlePane,BorderLayout.NORTH);
     
@@ -196,10 +193,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
     	
 		add(panel,BorderLayout.CENTER);
 		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((((int)dim.getWidth()/2)-175),(((int)dim.getHeight()/2)-240));
+		setLocation((((int)dim.getWidth()/2)-160),(((int)dim.getHeight()/2)-225));
     		setSize(355,470); 
     		setVisible(true);
-		//setResizable(false);
   	}
 
 	public void setMessage(String str){

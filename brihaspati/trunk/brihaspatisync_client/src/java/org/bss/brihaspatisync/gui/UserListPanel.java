@@ -38,12 +38,11 @@ public class UserListPanel {
 	private JScrollPane scrollPane=null;
 	private JList jlist=null;
 	private	Vector statusVector=new Vector();
+	private Vector user_list=new Vector();
+	private boolean flag=false;
+	private boolean sharescreenFlag=false;		
+	private String turnof_onFlag="";		
 	
-	private boolean flag=true;
-	private boolean screenFlag=true;		
-	private boolean sharescreenFlag=true;		
-	private boolean pptFlag=true;		
-
 	private static UserListPanel ul_panel=null;
 	private ClientObject client_obj=ClientObject.getController();
 	private String username=client_obj.getUserName();;	
@@ -51,8 +50,6 @@ public class UserListPanel {
 	private String a_status=client_obj.getAudioStatus();
         private String v_status=client_obj.getVideoStatus();
 	
-	private HandRaisePanel handRaisePanel=HandRaisePanel.getController();
-
 	/**
 	 * Controller for class.
 	 */	
@@ -95,7 +92,6 @@ public class UserListPanel {
                 labelPane.add(userLogin);
 		
                 mainPanel.add(labelPane,BorderLayout.NORTH);
-                mainPanel.add(handRaisePanel.createGUI(),BorderLayout.EAST);
 		mainPanel.add(scrollPane,BorderLayout.CENTER);
 		return mainPanel;
 	
@@ -109,7 +105,7 @@ public class UserListPanel {
 		ClassLoader clr= this.getClass().getClassLoader();
 		Object elements[][]=new Object[userlist.size()][5];
 		statusVector.clear();
-		Vector user_list=new Vector();
+		user_list.clear();
 		for (int i=0;i<userlist.size();i++) {
 			String str=(String)userlist.elementAt(i);
 			if(( str.indexOf("Allow") > 0 ) || (str.indexOf("Get")>0) || (str.indexOf("Share")>0) ){
@@ -128,109 +124,71 @@ public class UserListPanel {
 				String fullname=java.net.URLDecoder.decode(st.nextToken().trim());	
 				statusVector.add(status);
 				if(role.equals("student")) {		
-					if(user.equals(username)){
-						if(!user.equals("guest"))
-							handRaisePanel.setEnableORDisable(status);
-			
-					}
-					// Student mic controller. 
-					if(statusVector.contains("Allow-Mic")){
+					if(statusVector.contains("Allow-Permission")){					
 						try {
-							if((user.equals(username)) && (status.equals("Allow-Mic") && (flag))){
-                                                                flag=false;
-								HandRaiseThreadController.getController().starthandraiseraudioflag(true);
-								org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);
-                                                        }
-							if(flag) {
+							if((user.equals(username)) && (!(turnof_onFlag.equals(status))) && (flag) ) {
 								flag=false;
-								HandRaiseThreadController.getController().starthraudioflag(true);
+								HandRaiseThreadController.getController().stopAllPermission(true);		
+								System.out.println("\n\nstop --------------------> ");
+							}	
+							if((user.equals(username)) && (status.equals("Allow-Permission")) && (!flag)) {
+								flag=true;
+								turnof_onFlag="Allow-Permission";
+                        	                                HandRaiseThreadController.getController().startPostPermission(true);
+								System.out.println("\n\n\nAllow-Permission -------------------->\n\n\n ");
+							} else if(!flag) {
+								flag=true;
+								turnof_onFlag="available";
+	                                                        HandRaiseThreadController.getController().startGetPermission(true);
+								System.out.println("\n\n\n get -------------------->\n\n\n ");
 							}
-							
-						}catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
+						}catch(Exception e){}
+					}else {
+						if(flag) {
+                         			       flag=false;
+							HandRaiseThreadController.getController().stopAllPermission(true);
+                        			}
 					}
+					
+					
 					if(statusVector.contains("Share-Screen")){
 						try{
-							if(sharescreenFlag){
-                                                                sharescreenFlag=false;
-                                                                HandRaiseThreadController.getController().startGetScreenFlag(true);
+							if(!sharescreenFlag){
+                                                                sharescreenFlag=true;
+                                                                HandRaiseThreadController.getController().startGetShareScreen(true);
                                                         }
 						}catch(Exception es){System.out.println("Error in Share-Screen ===========> ");}
+					}else {
+						if(sharescreenFlag) {
+			                                sharescreenFlag=false;
+							HandRaiseThreadController.getController().stopShareScreen(true);
+                        			}
 					}
-					// Student screen share controller.
-					if(statusVector.contains("Allow-Screen")){
-						try {
-							if((user.equals(username)) && (status.equals("Allow-Screen") && (screenFlag))){
-                                                                screenFlag=false;
-                                                                HandRaiseThreadController.getController().startPostScreenFlag(true);
-                        			        	/*if((a_status.equals("1"))&&(v_status.equals("1"))){
-									HandRaiseThreadController.getController().startpresaudioflag(true);
-								}
-								*/
-                                                        }
 					
-                                                        if(screenFlag){
-								screenFlag=false;
-								HandRaiseThreadController.getController().startGetScreenFlag(true);
-                        			          	/*if((a_status.equals("1"))&&(v_status.equals("1"))){
-									HandRaiseThreadController.getController().startPresAudioRec(true);
-								}
-								*/
-                                                        }
-                                                }catch(Exception sp){System.out.println("  Error in catch Allow-Screen ==========> ");}
-					}
-					// Student ppt presentation controller.
-					if(statusVector.contains("Allow-PPT")){
-                                                try {
-                                                        if((user.equals(username)) && (status.equals("Allow-PPT") && (pptFlag))){
-                                                                pptFlag=false;
-                                                                HandRaiseThreadController.getController().startpostpptFlag(true);
-                                                        }
-
-                                                        if(pptFlag){
-                                                                pptFlag=false;
-                                                                HandRaiseThreadController.getController().startgetpptFlag(true);
-                                                        }
-                                                }catch(Exception sp){System.out.println("  Error in catch Allow-PPT ==========> ");}
-                                        }
 				}else if(role.equals("instructor")) { // check only for controller according to username.
-					
 					if(statusVector.contains("Share-Screen")){
-						if((user.equals(username)) && (status.equals("Share-Screen") && (sharescreenFlag))){
+						if((user.equals(username)) &&  (!sharescreenFlag)){
+                                                        sharescreenFlag=true;
+                                                        HandRaiseThreadController.getController().startPostShareScreen(true);
+                                                }
+					}else {
+                                                if(sharescreenFlag) {
                                                         sharescreenFlag=false;
-                                                        HandRaiseThreadController.getController().startPostScreenFlag(true);
+							HandRaiseThreadController.getController().stopShareScreen(true);
+                                                }
+                                        }
+					
+					if(statusVector.contains("Allow-Permission")){
+						if(!flag){
+							flag=true;
+							HandRaiseThreadController.getController().startGetPermission(true);
+						}	
+					}else {
+						if(flag) {
+                                                       	flag=false;
+                   					HandRaiseThreadController.getController().stopAllPermission(true);
                                                 }
 					}
-
-					// Instructor Screen share controller.
-					if(statusVector.contains("Allow-Screen")){
-						//if((user.equals(username)) && (status.equals("Allow-Screen") && (screenFlag))){
-						//	screenFlag=false;
-						//	HandRaiseThreadController.getController().startPostScreenFlag(true);
-						//}
-						if((screenFlag)){
-							screenFlag=false;
-							HandRaiseThreadController.getController().startGetScreenFlag(true);
-                                                        /*if((a_status.equals("1"))&&(v_status.equals("1"))){
-								HandRaiseThreadController.getController().startPresAudioRec(true);
-							}*/
-						}	
-					}
-
-					// Instructor ppt presentation controller.
-					if(statusVector.contains("Allow-PPT")){
-                                                try {
-                                                        if((user.equals(username)) && (status.equals("Allow-PPT") && (pptFlag))) {
-                                                                pptFlag=false;
-                                                                HandRaiseThreadController.getController().startpostpptFlag(true);
-                                                        }
-                                                        if(pptFlag){
-                                                                pptFlag=false;
-                                                                HandRaiseThreadController.getController().startgetpptFlag(true);
-                                                        }
-                                                }catch(Exception sp){System.out.println("  Error in catch Allow-PPT ==========> ");}
-                                        }
-
-
 				}
 				elements[i][0] = new Font("Helvetica", Font.PLAIN, 14);
         	        	elements[i][1] = Color.black;
@@ -239,103 +197,7 @@ public class UserListPanel {
 	                	elements[i][4] = fullname;
                         }
                 }
-
-		if(!(statusVector.contains("Share-Screen"))) {
-			if(!sharescreenFlag) {
-				sharescreenFlag=true;
-				try {
-                                        HandRaiseThreadController.getController().stopGetScreenFlag(true);
-                                        HandRaiseThreadController.getController().stopPostScreenFlag(true);
-                                } catch(Exception ex){}
-			}
-		}
-
-		//Contoller for Screen share for both student and instructor. 
-		if(!(statusVector.contains("Allow-Screen"))) {
-			if(!screenFlag) {
-				screenFlag=true;
-				try {
-                       			HandRaiseThreadController.getController().stopGetScreenFlag(true);
-					HandRaiseThreadController.getController().stopPostScreenFlag(true);
-                        		/*if((a_status.equals("1"))&&(v_status.equals("1"))){
-                     				HandRaiseThreadController.getController().stopPresAudioRec(true);
-					}*/
-				} catch(Exception ex){}
-			}
-		}
 		
-		//Student mic controller for both student and instructor. 
-		if(!(statusVector.contains("Allow-Mic"))) {
-                	if(!flag) {
-                          	flag=true;
-                               	try {
-                                	HandRaiseThreadController.getController().stophraudioflag(true);
-					/******  arvind ***********/
-					HandRaiseThreadController.getController().stophandraiseraudioflag(true);
-					org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(false);
-                                } catch(Exception ex){}
-                     	}
-               	}
-		
-		//PPT presentation contoller for both student and instructor. 
-		if(!(statusVector.contains("Allow-PPT"))) {
-                        if(!pptFlag) {
-                                pptFlag=true;
-				GetPPTScreen.getController().stop();
-				org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setEnable_Decable(false ,false);
-				org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setSclollEnable_Decable(false);
-				//org.bss.brihaspatisync.tools.presentation.JsliderListener.getController().setEnable_Decable(false);
-                        }
-               }
-	 		
-		/**
- 		 *  Controller for instructor to handle action on student specific request 	
- 		 */
-		if(role.equals("instructor")){
-			if((!(statusVector.contains("Get-WB"))) && (!(statusVector.contains("Get-Mic"))) && (!(statusVector.contains("Allow-WB"))) && (!(statusVector.contains("Allow-Mic")))&&(!(statusVector.contains("Share-Screen")))) {
-                     		handRaisePanel.setEnableORDisable("available");
-				
-			}
-			
-			if(!(statusVector.contains("Get-Mic"))){
-                                if(statusVector.contains("Allow-Mic") && (flag)){
-					flag=false;	
-                                        handRaisePanel.setEnableORDisable("Allow-Mic");
-					HandRaiseThreadController.getController().starthraudioflag(true);
-				}
-                        }else{
-				if(statusVector.contains("Get-Mic"))
-	                                handRaisePanel.setEnableORDisable("Get-Mic");
-                        }
-		
-			if(!(statusVector.contains("Get-WB"))){
-				if(statusVector.contains("Allow-WB")){
-					handRaisePanel.setEnableORDisable("Allow-WB");
-				}
-					
-			}else{
-				if(statusVector.contains("Get-WB"))
-					handRaisePanel.setEnableORDisable("Get-WB");
-			}
-			
-			if(!(statusVector.contains("Get-Screen"))){
-				if(statusVector.contains("Allow-Screen"))
-                                        handRaisePanel.setEnableORDisable("Allow-Screen");
-
-			}else{
-                                if(statusVector.contains("Get-Screen"))
-                                        handRaisePanel.setEnableORDisable("Get-Screen");
-                        }
-			
-			if(!(statusVector.contains("Get-PPT"))){
-                                if(statusVector.contains("Allow-PPT"))
-                                        handRaisePanel.setEnableORDisable("Allow-PPT");
-
-                        }else{
-                                if(statusVector.contains("Get-PPT"))
-                                        handRaisePanel.setEnableORDisable("Get-PPT");
-                        }
-		}		
 		jlist.setListData(elements);
                 ListCellRenderer renderer = new UserListCellRendered();
                 jlist.setCellRenderer(renderer);
@@ -350,27 +212,14 @@ public class UserListPanel {
 	private String getImageIcon(String status){
 		if(status.equals("available")){
 			return "resources/images/user/user.jpe";
-		}else if(status.equals("Get-WB")){
-                        return "resources/images/user/allow-wb.gif";
-                }else if(status.equals("Get-Mic")){
-                        return "resources/images/user/hr.jpeg";
-                }else if(status.equals("Get-Screen")){
+                }else if(status.equals("Get-Permission")){
                         return "resources/images/user/getscreen.jpeg";
-                }else if(status.equals("Allow-WB")){
-                        return "resources/images/user/draw.jpeg";
-                }else if(status.equals("Allow-Mic")){
-                        return "resources/images/user/mic1.jpeg";
-		}else if(status.equals("Get-Screen")){
-                        return "resources/images/user/getscreen.jpeg";
-                }else if(status.equals("Allow-Screen")){
-                        return "resources/images/user/allowscreen.jpeg";
-                } else if(status.equals("Get-PPT")){
-                        return "resources/images/user/getscreen.jpeg";
-                }else if(status.equals("Allow-PPT")){
-                        return "resources/images/user/allowppt.png";
-                }else if(status.equals("Share-Screen")){
+		}else if(status.equals("Allow-Permission")){
                         return "resources/images/user/allowscreen.jpeg";
 		}
+		else if(status.equals("Share-Screen")){
+                        return "resources/images/user/allowscreen.jpeg";
+                }
 		return "";
 	}
 }
