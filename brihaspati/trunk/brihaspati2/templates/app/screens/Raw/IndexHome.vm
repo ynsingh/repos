@@ -94,18 +94,6 @@ a.one:link,a.one:visited
 <body>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
-#macro(UNAME)
-
-        #if($firstname!="")
-                #if($lastname!="")
-                <b> $firstname $lastname</b>
-                #else
-                <b> $firstname</b>
-                #end
-        #else
-        <b>$username</b>
-        #end
-#end
 
 #macro (BlinkingText $text)
   <font face="$ui.sansSerifFonts" color="RED">
@@ -117,9 +105,9 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
 	<td align="center">
 			#if($lang == "hindi" || $lang == "gujarati")
-			        <font size=4 face="$ui.sansSerifFonts"><b>#UNAME()  $brih_welcome
+			        <font size=4 face="$ui.sansSerifFonts"><b>$username  $brih_welcome
 			#else
-			        <font size=4 face="$ui.sansSerifFonts"><b>$brih_welcome #UNAME()
+			        <font size=4 face="$ui.sansSerifFonts"><b>$brih_welcome $username
 			#end
 			        </font>
 	</td>

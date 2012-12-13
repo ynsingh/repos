@@ -75,7 +75,7 @@ $!data.getMessage()
 		#end
 	</table>
 </td>
-<td align="center" >
+<td align="center" valign="top" >
 ## width add by nksingh
 
 <table align="center" bgcolor="$ui.menuColor" cellspacing="1" width="80%">

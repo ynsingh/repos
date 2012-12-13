@@ -15,15 +15,7 @@ $page.setBgColor("$ui.tableColor")
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 $!data.getMessage()
 #macro(UNAME)
-#if($firstname!="")
-                #if($lastname!="")
-                <b> $firstname $lastname</b>
-                #else
-                <b> $firstname</b>
-                #end
-        #else
-        <b>$username</b>
-        #end
+$flname
 #end
 <table bgcolor="$ui.tableColor" width=100% CellPadding=0 align=center>
 <tr bgcolor="$ui.menuColor">
