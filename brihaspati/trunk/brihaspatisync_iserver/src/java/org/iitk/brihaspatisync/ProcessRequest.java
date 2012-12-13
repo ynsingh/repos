@@ -448,7 +448,8 @@ public class ProcessRequest extends HttpServlet {
 				String userAction=request.getParameter("userAction");
 				String login=request.getParameter("loginName");
 				login=login.replaceAll("loginName=","");
-				String message=PeerManager.getController().updateStatus(userAction,login,lectID);
+				String message=	"";
+				PeerManager.getController().updateStatus(userAction,login,lectID);
 				response.setContentLength(message.length());
                                 out.println(message);
                                 out.flush();

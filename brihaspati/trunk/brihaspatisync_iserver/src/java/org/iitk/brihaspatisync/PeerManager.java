@@ -114,7 +114,7 @@ public class PeerManager
 			
 	}
 				
-	protected String  updateStatus(String action,String userName,String LectureID){
+	protected void updateStatus(String action,String userName,String LectureID){
 		Element element=null;
                 Node node=null;
                 String user="";
@@ -137,19 +137,25 @@ public class PeerManager
         	                         * update Reflector of Parent Peer
                 	                 */
                         	        if(user.equals(userName)){
-						synchronized (this) {
-                        	                       	Attr attrNode = element.getAttributeNode("Status");
-                                	                attrNode.setValue(action);
-                                        	        saveXML(document,getFile(LectureID));
-							return "Successfull";
-                                               	}
-        	                     	}
+                        	        	Attr attrNode = element.getAttributeNode("Status");
+                                	        attrNode.setValue(action);
+                                        	saveXML(document,getFile(LectureID));
+        	                     	}else{
+						String status=element.getAttribute("Status");
+						if(status.equals("Allow-Permission")){
+							Attr attrNode = element.getAttributeNode("Status");
+                                                        attrNode.setValue("available");
+                                                        saveXML(document,getFile(LectureID));
+						}
+						if(status.equals("Share-Screen")){
+							Attr attrNode = element.getAttributeNode("Status");
+                                                        attrNode.setValue("available");
+                                                        saveXML(document,getFile(LectureID));
+						}
+					}
 				}
 			}
-		}catch(Exception e){
-			ServerLog.getController().Log("   Error from updateStatus -------> ");
-		}	
-		return "UnSuccessfull";
+		}catch(Exception e){	ServerLog.getController().Log("   Error from updateStatus -------> ");	}	
 	}
 	
 	protected boolean searchUserName(String lectID,String username) {
