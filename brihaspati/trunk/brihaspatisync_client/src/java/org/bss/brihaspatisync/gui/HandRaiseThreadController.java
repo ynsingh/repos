@@ -81,9 +81,8 @@ public class HandRaiseThreadController implements Runnable{
 						startpostpermission=false;
 						org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(true);	
 						org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw.getController().allowDrawforStudent();
+						
 						Post_GetSharedScreen.getController().start(false);
-					
-						VideoPanel.getController().addStudentPanel();					
 						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().start();
 						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(false);
 					}catch(Exception e){System.out.println("Error in startpostpermission ");}
@@ -92,7 +91,6 @@ public class HandRaiseThreadController implements Runnable{
 					try {
 						startgetpermission=false;
 						Post_GetSharedScreen.getController().start(true);
-						VideoPanel.getController().addStudentPanel();	
 						org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().start(true);
 					}catch(Exception e){System.out.println("Error in startgetpermission ");}
                                 }
@@ -102,12 +100,11 @@ public class HandRaiseThreadController implements Runnable{
 						if(!(role.equals("instructor"))){
 							org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw.getController().denieDrawforStudent();
 							org.bss.brihaspatisync.tools.audio.AudioClient.getController().postAudio(false);
+							org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
 						}
 						
 						Post_GetSharedScreen.getController().stop();		
 						StatusPanel.getController().setdestopClient("no");
-						
-						org.bss.brihaspatisync.network.video_capture.LocalServer.getController().stop();
                         	                org.bss.brihaspatisync.network.video_capture.StudentPostVideoCapture.getController().stop();
 						
 					}catch(Exception e){System.out.println("Error in stopallpermission ");}

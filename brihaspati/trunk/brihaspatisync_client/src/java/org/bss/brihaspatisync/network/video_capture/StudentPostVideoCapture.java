@@ -84,6 +84,7 @@ public class StudentPostVideoCapture implements Runnable {
 			getflag=getscreen;
                         runner = new Thread(this);
                         runner.start();
+			VideoPanel.getController().addStudentPanel();
 			System.out.println("Student Post Video Capture  start successfully !!");
 		}
         }
@@ -98,6 +99,7 @@ public class StudentPostVideoCapture implements Runnable {
 			getflag=false;
                         runner.stop();
                         runner = null;
+			VideoPanel.getController().removeStudentPanel();
 			System.out.println("Student Post Video Capture  stop successfully !!");
                 }
         }
