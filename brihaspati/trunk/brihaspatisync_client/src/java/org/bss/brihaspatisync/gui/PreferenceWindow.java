@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * PreferenceWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2012 ETRG,IIT Kanpur.
  */
 
 import java.io.BufferedWriter;
@@ -14,7 +14,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -36,7 +38,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Properties;
 import java.io.InputStream;
-//import java.lang.*;
 import java.io.File;
 import javax.swing.JOptionPane;
 import org.bss.brihaspatisync.util.Language;
@@ -106,10 +107,10 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 		tabPane.add(Language.getController().getLangValue("PreferenceWindow.TabPane"),createTabPane());
 		window_mainPanel.add(tabPane,BorderLayout.CENTER);
 		con.add(window_mainPanel); 
-    		setSize(420, 300);
+    		setSize(430, 300);
     		setLocation(515,100);
     		setVisible(true);
-    		setResizable(true);
+    		setResizable(false);
     	}
 
 	public Properties getProperties(){
@@ -151,11 +152,13 @@ public class PreferenceWindow extends JFrame implements ActionListener{
         	centerPanel.setLayout(new BorderLayout());
 
 		proxyPanel1=new JPanel();
-	        proxyPanel1.setLayout(new FlowLayout());
+	        proxyPanel1.setLayout(new GridBagLayout());
 
 		proxyPanel2=new JPanel();
-        	proxyPanel2.setLayout(new FlowLayout());
+        	proxyPanel2.setLayout(new GridBagLayout());
 
+		GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.HORIZONTAL;
   		
   		rbttnPanel=new JPanel();
   		rbttnPanel.setLayout(new GridLayout(3,1,1,1));
@@ -232,17 +235,34 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 			titledBorder = BorderFactory.createTitledBorder(Language.getController().getLangValue("PreferenceWindow.TitledBorder"));
         		centerPanel.setBorder(titledBorder);
 
-			proxyPanel1.add(proxyhost);
-                	proxyPanel1.add(proxyhosttext);
-                	proxyPanel1.add(proxyport);
-                	proxyPanel1.add(proxyporttext);
+			gbc.gridx = 0;
+                	gbc.gridy = 0;
+			gbc.insets = new Insets(5,5,5,5);
+			proxyPanel1.add(proxyhost,gbc);
+			gbc.gridx = 1;
+                	gbc.gridy = 0;
+                	proxyPanel1.add(proxyhosttext,gbc);
+			gbc.gridx = 2;
+	                gbc.gridy = 0;
+                	proxyPanel1.add(proxyport,gbc);
+			gbc.gridx = 3;
+	                gbc.gridy = 0;
+                	proxyPanel1.add(proxyporttext,gbc);
 
                 	centerPanel.add(proxyPanel1,BorderLayout.NORTH);
 
-                	proxyPanel2.add(proxyuser);
-                	proxyPanel2.add(proxyusertext);
-                	proxyPanel2.add(proxypass);
-                	proxyPanel2.add(proxypasstext);
+                	gbc.gridx = 0;
+                        gbc.gridy = 1;
+                	proxyPanel2.add(proxyuser,gbc);
+			gbc.gridx = 1;
+                        gbc.gridy = 1;
+                	proxyPanel2.add(proxyusertext,gbc);
+			gbc.gridx = 0;
+                        gbc.gridy = 2;
+                	proxyPanel2.add(proxypass,gbc);
+			gbc.gridx = 1;
+                        gbc.gridy = 2;
+                	proxyPanel2.add(proxypasstext,gbc);
 
                 	centerPanel.add(proxyPanel2,BorderLayout.CENTER);
 

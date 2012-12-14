@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * CourseSessionWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011 ETRG,IIT Kanpur
+ * Copyright (c) 2012 ETRG,IIT Kanpur
  */
 
 import java.awt.Container;
@@ -58,17 +58,27 @@ public class CourseSessionWindow extends JInternalFrame {
 	    	splitPane.setTopComponent(StudentCSPanel.getController().createGUI());
 	    	splitPane.setBottomComponent(InstructorCSPanel.getController().createGUI());
 		
-	  	splitPane.setPreferredSize(new Dimension(500, 200));
-	        splitPane.setDividerLocation(270);
-  		
-	  	mainPanel.add(splitPane,BorderLayout.CENTER);
-	  	add(mainPanel);
+		Dimension dim = MainWindow.getController().getDesktop().getSize();
+                int screen_width= (int)dim.getWidth();
+                int screen_height= (int)dim.getHeight();
+
+                setSize(screen_width/2, screen_height/2);
+
+
+                Dimension splitPane_dim=getSize();
+                int splitPane_width=(int)splitPane_dim.getWidth();
+                int splitPane_height=(int)splitPane_dim.getHeight();
+
+                splitPane.setDividerLocation(splitPane_height/2);
+                boolean b = splitPane.isContinuousLayout();
+                splitPane.setContinuousLayout(true);
+
+                mainPanel.add(splitPane,BorderLayout.CENTER);
+                add(mainPanel);
+
+                setLocation(screen_width/4, screen_height/4);
+                setVisible(true);
+                setResizable(true);
 		
-	  	//setLocation(200,50);
-	  	Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-                setLocation((((int)dim.getWidth()/2)-420),(((int)dim.getHeight()/2)-325));
-	    	setSize(840, 650);
-	    	setVisible(true); 
-		setResizable(false);	
-   	}
+	  }
 }

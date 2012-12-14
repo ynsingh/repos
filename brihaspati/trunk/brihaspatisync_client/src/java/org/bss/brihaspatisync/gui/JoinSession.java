@@ -112,7 +112,6 @@ public class JoinSession {
 		try {
 			//remove CourseSessionWindow and add gui for view all tools activities.
 	                MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
-			ShareScreenAndPPT.getController().setEnable_Decable();
         	        MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
 			MainWindow.getController().getMenuItem7().setEnabled(true);
 			MainWindow.getController().getContainer().validate();

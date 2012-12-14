@@ -4,10 +4,11 @@ package org.bss.brihaspatisync.gui;
  * JoinSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.BorderLayout;
 
 import java.awt.Toolkit;
@@ -21,8 +22,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
-
+import javax.swing.BorderFactory;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardPanel;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
 import org.bss.brihaspatisync.tools.presentation.PresentationPanel;
@@ -66,11 +70,13 @@ public class JoinSessionPanel extends JPanel {
          * Cretae GUI for JoinSessionPanel.
          */
 	protected JSplitPane createGUI(){
+
+		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
 		
 		//start for userlist, Audio Vedio, and PPT Presentation Panel
 		left_Pane=new JPanel();
                 left_Pane.setLayout(new BorderLayout());
-                
+		
 		JPanel new_Pane=new JPanel();
                 new_Pane.setLayout(new BorderLayout());
 		
@@ -80,8 +86,16 @@ public class JoinSessionPanel extends JPanel {
 		//Audio Vedio Panel
 		av_Pane=new JPanel();
                 av_Pane.setLayout(new BorderLayout());
-		av_Pane.setBackground(Color.BLUE);
-		av_Pane.setSize(500,400);	
+		av_Pane.setBackground(Color.BLACK);
+		JPanel labelPane=new JPanel();
+                JLabel welcome=new JLabel(Language.getController().getLangValue("UserListPanel.WelcomeLabel"));
+                welcome.setFont(new Font("Arial", Font.PLAIN, 20));
+                JLabel userLogin=new JLabel(ClientObject.getController().getwelcomeUserName());
+                userLogin.setForeground(new Color(24,116,205));
+                userLogin.setFont(new Font("Arial", Font.BOLD, 20));
+                labelPane.add(welcome);
+                labelPane.add(userLogin);
+		av_Pane.add(labelPane,BorderLayout.NORTH);
 		//PPT Presentation Panel
                 JPanel chat_slide_Pane=new JPanel();
                 chat_slide_Pane.setLayout(new BorderLayout());
@@ -90,12 +104,22 @@ public class JoinSessionPanel extends JPanel {
 		
 		JSplitPane chat_pp_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,ChatPanel.getController().createGUI(),PresentationPanel.getController().createGUI());
                	chat_slide_Pane.add(chat_pp_Split);
-                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
-                chat_pp_Split.setDividerLocation((((int)dim.getWidth()/5)-40));
+                chat_pp_Split.setDividerLocation(((int)dim.getWidth())/6);
+		BasicSplitPaneDivider chat_pp_divider = ( (BasicSplitPaneUI)  chat_pp_Split.getUI()).getDivider();
+                chat_pp_Split.setOneTouchExpandable(true);
+                chat_pp_divider.setDividerSize(5);
+                chat_pp_divider.setBorder(BorderFactory.createTitledBorder(chat_pp_divider.getBorder(), ""));
+
 		
-		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane, chat_slide_Pane);
+		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(), chat_slide_Pane);
                 new_Pane.add(av_chat_Split);
-		av_chat_Split.setDividerLocation(160);
+		av_chat_Split.setDividerLocation(((int)dim.getWidth()/7));
+		BasicSplitPaneDivider av_chat_divider = ( (BasicSplitPaneUI)  av_chat_Split.getUI()).getDivider();
+                av_chat_Split.setOneTouchExpandable(true);
+                av_chat_divider.setDividerSize(5);
+                av_chat_divider.setBorder(BorderFactory.createTitledBorder(av_chat_divider.getBorder(), ""));
+
+
 		/*********************************/
 		av_chat_Split.setContinuousLayout(true);
                 av_chat_Split.setOneTouchExpandable(true);
@@ -111,9 +135,14 @@ public class JoinSessionPanel extends JPanel {
                 av_chat_Split.addPropertyChangeListener(propertyChangeListener1);
 
 		/*********************************/
-	        JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(),new_Pane);
+	        JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane,new_Pane);
                 left_Pane.add(ul_av_Split);
-		ul_av_Split.setDividerLocation(270);
+		ul_av_Split.setDividerLocation(((int)dim.getWidth()/8));
+		BasicSplitPaneDivider divider = ( (BasicSplitPaneUI)  ul_av_Split.getUI()).getDivider();
+    		 ul_av_Split.setOneTouchExpandable(true);
+    		divider.setDividerSize(5);
+    		divider.setBorder(BorderFactory.createTitledBorder(divider.getBorder(), ""));
+   
 			
 		//TabbedPane for whiteboard, screen share and ppt presentation.
 		JTabbedPane jtp = new JTabbedPane();
@@ -143,13 +172,24 @@ public class JoinSessionPanel extends JPanel {
                 splitPane1.addPropertyChangeListener(propertyChangeListener);
 		
 		splitPane1.setBackground(Color.WHITE);
-                splitPane1.setDividerLocation(275);
+                splitPane1.setDividerLocation(((int)dim.getWidth()/7)+20);
+		BasicSplitPaneDivider splitPane1_divider = ( (BasicSplitPaneUI)  splitPane1.getUI()).getDivider();
+                splitPane1.setOneTouchExpandable(true);
+                splitPane1_divider.setDividerSize(5);
+                splitPane1_divider.setBorder(BorderFactory.createTitledBorder(splitPane1_divider.getBorder(), ""));
+
+
 		
 		splitPane=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setTopComponent(splitPane1);
 		splitPane.setBottomComponent(StatusPanel.getController());
 		System.out.println((int)dim.getHeight());
-		splitPane.setDividerLocation(((int)dim.getHeight())-110);
+		splitPane.setDividerLocation(((int)dim.getWidth()/2)-20);
+		BasicSplitPaneDivider splitPane_divider = ( (BasicSplitPaneUI)  splitPane.getUI()).getDivider();
+                splitPane.setOneTouchExpandable(false);
+                splitPane_divider.setDividerSize(5);
+                splitPane_divider.setBorder(BorderFactory.createTitledBorder(splitPane_divider.getBorder(), ""));
+
 		return splitPane;
 	}
 

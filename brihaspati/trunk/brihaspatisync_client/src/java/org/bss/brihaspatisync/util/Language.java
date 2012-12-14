@@ -128,7 +128,19 @@ public class Language {
                                 InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/italian.properties");
                                 prop.load(new InputStreamReader(inputStream,"UTF8"));
                         }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("Gujarati")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/gujarati.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
+                }else if(str.equals("Urdu")) {
+                        try{
+                                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("resources/lang/urdu.properties");
+                                prop.load(new InputStreamReader(inputStream,"UTF8"));
+                        }catch(Exception e){System.out.println("Error on loading properties file"+e.getMessage());}
                 }
+
+
 	}
         
                             

@@ -82,16 +82,8 @@ public class UserListPanel {
                 jlist.setCellRenderer(renderer);
                 scrollPane = new JScrollPane(jlist);
 	
-		JPanel labelPane=new JPanel();
-                JLabel welcome=new JLabel(Language.getController().getLangValue("UserListPanel.WelcomeLabel"));
-                welcome.setFont(new Font("Arial", Font.PLAIN, 20));
-                JLabel userLogin=new JLabel(ClientObject.getController().getwelcomeUserName());
-                userLogin.setForeground(new Color(24,116,205));
-                userLogin.setFont(new Font("Arial", Font.BOLD, 20));
-                labelPane.add(welcome);
-                labelPane.add(userLogin);
-		
-                mainPanel.add(labelPane,BorderLayout.NORTH);
+              	mainPanel.add(ShareScreenAndPPT.getController().createGUI(),BorderLayout.NORTH);
+		ShareScreenAndPPT.getController().setEnable_Decable();
 		mainPanel.add(scrollPane,BorderLayout.CENTER);
 		return mainPanel;
 	
@@ -129,18 +121,15 @@ public class UserListPanel {
 							if((user.equals(username)) && (!(turnof_onFlag.equals(status))) && (flag) ) {
 								flag=false;
 								HandRaiseThreadController.getController().stopAllPermission(true);		
-								System.out.println("\n\nstop --------------------> ");
 							}	
 							if((user.equals(username)) && (status.equals("Allow-Permission")) && (!flag)) {
 								flag=true;
 								turnof_onFlag="Allow-Permission";
                         	                                HandRaiseThreadController.getController().startPostPermission(true);
-								System.out.println("\n\n\nAllow-Permission -------------------->\n\n\n ");
 							} else if(!flag) {
 								flag=true;
 								turnof_onFlag="available";
 	                                                        HandRaiseThreadController.getController().startGetPermission(true);
-								System.out.println("\n\n\n get -------------------->\n\n\n ");
 							}
 						}catch(Exception e){}
 					}else {

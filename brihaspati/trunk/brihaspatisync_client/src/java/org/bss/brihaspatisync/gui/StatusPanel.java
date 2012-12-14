@@ -17,6 +17,7 @@ import org.bss.brihaspatisync.util.Language;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind pal </a>
  * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> 
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a> Modified on 10 Dec 2012, Add two method getStatusLabel(), and getAppLabel().
  *
  */
 public class StatusPanel extends JPanel {
@@ -24,7 +25,8 @@ public class StatusPanel extends JPanel {
 	private JPanel east_panel=new JPanel();
 	private JPanel west_panel=null;
 	
-	private JLabel label=null;
+	private JLabel statusLabel=null;
+	private JLabel appLabel=null;
 	private JLabel label1=null;
 	
 	private JLabel ppt=new JLabel();
@@ -52,13 +54,14 @@ public class StatusPanel extends JPanel {
 			east_panel=new JPanel();
 			west_panel.setBackground(new Color(24,116,205));
 			east_panel.setBackground(new Color(24,116,205));	
-			label = new JLabel("<html><Font size=3 color=white><b> Status&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
+			statusLabel = new JLabel("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
 			label1 = new JLabel();	
-			west_panel.add(label,flowLayout);
+			west_panel.add(statusLabel,flowLayout);
 			west_panel.add(label1,flowLayout);
 			add(west_panel,BorderLayout.WEST);
 			
-			east_panel.add(new JLabel("<html><Font size=3 color=white><b> Application Status&nbsp;:&nbsp</b></font></html>"),flowLayout);
+			appLabel=new JLabel("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
+			east_panel.add(appLabel);
 			setBackground(new Color(24,116,205));
 			
 			desktop_panel=new JPanel();
@@ -84,10 +87,18 @@ public class StatusPanel extends JPanel {
 		return labe;
 	}
 
+	public JLabel getStatusLabel(){
+		return statusLabel;
+	}
+
+	public JLabel getAppLabel(){
+		return appLabel;
+	}
+
 
 	public void setStatus(String message){
 		label1.setText("<html><blink><Font size=3 color=white><b>"+message+"</b></font></blink></html>");
-		label.updateUI();
+		statusLabel.updateUI();
 	}
 	
 	public void setaudioClient(String message){
@@ -115,7 +126,7 @@ public class StatusPanel extends JPanel {
 				httpclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/clock-green-blink.gif")));
 			else 
 				httpclient=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
-			httpclient.setText("<html><Font size=3 color=white><b> Reflector</b></font></html>");
+			httpclient.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.reflectorStatus")+"</b></font></html>");
 			reflector_panel.add(httpclient,flowLayout);	
 			httpclient.updateUI();
 		}
@@ -132,7 +143,7 @@ public class StatusPanel extends JPanel {
                                else
                                        destop=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
                        }catch(Exception e){System.out.println("Error in in StatusPanel in method  setdestopClient");}
-                        destop.setText("<html><Font size=3 color=white><b> DesktopShare</b></font></html>");
+                        destop.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.desktopShareStatus")+"</b></font></html>");
                         desktop_panel.add(destop,flowLayout);
                         destop.updateUI();
                        desktop_panel.revalidate();
@@ -149,7 +160,7 @@ public class StatusPanel extends JPanel {
                         else
                                 ppt=new JLabel(new javax.swing.ImageIcon(clr.getResource("resources/images/red.png")));
 
-                        ppt.setText("<html><Font size=3 color=white><b> PPT </b></font></html>");
+                        ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
                         ppt_panel.add(ppt,flowLayout);
                         ppt.updateUI();
 			ppt_panel.revalidate();

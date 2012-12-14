@@ -42,7 +42,7 @@ import java.util.Arrays;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.network.Log;
-//import javax.swing.JOptionPane;
+import javax.swing.JOptionPane;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
@@ -101,7 +101,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	private ClassLoader clr= this.getClass().getClassLoader();
-	private String[] languages={"English","Hindi","Bhojpuri","Arabic","Greek","Persian","Russian","French","Spanish","Dutch","Nepali","German","Italian"}; //"Tamil","Telugu","Japanese","Korean","Bangala","Chinese"
+	private String[] languages={"English","Hindi","Bhojpuri","Arabic","Greek","Persian","Russian","French","Spanish","Dutch","Nepali","German","Italian","Urdu","Gujarati"}; //"Tamil","Telugu","Japanese","Korean","Bangala","Chinese"
 	private static LoginWindow login=null;
 
 	/**
@@ -276,7 +276,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 cancelLabel.addMouseListener(this);
                 cancelLabel.setName("cancel.Action");
 
-                forgetpass=new JLabel("<html><font color=blue><u>"+Language.getController().getLangValue("LoginWindow.forgetpass")+"</u></font></html>");
+                forgetpass=new JLabel(Language.getController().getLangValue("LoginWindow.forgetpass"));
                 forgetpass.addMouseListener(this);
                 forgetpass.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 forgetpass.setName("forgetpass.Action");
@@ -293,15 +293,18 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	}
 
 	private void updateGUI(){
+
 		chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
                 chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
                 bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
                 titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+		titledBorder2.setTitle(Language.getController().getLangValue("LoginWindow.login"));
+		forgetpass.setText(Language.getController().getLangValue("LoginWindow.forgetpass"));
+
                 setTitle(Language.getController().getLangValue("LoginWindow.Title"));
-		{
-			username.setText(Language.getController().getLangValue("LoginWindow.username"));
-			password.setText(Language.getController().getLangValue("LoginWindow.password"));				
-		}
+		username.setText(Language.getController().getLangValue("LoginWindow.username"));
+		password.setText(Language.getController().getLangValue("LoginWindow.password"));				
+		
                 //mainPanel.remove(1);
                 //mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
                 mainPanel.revalidate();
@@ -310,6 +313,12 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
                 mainWindow.setMenuText();
                 mainWindow.setMenuItemText();
+		StatusPanel.getController().getStatusLabel().setText("<html><Font size=3 color=white><b> "+Language.getController().getLangValue("StatusPanel.loginStatus")+"&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</b></font></html>");
+		StatusPanel.getController().getAppLabel().setText("<html><Font size=3 color=white><b>" +Language.getController().getLangValue("StatusPanel.applicationStatus")+"&nbsp;:&nbsp</b></font></html>");
+		StatusPanel.getController().revalidate();
+		StatusPanel.getController().validate();
+		StatusPanel.getController().repaint();
+
 		Update_Enable_Decable();		
 	}
   	
@@ -347,11 +356,12 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			JComboBox combo = (JComboBox)e.getSource();
                         languageName=(String)combo.getSelectedItem();
 			Language.getController().SelectLanguage(languageName);
-
+                        System.out.println("language "+languageName);
 			if((languageName.equals("English")) ||(languageName.equals("Hindi"))||(languageName.equals("Tamil"))||(languageName.equals("Telugu"))||(languageName.equals("Bhojpuri"))||(languageName.equals("Arabic"))||(languageName.equals("Chinese")) ||(languageName.equals("Greek"))||(languageName.equals("Japanese"))||(languageName.equals("Korean"))||(languageName.equals("Persian"))||(languageName.equals("Russian"))||(languageName.equals("Bangala"))||(languageName.equals("French"))||(languageName.equals("Spanish"))||(languageName.equals("Dutch"))||(languageName.equals("Nepali"))||(languageName.equals("German"))||(languageName.equals("Italian"))){
 				
 				try {
 					updateGUI();
+					
 				}catch(Exception ex){}
 				return;
                         }

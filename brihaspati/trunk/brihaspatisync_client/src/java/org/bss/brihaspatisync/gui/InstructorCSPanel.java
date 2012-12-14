@@ -341,7 +341,6 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 				course_id=(String)combo.getSelectedItem();
 				courseName.addElement(course_id);
 				mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
-				MainWindow.getController().setCouseid(course_id);
 			}
                 	center_mainPanel.validate();
                        	mainPanel.revalidate();

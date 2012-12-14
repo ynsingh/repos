@@ -43,7 +43,7 @@ import org.bss.brihaspatisync.gui.HandRaiseAction;
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
-public class ShareScreenAndPPT extends JPanel implements MouseListener{
+public class ShareScreenAndPPT implements MouseListener{
 
         private JPanel mainPanel;
         private static ShareScreenAndPPT wbPanel=null;
@@ -60,7 +60,9 @@ public class ShareScreenAndPPT extends JPanel implements MouseListener{
                 }
                 return wbPanel;
         }
+
 	
+
        	protected JPanel createGUI(){
                 
                 mainPanel=new JPanel();
@@ -89,6 +91,7 @@ public class ShareScreenAndPPT extends JPanel implements MouseListener{
         }
 
 	protected void setEnable_Decable(){
+		try{
 		if((client_obj.getUserRole()).equals("instructor")){
                         desk_share.setText("<html><blink><Font size=3 color=blue><b> Allow-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                         desk_share.setName("Allow-Permission");
@@ -98,6 +101,9 @@ public class ShareScreenAndPPT extends JPanel implements MouseListener{
                         desk_share.setName("Get-Permission");
 			desk_share.setEnabled(true);
 		}
+		mainPanel.revalidate();
+		mainPanel.repaint();
+		}catch(Exception e){System.out.println("Error in Sha "+e.getMessage());}
 	}
 
 	public void mouseClicked(MouseEvent e) {

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * MainWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2011, ETRG, IIT Kanpur.
+ * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
 import java.awt.Color;
@@ -74,11 +74,13 @@ public class MainWindow  extends JFrame implements ActionListener{
                 content.setBackground(new Color(24,116,205));
                 setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 		setIconImage(new ImageIcon(clr.getResource("resources/images/mainwindow.gif")).getImage());
+                setJMenuBar(createJMenuBar());
 
 		desktop = new JDesktopPane();
                 desktop.setBackground(new Color(220,220,220));
-
-                content.add(createJMenuBar(),BorderLayout.NORTH);
+		JPanel northPanel=new JPanel();
+                northPanel.setBackground(new Color(24,116,205));
+                content.add(northPanel,BorderLayout.NORTH);
 
                 south_Panel=StatusPanel.getController();
                 south_Panel.setBackground(new Color(24,116,205));
@@ -91,7 +93,6 @@ public class MainWindow  extends JFrame implements ActionListener{
                 west_Panel=new JPanel();
                 west_Panel.setBackground(new Color(24,116,205));
                 content.add(west_Panel,BorderLayout.WEST);
-
 
                 content.add(desktop,BorderLayout.CENTER);
 
@@ -109,7 +110,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 	}
 
 	//Create JmenuBar for Mainwindow frame.
-	private JPanel createJMenuBar(){
+	private JMenuBar createJMenuBar(){
 	        menuBar = new JMenuBar();
 
                 menu1 = new JMenu(Language.getController().getLangValue("MainWindow.menu1"));
@@ -164,35 +165,7 @@ public class MainWindow  extends JFrame implements ActionListener{
                 menuBar.add(menu2);
                 menuBar.add(menu3);
 		
-                JPanel sub_EastPanel = new JPanel();
-		sub_EastPanel.setLayout(new BorderLayout());
-		
-		JPanel share_pane = new JPanel();
-                share_pane.setLayout(new BorderLayout());
-
-		JPanel courseidpanel= new JPanel();
-                courseidpanel.setLayout(new BorderLayout());
-                //courseidpanel.setBackground(new Color(24,116,205));
-
-                label = new JLabel("", JLabel.CENTER);
-                courseidpanel.add(label);
-                share_pane.add(courseidpanel,BorderLayout.CENTER);
-
-		share_pane.add(ShareScreenAndPPT.getController().createGUI(),BorderLayout.EAST);
-		
-		
-	
-                sub_EastPanel.add(menuBar,BorderLayout.WEST);
-               	sub_EastPanel.add(share_pane,BorderLayout.CENTER);
-			
-                north_Panel=new JPanel();
-		north_Panel.setBackground(new Color(24,116,205));
-
-		JPanel main_EastPanel = new JPanel();
-                main_EastPanel.setLayout(new BorderLayout());
-                main_EastPanel.add(sub_EastPanel,BorderLayout.NORTH);
-                main_EastPanel.add(north_Panel,BorderLayout.SOUTH);	
-		return main_EastPanel;	
+		return menuBar;//main_EastPanel;	
 	}
   
 
@@ -304,7 +277,7 @@ public class MainWindow  extends JFrame implements ActionListener{
         }
 
 	public  void setCouseid(String courseid){
-                label.setText("<html><blink><Font size=3 color=black><b>"+courseid+"</b></font></blink></html>");
+               setTitle(courseid);
 
         }
 }
