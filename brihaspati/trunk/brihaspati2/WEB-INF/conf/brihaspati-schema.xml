@@ -186,8 +186,8 @@
 </table>
 <table name="REMOTE_COURSES" idMethod="idbroker">
          <column name="SR_NO" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
-         <column name="LOCAL_COURSE_ID" primarykey="true" type="VARCHAR" size="50"/>
-         <column name="REMOTE_COURSE_ID" primarykey="true" type="VARCHAR" size="50"/>
+         <column name="LOCAL_COURSE_ID" primarykey="true" type="VARCHAR" size="255"/>
+         <column name="REMOTE_COURSE_ID" primarykey="true" type="VARCHAR" size="255"/>
          <column name="COURSE_SELLER" type="VARCHAR" size="50"/>
          <column name="COURSE_PURCHASER" type="VARCHAR" size="50"/>
          <column name="INSTITUTE_IP" type="VARCHAR" size="15"/>
@@ -214,12 +214,12 @@
 <table name="SURVEY_QUESTION" idMethod="idbroker">
         <column name="SURVEY_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
         <column name="INST_ID" required="true" type="INTEGER" />
-        <column name="CID" type="VARCHAR" size="25"/>
-        <column name="QUES1" type="VARCHAR" size="50"/>
-        <column name="QUES2" type="VARCHAR" size="50"/>
-        <column name="QUES3" type="VARCHAR" size="50"/>
-        <column name="QUES4" type="VARCHAR" size="50"/>
-        <column name="QUES5" type="VARCHAR" size="50"/>
+        <column name="CID" type="VARCHAR" size="255"/>
+        <column name="QUES1" type="VARCHAR" size="255"/>
+        <column name="QUES2" type="VARCHAR" size="255"/>
+        <column name="QUES3" type="VARCHAR" size="255"/>
+        <column name="QUES4" type="VARCHAR" size="255"/>
+        <column name="QUES5" type="VARCHAR" size="255"/>
         <column name="PDATE" required="true" type="DATE"/>
 </table>
 
@@ -227,7 +227,7 @@
         <column name="SURVEYST_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true" />
         <column name="SURVEY_ID" required="true" type="INTEGER" />
         <column name="INST_ID" required="true" type="INTEGER"/>
-        <column name="CID" type="VARCHAR" size="25"/>
+        <column name="CID" type="VARCHAR" size="255"/>
         <column name="STU_ID" type="VARCHAR" size="25"/>
         <column name="QUES1" type="INTEGER" size="2"/>
         <column name="QUES2" type="INTEGER" size="2"/>
@@ -240,7 +240,7 @@
 <table name="SURVEY_RESULT" idMethod="idbroker" >
         <column name="RESULT_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
         <column name="SURVEY_ID" required="true" type="INTEGER" />
-        <column name="CID" type="VARCHAR" size="25"/>
+        <column name="CID" type="VARCHAR" size="255"/>
         <column name="NUM_STU_ATTD" type="INTEGER" />
         <column name="TOTALMARKS_PER" type="INTEGER" />
         <column name="GRADE" type="VARCHAR" size="25"/>
@@ -594,7 +594,7 @@
 <table name ="Learner_sco" description="learner sco tracking">
         <column name="cmi_name" required="true" size="50" type="VARCHAR"/>
         <column name="cmi_value" required="true"  size="50" type="VARCHAR"/>
-        <column name="course_id" required="true" size="50" type="VARCHAR"/>
+        <column name="course_id" required="true" size="255" type="VARCHAR"/>
         <column name="sco_id" required="true" size="255" type="VARCHAR"/>
         <column name="member_id" required="true" size="50" type="VARCHAR"/>
         <column name="cmi_value_text" required="true" size="255" type="VARCHAR"/>
