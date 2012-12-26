@@ -144,32 +144,23 @@ public class OpenIdProcess
         	{
                 	try{
                         	endpoint = createOpenIdManagerObject().lookupEndpoint("Google");
-                        	ErrorDumpUtil.ErrorLog("OPENID 2-----OPENID-----  "+endpoint);
-        			//return endpoint;
-	        	}catch (Exception e) {
+                        }catch (Exception e) {
                   		final Throwable throwable = new Exception(e);
 		                ErrorDumpUtil.ErrorLog("STACK TRACE in performDiscovery of OpenIdProcess  "+getStackTrace(throwable));
 		                throw new RuntimeException ("Error in discovery",e);
-
 			}
         	}
         	if(openidurl.equalsIgnoreCase("Yahoo"))
         	{
                 	try{
                         	endpoint = createOpenIdManagerObject().lookupEndpoint("Yahoo");
-                        	ErrorDumpUtil.ErrorLog("OPENID 3-----OPENID-----  "+endpoint);
-				//return endpoint;
-                	}catch (Exception e) {
+                        }catch (Exception e) {
 		                final Throwable throwable = new Exception(e);
                		 	ErrorDumpUtil.ErrorLog("STACK TRACE in performDiscovery of OpenIdProcess  "+getStackTrace(throwable));
                 		throw new RuntimeException ("Error in discovery",e);
-
 			}
-
         	}
-		
 			return endpoint;
-		
 	}//method
 
 
@@ -187,14 +178,11 @@ public Association setupAssociation(Endpoint endpoint)
 	try
         {
                 association = createOpenIdManagerObject().lookupAssociation(endpoint);
-		//ErrorDumpUtil.ErrorLog("OPENID 4-----OPENID-----  "+association);
-		//return association;
         }
         catch (Exception e) {
     		String str = ("An error occured while fetching Authentication Url!!");
                 final Throwable throwable = new Exception(e);
                 ErrorDumpUtil.ErrorLog("STACK TRACE in setupAssociation of OpenIdProcess  "+getStackTrace(throwable));
-                //throw new RuntimeException (str,e);
         }
 
 	return association;
@@ -216,7 +204,6 @@ public String getAuthUrl(Endpoint endpoint,Association association)
 	String url = "";
 	try{
                 url = createOpenIdManagerObject().getAuthenticationUrl(endpoint, association);
-        	//ErrorDumpUtil.ErrorLog("OPENID 5-----OPENID-----  "+url);
 	}
         catch(Exception e)
         {
@@ -319,35 +306,23 @@ protected boolean isNonceExist(String nonce,String opurl)
 {
 	String stored_nonce = null;
 	try{
-		ErrorDumpUtil.ErrorLog("Inside isNonceExist() in OpenIdProcess ");
 		crit = new Criteria();
-		ErrorDumpUtil.ErrorLog("111111");
                 crit.add(OpenidPeer.NONCE,nonce);
-		ErrorDumpUtil.ErrorLog("2222");
 		crit.add(OpenidPeer.PROVIDER,opurl);
-		ErrorDumpUtil.ErrorLog("333333");
                 List list = OpenidPeer.doSelect(crit);
-		//int i = list.size();
-		ErrorDumpUtil.ErrorLog("4444");
 		if(list.size()>0)
 		{
-			ErrorDumpUtil.ErrorLog("555555");
                 	stored_nonce =((Openid)list.get(0)).getNonce();
 		}
-		ErrorDumpUtil.ErrorLog("666666 "+stored_nonce);	
-		//if (stored_nonce.equals(null) || stored_nonce == null)
+
 		if(stored_nonce!=null)
 		{
-			ErrorDumpUtil.ErrorLog("7777");
 			return true;
 		}
 		else
 		{
-		//	return true;
-			ErrorDumpUtil.ErrorLog("88888");
 			return false;
 		}
-		//ErrorDumpUtil.ErrorLog("9999999");
 	}
 	catch(Exception e)
 	{
@@ -356,7 +331,6 @@ protected boolean isNonceExist(String nonce,String opurl)
                 ErrorDumpUtil.ErrorLog("STACK TRACE of isNonceExist of OpenIdProcess  "+getStackTrace(throwable));
 		throw new OpenIdException ("Error while nonce checking");
 	}
-	//return false;		
 }
 
 /**
@@ -372,11 +346,9 @@ private void storeNonce(String nonce, long nonceTime, String provider)
                 crit.add(OpenidPeer.PROVIDER,provider);
 		crit.add(OpenidPeer.TO_DATE,nonceTime);
                 OpenidPeer.doInsert(crit);
-		//ErrorDumpUtil.ErrorLog("Inside storeNonce()");
         }
         catch(Exception e)
         {
-//		ErrorDumpUtil.ErrorLog("Error in storeNonce() method of OpenIdProcess"+e);
 		final Throwable throwable = new Exception(e);
                 ErrorDumpUtil.ErrorLog("STACK TRACE of storeNonce() of OpenIdProcess  "+getStackTrace(throwable));
                 throw new OpenIdException ("Error while inserting nonce in database");

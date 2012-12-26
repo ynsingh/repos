@@ -44,6 +44,9 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This class contains code for Updatecourse details
@@ -63,6 +66,7 @@ public class EditCourse extends SecureAction_Admin
 	 * @throws Exception, a generic exception
 	 * 
 	 */
+	private Log log = LogFactory.getLog(this.getClass());
 	private String file=null;
 	private String msg=null;
 	public void doUpdate(RunData data, Context context)
@@ -98,6 +102,10 @@ public class EditCourse extends SecureAction_Admin
 			{
 				data.setMessage(MultilingualUtil.ConvertedString("usr_prof1",file));
 			}
+
+		// maintain Log
+		java.util.Date date = new java.util.Date();
+		log.info("User Name --> Admin | Operation --> Update course "+CourseId +" | Time of operation --> "+date+ " | IP Address --> "+data.getRemoteAddr());
 		}
 		catch(Exception e)
 		{

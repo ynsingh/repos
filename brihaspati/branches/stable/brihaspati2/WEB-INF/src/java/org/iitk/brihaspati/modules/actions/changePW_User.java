@@ -41,7 +41,8 @@ package org.iitk.brihaspati.modules.actions;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 08-07-2010, 07-12-2010
  */
-
+import java.util.Date;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -49,7 +50,13 @@ import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.om.UserPrefPeer;
+import org.iitk.brihaspati.om.UserPref;
+import org.iitk.brihaspati.modules.utils.LoginUtils;
+import org.iitk.brihaspati.modules.utils.UserManagement;
 public class changePW_User extends SecureAction
 {
 	/**
@@ -58,7 +65,8 @@ public class changePW_User extends SecureAction
 	 * @param context Context
 	 * @return nothing
 	 */
-	 private String LangFile=null;
+	private String LangFile=null;
+	private Log log = LogFactory.getLog(this.getClass());
 	public void doUpdate(RunData data, Context context) 
 	{     
 		try{
@@ -71,6 +79,8 @@ public class changePW_User extends SecureAction
 		 	* currently logged in
 		 	*/
 			User user=data.getUser();
+			String uname=user.getName();
+			int uid=UserUtil.getUID(uname);
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			/**
 		 	* Get the old password and new passowrd entered by the
@@ -91,11 +101,20 @@ public class changePW_User extends SecureAction
 			if(!user.getName().equals("guest")){
 				PasswordUtil.passwordFromUtil(data.getServerName(), serverPort);
 				msg=PasswordUtil.doChangepassword(user,oldPW,newPW,LangFile);
+				// Maintain Log
+		                log.info("User Name --> "+user.getName()+" | Operation --> Change password | IP Address --> "+data.getRemoteAddr());
 			}
 			else{
 			 msg="Password can not be Modified for guest";
 			}
+			Date expdate=UserManagement.getExpirydate();
+			Criteria crit=new Criteria();
+                        crit.add(UserPrefPeer.USER_ID,uid);
+                        crit.add(UserPrefPeer.PASSWORD_EXPIRY,expdate);
+                        UserPrefPeer.doUpdate(crit);
+		//	data.getSession().invalidate();	
 			data.setMessage(msg);
+			data.setScreenTemplate("Index.vm");
 		}
 		catch(Exception ex)
 		{

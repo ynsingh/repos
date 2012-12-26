@@ -223,17 +223,17 @@ $!data.getMessage()
 		##foreach($num in [1..$counter])
 		#foreach($num in [1..$count])
 			<tr>
-			<td><select name="instName$num" class="drop" size=1  #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
+			<td><select name="instName$num" class="drop" style="width:300px;" size=1  #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
 				#set($temp1=0)
                                 #foreach($st in $UDetail)
                                 	#if($temp == $temp1)
-					<option value="$st.getInstId()">$!st.getInstName() </option>
+					<option value="$st.getInstId()">$!st.getInstName()</option>
 					#end
 	                                #set($temp1=$temp1+1)
                                 #end
 						<option>$brih_select $RemoteInstitute </option>
 						#foreach($name in $instList)
-					        <option value="$name.getInstituteId()">$name.getInstituteName() </option>
+					        <option value="$name.getInstituteId()" style="width:275px;" title="$name.getInstituteName()">$name.getInstituteName() </option>
 				          	#end
 			        </select></td>	
 			<td><select name="prg$num" class="drop" size=1 #if($sizecount==0) enabled #elseif($count>0) disabled #end/>

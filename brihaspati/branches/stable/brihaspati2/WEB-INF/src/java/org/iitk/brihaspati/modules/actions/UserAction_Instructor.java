@@ -74,6 +74,8 @@ import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Register a new student and remove student in database
@@ -95,6 +97,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 	 * @return nothing
 	 * @see UserManagement from Utils
 	 */
+	private Log log = LogFactory.getLog(this.getClass());
 	private String LangFile=null;
 	private String msg1=null;
 	private String[] msg;
@@ -153,6 +156,8 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			String lname=pp.getString("LNAME");
          		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,Instname,email,gName,"student",serverName,serverPort,LangFile,rollno,program,"act"); //modified by Shikha. Last parameter added by Priyanka
 			data.setMessage(msg);
+			// Maintain Log
+                        log.info("Student Registration by --> "+user.getName() +" | Institute Name -->"+Instname +" | Student's email -->"+email+" | Course Name -->"+gName + " | IP Address --> "+data.getRemoteAddr());
 		}
 		catch (Exception ex)
 		{
@@ -251,6 +256,10 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName,"","",fileName,serverName,serverPort);
 		                	msg = msg1.split(":");
 	                		data.setMessage(msg[0]);
+				        //Maintain Log
+                                        ParameterParser pp=data.getParameters();
+                                        String email_stu=pp.getString("EMAIL");
+                                        log.info("Student removal by -->"+loginName+ "| Institute Name -->"+instName+ " | Student's Email -->"+email+" | Course Name"+group + "| IP Address --> "+data.getRemoteAddr());
 					/**
 	                                String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,serverName,serverPort,LangFile);
 					data.setMessage(Mail_msg);
@@ -308,7 +317,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			String Passwd=PasswordUtil.randmPass();
 			//String Mail_msg=new String();
 			/**
-                         * This mail will specify the user name and password of the new user
+                         *MailNotification in utils This mail will specify the user name and password of the new user
                          * @see MailNotification in utils
                          */
 			String serverName=data.getServerName();
@@ -321,7 +330,13 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			String newPW=StringUtil.replaceXmlSpecialCharacters(Passwd);
 			String msg=PasswordUtil.doChangepassword(user1,"",newPW,LangFile);
 
-			data.setMessage(msg);			
+			data.setMessage(msg);
+			//Maintain Log
+                        User user=data.getUser();
+                        String strInstId =  (String)user.getTemp("Institute_id","");
+                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+                        String loginName = user.getName();
+                        log.info("Student password updation by -->"+loginName+ " | Institute name -->"+instName+ "| Student's Email -->"+mailId+ "| IP Address --> "+data.getRemoteAddr());			
                 }
                 catch(Exception ex)
                 {
@@ -664,6 +679,14 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         StudentExpiryPeer.executeStatement(information);
                         data.setMessage(userName+" expiry ");
                         data.addMessage(MultilingualUtil.ConvertedString("update_msg",LangFile));
+			//Maintain Log
+                        User user=data.getUser();
+			ErrorDumpUtil.ErrorLog("Expiry enable");
+                        String strInstId =  (String)user.getTemp("Institute_id","");
+                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+                        String loginName = user.getName();
+                        String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
+                        log.info("Student Expiry enable by -->"+loginName + " | Institute Name -->"+instName +"| Course -->"+cName+ " | email -->"+email+ " | IP Address --> "+data.getRemoteAddr());
                 }
                 catch(Exception ex)
                 {
@@ -698,6 +721,13 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         StudentExpiryPeer.executeStatement(information);
                         data.setMessage(userName+" expiry ");
                         data.addMessage(MultilingualUtil.ConvertedString("update_msg",LangFile));
+			//Maintain Log
+                        String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
+                        User user=data.getUser();
+                        String loginName = user.getName();
+                        String strInstId =  (String)user.getTemp("Institute_id","");
+                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+                        log.info("Student Expiry disable by -->"+loginName+ " | Course -->"+cName+"Institute Name -->"+instName + " | email -->"+email + " | IP Address --> "+data.getRemoteAddr());
                 }
                 catch(Exception ex)
                 {

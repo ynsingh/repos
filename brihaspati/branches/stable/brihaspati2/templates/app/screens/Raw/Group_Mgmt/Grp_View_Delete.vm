@@ -165,25 +165,25 @@ $!data.getMessage()
 	#end
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2")> #if($lang=="hindi") $brih_member $brih_add #else $brih_add/$brih_view$brih_member #end </a>
         	#if($total_size <= $userConf)
-        	<u><font color="white">$brih_first</font></u> &nbsp;
-        	<u><font color="white">$brih_pre</font></u> &nbsp;
-        	<u><font color="white">$brih_nxt</font></u> &nbsp;
-        	<u><font color="white">$brih_last</font></u> &nbsp;
+        	<img src="$content.getURI("images/First_blank.png")">
+        	<img src="$content.getURI("images/Previous_blank.png")">
+        	<img src="$content.getURI("images/Next_blank.png")">
+        	<img src="$content.getURI("images/Last_blank.png")">
         	#elseif($startIndex == $userConf_string)
-        	<u><font color="white">$brih_first</font></u> &nbsp;
-        	<u><font color="white">$brih_pre</font></u> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+        	<img src="$content.getURI("images/First_blank.png")">
+        	<img src="$content.getURI("images/Previous_blank.png")">
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
         	#elseif($endIndex == $total_size || $endIndex > $total_size)
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor)">$brih_first</a>&nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-        	<u><font color="white">$brih_nxt</font></u> &nbsp;
-        	<u><font color="white">$brih_last</font></u> &nbsp;
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+        	<img src="$content.getURI("images/Next_blank.png")">
+        	<img src="$content.getURI("images/Last_blank.png")">
         	#else
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor)">$brih_first</a>&nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_first).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/First.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_pre).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Previous.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Next.png")"></a>
+        	<a href="$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("startIndex",$check_last).addPathInfo("count",$tdcolor)"><img src="$content.getURI("images/Last.png")"></a>
         	#end
         </td>
 </tr>

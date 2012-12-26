@@ -7,7 +7,7 @@
  #*
   * @author  <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
   * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
-  *  @modify 12-05-09
+  *  @modify 12-05-09, 07-12-2012
   *#
 
 $page.setTitle("Home | $cname | Communication | Local Mail | Compose Message")
@@ -23,7 +23,9 @@ $page.setBgColor($ui.bgcolor)
 	 #if($mode1 == "grpmgmt")
                 <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")><b>$brih_grp $brih_mgmt</a> |
         #else
-		<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")> $brih_communication </a> | 
+		##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")> 
+		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none> $brih_communication</a> | 
+			
 		<a href=$link.setPage("call,Local_Mail,Mail.vm")> $brih_local $LocalMail_mail </a> |
 		<a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("mode","All")> $Notice_All $Notice_Mails </a> |
 		#if($status!="reply") 
@@ -122,8 +124,8 @@ $!data.getmessage()
 		if(confirm("Your message is empty !!"))
 		{
                         frm.hexaStr.value = frm.wpTextbox1.value;
-                        if(frm.repStat.value == "reply")
-                                frm.hexaStr.value = frm.sentMessage.value + frm.hexaStr.value;
+                        //if(frm.repStat.value == "reply")
+                          //      frm.hexaStr.value = frm.sentMessage.value + frm.hexaStr.value;
                         frm.actionName.value=field.name;
                         frm.submit();
                 }

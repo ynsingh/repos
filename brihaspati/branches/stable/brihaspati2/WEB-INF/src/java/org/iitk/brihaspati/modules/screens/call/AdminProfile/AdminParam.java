@@ -45,6 +45,7 @@ import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import java.util.List;
 import org.apache.torque.util.Criteria;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author <a href="mailto:chitvesh@yahoo.com ">Chitvesh Dutta</a> 
@@ -84,6 +85,11 @@ public class AdminParam extends SecureScreen{
 		 context.put("AdminConf",new Integer(AdminConf));
 		 String CrsExp = AdminProperties.getValue(path,"brihaspati.admin.courseExpiry");
 		 context.put("CrsExp",new Integer(CrsExp));
+		 String PassExp = AdminProperties.getValue(path,"brihaspati.admin.passwordExpiry");
+		if(StringUtils.isBlank(PassExp)){
+			PassExp="180";
+		}
+                 context.put("PassExp",PassExp);
 		 String mserv = AdminProperties.getValue(path,"brihaspati.mail.server");
 		 context.put("mServer",mserv);
 		 String mServerPort = AdminProperties.getValue(path,"brihaspati.mail.smtp.port");
@@ -109,6 +115,17 @@ public class AdminParam extends SecureScreen{
                  context.put("port",port);
 		 String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
 		 context.put("dstore",dstore);
+		 String mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
+                 if(!StringUtils.isBlank(mailSpoolingExpiry))
+
+                         context.put("mailSpoolingExpiry",mailSpoolingExpiry);
+                else
+                         context.put("mailSpoolingExpiry","3");
+                String mailResendTime =  AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
+                if(!StringUtils.isBlank(mailResendTime))
+                        context.put("spoolingMailResendTime", mailResendTime);
+                else
+                        context.put("spoolingMailResendTime","60");
 
 		// --------------------------------Telephone Directory------------------
 	Criteria crt=new Criteria();

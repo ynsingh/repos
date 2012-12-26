@@ -1,101 +1,103 @@
 #*
  * @(#) DeletePosted.vm
- * Copyright (c) 2005 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2010,2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com"> Sunil Kumar</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 31-12-2009, 20-04-2010, 07-09-2010,11-08-1011
 *#
 <head>
+## This Script use for Fck Editor in textarea.
+<script type="text/javascript">
+        _editor_url = "$content.getURI("/scrpts/")";
+        _editor_lang = "en";
+</script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script>
+</head>
+<body onload="initEditor()">
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
-$page.setTitle("Home | Communication | Delete Posted Notice")
-<table bgcolor="$ui.tableColor" width=100%>
-	<tr align="right">
-		<td>
-		<font face="$ui.sansSerifFonts">
-		<b>
-		<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | 
-		<a href=$link.setPage("call,Notice_User,Notices.vm")>$brih_communication</a> | $Notice_DeletePosted_msg1
-		</font>
-		</td>
-	</tr>
-</table>
+$page.setTitle("Admin Home | Communication | Delete Posted Notice")
 $!data.getMessage()
-<br>
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr><td>
+	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
+	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$brih_Notices</a> | $Notice_DeletePosted_msg1
+	</td></tr>
+</table>
+
+<table align=left bgcolor="$ui.tableColor" width="100%">
+<tr>
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
+	#if($tdcolor != "2")
+        	<td>
+	#elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("count","2")>$Notice_DeletePosted_msg1</a></td>
+        #if($tdcolor != "3")
+        	<td>
+	#elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh").addPathInfo("count","3")>$brih_flash $brih_heading</a></td>
+        ##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh")>$brih_flash $brih_heading</a></td>
+        #if($tdcolor != "4")
+                <td>
+        #elseif($tdcolor == "4")
+                <td bgcolor="#AFDCEC">
+        #end
+                <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4")>$brih_localmail</a></td>
+</td></tr>
+</table>
+
 <form name="frm" method="Post" action="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").setAction("Notice_Send_Delete")">
 #if($Mas_size!="0")
-<table align="center">
+<table align="left" width=100% bgcolor="$ui.tableColor">
 <tr>
-	#if($desc=="Notice_Des")
-	<td>
-        	<table>
-	        <tr align="right">
-        	<td bgcolor="$ui.tableColor" align="center">
-                	<font size=4><I><b>$Notice_sub</b></I></font>
-	        </td>
-        	</tr>
-		<tr align="right">
-	        <td>
-        	        <textarea name=description rows=10 cols=55 wrap=physical onFocus="this.blur();">$message</textarea>
-	        </td>
-        	</tr>
-	        </table>
-	</td>
-	#end
-
-	<td width=60%>
-		<table border=0 bgcolor="$ui.menuColor" align=center width=100% cellpadding=0 cellspacing=0>
-		<tr>
-		<td colspan=3 align=center bgcolor="$ui.tableColor">
-			<font size=4 face="$ui.sansSerifFonts"><I> $Notice_DeletePosted_msg2  #UNAME() </I>
-			</font>
-		</td>
-		</tr>
-		<tr bgcolor="$ui.tableColor" align="right">
-		<td align=center>
-	        	 <font face="$ui.sansSerifFonts">
-			 $brih_Da
-			 </font>
-		</td>
-		<td align=center>
-			<font face="$ui.sansSerifFonts">
-			$Notice_Subject	
-			</fonts> 
-		</td>
-		<td>
-		</td>
-		</tr>
-		#foreach($detail in $msgDetail)
-			<tr align="right">
-			<td align=center>
-	       			<font face="$ui.sansSerifFonts">
-				$detail.getPostTime()
-		 		</font>
-			</td>
-			<td align=center>
-	        	<font face="$ui.sansSerifFonts">
-				<a href="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("notice_id",$detail.getMsgId()).addPathInfo("desc","Notice_Des")">$detail.getMsgSubject()</a>
-				</font>
-   			</td>
-			<td align="Center">
-        	        	<INPUT TYPE="CHECKBOX" NAME="$detail.getMsgId()" onClick="addDeleteList(this,document.frm);">
-                	</td>
-			</tr>
+	<td>$Notice_Subject</td>
+	<td>$brih_Da</td>
+</tr>
+##tr for description
+<tr>
+	#foreach($detail in $msgDetail)
+		#if($velocityCount%2==0)
+		<tr bgcolor="$ui.tableColor">
+		#else
+		<tr bgcolor="$ui.menuColor">
 		#end
-		<tr bgcolor="$ui.tableColor" align="right">
-		<td align="center" colspan="3">
+		<td>
+                	<INPUT TYPE="CHECKBOX" NAME="$detail.getMsgId()" onClick="addDeleteList(this,document.frm);">
+		<a href="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("notice_id",$detail.getMsgId()).addPathInfo("desc","Notice_Des").addPathInfo("count","2")">$detail.getMsgSubject()</a></td>
+		<td>$detail.getPostTime()</td>
+		</tr>
+	#end
+	<tr bgcolor="$ui.tableColor">
+	<td>
 		<input type="button" class="button-ftextstyle" name="eventSubmit_doDelete" value="$brih_delete" onClick="CheckValue(document.frm,this);">
 		<input type="hidden" name="actionName" value="">
 		<input type="hidden" name="deleteFileNames" VALUE="">
-		</td>
-		</tr>
-		</table>
 	</td>
+#if($desc=="Notice_Des")
+<tr>
+<td bgcolor="$ui.tableColor" align="center"><font size=4><I><b>$Notice_sub</b></I></font></td>
+</tr>
+<tr><td><textarea id="ta" name=description rows=10 cols=90 wrap=physical onFocus="this.blur();">$message</textarea></td></tr>
+#end
 </tr>
 </table>
 #end
 </form>
+</body>
 <SCRIPT LANGUAGE="javascript">
 function CheckValue(frm,field)
 {

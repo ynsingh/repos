@@ -59,6 +59,8 @@ import org.iitk.brihaspati.modules.utils.XMLWriter_InstituteRegistration;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author <a href="mailto:palseema@rediffmail.com">Seema Pal </a>23April2012
@@ -82,6 +84,7 @@ import org.iitk.brihaspati.modules.utils.InstituteFileEntry;
 
 public class InstituteRegistration extends VelocitySecureAction
 {
+	private Log log = LogFactory.getLog(this.getClass());
 	private String institutename = "", instituteaddress = "", institutecity = "" ,institutepincode = "", institutestate = "", institutelandline = "", institutedomain = "", institutetype = "", instituteaffiliation = "", institutewebsite = "", instituteadminfname = "", instituteadminlname = "", instituteadminemail = "", instituteadmindesignation = "", instituteadminusername = "", instituteadminpassword = "", instituteregisterdate = "" ;
 	
 	 Properties pr ;
@@ -242,12 +245,16 @@ public class InstituteRegistration extends VelocitySecureAction
 				
 						//...............
 						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,a_key,flag1);
-						rundata.setMessage(mu.ConvertedString("mail_confirm",Lang));
+						rundata.setMessage(mu.ConvertedString("cnfrm_mail",Lang));
 					   }//if
 					   else
 					   {
 						flag1="1";
 						String writeinxml=XMLWriter_InstituteRegistration.InstituteRegistrationListXml(filepath,institutename,instituteaddress,institutecity,institutepincode,institutestate,institutelandline,institutedomain,institutetype,instituteaffiliation,institutewebsite,curdate,"2020-12-01",instituteadminfname,instituteadminlname,instituteadminemail,instituteadmindesignation,adminusername,instpassword,"",flag1);
+
+						 // Maintain Log
+                                                java.util.Date date= new java.util.Date();
+                                                log.info("Institute Admin Registration with name --> "+institutename+" | IP Address --> "+rundata.getRemoteAddr());
 
 						/**Get email of Sysadmin for sending email
 	                                         *regarding to the registration of a new Institute.

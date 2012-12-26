@@ -163,8 +163,10 @@ public class FAQ extends SecureAction
 					//data.setMessage("Category Add Successfully !!");
 				if( LangFile.endsWith("hi.properties") || LangFile.endsWith("urd.properties"))
 					data.setMessage(MultilingualUtil.ConvertedString("brih_FAQ",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully", LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added", LangFile));
-                	        else
+                	        else{
 					data.setMessage(MultilingualUtil.ConvertedString("brih_category",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully",LangFile));
+				log.info("Category Added successfully in FAQ with name "+category+ " By "+username+" IP Address : "+data.getRemoteAddr());
+				}
 				}
 			}//if
 			/**
@@ -201,6 +203,7 @@ public class FAQ extends SecureAction
 				vs.doRedirect(data,"call,FAQ,FAQ_Ques.vm");
 				//data.setMessage("Category Edit Successfully !!");
 				data.setMessage(MultilingualUtil.ConvertedString("brih_category",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeenedit",LangFile));
+				log.info("Category updated successfully "+categoryold+" to "+category+ " By "+username+" IP Address : "+data.getRemoteAddr());
 			}
 		}
 		catch(Exception e){data.setMessage("Error in action:FAQ[SaveFaq] !!"+e);}
@@ -474,6 +477,7 @@ public class FAQ extends SecureAction
 				}//for
                       		//data.setMessage("Category deleted successfully !!");
 				data.setMessage(MultilingualUtil.ConvertedString("brih_category",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
+				log.info("Category deleted successfully By "+username+" IP Address : "+data.getRemoteAddr());
 			}//if
 		}
 		catch(Exception e){data.setMessage("Error in action:FAQ[SaveQues] !!"+e);}

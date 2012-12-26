@@ -46,6 +46,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 //brihaspati
 import org.iitk.brihaspati.modules.utils.GetUnzip;
@@ -65,6 +67,7 @@ public class InstituteAdminRestoreAction extends SecureAction_Institute_Admin{
 		 * @param data RunData
 	         * @param context Context
 		 */
+	private Log log = LogFactory.getLog(this.getClass());
 
 	public void doRestoreDatabase(RunData data, Context context){
 		String s=null;
@@ -94,6 +97,7 @@ public class InstituteAdminRestoreAction extends SecureAction_Institute_Admin{
 			f.delete();	
 			String msg1=MultilingualUtil.ConvertedString("restore_msg3",LangFile);
                         data.setMessage(msg1);
+			log.info(msg1+" with name "+fileItem.getName()+" | IP Address : "+data.getRemoteAddr());
 			}
                         else{
                                 String msg1=MultilingualUtil.ConvertedString("upload_msg5",LangFile);
@@ -125,16 +129,18 @@ public class InstituteAdminRestoreAction extends SecureAction_Institute_Admin{
 		        File zipSourceFile=new File(Path);
 		        String fName=fileItem.getName();
 			if(fName.endsWith(".zip")){
+				String msg1="";
 			        if(fName.equals("Courses.zip")){
         	        		GetUnzip guz=new GetUnzip( zipSourceFile.getAbsolutePath(),TurbineServlet.getRealPath("/") );
-					String msg1=MultilingualUtil.ConvertedString("restore_msg2",LangFile);
+					msg1=MultilingualUtil.ConvertedString("restore_msg2",LangFile);
                         	        data.setMessage(msg1);
 			        }else{
         	        		GetUnzip guz=new GetUnzip( zipSourceFile.getAbsolutePath(),TurbineServlet.getRealPath("/Courses") );
-					String msg1=MultilingualUtil.ConvertedString("restore_msg1",LangFile);
+					msg1=MultilingualUtil.ConvertedString("restore_msg1",LangFile);
                         	        data.setMessage(msg1);
 	        		}
 			        zipSourceFile.delete();
+				log.info(msg1+" with name "+fileItem.getName()+" | IP Address : "+data.getRemoteAddr());
 			}
 			else{
 				String msg1=MultilingualUtil.ConvertedString("upload_msg3",LangFile);

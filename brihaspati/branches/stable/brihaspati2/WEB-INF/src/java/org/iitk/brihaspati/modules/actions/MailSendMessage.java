@@ -80,7 +80,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  *  @author<a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date 28-12-2009, 14-05-2010
+ * @modified date 28-12-2009, 14-05-2010, 07-12-2012 (Shaista)
 
  */
 public class MailSendMessage extends SecureAction
@@ -95,8 +95,8 @@ public class MailSendMessage extends SecureAction
     	{
 		try
 		{
-			//String cerMsg = "", message = "";
-			String message = "", cerMsg = "";
+			//String message = "", cerMsg = "";
+			String message = "";
 			User user = data.getUser();
 			ParameterParser pp=data.getParameters();
 			String AddList=new String();
@@ -109,10 +109,9 @@ public class MailSendMessage extends SecureAction
 			String name="",gpath="";
 			int msgid = 0,Status=0,receiver_id=0,readf=0,index=0;
 			RomanToUnicode romanToUni = new RomanToUnicode();
-			cerMsg = pp.getString("hexaStr");
-			String lang = (String)user.getTemp("lang");
 /*
-			//if(!(user.getTemp("lang").equals("english")))
+			//cerMsg = pp.getString("hexaStr");
+			String lang = (String)user.getTemp("lang");
 			 if( lang.equals("hindi") || lang.equals("marathi"))
 			{
 				
@@ -130,7 +129,7 @@ public class MailSendMessage extends SecureAction
 				AddList=Add_FstList;
 				
 			}
-			//ErrorDumpUtil.ErrorLog("\n\n\n\n message==========="+message);
+			ErrorDumpUtil.ErrorLog("\n\n\n\n message==========="+message);
                 	if(!AddList.equals(""))
 			{ //outer 'if'
 				Criteria crit=new Criteria();
@@ -194,16 +193,17 @@ public class MailSendMessage extends SecureAction
 					else
 					{
 						//doWriteMail(LangFile, path, msgid, message, toAddress,data,readf,receiver_id,context,Status,mode,cerMsg);
-						doWriteMail(LangFile, msgid, message, toAddress, data, readf, receiver_id, context, Status, mode, cerMsg, subject);
+						//doWriteMail(LangFile, msgid, message, toAddress, data, readf, receiver_id, context, Status, mode, cerMsg, subject);
+						doWriteMail(LangFile, msgid, message, toAddress, data, readf, receiver_id, context, Status, mode, "", subject);
 						//}
 					}
-					String msg1=MultilingualUtil.ConvertedString("mail_msg2",LangFile);
+					String msg1=MultilingualUtil.ConvertedString("mail_msg",LangFile);
 					data.setMessage(msg1);
 				}//end first 'for' loop
 			}//close outer 'if'
 			if(Status==1)
 			{
-				String msg4=MultilingualUtil.ConvertedString("mail_msg2",LangFile);
+				String msg4=MultilingualUtil.ConvertedString("mail_msg",LangFile);
 				String msg5=MultilingualUtil.ConvertedString("attach",LangFile);
 				if(LangFile.endsWith("hi.properties"))
 				data.setMessage(msg5+" "+msg4);
@@ -254,9 +254,9 @@ public class MailSendMessage extends SecureAction
 			}
 			try{
 			String path= data.getServletContext().getRealPath("/UserArea")+"/"+user_named+"/Msg.txt";
-			String path1= data.getServletContext().getRealPath("/UserArea")+"/"+user_named+"/typedCharMsg.txt";
+			//String path1= data.getServletContext().getRealPath("/UserArea")+"/"+user_named+"/typedCharMsg.txt";
 			CommonUtility.UpdateTxtFile(path,msg_idd,"",false);
-			CommonUtility.UpdateTxtFile(path1,msg_idd,"",false);
+			//CommonUtility.UpdateTxtFile(path1,msg_idd,"",false);
                         	/**
                          	* deleting attachment if any with the message.
                          	*/
@@ -400,22 +400,24 @@ public class MailSendMessage extends SecureAction
 					File first = new File(path);
 					if(!first.exists())
 	               				first.mkdirs();
-	                		String path1 = path+"/"+"typedCharMsg.txt";
+	                		//String path1 = path+"/"+"typedCharMsg.txt";
         	       			path = path+"/"+"Msg.txt";
              				FileWriter fw = new FileWriter(path,true);
-               				FileWriter fw1 = new FileWriter(path1,true);
+               				//FileWriter fw1 = new FileWriter(path1,true);
 	               			fw.write("\r\n");
 	                		fw.write("<" + msgid + ">");
         	        		fw.write("\r\n");
                 			fw.write(message);
                 			fw.write("\r\n"+"</" + msgid + ">");
                 			fw.close();
+/*
 	                		fw1.write("\r\n");
         	        		fw1.write("<" + msgid + ">");
                 			fw1.write("\r\n");
                 			fw1.write(msg);
                 			fw1.write("\r\n"+"</" + msgid + ">");
 	                		fw1.close();
+*/
 				} //else s1 end
 
 				/**

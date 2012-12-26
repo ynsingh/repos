@@ -20,11 +20,11 @@ $page.setBgColor($ui.bgcolor)
 #end
 
 <table bgcolor="$ui.tableColor" width=100% cellspacing=0>
-<tr align="right">
+<tr>
         <td>
         <font face="$ui.sansSerifFonts" size=3>
         <b>
-        <a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | 
+	<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | 
 	#if($st == "glsry")
         	 <a href=$link.setPage("call,Glossary,Glossary.vm")>$Glossary </a> |  $Glossary $brih_restore 
 	#else
@@ -66,15 +66,12 @@ $page.setBgColor($ui.bgcolor)
       </tr>
       #end
 	
-      <tr align="right">
+<tr align="right">
         ##fileUpload ("$brih_file" "file")
 	<td> <input type="file" name= "file" size ="35"> </td>
 	<td> $brih_file </td>
-	
-      </tr>
-
-
-      <tr>
+</tr>	
+      <tr align="right">
         <td align="center" bgcolor="$ui.buttonBoxColor" colspan="2">
 
           <font face="$ui.sansSerifFonts">

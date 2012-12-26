@@ -521,6 +521,8 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 User user=data.getUser();
                 LangFile=(String)user.getTemp("LangFile");
 		String ImageName=(data.getUser().getTemp("Institute_id")).toString();
+		String strInstId =  (String)user.getTemp("Institute_id","");
+                String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
 //                String ImageName=(String)user.getTemp("course_id");
                 ParameterParser pp=data.getParameters();
                 FileItem file = pp.getFileItem("file");
@@ -537,6 +539,8 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                 file.write(filePath);
                                 msg1=MultilingualUtil.ConvertedString("c_msg5",LangFile);
                                 data.setMessage(msg1);
+				// Maintain Log
+                                log.info("Logo uploded in "+instName+" By "+user.getName()+ " | IP Address --> "+data.getRemoteAddr());
                         }
                         catch(Exception ex){data.setMessage("The Error in Uploading!! "+ex);}
                 }
@@ -1017,6 +1021,8 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                         }
                                 }
                         }
+			// Maintain Log
+			log.info(Message+" By "+instAdminName);
                         context.put("Message",Message);
                         context.put("infrmtn",username);
                 }

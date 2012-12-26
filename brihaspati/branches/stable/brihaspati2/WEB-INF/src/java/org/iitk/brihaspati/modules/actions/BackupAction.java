@@ -71,6 +71,8 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This class is responsible for restoring the database entries and course contents. 
@@ -85,6 +87,7 @@ public class BackupAction extends SecureAction
 {
 	Date date=new Date();
 	private String fileID=null;
+	private Log log = LogFactory.getLog(this.getClass());
 //	private ServletOutputStream out;
 	/**
      	* This is gives the all course content backup as well as perticular course.
@@ -124,6 +127,8 @@ public class BackupAction extends SecureAction
 			cz=new CreateZip(docRoot+"/"+dir,destination);
 			data.setMessage(MultilingualUtil.ConvertedString("backup_backup",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg1",LangFile));
                         data.addMessage(MultilingualUtil.ConvertedString("backup_msg6",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg7",LangFile));
+			// Maintain Log
+			log.info("Course backup has taken successfully By "+user.getName()+" | IP Address : "+data.getRemoteAddr());
 //			data.setMessage("Backup has been taken properly");
 //			setTemplate(data,"call,Backups,BackupAdmin.vm");
 		}
@@ -156,6 +161,8 @@ public class BackupAction extends SecureAction
 			}
 			data.setMessage(MultilingualUtil.ConvertedString("backup_backup",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg1",LangFile));
                         data.addMessage(MultilingualUtil.ConvertedString("backup_msg6",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg7",LangFile));
+			// Maintain Log
+			log.info("Database backup has taken successfully By "+user.getName()+" | IP Address : "+data.getRemoteAddr());
 
 //			data.setMessage("Backup has been taken properly");
   //              	setTemplate(data,"call,Backups,BackupAdmin.vm");
@@ -275,6 +282,8 @@ public class BackupAction extends SecureAction
                         fw.close();
 			 data.setMessage(MultilingualUtil.ConvertedString("backup_msg3",LangFile)+" " + MultilingualUtil.ConvertedString("backup_backup",LangFile)+" " + MultilingualUtil.ConvertedString("backup_msg1",LangFile));
                         data.addMessage(MultilingualUtil.ConvertedString("backup_msg6",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg7",LangFile));
+			// Maintain Log
+			log.info("Complete backup has taken successfully By "+user.getName()+" | IP Address : "+data.getRemoteAddr());
 
 //			data.setMessage("Database Backup has been taken properly");
                         setTemplate(data,"call,Backups,Backups.vm");
@@ -292,6 +301,7 @@ public class BackupAction extends SecureAction
 	        */
 	public void doDeletebackup(RunData data,Context context){
 		User user= data.getUser();
+		String username=user.getName();
                 String LangFile=(String)user.getTemp("LangFile");
 		String fname=data.getParameters().getString("fname","");
 		context.put("tdcolor",data.getParameters().getString("count",""));
@@ -308,6 +318,8 @@ public class BackupAction extends SecureAction
 				boolean res=CommonUtility.autoDeletebackup();
 				fle.delete();
 				data.setMessage(MultilingualUtil.ConvertedString("personal_del2",LangFile));
+				// Maintain Log
+				log.info("Backup file named ("+fname+") deleted by "+username+" | IP Address --> "+data.getRemoteAddr());
 				setTemplate(data,"call,Backups,Backups.vm");
 			}
 			catch(Exception e){data.addMessage("The error in Backups file deletion : " +e);}
@@ -396,6 +408,8 @@ public class BackupAction extends SecureAction
 			data.setMessage(MultilingualUtil.ConvertedString("Glossary",LangFile)+" "+MultilingualUtil.ConvertedString("backup_backup",LangFile));
                         data.addMessage(MultilingualUtil.ConvertedString("backup_msg1",LangFile));
                         data.addMessage(MultilingualUtil.ConvertedString("backup_msg6",LangFile)+" "+MultilingualUtil.ConvertedString("backup_msg7",LangFile));
+			// Maintain Log
+			log.info("Glossary backup has taken successfully By "+user.getName()+" | IP Address : "+data.getRemoteAddr());
 
                         setTemplate(data,"call,Backups,Backups.vm");
 

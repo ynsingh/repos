@@ -268,6 +268,11 @@ This css is called for new GUI of Brihaspati
         overflow-x:scroll;
 }
 
+.indexhomescroll{
+        width:780px;
+        overflow-x:scroll;
+}
+
 .dt:hover {
 color:#fff;
 background:#CCCC99;
@@ -277,4 +282,15 @@ background:#CCCC99;
         background-color:#bddbfa;
 }
 
+.viwlink:hover {
+color:#222;
+background:#CCCC99;
+}
 
+.container {
+font-size:12px;	display:none; font-family: 'Alegreya SC', Georgia, serif; font-weight: 400; font-style:normal;	margin:75px 0px auto; overflowi-x:auto; width:330px; height:410px ; border: 10px solid #fff; background: rgba(255,255,255,0.7);	border-radius: 5px;	box-shadow: 1px 1px 1px 4px rgba(0,0,0,0.4);	-webkit-transition: all 0.3s ease-in-out;	-moz-transition: all 0.3s ease-in-out;	-o-transition: all 0.3s ease-in-out;	-ms-transition: all 0.3s ease-in-out;	transition: all 0.3s ease-in-out;	padding:8px;	z-index:300;	position:absolute;	
+}
+
+.tweet_header {
+width:310px; padding-top:3px; padding-bottom:3px; margin-top:20px; position:absolute; text-align:center; font-weight:bold;
+}

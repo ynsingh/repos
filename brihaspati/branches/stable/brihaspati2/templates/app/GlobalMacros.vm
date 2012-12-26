@@ -6,6 +6,10 @@
 # @author(Modify):- Jaivir Singh(singh_jaivir@rediffmail.com)
 *# ------------------------------------------------------------------
 
+<head>
+<link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
+</head>
+
 #macro (text $text)
   <font face="$ui.sansSerifFonts">
     $text

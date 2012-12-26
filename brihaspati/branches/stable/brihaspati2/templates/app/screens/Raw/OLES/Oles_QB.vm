@@ -117,25 +117,25 @@ $!data.getMessage()
 		#if( $total_size!=0 )
 			<table bgcolor="#e5e5e5" width="100%"><tr bgcolor="$ui.menuColor"><td align="left">
 	       		 #if($total_size <= $userConf)
-        	        <u><font color="white">$brih_first</font></u> &nbsp;
-                	<u><font color="white">$brih_pre</font></u> &nbsp;
-	                <u><font color="white">$brih_nxt</font></u> &nbsp;
-        	        <u><font color="white">$brih_last</font></u> &nbsp;
+        	        <img src="$content.getURI("images/First_blank.png")">
+                	<img src="$content.getURI("images/Previous_blank.png")">
+	                <img src="$content.getURI("images/Next_blank.png")">
+        	        <img src="$content.getURI("images/Last_blank.png")">
                 	#elseif($startIndex == $userConf_string)
-	                <u><font color="white">$brih_first</font></u> &nbsp;
-        	        <u><font color="white">$brih_pre</font></u> &nbsp;
-                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex)">$brih_nxt</a>&nbsp;
-	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)">$brih_last</a>&nbsp;
+	                <img src="$content.getURI("images/First_blank.png")">
+        	        <img src="$content.getURI("images/Previous_blank.png")">
+                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex)"><img src="$content.getURI("images/Next.png")"></a>
+	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)"><img src="$content.getURI("images/Last.png")"></a>
         	        #elseif($endIndex == $total_size || $endIndex > $total_size)
-                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)">$brih_first</a>&nbsp;
-	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-        	        <u><font color="white">$brih_nxt</font></u> &nbsp;
-                	<u><font color="white">$brih_last</font></u> &nbsp;
+                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)"><img src="$content.getURI("images/First.png")"></a>
+	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)"><img src="$content.getURI("images/Previous.png")"></a>
+        	        <img src="$content.getURI("images/Next_blank.png")">
+                	<img src="$content.getURI("images/Last_blank.png")">
 	                #else
-        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)">$brih_first</a>&nbsp;
-                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
-	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
-        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)"><img src="$content.getURI("images/First.png")"></a>
+                	<a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)"><img src="$content.getURI("images/Previous.png")"></a>
+	                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)"><img src="$content.getURI("images/Next.png")"></a>
+        	        <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)"><img src="$content.getURI("images/Last.png")"></a>
                 	#end
 	                </td></tr></table>
 		#end

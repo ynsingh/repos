@@ -97,6 +97,7 @@ public class changeAParam extends SecureAction_Admin{
 		String ALName=pp.getString("ALName","");
 	 	String AdminConf = pp.getString("AdminConf","");	
 	 	String AdminCrsExp = pp.getString("AdminCrsExp","");	
+		String AdminPassExp = pp.getString("AdminPassExp","");
 	 	String mailServ = pp.getString("mailServ","");
 		String mailServPort = pp.getString("mailServPort","");	
 	 	String mailFrom = pp.getString("mailFrom","");	
@@ -212,6 +213,8 @@ public class changeAParam extends SecureAction_Admin{
 		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
+		String mailSpoolResendTime = pp.getString("spoolMailResendTime","");
+		String mailSpoolExpiryDay = pp.getString("mailSpoolingExpiry","");
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
 			user.setFirstName(AFName);
 			user.setLastName(ALName);
@@ -221,6 +224,7 @@ public class changeAParam extends SecureAction_Admin{
 		 	(new File(path)).delete();
 			AdminProperties.setValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
 			AdminProperties.setValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
+			AdminProperties.setValue(path,AdminPassExp,"brihaspati.admin.passwordExpiry");
 			AdminProperties.setValue(path,mailServ,"brihaspati.mail.server");
 			AdminProperties.setValue(path,mailServPort,"brihaspati.mail.smtp.port");
 			AdminProperties.setValue(path,mailFrom,"brihaspati.mail.smtp.from");
@@ -236,6 +240,8 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
 			AdminProperties.setValue(path,port,"brihaspati.spring.port");
 			AdminProperties.setValue(path,dstore,"brihaspati.admin.datastore.value");
+			AdminProperties.setValue(path, mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
+			AdminProperties.setValue(path, mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
 
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);

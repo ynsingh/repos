@@ -54,6 +54,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.StringTokenizer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 /*
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
@@ -68,6 +70,7 @@ public class AcademicAction extends SecureAction
 	 * @param context Context
 	 * @return nothing
 	 */
+	private Log log = LogFactory.getLog(this.getClass());
 
 	public void doInsert(RunData data, Context context)
 	{
@@ -144,6 +147,8 @@ public class AcademicAction extends SecureAction
 				else
                                 msg=MultilingualUtil.ConvertedString("ac_msg2",LangFile);
                                 data.setMessage(msg);
+				// Maintain Log
+                                log.info("User Name --> Admin | Operation --> Add Event | IP Address --> "+data.getRemoteAddr());
 			}
 		}
 		catch(Exception e)
@@ -261,6 +266,8 @@ public class AcademicAction extends SecureAction
                         else
 				msg=MultilingualUtil.ConvertedString("ac_msg2",LangFile);
                           	data.setMessage(msg);
+				// Maintain Log
+                                log.info("User Name --> Admin | Operation --> Update event | IP Address --> "+data.getRemoteAddr());
 		}
 		catch(Exception e)
 		{

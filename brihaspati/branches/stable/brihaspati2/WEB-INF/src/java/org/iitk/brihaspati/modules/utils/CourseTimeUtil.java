@@ -31,14 +31,19 @@
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  
  */
-import java.util.*;
-import java.text.*;
-import java.lang.*;
+//import java.util.*;
+//import java.text.*;
+//import java.lang.*;
 import java.util.List;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.Collections;
+import java.util.Collection;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import org.apache.commons.lang.StringUtils;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.UsageDetails;
@@ -55,14 +60,9 @@ import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.CourseMonthPeer;
 import org.iitk.brihaspati.om.CourseMonth;
-//import com.workingdogs.village.Record;
 import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
-//package org.kodejava.example.util;
 import org.apache.commons.lang.StringUtils; 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 /**
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  */
@@ -159,18 +159,20 @@ public class CourseTimeUtil
                         Criteria crit=new Criteria();
 			crit.add(CourseTimePeer.ENTRY_ID,eid);
                         List v=CourseTimePeer.doSelect(crit);
-			for(int i=0;i<v.size();i++)
-			{
-				CourseTime element=(CourseTime)v.get(i);
-				int status=element.getStatus();
-				if(status==1)
+			if(v.size()!=0){
+				for(int i=0;i<v.size();i++)
 				{
-					Integer coursetime =element.getCourseTime();
-					long time1 = coursetime.longValue();
-					long diffHours = time1/(60*60*1000);
-					long diffHour = coursetime%(60*60*1000);
-					long diffMin=diffHour/(60*1000);
-					ctime=diffHours+" hours"+" "+diffMin+" min";
+					CourseTime element=(CourseTime)v.get(i);
+					int status=element.getStatus();
+					if(status==1)
+					{
+						Integer coursetime =element.getCourseTime();
+						long time1 = coursetime.longValue();
+						long diffHours = time1/(60*60*1000);
+						long diffHour = coursetime%(60*60*1000);
+						long diffMin=diffHour/(60*1000);
+						ctime=diffHours+" hours"+" "+diffMin+" min";
+					}
 				}
 			}
                 }catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil getCloginTime Method------"+ex);}
@@ -252,45 +254,51 @@ public class CourseTimeUtil
                                 Activelist.add(uid);
                         }
 			/*get List of All user in A Group bY gid*/
-			Criteria crit=null;
-			crit=new Criteria();
+			Criteria crit=new Criteria();
 			crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+			//crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
 			/*getList of All Users*/
                         List v=TurbineUserGroupRolePeer.doSelect(crit);
 			/*take value from List one by one*/
-			for(int p=0;p<v.size();p++){
-                                     TurbineUserGroupRole el=(TurbineUserGroupRole)v.get(p);
-				/*take User_Id*/
-                                int uid=el.getUserId();
-				/*if(this user belongs this group or not){yes*/
-				if(Activelist.contains(uid)){
-				/*getEntry_ID of this User From COURSE_TIME table*/
-				int eid=getentryid(uid);
-				crit=new Criteria();
-				/*take status of user on the behalf of ENTRY_ID and
-				  GROUP_NAME*/
-				crit.add(CourseTimePeer.ENTRY_ID,eid);
-				crit.add(CourseTimePeer.COURSE_ID,groupName);
-				List v1=CourseTimePeer.doSelect(crit);
-					CourseTime element=(CourseTime)v1.get(0);
-					int status=element.getStatus();
-					/*if(status==1){true*/
-					  if(status==1){
-						/*user currently in this GROUP*/
-						/*time in this CourseArea*/
-						 String ct=CourseTimeUtil.getCloginTime(uid);
-						/*take LoginName of User*/
-						String LoginName=UserUtil.getLoginName(uid);
-						/*take Login Name and Time in a String for showing 
-					          on browser*/
-						 String cname=LoginName+" ("+ct+" )";
-						userList.add(cname);
+			if(v.size()!=0){
+				for(int p=0;p<v.size();p++){
+                                	TurbineUserGroupRole el=(TurbineUserGroupRole)v.get(p);
+					/*take User_Id*/
+                                	int uid=el.getUserId();
+					/*if(this user belongs this group or not){yes*/
+					if(Activelist.contains(uid)){
+					/*getEntry_ID of this User From COURSE_TIME table*/
+					int eid=getentryid(uid);
+					crit=new Criteria();
+					/*take status of user on the behalf of ENTRY_ID and
+				  		GROUP_NAME*/
+					crit.add(CourseTimePeer.ENTRY_ID,eid);
+					crit.add(CourseTimePeer.COURSE_ID,groupName);
+					List v1=CourseTimePeer.doSelect(crit);
+					if(v1.size()!=0){
+						CourseTime element=(CourseTime)v1.get(0);
+						int status=element.getStatus();
+						/*if(status==1){true*/
+					  	if(status==1){
+							/*user currently in this GROUP*/
+							/*time in this CourseArea*/
+							 String ct=CourseTimeUtil.getCloginTime(uid);
+							/*take LoginName of User*/
+							String LoginName=UserUtil.getLoginName(uid);
+							/*take Login Name and Time in a String for showing 
+					          	on browser*/
+						 	String cname=LoginName+" ("+ct+" )";
+							userList.add(cname);
+						}
+					
 					}
+
 				}
 			}
-		} catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getCourseActiveList------"+ex); }
+		} 
+	}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Error in CourseTimeUtil in Method getCourseActiveList------"+ex); }
                  return userList;
-		}
+}
 	/*
 	 *Method for Calculating time User Spend in a Course in a day.
 	 */

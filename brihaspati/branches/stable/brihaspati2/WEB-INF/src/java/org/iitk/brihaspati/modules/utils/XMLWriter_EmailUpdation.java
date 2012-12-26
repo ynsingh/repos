@@ -63,7 +63,7 @@ import java.util.Properties;
  * and source email verification in case mail is sent to insitute admin, 
  * the class will create the Xml file and read the details of the file. 
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modified date: 15-10-2012, 08-11-2012
+ * @modified date: 15-10-2012, 08-11-2012, 10-12-2012
  */
 
 public class XMLWriter_EmailUpdation {
@@ -689,7 +689,7 @@ public int deleteExpiredProfile(String filePath, String serverName, String serve
 		Document doc =getCreateDocument(filePath);
                 /**Find all elements with the name "Profile"*/
 		NodeList list = doc.getElementsByTagName("Profile");
-                         if(list!=null){
+                         if(!list.equals(null)){
 				for( int i=0; i<list.getLength(); i++ ){
                                         node = list.item(i);
                                         if( node.getNodeType() == node.ELEMENT_NODE ){
@@ -772,25 +772,19 @@ public int deleteExpiredProfile(String filePath, String serverName, String serve
 	return cnt;	
 }//method
 
-public int deleteExpiredProfile(String filePath)
+public void deleteExpiredProfile(String filePath)
 {
-        //String info_Opt="", info_new="", msgRoleInfo="", msgRegard="", msgDear="", messageFormate="", sbjct="", activationLink="";
-        //Properties pr ;
-        //String fileName=new String();
-        String email;
         Element element=null;
         Node node=null;
-        int cnt=0, j;
         Date Creation_date;
-        //Vector exmail=new Vector();
-        Vector remxml=new Vector();
-
+	Vector remxml=new Vector();
+	String email="", hash="";
         try{
 		Document doc =getCreateDocument(filePath);
 		NodeList list = doc.getElementsByTagName("Profile");
-                         if(list!=null){
-                                for( int i=0; i<list.getLength(); i++ ){
-                                        node = list.item(i);
+		if(!list.equals(null)){
+        		for( int i=0; i<list.getLength(); i++ ){        
+	        		node = list.item(i);
                                         if( node.getNodeType() == node.ELEMENT_NODE ){
                                                 element = (Element)node;
 						String cdate=getTagValue("Date",element);
@@ -803,32 +797,33 @@ public int deleteExpiredProfile(String filePath)
 
                                                 if(noOfdays > 7 && (longCurrentDate-longCreationDate)!=0)
                                                 {
-							email=getTagValue("Email",element);
+							email=getTagValue("SenderEmail",element);
+							hash=getTagValue("Hash",element);
                                                         remxml.addElement(email);
-                                                        cnt++;
-/*
-                                                        cnt++;
-                                                        doc.getDocumentElement().removeChild(element);
-                                                        saveXML(doc,filePath);*/
+							setHash(filePath, email, hash);
+//							doc.getDocumentElement().removeChild(element);
+  //                                                      message=saveXML(doc,filePath);
+
 						}//if
 					}//if
-				}//for
-		
-				j=remxml.size();
-                        	cnt=0;
-                        	for(;j>0;j--)
-                        	{
-	                        	email =(String) remxml.get(cnt);
-                                	removeElement(filePath,email);
-                                	cnt++;
-                        	}
-			}//if
+			}//for
+			int j=remxml.size();
+                        int cnt=0;
+                        for(;j>0;j--)
+                        {
+                            	email =(String) remxml.get(cnt);
+				removeEmailElement(filePath, email);
+                            	//doc.getDocumentElement().removeChild(element);
+                            	//message=saveXML(doc,filePath);
+				cnt++;
+                        }
+		}
 	 }//try
         catch(Exception e)
         {
                 ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailUpdation method name:(deleteExpiredProfile2)"+e);
         }
-        return cnt;
+       //return cnt;
 }//method
 
 }//class

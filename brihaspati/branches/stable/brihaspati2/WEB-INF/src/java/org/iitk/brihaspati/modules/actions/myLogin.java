@@ -185,6 +185,7 @@ public class myLogin extends VelocityAction{
 						UpdateMailthread.getController().UpdateMailSystem();
 						Date date=new Date();
 						boolean AB=CommonUtility.IFLoginEntry(uid,date);
+						LoginUtils.getChangePasswordtemp(date,uid,data);
 
 						/**
         	                  		*Check the user for hint question when login at the first time.

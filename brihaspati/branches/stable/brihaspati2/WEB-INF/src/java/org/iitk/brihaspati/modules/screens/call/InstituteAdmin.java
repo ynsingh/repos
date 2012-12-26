@@ -66,15 +66,14 @@ public class InstituteAdmin extends SecureScreen{
 			User user=data.getUser();
 		        System.gc();	
 			String username=user.getName();
-			String fname=user.getFirstName();
-			String lname=user.getLastName();
 		
-                        context.put("username",username);
-                        context.put("firstname",fname);
-                        context.put("lastname",lname);
+                //        context.put("username",username);
 			
 			int u_id=UserUtil.getUID(username);
 			String id=Integer.toString(u_id);
+			String fnme=UserUtil.getFullName(u_id);
+                        context.put("flname",fnme);
+
 			if(user.getName().equals("guest")){
 				context.put("guest_login","true");
 			}
