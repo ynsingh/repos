@@ -82,7 +82,7 @@ function toggleViewAll(x) {
 </div>
 ##iframe is use to show brihaspati Twitter
 <div style="background:$ui.menuColor;" class="tweet_header">$brih_bri $brih_twitter</div>
-<iframe height="480" width="310px" style="margin:46px auto;overflow:hidden;" src="http://$ip:$port/brihaspatiSpring/index.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
+<iframe height="480" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
 
 <a onclick="refreshIframe(); return false" onmousedown="javascript:toggleViewAll('view');" class="viwlink" style="position:absolute; z-index:100; margin:490px -80px auto;cursor:pointer;">$brih_view_all</a>
 </td>
@@ -91,7 +91,7 @@ function toggleViewAll(x) {
 
 <a onClick="return false" onMouseDown="javascript:toggleViewAll('view');" style="text-decoration:none; cursor:pointer; color:#000; font-weight:bold; font-size:18px;">$LocalMail_Close</a>
 
-<iframe id="frame" name="frame" height="420" width="330px" style="margin:-10px auto;" src="http://$ip:$port/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username&name=$name" frameborder="0"></iframe>
+<iframe id="frame" name="frame" height="420" width="330px" style="margin:-10px auto;" src="http://$ip:$port/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
 
 </div>
 

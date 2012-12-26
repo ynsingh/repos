@@ -37,7 +37,6 @@ package org.iitk.brihaspati.modules.screens;
 import java.util.Date;
 import java.util.Vector;
 import java.util.List;
-//import java.text.DateFormat;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -76,9 +75,10 @@ public class Index extends SecureScreen{
 	public void doBuildTemplate( RunData data, Context context ){
 		try{
 			String ip=data.getServerName();
-			int port=data.getServerPort();
-			context.put("ip",ip);
-			context.put("port",port);
+			String port=Integer.toString(data.getServerPort());
+			String sch=data.getServerScheme(); 
+			String ipadd=sch+"://"+ip+":"+port;
+			context.put("ipadd",ipadd);
 
                         /*
                          * getting the current user 
