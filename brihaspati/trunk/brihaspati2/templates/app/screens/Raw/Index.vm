@@ -91,7 +91,7 @@ function toggleViewAll(x) {
 
 <a onClick="return false" onMouseDown="javascript:toggleViewAll('view');" style="text-decoration:none; cursor:pointer; color:#000; font-weight:bold; font-size:18px;">$LocalMail_Close</a>
 
-<iframe id="frame" name="frame" height="420" width="330px" style="margin:-10px auto;" src="http://$ip:$port/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
+<iframe id="frame" name="frame" height="420" width="330px" style="margin:-10px auto;" src="$ipadd/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
 
 </div>
 
