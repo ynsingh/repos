@@ -571,14 +571,23 @@ face="$ui.sansSerifFonts">$type</font>
           <td width=20%>
           <select name="group" size=1 class="drop" style="width:300px;">
           #set($i=1)
-          <option name=all value="All">$Notice_All
+          #if($searchgrp=="")
+	          <option name=all value="All">$Notice_All</option>
+	  #else
+	  	  #foreach($course in $courseList)
+	  	  	#if($course.getGroupName()==$searchgrp)
+	  			<option name=option$i value="$course.getGroupName()" style="width:275px;" title="$course.getCAlias(): $course.getCourseName()-$course.getUserName()">$course.getCAlias(): $course.getCourseName()-$course.getUserName()</option>	
+			#end
+		  #end
+	          	<option name=all value="All">$Notice_All</option>
+	#end
           #foreach($course in $courseList)
-	  	<option name=option$i value="$course.getGroupName()" style="width:275px;" title="$course.getCAlias(): $course.getCourseName()-$course.getUserName()">$course.getCAlias(): $course.getCourseName()-$course.getUserName()</option>	
+          	#if($course.getGroupName()!=$searchgrp)
+		  	<option name=option$i value="$course.getGroupName()" style="width:275px;" title="$course.getCAlias(): $course.getCourseName()-$course.getUserName()">$course.getCAlias(): $course.getCourseName()-$course.getUserName()</option>	
+		#end
           	#set($i=$i+1)
           #end
-          ##</option>
           </select>
-          ##</space>
          </td>
         <td align="left">
         <input type="submit" class="button-ftextstyle" name="eventSubmit_doSearch" value="$brih_search">

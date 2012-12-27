@@ -139,6 +139,8 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 		}
 		if(mode.equals("userdelete")){
 			String role=data.getParameters().getString("role");
+			String grpname=data.getParameters().getString("group","");
+			context.put("searchgrp",grpname);
 			context.put("role",role);
 		}
 	}
