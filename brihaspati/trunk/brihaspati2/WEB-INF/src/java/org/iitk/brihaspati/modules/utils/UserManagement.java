@@ -113,6 +113,7 @@ import babylon.babylonPasswordEncryptor;
  * @modified date: 27-07-2011, 05-08-2011(Richa), 09-08-2012(Priyanka)
  * @modified date: 16-08-2012(Sunil Yadav), 25-09-2012 (Priyanka), 30-10-2012(Richa)
  * @modified date: 02-11-2012 (Priyanka)
+ * @modified date: 27-12-2012 (Shaista) 
  */
 
 public class UserManagement
@@ -359,7 +360,6 @@ public class UserManagement
 				                subject = MailNotification.subjectFormate(userRole, "", pr );
 						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
                                                 messageFormate=MailNotification.getMessage_new(messageFormate,"","",i_name,"");
-              					//Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
 						Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid,"");//last parameter added by Priyanka
 						pr = null;
 						subject ="";
@@ -637,10 +637,8 @@ public class UserManagement
                                                	subject = MailNotification.subjectFormate(userRole, "", pr );
 						if(Role.equals("author"))
 						{
-							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
                                                		messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
 							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
-							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 							 Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka
 						}
 						else
@@ -650,7 +648,6 @@ public class UserManagement
 								messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,"");
 							else
 								messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
-							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 							Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka							
 						}
 						/**
@@ -772,7 +769,10 @@ public class UserManagement
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
 			String subj = MailNotification.subjectFormate(subject, "", pr );
                         messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort,pr);
-                        String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
+			/**
+				@param Last Parameter as a String is added as null for fileName if it gets failure. added by shaista
+			*/
+                        String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile, "");
                         Message=rmsg+" "+Mail_msg;
 
                 }
@@ -839,7 +839,6 @@ public class UserManagement
                         else
                                 msgInstAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
 
-                        //String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
                         String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, msgInstAdmin, email, subj, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
                         Message=rmsg+" "+Mail_msg;
 
@@ -1668,7 +1667,6 @@ public class UserManagement
 			if(message.length() >0)
 	                        message = MailNotification.getMessage_new(message,"","",instName,userName);
                         //ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  message="+message+"      subject="+subject);
-                        //MailNotification.sendMail(message, mail_id, subject, "" ,langFile);
                         if(instId == 0)
                                 Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile, "","");//last parameter added by Priyanka
                         else
@@ -1681,8 +1679,6 @@ public class UserManagement
                 	String message = MailNotification.getMessage(info_new, group_name, "", "", "", serverName, serverPort,pr);
 			message = MailNotification.getMessage_new(message,"","",instName,userName);
 		////////////////////////////////////////
-		//String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);
-			Mail_msg=MailNotification.sendMail(message, mail_id, subject, "" ,langFile);
 */
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in removeUserProfileWithMail method in UserManagment util"+e);}
 		return Mail_msg+":"+Msg;

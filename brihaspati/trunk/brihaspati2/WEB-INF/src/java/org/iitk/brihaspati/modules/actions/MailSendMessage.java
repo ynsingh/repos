@@ -129,7 +129,7 @@ public class MailSendMessage extends SecureAction
 				AddList=Add_FstList;
 				
 			}
-			ErrorDumpUtil.ErrorLog("\n\n\n\n message==========="+message);
+			//ErrorDumpUtil.ErrorLog("\n\n\n\n message==========="+message);
                 	if(!AddList.equals(""))
 			{ //outer 'if'
 				Criteria crit=new Criteria();

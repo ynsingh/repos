@@ -1,103 +1,105 @@
 #*
  * @(#) AdminMenu.vm
- * Copyright (c) 2008,2009, 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2008-2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author<a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- * @author<a href="mailto:shaistashekh@hotmail.com">Shaista </a>
- * @modified:Date 29-10-2009
- * @modified:Date 04-11-2009, 10-08-2010 (Shaista), 27-03-2012
+ * @author<a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author<a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author<a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @modified date: 05-04-2010, 22-11-2010 (Shaista)
+ * @modified date: 01-01-2012 (vipul kumar pal)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
-
-
+<head>
+<link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+</head>
 <table width="100%" bgcolor="$ui.MenuColor">
-<tr align="right"><td align="right">$brih_ad $brih_Of1 $brih_menu</td></tr>
+<tr align="right"><td align="right">
+	$brih_ad $brih_Of $brih_menu
+</td></tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-   <tr align="right">
-      <td align="right">
-	<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_Institute</a>
-      </td>
-   </tr>
-<tr bgcolor="$ui.menuColor" align="right">
-      <td>
-         <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
-                ##<img src="$content.getURI("/images/$lang/registration.jpg")"border=0></a><br>
-      </td>
-   </tr>
-
-   <tr align="right">
-      <td align="right">
-         <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_list </a>
-              ##  <img src="$content.getURI("/images/$lang/listmanagement.jpg")"border=0></a><br>
-      </td>
-   </tr>
-   <tr bgcolor="$ui.menuColor" align="right">
-   ##<tr align="right">
-      <td align="right">
-         <a href="$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal")" style=text-decoration:none>$personal $brih_calendar</a>
-      </td>
-   </tr>
-   <tr align="right">
-      <td align="right">
-	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a></td>
-   </tr>
-   <tr bgcolor="$ui.menuColor" align="right">
-      <td align="right">
-         <a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_ad $brih_Of1 $brih_backup</a>
-##       <img src="$content.getURI("/images/$lang/adminbackup.jpg")" border="0"></a>
-      </td>
-   </tr>
-	<tr align="right">
-      <td align="right">
-         <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_Ev </a>
-##                <img src="$content.getURI("/images/$lang/eventmanagement.jpg")"border=0></a><br>
-      </td>
-   </tr>
-   <tr bgcolor="$ui.menuColor" align="right">
-        <td align="right"><a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_role $Repo_Perm </a></td>
+<tr align="right">
+        <td class="dt"><a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $RemoteInstitute </a></td>
 </tr>
+   <tr bgcolor="$ui.menuColor" align="right">
+      <td class="dt">
+         <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
+      </td>
+   </tr>
+   <tr align="right">
+      <td class="dt">
+         <a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_usr </a>
+      </td>
+   </tr>
+
+   <tr bgcolor="$ui.menuColor" align="right">
+      <td class="dt"><a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_list</a>
+      </td>
+   </tr>
+   <tr align="right">
+      <td class="dt"><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none>$personal $brih_calendar</a></td>
+   </tr>
+
+   <tr bgcolor="$ui.menuColor" align="right">
+      <td class="dt"><a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a></td>
+   </tr>
 
    <tr align="right">
-      <td align="right">
-         <a href=$link.setPage("call,AdminProfile,ChangePasswd.vm").addPathInfo("count","1") style=text-decoration:none>$brih_changePassword</i>
+      <td class="dt"><a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none> $brih_ad $brih_Of1 $brih_backup </a>
       </td>
    </tr>
+
    <tr bgcolor="$ui.menuColor" align="right">
-      <td align="right">
-         <a href=$link.setPage("call,AdminProfile,AdminParam.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a>
+      <td class="dt">
+         <a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1") style=text-decoration:none>$brih_restoration</a>
       </td>
    </tr>
+
+<tr align="right">
+      <td class="dt"><a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_Ev</a></td>
+</tr>
+<tr bgcolor="$ui.menuColor" align="right">
+	<td class="dt"><a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_role $Repo_Perm </a></td>
+</tr>
+<tr align="right">
+      <td class="dt"><a href=$link.setPage("call,AdminProfile,ChangePasswd.vm").addPathInfo("count","1") style=text-decoration:none>$brih_changePassword</a></td>
+</tr>
+<tr bgcolor="$ui.menuColor" align="right">
+      <td class="dt"><a href=$link.setPage("call,AdminProfile,AdminParam.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a></td>
+</tr>
 #*
    <tr align="right">
-      <td align="right">
-         <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","uquota").addPathInfo("status","nosearch").addPathInfo("count","1")>$brih_mgmt $brih_quota </a>
-         ##<a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("status","uquota").addPathInfo("mode","all").addPathInfo("count","1")>Quota Management</a>
-##                <img src="$content.getURI("/images/$lang/quotaManagement.jpg")"border=0></a>
+      <td class="dt">
+         <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","uquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_quota</a>
       </td>
    </tr>
    <tr bgcolor="$ui.menuColor" align="right">
-      <td align="right">
-         <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1")>$brih_view $online_online $brih_reg</a>
+      <td class="dt">
+         <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> $brih_view $online_online $brih_reg </a>
       </td>
    </tr>
 *#
-   <tr align="right">
-      <td>
+<tr align="right">
+      <td class="dt">
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
       </td>
-   </tr>
-   <tr bgcolor="$ui.menuColor" align="right">
-      <td align="right">
-  <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1") style=text-decoration:none >$brih_FAQ</a>
+</tr>
+<tr bgcolor="$ui.menuColor" align="right">
+      <td class="dt">
+         <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1") style=text-decoration:none>$brih_FAQ</a>
+      </td>
 </tr>
 <tr align="right">
-      <td>
-         <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","instlistquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_quota $brih_mgmt</a>
+      <td class="dt">
+         <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","instlistquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $RemoteInstitute $brih_quota </a>
       </td>
    </tr>
-
-</td>
+<tr bgcolor="$ui.menuColor" align="right">
+	<td class="dt">
+		<a href=$link.setPage("call,Directory.vm").addPathInfo("mode","psnl") style=text-decoration:none>$brih_directory</a>
+	</td>
+</tr>
 </table>
 

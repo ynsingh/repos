@@ -51,11 +51,12 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /*
 * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+* @modified date: 27-12-2012
 */
 public class XMLWriter_EmailSpooling{
  private Document doc1 = null;
-			//public static String EmailSpoolingXml(String filePath, String emailId, String subject, String msg, String date, String sendStatus, String langFile, String instId)
-			public static String EmailSpoolingXml(String filePath, String emailId, String subject, String msg, String attachedFile, String date, String sendStatus, String langFile)
+			//public static String EmailSpoolingXml(String filePath, String emailId, String subject, String msg, String attachedFile, String date, String sendStatus, String langFile)
+			public static String EmailSpoolingXml(String filePath, String subject, String msg, String attachedFile, String langFile)
 			{	
 				String dispMessage="UnSuccessfull";
 				 //ErrorDumpUtil.ErrorLog("emailId===in XML="+emailId);
@@ -76,9 +77,6 @@ public class XMLWriter_EmailSpooling{
                          *and The text node is the content of that node
                          *Add a text node to the element        
                          */
-                        Element email = doc.createElement("EMAIL_ID");
-                        Text emailIdText = doc.createTextNode(emailId);
-                        email.appendChild(emailIdText);
 
                         Element  sub= doc.createElement("SUBJECT");
                         Text subjectText = doc.createTextNode(subject);
@@ -96,30 +94,14 @@ public class XMLWriter_EmailSpooling{
 	                        attachFileText = doc.createTextNode(attachedFile);
                         attachFile.appendChild(attachFileText);
 
-                        Element countDate= doc.createElement("DATE");
-                        Text dateText = doc.createTextNode(date);
-                        countDate.appendChild(dateText);
-
-                        Element countAttempt = doc.createElement("ATTEMPT");
-                        Text ateText = doc.createTextNode(sendStatus);
-                        countAttempt.appendChild(ateText);
-			
 			Element lang = doc.createElement("LANG_FILE");
                         Text langFileText = doc.createTextNode(langFile);
                         lang.appendChild(langFileText);
-		/*
-			Element instituteId = doc.createElement("INST_ID");
-                        Text instIdText = doc.createTextNode(instId);
-                        instituteId.appendChild(instIdText);
-		*/
-                        emailSpoolValue.appendChild(email);
+
                         emailSpoolValue.appendChild(sub);
                         emailSpoolValue.appendChild(message);
                         emailSpoolValue.appendChild(attachFile);
-                        emailSpoolValue.appendChild(countDate);
-                        emailSpoolValue.appendChild(countAttempt);
                         emailSpoolValue.appendChild(lang);
-                        //emailSpoolValue.appendChild(instituteId);
                         root.appendChild(emailSpoolValue);
                         dispMessage=saveXML(doc,filePath);
 			}catch(Exception ex){}
@@ -213,6 +195,7 @@ public class XMLWriter_EmailSpooling{
 		Element eElement=null;
 		Vector v = new Vector();
 		try{
+			//ErrorDumpUtil.ErrorLog("filepath============in getEmailSpoolDetails xml file="+filepath);
 			File f=new File(filepath);
 			if(f.exists()) {
  
@@ -238,20 +221,15 @@ public class XMLWriter_EmailSpooling{
                                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                                                 eElement = (Element) nNode;
 					
-						String emailId = getTagValue("EMAIL_ID",eElement);
 						String subject = getTagValue("SUBJECT", eElement);
 						String message = getTagValue("MESSAGE", eElement);
 						String attachFile = getTagValue("ATTACH_FILE", eElement);
-						String date = getTagValue("DATE", eElement);
-						String sendMailStatus = getTagValue("ATTEMPT",eElement);
 						String langFile = getTagValue("LANG_FILE", eElement);
-						InstfileEntry.setInstituteEmail(emailId);
 						InstfileEntry.setSubject(subject);
 						InstfileEntry.setMessage(message);
 						InstfileEntry.setAttachFile(attachFile);
-						InstfileEntry.setDate(date);
-						InstfileEntry.setAttempt(sendMailStatus);
 						InstfileEntry.setLangFile(langFile);
+
                                                 /*store all values in the vector*/
                                                 v.add(InstfileEntry);
 						
@@ -261,87 +239,8 @@ public class XMLWriter_EmailSpooling{
 		}catch( Exception e ){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling "+e);}
 		return v;
 	}
- /**Method for Delete Institute from Xml
-         *@param filePath (String)
-         *@param domain (String)
-         *return string 
-         */
-        public static String RemoveElement(String filePath, String emailId, String msg)
-        {
-                String message="UnSuccessfull";
-                Element element=null;
-                Node node=null;
-                try{
-                        /**Create blank DOM Document
-                         *@see getCreateDocument
-                         */
-                        Document doc =getCreateDocument(filePath);
 
-                        /**Find all elements with the name "Institute"*/
-
-                        NodeList list = doc.getElementsByTagName("Email");
-                        if(list!=null){
-                                for( int i=0; i<list.getLength(); i++ ){
-                                        node = list.item(i );
-                                        if( node.getNodeType() == node.ELEMENT_NODE ){
-                                                element = ( Element )node;
-                                                /**get tag value by passing tag(domain)
-                                                 *@see getTagValue method
-                                                 *if match domain then delete the entry from xml file
-                                                 */
-                                                String valueEmail =getTagValue("EMAIL_ID",element).trim();
-                                                String valueMsg =getTagValue("MESSAGE",element).trim();
-	//					ErrorDumpUtil.ErrorLog("\n\nXML REMOVE=============valueEmail="+valueEmail+"\nvalueMsg ="+valueMsg+"\t msg="+msg);
-                                                if(valueEmail.equals(emailId) && valueMsg.equals((msg))){
-                                                        doc.getDocumentElement().removeChild(element);
-                                                        saveXML(doc,filePath);
-                                                }
-                                        }
-                                }
-                        }
-                }
-                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling method name:(RemoveElement)"+e);}
-                return message;
-        }
-
-        //public static int RemoveElement(String filePath, String emailId, int num)
-        public static String RemoveElement(String filePath, String emailId)
-        {
-                String message="UnSuccessfull";
-                Element element=null;
-                Node node=null;
-                try{
-                        /**Create blank DOM Document
-                         *@see getCreateDocument
-                         */
-                        Document doc =getCreateDocument(filePath);
-
-                        /**Find all elements with the name "Institute"*/
-
-                        NodeList list = doc.getElementsByTagName("Email");
-                        if(list!=null){
-                                for( int i=0; i<list.getLength(); i++ ){
-                                        node = list.item(i );
-	                                        if( node.getNodeType() == node.ELEMENT_NODE ){
-        	                                        element = ( Element )node;
-                	                                /**get tag value by passing tag(domain)
-                        	                         *@see getTagValue method
-                                	                 *if match domain then delete the entry from xml file
-                                        	         */
-                                                	String valueEmail =getTagValue("EMAIL_ID",element).trim();
-							//ErrorDumpUtil.ErrorLog("\n\nXML REMOVE=============Email="+valueEmail);
-        	                                        if(valueEmail.equals(emailId) ){
-                	                                        doc.getDocumentElement().removeChild(element);
-                        	                                saveXML(doc,filePath);
-                                	                }
-                                        	}
-                                }
-                        }
-                }
-                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling method name:(RemoveElement)"+e);}
-                return message;
-        }
-/**method for update the xml file
+	/**method for update the xml file
          *@param filePath (String)
          *@param domain (String)
          *@param expdate (String)

@@ -40,6 +40,7 @@ import java.util.Properties;
 
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.Email;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.Turbine;
 import java.io.FileOutputStream;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
@@ -69,6 +70,7 @@ import javax.mail.Transport;
  * @modified date: 22-11-2010;
  * @modified date: 14-07-2011 (Shaista);
  * @modified date: 09-08-2012, 25-09-2012, 02-11-2012 (Priyanka)
+ * @modified date: 27-12-201 (Shaista);
  */
 
 public class MailNotification{
@@ -246,14 +248,16 @@ public class MailNotification{
 	 * @return String
 	 */
 
-	public static String sendMail(String message , String mail_id , String subject , String attachedFile, String LangFile){
+	public static String sendMail(String message , String mail_id , String subject , String attachedFile, String LangFile, String fileName){
 		
 		String email_new="";
 		String msg = "";
 		boolean flag = false;
-	//	ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
+		//ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
+		ErrorDumpUtil.ErrorLog("\nStarttttttt in MailNotification Class  mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
 		try{ //try 1
-			 if(!mail_id.equals("")){
+			 //if(!mail_id.equals("")){
+			if(StringUtils.isNotBlank(mail_id)){
 				email_new=mail_id;
 			}
 
@@ -287,8 +291,10 @@ public class MailNotification{
                         String local_domain=AdminProperties.getValue(path,"brihaspati.mail.local.domain.name");
 			// The properties retrievals end here.
 
-                        	if((!mail_smtp.equals("")) && (!mail_smtp.equals(null))){
-                                        if((!email_new.equals("")) && (!email_new.equals(null))){
+                        	//if((!mail_smtp.equals("")) && (!mail_smtp.equals(null))){
+                        	if(StringUtils.isNotBlank(mail_smtp)){
+                                        //if((!email_new.equals("")) && (!email_new.equals(null))){
+                                        if(StringUtils.isNotBlank(email_new)){
                                                 Properties l_props = System.getProperties();
                                                 l_props.put("mail.smtp.host", host_name);
                                                 if(!mail_pass.equals("")){
@@ -358,6 +364,7 @@ public class MailNotification{
 								tr.connect();
                                                       }
                                                       l_msg.saveChanges();     // don't forget this
+						      ErrorDumpUtil.ErrorLog("\nEnddddddddd MailNotification Class mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
                                                       tr.sendMessage(l_msg, l_msg.getAllRecipients());
                                                       tr.close();
 						/**
@@ -393,35 +400,34 @@ public class MailNotification{
                 }
 
 
-		mail_id.trim();
 		// msg is a message comes from BrihLang_en.properteis 
 		// message param is real message which is composed by a user.
-		message.trim();
 		/** getting path for creating EmailSpooling  directory*/
 	
+       		//String filePath = TurbineServlet.getRealPath("/EmailSpooling");
        		String filePath = TurbineServlet.getRealPath("/EmailSpooling");
 		File f = new File(filePath);
-		String writeinxml = "", searchMailId = "", searchMsg = "";
-		Vector  mailDetail1 = new Vector();
-		Vector mailDetail = new Vector();
-		InstituteFileEntry ifdetail;
+		//String writeinxml = "", searchMailId = "", searchMsg = "";
+		//Vector mailDetail = new Vector();
+		//InstituteFileEntry ifdetail;
 		if(flag){
-			/**
-                          * @see ExpiryUtil in Utils
-                         */
 			LangFile.trim();
-                        String curdate = ExpiryUtil.getCurrentDate("-");
-			Long longTime = new Date().getTime();
-			String time = longTime.toString();
 
 			/** This is executed while Langfile is nt coming properly to read message from conf */
 
-			if(org.apache.commons.lang.StringUtils.isBlank(LangFile) || LangFile.equals("english") )  
+			if(StringUtils.isBlank(LangFile) || LangFile.equals("english") )  
 				LangFile = TurbineServlet.getRealPath("/conf")+"BrihLang_en.properties/";
-			WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, curdate, time, LangFile);
+			//WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, curdate, time, LangFile, fileName);
+			WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, LangFile, fileName);
 		}
 		if(!flag){
+			f = new File(filePath+"/"+fileName);
 			if(f.exists())
+				f.delete();
+			if(attachedFile.length()>0)
+				if(!attachedFile.equals("tmp"))
+					deletingAttachedFile(attachedFile);
+		/*
 				mailDetail = XMLWriter_EmailSpooling.getEmailSpoolDetails(filePath+"/EmailSpoolFile.xml");
 			if( mailDetail.size() != 0){
 				for(int k=0;k<  mailDetail.size();k++) {
@@ -443,8 +449,9 @@ public class MailNotification{
 			if(attachedFile.length()>0)
 				if(!attachedFile.equals("tmp"))
 					deletingAttachedFile(attachedFile);
+		*/
 		}
-			 mailDetail = null;
+			 //mailDetail = null;
 
                 return(msg);
 
