@@ -37,6 +37,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.Hashtable;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.DirContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpSession ;
 import java.util.Collection;
 import org.apache.turbine.services.session.TurbineSession;
@@ -145,16 +149,61 @@ public class LoginUtils{
 				ErrorDumpUtil.ErrorLog("This Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e+"\n");
                         }
 			if(vec.size() != 0) {
+				try{
+				String confpath=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+				String authm = AdminProperties.getValue(confpath,"brihaspati.admin.authmethod.value");
+				if(authm.equals("LDAP")){
+					//add method for ldap
+					try{
+						// the base and ldap url getting from properties
+						String base=AdminProperties.getValue(confpath,"brihaspati.admin.ldapbase.value"); // "OU=SOU,DC=example,DC=com";
+						String ldapURL=AdminProperties.getValue(confpath,"brihaspati.admin.ldapurl.value"); // "ldap://abc.example.com:389";
+						if((StringUtils.isNotBlank(base))&&(StringUtils.isNotBlank(ldapURL))){
+							String dn = "cn=" + username + "," + base;
+							// Set up the environment for creating the initial context
+							Hashtable<String, String> env = new Hashtable<String, String>();
+	//						javax.naming.Context cntxt;
+							env.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+							env.put(javax.naming.Context.PROVIDER_URL, ldapURL);
+							env.put(javax.naming.Context.SECURITY_AUTHENTICATION, "simple");
+							env.put(javax.naming.Context.SECURITY_PRINCIPAL, dn); //we have 2 \\ because it's a escape char
+							env.put(javax.naming.Context.SECURITY_CREDENTIALS, password);
+					
+							// Create the initial context
+							DirContext ctx = new InitialDirContext(env);
+							boolean result = ctx != null;
+							if(ctx != null)
+								ctx.close();
+							password="";
+						}
+						else{
+							ErrorDumpUtil.ErrorLog("The auth method is LDAP but ldap url amd base are not present in the Login Utils-SetUserData Facility\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");
+						}
+					}
+					catch (NamingException namEx) {
+						ErrorDumpUtil.ErrorLog("This is ldap Exception comes (in side First try) in the Login Utils-SetUserData Facility"+namEx+"\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");
+          				//	return false;
+	        			} 
+					catch (Exception e)
+					{
+						ErrorDumpUtil.ErrorLog("This is ldap Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e+"\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");
+						//return false;
+					}
+				}
+				}catch (Exception ex){ErrorDumpUtil.ErrorLog("This is reading property file Exception comes (in side First try) in the Login Utils-SetUserData Facility"+ex+"\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");}
+
                        		TurbineUser element=(TurbineUser)vec.get(0);
-			
-				// Authenticate with local database of that user and get the object.
+				// Authenticate with local database (Brihaspati Database) of that user and get the object.
 				if(StringUtils.isNotBlank(password)){
 					password=EncryptionUtil.createDigest("MD5",password);
 				}
 				else{
 					password=element.getPasswordValue().toString();
 				}
+
 	                        user=TurbineSecurity.getAuthenticatedUser(username, password );
+
+
 				// Store the user object.
 				data.setUser(user);
 				// Mark the user as being logged in.
@@ -320,6 +369,7 @@ public class LoginUtils{
 				{
 					if(Expirydate.equals(date) || Expirydate.before(date))
                                 	{
+						
                                         	data.setScreenTemplate("call,UserMgmt_User,changePassword.vm");
                                 	}
 				}

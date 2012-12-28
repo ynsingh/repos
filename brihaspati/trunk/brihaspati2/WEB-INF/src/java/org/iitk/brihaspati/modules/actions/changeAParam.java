@@ -119,6 +119,9 @@ public class changeAParam extends SecureAction_Admin{
                 String designation=pp.getString("designation","");
 		String port=pp.getString("port","8090");
 		String dstore=pp.getString("datastorage","Local");
+		String authmethod=pp.getString("authmethod","Local");
+		String ldapurl=pp.getString("ldapurl","");
+		String ldapbase=pp.getString("ldapbase","");
 
                 String officeno=pp.getString("Offprefix","x")+"-"+pp.getString("Offccode","x")+"-"+pp.getString("Offrcode","x")+"-"+pp.getString("Offphnumber","x");
                 String mobileno=pp.getString("Mobprefix","x")+"-"+pp.getString("Mobccode","x")+"-"+pp.getString("Mobrcode","x")+"-"+pp.getString("Mobphnumber","x");
@@ -240,6 +243,9 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
 			AdminProperties.setValue(path,port,"brihaspati.spring.port");
 			AdminProperties.setValue(path,dstore,"brihaspati.admin.datastore.value");
+			AdminProperties.setValue(path,authmethod,"brihaspati.admin.authmethod.value");
+			AdminProperties.setValue(path,ldapurl,"brihaspati.admin.ldapurl.value");
+			AdminProperties.setValue(path,ldapbase,"brihaspati.admin.ldapbase.value");
 			AdminProperties.setValue(path, mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
 			AdminProperties.setValue(path, mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
 

@@ -115,6 +115,12 @@ public class AdminParam extends SecureScreen{
                  context.put("port",port);
 		 String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
 		 context.put("dstore",dstore);
+		 String authm = AdminProperties.getValue(path,"brihaspati.admin.authmethod.value");
+		 context.put("authm",authm);
+		 String ldapu = AdminProperties.getValue(path,"brihaspati.admin.ldapurl.value");
+		 context.put("ldapurl",ldapu);
+		 String ldapb = AdminProperties.getValue(path,"brihaspati.admin.ldapbase.value");
+		 context.put("ldapbase",ldapb);
 		 String mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
                  if(!StringUtils.isBlank(mailSpoolingExpiry))
 

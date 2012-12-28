@@ -124,7 +124,7 @@ $!data.getMessage()
   
 	<tr"$ui.menuColor">
 
-                                <td>$brih_officeno</td>
+                                <td><font face="$ui.sansSerifFonts">$brih_officeno</font></td>
                                 <td><select class="drop" name="Offprefix">
                                         #if($!offprefix=="+")
                                                 #option1()
@@ -151,7 +151,7 @@ $!data.getMessage()
                                 </td>
                         </tr>
 	<tr bgcolor="$ui.tableColor">
-                                <td>$brih_mobileno</td>
+                                <td><font face="$ui.sansSerifFonts">$brih_mobileno</font></td>
                                 <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
                                                 #option1()
@@ -178,7 +178,7 @@ $!data.getMessage()
                                 </td>
                         </tr>
                         <tr bgcolor="$ui.menuColor">
-                                <td>$brih_homeno</td>
+                                <td><font face="$ui.sansSerifFonts">$brih_homeno</font></td>
                                 <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
                                                 #option1()
@@ -252,14 +252,14 @@ $!data.getMessage()
 	##<tr bgcolor="$ui.menuColor">
 	<tr>
         <td>
-                $brih_spring $brih_port $brih_No
+                <font face="$ui.sansSerifFonts">$brih_spring $brih_port $brih_No</font>
         </td>
         <td>
                 <input type="text" id="port" title="Please use port like 80XX" name="port" value="$!port" maxlength="4" onkeypress="return isNumberKey(event)" >
         </td>
         </tr>
 	<tr bgcolor="$ui.menuColor">
-	<td> $brih_data $brih_storage $brih_option</td>
+	<td> <font face="$ui.sansSerifFonts">$brih_data $brih_storage $brih_option</font></td>
 	<td> 
 
 		#if($dstore == "HDFS")
@@ -277,13 +277,35 @@ $!data.getMessage()
 		#end
 	</td>
 	</tr>
+	
+	<tr>
+	<td> <font face="$ui.sansSerifFonts">$brih_auth $brih_option </font></td>
+	<td> 
+
+		#if($authm == "LDAP")
+		<input type="radio"  name="authmethod" value="$brih_local" onClick='javascript:hideTable();'/> $brih_local
+	 	<input type="radio"  name="authmethod" value="$brih_ldap" onClick='javascript:showTable();' checked  /> $brih_ldap 
+		#else
+		<input type="radio"  name="authmethod" value="$brih_local" onClick='javascript:hideTable();' checked  /> $brih_local
+	 	<input type="radio"  name="authmethod" value="$brih_ldap" onClick='javascript:showTable();'/> $brih_ldap
+		#end
+	</td>
+	</tr>
+		<tr id='tabl'>
+		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_server $brih_Of1 $brih_Url #else $brih_ldap $brih_server $brih_Url #end </font></td>
+		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapurl" value="$!ldapurl"> </font> Ex. ldap://abc.example.com:389 </td>
+		</tr>
+		<tr id='tabl1'>
+		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_Of1 $brih_base #else $brih_ldap $brih_base #end </font></td>
+		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapbase" value="$!ldapbase"> </font> Ex.OU=iit,DC=example,DC=com </td>
+		</tr>
    ##<tr bgcolor="$ui.menuColor">
-     <tr>
-	<td width=30><font face="$ui.sansSerifFonts">$spoolMailResendTime </td>	
+     <tr bgcolor="$ui.menuColor">
+	<td width=30><font face="$ui.sansSerifFonts">$spoolMailResendTime </font></td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="spoolMailResendTime" value="$!spoolingMailResendTime"></font></td>
    </tr>
    <tr>
-	<td width=30><font face="$ui.sansSerifFonts">$emailSpooling_expiry </td>	
+	<td width=30><font face="$ui.sansSerifFonts">$emailSpooling_expiry </font></td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="mailSpoolingExpiry" value="$!mailSpoolingExpiry"></font></td>
    </tr>
    <tr bgcolor="$ui.menuColor">
@@ -298,6 +320,16 @@ $!data.getMessage()
 </table>
 
 <SCRIPT LANGUAGE="javascript">
+
+function showTable(){
+document.getElementById('tabl').style.display ='table-row';
+document.getElementById('tabl1').style.display ='table-row';
+}
+function hideTable(){
+document.getElementById('tabl').style.display = 'none';
+document.getElementById('tabl1').style.display = 'none';
+}
+
 function checkValues(frm,field)
 {
 	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="") && (frm.AdminFaqExp.value!="")&& (frm.mailSpoolingExpiry.value !="") && (frm.spoolMailResendTime.value !=""))
