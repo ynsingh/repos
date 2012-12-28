@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)OnlineExaminationSystem.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -40,7 +40,6 @@ import java.util.Vector;
 import java.util.StringTokenizer;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Arrays;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
@@ -53,16 +52,18 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.apache.turbine.modules.screens.VelocityScreen;
+//import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+//import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+//import org.apache.commons.lang.StringUtils;
 
 /**
  * This Action class for Online Examination system 
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a> 
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar singh</a> 
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir singh</a>28-Dec-2012 
  */
 public class OnlineExaminationSystem extends SecureAction
 {
@@ -75,10 +76,10 @@ public class OnlineExaminationSystem extends SecureAction
  	  * @param context Context instance
  	  * @exception Exception, a generic exception
  	  */		
-		public void doUploadQues_Bank(RunData data, Context context){
-	        try
-		 {//try
-			CourseUserDetail MsgDetails=new CourseUserDetail();
+	public void doUploadQues_Bank(RunData data, Context context){
+		try
+		{//try
+			//CourseUserDetail MsgDetails=new CourseUserDetail();
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			crsId=(String)data.getUser().getTemp("course_id");
 		 	ParameterParser pp=data.getParameters();
@@ -111,407 +112,383 @@ public class OnlineExaminationSystem extends SecureAction
                                 data.setMessage(upload_msg2);
                         }
                         else{//else#1
-				xmlwritetopiclist(filepath,topic,Questype,difflevel,QBpath1,Cur_date,QBpath,data);
 				Date date=new Date();
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+".txt");
                                 file.write(f);
-				int entryNumber=0;
-				Vector ErrType=new Vector();
-				FileReader fr=new FileReader(f);
-                	        BufferedReader br=new BufferedReader(fr);
-                        	String line;
-                        	/**
-                        	* Read the lines in the file one by one and extracts
-                        	* the user details with the
-                        	* help of StringTokenizer
-                        	*/
-                        	while((line=br.readLine())!=null) {//while#1
-                               	StringTokenizer st1=new StringTokenizer(line,";",true);
-	                        //entryNumber++;
-        	                String Quesno="",Ques="",option1="",option2="",option3="",option4="",Answer="",Desc="";
-                	        int error=0;
-				String errMsg="";
-		                //if(st1.countTokens()<8 ||st1.countTokens()>8)//if#2
-		                if(st1.countTokens()<8)//if#2
-	                                {error=1;}
-				else
-                                {//else#2
-					File QBpathxml=new File(filepath+"/"+fulltopic+".xml");
-                                	if(!QBpathxml.exists())
-                                	{	
-                                        	TopicMetaDataXmlWriter.OLESRootOnly(QBpathxml.getAbsolutePath());
-                                	}//if
-		                	Quesno=st1.nextToken().trim();
-					if(addques.equals("addques"))
-						Quesno=getMaxQuesid(filepath,QBpath1,Questype,data);
-                		        	if(Quesno.equals(";"))//if#3
-                                       			{error=2;}
-	                                        else{
-				                       	st1.nextToken();
-        		        		        Ques=st1.nextToken().trim();
-						//ErrorDumpUtil.ErrorLog("\nst1======"+Ques);
-                	        	        	if(Ques.equals(";"))
-                        			                {error=2;}
-		                        		else{//else#4
-		                				st1.nextToken();
-	                		                        option1=st1.nextToken().trim();
-					//ErrorDumpUtil.ErrorLog("\nst1======"+option1);
-			                		        if(option1.equals(";"))
-                				                       	{error=2;}
-								else{//else#5
-                						       	st1.nextToken();
-				                                    	option2=st1.nextToken().trim();
-					//ErrorDumpUtil.ErrorLog("\nst1======"+option2);
-                                				        if(option2.equals(";"))
-										{error=2;}
-									else{//else6
-					                			st1.nextToken();
-                                        					option3=st1.nextToken().trim();
-					//ErrorDumpUtil.ErrorLog("\nst1======"+option3);
-					                                        if(option3.equals(";"))
-											{error=2;}
-										else{//else7
-                									st1.nextToken();
-						                                        option4=st1.nextToken().trim();
-					//ErrorDumpUtil.ErrorLog("\nst1======"+option4);
-						                                	if(option4.equals(";"))
-												{error=2;}
-											else{//else8
-                										st1.nextToken();
-                                							        Answer=st1.nextToken().trim();
-					//ErrorDumpUtil.ErrorLog("\nst1======"+Answer);
-							                                        if(Answer.equals(";"))
-													{error=2;}
-												else{//else9
-								                			st1.nextToken();
-								                                        Desc=st1.nextToken().trim();
-								                                        if(Desc.equals(";"))
-														{error=2;}
-														xmlwriteQues(filepath,Questype,option1,option2,option3,option4,Ques,Answer,Quesno,Desc,QBpath1,ImgUrl,data);
-												}//else9
-											}//else8
-										}//else7
-									}//else6
-								}//else5
-							}//else4
-						}//else3
-					}//else2
-				/**
-   	                         * Adds the error message to a vector if all the required fields
-                                 * are not entered in the file. The entry number is also added.
-                                 */
-                        if( error!=0){//if error
-				context.put("Msg",MultilingualUtil.ConvertedString("error_msg6",LangFile));
-	/*
-                                MsgDetails=new CourseUserDetail();
-                                String ErrorEntryNumber=Integer.toString(entryNumber);
-                                MsgDetails.setErr_User(ErrorEntryNumber);
-                                if(error==1){
-                                String error_msg1=MultilingualUtil.ConvertedString("error_msg6",LangFile);
-                                MsgDetails.setErr_Type(error_msg1);
-
-                                }
-                                if(error==2){
-
-
-                                                String error_msg2=MultilingualUtil.ConvertedString("error_msg7",LangFile);
-                                                MsgDetails.setErr_Type(error_msg2);
-                                }
-                                ErrType.add(MsgDetails);
-*/
-                        }//endif error
-				}//while1
-	//			context.put("Msg",ErrType);
-				br.close();
-                        	fr.close();
-                        	f.delete();
-				}//else1
-			//}//else
-			}//try
-			catch(Exception e)
-                	{
-				 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doUploadQues_Bank ======"+e);
-                        	 data.setMessage("Error in action[OLES:doUploadQues_Bank]"+e);
-
-                	}
-		}//method	
-		 /** This method is responsible for seting templates on the basis of type of question
- 	           * @param data RunData instance
-                   * @param context Context instance
-                   * @exception Exception, a generic exception
-                   */
-
-		public void doSettemplate_QB(RunData data, Context context)
-		{
-	        	try
-		 	{//try
-				LangFile=(String)data.getUser().getTemp("LangFile");
-            	ParameterParser pp=data.getParameters();
-				String topic=pp.getString("Topicname","");
-            	String Questype=pp.getString("valQuestype","");
-            	String difflevel=pp.getString("valdifflevel","");
-            	String typeques=pp.getString("typeques","");
-				if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques"))){
-                	if(Questype.equals("mcq"))
-                        	data.setScreenTemplate("call,OLES,Insert_Multiple.vm");
-                	if(Questype.equals("sat")||Questype.equals("lat"))
-                        	data.setScreenTemplate("call,OLES,Insert_Short.vm");
-                	if(Questype.equals("tft"))
-                        	data.setScreenTemplate("call,OLES,Insert_TF.vm");
-				}
-			}//try
-			catch(Exception e){
-				 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doSettemplate_QB "+e);
-            	 data.setMessage("Error in action[OLES:doSettemplate_QB]"+e);
-        	}
-		}//method	
-		
-		 /** This method is responsible for writing the question in QBR under respective topic
-		   * @param data RunData instance
-           * @param context Context instance
-           * @exception Exception, a generic exception
-           */
-		public void doInserQuestion(RunData data, Context context,String status)
-		{
-	        	try
-		 	{//try
-				LangFile=(String)data.getUser().getTemp("LangFile");
-				crsId=(String)data.getUser().getTemp("course_id");
-            	ParameterParser pp=data.getParameters();
-				User user=data.getUser();
-            	String username=data.getUser().getName();
-				String topic=pp.getString("Topicname","");
-                String Questype=pp.getString("valQuestype","");
-                String difflevel=pp.getString("valdifflevel","");
-                String typeques=pp.getString("typeques","");
-				String Ques=pp.getString("Question","");
-                String Answer=pp.getString("Answer","");
-                String Desc=pp.getString("hint","");
-                String option1=pp.getString("op1","");
-                String option2=pp.getString("op2","");
-                String option3=pp.getString("op3","");
-                String option4=pp.getString("op4","");
-				String ImgUrl="";
-				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
-            	File ff=new File(filepath);
-            	if(!ff.exists())
-            		ff.mkdirs();
-				String QBpath="/QBtopiclist.xml";
-				String fulltopic=topic+"_"+difflevel+"_"+Questype;
-				File QBpathxml=new File(filepath+"/"+fulltopic+".xml");
-				
-            	if(!QBpathxml.exists()){
-                	TopicMetaDataXmlWriter.OLESRootOnly(QBpathxml.getAbsolutePath());
-            	}//if
-            	
-            	String QBpath1=fulltopic+".xml";
-           		String Cur_date=ExpiryUtil.getCurrentDate("-");
-				String Quesid=getMaxQuesid(filepath,QBpath1,Questype,data);
-            	String quesimg=new String();
-				if(typeques.equals("imgtypeques")){
-					//	quesimg=Quesid+"_"+topic+"_"+difflevel+"_"+Questype;
-					FileItem fileItem=pp.getFileItem("quesimg");
-					if(fileItem.getSize() >0){
-            			long size=fileItem.getSize();
-            			Long size1=new Long(size);
-            			byte Filesize=size1.byteValue();
-            			String temp=fileItem.getName();
-            			int index=temp.lastIndexOf("\\");
-            			String tempFile=temp.substring(index+1);
-            			StringTokenizer st=new StringTokenizer(tempFile,".");
-            			String fileExt=null;
-            			for(int a=0;st.hasMoreTokens();a++){ 
-                    			fileExt=st.nextToken();
-                    			quesimg=Quesid+"_"+topic+"_"+difflevel+"_"+Questype;
-                    			//context.put("ImageName1",Byte.toString(Filesize));
-            			}
-      					if(fileExt.equals("jpg")|| fileExt.equals("gif")|| fileExt.equals("png")){
-                			int i=Integer.parseInt(Byte.toString(Filesize));
-                			if(i>0 && i<10000){
-								String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
-								File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic);
-                    			imgPath.mkdirs();
-                    			imgPath=new File(imgPath+"/"+quesimg);
-                    			//ErrorDumpUtil.ErrorLog("\nfileItem======"+imgPath+"\nimgPath"+imgPath+"\nimagepath"+imagepath);
-                    			fileItem.write(imgPath);
-                			}
+				int tn=TokenNumber(f);
+				boolean flag=FileExistsinXml(filepath,QBpath1);
+				if(flag==false){
+					if(Questype.equals("mcq"))
+					{
+						if(tn==8){
+						xmlwritetopiclist(filepath,topic,Questype,difflevel,QBpath1,Cur_date,QBpath,data);
+						}
+						else{
+						data.setMessage(MultilingualUtil.ConvertedString("quesformate",LangFile));
+						}
+					}
+					else{
+						if(tn==4){
+						xmlwritetopiclist(filepath,topic,Questype,difflevel,QBpath1,Cur_date,QBpath,data);
+						}	
+						else{
+						data.setMessage(MultilingualUtil.ConvertedString("quesformate",LangFile));
 						}
 					}
 				}
-				xmlwritetopiclist(filepath,topic,Questype,difflevel,fulltopic+".xml",Cur_date,QBpath,data);
-                xmlwriteQues(filepath,Questype,option1,option2,option3,option4,Ques,Answer,Quesid,Desc,QBpath1,quesimg,data);
-				if(status.equals("More")){
-					if(Questype.equals("mcq"))
-                    	setTemplate(data,"call,OLES,Insert_Multiple.vm");
-                    	if(Questype.equals("sat")||Questype.equals("lat"))
-                    		setTemplate(data,"call,OLES,Insert_Short.vm");
-                    	if(Questype.equals("tft"))
-                    		setTemplate(data,"call,OLES,Insert_TF.vm");
+                	        int error=0;
+				String errMsg="";
+				if(Questype.equals("mcq"))
+				{
+					if(tn==8)
+					ReadWriteMultitype(data,f,addques,QBpath1,filepath,ImgUrl,Questype);
+					else
+					data.setMessage(MultilingualUtil.ConvertedString("quesformate",LangFile));
 				}
-                if(status.equals("Finish"))
-                    setTemplate(data,"call,OLES,Oles_QB.vm");
+				else
+				{
+					if(tn==4)
+					ReadWriteTFTtype(data,f,addques,QBpath1,filepath,ImgUrl,Questype);
+					else
+					data.setMessage(MultilingualUtil.ConvertedString("quesformate",LangFile));
+				}
+			}//else1
+		}//try
+		catch(Exception e)
+                {
+			 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doUploadQues_Bank ======"+e);
+                       	 data.setMessage("Error in action[OLES:doUploadQues_Bank]"+e);
+               	}
+	}//method
+	
+	/** This method is responsible for seting templates on the basis of type of question
+ 	* @param data RunData instance
+        * @param context Context instance
+        * @exception Exception, a generic exception
+        */
+	
+	public void doSettemplate_QB(RunData data, Context context)
+	{
+		try
+		{//try
+			LangFile=(String)data.getUser().getTemp("LangFile");
+            		ParameterParser pp=data.getParameters();
+			String topic=pp.getString("Topicname","");
+            		String Questype=pp.getString("valQuestype","");
+            		String difflevel=pp.getString("valdifflevel","");
+            		String typeques=pp.getString("typeques","");
+			if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques"))){
+                		if(Questype.equals("mcq"))
+                        		data.setScreenTemplate("call,OLES,Insert_Multiple.vm");
+                		if(Questype.equals("sat")||Questype.equals("lat"))
+                        		data.setScreenTemplate("call,OLES,Insert_Short.vm");
+                		if(Questype.equals("tft"))
+                        		data.setScreenTemplate("call,OLES,Insert_TF.vm");
+			}
+		}//try
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doSettemplate_QB "+e);
+            	 	data.setMessage("Error in action[OLES:doSettemplate_QB]"+e);
+        	}
+	}//method	
+		
+	/** This method is responsible for writing the question in QBR under respective topic
+	  * @param data RunData instance
+          * @param context Context instance
+          * @exception Exception, a generic exception
+          */
+	public void doInserQuestion(RunData data, Context context,String status)
+	{
+	       	try
+	 	{//try
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			crsId=(String)data.getUser().getTemp("course_id");
+        		ParameterParser pp=data.getParameters();
+			User user=data.getUser();
+        		String username=data.getUser().getName();
+			String topic=pp.getString("Topicname","");
+               		String Questype=pp.getString("valQuestype","");
+               		String difflevel=pp.getString("valdifflevel","");
+               		String typeques=pp.getString("typeques","");
+			String Ques=pp.getString("Question","");
+               		String Answer=pp.getString("Answer","");
+               		String Desc=pp.getString("hint","");
+               		String option1=pp.getString("op1","");
+               		String option2=pp.getString("op2","");
+               		String option3=pp.getString("op3","");
+               		String option4=pp.getString("op4","");
+			String ImgUrl="";
+			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+        		File ff=new File(filepath);
+        		if(!ff.exists())
+        		ff.mkdirs();
+			String QBpath="/QBtopiclist.xml";
+			String fulltopic=topic+"_"+difflevel+"_"+Questype;
+			File QBpathxml=new File(filepath+"/"+fulltopic+".xml");
+        		if(!QBpathxml.exists()){
+               			TopicMetaDataXmlWriter.OLESRootOnly(QBpathxml.getAbsolutePath());
+        		}//if
+            	
+        		String QBpath1=fulltopic+".xml";
+        		String Cur_date=ExpiryUtil.getCurrentDate("-");
+			String Quesid=getMaxQuesid(filepath,QBpath1,Questype,data);
+        		String quesimg=new String();
+			if(typeques.equals("imgtypeques")){
+				FileItem fileItem=pp.getFileItem("quesimg");
+				if((fileItem.getSize() >0)&& (fileItem.getSize()<100000)) {
+        				long size=fileItem.getSize();
+            				Long size1=new Long(size);
+            				byte Filesize=size1.byteValue();
+            				String temp=fileItem.getName();
+            				int index=temp.lastIndexOf("\\");
+            				String tempFile=temp.substring(index+1);
+            				StringTokenizer st=new StringTokenizer(tempFile,".");
+            				String fileExt=null;
+            				for(int a=0;st.hasMoreTokens();a++){ 
+                				fileExt=st.nextToken();
+                				quesimg=Quesid+"_"+topic+"_"+difflevel+"_"+Questype;
+            				}
+      					if(fileExt.equals("jpg")|| fileExt.equals("gif")|| fileExt.equals("png")){
+                				int i=Integer.parseInt(Byte.toString(Filesize));
+                				if(i<10000){
+							String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+							File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic);
+							if(!imgPath.exists())
+                 						imgPath.mkdirs();
+                    					imgPath=new File(imgPath+"/"+quesimg);
+                    					fileItem.write(imgPath);
+                				}
+					}
+					xmlwritetopiclist(filepath,topic,Questype,difflevel,fulltopic+".xml",Cur_date,QBpath,data);
+					xmlwriteQues(filepath,Questype,Quesid,Ques,option1,option2,option3,option4,Answer,Desc,quesimg,QBpath1,data);
+				}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("qbimagesize",LangFile));
+				}
+				
+			}//if
+			else{
+			xmlwritetopiclist(filepath,topic,Questype,difflevel,fulltopic+".xml",Cur_date,QBpath,data);
+                	//xmlwriteQues(filepath,Questype,option1,option2,option3,option4,Ques,Answer,Quesid,Desc,QBpath1,quesimg,data);
+			xmlwriteQues(filepath,Questype,Quesid,Ques,option1,option2,option3,option4,Answer,Desc,quesimg,QBpath1,data);
+			}	
+			if(status.equals("More")){
+				if(Questype.equals("mcq"))
+                    		setTemplate(data,"call,OLES,Insert_Multiple.vm");
+                    		if(Questype.equals("sat")||Questype.equals("lat"))
+                    		setTemplate(data,"call,OLES,Insert_Short.vm");
+                    		if(Questype.equals("tft"))
+                    		setTemplate(data,"call,OLES,Insert_TF.vm");
+			}
+                	if(status.equals("Finish"))
+                    	setTemplate(data,"call,OLES,Oles_QB.vm");
 			}//try
 			catch(Exception e){
 				 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doInserQuestion "+e);
-            	 data.setMessage("Error in action[OLES:doInserQuestion]"+e);
-        	}
-		}
+            	 		data.setMessage("Error in action[OLES:doInserQuestion]"+e);
+        		}
+		}//method
 		 /** This method is responsible for deleting the whole topic with all data
  	           * @param data RunData instance
                    * @param context Context instance
                    * @exception Exception, a generic exception
                    */
-		public void doDeleteTopic(RunData data, Context context)
-		{
-	        	try
-		 	{//try
-				LangFile=(String)data.getUser().getTemp("LangFile");
-				crsId=(String)data.getUser().getTemp("course_id");
-                                ParameterParser pp=data.getParameters();
-				User user=data.getUser();
-                        	String username=data.getUser().getName();
-                                String deltype=pp.getString("deltype","");
-                                String questiontype=pp.getString("questype","");
-				String topicname_quesid="";
-				String topic=pp.getString("topic","");
-				String quesid=pp.getString("quesid","");
-				String dlevel=pp.getString("difflevel","");
-				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
-				String fulltopic=topic+"_"+dlevel+"_"+questiontype;
-				TopicMetaDataXmlReader topicmetadata=null;
-				if(deltype.equals("topicdel"))
-                        		topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+"QBtopiclist.xml");
+	public void doDeleteTopic(RunData data, Context context)
+	{
+        	try
+	 	{//try
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			crsId=(String)data.getUser().getTemp("course_id");
+                        ParameterParser pp=data.getParameters();
+			User user=data.getUser();
+                       	String username=data.getUser().getName();
+                        String deltype=pp.getString("deltype","");
+                        String questiontype=pp.getString("qtype","");
+			String topicname_quesid="";
+			String topic=pp.getString("topic","");
+			String quesid=pp.getString("quesid","");
+			String dlevel=pp.getString("dlevel","");
+			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+			String fulltopic=topic+"_"+dlevel+"_"+questiontype;
+			TopicMetaDataXmlReader topicmetadata=null;
+			if(deltype.equals("topicdel"))
+                       		topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+"QBtopiclist.xml");
+			else
+                       		topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
+			Vector collect=new Vector();
+			Vector str=new Vector();
+			if(deltype.equals("topicdel"))
+                		collect=topicmetadata.getQuesBanklist_Detail();
+			else
+			{
+				if(questiontype.equals("mcq"))
+                        		collect=topicmetadata.getQuesBank_Detail();
 				else
-                        		topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
-				Vector collect=new Vector();
-				Vector str=new Vector();
-				if(deltype.equals("topicdel"))
-                        		collect=topicmetadata.getQuesBanklist_Detail();
-				else
-				{
-					if(questiontype.equals("mcq"))
-                        			collect=topicmetadata.getQuesBank_Detail();
-					else
-                        			collect=topicmetadata.getQuesBank_Detail1();
-				}
-                        	if(collect!=null)
-                        	{
-                                	for(int i=0;i<collect.size();i++)
-                                	{//for
-						if(deltype.equals("topicdel"))
+                        		collect=topicmetadata.getQuesBank_Detail1();
+			}
+                        if(collect!=null)
+                        {
+                        	for(int i=0;i<collect.size();i++)
+                                {//for
+					if(deltype.equals("topicdel"))
+					{
+                                        	String topicname =((FileEntry) collect.elementAt(i)).getTopic();
+                                        	String filename =((FileEntry) collect.elementAt(i)).getfileName();
+                                        	if(topic.equals(topicname))
 						{
-                                        		String topicname =((FileEntry) collect.elementAt(i)).getTopic();
-                                        		String filename =((FileEntry) collect.elementAt(i)).getfileName();
-                                        		if(topic.equals(topicname))
+                        				str=DeleteEntry(filepath,"QBtopiclist.xml",topic,deltype,questiontype,data);
+							File file=new File(filepath+"/"+filename);
+                                        		file.delete();
+						}
+					}
+					else
+					{
+                                        	String questionid =((FileEntry) collect.elementAt(i)).getquestionid();
+                                        	String imgurl =((FileEntry) collect.elementAt(i)).getUrl();
+                                        	if(questionid.equals(quesid))
+						{
+                        				str=DeleteEntry(filepath,fulltopic+".xml",quesid,deltype,questiontype,data);
+							if(!imgurl.equals(""))
 							{
-                        					str=DeleteEntry(filepath,"QBtopiclist.xml",topic,deltype,questiontype,data);
-								File file=new File(filepath+"/"+filename);
-                                        			file.delete();
+								String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+                                                		File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic+"/"+imgurl);
+								imgPath.delete();
 							}
+						}
+					}//else
+                                }//for
+                        }//collect
+			DeleteEmptyXml(filepath,questiontype,fulltopic+".xml");
+			if(deltype.equals("topicdel"))
+				data.setMessage(MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
+			else
+				data.setMessage(MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
+		}//try
+		catch(Exception e)
+                {
+			 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doDeleteTopic "+e);
+                       	 data.setMessage("Error in action[OLES:doDeleteTopic]"+e);
+                }
+	}
+	/** This method is responsible for update the question data
+ 	  * @param data RunData instance
+          * @param context Context instance
+          * @exception Exception, a generic exception
+          */
+	public void doEditQuestion(RunData data, Context context)
+	{
+	   	try
+	 	{//try
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			crsId=(String)data.getUser().getTemp("course_id");
+                        ParameterParser pp=data.getParameters();
+			User user=data.getUser();
+			String username=data.getUser().getName();
+			String topic=pp.getString("topic","");
+			String ques=pp.getString("Question","");
+			String quesid=pp.getString("quesid","");
+			String opt1=pp.getString("op1","");
+			String opt2=pp.getString("op2","");
+			String opt3=pp.getString("op3","");
+			String opt4=pp.getString("op4","");
+			String Answer=pp.getString("Answer","");
+			String Desc=pp.getString("hint","");
+			String typeques=pp.getString("typeques","");
+			String difflevel=pp.getString("dlevel","");
+			String questiontype=pp.getString("qtype","");
+			String oldquesimage=pp.getString("quesimage","");
+			String quesimg=new String();
+			ErrorDumpUtil.ErrorLog("in update method typeques===="+typeques);
+			String fulltopic=topic+"_"+difflevel+"_"+questiontype;
+			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
+                        if(typeques.equals("imgtypeques")){
+                        	FileItem fileItem=pp.getFileItem("quesimg");
+				if(((fileItem.getSize() >0)&& (fileItem.getSize()<100000))){
+                                	long size=fileItem.getSize();
+                                        Long size1=new Long(size);
+                                        byte Filesize=size1.byteValue();
+                                        String temp=fileItem.getName();
+                                        int index=temp.lastIndexOf("\\");
+                                        String tempFile=temp.substring(index+1);
+                                        StringTokenizer st=new StringTokenizer(tempFile,".");
+                                        String fileExt=null;
+                                        for(int a=0;st.hasMoreTokens();a++){
+                                        	fileExt=st.nextToken();
+                                                quesimg=quesid+"_"+topic+"_"+difflevel+"_"+questiontype;
+                                        }
+                                        if(fileExt.equals("jpg")|| fileExt.equals("gif")|| fileExt.equals("png")){
+                                        	int i=Integer.parseInt(Byte.toString(Filesize));
+                                                if(i<10000){
+                                        		String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
+                                        		File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic);
+                                                        imgPath=new File(imgPath+"/"+quesimg);
+                                                        fileItem.write(imgPath);
+                                                }
+                                        }
+					UpdateQuestion(filepath,fulltopic,questiontype,quesid,ques,opt1,opt2,opt3,opt4,Answer,Desc,quesimg,data);
+                                }
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("qbimagesize",LangFile));	
+				}
+                        }
+			else{
+				UpdateQuestion(filepath,fulltopic,questiontype,quesid,ques,opt1,opt2,opt3,opt4,Answer,Desc,quesimg,data);
+			}
+                        setTemplate(data,"call,OLES,View_QB.vm");
+		}//try
+		catch(Exception e)
+                {
+			 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doEditQuestion "+e);
+                       	 data.setMessage("Error in action[OLES:doEditQuestion]"+e);
+                }
+	}
+	public void UpdateQuestion(String filepath,String fulltopic,String questiontype,String quesid,String ques,String opt1,String opt2,String opt3,String opt4,String Answer,String Desc,String quesimg,RunData data)
+	{
+	   	try
+	 	{
+			XmlWriter xmlWriter=null;
+                        Vector collect=new Vector();
+                        Vector str=new Vector();
+			String deltype="quesdel";
+                        TopicMetaDataXmlReader topicmetadata=null;
+                        topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
+                        if(questiontype.equals("mcq"))
+                               	collect=topicmetadata.getQuesBank_Detail();
+                        else
+                               	collect=topicmetadata.getQuesBank_Detail1();
+                        if(collect!=null)
+                        {
+                        	for(int i=0;i<collect.size();i++)
+                                {
+                                	String questionid =((FileEntry) collect.elementAt(i)).getquestionid();
+                                        if(quesid.equals(questionid))
+					{
+						if(questiontype.equals("mcq"))
+						{
+							xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml(filepath,fulltopic+".xml");
+                                                        TopicMetaDataXmlWriter.appendQues_Bank(xmlWriter,quesid,ques,opt1,opt2,opt3,opt4,Answer,Desc,quesimg);
+                                                        xmlWriter.writeXmlFile();
+                                                        str=DeleteEntry(filepath,fulltopic+".xml",quesid,deltype,questiontype,data);
 						}
 						else
 						{
-                                        		String questionid =((FileEntry) collect.elementAt(i)).getquestionid();
-                                        		String imgurl =((FileEntry) collect.elementAt(i)).getUrl();
-                                        		if(questionid.equals(quesid))
-							{
-                        					str=DeleteEntry(filepath,fulltopic+".xml",quesid,deltype,questiontype,data);
-								if(!imgurl.equals(""))
-								{
-									String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
-                                                       			File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic+"/"+imgurl);
-									imgPath.delete();
-								//	ErrorDumpUtil.ErrorLog("imagepath===="+imagepath+"\nimgPath"+imgPath);
-								}
-							}
-						}
-                                        }
-                                }
-				if(deltype.equals("topicdel"))
-					data.setMessage(MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
-				else
-					data.setMessage(MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
-			}//try
-			catch(Exception e)
-                	{
-				 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doDeleteTopic "+e);
-                        	 data.setMessage("Error in action[OLES:doDeleteTopic]"+e);
-                	}
-		}
-		 /** This method is responsible for update the question data
- 	           * @param data RunData instance
-                   * @param context Context instance
-                   * @exception Exception, a generic exception
-                   */
-		public void doEditQuestion(RunData data, Context context)
-		{
-	        	try
-		 	{//try
-				LangFile=(String)data.getUser().getTemp("LangFile");
-				crsId=(String)data.getUser().getTemp("course_id");
-                                ParameterParser pp=data.getParameters();
-				User user=data.getUser();
-				String username=data.getUser().getName();
-				String topic=pp.getString("topic","");
-				String ques=pp.getString("Question","");
-				String quesid=pp.getString("quesid","");
-				String opt1=pp.getString("op1","");
-				String opt2=pp.getString("op2","");
-				String opt3=pp.getString("op3","");
-				String opt4=pp.getString("op4","");
-				String Answer=pp.getString("Answer","");
-				String Desc=pp.getString("hint","");
-				String difflevel=pp.getString("difflevel","");
-				String questiontype=pp.getString("questype","");
-				String ImgUrl="";
-				XmlWriter xmlWriter=null;
-                                Vector collect=new Vector();
-                                Vector str=new Vector();
-				String deltype="quesdel";
-				
-				String fulltopic=topic+"_"+difflevel+"_"+questiontype;
-				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
-                                TopicMetaDataXmlReader topicmetadata=null;
-                                topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
-                                if(questiontype.equals("mcq"))
-                                	collect=topicmetadata.getQuesBank_Detail();
-                                else
-                                	collect=topicmetadata.getQuesBank_Detail1();
-                                if(collect!=null)
-                                {
-                                        for(int i=0;i<collect.size();i++)
-                                        {//for
-                                        	String questionid =((FileEntry) collect.elementAt(i)).getquestionid();
-                                                if(quesid.equals(questionid))
-						{
-							if(questiontype.equals("mcq"))
-							xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml(filepath,fulltopic+".xml");
-							else
 							xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml1(filepath,fulltopic+".xml");
-							if(questiontype.equals("mcq"))
-							{
-                                                        	TopicMetaDataXmlWriter.appendQues_Bank(xmlWriter,quesid,ques,opt1,opt2,opt3,opt4,Answer,Desc,ImgUrl);
-							}
-							else
-							{
-                                                        	TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,quesid,ques,Answer,Desc,ImgUrl);
-							}
+                                                        TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,quesid,ques,Answer,Desc,quesimg);
                                                         xmlWriter.writeXmlFile();
                                                         str=DeleteEntry(filepath,fulltopic+".xml",quesid,deltype,questiontype,data);
-							data.setMessage(MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeenedit",LangFile));
 						}
-                                        }
+						data.setMessage(MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeenedit",LangFile));
+					}
                                 }
-				Vector str3=Arrangeseq(filepath,fulltopic+".xml",questiontype,deltype,data);
-                                setTemplate(data,"call,OLES,View_QB.vm");
-
-			}//try
-			catch(Exception e)
-                	{
-				 ErrorDumpUtil.ErrorLog("The exception in On Line Examination Action - doEditQuestion "+e);
-                        	 data.setMessage("Error in action[OLES:doEditQuestion]"+e);
-                	}
-		}
+                        }
+			Vector str3=Arrangeseq(filepath,fulltopic+".xml",questiontype,deltype,data);
+		}//try
+		catch(Exception e)
+                {
+			 ErrorDumpUtil.ErrorLog("The exception in OnlineExaminationSystem Action - UpdateQuestion "+e);
+                       	 data.setMessage("Error in action[OLES:OnlineExaminationSystem]"+e);
+                }
+	}
 	/**
  	  * This method is invoked when no button corresponding to 
  	  * Action is found
@@ -540,19 +517,19 @@ public class OnlineExaminationSystem extends SecureAction
 			
 		
 	}
-		 /** This method is responsible for creating xml file for topic 
- 	           * @param filepath String 
-                   * @param topicname String Name of topic in QBR
-                   * @param Questiontype String Type of question 
-                   * @param Difflevel String
-                   * @param CreationDate String
-                   * @param QBpath String
-                   * @param data RunData instance
-                   * @exception Exception, a generic exception
-                   */
-	 public void xmlwritetopiclist(String filepath,String topicname,String Questiontype,String Difflevel,String Filename,String CreationDate,String QBpath,RunData data)
+	/** This method is responsible for creating xml file for topic 
+ 	  * @param filepath String 
+          * @param topicname String Name of topic in QBR
+          * @param Questiontype String Type of question 
+          * @param Difflevel String
+          * @param CreationDate String
+          * @param QBpath String
+          * @param data RunData instance
+          * @exception Exception, a generic exception
+          */
+	public void xmlwritetopiclist(String filepath,String topicname,String Questiontype,String Difflevel,String Filename,String CreationDate,String QBpath,RunData data)
         {
-                try
+        	try
                 {
 			ParameterParser pp=data.getParameters();
                         LangFile=data.getUser().getTemp("LangFile").toString();
@@ -564,6 +541,7 @@ public class OnlineExaminationSystem extends SecureAction
                         if(!QBxmls.exists())
                         {
 				TopicMetaDataXmlWriter.OLESRootOnly(QBxmls.getAbsolutePath());
+                                xmlWriter=new XmlWriter(filepath+"/"+QBpath);                               
                         }
                         /**
                         *Checking for  the existing topic
@@ -592,32 +570,32 @@ public class OnlineExaminationSystem extends SecureAction
                         {
                                 xmlWriter=new XmlWriter(filepath+"/"+QBpath);                               
                                 xmlWriter=TopicMetaDataXmlWriter.Ques_BankXmlist(filepath,QBpath);                               
-                                TopicMetaDataXmlWriter.appendQues_Banklist(xmlWriter,topicname,Questiontype,Difflevel,Filename,CreationDate);                               
+                                TopicMetaDataXmlWriter.appendQues_Banklist(xmlWriter,topicname,Questiontype,Difflevel,Filename,CreationDate);
                                 xmlWriter.writeXmlFile();                               
                         }
                 }//try
                 catch(Exception e){
-                                   ErrorDumpUtil.ErrorLog("Error in Action[OnlineExaminationSystem] method:xmlwritetopiclist !!"+e);
-                                   data.setMessage("See ExceptionLog !! " );
-                                }
+                	ErrorDumpUtil.ErrorLog("Error in Action[OnlineExaminationSystem] method:xmlwritetopiclist !!"+e);
+                        data.setMessage("See ExceptionLog !! " );
+                }
         }//method save
-		 /** This method is responsible for writing question in xml file  
- 	           * @param filepath String 
-                   * @param Questiontype String Type of question 
-                   * @param opt1 String 
-                   * @param opt2 String 
-                   * @param opt3 String 
-                   * @param opt4 String 
-                   * @param Question String 
-                   * @param Answer String
-                   * @param Quesid String
-                   * @param Description String
-                   * @param QBtopicpath String
-                   * @param ImgUrl String
-                   * @param data RunData instance
-                   * @exception Exception, a generic exception
-                   */
-	 public void xmlwriteQues(String filepath,String Questiontype,String opt1,String opt2,String opt3,String opt4,String Question,String Answer,String Quesid,String Description,String QBtopicpath,String ImgUrl,RunData data)
+	/** This method is responsible for writing question in xml file  
+ 	  * @param filepath String 
+          * @param Questiontype String Type of question 
+          * @param opt1 String 
+          * @param opt2 String 
+          * @param opt3 String 
+          * @param opt4 String 
+          * @param Question String 
+          * @param Answer String
+          * @param Quesid String
+          * @param Description String
+          * @param QBtopicpath String
+          * @param ImgUrl String
+          * @param data RunData instance
+          * @exception Exception, a generic exception
+          */
+	public void xmlwriteQues(String filepath,String Questiontype,String Quesid,String Question,String opt1,String opt2,String opt3,String opt4,String Answer,String Description,String ImgUrl,String QBtopicpath,RunData data)
 	{
 		try
 		{
@@ -654,45 +632,52 @@ public class OnlineExaminationSystem extends SecureAction
                                                 if(Question.equals(Ques))
                                                 {
                                                         found=true;
-                                                data.setMessage(MultilingualUtil.ConvertedString("brih_This",LangFile) +" "+MultilingualUtil.ConvertedString("GrpmgmtGroup",LangFile)+" "+MultilingualUtil.ConvertedString("Wikiaction6",LangFile)+" " +"!!");
+                                                data.setMessage("Questions are already exists");
                                                 }
                                           }//for
                                 }//if
                         }//else
                         if(found==false)
                         {
+				if(!Quesid.equals("")){
+				ErrorDumpUtil.ErrorLog("Quesid in ques write method=========="+Quesid);
                         	if(Questiontype.equals("mcq"))
 				{
                         		xmlWriter=new XmlWriter(filepath+"/"+QBtopicpath);
+					xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml(filepath,QBtopicpath);
                                		TopicMetaDataXmlWriter.appendQues_Bank(xmlWriter,Quesid,Question,opt1,opt2,opt3,opt4,Answer,Description,ImgUrl);
                        		}
 				else
         	        	{
                         		xmlWriter=new XmlWriter(filepath+"/"+QBtopicpath);
+					xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml1(filepath,QBtopicpath);
                        	        	TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,Quesid,Question,Answer,Description,ImgUrl);
                          	}
                 		xmlWriter.writeXmlFile();
-				data.setScreenTemplate("call,OLES,Oles_QB.vm");
 				if((typeques.equals("obo_ques"))||(typeques.equals("imgtypeques")))
 				data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
 				else
+				{
 				data.setMessage(MultilingualUtil.ConvertedString("oles_questions",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Uploaded",LangFile)+" "+MultilingualUtil.ConvertedString("oles_msg2",LangFile)+" "+MultilingualUtil.ConvertedString("oles_bank",LangFile));
+				data.setScreenTemplate("call,OLES,Oles_QB.vm");
+				}
+			}
 			}
                 }//try
                 catch(Exception e){
-                                   ErrorDumpUtil.ErrorLog("Error in Action[OnlineExaminationSystem] method:xmlwriteQues !!"+e);
-                                   data.setMessage("See ExceptionLog !! " );
-                                }
+                	ErrorDumpUtil.ErrorLog("Error in Action[OnlineExaminationSystem] method:xmlwriteQues !!"+e);
+                        data.setMessage("See ExceptionLog !! " );
+                }
 	}
-		 /** This method is responsible for delete entry in  xml file 
- 	           * @param filepath String 
-                   * @param xmlfile String 
-                   * @param tname String Type of question 
-                   * @param deltype String
-                   * @param questiontype String
-                   * @param data RunData instance
-                   * @exception Exception, a generic exception
-                   */
+	/** This method is responsible for delete entry in  xml file 
+ 	  * @param filepath String 
+          * @param xmlfile String 
+          * @param tname String Type of question 
+          * @param deltype String
+          * @param questiontype String
+          * @param data RunData instance
+          * @exception Exception, a generic exception
+          */
 	public  Vector DeleteEntry(String filePath,String xmlfile,String tname,String deltype,String questiontype,RunData data)
         {
                 Vector Read=null;
@@ -742,9 +727,9 @@ public class OnlineExaminationSystem extends SecureAction
                         xmlWriter.writeXmlFile();
                 }//try
                 catch(Exception e){
-                                   ErrorDumpUtil.ErrorLog("Error in method: DeleteEntry in online Examination action!!"+e);
-                                   data.setMessage("See ExceptionLog !! " );
-                                }
+                	ErrorDumpUtil.ErrorLog("Error in method: DeleteEntry in online Examination action!!"+e);
+                        data.setMessage("See ExceptionLog !! " );
+                }
         return Read;
         }//methodDeleteEntry
 
@@ -762,6 +747,7 @@ public class OnlineExaminationSystem extends SecureAction
                         	Read=tr.getQuesBank_Detail();
                         else
                                 Read=tr.getQuesBank_Detail1();
+				//ErrorDumpUtil.ErrorLog("read in else getMaxQuesid action==="+Read);	
                         if(Read != null)
                         {
                                 for(int n=0;n<Read.size();n++)
@@ -775,9 +761,9 @@ public class OnlineExaminationSystem extends SecureAction
 			Quesid=Integer.toString(tmp+1);
                 }//try
                 catch(Exception e){
-                                   ErrorDumpUtil.ErrorLog("Error in method: getMaxQuesid in on line examination action!!"+e);
-                                   data.setMessage("See ExceptionLog !! " );
-                                }
+                	ErrorDumpUtil.ErrorLog("Error in method: getMaxQuesid in on line examination action!!"+e);
+                        data.setMessage("See ExceptionLog !! " );
+                }
         return Quesid;
 	}
 	public Vector Arrangeseq(String filepath,String xmlfile,String questiontype,String deltype,RunData data)
@@ -785,10 +771,10 @@ public class OnlineExaminationSystem extends SecureAction
 		Vector Read=null;
 		try
 		{
+			Vector str=new Vector();
 			XmlWriter xmlWriter=null;
                         int tmp=0;
                         String quesid="";
-			//int num []= new [5];
 			Vector rr=new Vector();
                         TopicMetaDataXmlReader tr =new TopicMetaDataXmlReader(filepath+"/"+xmlfile);
                         if(questiontype.equals("mcq"))
@@ -809,7 +795,7 @@ public class OnlineExaminationSystem extends SecureAction
 				for(int k=0;k<rr.size();k++)
 				{
 					String qid=(String)rr.get(k); 
-                               		 for(int n=0;n<Read.size();n++)
+                               		for(int n=0;n<Read.size();n++)
 					{
                                         	quesid =((FileEntry)Read.elementAt(n)).getquestionid();
                                         	String ques =((FileEntry)Read.elementAt(n)).getquestion();
@@ -820,29 +806,304 @@ public class OnlineExaminationSystem extends SecureAction
                                         	String Answer =((FileEntry)Read.elementAt(n)).getAnswer();
                                         	String Desc =((FileEntry)Read.elementAt(n)).getDescription();
                                         	String ImgUrl=((FileEntry)Read.elementAt(n)).getUrl();
-					
 						if(quesid.equals(qid))
 						{
-							if(questiontype.equals("mcq"))
-								xmlWriter=new XmlWriter(filepath+"/"+xmlfile);
-                        				else
 							xmlWriter=new XmlWriter(filepath+"/"+xmlfile);
-                        				if(questiontype.equals("mcq"))
-                        				TopicMetaDataXmlWriter.appendQues_Bank(xmlWriter,quesid,ques,opt1,opt2,opt3,opt4,Answer,Desc,ImgUrl);
+							if(questiontype.equals("mcq"))
+							{
+								xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml(filepath,xmlfile);
+                        					TopicMetaDataXmlWriter.appendQues_Bank(xmlWriter,quesid,ques,opt1,opt2,opt3,opt4,Answer,Desc,ImgUrl);
+                        					xmlWriter.writeXmlFile();
+                                				str=DeleteEntry(filepath,xmlfile,quesid,deltype,questiontype,data);
+							}
                         				else
-                        				TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,quesid,ques,Answer,Desc,ImgUrl);
-                        				xmlWriter.writeXmlFile();
-                                			Vector str=DeleteEntry(filepath,xmlfile,quesid,deltype,questiontype,data);
-						}
-					}
-				}
-			}
+							{
+								//xmlWriter=new XmlWriter(filepath+"/"+xmlfile);
+								xmlWriter=TopicMetaDataXmlWriter.Ques_BankXml1(filepath,xmlfile);
+                        					TopicMetaDataXmlWriter.appendQues_Bank1(xmlWriter,quesid,ques,Answer,Desc,ImgUrl);
+                        					xmlWriter.writeXmlFile();
+                                				str=DeleteEntry(filepath,xmlfile,quesid,deltype,questiontype,data);
+							}
+						}//ifmatch
+					}//for
+				}//for
+			} //if nullread
 		}
                 catch(Exception e){
-                                   ErrorDumpUtil.ErrorLog("Error in method:Arrangeseq in on line Examination Action !!"+e);
-                                   data.setMessage("See ExceptionLog !! " );
-                                }
+                	ErrorDumpUtil.ErrorLog("Error in method:Arrangeseq in online Examination Action !!"+e);
+                        data.setMessage("See ExceptionLog !! " );
+                }
 	return Read;
+	}
+	public  void ReadWriteMultitype(RunData data,File f,String addques,String QBpath1,String filepath,String ImgUrl,String Questype)
+	{
+		try{
+			ParameterParser pp=data.getParameters();
+			FileItem file = pp.getFileItem("file");
+                        String fileName=file.getName();
+			FileReader fr=new FileReader(f);
+                        BufferedReader br=new BufferedReader(fr);
+                        String line;
+                        /**
+                        * Read the lines in the file one by one and extracts
+                        * the user details with the
+                        * help of StringTokenizer
+                        */
+			//try{
+                        while((line=br.readLine())!=null) {//while#1
+                        	StringTokenizer st1=new StringTokenizer(line,";",true);
+                        	//entryNumber++;
+				boolean flag=false;
+                        	String Quesno="",Ques="",option1="",option2="",option3="",option4="",Answer="",Desc="",Quesnonew="";
+                        	int error=0;
+                        	String errMsg="";
+				while(st1.hasMoreTokens()) { 
+					if(st1.countTokens()<8)//if#2
+                                        	{error=1;}
+                                	else
+					{
+						if(addques.equals("addques")){
+							flag=FileExistsinXml(filepath,QBpath1);
+							if(flag==true){	
+                        				Quesnonew=getMaxQuesid(filepath,QBpath1,Questype,data);
+							}
+							else
+							{
+							Quesno=st1.nextToken().trim();
+							}
+						}
+						else{
+						Quesno=st1.nextToken().trim();
+						}
+						if(addques.equals("addques"))
+						Quesno=st1.nextToken().trim();
+						if(!Quesnonew.equals("")){
+						Quesno=Quesnonew;
+						}
+					}
+                        		if(Quesno.equals(";"))//if#3
+                        			{error=2;}
+                        		else
+                        		{
+                        			st1.nextToken();
+                                		Ques=st1.nextToken().trim();
+                        		}
+                        		if(Ques.equals(";"))
+                               			{error=2;}
+                               		else
+                               		{//else#4
+                               			st1.nextToken();
+                                       		option1=st1.nextToken().trim();
+                               		}
+                               		if(option1.equals(";"))
+                               			{error=2;}
+                               		else
+                               		{//else#5
+                               			st1.nextToken();
+                                       		option2=st1.nextToken().trim();
+                               		}
+                               		if(option2.equals(";"))
+                               			{error=2;}
+                               		else{//else6
+                               			st1.nextToken();
+                                       		option3=st1.nextToken().trim();
+                               		}
+                               		if(option3.equals(";"))
+                               			{error=2;}
+                               		else{//else7
+                               			st1.nextToken();
+                                       		option4=st1.nextToken().trim();
+					}
+                                	if(option4.equals(";"))
+                               			{error=2;}
+                                	else{//else8
+                                		st1.nextToken();
+                                       		Answer=st1.nextToken().trim();
+                                	}
+                                	if(Answer.equals(";"))
+                                		{error=2;}
+                                	else{//else9
+                                		st1.nextToken();
+                                       		Desc=st1.nextToken().trim();
+                                	}
+                                	if(Desc.equals(";"))
+                                		{error=2;}
+				}//while
+					if( error!=0){//if error
+                                		data.addMessage(MultilingualUtil.ConvertedString("error_msg6",LangFile));
+					}
+					else{
+                                        	xmlwriteQues(filepath,Questype,Quesno,Ques,option1,option2,option3,option4,Answer,Desc,ImgUrl,QBpath1,data);
+					}
+			}//while
+			br.close();
+                        fr.close();
+                        f.delete();
+
+		}//try
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in method:ReadWriteMultitype in online Examination Action !!"+e);
+                        data.setMessage("See ExceptionLog !! " );
+		}
+	}//method
+	public void ReadWriteTFTtype(RunData data,File f,String addques,String QBpath1,String filepath,String ImgUrl,String Questype)
+        {
+                try{
+                        ParameterParser pp=data.getParameters();
+                        FileItem file = pp.getFileItem("file");
+                        String fileName=file.getName();
+                        FileReader fr=new FileReader(f);
+                        BufferedReader br=new BufferedReader(fr);
+                        String line;
+                        /**
+                        * Read the lines in the file one by one and extracts
+                        * the user details with the
+                        * help of StringTokenizer
+                        */
+                        //try{
+                        while((line=br.readLine())!=null) {//while#1
+                                StringTokenizer st1=new StringTokenizer(line,";",true);
+				boolean flag=false;
+                                String Quesno="",Ques="",option1="",option2="",option3="",option4="",Answer="",Desc="",Quesnonew="";
+                                int error=0;
+                                String errMsg="";
+				while(st1.hasMoreTokens()) {
+                                	if(st1.countTokens()<4)//if#2
+                                        	{error=1;}
+                                	else 
+                                	{
+						 if(addques.equals("addques")){
+                                                       flag=FileExistsinXml(filepath,QBpath1);
+                                                        if(flag==true){
+                                                        Quesnonew=getMaxQuesid(filepath,QBpath1,Questype,data);
+                                                        }
+                                                        else
+                                                        {
+                                                        Quesno=st1.nextToken().trim();
+                                                        }
+						}
+						else
+						{
+                                        		Quesno=st1.nextToken().trim();
+						}
+						if(addques.equals("addques"))
+						Quesno=st1.nextToken().trim();
+						if(!Quesnonew.equals("")){
+                                                Quesno=Quesnonew;}
+                                	}
+                                	if(Quesno.equals(";"))//if#3
+                                       		{error=2;}
+                                	else
+					{
+                                       		st1.nextToken();
+                                       		Ques=st1.nextToken().trim();
+                                	}
+                                	if(Ques.equals(";"))
+                                       		{error=2;}
+                                	else{//else8
+						st1.nextToken();
+                                        	Answer=st1.nextToken().trim();
+                                	}
+                                	if(Answer.equals(";"))
+                                        	{error=2;}
+                                	else{//else9
+                                        	st1.nextToken();
+                                        	Desc=st1.nextToken().trim();
+                                	}
+                                	if(Desc.equals(";"))
+                                        	{error=2;}
+                        	}//while
+					if( error!=0){//if error
+                                		data.addMessage(MultilingualUtil.ConvertedString("error_msg6",LangFile));
+					}
+					else{
+                                        	xmlwriteQues(filepath,Questype,Quesno,Ques,option1,option2,option3,option4,Answer,Desc,ImgUrl,QBpath1,data);
+					}
+			}//while
+                        br.close();
+                        fr.close();
+                        f.delete();
+		}//try
+                catch(Exception e){
+                	ErrorDumpUtil.ErrorLog("Error in method: ReadWriteTFTtype in online Examination Action !!"+e);
+                        data.addMessage("See ExceptionLog !! " );
+                }
+        }//method
+	
+	public static boolean FileExistsinXml(String filePath,String xmlfile)
+        {
+                boolean flag=false;
+                try{
+			TopicMetaDataXmlReader tr =new TopicMetaDataXmlReader(filePath+"/QBtopiclist.xml");
+                        Vector collect=tr.getQuesBanklist_Detail();
+			if(collect!=null)
+                        {
+                        	for(int i=0;i<collect.size();i++)
+                                {//for
+                                        String filename=((FileEntry) collect.elementAt(i)).getfileName();
+					if(filename.equals(xmlfile))
+                                       		flag=true;
+                                }//for
+                        }//if
+                }//try
+                catch(Exception e){ErrorDumpUtil.ErrorLog("Exception in OnlineExaminationSystem Action(Method:FileExistsinXml)"+e);}
+                return flag;
+        }
+
+	public static void DeleteEmptyXml(String filePath,String qtpe,String xmlfile)
+        {
+		try{
+                	int seq=-1;
+			boolean flag=false;
+			XmlWriter xmlWriter=null;
+                        Vector delvct=new Vector();
+                        TopicMetaDataXmlReader topicmetadata=null;
+			topicmetadata=new TopicMetaDataXmlReader(filePath+"/"+"QBtopiclist.xml");
+                        Vector tn=topicmetadata.getQuesBanklist_Detail();
+			topicmetadata=new TopicMetaDataXmlReader(filePath+"/"+xmlfile);
+			if(qtpe.equals("mcq"))
+			{
+                        	delvct=topicmetadata.getQuesBank_Detail();
+                        }
+                        else{
+                        	delvct=topicmetadata.getQuesBank_Detail1();
+			}
+                        if(delvct ==null){
+				File fle=new File(filePath+"/"+xmlfile);
+                        	fle.delete();
+                        	for(int l=0;l<tn.size();l++)
+				{
+                        		String fname =((FileEntry)tn.elementAt(l)).getfileName();
+					if(fname.equals(xmlfile))
+                                	{
+                                		seq=l;
+                                       		break;
+                               		}
+				}
+				xmlWriter=TopicMetaDataXmlWriter.Ques_BankXmlist(filePath,"QBtopiclist.xml");
+                                xmlWriter.removeElement("Question",seq);
+                                xmlWriter.writeXmlFile();
+			}
+		}//try
+		catch(Exception e){ErrorDumpUtil.ErrorLog("Exception in OnlineExaminationSystem Action(Method:DeleteEmptyXml)"+e);}
+	}//method
+
+	public  int TokenNumber(File f)
+        {
+		int num=0;			
+                try{
+                        FileReader fr=new FileReader(f);
+                        BufferedReader br=new BufferedReader(fr);
+                        String line;
+			while((line=br.readLine())=="0")
+			{
+				line=line;
+			}
+                        StringTokenizer st1=new StringTokenizer(line,";");
+			num=st1.countTokens();
+		}//try
+                catch(Exception e){ErrorDumpUtil.ErrorLog("Exception in OnlineExaminationSystem Action(Method:TokenNumber)"+e);}
+		return num;
 	}
 }
 

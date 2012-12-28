@@ -1,8 +1,9 @@
 #*
  * @(#)View_QB.vm
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ *  @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("QuestionBank")
@@ -35,7 +36,6 @@ $!data.getMessage()
 </tr>
 </table>
 ##creating form for FAQ
-##<form name="frm" method="post" action=$link.setPage("call,OLES,View_QB.vm").setAction("OnlineExaminationSystem")>
 <form name="frm" method="post" action=$link.setPage("call,OLES,View_QB.vm")>
 ## Adding links for  add category,showing list of Faq category and delte category
 <table width="100%" bgcolor="$ui.tableColor">
@@ -77,10 +77,20 @@ $!data.getMessage()
 			<td><b>$brih_qus $brih_type</b><font color=Red>*</font>
                         </td>
                         <td>
-                        ##<select name="Questype" onChange="ChangeQuestype(document.frm);"/>
-                        <select name="Questype" class="drop" onChange="ShowQues(document.frm);"/>
-                        ##<option>$questype</option>$questype
+                        <select name="questype" class="drop" onChange="ShowQues(document.frm);"/>
+			#if($questype="")
                         <option></option>
+                        #else
+			<option value="$!questype">
+                        #if($questype=="All") All #end
+                        #if($questype=="mcq") Multiple Choice Question Type #end
+                        #if($questype=="tft") True/False Type #end
+                        #if($questype=="maq") Matching Type #end
+                        #if($questype=="sat") Short Answer Type #end
+                        #if($questype=="lat") Long Answer Type #end
+                        </option>$!questype
+                        #end
+                        <option value="All">$brih_all
                         <option value="mcq">$brih_multiplechoice $brih_qus $brih_type
                         <option value="tft">$brih_true/$brih_false $brih_type 
                         <option value="maq">$brih_match $brih_type
@@ -89,37 +99,32 @@ $!data.getMessage()
                         </option>
                         </select>
                         </td>
+			#if($questype!="")
 			<td><b>$brih_qus $brih_difflevel</b><font color=Red>*</font>
                         </td>
                         <td>
-                        ##<select name="difflevel" onChange="Changedifflevel(document.frm);"/>
                         <select name="difflevel" class="drop" onChange="ShowQues(document.frm);"/>
-                        ##<option>$dlevel</option>$dlevel
+			#if($difflevel="")
                         <option></option>
+                        #end
+			 #if($difflevel!="All")
+                        <option value="$!difflevel">
+                        #if($difflevel=="0-3") Easy #end
+                        #if($difflevel=="4-6") Medium #end
+                        #if($difflevel=="7-9") Hard #end
+                        </option>$!difflevel
+                        #end
+                        <option value="All">$brih_all
                         <option value="0-3">$brih_easy
                         <option value="4-6">$brih_medium
                         <option value="7-9">$brih_hard
                         </option>
                         </select>
                         </td>
+			#end
 </tr>
 </table>
-##$questype
 <table width="100%" bgcolor="$ui.tableColor">
-					#if($checkstatus!="blank")
-					<tr bgcolor="$ui.menuColor"><td colspan="2"><b>$brih_qus $brih_type :</b>
-					#if($questype=="mcq") $brih_multiplechoice $brih_qus $brih_type #end
-					#if($questype=="tft") $brih_true/$brih_false $brih_type #end
-					#if($questype=="maq") $brih_match $brih_type #end
-					#if($questype=="sat") $brih_shortType $brih_answer $brih_type #end
-					#if($questype=="lat") $brih_long $brih_answer $brih_type #end </td>
-					<td colspan="2"><b>$brih_difflevel :</b>
-					#if($difflevel=="0-3") $brih_easy #end
-					#if($difflevel=="4-6") $brih_medium #end
-					#if($difflevel=="7-9") $brih_hard #end
-					 </td></tr>
-					#end
-		##if($checkstatus=="NoBlank")
 		#foreach ($Ques in $allQues)
 				#if($velocityCount%2==0)
                                 <tr bgcolor="$ui.menuColor">
@@ -128,18 +133,32 @@ $!data.getMessage()
                                 #end
 					##<td>$Ques.question</td>
 					#if($questype=="mcq")
-					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.questionid).addPathInfo("acttype","viewques")">$Ques.question</a></td>
-					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.questionid).addPathInfo("acttype","editques")">$brih_edit $brih_question</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
 					#end
 					#if($questype=="sat" || $questype=="lat")
-					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.questionid).addPathInfo("acttype","viewques")">$Ques.question</a></td>
-					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.questionid).addPathInfo("acttype","editques")">$brih_edit $brih_question</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
 					#end
 					#if($questype=="tft")
-					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.questionid).addPathInfo("acttype","viewques")">$Ques.question</a></td>
-					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.questionid).addPathInfo("acttype","editques")">$brih_edit $brih_question</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
+					<td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
 					#end
-				      <td><a href="$link.setPage("call,OLES,View_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","quesdel").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.questionid).addPathInfo("actionName","eventSubmit_dodeletetopic")" onclick="javascript:return confirm('Do you want to delete this Question')">$brih_delete $brih_question</a></td>
+					#if($questype=="All")
+                                        #if($Ques.Qtype=="mcq")
+                                        <td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_Multiple.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+                                        #end
+                                        #if($Ques.Qtype=="sat" || $Ques.Qtype=="lat")
+                                        <td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_Short.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+                                        #end
+                                        #if($Ques.Qtype=="tft")
+                                        <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","viewques")">$Ques.ques</a></td>
+                                        <td><a href="$link.setPage("call,OLES,Insert_TF.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("acttype","editques")">$brih_edit $brih_qus</a></td>
+                                        #end
+                                        #end
+				      <td><a href="$link.setPage("call,OLES,View_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","quesdel").addPathInfo("topic",$topic).addPathInfo("questype",$questype).addPathInfo("difflevel",$difflevel).addPathInfo("quesid",$Ques.quesid).addPathInfo("qtype",$Ques.Qtype).addPathInfo("dlevel",$Ques.dlevel).addPathInfo("actionName","eventSubmit_dodeletetopic")" onclick="javascript:return confirm('Do you want to delete this Question')">$brih_delete $brih_qus</a></td>
                                 </tr>
 		#end
 		#if($questype!="" && $difflevel!="" && $checkstatus=="blank")
@@ -163,10 +182,10 @@ function checkField(frm,field)
 }
 function ShowQues(frm,field)
 {
-	if(frm.difflevel.value!="" && frm.Questype.value!="")
-	{
+	/*if(frm.difflevel.value!="" && frm.Questype.value!="")
+	{*/
                	frm.submit();
-	}
+	//}
 }
 function popupWin(url,popupName)
 {
