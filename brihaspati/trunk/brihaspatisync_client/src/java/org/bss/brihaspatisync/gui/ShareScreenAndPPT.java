@@ -74,7 +74,7 @@ public class ShareScreenAndPPT implements MouseListener{
 		desk_share.setEnabled(false);
 		desk_share.addMouseListener(this);		
 
-		denie_permission=new JLabel("<html><blink><Font size=3 color=white><b> Denie-Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
+		denie_permission=new JLabel("<html><blink><Font size=3 color=white><b> Deny Permission &nbsp;  &nbsp;  &nbsp;</b></font></blink></html>");
                 denie_permission.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
                 denie_permission.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 denie_permission.setName("Denie-Permission");
