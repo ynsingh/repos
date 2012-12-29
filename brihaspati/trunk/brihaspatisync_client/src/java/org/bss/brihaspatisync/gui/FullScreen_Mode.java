@@ -1,17 +1,10 @@
 package org.bss.brihaspatisync.gui;
 
 /**
- * Desktop_Sharing.java
+ * FullScreen_Mode.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2012 ETRG, IIT Kanpur.
- */
-
-/**
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Created on feb2011
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a>Modified on feb2011
- * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation.
- * @author <a href="mailto:pradeepmca30@gmail.com">Pradeep kumar pal </a> testing on aug 2011 for gui.
  */
 
 import javax.swing.JLabel;
@@ -31,35 +24,46 @@ import java.awt.image.BufferedImage;
 
 import org.bss.brihaspatisync.util.ImageScaler;
 
-public class Desktop_Sharing implements MouseListener {
+/**
+  *@author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Created on dec2012
+  **/
 
+public class FullScreen_Mode implements MouseListener{
+
+	private JLayeredPane mainPanel=null;
+        private JPanel leftPanel=null;
+        private JPanel centerPanel=null;
 	private JScrollPane js=null;
-        private JLayeredPane mainPanel=null;
-	private JPanel centerPanel=null;
-	private JPanel leftPanel=null;	
-	private JLabel imageDisplay = null;
-	
-	private JScrollPane js1=null;
+        private JScrollPane js1=null;
+	private JLabel selfimageDisplay = null;
         private JLabel otherimageDisplay = null;
+	
+	private JLabel imageDisplay = null;
 	private BufferedImage origanalimage=null;	
-        private static Desktop_Sharing desktopSharing=null;
+	private javax.swing.JButton button;
+        private static FullScreen_Mode fullscreen_mode=null;
 
 	
-	public static Desktop_Sharing getController(){
-                if (desktopSharing==null){
-                        desktopSharing=new Desktop_Sharing();
+	public static FullScreen_Mode getController(){
+                if (fullscreen_mode == null){
+                        fullscreen_mode =new FullScreen_Mode();
                 }
-                return desktopSharing;
+                return fullscreen_mode;
         }
-
+	
 	/**
  	 * Create JscrollPane in which images dislpay label is added to show screen share images.
  	 */ 
-	public JLayeredPane createGUI(){  
-		mainPanel=new JLayeredPane();
+
+	public JLayeredPane createGUI() {
+
+                mainPanel=new JLayeredPane();
+                mainPanel.setBackground(Color.YELLOW);
 
                 leftPanel=new JPanel();
                 leftPanel.setLayout(new BorderLayout());
+		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
+		leftPanel.setSize(screensize.width,screensize.height);
 
                 imageDisplay = new JLabel();
                 js=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -68,28 +72,29 @@ public class Desktop_Sharing implements MouseListener {
 
                 centerPanel=new JPanel();
                 centerPanel.setLayout(new BorderLayout());
-		centerPanel.setLocation(0,0);
-		centerPanel.setSize(0,0);
+                centerPanel.setLocation(0,0);
+                centerPanel.setSize(40,40);
 
                 otherimageDisplay= new JLabel(new ImageIcon(this.getClass().getClassLoader().getResource("resources/images/icon_fullscreen_off.jpg")));
-		otherimageDisplay.setBackground(new Color(24,116,205));
-                otherimageDisplay.setName("click");
+		otherimageDisplay.setName("click");
                 otherimageDisplay.setEnabled(true);
                 otherimageDisplay.addMouseListener(this);
+		
                 js1=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 js1.getViewport().add(otherimageDisplay);
                 centerPanel.add(js1,BorderLayout.CENTER);
-                mainPanel.add(leftPanel, new Integer(0), 0);
+		mainPanel.add(leftPanel, new Integer(0), 0);
                 mainPanel.add(centerPanel, new Integer(1), 0);
-		return mainPanel; 	
-	}
-
+                return mainPanel;
+        }
+		
+	
 	public void mouseClicked(MouseEvent e) {
                 String cmd=e.getComponent().getName();
                 if(cmd.equals("click")) {
                         try {
-				org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().setFlag(true);
-                                FullScreen.getController().screenshare(FullScreen_Mode.getController().createGUI());
+				org.bss.brihaspatisync.network.desktop_sharing.Post_GetSharedScreen.getController().setFlag(false);
+                                FullScreen.getController().disposescreenshare();
                         }catch(Exception ex ){}
                 }
 
@@ -98,18 +103,14 @@ public class Desktop_Sharing implements MouseListener {
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
-
-
-	/*This method uses ImageScaler class to resize and rescale image to show on player panel.
- 	 *@author : Ashish Yadav 
- 	 */
+	
+	/** This method uses ImageScaler class to resize and rescale image to show on player panel. */
 	public void showImage(BufferedImage originalImage){
 		try{
 
 			Dimension mainPanel_dim=mainPanel.getSize();
 			int mainPanelWidth = (int)mainPanel_dim.getWidth();
         		int mainPanelHeight = (int)mainPanel_dim.getHeight();
-			leftPanel.setSize(mainPanelWidth,mainPanelHeight);
         		int imageWidth = originalImage.getWidth();
         		int imageHeight = originalImage.getHeight();
         		double xScale = (double)mainPanelWidth/imageWidth;
@@ -121,11 +122,8 @@ public class Desktop_Sharing implements MouseListener {
 			BufferedImage scaledImage= ImageScaler.resize(originalImage, ImageScaler.Method.QUALITY,ImageScaler.Mode.FIT_EXACT, targetWidth, targetHeight,ImageScaler.OP_ANTIALIAS);
 			imageDisplay.setIcon(new ImageIcon(scaledImage));
 			imageDisplay.setHorizontalAlignment(JLabel.CENTER);
-			centerPanel.setLocation(targetWidth-40,4);
-	                centerPanel.setSize(40,40);
-			//centerPanel.updateUI();
 			scaledImage.flush(); 
-		}catch(Exception ex){System.out.println("Error in Desktop_Sharing.java !!"+ex);}
+		}catch(Exception ex){System.out.println("Error in FullScreen_Mode.java !!"+ex);}
 	}
 }
 

@@ -60,7 +60,7 @@ public class Post_GetSharedScreen implements Runnable {
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static Post_GetSharedScreen post_screen=null;
-		
+	private boolean screen_mode=false;		
 	/**
  	 * Controller for the class.
  	 */ 
@@ -162,8 +162,12 @@ public class Post_GetSharedScreen implements Runnable {
 						byte[] bytes1=postMethod.getResponseBody();
 		                                BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(bytes1));
 						try {
-		                                        if(image!=null)
-                		                                Desktop_Sharing.getController().showImage(image);
+		                                        if(image!=null){
+								if(!screen_mode)
+                		                                	Desktop_Sharing.getController().showImage(image);
+								else
+                		                                	org.bss.brihaspatisync.gui.FullScreen_Mode.getController().showImage(image);
+							}
                                 		}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
 					}
                 	       		postMethod.getStatusLine();
@@ -177,5 +181,9 @@ public class Post_GetSharedScreen implements Runnable {
 			System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
 			StatusPanel.getController().setdestopClient("no");
 		}
+	}
+	
+	public void setFlag(boolean f){
+		screen_mode=f;
 	}
 }

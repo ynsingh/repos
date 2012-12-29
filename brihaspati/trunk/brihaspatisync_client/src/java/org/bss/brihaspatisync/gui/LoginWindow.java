@@ -219,7 +219,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
 
                 username.setEnabled(false);
-                usernameText=new JTextField();
+                usernameText=new JTextField("sharads@iitk.ac.in");
                 usernameText.setEnabled(false);
 
                 usernameText.addActionListener(new ActionListener() {
@@ -229,7 +229,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 });
                 password=new JLabel(Language.getController().getLangValue("LoginWindow.password"));
                 password.setEnabled(false);
-                passwordField=new JPasswordField();
+                passwordField=new JPasswordField("sharad");
                 passwordField.setEnabled(false);
                 passwordField.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
