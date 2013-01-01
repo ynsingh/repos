@@ -1,0 +1,2 @@
+https://172.26.82.26:8443/livetv_iserver
+https://172.26.80.36:8443/livetv_iserver

@@ -1,0 +1,44 @@
+<project name="LiveTV_mserver" default="main" basedir=".">
+
+	<property name="src.dir" value="src/java"/>
+    	<property name="build.dest" value="WEB-INF/classes"/>
+    	<property name="debug" value="on"/>
+    	<property name="deprecation" value="off"/>
+    	<property name="optimize" value="off"/>
+    	<property name="lib.dir" value="lib"/>
+
+
+
+  <!-- Build classpath -->
+  <path id="livetv_mserver-classpath">
+    <fileset dir="WEB-INF/${lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+
+  <!-- =================================================================== -->
+  <!-- C O M P I L E  O M                                                  -->
+  <!-- =================================================================== -->
+
+	<target name="compile" description="==> compiles the servlet classes">
+
+    		<mkdir dir="${build.dest}"/>
+    		<javac srcdir="${src.dir}"
+      			destdir="${build.dest}"
+      			debug="${debug}"
+      			deprecation="${deprecation}"
+      			optimize="${optimize}">
+      			<classpath refid="livetv_mserver-classpath"/>
+    		</javac>
+  	</target>
+
+	<target name="clean" description="Clean output directories">
+      		<delete>
+          		<fileset dir="${build.dest}">
+              			<include name="**/*.class"/>
+          		</fileset>
+      		</delete>
+  	</target>
+</project>
+
