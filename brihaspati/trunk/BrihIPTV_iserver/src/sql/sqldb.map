@@ -1,0 +1,4 @@
+#Sqlfile -> Database map
+#Sat Dec 22 02:32:10 IST 2012
+id-table-schema.sql=livetv
+livetv-schema.sql=livetv

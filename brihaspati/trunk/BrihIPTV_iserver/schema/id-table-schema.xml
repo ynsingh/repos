@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE database SYSTEM "database_3_1.dtd">
+
+<!-- ==================================================================== -->
+<!--                                                                      -->
+<!-- I D  B R O K E R  S C H E M A                                        -->
+<!--                                                                      -->
+<!-- ==================================================================== -->
+
+<database name="livetv">
+  <table name="ID_TABLE" idMethod="idbroker">
+    <column name="ID_TABLE_ID" required="true" primaryKey="true" type="INTEGER"/>
+    <column name="TABLE_NAME" required="true" size="255" type="VARCHAR"/>
+    <column name="NEXT_ID" type="INTEGER"/>
+    <column name="QUANTITY" type="INTEGER"/>
+
+    <unique>
+      <unique-column name="TABLE_NAME"/>
+    </unique>
+
+  </table>
+</database>

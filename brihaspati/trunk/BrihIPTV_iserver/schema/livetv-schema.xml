@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE database SYSTEM "database_3_1.dtd">
+
+<!-- ==================================================================== -->
+<!--                                                                      -->
+<!-- LiveTV  DATABASE  S C H E M A                                        -->
+<!--                                                                      -->
+<!-- ==================================================================== -->
+<!-- ==================================================================== -->
+
+<database name="livetv" defaultIdMethod="idbroker">
+
+	<table name="USER" idMethod="idbroker">
+        	<column name="USER_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	        <column name="FULL_NAME" size="255" type="VARCHAR" />
+	        <column name="USERNAME" size="255" type="VARCHAR" />
+	        <column name="PASSWORD" size="255" type="VARCHAR" />
+	        <column name="EMAIL_ID" size="100" type="VARCHAR" />
+		<column name="DATE_OF_BIRTH" type="DATE" />
+	        <column name="PHONE_NUMBER" size="255" type="VARCHAR" />
+	        <column name="ADDRESS" size="255" type="VARCHAR" />
+	        <column name="POSTCODE" type="INTEGER" />
+	        <column name="CITY" size="255" type="VARCHAR" />
+	        <column name="STATE" size="255" type="VARCHAR" />
+	        <column name="COUNTRY" size="255" type="VARCHAR" />
+		<column name="QUOTA" required="true" type="NUMERIC" default="100"/>
+		<column name="CREATED_ON" type="TIMESTAMP" default="20120120"/>
+        	<column name="LAST_LOGINE" type="TIMESTAMP" default="20120120"/>
+	</table>
+	
+	<table name="ROLE" idMethod="idbroker">
+    		<column name="ROLE_ID" required="true" primaryKey="true" type="INTEGER"/>
+    		<column name="ROLE_NAME" required="true" size="99" type="VARCHAR"/>
+
+    		<unique>
+      			<unique-column name="ROLE_NAME"/>
+    		</unique>
+  	</table>
+
+	<table name="USER_ROLE">
+    		<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
+    		<column name="ROLE_ID" required="true" primaryKey="true" type="INTEGER"/>
+
+    		<foreign-key foreignTable="USER">
+      			<reference local="USER_ID" foreign="USER_ID"/>
+    		</foreign-key>
+
+    		<foreign-key foreignTable="ROLE">
+      			<reference local="ROLE_ID" foreign="ROLE_ID"/>
+    		</foreign-key>
+  	</table>
+
+	<table name="CATEGORY" idMethod="idbroker">
+                <column name="CATEGORY_ID" required="true" primaryKey="true" type="INTEGER"/>
+                <column name="CATEGORY_NAME" required="true" size="99" type="VARCHAR"/>
+                <column name="CATEGORY_DESC" size="255" type="VARCHAR"/>
+
+		<unique>
+                        <unique-column name="CATEGORY_NAME"/>
+                </unique>
+
+        </table>
+
+	<table name="CHANNEL" idMethod="idbroker">
+                <column name="CHANNEL_ID" required="true" primaryKey="true" type="INTEGER"/>
+                <column name="CHANNEL_NAME" required="true" size="100" type="VARCHAR"/>
+                <column name="CHANNEL_DESC" size="255" type="VARCHAR"/>
+                <column name="CHANNEL_IP_ADDRESS" required="true" size="25" type="VARCHAR"/>
+                <column name="CHANNEL_PORT" required="true" size="10" type="INTEGER"/>
+                <column name="CHANNEL_ICON" size="255" type="VARCHAR"/>
+		
+                <unique>
+                        <unique-column name="CHANNEL_NAME"/>
+                </unique>
+        </table>
+
+</database>
