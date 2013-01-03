@@ -1,0 +1,16 @@
+#*
+ * @(#) Twtwin.vm
+ * Copyright(c)2004,2009, 2010,2011 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *  @author: <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+*#
+<head>
+<link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
+</head>
+<body style="background:$ui.menuColor;">
+<div class="bgd"style="height:900px;">
+<center>
+<iframe id="frame" name="frame" height="900px" width="100%" style="margin:-10px auto;" src="$ipadd/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
+</center>
+</div>
+
