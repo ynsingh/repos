@@ -121,6 +121,8 @@ public class AdminParam extends SecureScreen{
 		 context.put("ldapurl",ldapu);
 		 String ldapb = AdminProperties.getValue(path,"brihaspati.admin.ldapbase.value");
 		 context.put("ldapbase",ldapb);
+		 String ldapcat = AdminProperties.getValue(path,"brihaspati.admin.ldapcate.value");
+		 context.put("ldapcate",ldapcat);
 		 String mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
                  if(!StringUtils.isBlank(mailSpoolingExpiry))
 

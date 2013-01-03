@@ -122,6 +122,7 @@ public class changeAParam extends SecureAction_Admin{
 		String authmethod=pp.getString("authmethod","Local");
 		String ldapurl=pp.getString("ldapurl","");
 		String ldapbase=pp.getString("ldapbase","");
+		String ldapcate=pp.getString("ldapcate","");
 
                 String officeno=pp.getString("Offprefix","x")+"-"+pp.getString("Offccode","x")+"-"+pp.getString("Offrcode","x")+"-"+pp.getString("Offphnumber","x");
                 String mobileno=pp.getString("Mobprefix","x")+"-"+pp.getString("Mobccode","x")+"-"+pp.getString("Mobrcode","x")+"-"+pp.getString("Mobphnumber","x");
@@ -246,6 +247,7 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,authmethod,"brihaspati.admin.authmethod.value");
 			AdminProperties.setValue(path,ldapurl,"brihaspati.admin.ldapurl.value");
 			AdminProperties.setValue(path,ldapbase,"brihaspati.admin.ldapbase.value");
+			AdminProperties.setValue(path,ldapcate,"brihaspati.admin.ldapcate.value");
 			AdminProperties.setValue(path, mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
 			AdminProperties.setValue(path, mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
 

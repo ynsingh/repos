@@ -299,6 +299,10 @@ $!data.getMessage()
 		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_Of1 $brih_base #else $brih_ldap $brih_base #end </font></td>
 		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapbase" value="$!ldapbase"> </font> Ex.OU=iit,DC=example,DC=com </td>
 		</tr>
+		<tr id='tabl2'>
+		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_Of1 $brih_cat #else $brih_ldap $brih_cat #end </font></td>
+		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapcate" value="$!ldapcate"> </font> Ex. staff,faculty,student </td>
+		</tr>
    ##<tr bgcolor="$ui.menuColor">
      <tr bgcolor="$ui.menuColor">
 	<td width=30><font face="$ui.sansSerifFonts">$spoolMailResendTime </font></td>	
@@ -324,10 +328,12 @@ $!data.getMessage()
 function showTable(){
 document.getElementById('tabl').style.display ='table-row';
 document.getElementById('tabl1').style.display ='table-row';
+document.getElementById('tabl2').style.display ='table-row';
 }
 function hideTable(){
 document.getElementById('tabl').style.display = 'none';
 document.getElementById('tabl1').style.display = 'none';
+document.getElementById('tabl2').style.display = 'none';
 }
 
 function checkValues(frm,field)

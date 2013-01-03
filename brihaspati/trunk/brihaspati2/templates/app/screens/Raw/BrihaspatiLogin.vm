@@ -281,17 +281,19 @@ $!msg
 <form name="frm" method="post" action="$link.setAction("myLogin")">
 <tr> #formCell("$brih_email ($brih_usr)" "username" "") <td>(Ex. brihspti@iitk.ac.in)</td></tr> 
 <tr> #formPasswordCell("$brih_pwd" "password" "") </tr> 
+#if(($ldapcat == "null")||($ldapcat ==""))
+&nbsp;
+#else
 <tr><td>$brih_ldap $brih_cat</td>
 <td>
 <select id="lcate_id" name="lcate" class="drop">
 <option>  </option>
-<option value="staff"> Staff </option>
-<option value="faculty"> Faculty </option>
-<option value="y13"> Y13 </option>
-<option value="y12"> Y12 </option>
-<option value="y11"> Y11 </option>
+#foreach($num in $ldapcat.split(","))
+<option value=$num> $num </option>
+#end
 </select>
 </td></tr>
+#end
 <tr align="right"><td align=left> ## 5, 6
 <font face="$ui.sansSerifFonts">
 ##<input type="button" value="$brih_submit" onClick="checkUNamePwd(document.frm,this);">

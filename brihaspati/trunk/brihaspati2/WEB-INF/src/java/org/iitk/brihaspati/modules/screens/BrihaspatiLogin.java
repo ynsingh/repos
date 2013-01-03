@@ -57,6 +57,10 @@ import java.util.Date;
 import java.util.Vector;
 import org.apache.torque.util.Criteria;
 import org.apache.xmlrpc.XmlRpc;
+
+//import in.ac.dei.edrp.api.DEIRemoteAccessAPI;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+
 /**
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sweetshaista00@yahoo.com">Shaista Bano</a>
@@ -71,6 +75,24 @@ public class BrihaspatiLogin extends VelocityScreen
     {
 		boolean flag = false;
 		System.gc();
+/*
+		String message=DEIRemoteAccessAPI.getStudentInfo("nksinghiitk@gmail.com", "iitk_brihaspati");
+                ErrorDumpUtil.ErrorLog("Message comes from dei server  =="+message);
+
+String hdir=System.getProperty("user.home");
+		String osnme=System.getProperty("os.name");
+		
+                String path1234="";
+                if (osnme.startsWith("Win")){
+                        path1234=hdir+"\\remote_auth\\brihaspati3-remote-access.properties";
+                }
+                else{
+                        path1234=hdir+"/remote_auth/brihaspati3-remote-access.properties";
+                }
+                System.out.println("The Value of path on the basis of OS is   "+osnme +"=="+path1234);
+ ErrorDumpUtil.ErrorLog("The Value of path on the basis of OS is   "+osnme +"=="+path1234);
+*/
+
                 try{
                         ParameterParser pp=data.getParameters();
                         String lang=pp.getString("lang","");
@@ -83,6 +105,12 @@ public class BrihaspatiLogin extends VelocityScreen
 				context.put("flag",flag);
 				context.put("lang",lang);
 				lang= "";
+			
+			String lpath=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			String ldapcat = AdminProperties.getValue(lpath,"brihaspati.admin.ldapcate.value");
+		//	boolean ldps=StringUtil.isBlank(ldapcat);
+			context.put("ldapcat",ldapcat);
+			//context.put("ldps",ldps);
 			
 			Vector newsd=NewsHeadlinesUtil.getNews(1);
 			int t_size=newsd.size();
