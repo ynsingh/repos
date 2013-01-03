@@ -458,7 +458,7 @@ public class UserManagement
 			 			* Encrypt the password entered by the user
 			 			* @see EncryptionUtil in utils
 			 			*/
-						String encrPassword=EncryptionUtil.createDigest("MD5",Passwd);
+						String encrPassword=EncryptionUtil.createDigest("SHA1",Passwd);
 						/**
 				 		* Adds the new user using TurbineSecurity which throws
 				 		* EntityExistsException and DataBackendException
@@ -582,7 +582,7 @@ public class UserManagement
 						{
 							String randm_n = PasswordUtil.randmPass();	
                                                 	String str=randm_n+Email;
-                                                	String a_key=EncryptionUtil.createDigest("MD5",str);
+                                                	String a_key=EncryptionUtil.createDigest("SHA1",str);
                                                 	//ErrorDumpUtil.ErrorLog("Inside User Management Activation key = "+a_key);
 							activationLink=pr.getProperty("brihaspati.Mailnotification."+NewUser+".activationLink");
 	                                         	activationLink=MailNotification.getMessage(activationLink, Email, a_key, mode,"english");

@@ -164,7 +164,7 @@ public class InstituteAdminMail extends VelocityAction{
 			//Generate a random string
 			String randm_n = PasswordUtil.randmPass();
 			String str1=randm_n+senderEmail;
-                	String a_key=EncryptionUtil.createDigest("MD5",str1);	
+                	String a_key=EncryptionUtil.createDigest("SHA1",str1);	
 			/**
                  	* @see ExpiryUtil in Utils
                  	*/

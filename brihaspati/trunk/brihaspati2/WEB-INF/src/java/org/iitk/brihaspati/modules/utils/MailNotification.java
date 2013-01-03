@@ -309,7 +309,7 @@ public class MailNotification{
                                                         l_props.put("mail.smtp.socketFactory.fallback", "false");
                                                 }
                                                 Session l_session = Session.getDefaultInstance(l_props,  null);
-                                                l_session.setDebug(true);
+                                                l_session.setDebug(false);
 						try {
 							MimeMessage l_msg = new MimeMessage(l_session); // Create a New message
 							l_msg.setFrom(new InternetAddress(mail_smtp)); // Set the From address

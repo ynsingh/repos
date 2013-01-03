@@ -69,7 +69,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 //import org.apache.turbine.Turbine;
 import org.apache.turbine.services.servlet.TurbineServlet;
-
+import org.apache.turbine.modules.actions.VelocityAction;
 /**
  * This class is used for call the method in mylogin 
  * like Create index for Search, Clean the system 
@@ -117,12 +117,13 @@ public class LoginUtils{
 	 *  Set the user data for session in temp variable
 	 *  @param username String
 	 *  @param password String
+	 *  @param lcat String
 	 *  @param flag String
 	 *  @param lang String
 	 *  @param data RunData
 	 *  @return String
 	 **/
-	public static String SetUserData(String username, String password, String flag, String lang, RunData data){
+	public static String SetUserData(String username, String password, String lcat, String flag, String lang, RunData data){
 		User user=null;
         	String userLanguage = "";
 		String page=new String();
@@ -151,22 +152,24 @@ public class LoginUtils{
 			if(vec.size() != 0) {
 				try{
 				String confpath=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-				String authm = AdminProperties.getValue(confpath,"brihaspati.admin.authmethod.value");
-				if(authm.equals("LDAP")){
+			//	String authm = AdminProperties.getValue(confpath,"brihaspati.admin.authmethod.value");
+				if(StringUtils.isNotBlank(lcat)){
 					//add method for ldap
 					try{
 						// the base and ldap url getting from properties
 						String base=AdminProperties.getValue(confpath,"brihaspati.admin.ldapbase.value"); // "OU=SOU,DC=example,DC=com";
 						String ldapURL=AdminProperties.getValue(confpath,"brihaspati.admin.ldapurl.value"); // "ldap://abc.example.com:389";
+						String unm=StringUtils.substringBefore(username,"@");
 						if((StringUtils.isNotBlank(base))&&(StringUtils.isNotBlank(ldapURL))){
-							String dn = "cn=" + username + "," + base;
+							//String dn = "cn=" + username + "," + base;
+							String dn = "uid="+unm+ "," +lcat+","+base;
 							// Set up the environment for creating the initial context
 							Hashtable<String, String> env = new Hashtable<String, String>();
 	//						javax.naming.Context cntxt;
 							env.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 							env.put(javax.naming.Context.PROVIDER_URL, ldapURL);
 							env.put(javax.naming.Context.SECURITY_AUTHENTICATION, "simple");
-							env.put(javax.naming.Context.SECURITY_PRINCIPAL, dn); //we have 2 \\ because it's a escape char
+							env.put(javax.naming.Context.SECURITY_PRINCIPAL, dn); 
 							env.put(javax.naming.Context.SECURITY_CREDENTIALS, password);
 					
 							// Create the initial context
@@ -190,19 +193,32 @@ public class LoginUtils{
 						//return false;
 					}
 				}
+			
 				}catch (Exception ex){ErrorDumpUtil.ErrorLog("This is reading property file Exception comes (in side First try) in the Login Utils-SetUserData Facility"+ex+"\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");}
 
                        		TurbineUser element=(TurbineUser)vec.get(0);
+				// make a copy of original password for SHA1 encription 
+				String password1=password;
 				// Authenticate with local database (Brihaspati Database) of that user and get the object.
+				// This is used for SHA1 hash
 				if(StringUtils.isNotBlank(password)){
-					password=EncryptionUtil.createDigest("MD5",password);
+					password=EncryptionUtil.createDigest("SHA1",password);
 				}
 				else{
 					password=element.getPasswordValue().toString();
 				}
+				try{
+	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
+				}
+				catch (TurbineSecurityException eu){ErrorDumpUtil.ErrorLog(" The value of User ( "+username+ " ) with SHA1 is "+user +" and password is "+ password +" and Exception is "+eu, TurbineServlet.getRealPath("/logs")+"/Loginauth.txt"); }
 
-	                        user=TurbineSecurity.getAuthenticatedUser(username, password );
-
+				//This is used for MD5 hash
+				if(((user == null)||(user.equals(null)))){
+					if(StringUtils.isNotBlank(password1)){
+						password=EncryptionUtil.createDigest("MD5",password1);
+					}
+	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
+				}
 
 				// Store the user object.
 				data.setUser(user);
@@ -278,6 +294,7 @@ public class LoginUtils{
 			log.info("User Name --> "+username + "| Unsuccesfull Login Attempt | Login Time --> "+dt +"| IP Address --> "+data.getRemoteAddr() +"/"+msg);
                         ErrorDumpUtil.ErrorLog("This TurbineSecurityException comes in the Login Utils-SetUserData Facility"+e);
                 }
+
                 catch (NoSuchAlgorithmException e){
                         data.setMessage("Could not find the required implementation");
                         page=Turbine.getConfiguration().getString("screen.login");

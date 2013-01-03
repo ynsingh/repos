@@ -155,7 +155,7 @@ public class EmailVerification
                                			info_Opt = "newUserhttps";
 					String randm_n = PasswordUtil.randmPass();
                        			String str1=randm_n+email;
-                       			String a_key=EncryptionUtil.createDigest("MD5",str1);
+                       			String a_key=EncryptionUtil.createDigest("SHA1",str1);
                        			fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                        			pr =MailNotification.uploadingPropertiesFile(fileName);
                        			msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");

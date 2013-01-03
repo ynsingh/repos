@@ -110,7 +110,7 @@ public class remoteAuthRes extends VelocityAction{
         	        srcid=ur.getSourceid();
                 }
 
-		String password="";
+		String password="",password1="";
 		List vec=null;
 		if(pass.equals("")){
 //			ErrorDumpUtil.ErrorLog("I am going to template "+pass);
@@ -119,6 +119,7 @@ public class remoteAuthRes extends VelocityAction{
 		else{
 //			ErrorDumpUtil.ErrorLog("I am not going to template "+pass);
 			try{
+				password1=EncryptionUtil.createDigest("SHA1",pass);
 				password=EncryptionUtil.createDigest("MD5",pass);
 			}
                 	catch(Exception ex){
@@ -138,7 +139,7 @@ public class remoteAuthRes extends VelocityAction{
 				if(vec.size() != 0) {
         	                        TurbineUser element=(TurbineUser)vec.get(0);
 					String pass1=element.getPasswordValue().toString();
-					if(pass1.equals(password)){
+					if((pass1.equals(password))||(pass1.equals(password1))){
 
 				// generate encript string ( email, sess, random no) with shared secret
 						String params = "email="+email1+"&sess="+sess;

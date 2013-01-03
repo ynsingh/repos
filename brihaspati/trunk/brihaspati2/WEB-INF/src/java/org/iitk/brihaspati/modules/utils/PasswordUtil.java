@@ -80,7 +80,7 @@ public class PasswordUtil{
 			 * Encrypt the new password
 			 * @see EncryptionUtil in utils
 			 */
-			String encryptPasswd=EncryptionUtil.createDigest("MD5",newPassword);
+			String encryptPasswd=EncryptionUtil.createDigest("SHA1",newPassword);
 			/**
 		  	 * Get the original password of the user from
 		  	 * the user object
@@ -93,7 +93,10 @@ public class PasswordUtil{
 				 * it is not same then sent the error
 				 * message
 				 */
-				int result=existingPassword.compareTo(EncryptionUtil.createDigest("MD5",oldPassword));
+				int result=existingPassword.compareTo(EncryptionUtil.createDigest("SHA1",oldPassword));
+				if(result!=0){
+					result=existingPassword.compareTo(EncryptionUtil.createDigest("MD5",oldPassword));
+				}
 				if(result!=0){
                 		/**
                  		* @param file Getting file value from temporary variable according to selection of Language

@@ -497,7 +497,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 						crit.add(RemoteCoursesPeer.COURSE_SELLER,course_s);
 						crit.add(RemoteCoursesPeer.COURSE_PURCHASER,course_p);
 						crit.add(RemoteCoursesPeer.INSTITUTE_NAME,inst_name);
-						crit.add(RemoteCoursesPeer.SECRET_KEY,EncryptionUtil.createDigest("MD5",sec_key));
+						crit.add(RemoteCoursesPeer.SECRET_KEY,EncryptionUtil.createDigest("SHA1",sec_key));
 						crit.add(RemoteCoursesPeer.EXPIRY_DATE,Expiry_date);
 		        			RemoteCoursesPeer.doInsert(crit);
 						pp.add("act","INSERT");
@@ -538,7 +538,7 @@ public class RemoteCoursesAction extends SecureAction_Instructor
 							*/
                                                         if(!sec_keyDb.equals(sec_key))
                                                         {
-                                                                crit.add(RemoteCoursesPeer.SECRET_KEY,EncryptionUtil.createDigest("MD5",sec_key));
+                                                                crit.add(RemoteCoursesPeer.SECRET_KEY,EncryptionUtil.createDigest("SHA1",sec_key));
                                                         }
                                                 }
                                                	else

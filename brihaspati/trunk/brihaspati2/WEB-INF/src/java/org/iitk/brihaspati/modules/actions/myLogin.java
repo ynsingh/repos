@@ -43,7 +43,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.modules.actions.VelocityAction;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.torque.util.Criteria;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.iitk.brihaspati.om.UserPrefPeer;
@@ -101,6 +101,7 @@ public class myLogin extends VelocityAction{
 		String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
+		String lcat = data.getParameters().getString("lcate", "" );
 		String password = data.getParameters().getString("password", "" );
 		if (password.equals(" ")){
 			data.setScreenTemplate("BrihaspatiLogin.vm");
@@ -155,7 +156,7 @@ public class myLogin extends VelocityAction{
 						log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
 
 						user = null;
-						lang=LoginUtils.SetUserData(username, password, flag, lang, data);
+						lang=LoginUtils.SetUserData(username, password, lcat, flag, lang, data);
 						context.put("lang",lang);
 						ErrorDumpUtil.ErrorLog("After setting User data");
 
@@ -185,6 +186,7 @@ public class myLogin extends VelocityAction{
 						UpdateMailthread.getController().UpdateMailSystem();
 						Date date=new Date();
 						boolean AB=CommonUtility.IFLoginEntry(uid,date);
+						
 						LoginUtils.getChangePasswordtemp(date,uid,data);
 
 						/**

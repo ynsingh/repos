@@ -179,12 +179,12 @@ $page.setBgColor($ui.bgcolor)
 		<td colspan=2><b> $brih_c_msg13 </b></td> #if($mode != "instlist") <td> <b>$brih_program $brih_name </b></td> #else <td></td><td></td>  #end </b>
 	</tr>
 	<tr>
-		<td colspan=2><select name="group" class="drop" size=1>
+		<td colspan=2><select name="group" class="drop" size=1 style="width:300px;">
 		#foreach($name in $CourseList)
 			##if($name.getName() !="global" && $name.getName()!="author")
 			##<option value="$name.getName()">$name.getName()
 			##<option value="$name.getGroupName()">$name.getGroupName()
-			<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName()
+			<option value="$name.getGroupName()" style="width:275px;" title="$name.getCAlias(): $name.getCourseName()-$name.getUserName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName()
 			##end
 		#end
 		</option>

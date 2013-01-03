@@ -168,10 +168,10 @@ public class OnlineRegistration extends VelocitySecureAction
 		}
 		gname=pp.getString("group","");
 
-		//Generate MD5 hash
+		//Generate MD5/SHA1 hash
 		String randm_n = PasswordUtil.randmPass();
                 String str1=randm_n+email;
-                String a_key=EncryptionUtil.createDigest("MD5",str1);
+                String a_key=EncryptionUtil.createDigest("SHA1",str1);
 
 		//Get onlinecong value of the course added by sharad on 02022011
 		Criteria crit = new Criteria();
@@ -498,10 +498,10 @@ public class OnlineRegistration extends VelocitySecureAction
                 passwd=starr[0];
 		}
 	
-		//Generate MD5 hash
+		//Generate MD5/SHA1 hash
 		String randm_n = PasswordUtil.randmPass();
                 String str1=randm_n+email;
-                String a_key=EncryptionUtil.createDigest("MD5",str1);
+                String a_key=EncryptionUtil.createDigest("SHA1",str1);
 
 		/**
 		 * Below line added by Shaista 

@@ -229,7 +229,7 @@ public class ForgotPassword extends VelocitySecureAction
 						* password for user
 						*/
 						//String encPass=EncryptionUtil.createDigest("MD5",str);
-						String encPass=EncryptionUtil.createDigest("MD5",password);
+						String encPass=EncryptionUtil.createDigest("SHA1",password);
 		       				user.setPassword(encPass); 
 						TurbineSecurity.saveUser(user);
 						msg=MultilingualUtil.ConvertedString("forgotPwd_msg3",LangFile);
