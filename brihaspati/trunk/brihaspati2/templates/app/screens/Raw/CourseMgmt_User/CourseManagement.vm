@@ -1,6 +1,6 @@
 #*
  * @(#) CourseManagement.vm
- * Copyright (c) 2005,2009-2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005, 2009-2010, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -10,11 +10,10 @@
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
   @author <a href="mailto:piyushm45@gmail.com">Piyush Mishra</a>
  * @modified date: 30-03-2010
- * @modified date: 15-02-2011, 20-04-2012,04-10-2012
+ * @modified date: 15-02-2011, 20-04-2012,04-10-2012, 04-01-2013 (Shaista)
 *#
 
 $page.setTitle("Home | $course | Course management")
-$!data.getMessage()
 <head>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
 </head>
@@ -51,6 +50,7 @@ $!data.getMessage()
                 #else
                 $brih_uploadSucessfully
                 #end
+		&nbsp;&nbsp;$!data.getMessage()
                 </td>
         #else
                 #if($uploadStatus=="partial")
@@ -59,7 +59,8 @@ $!data.getMessage()
                         $brih_uploadSomeFile  <br>
 
                        ## Following files already existed, so were not uploaded :
-                        $brih_uploadFileExist $brih_commaexist<br>
+                        $brih_uploadFileExist $brih_commaexist
+			&nbsp;&nbsp;$!data.getMessage() <br>
                 
 		#elseif($totalFilesEntries.Count>0)
                         <td>
@@ -218,6 +219,7 @@ $!data.getMessage()
         ##</tr>
         ##<tr>
         <td>
+        <INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"> <b>$Notice_Send $brih_mail</b>&nbsp;&nbsp;&nbsp;
         <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b>
         </td>
         </tr>

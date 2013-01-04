@@ -7,7 +7,7 @@
 <!--                                                                      -->
 <!-- ==================================================================== -->
 <!-- ==================================================================== -->
-<database name="brihaspati" defaultIdMethod="idbroker">
+<database name="brihaspati1" defaultIdMethod="idbroker">
   <table name="NOTE" idMethod="idbroker">
     <column name="NOTE_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="POSTED_BY" size="255" type="VARCHAR"/>
@@ -580,7 +580,7 @@
 <table name="USER_PREF" idMethod="idbroker"  description="User preference information">
 	<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
 	<column name="USER_LANG" required="true" size="32" type="VARCHAR" default="english"/>
-	<column name="ACTIVATION" required="true" size="32" type="VARCHAR" default="NULL"/>
+	<column name="ACTIVATION" required="true" size="150" type="VARCHAR" default="NULL"/>
 	 <column name="PASSWORD_EXPIRY" required="true" type="TIMESTAMP" default="0000-00-00"/>
 	<unique>
         	<unique-column name="USER_ID"/>

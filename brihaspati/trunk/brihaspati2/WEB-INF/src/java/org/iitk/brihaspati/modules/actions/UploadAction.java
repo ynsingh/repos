@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UploadAction.java
  *
- *  Copyright (c) 2005-2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2012, 2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -53,6 +53,9 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.torque.util.Criteria;
 
 import org.apache.commons.fileupload.FileItem;
@@ -63,6 +66,7 @@ import org.apache.commons.logging.LogFactory;
 import java.util.Date;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.FileEntry;
@@ -75,6 +79,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.HDFSClient;
 import org.apache.commons.lang.StringUtils;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
@@ -93,6 +98,7 @@ import org.iitk.brihaspati.modules.utils.AdminProperties;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date:30-Apr-2012(Richa)(Guest access enable/disable)
+ * @modified date: 04-Jan-2013 (Shaista) Sending Mail on Upload Content.
  */
 
 public class UploadAction extends SecureAction
@@ -144,6 +150,7 @@ public class UploadAction extends SecureAction
 		User user=data.getUser();
 		String uName=user.getName();
 		int uid=UserUtil.getUID(uName);
+		String fullName = UserUtil.getFullName(uid);
 		LangFile=(String)user.getTemp("LangFile");
 		String courseHome=(String)user.getTemp("course_id","");
 		ParameterParser pp=data.getParameters();
@@ -151,6 +158,7 @@ public class UploadAction extends SecureAction
 		String location=pp.getString("course","");
 		String Pub=pp.getString("publish","");
 		context.put("pub",Pub);
+		String sendMail = pp.getString("sendMail","");
 		Vector new_files_uploaded=new Vector();
 		XmlWriter xmlWriter=null;
 		int instituteId=Integer.parseInt(data.getUser().getTemp("Institute_id").toString());
@@ -376,6 +384,32 @@ public class UploadAction extends SecureAction
 				updateLastModified(courseHome,d);
                                		}//for
                        		}//if
+				
+				if(sendMail.equals("sendMail")){
+					try{
+					int roleId[]={2,3};
+					int userId[]={uid};
+					crit = new Criteria();
+			                crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
+			                crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleId);
+			                crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,userId);
+			                List v1=TurbineUserGroupRolePeer.doSelect(crit);				
+					String Mail_msg = "";
+					if(v1.size() >0){
+						for(int i=0; i < v1.size(); i ++) {
+							int usrId =( (TurbineUserGroupRole) v1.get(i)).getUserId();
+							crit = new Criteria();
+							crit.add(TurbineUserPeer.USER_ID, usrId);
+							List usrList = TurbineUserPeer.doSelect(crit);
+							String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
+							String courseName = CourseUtil.getCourseName(courseHome);	
+							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile, "","");	
+						}
+						data.addMessage(Mail_msg);
+					}
+					}
+					catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in Upload Action class on 411 line "+e.getMessage());}
+				}
 			}//ifpublish
 			if(successfulUploadFilesCount>0) 
 			{	
