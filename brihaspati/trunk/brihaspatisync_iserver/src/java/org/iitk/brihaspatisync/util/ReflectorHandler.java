@@ -17,6 +17,7 @@ import org.iitk.brihaspatisync.om.LecturePeer;
 import org.iitk.brihaspatisync.om.UrlConection;
 import org.iitk.brihaspatisync.om.UrlConectionPeer;
 import org.iitk.brihaspatisync.ReflectorStatusManager;
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind pal </a>
@@ -25,7 +26,6 @@ import org.iitk.brihaspatisync.ReflectorStatusManager;
 
 public class ReflectorHandler {
 
-	private javax.servlet.ServletContext context=null;	
 	private static ReflectorHandler obj=null;
 
    	public static ReflectorHandler getController() {
@@ -34,69 +34,76 @@ public class ReflectorHandler {
         	return obj;
    	}
 	
-	public void LectureHandler(javax.servlet.ServletContext context1) {
-		if(context==null)
-			this.context=context1;
-		List l=getAllSessionList();
+	/**
+	 *  This method is used to remove sessionid.xml file  and delete entry from reflector.xml according to the  end of the durataion of  session id
+	 *  This method  is called in ProcessRequest.java 
+	 **/	
+	
+	public void LectureHandler(javax.servlet.ServletContext context) {
+		List sessionlist=getAllSessionList();
 		java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
                 Date now = new Date();
                 String systemTime = sdfTime.format(now);
 		String systemdate=getCurrentDate("");
 		String system_time_split[]=systemTime.split(":");
 		java.text.SimpleDateFormat dateformatYYYYMMDD = new java.text.SimpleDateFormat("yyyyMMdd");
-		if(l!=null) {
-			for(int i=0;i<l.size();i++) {
-				Lecture element=(Lecture)(l.get(i));
+		if(sessionlist!=null) {
+			for(int i=0;i<sessionlist.size();i++) {
+				Lecture element=(Lecture)(sessionlist.get(i));
 	                        String lectid=Integer.toString(element.getLectureid());
 				Date lectDate=element.getSessiondate();
-				String lecturdate = new String( dateformatYYYYMMDD.format(lectDate));
 				String lectTime=element.getSessiontime();
-				if(Integer.parseInt(lecturdate)<Integer.parseInt(systemdate)) {
-					java.io.File filepath=new java.io.File(context.getRealPath(lectid+".xml"));
-					if(filepath.exists()){
-                                       		try { 
-							ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
-                                        		filepath.delete();
-							{
-								Criteria crit=new Criteria();
-                        			                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lectid));
-	                                        		UrlConectionPeer.doDelete(crit);	
-							}		
-						}catch(Exception e){}
-					}
-				} else if(Integer.parseInt(lecturdate)==Integer.parseInt(systemdate)) {
-        	        	       	String lectDuration=element.getDuration();
-					String lecture_times_split[]=lectTime.split(":");
-					String durationtime[]=lectDuration.split(":");	
-					
-					int total_Lecture_hour=Integer.parseInt(lecture_times_split[0]);
-					int lecture_minute=total_Lecture_hour*60+Integer.parseInt(lecture_times_split[1]);
-					int end_lecture_minute=((total_Lecture_hour+Integer.parseInt(durationtime[0]))*60)+Integer.parseInt(lecture_times_split[1]);
-					int system_hour=Integer.parseInt(system_time_split[0]);
-					int system_minute=system_hour*60+Integer.parseInt(system_time_split[1]);
-					if(end_lecture_minute <= system_minute) {
-						java.io.File filepath=new java.io.File(context.getRealPath(lectid+".xml"));
-						if(filepath.exists()){
-							try {
-								ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
-								filepath.delete();
-								{
-                                                                	Criteria crit=new Criteria();
-	                                                                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lectid));
-        	                                                        UrlConectionPeer.doDelete(crit);      
-                                                        	}
-							}catch(Exception e){}
-						}
-					}
+				String lectDuration=element.getDuration();
+				
+				String lecturdate = new String( dateformatYYYYMMDD.format(lectDate));
+				String lecture_times_split[]=lectTime.split(":");
+				int start_Lecture_hour=Integer.parseInt(lecture_times_split[0]);
+                                String durationtime[]=lectDuration.split(":");	
+				int duratiinhour=Integer.parseInt(durationtime[0]);
+				int total_session_hour=start_Lecture_hour+duratiinhour;
+				int session_date=Integer.parseInt(lecturdate);
+				int system_cur_date=Integer.parseInt(systemdate);
+				if(total_session_hour>24) {
+					total_session_hour=total_session_hour-24;
+					session_date=session_date+1;
+				}
+				
+				int total_session_minute=total_session_hour*60+Integer.parseInt(lecture_times_split[1]);	
+				int total_system_minute=(Integer.parseInt(system_time_split[0]))*60+Integer.parseInt(system_time_split[1]);				
+
+				/** compare serverdate and sessiondate */
+				if(session_date <system_cur_date) {
+					removeExpiryEntry(lectid,context);
+				}else if((session_date ==system_cur_date) && (total_session_minute<total_system_minute)) {
+					removeExpiryEntry(lectid,context);
 				}
 			}
 		}
 	}
 
-	/****************  get Current Date **************/
+	/** 
+ 	 * This method is used to remove the entry from UrlConection table accroding to session_id
+ 	 * and delete file session_id.xml 
+ 	 * and remove entry from ReflectorStatusManager accroding to session_id
+ 	 **/  	
+	private void removeExpiryEntry(String lectid,javax.servlet.ServletContext context ){
+                try {
+                        ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
+                        Criteria crit=new Criteria();
+                        crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lectid));
+                        UrlConectionPeer.doDelete(crit);
+                        ReflectorStatusManager.getController().removeLoad_and_Sessionid_Peer(lectid);
+			java.io.File filepath=new java.io.File(context.getRealPath(lectid+".xml"));
+                        if(filepath.exists())
+                        	filepath.delete();
+           	} catch(Exception e){ ServerLog.getController().Log(" Error in ReflectorHandler.java "+e.getMessage()); }
+	}
+
+	/** 
+ 	 * This method is used to get curent system date ant time .
+ 	 */ 
 	public String getCurrentDate(String delimiter)
         {
-                String cdate="";
                 try{
                         Calendar calendar=Calendar.getInstance();
                         int curr_day=calendar.get(calendar.DATE);
@@ -110,18 +117,18 @@ public class ReflectorHandler {
                         if(curr_day<10)
                                 current_day="0"+current_day;
                         if(!delimiter.equals(""))
-                                cdate=current_year+delimiter+current_month+delimiter+current_day;
+                                return current_year+delimiter+current_month+delimiter+current_day;
                         else
-                                cdate=current_year+current_month+current_day;
+                                return current_year+current_month+current_day;
                 }
-                catch(Exception ex) {
-                        System.out.println("Error in Expiry Util");
-                }
-                return(cdate);
+                catch(Exception ex) { System.out.println("Error in Expiry Util"); }
+                return null;
         }
-	/** getting the  day or time difference between the sessionDate and SystemDate. */
 	
-	/*
+	/**
+ 	 * This method is used to get difference between the sessionDate and SystemDate. 
+	 */
+	
 	public String getSystemDateTime() {
 		java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
                 java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
@@ -132,7 +139,10 @@ public class ReflectorHandler {
                 System.out.println("Time: " + strTime); 
                 return "date"+strDate+" "+strTime;
 	}
-	*/
+
+	/**
+ 	 * This is used to getting all session list from LECTURE table .
+ 	 */	
 	public List getAllSessionList(){
                	List l=null;
                 try {

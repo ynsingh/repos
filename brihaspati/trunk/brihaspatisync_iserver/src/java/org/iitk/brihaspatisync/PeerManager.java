@@ -103,6 +103,7 @@ public class PeerManager
 					message="Write succfully";	
 				}else{
 					removePeer(lect_id,user);	
+					createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip,first_lst_name);
 				}
       			} else{
               			ServerLog.getController().Log("Error in insert value to xml file by any null value==>");
