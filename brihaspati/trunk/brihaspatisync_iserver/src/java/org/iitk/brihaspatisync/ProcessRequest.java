@@ -2,7 +2,7 @@ package org.iitk.brihaspatisync;
 
 /*@(#)ProcessRequest.java
  * See licence file for usage and redistribution terms
- * Copyright (c) 2007-2008, 2012.
+ * Copyright (c) 2007-2008, 2013.
  * All Rights Reserved.
  */
 
@@ -626,6 +626,21 @@ public class ProcessRequest extends HttpServlet {
 				subject=lectCouseName.substring(0,lectCouseName.lastIndexOf("_")) +"  session name "+lectName+" has been updated." ;
 			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture:  "+e.getMessage()); }
 		}
+		//Updated by Shikha To generate Session Key for guest.
+		
+		 try{
+                                int key=ServerUtil.getController().generateSessionKey();
+                                Criteria crit=new Criteria();
+                                crit.add(UrlConectionPeer.SESSION_KEY,key);
+                                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lect_id));
+                                crit.add(UrlConectionPeer.LOGIN_ID,"guest");
+                                crit.add(UrlConectionPeer.GROUP_NAME,lectCouseName);
+                                crit.add(UrlConectionPeer.LECTURENAME,lectName);
+                                crit.add(UrlConectionPeer.ROLE,"student");
+                                UrlConectionPeer.doInsert(crit);
+
+                   }catch(Exception e){ServerLog.getController().Log("Error Log in Generating Session Key:  "+e.getMessage()); }
+
 		
 		try {
 			Criteria crit=new Criteria();
@@ -656,15 +671,6 @@ public class ProcessRequest extends HttpServlet {
 						MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
 					
 				}
-				int key_g=ServerUtil.getController().generateSessionKey();
-                                crit=new Criteria();
-                                crit.add(UrlConectionPeer.SESSION_KEY,key_g);
-                                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lect_id));
-                                crit.add(UrlConectionPeer.LOGIN_ID,"NULL");
-                                crit.add(UrlConectionPeer.GROUP_NAME,lectCouseName);
-                                crit.add(UrlConectionPeer.LECTURENAME,lectName);
-                                crit.add(UrlConectionPeer.ROLE,"guest");
-                                UrlConectionPeer.doInsert(crit);
 
 				mail_id.clear();
 				mail_id=AdminProperties.getUDetail(gid,2);
