@@ -1,6 +1,6 @@
 #*
  * @(#) BrihaspatiLogin.vm
- * Copyright (c) 2008-2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2012-2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
@@ -9,6 +9,7 @@
  * @author <a href="palseema30@gmail.com">ManoramaPal</a>
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
  *@author modified date 09-08-2012<a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
+ *@author modified date 31-10-2012<a href="mailto:shikhashuklaa@ymail.com">Shikha Shukla</a>
  * @modified date: 07-12-2010
  * @modified date: 15-02-2011
 *#
@@ -16,7 +17,10 @@
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
 <head>
+<body>
 <link rel="stylesheet" type="text/css" href="$content.getURI("/scrpts/htmlarea.css")" media="screen"/>
+<script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.ui.min.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/slimScroll.js")"></script>
 </head>
 <div class="main" style="width:1100px; margin:-10px auto; background:$ui.tableColor;">
 <table>
@@ -66,6 +70,20 @@ $!msg
 		<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)">$brih_more $brih_news &raquo;</a>
                 </td></tr> ## 6, 5
         </table> ## 4
+
+	<div style="width:258px; z-index:100; height:25px; border:1px solid #ccc; font-size:13px; background:$ui.menuColor; position:absolute;"><span style="margin:4px 18px; position:absolute; align:center">List Of Sessions in Brihaspati Sync</span></div>
+        <div id="scroll" style="width:257px; height:100px; border:1px solid #ccc; ">
+        <br><br>
+        #if($lec_details.size()==0)
+                $session_info
+        #else
+        #foreach($st in $lec_details)
+        <span style="margin-left:10px;">$st.lecname</span> <a href=javascript:popup("$link.setPage("LectureInfo.vm").addPathInfo("lectureId",$st.lid)","newWin"); style="float:right; margin-right:10px; text-decoration:none; font-weight:normal;" class="link">more</a><br>
+        #end
+        #end
+        </div>
+	
+
 	</td> ## 3
 	<td valign="top"> ## 3
 	<table align="left" class="desc"> ## 4
@@ -363,11 +381,33 @@ $!msg
 </table> ## 1
 </div>
 <br>
+</body>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {
                 Win1=window.open(url,popupName,"resizable,height=200,width=400");
         }
+	
+	function popup(url,popupName)
+        {
+                var w=650;
+                var h=200;
+                var left = (screen.width/2)-(w/2);
+                var top = (screen.height/2)-(h/2);
+                Win2 = window.open (url,popupName, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+                //Win2=window.open(url,popupName,"resizable,height=200,width=650");
+        }
+
+
+	window.onload = setupRefresh;
+
+        function setupRefresh() {
+        setTimeout("refreshPage();", 60000); // milliseconds
+        }
+    	function refreshPage() {
+       	window.location = location.href;
+    	}
+
 	function checkUNamePwd(frm,field)
 	{
 		if(frm.username.value!="")
@@ -409,5 +449,12 @@ var x=document.getElementById("language");
 //x.options[x.selectedIndex].text=str;
 window.location=x.value;
 }
+$(function(){
+     $('#scroll').slimScroll({
+         height: '200px',
+         disableFadeOut: true
+          });
+      });
+
                          
 </SCRIPT>
