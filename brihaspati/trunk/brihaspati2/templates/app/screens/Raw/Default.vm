@@ -30,8 +30,7 @@ $page.setBgColor("$ui.bgcolor")
 <body valign="left">
   $screen_placeholder
 </body>
-#elseif(($result=="video")||($result=="document")||($result=="session"))
-#elseif(($result=="video")||($result=="document")|| ($result=="twitter"))
+#elseif(($result=="video")||($result=="document")|| ($result=="twitter")||($result=="session"))
 <body valign="left">
         <table align="center"  height="600px" width="100%">
                 <tr valign="middle">
