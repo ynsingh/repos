@@ -95,10 +95,6 @@ public class ProcessRequest extends HttpServlet {
   			dbTimer.schedule(TimerOfDatabase.getController(), 1000, 60*60*1000);
  		}catch(Exception e){ ServerLog.getController().Log("Error in database Scheduler "+e.getMessage());}
 
-		try {
-			org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
-		}catch(Exception e){}
-			
 		String reqType=request.getParameter("req");
 		PrintWriter out = response.getWriter();
 
@@ -308,6 +304,7 @@ public class ProcessRequest extends HttpServlet {
 			String courseName=request.getParameter("cn");
 			
 			String message=ServerUtil.getController().getSessionList(courseName);
+			ServerLog.getController().Log("Session list from database : ==>"+message);
 			if(!message.equals(""))	{
                         	response.setContentLength(message.length());
 	                        out.println(message);
@@ -506,7 +503,9 @@ public class ProcessRequest extends HttpServlet {
                         }catch(Exception e){ServerLog.getController().Log("error GetReflectorXML ==> "+e.getMessage());}
                 }
 
-
+		try {
+			org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
+                }catch(Exception e){}
 
 
 	}//end of post method
@@ -517,17 +516,27 @@ public class ProcessRequest extends HttpServlet {
 		String result=null;
 		List returnValue=null;
 		try{
-			 /** use the server util for getting the password in string form from the MD5 */
-                        String authPassword=EncryptionUtil.createDigest("MD5",password);
-
-                        /** send the Login and Password to the Mysql Database for the authentication purpose */
-                        try{
-                        	Criteria crit = new Criteria();
+			//for SHA1
+			String authPassword=EncryptionUtil.createDigest("SHA1",password);
+			try{
+                                Criteria crit = new Criteria();
                                 crit.add(TurbineUserPeer.LOGIN_NAME,username);
                                 crit.and(TurbineUserPeer.PASSWORD_VALUE,authPassword);
                                 returnValue=TurbineUserPeer.doSelect(crit);
-                   	}catch(Exception e){ServerLog.getController().Log("Error in Criteria = "+e.getMessage());}
-
+                        }catch(Exception e){ServerLog.getController().Log("Error in Criteria in case of SHA1 = "+e.getMessage());}
+			//if SHA1 does not exist then check for MD5
+			if(returnValue.size()== 0){
+				 /** use the server util for getting the password in string form from the MD5 */
+        	                authPassword=EncryptionUtil.createDigest("MD5",password);
+	
+        	                /** send the Login and Password to the Mysql Database for the authentication purpose */
+                	        try{
+                        		Criteria crit = new Criteria();
+                                	crit.add(TurbineUserPeer.LOGIN_NAME,username);
+	                                crit.and(TurbineUserPeer.PASSWORD_VALUE,authPassword);
+        	                        returnValue=TurbineUserPeer.doSelect(crit);
+                	   	}catch(Exception e){ServerLog.getController().Log("Error in Criteria in case of MD5 = "+e.getMessage());}
+			}
                         /* if authorisation is unsuccessfull then return null in result vector */
                         if(returnValue.size()== 0) {
                                 result="loginfailed";
@@ -667,6 +676,7 @@ public class ProcessRequest extends HttpServlet {
         	                        crit.add(UrlConectionPeer.LECTURENAME,lectName);
                 	                crit.add(UrlConectionPeer.ROLE,"student");
                         	        UrlConectionPeer.doInsert(crit);
+					ServerLog.getController().Log("mailsend_permission------------>  "+mailsend_permission);	
 					if(mailsend_permission.equals("1"))
 						MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
 					
@@ -685,6 +695,7 @@ public class ProcessRequest extends HttpServlet {
                                         crit.add(UrlConectionPeer.LECTURENAME,lectName);
                                         crit.add(UrlConectionPeer.ROLE,"instructor");
                                         UrlConectionPeer.doInsert(crit);
+					ServerLog.getController().Log("mailsend_permission------------>  "+mailsend_permission);	
 					if(mailsend_permission.equals("1"))
 						MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"instructor",Integer.toString(key),url);
 					
