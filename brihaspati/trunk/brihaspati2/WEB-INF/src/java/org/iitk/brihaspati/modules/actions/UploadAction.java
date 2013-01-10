@@ -193,6 +193,7 @@ public class UploadAction extends SecureAction
 		**/
                 String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                 String dstore = AdminProperties.getValue(path,"brihaspati.admin.datastore.value");
+                String hdfsurl = AdminProperties.getValue(path,"brihaspati.admin.hdfsurl.value");
                 if(StringUtils.isBlank(dstore)){
                         dstore="Local";
                 }
@@ -329,41 +330,46 @@ public class UploadAction extends SecureAction
 						// write the code here for storing data in hdfs file system
 						// check name node is running is running or not
 						boolean serverOn=false;
-			                        try {
-                        			        URL myURL = new URL("http://202.141.40.215:50070/");
-			                                HttpURLConnection connection = (HttpURLConnection)myURL.openConnection();
-                        			        connection.setDoOutput(true);
-			                                connection.setRequestMethod("POST");
-                        			        connection.connect();
-			                                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                        			                serverOn=true;
-                                			}
-                        			}
-			                        catch (MalformedURLException e) {
-                        			        data.setMessage("The problem in connecting to server "+e);
-			                        }
-                        			catch (IOException e) {
-			                                data.setMessage("The problem in connecting to server (IO exception) "+e);
-                        			}
-						 // then write the name of file in xml file
-						if(serverOn){
-						// set the location of the file
-							if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
-								f.mkdirs();
-								String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
-	                                                        String fospath=filePath+tempFile[count];
-                                                        	writeData(descfilepath, fileItem, fospath);
-							}
-							HDFSClient.mkdir(filePath);
-							HDFSClient.addFile(filePath+temp, filePath);
-							if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
-								(new File(filePath+temp)).delete();
-							}
-
-					 	}
-                        			else{
-			                                data.setMessage("The problem in connecting to server due to either network failure or server/service down");
-                        			}
+						if(StringUtils.isNotBlank(hdfsurl)){
+			                        	try {
+                        			        	URL myURL = new URL(hdfsurl);
+				                                HttpURLConnection connection = (HttpURLConnection)myURL.openConnection();
+        	                			        connection.setDoOutput(true);
+				                                connection.setRequestMethod("POST");
+                        				        connection.connect();
+			        	                        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        				                serverOn=true;
+                                				}
+	                        			}
+				                        catch (MalformedURLException e) {
+                		       			        data.setMessage("The problem in connecting to server "+e);
+			        	                }
+                        				catch (IOException e) {
+			                	                data.setMessage("The problem in connecting to server (IO exception) "+e);
+                        				}
+							 // then write the name of file in xml file
+							if(serverOn){
+							// set the location of the file
+								if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+									f.mkdirs();
+									String descfilepath=topicDir+"/"+contentTopic+"__des.xml";
+	                                        	                String fospath=filePath+tempFile[count];
+                                                        		writeData(descfilepath, fileItem, fospath);
+								}
+								HDFSClient.mkdir(filePath);
+								HDFSClient.addFile(filePath+temp, filePath);
+								if(StringUtils.equalsIgnoreCase(dstore,"HDFS")){
+									(new File(filePath+temp)).delete();
+								}
+						 	}
+                	        			else{
+				                                data.setMessage("The problem in connecting to server due to either network failure or server/service down");
+                        				}
+						}//if url is not blank
+						else{
+							ErrorDumpUtil.ErrorLog("The hdfs server url is blank so file is not stored on distributed server");
+							data.setMessage("The hdfs server url is blank so file is not stored on distributed server");
+						}
                 			}//if end data storage on hdfs
 
 				}//fileTiem

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)LoginUtils.java
- *  Copyright (c) 2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2011, 2013 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -162,7 +162,7 @@ public class LoginUtils{
 						String unm=StringUtils.substringBefore(username,"@");
 						if((StringUtils.isNotBlank(base))&&(StringUtils.isNotBlank(ldapURL))){
 							//String dn = "cn=" + username + "," + base;
-							String dn = "uid="+unm+ "," +lcat+","+base;
+							String dn = "uid="+unm+ ", OU=" +lcat+","+base;
 							// Set up the environment for creating the initial context
 							Hashtable<String, String> env = new Hashtable<String, String>();
 	//						javax.naming.Context cntxt;

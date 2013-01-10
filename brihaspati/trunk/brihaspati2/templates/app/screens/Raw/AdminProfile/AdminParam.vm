@@ -263,20 +263,25 @@ $!data.getMessage()
 	<td> 
 
 		#if($dstore == "HDFS")
-		<input type="radio" name="datastorage" value="$brih_local"  /> $brih_local
-	 	<input type="radio" name="datastorage" value="$brih_hdfs" checked  /> $brih_hdfs 
-		<input type="radio" name="datastorage" value="$brih_both"  /> $brih_both  
+		<input type="radio" name="datastorage" value="$brih_local" onClick='javascript:hideRow();' /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  onClick='javascript:showRow();' checked  /> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  onClick='javascript:showRow();' /> $brih_both  
 		#elseif($dstore == "Both")				
-		<input type="radio" name="datastorage" value="$brih_local"  /> $brih_local
-	 	<input type="radio" name="datastorage" value="$brih_hdfs"  /> $brih_hdfs 
-		<input type="radio" name="datastorage" value="$brih_both"  checked  /> $brih_both  
+		<input type="radio" name="datastorage" value="$brih_local" onClick='javascript:hideRow();' /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  onClick='javascript:showRow();' /> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  onClick='javascript:showRow();' checked  /> $brih_both  
 		#else
-		<input type="radio" name="datastorage" value="$brih_local"  checked  /> $brih_local
-	 	<input type="radio" name="datastorage" value="$brih_hdfs"  /> $brih_hdfs 
-		<input type="radio" name="datastorage" value="$brih_both"  /> $brih_both  
+		<input type="radio" name="datastorage" value="$brih_local" onClick='javascript:hideRow();' checked  /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  onClick='javascript:showRow();'/> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  onClick='javascript:showRow();' /> $brih_both  
 		#end
 	</td>
 	</tr>
+	<tr id='tabl0'>
+                <td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_hdfs $brih_server $brih_Of1 $brih_Url #else $brih_hdfs $brih_server $brih_Url #end </font></td>
+                <td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdfsurl" value="$!hdfsurl"> </font> Ex. http://202.141.40.215:50070 </td>
+       </tr>
+
 	
 	<tr>
 	<td> <font face="$ui.sansSerifFonts">$brih_auth $brih_option </font></td>
@@ -291,15 +296,15 @@ $!data.getMessage()
 		#end
 	</td>
 	</tr>
-		<tr id='tabl'>
+		<tr id='tabl1'>
 		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_server $brih_Of1 $brih_Url #else $brih_ldap $brih_server $brih_Url #end </font></td>
 		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapurl" value="$!ldapurl"> </font> Ex. ldap://abc.example.com:389 </td>
 		</tr>
-		<tr id='tabl1'>
+		<tr id='tabl2'>
 		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_Of1 $brih_base #else $brih_ldap $brih_base #end </font></td>
 		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapbase" value="$!ldapbase"> </font> Ex.OU=iit,DC=example,DC=com </td>
 		</tr>
-		<tr id='tabl2'>
+		<tr id='tabl3'>
 		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_Of1 $brih_cat #else $brih_ldap $brih_cat #end </font></td>
 		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapcate" value="$!ldapcate"> </font> Ex. staff,faculty,student </td>
 		</tr>
@@ -326,14 +331,22 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
 
 function showTable(){
-document.getElementById('tabl').style.display ='table-row';
 document.getElementById('tabl1').style.display ='table-row';
 document.getElementById('tabl2').style.display ='table-row';
+document.getElementById('tabl3').style.display ='table-row';
 }
 function hideTable(){
-document.getElementById('tabl').style.display = 'none';
 document.getElementById('tabl1').style.display = 'none';
 document.getElementById('tabl2').style.display = 'none';
+document.getElementById('tabl3').style.display = 'none';
+}
+
+function showRow(){
+document.getElementById('tabl0').style.display ='table-row';
+}
+
+function hideRow(){
+document.getElementById('tabl0').style.display = 'none';
 }
 
 function checkValues(frm,field)

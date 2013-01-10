@@ -262,7 +262,9 @@ public class MailNotificationThread implements Runnable {
 	        			flag2 = false;
 				}
 					
-			}catch(Exception es){}
+			}catch(Exception es){
+				ErrorDumpUtil.ErrorLog("\nThe error in running mail thread (MailNotificationThread) "+es, TurbineServlet.getRealPath("/logs/Email.txt"));
+			}
 			stop();
 		}	
     	}

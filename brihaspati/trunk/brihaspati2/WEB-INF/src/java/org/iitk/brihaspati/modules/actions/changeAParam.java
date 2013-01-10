@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)changeAParam.java	
  *
- *  Copyright (c) 2005-2006,2009-2010, 2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009-2010, 2012-2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -119,6 +119,7 @@ public class changeAParam extends SecureAction_Admin{
                 String designation=pp.getString("designation","");
 		String port=pp.getString("port","8090");
 		String dstore=pp.getString("datastorage","Local");
+		String dstoreurl=pp.getString("hdfsurl","");
 		String authmethod=pp.getString("authmethod","Local");
 		String ldapurl=pp.getString("ldapurl","");
 		String ldapbase=pp.getString("ldapbase","");
@@ -244,6 +245,7 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
 			AdminProperties.setValue(path,port,"brihaspati.spring.port");
 			AdminProperties.setValue(path,dstore,"brihaspati.admin.datastore.value");
+			AdminProperties.setValue(path,dstoreurl,"brihaspati.admin.hdfsurl.value");
 			AdminProperties.setValue(path,authmethod,"brihaspati.admin.authmethod.value");
 			AdminProperties.setValue(path,ldapurl,"brihaspati.admin.ldapurl.value");
 			AdminProperties.setValue(path,ldapbase,"brihaspati.admin.ldapbase.value");

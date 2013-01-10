@@ -364,7 +364,7 @@ public class MailNotification{
 								tr.connect();
                                                       }
                                                       l_msg.saveChanges();     // don't forget this
-						      ErrorDumpUtil.ErrorLog("\nEnddddddddd MailNotification Class mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
+						      ErrorDumpUtil.ErrorLog("\nEnd MailNotification Class mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
                                                       tr.sendMessage(l_msg, l_msg.getAllRecipients());
                                                       tr.close();
 						/**
@@ -376,6 +376,7 @@ public class MailNotification{
                                                 // If here, then error in sending Mail. Display Error message.
 
                                                 msg=msg+"The error in sending Mail Message "+mex.toString();
+						ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification -379) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
 						flag = true;
                                                 }
                                                 //msg="Mail send succesfully!!";
@@ -396,6 +397,7 @@ public class MailNotification{
                 catch(Exception ex)
                 {
                         msg=msg+"The error in mail send !!!"+ex;
+			ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
 			flag = true;
                 }
 
