@@ -32,7 +32,7 @@ import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
-public class UserListPanel {
+public class UserListPanel extends Thread {
 
 	private JPanel mainPanel;
 	private JScrollPane scrollPane=null;
@@ -42,6 +42,7 @@ public class UserListPanel {
 	private boolean flag=false;
 	private boolean sharescreenFlag=false;		
 	private String turnof_onFlag="";		
+	private Vector userlist=new Vector();
 	
 	private static UserListPanel ul_panel=null;
 	private ClientObject client_obj=ClientObject.getController();
@@ -85,15 +86,38 @@ public class UserListPanel {
               	mainPanel.add(ShareScreenAndPPT.getController().createGUI(),BorderLayout.NORTH);
 		ShareScreenAndPPT.getController().setEnable_Decable();
 		mainPanel.add(scrollPane,BorderLayout.CENTER);
+		this.start();
 		return mainPanel;
 	
 	}
 
 	/**
- 	 * Getting username and it's status from userlist vector to change userlist view in gui
- 	 * according to status set flags for student mic controller, screen share controller, whiteboard controller etc.
- 	 */  	
-	protected void  userlistPanel(Vector userlist){
+ 	 * This method is used to get all userlist from reflector. 
+ 	 */
+	public  void run(){
+		while(org.bss.brihaspatisync.util.ThreadController.getController().getThreadFlag()) {
+			userlist.clear(); 
+			try {
+				String str=RuntimeDataObject.getController().getUserList();
+                     		str=str.replaceAll(","," ");
+	                        if(str.length()>0){
+        	                	java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
+                	                while(Tok.hasMoreElements()) {
+                        	        	String str1=(String)Tok.nextElement();
+                                	        userlist.add(str1);
+	                             	}       
+        	            	}
+				display_UserList();
+			}catch(Exception e){}
+		}		
+	}	
+
+	/**
+	 * Getting username and it's status from userlist vector to change userlist view in gui
+	 * according to status set flags for student mic controller, screen share controller, whiteboard controller etc.
+	 */
+	
+	private void display_UserList(){
 		ClassLoader clr= this.getClass().getClassLoader();
 		Object elements[][]=new Object[userlist.size()][5];
 		statusVector.clear();

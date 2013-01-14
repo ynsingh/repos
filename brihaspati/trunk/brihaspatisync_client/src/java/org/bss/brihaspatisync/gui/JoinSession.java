@@ -10,8 +10,6 @@ package org.bss.brihaspatisync.gui;
 import java.io.File;
 import java.awt.BorderLayout;
 import java.net.URLEncoder;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
@@ -32,9 +30,7 @@ import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
 
 public class JoinSession {
 
-        private Timer UL_Timer;
-	private Timer ref_Timer;
-        private String status="available";
+	private String status="available";
 	private static JoinSession js=null;
 	private ClientObject client_obj=ClientObject.getController();
 	private Log log=Log.getController();
@@ -118,11 +114,6 @@ public class JoinSession {
 			MainWindow.getController().getContainer().repaint();
 		}catch(Exception e){System.out.println("Error to open panel in JoinSession "+e.getMessage());}
 		// Timer to print user list in gui.
-           	try{
-                	UL_Timer=new Timer(true);
-			UL_Timer.schedule(UserListTimer.getController(),01,60*60*1);
-               	}catch(Exception e){log.setLog("Error in user list timer"+e.getMessage());}
-		
                 try{
 			// start thread controller which can handle send and receive thread of network.
 			WhiteBoardDraw.getController().start();
@@ -154,9 +145,5 @@ public class JoinSession {
                 }catch(Exception e){}
 		
 	}
-
-	protected Timer getUL_Timer(){
-                return UL_Timer;
-        }
 
 }

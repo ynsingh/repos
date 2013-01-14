@@ -50,7 +50,7 @@ public class HTTPClient extends Thread {
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private final String refHttpPort=runtime_object.getRefHttpPort();
 	private HttpClient client = new HttpClient();
-
+	private int value_count=0;
 	public HTTPClient(){ }
 
 	public HTTPClient(String reflectorIP,String lect_id){
@@ -102,17 +102,26 @@ public class HTTPClient extends Thread {
 					try {
 						String str=new String(bytes);
 						java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
+						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");
 						if (Tok.hasMoreElements()) {
 							String str1=(String)Tok.nextElement();
 							String str2=(String)Tok.nextElement();
 							str2=java.net.URLDecoder.decode(str2);
-							if(!str1.equals("nodata"))
-								RuntimeDataObject.getController().setUserList(str1);
+							System.out.println("str1 ===========>  "+str1);
+							if(!str1.equals("nodata")){
+								
+								if(str1.equals("sessionlist_timeout") && (value_count>5)){
+									org.bss.brihaspatisync.gui.Logout.getController().sessionOutMessage();
+								}else
+									RuntimeDataObject.getController().setUserList(str1);
+								if(value_count<7)
+									value_count++;
+								
+							}
 							if(!str1.equals("nodata"))
 								utilObject.setRecQueue(str2);	
 						}
-						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");
-						this.sleep(500);
+						this.sleep(1000);
 						this.yield();
 					}catch(Exception ww){
 						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
