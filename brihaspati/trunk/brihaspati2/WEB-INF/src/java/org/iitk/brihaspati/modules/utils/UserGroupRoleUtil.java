@@ -136,7 +136,6 @@ public class UserGroupRoleUtil{
 			Criteria crit=new Criteria();
 			crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
 			crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId);
-			crit.addAscendingOrderByColumn(TurbineUserGroupRolePeer.USER_ID);
 			v=TurbineUserGroupRolePeer.doSelect(crit);
 		}
 		catch(Exception e){

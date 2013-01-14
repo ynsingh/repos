@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BRIHASPATI_HOME=/home/nksingh
+BRIHASPATI_HOME=/home/brihaspati
 
 cd $BRIHASPATI_HOME/tdk-2.3_01/webapps/brihaspati2/babylon
 $BRIHASPATI_HOME/tdk-2.3_01/bin/shutdown.sh

@@ -155,7 +155,6 @@ public class MailNotificationThread implements Runnable {
 				/** Please dont remove below line */
  
 				ErrorDumpUtil.ErrorLog("\nMailNotificationThread Class  mailnotification.size()!!!!!!!!!!!!!!!!"+mailnotification.size(), TurbineServlet.getRealPath("/logs/Email.txt"));
-				 bubbleSort(mailnotification);
 				while(mailnotification.size() != 0) {
 					boolean boolFlag = false;
 					Vector mail_data=(Vector)mailnotification.pop();
@@ -269,30 +268,6 @@ public class MailNotificationThread implements Runnable {
 			stop();
 		}	
     	}
-	
-	 public void bubbleSort(LinkedList list) {  
-        	if(list.isEmpty())  
-			ErrorDumpUtil.ErrorLog("\n List is currently empty. (MailNotificationThread) ");
-            	else if (list.size() == 1)  
-			ErrorDumpUtil.ErrorLog("\n List is already sorted.(MailNotificationThread) ");
-              	else {  
-            		Node current = list.getHead();  
-            		Node counter = current;  
-            		while(counter.getNext().getNext() != null) {  
-                		current = counter;  
-                		while(current.getNext() != null) {  
-                    			if(current.getData() > current.getNext().getData()) {  
-                        			int temp = current.getData();  
-                        			current.setData(current.getNext().getData());  
-                        			current.getNext().setData(temp);  
-                    			}  
-                    			current = current.getNext();  
-                		}  
-                		counter = counter.getNext();  
-            		}  
-        	}  
-    	}  
-
 	public void emailXMLRead(){
 		Vector  mailDetail1 = new Vector();
 		 String searchMailId= "", searchMsg ="", sendAttemptTime = "", searchDate = "", attachedFile = "", writeinxml = "", sub = "", langFile = "";

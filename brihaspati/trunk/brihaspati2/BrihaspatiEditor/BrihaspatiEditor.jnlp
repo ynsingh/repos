@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jnlp spec="1.0+" codebase="http://172.26.82.17:8080/brihaspati/BrihaspatiEditor/" href="BrihaspatiEditor.jnlp">
+<jnlp spec="1.0+" codebase="http://172.28.44.17:8080/brihaspati/BrihaspatiEditor/" href="BrihaspatiEditor.jnlp">
 	<information>
 		<title>Brihaspati2  Reload Editor</title>
 		<vendor>Brihaspti software solutions,Learning Commons</vendor>
