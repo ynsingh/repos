@@ -57,9 +57,11 @@ public class AdminProperties {
                                 	String uName=element1.getUserName();
                                 	String fName=element1.getFirstName();
 	                                String lName=element1.getLastName();
-					if(fName.equals(""))
+					if(fName.equals("") && (uName.equals("guest")) )
 						fName=uName;	
                                		String eMail=element1.getEmail();
+					if(uName.equals("guest"))
+						eMail="guest";
 					uid.add(eMail+"-"+fName+" "+lName);
                                 }
 				
@@ -80,13 +82,6 @@ public class AdminProperties {
                                 crit.add(TurbineUserPeer.USER_ID,UID);
                                 v=TurbineUserPeer.doSelect(crit);
                         }
-			/*
-                        else
-                        {
-                                int noUid[]={0,1};
-                                crit.addNotIn(TurbineUserPeer.USER_ID,noUid);
-                                v=TurbineUserPeer.doSelect(crit);
-                        }*/
                 }
                 catch(Exception e) { org.iitk.brihaspatisync.util.ServerLog.getController().Log(" This is the exception in get user UDetail method in AdminProperties class ---> "+e); }
                 return v;

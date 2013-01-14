@@ -338,7 +338,6 @@ public class ProcessRequest extends HttpServlet {
 				url=request.getRequestURL();
 			}catch(Exception e){}
 			String message=putLecture(url,lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard,mailsend_permission);                       
-			 
                        	out.println(message);
                         out.flush();
 			out.close();
@@ -359,7 +358,7 @@ public class ProcessRequest extends HttpServlet {
 				String privateIP=ipaddress.toString();
 				String proxy="NO";	
 				String message=ReflectorStatusManager.getController().Register(user,lect_id,role);  
-				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ){
+				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not available !!")) && (!message.equals("Reflector have insufficient Load !!")) ) {
 					HandRaisePortHandler.getController().handRaisePortHandler(lect_id);
 					String ref_ip=message;
 					if(ref_ip.startsWith("current")){
@@ -405,7 +404,7 @@ public class ProcessRequest extends HttpServlet {
 				Vector result=PeerManager.getController().getPeerList(lect_id);
 				int resultSize=result.size();
 				String message="";
-                        	if(resultSize!=0){
+                        	if(resultSize !=0){
 					for(int i=0;i<resultSize;i++){
 						if(message.equals(""))
         	                                        message=result.elementAt(i).toString();
@@ -418,6 +417,7 @@ public class ProcessRequest extends HttpServlet {
 	                                out.close();
         	                }else{
                 	                message="noUser";
+					ServerLog.getController().Log("Get Userlist in Vector for given Lecture Id ==>"+message);
                         	        response.setContentLength(message.length());
                                 	out.println(message);
 	                                out.flush();
@@ -504,7 +504,7 @@ public class ProcessRequest extends HttpServlet {
                 }
 
 		try {
-			org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
+                        org.iitk.brihaspatisync.util.ReflectorHandler.getController().LectureHandler(context);
                 }catch(Exception e){}
 
 
@@ -581,77 +581,22 @@ public class ProcessRequest extends HttpServlet {
 		String subject="";
 		String message=" ";
 		Date date=Date.valueOf(lectDate);
-		if(lectGetParameter.equals("GetAnnounceValues")) {
-			try {
-				Criteria crit=new Criteria();
-				crit.add(LecturePeer.GROUP_NAME,lectCouseName);
-				crit.add(LecturePeer.LECTURENAME,lectName);
-				crit.add(LecturePeer.LECTUREINFO,lectInfo);
-				crit.add(LecturePeer.URLNAME,lectUserName);
-				crit.add(LecturePeer.PHONENO,lectNo);	
-				crit.add(LecturePeer.FORVIDEO,lectVedio);
-				crit.add(LecturePeer.FORAUDIO,lectAudio);
-				crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
-				crit.add(LecturePeer.MAIL_NOTIFICATION,mailsend_permission);
-				crit.add(LecturePeer.SESSIONDATE,date);
-				crit.add(LecturePeer.SESSIONTIME,lectTime);
-				crit.add(LecturePeer.DURATION,lectDuration);
-				crit.add(LecturePeer.REPEATLEC,"NO");
-				crit.add(LecturePeer.FORTIME,"NO");
-	        	        LecturePeer.doInsert(crit);
-				{
-					crit=new Criteria();
-					crit.addGroupByColumn(LecturePeer.LECTUREID);
-					java.util.List list=LecturePeer.doSelect(crit);
-					int ints[]=new int[list.size()];
-					for(int i=0;i<list.size();i++) {
-                                		Lecture element=(Lecture)(list.get(i));
-						ints[i]=(element.getLectureid());
-					}
-					java.util.Arrays.sort(ints);
-					lect_id=Integer.toString(ints[list.size()-1]);
-				}
-				subject=lectCouseName.substring(0,lectCouseName.lastIndexOf("_"))+"  session name "+lectName+" has been Announced  " ;
-			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture: "+e.getMessage()); }
-		}else if(lectGetParameter.equals("GetUpdateLectValues")) {
-			try {
-				Criteria crit=new Criteria();
-        	                crit.add(LecturePeer.LECTUREID,Integer.parseInt(lect_id));
-                	        crit.add(LecturePeer.GROUP_NAME,lectCouseName);
-                        	crit.add(LecturePeer.LECTURENAME,lectName);
-				crit.add(LecturePeer.LECTUREINFO,lectInfo);
-	                        crit.add(LecturePeer.URLNAME,lectUserName);
-        	                crit.add(LecturePeer.PHONENO,lectNo);
-                	        crit.add(LecturePeer.FORVIDEO,lectVedio);
-                        	crit.add(LecturePeer.FORAUDIO,lectAudio);
-	                        crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
-				crit.add(LecturePeer.MAIL_NOTIFICATION,mailsend_permission);	
-        	                crit.add(LecturePeer.SESSIONDATE,date);
-                	        crit.add(LecturePeer.SESSIONTIME,lectTime);
-                        	crit.add(LecturePeer.DURATION,lectDuration);
-	                        crit.add(LecturePeer.REPEATLEC,"NO");
-        	                crit.add(LecturePeer.FORTIME,"NO");
-                	        LecturePeer.doUpdate(crit);
-				subject=lectCouseName.substring(0,lectCouseName.lastIndexOf("_")) +"  session name "+lectName+" has been updated." ;
-			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture:  "+e.getMessage()); }
-		}
-		//Updated by Shikha To generate Session Key for guest.
-		
-		 try{
-                                int key=ServerUtil.getController().generateSessionKey();
-                                Criteria crit=new Criteria();
-                                crit.add(UrlConectionPeer.SESSION_KEY,key);
-                                crit.add(UrlConectionPeer.LECTUREID,Integer.parseInt(lect_id));
-                                crit.add(UrlConectionPeer.LOGIN_ID,"guest");
-                                crit.add(UrlConectionPeer.GROUP_NAME,lectCouseName);
-                                crit.add(UrlConectionPeer.LECTURENAME,lectName);
-                                crit.add(UrlConectionPeer.ROLE,"student");
-                                UrlConectionPeer.doInsert(crit);
-
-                   }catch(Exception e){ServerLog.getController().Log("Error Log in Generating Session Key:  "+e.getMessage()); }
-
-		
 		try {
+			/** this method is called to update and announce session and returns course name and session name **/
+			subject=getLectureValues(lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard, mailsend_permission);
+			if(lectGetParameter.equals("GetAnnounceValues")) {		
+				Criteria crit=new Criteria();
+                                crit.addGroupByColumn(LecturePeer.LECTUREID);
+                                java.util.List list=LecturePeer.doSelect(crit);
+                                int ints[]=new int[list.size()];
+                                for(int i=0;i<list.size();i++) {
+                                	Lecture element=(Lecture)(list.get(i));
+	                                ints[i]=(element.getLectureid());
+                                }
+                                java.util.Arrays.sort(ints);
+        			lect_id=Integer.toString(ints[list.size()-1]);
+                       	}
+			
 			Criteria crit=new Criteria();
 	                crit.add(TurbineGroupPeer.GROUP_NAME,lectCouseName);
                 	java.util.List v=TurbineGroupPeer.doSelect(crit);
@@ -676,12 +621,12 @@ public class ProcessRequest extends HttpServlet {
         	                        crit.add(UrlConectionPeer.LECTURENAME,lectName);
                 	                crit.add(UrlConectionPeer.ROLE,"student");
                         	        UrlConectionPeer.doInsert(crit);
-					ServerLog.getController().Log("mailsend_permission------------>  "+mailsend_permission);	
-					if(mailsend_permission.equals("1"))
+					if(mailsend_permission.equals("1") && (!(mail_id_new[0].equals("guest"))))
+					        ServerLog.getController().Log("mailsend_permission------------>  "+mailsend_permission);	
 						MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
 					
 				}
-
+				
 				mail_id.clear();
 				mail_id=AdminProperties.getUDetail(gid,2);
 				for(int i=0;i<mail_id.size();i++){
@@ -704,6 +649,58 @@ public class ProcessRequest extends HttpServlet {
 		}catch(Exception e){}
 		return "Successfull";
 	}
+
+	/**
+	 * This block of code is used to Announce Session and Update Session.It inserts all information 
+	 * to Lecture table which has been announced.It returns Course Name and Session Name for 
+	 * sending mail.    
+	 */
+	
+	private String getLectureValues(String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard,String mailsend_permission){
+                String subject=" ";
+                try {
+                        Date date=Date.valueOf(lectDate);
+                        if(lectGetParameter.equals("GetAnnounceValues")) {
+                                Criteria crit=new Criteria();
+                                crit.add(LecturePeer.GROUP_NAME,lectCouseName);
+                                crit.add(LecturePeer.LECTURENAME,lectName);
+                                crit.add(LecturePeer.LECTUREINFO,lectInfo);
+                                crit.add(LecturePeer.URLNAME,lectUserName);
+                                crit.add(LecturePeer.PHONENO,lectNo);
+                                crit.add(LecturePeer.FORVIDEO,lectVedio);
+                                crit.add(LecturePeer.FORAUDIO,lectAudio);
+                                crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
+                                crit.add(LecturePeer.MAIL_NOTIFICATION,mailsend_permission);
+                                crit.add(LecturePeer.SESSIONDATE,date);
+                                crit.add(LecturePeer.SESSIONTIME,lectTime);
+                                crit.add(LecturePeer.DURATION,lectDuration);
+                                crit.add(LecturePeer.REPEATLEC,"NO");
+                                crit.add(LecturePeer.FORTIME,"NO");
+                                LecturePeer.doInsert(crit);
+                                subject=lectCouseName.substring(0,lectCouseName.lastIndexOf("_"))+"  session name "+lectName+" has been Announced  " ;
+                        }else if(lectGetParameter.equals("GetUpdateLectValues")) {
+				Criteria crit=new Criteria();
+                                crit.add(LecturePeer.LECTUREID,Integer.parseInt(lect_id));
+                                crit.add(LecturePeer.GROUP_NAME,lectCouseName);
+                                crit.add(LecturePeer.LECTURENAME,lectName);
+                                crit.add(LecturePeer.LECTUREINFO,lectInfo);
+                                crit.add(LecturePeer.URLNAME,lectUserName);
+                                crit.add(LecturePeer.PHONENO,lectNo);
+                                crit.add(LecturePeer.FORVIDEO,lectVedio);
+                                crit.add(LecturePeer.FORAUDIO,lectAudio);
+                                crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
+                                crit.add(LecturePeer.MAIL_NOTIFICATION,mailsend_permission);
+                                crit.add(LecturePeer.SESSIONDATE,date);
+                                crit.add(LecturePeer.SESSIONTIME,lectTime);
+                                crit.add(LecturePeer.DURATION,lectDuration);
+                                crit.add(LecturePeer.REPEATLEC,"NO");
+                                crit.add(LecturePeer.FORTIME,"NO");
+                                LecturePeer.doUpdate(crit);
+                                subject=lectCouseName.substring(0,lectCouseName.lastIndexOf("_")) +"  session name "+lectName+" has been updated." ;
+                        }
+                }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture:  "+e.getMessage()); }
+                return subject;
+        }
 }//end of class
 
 
