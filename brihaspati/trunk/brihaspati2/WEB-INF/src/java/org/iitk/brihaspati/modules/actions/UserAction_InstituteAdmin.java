@@ -999,7 +999,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                         {
 
                                                 if(coursestatus.equals("Active"))
-                                                        coursestatus="0";
+                                                        coursestatus="1";
                                                 else
                                                         coursestatus="0";
 

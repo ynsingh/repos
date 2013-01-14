@@ -59,6 +59,10 @@ public class Directory extends SecureScreen{
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
                         context.put("AdminConf",AdminConf);
 			String ip = data.getServerName();
+			//String port=Integer.toString(data.getServerPort());
+                        //String sch=data.getServerScheme();
+                        //String ipadd=sch+"://"+ip+":"+port;
+			//context.put("ipadd",ipadd);
 			context.put("ip",ip);
 			String port = AdminProperties.getValue(path,"brihaspati.spring.port");
 			context.put("port",port);

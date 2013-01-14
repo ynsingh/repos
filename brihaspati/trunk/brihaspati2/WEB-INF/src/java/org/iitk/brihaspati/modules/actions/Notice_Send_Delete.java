@@ -335,11 +335,11 @@ public class Notice_Send_Delete extends SecureAction
 						int list=userList.size();
 						if(list!=0)
 						{
-						for(int k=0;k<list;k++)
-						{
-							userid=Integer.parseInt((String)userList.get(k));
-							insertReceiveNotice( msg_id, userid, group_id, data, notice_sub_modify);
-						}
+							for(int k=0;k<list;k++)
+							{
+								userid=Integer.parseInt((String)userList.get(k));
+								insertReceiveNotice( msg_id, userid, group_id, data, notice_sub_modify);
+							}
 						}
 					}
 					}//else

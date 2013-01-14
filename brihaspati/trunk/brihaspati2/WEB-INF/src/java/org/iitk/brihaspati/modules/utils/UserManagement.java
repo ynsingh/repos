@@ -246,9 +246,7 @@ public class UserManagement
 						 */
 						if((Role.equals("student"))&& (!(Program.equals("")))&&(!(Program.equals("Select Program"))))
 						{
-							String actgname[]=GroupName.split("_");
-                                                        String InsId=actgname[1];
-							Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,InsId,file,GroupName);
+							Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,instituteid,file,GroupName);
 						}
 						User existingUser=TurbineSecurity.getUser(UName);
 						TurbineSecurity.grant(existingUser,user_group,user_role);
@@ -523,9 +521,7 @@ public class UserManagement
 						 */
 						if((Role.equals("student"))&&(!(Program.equals("")))&&(!(Program.equals("Select Program"))))
 						{
-							String actgname[]=GroupName.split("_");
-                                                        String InsId=actgname[1];
-                                                        Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,InsId,file,GroupName);
+                                                        Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,instituteid,file,GroupName);
                                                 }
 
 						/** set student expiry */

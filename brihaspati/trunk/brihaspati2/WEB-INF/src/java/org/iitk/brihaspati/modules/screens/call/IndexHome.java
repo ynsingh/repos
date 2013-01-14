@@ -118,6 +118,10 @@ public class IndexHome extends SecureScreen{
 		/**
 		 * Getting User Detail & user id
 		**/
+			
+			java.util.Date dateTs= new java.util.Date();
+			ErrorDumpUtil.ErrorLog("The time start in IndexHome"+new Timestamp(dateTs.getTime()));
+
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 	                int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
         	        context.put("AdminConf",AdminConf);
@@ -329,6 +333,7 @@ public class IndexHome extends SecureScreen{
                         	MailNotificationThread.getController().CourseTimeSystem(u_id,eid2);
 			}
 
+			ErrorDumpUtil.ErrorLog("The time end in IndexHome"+new Timestamp((new java.util.Date()).getTime()));
 		}
 		catch(Exception e){data.setMessage("The error in IndexHome !!"+e);}
 	}
