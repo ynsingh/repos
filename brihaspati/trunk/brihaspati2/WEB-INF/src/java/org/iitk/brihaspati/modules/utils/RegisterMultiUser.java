@@ -133,8 +133,7 @@ public class RegisterMultiUser
 				else 
 				{
 					username=st2.nextToken().trim();
-					//username=username+"@"+addUname;
-					if(username.equals(";"))
+					if((username.equals(";"))||(org.apache.commons.lang.StringUtils.isNotBlank(org.apache.commons.lang.StringUtils.substringBefore(username,"@"))))
 						{error=2;}
 			      		else 
 					{
@@ -143,9 +142,7 @@ public class RegisterMultiUser
 			      			if(!passwd.equals(";"))
 							{st2.nextToken();}
 						else 
-							{String psd[]=username.split("@");
-							passwd=psd[0];}
-							//passwd=username;}
+							{passwd=PasswordUtil.randmPass();}
 			      			first_name=st2.nextToken().trim();
 			      			if(!first_name.equals(";"))
 						{
