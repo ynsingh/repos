@@ -67,7 +67,8 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
  * Action class to resend activation for direct registration
  * and confirmation mail for institute registration and online regitration.
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modified date: 09-08-2012, 01-10-2012, 15-10-2012, 06-11-2012(Priyanka)
+ * @modification date: 09-08-2012, 01-10-2012, 15-10-2012, 06-11-2012(Priyanka)
+ * @modification date: 15-01-2013 (Priyanka)
  */
 
 public class ResendActivation extends VelocityAction{
@@ -82,7 +83,9 @@ public class ResendActivation extends VelocityAction{
 
                 System.gc();
                 Criteria crit = null;
-                String e_mail=data.getParameters().getString("email");
+		Criteria criteria = null;
+       		int id;
+	        String e_mail=data.getParameters().getString("email");
 		String lang=data.getParameters().getString("lang","english");
 		//Properties pr ;
 		//String fileName=new String();
@@ -275,15 +278,25 @@ public class ResendActivation extends VelocityAction{
                         		{
                               			TurbineUser tuser = (TurbineUser) i.next();
                               			email = tuser.getEmail();
-                              			if(e_mail.equals(email))
-                                   			user++;
+                              			id = tuser.getUserId();
+						if(e_mail.equals(email))
+						{
+							criteria = new Criteria();
+		                                        criteria.add(UserPrefPeer.USER_ID,id);
+                		                        List list1 = UserPrefPeer.doSelect(criteria);
+							a_key =((UserPref)list1.get(0)).getActivation();
+							if(a_key == "ACTIVATE" || a_key.equalsIgnoreCase("ACTIVATE"))
+                                   				user++;
+						}
+
                         		}//for 
 					if(user!=0)
 		                        {
 						sent = true;
                 		                try{
-						        str=mu.ConvertedString("brih_email",LangFile)+" "+mu.ConvertedString("update_msg",LangFile);
-                                        		data.setMessage(str);
+						        //str=mu.ConvertedString("brih_email",LangFile)+" "+mu.ConvertedString("update_msg",LangFile);
+                                        		str=MultilingualUtil.ConvertedString("ac_act",LangFile);
+	                                       		data.setMessage(str);
                                         		data.getResponse().sendRedirect(data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/template/BrihaspatiLogin.vm?msg="+str);
                                 		}
                                 		catch (Exception ex){

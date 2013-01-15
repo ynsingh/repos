@@ -7,7 +7,7 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010
  * @author <a href="mailto:parasharirajeev@gmail.com">Rajeev Parashari</a>
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modifyDate : 10-12-2012 (Priyanka) 
+ * @modification date : 10-12-2012, 15-01-2013 (Priyanka) 
  *#
 
 $page.setTitle("Registered Institute List")
@@ -84,32 +84,32 @@ $!data.getMessage()
 <table align="left" bgcolor="$ui.menuColor" width=100%>
 <tr>
 	##<td><b>$brih_reg2 $RemoteInstitute</b></font></td>
-	<td width=30%><a href="#" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none" title="Send Email to Institute Admin"><img align="left" border=0 src="$content.getURI("/images/ml.gif")">&nbsp;<b>$Notice_Send $brih_email $brih_to $RemoteInstitute $brih_admin</b></a>
+	<td width=30%><a href="#" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none" title="Send Email to Institute Admin"><img align="left" border=0 src="$content.getURI("/images/ml.gif")">&nbsp;<b> #if($lang=="hindi")$Notice_Send $brih_email $brih_to $RemoteInstitute $brih_admin #else $Notice_Send $brih_email $brih_to $RemoteInstitute $brih_admin #end</b></a>
                         <input type="hidden" class="big-link" data-reveal-id="myModal" data-animation="fade" style="text-decoration:none">
                         <div id="myModal" class="reveal-modal" >
                                 <div class="frameBorderless p10">
                                 <form name="send_mail" method="post" action="$link.setPage("ViewInstituteList.vm").setAction("InstituteAdminMail")" onsubmit="return validateForm(this)">
                                         ##<h2 class="underline mb10">Send e-mail to Institute Admin</h2>
-					<label class="mt10"><font color="red">* </font><b>All fields are compulsory</b></label><br><br>
-                                        <div><label class="mt10">To:</label><div>
-                                        <div><select name="inst"><option>Select Institute</option>
+					<label class="mt10"><font color="red">* </font><b>$Remotemandatory</b></label><br><br>
+                                        <div><label class="mt10">$LocalMail_MailTestMessage_To:</label><div>
+                                        <div><select name="inst" style="width: 150px;"><option value="Select Institute"> #if ($lang=="hindi")$brih_Institute $brih_Of3 $brih_sel_the #else $brih_select $RemoteInstitute #end</option>
                                         #foreach($iid in $iidvector1)
                                         <option value="$iid.getInstituteName()~??~$!iid.getInstituteEmail()">$iid.getInstituteName()</option>
                                         #end
 					</select>
                                         </div>
-                                        <div><label class="mt10">From:</label></div>
+                                        <div><label class="mt10">$brih_from:</label></div>
                                         <div><input class="w99p mt10 h75 text" type="text" name="from" value=""</div>
-                                        <div><label class="mt10">Subject:</label></div>
+                                        <div><label class="mt10">$Notice_Subject:</label></div>
                                         <div><input class="w99p mt10 h75 text" type="text" name="subject" value=""></div>
-                                        <div><label class="mt10">Message:</label></div>
+                                        <div><label class="mt10">$brih_msg2:</label></div>
                                         <div><textarea name="message" rows="10" cols="50" class="w99p mt10 h150 text"></textarea></div>
                                         <div class="right pt10">
                                         <button class="button w100"  type="submit"  title="Send">
-                                                <span class="ico ico-confirm">Send</span>
+                                                <span class="ico ico-confirm">$Notice_Send</span>
                                         </button>
                                         <button class="button w100"  type="button"  title="Cancel" onclick="self.parent.location.reload();"/>
-                                                <span class="ico ico-cancel">Cancel</span>
+                                                <span class="ico ico-cancel">$brih_cancel</span>
                                         </button>
                                         </div>
                                         <input type="hidden" name="lang" value=$lang>

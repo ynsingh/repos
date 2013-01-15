@@ -1,3 +1,8 @@
+/**
+ * Sets the display options for REGISTERED INSTITUTE LIST page
+ * @author: Priyanka Rawat (rpriyanka12@ymail.com)
+ */
+
 function validateForm(form) {
 
     var instField = form.inst;
