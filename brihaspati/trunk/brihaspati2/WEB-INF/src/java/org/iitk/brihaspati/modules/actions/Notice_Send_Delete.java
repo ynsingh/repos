@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)Notice_Send_Delete.java	
  *
- *  Copyright (c) 2005,2008,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2008,2010,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -335,11 +335,11 @@ public class Notice_Send_Delete extends SecureAction
 						int list=userList.size();
 						if(list!=0)
 						{
-						for(int k=0;k<list;k++)
-						{
-							userid=Integer.parseInt((String)userList.get(k));
-							insertReceiveNotice( msg_id, userid, group_id, data, notice_sub_modify);
-						}
+							for(int k=0;k<list;k++)
+							{
+								userid=Integer.parseInt((String)userList.get(k));
+								insertReceiveNotice( msg_id, userid, group_id, data, notice_sub_modify);
+							}
 						}
 					}
 					}//else

@@ -329,7 +329,7 @@ public class UserManagement
 						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 						pr =MailNotification.uploadingPropertiesFile(fileName);
 						if(Role.equals("author") || Role.equals("institute_admin"))
-							msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+							msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
 						else{ 
 							crit=new Criteria();
 							try{
@@ -561,7 +561,7 @@ public class UserManagement
 							msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
                                                 	msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
 						}
-						msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+						msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
                                                 //msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
                                                 //msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
                                                 msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
@@ -607,7 +607,7 @@ public class UserManagement
 						subject = ""; messageFormate =""; msgBrihAdmin="";
 						//ErrorDumpUtil.ErrorLog("to test----------------->else3 part");
 						if(Role.equals("author") || Role.equals("institute_admin"))
-                                                        msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+                                                        msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
                                                 else{
                                                         try{
                                                                 crit=new Criteria();
