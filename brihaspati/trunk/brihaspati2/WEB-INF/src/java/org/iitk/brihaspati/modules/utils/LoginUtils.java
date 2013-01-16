@@ -201,20 +201,21 @@ public class LoginUtils{
 				String password1=password;
 				// Authenticate with local database (Brihaspati Database) of that user and get the object.
 				// This is used for SHA1 hash
-				if(StringUtils.isNotBlank(password)){
+				if(StringUtils.isNotEmpty(password)){
 					password=EncryptionUtil.createDigest("SHA1",password);
 				}
-				else{
+		/*		else{
 					password=element.getPasswordValue().toString();
 				}
-				try{
+		*//* The above piece will allow one to login if just space is being used in the password field.
+		*/		try{
 	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
 				}
 				catch (TurbineSecurityException eu){ErrorDumpUtil.ErrorLog(" The value of User ( "+username+ " ) with SHA1 is "+user +" and password is "+ password +" and Exception is "+eu, TurbineServlet.getRealPath("/logs")+"/Loginauth.txt"); }
 
 				//This is used for MD5 hash
-				if(((user == null)||(user.equals(null)))){
-					if(StringUtils.isNotBlank(password1)){
+				if((user == null)||(user.equals(null))){
+					if(StringUtils.isNotEmpty(password1)){
 						password=EncryptionUtil.createDigest("MD5",password1);
 					}
 	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
