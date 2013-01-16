@@ -56,6 +56,9 @@ import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
 //import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 /**
  * Action class for authenticating a user into the system
  * This class also contains code for recording login statistics of 
@@ -107,6 +110,20 @@ public class myLogin extends VelocityAction{
 			data.setScreenTemplate("BrihaspatiLogin.vm");
 		}
 		else{
+			 for(int i = 0; i < password.length(); i++){
+                         	if(Character.isWhitespace(password.charAt(i))){
+                                        ErrorDumpUtil.ErrorLog("Test111 in myLogin Action=====>");
+                                        data.setACL(null);
+                                        data.getSession().invalidate();
+                                        if (!Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGOUT_DEFAULT , "").equals("LogoutUser"))
+                                        data.setScreenTemplate("Login.vm");
+                                        data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
+
+//                                      data.setScreenTemplate("BrihaspatiLogin.vm");   
+
+                          	}
+                          	else{
+
 			/**
 			 * If you make any change below the code then make sure that 
 			 * make the same change in LoginFromBrihspti.java action
@@ -228,5 +245,6 @@ public class myLogin extends VelocityAction{
                                 data.setScreenTemplate("BrihaspatiLogin.vm");
 			}
        		}//end else of password check
+		}}//end by sharad
 	}
 }
