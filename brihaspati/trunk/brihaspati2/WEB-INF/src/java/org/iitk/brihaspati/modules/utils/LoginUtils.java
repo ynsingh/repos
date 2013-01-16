@@ -1,7 +1,5 @@
 package org.iitk.brihaspati.modules.utils;
 
-
-
 /*@(#)LoginUtils.java
  *  Copyright (c) 2011, 2013 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
@@ -204,10 +202,10 @@ public class LoginUtils{
 				if(StringUtils.isNotEmpty(password)){
 					password=EncryptionUtil.createDigest("SHA1",password);
 				}
-		/*		else{
+				else{
 					password=element.getPasswordValue().toString();
 				}
-		*//* The above piece will allow one to login if just space is being used in the password field.
+		/* The above piece will allow one to login when if just space is being used in the password field.
 		*/		try{
 	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
 				}

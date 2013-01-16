@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)myLogin.java	
  *
- *  Copyright (c) 2004-2008,2009,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2009,2011,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,16 +36,17 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.util.List;
 import java.util.Date;
-import org.apache.velocity.context.Context;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.modules.actions.VelocityAction;
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.torque.util.Criteria;
-import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.torque.util.Criteria;
+import org.apache.turbine.modules.actions.VelocityAction;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -106,23 +107,10 @@ public class myLogin extends VelocityAction{
 		if(StringUtil.checkString(username) != -1) username="";
 		String lcat = data.getParameters().getString("lcate", "" );
 		String password = data.getParameters().getString("password", "" );
-		if (password.equals(" ")){
+		if (StringUtils.isBlank(password)){
 			data.setScreenTemplate("BrihaspatiLogin.vm");
 		}
 		else{
-			 for(int i = 0; i < password.length(); i++){
-                         	if(Character.isWhitespace(password.charAt(i))){
-                                        ErrorDumpUtil.ErrorLog("Test111 in myLogin Action=====>");
-                                        data.setACL(null);
-                                        data.getSession().invalidate();
-                                        if (!Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGOUT_DEFAULT , "").equals("LogoutUser"))
-                                        data.setScreenTemplate("Login.vm");
-                                        data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
-
-//                                      data.setScreenTemplate("BrihaspatiLogin.vm");   
-
-                          	}
-                          	else{
 
 			/**
 			 * If you make any change below the code then make sure that 
@@ -130,6 +118,8 @@ public class myLogin extends VelocityAction{
 			 */
                                          
 			int uid=UserUtil.getUID(username);
+			// uid will be returned as -1 if user does not exists.
+
 			if(uid != -1){
 		// Following lines added by Priyanka
 				try{
@@ -245,6 +235,5 @@ public class myLogin extends VelocityAction{
                                 data.setScreenTemplate("BrihaspatiLogin.vm");
 			}
        		}//end else of password check
-		}}//end by sharad
 	}
 }
