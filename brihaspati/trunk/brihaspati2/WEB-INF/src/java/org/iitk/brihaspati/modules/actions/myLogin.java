@@ -107,7 +107,7 @@ public class myLogin extends VelocityAction{
 		if(StringUtil.checkString(username) != -1) username="";
 		String lcat = data.getParameters().getString("lcate", "" );
 		String password = data.getParameters().getString("password", "" );
-		if (StringUtils.isBlank(password)){
+		if (StringUtils.isEmpty(password)){
 			data.setScreenTemplate("BrihaspatiLogin.vm");
 		}
 		else{
