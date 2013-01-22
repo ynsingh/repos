@@ -1,6 +1,6 @@
 #*
  * @(#) Chat.vm
- * Copyright (c) 2005,2009, 2010, 2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009, 2010, 2011, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhk_t@yahoo.com ">Awadhesh Kumar Trivedi</a>
@@ -72,7 +72,7 @@ $!data.getMessage()
 		<td>
 		<font face="$ui.sansSerifFonts"><b>
 		#if(( $mode == "general") || ($mode == "instituteWise"))
-			<a href=$link.setPage("Index.vm")>$brih_home</a> |
+			<a href="$link.setPage("Index.vm")">$brih_home</a> |
 		#else
 			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
 			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
@@ -189,8 +189,7 @@ $!data.getMessage()
 </td></tr>
 <tr bgcolor="tableColor"><td>
 	<blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
-		##<a href=http://javashoplm.sun.com/ECom/docs/Welcome.jsp?StoreId=8&PartDetailId=jre-6u5-oth-JPR&SiteId=JSC&TransactionId=noreg> Download Java SE Runtime Environment</a>
-		<a href=http://javashoplm.sun.com/ECom/docs/Welcome.jsp?StoreId=8&PartDetailId=jre-6u5-oth-JPR&SiteId=JSC&TransactionId=noreg>$brih_djre</a>
+		<a href="http://java.com/en/download/manual.jsp" target="_blank">$brih_djre</a>
 </td></tr>
 
 <tr><td>
@@ -219,7 +218,7 @@ $!data.getMessage()
 	#else
                 <param name="chatroom" value=$chatRoom>
         #end
-	<param name="username" value=$username>
+	<param name="username" value="$username">
 	<param name="password" value=$password>
 	<param name="servername" value=$serverName>
 	<param name="autoconnect" value="yes">
@@ -228,7 +227,7 @@ $!data.getMessage()
 	<param name="lang" value=$lang>
 	##<param name="expiryTime" value=$TaskConf>
 	<param name="babylonPath" value=$babylonPath>
-        <param name="fullfile" value=$fullfile>
+        <param name="fullfile" value="$fullfile">
 	<param name="role" value=$role>
 	<param name="mode" value=$mode>
 </applet>
