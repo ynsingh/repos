@@ -1,8 +1,8 @@
 package org.iitk.brihaspati.modules.utils;
 /*
- * @(#)MailNotificationThread.java
+ * @(#)EmailSpoolingThread.java
  *
- *  Copyright (c) 2010-2011 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010-2011, 2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -36,21 +36,16 @@ package org.iitk.brihaspati.modules.utils;
  */
 
 import java.io.File;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Vector;
 
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.om.InstituteAdminUserPeer;
-import org.iitk.brihaspati.om.InstituteAdminUser;
-import org.iitk.brihaspati.om.TurbineUserPeer;
-import org.iitk.brihaspati.om.TurbineUser;
-import org.apache.torque.util.Criteria;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modify date: 27-12-2012 (Shaista)
  */
@@ -60,7 +55,7 @@ public class EmailSpoolingThread implements Runnable {
 	private static String attachFile="", temp = "";
 	private static String mailSpoolFilePath="";
 	private static Vector v=null;
-	private static LinkedList mailnotification = new LinkedList();
+	private static LinkedList mailnotification1 = new LinkedList();
 	private boolean flag=false;
 	private static Thread runner=null;
 	private static EmailSpoolingThread mailSpoolingThread=null;
@@ -90,7 +85,7 @@ public class EmailSpoolingThread implements Runnable {
                 v.add(langFile);//4
                 v.add(fileName);//5
 		//ErrorDumpUtil.ErrorLog("\n\nmailSpoolingThread.v="+v);
-		mailnotification.add(0,v);
+		mailnotification1.add(0,v);
 		start();
 			strng= mu.ConvertedString("mail_msg", langFile);
 			//"Message is in queue";
@@ -127,11 +122,11 @@ public class EmailSpoolingThread implements Runnable {
       	public synchronized void run() {
 
 		while(flag) {
-			try{ 	Thread.sleep(200); }catch(Exception e){}
+			try{ 	Thread.sleep(200); }catch(Exception e){ErrorDumpUtil.ErrorLog("\nI am  in EmailSpoolingThread  Class  sleep section "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
 			try { 
 				File f = new File(mailSpoolingThread.mailSpoolFilePath);
-				while(mailnotification.size() != 0) {
-                                        Vector mail_data=(Vector)mailnotification.pop();
+				while(mailnotification1.size() > 0) {
+                                        Vector mail_data=(Vector)mailnotification1.pop();
                                         String mailId = mail_data.get(0).toString().trim();
                                         String sub = mail_data.get(1).toString();
                                         String msg = mail_data.get(2).toString().trim();
@@ -142,7 +137,7 @@ public class EmailSpoolingThread implements Runnable {
 					MailNotification.sendMail(msg, mailId, sub, attachedFile, LangFile, fileName);	
 				} //main while close
 				
-			}catch(Exception es){}
+			}catch(Exception es){ErrorDumpUtil.ErrorLog("\nI am  in EmailSpoolingThread  Class  sleep section "+es, TurbineServlet.getRealPath("/logs/Email.txt"));}
 			stop();
 		}	
     	}

@@ -1,8 +1,8 @@
 package org.iitk.brihaspati.modules.utils;
 /*
- * @(#)MailNotificationThread.java
+ * @(#)WriteXmlThread.java
  *
- *  Copyright (c) 2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2012, 2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -41,21 +41,18 @@ import java.io.InputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.FileNotFoundException;
-import java.text.DateFormat;
+//import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Vector;
 
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.om.InstituteAdminUserPeer;
-import org.iitk.brihaspati.om.InstituteAdminUser;
-import org.iitk.brihaspati.om.TurbineUserPeer;
-import org.iitk.brihaspati.om.TurbineUser;
-import org.apache.torque.util.Criteria;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified date: 27-12-2012
  */
@@ -135,12 +132,12 @@ public class WriteXmlThread implements Runnable {
       	public synchronized void run() {
 
 		while(flag) {
-			try{ 	Thread.sleep(200); }catch(Exception e){}
+			try{ 	Thread.sleep(200); }catch(Exception e){ErrorDumpUtil.ErrorLog("\nI am  in WriteXmlThread Class  sleep section "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
 			try { 
 				int j = 0;
-				Criteria crit = null;
+				//Criteria crit = null;
 				Vector mailDetail = new Vector();
-				while(linkList.size() != 0) {
+				while(linkList.size() > 0) {
 					String writeinxml = "";
                                         Vector mail_data=(Vector)linkList.pop();
                                         String mailId = mail_data.get(0).toString().trim();
@@ -216,7 +213,7 @@ public class WriteXmlThread implements Runnable {
 					j = j + 1;
 				} //main while close
 				
-			}catch(Exception es){}
+			}catch(Exception es){ErrorDumpUtil.ErrorLog("\nI am  in WriteXmlThread Class  in run method ", TurbineServlet.getRealPath("/logs/Email.txt"));}
 			stop();
 		}	
     	}

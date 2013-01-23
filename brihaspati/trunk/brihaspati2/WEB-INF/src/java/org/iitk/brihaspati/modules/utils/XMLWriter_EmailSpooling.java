@@ -1,9 +1,9 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*
- * @(#)XMLWriter_GraphCalculation.java
+ * @(#)XMLWriter_EmailSpooloing.java
  *
- *  Copyright (c) 2012 conditions are met:
+ *  Copyright (c) 2012,2013 conditions are met:
  *
  *  Redistributions of source code must retain the above copyright
  *  notice, this  list of conditions and the following disclaimer.
@@ -30,26 +30,29 @@ package org.iitk.brihaspati.modules.utils;
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *
  */
+
 import java.io.File;
-import java.sql.Date;
-import java.util.List;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
+import java.io.FileOutputStream;
 import java.util.Vector;
-import org.w3c.dom.NodeList;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import java.io.FileOutputStream;
-import org.apache.torque.util.Criteria;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+
 import javax.xml.parsers.DocumentBuilder;
-import org.apache.xerces.dom.DocumentImpl;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.apache.commons.lang.StringUtils;
-import javax.xml.parsers.DocumentBuilderFactory;
+import org.apache.turbine.services.servlet.TurbineServlet;
+
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
-/*
+/**
+* @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
 * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
 * @modified date: 27-12-2012
 */
@@ -104,21 +107,25 @@ public class XMLWriter_EmailSpooling{
                         emailSpoolValue.appendChild(lang);
                         root.appendChild(emailSpoolValue);
                         dispMessage=saveXML(doc,filePath);
-			}catch(Exception ex){}
+			}catch(Exception ex){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (EmailSpoolingXml) under  XMLWriter_EmailSpooling "+ex, TurbineServlet.getRealPath("/logs/Email.txt"));}
 			return dispMessage;
         }
         //prints the XML document to file.
         private static  String saveXML(Document doc,String filePath) {
                 try{
-
+			FileOutputStream fos=new FileOutputStream(filePath);
                         //print
                         OutputFormat format = new OutputFormat(doc);
+			format.setIndent(1);
                         format.setIndenting(true);
                         //to generate a file output use fileoutputstream
-                        XMLSerializer output = new XMLSerializer(new FileOutputStream(filePath), format);
+                        //XMLSerializer output = new XMLSerializer(new FileOutputStream(filePath), format);
+                        XMLSerializer output = new XMLSerializer(fos, format);
+			output.asDOMSerializer();
                         output.serialize(doc);
+			fos.close();
                         return "Successfull";
-                }catch(Exception e){ErrorDumpUtil.ErrorLog(e.getMessage());}
+                }catch(Exception e){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (saveXml) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
                 return "UnSuccessfull";
         }
         /**method for creating blank xml file
@@ -155,7 +162,7 @@ public class XMLWriter_EmailSpooling{
                         doc = builder.parse(getFile(filePath));
 
                 } catch( Exception e ){
-                        e.printStackTrace();
+			ErrorDumpUtil.ErrorLog("\nThe exception comes in method (getCreateDocument) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));
                 }
                 return doc;
         }
@@ -171,7 +178,7 @@ public class XMLWriter_EmailSpooling{
                         list = doc.getElementsByTagName("Email");
 
                 } catch( Exception e ){
-                        e.printStackTrace();
+                       ErrorDumpUtil.ErrorLog("\nThe exception comes in method (getNodeList) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt")); 
                 }
                 return list;
         }
@@ -236,7 +243,7 @@ public class XMLWriter_EmailSpooling{
 					}
 				}
 			}
-		}catch( Exception e ){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling "+e);}
+		}catch( Exception e ){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (getEmailSpoolDetails) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
 		return v;
 	}
 
@@ -284,7 +291,7 @@ public class XMLWriter_EmailSpooling{
                         }
 
                 }//try
-                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling method name:(UpdateEmailSpoolxml)"+e);}
+                catch(Exception e){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (UpdateEmailSpoolxml) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
         }//method
 
 }
