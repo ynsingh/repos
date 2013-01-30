@@ -621,9 +621,10 @@ public class ProcessRequest extends HttpServlet {
         	                        crit.add(UrlConectionPeer.LECTURENAME,lectName);
                 	                crit.add(UrlConectionPeer.ROLE,"student");
                         	        UrlConectionPeer.doInsert(crit);
-					if(mailsend_permission.equals("1") && (!(mail_id_new[0].equals("guest"))))
+					if((mailsend_permission.equals("1")) && (!(mail_id_new[0].equals("guest")))){
 					        ServerLog.getController().Log("mailsend_permission------------>  "+mailsend_permission);	
 						MailNotification.getController().sendMail(context,subject,mail_id_new,date,lectTime,lectDuration,lectName,lectCouseName,"student",Integer.toString(key),url);
+					}
 					
 				}
 				
@@ -646,7 +647,7 @@ public class ProcessRequest extends HttpServlet {
 					
 				}
 			}
-		}catch(Exception e){}
+		}catch(Exception e){ServerLog.getController().Log("Error in put lecture method "+e);}
 		return "Successfull";
 	}
 
