@@ -64,6 +64,7 @@ public class AdminProperties{
 		p.load(f);
 		String val = null;
 		val=p.getProperty(key);
+		f.close();
 		return(val);
 	 }
 	
@@ -80,5 +81,6 @@ public class AdminProperties{
 		Properties p = new Properties();
 		p.setProperty(key,Value);
 		p.store(os,"header");
+		os.close();
 	}
 }
