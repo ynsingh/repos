@@ -166,7 +166,7 @@ System.out.println("institute_name="+institute_name);
                 registration_id = admindao.insert(adminReg);
                 String msg=resource.getString("requestforregistration_accept_successfuly")+String.valueOf(user_id) ;
                
-                request.setAttribute("registration_msg", msg);
+                request.setAttribute("msg1", msg);
                 return mapping.findForward("success");
        }
 

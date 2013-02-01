@@ -35,8 +35,10 @@ public class CheckElection extends org.apache.struts.action.Action {
 
 HttpSession session=request.getSession();
 session.removeAttribute("election_id");
-        String election = request.getParameter("election");
 
+        String election = request.getParameter("election");
+        String voting = request.getParameter("voting");
+        request.setAttribute("voting", voting);
       String inst = (String)session.getAttribute("institute_id");
       ElectionDAO e=new ElectionDAO();
       

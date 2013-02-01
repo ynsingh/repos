@@ -24,12 +24,12 @@ public class MyConnection {
         try
 
        {
-                 Context ctx=new InitialContext();
-                if(ctx==null)
-                    throw new RuntimeException("JNDI");
-
-                    ds=(DataSource)ctx.lookup("java:/comp/env/jdbc/ems");
-                    connection=ds.getConnection();
+//                 Context ctx=new InitialContext();
+//                if(ctx==null)
+//                    throw new RuntimeException("JNDI");
+//
+//                    ds=(DataSource)ctx.lookup("java:/comp/env/jdbc/ems");
+//                    connection=ds.getConnection();
 
 
 

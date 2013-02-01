@@ -504,6 +504,24 @@ public static byte[] getBytesFromFile(String file1)  {
              }
 
           }
+public static boolean WriteTextFile(String msg,String filename)
+	{
 
+
+		try
+		{
+
+			FileOutputStream log=new FileOutputStream(filename);
+			log.write((msg).getBytes());
+                       	log.close();
+			log4j.error("Write:"+filename);
+			return true;
+		}//try
+		catch(Exception e)
+		{
+                    log4j.error("File Write Error"+e.toString());
+			return false;
+		}
+    	}
 
 }

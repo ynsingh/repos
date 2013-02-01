@@ -80,7 +80,7 @@ admindao.migrate_election_manager(e2);
 e.setCreatedBy(newem);
 electiondao.update(e);
 
- request.setAttribute("msg", "ELection Manager MIgrated");
+ request.setAttribute("msg", "ELection Manager Migrated to:-"+newem);
          
 
 

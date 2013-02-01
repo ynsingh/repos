@@ -165,12 +165,97 @@ public String InsertVote(ArrayList E, String path)
     return obj;
         
 }
+
+
+
+
 	private void wait1(int k){
 		do{
 		k--;
 		}
 		while(k>0);
 	}
+
+
+        public String InsertPVote(ArrayList E, String path)
+{
+    Session session =null;
+    String obj=null;
+    Transaction tx = null;
+    StringBuffer  st=new StringBuffer();
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+           Iterator it = E.iterator();
+          // System.out.println("its working"+E);
+
+           VotingProcess vot1 = (VotingProcess)it.next();
+           //String election_id=vot1.getId().getElectionId();
+           //String insti_id=vot1.getId().getInstituteId();
+
+            session.save(vot1);
+		st.append("Voting Process (Institue ID, Election Id,Voter Id)==>"+vot1.getId().getInstituteId()+"|"+vot1.getId().getElectionId()+"|"+vot1.getId().getVoterId()+"\n");
+           Voting vot = (Voting)it.next();
+            session.save(vot);
+		st.append("Voting (Election id, Institue Id, voter ballot id)==> "+vot.getId().getElectionId()+"|"+vot.getId().getInstituteId()+"|"+vot.getId().getVoterBallotId()+"\n");
+           while(it.hasNext())
+           {
+               ArrayList col = (ArrayList)it.next();
+               Iterator itcol = col.iterator();
+            //   System.out.println("its working1"+col);
+               ArrayList<VotingBallot> l = (ArrayList<VotingBallot>) E.get(2);
+              Iterator it1 = l.iterator();
+               while(it1.hasNext())
+               {
+                  VotingBallot vb = new VotingBallot();
+                   vb = (VotingBallot)it1.next();
+                   session.save(vb);
+                   st.append("Voting Ballot (Voter Ballot id,Position id,candidate id)==>"+vb.getId().getVoterBallotId()+"|"+vb.getId().getPositionId()+"|"+vb.getId().getCandidateId()+"\n");
+               }
+              //prefertional Voting Table Insertion
+
+                ArrayList<PreferencialVoting> l1 = (ArrayList<PreferencialVoting>) E.get(3);
+              it1 = l1.iterator();
+               while(it1.hasNext())
+               {
+                  PreferencialVoting pv = new PreferencialVoting();
+                   pv = (PreferencialVoting)it1.next();
+                   session.save(pv);
+                   st.append("Prefertional Voting Ballot (Voter Ballot id,Position id,candidate id)==>"+pv.getVoterBallotId()+"|"+pv.getId().getPositionId()+"|"+pv.getId().getCandidateId()+"\n");
+               }
+
+               itcol = null;
+               col=null;
+           }
+	    boolean flg1;
+	do{
+	    flg1=true;
+	    wait1(100000);
+            tx = session.beginTransaction();
+            tx.commit();
+  		if(!(tx.wasCommitted())){
+			tx.rollback();
+			flg1=false;
+		}
+
+	}
+	while(!(flg1));
+            obj= (String)"Your Vote Successfully Casted";
+		UserLog.ErrorLog(st.toString()+" "+obj,path);
+        }
+        catch (RuntimeException e) {
+
+            System.out.println(" I am in catch voterDAo InsertVote:");e.printStackTrace();
+            tx.rollback();
+          obj="Vote not Saved!";
+	UserLog.ErrorLog(st.toString()+"\n"+ obj,path);
+        }
+    finally{
+    session.close();
+    }
+    return obj;
+
+}
+
 public VotingProcess getVoter(String institute_id,String election_id,String voter_id)
 {
     Session session =null;
@@ -185,6 +270,34 @@ public VotingProcess getVoter(String institute_id,String election_id,String vote
             query.setString("instituteId", institute_id);
 
             obj= (VotingProcess)query.uniqueResult();
+            session.getTransaction().commit();
+        }
+        catch (RuntimeException e) {
+          e.printStackTrace();
+
+
+        }
+    finally{
+    session.close();
+    }
+        return obj;
+
+}
+
+public PreferencialVoting getPreferencialVoter(String institute_id,String election_id,String voter_id)
+{
+    Session session =null;
+    PreferencialVoting obj=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM PreferencialVoting where id.voterId=:voterId and id.electionId = :electionId and instituteId=:instituteId");
+
+            query.setString("voterId",voter_id);
+            query.setString("electionId",election_id );
+            query.setString("instituteId", institute_id);
+
+            obj= (PreferencialVoting)query.uniqueResult();
             session.getTransaction().commit();
         }
         catch (RuntimeException e) {

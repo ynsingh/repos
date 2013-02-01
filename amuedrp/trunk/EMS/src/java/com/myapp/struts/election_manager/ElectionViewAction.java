@@ -43,11 +43,16 @@ private ElectionId elid=new ElectionId();
         Election l;
         // System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDD"+button);
           String Eid=employeeform.getInstituteId();
+            String institute_id = (String)session.getAttribute("institute_id");
+        String staff_id = (String)session.getAttribute("user_id");
           if (Eid==null) Eid = (String)session.getAttribute("institute_id");
         String req=(String)request.getParameter("id");
          String req1=(String)request.getParameter("st");
         if(req!=null && req1==null){
         session.setAttribute("ele", req);
+         Election election   =(Election)CandidateRegistrationDAO.getElectionName(institute_id,req);
+    session.setAttribute("electionname",election.getElectionName());
+
         return mapping.findForward("preview");
 
 
@@ -233,16 +238,17 @@ private ElectionId elid=new ElectionId();
 //                }
 //        }
 
-if(button.equals("Preview"))
+if(button.equals("Preview")){
+ Election election   =(Election)CandidateRegistrationDAO.getElectionName(institute_id,req);
+    session.setAttribute("electionname",election.getElectionName());
+    System.out.println("Election nameQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ"+election.getElectionName());
 return mapping.findForward("preview");
-           String institute_id = (String)session.getAttribute("institute_id");
-        String staff_id = (String)session.getAttribute("user_id");
+}       
 List<CandidateRegLoginDetails> lstcandi = (List<CandidateRegLoginDetails>)CandidateRegistrationDAO.searchCandidate1(staff_id, institute_id);
 
         if(lstcandi!=null)
         {
-
-
+            
 
 
              session.setAttribute("CandidateList", lstcandi);

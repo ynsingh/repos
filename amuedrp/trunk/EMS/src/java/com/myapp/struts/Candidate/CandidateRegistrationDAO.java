@@ -1020,4 +1020,29 @@ List candi=null;
 return candi;
       }
 
+      public static Election getElectionName(String institute_id,String ElectionId)
+      {
+       Session session =null;
+  
+Election candi=null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Election where id.electionId=:electionId and id.instituteId=:instituteId");
+             query.setString("electionId",ElectionId );
+              query.setString("instituteId",institute_id);
+
+
+        candi= (Election)query.uniqueResult();
+         session.getTransaction().commit();
+        }
+    catch(Exception e){
+    e.printStackTrace();
+    }
+        finally {
+            session.close();
+        }
+return candi;
+      }
+
 }

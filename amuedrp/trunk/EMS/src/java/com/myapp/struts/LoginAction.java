@@ -153,7 +153,7 @@ else{
             }catch(Exception e)
         {
              request.setAttribute("msg1", "Database Not Connected! Please Contact Web Admin");
-          //   System.out.println("Error:"+e.getMessage());
+             System.out.println("Error:"+e.getMessage());
              return mapping.findForward("failure");
         }
 
@@ -200,7 +200,9 @@ if(x!=null)
                 staff_id = login.getStaffDetail().getId().getStaffId();
                 institute_id =login.getStaffDetail().getId().getInstituteId();
 
-
+                InstituteDAO insti= new InstituteDAO();
+Institute ado=(Institute)insti.getInstituteDetails(institute_id);
+session.setAttribute("insti",ado.getInstituteName());
        List<Election> election = ElectionDAO.Elections(institute_id);
         Iterator ite = election.iterator();
         
@@ -209,8 +211,10 @@ if(x!=null)
        ArrayList ClosedelectionList=new ArrayList();
        ArrayList underprocessList=new ArrayList();
        ArrayList setVoter=new ArrayList();
-       InstituteDAO insti= new InstituteDAO();
+       
         String status="OK";
+
+
         List Institute = insti.getInstituteNameByStatus(status);
       
         session.setAttribute("Institute",Institute);

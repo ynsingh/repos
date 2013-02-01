@@ -51,12 +51,14 @@ String projectPath = getProject();
 
     if(os.equalsIgnoreCase("linux"))
     {
-        projectPath=projectPath+"/reports/";
+       // projectPath=projectPath+"/web/reports/";
+         projectPath=projectPath+"/reports/";
     return projectPath;
     }
     else
-    {
-    projectPath=projectPath+"\\reports\\";
+    { 
+     // projectPath=projectPath+"\\web\\reports\\";   
+      projectPath=projectPath+"\\reports\\";
     return projectPath;
     }
 
@@ -92,12 +94,14 @@ String projectPath = getProject();
 
     if(os.equalsIgnoreCase("linux"))
     {
-        projectPath=projectPath+"/images/";
+       // projectPath=projectPath+"/web/images/";
+         projectPath=projectPath+"/images/";
     return projectPath;
     }
     else
-    {
-    projectPath=projectPath+"\\images\\";
+    { 
+       //projectPath=projectPath+"\\web\\images\\";   
+         projectPath=projectPath+"\\images\\";
     return projectPath;
     }
 
@@ -232,11 +236,13 @@ public static String getProjectExportPath(){
 
     if(os.equalsIgnoreCase("linux"))
     {
-        projectPath=projectPath+"/Export/";
+       // projectPath=projectPath+"/web/Export/";
+         projectPath=projectPath+"/Export/";
         return projectPath;
     }
     else
     {
+       //projectPath=projectPath+"\\web\\Export\\";
        projectPath=projectPath+"\\Export\\";
        return projectPath;
     }

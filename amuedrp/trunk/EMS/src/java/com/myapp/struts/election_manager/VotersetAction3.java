@@ -101,7 +101,7 @@ if(action.equalsIgnoreCase("1"))//got Reset Password & One Time Key with Voting 
      for(int i=0;i<obj.size();i++)
         {
             VoterRegistration obj1=(VoterRegistration)obj.get(i);
-           
+              if(obj1.getEmail()!=null){
           
 
                     Election e=ElectionDAO.searchElection(election, institute_id);
@@ -153,7 +153,7 @@ if(action.equalsIgnoreCase("1"))//got Reset Password & One Time Key with Voting 
                                 }else{
                                         log.add( "\nReset Password & One time key link not generated as Voter already cast there vote\n");
                                 }
-         }
+         }}
 }
 else if(action.equalsIgnoreCase("2")) //Reset Password and one time key for All Voter not cast there vote
 {
@@ -163,6 +163,7 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
         for(int i=0;i<rst.size();i++)
         {
             VoterRegistration obj1=(VoterRegistration)rst.get(i);
+            if(obj1.getEmail()!=null){
             
                     Election e=ElectionDAO.searchElection(election, institute_id);
                                 VotingDAO v=new VotingDAO();
@@ -217,7 +218,7 @@ VoterRegistrationDAO voter=new VoterRegistrationDAO();
                                     }
 
 
-         }
+         }}
 
 }
 

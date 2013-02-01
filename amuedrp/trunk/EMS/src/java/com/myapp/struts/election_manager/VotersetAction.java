@@ -62,11 +62,12 @@ public class VotersetAction extends org.apache.struts.action.Action {
      			List<VoterRegistration> rst = (List<VoterRegistration>)voter.getVoterDetailsReg(institute_id);
 			for(int i=0;i<rst.size();i++){
 		    		VoterRegistration obj1=(VoterRegistration)rst.get(i);
-
+                                if(obj1.getEmail()!=null){
  				//check the Voter already cast vote for this election or not.
  				VotingDAO v=new VotingDAO();
     				VotingProcess voting=(VotingProcess)v.GetVoteStatus(institute_id, election_id,obj1.getEmail());
 				if(voting==null){
+                                     System.out.println("votinrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
     					SetVoter o=new SetVoter();
     					SetVoterId oi=new SetVoterId();
     					oi.setInstituteId(institute_id);
@@ -94,14 +95,17 @@ public class VotersetAction extends org.apache.struts.action.Action {
 				}else{
 					log.add( "\nOne time key has not been send to = "+obj1.getEmail()+ " because Voter already cast their vote"+"\n");
 				}
-			}
+			} 
+                        }   
 		}
 		else{
 			for(int i=0;i<obj.size();i++){
 	     			VoterRegistration obj1=(VoterRegistration)obj.get(i);
+                                if(obj1.getEmail()!=null){
 				VotingDAO v=new VotingDAO();
 				VotingProcess voting=(VotingProcess)v.GetVoteStatus(institute_id, election_id,obj1.getEmail());
 				if(voting==null){
+                                    System.out.println("votingggggggggggggggggggggggggg");
 					SetVoter o=new SetVoter();
 	    				SetVoterId oi=new SetVoterId();
 	    				oi.setInstituteId(institute_id);
@@ -110,7 +114,7 @@ public class VotersetAction extends org.apache.struts.action.Action {
 	    				o.setId(oi);
 					/*Admin Password Generate*/
                  			admin_password= RandomPassword.getRandomString(10);
-                                        //admin_password="1";
+                                       // admin_password="1";
 					//log.add( "\nOne time key is  "+admin_password);
                 			admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
 					//log.add( "\nOne time key MD5  "+admin_password1);//
@@ -129,7 +133,8 @@ public class VotersetAction extends org.apache.struts.action.Action {
 				}else{
 					log.add( "\nOne time key has not been send to = "+obj1.getEmail()+ " because Voter already cast their vote");
 				}
-			}
+			} 
+                        }          
 		}
 		StringBuffer str = new StringBuffer();
 		//always give the path from root. This way it almost always works.

@@ -5,6 +5,7 @@
 
 package com.myapp.struts.election_manager;
 
+import com.myapp.struts.Candidate.CandidateRegistrationDAO;
 import com.myapp.struts.hbm.*;
 import com.myapp.struts.hbm.ElectionId;
 import java.util.Iterator;
@@ -139,7 +140,8 @@ employeeform.setResultDeclarationDate(ere.getResultDeclarationDate());
          //   employeeform.setDeaprtment(ere.getEligibility().getDepartment());
          //   employeeform.setMarks(ere.getEligibility().getMarks());
         //    employeeform.setIndiscipline(ere.getEligibility().getIndiscipline());
-
+               Election election   =(Election)CandidateRegistrationDAO.getElectionName(Eid,id);
+    session.setAttribute("electionname",election.getElectionName());
             request.setAttribute("button", button);
             return mapping.findForward("add");
                        }

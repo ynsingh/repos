@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Feb 3, 2012 11:38:44 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.ElectionManagerMigrate" table="election_manager_migrate" catalog="emsiitk">
+    <class name="com.myapp.struts.hbm.ElectionManagerMigrate" table="election_manager_migrate">
         <composite-id name="id" class="com.myapp.struts.hbm.ElectionManagerMigrateId">
             <key-property name="electionId" type="string">
                 <column name="election_id" length="20" />

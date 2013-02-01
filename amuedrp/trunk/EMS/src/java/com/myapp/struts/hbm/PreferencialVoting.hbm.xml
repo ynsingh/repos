@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Oct 20, 2012 11:50:47 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.PreferencialVoting" table="preferencial_voting" >
+        <composite-id name="id" class="com.myapp.struts.hbm.PreferencialVotingId">
+            <key-property name="candidateId" type="string">
+                <column name="candidate_id" length="20" />
+            </key-property>
+            <key-property name="positionId" type="string">
+                <column name="position_id" length="20" />
+            </key-property>
+            <key-property name="electionId" type="string">
+                <column name="election_id" length="20" />
+            </key-property>
+            <key-property name="voterId" type="string">
+                <column name="voter_id" />
+            </key-property>
+        </composite-id>
+        <property name="voterBallotId" type="string">
+            <column name="voter_ballot_id" length="20" />
+        </property>
+        <property name="instituteId" type="string">
+            <column name="institute_id" length="20" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="20" />
+        </property>
+        <property name="preference" type="string">
+            <column name="preference" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

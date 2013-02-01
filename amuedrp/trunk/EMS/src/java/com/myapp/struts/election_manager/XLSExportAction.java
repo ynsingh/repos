@@ -7,6 +7,7 @@ package com.myapp.struts.election_manager;
 
 import com.myapp.struts.hbm.ElectionManagerDAO;
 import com.myapp.struts.utility.AppPath;
+import com.myapp.struts.utility.UserLog;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -48,6 +49,7 @@ public class XLSExportAction extends org.apache.struts.action.Action {
                  String login_role=(String)session.getAttribute("login_role");
                  String institute_id=(String)session.getAttribute("institute_id");
                  String election_id=request.getParameter("election");
+                 String export=request.getParameter("export");
                  ArrayList columns=new ArrayList();
              ElectionManagerDAO dao=new ElectionManagerDAO();
 
@@ -59,6 +61,105 @@ public class XLSExportAction extends org.apache.struts.action.Action {
        try
     	{
                 String   filename=path+login+".xls";
+        if (export!=null)
+        {
+            filename=path+login+".txt";
+
+        columns.add(0, "Institute_Name");
+        columns.add(1, "Election_Id");
+        columns.add(2, "Enrollment");
+        columns.add(3, "Email");
+        columns.add(4, "VoterName");
+        columns.add(5, "Status");
+        columns.add(6, "MobileNo");
+        columns.add(7, "Nomination Start Date");
+        columns.add(8, "Nomination End Date");
+        columns.add(9, "Election Start Date");
+        columns.add(10, "Election End Date");
+        columns.add(11, "Position Name");
+
+
+               StringBuffer line=new StringBuffer();
+               for (int k = 0; k < columns.size(); k++)
+               {
+                    line.append(columns.get(k).toString());
+                    line.append("|");
+                }
+               line.deleteCharAt(line.length()-1);
+               line.append("\n");
+              // List<Export> lst = (ArrayList<Export>)daoobj.ViewAllTable(tableName,library_id,sublibrary_id) ;
+                List<CandidateReg1> lst=dao.VotedVoterListXML(institute_id,election_id);
+               for (int row = 0; row < lst.size(); row++)
+	       {
+
+
+                CandidateReg1 rowdata=(CandidateReg1)lst.get(row);
+
+
+
+
+                line.append(rowdata.getI_institute_name());
+                line.append("|");
+
+                line.append(rowdata.getE_election_name()==null?"NA":rowdata.getE_election_name());
+                line.append("|");
+
+                line.append(rowdata.getV_enrollment()==null?"NA":rowdata.getV_enrollment());
+                line.append("|");
+
+                line.append(rowdata.getV_email()==null?"NA":rowdata.getV_email());
+                    line.append("|");
+
+                line.append(rowdata.getV_voter_name()==null?"NA":rowdata.getV_voter_name());
+                    line.append("|");
+
+                line.append(rowdata.getStatus()==null?"NA":rowdata.getStatus());
+                    line.append("|");
+
+                line.append(rowdata.getV_mobile_number()==null?"NA":rowdata.getV_mobile_number());
+                    line.append("|");
+
+                    line.append(rowdata.getE_nomistart()==null?"NA":rowdata.getE_nomistart());
+                    line.append("|");
+
+                    line.append(rowdata.getE_nomiend()==null?"NA":rowdata.getE_nomiend());
+                    line.append("|");
+
+                    line.append(rowdata.getE_start()==null?"NA":rowdata.getE_start());
+                    line.append("|");
+
+                    line.append(rowdata.getE_end()==null?"NA":rowdata.getE_end());
+                    line.append("|");
+
+                    line.append(rowdata.getP_position_name()==null?"NA":rowdata.getP_position_name());
+                    line.append("|");
+
+                   
+
+
+            line.append("\n");
+
+
+
+        }
+        //write data in the file
+
+               boolean res=UserLog.WriteTextFile(line.toString(), filename);
+		if(res==false){
+		               request.setAttribute("msg1", "Export in Flat file has error");
+		}else{
+               session.setAttribute("type", "text");
+               request.setAttribute("msgxls", "The Data has been successfully exported and saved");
+               //session.setAttribute("file", tableName+user_id+".txt");
+               session.setAttribute("filename", login+".txt");
+		}
+            return mapping.findForward("success");
+        }
+
+
+
+
+
                     WorkbookSettings ws = new WorkbookSettings();
                     ws.setLocale(new Locale("en", "EN"));
                     WritableWorkbook workbook =

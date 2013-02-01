@@ -16,7 +16,7 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  *
- * @author faraz
+ * @author iqubal
  */
 public class selectElectionAction extends org.apache.struts.action.Action {
 
