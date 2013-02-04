@@ -308,8 +308,8 @@ $!data.getMessage()
 				<td width="15%" align="center">
         	                        <select name="actionType" class="drop">
                 		                <option selected value="-1"></option>
-			                        <option value=1> Move</option>
-                        		        <option value=2> Exchange with </option>
+			                        <option value=1>$brih_move</option>
+                        		        <option value=2>$brih_exchange</option>
 	                                </select>
                                 </td>
         	                <td width="15%" align="center">
