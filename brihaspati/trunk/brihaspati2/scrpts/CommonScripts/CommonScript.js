@@ -64,13 +64,13 @@ function validateEmail(fld) {
 // Roll No
 function validateRollNo(fld){
         var error="";
-        if((fld.value.length == 0)&&(fld.disabled==false)){
-                fld.style.background = 'Yellow';
+        if((fld.rollno.value.length == 0)&&(fld.PrgName.value!="Select Program")){
+                fld.rollno.style.background = 'Yellow';
                 error="* you havn't entered User's Roll No.\n";
         }
         else
         {
-                fld.style.background = 'White';
+                fld.rollno.style.background = 'White';
         }
         return error;
 }
@@ -96,7 +96,7 @@ function validateGroup(fld){
 // User Role
 function validateRole(fld){
         var error="";
-        if(fld.value.length == 0){
+        if(fld.value == "Select Role"){
                 error="* you havn't selected User's Role.\n";
         }
         return error;
@@ -181,7 +181,7 @@ var reason = "";
     reason += validateGroup(frm.group);
     reason += validateRole(frm.role);
     reason+= validateEmail(frm.EMAIL);
-    reason += validateRollNo(frm.rollno);
+    reason += ChkRollNo(frm);
 if (reason != "") {
         alert("Some fields need correction:\n\n" + reason);
         return false;
@@ -200,7 +200,8 @@ var reason = "";
     reason += validateGroup(frm.group);
     reason += validateRole(frm.role);
     reason += validateEmail(frm.EMAIL);
-    reason += validateRollNo(frm.rollno);
+    //reason += validateRollNo(frm);
+    reason += ChkRollNo(frm);
 if (reason != "") {
         alert("Some fields need correction:\n\n" + reason);
         return false;
@@ -217,7 +218,7 @@ if (reason != "") {
 function  checkFieldStudent(frm,fld) {
 var reason = "";
     reason += validateEmail(frm.EMAIL);
-    reason += validateRollNo(frm.rollno);
+    reason += validateRollNo(frm);
 if (reason != "") {
         alert("Some fields need correction:\n\n" + reason);
         return false;
@@ -306,5 +307,22 @@ function checkClear(frm,field)
         frm.role.value="";
         frm.rollno.disabled=true;
         frm.rollno.style.background = '';
+}
+function ChkRollNo(fld){
+        var error="";
+	if(fld.role.value=="student"){
+	if(fld.prg.value!="Select Program")
+	{
+	        if(fld.rollno.value == 0){
+	               fld.rollno.style.background = 'Yellow';
+         	       error="* you havn't entered User's Roll No.\n";
+		}
+        }
+        else
+        {
+                fld.rollno.style.background = 'White';
+        }
+	}
+        return error;
 }
 

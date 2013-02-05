@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) UserAction_Instructor.java	
  *
- *  Copyright (c) 2005-2006, 2008-2010, 2010-2011,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008-2010, 2010-2011,2012-2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -86,7 +86,7 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
  * @modified date: 26-02-2011, 27-07-2011, 05-08-2011, 19-04-2012
- * @modified date: 08-08-2012, 30-10-2012(Richa)
+ * @modified date: 08-08-2012, 30-10-2012(Richa),01-02-2013(Richa)
  */
 public class UserAction_Instructor extends SecureAction_Instructor
 {
@@ -131,7 +131,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 				data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
                                return;
 	                }
-			String program = pp.getString("prg","");
+			String program = pp.getString("PrgName","");
 			/**
  			 * Check value of program, if it is RWP ie RegistrationWithoutProgram 
  			 * then generate random rollno for that user. 
@@ -767,6 +767,8 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         doDisableExp(data,context);
 		else if(action.equals("eventSubmit_doExpEnab"))
                         doEnableExp(data,context);
+		else if(action.equals("PrgName"))
+                        setTemplate(data,"call,UserMgmt_User,StudentManagement.vm");
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("usr_prof2",LangFile));
 	}

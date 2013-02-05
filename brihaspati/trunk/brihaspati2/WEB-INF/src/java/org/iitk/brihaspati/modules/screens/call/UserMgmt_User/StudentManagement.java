@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /*
  * @(#) StudentManagement.java	
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2010, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,11 +37,15 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
  */
 import java.util.List;
 import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.apache.turbine.util.RunData;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
@@ -49,7 +53,9 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
@@ -58,7 +64,7 @@ import org.iitk.brihaspati.modules.utils.MailNotificationThread;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:23-12-2010, 11-01-2011
+ * @modified date:23-12-2010, 11-01-2011, 01-02-2013(Richa)
  */
 
 public class StudentManagement extends SecureScreen_Instructor
@@ -114,24 +120,48 @@ public class StudentManagement extends SecureScreen_Instructor
 		/**
  		 * Getting list of program according to institute id  
  		 */ 	
-		int InstId =Integer.parseInt((String)data.getUser().getTemp("Institute_id"));
+		String InstId =(String)data.getUser().getTemp("Institute_id");
 		Criteria crit=new Criteria();
-                crit.add(InstituteProgramPeer.INSTITUTE_ID,InstId);
-                List Instplist= InstituteProgramPeer.doSelect(crit);
-		Vector PrgDetail = new Vector();
-		for(int i=0;i<Instplist.size();i++)
-		{
-			InstituteProgram element = (InstituteProgram)Instplist.get(i);
-			String PrgCode = element.getProgramCode();
-			//String PrgCode = Integer.toString(prgcode);
-			String prgName = InstituteIdUtil.getPrgName(PrgCode);
-			CourseUserDetail cDetails=new CourseUserDetail();
-			cDetails.setPrgName(prgName);
-			cDetails.setPrgCode(PrgCode);
-			PrgDetail.add(cDetails);
-			context.put("PrgDetail",PrgDetail);
-		}	
-
+                crit.add(InstituteProgramPeer.INSTITUTE_ID,Integer.parseInt(InstId));
+	        List Instplist= InstituteProgramPeer.doSelect(crit);
+                Vector PrgDetail = new Vector();
+                for(int i=0;i<Instplist.size();i++)
+                {
+                	InstituteProgram element = (InstituteProgram)Instplist.get(i);
+                        String PrgCode = element.getProgramCode();
+                        String prgName = InstituteIdUtil.getPrgName(PrgCode);
+                	CourseUserDetail cDetails=new CourseUserDetail();
+                        cDetails.setPrgName(prgName);
+                        cDetails.setPrgCode(PrgCode);
+                        PrgDetail.add(cDetails);
+                }
+                context.put("PrgDetail",PrgDetail);
+		/**
+ 		 * Getting values of all fields of template and set into hash map for 
+ 		 * display in template after reloading the page for checking existing rollno .
+ 		 */ 
+		ArrayList list = new ArrayList();
+                Map map = new HashMap();
+		String uname=data.getParameters().getString("EMAIL","");
+		String Passwd=data.getParameters().getString("PASSWD","");
+		String Fname=data.getParameters().getString("FNAME","");
+		String Lname=data.getParameters().getString("LNAME","");
+		String pgcode=data.getParameters().getString("PrgName","");
+		String pgname="";
+		if(StringUtils.isNotBlank(pgcode))
+			pgname=InstituteIdUtil.getPrgName(pgcode);
+		map = new HashMap();
+		map.put("usrname",uname);
+		map.put("Pswd",Passwd);
+		map.put("Fstname",Fname);
+		map.put("Lstname",Lname);
+		map.put("Pgcode",pgcode);
+		map.put("Pgname",pgname);
+		list.add(map);
+		context.put("UsrDetail",list);
+		//Get rollno of the user if exist in databse and context put in template.
+		List userRollNo=CourseProgramUtil.getUserPrgRollNo(uname,pgcode,InstId);
+		context.put("rollno",userRollNo);
 	}
 	catch(Exception e)
 	{

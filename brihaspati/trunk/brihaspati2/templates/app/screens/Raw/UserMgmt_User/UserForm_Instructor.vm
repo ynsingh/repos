@@ -101,16 +101,13 @@ $page.setBgColor($ui.bgcolor)
                                 </tr>
 				<tr bgcolor="$ui.menuColor">
                                 #if($UDetail.size()==0)
-                                	<td><select class="drop" name="prg1" size=1 id="pg1"onChange="showList(document.frm,this);">
+                                	<td colspan=5><select class="drop" name="prg1" size=1 id="pg1"onChange="showList(document.frm,this);">
                                                 <option value="Select Program">$brih_select $brih_program </option>
-						#foreach($instplist in $PrgDetail)
+						#foreach($instplist in $rlprglist)
 							<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 						#end
 					</td>
-                                        <td colspan=4>
-                                                <input type="text" name="rollno1" id="rl1" value="">
-                                        </td>
-                                        </tr>
+                                </tr>
 				#end
 				#foreach($st in $UDetail)
 					#if($velocityCount%2==0)
@@ -121,7 +118,7 @@ $page.setBgColor($ui.bgcolor)
                                         	<td><select class="drop" name="prg1" size=1 id="pg1" onChange="showList(document.frm,this);">
 						#set($tmpPrg = $st.pgname)
 							<option value="$st.pgcode">$st.pgname </option>
-							#foreach($instplist in $PrgDetail)
+							#foreach($instplist in $rlprglist)
 								#if($tmpPrg!=$instplist.getPrgName())
 									<option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 								#end
@@ -130,7 +127,6 @@ $page.setBgColor($ui.bgcolor)
 	                                        <td colspan=4 id="rl1">
         	                                ## get rollno from record
         	                                	$st.rlno
-        	        				##<input type="text" name="rollno1" value="$st.rlno" id="rl1">
 	                                        </td></tr>
                                 #end
 			#else
