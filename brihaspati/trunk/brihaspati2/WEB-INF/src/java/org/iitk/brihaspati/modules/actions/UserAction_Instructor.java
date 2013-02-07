@@ -113,9 +113,9 @@ public class UserAction_Instructor extends SecureAction_Instructor
                  	*/
                 	User user=data.getUser();
                 	LangFile=(String)user.getTemp("LangFile"); 
-			String serverName=data.getServerName();
-                        int srvrPort=data.getServerPort();
-                        String serverPort=Integer.toString(srvrPort);
+			//String serverName=data.getServerName();
+                        //int srvrPort=data.getServerPort();
+                        //String serverPort=Integer.toString(srvrPort);
 
 			ParameterParser pp=data.getParameters();
 			String gName=data.getUser().getTemp("course_id").toString();
@@ -154,7 +154,8 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-         		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,Instname,email,gName,"student",serverName,serverPort,LangFile,rollno,program,"act"); //modified by Shikha. Last parameter added by Priyanka
+         		//String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,Instname,email,gName,"student",serverName,serverPort,LangFile,rollno,program,"act"); //modified by Shikha. Last parameter added by Priyanka
+			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,Instname,email,gName,"student",LangFile,rollno,program,"act");
 			data.setMessage(msg);
 			// Maintain Log
                         log.info("Student Registration by --> "+user.getName() +" | Institute Name -->"+Instname +" | Student's email -->"+email+" | Course Name -->"+gName + " | IP Address --> "+data.getRemoteAddr());
@@ -201,8 +202,8 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			*Get the Server Name and
 			*Server Port using in mail on deletion
 			*/
-			String serverName=TurbineServlet.getServerName();
-	                String serverPort=TurbineServlet.getServerPort();
+			//String serverName=TurbineServlet.getServerName();
+	                //String serverPort=TurbineServlet.getServerPort();
 			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 			String subject="";
 			String loginName = user.getName();
@@ -252,9 +253,11 @@ public class UserAction_Instructor extends SecureAction_Instructor
 					String uid=Integer.toString(UserUtil.getUID(userName));
 					TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 	email=element.getEmail();
-					subject=checkUserAvailabilityDifferntGroup(userName,serverPort);
-			                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName,"","",fileName,serverName,serverPort);
-		                	msg = msg1.split(":");
+					//subject=checkUserAvailabilityDifferntGroup(userName,serverPort);
+			                subject=checkUserAvailabilityDifferntGroup(userName);
+					//msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName,"","",fileName,serverName,serverPort);
+		                	msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName,"","",fileName);
+					msg = msg1.split(":");
 	                		data.setMessage(msg[0]);
 				        //Maintain Log
                                         ParameterParser pp=data.getParameters();
@@ -320,13 +323,13 @@ public class UserAction_Instructor extends SecureAction_Instructor
                          *MailNotification in utils This mail will specify the user name and password of the new user
                          * @see MailNotification in utils
                          */
-			String serverName=data.getServerName();
-                        int srvrPort=data.getServerPort();
-                        String serverPort=Integer.toString(srvrPort);
+			//String serverName=data.getServerName();
+                        //int srvrPort=data.getServerPort();
+                        //String serverPort=Integer.toString(srvrPort);
 			//String file=(String)data.getUser().getTemp("LangFile");
 			User user1 = TurbineSecurity.getUser(userName);
                         String mailId=user1.getEmail();
-			PasswordUtil.passwordFromUtil(serverName, serverPort);
+			//PasswordUtil.passwordFromUtil(serverName, serverPort);
 			String newPW=StringUtil.replaceXmlSpecialCharacters(Passwd);
 			String msg=PasswordUtil.doChangepassword(user1,"",newPW,LangFile);
 
@@ -484,17 +487,19 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 *Get the Server Name and
                 *Server Port using in sending mail on deletion
                 */
-                String serverName=TurbineServlet.getServerName();
-                String serverPort=TurbineServlet.getServerPort();
+                //String serverName=TurbineServlet.getServerName();
+                //String serverPort=TurbineServlet.getServerPort();
 		String subject="";	
-		subject=checkUserAvailabilityDifferntGroup(userName,serverPort);
+		//subject=checkUserAvailabilityDifferntGroup(userName,serverPort);
+		subject=checkUserAvailabilityDifferntGroup(userName);
 		 /**
                 *Release the disk space
                 */
 		String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 		UserManagement umt= new UserManagement();
-		msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName, "","",fileName,serverName,serverPort);
-                msg = msg1.split(":");
+		//msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName, "","",fileName,serverName,serverPort);
+                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName, "","",fileName);
+		msg = msg1.split(":");
 		data.setMessage(msg[0]);
 		data.addMessage(msg[1]);
                 /**String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,serverName,serverPort,LangFile);
@@ -597,8 +602,9 @@ public class UserAction_Instructor extends SecureAction_Instructor
 	 * otherwise it would be, subject="deleteUser"
 	*/
 
-	public String checkUserAvailabilityDifferntGroup( String userName, String serverPort)
-        {
+	//public String checkUserAvailabilityDifferntGroup( String userName, String serverPort)
+        public String checkUserAvailabilityDifferntGroup( String userName)
+	{
                 String subject="";
 		int[]  rId={1,6};
 		Vector grpId = new Vector();
@@ -622,21 +628,21 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 }
                 if( (grpId.size() > 1) )
                 {
-                        if(serverPort.equals("8080"))
+                        //if(serverPort.equals("8080"))
                                  //subject="deleteFromGroup";
                                  subject="deleteFromGroup$newUser";
-                        else
+                        //else
                                 //subject="deleteFromGrouphttps";
-                                subject="deleteFromGrouphttps$newUserhttps";
+                            //    subject="deleteFromGrouphttps$newUserhttps";
                 }
 		 else
                 {
-                        if(serverPort.equals("8080"))
+                        //if(serverPort.equals("8080"))
                                 //subject="deleteUser";
                                 subject="deleteUser$newUser";
-                        else
+                        //else
                                 //subject="deleteUserhttps";
-                               subject="deleteUserhttps$newUserhttps";
+                          //     subject="deleteUserhttps$newUserhttps";
                 }
                 return subject;
 	}

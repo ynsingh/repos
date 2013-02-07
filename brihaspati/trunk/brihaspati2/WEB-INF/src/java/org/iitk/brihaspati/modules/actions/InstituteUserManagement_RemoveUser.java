@@ -326,8 +326,8 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 			*For Using in Mail on deletion
 			*/
 			StringTokenizer st1;
-                        String server_name=TurbineServlet.getServerName();
-                        String srvrPort=TurbineServlet.getServerPort();
+                   //     String server_name=TurbineServlet.getServerName();
+                     //   String srvrPort=TurbineServlet.getServerPort();
 			String postString="";
                         String email="";
                         String message="";
@@ -364,7 +364,7 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 						/**
 						*Send Mail on deletion User
 						*/
-						subject=checkUserAvailabilityDifferntGroup(postString,3,srvrPort);
+						subject=checkUserAvailabilityDifferntGroup(postString,3);
 						uid=Integer.toString(UserUtil.getUID(postString));
 						//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 						element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
@@ -372,7 +372,7 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 						/**
 						 * Delete all student one by one
 						 */
-						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName, loginName,"","",fileName,server_name,srvrPort);
+						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName, loginName,"","",fileName);
 						msg = message.split(":");
 			                	data.setMessage(msg[0]);
 	                                        CuDetail.setErr_User(postString);
@@ -396,7 +396,7 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
                                                 String preString=s.substring(0,index);
                                                 postString=s.substring(index+1);
 						//ErrorDumpUtil.ErrorLog("preString=="+preString+"\npostString=="+postString);
-                                                subject=checkUserAvailabilityDifferntGroup(postString,2,srvrPort);
+                                                subject=checkUserAvailabilityDifferntGroup(postString,2);
 
                                                 /**
                                                 * Check if the course obtained above is active
@@ -437,7 +437,7 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
                                                                 
                                                            
                                                                 
-                                                		message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName, loginName,"","",fileName,server_name,srvrPort);
+                                                		message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName, loginName,"","",fileName);
 								//ErrorDumpUtil.ErrorLog("message without split=="+message);
 								msg = message.split(":");
 				                		data.setMessage(msg[0]);
@@ -472,12 +472,12 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 							/**
 							*Send Mail on deletion
 							*/
-	                                                subject=checkUserAvailabilityDifferntGroup(postString,2,srvrPort);
+	                                                subject=checkUserAvailabilityDifferntGroup(postString,2);
 							uid=Integer.toString(UserUtil.getUID(postString));
 							//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 							element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 			email=element.getEmail();
-					         	message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,loginName,"","",fileName,server_name,srvrPort);
+					         	message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,loginName,"","",fileName);
 							msg = message.split(":");
 			                		data.setMessage(msg[0]);
                                                         if(umt.flag.booleanValue()==false)
@@ -515,24 +515,24 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 		}
 
 	}
-	public String checkUserAvailabilityDifferntGroup( String userName, int roleId, String srvrPort)
+	public String checkUserAvailabilityDifferntGroup( String userName, int roleId)
 	{
 		String subject="";
                 int userId=UserUtil.getUID(userName);
                 Vector studGrp=UserGroupRoleUtil.getGID(userId,roleId);
 		if( (studGrp.size() > 1) )
                 {
-                	if(srvrPort.equals("8080"))
+                	//if(srvrPort.equals("8080"))
                                  subject="deleteFromGroup$newUser";
-			else
-				subject="deleteFromGrouphttps$newUserhttps";
+			//else
+				//subject="deleteFromGrouphttps$newUserhttps";
 		}
                 else
 		{                 
-                	if(srvrPort.equals("8080"))
+                	//if(srvrPort.equals("8080"))
                         	subject="deleteUser$newUser";
-			else
-                        	subject="deleteUserhttps$newUserhttps";
+			//else
+                        	//subject="deleteUserhttps$newUserhttps";
 		}
 		return subject;
 	}

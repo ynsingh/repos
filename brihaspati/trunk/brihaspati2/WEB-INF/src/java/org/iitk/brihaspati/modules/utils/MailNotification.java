@@ -89,6 +89,7 @@ public class MailNotification{
                 	f = new FileInputStream(file);
 	                //String msg1=MultilingualUtil.ConvertedString("mailNotification_msg1",LangFile);
         	        p.load(f);
+			f.close();
 		}
 		catch (Exception e){ErrorDumpUtil.ErrorLog("The error in uploadingPropertiesFile method in MailNotification" );}
 	return p;
@@ -126,17 +127,29 @@ public class MailNotification{
 	 *
 	 * @return String
 	 */
-
+/*
 	public static String getMessage(String info, String course_id, String dept_name, String uName, String uPassword, String server_name, String server_port, Properties pr) throws Exception{
 		
 		message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
 		replaceString("course_id",course_id);
         	replaceString("dept_name",dept_name);
              	replaceString("user_name",uName);
-		return replaceString("user_pass",uPassword);
-                //replaceString("server_name",server_name);
-               	//return(replaceString("server_port",server_port));
+		replaceString("user_pass",uPassword);
+		replaceString("server_name",server_name);
+               	return replaceString("server_port",server_port);
 	}
+*/
+	/**
+ 	 * Replaces constants for the purpose of sending mail to user.
+ 	 * @param info String Portion of a property define in brihaspati.properties file like(deleteUser, deleteUserhttps, onlineStudentRegRequest 
+ 	 * onlineStudentRegRequesthttps etc. It is vary according to requirement.
+ 	 * @param course_id String Course ID
+ 	 * @param dept_name String Name of department
+ 	 * @param uName String User Name
+ 	 * @param uPassword String Password of the user
+ 	 * @param pr Properties  File in which the properties file is opened
+ 	 * @return String
+ 	 */ 
 	public static String getMessage(String info, String course_id, String dept_name, String uName, String uPassword, Properties pr) throws Exception{
 		
 		message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
@@ -144,8 +157,16 @@ public class MailNotification{
         	replaceString("dept_name",dept_name);
              	replaceString("user_name",uName);
 		return replaceString("user_pass",uPassword);
+		
 	}
-
+	/**
+ 	 * Replaces constants for the purpose of sending mail to user.
+ 	 * @param info String Portion of a property define in brihaspati.properties file like(deleteUser, deleteUserhttps, onlineStudentRegRequest 
+ 	 * onlineStudentRegRequesthttps etc. It is vary according to requirement.
+ 	 * @param email email id of user
+ 	 * @param pr Properties  File in which the properties file is opened
+ 	 * @return String
+ 	 */ 
 	public static String getMessage(String info, String email, Properties pr) throws Exception
 	{
                 message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
@@ -160,6 +181,7 @@ public class MailNotification{
          * @param aKey Verification key
          * @param mode String
          * @param lang Language selected
+         * @return String
          */
 	public static String getMessage(String info,String uName, String aKey, String mode, String lang) throws Exception{
 	
@@ -184,15 +206,39 @@ public class MailNotification{
 
         }
 
+        /**
+ 	  * Replace the server parameter (scheme, name, port) in message .
+ 	  * @param info This string is actual message which will be send in the email.
+          * @param serverScheme Scheme of the server.
+          * @param serverName Name of the server.
+          * @param serverPort Used Port of the server.
+          * @return String
+          */
 
-	 public static String replaceServerPort(String info,String serverName, String serverPort) throws Exception {
+	 //public static String replaceServerPort(String info,String serverScheme, String serverName, String serverPort) throws Exception {
+	 public static String replaceServerPort(String info) throws Exception {
+		String serverName= TurbineServlet.getServerName();
+                String serverPort= TurbineServlet.getServerPort();
+                String serverScheme = TurbineServlet.getServerScheme();
+		
+               if(serverScheme.length() >0)
+                       info=info.replaceAll("server_scheme", serverScheme);
                if(serverName.length() >0)
                        info=info.replaceAll("server_name", serverName);
                if(serverPort.length() >0)
                        info=info.replaceAll("server_port", serverPort);
                return info;
 	}
-	
+	 
+        /**
+ 	  * Replace the constant in message .
+ 	  * @param info This string is actual message which will be send in the email.
+          * @param FName First name of the user.
+          * @param LName Last name of the user.
+          * @param i_name Institute name.
+          * @param uName User name of user.
+          * @return String
+          */
 	public static String getMessage_new(String info,String FName,String LName,String i_name,String uName) throws Exception {
 	       if(FName.length()>0){ 
                         info=info.replaceAll("first_name",FName);
@@ -214,7 +260,7 @@ public class MailNotification{
 		 return info;
         }
 
-         /* This method replaces the a string with the replacement string
+       /** This method replaces the a string with the replacement string
 	 * @param searchString String The substring to be searched in the string
 	 * @param replacement String The string with which the substring has to be replaced
 	 * @return String
@@ -256,7 +302,7 @@ public class MailNotification{
 		//ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
 		ErrorDumpUtil.ErrorLog("\nStarttttttt in MailNotification Class  mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
 		try{ //try 1
-			 //if(!mail_id.equals("")){
+			 //if(!mail_id.equals("")) {
 			if(StringUtils.isNotBlank(mail_id)){
 				email_new=mail_id;
 			}

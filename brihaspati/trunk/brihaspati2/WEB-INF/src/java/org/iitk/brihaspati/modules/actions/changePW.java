@@ -92,7 +92,7 @@ public class changePW extends SecureAction{
 		 * @see PasswordUtil in utils
 		 */
 
-                PasswordUtil.passwordFromUtil(data.getServerName(), Integer.toString(data.getServerPort()));
+                //PasswordUtil.passwordFromUtil(data.getServerName(), Integer.toString(data.getServerPort()));
 		String msg=PasswordUtil.doChangepassword(user,oldPW,newPW,LangFile);
 		data.setMessage(msg);
 		// Maintain Log

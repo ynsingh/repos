@@ -44,6 +44,15 @@ import org.apache.commons.lang.StringUtils;
 
 
 /**
+ * This is a singleton class. Only instance of this will always exist. Object
+ * should always be created using MailNotificationThread.getController() which
+ * return the object reference to this singleton class if it exist. If it does
+ * not exist, it will be created.
+ *
+ * setMessage() function in this class should be called for putting up the
+ * message in email spool, so that it can sent by independent thread to the smtp
+ * server as configured in the conf/admin.propertie.
+ *
  * @author <a href="mailto:meha1490@gmail.com">Meha Singh</a>Created on march-2011
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified Date: 18-08-2011 (Shaista)
@@ -77,10 +86,52 @@ public class MailNotificationThread implements Runnable {
         }	
 	
 	/**
- 	 * Add message to a vector which store in linkedlist.
+ 	 * Add message to a vector which is stored in linkedlist.
+         * last parameter added by Priyanka
+         * @param message_text This string is actual message which will be send
+         * in the email.
+         * @param msg_Dear Saluation to be added in the message text.
+         * @param msg_regard The closing words for the mail message.
+         * @param msg_UserInfo The name institute admin/sender
+         * @param mailId mailid of the destination where mail message has to be
+         * sent.
+         * @param sub subject of the email.
+         * @param filePathForLM
+         * @param LangFile language file name
+         * @param instId Institute id 
+         * @param mode 
 	 */
-	//public String set_Message(String message_text,String mailId,String sub,String filePathForLM,String LangFile, String portNum)
-	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile, String instId, String mode)//last parameter added by Priyanka
+	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile)
+	{
+		String strng="failure";
+		//ErrorDumpUtil.ErrorLog("Lang File in MailNotificationThread Class ="+LangFile);
+		v=new Vector();
+		v.add(mailId); //0   
+                v.add(sub);    //1
+                v.add(msg_Dear);  //2 
+                v.add(message_text); //3  
+                v.add(filePathForLM);//4
+                v.add(LangFile);//5
+ //               v.add(instId);//6
+                v.add(msg_regard);  //7 
+                v.add(msg_UserInfo);  //8
+		mailnotification.add(0,v);
+		if(mailnotification.size()>0)
+			strng="Success";
+		//ErrorDumpUtil.ErrorLog("\n v=="+v); 
+		start();
+	        //following check added by priyanka
+//		if(mode.equals("act") || mode.equals(""))
+//			strng= mu.ConvertedString("mail_msg", LangFile);
+			//"Message is in queue";
+//		if(mode.equals("cnfrm_i") || (mode.equals("cnfrm_u")) || (mode.equals("cnfrm_c")))
+                 /* The above line is to be verified. */
+//			strng= mu.ConvertedString("mail_confirm", LangFile);
+			//"Please click on the Activation link to Activate your account."
+		return strng;
+	}
+/*
+	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile, String instId, String mode)
 	{
 		String strng="";
 		//ErrorDumpUtil.ErrorLog("Lang File in MailNotificationThread Class ="+LangFile);
@@ -97,27 +148,21 @@ public class MailNotificationThread implements Runnable {
 		mailnotification.add(0,v);
 		//ErrorDumpUtil.ErrorLog("\n v=="+v); 
 		start();
-	//following check added by priyanka
+	        //following check added by priyanka
 		if(mode.equals("act") || mode.equals(""))
 			strng= mu.ConvertedString("mail_msg", LangFile);
 			//"Message is in queue";
 		if(mode.equals("cnfrm_i") || (mode.equals("cnfrm_u")) || (mode.equals("cnfrm_c")))
-			strng= mu.ConvertedString("mail_confirm", LangFile);
+  */               /* The above line is to be verified. */
+/*			strng= mu.ConvertedString("mail_confirm", LangFile);
 			//"Please click on the Activation link to Activate your account."
-	//....................
 		return strng;
 	}
-
-	/*public void CourseTimeSystem(int userid){
-                this.userid=userid;
-		//this.eid=eid;
-		flag1=true;	
-                start();
-        }*/
-	public void CourseTimeSystem(int userid,int eid){
-		this.userid=userid;
-                this.eid=eid;
-                flag1=true;
+*/
+	public void CourseTimeSystem(int userid, int eid){
+		this.userid = userid;
+                this.eid = eid;
+                flag1 = true;
                 start();
         }
 
@@ -150,39 +195,42 @@ public class MailNotificationThread implements Runnable {
       	public synchronized void run() {
 		
 		while(flag) {
-			try{ 	Thread.sleep(200); }catch(Exception e){}
 			try {
-				/** Please dont remove below line */
- 
-				ErrorDumpUtil.ErrorLog("\nMailNotificationThread Class  mailnotification.size()!!!!!!!!!!!!!!!!"+mailnotification.size(), TurbineServlet.getRealPath("/logs/Email.txt"));
-				while(mailnotification.size() != 0) {
+			 	Thread.sleep(200);
+			} catch(Exception e){
+				ErrorDumpUtil.ErrorLog("\nI am  in MailNotificationThread Class  sleep section "+e, TurbineServlet.getRealPath("/logs/Email.txt"));
+			}
+			try {
+				/** Please dont remove next line */
+				ErrorDumpUtil.ErrorLog("\nMailNotificationThread Class  mailnotification.size() -> "+mailnotification.size(), TurbineServlet.getRealPath("/logs/Email.txt"));
+				while(mailnotification.size() > 0) {
 					boolean boolFlag = false;
 					Vector mail_data=(Vector)mailnotification.pop();
-					//ErrorDumpUtil.ErrorLog("\nMailNotificationThread   mail_data=="+mail_data);
 					String mailId =mail_data.get(0).toString().trim();
-        	                        String sub = mail_data.get(1).toString();
-					String msgDear =mail_data.get(2).toString();
+        	                        String sub = mail_data.get(1).toString().trim();
+					String msgDear =mail_data.get(2).toString().trim();
                				String message_text =mail_data.get(3).toString().trim();
-					String filePathForLM =mail_data.get(4).toString();
-	               			String LangFile =mail_data.get(5).toString();
-					String instId =mail_data.get(6).toString();
+					String filePathForLM =mail_data.get(4).toString().trim();
+	               			String LangFile =mail_data.get(5).toString().trim();
+					//String instId =mail_data.get(6).toString().trim();
 					//MailNotificationThread.attachedFile = filePathForLM;
-					String msgRegard1 =mail_data.get(7).toString();
-					String msgUserInfo =mail_data.get(8).toString().trim();
+					String msgRegard1 =mail_data.get(6).toString().trim();
+					String msgUserInfo =mail_data.get(7).toString().trim();
 					int j=0;
-					while(mailnotification.size() !=0 ) {
+					while(mailnotification.size() >0 ) {
 						boolean flag1=false;
 						Vector mail_data1 = (Vector)mailnotification.get(j);
-		                                String searchId = mail_data1.get(0).toString();
-						String searchInstId = mail_data1.get(6).toString();
-						String searchAttachFile = mail_data1.get(4).toString();
+		                                String searchId = mail_data1.get(0).toString().trim();
+						//String searchInstId = mail_data1.get(6).toString().trim();
 						//ErrorDumpUtil.ErrorLog("mail_data1=="+mail_data1);
-						if(mailId.equals(searchId) && ((instId.equals(searchInstId)|| searchInstId.equals("")))){
+						//if(mailId.equals(searchId) && ((instId.equals(searchInstId)|| searchInstId.equals("")))){
+						if(mailId.equals(searchId) ){
 				
 							flag1=true;
 							boolFlag = true;
-							String searchMsgUserInfo =mail_data1.get(8).toString().trim();
-		               				String searchLangFile =mail_data1.get(5).toString();
+							String searchMsgUserInfo =mail_data1.get(7).toString().trim();
+		               				String searchLangFile =mail_data1.get(5).toString().trim();
+						        String searchAttachFile = mail_data1.get(4).toString().trim();
 							if(!msgUserInfo.equals(searchMsgUserInfo))
 							{
 								/* If One User in Same institute have same message then it would go in "else" part 
@@ -257,7 +305,8 @@ public class MailNotificationThread implements Runnable {
 				
 				if(flag2){
  	              			File f1 = new File(TurbineServlet.getRealPath("/EmailSpooling"));
-	                       		if(f1.exists())
+					File[] files = f1.listFiles();
+	                       		if((f1.exists())&&(files.length >0))
 						emailXMLRead();
 	        			flag2 = false;
 				}
@@ -268,6 +317,10 @@ public class MailNotificationThread implements Runnable {
 			stop();
 		}	
     	}
+
+	/* 
+ 	 *
+ 	 */
 	public void emailXMLRead(){
 		Vector  mailDetail1 = new Vector();
 		 String searchMailId= "", searchMsg ="", sendAttemptTime = "", searchDate = "", attachedFile = "", writeinxml = "", sub = "", langFile = "";

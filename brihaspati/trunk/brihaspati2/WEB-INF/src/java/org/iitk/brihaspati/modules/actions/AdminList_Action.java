@@ -107,16 +107,17 @@ import org.apache.commons.logging.LogFactory;
                                                         crit.add(InstituteAdminUserPeer.ADMIN_UNAME,adminemail);
                                                         crit.add(InstituteAdminUserPeer.ADMIN_PERMISSION_STATUS,0);
                                                         InstituteAdminUserPeer.doInsert(crit);
-							  String serverName=data.getServerName();
-                                                        int srvrPort=data.getServerPort();
-                                                        String serverPort=Integer.toString(srvrPort);
+							  //String serverName=data.getServerName();
+                                                        //int srvrPort=data.getServerPort();
+                                                        //String serverPort=Integer.toString(srvrPort);
                                                         /**
                                                         *   Create User Profile to call UserManagement util Method         
                                                         *   CreateUserProfile. 
                                                         */
                                                         UserManagement usermanagement = new UserManagement();
-                                                        usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,"","","act");// Last parameter added by Priyanka
-                                                        data.setMessage(usermgmt +" "+ mail_msg);
+                                                        //usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,"","","act");// Last parameter added by Priyanka
+                                                        usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",LangFile,"","","act");
+							data.setMessage(usermgmt +" "+ mail_msg);
 							// maintain log
 							log.info("Secondary Admin Added with mailid "+adminemail+" By "+data.getUser().getName()+" | IP Address : "+data.getRemoteAddr());
                                                 }//if

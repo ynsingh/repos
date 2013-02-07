@@ -517,15 +517,17 @@ public class DeleteInstituteUtil
 				 		 *By calling method removeUserProfileWithMail
 				 		 *@see UserManagement in Utils.
 				 		 */
-						String server_name=TurbineServlet.getServerName();
-                        			String srvrPort=TurbineServlet.getServerPort();
-						String subject="";
-						if(srvrPort.equals("8080"))
+						//String server_name=TurbineServlet.getServerName();
+                        			//String srvrPort=TurbineServlet.getServerPort();
+						//String subject="";
+						/*if(srvrPort.equals("8080"))
                                                 	subject="deleteinstadmin";
                                         	else
                                                 	subject="deleteinstadminhttps";
+						*/
 						UserManagement umt=new UserManagement();
-						message=umt.removeUserProfileWithMail(email,gname,langFile,subject,email,"","","","",file,server_name,srvrPort);
+						//message=umt.removeUserProfileWithMail(email,gname,langFile,subject,email,"","","","",file,server_name,srvrPort);
+						message=umt.removeUserProfileWithMail(email,gname,langFile,"deleteinstadmin",email,"","","","",file);
 						/**Delete the entries from USER_PREFS table.*/
                                 		crit=new Criteria();
                                 		crit.add(UserPrefPeer.USER_ID,uid);
@@ -997,16 +999,18 @@ public class DeleteInstituteUtil
                                 	*@see UserManagement in Utils.
                                 	*/
 					String gname=GroupUtil.getGroupName(3);
-                                	String server_name=TurbineServlet.getServerName();
-                                	String srvrPort=TurbineServlet.getServerPort();
-					String subject="";
-					if(srvrPort.equals("8080"))
+                                	//String server_name=TurbineServlet.getServerName();
+                                	//String srvrPort=TurbineServlet.getServerPort();
+					//String subject="";
+					/*if(srvrPort.equals("8080"))
                         			subject="deleteinstadmin";
                 			else
                         			subject="deleteinstadminhttps";
-                                	UserManagement umt=new UserManagement();
-                                	message=umt.removeUserProfileWithMail(username,gname,langFile,subject,username,"","","","",file,server_name,srvrPort);
-                                	/**
+                                	*/
+					UserManagement umt=new UserManagement();
+                                	//message=umt.removeUserProfileWithMail(username,gname,langFile,subject,username,"","","","",file,server_name,srvrPort);
+                                	message=umt.removeUserProfileWithMail(username,gname,langFile,"deleteinstadmin",username,"","","","",file);
+					/**
                                 	* Delete the entries from USER_PREFS table.
                                 	*/
                                 	crit=new Criteria();

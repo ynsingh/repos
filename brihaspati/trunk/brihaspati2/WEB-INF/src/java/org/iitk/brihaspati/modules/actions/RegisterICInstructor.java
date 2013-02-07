@@ -97,9 +97,9 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 		 	        String lname=pp.getString("LNAME","");
 		 		String email=pp.getString("EMAIL","");
 		 		String passwd=pp.getString("PASSWD","");
-				String serverName=data.getServerName();
-                 		int srvrPort=data.getServerPort();
-                 		String serverPort=Integer.toString(srvrPort);
+				//String serverName=data.getServerName();
+                 		//int srvrPort=data.getServerPort();
+                 		//String serverPort=Integer.toString(srvrPort);
 				String instId=(data.getUser().getTemp("Institute_id")).toString();
 				int instituteId=Integer.parseInt(instId);
 				String instName=InstituteIdUtil.getIstName(instituteId); //added by Shikha
@@ -122,8 +122,9 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
 	 			boolean check=QuotaUtil.CompareAllotedQuota(instId);
 				if(check){
-	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName,"act"); //modified by Shikha. Last parameter added by Priyanka                   
-		 		data.setMessage(msg);
+	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName,"act"); //modified by Shikha. Last parameter added by Priyanka                   
+		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,LangFile,instituteId,instName,"act");
+				data.setMessage(msg);
 				}
 				else{
 					data.setMessage(MultilingualUtil.ConvertedString("qmgmt_msg7",LangFile));

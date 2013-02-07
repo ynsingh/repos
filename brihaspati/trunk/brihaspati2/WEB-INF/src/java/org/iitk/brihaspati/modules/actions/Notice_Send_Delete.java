@@ -390,8 +390,8 @@ public class Notice_Send_Delete extends SecureAction
                         NoticeReceivePeer.doInsert(crit);
 			//String lang=data.getUser().getTemp("lang").toString();
 			String lang=data.getUser().getTemp("LangFile").toString();
-			String server_name=TurbineServlet.getServerName();
-                        String srvrPort=TurbineServlet.getServerPort();
+			//String server_name=TurbineServlet.getServerName();
+                        //String srvrPort=TurbineServlet.getServerPort();
 			String groupName = GroupUtil.getGroupName(group_id);
 			String userName=UserUtil.getLoginName(userid);
 			crit=new Criteria();
@@ -403,21 +403,24 @@ public class Notice_Send_Delete extends SecureAction
                         List userList=TurbineUserPeer.doSelect(crit);
 			////////////////////////////////////////////////////
 			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-			String info_new = "";
-			if(srvrPort == "8080")
+			//String info_new = "";
+			/*if(srvrPort == "8080")
 				info_new= "brihaspatiNotice";
 			else
 				info_new= "brihaspatiNoticehttps";
+			*/
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
                         //String subject = MailNotification.subjectFormate(info_new, courseName, pr );
-			String message = MailNotification.getMessage(info_new, courseName, "", data.getUser().getName(), "", pr);
+			//String message = MailNotification.getMessage(info_new, courseName, "", data.getUser().getName(), "", pr);
+			String message = MailNotification.getMessage("brihaspatiNotice", courseName, "", data.getUser().getName(), "", pr);
 			///////////////////////////////////////////////////
 			for(int c1=0;c1<userList.size();c1++) {
 				TurbineUser element=(TurbineUser)(userList.get(c1));
                                 String eMail=element.getEmail();
 				if(!eMail.equals("")){
 					//String Mail_msg= MailNotification.sendMail(message+"<br><br>"+notice_message, eMail, noticeSubject, "", lang);
-					String Mail_msg= MailNotificationThread.getController().set_Message(message+"<br><br>"+notice_message, "", "", "", eMail, noticeSubject, "", lang, "","");//last parameter added by Priyanka
+					//String Mail_msg= MailNotificationThread.getController().set_Message(message+"<br><br>"+notice_message, "", "", "", eMail, noticeSubject, "", lang, "","");//last parameter added by Priyanka
+					String Mail_msg= MailNotificationThread.getController().set_Message(message+"<br><br>"+notice_message, "", "", "", eMail, noticeSubject, "", lang);
 				}
 			}
 		}

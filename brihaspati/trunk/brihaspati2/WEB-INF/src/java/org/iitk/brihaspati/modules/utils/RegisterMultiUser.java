@@ -85,8 +85,8 @@ public class RegisterMultiUser
 		Vector ErrType=new Vector();
 		try
 		{
-			String serverName=TurbineServlet.getServerName();
-                	String serverPort=TurbineServlet.getServerPort();
+			//String serverName=TurbineServlet.getServerName();
+                	//String serverPort=TurbineServlet.getServerPort();
 			int entryNumber=0;
 			CourseUserDetail MsgDetails=new CourseUserDetail();
 			String course_id="";
@@ -245,7 +245,8 @@ public class RegisterMultiUser
  							 */
 							String str="";
                                                         if(instName.length() >0){
-                                                                str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,instName,email,groupName,Role,serverName,serverPort,Langfile,rollno,program,"act"); //modified by Shikha Shukla. Last parameter added by Priyanka
+                                                                //str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,instName,email,groupName,Role,serverName,serverPort,Langfile,rollno,program,"act"); //modified by Shikha Shukla. Last parameter added by Priyanka
+								str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,instName,email,groupName,Role,Langfile,rollno,program,"act");
 							error=3;
 								if(Role.equals("student")){
 								errMsg=MultilingualUtil.ConvertedString("varStudent",Langfile)+" - "+str;
@@ -322,8 +323,8 @@ public class RegisterMultiUser
                 Vector ErrType=new Vector();
                 try
                 {
-		 	String serverName=TurbineServlet.getServerName();
-                	String serverPort=TurbineServlet.getServerPort();
+		 	//String serverName=TurbineServlet.getServerName();
+                	//String serverPort=TurbineServlet.getServerPort();
                 	int entryNumber=0;
 			int InstituteId=0;
                         CourseUserDetail MsgDetails=new CourseUserDetail();
@@ -402,8 +403,9 @@ public class RegisterMultiUser
                                         							* @see CourseManagement Utils
                                         							*/
 												if(InstituteId==0){
-													String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0,"","");//last parameter added by Priyanka
-     													error=3;
+													//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0,"","");//last parameter added by Priyanka
+     													String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,LangFile,0,"","");
+													error=3;
                                         								errMsg=msg;
 												}
 												else{
@@ -418,8 +420,9 @@ public class RegisterMultiUser
                                          									* @see UserManagement Util
                                          									**/
 
-                                        									String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName,"");//last parameter added by Priyanka
-                                        									error=3;
+                                        									//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName,"");//last parameter added by Priyanka
+                                        									String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,LangFile,InstituteId,instName,"");
+														error=3;
                                         									errMsg=MultilingualUtil.ConvertedString("instructor",LangFile)+" - "+msg;
                                         								}
                                         								else{

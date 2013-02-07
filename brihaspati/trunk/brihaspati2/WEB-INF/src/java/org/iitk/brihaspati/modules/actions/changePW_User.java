@@ -96,10 +96,10 @@ public class changePW_User extends SecureAction
 		 	* @see PasswordUtil in utils
 		 	*/
 			String msg="";
-			int srvrPort=data.getServerPort();
-                        String serverPort=Integer.toString(srvrPort);
+			//int srvrPort=data.getServerPort();
+                        //String serverPort=Integer.toString(srvrPort);
 			if(!user.getName().equals("guest")){
-				PasswordUtil.passwordFromUtil(data.getServerName(), serverPort);
+				//PasswordUtil.passwordFromUtil(data.getServerName(), serverPort);
 				msg=PasswordUtil.doChangepassword(user,oldPW,newPW,LangFile);
 				// Maintain Log
 		                log.info("User Name --> "+user.getName()+" | Operation --> Change password | IP Address --> "+data.getRemoteAddr());

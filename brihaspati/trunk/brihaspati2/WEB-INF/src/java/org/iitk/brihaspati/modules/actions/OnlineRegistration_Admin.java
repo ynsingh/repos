@@ -109,8 +109,9 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 			StringTokenizer st=new StringTokenizer(accept,"^");
 			//String MsgForExpireTime= "Your Request for "; 
 			//String subMsgForExpireTime= " Registration is rejected. Please contact to the administrator personally";
-                        String server_name= TurbineServlet.getServerName();
-                        String srvrPort= TurbineServlet.getServerPort();
+                        //String server_name= TurbineServlet.getServerName();
+                        //String srvrPort= TurbineServlet.getServerPort();
+			//String server_scheme = TurbineServlet.getServerScheme();
 			//////////////////////////////////////////////////
 			try{    
 				Criteria crit=new Criteria();
@@ -129,8 +130,9 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                 	catch(Exception e){ErrorDumpUtil.ErrorLog("Error in OnlineRegistration_Admin class in acion at line 113");}
 
 			String message ="";
-			String info_new = "", info_Opt="", msgRegard="";
-       			if(srvrPort == "8080"){
+			//String info_new = "", info_Opt="", msgRegard="";
+       			String msgRegard="";
+			/*if(srvrPort == "8080"){
                                	info_new="onLineRegReqForUserReject";
 				info_Opt = "newUser";
 	                }
@@ -139,13 +141,17 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                                	info_new="onLineRegReqForUserReject_https";
 				info_Opt = "newUserhttps";
 	                }
-
+			*/
        			Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
-                        String subject = MailNotification.subjectFormate(info_new, "", pr );
-			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-	                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-			String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
-                	msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
+                        //String subject = MailNotification.subjectFormate(info_new, "", pr );
+			String subject = MailNotification.subjectFormate("onLineRegReqForUserReject", "", pr );
+			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+	                msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+			//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+			msgRegard = MailNotification.replaceServerPort(msgRegard);
+			//String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+                	String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
+			msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			while(st.hasMoreTokens())
                         {
@@ -171,14 +177,16 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 						//ErrorDumpUtil.ErrorLog("\n email==="+email+"\t mailid="+mailid+"\tgname="+gname+"\t gName="+gName+"\t uname="+uname+"\tuName ="+uName);
                	                                if(email.equals(mailid) && gname.equals(gName) && uname.equals(uName))
 						{						
-                               	                	message = MailNotification.getMessage(info_new, gname, "", uname, "", pr);
+                               	                	//message = MailNotification.getMessage(info_new, gname, "", uname, "", pr);
+							message = MailNotification.getMessage("onLineRegReqForUserReject", gname, "", uname, "", pr);
 							message = MailNotification.getMessage_new(message, "","",instName,"");
 
 							 
 
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Admin.java RejectUser  message="+message);
 							//Mail_msg=MailNotification.sendMail(message, mailid, subject, "",LangFile);
-							 Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, mailid, subject, "", LangFile, Integer.toString(instid),"");//last parameter added by Priyanka
+							 //Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, mailid, subject, "", LangFile, Integer.toString(instid),"");//last parameter added by Priyanka
+							 Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, mailid, subject, "", LangFile);
 							indexList.add(i);
                						data.setMessage(MultilingualUtil.ConvertedString("online_msg3",LangFile));
 						}
@@ -212,8 +220,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 			context.put("status","UserResitration");	
 			User user=data.getUser();
                         ParameterParser pp=data.getParameters();
-		        String serverName=data.getServerName();
-			String serverPort=TurbineServlet.getServerPort();
+		        //String serverName=data.getServerName();
+			//String serverPort=TurbineServlet.getServerPort();
 	                String accept=pp.getString("deleteFileNames");
                 	String path=data.getServletContext().getRealPath("/OnlineUsers"+"/OnlineUser.xml");
                 	String xmlfilepath=data.getServletContext().getRealPath("/OnlineUsers");
@@ -267,7 +275,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 							{
 								instName = ((CourseUserDetail)userlist.get(i)).getInstAdminName();
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"cnfrm_u");//last parameter added by Priyanka
+			              					//String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"cnfrm_u");//last parameter added by Priyanka
+									String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,LangFile,rollno,program,"cnfrm_u");
 									ErrorDumpUtil.ErrorLog("inside onlireg_Admin");
 									data.setMessage(msg);
 								}
@@ -307,8 +316,9 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                         Vector courselist = new Vector();
 			String Mail_msg="";
 			context.put("status","CourseRegistration");
-			String server_name= TurbineServlet.getServerName();
-			String srvrPort= TurbineServlet.getServerPort();
+			//String server_name= TurbineServlet.getServerName();
+			//String srvrPort= TurbineServlet.getServerPort();
+			//String serverScheme = TurbineServlet.getServerScheme();
                         TopicMetaDataXmlReader topicmetadata =new TopicMetaDataXmlReader(path+"/courses.xml");
                         courselist=topicmetadata.getOnlineUserDetails();
                         StringTokenizer st= new StringTokenizer(accept,"^");
@@ -316,7 +326,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 			//String subMsgForExpireTime= " Registration is rejected. Please contact to the administrator personally";
 ///////////////////////////////////////////////////////////////////////
 			String message ="";
-                        String info_new = "", info_Opt="", msgRegard="", instAdminName="";
+                        //String info_new = "", info_Opt="", msgRegard="", instAdminName="";
+			String msgRegard="", instAdminName="";
 			 try{    
 				Criteria crit=new Criteria();
 				crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instid);
@@ -333,20 +344,24 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 			}
 	                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in OnlineRegistration_Admin class in action at line 245");}
 
-                        if(srvrPort == "8080"){
+                       /* if(srvrPort == "8080"){
                                 info_new="onLineRegReqForCourseReject";
 				info_Opt = "newUser";
 	                }
         	        else {
                                 info_new="onLineRegReqForCourseReject_https";
 				info_Opt = "newUserhttps";
-	                }
+	                }*/
 			Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
-                        String subject = MailNotification.subjectFormate(info_new, "", pr );
-			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-        	        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-	                String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin"); 
-                	msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
+                        //String subject = MailNotification.subjectFormate(info_new, "", pr );
+			String subject = MailNotification.subjectFormate("onLineRegReqForCourseReject", "", pr );
+			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+        	        msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+			//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+	                msgRegard = MailNotification.replaceServerPort(msgRegard);
+			//String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin"); 
+                	String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
+			msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
                         LangFile=(String)data.getUser().getTemp("LangFile");
 ///////////////////////////////////////////////////////////////////////
                         for(int j=0;st.hasMoreTokens();j++)
@@ -372,16 +387,21 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 						gname=((CourseUserDetail) courselist.elementAt(i)).getGroupName().replace("&colon",":")+((CourseUserDetail) courselist.elementAt(i)).getLoginName();
                                                 if((email.equals(mailid)) && gName.equals(gname))
                                                 {
-							message = MailNotification.getMessage(info_new, gname, "", "", "", pr);
+							//message = MailNotification.getMessage(info_new, gname, "", "", "", pr);
+							message = MailNotification.getMessage("onLineRegReqForCourseReject_https", gname, "", "", "", pr);
 							message = MailNotification.getMessage_new(message, "","",instName,"");
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Admin.java RejectCourse message="+message);
 							//Mail_msg=MailNotification.sendMail(message, mailid, subject, "", LangFile);
-							//Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile, Integer.toString(instid));
-							Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile, instituteId,"");//last parameter added by Priyanka
+							Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile);
+							//Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile, instituteId,"");//last parameter added by Priyanka
                                                         indexList.add(i);
 							LangFile=(String)data.getUser().getTemp("LangFile");
                                                         data.setMessage(MultilingualUtil.ConvertedString("online_msg4",LangFile));
-							data.addMessage(Mail_msg);
+							if(Mail_msg.equals("Success"))
+							{
+								Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+								data.addMessage(Mail_msg);
+							}
                                                 }
                                         }
                                 }
@@ -408,8 +428,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 			context.put("status","CourseRegistration");
                         User user=data.getUser();
                         ParameterParser pp=data.getParameters();
-                        String serverName=data.getServerName();
-			String serverPort=TurbineServlet.getServerPort();
+                        //String serverName=data.getServerName();
+			//String serverPort=TurbineServlet.getServerPort();
                         String accept=pp.getString("deleteFileNames");
                         String path=data.getServletContext().getRealPath("/OnlineUsers"+"/courses.xml");
                         String xmlfilepath=data.getServletContext().getRealPath("/OnlineUsers");
@@ -454,7 +474,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 							//ErrorDumpUtil.ErrorLog(" instName =="+instName);
                                                        {
                                                                 try{
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");//last parameter added by Priyanka
+                                                                        //String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");//last parameter added by Priyanka
+									String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c");
 								/**
 									String subject="";
 									if(serverPort.equals("8080"))

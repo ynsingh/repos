@@ -73,8 +73,9 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 
 public class ResendActivation extends VelocityAction{
         private Log log = LogFactory.getLog(this.getClass());
-	String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";
-        Properties pr ;
+	//String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";
+        String msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";
+	Properties pr ;
 	String fileName=new String();
 
 	
@@ -90,9 +91,10 @@ public class ResendActivation extends VelocityAction{
 		//Properties pr ;
 		//String fileName=new String();
 		//String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", activationLink="";	
-		String serverName=data.getServerName();
-                int srvrPort=data.getServerPort();
-                String serverPort=Integer.toString(srvrPort);
+	//	String serverName=data.getServerName();
+         //       int srvrPort=data.getServerPort();
+           //     String serverPort=Integer.toString(srvrPort);
+	//	String server_scheme = TurbineServlet.getServerScheme();
 		String Mail_msg=new String();
          	String message=new String();
 		String a_key = null, domain = null;
@@ -373,27 +375,35 @@ public class ResendActivation extends VelocityAction{
  						 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
                                 		 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
                                 		 */
-						if(serverPort.equals("8080"))
+						/*if(serverPort.equals("8080"))
                                       			info_Opt = "newUser";
                                 		else
                                       			info_Opt = "newUserhttps";
-				
+						*/
 						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                                 		pr =MailNotification.uploadingPropertiesFile(fileName);
-						msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+						//msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                                		msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
 //                                		msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
 						msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", e_mail);
-						msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                		msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-						subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_subject");
+						//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                		msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+						//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+						msgRegard = MailNotification.replaceServerPort(msgRegard);
+						//subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_subject");
+      						subject=pr.getProperty("brihaspati.Mailnotification.newUser.a_subject");
       //                          		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
-        					messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_message"); // get a_key
-	                        		activationLink=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".activationLink");
-                                		activationLink=MailNotification.getMessage(activationLink, e_mail, a_key,"", lang);
-                                		activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
-                                		messageFormate = messageFormate+activationLink;
-			//			Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid);
-						Mail_msg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", e_mail, subject, "", "", "","");//last parameter added by Priyanka
+        					//messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".a_message"); // get a_key
+	                        		messageFormate = pr.getProperty("brihaspati.Mailnotification.newUser.a_message");
+						//activationLink=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".activationLink");
+                                		activationLink=pr.getProperty("brihaspati.Mailnotification.newUser.activationLink");
+						activationLink=MailNotification.getMessage(activationLink, e_mail, a_key,"", lang);
+                                		//activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
+                                		activationLink=MailNotification.replaceServerPort(activationLink);
+						messageFormate = messageFormate+activationLink;
+						//Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file);
+						Mail_msg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", e_mail, subject, "", "");
+						//Mail_msg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", e_mail, subject, "", "", "","");//last parameter added by Priyanka
 						//data.setMessage(Mail_msg);
 				
 						try{
@@ -447,38 +457,47 @@ public class ResendActivation extends VelocityAction{
  */
 private boolean sendMail(String email, String a_key, String u_mode, String LangFile, RunData data, String lang, String domain){
 	String str, Mailmsg, confirmationMail;
-	String serverName=data.getServerName();
-        int srvrPort=data.getServerPort();
-        String serverPort=Integer.toString(srvrPort);
-
+	//String serverName=data.getServerName();
+        //int srvrPort=data.getServerPort();
+        //String serverPort=Integer.toString(srvrPort);
+	//String serverScheme= TurbineServlet.getServerScheme();
 	try{
 	 /**
           * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
           * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
           */
-		if(serverPort.equals("8080"))
+		/*if(serverPort.equals("8080"))
                         info_Opt = "newUser";
                 else
                         info_Opt = "newUserhttps";
+		*/
 		// set key in link and pass in mail
 		fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                 pr =MailNotification.uploadingPropertiesFile(fileName);
-                msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
-                msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
-                msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-                subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_subject");
-                messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_message"); // get a_key
-                confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                //msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+		msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+                //msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+		//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                msgRegard = MailNotification.replaceServerPort(msgRegard);
+		//subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_subject");
+                subject=pr.getProperty("brihaspati.Mailnotification.newUser.cnfrm_subject");
+		//messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".cnfrm_message"); // get a_key
+                messageFormate = pr.getProperty("brihaspati.Mailnotification.newUser.cnfrm_message");
+		//confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+		confirmationMail=pr.getProperty("brihaspati.Mailnotification.newUser.confirmationMail");
 		if(u_mode.equals("cnfrm_mail"))
 			confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, LangFile);
 		else
                 	confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, u_mode, lang);
-                confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
+                //confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
+		confirmationMail=MailNotification.replaceServerPort(confirmationMail);
 		if(u_mode.equals("cnfrm_i"))
 			confirmationMail=MailNotification.getMessage(confirmationMail, domain, "");
                 messageFormate = messageFormate+confirmationMail;
-		Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "", "","");
+		//Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "", "","");
+		Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "");
 		if(!Mailmsg.equals(""))
 		{
 			//mail sent successfully

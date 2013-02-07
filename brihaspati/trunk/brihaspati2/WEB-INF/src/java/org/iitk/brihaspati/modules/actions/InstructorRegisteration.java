@@ -119,10 +119,11 @@ public class InstructorRegisteration extends SecureAction
 			instName= InstituteIdUtil.getIstName(instId);
 		}
 		String mail_msg="";
-		String serverName=data.getServerName();
-                int srvrPort=data.getServerPort();
-                String serverPort=Integer.toString(srvrPort);
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program, "act"); //modified by Shikha
+		//String serverName=data.getServerName();
+                //int srvrPort=data.getServerPort();
+                //String serverPort=Integer.toString(srvrPort);
+		//String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program, "act"); //modified by Shikha
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gName,"instructor",LangFile,rollno,program, "act");
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 		// Maintain Log

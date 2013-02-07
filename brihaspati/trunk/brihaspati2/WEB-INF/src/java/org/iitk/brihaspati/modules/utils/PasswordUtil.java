@@ -54,7 +54,7 @@ import babylon.babylonPasswordEncryptor;
  */
 public class PasswordUtil{
 	
-	static String serverName= "", serverPort="";
+//	static String serverName= "", serverPort="", server_scheme="";
 	/**
 	 * Used to change the password
 	 * @param user User The user object for the user for whom
@@ -156,25 +156,36 @@ public class PasswordUtil{
         	                String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         	try
 	                        {
+	//				server_scheme =TurbineServlet.getServerScheme();
 					// Shaista did Modification for mail Sending 
 					String info_new = "", info_Opt="", msgRegard="", msgBrihAdmin="";
-        	                        if(PasswordUtil.serverPort == "8080"){
+        	                        /*if(PasswordUtil.serverPort == "8080"){
 						info_new = "newPassword";
 						 info_Opt = "newUser";
 					}
 					else {
 						info_new = "newPasswordhttps";
 						info_Opt = "newUserhttps";
-					}
+					}*/
 					Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-					msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                                        msgRegard = MailNotification.replaceServerPort(msgRegard, PasswordUtil.serverName, PasswordUtil.serverPort);
-                                        msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
-                                        String subject = MailNotification.subjectFormate(info_new, "", pr );
+					//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                        msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+					//msgRegard = MailNotification.replaceServerPort(msgRegard, PasswordUtil.serverName, PasswordUtil.serverPort);
+                                        msgRegard = MailNotification.replaceServerPort(msgRegard);
+					//msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+                                        msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
+					//String subject = MailNotification.subjectFormate(info_new, "", pr );
+					String subject = MailNotification.subjectFormate("newPassword", "", pr );
 					//String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, PasswordUtil.serverName, PasswordUtil.serverPort,pr);
-					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword,PasswordUtil.serverName, PasswordUtil.serverPort, pr);
+					//String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword,PasswordUtil.serverName, PasswordUtil.serverPort, pr);
+					String messageFormat = MailNotification.getMessage("newPassword", "", "", "", newPassword, pr);
+					messageFormat = MailNotification.replaceServerPort(messageFormat);
 					//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+messageFormat+"\nmsgRegard	"+msgRegard);
-					msg1= MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, msgBrihAdmin, mailId, subject, "", file, "","");//last parameter added by Priyanka
+					//msg1= MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, msgBrihAdmin, mailId, subject, "", file, "","");//last parameter added by Priyanka
+					msg1= MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, msgBrihAdmin, mailId, subject, "", file);
+					if(msg1.equals("Success"))
+						msg1=m_u.ConvertedString("mail_msg",file);
+							
 					//MailNotification.sendMail(messageFormat, mailId, subject, "", file);
 					//ErrorDumpUtil.ErrorLog("\n msg1="+msg1);
 
@@ -214,11 +225,12 @@ public class PasswordUtil{
 		}
 		return message;
 	}
-
+/*
 	public static void passwordFromUtil(String serverName, String serverPort){
 		PasswordUtil.serverName = serverName;
 		PasswordUtil.serverPort = serverPort;	
 	}
+*/
 	/**
          * Used to generate random password password
          * @return String

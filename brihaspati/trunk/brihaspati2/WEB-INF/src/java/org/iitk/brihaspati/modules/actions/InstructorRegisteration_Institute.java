@@ -99,12 +99,13 @@ public class InstructorRegisteration_Institute extends SecureAction_Institute_Ad
 			passwd=uname;
 
 		String mail_msg="";
-		String serverName=data.getServerName();
-                int srvrPort=data.getServerPort();
-                String serverPort=Integer.toString(srvrPort);
+		//String serverName=data.getServerName();
+                //int srvrPort=data.getServerPort();
+                //String serverPort=Integer.toString(srvrPort);
 		String InstituteId=(data.getUser().getTemp("Institute_Id")).toString();
 		int instituteId=Integer.parseInt(InstituteId); 	
-		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gName,"instructor",serverName,serverPort,LangFile,rollno,program,""); // modified by Shikha Shukla. Last parameter added by Priyanka.
+		//String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gName,"instructor",serverName,serverPort,LangFile,rollno,program,""); // modified by Shikha Shukla. Last parameter added by Priyanka.
+		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gName,"instructor",LangFile,rollno,program,"");
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

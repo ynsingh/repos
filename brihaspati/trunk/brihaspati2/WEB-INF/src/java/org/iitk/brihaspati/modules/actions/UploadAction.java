@@ -409,9 +409,14 @@ public class UploadAction extends SecureAction
 							List usrList = TurbineUserPeer.doSelect(crit);
 							String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
 							String courseName = CourseUtil.getCourseName(courseHome);	
-							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile, "","");	
+							//Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile, "","");	
+							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
 						}
-						data.addMessage(Mail_msg);
+						if(Mail_msg.equals("Success"))
+						{
+							Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+							data.addMessage(Mail_msg);
+						}
 					}
 					}
 					catch(Exception e) { ErrorDumpUtil.ErrorLog("Exception in Upload Action class on 411 line "+e.getMessage());}

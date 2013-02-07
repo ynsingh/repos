@@ -77,9 +77,9 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
                 *and get the role in which user registered.
                 */
 		ParameterParser pp=data.getParameters();
-		String serverName=data.getServerName();
-                int srvrPort=data.getServerPort();
-                String serverPort=Integer.toString(srvrPort);
+		//String serverName=data.getServerName();
+                //int srvrPort=data.getServerPort();
+                //String serverPort=Integer.toString(srvrPort);
                 String roleName=pp.getString("role","");
 		/**
                  * Getting the value of file from temporary variable
@@ -149,7 +149,8 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		{
 			rollno = InstituteIdUtil.generateRollno(instid);
 		}
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"act");//last parameter added by Priyanka
+		//String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"act");//last parameter added by Priyanka
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,LangFile,rollno,program,"act");
 		data.setMessage(msg);
 		}
 		catch(Exception ex){
