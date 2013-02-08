@@ -1,6 +1,6 @@
 #*
  * @(#)Grpmgmt.vm
- * Copyright (c) 2006,2007,2009,2010,2011 ETRG,IIT Kanpur.
+ * Copyright (c) 2006,2007,2009,2010,2011,2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
@@ -25,6 +25,10 @@
 <body onload="initEditor()">
 
 #set($lang = $data.getUser().getTemp("lang" ).toString()) 
+#set($flag=false)
+#if($data.getUser().getTemp("modulename6") == "6")
+	#set($flag=true)
+#end
 $page.setTitle("Home | $courseName | $brih_grpmgmt")
 $!data.getMessage()
 
@@ -39,7 +43,7 @@ $!data.getMessage()
 ## #if($user_role == "instructor")
 ## modify by sunil
 
-#if(($user_role == "instructor")||($user_role == "teacher_assistant"))
+#if(($user_role == "instructor")||($user_role == "teacher_assistant"&& $flag))
 	#if($tdcolor != "1")
 	<td>
 	#elseif($tdcolor=="1")
@@ -90,7 +94,7 @@ $!data.getMessage()
 ############################Creategroup.vm add by jai
 ## #if($user_role=="instructor")
 ## modify by sunil
-#if(($user_role == "instructor")||($user_role == "teacher_assistant"))
+#if(($user_role == "instructor")||($user_role == "teacher_assistant" && $flag))
 ##<form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Creategroup.vm").setAction("Groupmanagement")>
 <form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").setAction("Groupmanagement")>
 <table bgcolor="$ui.tableColor" width=100% > ## table 3 start

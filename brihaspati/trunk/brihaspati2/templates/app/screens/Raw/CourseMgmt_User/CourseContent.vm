@@ -17,6 +17,7 @@ $page.setBgColor($ui.bgcolor)
 $page.setTitle("Course Content")
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
 #set ($loginusr=$data.getUser().getName().toString())
+#set($flag=false)
 
 $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
@@ -110,8 +111,10 @@ $!data.getMessage()
        <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")> $brih_scorm $Repo_Player </a>
          </td>
 #end
-
-#if($user_role == "student")
+#if($data.getUser().getTemp("modulename5") == "5")
+        #set($flag=true)
+#end
+#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag==false)))
 	#if($tdcolor != "1")
          <td>
          #elseif($tdcolor == "1")
@@ -135,7 +138,7 @@ $!data.getMessage()
 #end
 
 
-#if($user_role == "teacher_assistant")
+#if(($user_role == "teacher_assistant")&&($flag))
 
          #if($tdcolor != "1")    
         <td>

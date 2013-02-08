@@ -29,10 +29,10 @@ $!data.getMessage()
 	#if($user_role == "instructor")	
 	<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment $brih_post #else $brih_post $brih_assignment #end </b>
 	#else
-	<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment/$brih_answer $rih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </b>
+	<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| #if($lang == "hindi") $brih_assignment/$brih_answer $brih_Of1 $brih_view #else $brih_view $brih_assignment/$brih_answer #end </b>
 	#end
         </td></tr>
-</table> ##table 1 end   
+</table> ##table 1 end  
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
 	#if($user_role == "instructor")

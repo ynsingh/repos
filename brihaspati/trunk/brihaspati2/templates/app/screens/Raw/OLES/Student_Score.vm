@@ -16,6 +16,7 @@ $page.setBgColor("#ffffff")
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
+#set($flag=false)
 <font face="$ui.sansSerifFonts">
 
 $!data.getMessage()
@@ -30,6 +31,9 @@ $!data.getMessage()
 		#end
 	</b>
 </td>
+#if($data.getUser().getTemp("modulename7") == "7")
+        #set($flag=true)
+#end
 ## Creating the links for help regarding FAQ 
 <td align="right">
 <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
@@ -53,7 +57,7 @@ $!data.getMessage()
 #end	
 
 <tr  bgcolor="$ui.tableColor">
-	#if($user_role == "student")
+	#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag==false)))
 		#if($tdcolor != "1")
     		<td width="25%">
 		#elseif($tdcolor == "1")

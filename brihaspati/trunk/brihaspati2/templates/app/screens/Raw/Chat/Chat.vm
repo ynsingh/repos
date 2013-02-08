@@ -14,6 +14,7 @@
 $page.setTitle("Chat")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
+#set($flag=false)
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #if ($lang == "arabic")
         #set($lang="ar")
@@ -67,6 +68,9 @@ $!data.getMessage()
         #set($lang="ta")
 #end
 
+#if($data.getUser().getTemp("modulename3") == "3")
+        #set($flag=true)
+#end
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr>
 		<td>
@@ -134,7 +138,7 @@ $!data.getMessage()
         	#elseif($tdcolor == "3")
 		        <td bgcolor="#AFDCEC">
         	#end
-		#if( $data.getUser().getTemp("role") == "student")
+		#if(( $data.getUser().getTemp("role") == "student")||(($data.getUser().getTemp("role") == "teacher_assistant")&&($flag==false)))
                         <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
 			#foreach($msg in $unreadMsg)
                         #if($msg!="0")
@@ -165,7 +169,7 @@ $!data.getMessage()
                         #end
 
 		</td>
-		#if( $data.getUser().getTemp("role") != "student")
+		#if( $data.getUser().getTemp("role") != "student" && $flag)
 			#if($tdcolor!="5")
 		        	<td>
 	        	#elseif($tdcolor == "5")
