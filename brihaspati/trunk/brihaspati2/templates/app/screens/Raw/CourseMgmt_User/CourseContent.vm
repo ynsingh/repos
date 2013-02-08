@@ -17,7 +17,7 @@ $page.setBgColor($ui.bgcolor)
 $page.setTitle("Course Content")
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
 #set ($loginusr=$data.getUser().getName().toString())
-#set($flag=false)
+#set($flag1=false)
 
 $!data.getMessage()
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.js")"></script>
@@ -112,9 +112,9 @@ $!data.getMessage()
          </td>
 #end
 #if($data.getUser().getTemp("modulename5") == "5")
-        #set($flag=true)
+        #set($flag1=true)
 #end
-#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag==false)))
+#if(($user_role == "student")||(($user_role == "teacher_assistant")&&($flag1==false)))
 	#if($tdcolor != "1")
          <td>
          #elseif($tdcolor == "1")
@@ -138,7 +138,7 @@ $!data.getMessage()
 #end
 
 
-#if(($user_role == "teacher_assistant")&&($flag))
+#if(($user_role == "teacher_assistant")&&($flag1))
 
          #if($tdcolor != "1")    
         <td>
