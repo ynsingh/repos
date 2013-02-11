@@ -14,17 +14,15 @@
 	width:24em;
 }
 </style>
-
 <body>
-
 <form name="registerfile" method="POST" >
 <center><span style="font: 14px Helvetica, Arial, sans-serif"><b><h3>#springMessage("brih_tweets")</h3></b><span></center>
 <hr class="hr_tweet">
 #foreach ($tweet in ${model.tweets})
         <b><span style="float:left;color:#333;margin-left:5px; font: 14px Helvetica, Arial, sans-serif;">$!tweet.getUserName()</span><span style="float:right;color:#333;font: 14px Helvetica, Arial, sans-serif;">$!tweet.getTweetDate()</span><br></b>
         <span style="margin-left:5px;font: 14px Helvetica, Arial, sans-serif;color:blue" class="test">$!tweet.getTweet()   $!tweet.getID()</span><br>
-#if($!tweet.getUserName()==${model.username})
-	<a href="#springUrl("/tweetsmsg.vm")?Id=$!tweet.getId()&username=${model.username}"><img src="images/delete.png" style="float:right; margin-top:-16px;"onclick="javascript:return confirm('Do you want to delete this Tweet')" ></a>
+#if(($!tweet.getUserName()==${model.username})||(${model.Uid}=="1"))
+	<a href="#springUrl("/tweetsmsg.vm")?Id=$!tweet.getId()&username=${model.username}&Uid=${model.Uid}"><img src="images/delete.png" style="float:right; margin-top:-16px;"onclick="javascript:return confirm('Do you want to delete this Tweet')" ></a>
 #end
         <hr style="opacity:0.4;" class="hr_tweet">
 #end

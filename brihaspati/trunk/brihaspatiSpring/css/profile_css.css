@@ -220,8 +220,5 @@ a.rm, a.com {
         background:-moz-linear-gradient( center top, #80b5ea 5%, #bddbfa 100% );
         filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#80b5ea', endColorstr='#bddbfa');
         background-color:#80b5ea;
-}.button-ftextstyle:active {
-        position:relative;
-        top:1px;
 }
 

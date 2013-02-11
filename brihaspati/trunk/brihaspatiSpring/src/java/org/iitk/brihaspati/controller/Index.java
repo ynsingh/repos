@@ -1,7 +1,8 @@
+package org.iitk.brihaspati.controller;
 /*
  * @(#)Index.java
  *
- *  Copyright (c) 2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2012,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -39,7 +40,6 @@
  */
 
 
-package org.iitk.brihaspati.controller;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.apache.torque.Torque;
@@ -58,20 +58,34 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.utils.ErrorDumpUtil;
 import java.util.List;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
-
+/**
+*class for handling tweet insertion 
+*set expirey for tweets according to the superadmin
+*/
 public class Index extends SimpleFormController {
         private Torque set=null;
         private ServletContext context=null;
+/**
+         *this mathod is used for initilize torque to access database  
+         *and process response according to http request
+         */
+
         public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
                 Map myModel = new HashMap();
-                try{
+                try{	
                         String tweetmsg=request.getParameter("tweets");
+                        String Uid=request.getParameter("Uid");
                         String username=request.getParameter("username");
-                        String uname=request.getParameter("uname");
+			String uname=request.getParameter("uname");
+                        String expdate=request.getParameter("expdate");
+			ErrorDumpUtil.ErrorLog("expiry date"+expdate);
                         String name=request.getParameter("name");
                         myModel.put("username",username);
                         myModel.put("name",name);
+                        myModel.put("expdate",expdate);
+                        myModel.put("Uid",Uid);
                         Date date = new Date();
                         java.sql.Date Cdate = new java.sql.Date(date.getTime());
                         set=new Torque();
@@ -83,6 +97,7 @@ public class Index extends SimpleFormController {
         	                crit.add(TweetsPeer.USER_NAME,username);
                 	        crit.add(TweetsPeer.TWEET,tweetmsg);
                         	crit.add(TweetsPeer.TWEET_DATE,Cdate);
+                        	crit.add(TweetsPeer.EXPIRY_DATE,expdate);
 	                        crit.setDistinct();
         	                TweetsPeer.doInsert(crit);
 			}catch(Exception exp){}

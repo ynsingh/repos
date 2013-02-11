@@ -11,16 +11,19 @@
 
 <link href="css/profile_css.css" rel="stylesheet" type="text/css" />
 <link href="css/color.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="js/Jquery.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
 <script type="text/javascript" language="javascript">
 $(document).ready(function(){
  $("#button").hide();
   $("#tweets").click(function(){
-    $('#tweets').animate({ height: "60px" }, 500);
+    $('#tweets').animate({ height: "45px" }, 500);
         var qrcontainer = $(this).next("#button");
         qrcontainer.show();
    });
+$("#tweetnow").click(function() {
+	$("#comptweet").toggle("slow");
+	});
 });
 
 function limitText(limitField, limitCount, limitNum) {
@@ -33,11 +36,9 @@ function limitText(limitField, limitCount, limitNum) {
 }
 
 </script>
-
 <body class="bg menuColor">
-
+<div>
 <div style="width:220px; margin:0px auto;">
-
 <form name="registerfile" method="POST" >
 <div style="width:290px; max-height:210px auto; margin-top:5px; margin-left:-15px;" class="bgd">
 <span style=" margin:0px 15px auto;" class="span_text">#springMessage("brih_tweets")<br><center>$!model.tweets.size()</center></span>
@@ -46,18 +47,26 @@ function limitText(limitField, limitCount, limitNum) {
 <hr style="width:1px; height:40px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin:-40px 200px auto;">
 <span style="margin:-40px 210px auto;" class="span_text">#springMessage("brih_followers")<br><center>$!model.fls.size()</center></span>
 <hr style="width:290px; height:1px; opacity:0.4; border:1px solid rgba(0, 0, 0, 0.1); margin-top:0px;">
+#if(${model.Uid}!="0")
+<a href="javascript:void(0);" style="color:#333; font-size:14px; text-decoration:none; margin-left:10px;" id="tweetnow">Compose Tweet </a>
+<div style="display:none;" id="comptweet">
+<textarea  name="tweets" id="tweets" onKeyDown="limitText(this.form.tweets,this.form.countdown,100);"
+onKeyUp="limitText(this.form.tweets,this.form.countdown,100);" placeholder="Compose..."style="width:220px"></textarea>
+<input type="button" id="button" class="button-ftextstyle" value="Tweet" style="margin-top:-55px; margin-left:230px;width:55px;height:40px; position:absolute;z-index:100;" onclick="check(document.registerfile,this);"/>
+#end
+</div>
+</div>
 
-<textarea name="tweets" id="tweets" onKeyDown="limitText(this.form.tweets,this.form.countdown,100);"
-onKeyUp="limitText(this.form.tweets,this.form.countdown,100);" placeholder="Compose New Tweet..." ></textarea>
 
-<input type="button" id="button" class="button-ftextstyle" value="tweet now" style="margin-top:-10px; margin-left:180px;" onclick="check(document.registerfile,this);"/>
+
+
 </div>
 </form>
 <br>
 <br>
-<div class="gadget">
+<div class="gadget" style="margin-left:26px;">
 
-<iframe src="#springUrl("/tweetsmsg.vm?username=${model.username}")" frameborder="0" height="300px" class="bgd"></iframe>
+<iframe src="#springUrl("/tweetsmsg.vm?username=${model.username}&Uid=${model.Uid}")" frameborder="0" height="330px" class="bgd"></iframe>
 
 </div>
 </div>

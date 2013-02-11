@@ -1,7 +1,9 @@
+package org.iitk.brihaspati.controller;
+
 /*
  * @(#)Tweetmsg.java
  *
- *  Copyright (c) 2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2012,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -34,10 +36,6 @@
  *                      
  */                     
                         
-/**                     
- *  @author: <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
- */  
-package org.iitk.brihaspati.controller;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
@@ -56,45 +54,52 @@ import org.iitk.brihaspati.om.Tweets;
 import org.iitk.brihaspati.om.TweetsPeer;
 
 
-//this class is used for reading and deleting tweet msg
+/**                     
+ *  @author: <a href="sisaudiya.dewan17@gmail.com">Dewanshu Singh Sisaudiya</a>
+ */  
 
-
+/**
+*class for handling all functions for  tweet deletion and selection for show tweets
+*class file use parameters to show and delete tweets
+*/
 public class Tweetsmsg extends SimpleFormController {
 
         private Torque set=null;
         private ServletContext context=null;
+	/**
+	 *this mathod is used for initilize torque to access database  
+	 *and process response according to http request
+	 */
         public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException{
-
-        Map myModel = new HashMap();
-        try{	
-                set=new Torque();
-                String tempFileName = getServletContext().getRealPath("Torque.properties");
-                set.init(tempFileName);
-		String id = request.getParameter("Id");
-		String username=request.getParameter("username");
-                myModel.put("username",username);
-		// this is used to delete tweets by corresponding user id.
+        		
+			Map myModel = new HashMap();
 		try{
-			if(!id.equals("")){
-        	       	Criteria del = new Criteria();
-	                del.add(TweetsPeer.ID,id);
-        	        TweetsPeer.doDelete(del);
+        	       	Criteria  crit=null;
+			String Uid=request.getParameter("Uid");
+        	        set=new Torque();
+                	String tempFileName = getServletContext().getRealPath("Torque.properties");
+	                set.init(tempFileName);
+			String id = request.getParameter("Id");
+			String username=request.getParameter("username");
+	                myModel.put("username",username);
+			myModel.put("Uid",Uid);
+			// this is used to delete tweets by corresponding user id.
+			try{
+				if(!id.equals("")){
+        	       		crit= new Criteria();
+		                crit.add(TweetsPeer.ID,id);
+        		        TweetsPeer.doDelete(crit);
+				}
+			}catch(Exception exp){
+                        ErrorDumpUtil.ErrorLog("Exception in Tweetsmsg.java when try to delete"+exp);
+
                 	}
-		}catch(Exception exp){
-			ErrorDumpUtil.ErrorLog("Exception in Tweetsmsg.java when try to delete"+exp);
-		}
-
-		// this is used to show all the Tweets
-                Criteria criteria = new Criteria();
-                criteria.addDescendingOrderByColumn(TweetsPeer.ID);
-                List tweets = TweetsPeer.doSelect(criteria);
-                myModel.put("tweets",tweets);
-		
-
-        }
-        catch(Exception ex){
-                ErrorDumpUtil.ErrorLog("Exception in Tweetsmsg.java"+ex);
-        }
-        return new ModelAndView("tweetsmsg", "model", myModel);
-    }
+			// this is used to show all  Tweets
+	                crit= new Criteria();
+        	        crit.addDescendingOrderByColumn(TweetsPeer.ID);
+                	List tweets = TweetsPeer.doSelect(crit);
+	                myModel.put("tweets",tweets);
+		}catch(Exception ex){  	ErrorDumpUtil.ErrorLog("Exception in Tweetsmsg.java"+ex); }
+	        return new ModelAndView("tweetsmsg", "model", myModel);
+    	}
 }
