@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Group_Mgmt;
 /*
  * @(#)Addmembers.java
  *
- *  Copyright (c) 2006-07,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2006-07,2009,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.Group_Mgmt;
 /**This class contain the code for the Addmember in the groups. 
  *  @author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  *  @author: <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar shukla</a>
+ *  @modified: <a href="mailto:tejdgurung20@gmail.com">Tej bahadur</a>
+ *  @modifie date: 15-02-2011,07-02-2013
  */
 
 import java.util.List;
@@ -96,6 +98,8 @@ public class Addmembers extends SecureScreen
                         *Putting the parameters context for use in templates.
                         */
                         String grouptype=pp.getString("type","");
+                        String modd=pp.getString("modd","");
+                        context.put("modd",modd);
 			String status=pp.getString("Status","");
 			context.put("Status",status);
 			String actmode=pp.getString("actmode","");
@@ -135,11 +139,13 @@ public class Addmembers extends SecureScreen
                         }//if exists
 
 			/**
-                        *Selecting the particular course student detail
+                        *Selecting the particular course student detail Except guest
                         *put in the context for the use in templates.
                         */
+			int noUid[]={0};
                         Criteria crit =new Criteria();
                         crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+                        crit.addNotIn(TurbineUserGroupRolePeer.USER_ID,noUid);
                         crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
                         crit.and(TurbineUserGroupRolePeer.GROUP_ID,g_id);
                         crit.setDistinct();
