@@ -47,6 +47,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 
 public class Twtwin extends SecureScreen{
 
@@ -55,18 +56,27 @@ public class Twtwin extends SecureScreen{
 
 			try{
 				User user=data.getUser();
+				String username=user.getName();
 				ParameterParser pp=data.getParameters();
         	                String ip=data.getServerName();
                 	        String port=Integer.toString(data.getServerPort());
                         	String sch=data.getServerScheme();
+				int uid=UserUtil.getUID(username);
 	                        String ipadd=sch+"://"+ip+":"+port;
         	                context.put("ipadd",ipadd);
 				pp.add("str","twitter");
 				String fname=user.getFirstName();
   	                      	String lname=user.getLastName();
+				if((fname==null) || (lname ==null)){
+                        context.put("fullname",username);
+                        }
+                        else{
+                        context.put("fullname",fname+lname);
+                        }
                 	        context.put("firstname",fname);
                         	context.put("lastname",lname);
-                        	context.put("fullname",fname+lname);
+                        	context.put("username",username);
+                        	context.put("Uid",uid);
 
 			}catch(Exception exp){}
 	}

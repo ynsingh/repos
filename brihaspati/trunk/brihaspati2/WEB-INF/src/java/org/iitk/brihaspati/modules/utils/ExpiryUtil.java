@@ -70,6 +70,7 @@ import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.util.RunData;
 import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TweetsPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRole;
@@ -87,6 +88,8 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 26-02-2011,08May2012,10-10-2012,30-Nov-2012(Richa)
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
+ * @modified date: 28-12-2012,(Richa)
  */
 
 public class ExpiryUtil{
@@ -385,7 +388,7 @@ public class ExpiryUtil{
 			* add StudentCrsDisable as string in array for update
 			* table and delete record from specific tables
 			*/
-			String str[]={"CalInfo","DisBoard","News","Notices","Task","Institutedel","StudentCrsDisable"};
+			String str[]={"CalInfo","DisBoard","News","Notices","Task","Institutedel","StudentCrsDisable","Tweet"};
 			Criteria crit=new Criteria();
 			String current_date=getCurrentDate("-");
 			List v=null;
@@ -419,6 +422,13 @@ public class ExpiryUtil{
 					}
 					v=null;
 				}
+				else if(str[i].equals("Tweet"))
+                                {
+                                        crit=new Criteria();
+                                        crit.add(TweetsPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
+                                        TweetsPeer.doDelete(crit);
+                                }
+
 				else if(str[i].equals("News"))
 				{
 					crit=new Criteria();

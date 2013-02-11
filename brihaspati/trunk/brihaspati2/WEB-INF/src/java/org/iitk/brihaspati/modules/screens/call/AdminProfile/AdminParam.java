@@ -57,6 +57,8 @@ import org.apache.commons.lang.StringUtils;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
  * @modified date: 29-09-2010
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ *@modified date: 10-01-2013
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Vipul Kumar Pal</a>
  */
 
 
@@ -129,6 +131,9 @@ public class AdminParam extends SecureScreen{
 		 context.put("ldapbase",ldapb);
 		 String ldapcat = AdminProperties.getValue(path,"brihaspati.admin.ldapcate.value");
 		 context.put("ldapcate",ldapcat);
+		 String twtexp = AdminProperties.getValue(path,"brihaspati.admin.twtexpiry.value");
+                 context.put("twtexp",twtexp);
+
 		 String mailSpoolingExpiry = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value");
                  if(!StringUtils.isBlank(mailSpoolingExpiry))
 

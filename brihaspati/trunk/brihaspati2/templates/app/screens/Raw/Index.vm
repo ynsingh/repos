@@ -73,9 +73,10 @@ $!data.getMessage()
 </div>
 ##iframe is use to show brihaspati Twitter
 <div style="background:$ui.menuColor;" class="tweet_header">$brih_twitter</div>
-<iframe height="480" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
-
-<a href=javascript:popup("$link.setPage("call,Twtwin.vm")","newWin");  class="link" style="position:absolute; z-index:100; margin:500px -80px auto;cursor:pointer;text-decoration:none;color:black;">$brih_view_all</a>
+<iframe height="410" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username&Uid=$Uid&expdate=$expdate&language=$lang" frameborder="0"></iframe>
+<div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
+<a href=javascript:popup("$link.setPage("call,Twtwin.vm")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
+</div>
 <td width="80%" valign="top">
 #if($Uid.toString()!="1")
 <div class="indexhomescroll">
@@ -196,4 +197,5 @@ function popup(url,popupName)
                 Win2 = window.open (url,popupName, 'scrollbars=yes, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
                 //Win2=window.open(url,popupName,"resizable,height=200,width=650");
         }
+
 </SCRIPT >

@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
 </head>
 <body style="background:$ui.menuColor;">
-<div class="bgd"style="height:900px;">
+<div class="bgd"style="height:1200px;">
 <center>
-<iframe id="frame" name="frame" height="900px" width="100%" style="margin:-10px auto;" src="$ipadd/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
+<iframe id="frame" name="frame" height="1200px" width="100%" style="margin:-10px auto;" src="$ipadd/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username&Uid=$Uid" frameborder="0"></iframe>
 </center>
 </div>
 
