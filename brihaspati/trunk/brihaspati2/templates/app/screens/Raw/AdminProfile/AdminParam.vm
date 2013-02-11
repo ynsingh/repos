@@ -5,8 +5,10 @@
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
  * modified date: 17-10-2009, 29-09-2010
  * @modified date: 22-11-2010, 15-02-2011
+ * modified date: 01-01-2013, 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -121,8 +123,13 @@ $!data.getMessage()
 	<td width=30><font face="$ui.sansSerifFonts">$brih_upload $brih_size </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="upldsze" value="$!upldsze"></font></td>
    </tr>
-  
-	<tr"$ui.menuColor">
+##--------------------------------------Tweet expiry---------------------
+	<tr bgcolor="$ui.menuColor">
+        <td width=30><font face="$ui.sansSerifFonts">Tweets Expiry(in days)</td>
+        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="TweetExp" value="$!twtexp"></font></td>
+    </tr>
+##---------------------------------------------------------------------------  
+	<tr"$ui.tableColor">
 
                                 <td><font face="$ui.sansSerifFonts">$brih_officeno</font></td>
                                 <td><select class="drop" name="Offprefix">
