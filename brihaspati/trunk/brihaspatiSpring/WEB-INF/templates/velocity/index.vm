@@ -12,7 +12,6 @@
 <link href="css/profile_css.css" rel="stylesheet" type="text/css" />
 <link href="css/color.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
 <script type="text/javascript" language="javascript">
 $(document).ready(function(){
  $("#button").hide();
