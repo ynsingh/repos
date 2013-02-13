@@ -231,7 +231,7 @@ public class Assignments extends SecureAction
                                 FileItem fileItem;
                                 fileItem = pp.getFileItem("file");
                                 String fileName1=fileItem.getName();
-				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html"))
+				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
                                 {//if1
 					
                                         /**
@@ -341,7 +341,7 @@ public class Assignments extends SecureAction
                                 else {
 					
 					/**
-                                        * Disply Message The file for uploading should have '.txt', '.pdf', '.html' extension !!
+                                        * Disply Message The file for uploading should have '.txt', '.pdf', '.html', '.zip.' extension.
 					*/
 
 					msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);               
@@ -360,7 +360,7 @@ public class Assignments extends SecureAction
 
 			/**
  			* Break Message in textarea if topic name same or
-                        * Assignment file .txt, .pdf and .html format not found
+                        * assignment file .txt, .pdf, .zip and .html format not found.
                         */
 
 			if(!flag){
@@ -451,7 +451,7 @@ public class Assignments extends SecureAction
 
 		//		ErrorDumpUtil.ErrorLog("aaaa    "+fileName1);
                                 
-				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html"))
+				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
                                 {
 					int startIndex=fileName1.lastIndexOf(".")+1;
                                         String fileExt="."+fileName1.substring(startIndex);
@@ -561,7 +561,7 @@ public class Assignments extends SecureAction
                         FileItem fileItem;
                         fileItem = pp.getFileItem("file");
                         String fileName1=fileItem.getName();
-                        if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html"))
+                        if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html")||fileName1.endsWith(".zip"))
                         {
 				int startIndex=fileName1.lastIndexOf(".")+1;
                                 String fileExt="."+fileName1.substring(startIndex);

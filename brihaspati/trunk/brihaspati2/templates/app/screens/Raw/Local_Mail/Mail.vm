@@ -199,7 +199,7 @@ $!data.getMessage()
 	#end
 	</td>
 	</tr>
-	#if( $role != "student" && $flag)
+	#if($role != "student")
 		#if($tempBoolean)
                         <tr bgcolor="$ui.menuColor">
                 #else
