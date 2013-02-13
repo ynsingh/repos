@@ -601,7 +601,9 @@ public class CourseManagement
 		boolean checkPrimary=false;
 		try
 		{
-			 checkPrimary=groupName.endsWith(userName);
+			String grpAlias=CourseUtil.getCourseAlias(groupName);
+			String unmwIid=StringUtils.substringAfter(groupName,grpAlias);
+			checkPrimary=unmwIid.startsWith(userName);
 		}
 		catch(Exception e)
 		{

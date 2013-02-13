@@ -333,12 +333,14 @@ public class UserAction_Admin extends SecureAction_Admin{
                 	{
                 		Courses nm=(Courses)lstt.get(j);
                        		Gname=nm.getGroupName();
-				if(Gname.endsWith(userName))
-                                {
-					boolean check_Primary=CourseManagement.IsPrimaryInstructor(Gname,userName);
+			//	if(Gname.endsWith(userName))
+                          //      {
+				boolean check_Primary=CourseManagement.IsPrimaryInstructor(Gname,userName);
+				if(check_Primary){
 					context.put("pInst",check_Primary);
 					flag=true;
 				}
+			//	}
                        		String cName=nm.getCname();
                        		String active=(new Byte(nm.getActive())).toString();
 				if(active.equals("0"))

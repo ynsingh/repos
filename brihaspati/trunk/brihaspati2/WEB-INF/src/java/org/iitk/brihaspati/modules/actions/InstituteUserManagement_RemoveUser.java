@@ -409,9 +409,9 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 						*/
 						//String 	instituteId=(data.getUser().getTemp("Institute_id")).toString();                                                                                          
                                                 //ErrorDumpUtil.ErrorLog("iid in doremoveUser method at line 303 in UserManagement_RemoveUser=="+instituteId1);
-						String postStringWithInsId=postString+"_"+instituteId1;
-                                                //boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,postString);
-                                                boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,postStringWithInsId);
+					//	String postStringWithInsId=postString+"_"+instituteId1;
+                                               boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,postString);
+                                             //   boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,postStringWithInsId);
                                                 int gId=GroupUtil.getGID(preString);
 						boolean check_Active=CourseManagement.CheckcourseIsActive(gId);
 						//ErrorDumpUtil.ErrorLog("chprymry=="+check_Primary+"\nactive="+check_Active+"\ngid=="+gId);

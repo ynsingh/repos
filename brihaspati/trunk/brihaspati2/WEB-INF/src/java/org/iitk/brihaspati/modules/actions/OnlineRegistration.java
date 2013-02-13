@@ -761,7 +761,7 @@ public class OnlineRegistration extends VelocitySecureAction
 				Vector uid=UserGroupRoleUtil.getUID(gid,2);
 				//String []gnamesplit=gname.split("_");
 				//String Agname=gnamesplit[0];
-				String Agname = org.apache.commons.lang.StringUtils.substringBeforeLast(gname, "_");
+			//	String Agname = org.apache.commons.lang.StringUtils.substringBeforeLast(gname, "_");
 				//ErrorDumpUtil.ErrorLog("\n\n\n actions OnlineRegist at 503 msgRegard="+msgRegard+"\n fname="+fname+"\n lname="+lname);
 				for(counter =0; counter<uid.size(); counter++)
 				{
@@ -771,8 +771,8 @@ public class OnlineRegistration extends VelocitySecureAction
 	                       		{
 						TurbineUser element1=(TurbineUser)st.get(j);
 						String userName = element1.getUserName();
-						//boolean check_Primary=CourseManagement.IsPrimaryInstructor(gname,userName);
-						boolean check_Primary=CourseManagement.IsPrimaryInstructor(Agname,userName);
+						boolean check_Primary=CourseManagement.IsPrimaryInstructor(gname,userName);
+					//	boolean check_Primary=CourseManagement.IsPrimaryInstructor(Agname,userName);
 						boolean check_Active=CourseManagement.CheckcourseIsActive(gid);
 						if(check_Primary==true && check_Active==false)
 						{

@@ -392,7 +392,8 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
                                                 * or inactive and PrimaryInstructor
                                                 * @see CourseManagement from Utils
                                                 */
-                                                boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,(postString+"_"+iid));
+                                                //boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,(postString+"_"+iid));
+                                                boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,postString);
                                                 int gId=GroupUtil.getGID(preString);
 						boolean check_Active=CourseManagement.CheckcourseIsActive(gId);
                                                 /**

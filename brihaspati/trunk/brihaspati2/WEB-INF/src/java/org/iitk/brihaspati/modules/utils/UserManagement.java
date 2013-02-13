@@ -1363,12 +1363,12 @@ public class UserManagement
                          	* else add the group id to vector "primary_inactive".
 				* otherwise add the group id to "sec_Instructor".
                          	*/
-                        	if(check_Primary==true)
+                        	if(check_Primary)
 				{
-                                	if(check_Active==false)
-                                       		primary_active.add(Integer.toString(gId));
-                                	else
+                                	if(check_Active)
                         			primary_inactive.add(Integer.toString(gId));
+                                	else
+                                       		primary_active.add(Integer.toString(gId));
                         	}
 				else
 				{
