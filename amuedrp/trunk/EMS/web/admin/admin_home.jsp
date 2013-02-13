@@ -66,7 +66,7 @@ String contextPath = request.getContextPath();
 <%!
     Locale locale=null;
     String locale1="en";
-    String rtl="ltr";
+    String rtl="ltr";String align="left";
     boolean page=true;
 %>
 <%
@@ -81,9 +81,17 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+   String user=(String)session.getAttribute("username");
+String pass=(String)session.getAttribute("pass");
+ session.setAttribute("pass","t");
+  user_id=   (String)session.getAttribute("user_id");
+String user_name=   (String) session.getAttribute("username");
+  String question=  (String)request.getAttribute("question");
+   String staff_id=  (String) request.getAttribute("staff_id");
+    contextPath = request.getContextPath();
 
     %>
 <html>
@@ -132,7 +140,7 @@ function fn(){
     //alert("frmheight="+frmheight);
     if(winwidth!=undefined && frmwidth!=undefined)
         windiff= winwidth - frmwidth;
-    document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
+   // document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
     document.getElementById("ifr3").style.height = frmheight;
 }
 
@@ -172,99 +180,99 @@ body
 if(session.getAttribute("username")==null)
    { %><script>parent.location="<%=request.getContextPath()%>"</script>
 <%}%>
- <jsp:include page="adminheader.jsp" flush="true" />
+ 
 </head>
 
-<div
-   style="  top:85px;
-   left:5px;
-   right:5px;
-      position: absolute;
-      height: 600px;
-      visibility: show;">
+<body onload="window.setTimeout('winresize()', 1000);"  style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
+
+
+
+
+        <table align="center" style="padding: 0px 0px 0px 0px;width: 80%;height:100%;border-right:  solid #ECF1EF 10px;border-left:  solid #ECF1EF 10px;" dir="<%=rtl%>" >
+            <tr style="background-color: #425C83;color:white"><td><b>&nbsp;Web Admin Module</b></td><td align="right">
+  <span style="font-family:arial;color:white;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:white" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;
+     </td></tr>
+
+            <tr style="background-image: url('/EMS/images/header.jpg');;height: 100px">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center" width="100%"  dir="<%=rtl%>">
+            <tr><td width="70%"  valign="bottom"  align="<%=align%>">
+                            &nbsp;&nbsp;    <span style="font-weight: bold;color:white;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >Election</span><span style="color:white;font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >MS</span>
+
+
+
+                </td><td align="center" > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="center" id="Image1" style="" height="80px" width="120"><br/>
+
+                            </td></tr>
+             <tr><td>
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("login.message.logo.under")%>&nbsp;
+
+</div>
+                </td>
+                <td >
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px white;font-family:Gill, Helvetica, sans-serif" >
+
+
+</div>
+                </td></tr>
+            </table></td>
+            </tr>
     
-    <body leftmargin="0" topmargin="0" marginwidth="0" onload="fn();" marginheight="0" dir="<%=rtl%>">
- 
-<ul class="dd-menu">
+    <%--<body leftmargin="0" topmargin="0" marginwidth="0" onload="fn();" marginheight="0" dir="<%=rtl%>">--%>
+    <tr><td valign="top" width="20%">
 
-      <li><a href="#" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b><%=resource.getString("instituteList")%></b></a>
-    <ul><li><a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.viewpendinglist")%></b></a></li>
-        <li><a href="<%=contextPath%>/admin/view_approved.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewapprovedlist")%></b></a></li>
-      <li><a href="<%=contextPath%>/admin/block_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-        <b style="color:white" dir="<%=rtl%>">Deliquent Institute</b> </a></li>
-      <li><a href="<%=contextPath%>/admin/rejected.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> Rejected Institute List</b></a></li>
-        <li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%></b></a></li>
- <%-- <li><a href="<%=contextPath%>/printlog.do" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> User Log</b></a></li>--%>
-
-</ul>
-</li>
-<li><a href="<%=contextPath%>/admin/update_admin.jsp" onclick="window.setTimeout('winresize()', 1000);" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.modifyinstituterecord")%></b></a></li>
-<li><a href="<%=contextPath%>/admin/search_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.searchinstitute")%>  </b></a></li>
-<li><a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.managesuperadminaccount")%></b></a></li>
-<li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp" onclick="window.setTimeout('winresize()', 1000);"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a></li>
-<li><a href="<%=contextPath%>/reset_password.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>">Reset Password </b></a></li>
-    <li><a href="<%=contextPath%>/admin/mailsetting.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>">SMTP Mail Setting </b></a></li>
-</ul>
-
-
-
-<table border=0 cellpadding=0 cellspacing=0 style="position: absolute;top: 20px" width="100%" dir="<%=rtl%>">
-    <%--<tr><td height="25px" width="600px" bgcolor="#7697BC" dir="<%=rtl%>">
-  <a href="<%=contextPath%>/admin/admin_home.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"> &nbsp;&nbsp;<%=resource.getString("login.home")%>&nbsp;|&nbsp;</b></a>
+<table border=0 cellpadding=0 cellspacing=0 style="padding: 0px 0px 0px 0px" width="100%" dir="<%=rtl%>">
+    <tr><td height="25px"  align="center" bgcolor="#7697BC" dir="<%=rtl%>"><hr color="white">
+          <%-- <a href="<%=contextPath%>/admin/admin_home.jsp"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.home")%>&nbsp;</b></a>
+      <hr color="white">--%>
       <a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.viewpendinglist")%>&nbsp;|&nbsp;</b></a>
- <a href="<%=contextPath%>/admin/view_approved.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewapprovedlist")%>&nbsp;|&nbsp;</b></a>
-<a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%> &nbsp;|&nbsp;</b></a>
-          <a href="<%=contextPath%>/admin/update_admin.jsp" onclick="window.setTimeout('winresize()', 1000);" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.modifyinstituterecord")%>&nbsp;|&nbsp;</b></a>
-<a href="<%=contextPath%>/admin/search_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.searchinstitute")%>  &nbsp;|&nbsp;</b></a>
-<a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.managesuperadminaccount")%>&nbsp;|</b>&nbsp;</a>
-<a href="<%=contextPath%>/admin/block_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.delinquentinstitutelist")%> |</b>&nbsp;</a>
-<a href="<%=contextPath%>/admin/view_blocked_institute.jsp" onclick="window.setTimeout('winresize()', 1000);"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> |</b>&nbsp;</a>
-<a href="<%=contextPath%>/admin/email_setup.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("email_setup")%> </b></a>&nbsp;
-    
+      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.viewpendinglist")%>&nbsp;</b></a>
+   <hr color="white"><a href="<%=contextPath%>/admin/view_approved.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewapprovedlist")%>&nbsp;</b></a>
+  <hr color="white"><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
+      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%> &nbsp;</b></a>
+  <hr color="white">     <a href="<%=contextPath%>/admin/update_admin.jsp" onclick="window.setTimeout('winresize()', 1000);" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.modifyinstituterecord")%>&nbsp;</b></a>
+<hr color="white"><a href="<%=contextPath%>/admin/search_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.searchinstitute")%>  &nbsp;</b></a>
+<hr color="white"><a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.managesuperadminaccount")%>&nbsp;</b></a>
+<hr color="white"><a href="<%=contextPath%>/admin/block_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.delinquentinstitutelist")%> </b>&nbsp;</a>
+<hr color="white"><a href="<%=contextPath%>/admin/view_blocked_institute.jsp" onclick="window.setTimeout('winresize()', 1000);"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a>
+<hr color="white"><a href="<%=contextPath%>/admin/mailsetting.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+    <b style="color:white" dir="<%=rtl%>">SMTP Mail Setting </b></a>&nbsp;
+    <hr color="white">
+<a href="<%=contextPath%>/reset_password.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
+    <b style="color:white" dir="<%=rtl%>">Reset Login Password</b></a>&nbsp;
+    <hr color="white">
 
       </td>
-  </tr>--%>
-  <tr><td dir="<%=rtl%>">
-            <font color="blue" size="-1" dir="<%=rtl%>"><b><br>
-<%=resource.getString("login.pendingrequestforinstitueregistration")%> (<%=count%>)&nbsp;<a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" dir="<%=rtl%>"> <%=resource.getString("viewpending")%></a>
-
-    </b>
-</font>
-
-      </td></tr>
-  <tr dir="<%=rtl%>"><td id="ifr3" align="left" rowspan="2" style=" padding-left:200px;" dir="<%=rtl%>">
-          <IFRAME  name="f3" src="admin/view_pending.jsp" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:100%;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
-
-
-      </td></tr>
+ </tr>
   
  
        
       
 </table>
          
-    </div>
+        </td><td id="ifr3" valign="top" align="left" rowspan="2" dir="<%=rtl%>">
+     <%--   <font color="blue" size="-1" dir="<%=rtl%>"><b><br>
+<%=resource.getString("login.pendingrequestforinstitueregistration")%> (<%=count%>)&nbsp;<a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" dir="<%=rtl%>"> <%=resource.getString("viewpending")%></a>
+
+    </b>
+</font>--%>
+          <IFRAME  name="f3" src="/EMS/admin/view_pending.jsp" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:100%;visibility:true;" id="f3" dir="<%=rtl%>"></IFRAME>
+
+          <br><br><br>
+      </td></tr>
+        <tr><td colspan="2" align="center"  style="font-family: arial;color:white;font-size: 12px;background-color: #425C83;height: 25px" valign="middle">
+         <%=resource.getString("developedby")%> &nbsp;
+                    &copy; <%=resource.getString("login.message.footer")%>
+                </td></tr>
+        </table>
         </body>
    </html>
    <%}else{

@@ -252,6 +252,11 @@ else
 
   <columns>
 
+      <column width="10%">
+      <header value="Election_id" hAlign="left" styleClass="header"/>
+      <item   value="${doc.election_id}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  hAlign="left"    styleClass="item"/>
+    </column>
+      
     <column width="10%">
       <header value="${Enrollment_No}" hAlign="left" styleClass="header"/>
       <item   value="${doc.enrollment}" hyperLink="${path}/candidate1.do?id=${doc.enrollment}${amp}pos=${doc.position_id}${stat}${amp}eid=${doc.election_id}"  hAlign="left"    styleClass="item"/>

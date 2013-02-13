@@ -211,12 +211,12 @@ var divtag1 = document.createElement("div");
                 divtag1.style.borderTopRightRadius = "15px";
                 divtag1.style.borderBottomLeftRadius = "15px";
                 divtag1.style.borderBottomRightRadius = "15px";
-                divtag1.style.marginLeft = "30px";
-                divtag1.style.width = "590px";
+                divtag1.style.marginLeft = "200px";
+                divtag1.style.width = "290px";
                 divtag1.style.align = "center";
                 divtag1.style.marginTop = "5px";
                 divtag1.style.height = "20px";
-               var htm1 = '<span style="text-align:center">'+ elec +'</span><a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><input type="button" value="close" onclick="send()"/>';
+               var htm1 = '<span style="text-align:center;margin-left:80px">'+ elec +'</span>';
                divtag1.innerHTML = htm1;
             document.getElementById("ballot").appendChild(divtag1);
 
@@ -452,12 +452,18 @@ function checkCandidateLimit(iii,jj,this1,noofchoice,currentSel,candidateName,po
         </script>
     </head>
 
-    <body onload="previewBallot(this)" style="margin: 0px;">
- 
+    <body onload="previewBallot(this)" style="margin-left: 300px;">
+        <table style="background-color: blue;color:white;font-weight: bold;font-size: 12px;" width="660px">
+            <tr><td>
+                    For Download Result in PDF Format  <a style="color:yellow;text-decoration: none;" href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true"><i>Click here</i></a>
+                </td><td>
+ <input type="button" value="close" onclick="send()"/>
+                </td></tr>
+        </table>
         <div id="main" style="width: 100%; height: 100%">
             <div id="middle" style="width: 100%;margin-left: 0%; position: relative;">
                 <form id="form1">
-                <div id="ballot" style="width: 660px; position: relative;margin-left: 0px; margin-top: 0px; border: 2px solid #F2F5A9;background-color: #D8CEF6;overflow: auto">
+                <div id="ballot" style="width: 660px; position: relative;margin-left: 0px; margin-top: 0px; border: 2px solid #F2F5A9;background-color: #D8CEF6;overflow: auto;font-family: Gill, Helvetica, sans-serif;font-size: 12px;">
 
                 </div>
                 </form>

@@ -138,18 +138,18 @@ document.Form1.submit();
 </script>
 </head>
 <link rel="stylesheet" href="/EMS/css/page.css"/>
-<body onload="fun();" class="datagrid">
+<body onload="fun();" class="datagrid" style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
    
 
     <form name="Form1" id="form1" action="<%=request.getContextPath()%>/candidatesetup1.do" style="" >
-      <table  align="left" width="100%"  class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
+      <table  align="center" width="90%"  class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
 
 
 
           <tr class="header"><td  width="100%"   align="center" colspan="2" dir="<%=rtl%>">
 
 
-                 Search Candidate
+                 Search Candidate 
                   <%--<%=resource.getString("login.searchinstitute.institutesearch")%>--%>
 
 
@@ -205,7 +205,7 @@ document.Form1.submit();
       </td>
 
   </tr>
-  <tr><td colspan="2" id="ifr3"><IFRAME  name="f1" src="<%=request.getContextPath()%>/candidatesetup1.do" frameborder=0  id="f1" width="90%" height="700px" ></IFRAME></td></tr>
+  <tr style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;"><td colspan="2" align="center" id="ifr3"><IFRAME  name="f1" src="<%=request.getContextPath()%>/candidatesetup1.do" frameborder=0  scrolling="yes" id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
   <tr><td><input type="hidden" id="hidHigh"/></td></tr>
        </table>

@@ -16,32 +16,33 @@ if(session.isNew()){
 <%@ page language="java" %>
 <%@page import="java.util.*,java.io.*,java.net.*" %>
 <%@page import="com.myapp.struts.hbm.*,com.myapp.struts.hbm.Election"%>
-<jsp:include page="/Voter/voterheader.jsp"/>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
-
+<link rel="stylesheet" href="/EMS/css/page.css"/>
 <script type="text/javascript">
     function submit()
     {
         var f = document.getElementById("form1").submit();
     }
+
     </script>
 
     
 
         <html:form action="/candidatemenifestoupload" method="post" styleId="form1" enctype="multipart/form-data">
-     
+            <table class="datagrid" align="center"><tr><td colspan="2" class="header">
 
          <%
          session.setAttribute("election_id",(String)request.getParameter("id"));
          session.setAttribute("position_id",(String)request.getParameter("pos_id"));
          %>
-         Upload Menifesto for :
-         Election Name: <%=(String)session.getAttribute("election_id")%>
+         Upload Menifesto</td></tr>
+                <tr><td>Election Name:</td><td> <%=(String)session.getAttribute("election_id")%></td></tr>
 
-     Position :<%=(String)session.getAttribute("position_id")%>
+                <tr><td>Position :</td><td><%=(String)session.getAttribute("position_id")%></td></tr>
          <%
 String msg=(String)request.getAttribute("msg");
 if(msg!=null)
@@ -50,8 +51,9 @@ else{
 
 %>
 
-         Upload PDF Format Menifeasto   <html:file  property="menifesto" name="CandidateMenifestoActionForm" styleId="menifesto" onchange="submit()"  />
+<tr><td> Upload PDF Format Menifeasto </td><td>  <html:file  property="menifesto" name="CandidateMenifestoActionForm" styleId="menifesto" onchange="submit()"  /></tr>
 <%}%>
+            </table>
         </html:form>
 
 

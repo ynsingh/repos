@@ -105,27 +105,11 @@ function isNumberKey(evt)
          return true;
       }
 </script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-.mess1               { font-family:Tahoma;font-size:13px;letter-spacing:1px;padding-left:5px;color:blue;}
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
+ <link rel="stylesheet" href="/EMS/css/page.css"/>
 </head>
 
-<body style="width: 720px">
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-      width: 710px;
-      visibility: show;">
+<body style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;" >
+ 
 <%!
    
    
@@ -195,7 +179,7 @@ pageContext.setAttribute("rec",perpage);
    pageContext.setAttribute("tCount", tcount);
     pageContext.setAttribute("path", request.getContextPath());
 %>
-<br><br>
+
 Modify Institute Details
 <%if(tcount==0)
 {%>
@@ -309,7 +293,7 @@ request.setAttribute("msg", "Your Session Expired: Please Login Again");
 
 </td></tr>
 </table>
- </div>
+ 
     </body>
 
     <script type="text/javascript" language="javascript">

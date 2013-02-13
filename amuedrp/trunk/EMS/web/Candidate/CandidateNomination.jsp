@@ -19,7 +19,6 @@
     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-<jsp:include page="/Voter/voterheader.jsp"/>
 
 <%
 try{
@@ -71,17 +70,6 @@ locale1=(String)session.getAttribute("locale");
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Block_Managergrid</title>
-         <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
         <%!
 
 
@@ -235,13 +223,12 @@ function isNumberKey(evt)
     parent.document.getElementById("f3").style.height = heigh;
       },200);}
         </script>
+    <link rel="stylesheet" href="/EMS/css/page.css"/>
     </head>
     <body onload="funload()">
 
 
 
-
-<br><br>
 
 <%if(tcount==0)
 {%>
@@ -249,7 +236,7 @@ function isNumberKey(evt)
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="50%">
+<table align="center" dir="<%=rtl%>" width="80%">
     <tr><td>Election Details</td><td align="right">View Next&nbsp;<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/></td></tr>
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>" colspan="2">
             <table width="100%"  align="center"><tr><td colspan="2" align="center">
@@ -257,41 +244,41 @@ else
 
   <columns>
 
-    <column width="20%">
+    <column width="5%">
       <header value="Election_Id" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_id}" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="20%">
+    <column width="5%">
       <header value="Institute_Id" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_id}" hAlign="left" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  styleClass="item"/>
     </column>
-    <column width="20%">
+    <column width="10%">
       <header value="Election Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_name}" hAlign="left" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  styleClass="item"/>
     </column>
 
-    <column width="20%">
+    <column width="15%">
       <header value="Position Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.positionName}" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  hAlign="left" styleClass="item"/>
     </column>
 
-      <column width="20%">
+      <column width="15%">
       <header value="Candidate Name" hAlign="left" styleClass="header"/>
       <item   value="${doc.candidateName}" hyperLink="${path}/Candidate/candidate_details.jsp?id=${doc.index}"  hAlign="left" styleClass="item"/>
     </column>
 
-<column width="20%">
+<column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Withdraw" hyperLink="${path}/withdrawal.do?id=${doc.election_id}&amp;pos_id=${doc.position_id}"  hAlign="left" styleClass="item"/>
     </column>
 
-<column width="20%">
+<column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Upload Menifesto" hyperLink="${path}/Candidate/upload_menifesto.jsp?id=${doc.election_id}&amp;pos_id=${doc.position_id}"  hAlign="left" styleClass="item"/>
     </column>
 
-<column width="20%">
+<column width="10%">
       <header value="View Menifesto" hAlign="left" styleClass="header"/>
       <item   value="${doc.menifesto}" hyperLink="${path}/Candidate/viewmenifesto.jsp?id=${doc.election_id}&amp;pos_id=${doc.position_id}"  hAlign="left" styleClass="item"/>
     </column>

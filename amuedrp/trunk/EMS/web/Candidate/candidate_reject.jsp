@@ -472,8 +472,8 @@ function send1()
 
 
     <div
-        style="  top:20px;
-        left:50%;
+        style="  top:10%;
+        left:55%;
         right:5px;
         position: absolute;
 
@@ -561,14 +561,14 @@ function send1()
     </div>
     <html:form action="/candidateregistration1" method="post"    onsubmit="return check3()" styleId="radio_form">
 
-        <table  dir="<%=rtl%>" class="table" width="60%">
+        <table  dir="<%=rtl%>" class="datagrid" align="center" width="60%">
         <tr><td class="header" align="center" colspan="3" bgcolor="cyan"> <%=resource.getString("candidateregform")%></td></tr>
          <tr><td>
               
                                     <tr>
                                         <td ><%=resource.getString("enrollment")%>*:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td>
                                         
-                                        <td rowspan="15">
+                                        <td rowspan="19">
                                             
                                             
                                             
@@ -690,7 +690,7 @@ function send1()
                         </tr>
 
                         <tr><td align="center" height="10px;" colspan="3" bgcolor="cyan">Academic Detail</td></tr>
-                        <tr><td align=""><%=resource.getString("department")%>*
+                        <tr><td align=""><%=resource.getString("department")%>*</td><td>
                                 <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
 
                                     <html:option  value="Select"> Select </html:option>

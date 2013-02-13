@@ -56,11 +56,7 @@ else{
 %>
 
 <style type="text/css">
-body
-{
-   background-color: #FFFFFF;
-   color: #000000;
-}
+
 </style>
 <script language="javascript">
 function fun()
@@ -91,13 +87,13 @@ window.setInterval('winresize()', 100);
     //alert("frmheight="+frmheight);
     if(winwidth!=undefined && frmwidth!=undefined)
         windiff= winwidth - frmwidth;
-    document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
+   // document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
     document.getElementById("ifr3").style.height = frmheight;
 }
 </script>
 </head>
 <link rel="stylesheet" href="/EMS/css/page.css"/>
-<body onload="fun()" class="datagrid">
+<body onload="fun();window.setTimeout('winresize()', 1000);" style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
    
 
 <form name="Form1" action="search_institute.do"  >
@@ -105,7 +101,7 @@ window.setInterval('winresize()', 100);
 
 
 
-          <tr class="header"><td  width="100%"   align="center" colspan="2" dir="<%=rtl%>">
+          <tr class="header"><td  width="50%"   align="center" colspan="2" dir="<%=rtl%>">
 
 
                   <%=resource.getString("login.searchinstitute.institutesearch")%>
@@ -114,9 +110,9 @@ window.setInterval('winresize()', 100);
 
 
         </td></tr>
-  <tr style="background-color:#e0e8f5;"><td width="800px"  >
-          <table dir="<%=rtl%>" align="<%=align%>">
-              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("enterstartingkeyword")%></td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
+  <tr style="background-color:#e0e8f5;"><td width="100%">
+          <table width="100%" dir="<%=rtl%>" align="<%=align%>" border="0">
+              <tr><td  dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("enterstartingkeyword")%></td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
               <td>
 
 
@@ -128,7 +124,7 @@ window.setInterval('winresize()', 100);
 
           </table>
       </td>
-      <td    align="left" valign="top">
+      <td  width="100%"  align="left" valign="top">
           <table >
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
                       <select name="search_by" onChange="fun()" id="search_by" size="1">
@@ -159,13 +155,15 @@ window.setInterval('winresize()', 100);
       </td>
 
   </tr>
-  <tr><td id="ifr3"><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
+  <%--<tr><td id="ifr3" valign="top" align="left">
+          
+      </td></tr>--%>
      
 
        </table>
 
-
-
+  <br>
+<IFRAME  name="f1" src="#" frameborder=0  id="f1" scrolling="no" width="800px" height="250px" onload="window.setTimeout('winresize()', 1000);" ></IFRAME>
    
 
 

@@ -102,13 +102,12 @@ if(msg2!=null){
     <body>
 
         <form name="Form1" action="<%=request.getContextPath()%>/sendallmail1.do" name="CandidateRegActionForm"  >
-                <table  cellspacing="10px">
-
+     <table  cellspacing="10px" align="center">
+                <tr><td><u>Candidate Mail Body</u></td></tr>
                     <tr>
-                        
-                      
 
- <td>Candidate Mail Body</td><td><textarea   cols="50" rows="5" name="candidateid" id="candidateid"><%=mailbody%></textarea><br><br>
+                        <td>Type the Mail Body</td>
+<td><textarea   cols="50" rows="5" name="candidateid" id="candidateid"><%=mailbody%></textarea><br><br>
 <%
 if(session.getAttribute("mail")!=null){
 

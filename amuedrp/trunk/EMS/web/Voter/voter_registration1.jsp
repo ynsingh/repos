@@ -307,7 +307,7 @@ function check3()
 
 
  <div
-   style="  top:25%;
+   style="  top:45%;
    left:55%;
    right:5px;
    position: absolute;
@@ -315,10 +315,10 @@ function check3()
   <%if(btn.equals("Add")==true){%>
 
                             <%if(session.getAttribute("image")!=null){%>
-                         <html:img src="/EMS/Voter/upload.jsp"  alt="no Imageg Selected" width="80" height="80"/>
+                            <html:img src="/EMS/Voter/upload.jsp"  alt="no Imageg Selected" style="border: solid 1px black;height:80px" width="80" height="80px"/>
                         <%}else{%>
 
-                        <html:img src="/EMS/images/no-image.jpg"  alt="no Imagew Selected" width="80" height="80"/>
+                        <html:img src="/EMS/images/no-image.jpg"  alt="no Imagew Selected" style="border: solid 1px black;" width="80" height="80px"/>
                            <%}%>
 
 
@@ -330,9 +330,9 @@ function check3()
 
 
                             <%if (request.getAttribute("imagechange")!=null){%>
-                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="80" height="80"/>
+                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" style="border: solid 1px black;"  width="80" height="80"/>
                         <%}else{%>
-                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image1 selected" width="80" height="80" />
+                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image1 selected"  width="80" height="80" />
                         <%}%><br/>
 
 
@@ -396,18 +396,13 @@ function check3()
 
 
      </div>
-     <html:form action="/voterregistration" method="post" style="position:absolute; left:90px; top:90px;"  onsubmit="return check3();">
+     <html:form action="/voterregistration" method="post" onsubmit="return check3();">
 
 
-         <table align="center" class="table" width="80%">
-            <tr><td>
-        <table border="0" class="txtStyle" align="center">
-            <tr><td align="center" class="headerStyle1" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Voter Registration Form </b></td></tr>
-
-
-            <tr><td>
-                    <table  class="table1"  border="0" cellspacing="6" cellpadding="2" align="center">
-
+         
+                    <table  class="table1"  border="0" cellspacing="6" width="80%" cellpadding="2" align="center">
+                        <tr><td align="center" height="10px;" colspan="3"><b>Voter Registration Form </b></td><td align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
+                        <tr><td colspan="4"><hr></td></tr>
 <tr>
     <td >Enrollment Number*:</td><td><html:text readonly="true"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td>
     <td colspan="2" rowspan="3">
@@ -501,6 +496,9 @@ function check3()
 <td align="left">Mobile No:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
 <td align="left">Country</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td>
 </tr>
+
+
+
   <tr>
           <td colspan="2"><b>Important! </b>Please provide a working email address:</td>
 
@@ -508,17 +506,8 @@ function check3()
 
 <tr>
 
-    <td align="left" colspan="2">email*:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
-
-</tr>
-<tr>
-
-    <td align="left" colspan="2">Alternate Email:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=alternateemail%>" styleId="alternateemail" property="alternateemail"/></td>
-
-</tr>
-
-<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
-<tr><td colspan="5" height="10px"></td>
+<td align="left" >email*:</td><td><html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
+<td align="left" >Alternate Email:</td><td><html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=alternateemail%>" styleId="alternateemail" property="alternateemail"/></td>
 </tr>
 <tr>
 <td align="center" colspan="5">
@@ -542,15 +531,9 @@ function check3()
 </tr>
 
 
-                        </table>   </td>
-                <td>
-
-
-                </td>
-            </tr>
-  <tr>
+                        </table>  
   <td>
-  <table>
+  
    <script>
     function copy()
 {
@@ -569,21 +552,7 @@ document.getElementById("country21").value=e;
 
 
 
-                </table>
-            </td>
-            </tr>
-                        <%-- <input type="submit" id="Button1" name="" value="Register" >
-                            <input type="reset" id="Button2" name="submit" value="Reset" >
-                            <input type="button" id="Button3" name="" value="Back" onclick="return send()">--%>
-                        <%--</td></tr>--%>
 
 </html:form>
 
 
-<tr><td colspan="5" height="5px"></td>
-</tr>
-                        </table>
-
-</td>
-</tr>
-        </table>

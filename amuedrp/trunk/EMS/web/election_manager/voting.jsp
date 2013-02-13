@@ -182,7 +182,7 @@ var divtag1 = document.createElement("div");
                 divtag1.style.align = "center";
                 divtag1.style.marginTop = "5px";
                 divtag1.style.height = "20px";
-               var htm1 = '<span style="margin-left: 45%"><%=session.getAttribute("electionName")%></span>';
+               var htm1 = '<span style="margin-left: 30%"><%=session.getAttribute("electionName")%></span>';
                divtag1.innerHTML = htm1;
             document.getElementById("ballot").appendChild(divtag1);
             
@@ -366,10 +366,10 @@ function checkCandidateLimit(iii,jj,this1,noofchoice,currentSel,candidateName,po
     
     <body onload="previewBallot()" style="margin: 0px;">
    
-        <div id="main" style="width: 100%; height: 100%">
-            <div id="middle" style="width: 100%;margin-left: 0%; position: relative;">
+        <div id="main" style="width: 100%; height: 100%" class="datagrid">
+            <div id="middle" style="width: 100%;margin-left: 0%; position: relative;" class="datagrid">
                 <form id="form1">
-                <div id="ballot" style="width: 660px; position: relative;margin-left: 0px; margin-top: 0px; border: 2px solid #F2F5A9;background-color: #D8CEF6;overflow: auto">
+                <div id="ballot" style="width: 660px; position: relative;margin-left: 0px; margin-top: 0px; border: 2px solid #F2F5A9;background-color: #D8CEF6;overflow: auto;font-family: Gill, Helvetica, sans-serif ;font-size: 12px;" class="datagrid">
                     
                 </div>
                 </form>

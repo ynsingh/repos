@@ -75,7 +75,7 @@ adminReg =(AdminReg_Institute) rst.get(0);}
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Untitled Page</title>
+<title>Admin Module</title>
 <style type="text/css">
 body
 {
@@ -84,15 +84,14 @@ body
 }
 </style>
 </head>
-<body>
+<body style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
     <html:form  action="/changeWorkingStatus" method="post"  onsubmit="return validation();">
-         <table align="center"  class="txt" width="800px" style="font-family: arial;font-weight: bold;color:brown;font-size:13px" dir="<%=rtl%>" align="<%=align%>">
+         <table align="center"   width="800px" style="font-family: arial;font-size:13px" dir="<%=rtl%>" align="<%=align%>">
 
 
-             <tr><td  align="left" colspan="2" ><br><br> <span class="txt">
-</span><br>
-             <br>
-
+             <tr><td  align="left" colspan="2" >
+                     Institute Details
+                     <hr><br>
 
          </td></tr>
 

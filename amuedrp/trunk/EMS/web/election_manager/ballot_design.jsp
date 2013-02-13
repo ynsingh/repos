@@ -128,10 +128,17 @@ var em1 = em.getElementsByTagName("position");
 if(em1.length==0){
     alert("No Poisition Defined in the Selected Election");
     top.window.location="/EMS/institute_admin/search_election_details.jsp";
-<%}else{%>
+<%}else if(role.equalsIgnoreCase("Election Manager")|| role.equalsIgnoreCase("Election Manager,voter")){%>
 if(em1.length==0){
     alert("No Poisition Defined in the Selected Election");
     top.window.location="/EMS/electionmanager.do";
+   
+<%} else
+{%>
+if(em1.length==0){
+    alert("No Poisition Defined in the Selected Election");
+  //  top.window.location="/EMS/electionmanager.do";
+    top.window.location="/EMS/Voter/voter_home.jsp";
 <%}%>
     return true;
 }
@@ -159,7 +166,7 @@ var instruct = em1[iii].getElementsByTagName("instruction");
 var instrucT = instruct[0].firstChild.nodeValue;
 var instruct1;
 var instruct2;
-htm = ' <div class="datagrid" align="center" >Position: <strong>'+positionname+'</strong><br><strong >'+ instrucT +' <span style="color: red"></span></strong>';
+htm = ' <div class="datagrid" align="center"  >Position: <strong>'+positionname+'</strong><br><strong >'+ instrucT +' <span style="color: red"></span></strong>';
 htm = htm +'<table class="datagrid" width="100%"><tbody><tr><th style="text-align: left;">Candidate ID</th><th style="text-align: left;">Candidate Name</th><th></th></tr>';
 
 var ca = em1[iii].getElementsByTagName("candidate");
@@ -207,8 +214,14 @@ document.getElementById("ballot").style.display="inline";
             </script>
     </head>
     <body onload="previewBallot();">
-      <div id="ballot">
-</div>
+        <table style="background-color: blue;color:white;font-weight: bold;font-size: 12px;" align="center" width="590px">
+            <tr><td>Preview Ballot Section</td><td><%=session.getAttribute("electionname")%></td><td align="right">
+
 <input type="button" value="Close" onclick="send()"/>
+                </td></tr>
+        </table>
+      <div id="ballot" align="center">
+</div>
+
     </body>
 </html>

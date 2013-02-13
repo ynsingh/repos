@@ -467,8 +467,8 @@ String instituteName=(String)session.getAttribute("institute_name");
 
 
     <div
-        style="  top:20px;
-        left:50%;
+        style="  top:10%;
+        left:55%;
         right:5px;
         position: absolute;
 
@@ -556,14 +556,14 @@ String instituteName=(String)session.getAttribute("institute_name");
     </div>
     <html:form action="/candidateregistration1" method="post"    onsubmit="return check3()" styleId="radio_form">
 
-        <table  dir="<%=rtl%>" class="table" width="60%">
+        <table  dir="<%=rtl%>" class="datagrid" align="center" width="60%">
         <tr><td class="header" align="center" colspan="3" bgcolor="cyan"> <%=resource.getString("candidateregform")%></td></tr>
          <tr><td>
               
                                     <tr>
                                         <td ><%=resource.getString("enrollment")%>*:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td>
                                         
-                                        <td rowspan="15">
+                                        <td rowspan="19">
                                             
                                             
                                             
@@ -697,14 +697,14 @@ String instituteName=(String)session.getAttribute("institute_name");
 
                         <tr><td align="center" height="10px;" colspan="3" bgcolor="cyan">Academic Detail</td></tr>
                         <tr><td align=""><%=resource.getString("department")%>*
-                                <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
+                            </td><td> <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
 
                                     <html:option  value="Select"> Select </html:option>
                                     <html:option  value="ug">Under Graduate</html:option>
                                     <html:option value="pg">Post Graduate</html:option>
                                     <html:option value="other">Others</html:option>
 
-                                </html:select>                        
+                                </html:select>   </td>
                         </tr>
                         <tr>
                             <td align="left"><%=resource.getString("marks")%> %*:</td><td><html:text  name="CandidateRegActionForm" styleId="mark" property="p_marks" readonly="<%=read%>" /></td>

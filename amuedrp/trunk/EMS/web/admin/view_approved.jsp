@@ -112,27 +112,11 @@ function isNumberKey(evt)
          return true;
       }
 </script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: 7697BC; color: #FFFFFF;font-weight: bold }
 
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
 </head>
 
 <body style="width: 620px;">
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-      width: 610px;
-      visibility: show;">
+ 
      Approved List
 <%!
    
@@ -196,7 +180,7 @@ pageContext.setAttribute("rec",perpage);
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
 %>
-<br><br>
+
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
@@ -284,7 +268,7 @@ request.setAttribute("msg", "Your Session Expired: Please Login Again");
 </td></tr>
 </table>
 
- </div>
+ 
     </body>
 
 

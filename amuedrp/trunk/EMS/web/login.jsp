@@ -235,6 +235,7 @@ function search2()
 }
 
     </script>
+            <style>a:link{color:white;}</style>
 <%
 try{
 locale1=(String)session.getAttribute("locale");
@@ -252,15 +253,51 @@ sessionId = session.getId().toString();
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<body style="margin:0px 0px 0px 0px"  background="<%=request.getContextPath()%>/images/spaces_background-2560x1600.png" >
+<body  style=" background-image: url('./images/paperbg.gif'); margin-top:0; margin-bottom:0;">
     
 
 
 
     <form method="post" action="login.do" name="form1" onsubmit="return search2();" >
-        <table align="center" style="width: 70%;background-color: white;border: solid #ECF1EF 10px;margin-top: 50px" dir="<%=rtl%>" >
+        <table align="center" style="padding: 0px 0px 0px 0px;width: 80%;height:100%;border-right:  solid #ECF1EF 3px;border-left:  solid #ECF1EF 3px;" dir="<%=rtl%>" >
              
-            <tr><td>
+            
+           
+            <tr style=" background-image: url('./images/header.jpg'); height: 100px">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center" width="100%"  dir="<%=rtl%>">
+            <tr style="background-color: #425C83;color:white"><td align="center">
+                    
+                         
+<%String msg1="";
+if (request.getAttribute("msg")==null){
+String msgsession=(String)request.getParameter("session");
+if(msgsession!=null){
+    msg1= "Your Session "+msgsession;
+}else
+    {
+    msg1=null;
+    }
+}
+else{
+    msg1= (String)request.getAttribute("msg");
+}%>
+
+<%
+if(msg1!=null)
+      { 
+   // out.println(msg1);
+}
+ String msg11 =(String) request.getAttribute("msg1");
+ //request.removeAttribute(msg11);
+if (msg11!=null){
+      out.println(msg11);       
+    
+       }
+
+%>
+ 
+                    
                     <%
 String m=(String)request.getParameter("m");
 if(m!=null)
@@ -276,49 +313,82 @@ if(str1==null){
 }
 if(str1!=null)
     {%>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:12px;font-weight:bold;color:<%=col%>;" ><%=str1%></span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:12px;font-weight:bold;color:white;" ><%=str1%></span>
 <%}%>
-   
+
 
             <%
 
 String str=(String)request.getAttribute("msg");
 if(str!=null)
     {%>
-    &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:12px;font-weight:bold;color:blue; direction: <%=rtl%>" ><%=str%></span>
-<%}%>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:12px;font-weight:bold;color:white;" ><%=str%></span>
+<%}%> 
 
-                </td> </tr>
-           
-        <tr>
-    <td  valign="top" colspan="2" width="100%" align="center">
-        <table  align="center"  dir="<%=rtl%>">
-            <tr><td  width="73%" valign="bottom"  align="<%=align%>">
-                                <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
+   
+
+                </td><td align="right">         <%=resource.getString("login.message.selectlanguage")%><select name="locale" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select></td>
+            </tr>
+            <tr><td width="70%"  valign="bottom"  align="<%=align%>">
+                            &nbsp;&nbsp;    <span style="font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;color:white" >Election</span><span style="color:white;font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >MS</span>
+
                           
                
-                </td><td> <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="top" id="Image1" style="" height="100px" width="100%"><br/>
+                </td><td align="right" > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="center" id="Image1" style="" height="80px" width="150"><br/>
                                 
                             </td></tr>
+             <tr><td>
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("login.message.logo.under")%>&nbsp;
+
+</div>
+                </td>
+                <td >
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("userlogin")%>&nbsp;
+
+</div>
+                </td></tr>
             </table></td>
             </tr>
-            <tr  height="5px" style="font-family: arial;color:#6495ED;font-weight: bold;font-size: 12px"><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("login.message.logo.under")%></td><td align="center"><%=resource.getString("login.message.selectlanguage")%><select name="locale" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select></td></tr>
-            <tr><td width="90%" colspan="2" valign="top" align="center" dir="<%=rtl%>" >
+           
+         <%--   <tr  height="5px" style="font-family: arial;color:#6495ED;font-weight: bold;font-size: 12px"><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("login.message.logo.under")%></td></tr>
+         --%>   <tr><td width="90%" colspan="2" valign="top" align="center" dir="<%=rtl%>" >
 
                     <table align="center" ><tr><td align="center" valign="top">
-                                <table width="90%" dir="<%=rtl%>" style="color:#00008B;font-family: arial;font-size: 16px;text-align: justify;line-height: 30px">
-                                    <tr><td dir="<%=rtl%>" valign="top">
+                                <table width="100%" dir="<%=rtl%>" class="datagrid" style="line-height: 17px;color:#00008B;text-align: justify;padding: 5px 5px 5px 5px;font-size: 12px;">
+                                    <tr ><td dir="<%=rtl%>" valign="top">
 
-                                          <%=resource.getString("intro")%> 
+                                          <%=resource.getString("intro")%>
+                                          <br><br>
+                                          <%=resource.getString("functionmoduleinelection")%><br>
+                                          <ol style="line-height: 17px">
+                                                   
+                                                  <li><b> <%=resource.getString("webadmin")%></b><hr>
+                                                      <%=resource.getString("webadministheperson")%>.<%=resource.getString("hereceivesregistrationrequests")%>. <%=resource.getString("superadminhastheprivileges")%>.<%=resource.getString("superadmincanreset")%>.
+                                                  </li>
+                                                  <li><b> <%=resource.getString("chiefelectionofficer")%>
+                                                      </b><hr> <%=resource.getString("chiefelectionofficer")%><%=resource.getString("istheauthority")%>.<%=resource.getString("Instituteadminworks")%>. <%=resource.getString("ElectionOfficerforthemanaging")%>. <%=resource.getString("thismodulehelps")%>, <%=resource.getString("blockelectionmanagers")%>.</li>
+
+                                                  <li><b> <%=resource.getString("electionmanager")%></b><hr><%=resource.getString("electionOfficer")%><%=resource.getString("cancreate")%>,<%=resource.getString("openandclose")%>. <%=resource.getString("electionmanagerwill")%>. <%=resource.getString("itwillberesponsibility")%>,<%=resource.getString("candidatespublish")%>. <%=resource.getString("thismodulesfacilitate")%>. <%=resource.getString("electionmanageris")%>, <%=resource.getString("whichissystem")%>,  <%=resource.getString("toitsvoters")%>.</li>
+                                                  <li><b> <%=resource.getString("voter")%>/<%=resource.getString("candidate")%></b><hr><%=resource.getString("VotersCandidate")%> <%=resource.getString("mayregisterthemselves")%> . <%=resource.getString("mayregisterthemselves")%>. <%=resource.getString("Voterscanregister")%>.<%=resource.getString("Votersgets")%>. <%=resource.getString("beingcandidates")%>. <%=resource.getString("candidateswillable")%>.</li>
+                                                  
+                                              </ol>
+                                        
+                                               
+                                         
+                                        
+                                        
+
 
                                         </td></tr>
 
                                 </table>
                                
-                            </td><td style="background-color:#ECF1EF ;font-family:arial;font-size:12px;">
+                            </td><td valign="top" style="background-color:#657AF0 ;font-family:arial;font-size:12px;margin: 0px 0px 0px 0px;padding: 0px 0px 0px 0px">
 
-                    <table  width="250px" dir="<%=rtl%>">
-                        <tr><td style="background-color: #458B74;color:white;font-size: 15px"><%=resource.getString("pleaselogin")%></td></tr>
+                                <table  width="250px" dir="<%=rtl%>" style="color:white ">
+                        <tr><td style="background-color: #425C83;color:white;font-size: 15px"><%=resource.getString("pleaselogin")%></td></tr>
                     <tr>
                     <td  align="center" width="250px">
                         <table dir="<%=rtl%>" width="250px">
@@ -348,14 +418,28 @@ if(str!=null)
 
                             <p class="emailheadhome1" align="left">
                         <%--<form  action="./admin/remote" method="post">--%>
-       Login with Open ID<br/>
-Please click your open Id provider:<input type="textbox" style="width:300px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;" name="email" value="http://202.141.40.216:8081/openid/username" id="email2"/>
-<br>     <input class="buttonhome" type="button" value="Log In" onclick="send()"/><br>Please replace username with your actual username.
+      <%=resource.getString("loginwithopen")%><br/>
+<%=resource.getString("pleaseclickyour")%><input type="textbox" style="width:300px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;" name="email" value="http://202.141.40.216:8081/openid/username" id="email2"/>
+<br>     <input class="buttonhome" type="button" value="<%=resource.getString("login.button.sigin.login")%>" onclick="send()"/><br>Please replace username with your actual username.
         <%--</form>--%>
 </p>
 
-                            <a href="<%=request.getContextPath()%>/admin/admin_registration.jsp"> <%=resource.getString("join")%></a>
                         </td></tr>
+                    <tr><td width="250px" colspan="2"  class="homepage" style="color:white">
+
+                             <b><%=resource.getString("importantlink")%></b>
+
+                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;     <a href="<%=request.getContextPath()%>/admin/admin_registration.jsp"> <%=resource.getString("join")%></a>
+                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>
+                        <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="http://www.ignouonline.ac.in/sakshatproposal/default.aspx" style="color:white">  NMEICT <%=resource.getString("homepage")%></a>
+                       <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="#" style="color:white">  <%=resource.getString("sitemap")%></a>
+                       <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/ModuleHelp/Releasenotes.jsp" style="color:white"> <%=resource.getString("releasenotes")%></a>
+                       <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a href="<%=request.getContextPath()%>/ModuleHelp/CompleteUserManual.pdf" style="color:white"> <%=resource.getString("usermanual")%></a>
+                       <br/> <img src="<%=request.getContextPath()%>/images/bullet.jpg">&nbsp;    <a  style="color:white" href="/EMS/ModuleHelp/index.html">HTML Help</a></a>
+
+                         </td></tr>
+
+
                         </table>
 
 
@@ -368,7 +452,7 @@ Please click your open Id provider:<input type="textbox" style="width:300px;heig
                     </td>
                     
 
-                    </tr><tr><td width="250px" colspan="2"> <a href="<%=request.getContextPath()%>/newenrollment.do">  <%=resource.getString("Voter_Registration")%></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </td></tr>
+                    </tr>
 
 
                     </table>
@@ -384,8 +468,8 @@ Please click your open Id provider:<input type="textbox" style="width:300px;heig
 
 
 
- <tr><td colspan="3" align="center" style="font-family: arial;font-size: 12px;color:#6495ED;" valign="top"><br/><br/><br/>
-         <%=resource.getString("developedby")%> &nbsp;<br/>
+ <tr><td colspan="3" align="center"  style="font-family: arial;color:white;font-size: 12px;background-color: #425C83;height: 25px" valign="middle">
+         <%=resource.getString("developedby")%> &nbsp;
                     &copy; <%=resource.getString("login.message.footer")%>
                 </td></tr>
         </table>
@@ -393,25 +477,6 @@ Please click your open Id provider:<input type="textbox" style="width:300px;heig
 </form>
 
 </body>
-      
-<%String msg1="";
-if (request.getAttribute("msg")==null){
-String msgsession=(String)request.getParameter("session");
-if(msgsession!=null){
-    msg1= "Your Session "+msgsession;
-}else
-    {
-    msg1=null;
-    }
-}
-else{
-    msg1= (String)request.getAttribute("msg");
-}%>
-
-<%
-if(msg1!=null)
-   // out.println(msg1);
-%>
      
 
 

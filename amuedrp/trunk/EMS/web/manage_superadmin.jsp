@@ -133,9 +133,9 @@ function clearme()
 }
             </script>
     </head>
-    <body style="width: 510px">
+    <body style="width: 510px" style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
         <html:form styleId="form1"  action="/manage_superadmin.do" method="post">
-            <table  align="<%=align%>" dir="<%=rtl%>" width="500px" height="150px" style="background-color: white;border:#C7C5B2 1px solid;margin:0px 0px 0px 0px;">
+            <table  align="<%=align%>" dir="<%=rtl%>" width="500px" height="150px" style="border:#C7C5B2 1px solid;margin:0px 0px 0px 0px;">
                 <tr><td dir="<%=rtl%>" style="background-color: #7697BC;color:white;" colspan="2" class="btn1" height="30px"><b><%=resource.getString("login.managesuperadminaccount.superadminaccount")%></b> </td></tr>
                 <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.oldloginid")%></td><td><html:text styleId="user_id1" style="width: 200px" property="user_id1" value="<%=user%>" readonly="true"/></td></tr>
            <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.newloginid")%></td><td><html:text styleId="user_id2" style="width: 200px" property="user_id2" disabled="true"/></td></tr>

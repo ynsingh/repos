@@ -70,17 +70,6 @@ locale1=(String)session.getAttribute("locale");
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Block_Managergrid</title>
-         <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
         <%!
 
 
@@ -149,25 +138,11 @@ System.out.println("it="+(tcount));
         Ob.setElection_name(election.getElectionName());
         Ob.setManager_id(election.getCreatedBy());
         Ob.setStatus(election.getStatus());
-        
-        //ems.getElectionManager().setStatus(ems.getElectionManager().getStatus());
-
-
-
-
-
-
-
-
-
    requestList.add(Ob);
    tcount++;
 it.next();
    //System.out.println("tcount="+tcount);
 		     }
-
-System.out.println("tcount="+tcount);
-
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+perpage) >= requestList.size ())
    toIndex = requestList.size();
@@ -230,13 +205,11 @@ function isNumberKey(evt)
     parent.document.getElementById("form1").style.height = heigh;
       },200);}
         </script>
+    <link rel="stylesheet" href="/EMS/css/page.css"/>
     </head>
     <body onload="funload()">
 
         
-
-
-<br><br>
 
 <%if(tcount==0)
 {%>
@@ -244,8 +217,8 @@ function isNumberKey(evt)
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="90%">
-    <tr><td colspan="2" align="right">View Next&nbsp;
+<table align="<%=align%>" dir="<%=rtl%>" width="100%">
+    <tr><td colspan="2" align="center">View Next&nbsp;
             <%--<input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
         --%>
         <select id="rec" onchange="changerec()" style="width:50px">
@@ -254,8 +227,8 @@ else
              <option value="30">30</option>
        </select>
         </td></tr>
-    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
-            <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" style="margin-left: 30px" cellPadding="0" cellSpacing="0" styleClass="datagrid">
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>" align="center">
+            <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1"  cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
@@ -292,7 +265,13 @@ else
 <column width="10%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Cast Vote" hyperLink="${path}/voting.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
+</column>
+
+<column width="10%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="Preferencial Voting" hyperLink="${path}/voting.do?election=${doc.election_id}&amp;voting=p"  hAlign="left" styleClass="item"/>
     </column>
+    
       
       <column width="20%">
       <header value="Action" hAlign="left" styleClass="header"/>

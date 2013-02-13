@@ -101,14 +101,14 @@ font-weight:bold;
 }
 </style>
 </head>
-<body>
+<body style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
     <html:form  method="post" action="/adminupdate" onsubmit="return validation();" >
-        <table align="center" dir="<%=rtl%>"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+        <table align="center" dir="<%=rtl%>"  width="80%" style="font-family: arial;font-size:13px">
 
 
-            <tr><td  align="<%=align%>" dir="<%=rtl%>" colspan="2" ><br><br> <span class="txt">
-</span><br>
-             <br>
+            <tr><td  align="<%=align%>" dir="<%=rtl%>" colspan="2" ><br>Institute Details<hr><span class="txt">
+</span>
+            
 
 
          </td></tr>

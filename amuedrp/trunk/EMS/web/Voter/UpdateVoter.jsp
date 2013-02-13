@@ -550,10 +550,10 @@ function send1()
      <html:form action="/updatevoter1" method="post"   onsubmit="return check3();">
 
 
-         <table align="center" class="table" width="70%">
+         <table align="center" class="table" width="90%">
             <tr><td>
-        <table border="0" class="" align="center" width="100%">
-            <tr><td align="center" class="headerStyle1" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Voter Registration Form </b></td></tr>
+        <table border="0" align="center" width="100%">
+            <tr class="headerstyle" ><td align="center"height="10px;" ><b>Voter Registration Form </b></td><td><a class="star">*</a>indicated fields are mandatory</td></td></tr>
 
 
             <tr><td>
@@ -675,18 +675,16 @@ function send1()
 
 <tr>
 
-    <td align="left" colspan="2">Email*:<html:text readonly="true" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" onblur="return echeck();" property="email"/></td>
+    <td align="left" >Email*:</td><td colspan="3"><html:text readonly="true" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" onblur="return echeck();" property="email"/></td>
 
 </tr>
 <tr>
 
-    <td align="left" colspan="2">Alternate Email:<html:text readonly="<%=read%>" name="VoterRegActionForm"    styleId="alternateemail1" property="alternateemail"/></td>
+    <td align="left" >Alternate Email:</td><td colspan="3"><html:text readonly="<%=read%>" name="VoterRegActionForm"    styleId="alternateemail1" property="alternateemail"/></td>
 
 </tr>
 
-<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
-<tr><td colspan="5" height="10px"></td>
-</tr>
+
 <tr>
 <td align="center" colspan="5">
      <%if(btn.equals("Update")){%>

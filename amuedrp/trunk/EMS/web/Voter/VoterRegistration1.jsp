@@ -504,8 +504,8 @@ function check3()
 <body>
 
     <div
-   style="  top:250px;
-   left:800px;
+   style="  top:65%;
+   left:55%;
    right:5px;
       position: absolute;
 
@@ -560,9 +560,8 @@ function check3()
      </div>
 
      <div
-   style="  top:125px;
-   left:60%;
-   right:5px;
+   style="  top:45%;
+   right:37%;
       position: absolute;
 
       visibility: show;" >
@@ -580,10 +579,10 @@ function check3()
                            <%}else{%>
 
                             <%if (request.getAttribute("imagechange")!=null){%>
-                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="120" height="120"/>
+                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="100" height="100"/>
                         <%}else{%>
                         
-                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image selected" width="120" height="120" />
+                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image selected" width="100" height="100" />
                        
                         <%}%><br/>
                           
@@ -595,14 +594,11 @@ function check3()
 
 
      <html:form action="/addvoterregistration" method="post"   onsubmit="return check3();">
-         <table  align="center" width="90%" border="0" class="txtStyle">
-            <tr><td>
-        <table border="0" class="table" align="center">
+         <table border="0" class="datagrid" align="center" width="50%">
             <tr><td align="center" class="headerStyle"  height="25px;" colspan="2"><b>Voter Registration Form </b></td></tr>
-            <tr><td>
-                    <table >
-              <tr>
-                  <td >Enrollment Number*:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment" onfocus="statwords('Please enter enrollment number')" onblur="return status()"  value="<%=enrollment%>" /></td><td>
+           
+<tr>
+    <td width="30%" >Enrollment Number*:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm"  styleId="enrollment1" property="enrollment" onfocus="statwords('Please enter enrollment number')" onblur="return status()"  value="<%=enrollment%>" /></td><td>
 <td></td>
 </tr>
 <tr><td align="left">Institute Name*</td><td>
@@ -629,13 +625,8 @@ function check3()
     <td align="left">Year :</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="year1" property="year" value="<%=yr%>" onfocus="statwords('Please enter current academic year')" onblur="return status()"/></td>
                                                <%-- <td>Upload Photo:</td><td><html:file property="image"/></td>--%>
 </tr>
-                    </table>
-                </td></tr>
-
-            <tr><td>
-                        <table width="100%" border="0">
-                        
-<tr><td  width="50%">Duration of course:</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" onfocus="statwords('Please enter total duration of course')" onblur="return status()"/> </td><td width="30%">
+           
+                    <tr><td  >Duration of course:</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" onfocus="statwords('Please enter total duration of course')" onblur="return status()"/> </td>
     </tr>
 <tr>
 <td align="left">Current Session:</td><td><html:text readonly="<%=read %>"  name="VoterRegActionForm" styleId="sess1" value="<%=sess%>" property="session" onfocus="statwords('Please enter current academic session')" onblur="return status()" /></td>
@@ -680,9 +671,8 @@ function check3()
 <tr>
     <td align="left">Alternate Email:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="alternateemail"  value="<%=zcode%>" styleId="alternateemail1" /></td>
 </tr>
-                        </table>   </td>
-                <td>
- <table> <tr>
+
+  <tr>
          <td align="left">Corresponding Address:</td> <td> <html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>" onfocus="statwords('Please enter corresponding address')" onblur="return status()" /></td>
 </tr>
 
@@ -715,33 +705,10 @@ function check3()
         <tr>    <td align="left">State</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="state1" value="<%=state1%>" styleId="state21" onfocus="statwords('Please enter state name')" onblur="return status()"/></td></tr>
          <tr> <td align="left">ZIP Code</td><td><html:text  readonly="<%=read %>" name="VoterRegActionForm" property="zipcode1"  value="<%=zcode1%>" styleId="zcode21" onfocus="statwords('Please enter zipcode')" onblur="return status()"/></td><td colspan="2"></tr>
           <tr><td align="left">Country</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" property="country1" value="<%=country1%>" styleId="country21" onfocus="statwords('Please enter country name')" onblur="return status()"/></td></tr>
- </table>
-                </td>
-            </tr>
+
+              
   <tr>
   <td>
-  <table>
-   <script>
-    function copy()
-{
-    var a=document.getElementById("cadd1").value;
-    var b=document.getElementById("city1").value;
-    var c=document.getElementById("state1").value;
-    var d=document.getElementById("zcode1").value;
-    var e=document.getElementById("country1").value;
-document.getElementById("padd1").value=a;
-document.getElementById("city21").value=b;
-document.getElementById("state21").value=c;
-document.getElementById("zcode21").value=d;
-document.getElementById("country21").value=e;
-}
-
-function status()
-{
-    window.status='Press F1 for help';
-}
-</script>
-                </table>
             </td>
             </tr>
                       <tr>
@@ -772,15 +739,35 @@ function status()
      <input  name="button1" type="button" value="Back" onclick="return send();" class="txt1" />
 
             <%}%>
-   
+
 
 
 
 	</td>
 </tr>
                         </table>
+ 
+   <script>
+    function copy()
+{
+    var a=document.getElementById("cadd1").value;
+    var b=document.getElementById("city1").value;
+    var c=document.getElementById("state1").value;
+    var d=document.getElementById("zcode1").value;
+    var e=document.getElementById("country1").value;
+document.getElementById("padd1").value=a;
+document.getElementById("city21").value=b;
+document.getElementById("state21").value=c;
+document.getElementById("zcode21").value=d;
+document.getElementById("country21").value=e;
+}
 
-</td>
-</tr>
-        </table>
+function status()
+{
+    window.status='Press F1 for help';
+}
+</script>
+               
+
+
 </html:form>

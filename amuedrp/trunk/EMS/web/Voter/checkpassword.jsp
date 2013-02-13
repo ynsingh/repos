@@ -429,7 +429,14 @@ function loadvoting()
                 var htm = '<div id="electionResult1" style="display: block;opacity:1;background-color: white;border: 2px solid teal;height: 90%; width: 669px;margin-left: 25%; position: absolute;top:100px;">';
                 htm+= '<div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>';
                 htm+='<div style="position: relative">';
-                htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
+                <%
+                String s=(String)request.getAttribute("voting");
+                if(s!=null){
+                %>
+                htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/pref_election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
+                <%}else{%>
+                     htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/election.do?election='+ electVal +'" width="665px" style="height: '+ h1 +'px" />';
+                     <%}%>
                     htm+='</div></div>';
                 divtag.innerHTML = htm;
                 document.getElementById("bod").appendChild(divtag);

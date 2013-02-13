@@ -52,7 +52,7 @@ document.getElementById('st').style.visibility = 'hidden';
                // divtag.style.backgroundColor = "gray";
                 divtag.style.opacity = 0.97;
                 var h1 = "495";
-                var htm = '<div id="electionResult1" style="display: block;opacity:1;background-color: white;border: 2px solid teal;height: 90%; width: 669px;margin-left: 25%; position: absolute;top:100px;">';
+                var htm = '<div id="electionResult1" style="display: block;opacity:1;background-color: white;border: 2px solid teal;height: 90%; width: 669px;margin-left: 25%; position: absolute;top:23%">';
                 htm+= '<div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>';
                 htm+='<div style="position: relative">';
                   htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/election.do?election='+ electVal +'&amp;agm=true" width="665px" style="height: '+ h1 +'px" />';
@@ -78,10 +78,10 @@ function loadresult1()
                 divtag.style.top = "0px";
                 divtag.style.position = "absolute";
                 divtag.style.overflow = "visible";
-                divtag.style.backgroundColor = "gray";
+             //   divtag.style.backgroundColor = "gray";
                 divtag.style.opacity = 0.97;
                 var h1 = "495";//alert(h1);
-                var htm = '<div id="electionResult1" style="display: block;opacity:1;background-color: white;border: 2px solid teal;height: 90%; width: 669px;margin-left: 25%; position: absolute;top:100px;">';
+                var htm = '<div id="electionResult1" style="display: block;opacity:1;background-color: white;border: 2px solid teal;height: 90%; width: 669px;margin-left: 25%; position: absolute;top:23%">';
                 htm+= '<div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>';
                 htm+='<div style="position: relative">';
                 htm+='<iframe name="f1" id="f1"  src="<%=request.getContextPath()%>/Voter/viewagm.jsp?election='+ electVal +'&amp;compute1=t" width="665px" style="height: '+ h1 +'px" />';
@@ -147,7 +147,7 @@ String instituteName=(String)session.getAttribute("institute_name");
  String role=(String)session.getAttribute("login_role");
     %>
     <body id="bod" >
-        <div id="st" >
+        <div id="st" align="center">
 <%
   List<Election> lstclosedelection = (List<Election>)session.getAttribute("ClosedelectionList");
 %>

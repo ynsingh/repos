@@ -302,7 +302,7 @@ List<Election> lstcurelection = (List<Election>)session.getAttribute("currentele
             function currentElections()
             {
              window.location.href="<%=request.getContextPath()%>/Voter/send_candi_request.jsp";
-              // loadElections();
+              
             }
             function fun(index,node){
                 var id = "block"+index;
@@ -790,6 +790,7 @@ function createul(current)
 }
 <%
 String instituteName=(String)session.getAttribute("institute_name");
+String user=(String)session.getAttribute("username");
 
  String role=(String)session.getAttribute("login_role");
 
@@ -800,89 +801,43 @@ String instituteName=(String)session.getAttribute("institute_name");
 
    
     </head>
-    <body style="margin:  0px;height: 90%; " id="bod" >
+    <body style="margin:  0px;height: 100%; " id="bod"  style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;" >
         <%String x=(String)request.getParameter("g");
         if(x==null){%>
-        <table align="center" style="" dir="<%=rtl%>" width="100%">
+   <table width="100%" align="center" style="padding: 0px 0px 0px 0px;width: 100%;background-image: url('/EMS/images/paperbg.gif');height:90px;" dir="<%=rtl%>" >
+            <tr style="background-color: #425C83;;color:white;font-size: 12px;"><td width="70%"><b>Login Detail:&nbsp;<%=instituteName%>&nbsp;Voter/Candidate Module</b></td><td align="right">
+                    <span style="font-family:arial;color:white;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">&nbsp;<a href="<%=request.getContextPath()%>/change_password.do?page=voter" target="ff" style="text-decoration: none;color:white" dir="<%=rtl%>">&nbsp;Change Password</a> &nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/newregistration2.do" target="ff" style="text-decoration: none;color:white" dir="<%=rtl%>">&nbsp;View Profile</a>&nbsp;|&nbsp;<%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:white" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;
+     </td></tr>
 
-        <tr>
-            <td  valign="top" colspan="2" width="100%" align="<%=align%>">
-
-                <table  align="<%=align%>"  dir="<%=rtl%>" width="100%">
-            <tr><td valign="bottom"  align="<%=align%>">
-            <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
-            </td>
-            <td dir="<%=rtl%>" align="center" valign="middle" width="50%"><span dir="<%=rtl%>"><b><%=instituteName%><br>&nbsp; Role[<%=role%>]</b></span></td>
-             <td  align="right"   valign="top" style="font:8pt Verdana;text-decoration:none;">
-
-<table width="100%" border="0px"><tr>
-<td>
-<html:img src="/EMS/images/logo.png" width="150px" height="60px"  />
-</td>
-<td align="right"  valign="top"><%=resource.getString("login.hello")%>,&nbsp;
-
-                        
-                      
-<script type="text/javascript" language="javascript">
-document.write("<span " );
-document.write('style="height:10px;border:0px solid black;font:bold 11px Verdana;"');
-document.write(' onclick="toggle_menu(1);');
-document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
-document.write('<%=(String)session.getAttribute("username")%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>');
-document.write('<div id="ddmenu" style="');
-document.write('height:45px;border:0px solid black;background-color:white;text-decoration:none;text-align: right;padding-right:2px');
-document.write('visibility:hidden;">');
-add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do");
-add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do?page=voter");
-function add_item(linkname,dest){
-  document.write('<a  href="'+dest+'" target="ff"  <%--onclick="return pageload(3);"--%>>'+linkname+'</a><br>');
-}
-
-function toggle_menu(state){
-var theMenu=document.getElementById("ddmenu").style;
-if (state==0) {
-  theMenu.visibility="hidden"; }
-else {
-  theMenu.visibility = (theMenu.visibility=="hidden") ? "visible" : "hidden";
-}
-}
-
-
-document.onclick= function() {toggle_menu(0); }
-document.write('</div></span>');
-
-
-</script>
-
-
-</td><td align="left" valign="top" width="20%">
-|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>
-
-</td>
-    <%
-
-%>
+            <tr style=" background-image: url('/EMS/images/header.jpg');height: 100px">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center" width="100%"  dir="<%=rtl%>">
+            <tr><td width="70%"  valign="bottom"  align="<%=align%>">
+                            &nbsp;&nbsp;    <span style="font-weight: bold;font-size: 35px;color:white;font-family:Gill, Helvetica, sans-serif;" >Election</span><span style="color:white;font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >MS</span>
 
 
 
-    </tr>
-</table>
+                </td><td align="center" > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="center" id="Image1" style="" height="80px" width="120"><br/>
+
+                            </td></tr>
+             <tr><td>
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("login.message.logo.under")%>&nbsp;
+
+</div>
+                </td>
+                <td align="right">
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px white;font-family:Gill, Helvetica, sans-serif" >
 
 
-             </td></tr>
-            </table><br>
-            </td>
-
-            </tr>
-            <tr><td>
-
-
-
+</div>
                 </td></tr>
+        </table>
+    </td></tr>
         </table>
             
 
-        <div id="main" style="width: 100%;height: 100%;margin: 0px;">
+        <div id="main" style="width: 100%;height: 100%;margin: 0px; background-image: url('/EMS/images/paperbg.gif');">
             <div id="topstrip" style="margin: 0px; width: 100%;height: 20px;background-color: black;">
                 
                     
@@ -890,28 +845,17 @@ document.write('</div></span>');
                         <table>
                             <tr><td>
 
-                            <a href="/EMS/Voter/voter_home.jsp" style="font-size: 13px;text-decoration: none;">&nbsp;<%=resource.getString("login.home")%></a>&nbsp;|&nbsp;
-                        
-                        
-                        <%
+                            <a href="/EMS/Voter/voter_home.jsp" style="font-size: 13px;text-decoration: none;">&nbsp;<%=resource.getString("login.home")%></a>&nbsp;|&nbsp;</td>
+                                <td>        <%
                         if(lstcurelection!=null && !lstcurelection.isEmpty()){%>
-                        <a href="#" style="font-size: 13px;text-decoration: none;"  onclick="currentElections()"><%=resource.getString("currentelection")%></a>&nbsp;|&nbsp;
-                        <%}
-                        if(lstelection!=null && !lstelection.isEmpty()){%>
-                        <a href="#" style="font-size: 13px;text-decoration: none;" <%--onclick="elections();"--%> onclick="checkElection();"><%--<%=resource.getString("votingprocess")%>--%></a>&nbsp;&nbsp;
-                        <%}
+                        <a href="<%=request.getContextPath()%>/Voter/send_candi_request.jsp" style="font-size: 13px;text-decoration: none;"><%=resource.getString("currentelection")%></a>&nbsp;|&nbsp;
+                        <%}%></td><td><%
                         if(lstclosedelection!=null && !lstclosedelection.isEmpty()){%>
                         <a href="#" style="font-size: 13px;text-decoration: none;" onclick="electionsResults()"><%=resource.getString("electionresults")%></a>&nbsp;|&nbsp;
                             <%}%>
-                           <%-- <ul>
-                                <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
-                                <li><a href="#" style="font-size: 13px;font-weight: bold;z-index:1000" onclick="electionsResults()">Election&nbsp;Results</a></li>
-                            </ul>--%>
                         
-                       <%-- <a href="#" style="font-size: 13px;text-decoration: none;" onclick="viewelections();"><%=resource.getString("view_elction")%></a>&nbsp;|&nbsp;--%>
-
-                   
-                    </td><td>
+                        </td>
+                    
                             <%
                             Login login=(Login)session.getAttribute("login");
                             InstituteDAO institutedao=new InstituteDAO();
@@ -924,39 +868,16 @@ if(!obj1.isEmpty()){
 
       
 
-    <a href="<%=contextPath%>/nominationList1.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>Current Nomination&nbsp;List</b></a>|
-     <a href="<%=request.getContextPath()%>/catchroom1.do" style="font-size: 13px;text-decoration: none;" onclick="">Candidate Chat</a>
-    <%--<a href="<%=contextPath%>/withdrawal.do" target="_self" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>">Send Withdrawal Request</b></a>|--%>
-       <%-- <a href="<%=contextPath%>/finalnominationList.do"  onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> Final List</b></a>|--%>
-     <%-- <a href="<%=contextPath%>/Candidate/upload_menifesto.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-        <b style="color:white" dir="<%=rtl%>">Upload Menifesto</b> </a>--%>
-         <%--<li><a href="<%=contextPath%>/catchroom1.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-        <b style="color:white" dir="<%=rtl%>">Chat</b> </a>
-         </li>--%>
-      <%--<li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%></b></a></li>--%>
-
-
-
-
-<%--<li><a href="<%=contextPath%>/admin/update_admin.jsp" onclick="window.setTimeout('winresize()', 1000);" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.modifyinstituterecord")%></b></a></li>
-<li><a href="<%=contextPath%>/admin/search_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.searchinstitute")%>  </b></a></li>
-<li><a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.managesuperadminaccount")%></b></a></li>
-<li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp" onclick="window.setTimeout('winresize()', 1000);"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a></li>--%>
-
-
+<td><a href="<%=contextPath%>/nominationList1.do" target="ff"   style="text-decoration:none;font-size: 13px"  dir="<%=rtl%>">Current Nomination&nbsp;List</a>&nbsp;|&nbsp;</td>
+     <td><a href="<%=request.getContextPath()%>/catchroom1.do" style="font-size: 13px;text-decoration: none;" onclick="">Candidate Chat</a>&nbsp;|&nbsp;</td>
+    
+    
                    
 <%}else{%>
-<a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat|</a>
+<td><a href="<%=request.getContextPath()%>/listrooms.do" style="font-size: 13px;text-decoration: none;" onclick="">Chat</a>&nbsp;</td>
 <%}%>
 
-         </td>                    </tr>
+                           </tr>
                             
                         </table>
                         
@@ -964,7 +885,7 @@ if(!obj1.isEmpty()){
 
                         
                 </div>
-<br/><br/>                   
+                   
             </div>
             <div id="header" style="width: 100%;height: 5%;margin: 0px;">
                 
@@ -997,10 +918,10 @@ if(!obj1.isEmpty()){
                     </html:form>
                 </div></div> <%}%>
 
-                <div id="currentElections" style="display: none;position: absolute;margin-left: 250px; width: 40%;float: left;">
+<!--                <div id="currentElections" style="display: none;position: absolute;margin-left: 250px; width: 40%;float: left;">
 
                     
-                </div>
+                </div>-->
             </div>
             <div id="footer" style="width: 100%;height: 15%; position: relative;"></div>
         </div>
@@ -1010,7 +931,7 @@ if(!obj1.isEmpty()){
         if(x1!=null){%><script>
            alert("<%=x1%>");</script>
             <%}%>
-                <iframe frameborder="0" name="ff" id="ff" src="<%=request.getContextPath()%>/get_elections1.do" width="100%" height="700px"/>
+            <iframe  align="center" style="background-image: url('/EMS/images/paperbg.gif');" frameborder="0" name="ff" id="ff" src="<%=request.getContextPath()%>/get_elections1.do" width="100%" height="700px"/>
       
            </body>
 </html>

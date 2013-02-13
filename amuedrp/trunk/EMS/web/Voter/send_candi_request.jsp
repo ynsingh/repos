@@ -583,7 +583,9 @@ else
 function loadElections() {
     
    // alert(document.getElementById("position").style.display);
-
+  
+  document.getElementById('ff1').src='';
+  
     var req = newXMLHttpRequest();
 
 req.onreadystatechange = getReadyStateHandler(req, loadElection);
@@ -650,15 +652,15 @@ for(iii=0;iii<em1.length;iii++)
        doc1.style.backgroundColor = "teal";
        doc1.style.color = "white";
        
-       doc1.innerHTML = '<img src="<%=request.getContextPath()%>/images/plus.jpg" alt="" style="width: 13px;height: 13px;" onclick="fun('+ iii +',this)"/> '+ electionName +'<span style="margin-left: 57%;color: white">Download As:</span><span style="margin-left: 10px;color: white"><a href="<%=request.getContextPath()%>/detailreport.do?getElection='+electionId+'" style="color: white">pdf</a></span><span style="margin-left: 10px;color: white"><a href="#" style="color: white">xml</a></span>';
+       doc1.innerHTML = '<img src="<%=request.getContextPath()%>/images/plus.jpg" alt="" style="width: 13px;height: 13px;" onclick="fun('+ iii +',this)"/> '+ electionName +'<span style="margin-left: 35%;color: white">Download As:</span><span style="margin-left: 10px;color: white"><a href="<%=request.getContextPath()%>/detailreport.do?getElection='+electionId+'" style="color: white">pdf</a></span><span style="margin-left: 10px;color: white"><a href="#" style="color: white">xml</a></span>';
        doc.appendChild(doc1);
        var block1 = document.createElement("div");
        var blockId = "block"+iii;
        block1.id = blockId;
        block1.style.display = "none";
          
-       var innerhtm = '<table>';
-       innerhtm = innerhtm + '<tr><td>Election Name:</td><td>'+ electionName +'</td></tr>';
+       var innerhtm = '<table border=0 width=100%>';
+       innerhtm = innerhtm + '<tr><td width="30%">Election Name:</td><td>'+ electionName +'</td></tr>';
        innerhtm = innerhtm + '<tr><td>Description:</td><td>'+ description +'</td></tr>';
        innerhtm = innerhtm + '<tr><td>Nomination Date:</td><td>'+ nstart +'&nbsp;&nbsp;&nbsp;&nbsp; to&nbsp;&nbsp;&nbsp;&nbsp; '+nend+'</td></tr>';
        //innerhtm = innerhtm + '<tr><td>Nomination End Date:</td><td>'+ nend +'</td></tr>';
@@ -669,7 +671,7 @@ for(iii=0;iii<em1.length;iii++)
        innerhtm = innerhtm + '<tr><td>Election Date:</td><td>'+ estart +'&nbsp;&nbsp;&nbsp;&nbsp; to&nbsp;&nbsp;&nbsp;&nbsp; '+ eend +'</td></tr>';
        //innerhtm = innerhtm + '<tr><td>Election End Date:</td><td>'+ eend +'</td></tr>';
          innerhtm += '<tr><td colspan=2>For the Post of:</td></tr>';
-       
+//       
         for(jj=0;jj<post.length;jj++)
            {
                
@@ -684,10 +686,10 @@ for(iii=0;iii<em1.length;iii++)
    
         var rule = rules.getElementsByTagName("rule");
 
-               innerhtm +='<tr><td colspan=2><br/>'+position+' ('+candidature+')</td>';
+               innerhtm +='<tr ><td colspan=2 >'+position+' ('+candidature+')</td></tr>';
 
                
-    innerhtm+='</tr><tr><td><table><tr><td colspan=2>'
+    innerhtm+='<tr><td colspan=2><table>'
   
    for(jjk=0;jjk<rule.length;jjk++)
            {
@@ -701,9 +703,9 @@ for(iii=0;iii<em1.length;iii++)
                innerhtm +='</tr>';
            }
            
-       innerhtm += '</td></tr></table>';
-       innerhtm+='</td></tr><tr>'
-innerhtm +='<td colspan=2><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId.toString()+','+rule.length.toString()+');"/></td></tr></table>';
+       innerhtm += '</table>';
+       innerhtm+='</td></tr>'
+innerhtm +='<tr><td colspan=2><input type="button" value="Send Request For Candidature" onclick="candiReq('+positionId+','+electionId.toString()+','+rule.length.toString()+');"/></td></tr></table>';
         
            }
       
@@ -826,7 +828,11 @@ function createul(current)
     obj = dul;
 }
 
-
+function showdiv(){
+   
+    document.getElementById('currentElections').style.display="none";
+    
+}
 
 
 
@@ -834,96 +840,50 @@ function createul(current)
 String instituteName=(String)session.getAttribute("institute_name");
 
  String role=(String)session.getAttribute("login_role");
-
+String user=(String)session.getAttribute("username");
 %>
         </script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 
-   
     </head>
-    <body style="margin:  0px;height: 90%; " id="bod" onload="currentElections();" >
-        
-        <table align="center" style="" dir="<%=rtl%>" width="100%">
 
-        <tr>
-            <td  valign="top" colspan="2" width="100%" align="<%=align%>">
+<body style="margin:  0px;height: 90%; " id="bod" onload="currentElections();" background="<%=request.getContextPath()%>/images/paperbg.gif">
+          <table width="100%" align="center" style="padding: 0px 0px 0px 0px;width: 100%;height:90px;" dir="<%=rtl%>" >
+            <tr style="background-color: #425C83;;color:white;font-size: 12px;"><td width="70%"><b>Login Detail:&nbsp;<%=instituteName%>&nbsp;Voter/Candidate Module</b></td><td align="right">
+                    <span style="font-family:arial;color:white;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>">&nbsp;<a href="<%=request.getContextPath()%>/change_password.do?page=voter" onclick="showdiv();" target="ff" style="text-decoration: none;color:white" dir="<%=rtl%>">&nbsp;Change Password</a> &nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/newregistration2.do" onclick="showdiv();" target="ff" style="text-decoration: none;color:white" dir="<%=rtl%>">&nbsp;View Profile</a>&nbsp;|&nbsp;<%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:white" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;
+     </td></tr>
 
-                <table  align="<%=align%>"  dir="<%=rtl%>" width="100%">
-            <tr><td valign="bottom"  align="<%=align%>">
-            <img src="<%=request.getContextPath()%>/images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
-            </td>
-            <td dir="<%=rtl%>" align="center" valign="middle" width="50%"><span dir="<%=rtl%>"><b><%=instituteName%><br>&nbsp; Role[<%=role%>]</b></span></td>
-             <td  align="right"   valign="top" style="font:8pt Verdana;text-decoration:none;">
-
-<table width="100%" border="0px"><tr>
-<td>
-<html:img src="/EMS/images/logo.png" width="150px" height="60px"  />
-</td>
-<td align="right"  valign="top"><%=resource.getString("login.hello")%>,&nbsp;
-
-                        
-                      
-                      <script type="text/javascript" language="javascript">
-document.write("<span " );
-document.write('style="height:10px;border:0px solid black;font:bold 11px Verdana;"');
-document.write(' onclick="toggle_menu(1);');
-document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
-document.write('<%=(String)session.getAttribute("username")%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>');
-document.write('<div id="ddmenu" style="');
-document.write('height:45px;border:0px solid black;background-color:white;text-decoration:none;text-align: right;padding-right:2px');
-document.write('visibility:hidden;">');
-add_item("<%=resource.getString("view_profile")%>","<%=request.getContextPath()%>/newregistration2.do?id=<%=session.getAttribute("voter_id")%>");
-add_item("<%=resource.getString("login.managesuperadminaccount.changepassword")%>","<%=request.getContextPath()%>/change_password.do");
-function add_item(linkname,dest){
-  document.write('<a  href="'+dest+'"  onclick="return pageload(3);">'+linkname+'</a><br>');
-}
-
-function toggle_menu(state){
-var theMenu=document.getElementById("ddmenu").style;
-if (state==0) {
-  theMenu.visibility="hidden"; }
-else {
-  theMenu.visibility = (theMenu.visibility=="hidden") ? "visible" : "hidden";
-}
-}
-
-
-document.onclick= function() {toggle_menu(0); }
-document.write('</div></span>');
-
-
-</script>
-
-
-</td><td align="left" valign="top" width="20%">
-|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a>
-
-</td>
-    <%
-
-%>
+            <tr style=" background-image: url('/EMS/images/header.jpg');height: 100px">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center" width="100%"  dir="<%=rtl%>">
+            <tr><td width="70%"  valign="bottom"  align="<%=align%>">
+                            &nbsp;&nbsp;    <span style="font-weight: bold;font-size: 35px;color:white;font-family:Gill, Helvetica, sans-serif;" >Election</span><span style="color:white;font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >MS</span>
 
 
 
-    </tr>
-</table>
+                </td><td align="center" > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="center" id="Image1" style="" height="80px" width="120"><br/>
+
+                            </td></tr>
+             <tr><td>
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("login.message.logo.under")%>&nbsp;
+
+</div>
+                </td>
+                <td align="right">
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px white;font-family:Gill, Helvetica, sans-serif" >
 
 
-             </td></tr>
-            </table><br>
-            </td>
-
-            </tr>
-            <tr><td>
-
-
-
+</div>
                 </td></tr>
         </table>
+    </td></tr>
+        </table>
+        
             
 
-        <div id="main" style="width: 100%;height: 100%;margin: 0px;">
+        <div id="main" style="width: 100%;height: 100%;margin: 0px;" style="font-family: Gill, Helvetica, sans-serif ;font-size: 12px;" >
             <div id="topstrip" style="margin: 0px; width: 100%;height: 20px;background-color: black;">
                 
                     
@@ -965,32 +925,7 @@ if(!obj1.isEmpty()){
 
 
 
-    <a href="<%=contextPath%>/nominationList1.do"  style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>"><b>Current Nomination&nbsp;List</b></a>|
-    <%--<a href="<%=contextPath%>/withdrawal.do" target="_self" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>">Send Withdrawal Request</b></a>|--%>
-       <%-- <a href="<%=contextPath%>/finalnominationList.do"  onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> Final List</b></a>|--%>
-     <%-- <a href="<%=contextPath%>/Candidate/upload_menifesto.jsp"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-        <b style="color:white" dir="<%=rtl%>">Upload Menifesto</b> </a>--%>
-         <%--<li><a href="<%=contextPath%>/catchroom1.do"   style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-        <b style="color:white" dir="<%=rtl%>">Chat</b> </a>
-         </li>--%>
-      <%--<li><a href="<%=contextPath%>/admin/view_all.jsp" target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>" >
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.viewall")%></b></a></li>--%>
-
-
-
-
-<%--<li><a href="<%=contextPath%>/admin/update_admin.jsp" onclick="window.setTimeout('winresize()', 1000);" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"> <%=resource.getString("login.modifyinstituterecord")%></b></a></li>
-<li><a href="<%=contextPath%>/admin/search_admin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px"  dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.searchinstitute")%>  </b></a></li>
-<li><a href="<%=contextPath%>/manage_superadmin.jsp"  target="f3" onclick="window.setTimeout('winresize()', 1000);" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-      <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.managesuperadminaccount")%></b></a></li>
-<li><a href="<%=contextPath%>/admin/view_blocked_institute.jsp" onclick="window.setTimeout('winresize()', 1000);"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" dir="<%=rtl%>">
-    <b style="color:white" dir="<%=rtl%>"><%=resource.getString("login.changeworkingstatus")%> </b></a></li>--%>
-
-
+    <a href="<%=contextPath%>/nominationList1.do" target="ff" onclick="showdiv();"  style="font-size: 13px;text-decoration: none;"  dir="<%=rtl%>">Current Nomination&nbsp;List</a>&nbsp;|
                    
 <%}%>
 
@@ -1014,30 +949,7 @@ if(!obj1.isEmpty()){
             </div>
             <div id="middle" style="width: 100%;height: 70%; position: relative;margin-top: 30px;">
                 <div id="ballot"></div>
-               <%-- <%if(lstelection!=null && !lstelection.isEmpty()){%>
-                <div id="electionDetails1" style="border: 2px solid teal;background-color: white;height: 100px; width: 450px;margin-left: 450px; position: absolute;top: 40%;display: none">
-                <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
-                <div style="position: relative;">
-                   <html:form action="/election" styleId="election1" target="f1"><table style="width:100%"><tr><td style="text-align:center"><%=resource.getString("selectanelection")%>:
-                                   <html:select property="election" styleId="election2"  style="width: 150px">
-                                        <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
-                       </html:select></td></tr><tr><td style="text-align:center">
-                       <input value="<%=resource.getString("select")%>" type="button" onclick="loadvoting();" id="electionsubmit"/>
-
-                                           </td></tr></table>
-                   </html:form></div></div>
-                <div id="electionView1" style="border: 2px solid teal;background-color: white;height: 100px; width: 450px;margin-left: 450px; position: absolute;top: 40%;display: none">
-                <div style="background-color: teal;width: 100%;position: relative">&nbsp;<span style="float: right;"><a href="#" title="Close this window" onclick="deleteBod();">[X]</a></span></div>
-                <div style="position: relative;">
-                   <html:form action="/election" styleId="electionv" target="f1">
-                       <table style="width:100%">
-                           <tr><td style="text-align:center"><%=resource.getString("selectanelection")%>:<html:select property="election" styleId="electionv2"  style="width: 150px">
-                                       <html:options collection="electionList" property="id.electionId" labelProperty="electionName" />
-                                   </html:select></td></tr>
-                           <tr><td style="text-align:center"><input value="<%=resource.getString("select")%>" type="button" onclick="loadelectionview();" id="electionsubmit"/></td></tr>
-                       </table>
-                   </html:form></div></div>
-                    <%}%>--%>
+              
 <!--Show Vote -->
                     <%if(lstelec!=null && !lstelec.isEmpty()){%>
                 <div id="electionResults3" style="display: none">
@@ -1064,13 +976,16 @@ if(!obj1.isEmpty()){
 
                 <%--<div id="middleleft" style="display: none;position: relative; width: 30%;float: left" >&nbsp;</div>
                 <div id="middleright" style="display: block;position: relative; width: 30%;float: right" >&nbsp;</div>--%>
-                <div id="currentElections" style="display: none;position: absolute;margin-left: 250px; width: 40%;float: left;">
+                <div id="currentElections" style="display: none;position: absolute;margin-left: 250px; width: 40%;float: left;font-family: Gill, Helvetica, sans-serif ;font-size: 13px;">
 
                     
                 </div>
             </div>
-                 <a  href="voter_home.jsp">Back</a>
+                
             <div id="footer" style="width: 100%;height: 15%; position: relative;"></div>
         </div>
+                  <iframe  align="center" style="background-image: url('/EMS/images/paperbg.gif');" name="ff" id="ff1" frameborder="0"   src="#" width="100%" height="700px"/>
+      
+                
                </body>
 </html>

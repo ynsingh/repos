@@ -392,6 +392,38 @@ if(session.isNew()){
             var button1=document.getElementById("button1");
             button.value=button1.value;
         }
+
+
+
+
+                                 
+                                        function copy()
+                                        {
+                                            var a=document.getElementById("cadd1").value;
+                                            var b=document.getElementById("city1").value;
+                                            var c=document.getElementById("state1").value;
+                                            var d=document.getElementById("zcode1").value;
+                                            var e=document.getElementById("country1").value;
+                                            document.getElementById("padd1").value=a;
+                                            document.getElementById("city21").value=b;
+                                            document.getElementById("state21").value=c;
+                                            document.getElementById("zcode21").value=d;
+                                            document.getElementById("country21").value=e;
+                                        }
+                                        function checkReason()
+                                        {
+                                            if(document.getElementById("txtReason")!=undefined)
+                                                if(document.getElementById("txtReason").value !=undefined && document.getElementById("txtReason").value!="")
+                                                   return true;
+                                                else{
+                                                    alert("Please enter reason for Rejection");
+                                                    document.getElementById("txtReason").focus();
+                                                     return false;}
+                                        }
+
+
+
+
     </script>
 </head>
 
@@ -403,7 +435,7 @@ if(session.isNew()){
 
 
     <div
-        style="  top:100px;
+        style="  top:10%;
         left:60%;
         right:5px;
         position: absolute;
@@ -488,15 +520,16 @@ if(session.isNew()){
     <html:form action="/candidateregistration2" method="post"   onsubmit="return check3()" styleId="radio_form">
 
 
-     <table width="80%" class="table" align="center">
-     <tr><td>
-             <table border="0" class="txtStyle" align="center" width="80%">
-                        <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Candidate Details </b></td></tr>
-                        <tr><td >
-                                <table>
+     
+             <table border="0" class="datagrid" align="center" width="80%">
+                  <tr class="headerStyle">
+                                        <td colspan="2" align="center">Candidate Details</td>
+
+
+                                    </tr>
                                     <tr>
-                                        <td >Enrollment Number*:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"   /></td><td>
-                                        <td></td>
+                                        <td >Enrollment Number*:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"   /></td>
+                                        
 
                                     </tr>
                                     
@@ -518,21 +551,10 @@ if(session.isNew()){
                                     </tr>
 
                                     <tr>
-                                        <td align="left">Year :</td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
+                                        <td align="left">Year :</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="year1" property="year" value="<%=yr%>"/></td>
 
                                     </tr>
-                                </table>
-                            </td></tr>
-
-                        <tr><td>
-                                <table width="700" border="0" cellspacing="6" cellpadding="2" align="left">
-                                    <tr>
-                                    </tr>
-                                    <%--<tr>
-                                    <td align="left">Faculty Roll No :</td><td><html:text name="CandidateRegActionForm" property="electionid"/></td>
-                                    </tr>
-                                    <tr--%>
-                                    <tr><td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td><td width="30%">
+                                    <tr><td  width="30%">Duration of course:</td><td><html:text  readonly="<%=read%>" name="CandidateRegActionForm" styleId="dur1" value="<%=dur%>" property="duration" /> </td>
                                     </tr>
                                     <tr>
                                         <td align="left">Current Session:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm" styleId="sess1" value="<%=sess%>" property="session"  /></td>
@@ -544,10 +566,9 @@ if(session.isNew()){
                                     <tr>
                                         <td align="left">Candidate Name*</td>
                                         <td>
-                                            <table><tr><td>
-                                                        </td>
-                                                    <td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name"/></td>
-                                            </table>
+
+                                          <html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name"/>
+
                                         </td>
                                     </tr>
                                     <tr><td align="left">Gender*</td><td>
@@ -561,8 +582,7 @@ if(session.isNew()){
 
                                     </tr>
                                     <tr>
-                                        <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" />
-                                            <%--<a href="javascript:NewCal('3','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>--%></td>
+                                        <td>Date of Birth*<br>(DD-MM-YYYY)</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  property="b_date"  value="<%=bdate%>" styleId="3" /></td>                                           </td>
                                     </tr>
 
 
@@ -573,30 +593,27 @@ if(session.isNew()){
                                     <tr>
                                         <td align="left">Mobile No*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" /></td>
                                     </tr>
-                                </table>   </td>
-                            <td>
-
-                                <table> <tr>
-                                        <td align="left">Corresponding Address:</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td> &nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"  /></td>
+                                    <tr>
+                                        <td align="left">Corresponding Address:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>"  /></td>
                                     </tr>
                                     <tr>
-                                        <td align="left">City:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
+                                        <td align="left">City:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="city"  value="<%=city%>" styleId="city1"/></td>
                                     </tr>
 
                                     <tr>
-                                        <td align="left">State:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
+                                        <td align="left">State:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="state" value="<%=state%>" styleId="state1"/></td>
                                     </tr>
 
 
                                     <tr>
-                                        <td align="left">Zip Code:</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
+                                        <td align="left">Zip Code:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="zipcode"  value="<%=zcode%>" styleId="zcode1"/></td>
                                     </tr>
                                     <tr>
-                                        <td align="left">Country:*</td><td>&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
+                                        <td align="left">Country:*</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country"  value="<%=country%>" styleId="country1"/></td>
 
                                     </tr>
-                                    
-                                    
+
+
 
                                     <tr>
                                         <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
@@ -608,58 +625,22 @@ if(session.isNew()){
                                     <tr><td align="left">Country</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="country1" value="<%=country1%>" styleId="country21"/></td></tr>
 
                                <tr><td align="left">Alternate Email</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm" property="alternateemail" value="<%=alternateemail%>" styleId="alternateemail"/></td></tr>
-                                </table>
+                             <tr>
 
-                            </td>
+                            <td align="left" >email*:</td><td><html:text readonly="<%=read%>" name="CandidateRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
+
                         </tr>
-                        <tr>
-                            <td>
-                                <table>
-                                    <script>
-                                        function copy()
-                                        {
-                                            var a=document.getElementById("cadd1").value;
-                                            var b=document.getElementById("city1").value;
-                                            var c=document.getElementById("state1").value;
-                                            var d=document.getElementById("zcode1").value;
-                                            var e=document.getElementById("country1").value;
-                                            document.getElementById("padd1").value=a;
-                                            document.getElementById("city21").value=b;
-                                            document.getElementById("state21").value=c;
-                                            document.getElementById("zcode21").value=d;
-                                            document.getElementById("country21").value=e;
-                                        }
-                                        function checkReason()
-                                        {
-                                            if(document.getElementById("txtReason")!=undefined)
-                                                if(document.getElementById("txtReason").value !=undefined && document.getElementById("txtReason").value!="")
-                                                   return true;
-                                                else{
-                                                    alert("Please enter reason for Rejection");
-                                                    document.getElementById("txtReason").focus();
-                                                     return false;}
-                                        }
-                                    </script>
+                         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Candidature Eligibility Criteria </b></td></tr>
 
-
-
-                                </table>
-                            </td>
-                        </tr>
+                               
 
                         <tr>
                             <td colspan="2"><b>Important! </b>Please provide a working email address:</td>
 
                         </tr>
 
-                        <tr>
-
-                            <td align="left" colspan="2">email*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<html:text readonly="<%=read%>" name="CandidateRegActionForm"   value="<%=email%>" styleId="email1" property="email"/></td>
-
-                        </tr>
-                         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Candidature Eligibility Criteria </b></td></tr>
-
-                        <tr><td class="datagrid">
+                       
+                       
                                 <%
 List<ElectionCriteria> obj=(List<ElectionCriteria>)session.getAttribute("rule");
 if(obj!=null)
@@ -667,8 +648,8 @@ if(obj!=null)
        Iterator it=obj.iterator();
        for(int i=0;i<obj.size();i++)
        {
-           out.println("<h2> Rule :<font color='blue'>"+obj.get(i).getElectionrule().getCriteria()+"</font></h2>");
-           out.println("Ans:"+obj.get(i).getRuleanswer().getAnswer()+"<br/>");
+           out.println("<tr><td>Rule :</td><td>"+obj.get(i).getElectionrule().getCriteria()+"</td><tr>");
+           out.println("<tr><td>Ans:</td><td>"+obj.get(i).getRuleanswer().getAnswer()+"</td><tr>");
        }
 
      }
@@ -678,52 +659,28 @@ if(obj!=null)
 
 
 
-                            </td></tr>
+                            
                         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Candidature Request for: </b></td></tr>
-                        <%--<tr><td align="">Enrolled IN*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
-                                <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
-
-                                    <html:option  value="Select"> Select </html:option>
-                                    <html:option  value="ug">Under Graduate</html:option>
-                                    <html:option value="pg">Post Graduate</html:option>
-                                    <html:option value="other">Others</html:option>
-
-                                </html:select>
-                        </tr>
-                        <tr>
-                            <td align="left">Marks %*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text  name="CandidateRegActionForm" styleId="mark" property="p_marks" readonly="<%=read%>" /></td>
-                        </tr>
-                        <tr>
-                            <td align="left">Attendence %*:&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text  name="CandidateRegActionForm" styleId="attendence" property="p_attendence"  readonly="<%=read%>"/></td>
-                        </tr>
-                </td></tr>
-
-            <tr><td align="left" >Backlog*
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <html:radio name="CandidateRegActionForm" property="backlog" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="backlog" styleId="backlog" value="no" disabled="<%=read%>"/>N0 </td></tr>
-            <br> <tr><td align="left">Criminal log*&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:radio name="CandidateRegActionForm" property="criminal"  value="yes" disabled="<%=read%>"/>Yes<html:radio  name="CandidateRegActionForm" property="criminal"  styleId="criminal" value="no" disabled="<%=read%>"/>No</td></tr>
-            <br><tr><td>Indisciplinery Action*  &nbsp;&nbsp;&nbsp;&nbsp;<html:radio name="CandidateRegActionForm" property="indisc" value="yes" disabled="<%=read%>"/>Yes<html:radio name="CandidateRegActionForm" property="indisc"  value="no" disabled="<%=read%>"/>No</td></tr>
-            <br>--%>
-            <tr><td>Election* <html:text name="CandidateRegActionForm" property="elections"  readonly="<%=read%>"/>
+                        
+            <tr><td>Election* </td><td><html:text name="CandidateRegActionForm" property="elections"  readonly="<%=read%>"/>
                 </td></tr>
             <br>
-            <tr><td>Position* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:text name="CandidateRegActionForm" property="position"  readonly="<%=read%>"/>
+            <tr><td>Position* </td><td><html:text name="CandidateRegActionForm" property="position"  readonly="<%=read%>"/>
                 </td></tr>
-            <tr><td>Reason of Rejection* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<html:textarea name="CandidateRegActionForm" style="width: 514px; height: 67px;" styleId="txtReason" property="reason" rows="3" cols="200"/>
+            <tr><td>Reason of Rejection*</td><td><html:textarea name="CandidateRegActionForm" style="width: 514px; height: 67px;" styleId="txtReason" property="reason" rows="3" cols="200"/>
                 </td></tr>
 
 
 
-            <%--<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>--%>
-            <tr><td colspan="5" height="10px"></td>
-            </tr>
+         
             <tr>
-                <td align="center" colspan="5">
+                <td align="center" colspan="2">
 
 
 
 
-                    <br><br><br><br>*indicated fields are mandatory
-                    <br><br>
+                    *indicated fields are mandatory
+                    
 
 
 
@@ -743,12 +700,9 @@ String role=(String)session.getAttribute("login_role");
 <%}%>
 
                 </td>
-            </tr><tr><td colspan="5" height="5px"></td>
+            </tr>
 
-
-
-            </tr></table>
-
+             </table>
 
     </html:form>
 

@@ -79,7 +79,7 @@ body
 }
 </style>
 </head>
-<body>
+<body style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
     <html:form  action="/confirm" method="post">
          <table align="center"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px" dir="<%=rtl%>" align="<%=align%>">
 

@@ -96,18 +96,18 @@ function clearme()
 }
             </script>
     </head>
-    <body>
+    <body style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
         <html:form styleId="form1"  action="/reset_password.do" method="post">
-            <table  align="<%=align%>" dir="<%=rtl%>" width="500px" height="150px" style="background-color: white;border:#C7C5B2 1px solid;margin:0px 0px 0px 0px;">
-                <tr><td dir="<%=rtl%>" style="background-color: #7697BC;color:white;" colspan="2" class="btn1" height="30px"><b>Reset Password </b> </td></tr>
-                <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="right">User Id</td><td><html:text styleId="user_id1" style="width: 200px" property="user_id1" value=""/></td></tr>
+            <table  align="center" dir="<%=rtl%>" width="500px" height="150px" >
+                <tr><td dir="<%=rtl%>" align="center"  colspan="2" height="30px"><u>Reset Password </u> </td></tr>
+                <tr><td width="50%" dir="<%=rtl%>" align="right">User Id</td><td><html:text styleId="user_id1" style="width: 200px" property="user_id1" value=""/></td></tr>
            
-           <tr><td width="50%" class="btn3" dir="<%=rtl%>" align="right">Password</td><td><html:password styleId="password" style="width: 200px" property="password1" value=""/></td></tr>
+           <tr><td width="50%"  dir="<%=rtl%>" align="right">Password</td><td><html:password styleId="password" style="width: 200px" property="password1" value=""/></td></tr>
 
            
                
-                <tr><td class="btn3" dir="<%=rtl%>" align="<%=align%>" colspan="2">
-                <br>
+                <tr><td  dir="<%=rtl%>" align="<%=align%>" colspan="2">
+                
    <%
    String   message="";
      message =(String) request.getAttribute("msg");
@@ -145,8 +145,8 @@ function clearme()
 
 
             </td></tr>
-           <tr><td><html:submit styleClass="btn2" style="float: right" onclick="return check();"> Reset Password</html:submit></td><td dir="<%=rtl%>" width="300px">
-                   <input type="button" onclick="return clearme();"   class="btn2" dir="<%=rtl%>" value="<%=resource.getString(clear)%>" />
+                <tr><td colspan="2" align="center"><html:submit  onclick="return check();"> Reset Password</html:submit>
+                   <input type="button" onclick="return clearme();"    dir="<%=rtl%>" value="<%=resource.getString(clear)%>" />
             </td></tr>
         <tr><td></td><td  align="<%=align%>" width="200px">
                   

@@ -192,7 +192,7 @@ if(em!=undefined)
             var htm1 = '<span style="text-align:center">'+ elec +'</span>';
             divtag1.innerHTML = htm1;
             document.getElementById("ballot").appendChild(divtag1);
-
+  //alert(em1.length);
 for(iii=0;iii<em1.length;iii++)
     {
         //position block creation
@@ -352,14 +352,23 @@ top.location.href="/EMS/institute_admin/search_election_details.jsp";
     </head>
 
     <body onload="previewBallot(this)" style="margin: 0px;">
+<table style="background-color: blue;color:white;font-weight: bold;font-size: 12px;" align="center" width="660px">
+            <tr><td>Election Voting Result</td><td align="right">
 
-<a href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><br>
-<a href="<%=request.getContextPath()%>/printlog.do?election=<%=election%>">Show PDF Report In Graphical Format</a>
+<input type="button" value="Close" onclick="send()"/>
+                </td></tr>
+            <tr><td>
+                    <a style="color:white" href="<%=request.getContextPath()%>/electionResult.do?election=<%=election%>&amp;report=true">Show PDF Report</a><br>
+
+                </td>
+                <td align="right"><a style="color:white" href="<%=request.getContextPath()%>/printlog.do?election=<%=election%>">Show PDF Report In Graphical Format</a>
+</td></tr>
+        </table>
  
-        <div id="main" align="center" style="width: 100%; height: 100%" class="datagrid">
+        <div id="main" align="center" style="width: 100%; height: 100%;font-family: Gill, Helvetica, sans-serif ;font-size: 12px" >
             <div id="middle" style="width: 100%;margin-left: 0%; position: relative;">
                 <form id="form1">
-                <div id="ballot" style="width: 660px; position: relative;margin-left: 0px; margin-top: 0px; border: 2px solid #F2F5A9;background-color: #D8CEF6;overflow: auto">
+                <div id="ballot" style="width: 660px; position: relative;margin-left: 0px; margin-top: 0px;background-color: #D8CEF6;overflow: auto">
 
                 </div>
                 </form>

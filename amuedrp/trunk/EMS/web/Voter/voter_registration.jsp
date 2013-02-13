@@ -1,5 +1,31 @@
 
-<%@ page language="java" %>
+<%@ page language="java" import="java.util.*" %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String sessionId="";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+sessionId = session.getId().toString();
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 <%
 if(session.isNew()){
 %>
@@ -465,8 +491,8 @@ var alternateemail=document.getElementById("alternateemail");
 
 
  <div
-   style="  top:20%;
-   left:57%;
+   style="  top:35%;
+   left:53%;
    right:5px;
    position: absolute;
    visibility: show;" >
@@ -541,7 +567,37 @@ var alternateemail=document.getElementById("alternateemail");
 
    
      <html:form action="/voterregistration" method="post"   onsubmit="return check3();">
+<table align="center" style="padding: 0px 0px 0px 0px;width: 90%;height:100%;border-right:  solid #ECF1EF 10px;border-left:  solid #ECF1EF 10px;" dir="<%=rtl%>" >
 
+            
+
+            <tr style="background-image: url('/EMS/images/header.jpg');height: 100px">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center" width="100%"  dir="<%=rtl%>">
+            <tr><td width="70%"  valign="bottom"  align="<%=align%>">
+                            &nbsp;&nbsp;    <span style="font-weight: bold;color:white;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >Election</span><span style="color:white;font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >MS</span>
+
+
+
+                </td><td align="center" > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="center" id="Image1" style="" height="100px" width="200"><br/>
+
+                            </td></tr>
+             <tr><td>
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("login.message.logo.under")%>&nbsp;
+
+</div>
+                </td>
+                <td >
+                    <hr>
+
+
+                </td></tr>
+            </table></td>
+            </tr>
+
+
+           <tr><td width="90%" colspan="2" valign="top" align="center" dir="<%=rtl%>" >
 
          <table align="center" class="table" width="70%">
             <tr><td>
@@ -615,17 +671,7 @@ var alternateemail=document.getElementById("alternateemail");
 
  <tr>
                 <td align="left">Voter(student) Name*</td>
-                <td>
-                    <table><tr><td>
-                         <%--<select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right">
-
-                         <option selected value="Select">Select</option>
-                         <option  value="mr">Mr.</option>
-                         <option value="mrs">Mrs.</option>
-                        <option  value="ms">Ms.</option>
-                         </select>--%></td>
-                        <td><html:text  name="VoterRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name" readonly="<%=read %>"/></td>
-                        </table>
+                <td><html:text  name="VoterRegActionForm"  styleId="vname1"  value="<%=vname%>"  property="v_name" readonly="<%=read %>"/>
                         </td>
                      <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="off" tabindex="17" onclick="return copy();"><b>Click Here</b>&nbsp;(If permanent address is same as corresponding address)</td>
                         </tr>
@@ -668,20 +714,18 @@ var alternateemail=document.getElementById("alternateemail");
 
 <tr>
 
-    <td align="left" colspan="2">Email*:<html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" onblur="return echeck();" property="email"/></td>
+    <td align="left" >Email*:</td><td><html:text readonly="<%=read%>" name="VoterRegActionForm"   value="<%=email%>" styleId="email1" onblur="return echeck();" property="email"/></td>
 
 </tr>
 <tr>
 
-    <td align="left" colspan="2">Alternate Email-:<html:text readonly="<%=read%>" name="VoterRegActionForm"    styleId="alternateemail1" property="alternateemail"/></td>
+    <td align="left">Alternate Email-:</td><td><html:text readonly="<%=read%>" name="VoterRegActionForm"    styleId="alternateemail1" property="alternateemail"/></td>
 
 </tr>
 
-<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
-<tr><td colspan="5" height="10px"></td>
-</tr>
+
 <tr>
-<td align="center" colspan="5">
+<td align="center" colspan="3">
      <%if(btn.equals("Update")){%>
     <input id="button1"  name="button" type="submit" value="<%=btn%>" class="txt1" />
     &nbsp;&nbsp;&nbsp;<input name="button" type="submit" value="Cancel" onclick="return send1()"  class="txt1"/>
@@ -698,20 +742,17 @@ var alternateemail=document.getElementById("alternateemail");
 
 
 
-    <%}%>
+    <%}%></td><td><a class="star">*</a>indicated fields are mandatory
 	</td>
 </tr>
 
 
                         </table>   </td>
-                <td>
-
-                
-                </td>
+              
             </tr>
-  <tr>
-  <td>
-  <table>
+  
+  </table>
+               
    <script>
     function copy()
 {
@@ -730,22 +771,7 @@ document.getElementById("country21").value=e;
 
 
 
-                </table>
-            </td>
-            </tr>
-                        <%-- <input type="submit" id="Button1" name="" value="Register" >
-                            <input type="reset" id="Button2" name="submit" value="Reset" >
-                            <input type="button" id="Button3" name="" value="Back" onclick="return send()">--%>
-                        <%--</td></tr>--%>
+              
               
 </html:form>
-
-
-<tr><td colspan="5" height="5px"></td>
-</tr>
-                        </table>
-
-</td>
-</tr>
-        </table>
- 
+</body>

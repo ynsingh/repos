@@ -1,10 +1,3 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
-
     <%@page import="com.myapp.struts.admin.*,com.myapp.struts.hbm.*"%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*,java.lang.Object"%>
@@ -112,20 +105,10 @@ function isNumberKey(evt)
          return true;
       }
 </script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: 7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
+ <link rel="stylesheet" href="/EMS/css/page.css"/>
 </head>
 
-<body style="width: 610px;">
+<body >
  
 <%!
 
@@ -205,7 +188,7 @@ pageContext.setAttribute("rec",perpage);
    pageContext.setAttribute("path", request.getContextPath());
    }
 %>
-<br><br>
+
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
@@ -213,7 +196,7 @@ pageContext.setAttribute("rec",perpage);
 else
 {%>
 
-<table align="<%=align%>" dir="<%=rtl%>" width="600px">
+<table align="<%=align%>" dir="<%=rtl%>" width="100%">
     <tr><td colspan="2" align="right">View Next&nbsp;
            <%-- <input type="textbox" id="rec" onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>--%>
 
@@ -235,28 +218,28 @@ else
 
     <column width="100">
       <header value="${Registration_ID}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.registration_id}"   hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
       <header value="${Institute_Name}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_name}" hAlign="left" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  styleClass="item"/>
+      <item   value="${doc.institute_name}" hAlign="left"   styleClass="item"/>
     </column>
 
    
 
     <column width="150">
       <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.admin_email}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.admin_email}"   hAlign="left" styleClass="item"/>
     </column>
 
    <column width="100">
    <header value="${Institute_ID}" hAlign="left" styleClass="header"/>
- <item  value="${doc.institute_id}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+ <item  value="${doc.institute_id}"  hAlign="left" styleClass="item"/>
     </column>
       <column width="100">
    <header value="${Status}" hAlign="left" styleClass="header"/>
- <item  value="${doc.status}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+ <item  value="${doc.status}"   hAlign="left" styleClass="item"/>
     </column>
  </columns>
 

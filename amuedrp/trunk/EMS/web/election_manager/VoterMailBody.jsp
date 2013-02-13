@@ -87,13 +87,15 @@ if(msg2!=null){
     <body>
 
         <form name="Form1" action="/EMS/sendmail1.do"   >
-                <table  cellspacing="10px">
+            
 
+            <table  cellspacing="10px" align="center">
+                <tr><td><u>Voter Mail Body</u></td></tr>
                     <tr>
 
+                        <td>Type the Mail Body</td>
 
-
- <td>Voter Mail Body</td><td><textarea   cols="50" rows="5" name="candidateid" id="candidateid"><%=mailbody%></textarea><br><br>
+ <td><textarea   cols="50" rows="5" name="candidateid" id="candidateid"><%=mailbody%></textarea><br><br>
 <%
 if(session.getAttribute("mail")!=null){
 

@@ -58,7 +58,7 @@ locale1=(String)session.getAttribute("locale");
     <title>View Request</title>
 
 
-<link rel="stylesheet" href="/EMS/css/page.css"/>
+    <link rel="stylesheet" href="../css/page.css"/>
 <script language="javascript" >
 function b1click()
 {
@@ -162,27 +162,11 @@ location.href= loc;
 
 
 </script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
+ <link rel="stylesheet" href="/EMS/css/page.css"/>
 </head>
 
-<body style="width: 720px" onload="show();">
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-      width: 710px;
-      visibility: show;">
+<body  onload="show();" >
+ 
      Pending Institute List
 <%!
    
@@ -262,7 +246,7 @@ pageContext.setAttribute("Action", Action);
 pageContext.setAttribute("rec",perpage);
 %>
 
-<br><br>
+
 <%if(tcount==0)
 {%>
 <p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
@@ -270,7 +254,7 @@ pageContext.setAttribute("rec",perpage);
 else
 {%>
 
-<table align="<%=align%>" dir="<%=rtl%>" width="700px" >
+<table align="<%=align%>" dir="<%=rtl%>" width="100%" >
   <%--  <tr><td colspan="2" align="right">View Next&nbsp;
        <input type="textbox" id="rec"   onkeypress="return isNumberKey(event)" onblur="changerec()" style="width:50px"/>
        <select id="rec" onchange="changerec()" style="width:50px" value="<%=perpage%>">
@@ -354,7 +338,7 @@ request.setAttribute("msg", "Your Session Expired: Please Login Again");
 
 </td></tr>
 </table>
- </div>
+ 
     </body>
 
 </html>

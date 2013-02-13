@@ -94,54 +94,29 @@ if(session.isNew()){
 
 function validate()
 {
-  //  document.getElementById('election').value=document.getElementById('election_id').value;
+    var x = document.getElementById('search_keyword').value;
+    if(x.length==0){
+        alert("Please Type The Enrollment For Whom Want To Set Alternate Email")
+        document.getElementById('search_keyword').focus();
+        return false;
+    }
+  else{
 
-//var x=document.getElementById('election').value;
 
 var action=document.getElementById("createdby").value;
-  <%-- if(action.disabled==true){
-   
-//   var answer = confirm ("Current Action is Current Page")
-//if (answer!=true)
-  //  {
-
-    //    return false;
-    //}
-    //else
-      //  {
-            if(x=="Select")
-            {
-            	alert("Please select the election");
-                return false;
-            }else{
-
-                document.DepActionForm.action="/EMS/setvotermail.do";
-                document.DepActionForm.method="post";
-                document.DepActionForm.submit();
-                return true;
-                }
-       // }
-   }
-else{
-
-
-//if(x=="Select"){
-//	alert("Please select the election");
-//	return false;
-//}
---%>
+ 
 if(action==""){
 	alert("Please Type Alternate Mail");
 	return false;
 }
-
+ 
 
 
 document.DepActionForm.action="/EMS/setvotermail.do";
 document.DepActionForm.method="post";
 document.DepActionForm.submit();
 return true;
-
+ }
 //}
 }
 function disable(){

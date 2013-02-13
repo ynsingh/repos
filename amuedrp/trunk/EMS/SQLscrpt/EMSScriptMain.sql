@@ -102,8 +102,8 @@ CREATE TABLE `candidate1` (
   `candidateName` varchar(50) DEFAULT NULL,
   `enrolment` varchar(20) DEFAULT NULL,
   `menifesto` longblob,
-  `offline_vote` int(11) DEFAULT '0',
-  `agm` int(11) DEFAULT NULL,
+  `offline_vote` varchar(255) DEFAULT NULL,
+  `agm` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`candidate_id`,`position_id`,`election_id`,`institute_id`),
   KEY `position_id` (`position_id`,`election_id`,`institute_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -593,12 +593,13 @@ DROP TABLE IF EXISTS `ruleanswer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ruleanswer` (
   `rule_id` varchar(20) NOT NULL,
+   `position_id` int NOT NULL,
   `election_id` varchar(20) NOT NULL,
   `institute_id` varchar(20) NOT NULL,
   `enrollment` varchar(30) NOT NULL,
   `answer` varchar(500) DEFAULT NULL,
   `enclosure` varchar(500) DEFAULT NULL,
-  PRIMARY KEY (`election_id`,`institute_id`,`rule_id`,`enrollment`)
+  PRIMARY KEY (`election_id`,`institute_id`,`rule_id`,`position_id`,`enrollment`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -621,3 +622,6 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2012-02-08 11:07:33
+
+
+CREATE TABLE preferencial_voting (voter_ballot_id VARCHAR(20), position_id VARCHAR(20) NOT NULL, candidate_id VARCHAR(20) NOT NULL, election_id VARCHAR(20) NOT NULL, institute_id VARCHAR(20), voter_id VARCHAR(255) NOT NULL, status VARCHAR(20), preference VARCHAR(20), PRIMARY KEY (candidate_id, election_id, position_id, voter_id));

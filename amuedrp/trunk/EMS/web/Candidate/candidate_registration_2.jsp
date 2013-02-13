@@ -467,15 +467,9 @@ String instituteName=(String)session.getAttribute("institute_name");
 
 
 <body>
-
-
-    
-    <%--  <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>--%>
-
-
     <div
-        style="  top:20px;
-        left:50%;
+        style="  top:5%;
+        left:55%;
         right:5px;
         position: absolute;
 
@@ -483,20 +477,20 @@ String instituteName=(String)session.getAttribute("institute_name");
         <%if (btn.equals("View") == true) {%>
 
         <%if (session.getAttribute("image") != null) {%>
-        <html:img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" width="80" height="80"/>
+        <img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" style="border:solid 4px cyan" width="100px" height="100px"/>
 
         <%} else {%>
 
-        <html:img src="/EMS/images/no-image.jpg"  alt="no Image Selected" width="80" height="80"/>
+        <img src="/EMS/images/no-image.jpg"  alt="no Image Selected11" style="border:solid 4px cyan" width="100px" height="100px"/>
         <%}%>
 
 
         <%} else {%>
 
         <%if (request.getAttribute("imagechange") != null) {%>
-        <html:img src="/EMS/Candidate/upload.jsp"  alt="no Image Selected" width="80" height="80"/>
+        <img src="/EMS/Candidate/upload.jsp"   alt="no Image Selected" style="border:solid 4px cyan" width="100px" height="100px"/>
         <%} else {%>
-        <html:img src="/EMS/Candidate/viewimage.jsp" alt="no image selected" width="80" height="80" />
+        <img src="/EMS/Candidate/viewimage.jsp"  alt="no Image Selected12" style="border:solid 4px cyan" width="100px" height="100px"/>
         <%}%><br/>
 
 
@@ -563,14 +557,16 @@ String instituteName=(String)session.getAttribute("institute_name");
     </div>
     <html:form action="/candidateregistration1" method="post"    onsubmit="return check3()" styleId="radio_form">
 
-        <table  dir="<%=rtl%>" class="table" width="60%">
-        <tr><td class="header" align="center" colspan="3" bgcolor="cyan"> <%=resource.getString("candidateregform")%></td></tr>
-         <tr><td>
+        <table  dir="<%=rtl%>" class="datagrid" align="center" width="60%">
+        <tr><td  align="center" colspan="3"> <%=resource.getString("candidateregform")%></td></tr>
+        <tr><td  align="center" colspan="3"> <hr></td></tr>
+
+        <tr><td>
               
                                     <tr>
                                         <td ><%=resource.getString("enrollment")%>*:</td><td><html:text readonly="<%=read%>"  name="CandidateRegActionForm"  styleId="enrollment1" property="enrollment"  value="<%=enrollment%>" /></td>
                                         
-                                        <td rowspan="15">
+                                        <td rowspan="19">
                                             
                                             
                                             
@@ -694,7 +690,7 @@ String instituteName=(String)session.getAttribute("institute_name");
 
                         <tr><td align="center" height="10px;" colspan="3" bgcolor="cyan">Academic Detail</td></tr>
                         <tr><td align=""><%=resource.getString("department")%>*
-                                <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
+                            </td><td>    <html:select property="enrolled_in" styleId="enrolled"  name="CandidateRegActionForm"  tabindex="10" disabled="<%=read%>">
 
                                     <html:option  value="Select"> Select </html:option>
                                     <html:option  value="ug">Under Graduate</html:option>

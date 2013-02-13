@@ -30,17 +30,7 @@ if(session.isNew()){
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Block_Managergrid</title>
-         <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
+         
         <%!
     Locale locale=null;
     String locale1="en";
@@ -94,7 +84,7 @@ pageContext.setAttribute("Edit",Edit);
 
 %>
     </head>
-    <body dir="<%=rtl%>" >
+    <body dir="<%=rtl%>" style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
 
 
        
@@ -206,8 +196,8 @@ String msg1=(String)request.getAttribute("msg1");
 
 
 
- <font color="blue" size="-1" dir="<%=rtl%>"><br>
-  <%=resource.getString("voterreq")%>(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp"><%=resource.getString("voter")%> </a>
+ <font dir="<%=rtl%>">
+  <%=resource.getString("voterreq")%>(<%=count%>) &nbsp;<a href="<%=contextPath%>/election_manager/pending_voter.jsp">Click here </a>
             </font>
 <br>
 <%if(tcount==0)
@@ -216,18 +206,18 @@ String msg1=(String)request.getAttribute("msg1");
 <%}
 else
 {%>
-<table align="<%=align%>" dir="<%=rtl%>" width="100%" style="top:150px;position: absolute;z-index: 30 ">
+<table align="center" dir="<%=rtl%>" width="95%" >
     <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
     <column width="5%">
-      <header value="${Election_Id}" hAlign="left" styleClass="header"/>
-      <item   value="${doc.election_id}"   hAlign="left"    styleClass="item"/>
+      <header value="${Election_Id}" hAlign="center" styleClass="header"/>
+      <item   value="${doc.election_id}"   hAlign="center"    styleClass="item"/>
     </column>
 
-    <column width="5%">
+    <column width="10%">
       <header value="${Election_Name}" hAlign="left" styleClass="header"/>
       <item   value="${doc.election_name}"  styleClass="item"/>
     </column>
@@ -236,30 +226,32 @@ else
 
 
 
- <column width="10%">
+ <column width="5%">
       <header value="Voting Status" hAlign="left" styleClass="header"/>
       <item   value="${votingStatus}"   hAlign="left" styleClass="item"/>
     </column>
 
 
-      <column width="10%">
+      <column width="5%">
       <header value="${Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.status}"   hAlign="left" styleClass="item"/>
     </column>
-<column width="5%">
+<column width="3%">
       <header value="Action" hAlign="left" styleClass="header"/>
       <item   value="Update" hyperLink="${path}/electionview1.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
 
-<column width="5%">
+<column width="3%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="View" hyperLink="${path}/electionview.do?id=${doc.election_id}&amp;st='y'"  hAlign="left" styleClass="item"/>
     </column>
-    <column width="10%">
+    <column width="5%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Results" hyperLink="${path}/Voter/finalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
-    </column>
-<column width="10%">
+    </column> 
+    
+    
+<column width="5%">
 <header value="" hAlign="left" styleClass="header"/>
 
    
@@ -267,9 +259,12 @@ else
 
 
   </column>
-      
+      <column width="5%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="PreferencialResults" hyperLink="${path}/Voter/Preferencialfinalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
+    </column>
 
-      <column width="10%">
+      <column width="5%">
       <header value="" hAlign="left" styleClass="header"/>
       <item   value="Preview Ballot" hyperLink="${path}/electionview.do?id=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
@@ -292,24 +287,33 @@ else
       <header value="Vote Cast Till Date" hAlign="left" styleClass="header"/>
       <item   value="${doc.totalvoted}" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
-      <column width="5%">
+      <column width="3%">
       <header value="View All Voted Voter" hAlign="left" styleClass="header"/>
       <item   value="PDF" hyperLink="${path}/votedvoterlist.do?election=${doc.election_id}"  hAlign="left" styleClass="item"/>
     </column>
-       <column width="5%" >
+       <column width="3%" >
       <header value=""   hAlign="left" styleClass="header"   />
    <item>
       <![CDATA[<a href="/EMS/xmlexport.do?election=${doc.election_id}">XML</a>]]>
   </item>
 
     </column>
-   <column width="5%" >
+   <column width="3%" >
       <header value=""   hAlign="left" styleClass="header"   />
    <item>
       <![CDATA[<a href="/EMS/xlsexport.do?election=${doc.election_id}">XLS</a>]]>
   </item>
 
     </column>
+   
+       <column width="5%" >
+      <header value=""   hAlign="left" styleClass="header"   />
+   <item>
+      <![CDATA[<a href="/EMS/csvexport.do?election=${doc.election_id}&amp;export='csv'">CSV</a>]]>
+  </item>
+
+    </column>
+
 
  </columns>
 
@@ -321,7 +325,7 @@ else
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
 
-  <table width="500" style="font-family: arial; font-size: 10pt" border=0>
+  <table width="95%" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left" width="100px">
     
@@ -400,3 +404,9 @@ if(msg!=null)
     </body>
 
 </html>
+
+
+<column width="5%">
+      <header value="" hAlign="left" styleClass="header"/>
+      <item   value="PreferencialResults" hyperLink="${path}/Voter/Preferencialfinalresult.jsp?election=${doc.election_id}&amp;"  hAlign="left" styleClass="item"/>
+    </column>

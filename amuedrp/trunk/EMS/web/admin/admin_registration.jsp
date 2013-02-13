@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<jsp:include page="../header.jsp" flush="true" />
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -59,30 +59,58 @@ locale1=(String)session.getAttribute("locale");
 </head>
 <body dir="<%=rtl%>">
   
-        <div
-   style="  top:85px;
-   left:150px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
+      
 
          
 
             <html:form  method="post" action="/instituteregistration" onsubmit="return checkPassword();" >
+ <body  style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
 
+
+
+
+        <table align="center" style="padding: 0px 0px 0px 0px;width: 80%;height:100%;border-right:  solid #ECF1EF 10px;border-left:  solid #ECF1EF 10px;" dir="<%=rtl%>" >
+
+
+
+            <tr style="background-image: url('/EMS/images/header.jpg');height: 100px">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center" width="100%"  dir="<%=rtl%>">
+            <tr><td width="70%"  valign="bottom"  align="<%=align%>">
+                            &nbsp;&nbsp;    <span style="font-weight: bold;color:white;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >Election</span><span style="color:white;font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >MS</span>
+
+
+
+                </td><td align="center" > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="center" id="Image1" style="" height="100px" width="200"><br/>
+
+                            </td></tr>
+             <tr><td>
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("login.message.logo.under")%>&nbsp;
+
+</div>
+                </td>
+                <td >
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+
+
+</div>
+                </td></tr>
+            </table></td>
+            </tr>
+            <tr><td colspan="2">
                 <table   align="center">
 
 
 
 
      
-           <tr><td valign="top" width="70%" >
+           <tr><td valign="top" width="50%" >
             
           
-                   <table align="center"  class="btn3"  style="" dir="<%=rtl%>" >
-  <tr><td align="center" colspan="2" style="background-color: #7697BC; height:5px;color:white;border:solid 1px  #7697BC; margin:0px 0px 0px 0px;font-family:Tahoma;">
-          <b dir="<%=rtl%>"><%=resource.getString("login.href.institute.registration")%></b></td><td dir="<%=rtl%>" align="<%=align%>"><b class="mess"><%=resource.getString("(*)")%></b></td></tr>
+                   <table align="center" width="70%"   style="" dir="<%=rtl%>" >
+  <tr><td align="left" colspan="2" style=" height:15px;color:black; margin:0px 0px 0px 0px;font-family:Tahoma;">
+          <b dir="<%=rtl%>"><%=resource.getString("login.href.institute.registration")%></b><hr></td><td dir="<%=rtl%>" align="<%=align%>"><b class="mess"><%=resource.getString("(*)")%></b></td></tr>
      <tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("institutename")%>*</td><td width="150px"><html:text property="institute_name" name="AdminRegistrationActionForm" />
 
          </td><td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"> <html:messages id="err_name"  property="institute_name">
@@ -274,12 +302,17 @@ locale1=(String)session.getAttribute("locale");
 			</html:messages>
          </td></tr>
 --%>
-              <tr><td></td><td colspan="2" dir="<%=rtl%>" align="<%=align%>"><input type="submit"  id="submit" name="submit" value=" <%=resource.getString("register")%>" class="txt2" onclick="return checkPassLog();">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" class="txt2" onclick="quit()"><br></td></tr>
+              <tr><td colspan="3" dir="<%=rtl%>" align="left"><input type="submit"  id="submit" name="submit" value=" <%=resource.getString("register")%>" class="txt2" onclick="return checkPassLog();">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" class="txt2" onclick="quit()"><br></td></tr>
         </table><br><br>
           </td></tr>
     </table>
+                </td></tr>
+        <tr><td colspan="2" align="center"  style="font-family: arial;color:white;font-size: 12px;background-color: #425C83;height: 25px" valign="middle">
+         <%=resource.getString("developedby")%> &nbsp;
+                    &copy; <%=resource.getString("login.message.footer")%>
+                </td></tr>
+        </table>
  </html:form>
-</div>
 
         </body>
         <script language="javascript">
@@ -329,10 +362,10 @@ if(msg!=null)
     {
     %>
     <script language="javascript" type="text/javascript">
-        
-        document.getElementById("user_id").value = "";
-        document.getElementById("user_id").focus();
         alert("<%=msg%>");
+        document.getElementById("admin_email").value = "";
+        document.getElementById("admin_email").focus();
+        
     </script>
     <%}%>
 

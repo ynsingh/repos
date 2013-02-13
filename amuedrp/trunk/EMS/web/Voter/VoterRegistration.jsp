@@ -1,4 +1,3 @@
-
 <%@ page language="java" import="com.myapp.struts.hbm.VoterRegistration"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -371,22 +370,23 @@ send();
       position: absolute;
 
       visibility: show;" >
+
   <%if(btn.equals("Add")==true || btn.equals("Submit")==true){%>
 
                             <%if(session.getAttribute("image")!=null){%>
-                         <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="100" height="100"/>
+                            <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" style="border:solid 4px cyan" width="100" height="100"/>
                         <%}else{%>
 
-                        <html:img src="/EMS/images/no-image.jpg"  alt="no Image Selected" width="100" height="100"/>
+                        <html:img src="/EMS/images/no-image.jpg"  alt="no Image Selected" style="border:solid 4px cyan" width="100" height="100"/>
                            <%}%>
 
 
                            <%}else{%>
 
                             <%if (request.getAttribute("imagechange")!=null){%>
-                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="120" height="120"/>
+                        <html:img src="/EMS/Voter/upload.jsp"  alt="no Image Selected" width="120" style="border:solid 4px cyan" height="120"/>
                         <%}else{%>
-                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image selected" width="120" height="120" />
+                        <html:img src="/EMS/Voter/viewimage.jsp" alt="no image selected" width="120" style="border:solid 4px cyan" height="120" />
                         <%}%><br/>
 
 
@@ -396,10 +396,12 @@ send();
 
 
     <html:form action="/addvoterregistration" method="post" styleId="form2"  onsubmit="return check3();">
-        <table class="table" width="80%" align="center">
-            <tr><td>
-        <table border="0" class="txtStyle" align="center">
-            <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="10px;" colspan="2"><b>Voter Registration Form </b></td></tr>
+        
+        <table border="0" align="center" >
+            <tr><td align="center" height="10px;" colspan="1">Voter Registration Form </td>
+                <td align="right"><a class="star">*</a>indicated fields are mandatory</td>
+            </tr>
+            <tr><td colspan="2"><hr></td></tr>
             <tr><td >
                     <table class="txtStyle">
               <tr>
@@ -435,9 +437,7 @@ send();
 
             <tr><td>
                         <table  class="txtStyle" border="0" cellspacing="6" cellpadding="2" align="left">
-                        <tr>
-                                 </tr>
-<%--<tr>
+                        <%--<tr>
 <td align="left">Faculty Roll No :</td><td><html:text name="VoterRegActionForm" property="electionid"/></td>
 </tr>
 <tr--%>
@@ -479,16 +479,18 @@ send();
 <tr>
 <td align="left">Mobile No*:</td><td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="mnumb1" value="<%=mnumb%>" property="m_number" onfocus="statwords('Please enter valid mobile number')" onblur="return status()" /></td>
 </tr>
-<tr><td></td></tr>
-<tr>
+                        </table>   </td>
+                <td>
+ <table class="txtStyle">
+     <tr>
     <td align="left">email*:</td><td><html:text  name="VoterRegActionForm"   styleId="email1" property="email" readonly="<%=read%>" onfocus="statwords('Please enter active email id')" onblur="return status()"/></td>
 </tr>
 <tr>
     <td align="left">Alternate Email:</td><td><html:text  name="VoterRegActionForm"   styleId="alternateemail1" property="alternateemail" readonly="<%=read%>" /></td>
 </tr>
-                        </table>   </td>
-                <td>
- <table class="txtStyle"> <tr>
+
+
+     <tr>
          <td align="left">Corresponding Address:</td> <td><html:text readonly="<%=read %>" name="VoterRegActionForm" styleId="cadd1" property="c_add" value="<%=cadd%>" onfocus="statwords('Please enter corresponding address')" onblur="return status()" /></td>
 </tr>
 <tr>
@@ -541,7 +543,6 @@ function status()
             </td>
             </tr>
                    
-<tr><td colspan="3" height="5px" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
 <tr>
 <td align="center" colspan="5">
     <%if(btn!=null){
@@ -575,8 +576,4 @@ function status()
 	</td>
 </tr>
                         </table>
-
-</td>
-</tr>
-        </table>
 </html:form>

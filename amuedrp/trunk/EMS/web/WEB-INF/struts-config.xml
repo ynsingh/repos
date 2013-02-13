@@ -530,6 +530,9 @@
  <action path="/xlsexport" scope="request" type="com.myapp.struts.election_manager.XLSExportAction">
     <forward name="success" path="/election_manager/Election_List.jsp"/>
 </action>
+<action path="/csvexport" scope="request" type="com.myapp.struts.election_manager.XLSExportAction">
+    <forward name="success" path="/election_manager/Election_List.jsp"/>
+</action>
 
 
    <!--====================================Voter  Action Setting==========================================-->
@@ -601,6 +604,12 @@
                  <forward name="success2" path="/election_manager/agmvoting.jsp"/>
                 
          </action>
+          <action  path="/pref_election" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.selectElectionAction" >
+                <forward name="success" path="/Voting/Preferencialvoting.jsp"/>
+                <forward name="success1" path="/election_manager/Preferencialvoting.jsp"/>
+                 <forward name="success2" path="/election_manager/agmvoting.jsp"/>
+
+         </action>
         <action  path="/viewelection" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.selectElectionAction" >
                 <forward name="view" path="/Voting/viewElection.jsp"/>
          </action>
@@ -610,7 +619,16 @@
          <action  path="/electionResult" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.VotingAction" >
                 <forward name="success" path="/Voting/electionResult.jsp"/>
          </action>
+          <action  path="/preferencialelectionResult" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.PreferencialVotingAction" >
+                <forward name="success" path="/Voter/Preferencialfinalresult.jsp"/>
+         </action>
+           <action  path="/preferencialelectionResult1" input="/Voter/voter_home.jsp" name="VoterElectionActionForm"  scope="request" type="com.myapp.struts.Voting.PreferentialFinalResultAction" >
+                <forward name="success" path="/Voter/PreferentialFinalResult1.jsp"/>
+         </action>
+
+         
          <action path="/VoteCast" scope="request" type="com.myapp.struts.Voting.CastVote"/>
+          <action path="/PreferentialVoteCast" scope="request" type="com.myapp.struts.Voting.PreferentialCastVote"/>
             <action path="/newenrollment" scope="request" type="com.myapp.struts.Voter.newenrollment">
               <forward name="success" path="/Voter/enrollment.jsp"/>
               </action>
@@ -620,6 +638,7 @@
               <forward name="success2" path="/electionmanager.do"/>
                <forward name="success3" path="/Voter/voter_home.jsp?g=x"/>
               </action>
+            
 
           <action path="/applyCandidature" scope="request" type="com.myapp.struts.Voter.ApplyCandidatureAction"/>
  <!--====================================Candidate  Action Setting==========================================-->

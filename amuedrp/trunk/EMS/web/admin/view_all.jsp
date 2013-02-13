@@ -106,17 +106,7 @@ function isNumberKey(evt)
          return true;
       }
 </script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
+ <link rel="stylesheet" href="/EMS/css/page.css"/>
 </head>
 
 <body style="width: 620px;margin-top: 0px;">

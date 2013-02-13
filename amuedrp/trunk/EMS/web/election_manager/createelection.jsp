@@ -1209,9 +1209,9 @@ rulerowcount=em1r.length;
 
 
    <html:form method="post" action="/createelection" onsubmit="return checkdates()">
-       <table align="center" width="80%" valign="top" dir="<%=rtl%>">
+       <table align="center" style="font-family: Gill, Helvetica, sans-serif;" width="50%" valign="top" dir="<%=rtl%>">
            <tr><td width="70%" align="left" valign="top" style="border: solid #ECF1EF 5px;" dir="<%=rtl%>">
-                   <table><tr><td colspan="2" style="border: 2px solid teal"><div style="background-color: teal;width: 100%;color: white"><%=resource.getString("electiondetail")%> </div>
+                   <table><tr><td colspan="2" style="border: 2px solid teal"><div style="background-color: teal;font-family: Gill, Helvetica, sans-serif;width: 100%;color: white"><%=resource.getString("electiondetail")%> </div>
      <html:hidden value="<%=institute_id%>" name="DepActionForm" property="instituteId"/>
   <html:hidden value="<%=user_id%>" name="DepActionForm" property="createdby"/>
      <table dir="<%=rtl%>">

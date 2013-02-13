@@ -1,10 +1,3 @@
-
-<%-- 
-    Document   : admin_view
-    Created on : Jun 13, 2010, 9:19:07 AM
-    Author     : Dushyant
---%>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html"%>
 
@@ -85,13 +78,37 @@ body
    color: #000000;
 }
 </style>
+<script>
+ function winresize()
+{
+    //alert(document.width);
+    var winwidth = document.width;
+    var IFRAMERef = frames['f1'];
+    alert(IFRAMERef);
+    var frmwidth = IFRAMERef.document.width;
+    var windiff=200;
+    var frmheight;
+        if(IFRAMERef.document.getElementById("f1")!=undefined)
+        frmheight= IFRAMERef.document.getElementById("f1").height;
+        else
+            if(IFRAMERef.document.getElementById("form3")!=undefined)
+        frmheight= IFRAMERef.document.getElementById("form3").height;
+        else
+            frmheight = 550+"px";
+    //alert("frmheight="+frmheight);
+    if(winwidth!=undefined && frmwidth!=undefined)
+        windiff= winwidth - frmwidth;
+   // document.getElementById("ifr3").style.paddingLeft = windiff*0.5+"px";
+    document.getElementById("ifr3").style.height = frmheight;
+}
+</script>
 </head>
-<body>
-    <html:form  method="post" action="/confirm">
-        <table align="center" dir="<%=rtl%>"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+<body style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
+    <html:form  method="post" styleId="form3" action="/confirm">
+        <table align="center" dir="<%=rtl%>"    width="100%" style="font-family: arial;font-size:13px">
 
 
-            <tr><td  align="<%=align%>" colspan="2" ><br><br> <span class="txt">
+            <tr><td  align="<%=align%>" colspan="2" >Institute Details<hr><br> <span class="txt">
 </span>
 
          </td></tr>
@@ -280,12 +297,12 @@ body
              <tr><td dir="<%=rtl%>"><%=resource.getString("instituteid")%></td><td dir="<%=rtl%>"><input type="text"  id="Institute_id" dir="<%=rtl%>" name="Institute_id" value="<%=institute_Id%>"  readonly tabindex="17" title="Enter Institute Id"></td>
               
               </tr>
-<tr><td dir="<%=rtl%>" colspan="4" align="center"><br>
-        <input type="button" dir="<%=rtl%>" class="txt2"   name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
-</td></tr
+
+
+
 <%}%>
         </table>
-        
+        <input type="button" dir="<%=rtl%>" class="txt2"   name="cancel" value="<%=resource.getString("back")%>" onclick="quit();">
     </html:form>
 
 </body>

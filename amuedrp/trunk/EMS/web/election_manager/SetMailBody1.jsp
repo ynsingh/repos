@@ -71,8 +71,8 @@ function submit1(){
     <body>
         
         <form action="/EMS/election_manager/mail.do" name="MailBodyFormBean" >
-            <table  cellspacing="10px" >
-               
+            <table  cellspacing="10px" align="center" >
+                <tr><td><u>Election manager Mail body</u></td>   </tr>
                         
                         <%
 //String role=(String)session.getAttribute("login_role");
@@ -81,7 +81,7 @@ if(role.equalsIgnoreCase("insti-admin")|| role.equalsIgnoreCase("insti-admin,vot
      electionmanager=UserLog.readProperty("mail.properties", userid+"em")!=null?UserLog.readProperty("mail.properties", userid+"em"):"";
 
 %>
-<td>Election manager mailbody</td><td><textarea cols="50" rows="5" name="electionmail" id="e" ><%=electionmanager%></textarea><br>
+<td>Type Mail body</td><td><textarea cols="50" rows="5" name="electionmail" id="e" ><%=electionmanager%></textarea><br>
  <input type="Submit" onclick="return submit1();" id="button" name="button" value="Submit" />
     <%}else{%>
     <table  align="center" class="datagrid">

@@ -11,7 +11,6 @@ if(session.isNew()){
 %>
 <script>parent.location="<%=request.getContextPath()%>/login.jsp";</script>
 <%}%>
- <jsp:include page="/header.jsp" flush="true" />
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -21,7 +20,32 @@ if(session.isNew()){
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-       
+        <%@page import="java.util.*,java.io.*,java.net.*"%>
+     <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+    String regid="";
+%>  <%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+    regid = resource.getString("registrationid");
+    System.out.println("Reg id="+regid);
+    %>
         <script language="javascript" type="text/javascript">
 
 
@@ -59,15 +83,43 @@ if(session.isNew()){
         </script>
                 <%String msg=(String)request.getAttribute("msg1"); %>
     </head>
-    <body>
-        <html:form method="post" onsubmit="return check2()" action="/newregistration">
-            <div
-                style="  top:100px;
-                left:5px;
-                right:5px;
-                position: absolute;
+    <body  style=" background-image: url('/EMS/images/paperbg.gif'); margin-top:0; margin-bottom:0;">
 
-                visibility: show;">
+
+
+
+        <table align="center" style="padding: 0px 0px 0px 0px;width: 80%;height:100%;border-right:  solid #ECF1EF 10px;border-left:  solid #ECF1EF 10px;" dir="<%=rtl%>" >
+
+
+
+            <tr style="background-image: url('/EMS/images/header.jpg');height: 100px">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center" width="100%"  dir="<%=rtl%>">
+            <tr><td width="70%"  valign="bottom"  align="<%=align%>">
+                            &nbsp;&nbsp;    <span style="font-weight: bold;color:white;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >Election</span><span style="color:white;font-weight: bold;font-size: 35px;font-family:Gill, Helvetica, sans-serif;" >MS</span>
+
+
+
+                </td><td align="center" > <img src="<%=request.getContextPath()%>/images/logo.png" alt="No Image"  border="0" align="center" id="Image1" style="" height="100px" width="200"><br/>
+
+                            </td></tr>
+             <tr><td>
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+&nbsp;<%=resource.getString("login.message.logo.under")%>&nbsp;
+
+</div>
+                </td>
+                <td >
+                    <div style="background-color: white;color:blue;font-size: 14px;border:double 1px black;font-family:Gill, Helvetica, sans-serif" >
+
+
+</div>
+                </td></tr>
+            </table></td>
+            </tr>
+            <tr><td>
+        <html:form method="post" onsubmit="return check2()" action="/newregistration">
+           
                 <table  class="table" width="600px" height="300px" align="center">
                     <tr><td align="center" class="headerStyle1" bgcolor="#E0E8F5" height="25px;">Voter Registration </td></tr>
                     <tr><td valign="top" align="center"> <br><br>
@@ -99,7 +151,13 @@ if(session.isNew()){
                         </td></tr>
 
                 </table>
-            </div>
+          
 </html:form>
+                </td></tr>
+        <tr><td colspan="2" align="center"  style="font-family: arial;color:white;font-size: 12px;background-color: #425C83;height: 25px" valign="middle">
+         <%=resource.getString("developedby")%> &nbsp;
+                    &copy; <%=resource.getString("login.message.footer")%>
+                </td></tr>
+        </table>
         </body>
     </html>

@@ -1,10 +1,4 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Azam/Faraz
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
- 
+
     <%@page import="com.myapp.struts.admin.RequestDoc,com.myapp.struts.hbm.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -114,27 +108,11 @@ function isNumberKey(evt)
          return true;
       }
 </script>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
-
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
+ <link rel="stylesheet" href="/EMS/css/page.css"/>
 </head>
 
 <body style="width: 720px">
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-      width: 710px;
-      visibility: show;">
+ 
 <%
    
    
@@ -302,7 +280,7 @@ request.setAttribute("msg", "Your Session Expired: Please Login Again");
 }%>
 </td></tr>
 </table>
- </div>
+
     </body>
 
 
