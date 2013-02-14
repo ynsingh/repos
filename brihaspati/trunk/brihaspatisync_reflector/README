@@ -1,0 +1,6 @@
+For compiling the reflector code use.
+
+$ant clean
+$ant sign
+
+
