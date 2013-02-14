@@ -144,7 +144,7 @@ public class LoginFromBrihspti extends VelocityAction{
                 	                	ErrorDumpUtil.ErrorLog("After checking the session LoginFromBrihspti");
 
 						user = null;
-        	                	        lang=LoginUtils.SetUserData(email1, password, flag1, lang, data);
+        	                	        lang=LoginUtils.SetUserData(email1, password, "", flag1, lang, data);
 	                                	context.put("lang",lang);
 	                	                ErrorDumpUtil.ErrorLog("After setting User data LoginFromBrihspti");
 				

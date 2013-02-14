@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UserAction_InstituteAdmin.java	
  *
- *  Copyright (c) 2005-2006, 2008, 2010, 2011,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2010, 2011,2012,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -98,7 +98,7 @@ import org.iitk.brihaspati.om.InstituteAdminUserPeer;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 08-07-2010, 20-10-2010, 26-12-2010, 27-07-2011, 05-08-2011,07-02-2012
- * @modified date:30-10-2012(Richa)
+ * @modified date:30-10-2012(Richa),01-02-2013(Richa)
  */
 
 public class UserAction_InstituteAdmin extends SecureAction{
@@ -252,9 +252,9 @@ public class UserAction_InstituteAdmin extends SecureAction{
 		 	* Update password entered by the admin for the user
 		 	* @see PasswordUtil in utils
 		 	*/
-			String serverName =TurbineServlet.getServerName();
-	                String serverPort =TurbineServlet.getServerPort();
-			PasswordUtil.passwordFromUtil(serverName, serverPort);
+			//String serverName =TurbineServlet.getServerName();
+	                //String serverPort =TurbineServlet.getServerPort();
+			//PasswordUtil.passwordFromUtil(serverName, serverPort);
 			String msg=PasswordUtil.doChangepassword(user,"",newPW,LangFile);
 			data.setMessage(msg);
 		}
@@ -691,6 +691,44 @@ public class UserAction_InstituteAdmin extends SecureAction{
                 }
         }
 
+	/**
+        * ActionEvent responsible for Adding new rollno of the user.
+        * @param data RunData
+        * @param context Context
+        */
+	public void doAddRollno(RunData data, Context context)
+	{
+		try{
+			String msg="";
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			String InstId=(data.getUser().getTemp("Institute_id")).toString();
+			String uname=data.getParameters().getString("username");
+			String prgcode=data.getParameters().getString("prg","");
+			String rollno=data.getParameters().getString("rlno","").trim();
+			/**
+                         * check if rollno have any special character then return message
+                         */
+			if(StringUtil.checkString(rollno) != -1)
+                        {
+                                data.addMessage(MultilingualUtil.ConvertedString("c_msg3",LangFile));
+                               return;
+                        }
+			if(StringUtils.isNotBlank(uname) && StringUtils.isNotBlank(rollno) && StringUtils.isNotBlank(prgcode) && StringUtils.isNotBlank(InstId))
+			{
+				msg=CourseProgramUtil.InsertRollno(uname, prgcode, rollno, InstId, LangFile);
+			}
+			data.setMessage(msg);
+		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Exception in inserting rollno method(UserAction_InstituteAdmin!!)" +e);
+		}
+	}
+	/**
+        * ActionEvent responsible for updating rollno of the user.
+        * @param data RunData
+        * @param context Context
+        */
 	public void doUpdateRollno(RunData data, Context context)
 	{
 		try{
@@ -701,6 +739,9 @@ public class UserAction_InstituteAdmin extends SecureAction{
 			String ProgramList=data.getParameters().getString("deleteFileNames","");
 			String uname=data.getParameters().getString("username");
                 	//ErrorDumpUtil.ErrorLog("inside do update method in action file"+ProgramList);
+			/**
+			 * Getting values of rollno and program of the user from parameter parser 
+			 */ 
 			ArrayList list = new ArrayList();
                         Map map = new HashMap();
         	        if(!ProgramList.equals("")){
@@ -721,27 +762,43 @@ public class UserAction_InstituteAdmin extends SecureAction{
 		                        }
                                         String prg=StringUtils.substringBeforeLast(s,":");
                                         //ErrorDumpUtil.ErrorLog("prg before---"+prg);
-					String prgcode = InstituteIdUtil.getPrgCode(prg);
-					//List lst=CheckRollnoExistence(uname,prgcode,rollno,InstId);
+					String prgcode = InstituteIdUtil.getPrgCode(prg);	
+					/**
+ 					 *  check existence of rollno, program in the institute.
+ 					 */ 
 					List rollnolist=CourseProgramUtil.CheckDuplicateRollno(rollno,prgcode,InstId);
-                                        //ErrorDumpUtil.ErrorLog("rollnolist inside doupdate action---"+rollnolist);
+ 					/**  If(exist)
+ 					 *	then get username for this combination
+ 					 *	and match this username with the user for which rollno has to be update 	
+ 					 *	if(match)
+ 					 *	   set all the values inside hash map and then in list for display the case of conflict.
+ 					 *	else
+ 					 *	   show message accordingly
+ 					 *    Else
+ 					 *       update rollno of the user.
+ 					 */ 
 					if(rollnolist.size()>0)
 		                        {
 						String usrname= ((StudentRollno)rollnolist.get(0)).getEmailId();
 						if(!uname.equals(usrname)){
-						String Program= ((StudentRollno)rollnolist.get(0)).getProgram();
-						String pgname = InstituteIdUtil.getPrgName(Program);
-						String rlno= ((StudentRollno)rollnolist.get(0)).getRollNo();
-						map = new HashMap();
-        	                                map.put("confuname",usrname);
-        	                                map.put("confProgram",pgname);
-        	                                map.put("confRollno",rlno);
-						map.put("uname",uname);
-						map.put("Program",prg);
-						map.put("Rollno",rollno);
-						list.add(map);
-						context.put("Rollnolist",list);
-						msg=MultilingualUtil.ConvertedString("prgm_msg3",LangFile);
+							String Program= ((StudentRollno)rollnolist.get(0)).getProgram();
+							String pgname = InstituteIdUtil.getPrgName(Program);
+							String rlno= ((StudentRollno)rollnolist.get(0)).getRollNo();
+							map = new HashMap();
+        	                	                map.put("confuname",usrname);
+        	                        	        map.put("confProgram",pgname);
+	        	                                map.put("confRollno",rlno);
+							map.put("uname",uname);
+							map.put("Program",prg);
+							map.put("Rollno",rollno);
+							list.add(map);
+							context.put("Rollnolist",list);
+							msg=MultilingualUtil.ConvertedString("prgm_msg3",LangFile);
+						}
+						else
+						{
+							msg=MultilingualUtil.ConvertedString("rollno_msg3",LangFile);
+							
 						}
 		                        }
 					else
@@ -761,13 +818,21 @@ public class UserAction_InstituteAdmin extends SecureAction{
 		}
 		
 	}
+	/**
+        * ActionEvent responsible for updating conflict rollno of the users.
+        * @param data RunData
+        * @param context Context
+        */
 	 public void doUpdateConflictRollno(RunData data, Context context)
         {
                 try{
 			String msg="";
 			ArrayList list = new ArrayList();
-                         Map map = new HashMap();
+                        Map map = new HashMap();
 			String  InstId=(data.getUser().getTemp("Institute_id")).toString();
+			/**
+ 			 * Getting conflicted values of rollno and program. 
+ 			 */ 
 			String confPrg=data.getParameters().getString("confProgram","");
 			//ErrorDumpUtil.ErrorLog("Confprogram -----------"+confPrg);
 			int rlcount=Integer.parseInt(data.getParameters().getString("rlnocount",""));
@@ -776,51 +841,58 @@ public class UserAction_InstituteAdmin extends SecureAction{
 			//ErrorDumpUtil.ErrorLog("Confprogram code-----------"+pgcode);
 			String rlno="",uname="";
 			boolean flag=true;
+			/**
+ 			 * befor updating rollno check this rollno is conflicting with another user or not.
+ 			 * If (conflict)
+ 			 * 	set all the values inside hash map and then in list for display the case of conflict.
+ 			 * else
+ 			 *  	update rollno of the user
+ 			 */ 
 			for(int i=1;i<=rlcount;i++)
 			{
 				if(flag){
-				rlno=data.getParameters().getString("rollno"+i,"");
-				//ErrorDumpUtil.ErrorLog("rollno -----------"+rlno);
-				if(StringUtil.checkString(rlno) != -1)
-	                        /**
-	                         * check if rollno have any special character then return message
-                                 */
-	                        {
-        	                        data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
-                	                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
-                        	       return;
-	                        }
-				if(i==1)
-					uname=data.getParameters().getString("confuser","");
-				else
-					uname=data.getParameters().getString("username");
-				//List lst1=CheckRollnoExistence(confuname,pgcode,rlno,InstId);
-				//ErrorDumpUtil.ErrorLog("uname -----------"+uname);
-				List rollnolist=CourseProgramUtil.CheckDuplicateRollno(rlno,pgcode,InstId);
-                        	if(rollnolist.size()>0)
-	                        {
- 		                       	String usrname= ((StudentRollno)rollnolist.get(0)).getEmailId();
-					//ErrorDumpUtil.ErrorLog("username inside loop---"+usrname);
-                	               	String Program= ((StudentRollno)rollnolist.get(0)).getProgram();
-	                               	String pgname = InstituteIdUtil.getPrgName(Program);
-        	                       	String rollno= ((StudentRollno)rollnolist.get(0)).getRollNo();
-					if(!uname.equals(usrname)){
-		                               	map = new HashMap();
-        		                       	map.put("confuname",usrname);
-                		               	map.put("confProgram",pgname);
-	                	               	map.put("confRollno",rollno);
-        	                	       	map.put("uname",uname);
-                	               		map.put("Program",confPrg);
-		                       	       	map.put("Rollno",rollno);
-        		                       	list.add(map);
-						flag=false;
-					}
-	                	        context.put("Rollnolist",list);
-	                        }
-        		        else
-                	        {
-                        	        msg=CourseProgramUtil.updateRollno(uname,confPrg,rlno,InstId,LangFile);
-	                        }
+					rlno=data.getParameters().getString("rollno"+i,"");
+					//ErrorDumpUtil.ErrorLog("rollno -----------"+rlno);
+					if(StringUtil.checkString(rlno) != -1)
+		                        /**
+		                         * check if rollno have any special character then return message
+	                                 */
+		                        {
+	        	                        data.addMessage(MultilingualUtil.ConvertedString("quiz_msg8",LangFile));
+        	        	                data.addMessage(MultilingualUtil.ConvertedString("ProxyuserMsg3",LangFile));
+                	        	       return;
+	                	        }
+					if(i==1)
+						uname=data.getParameters().getString("confuser","");
+					else
+						uname=data.getParameters().getString("username");
+					//List lst1=CheckRollnoExistence(confuname,pgcode,rlno,InstId);
+					//ErrorDumpUtil.ErrorLog("uname -----------"+uname);
+					List rollnolist=CourseProgramUtil.CheckDuplicateRollno(rlno,pgcode,InstId);
+                        		if(rollnolist.size()>0)
+		                        {
+ 			                       	String usrname= ((StudentRollno)rollnolist.get(0)).getEmailId();
+						//ErrorDumpUtil.ErrorLog("username inside loop---"+usrname);
+	                	               	String Program= ((StudentRollno)rollnolist.get(0)).getProgram();
+		                               	String pgname = InstituteIdUtil.getPrgName(Program);
+        		                       	String rollno= ((StudentRollno)rollnolist.get(0)).getRollNo();
+						if(!uname.equals(usrname)){
+			                               	map = new HashMap();
+        			                       	map.put("confuname",usrname);
+                			               	map.put("confProgram",pgname);
+	                		               	map.put("confRollno",rollno);
+        	                		       	map.put("uname",uname);
+                	               			map.put("Program",confPrg);
+			                       	       	map.put("Rollno",rollno);
+        			                       	list.add(map);
+							flag=false;
+						}
+	                		        context.put("Rollnolist",list);
+		                        }	
+        			        else	
+                		        {
+                        		        msg=CourseProgramUtil.updateRollno(uname,confPrg,rlno,InstId,LangFile);
+	                        	}
 				}
 			}
 			data.setMessage(msg);
@@ -924,7 +996,8 @@ public class UserAction_InstituteAdmin extends SecureAction{
                         String grouprecord=data.getParameters().getString("deleteFileNames","");
                         MultilingualUtil mu=new MultilingualUtil();
                         String username=data.getParameters().getString("username");
-			String subject="", info_new = "", info_Opt="", msgRegard="", msgInstAdmin="",groupname="",userrole="",coursestatus="",coursename="",instFirstLastName="",mailsubject="";
+			//String subject="", info_new = "", info_Opt="", msgRegard="", msgInstAdmin="",groupname="",userrole="",coursestatus="",coursename="",instFirstLastName="",mailsubject="";
+			String subject="", msgRegard="", msgInstAdmin="",groupname="",userrole="",coursestatus="",coursename="",instFirstLastName="",mailsubject="";
 			User user = data.getUser();
 			String instituteId=(user.getTemp("Institute_id")).toString();
                 	String instAdminName = user.getName();
@@ -934,9 +1007,10 @@ public class UserAction_InstituteAdmin extends SecureAction{
                         UserManagement usmt=new UserManagement();
 			String instName=InstituteIdUtil.getIstName(Integer.parseInt(instituteId));
 		 	int instIdint=InstituteIdUtil.getIst_Id(instName);
-			String server_name=TurbineServlet.getServerName();
-		        String serverport=TurbineServlet.getServerPort();
-                        if(serverport.equals("8080"))
+			//String server_name=TurbineServlet.getServerName();
+		        //String serverport=TurbineServlet.getServerPort();
+			//String server_scheme = TurbineServlet.getServerScheme();
+                        /*if(serverport.equals("8080"))
 			{
 	                        info_new = "deleteUser";
 				info_Opt = "newUser";
@@ -945,7 +1019,7 @@ public class UserAction_InstituteAdmin extends SecureAction{
 			{
                                 info_new = "deleteUserhttps";
 				info_Opt = "newUserhttps";;
-			}	
+			}*/	
 			Criteria crit=new Criteria();
                 	try{
                 		crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
@@ -964,16 +1038,20 @@ public class UserAction_InstituteAdmin extends SecureAction{
                         String filename=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         Properties pr =MailNotification.uploadingPropertiesFile(filename);
 			try{
-			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-	                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, serverport);
+			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+	                msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+			//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, serverport);
+			msgRegard = MailNotification.replaceServerPort(msgRegard);
 			}catch(Exception ex1){ErrorDumpUtil.ErrorLog("exception message===>"+ex1.getMessage());}
-        	        msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
-                	if ( instFirstLastName.length() > 0)
+        	        //msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+                	msgInstAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
+			if ( instFirstLastName.length() > 0)
                 		msgInstAdmin = msgInstAdmin.replaceAll("institute_admin", instFirstLastName);
 			else if(instAdminName.length() > 0)
                 		msgInstAdmin = msgInstAdmin.replaceAll("institute_admin", instAdminName);
-			subject = MailNotification.subjectFormate(info_new, "", pr );
-                        String email="", Mail_msg="", message="", loginname="",infrmtn="";
+			//subject = MailNotification.subjectFormate(info_new, "", pr );
+                        subject = MailNotification.subjectFormate("deleteUser", "", pr );
+			String email="", Mail_msg="", message="", loginname="",infrmtn="";
                         loginname=username;
                         String userid=Integer.toString(UserUtil.getUID(username));
                         email=((TurbineUser)UserManagement.getUserDetail(userid).get(0)).getEmail();
@@ -988,10 +1066,16 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                         userrole=str2[1];
                                         coursestatus=str2[2];
                                         coursename=str2[3];
-					message = MailNotification.getMessage(info_new, coursename, "", "", "", pr);
-                			message = message.replaceAll("institute_admin",instName);
-					Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");
-                                        data.setMessage(Mail_msg);
+					//message = MailNotification.getMessage(info_new, coursename, "", "", "", pr);
+                			message = MailNotification.getMessage("deleteUser", coursename, "", "", "", pr);
+					message = message.replaceAll("institute_admin",instName);
+					//Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");
+					Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile);
+                                        if(Mail_msg.equals("Success"))
+					{
+						Mail_msg=mu.ConvertedString("mail_msg",LangFile);
+						data.setMessage(Mail_msg);
+					}
                                         String first=mu.ConvertedString("delIns1",LangFile);
                                         String second=mu.ConvertedString("delIns2",LangFile);
                                         infrmtn=first+" "+username+" "+second;
@@ -999,25 +1083,34 @@ public class UserAction_InstituteAdmin extends SecureAction{
                                         {
 
                                                 if(coursestatus.equals("Active"))
-                                                        coursestatus="0";
+                                                        coursestatus="1";
                                                 else
                                                         coursestatus="0";
 
                                                 String updatecoursestatus=CourseManagement.UpdateCourseDetails(groupname,coursename,"","",coursestatus,LangFile);
                                                 msg=UserManagement.DeleteInstructor(groupname,LangFile);	
-						message = MailNotification.getMessage(info_new, coursename, "", "", "", pr);
-	                                        message = message.replaceAll("institute_admin",instName);
-        	                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");
-                	                        data.setMessage(Mail_msg);
+						//message = MailNotification.getMessage(info_new, coursename, "", "", "", pr);
+	                                        message = MailNotification.getMessage("deleteUser", coursename, "", "", "", pr);
+						message = message.replaceAll("institute_admin",instName);
+        	                                //Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");
+        	                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile);
+                	                        if(Mail_msg.equals("Success"))
+						{
+							Mail_msg=mu.ConvertedString("mail_msg",LangFile);
+							data.setMessage(Mail_msg);
+						}
                                                 Message.add(msg);
                                         }
                                         else
                                         {
-						message = MailNotification.getMessage(info_new, groupname, "", "", "", pr);
-       						message = message.replaceAll("institute_admin",instName);
-						Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");						
-                                                msg=usmt.removeUserProfileWithMail(username,groupname,LangFile,info_new,email,"firstName",loginname,"","",filename,server_name,serverport);
-                                                Message.add(msg);
+						//message = MailNotification.getMessage(info_new, groupname, "", "", "", pr);
+       						message = MailNotification.getMessage("deleteUser", groupname, "", "", "", pr);
+						message = message.replaceAll("institute_admin",instName);
+						//Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, instituteId,"");	
+						Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile);
+                                                //msg=usmt.removeUserProfileWithMail(username,groupname,LangFile,info_new,email,"firstName",loginname,"","",filename,server_name,serverport);
+                                                msg=usmt.removeUserProfileWithMail(username,groupname,LangFile,"deleteUser",email,"firstName",loginname,"","",filename);
+						Message.add(msg);
                                         }
                                 }
                         }
@@ -1031,6 +1124,52 @@ public class UserAction_InstituteAdmin extends SecureAction{
                         data.setMessage("The error in doExpire method -"+ex);
                 }
         }
+	/**
+        * ActionEvent responsible for deleting rollno and program of the users.
+        * @param data RunData
+        * @param context Context
+        */
+
+	public void doDeleteRollno(RunData data, Context context)
+        {
+                try{
+                        ParameterParser pp=data.getParameters();
+                        String msg="";
+			/**
+ 			 * Get values of rollno and program for deleting from parameter parser.
+ 			 * Before deleting this rollno and program is exist in databse or not
+ 			 * if(exist)
+ 			 * 	then delete entry and show message accordingly  	
+ 			 */ 
+                        String Prgname=pp.getString("prgval");
+                        //ErrorDumpUtil.ErrorLog("prg after ---"+Prgname);
+                        String rollno=pp.getString("rollnoval");
+                        //ErrorDumpUtil.ErrorLog("rollno before---"+rollno);
+                        String  InstId=(data.getUser().getTemp("Institute_id")).toString();
+                        String uname = pp.getString("username");
+                        String Pgcode = InstituteIdUtil.getPrgCode(Prgname);
+                        Criteria crit=new Criteria();
+                        crit.add(StudentRollnoPeer.EMAIL_ID,uname);
+                        crit.and(StudentRollnoPeer.INSTITUTE_ID,InstId);
+                        crit.and(StudentRollnoPeer.ROLL_NO,rollno);
+                        crit.and(StudentRollnoPeer.PROGRAM,Pgcode);
+                        List ve=StudentRollnoPeer.doSelect(crit);
+			//ErrorDumpUtil.ErrorLog("List after checking---"+ve);
+                        if(ve.isEmpty()==false){
+	                        crit=new Criteria();
+                                crit.add(StudentRollnoPeer.EMAIL_ID,uname);
+                                crit.and(StudentRollnoPeer.INSTITUTE_ID,InstId);
+                                crit.and(StudentRollnoPeer.ROLL_NO,rollno);
+                                crit.and(StudentRollnoPeer.PROGRAM,Pgcode);
+				StudentRollnoPeer.doDelete(crit);
+				msg = MultilingualUtil.ConvertedString("prgm_msg7",LangFile);
+                        }
+                        data.setMessage(msg);
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("Exception in deleting rollno (UserAction_InstituteAdmin)!! "+e);
+                }
+        }
 
 
 	 /**
@@ -1042,7 +1181,10 @@ public class UserAction_InstituteAdmin extends SecureAction{
 	public void doPerform( RunData data,Context context )
 	throws Exception
     	{
-        	String action=data.getParameters().getString("actionName","");
+		String action="";
+        	action=data.getParameters().getString("actionName","");
+		if(StringUtils.isBlank(action))
+			action=data.getParameters().getString("actionname","");
 		context.put("actionName",action);
 		LangFile=(String)data.getUser().getTemp("LangFile");
 		if(action.equals("eventSubmit_doUpdatePass"))
@@ -1069,6 +1211,10 @@ public class UserAction_InstituteAdmin extends SecureAction{
 			doUpdateRollno(data,context);
 		else if(action.equals("eventSubmit_doUpdateConflictRollno"))
 			doUpdateConflictRollno(data,context);
+		else if(action.equals("eventSubmit_doAddRollno"))
+			doAddRollno(data,context);
+		else if(action.equals("eventSubmit_doDeleteRollno"))
+			doDeleteRollno(data,context);
 		else
 		{
 			 /**

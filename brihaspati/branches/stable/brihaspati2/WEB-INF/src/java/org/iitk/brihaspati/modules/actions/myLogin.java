@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)myLogin.java	
  *
- *  Copyright (c) 2004-2008,2009,2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2009,2011,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,16 +36,17 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.util.List;
 import java.util.Date;
-import org.apache.velocity.context.Context;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.modules.actions.VelocityAction;
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.torque.util.Criteria;
-
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.torque.util.Criteria;
+import org.apache.turbine.modules.actions.VelocityAction;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.om.UserPrefPeer;
 import org.iitk.brihaspati.om.UserPref;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -56,6 +57,9 @@ import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.UpdateMailthread;
 //import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 /**
  * Action class for authenticating a user into the system
  * This class also contains code for recording login statistics of 
@@ -101,17 +105,21 @@ public class myLogin extends VelocityAction{
 		String LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
+		String lcat = data.getParameters().getString("lcate", "" );
 		String password = data.getParameters().getString("password", "" );
-		if (password.equals(" ")){
+		if (StringUtils.isEmpty(password)){
 			data.setScreenTemplate("BrihaspatiLogin.vm");
 		}
 		else{
+
 			/**
 			 * If you make any change below the code then make sure that 
 			 * make the same change in LoginFromBrihspti.java action
 			 */
                                          
 			int uid=UserUtil.getUID(username);
+			// uid will be returned as -1 if user does not exists.
+
 			if(uid != -1){
 		// Following lines added by Priyanka
 				try{
@@ -155,7 +163,7 @@ public class myLogin extends VelocityAction{
 						log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
 
 						user = null;
-						lang=LoginUtils.SetUserData(username, password, flag, lang, data);
+						lang=LoginUtils.SetUserData(username, password, lcat, flag, lang, data);
 						context.put("lang",lang);
 						ErrorDumpUtil.ErrorLog("After setting User data");
 
@@ -185,6 +193,7 @@ public class myLogin extends VelocityAction{
 						UpdateMailthread.getController().UpdateMailSystem();
 						Date date=new Date();
 						boolean AB=CommonUtility.IFLoginEntry(uid,date);
+						
 						LoginUtils.getChangePasswordtemp(date,uid,data);
 
 						/**

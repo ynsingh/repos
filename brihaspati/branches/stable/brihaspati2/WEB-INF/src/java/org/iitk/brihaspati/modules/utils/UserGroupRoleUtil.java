@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)UserGroupRoleUtil.java
  *
- *  Copyright (c) 2004-2006,2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2004-2006,2010,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -136,6 +136,7 @@ public class UserGroupRoleUtil{
 			Criteria crit=new Criteria();
 			crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
 			crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId);
+			crit.addAscendingOrderByColumn(TurbineUserGroupRolePeer.USER_ID);
 			v=TurbineUserGroupRolePeer.doSelect(crit);
 		}
 		catch(Exception e){

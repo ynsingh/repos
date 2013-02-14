@@ -113,13 +113,14 @@ import babylon.babylonPasswordEncryptor;
  * @modified date: 27-07-2011, 05-08-2011(Richa), 09-08-2012(Priyanka)
  * @modified date: 16-08-2012(Sunil Yadav), 25-09-2012 (Priyanka), 30-10-2012(Richa)
  * @modified date: 02-11-2012 (Priyanka)
+ * @modified date: 27-12-2012 (Shaista) 
  */
 
 public class UserManagement
 {
     public static String Msg=null;	
     public Boolean flag=new Boolean(true);
-
+    //private static String server_scheme="";
 		/**
 		 * Adds the new user in the database as well as in babylon chat server
 		 * @param UName String The Login Name of new user who has to be registered
@@ -134,7 +135,8 @@ public class UserManagement
 		 * @param mode String Defines whether activation link will be sent or not
 		 * @return String
 		 */
-	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String i_name,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo,String Program,String mode)//last parameter added by Priyanka
+	//public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String i_name,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo,String Program,String mode)//last parameter added by Priyanka
+	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String i_name,String Email,String GroupName,String Role,String file,String RollNo,String Program,String mode)
 	{
     		babylonUserTool tool=new babylonUserTool();	
 		String message=new String();
@@ -145,6 +147,7 @@ public class UserManagement
 		java.sql.Date expdate=null;
 		String instituteid="";
 		int instIdint = 0,Auid=0, check=0;
+		//server_scheme=TurbineServlet.getServerScheme();
 		/**
 		 * Below  check is added by Shaista
 		 * In admin case iname is recieved null 
@@ -245,9 +248,7 @@ public class UserManagement
 						 */
 						if((Role.equals("student"))&& (!(Program.equals("")))&&(!(Program.equals("Select Program"))))
 						{
-							String actgname[]=GroupName.split("_");
-                                                        String InsId=actgname[1];
-							Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,InsId,file,GroupName);
+							Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,instituteid,file,GroupName);
 						}
 						User existingUser=TurbineSecurity.getUser(UName);
 						TurbineSecurity.grant(existingUser,user_group,user_role);
@@ -273,46 +274,47 @@ public class UserManagement
 							dept=((Courses)result1.get(0)).getDept();
 						}
 						if(Role.equals("instructor")){
-		                	                if(serverPort.equals("8080"))
+		                	                //if(serverPort.equals("8080"))
                 	                	        	userRole="newInstructor";
-                        		        	else
-                                        			userRole="newInstructorhttps";
+                        		        	//else
+                                        		//	userRole="newInstructorhttps";
                         			}
 						else if(Role.equals("teacher_assistant")){
-                                                        if(serverPort.equals("8080"))
+                                                        //if(serverPort.equals("8080"))
                                                                 userRole="newTeacherAssistant";
-                                                        else
-                                                                userRole="newTeacherAssistanthttps";
+                                                        //else
+                                                          //      userRole="newTeacherAssistanthttps";
                                                 }
 
                         			else if(Role.equals("student")){
-                                			if(serverPort.equals("8080"))
+                                			//if(serverPort.equals("8080"))
                                         			userRole="newStudent";
-                                			else
-                                        			userRole="newStudenthttps";
+                                			//else
+                                        		//	userRole="newStudenthttps";
                         			}
 						
 						else if(Role.equals("institute_admin")){
-							if(serverPort.equals("8080"))
+							//if(serverPort.equals("8080"))
 								userRole="newInstituteAdmin";
-							else
-								userRole="newInstituteAdminhttps";
+							//else
+							//	userRole="newInstituteAdminhttps";
 						}
                         			else{
-                                			if(serverPort.equals("8080"))
+                                			//if(serverPort.equals("8080"))
                                         			userRole="newAuthor";
-                                			else
-                       						userRole="newAuthorhttps";
+                                			//else
+                       					//	userRole="newAuthorhttps";
                         			}
 						/**
 						 * Added by shaista
 						 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
 						 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
 						 */
-						if(serverPort.equals("8080"))
+						/*if(serverPort.equals("8080"))
 							info_Opt = "newUser";
 						else
 							info_Opt = "newUserhttps";
+						*/
                         			/**
 						 *  Added by shaista
                          			 * Check if the user already exists. If the user exists then 
@@ -330,7 +332,8 @@ public class UserManagement
 						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 						pr =MailNotification.uploadingPropertiesFile(fileName);
 						if(Role.equals("author") || Role.equals("institute_admin"))
-							msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+							//msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+							msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
 						else{ 
 							crit=new Criteria();
 							try{
@@ -348,19 +351,27 @@ public class UserManagement
                         			               ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 282 to 288 !!"+ex);
 			                               }
 
-							msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+							//msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+							msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
 							msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
 							//ErrorDumpUtil.ErrorLog("\n\nline 301 msgBrihAdmin"+msgBrihAdmin);
 						}
-						msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+						//msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+						msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
 						msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
-						msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-						msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-				                subject = MailNotification.subjectFormate(userRole, "", pr );
-						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
-                                                messageFormate=MailNotification.getMessage_new(messageFormate,"","",i_name,"");
-              					//Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
-						Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid,"");//last parameter added by Priyanka
+						//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+						msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+						//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+				                msgRegard = MailNotification.replaceServerPort(msgRegard);
+						subject = MailNotification.subjectFormate(userRole, "", pr );
+						//messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
+                                                messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", pr);
+						 messageFormate= MailNotification.replaceServerPort(messageFormate);
+						messageFormate=MailNotification.getMessage_new(messageFormate,"","",i_name,"");
+						//Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid,"");//last parameter added by Priyanka
+						Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file);
+						if(Mail_msg.equals("Success"))
+							Mail_msg=MultilingualUtil.ConvertedString("mail_msg",file);
 						pr = null;
 						subject ="";
 						messageFormate = "";msgBrihAdmin =""; msgDear=""; msgRegard="";	
@@ -402,36 +413,36 @@ public class UserManagement
 						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                                         	userRole=new String();						
 	                                        if(Role.equals("instructor")){
-        	                                	if(serverPort.equals("8080"))
+        	                                	//if(serverPort.equals("8080"))
                 	                                	userRole="newInstructor";
-                        	                        else
-                                	                        userRole="newInstructorhttps";
+                        	                        //else
+                                	                  //      userRole="newInstructorhttps";
                                         	}
 						 else if(Role.equals("teacher_assistant")){
-                                                        if(serverPort.equals("8080"))
+                                                        //if(serverPort.equals("8080"))
                                                                 userRole="newTeacherAssistant";
-                                                        else
-                                                                userRole="newTeacherAssistanthttps";
+                                                        //else
+                                                          //      userRole="newTeacherAssistanthttps";
                                                 }
 						else if(Role.equals("student")){
-                                			if(serverPort.equals("8080"))
+                                			//if(serverPort.equals("8080"))
                                         			userRole="newStudent";
-                                			else
-                                        			userRole="newStudenthttps";
+                                			//else
+                                        		//	userRole="newStudenthttps";
                         			}
 					
 						else if(Role.equals("institute_admin")){
-                                                        if(serverPort.equals("8080"))
+                                                        //if(serverPort.equals("8080"))
                                                                 userRole="newInstituteAdmin";
-                                                        else
-                                                                userRole="newInstituteAdminhttps";	
+                                                        //else
+                                                          //      userRole="newInstituteAdminhttps";	
                                                 }
 
                         			else{
-                                			if(serverPort.equals("8080"))
+                                			//if(serverPort.equals("8080"))
                                         			userRole="newAuthor";
-                                			else
-                                        			userRole="newAuthorhttps";
+                                			//else
+                                        		//	userRole="newAuthorhttps";
                         			}
 
                         			if(Email.equals("") || Email.equals(null))
@@ -458,7 +469,7 @@ public class UserManagement
 			 			* Encrypt the password entered by the user
 			 			* @see EncryptionUtil in utils
 			 			*/
-						String encrPassword=EncryptionUtil.createDigest("MD5",Passwd);
+						String encrPassword=EncryptionUtil.createDigest("SHA1",Passwd);
 						/**
 				 		* Adds the new user using TurbineSecurity which throws
 				 		* EntityExistsException and DataBackendException
@@ -523,9 +534,7 @@ public class UserManagement
 						 */
 						if((Role.equals("student"))&&(!(Program.equals("")))&&(!(Program.equals("Select Program"))))
 						{
-							String actgname[]=GroupName.split("_");
-                                                        String InsId=actgname[1];
-                                                        Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,InsId,file,GroupName);
+                                                        Rollno_msg = CourseProgramUtil.InsertPrgRollNo(UName,RollNo,Program,instituteid,file,GroupName);
                                                 }
 
 						/** set student expiry */
@@ -537,10 +546,11 @@ public class UserManagement
 				                	StudentExpiryPeer.doInsert(crit);
 						}
 						String NewUser= new String();
-						if(serverPort.equals("8080"))
+						/*if(serverPort.equals("8080"))
 							NewUser="newUser";
 						else
 							NewUser="newUserhttps";
+						*/
                         			/**
 						 *  Added by shaista
                          			 * One more mail is sent to New User on behalf of Brihaspati Admin if given user is new one.  
@@ -562,16 +572,23 @@ public class UserManagement
 						pr =MailNotification.uploadingPropertiesFile(fileName);
 						if(!mode.equals("cnfrm_i"))
 						{
-							msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
-                                                	msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
+							//msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
+                                                	msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+							msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
 						}
-						msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
-                                                //msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
+						//msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+                                                msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
+						//msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
                                                 //msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
-                                                msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
-                                                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-                                                subject = MailNotification.subjectFormate(NewUser, "", pr );
-				                messageFormate = MailNotification.getMessage(NewUser, "", "", UName, Passwd, serverName, serverPort,pr);
+                                                //msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
+                                                msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+						//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                                                msgRegard = MailNotification.replaceServerPort(msgRegard);
+						//subject = MailNotification.subjectFormate(NewUser, "", pr );
+				                subject = MailNotification.subjectFormate("newUser", "", pr );
+						//messageFormate = MailNotification.getMessage(NewUser, "", "", UName, Passwd, serverName, serverPort,pr);
+						messageFormate = MailNotification.getMessage("newUser", "", "", UName, Passwd,pr);
+						 messageFormate = MailNotification.replaceServerPort(messageFormate);
 						//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
                                                 messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name,"");
 						//ErrorDumpUtil.ErrorLog("mode = "+mode);
@@ -582,14 +599,17 @@ public class UserManagement
 						{
 							String randm_n = PasswordUtil.randmPass();	
                                                 	String str=randm_n+Email;
-                                                	String a_key=EncryptionUtil.createDigest("MD5",str);
+                                                	String a_key=EncryptionUtil.createDigest("SHA1",str);
                                                 	//ErrorDumpUtil.ErrorLog("Inside User Management Activation key = "+a_key);
-							activationLink=pr.getProperty("brihaspati.Mailnotification."+NewUser+".activationLink");
-	                                         	activationLink=MailNotification.getMessage(activationLink, Email, a_key, mode,"english");
+							//activationLink=pr.getProperty("brihaspati.Mailnotification."+NewUser+".activationLink");
+	                                         	activationLink=pr.getProperty("brihaspati.Mailnotification.newUser.activationLink");
+							activationLink=MailNotification.getMessage(activationLink, Email, a_key, mode,"english");
 						 	//activationLink=MailNotification.getMessage(activationLink, Email, a_key, mode);
-							activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
-						 	messageFormate = messageFormate+activationLink;
-						 	MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,mode);//last parameter added by Priyanka
+							//activationLink=MailNotification.replaceServerPort(activationLink, serverName, serverPort);
+						 	activationLink=MailNotification.replaceServerPort(activationLink);
+							messageFormate = messageFormate+activationLink;
+						 	//MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,mode);//last parameter added by Priyanka
+						 	MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file);
 							// UPDATE USER_PREF TABLE......................
 						 	crit = new Criteria();
                                                 	int uid=UserUtil.getUID(UName);
@@ -600,7 +620,8 @@ public class UserManagement
 						//ErrorDumpUtil.ErrorLog("to test----------------->else2 part");				
 						if((mode.equals("cnfrm_i")) || (mode.equals("cnfrm_u")) || (mode.equals("cnfrm_c")))
 						{
-							MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,mode);//last parameter added by Priyanka
+							//MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,mode);//last parameter added by Priyanka
+							MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file);
        							 crit = new Criteria();
 						         int uid=UserUtil.getUID(Email);
 						         crit.add(UserPrefPeer.USER_ID,uid);
@@ -611,8 +632,9 @@ public class UserManagement
 						subject = ""; messageFormate =""; msgBrihAdmin="";
 						//ErrorDumpUtil.ErrorLog("to test----------------->else3 part");
 						if(Role.equals("author") || Role.equals("institute_admin"))
-                                                        msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
-                                                else{
+                                                        //msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+                                                	msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
+						else{
                                                         try{
                                                                 crit=new Criteria();
                                                                 crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
@@ -629,30 +651,36 @@ public class UserManagement
                                                        catch(Exception ex){
                                                                ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 506 to 513 !!"+ex);
                                                        }
-                                                        msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgInstAdmin");
-                                                        msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
+                                                        //msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgInstAdmin");
+                                                        msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
+							msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
                                                 }
 						//ErrorDumpUtil.ErrorLog("to test----------------->else4 part");
 						//if(!(mode.equals("cnfrm_i")&&(check>0)))
                                                	subject = MailNotification.subjectFormate(userRole, "", pr );
 						if(Role.equals("author"))
 						{
-							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
-                                               		messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
+                                               		//messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
+							messageFormate = MailNotification.getMessage(userRole, "", "", "", "",pr);
+							messageFormate = MailNotification.replaceServerPort(messageFormate);
 							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
-							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
-							 Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka
+							//Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka
+							Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file);
 						}
 						else
 						{
-                                               		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
+                                               		//messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
+							messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "",pr);
+							messageFormate = MailNotification.replaceServerPort(messageFormate);
 							if(mode.equals("cnfrm_i"))
 								messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,"");
 							else
 								messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
-							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
-							Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka							
+							//Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid,"");//last parameter added by Priyanka	
+							Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file);
 						}
+							if(Mail_msg.equals("Success"))
+								Mail_msg=MultilingualUtil.ConvertedString("mail_msg",file);
 						/**
 						  * Insert default value of configuartion parameter
 						  */
@@ -757,22 +785,29 @@ public class UserManagement
                         List lst=TurbineUserGroupRolePeer.doSelect(crit);
                         int userId=((TurbineUserGroupRole)lst.get(0)).getUserId();
                         String uid=Integer.toString(userId);
-                        String server_name=TurbineServlet.getServerName();
-                        String srvrPort=TurbineServlet.getServerPort();
-                        String subject="";
-                        if(srvrPort.equals("8080"))
+                        //String server_name=TurbineServlet.getServerName();
+                        //String srvrPort=TurbineServlet.getServerPort();
+                        //String subject="";
+                        /*if(srvrPort.equals("8080"))
                                 subject="deleteUser";
                         else
                                 subject="deleteUserhttps";
-                        String email="";
+                        */
+			String email="";
              		TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                         email=element.getEmail();
                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         String rmsg=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-			String subj = MailNotification.subjectFormate(subject, "", pr );
-                        messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort,pr);
-                        String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
+			//String subj = MailNotification.subjectFormate(subject, "", pr );
+                        String subj = MailNotification.subjectFormate("deleteUser", "", pr );
+			//messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort,pr);
+			messageFormate = MailNotification.getMessage("deleteUser", Gname, "", "", "",pr);
+			messageFormate = MailNotification.replaceServerPort(messageFormate);
+			/**
+				@param Last Parameter as a String is added as null for fileName if it gets failure. added by shaista
+			*/
+                        String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile, "");
                         Message=rmsg+" "+Mail_msg;
 
                 }
@@ -794,9 +829,10 @@ public class UserManagement
                         List lst=TurbineUserGroupRolePeer.doSelect(crit);
                         int userId=((TurbineUserGroupRole)lst.get(0)).getUserId();
 			String uid=Integer.toString(userId);
-                        String server_name=TurbineServlet.getServerName();
-			String srvrPort=TurbineServlet.getServerPort();
-			String subject="", NewUser="";
+                        //String server_name=TurbineServlet.getServerName();
+			//String srvrPort=TurbineServlet.getServerPort();
+			//server_scheme = TurbineServlet.getServerScheme();
+			/*String subject="", NewUser="";
 			 if(srvrPort.equals("8080")){
 				subject="deleteUser";
 				NewUser = "newUser";
@@ -804,7 +840,7 @@ public class UserManagement
                         else{
                                 subject="deleteUserhttps";
                                 NewUser = "newUserhttps";
-                        }
+                        }*/
 			String email="";
                         if(instId != 0)
                         {
@@ -826,22 +862,29 @@ public class UserManagement
                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         String rmsg=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
                         Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-                        String subj = MailNotification.subjectFormate(subject, "", pr );
-                        messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", pr);
-                        msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
-                        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-                        if(instId != 0)
+                        //String subj = MailNotification.subjectFormate(subject, "", pr );
+                        String subj = MailNotification.subjectFormate("deleteUser", "", pr ); 
+			//messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", pr);
+                        messageFormate = MailNotification.getMessage("deleteUser", Gname, "", "", "", pr);
+			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
+                        msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+			//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                        msgRegard = MailNotification.replaceServerPort(msgRegard);
+			if(instId != 0)
                         {
                                 messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,"");
-                                msgInstAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgInstAdmin");
-                                msgInstAdmin = MailNotification.getMessage_new(msgInstAdmin, "", "", instFirstLastName, "");
+                                //msgInstAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgInstAdmin");
+                                msgInstAdmin = pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
+				msgInstAdmin = MailNotification.getMessage_new(msgInstAdmin, "", "", instFirstLastName, "");
                         }
                         else
-                                msgInstAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
-
-                        //String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
-                        String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, msgInstAdmin, email, subj, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
-                        Message=rmsg+" "+Mail_msg;
+                                //msgInstAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+				msgInstAdmin = pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
+                        //String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, msgInstAdmin, email, subj, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
+                        String Mail_msg= MailNotificationThread.getController().set_Message(messageFormate, "", msgRegard, msgInstAdmin, email, subj, "", LangFile);
+                        if(Mail_msg.equals("Success"))
+				Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+			Message=rmsg+" "+Mail_msg;
 
                 }
                 catch(Exception cx)
@@ -1320,12 +1363,12 @@ public class UserManagement
                          	* else add the group id to vector "primary_inactive".
 				* otherwise add the group id to "sec_Instructor".
                          	*/
-                        	if(check_Primary==true)
+                        	if(check_Primary)
 				{
-                                	if(check_Active==false)
-                                       		primary_active.add(Integer.toString(gId));
-                                	else
+                                	if(check_Active)
                         			primary_inactive.add(Integer.toString(gId));
+                                	else
+                                       		primary_active.add(Integer.toString(gId));
                         	}
 				else
 				{
@@ -1630,16 +1673,19 @@ public class UserManagement
 	 * @param serverPort String Port Number of the server
 	 * @return String
 	**/
-        public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new1, String mail_id,String instName,String courseId, String dept, String userPassword, String file, String serverName, String serverPort )
+        //public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new1, String mail_id,String instName,String courseId, String dept, String userPassword, String file, String serverName, String serverPort )
+	public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new1, String mail_id,String instName,String courseId, String dept, String userPassword, String file)
 	{
 		//String Msg ="", Mail_msg = "";
 		String Msg ="", Mail_msg = "", info_Opt="", msgRegard="", msgInstAdmin="", instAdminName="";
 		int instId=0, Auid=0;
+		//server_scheme = TurbineServlet.getServerScheme();
 		try{
 			Msg=removeUserProfile(userName,group_name,langFile);
                         Properties pr =MailNotification.uploadingPropertiesFile(file);
                         String info_new = org.apache.commons.lang.StringUtils.substringBeforeLast(info_new1, "$");
                         info_Opt = org.apache.commons.lang.StringUtils.substringAfterLast(info_new1, "$");
+			//ErrorDumpUtil.ErrorLog("info_Opt in UserManagement = "+info_Opt);
 			//ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  info_new=="+info_new+"\t info_Opt ==="+info_Opt );
                         if(! instName.equals("")){
                                 instId= InstituteIdUtil.getIst_Id(instName);
@@ -1660,29 +1706,32 @@ public class UserManagement
                                }
                         }
                         msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                       	msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-                       	msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+                       	//ErrorDumpUtil.ErrorLog("msgRegard in UserManagement = "+msgRegard);
+			//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                       	msgRegard = MailNotification.replaceServerPort(msgRegard);
+			msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
                         msgInstAdmin = MailNotification.getMessage_new(msgInstAdmin,"","",instAdminName,"");
                         String subject = MailNotification.subjectFormate(info_new, "", pr );
                         String message = MailNotification.getMessage(info_new, group_name, "", "", "", pr);
 			if(message.length() >0)
 	                        message = MailNotification.getMessage_new(message,"","",instName,userName);
                         //ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  message="+message+"      subject="+subject);
-                        //MailNotification.sendMail(message, mail_id, subject, "" ,langFile);
-                        if(instId == 0)
-                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile, "","");//last parameter added by Priyanka
-                        else
-                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile, Integer.toString(instId),"");//last parameter added by Priyanka
-                }
-
+                //        if(instId == 0)
+                                //Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile, "","");//last parameter added by Priyanka
+                  //              Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile);
+                    //    else
+                                //Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile, Integer.toString(instId),"");//last parameter added by Priyanka
+                                Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, mail_id, subject, "", langFile);
+                
+			if(Mail_msg.equals("Success"))
+				Mail_msg=MultilingualUtil.ConvertedString("mail_msg",langFile);
+		}
 /*
 			Properties pr =MailNotification.uploadingPropertiesFile(file);
         	        String subject = MailNotification.subjectFormate(info_new, "", pr );
                 	String message = MailNotification.getMessage(info_new, group_name, "", "", "", serverName, serverPort,pr);
 			message = MailNotification.getMessage_new(message,"","",instName,userName);
 		////////////////////////////////////////
-		//String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);
-			Mail_msg=MailNotification.sendMail(message, mail_id, subject, "" ,langFile);
 */
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in removeUserProfileWithMail method in UserManagment util"+e);}
 		return Mail_msg+":"+Msg;

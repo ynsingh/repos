@@ -456,6 +456,6 @@ public class XmlWriter
 			}
 
 		}
-		}catch(Exception ioe){}
+		}catch(Exception ioe){ErrorDumpUtil.ErrorLog(" The error in xml writer util ( Traverse and print method) "+ioe);}
 	}
 }

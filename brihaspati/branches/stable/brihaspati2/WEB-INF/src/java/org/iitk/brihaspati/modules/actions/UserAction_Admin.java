@@ -216,9 +216,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 		 	* Update password entered by the admin for the user
 		 	* @see PasswordUtil in utils
 		 	*/
-			String serverName =TurbineServlet.getServerName();
-	                String serverPort =TurbineServlet.getServerPort();
-			PasswordUtil.passwordFromUtil(serverName, serverPort);
+	//		String serverName =TurbineServlet.getServerName();
+	  //              String serverPort =TurbineServlet.getServerPort();
+	//		PasswordUtil.passwordFromUtil(serverName, serverPort);
 			String msg=PasswordUtil.doChangepassword(user,"",newPW,LangFile);
 			data.setMessage(msg);
 			// Maintain Log
@@ -258,9 +258,11 @@ public class UserAction_Admin extends SecureAction_Admin{
                 List listone=TurbineRolePeer.doSelect(crit);
                 String RoleName=((TurbineRole)listone.get(0)).getRoleName();
 		context.put("roleName",RoleName);
-		String server_name=TurbineServlet.getServerName();
-                String srvrPort=TurbineServlet.getServerPort();
-		String subject="", info_new = "", info_Opt="", msgRegard="";
+		//String server_name=TurbineServlet.getServerName();
+                //String srvrPort=TurbineServlet.getServerPort();
+		//String server_scheme = TurbineServlet.getServerScheme();
+		//String subject="", info_new = "", info_Opt="", msgRegard="";
+		String subject="", msgRegard="";
 		int instId=0, aUid = 0;
 		String instAdminName ="";
 		if(instId != 0) {
@@ -281,14 +283,14 @@ public class UserAction_Admin extends SecureAction_Admin{
         	        catch(Exception e){ErrorDumpUtil.ErrorLog("Error in UserAction_Admin class in action at line 245");}
 		}	
 
-		if(srvrPort.equals("8080")) {
+		/*if(srvrPort.equals("8080")) {
 			info_new = "deleteUser";
 			info_Opt = "newUser";
 		}
                 else {
 			info_new = "deleteUserhttps";
 			info_Opt = "newUserhttps";
-                }
+                }*/
 		String email="", msgRoleInfo="";
 		String Mail_msg="", message ="";
 		boolean flag=false;
@@ -298,12 +300,16 @@ public class UserAction_Admin extends SecureAction_Admin{
 		String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 		////////////////////////////////////////////////////
 		Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-		subject = MailNotification.subjectFormate(info_new, "", pr );
-		msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-
+		//subject = MailNotification.subjectFormate(info_new, "", pr );
+		subject = MailNotification.subjectFormate("deleteUser", "", pr );
+		//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+		//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+		msgRegard = MailNotification.replaceServerPort(msgRegard);
+	
 		if(instId != 0) {
-			msgRoleInfo = pr.getProperty("brihaspati.MailNotification."+info_Opt+".msgInstAdmin");
+			//msgRoleInfo = pr.getProperty("brihaspati.MailNotification."+info_Opt+".msgInstAdmin");
+			msgRoleInfo = pr.getProperty("brihaspati.MailNotification.newUser.msgInstAdmin");
 			if(msgRoleInfo.length() > 0)
 				msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
 		}
@@ -327,12 +333,14 @@ public class UserAction_Admin extends SecureAction_Admin{
                 	{
                 		Courses nm=(Courses)lstt.get(j);
                        		Gname=nm.getGroupName();
-				if(Gname.endsWith(userName))
-                                {
-					boolean check_Primary=CourseManagement.IsPrimaryInstructor(Gname,userName);
+			//	if(Gname.endsWith(userName))
+                          //      {
+				boolean check_Primary=CourseManagement.IsPrimaryInstructor(Gname,userName);
+				if(check_Primary){
 					context.put("pInst",check_Primary);
 					flag=true;
 				}
+			//	}
                        		String cName=nm.getCname();
                        		String active=(new Byte(nm.getActive())).toString();
 				if(active.equals("0"))
@@ -340,12 +348,19 @@ public class UserAction_Admin extends SecureAction_Admin{
 					String Message=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
 					//message = MailNotification.getMessage(info_new, cName, "", "", "", server_name, srvrPort,pr);
 					//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
-					message = MailNotification.getMessage(info_new, cName, "", "", "", pr);
+					//message = MailNotification.getMessage(info_new, cName, "", "", "", pr);
+					message = MailNotification.getMessage("deleteUser", cName, "", "", "", pr);
 					if(instId != 0) 
-						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
+						//Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
+						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile);
 					else
-						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
-					data.setMessage(Mail_msg);
+						//Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
+						Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile);
+					if(Mail_msg.equals("Success"))
+					{
+						Mail_msg=mu.ConvertedString("mail_msg",LangFile);
+						data.setMessage(Mail_msg);
+					}
 					String st1=mu.ConvertedString("delIns1",LangFile);
 					String st2=mu.ConvertedString("delIns2",LangFile);
 					String infrmtn=st1+" "+userName+" "+st2;
@@ -367,17 +382,24 @@ public class UserAction_Admin extends SecureAction_Admin{
 				groupName = GroupUtil.getGroupName(userId,2);
 
 			//message = MailNotification.getMessage(info_new, groupName, "", "", "", server_name, srvrPort,pr);
-			message = MailNotification.getMessage(info_new, groupName, "", "", "", pr);
+			//message = MailNotification.getMessage(info_new, groupName, "", "", "", pr);
+			message = MailNotification.getMessage("deleteUser", groupName, "", "", "", pr);
 			//ErrorDumpUtil.ErrorLog("\n	in User_Action_Admin  message="+message+"      subject="+subject);	
 			//Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
 			if(instId == 0) 
-				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
+				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile);
+				//Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Brihaspati Admin", email, subject, "", LangFile, "","");//last parameter added by Priyanka
 			else
-				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
+				//Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile, Integer.toString(instId),"");//last parameter added by Priyanka
+				Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, msgRoleInfo, email, subject, "", LangFile);
 
 			Messages=UserManagement.RemoveUser(userName,LangFile);
 			context.put("error_Messages",Messages);
-			data.setMessage(Mail_msg);
+			if(Mail_msg.equals("Success"))
+			{
+				Mail_msg=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+				data.setMessage(Mail_msg);
+			}
 		}
         }
 

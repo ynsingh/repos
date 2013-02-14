@@ -90,23 +90,27 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 		String CourseList=data.getParameters().getString("deleteFileNames","");
 		if(!CourseList.equals("")){  
 			String info_new = "", subject = "", info_Opt="", msgRegard="", msgInstAdmin="" ;
-			String server_name=TurbineServlet.getServerName();
-                       	String srvrPort=TurbineServlet.getServerPort();
-			if(srvrPort.equals("8080")){
+			//String server_name=TurbineServlet.getServerName();
+                       	//String srvrPort=TurbineServlet.getServerPort();
+			/*if(srvrPort.equals("8080")){
 	               		info_new = "deleteUser";
 				info_Opt = "newUser";
 			}
                		else{
                 		info_new = "deleteUserhttps";	
 				 info_Opt = "newUserhttps";
-			}
+			}*/
 			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-			subject = MailNotification.subjectFormate(info_new, "", pr );
-			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-       	                msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-                        msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+			//subject = MailNotification.subjectFormate(info_new, "", pr );
+			subject = MailNotification.subjectFormate("deleteUser", "", pr );
+			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+       	                msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+			//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+                        msgRegard = MailNotification.replaceServerPort(msgRegard);
+			//msgInstAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+			msgInstAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
 			StringTokenizer st=new StringTokenizer(CourseList,"^");
 			for(int i=0;st.hasMoreTokens();i++){ 
 				String s=st.nextToken();
@@ -133,10 +137,16 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 		                String uid=Integer.toString(uId);
 				TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 				String email=element.getEmail();
-				String message = MailNotification.getMessage(info_new, preString, "", "", "", pr);
-                                String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, "","");//last parameter added by Priyanka
+				//String message = MailNotification.getMessage(info_new, preString, "", "", "", pr);
+                                String message = MailNotification.getMessage("deleteUser", preString, "", "", "", pr);
+				//String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile, "","");//last parameter added by Priyanka
+                                String Mail_msg=  MailNotificationThread.getController().set_Message(message, "", msgRegard, msgInstAdmin, email, subject, "", LangFile);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                data.setMessage(Mail_msg);
+                                if(Mail_msg.equals("Success"))
+				{
+					Mail_msg=m_u.ConvertedString("mail_msg",LangFile);
+					data.setMessage(Mail_msg);
+				}
 				String msg=umt.removeUserProfile(postString,preString,LangFile);
 				if(umt.flag.booleanValue()==false){ 
 					Err_user.addElement(postString);
@@ -188,9 +198,9 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 			/**
 			 *Retreiving details entered by the user
 			 */
-			String serverName=data.getServerName();
-                        int srvrPort=data.getServerPort();
-                        String serverPort=Integer.toString(srvrPort);
+			//String serverName=data.getServerName();
+                        //int srvrPort=data.getServerPort();
+                        //String serverPort=Integer.toString(srvrPort);
 			String gName=pp.getString("group");
 			String uname=pp.getString("username");
 			String rollno = pp.getString("rollno","").trim();
@@ -204,8 +214,8 @@ public class RemoveStudentCourse extends SecureAction_Admin{
                         }
 			String program = pp.getString("prg","");
 			String roleName="student";
-			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program,"");  //modified by Shikha. Last parameter added by Priyanka
-
+			//String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program,"");  //modified by Shikha. Last parameter added by Priyanka
+			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,LangFile,rollno,program,"");
 			data.setMessage(msg);
 		}
 		catch(Exception e)

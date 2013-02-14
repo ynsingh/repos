@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)AdminProperties.java
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -42,6 +42,7 @@ import java.io.OutputStream;
 
 /**
  *  @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
+ *  @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 /** 
  * This class methods set and return the value of Admin.properties 
@@ -60,11 +61,11 @@ public class AdminProperties{
 	public static String getValue(String path,String key) throws Exception{
 	 	InputStream f = new FileInputStream(path);
  		Properties p = new Properties();
-		 p.load(f);
-		 String val = p.getProperty(key);
-	//	 int retval =  Integer.parseInt(val);	
-	//	 return(retval);
-		 return(val);
+		p.load(f);
+		String val = null;
+		val=p.getProperty(key);
+		f.close();
+		return(val);
 	 }
 	
 	/**
@@ -80,5 +81,6 @@ public class AdminProperties{
 		Properties p = new Properties();
 		p.setProperty(key,Value);
 		p.store(os,"header");
+		os.close();
 	}
 }

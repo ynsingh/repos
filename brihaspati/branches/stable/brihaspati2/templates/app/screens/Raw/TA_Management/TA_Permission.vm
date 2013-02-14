@@ -34,12 +34,12 @@ $!data.getMessage()
 	        <td bgcolor="#AFDCEC">
 	        #end
         	<a href=$link.setPage("call,TA_Management,TA_Add.vm").addPathInfo("count","2") style=text-decoration:none> $brih_reg1 $bri_ta </a></td>
-		#if($tdcolor != "3")
+		#*#if($tdcolor != "3")
 	        <td>
         	#elseif($tdcolor == "3")
 	        <td bgcolor="#AFDCEC">
         	#end
-	        <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>
+	        <a href=$link.setPage("call,TA_Management,TA_Permission.vm").addPathInfo("count","3") style=text-decoration:none> $brih_course $bri_mod $bri_auth </a></td>*#
 	
 	        </tr>
         </table>
@@ -57,9 +57,9 @@ $!data.getMessage()
 	#set( $count = "" )
         #foreach($users in $courseModule)
 		#if($velocityCount%2==0)
-                   <tr bgcolor="$ui.tableColor" width=100%>
-                #else
                    <tr bgcolor="$ui.menuColor" width=100%>
+                #else
+                   <tr bgcolor="$ui.tableColor" width=100%>
                 #end
 		
 		#foreach($InstructCrsMod in $courseModuleList)

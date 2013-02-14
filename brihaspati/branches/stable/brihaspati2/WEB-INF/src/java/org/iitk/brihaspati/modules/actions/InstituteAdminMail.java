@@ -78,9 +78,9 @@ import org.apache.commons.lang.StringUtils;
 public class InstituteAdminMail extends VelocityAction{
 
 	private Log log = LogFactory.getLog(this.getClass());
-	private String serverName="";
-	private int srvrport;
-	private String serverPort="";
+	//private String serverName="";
+	//private int srvrport;
+	//private String serverPort="";
 	private ParameterParser parameterparser; 
         String str, msg1;
         MultilingualUtil mu = new MultilingualUtil();
@@ -98,11 +98,10 @@ public class InstituteAdminMail extends VelocityAction{
 	public void doPerform(RunData rundata,Context context) throws Exception
         {
 		System.gc();
-        	serverName=rundata.getServerName();
-                srvrport=rundata.getServerPort();
-                serverPort=Integer.toString(srvrport);
+        	//serverName=rundata.getServerName();
+                //srvrport=rundata.getServerPort();
+                //serverPort=Integer.toString(srvrport);
                 parameterparser = rundata.getParameters();
-
 		String mode=parameterparser.getString("mode","");	
 		if(mode.equals("store"))
 		{
@@ -164,7 +163,7 @@ public class InstituteAdminMail extends VelocityAction{
 			//Generate a random string
 			String randm_n = PasswordUtil.randmPass();
 			String str1=randm_n+senderEmail;
-                	String a_key=EncryptionUtil.createDigest("MD5",str1);	
+                	String a_key=EncryptionUtil.createDigest("SHA1",str1);	
 			/**
                  	* @see ExpiryUtil in Utils
                  	*/
@@ -297,29 +296,29 @@ private String mailForward(String email, String sbj, String str, String msg, Str
 	{
 		if(str.equals("mailToAdmin"))
 		{
-			if(serverPort.equals("8080"))	
-			{
+			//if(serverPort.equals("8080"))	
+			//{
 		       		info_Opt = "newUser";
 				mail_str = "mailToAdmin";
-			}
+			/*}
        	 		else
 			{
                 		info_Opt = "newUserhttps";
 				mail_str = "mailToAdminhttps";
-			}
+			}*/
 		}
 		if(str.equals("sourceMailVerify"))
                 {
-                        if(serverPort.equals("8080"))
-                        {
+                        //if(serverPort.equals("8080"))
+                        //{
                                 info_Opt = "newUser";
                                 mail_str = "sourceMailVerify";
-                        }
+                        /*}
                         else
                         {
                                 info_Opt = "newUserhttps";
                                 mail_str = "sourceMailVerifyhttps";
-                        }
+                        }*/
                 }
 
         	fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
@@ -328,21 +327,25 @@ private String mailForward(String email, String sbj, String str, String msg, Str
         	msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
         	msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
 		msgRegard=msgRegard+pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
-        	msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+        	//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+		msgRegard = MailNotification.replaceServerPort(msgRegard);
 		if(str.equals("mailToAdmin"))
 		{
 			messageFormate = pr.getProperty("brihaspati.Mailnotification."+mail_str+".message");
                         messageFormate=MailNotification.getMessage(messageFormate, senderEmail, msg);
-			Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbj, "", "", "", "");
+			//Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbj, "", "", "", "");
+			Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, sbj, "", "");
 		}
 		if(str.equals("sourceMailVerify"))
 		{
 			subject=pr.getProperty("brihaspati.Mailnotification."+mail_str+".subject");
 			messageFormate = pr.getProperty("brihaspati.Mailnotification."+mail_str+".message");
                         messageFormate=MailNotification.getMessage(messageFormate, instName, msg);
-                        messageFormate=MailNotification.replaceServerPort(messageFormate, serverName, serverPort);
-                        messageFormate=MailNotification.getMessage(messageFormate, senderEmail, a_key, "send", lang);
-		       	Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", senderEmail, subject, "", "", "", "");
+                        //messageFormate=MailNotification.replaceServerPort(messageFormate, serverName, serverPort);
+                        messageFormate=MailNotification.replaceServerPort(messageFormate);
+			messageFormate=MailNotification.getMessage(messageFormate, senderEmail, a_key, "send", lang);
+		       	//Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", senderEmail, subject, "", "", "", "");
+		       	Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", senderEmail, subject, "", "");
 		}
 	}
 	catch(Exception e)

@@ -40,6 +40,7 @@ import java.util.Properties;
 
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.Email;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.Turbine;
 import java.io.FileOutputStream;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
@@ -69,6 +70,7 @@ import javax.mail.Transport;
  * @modified date: 22-11-2010;
  * @modified date: 14-07-2011 (Shaista);
  * @modified date: 09-08-2012, 25-09-2012, 02-11-2012 (Priyanka)
+ * @modified date: 27-12-201 (Shaista);
  */
 
 public class MailNotification{
@@ -87,6 +89,7 @@ public class MailNotification{
                 	f = new FileInputStream(file);
 	                //String msg1=MultilingualUtil.ConvertedString("mailNotification_msg1",LangFile);
         	        p.load(f);
+			f.close();
 		}
 		catch (Exception e){ErrorDumpUtil.ErrorLog("The error in uploadingPropertiesFile method in MailNotification" );}
 	return p;
@@ -124,17 +127,29 @@ public class MailNotification{
 	 *
 	 * @return String
 	 */
-
+/*
 	public static String getMessage(String info, String course_id, String dept_name, String uName, String uPassword, String server_name, String server_port, Properties pr) throws Exception{
 		
 		message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
 		replaceString("course_id",course_id);
         	replaceString("dept_name",dept_name);
              	replaceString("user_name",uName);
-		return replaceString("user_pass",uPassword);
-                //replaceString("server_name",server_name);
-               	//return(replaceString("server_port",server_port));
+		replaceString("user_pass",uPassword);
+		replaceString("server_name",server_name);
+               	return replaceString("server_port",server_port);
 	}
+*/
+	/**
+ 	 * Replaces constants for the purpose of sending mail to user.
+ 	 * @param info String Portion of a property define in brihaspati.properties file like(deleteUser, deleteUserhttps, onlineStudentRegRequest 
+ 	 * onlineStudentRegRequesthttps etc. It is vary according to requirement.
+ 	 * @param course_id String Course ID
+ 	 * @param dept_name String Name of department
+ 	 * @param uName String User Name
+ 	 * @param uPassword String Password of the user
+ 	 * @param pr Properties  File in which the properties file is opened
+ 	 * @return String
+ 	 */ 
 	public static String getMessage(String info, String course_id, String dept_name, String uName, String uPassword, Properties pr) throws Exception{
 		
 		message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
@@ -142,8 +157,16 @@ public class MailNotification{
         	replaceString("dept_name",dept_name);
              	replaceString("user_name",uName);
 		return replaceString("user_pass",uPassword);
+		
 	}
-
+	/**
+ 	 * Replaces constants for the purpose of sending mail to user.
+ 	 * @param info String Portion of a property define in brihaspati.properties file like(deleteUser, deleteUserhttps, onlineStudentRegRequest 
+ 	 * onlineStudentRegRequesthttps etc. It is vary according to requirement.
+ 	 * @param email email id of user
+ 	 * @param pr Properties  File in which the properties file is opened
+ 	 * @return String
+ 	 */ 
 	public static String getMessage(String info, String email, Properties pr) throws Exception
 	{
                 message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
@@ -158,6 +181,7 @@ public class MailNotification{
          * @param aKey Verification key
          * @param mode String
          * @param lang Language selected
+         * @return String
          */
 	public static String getMessage(String info,String uName, String aKey, String mode, String lang) throws Exception{
 	
@@ -182,15 +206,39 @@ public class MailNotification{
 
         }
 
+        /**
+ 	  * Replace the server parameter (scheme, name, port) in message .
+ 	  * @param info This string is actual message which will be send in the email.
+          * @param serverScheme Scheme of the server.
+          * @param serverName Name of the server.
+          * @param serverPort Used Port of the server.
+          * @return String
+          */
 
-	 public static String replaceServerPort(String info,String serverName, String serverPort) throws Exception {
+	 //public static String replaceServerPort(String info,String serverScheme, String serverName, String serverPort) throws Exception {
+	 public static String replaceServerPort(String info) throws Exception {
+		String serverName= TurbineServlet.getServerName();
+                String serverPort= TurbineServlet.getServerPort();
+                String serverScheme = TurbineServlet.getServerScheme();
+		
+               if(serverScheme.length() >0)
+                       info=info.replaceAll("server_scheme", serverScheme);
                if(serverName.length() >0)
                        info=info.replaceAll("server_name", serverName);
                if(serverPort.length() >0)
                        info=info.replaceAll("server_port", serverPort);
                return info;
 	}
-	
+	 
+        /**
+ 	  * Replace the constant in message .
+ 	  * @param info This string is actual message which will be send in the email.
+          * @param FName First name of the user.
+          * @param LName Last name of the user.
+          * @param i_name Institute name.
+          * @param uName User name of user.
+          * @return String
+          */
 	public static String getMessage_new(String info,String FName,String LName,String i_name,String uName) throws Exception {
 	       if(FName.length()>0){ 
                         info=info.replaceAll("first_name",FName);
@@ -212,7 +260,7 @@ public class MailNotification{
 		 return info;
         }
 
-         /* This method replaces the a string with the replacement string
+       /** This method replaces the a string with the replacement string
 	 * @param searchString String The substring to be searched in the string
 	 * @param replacement String The string with which the substring has to be replaced
 	 * @return String
@@ -246,14 +294,16 @@ public class MailNotification{
 	 * @return String
 	 */
 
-	public static String sendMail(String message , String mail_id , String subject , String attachedFile, String LangFile){
+	public static String sendMail(String message , String mail_id , String subject , String attachedFile, String LangFile, String fileName){
 		
 		String email_new="";
 		String msg = "";
 		boolean flag = false;
-	//	ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
+		//ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
+		ErrorDumpUtil.ErrorLog("\nStarttttttt in MailNotification Class  mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
 		try{ //try 1
-			 if(!mail_id.equals("")){
+			 //if(!mail_id.equals("")) {
+			if(StringUtils.isNotBlank(mail_id)){
 				email_new=mail_id;
 			}
 
@@ -287,8 +337,10 @@ public class MailNotification{
                         String local_domain=AdminProperties.getValue(path,"brihaspati.mail.local.domain.name");
 			// The properties retrievals end here.
 
-                        	if((!mail_smtp.equals("")) && (!mail_smtp.equals(null))){
-                                        if((!email_new.equals("")) && (!email_new.equals(null))){
+                        	//if((!mail_smtp.equals("")) && (!mail_smtp.equals(null))){
+                        	if(StringUtils.isNotBlank(mail_smtp)){
+                                        //if((!email_new.equals("")) && (!email_new.equals(null))){
+                                        if(StringUtils.isNotBlank(email_new)){
                                                 Properties l_props = System.getProperties();
                                                 l_props.put("mail.smtp.host", host_name);
                                                 if(!mail_pass.equals("")){
@@ -303,7 +355,7 @@ public class MailNotification{
                                                         l_props.put("mail.smtp.socketFactory.fallback", "false");
                                                 }
                                                 Session l_session = Session.getDefaultInstance(l_props,  null);
-                                                l_session.setDebug(true);
+                                                l_session.setDebug(false);
 						try {
 							MimeMessage l_msg = new MimeMessage(l_session); // Create a New message
 							l_msg.setFrom(new InternetAddress(mail_smtp)); // Set the From address
@@ -358,6 +410,7 @@ public class MailNotification{
 								tr.connect();
                                                       }
                                                       l_msg.saveChanges();     // don't forget this
+						      ErrorDumpUtil.ErrorLog("\nEnd MailNotification Class mail_id======"+mail_id+"\t  message========"+ message, TurbineServlet.getRealPath("/logs/Email.txt"));
                                                       tr.sendMessage(l_msg, l_msg.getAllRecipients());
                                                       tr.close();
 						/**
@@ -369,6 +422,7 @@ public class MailNotification{
                                                 // If here, then error in sending Mail. Display Error message.
 
                                                 msg=msg+"The error in sending Mail Message "+mex.toString();
+						ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification -379) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
 						flag = true;
                                                 }
                                                 //msg="Mail send succesfully!!";
@@ -389,39 +443,39 @@ public class MailNotification{
                 catch(Exception ex)
                 {
                         msg=msg+"The error in mail send !!!"+ex;
+			ErrorDumpUtil.ErrorLog("\nThe error in send mail (MailNotification) "+msg, TurbineServlet.getRealPath("/logs/Email.txt"));
 			flag = true;
                 }
 
 
-		mail_id.trim();
 		// msg is a message comes from BrihLang_en.properteis 
 		// message param is real message which is composed by a user.
-		message.trim();
 		/** getting path for creating EmailSpooling  directory*/
 	
+       		//String filePath = TurbineServlet.getRealPath("/EmailSpooling");
        		String filePath = TurbineServlet.getRealPath("/EmailSpooling");
 		File f = new File(filePath);
-		String writeinxml = "", searchMailId = "", searchMsg = "";
-		Vector  mailDetail1 = new Vector();
-		Vector mailDetail = new Vector();
-		InstituteFileEntry ifdetail;
+		//String writeinxml = "", searchMailId = "", searchMsg = "";
+		//Vector mailDetail = new Vector();
+		//InstituteFileEntry ifdetail;
 		if(flag){
-			/**
-                          * @see ExpiryUtil in Utils
-                         */
 			LangFile.trim();
-                        String curdate = ExpiryUtil.getCurrentDate("-");
-			Long longTime = new Date().getTime();
-			String time = longTime.toString();
 
 			/** This is executed while Langfile is nt coming properly to read message from conf */
 
-			if(org.apache.commons.lang.StringUtils.isBlank(LangFile) || LangFile.equals("english") )  
+			if(StringUtils.isBlank(LangFile) || LangFile.equals("english") )  
 				LangFile = TurbineServlet.getRealPath("/conf")+"BrihLang_en.properties/";
-			WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, curdate, time, LangFile);
+			//WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, curdate, time, LangFile, fileName);
+			WriteXmlThread.getController().set_Message(filePath, mail_id, subject, message, attachedFile, LangFile, fileName);
 		}
 		if(!flag){
+			f = new File(filePath+"/"+fileName);
 			if(f.exists())
+				f.delete();
+			if(attachedFile.length()>0)
+				if(!attachedFile.equals("tmp"))
+					deletingAttachedFile(attachedFile);
+		/*
 				mailDetail = XMLWriter_EmailSpooling.getEmailSpoolDetails(filePath+"/EmailSpoolFile.xml");
 			if( mailDetail.size() != 0){
 				for(int k=0;k<  mailDetail.size();k++) {
@@ -443,8 +497,9 @@ public class MailNotification{
 			if(attachedFile.length()>0)
 				if(!attachedFile.equals("tmp"))
 					deletingAttachedFile(attachedFile);
+		*/
 		}
-			 mailDetail = null;
+			 //mailDetail = null;
 
                 return(msg);
 

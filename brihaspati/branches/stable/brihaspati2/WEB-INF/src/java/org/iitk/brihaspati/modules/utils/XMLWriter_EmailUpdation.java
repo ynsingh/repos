@@ -670,10 +670,13 @@ public class XMLWriter_EmailUpdation {
  * @param serverPort (String)
  */
 
-public int deleteExpiredProfile(String filePath, String serverName, String serverPort)
+//public int deleteExpiredProfile(String filePath, String serverName, String serverPort)
+public int deleteExpiredProfile1(String filePath)
 {
-	String info_Opt="", info_new="", msgRoleInfo="", msgRegard="", msgDear="", messageFormate="", sbjct="", activationLink="";
-        Properties pr ;
+//	String server_scheme =TurbineServlet.getServerScheme();
+	//String info_Opt="", info_new="", msgRoleInfo="", msgRegard="", msgDear="", messageFormate="", sbjct="", activationLink="";
+        String msgRoleInfo="", msgRegard="", msgDear="", messageFormate="", sbjct="", activationLink="";
+	Properties pr ;
 	String fileName=new String();
 	String Mailmsg, message, email;
 	Element element=null;
@@ -743,7 +746,7 @@ public int deleteExpiredProfile(String filePath, String serverName, String serve
 				for(;j>0;j--)
                                 {
 					email =(String) exmail.get(cnt);
-                                        if(serverPort.equals("8080"))
+                                        /*if(serverPort.equals("8080"))
 					{
 						info_new = "mailUpdateRequestForUserExpire";
                         		        info_Opt = "newUser";
@@ -752,15 +755,21 @@ public int deleteExpiredProfile(String filePath, String serverName, String serve
 					{
 						info_new = "mailUpdateRequestForUserExpire";
                         			info_Opt = "newUserhttps";	
-					}
+					}*/
 					fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 					pr =MailNotification.uploadingPropertiesFile(fileName);
-                			message = MailNotification.getMessage(info_new, email, pr);
-					msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                			msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-               				msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");					
-		 			sbjct=pr.getProperty("brihaspati.Mailnotification."+info_new+".subject");
-                			Mailmsg = MailNotificationThread.getController().set_Message(message,"", msgRegard, msgRoleInfo, email, sbjct, "", "", "","");//last parameter added by Priyanka
+                			//message = MailNotification.getMessage(info_new, email, pr);
+					message = MailNotification.getMessage("mailUpdateRequestForUserExpire", email, pr);
+					//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                			msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+					//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+               				msgRegard = MailNotification.replaceServerPort(msgRegard);
+					//msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");	
+					msgRoleInfo = pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");			
+		 			//sbjct=pr.getProperty("brihaspati.Mailnotification."+info_new+".subject");
+                			sbjct=pr.getProperty("brihaspati.Mailnotification.mailUpdateRequestForUserExpire.subject");
+					//Mailmsg = MailNotificationThread.getController().set_Message(message,"", msgRegard, msgRoleInfo, email, sbjct, "", "", "","");//last parameter added by Priyanka
+                			Mailmsg = MailNotificationThread.getController().set_Message(message,"", msgRegard, msgRoleInfo, email, sbjct, "", "");
 					cnt++;
 				}//for
 			}//if            					

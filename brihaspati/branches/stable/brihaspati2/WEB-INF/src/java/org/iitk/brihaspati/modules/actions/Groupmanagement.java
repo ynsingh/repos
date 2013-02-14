@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) Groupmanagement.java
  *
- *  Copyright (c) 2006-07 ETRG,IIT Kanpur.
+ *  Copyright (c) 2006-07,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -74,7 +74,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 * @author: <a href="mailto:seema_020504@yahoo.com">seema pal</a>
 * @author: <a href="mailto:kshuklak@rediffmail.com">kishore kumar shukla</a>
 * @modified: <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
-* @modifie date: 15-02-2011
+* @modified: <a href="mailto:tejdgurung20@gmail.com">Tej bahadur</a>
+* @modifie date: 15-02-2011,07-02-2013
 */
 
 
@@ -240,8 +241,10 @@ public class Groupmanagement extends SecureAction
 				*matching with selected list of student
 				*for getting the freshlist of student for add in the group. 
 				*/
+				int noUid[]={0};
 				Criteria crit =new Criteria();
                         	crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+				crit.addNotIn(TurbineUserGroupRolePeer.USER_ID,noUid);
                         	crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
                         	crit.and(TurbineUserGroupRolePeer.GROUP_ID,g_id);
                         	crit.setDistinct();
@@ -458,19 +461,26 @@ public class Groupmanagement extends SecureAction
                         * Put in the context for the use in templates.
                         */
                         String grpName=pp.getString("val");
-
+                        context.put("val",grpName);
+                        String modd=pp.getString("modd","");
 			/**
                         *Reading the group xml for getting the details
                         *put in the context for the use in templates.
                         *@see TopicMetaDataXmlReader in Utils
                         */
-			String addpath=groupPath+"/"+courseid+"/"+"GroupManagement";
+			String groupPath = data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/GroupManagement");
                         TopicMetaDataXmlReader topicmetadata=null;
                         Vector selectedlist=new Vector();
                         File f=new File(groupPath+"/"+grpName+"__des.xml");
                         if(f.exists())
                         {
-                        	topicmetadata=new TopicMetaDataXmlReader(addpath+"/"+grpName+"__des.xml");
+				/**
+	                        *Reading the xml file for getting the details of selected group.
+        	                *put in the context for the use in templates.
+                	        *@see TopicMetaDataXmlReader in Utils
+                        	*/
+
+                        	topicmetadata=new TopicMetaDataXmlReader(groupPath+"/"+grpName+"__des.xml");
                                 selectedlist=topicmetadata.getGroupDetails();
                                 if(selectedlist == null)
                                 return;
@@ -482,6 +492,44 @@ public class Groupmanagement extends SecureAction
                                 else
                                         context.put("mode","empty");
 			}
+			/**
+                         *Reading the xml file for getting the details of All group.
+                         *put in the context for the use in templates.
+                         *@see TopicMetaDataXmlReader in Utils.
+                         */
+                        if(grpName.equals("All")) {
+                        try{
+                        Vector allgrouplist=new Vector();
+                        Vector grplist=new Vector();
+			/**
+			 * Get All list of Group from GroupList__des.xml File
+			 */
+                        topicmetadata=new TopicMetaDataXmlReader(groupPath+"/GroupList__des.xml");
+                        grplist=topicmetadata.getGroupDetails();
+                        String tempgroupname="";
+                        FileEntry fileEntry=new FileEntry();
+                        for(int l=0;l<grplist.size();l++){
+				// Reading the xml file and Get All Group name one by one.
+                                tempgroupname =((FileEntry) grplist.elementAt(l)).getName();
+				// Get All Student's Details of each Group one by one.
+                                topicmetadata=new TopicMetaDataXmlReader(groupPath+"/"+tempgroupname+"__des.xml");
+                                selectedlist=topicmetadata.getGroupDetails();
+				/** 
+				 * Check Grouplist is empty or not.
+				 * if not empty then add in vector for display user info in template.
+				 */
+					if(selectedlist.size()!=0){
+						//Add each grouplist in Vector one by one.
+                                        	allgrouplist.addAll(selectedlist);
+					}
+                                }
+				// Send all grouplist user in template for displaying user according to all group.
+                                 context.put("allgrouplist",allgrouplist);
+                                 context.put("modd",modd);
+                        }
+                        catch(Exception e){
+                        }
+                }//End if
 		}//try
 		catch(Exception e){
                                    ErrorDumpUtil.ErrorLog("Error in method:doViewmember !!"+e);

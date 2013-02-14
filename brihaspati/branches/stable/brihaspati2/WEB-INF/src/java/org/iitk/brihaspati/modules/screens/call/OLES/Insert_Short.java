@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /* @(#)Insert_Short.java
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -37,6 +37,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /**
  *author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  *author <a href="mailto:omprakashkgp@gmail.com">Om Prakash</a>
+ *author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
  */
 //Jdk
 import java.util.Vector;
@@ -72,6 +73,7 @@ public class Insert_Short extends SecureScreen
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
 			String crsId=(String)data.getUser().getTemp("course_id");
+                	context.put("crsId",crsId);
 			String username=data.getUser().getName();
                 	context.put("username",username);
                 	context.put("tdcolor",pp.getString("count",""));
@@ -96,10 +98,14 @@ public class Insert_Short extends SecureScreen
                 		String edtopic=pp.getString("topic","");
                         	context.put("topic",edtopic);
                         	String quesid=pp.getString("quesid","");
-                       		String questiontype=pp.getString("questype","");
-				context.put("questype",questiontype);
-				String difflevel12=pp.getString("difflevel","");
-                                context.put("difflevel",difflevel12);
+                       		String questiontype=pp.getString("qtype","");
+                        	context.put("qtype",questiontype);
+				String selquestiontype=pp.getString("questype","");
+                                context.put("questype",selquestiontype);
+                                String difflevel12=pp.getString("dlevel","");
+                        	context.put("dlevel",difflevel12);
+                                String seldifflevel=pp.getString("difflevel","");
+                                context.put("difflevel",seldifflevel);
                                 String fulltopic=edtopic+"_"+difflevel12+"_"+questiontype;
                        		String filepath=QuestionBankPath+"/"+username+"/"+crsId;
                         	Vector Read=new Vector();
@@ -122,6 +128,8 @@ public class Insert_Short extends SecureScreen
                                         	        context.put("Ans",Ans);
                                         	        context.put("Desc",desc);
                                         	        context.put("quesimage",Quesimage);
+							if(!Quesimage.equals(""))
+							context.put("typeques","imgtypeques");
                                         	}
 					}
 				}

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)changeAParam.java	
  *
- *  Copyright (c) 2005-2006,2009-2010, 2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009-2010, 2012-2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -59,6 +59,8 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @modified date: 17-10-2009, 29-09-2010
  * @author <a href="mailto:vipulk@iitk.ac.in">Vipul Kumar Pal</a>
+ * @modified date: 30-1-2013
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
  */
 
 //public class changeAParam extends SecureAction_Admin{
@@ -119,7 +121,12 @@ public class changeAParam extends SecureAction_Admin{
                 String designation=pp.getString("designation","");
 		String port=pp.getString("port","8090");
 		String dstore=pp.getString("datastorage","Local");
-
+		String dstoreurl=pp.getString("hdfsurl","");
+		String authmethod=pp.getString("authmethod","Local");
+		String ldapurl=pp.getString("ldapurl","");
+		String ldapbase=pp.getString("ldapbase","");
+		String ldapcate=pp.getString("ldapcate","");
+		String twtexp=pp.getString("TweetExp","30");
                 String officeno=pp.getString("Offprefix","x")+"-"+pp.getString("Offccode","x")+"-"+pp.getString("Offrcode","x")+"-"+pp.getString("Offphnumber","x");
                 String mobileno=pp.getString("Mobprefix","x")+"-"+pp.getString("Mobccode","x")+"-"+pp.getString("Mobrcode","x")+"-"+pp.getString("Mobphnumber","x");
                 String homeno=pp.getString("Homeprefix","x")+"-"+pp.getString("Homeccode","x")+"-"+pp.getString("Homercode","x")+"-"+pp.getString("Homephnumber","x");
@@ -240,9 +247,14 @@ public class changeAParam extends SecureAction_Admin{
 			AdminProperties.setValue(path,fileupldsze,"services.UploadService.size.max");
 			AdminProperties.setValue(path,port,"brihaspati.spring.port");
 			AdminProperties.setValue(path,dstore,"brihaspati.admin.datastore.value");
+			AdminProperties.setValue(path,dstoreurl,"brihaspati.admin.hdfsurl.value");
+			AdminProperties.setValue(path,authmethod,"brihaspati.admin.authmethod.value");
+			AdminProperties.setValue(path,ldapurl,"brihaspati.admin.ldapurl.value");
+			AdminProperties.setValue(path,ldapbase,"brihaspati.admin.ldapbase.value");
+			AdminProperties.setValue(path,ldapcate,"brihaspati.admin.ldapcate.value");
 			AdminProperties.setValue(path, mailSpoolResendTime, "brihaspati.admin.spoolMailResendTime.value");
 			AdminProperties.setValue(path, mailSpoolExpiryDay, "brihaspati.admin.mailSpoolingExpiry.value");
-
+			AdminProperties.setValue(path,twtexp,"brihaspati.admin.twtexpiry.value");
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	

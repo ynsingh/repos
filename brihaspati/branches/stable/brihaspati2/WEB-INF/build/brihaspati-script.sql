@@ -45,8 +45,8 @@ insert into TURBINE_ROLE_PERMISSION values (3,8);
 insert into TURBINE_ROLE_PERMISSION values (3,9);
 insert into TURBINE_ROLE_PERMISSION values (6,10);
 
-update TURBINE_USER set LOGIN_NAME='admin',PASSWORD_VALUE= MD5('admin') where USER_ID=1;
-insert into TURBINE_USER(USER_ID,LOGIN_NAME,PASSWORD_VALUE,FIRST_NAME,LAST_NAME) values(0,'guest',MD5('guest'),'guest','');
+update TURBINE_USER set LOGIN_NAME='admin',PASSWORD_VALUE= SHA1('admin') where USER_ID=1;
+insert into TURBINE_USER(USER_ID,LOGIN_NAME,PASSWORD_VALUE,FIRST_NAME,LAST_NAME) values(0,'guest',SHA1('guest'),'guest','');
 insert into PROGRAM (ID, PROGRAM_CODE, PROGRAM_NAME) values(0,'RWP', 'RegistrationWithoutProgram');
 INSERT INTO USER_PREF (USER_ID, USER_LANG) SELECT USER_ID, USER_LANG FROM TURBINE_USER;
 update USER_PREF set ACTIVATION='ACTIVATE' where ACTIVATION='null';

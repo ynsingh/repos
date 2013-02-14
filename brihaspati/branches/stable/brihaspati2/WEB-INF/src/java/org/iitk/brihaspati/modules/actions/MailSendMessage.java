@@ -129,7 +129,7 @@ public class MailSendMessage extends SecureAction
 				AddList=Add_FstList;
 				
 			}
-			ErrorDumpUtil.ErrorLog("\n\n\n\n message==========="+message);
+			//ErrorDumpUtil.ErrorLog("\n\n\n\n message==========="+message);
                 	if(!AddList.equals(""))
 			{ //outer 'if'
 				Criteria crit=new Criteria();
@@ -348,8 +348,8 @@ public class MailSendMessage extends SecureAction
                                         TurbineUser element=(TurbineUser)v.get(0);
                                         mailId=element.getEmail();
 				}
-				String instId =  (String) data.getUser().getTemp("Institute_id","");
-				boolean bl = StringUtils.isBlank(instId);
+				//String instId =  (String) data.getUser().getTemp("Institute_id","");
+				//boolean bl = StringUtils.isBlank(instId);
 				if(mailId != null && mailId != ""){ //if s1 start
                                 	/////////////////////////////////////
                                         /**
@@ -428,15 +428,17 @@ public class MailSendMessage extends SecureAction
                         	try {//inner try
 					//ErrorDumpUtil.ErrorLog("message==========="+message+"	subject="+subject);
                				String mailMsg="";
-					String serverName= TurbineServlet.getServerName();
-        			        String serverPort= TurbineServlet.getServerPort();
+					//String serverName= TurbineServlet.getServerName();
+        			        //String serverPort= TurbineServlet.getServerPort();
 	                		if( (fileItem.getSize() == 0) && (mailId != null && mailId != "") ){
 						// mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, LangFile);
 						//mailMsg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
-						if(!bl)
-							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, instId,"");//last parameter added by Priyanka
-						else	
-							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, "","");//last parameter added by Priyanka	
+						//if(!bl)
+							//mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, instId,"");//last parameter added by Priyanka
+						//	mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile);
+						//else	
+							//mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, "","");//last parameter added by Priyanka	
+							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile);
 					}
 	                		if((fileItem!=null) && (fileItem.getSize()!=0))
                                 	{
@@ -453,7 +455,8 @@ public class MailSendMessage extends SecureAction
 							fileItem.write(f1ForLM);
 							//mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", filePathForLM, serverName, serverPort, LangFile);
 							//mailMsg=MailNotification.sendMail(message, mailId, subject, filePathForLM, LangFile);
-							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, filePathForLM, LangFile, "","");//last parameter added by Priyanka
+							//mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, filePathForLM, LangFile, "","");//last parameter added by Priyanka
+							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, filePathForLM, LangFile);
 						} //if s3 end
 						else { //else s3 start
 	                                		String realPath = TurbineServlet.getRealPath("/UserArea");

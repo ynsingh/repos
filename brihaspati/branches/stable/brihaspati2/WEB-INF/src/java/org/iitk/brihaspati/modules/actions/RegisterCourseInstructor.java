@@ -107,9 +107,9 @@ public class RegisterCourseInstructor extends SecureAction_Admin
         	                        passwd =starr[0];
                                 }
 
-		 		String serverName=data.getServerName();
-                 		int srvrPort=data.getServerPort();
-                 		String serverPort=Integer.toString(srvrPort);
+		 		//String serverName=data.getServerName();
+                 		//int srvrPort=data.getServerPort();
+                 		//String serverPort=Integer.toString(srvrPort);
 		 		/**
 		  		* Register a new course with instructor
 				* Here we give 100MB quota for course, once he is login in the system and immediate his quota is updated
@@ -117,8 +117,9 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 		  		* @see CourseManagement Utils
 		  		*/
 		 		//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha
-		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,""); //modified by Shaista passing institute id and institute name. Last parameter added by Priyanka
-		 		data.setMessage(msg);
+		 		//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,""); //modified by Shaista passing institute id and institute name. Last parameter added by Priyanka
+		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,LangFile,instId,instName,"");
+				data.setMessage(msg);
 				// Maintain Log
                                 java.util.Date date= new java.util.Date();
 				log.info("Course Instructor Registration by Admin on "+instName +" with name "+gname +"| Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());

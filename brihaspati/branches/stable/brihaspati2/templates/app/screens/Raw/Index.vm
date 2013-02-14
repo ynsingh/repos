@@ -30,15 +30,6 @@ $!data.getMessage()
 <head>
 <link rel="stylesheet" href="$content.getURI("/scrpts/htmlarea.css")" type="text/css">
 <script type="text/javascript" src="$content.getURI("/scrpts/jquery/jquery.min.js")"></script>
-<script type="text/javascript" language="javascript">
-
-function toggleViewAll(x) {
-                if ($('#'+x).is(":hidden")) {
-                        $('#'+x).fadeIn(500);
-                } else {
-                        $('#'+x).fadeOut(500);
-                }
-}
 </script>
 </head>
 
@@ -58,7 +49,7 @@ function toggleViewAll(x) {
         </tr>
 	#end
 #end
-#if($userid.toString()=="1")
+#if($Uid.toString()=="1")
 <div class="scroll">
 #end
 
@@ -81,22 +72,13 @@ function toggleViewAll(x) {
         </table>
 </div>
 ##iframe is use to show brihaspati Twitter
-<div style="background:$ui.menuColor;" class="tweet_header">$brih_bri $brih_twitter</div>
-<iframe height="480" width="310px" style="margin:46px auto;overflow:hidden;" src="http://$ip:$port/brihaspatiSpring/index.vm?username=$fullname&uname=$username" frameborder="0"></iframe>
-
-<a onclick="refreshIframe(); return false" onmousedown="javascript:toggleViewAll('view');" class="viwlink" style="position:absolute; z-index:100; margin:490px -80px auto;cursor:pointer;">$brih_view_all</a>
-</td>
-
-<div class="container" id="view" style="overflow:hidden; background:$ui.menuColor;">
-
-<a onClick="return false" onMouseDown="javascript:toggleViewAll('view');" style="text-decoration:none; cursor:pointer; color:#000; font-weight:bold; font-size:18px;">$LocalMail_Close</a>
-
-<iframe id="frame" name="frame" height="420" width="330px" style="margin:-10px auto;" src="http://$ip:$port/brihaspatiSpring/tweetsmsg.vm?username=$fullname&uname=$username&name=$name" frameborder="0"></iframe>
-
+<div style="background:$ui.menuColor;" class="tweet_header">$brih_twitter</div>
+<iframe height="410" width="310px" style="margin:46px auto;overflow:hidden;" src="$ipadd/brihaspatiSpring/index.vm?username=$fullname&uname=$username&Uid=$Uid&expdate=$expdate&language=$lang" frameborder="0"></iframe>
+<div style="background:$ui.menuColor;height:30px;margin-top:-46px;">
+<a href=javascript:popup("$link.setPage("call,Twtwin.vm")","newWin"); style="margin-top:5px;margin-right:9px;z-index:100; cursor:pointer;text-decoration:none;color:black;text-align:right;float:right;">$brih_view_all</a>
 </div>
-
 <td width="80%" valign="top">
-#if($userid.toString()!="1")
+#if($Uid.toString()!="1")
 <div class="indexhomescroll">
 #end
 <table bgcolor="$ui.tableColor" width="100%">
@@ -163,7 +145,7 @@ function toggleViewAll(x) {
 
 	<td width="16%" > <a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
 	</td>
-	<td width="16%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
+	<td width="16%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general") style=text-decoration:none> $brih_chat</a> </td>
 	<td width="16%" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
 	
 		<td width="16%" > #if($lang == "hindi") $brih_Institute $brih_wise $brih_chat/$DiscussionBoard #else $RemoteInstitute $brih_wise $brih_chat/$DiscussionBoard #end </td>
@@ -181,7 +163,7 @@ function toggleViewAll(x) {
 #end
 
 #if($Role7=="InstituteAdminRole" || $Role3=="StudentRole" || $Role2=="InstructorRole" || ($Role8=="TeacherAssistantRole"))
-        <td width="20%" ><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang)>$brih_FAQ</a></td>
+        <td width="20%" ><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang) style=text-decoration:none>$brih_FAQ</a></td>
 #end
 </tr>
 <tr>
@@ -206,9 +188,14 @@ function doLoad()
 {
 setTimeout( "refresh()", 5*60*1000 );
 }
-function refreshIframe() {
-    var ifr = document.getElementsByName('frame')[0];
-    ifr.src = ifr.src;
-}
+function popup(url,popupName)
+        {
+                var w=650;
+                var h=450;
+                var left = (screen.width/2)-(w/2);
+                var top = (screen.height/2)-(h/2);
+                Win2 = window.open (url,popupName, 'scrollbars=yes, toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
+                //Win2=window.open(url,popupName,"resizable,height=200,width=650");
+        }
 
 </SCRIPT >

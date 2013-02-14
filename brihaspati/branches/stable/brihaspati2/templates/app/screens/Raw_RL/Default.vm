@@ -28,7 +28,7 @@ $page.setBgColor("$ui.bgcolor")
 <body valign="left">
   $screen_placeholder
 </body>
-#elseif(($result=="video") ||($result=="document"))
+#elseif(($result=="video") || ($result=="document") || ($result=="twitter") || ($result=="session"))
 <body valign="left">
         <table align="center"  height="600px">
                 <tr valign="middle">

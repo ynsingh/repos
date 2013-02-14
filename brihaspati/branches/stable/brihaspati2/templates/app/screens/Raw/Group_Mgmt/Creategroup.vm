@@ -1,10 +1,12 @@
 <html>
 #*
  * @(#) Creategroup.vm
- *  Copyright (c) 2006-07 ETRG,IIT Kanpur.
+ *  Copyright (c) 2006-07,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *  @author <a href="mailto:tejdgurung20@gmail.com ">Tej Bahadur</a>
+ *  @modify date: 07 feb 2013
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -20,9 +22,9 @@ $!data.getMessage()
 
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
 	<tr> <td><b>
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
-        <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")> $brih_grp $brih_mgmt </a> |
+	<a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none">$coursename </a> |
+        <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm") style="text-decoration:none"> $brih_grp $brih_mgmt </a> |
 	#if($lang=="english")
 	$WikiCreate $brih_grp
 	#else
@@ -32,7 +34,7 @@ $!data.getMessage()
 </table> ##table 1 end
 <table width=100% > ##table 2 start
 	<tr><td align ="right">
-          <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Creategrp.html","newWin");>$brih_help</a>
+          <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Creategrp.html","newWin"); style="text-decoration:none">$brih_help</a>
 	</td></tr>
 </table> ## table 2 end
 <form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Creategroup.vm").setAction("Groupmanagement")>

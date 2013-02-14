@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /* @(#)	Insert_TF.java
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2010,2012 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -71,7 +71,9 @@ public class Insert_TF extends SecureScreen
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
 			String crsId=(String)data.getUser().getTemp("course_id");
+			context.put("crsId",crsId);
 			String username=data.getUser().getName();
+			context.put("username",username);
                 	context.put("tdcolor",pp.getString("count",""));
                 	context.put("course",(String)user.getTemp("course_name"));
                 	String mode=pp.getString("mode","");
@@ -94,10 +96,14 @@ public class Insert_TF extends SecureScreen
                 		String edtopic=pp.getString("topic","");
                         	context.put("topic",edtopic);
                         	String quesid=pp.getString("quesid","");
-                        	String questiontype=pp.getString("questype","");
-				context.put("questype",questiontype);
-				String difflevel12=pp.getString("difflevel","");
-                                context.put("difflevel",difflevel12);
+                        	String questiontype=pp.getString("qtype","");
+				context.put("qtype",questiontype);
+                        	String selquestiontype=pp.getString("questype","");
+				context.put("questype",selquestiontype);
+				String difflevel12=pp.getString("dlevel","");
+				context.put("dlevel",difflevel12);
+				String seldifflevel=pp.getString("difflevel","");
+                                context.put("difflevel",seldifflevel);
                                 String fulltopic=edtopic+"_"+difflevel12+"_"+questiontype;
                         	String filepath=QuestionBankPath+"/"+username+"/"+crsId;
                         	Vector Read=new Vector();
@@ -112,12 +118,16 @@ public class Insert_TF extends SecureScreen
                                         	String ques=((FileEntry)Read.elementAt(n)).getquestion();
                                         	String Ans=((FileEntry)Read.elementAt(n)).getAnswer();
                                         	String desc=((FileEntry)Read.elementAt(n)).getDescription();
+						String Quesimage=((FileEntry)Read.elementAt(n)).getUrl();
                                         	if(questionid.equals(quesid))
                                         	{
 							context.put("quesid",questionid);
                                         		context.put("Ques",ques);
                                                 	context.put("Ans",Ans);
                                                 	context.put("Desc",desc);
+							context.put("quesimage",Quesimage);
+							if(!Quesimage.equals("")){
+                                                        context.put("typeques","imgtypeques");}
                                         	}
                                 	}
                         	}

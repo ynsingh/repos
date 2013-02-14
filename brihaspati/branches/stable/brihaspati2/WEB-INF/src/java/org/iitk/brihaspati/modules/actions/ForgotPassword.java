@@ -193,18 +193,20 @@ public class ForgotPassword extends VelocitySecureAction
 					/**
 					* Get Server Name and Server Port
 					*/
-					String serverName=data.getServerName();
- 					int srvrPort=data.getServerPort();
-					String serverPort=Integer.toString(srvrPort);
+//					String serverName=data.getServerName();
+ //					int srvrPort=data.getServerPort();
+//					String serverPort=Integer.toString(srvrPort);
         		        	String password=PasswordUtil.randmPass();
+					String server_scheme = TurbineServlet.getServerScheme();
 	        			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 					String msg1=new String();
 					try
 					{
 						////////////////////////////////////////////////// Shaista did Modification for mail Sending 
-						String info_new = "", info_Opt="", msgRegard="", msgBrihAdmin=""; 
+						//String info_new = "", info_Opt="", msgRegard="", msgBrihAdmin=""; 
+						String msgRegard="", msgBrihAdmin="";
 						//msgDear="",
-						if(srvrPort == 8080){
+						/*if(srvrPort == 8080){
 							info_new="newPassword";
 							info_Opt = "newUser";
 						}
@@ -212,28 +214,39 @@ public class ForgotPassword extends VelocitySecureAction
 							info_new="newPasswordhttps";
 							info_Opt = "newUserhttps";
 						}
-						
+						*/
 						Properties pr =MailNotification.uploadingPropertiesFile(fileName);
 						//getMessage_new(String info,String FName,String LName,String i_name,String uName)
-						msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-						msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-						msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
-						String subject = MailNotification.subjectFormate(info_new, "", pr );
-						String message = MailNotification.getMessage(info_new, "", "", "", password, serverName, Integer.toString(srvrPort), pr);
+						//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+						msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+						//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+						msgRegard = MailNotification.replaceServerPort(msgRegard);
+						//msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+						msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification.newUser.msgBrihAdmin");
+						//String subject = MailNotification.subjectFormate(info_new, "", pr );
+						String subject = MailNotification.subjectFormate("newPassword", "", pr );
+						//String message = MailNotification.getMessage(info_new, "", "", "", password, serverName, Integer.toString(srvrPort), pr);
+						String message = MailNotification.getMessage("newPassword", "", "", "", password, pr);
+						message = MailNotification.replaceServerPort(message);
 						//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+message+"\nmsgRegard   "+msgRegard);
 						//msg1=MailNotification.sendMail(message, mailId, subject, "", LangFile); 
-						msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile, "","");//last parameter added by Priyanka 
+						//msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile, "","");//last parameter added by Priyanka 
+						msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile);
 						/////////////////////////////////////////////////
 						/**
 						* new Password encrypted by MD5 then modify database 
 						* password for user
 						*/
 						//String encPass=EncryptionUtil.createDigest("MD5",str);
-						String encPass=EncryptionUtil.createDigest("MD5",password);
+						String encPass=EncryptionUtil.createDigest("SHA1",password);
 		       				user.setPassword(encPass); 
 						TurbineSecurity.saveUser(user);
 						msg=MultilingualUtil.ConvertedString("forgotPwd_msg3",LangFile);
-						data.setMessage(msg1);
+						if(msg1.equals("Success"))
+						{	
+							msg1=MultilingualUtil.ConvertedString("mail_msg",LangFile);
+							data.setMessage(msg1);
+						}
 						data.addMessage(msg);
 						// Maintain Log File
 						log.info("Successfully Forget Password Operation called by --> "+loginName +" | Time of operation --> "+date+ " | IP Address --> "+data.getRemoteAddr());

@@ -145,7 +145,9 @@ public class UserForm_Instructor extends SecureScreen_Instructor{
 	                StudentRollno element = (StudentRollno)rlrecord.get(k);
                         String rollno = element.getRollNo();
                         String Program = element.getProgram();
+			String prgName = InstituteIdUtil.getPrgName(Program);
                         cDetails = new CourseUserDetail();
+			cDetails.setPrgName(prgName);
                         cDetails.setPrgCode(Program);
                         cDetails.setRollNo(rollno);
                         rollprglist.add(cDetails);

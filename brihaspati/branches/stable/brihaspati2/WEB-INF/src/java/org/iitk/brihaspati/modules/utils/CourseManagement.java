@@ -91,7 +91,8 @@ public class CourseManagement
 		 * @see UserManagement In this utils manage all details of user
 		 * 
 		 */
-		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id,String iname,String mode) throws Exception//last parameter added by Priyanka
+		//public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id,String iname,String mode) throws Exception//last parameter added by Priyanka
+		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String file,int institute_id,String iname,String mode)
 		{
 			String message=new String();
 			/**
@@ -107,7 +108,9 @@ public class CourseManagement
 			/**
 		   	  * Concatenate CourseId and UserName
 		   	  */
-                   	  String newcid=groupalias + uname+"_"+institute_id;
+			  groupalias=(groupalias.trim()).replaceAll("\\s","");
+			  uname=uname.trim();
+                   	  String newcid=groupalias+uname+"_"+institute_id;
 		   	  if(!newcid.equals(""))
 			  {
 		  	 	/**
@@ -182,7 +185,8 @@ public class CourseManagement
 				 		*/
 						String rollno="";
 						String program="";
-						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,iname,email,newcid,"instructor",serverName,serverPort,file,rollno,program,mode);//Last parameter added by Priyanka
+						//String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,iname,email,newcid,"instructor",serverName,serverPort,file,rollno,program,mode);//Last parameter added by Priyanka
+						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,iname,email,newcid,"instructor",file,rollno,program,mode);
 						/**********************modify by sunil***/
                                 		int GID=GroupUtil.getGID(newcid);
                                 		int uid=UserUtil.getUID(uname);
@@ -599,7 +603,9 @@ public class CourseManagement
 		boolean checkPrimary=false;
 		try
 		{
-			 checkPrimary=groupName.endsWith(userName);
+			String grpAlias=CourseUtil.getCourseAlias(groupName);
+			String unmwIid=StringUtils.substringAfter(groupName,grpAlias);
+			checkPrimary=unmwIid.startsWith(userName);
 		}
 		catch(Exception e)
 		{

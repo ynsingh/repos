@@ -182,13 +182,12 @@ $!data.getMessage()
 			#end
 		</td>
                 <td><select class="drop" name="prg1" size=1 id="pg1"onChange="showList(document.frm,this,$num);">
-			<option value="Select Program">$brih_select $brih_program </iption>
-			#foreach($instplist in $PrgDetail)
+			<option value="Select Program">$brih_select $brih_program </option>
+			#foreach($instplist in $rlprglist)
 	                        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 	                #end
 	        </td>
-                <td>
-                        <input type="text" name="rollno1" id="rl1" value="">
+		<td id="rl1">
                 </td>
                 </tr>
         #end
@@ -212,15 +211,14 @@ $!data.getMessage()
 		## display in drop down list
 	        #set($tmpPrg = $st.pgname)
 			<option value="$st.pgcode">$st.pgname </option>
-        	        #foreach($instplist in $PrgDetail)
+        	        #foreach($instplist in $rlprglist)
 	        	        #if($tmpPrg!=$instplist.getPrgName())
 		        	        <option value="$instplist.getPrgCode()">$instplist.getPrgName() </option>
 			        #end
         	        #end
 		 </select></td>
-	        <td id="rl$num">
+		<td id="rl$num">
 		## get rollno from record
-				##<input type="text" name="rollno$num" value="$st.rlno" id="rl$num">
 			$st.rlno
         	</td></tr>
 		<input type="hidden" name="num" value="$num">
@@ -340,43 +338,26 @@ if($UDetail.size()==0)
         {
                 if(document.frm.prg1.value=="Select Program")
                 {
-                        if(document.frm.rollno1.value=="")
-                        {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                        else
-                        {
-                                alert("Please select program name");
-                        }
-                }
-                else if(document.frm.group1.value=="Select Course")
-                {
-                       alert("Please select course");
-                       }
-                else if(document.frm.rollno1.value=="")
-                {
-                       alert("Please fill rollno field");
-                }
+                        frm.actionName.value=field.name;
+                        frm.submit();
+		}
                 else
                 {
-                       frm.actionName.value=field.name;
-                       frm.submit();
+	                alert("Please select course name");
                 }
-        }
-        else if(document.frm.prg1.value=="Select Program")
-        {
-                alert("Please select program name");
-        }
-        else if(document.frm.rollno1.value=="")
-        {
-                alert("Please fill rollno field");
-        }
-        else
-        {
-                frm.actionName.value=field.name;
-                frm.submit();
-        }	
+	}
+        else 	
+	{
+		if(document.frm.prg1.value=="Select Program")
+        	{
+                	alert("Please select program name");
+	        }
+	        else
+        	{
+                	frm.actionName.value=field.name;
+	                frm.submit();
+        	}	
+	}
 }
 }	
 

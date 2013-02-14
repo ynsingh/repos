@@ -118,7 +118,7 @@ $page.setBgColor($ui.bgcolor)
 			</tr>
 			<tr>
 				<td>
-					<INPUT TYPE="SUBMIT" NAME=eventSubmit_doRemove VALUE="$brih_remove"></td></tr>
+					<INPUT TYPE="SUBMIT" class="button-ftextstyle" NAME=eventSubmit_doRemove VALUE="$brih_remove"></td></tr>
 					<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
 				</td>
 			</tr>
@@ -127,7 +127,7 @@ $page.setBgColor($ui.bgcolor)
 ##<table align=left width=100% bgcolor="$ui.menuColor"> 
 	<tr bgcolor="$ui.menuColor">
 		<td>$brih_c_msg13</td>
-		<td><select name="group" size=1>
+		<td><select name="group" size=1 class="drop">
 		#foreach($name in $CourseList)
 			#if($name.getName() !="global" && $name.getName()!="author")
 			<option value="$name.getName()">$name.getName()
@@ -136,7 +136,7 @@ $page.setBgColor($ui.bgcolor)
 		</option>
 		</select>
 		</td>
-		<td><INPUT TYPE="SUBMIT" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
+		<td><INPUT TYPE="SUBMIT" class="button-ftextstyle" NAME=eventSubmit_doRegister VALUE="$brih_reg1">
 		<INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
 		</td>
 	</tr>

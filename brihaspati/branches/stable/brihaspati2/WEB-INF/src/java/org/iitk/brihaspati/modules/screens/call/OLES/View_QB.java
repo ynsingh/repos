@@ -57,6 +57,12 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 //import org.iitk.brihaspati.modules.utils.ModuleTimeUtil;
 //import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
+import org.iitk.brihaspati.modules.utils.ViewAllQuestionUtil;
+import org.iitk.brihaspati.modules.utils.NotInclude;
+//import org.apache.commons.lang.StringUtils;
+//import org.iitk.brihaspati.modules.utils.XmlWriter;
+//import org.iitk.brihaspati.modules.utils.FileEntry;
+
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
@@ -79,11 +85,7 @@ public class View_QB extends SecureScreen{
 			context.put("mode",mode);
 			String topic=pp.getString("topic","");
 			context.put("topic",topic);
-			String questiontype12=pp.getString("questype","");
-			context.put("questype",questiontype12);
-			String difflevel12=pp.getString("difflevel","");
-			context.put("difflevel",difflevel12);
-			String questiontype=pp.getString("Questype","");
+			String questiontype=pp.getString("questype","");
 			context.put("questype",questiontype);
 			String difflevel=pp.getString("difflevel","");
 			context.put("difflevel",difflevel);
@@ -91,16 +93,9 @@ public class View_QB extends SecureScreen{
 			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username+"/"+crsId);
 			TopicMetaDataXmlReader topicmetadata=null;
                         Vector allQuestions=new Vector();
-			String fulltopic=topic+"_"+difflevel+"_"+questiontype;
-			File f=new File(filePath+"/"+fulltopic+".xml");
-			if(f.exists())
-                        {
-				topicmetadata=new TopicMetaDataXmlReader(filePath+"/"+fulltopic+".xml");
-				if(questiontype.equals("mcq"))
-                        		allQuestions=topicmetadata.getQuesBank_Detail();
-				else
-                        		allQuestions=topicmetadata.getQuesBank_Detail1();
-					//ErrorDumpUtil.ErrorLog("\nallQuestions"+allQuestions);
+			if(!questiontype.equals("")&&(!difflevel.equals("")))
+			{
+				allQuestions=ViewAllQuestionUtil.ReadTopicAllFile(topic,filePath,questiontype,difflevel);
 			}
 			if(allQuestions==null)
                         return;
@@ -115,8 +110,6 @@ public class View_QB extends SecureScreen{
                                 context.put("userConf_string",conf);
                                 Vector vctr= CommonUtility.PListing(data ,context ,allQuestions,list_conf);
                                 context.put("entry",vctr);
-
-                                //CommonUtility.PListing(data,context,allQuestions);
                        	}
                        	else
                        	{
@@ -135,7 +128,6 @@ public class View_QB extends SecureScreen{
 				int eid=0;
 				MailNotificationThread.getController().CourseTimeSystem(uid,eid);
                          }
-
 		}//try
 		catch(Exception ex)
 		{

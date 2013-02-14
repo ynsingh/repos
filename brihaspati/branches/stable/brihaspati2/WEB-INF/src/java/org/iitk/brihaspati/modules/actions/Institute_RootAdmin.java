@@ -223,9 +223,9 @@ public class Institute_RootAdmin extends SecureAction_Admin
                                                 InstituteAdminUserPeer.doInsert(criteria);
 
 						/**Get ServerName and ServerPort for sending mail.*/
-						String serverName=data.getServerName();
-	                                	int srvrPort=data.getServerPort();
-						String serverPort=Integer.toString(srvrPort);
+						//String serverName=data.getServerName();
+	                                	//int srvrPort=data.getServerPort();
+						//String serverPort=Integer.toString(srvrPort);
 						String rollno = data.getParameters().getString("rollno","").trim();
 						/**
 			                 	* check if rollno have any special character then return message
@@ -249,7 +249,8 @@ public class Institute_RootAdmin extends SecureAction_Admin
 						*@see usermanagement in utils
                                                 */
 						
-						String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_name,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program,"cnfrm_i");// last parameter added by Priyanka
+						//String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_name,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program,"cnfrm_i");// last parameter added by Priyanka
+						String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_name,i_adminemail,"institute_admin","institute_admin",LangFile,rollno,program,"cnfrm_i");
 						data.setMessage(usermgmt);
 						
 						/**Read Quota value from the property file (Admin.properties).
@@ -445,16 +446,17 @@ public class Institute_RootAdmin extends SecureAction_Admin
 							InstituteAdminUserPeer.doInsert(crit);
 							
 							/**Get ServerName and ServerPort for sending mail.*/  
-							String serverName=data.getServerName();
-	                        	                int srvrPort=data.getServerPort();
-        	                        	        String serverPort=Integer.toString(srvrPort);
+							//String serverName=data.getServerName();
+	                        	                //int srvrPort=data.getServerPort();
+        	                        	        //String serverPort=Integer.toString(srvrPort);
 		
 							/** Create User Profile
 							 * insert the institute admin details in database. 
                                                          * @see usermanagement in utils
                                                          */
 							UserManagement usermanagement = new UserManagement();
-							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program,"");// last parameter added by Priyanka
+							//usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno,program,"");// last parameter added by Priyanka
+							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,instName,adminemail,"institute_admin","institute_admin",LangFile,rollno,program,"");
 							data.setMessage(usermgmt +" "+ mail_msg);
 							// Maintain Log
 							log.info("Addition of Secondary Institute Admin by Admin with email "+adminemail +" in " +instName +" | Date --> "+date+ "| IP Address --> "+data.getRemoteAddr());

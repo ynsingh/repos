@@ -1,14 +1,14 @@
 #*
  * @(#) Addmembers.vm
- *  Copyright (c) 2006-07,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2006-07,2009,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- *  @modified date:Feb 15- 2011
+ *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ *  @modified date:Feb 15- 2011,7-02-2013
  *  Contributors: Members of ETRG, I.I.T. Kanpur
-
  *#
 
 $page.setTitle("create group")
@@ -23,9 +23,9 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr> <td><b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a>|
-        <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>$brih_grp $brih_mgmt </a>|
+        <a href=$link.setPage("call,IndexHome.vm") style="text-decoration:none">$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style="text-decoration:none" >$coursename </a>|
+        <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style="text-decoration:none" >$brih_grp $brih_mgmt </a>|
 	#if($Status!="Edit")
 	#if($lang =="hindi" || $lang =="gujarati")
 	$brih_member $brih_add</b>
@@ -35,9 +35,9 @@ $!data.getMessage()
 	#else
         ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>$brih_grp $brih_mgmt </a>|
 	#if($lang =="hindi" || $lang =="gujarati")
-        <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>$brih_grp $brih_Of1 $brih_edit</a> | $brih_member $brih_remove</b>
+        <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4") style="text-decoration:none">$brih_grp $brih_Of1 $brih_edit</a> | $brih_member $brih_remove</b>
 	#else
-        <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>$brih_edit $brih_grp</a> | $brih_remove $brih_member</b>
+        <a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4") style="text-decoration:none">$brih_edit $brih_grp</a> | $brih_remove $brih_member</b>
 	#end
 	#end
      </td></tr>
@@ -51,39 +51,39 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
         #end
         ##<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>$WikiCreate $brih_grp</a></td>
-	<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")> #if($lang == "hindi") $brih_grp $brih_Of1 $WikiCreate #else $WikiCreate $brih_grp #end </a></td>
+	<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style="text-decoration:none"> #if($lang == "hindi") $brih_grp $brih_Of1 $WikiCreate #else $WikiCreate $brih_grp #end </a></td>
         #if($tdcolor != "2")
         <td>
         #elseif($tdcolor=="2")
         <td bgcolor="#AFDCEC">
         #end
 	##<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2")>$brih_add/$brih_view $brih_member</a></td>
-	<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2")> #if($lang == "hindi") $brih_member $brih_add/$brih_view #else $brih_add/$brih_view $brih_member #end </a></td>
+	<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2") style="text-decoration:none"> #if($lang == "hindi") $brih_member $brih_add/$brih_view #else $brih_add/$brih_view $brih_member #end </a></td>
         #if($tdcolor != "3")
         <td>
         #elseif($tdcolor=="3")
         <td bgcolor="#AFDCEC">
         #end
 	##<a href=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("count","3")>$brih_view/$brih_delete $brih_grp</a></td>
-	<a href=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("count","3")> #if($lang == "hindi") $brih_grp $brih_Of1 $brih_view/$brih_delete #else $brih_view/$brih_delete $brih_grp #end </a></td>
+	<a href=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("count","3") style="text-decoration:none"> #if($lang == "hindi") $brih_grp $brih_Of1 $brih_view/$brih_delete #else $brih_view/$brih_delete $brih_grp #end </a></td>
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor=="4")
         <td bgcolor="#AFDCEC">
         #end
 	##<a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>$brih_edit/$brih_remove $brih_member</a></td>
-	<a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")> #if($lang == "hindi") $brih_member $brih_Of1 $brih_edit/$brih_remove #else $brih_edit/$brih_remove $brih_member #end </a></td>
+	<a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4") style="text-decoration:none"> #if($lang == "hindi") $brih_member $brih_Of1 $brih_edit/$brih_remove #else $brih_edit/$brih_remove $brih_member #end </a></td>
         #if($tdcolor != "5")
         <td>
         #elseif($tdcolor=="5")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5")>$brih_grp #if($lang == "hindi") $brih_Of #end $brih_activity</a></td>
+	<a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5") style="text-decoration:none">$brih_grp #if($lang == "hindi") $brih_Of #end $brih_activity</a></td>
         <td>
 	#if($Status!="Edit")
-        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/add-viewmembers.html","newWin");>$brih_help</a>
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/add-viewmembers.html","newWin"); style="text-decoration:none">$brih_help</a>
 	#else
-            <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/edit-removemembers.html","newWin");>$brih_help</a>
+            <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/edit-removemembers.html","newWin"); style="text-decoration:none">$brih_help</a>
 	#end
         </td>
         </tr>
@@ -109,12 +109,13 @@ $!data.getMessage()
 			#if($Status != "Edit")
 				<tr><td>
 					#if($lang =="hindi" || $lang =="gujarati")
-					<b><font color="Red">*</font>$brih_grp $brih_select:&nbsp;&nbsp;</b>
+					<b><font color="Red">*</font>$brih_grp $brih_select: </b>
 					#else
-					<b><font color="Red">*</font>$brih_select $brih_grp:&nbsp;&nbsp;</b>
+					<b><font color="Red">*</font>$brih_select $brih_grp: </b>
 					#end
                 			<select name="groupname" size="1" class="drop" onChange="Changegroup(document.frm,this);"/>
-                        			<option> </option>
+                        			<option Value="Select Any Group"> $brih_select $brih_any $brih_grp </option>
+                        			<option Value="All"> $brih_selAll $brih_grp </option>
                         			#foreach($grpname in $grplist)
                         			<option value="$grpname.Name">$grpname.Name
                         			#end
@@ -176,7 +177,7 @@ $!data.getMessage()
                         				</td>
 							##<td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							##<b> $brih_grp $brih_member</b>
-							<td bgcolor="$ui.menuColor">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<td bgcolor="$ui.menuColor">
 							<b> $brih_grp #if($lang == "hindi") $brih_Of2 #end $brih_member</b>
 							</td>
 						</tr>
@@ -198,11 +199,12 @@ $!data.getMessage()
 						#end
 						#end
 						#else
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td align="center"><b><font color=blue><I><font size="4">$brih_grpmsg12</font></I></font></b></td>
+						<td align="center"><b><font color=blue><I><font size="4">$brih_grpmsg12</font></I></font></b></td>
 						#end
 					</table>
 					#else
          				#set ($counts="")
+					 <div style="height:330px;width:340px;overflow:auto">
 						<table width=100% bgcolor="$ui.tableColor">
                         				#foreach($studentnames in $studentlist)
 							#if($velocityCount%2==0)
@@ -223,13 +225,17 @@ $!data.getMessage()
 					#set($counts=$counts+1)
 							#end
 						</table>
+					</div>
 					#end
 			</td>
 			#if($Status !="Edit" )
 				<td bgcolor="$ui.menuColor" valign="top" align="left">
+				<div style="height:330px;width:590px;overflow:auto">
+                                <table width=100% bgcolor="$ui.menuColor">
+
 				#if($nolist == "yeslist")
-				#if($val == "")
-					<td bgcolor="$ui.menuColor" width="40%"><i><font color="blue">$brih_grpmsg13</font><i></td>
+				#if(($val == "") && ($modd=="All"))
+					<td bgcolor="$ui.menuColor" align="center"><i><font color="blue" size=4><b>Please select any group for viewing the group members !!</font><i></td>
 				#else
 					#if($lang =="hindi" || $lang =="gujarati")
                         		#set($headings=["","<font color=green>$val</font> $brih_grp $brih_Of2 $brih_selected $brih_student "])
@@ -239,7 +245,6 @@ $!data.getMessage()
 					#foreach($headings in $headings)
                                 		<font size="4"><I><b>$headings</b></I></font>
                         		#end
-					<table width=100% bgcolor="$ui.tableColor">
 						#if($mode == "noempty")
 						#foreach($selectedlist in $selectedlist)
 						#if($velocityCount%2==0)
@@ -247,16 +252,34 @@ $!data.getMessage()
                                                 #else
                                                 <tr bgcolor="$ui.tableColor">
                                                 #end
-						<td> $selectedlist.UserName</td>
+						<td> $selectedlist.UserName <font color="blue">[$!selectedlist.StudentFullName]</font></td>
 						</tr>
 						#end
+						
+						###################### Show All Group List######################
+						#elseif(($modd=="All")&&($val=="All")&&($allgrouplist.size()!=0))
+                                                <th bgcolor="$ui.tableColor">$brih_grp $brih_name</th>
+						<th bgcolor="$ui.tableColor">$brih_student $brih_name</th>
+                                                	#foreach($allgrouplistt in $allgrouplist)
+                                                	#if($velocityCount%2==0)
+                                                	<tr bgcolor="$ui.tableColor">
+                                                	#else
+                                                	<tr bgcolor="$ui.menuColor">
+                                                	#end
+							<td width="20%"> $!allgrouplistt.Name</td>
+                                                	<td> $!allgrouplistt.UserName <font color="blue">[$!allgrouplistt.StudentFullName]</font></td>
+                                                	</tr>
+                                                	#end
+						################# END ######################
+						
 						#else
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<td align="center"><b><font color=blue><I><font size="4">$brih_grpmsg12</font></I></font></b></td>
+						<td align="center"><b><font color=blue><I><font size="4">$brih_grpmsg12</font></I></font></b></td>
 						#end
-					</table>
 				#end
 				#end
 				</td>
+			 </table>
+                        </div>
 			#end
         ##        </table> ## table end 6
        ## </tr></td> ## end of tr td 7
@@ -273,17 +296,19 @@ $!data.getMessage()
 			#end
 		#else
 			#if($lang == "hindi" || $lang =="gujarati")
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doAddSelected" value="$brih_member $brih_add" onClick="checkselect(document.frm,this);"/>
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doAddSelected" value="$brih_member $brih_add" onClick="checkselect(document.frm,this);"/>
 			#else
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doAddSelected" value="$brih_add $brih_member" onClick="checkselect(document.frm,this);"/>
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doAddSelected" value="$brih_add $brih_member" onClick="checkselect(document.frm,this);"/>
 			#end
 			#if($lang =="hindi" || $lang =="gujarati")
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doViewmember" value="$brih_member $brih_Of1 $brih_view" onClick="checkselect1(document.frm,this);"/>
+			<input type="hidden" name="modd" value="All">
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doViewmember" value="$brih_member $brih_Of1 $brih_view" onClick="checkselect1(document.frm,this);"/>
 			#else
-        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="button-ftextstyle" name="eventSubmit_doViewmember" value="$brih_view $brih_member " onClick="checkselect1(document.frm,this);"/>
+			<input type="hidden" name="modd" value="All">
+        		<input type="button" class="button-ftextstyle" name="eventSubmit_doViewmember" value="$brih_view $brih_member " onClick="checkselect1(document.frm,this);"/>
 			#end
 		#end
-			&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
+			<input type="submit" class="button-ftextstyle" name="eventSubmit_doCancel" value="$brih_cancel"/>
 				#else
 				<b><font color="blue"><i>$brih_grpmsg18.</i></font></b>
 				#end
@@ -313,13 +338,17 @@ $!data.getMessage()
                 var items;
                 items=frm.StudentNames.value;
 		var val1=document.frm.groupname.value; 
-                if((items.length!=0)&&(val1.length!=0))
+                if((items.length!=0)&&(val1.length!=0)&& (val1!="Select Any Group") &&(val1!="All"))
                 {
                         frm.actionName.value=field.name;
                         frm.submit();
                 }
-                else
-                 	alert("Please Select check box and group  !!");
+		else if((items.length!=0)&&((val1=="Select Any Group")||(val1=="All"))){
+                        alert("Please Select any group  !!");
+                }
+                else{
+                alert("Please Select check box and group  !!");
+                }
 	}
 	function checkfield(frm,field)
 	{
@@ -357,7 +386,7 @@ $!data.getMessage()
         	if(field.checked)
         	{
                 	var rmFile,index,actualString,pre=0,next=0;
-                	actualString=document.frm.StudentNames.value="$count";
+                	actualString=document.frm.StudentNames.value="$counts";
                 	while( ( pre=actualString.indexOf("^",next) ) >=0 )
                         {
                         	var temp=actualString.substring(next,pre);
@@ -368,7 +397,7 @@ $!data.getMessage()
         	else
         	{
                 	var rmFile,index,actualString,pre=0,next=0;
-                        actualString=document.frm.StudentNames.value="$count";
+                        actualString=document.frm.StudentNames.value="$counts";
                   	while( ( pre=actualString.indexOf("^",next) ) >=0 )
                         {
                         	var temp=actualString.substring(next,pre);

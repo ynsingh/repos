@@ -326,7 +326,7 @@ private void checkActivation(int uid, String email, String password, String flag
                         LoginUtils.CheckSession(email);
                         Date date=new Date();
                         data.setMessage(email);
-                        lang=LoginUtils.SetUserData(email, password, flag, lang, data);
+                        lang=LoginUtils.SetUserData(email, password, "", flag, lang, data);
                         data.unsetMessage();
                         context.put("lang",lang);
                         LoginUtils.UpdateUsageData(uid);

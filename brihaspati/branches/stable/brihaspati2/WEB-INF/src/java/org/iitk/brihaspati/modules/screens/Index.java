@@ -37,7 +37,6 @@ package org.iitk.brihaspati.modules.screens;
 import java.util.Date;
 import java.util.Vector;
 import java.util.List;
-//import java.text.DateFormat;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -48,6 +47,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.UserConfiguration;
@@ -60,6 +60,8 @@ import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.CourseTimeUtil;
 import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
@@ -68,17 +70,19 @@ import org.iitk.brihaspati.modules.utils.LoginUtils;
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:sunil0711@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
  * @ mdified date 05-05-2010,13-07-2010,5-10-2010(Smita),23-12-2010
  * @ mdified date 04-04-2011 (Shaista),25-07-2011(Tej),23-08-2012(Sunil)
  */
 
 public class Index extends SecureScreen{
 	public void doBuildTemplate( RunData data, Context context ){
-		try{
+		try{	
 			String ip=data.getServerName();
-			int port=data.getServerPort();
-			context.put("ip",ip);
-			context.put("port",port);
+			String port=Integer.toString(data.getServerPort());
+			String sch=data.getServerScheme(); 
+			String ipadd=sch+"://"+ip+":"+port;
+			context.put("ipadd",ipadd);
 
                         /*
                          * getting the current user 
@@ -120,10 +124,10 @@ public class Index extends SecureScreen{
                         actlst.addAll(au);
 			Iterator it=au.iterator();
                         Vector ve=new Vector();
-                                while(it.hasNext()){
-                                       String ss=it.next().toString();
-                                       ve.add(ss.substring(0,(ss.length()-3)));
-                                }
+                        	while(it.hasNext()){
+                        		String ss=it.next().toString();
+                                	ve.add(ss.substring(0,(ss.length()-3)));
+                        }
 
                         //send list to vm
                         /*context.put("activelist", actlst);
@@ -169,9 +173,8 @@ public class Index extends SecureScreen{
 								String instid=(String)ve3.get(m);
 								if(!ve2.contains(instid)){
                         			                         ve2.add(instid);
-                                        				}
-                                				}
-							
+                                        			}
+                                			}
 						}
 					}//end of for loop for cId value
                                                
@@ -196,7 +199,12 @@ public class Index extends SecureScreen{
                         context.put("username",username);
                         context.put("firstname",fname);
                         context.put("lastname",lname);
+			if((fname==null) || (lname ==null)){
+			context.put("fullname",username);
+			}
+			else{
 			context.put("fullname",fname+lname);
+			}
 			context.put("flname",flname);
 			String lang=user.getTemp("lang").toString();
                         context.put("lang",lang);
@@ -270,8 +278,8 @@ public class Index extends SecureScreen{
                         context.put("message",Mssg);
 			Date date=new Date();
 			LoginUtils.getChangePasswordtemp(date,uid,data);
-			try{
-        	                /*entry id fron USAGE_DETAILS*/
+			try{	
+				 /*entry id fron USAGE_DETAILS*/
                 	        int eid1=UsageDetailsUtil.getentryId(uid);
                        		 /*entry id from COURSE_TIME */
                 	        int eid2=CourseTimeUtil.getentryid(uid);
@@ -281,6 +289,20 @@ public class Index extends SecureScreen{
                                	}
 		
 			} catch(Exception e){ ErrorDumpUtil.ErrorLog("The error is :- "+e); }
+			try{
+                                /**
+                                 * Getting tweets expirey from admin properties 
+                                 */
+                                String current_date=ExpiryUtil.getCurrentDate("-");
+                                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                String twtexp = AdminProperties.getValue(path,"brihaspati.admin.twtexpiry.value");
+                                int texp=Integer.parseInt(twtexp);
+                                texp=texp-1;
+                                String expdate=ExpiryUtil.getExpired(current_date,texp);
+                                context.put("expdate",expdate);
+
+                        } catch(Exception error){ ErrorDumpUtil.ErrorLog("The error is :- "+error); }
+
 		}
 		catch(Exception e){
 			data.setMessage("The error is :- "+e);

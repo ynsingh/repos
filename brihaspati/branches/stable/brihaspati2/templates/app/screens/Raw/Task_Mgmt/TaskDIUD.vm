@@ -223,7 +223,7 @@ a.one:link,a.one:visited
 
 		## code for move the task
 
-		 <a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm").setAction("Task_Action").addPathInfo("id",$tlist.get($i).getTask_Id()).addPathInfo("seqno",$tlist.get($i).getSeqNumber()).addPathInfo("mode","move").addPathInfo("actionName","eventSubmit_doMove").addPathInfo("all","aa") onmouseover="showToolTip(event,'You Can Move Your Task to Currunt List');return false" onmouseout="hideToolTip()"><img src=$content.getURI("/images/home.JPG") width="18" height="18" style=border:0px solid; ></a>&nbsp;&nbsp;
+		 <a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm").setAction("Task_Action").addPathInfo("id",$tlist.get($i).getTask_Id()).addPathInfo("seqno",$tlist.get($i).getSeqNumber()).addPathInfo("mode","move").addPathInfo("actionName","eventSubmit_doMove").addPathInfo("all","aa") onmouseover="showToolTip(event,'You Can Move Your Task to Currunt List');return false" onmouseout="hideToolTip()"><img src=$content.getURI("/images/home.png") width="18" height="18" style=border:0px solid; ></a>&nbsp;&nbsp;
 
 		
                 ## code for Add the task/subtask

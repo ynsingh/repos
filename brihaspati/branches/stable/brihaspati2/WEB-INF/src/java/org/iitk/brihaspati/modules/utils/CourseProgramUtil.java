@@ -173,7 +173,8 @@ public class CourseProgramUtil
 				}
 				else
 				{
-					Msg= m_u.ConvertedString("prgm_msg1",File);
+					if(!Prg.equals("Select Program")&&!CourseId.equals("Select Course"))
+						Msg= m_u.ConvertedString("prgm_msg1",File);
 				}
 			}
 		}
@@ -612,5 +613,42 @@ public class CourseProgramUtil
 			ErrorDumpUtil.ErrorLog("Exception in updaterollno !!(CourseProgramUtil)"+e);
 		}
 		return msg;
+	}
+
+	/**
+         * In this method, Insert rollno of the student for new program  
+         * @param uname String the username
+         * @param Program String program of the student
+         * @param Rollno String rollno of the student
+         * @param Instid String institute id
+         * @param File String language file for messages
+         * @return String
+         */
+	public static String InsertRollno(String uname, String Program, String Rollno, String Instid, String File)
+	{
+		String Msg="";
+		Criteria crit=new Criteria();
+		try{
+			List chkuser=CheckDuplicateRollno(Rollno,Program,Instid);
+                        if(chkuser.size()!=0)
+               	        {
+	               	         Msg =MultilingualUtil.ConvertedString("rollno_msg",File);
+	                }
+                        else
+               	        {
+	       	                 crit = new Criteria();
+                                 crit.add(StudentRollnoPeer.EMAIL_ID,uname);
+               	                 crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
+                       	         crit.add(StudentRollnoPeer.PROGRAM,Program);
+	                         crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+                                 StudentRollnoPeer.doInsert(crit);
+	               	         Msg =MultilingualUtil.ConvertedString("prgm_msg8",File);
+               	 	}
+		}
+		catch(Exception e)
+		{	
+			ErrorDumpUtil.ErrorLog("Exception in Insertrollno !!(CourseProgramUtil)"+e);
+		}
+		return Msg;
 	}
 }

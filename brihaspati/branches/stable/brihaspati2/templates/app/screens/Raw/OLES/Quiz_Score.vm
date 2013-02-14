@@ -15,6 +15,7 @@ $page.setBgColor($ui.bgcolor)
 
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($flag=false)
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 	<tr>
@@ -31,7 +32,9 @@ $page.setBgColor($ui.bgcolor)
 </table>
 
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
-
+#if($data.getUser().getTemp("modulename7") == "7")
+	#set($flag=true)
+#end
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
 	<td>
@@ -39,9 +42,9 @@ $page.setBgColor($ui.bgcolor)
 		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |	
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | 
         #set($role = $data.getUser().getTemp("role").toString())
-        #if($role=="instructor")
+        #if(($role=="instructor")||(($user_role == "teacher_assistant")&&($flag)))
          <a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result")>$brih_quiz </a> | 
-        #elseif($role=="student")
+        #elseif(($role=="student")||(($user_role == "teacher_assistant")&&($flag==false)))
         	#if($!type=="practice")
         		<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2")>$brih_quiz </a> | 
         	#else

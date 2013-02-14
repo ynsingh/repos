@@ -99,34 +99,32 @@ $page.setBgColor($ui.bgcolor)
     </tr>
 	#foreach($list in $ListUser)
 	#if($velocityCount%2==0)
-    	<tr bgcolor="$ui.menuColor">
+	    	<tr bgcolor="$ui.menuColor">
+		#set($bg=$ui.tableColor)
 	#else
-    	<tr bgcolor="$ui.tableColor">
+	    	<tr bgcolor="$ui.tableColor">
+		#set($bg=$ui.menuColor)
 	#end
 	<td>$!list.getLoginName()</td>
 	<td>$!list.getUserName()</td>
         <td><a href=mailto:$!list.getEmail()>$!list.getEmail()</a></td>
 	#set ($i=2)
         #set ($j=0)
+        <td>
         	#foreach ($urecord1 in $rollnolist)
 		        #if($!list.getLoginName()== $!rollnolist.get($j).getEmailId())
-			        <td> $!rollnolist.get($j).getRollNo()</td>
+		        	#if($i<=1) <font color=$bg>| </font>#end
+			         $!rollnolist.get($j).getRollNo()
 			        #set ($i = $i - 1)
 		        #end
 		        #set($j = $j + 1)
 	        #end
-        ## if no rollno exist
-        #if($i==2)
-        	<td></td><td></td>
-        #end
-        ## if one rollno exist
-        #if($i==1)
-	        <td></td>
-        #end
+	</td>
 	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstituteUserForm.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("Process","modify").addPathInfo("mode","sclist").addPathInfo("count",$tdcolor).addPathInfo("from","usermgmt") style=text-decoration:none>$brih_update</a> &nbsp;</td>
         <td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","changePW").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword </a> &nbsp;</td>
-        <td colspan=2>
-            <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_list</a> &nbsp;</td>
+        <td>
+            <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstStudentCourseList.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("count","2").addPathInfo("mode","sclist") style=text-decoration:none>$brih_course $brih_list</a> &nbsp;</td>
+	<td><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("username",$list.getLoginName()).addPathInfo("mode","rollnomgmt").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_rollno $brih_mgmt </a> </td>
 	#end
     </tr>
 <tr>

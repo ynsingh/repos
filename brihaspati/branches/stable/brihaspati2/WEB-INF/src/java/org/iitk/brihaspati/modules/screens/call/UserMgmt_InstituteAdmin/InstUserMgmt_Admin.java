@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /*
  * @(#)InstUserMgmt_Admin.java	
  *
- *  Copyright (c) 2010-11,2012 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010-11,2012, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -43,13 +43,17 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @author  <a href="prajeev@iitk.ac.in">Rajeev Parashari</a>
  * @modified date:23-12-2010, 11-01-2011, 31-01-2012
- * @modified date:18-07-2012(Rajeev),30-10-2012(Richa)
+ * @modified date:18-07-2012(Rajeev),30-10-2012(Richa),01-02-2013(Richa)
  */
 import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
@@ -65,6 +69,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseProgramUtil;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.om.StudentRollno;
@@ -103,31 +110,110 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	/**
  	* Get institute wise user rollno list.
  	* *@see CourseProgramUtil util in utils.   
- 	*/ 
+ 	*/
+	try{ 
 	List rollnoprglist=CourseProgramUtil.getUserInstituteRollnoList(uname,instituteId);
+	int Usrlistsize=rollnoprglist.size();
         Vector Rollnolist = new Vector();
+	ArrayList al = new ArrayList(); 
         for(int j=0;j<rollnoprglist.size();j++)
  	{
         	StudentRollno st = (StudentRollno)rollnoprglist.get(j);
                 String PrgCode = st.getProgram();
                 String Pgname = InstituteIdUtil.getPrgName(PrgCode);
                 String rollno = st.getRollNo();
+		al.add(PrgCode);
                 CourseUserDetail Crsdetail=new CourseUserDetail();
                 Crsdetail.setPrgName(Pgname);
                 Crsdetail.setRollNo(rollno);
                 Rollnolist.add(Crsdetail);
         }
         context.put("rlnolist",Rollnolist);
-	if(mode.equals("rollnomgmt")){
-		if(rollnoprglist.size()==0){
-			context.put("type","NoRollno");
-			String msg=MultilingualUtil.ConvertedString("prgm_msg6",file);
-			data.setMessage(msg);
-		}	
-		else
-			context.put("type","notEmpty");
+	/**
+         * Getting values of all fields of template and set into hash map for 
+         * display in template after reloading the page for checking existing rollno .
+         */
+	ArrayList list = new ArrayList();
+        Map map = new HashMap();
+        String usrname=data.getParameters().getString("EMAIL","");
+        String Passwd=data.getParameters().getString("PASSWD","");
+        String Fname=data.getParameters().getString("FNAME","");
+        String Lname=data.getParameters().getString("LNAME","");
+        String group=data.getParameters().getString("group","");
+	String Crsname="",Crsalias="",userName="";
+	if(StringUtils.isNotBlank(group))
+	{
+		Crsname=CourseUtil.getCourseName(group);
+		Crsalias=CourseUtil.getCourseAlias(group);
+		String insId=org.apache.commons.lang.StringUtils.substringAfterLast(group, "_");
+		String loginName=org.apache.commons.lang.StringUtils.substringBetween(group, Crsalias,"_"+insId);
+		int UId=UserUtil.getUID(loginName);
+       	       	String uID=Integer.toString(UId);
+                List userDetails=UserManagement.getUserDetail(uID);
+       	        TurbineUser element=(TurbineUser)userDetails.get(0);
+               	String firstName=element.getFirstName().toString();
+                String lastName=element.getLastName().toString();
+		userName=firstName+lastName;
+        	if(org.apache.commons.lang.StringUtils.isBlank(userName))
+                	userName=loginName;
 	}
-
+        String role=data.getParameters().getString("role","");
+        String pgcode=data.getParameters().getString("prg","");
+        String pgname="";
+        if(StringUtils.isNotBlank(pgcode))
+	        pgname=InstituteIdUtil.getPrgName(pgcode);
+        map = new HashMap();
+        map.put("usrname",usrname);
+        map.put("Pswd",Passwd);
+        map.put("Fstname",Fname);
+        map.put("Lstname",Lname);
+        map.put("Grpname",group);
+	map.put("CrsName",Crsname);
+	map.put("CrsAlias",Crsalias);
+	map.put("InstrName",userName);
+        map.put("Rolename",role);
+        map.put("Pgcode",pgcode);
+        map.put("Pgname",pgname);
+        list.add(map);
+        context.put("UsrDetail",list);
+	//Get rollno of the user if exist in databse and context put in template.
+        List userRollNo=CourseProgramUtil.getUserPrgRollNo(usrname,pgcode,instituteId);
+        context.put("rollno",userRollNo);
+	/**
+         * If mode is "rollnomgmt" then come inside below check.
+         * Check status if it is "newrollno" then context put only those program that is not registered for the user
+ 	 */ 
+	if(mode.equals("rollnomgmt")){
+		String status=data.getParameters().getString("status","");
+		context.put("status",status);
+		if (status.equals("newrollno")|| rollnoprglist.size()==0)
+		{
+        	        Criteria crit=new Criteria();
+			if(al.size()>0){
+	                	crit.add(InstituteProgramPeer.INSTITUTE_ID,Integer.parseInt(instituteId));
+				crit.andNotIn(InstituteProgramPeer.PROGRAM_CODE,al);
+			}
+			else
+				crit.add(InstituteProgramPeer.INSTITUTE_ID,Integer.parseInt(instituteId));
+        	        List LeftPrglist= InstituteProgramPeer.doSelect(crit);
+			//ErrorDumpUtil.ErrorLog("Instplist after excluding----"+LeftPrglist);
+			Vector NewPrgDetail = new Vector();
+	                for(int i=0;i<LeftPrglist.size();i++)
+        	        {
+                	        InstituteProgram element = (InstituteProgram)LeftPrglist.get(i);
+	                        String PrgCode = element.getProgramCode();
+        	                String prgName = InstituteIdUtil.getPrgName(PrgCode);
+                	        CourseUserDetail cDetails=new CourseUserDetail();
+	                        cDetails.setPrgName(prgName);
+        	                cDetails.setPrgCode(PrgCode);
+                	        NewPrgDetail.add(cDetails);
+	                }	
+			context.put("NewPrgDetail",NewPrgDetail);
+		}
+	}
+	}
+	catch(Exception e)
+	{ErrorDumpUtil.ErrorLog("Error in screen[InstUserMgmt_Admin.java] "+e);}
 	/**
 	  *get InstituteId and used in getting Institute Course List.
 	  *@see InstituteDetailsManagement util in utils. 	
@@ -139,6 +225,8 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 		}
 		if(mode.equals("userdelete")){
 			String role=data.getParameters().getString("role");
+			String grpname=data.getParameters().getString("group","");
+			context.put("searchgrp",grpname);
 			context.put("role",role);
 		}
 	}

@@ -76,16 +76,17 @@ public class EmailVerification
         String fileName=new String();
         String info_Opt="", msgRegard="", msgDear="", messageFormate="", subject="", confirmationMail="";
         String Mailmsg=new String();
-	String serverName, serverPort, current_date;
+	String current_date;
 	ParameterParser parameterparser;
 	int srvrport;
 	MultilingualUtil mu = new MultilingualUtil();
 
 	EmailVerification(RunData rundata)
 	{
-		serverName=rundata.getServerName();
-                srvrport=rundata.getServerPort();
-                serverPort=Integer.toString(srvrport);
+	//	serverName=rundata.getServerName();
+          //      srvrport=rundata.getServerPort();
+            //    serverPort=Integer.toString(srvrport);
+	//	server_scheme=TurbineServlet.getServerScheme();
 		parameterparser = rundata.getParameters();
 	}	
 
@@ -133,7 +134,8 @@ public class EmailVerification
                 	f.mkdirs();
                 	filepath=filepath+"/EmailUpdation.xml";
 			//delete expired profile
-	                int cnt=exml.deleteExpiredProfile(filepath, serverName, serverPort);         	
+	                //int cnt=exml.deleteExpiredProfile(filepath, serverName, serverPort);         	
+	                int cnt=exml.deleteExpiredProfile1(filepath);         	
 
 			/** check for existence of entry
                  	* @see XMLWriter_EmailUpdation (method-mailExist)in Utils
@@ -149,26 +151,35 @@ public class EmailVerification
                        	 		* instAdmin/ brihaspatiAdmin defined in brihasapti.properties
                        	 		*/
 				
-                       			if(serverPort.equals("8080"))
+                       			/*if(serverPort.equals("8080"))
                                			info_Opt = "newUser";
                        			else
                                			info_Opt = "newUserhttps";
+					*/
 					String randm_n = PasswordUtil.randmPass();
                        			String str1=randm_n+email;
-                       			String a_key=EncryptionUtil.createDigest("MD5",str1);
+                       			String a_key=EncryptionUtil.createDigest("SHA1",str1);
                        			fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                        			pr =MailNotification.uploadingPropertiesFile(fileName);
-                       			msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
-                			msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
-                       			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-                       			msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
-                       			subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".eu_subject");
-                       			messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".eu_message"); // get a_key
-                       			confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
-                       			confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, mode, Lang);
-                       			confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
-                       			messageFormate = messageFormate+confirmationMail;
-                       			Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "", "", "");
+                       			//msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+                			msgDear = pr.getProperty("brihaspati.Mailnotification.newUser.msgDear");
+					msgDear = MailNotification.getMessage_new(msgDear, "Brihaspati", "User", "", email);
+                       			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                       			msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+					//msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+                       			msgRegard = MailNotification.replaceServerPort(msgRegard);
+					//subject=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".eu_subject");
+                       			subject=pr.getProperty("brihaspati.Mailnotification.newUser.eu_subject");
+					//messageFormate = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".eu_message"); // get a_key
+                       			messageFormate = pr.getProperty("brihaspati.Mailnotification.newUser.eu_message");
+					//confirmationMail=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".confirmationMail");
+                       			confirmationMail=pr.getProperty("brihaspati.Mailnotification.newUser.confirmationMail");
+					confirmationMail=MailNotification.getMessage(confirmationMail, email, a_key, mode, Lang);
+                       			//confirmationMail=MailNotification.replaceServerPort(confirmationMail, serverName, serverPort);
+                       			confirmationMail=MailNotification.replaceServerPort(confirmationMail);
+					messageFormate = messageFormate+confirmationMail;
+                       			//Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "", "", "");
+                       			Mailmsg = MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, "", email, subject, "", "");
 					String update = XMLWriter_EmailUpdation.emailVerification(filepath,uname,email,a_key,current_date,photo);
 					return update;
 					

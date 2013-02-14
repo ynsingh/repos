@@ -44,12 +44,21 @@ import org.apache.commons.lang.StringUtils;
 
 
 /**
+ * This is a singleton class. Only instance of this will always exist. Object
+ * should always be created using MailNotificationThread.getController() which
+ * return the object reference to this singleton class if it exist. If it does
+ * not exist, it will be created.
+ *
+ * setMessage() function in this class should be called for putting up the
+ * message in email spool, so that it can sent by independent thread to the smtp
+ * server as configured in the conf/admin.propertie.
+ *
  * @author <a href="mailto:meha1490@gmail.com">Meha Singh</a>Created on march-2011
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified Date: 18-08-2011 (Shaista)
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
  * @modify date: 09-08-2012 (Priyanka)
- * @modify date: 09-11-2012 (Shaista)
+ * @modify date: 09-11-2012, 27-12-2012 (Shaista)
  */
 
 public class MailNotificationThread implements Runnable {
@@ -77,10 +86,52 @@ public class MailNotificationThread implements Runnable {
         }	
 	
 	/**
- 	 * Add message to a vector which store in linkedlist.
+ 	 * Add message to a vector which is stored in linkedlist.
+         * last parameter added by Priyanka
+         * @param message_text This string is actual message which will be send
+         * in the email.
+         * @param msg_Dear Saluation to be added in the message text.
+         * @param msg_regard The closing words for the mail message.
+         * @param msg_UserInfo The name institute admin/sender
+         * @param mailId mailid of the destination where mail message has to be
+         * sent.
+         * @param sub subject of the email.
+         * @param filePathForLM
+         * @param LangFile language file name
+         * @param instId Institute id 
+         * @param mode 
 	 */
-	//public String set_Message(String message_text,String mailId,String sub,String filePathForLM,String LangFile, String portNum)
-	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile, String instId, String mode)//last parameter added by Priyanka
+	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile)
+	{
+		String strng="failure";
+		//ErrorDumpUtil.ErrorLog("Lang File in MailNotificationThread Class ="+LangFile);
+		v=new Vector();
+		v.add(mailId); //0   
+                v.add(sub);    //1
+                v.add(msg_Dear);  //2 
+                v.add(message_text); //3  
+                v.add(filePathForLM);//4
+                v.add(LangFile);//5
+ //               v.add(instId);//6
+                v.add(msg_regard);  //7 
+                v.add(msg_UserInfo);  //8
+		mailnotification.add(0,v);
+		if(mailnotification.size()>0)
+			strng="Success";
+		//ErrorDumpUtil.ErrorLog("\n v=="+v); 
+		start();
+	        //following check added by priyanka
+//		if(mode.equals("act") || mode.equals(""))
+//			strng= mu.ConvertedString("mail_msg", LangFile);
+			//"Message is in queue";
+//		if(mode.equals("cnfrm_i") || (mode.equals("cnfrm_u")) || (mode.equals("cnfrm_c")))
+                 /* The above line is to be verified. */
+//			strng= mu.ConvertedString("mail_confirm", LangFile);
+			//"Please click on the Activation link to Activate your account."
+		return strng;
+	}
+/*
+	public String set_Message(String message_text, String msg_Dear, String msg_regard, String msg_UserInfo, String mailId, String sub, String filePathForLM, String LangFile, String instId, String mode)
 	{
 		String strng="";
 		//ErrorDumpUtil.ErrorLog("Lang File in MailNotificationThread Class ="+LangFile);
@@ -97,27 +148,21 @@ public class MailNotificationThread implements Runnable {
 		mailnotification.add(0,v);
 		//ErrorDumpUtil.ErrorLog("\n v=="+v); 
 		start();
-	//following check added by priyanka
+	        //following check added by priyanka
 		if(mode.equals("act") || mode.equals(""))
 			strng= mu.ConvertedString("mail_msg", LangFile);
 			//"Message is in queue";
 		if(mode.equals("cnfrm_i") || (mode.equals("cnfrm_u")) || (mode.equals("cnfrm_c")))
-			strng= mu.ConvertedString("mail_confirm", LangFile);
+  */               /* The above line is to be verified. */
+/*			strng= mu.ConvertedString("mail_confirm", LangFile);
 			//"Please click on the Activation link to Activate your account."
-	//....................
 		return strng;
 	}
-
-	/*public void CourseTimeSystem(int userid){
-                this.userid=userid;
-		//this.eid=eid;
-		flag1=true;	
-                start();
-        }*/
-	public void CourseTimeSystem(int userid,int eid){
-		this.userid=userid;
-                this.eid=eid;
-                flag1=true;
+*/
+	public void CourseTimeSystem(int userid, int eid){
+		this.userid = userid;
+                this.eid = eid;
+                flag1 = true;
                 start();
         }
 
@@ -150,39 +195,42 @@ public class MailNotificationThread implements Runnable {
       	public synchronized void run() {
 		
 		while(flag) {
-			try{ 	Thread.sleep(200); }catch(Exception e){}
-			try { 
-				//ErrorDumpUtil.ErrorLog("\n\nmailnotification.size()!!!!!!!!!!!!!!!!"+mailnotification.size());
-				while(mailnotification.size() != 0) {
+			try {
+			 	Thread.sleep(200);
+			} catch(Exception e){
+				ErrorDumpUtil.ErrorLog("\nI am  in MailNotificationThread Class  sleep section "+e, TurbineServlet.getRealPath("/logs/Email.txt"));
+			}
+			try {
+				/** Please dont remove next line */
+				ErrorDumpUtil.ErrorLog("\nMailNotificationThread Class  mailnotification.size() -> "+mailnotification.size(), TurbineServlet.getRealPath("/logs/Email.txt"));
+				while(mailnotification.size() > 0) {
 					boolean boolFlag = false;
 					Vector mail_data=(Vector)mailnotification.pop();
-					//ErrorDumpUtil.ErrorLog("\nMailNotificationThread   mail_data=="+mail_data);
 					String mailId =mail_data.get(0).toString().trim();
-        	                        String sub = mail_data.get(1).toString();
-					String msgDear =mail_data.get(2).toString();
+        	                        String sub = mail_data.get(1).toString().trim();
+					String msgDear =mail_data.get(2).toString().trim();
                				String message_text =mail_data.get(3).toString().trim();
-					String filePathForLM =mail_data.get(4).toString();
-	               			String LangFile =mail_data.get(5).toString();
-					String instId =mail_data.get(6).toString();
+					String filePathForLM =mail_data.get(4).toString().trim();
+	               			String LangFile =mail_data.get(5).toString().trim();
+					//String instId =mail_data.get(6).toString().trim();
 					//MailNotificationThread.attachedFile = filePathForLM;
-					String msgRegard1 =mail_data.get(7).toString();
-					String msgUserInfo =mail_data.get(8).toString().trim();
+					String msgRegard1 =mail_data.get(6).toString().trim();
+					String msgUserInfo =mail_data.get(7).toString().trim();
 					int j=0;
-					Vector v1 = new Vector();
-					while(mailnotification.size() !=0 ) {
+					while(mailnotification.size() >0 ) {
 						boolean flag1=false;
 						Vector mail_data1 = (Vector)mailnotification.get(j);
-		                                String searchId = mail_data1.get(0).toString();
-						String searchInstId = mail_data1.get(6).toString();
-						String searchAttachFile = mail_data1.get(4).toString();
+		                                String searchId = mail_data1.get(0).toString().trim();
+						//String searchInstId = mail_data1.get(6).toString().trim();
 						//ErrorDumpUtil.ErrorLog("mail_data1=="+mail_data1);
-						if(mailId.equals(searchId) && ((instId.equals(searchInstId)|| searchInstId.equals("")))){
+						//if(mailId.equals(searchId) && ((instId.equals(searchInstId)|| searchInstId.equals("")))){
+						if(mailId.equals(searchId) ){
 				
 							flag1=true;
 							boolFlag = true;
-							v1.add(searchId);
-							String searchMsgUserInfo =mail_data1.get(8).toString().trim();
-		               				String searchLangFile =mail_data1.get(5).toString();
+							String searchMsgUserInfo =mail_data1.get(7).toString().trim();
+		               				String searchLangFile =mail_data1.get(5).toString().trim();
+						        String searchAttachFile = mail_data1.get(4).toString().trim();
 							if(!msgUserInfo.equals(searchMsgUserInfo))
 							{
 								/* If One User in Same institute have same message then it would go in "else" part 
@@ -244,98 +292,116 @@ public class MailNotificationThread implements Runnable {
 					}
 					if(boolFlag){
 						sub = "Combined mail from Brihaspati- The Virtual Classroom ";
-						String filePath1 =TurbineServlet.getRealPath("/EmailSpooling");
-       	                			File f1 = new File(filePath1);
-	                        		if(f1.exists()){
-							if(v1.size() > 0){
-								for(int k=0; k< v1.size(); k++){
-									XMLWriter_EmailSpooling.RemoveElement(filePath1+"/EmailSpoolFile.xml", mailId);
-								}
-							}
-							v1 = null;
-						}
 					}
 
-					String msg=MailNotification.sendMail(msgDear+message_text+msgRegard1+msgUserInfo, mailId, sub, filePathForLM, LangFile);
+					String msg=MailNotification.sendMail(msgDear+message_text+msgRegard1+msgUserInfo, mailId, sub, filePathForLM, LangFile, "");
 				} //main while close
 				this.flag2 = true;
-/**
-				if(mailnotification.size() == 0){
-				 	if(MailNotificationThread.attachedFile.length() >0)
-						MailNotification.deletingAttachedFile(MailNotificationThread.attachedFile);
-				}
-*/
+
 				if(flag1){
 					 ModuleTimeUtil.AllCalculations(userid,eid);
                                         flag1=false;
                                 }
 				
 				if(flag2){
-
-					emailXMLRead();
+ 	              			File f1 = new File(TurbineServlet.getRealPath("/EmailSpooling"));
+					File[] files = f1.listFiles();
+	                       		if((f1.exists())&&(files.length >0))
+						emailXMLRead();
 	        			flag2 = false;
 				}
 					
-			}catch(Exception es){}
+			}catch(Exception es){
+				ErrorDumpUtil.ErrorLog("\nThe error in running mail thread (MailNotificationThread) "+es, TurbineServlet.getRealPath("/logs/Email.txt"));
+			}
 			stop();
 		}	
     	}
+
+	/* 
+ 	 *
+ 	 */
 	public void emailXMLRead(){
-			Vector  mailDetail1 = new Vector();
-			 String searchMailId= "", searchMsg ="", sendAttemptTime = "", searchDate = "", attachedFile = "", writeinxml = "", sub = "", langFile = "";
-			int intSearchAttempt =0;
-			long longCreationDate;
-	                long longCurrentDate;
-			long noOfmin, noOfDays;
-			String filePath1=TurbineServlet.getRealPath("/EmailSpooling");
-                        File f1 = new File(filePath1);
-                        if(f1.exists())
-				mailDetail1 = XMLWriter_EmailSpooling.getEmailSpoolDetails(filePath1+"/EmailSpoolFile.xml");
-                        if( mailDetail1.size() != 0){
-                                 for( int i=0; i < mailDetail1.size(); i++){
-					
-                                        InstituteFileEntry  InstfileEntry =  (InstituteFileEntry)mailDetail1.get(i);
-                                        searchMailId = InstfileEntry.getInstituteEmail().trim();
-                                        searchMsg = InstfileEntry.getMessage().trim();
-					sub = InstfileEntry.getSubject();
-					attachedFile = InstfileEntry.getAttachFile();
-					langFile =  InstfileEntry.getLangFile();
-					searchDate = InstfileEntry.getDate();
-                                        sendAttemptTime = InstfileEntry.getAttempt();
-					//ErrorDumpUtil.ErrorLog("CurrentDate=="+new java.util.Date().getMinutes() +"\n sendAttemptTime="+Date.valueOf(sendAttemptTime).getMinutes());
-					/** Calculating minuts */
+		Vector  mailDetail1 = new Vector();
+		 String searchMailId= "", searchMsg ="", sendAttemptTime = "", searchDate = "", attachedFile = "", writeinxml = "", sub = "", langFile = "";
+		int intSearchAttempt =0;
+		long longCreationDate;
+                long longCurrentDate;
+		long noOfmin, noOfDays;
+		String filePath1=TurbineServlet.getRealPath("/EmailSpooling");
+        	File f1 = new File(filePath1);
+		if(f1 != null){ //if1
+			File[] files = f1.listFiles();  
+			if (files.length >0){ //if2
+				for (File file : files) {
+					String fileName = file.getName();
+					searchMailId = StringUtils.substringBeforeLast(fileName, "_");
+					String tmp = StringUtils.substringAfterLast(fileName, "_");
+					searchDate = (StringUtils.substringBeforeLast(tmp, "$")).trim();
+					String temp = (StringUtils.substringAfterLast(tmp, "$")).trim();
+					String tmpSearchDate = (StringUtils.substringBeforeLast(temp, ":")).trim();
+					String tmpTime = (StringUtils.substringAfterLast(tmp, ":")).trim();
+					sendAttemptTime = StringUtils.substringBeforeLast(tmpTime,".xml");
+					//ErrorDumpUtil.ErrorLog("\nsearchMailId=="+searchMailId+"\t searchDate="+searchDate+"\t ExpiryUtil.getCurrentDate=="+ExpiryUtil.getCurrentDate("-")+"\t sendAttemptTime="+sendAttemptTime);
+					/* Getting current time */
+
 					java.util.Date date = new java.util.Date();
 					longCurrentDate =  date.getTime();
-				
-                                        longCreationDate = Long.valueOf(sendAttemptTime);
-					//ErrorDumpUtil.ErrorLog("longCreationDate ="+longCreationDate +" \t longCurrentDate="+longCurrentDate);
-                                        noOfmin = (longCurrentDate-longCreationDate)/(60*1000);
-					//ErrorDumpUtil.ErrorLog("\n noOfmin ="+noOfmin);
+
 
 					 /** Calculating Days*/
 
-                                        //ErrorDumpUtil.ErrorLog("\n\nsearchDate=="+searchDate);
-                                        longCreationDate = Date.valueOf(searchDate).getTime();
+        				longCreationDate = Date.valueOf(searchDate).getTime();
 					noOfDays = (longCurrentDate-longCreationDate)/(24*3600*1000)+1;
 
+					//ErrorDumpUtil.ErrorLog("\nlongCurrentDate ="+longCurrentDate);
+					//ErrorDumpUtil.ErrorLog("\nlongCreationDate ="+longCreationDate);
 					//ErrorDumpUtil.ErrorLog("\n noOfDays ="+noOfDays);
-					if(noOfDays >1 )
-						noOfmin= 24*(noOfDays-1)*60 + noOfmin;
+					String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+					try{
+				        	String mailSpoolingExpiryDay = AdminProperties.getValue(path,"brihaspati.admin.mailSpoolingExpiry.value"); 
+					
+						if(StringUtils.isBlank(mailSpoolingExpiryDay))
+							mailSpoolingExpiryDay = "3";
+						String mailResendTime =  AdminProperties.getValue(path,"brihaspati.admin.spoolMailResendTime.value");
+						if(StringUtils.isBlank(mailResendTime))
+							mailResendTime = "60";
 						
-						
-                                        //ErrorDumpUtil.ErrorLog("searchMailId==="+searchMailId+"\tsearchMsg="+searchMsg);
-					if(noOfDays > 3)
-						XMLWriter_EmailSpooling.RemoveElement(filePath1+"/EmailSpoolFile.xml", searchMailId, searchMsg);
-					else {
-						if(noOfmin > 60 && (longCurrentDate-longCreationDate)!=0){
-							Long cDate = date.getTime();
-	
-							MailNotificationThread.getController().set_Message( searchMsg, "", "", "", searchMailId, sub, attachedFile, langFile, "", "");
-							//ErrorDumpUtil.ErrorLog("minutttttttttttttt");
-							 XMLWriter_EmailSpooling.UpdateEmailSpoolxml(filePath1+"/EmailSpoolFile.xml", searchMailId, searchMsg, cDate.toString(), ExpiryUtil.getCurrentDate("-") );
-                        	                }
-					}
-				}
-			}
+						if(noOfDays > Long.valueOf(mailSpoolingExpiryDay)){
+							File f = new File(filePath1+"/"+fileName);
+							f.delete();
+						}
+						else {
+							/** Calculating minuts */
+
+       	       						longCreationDate = Long.valueOf(sendAttemptTime);
+        		        	        	noOfmin = (longCurrentDate-longCreationDate)/(60*1000);
+
+							if(!tmpSearchDate.equals(ExpiryUtil.getCurrentDate("-"))) 
+							{
+								if(noOfDays >1 )
+									noOfmin = 24*(noOfDays-1)*60 + noOfmin;
+							}
+							//ErrorDumpUtil.ErrorLog("\nAFTERRRRRRRRRRRRRRRR noOfmin ="+noOfmin);
+		
+							if(noOfmin > Long.valueOf(mailResendTime) && (longCurrentDate-longCreationDate)!=0){
+								mailDetail1 = XMLWriter_EmailSpooling.getEmailSpoolDetails(filePath1+"/"+fileName);
+		        		                	if( mailDetail1.size() != 0){
+
+	                               			        	InstituteFileEntry  InstfileEntry =  (InstituteFileEntry)mailDetail1.get(0);
+              				        		        searchMsg = InstfileEntry.getMessage().trim();
+									sub = InstfileEntry.getSubject();
+									attachedFile = InstfileEntry.getAttachFile();
+									langFile =  InstfileEntry.getLangFile();
+									Long cDate = date.getTime();
+									EmailSpoolingThread.getController().set_Message( searchMailId, sub, searchMsg, attachedFile, langFile, fileName);
+       			           	        	        }
+							}		
+						} //else
+					} //try close
+					catch (Exception e){ ErrorDumpUtil.ErrorLog("\nError in readXml() Method in MailNotificationThread class="+e.getMessage());}
+				} //for
+			}//if 2
+		} //if 1
 	}
 }// End of file.

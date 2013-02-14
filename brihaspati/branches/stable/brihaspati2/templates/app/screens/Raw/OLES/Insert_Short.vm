@@ -1,8 +1,9 @@
 #*
  * @(#) Insert_Short.vm
- * Copyright(c)2010 ETRG,IIT Kanpur.
+ * Copyright(c)2010,2012 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author <a href="mailto:jaivirpal@gmail.com">Jaivir Singh</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -37,12 +38,16 @@ $!data.getMessage()
 <br>
 <form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Insert_Short.vm").setAction("OnlineExaminationSystem")>
 <table width="100%" bgcolor="$ui.tableColor" cellpadding="2">
+#if($acttype=="editques" || $acttype=="viewques")
+<tr bgcolor="$ui.menuColor"><td><b>$brih_queBank $brih_topic : $topic</b></td></tr>
+#else
 <tr bgcolor="$ui.menuColor"><td><b>$brih_queBank $brih_topic : $Topicname</b></td></tr>
+#end
 </table>
 <table width="100%" bgcolor="$ui.menuColor" cellpadding="2"> 
-#if($acttype!="editques")  
-<tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$topic/$quesimage")" width="80" height="100"></td></tr>
-#end
+##if($acttype!="editques")  
+<tr bgcolor="$ui.menuColor"><td width="100%" align="center" colspan="2"><img src="$content.getURI("/images/QuestionBank/$username/$crsId/$topic/$quesimage")" width="80" height="100"></td></tr>
+##end
   <tr>
    <td align="centre" width="30%">
      <b><font face="$ui.sansSerifFonts">$brih_qus</font></b>
@@ -53,10 +58,11 @@ $!data.getMessage()
 	</td>
  </tr>
  #if($typeques=="imgtypeques")
+#if($acttype !="viewques"))
  <tr>
-        ##fileUpload ("<b>Attach File </b><font color=Red>*</font>" "file")
 	#fileUpload ("<b>Upload Image </b><font color=Red>*</font>" "quesimg")
  </tr>
+ #end
  #end
   <tr bgcolor="$ui.tableColor"> 
   	<td width=30% align="centre" >
@@ -104,7 +110,9 @@ $!data.getMessage()
   <input type="hidden" name="quesid" value="$quesid">
   <input type="hidden" name="questype" value="$questype">
   <input type="hidden" name="difflevel" value="$difflevel">
-
+  <input type="hidden" name="dlevel" value="$dlevel">
+  <input type="hidden" name="qtype" value="$qtype">
+  <input type="hidden" name="quesimage" value="$quesimage">
 </font>
 </td>
 </tr>

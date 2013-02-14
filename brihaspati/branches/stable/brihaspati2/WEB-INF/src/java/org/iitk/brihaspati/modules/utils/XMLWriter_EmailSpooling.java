@@ -1,9 +1,9 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*
- * @(#)XMLWriter_GraphCalculation.java
+ * @(#)XMLWriter_EmailSpooloing.java
  *
- *  Copyright (c) 2012 conditions are met:
+ *  Copyright (c) 2012,2013 conditions are met:
  *
  *  Redistributions of source code must retain the above copyright
  *  notice, this  list of conditions and the following disclaimer.
@@ -30,32 +30,36 @@ package org.iitk.brihaspati.modules.utils;
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *
  */
+
 import java.io.File;
-import java.sql.Date;
-import java.util.List;
-import org.w3c.dom.Node;
-import org.w3c.dom.Text;
+import java.io.FileOutputStream;
 import java.util.Vector;
-import org.w3c.dom.NodeList;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import java.io.FileOutputStream;
-import org.apache.torque.util.Criteria;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+
 import javax.xml.parsers.DocumentBuilder;
-import org.apache.xerces.dom.DocumentImpl;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
 import org.apache.commons.lang.StringUtils;
-import javax.xml.parsers.DocumentBuilderFactory;
+import org.apache.turbine.services.servlet.TurbineServlet;
+
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
-/*
+/**
+* @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
 * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+* @modified date: 27-12-2012
 */
 public class XMLWriter_EmailSpooling{
  private Document doc1 = null;
-			//public static String EmailSpoolingXml(String filePath, String emailId, String subject, String msg, String date, String sendStatus, String langFile, String instId)
-			public static String EmailSpoolingXml(String filePath, String emailId, String subject, String msg, String attachedFile, String date, String sendStatus, String langFile)
+			//public static String EmailSpoolingXml(String filePath, String emailId, String subject, String msg, String attachedFile, String date, String sendStatus, String langFile)
+			public static String EmailSpoolingXml(String filePath, String subject, String msg, String attachedFile, String langFile)
 			{	
 				String dispMessage="UnSuccessfull";
 				 //ErrorDumpUtil.ErrorLog("emailId===in XML="+emailId);
@@ -76,9 +80,6 @@ public class XMLWriter_EmailSpooling{
                          *and The text node is the content of that node
                          *Add a text node to the element        
                          */
-                        Element email = doc.createElement("EMAIL_ID");
-                        Text emailIdText = doc.createTextNode(emailId);
-                        email.appendChild(emailIdText);
 
                         Element  sub= doc.createElement("SUBJECT");
                         Text subjectText = doc.createTextNode(subject);
@@ -96,47 +97,35 @@ public class XMLWriter_EmailSpooling{
 	                        attachFileText = doc.createTextNode(attachedFile);
                         attachFile.appendChild(attachFileText);
 
-                        Element countDate= doc.createElement("DATE");
-                        Text dateText = doc.createTextNode(date);
-                        countDate.appendChild(dateText);
-
-                        Element countAttempt = doc.createElement("ATTEMPT");
-                        Text ateText = doc.createTextNode(sendStatus);
-                        countAttempt.appendChild(ateText);
-			
 			Element lang = doc.createElement("LANG_FILE");
                         Text langFileText = doc.createTextNode(langFile);
                         lang.appendChild(langFileText);
-		/*
-			Element instituteId = doc.createElement("INST_ID");
-                        Text instIdText = doc.createTextNode(instId);
-                        instituteId.appendChild(instIdText);
-		*/
-                        emailSpoolValue.appendChild(email);
+
                         emailSpoolValue.appendChild(sub);
                         emailSpoolValue.appendChild(message);
                         emailSpoolValue.appendChild(attachFile);
-                        emailSpoolValue.appendChild(countDate);
-                        emailSpoolValue.appendChild(countAttempt);
                         emailSpoolValue.appendChild(lang);
-                        //emailSpoolValue.appendChild(instituteId);
                         root.appendChild(emailSpoolValue);
                         dispMessage=saveXML(doc,filePath);
-			}catch(Exception ex){}
+			}catch(Exception ex){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (EmailSpoolingXml) under  XMLWriter_EmailSpooling "+ex, TurbineServlet.getRealPath("/logs/Email.txt"));}
 			return dispMessage;
         }
         //prints the XML document to file.
         private static  String saveXML(Document doc,String filePath) {
                 try{
-
+			FileOutputStream fos=new FileOutputStream(filePath);
                         //print
                         OutputFormat format = new OutputFormat(doc);
+			format.setIndent(1);
                         format.setIndenting(true);
                         //to generate a file output use fileoutputstream
-                        XMLSerializer output = new XMLSerializer(new FileOutputStream(filePath), format);
+                        //XMLSerializer output = new XMLSerializer(new FileOutputStream(filePath), format);
+                        XMLSerializer output = new XMLSerializer(fos, format);
+			output.asDOMSerializer();
                         output.serialize(doc);
+			fos.close();
                         return "Successfull";
-                }catch(Exception e){ErrorDumpUtil.ErrorLog(e.getMessage());}
+                }catch(Exception e){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (saveXml) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
                 return "UnSuccessfull";
         }
         /**method for creating blank xml file
@@ -173,7 +162,7 @@ public class XMLWriter_EmailSpooling{
                         doc = builder.parse(getFile(filePath));
 
                 } catch( Exception e ){
-                        e.printStackTrace();
+			ErrorDumpUtil.ErrorLog("\nThe exception comes in method (getCreateDocument) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));
                 }
                 return doc;
         }
@@ -189,7 +178,7 @@ public class XMLWriter_EmailSpooling{
                         list = doc.getElementsByTagName("Email");
 
                 } catch( Exception e ){
-                        e.printStackTrace();
+                       ErrorDumpUtil.ErrorLog("\nThe exception comes in method (getNodeList) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt")); 
                 }
                 return list;
         }
@@ -213,6 +202,7 @@ public class XMLWriter_EmailSpooling{
 		Element eElement=null;
 		Vector v = new Vector();
 		try{
+			//ErrorDumpUtil.ErrorLog("filepath============in getEmailSpoolDetails xml file="+filepath);
 			File f=new File(filepath);
 			if(f.exists()) {
  
@@ -238,110 +228,26 @@ public class XMLWriter_EmailSpooling{
                                         if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                                                 eElement = (Element) nNode;
 					
-						String emailId = getTagValue("EMAIL_ID",eElement);
 						String subject = getTagValue("SUBJECT", eElement);
 						String message = getTagValue("MESSAGE", eElement);
 						String attachFile = getTagValue("ATTACH_FILE", eElement);
-						String date = getTagValue("DATE", eElement);
-						String sendMailStatus = getTagValue("ATTEMPT",eElement);
 						String langFile = getTagValue("LANG_FILE", eElement);
-						InstfileEntry.setInstituteEmail(emailId);
 						InstfileEntry.setSubject(subject);
 						InstfileEntry.setMessage(message);
 						InstfileEntry.setAttachFile(attachFile);
-						InstfileEntry.setDate(date);
-						InstfileEntry.setAttempt(sendMailStatus);
 						InstfileEntry.setLangFile(langFile);
+
                                                 /*store all values in the vector*/
                                                 v.add(InstfileEntry);
 						
 					}
 				}
 			}
-		}catch( Exception e ){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling "+e);}
+		}catch( Exception e ){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (getEmailSpoolDetails) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
 		return v;
 	}
- /**Method for Delete Institute from Xml
-         *@param filePath (String)
-         *@param domain (String)
-         *return string 
-         */
-        public static String RemoveElement(String filePath, String emailId, String msg)
-        {
-                String message="UnSuccessfull";
-                Element element=null;
-                Node node=null;
-                try{
-                        /**Create blank DOM Document
-                         *@see getCreateDocument
-                         */
-                        Document doc =getCreateDocument(filePath);
 
-                        /**Find all elements with the name "Institute"*/
-
-                        NodeList list = doc.getElementsByTagName("Email");
-                        if(list!=null){
-                                for( int i=0; i<list.getLength(); i++ ){
-                                        node = list.item(i );
-                                        if( node.getNodeType() == node.ELEMENT_NODE ){
-                                                element = ( Element )node;
-                                                /**get tag value by passing tag(domain)
-                                                 *@see getTagValue method
-                                                 *if match domain then delete the entry from xml file
-                                                 */
-                                                String valueEmail =getTagValue("EMAIL_ID",element).trim();
-                                                String valueMsg =getTagValue("MESSAGE",element).trim();
-	//					ErrorDumpUtil.ErrorLog("\n\nXML REMOVE=============valueEmail="+valueEmail+"\nvalueMsg ="+valueMsg+"\t msg="+msg);
-                                                if(valueEmail.equals(emailId) && valueMsg.equals((msg))){
-                                                        doc.getDocumentElement().removeChild(element);
-                                                        saveXML(doc,filePath);
-                                                }
-                                        }
-                                }
-                        }
-                }
-                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling method name:(RemoveElement)"+e);}
-                return message;
-        }
-
-        //public static int RemoveElement(String filePath, String emailId, int num)
-        public static String RemoveElement(String filePath, String emailId)
-        {
-                String message="UnSuccessfull";
-                Element element=null;
-                Node node=null;
-                try{
-                        /**Create blank DOM Document
-                         *@see getCreateDocument
-                         */
-                        Document doc =getCreateDocument(filePath);
-
-                        /**Find all elements with the name "Institute"*/
-
-                        NodeList list = doc.getElementsByTagName("Email");
-                        if(list!=null){
-                                for( int i=0; i<list.getLength(); i++ ){
-                                        node = list.item(i );
-	                                        if( node.getNodeType() == node.ELEMENT_NODE ){
-        	                                        element = ( Element )node;
-                	                                /**get tag value by passing tag(domain)
-                        	                         *@see getTagValue method
-                                	                 *if match domain then delete the entry from xml file
-                                        	         */
-                                                	String valueEmail =getTagValue("EMAIL_ID",element).trim();
-							//ErrorDumpUtil.ErrorLog("\n\nXML REMOVE=============Email="+valueEmail);
-        	                                        if(valueEmail.equals(emailId) ){
-                	                                        doc.getDocumentElement().removeChild(element);
-                        	                                saveXML(doc,filePath);
-                                	                }
-                                        	}
-                                }
-                        }
-                }
-                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling method name:(RemoveElement)"+e);}
-                return message;
-        }
-/**method for update the xml file
+	/**method for update the xml file
          *@param filePath (String)
          *@param domain (String)
          *@param expdate (String)
@@ -385,7 +291,7 @@ public class XMLWriter_EmailSpooling{
                         }
 
                 }//try
-                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in util XMLWriter_EmailSpooling method name:(UpdateEmailSpoolxml)"+e);}
+                catch(Exception e){ErrorDumpUtil.ErrorLog("\nThe exception comes in method (UpdateEmailSpoolxml) under  XMLWriter_EmailSpooling "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
         }//method
 
 }

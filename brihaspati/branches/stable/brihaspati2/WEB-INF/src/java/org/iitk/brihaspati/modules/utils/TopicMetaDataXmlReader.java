@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)TopicMetaDataXmlReader.java
  *
- *  Copyright (c) 2005-2008,2009,2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2008,2009,2010,2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -35,15 +35,17 @@ package org.iitk.brihaspati.modules.utils;
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *
  */
-
 import java.io.File;
+import java.util.List;
 import java.util.Vector;
 import org.xml.sax.Attributes;
 import org.iitk.brihaspati.modules.utils.XmlData;
 import org.iitk.brihaspati.modules.utils.XmlReader;
 import org.xml.sax.helpers.AttributesImpl;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
-
+import org.apache.torque.util.Criteria;
+import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
 /**
  * This class Read Xml file with attributes and values
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
@@ -58,7 +60,8 @@ import org.iitk.brihaspati.modules.utils.XmlWriter;
  * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modify 23-12-2010
  * @author <a href="mailto:rpriyanka12@ymail.com">Priyanka Rawat</a>
- * @modify date: 09-08-2012 (Priyanka)
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify date: 09-08-2012 (Priyanka),07-02-2013
  */
 
 public class TopicMetaDataXmlReader
@@ -169,6 +172,7 @@ public class TopicMetaDataXmlReader
 		}
         return null;
         }
+	
 	/**
         *This method get all details of group manangement
         *@return Vector
@@ -182,6 +186,9 @@ public class TopicMetaDataXmlReader
                 if(files!=null)
                 {
                         Attributes ats;
+			String StudfullName="";
+			String firstName=" ";
+			String lastName=" ";
                         String GroupName,type,CreationDate,studentname,studentno;
                         for(int j=0;j<files.length;j++)
                         {
@@ -192,16 +199,30 @@ public class TopicMetaDataXmlReader
                                 CreationDate=ats.getValue("CreationDate");
                                 studentname=ats.getValue("studentname");
                                 studentno=ats.getValue("studentno");
-
+				/*
+				* Get student's userid using studnt LoginId(Email Id).
+				* Get student's FullName using userId.
+				* @UserUtil
+				*/
+				int userid = UserUtil.getUID(studentname);
+				String tempStudfullName = UserUtil.getFullName(userid);
+				// Check student name, if LoginId or EmailId
+				// if equal to login/Email Id then set blank
+				if(tempStudfullName.equals(studentname)){
+				StudfullName="";
+				}
+				// else set student full name 
+				else{
+				StudfullName=tempStudfullName;
+				}
                                 fileEntry.setName(GroupName);
                                 fileEntry.settype(type);
                                 fileEntry.setPDate(CreationDate);
                                 fileEntry.setUserName(studentname);
                                 fileEntry.setstudentno(studentno);
-
+                                fileEntry.setStudentFullName(StudfullName);
                                 vg.add(fileEntry);
                         }
-                        return vg;
 		 }
 
                 }catch(Exception e)
@@ -210,7 +231,8 @@ public class TopicMetaDataXmlReader
                         System.out.println("See Exception message in ExceptionLog.txt file:: ");
 //                        return null;
                 }
-        return null;
+         return vg;
+        //return null;
         }
 
 	/**

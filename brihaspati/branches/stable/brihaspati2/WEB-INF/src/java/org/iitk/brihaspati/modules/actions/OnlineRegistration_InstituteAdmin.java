@@ -92,14 +92,16 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
                         Vector indexList=new Vector();
                         Vector courselist = new Vector();
 			String Mail_msg="";
-			String server_name= TurbineServlet.getServerName();
-			String srvrPort= TurbineServlet.getServerPort();
+			//String server_name= TurbineServlet.getServerName();
+			//String srvrPort= TurbineServlet.getServerPort();
+			//String server_scheme = TurbineServlet.getServerScheme();
 			//get the xml file of online registered courses list in an institute.
                         TopicMetaDataXmlReader topicmetadata =new TopicMetaDataXmlReader(path+"/courses.xml");
                         courselist=topicmetadata.getOnlineUserDetails();
                         StringTokenizer st= new StringTokenizer(accept,"^");
 			String message ="";
-                        String info_new = "", info_Opt="", msgRegard="", instAdminName="";
+                        //String info_new = "", info_Opt="", msgRegard="", instAdminName="";
+			String msgRegard="", instAdminName="";
 			 try{    
 				Criteria crit=new Criteria();
 				crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instid);
@@ -110,20 +112,24 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
 			}
 	                catch(Exception e){ErrorDumpUtil.ErrorLog("Error in OnlineRegistration_Admin class in action at line 245");}
 
-                        if(srvrPort == "8080"){
+                        /*if(srvrPort == "8080"){
                                 info_new="onLineRegReqForCourseReject";
 				info_Opt = "newUser";
 	                }
         	        else {
                                 info_new="onLineRegReqForCourseReject_https";
 				info_Opt = "newUserhttps";
-	                }
+	                }*/
 			Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
-                        String subject = MailNotification.subjectFormate(info_new, "", pr );
-			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
-        	        msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
-	                String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin"); 
-                	msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
+                        //String subject = MailNotification.subjectFormate(info_new, "", pr );
+			String subject = MailNotification.subjectFormate("onLineRegReqForCourseReject", "", pr );
+			//msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+        	        msgRegard=pr.getProperty("brihaspati.Mailnotification.newUser.msgRegard");
+			//msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
+	                msgRegard = MailNotification.replaceServerPort(msgRegard);
+			//String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin"); 
+                	String msgRoleInfo = pr.getProperty("brihaspati.Mailnotification.newUser.msgInstAdmin");
+			msgRoleInfo = msgRoleInfo.replaceAll("institute_admin",instAdminName);
                         LangFile=(String)data.getUser().getTemp("LangFile");
                         for(int j=0;st.hasMoreTokens();j++)
                         {
@@ -140,7 +146,8 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
 						gname=((CourseUserDetail) courselist.elementAt(i)).getGroupName().replace("&colon",":")+((CourseUserDetail) courselist.elementAt(i)).getLoginName();
                                                 if((email.equals(mailid)) && gName.equals(gname))
                                                 {
-							message = MailNotification.getMessage(info_new, gname, "", "", "", pr);
+							//message = MailNotification.getMessage(info_new, gname, "", "", "", pr);
+							message = MailNotification.getMessage("onLineRegReqForCourseReject", gname, "", "", "", pr);
 							message = MailNotification.getMessage_new(message, "","",instName,"");
 							//Mail_msg = MailNotificationThread.getController().set_Message(message, instName, msgRegard, msgRoleInfo, mailid, subject, "", LangFile, instituteId);
                                                         indexList.add(i);
@@ -174,8 +181,8 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
                         Vector courselist=new Vector();
 			context.put("status","CourseRegistration");
                         User user=data.getUser();
-                        String serverName=data.getServerName();
-			String serverPort=TurbineServlet.getServerPort();
+                        //String serverName=data.getServerName();
+			//String serverPort=TurbineServlet.getServerPort();
                         String accept=pp.getString("deleteFileNames");
 			//get the path where online course request xml file stored
                         String path=data.getServletContext().getRealPath("/OnlineUsers"+"/courses.xml");
@@ -217,8 +224,9 @@ public class  OnlineRegistration_InstituteAdmin extends SecureAction_Institute_A
                                                        {
 								//call for utils to perform registration successfull in the courses.
                                                                 try{
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");
-                                                                        data.setMessage(msg);
+                                                                        //String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,instName,"cnfrm_c");
+                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,LangFile,instId,instName,"cnfrm_c");
+									data.setMessage(msg);
                                                                 }
                                                                 catch(Exception e){data.setMessage("Error in new Course Registration "+e);}
                                                         }

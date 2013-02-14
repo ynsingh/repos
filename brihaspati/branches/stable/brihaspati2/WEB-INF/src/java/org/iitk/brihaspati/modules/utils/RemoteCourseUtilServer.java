@@ -265,7 +265,7 @@ public class RemoteCourseUtilServer
        		       		* Take MD5 hashcode  of modified key
                 	       	*/
 
-	          		String md5keyserver = EncryptionUtil.createDigest("MD5",modifiedkey);
+	          		String md5keyserver = EncryptionUtil.createDigest("SHA1",modifiedkey);
 				if(md5keyserver.equals(md5keyclient))
 				isAuthorized = true; 
 
@@ -399,7 +399,7 @@ public class RemoteCourseUtilServer
               		          /**
               		          * Take MD5 hashcode  of modified key
                        		   */
-	          		 String md5keyserver = EncryptionUtil.createDigest("MD5",modifiedkey);
+	          		 String md5keyserver = EncryptionUtil.createDigest("SHA1",modifiedkey);
 			
 				 boolean isAuthorized = false;
 				 if(md5keyserver.equals(md5keyclient))

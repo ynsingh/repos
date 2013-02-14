@@ -14,11 +14,15 @@
  *#
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($flag=false)
 $page.setTitle("Home | DiscussionBoard")
 
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
    <tr><td>
+#if($data.getUser().getTemp("modulename3") == "3")
+        #set($flag=true)
+#end
 ##($stats == "fromIndex") Use for general discussion group ## 
 ##($mode2 == "instituteWise") Use for insititue wise discussion group ## 
 	#if($stats == "fromIndex")
@@ -61,10 +65,10 @@ $!data.getMessage()
 	                        #end
         	        #end
                 ###end
-			#if($data.getUser().getTemp("role") == "student")	
+			#if(($data.getUser().getTemp("role") == "student")||(($data.getUser().getTemp("role") == "teacher_assistant")&&($flag==false)))	
         			<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")>$Notice_NoticeContent_msg1</td>
 			#end
-			 #if($data.getUser().getTemp("role") == "instructor")
+			 #if(($data.getUser().getTemp("role") == "instructor")||(($data.getUser().getTemp("role") == "teacher_assistant")&& $flag))
 				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices
 				#foreach($msg in $unreadMsg)
 			#if($msg!="0")
@@ -96,7 +100,7 @@ $!data.getMessage()
 	</tr>
 		#end
 	#end
-#if($data.getUser().getTemp("role") =="student" && $data.getUser().getUserName() == "guest")
+#if(($data.getUser().getTemp("role") =="student" && $data.getUser().getUserName() == "guest") ||($data.getUser().getTemp("role") == "teacher_assistant" && $flag==false))
                 #if($tdcolor1 != "2")
                         <td>
                 #elseif($tdcolor1 == "2")

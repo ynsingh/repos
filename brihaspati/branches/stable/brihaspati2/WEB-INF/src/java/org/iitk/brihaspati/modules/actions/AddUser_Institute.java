@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) AddUser_Institute.java	
  *
- *  Copyright (c) 2009-2010, 2011 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009-2010, 2011, 2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -54,6 +54,7 @@ import org.apache.turbine.om.security.User;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
  * @modified date:20-10-2010,23-12-2010,26-02-2011,05-08-2011(Richa)
+ * @modified date:01-Feb-2013(Richa)
  */
 
 public class AddUser_Institute extends SecureAction_Institute_Admin 
@@ -76,9 +77,9 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
                 *and get the role in which user registered.
                 */
 		ParameterParser pp=data.getParameters();
-		String serverName=data.getServerName();
-                int srvrPort=data.getServerPort();
-                String serverPort=Integer.toString(srvrPort);
+		//String serverName=data.getServerName();
+                //int srvrPort=data.getServerPort();
+                //String serverPort=Integer.toString(srvrPort);
                 String roleName=pp.getString("role","");
 		/**
                  * Getting the value of file from temporary variable
@@ -148,7 +149,8 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		{
 			rollno = InstituteIdUtil.generateRollno(instid);
 		}
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"act");//last parameter added by Priyanka
+		//String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program,"act");//last parameter added by Priyanka
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,LangFile,rollno,program,"act");
 		data.setMessage(msg);
 		}
 		catch(Exception ex){
@@ -173,6 +175,8 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		{
 			doRegister(data,context);
 		}
+		else if(action.equals("prg"))
+                        setTemplate(data,"call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm");
 		else
 		{
 			String str=m_u.ConvertedString("c_msg",LangFile);

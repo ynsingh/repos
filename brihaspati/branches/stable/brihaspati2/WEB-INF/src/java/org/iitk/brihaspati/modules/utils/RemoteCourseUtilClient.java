@@ -311,7 +311,7 @@ public class RemoteCourseUtilClient
 			/**
 			* Take MD5 hashcode modified key 
 			*/
-			md5 = EncryptionUtil.createDigest("MD5",modifiedkey);
+			md5 = EncryptionUtil.createDigest("SHA1",modifiedkey);
 
 			/**
 			* Add to vector below  the md5 string -----------------manav

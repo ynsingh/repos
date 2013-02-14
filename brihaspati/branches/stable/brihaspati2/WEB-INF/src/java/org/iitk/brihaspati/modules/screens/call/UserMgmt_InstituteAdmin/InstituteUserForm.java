@@ -102,7 +102,9 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 				StudentRollno element = (StudentRollno)userRollNo.get(j);
 				String rollno = element.getRollNo();
 				String Program = element.getProgram();
+				String Pgname = InstituteIdUtil.getPrgName(Program);
 				cDetails = new CourseUserDetail();
+				cDetails.setPrgName(Pgname);
 				cDetails.setPrgCode(Program);
 				cDetails.setRollNo(rollno);
 				rollprglist.add(cDetails);

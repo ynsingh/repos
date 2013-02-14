@@ -1,7 +1,7 @@
 
 #*
  * @(#) CourseHome.vm
- * Copyright (c) 2004-2005, 2009, 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2004-2005, 2009, 2010, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
@@ -9,7 +9,8 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author<a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author<a href="mailto:sunil0711@gmail.com">Sunil Yadav </a>
- * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012
+ * @author<a href="mailto:richa.tandon11@gmail.com">Richa Tandon </a>
+ * @modified:Date 07-04-2010, 26-07-2010, 13-10-2010, 21-08012, 07-Feb-2013(Richa)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -215,9 +216,9 @@ $!data.getMessage()
 						  <tr><td align=center><font face="$ui.sansSerifFonts">
 						   #if($lang != "english")
 
-							 <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
+							 <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
 						    #else
-							  <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
+							  <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> $brih_upload $brih_marks</a><br>
 						    #end
 						  </td></tr>
 					  </table>
@@ -434,7 +435,7 @@ $!data.getMessage()
         <tr>
 		
 			 
-		#if($data.getUser().getTemp("modulename1") == "1")
+		##if($data.getUser().getTemp("modulename1") == "1")
                 
 			## inner column 1 (1)open
 			<td align="center" valign="top">
@@ -448,7 +449,7 @@ $!data.getMessage()
 				</table>
  			</td>
                                         
-		#else
+		#*#else
                                         
 			<td align="center" valign="top">
                                                 
@@ -462,7 +463,7 @@ $!data.getMessage()
                                         
 			</td>
                                         
-		#end
+		#end*#
                                         ## inner column 1 (1)close
                                         ## inner column 2 (1)open
 				
@@ -497,7 +498,7 @@ $!data.getMessage()
                                         ## inner column 2 (1)close
                                         ## inner column 3 (1)open
 			
-		#if($data.getUser().getTemp("modulename3") == "3")
+		##if($data.getUser().getTemp("modulename3") == "3")
                                         
 			<td align=center>
                                                 
@@ -511,7 +512,7 @@ $!data.getMessage()
                                        
 			 </td>
                                         
-		#else
+		#*#else
                                         
 			<td align=center>
                                                 
@@ -525,7 +526,7 @@ $!data.getMessage()
                                         
 			</td>
 		
-		#end
+		#end*#
 
                                         ## inner column 3 (1)close
 
@@ -534,7 +535,7 @@ $!data.getMessage()
         ## row 2 open   
         <tr>
 			 
-		#if($data.getUser().getTemp("modulename4") == "4")
+		##if($data.getUser().getTemp("modulename4") == "4")
                 	<td align=center>
                                                 
 				<table border=0>
@@ -548,7 +549,7 @@ $!data.getMessage()
 			</td>
 
                                         
-		#else
+		#*#else
                                         
 			<td align=center>
                                                 
@@ -563,7 +564,7 @@ $!data.getMessage()
 			</td>
 
                                         
-		#end
+		#end*#
 
                                         ## inner column 2 (1)close
                                         ## inner column 2 (2)open
@@ -588,10 +589,9 @@ $!data.getMessage()
                                                 
 				<table border=0 valign="top">
                                                         
-					<tr><td align="center" valign="top"><a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none><img border=0 src="$content.getURI("/images/coursemgmt.png")" class="img" ></a></td></tr>
-                                                        
-					<tr><td align=center><font face="$ui.sansSerifFonts"><a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none> $brih_course $brih_mgmt</a><br></td></tr>
-                                                
+                                        <tr><td align="center" valign="top"><a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursecontent").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/coursemgmt.png")" class="img" ></a></td></tr>
+
+                                        <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","coursecontent").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end</a><br></td></tr> 
 				</table>
                                         
 			</td>
@@ -600,7 +600,7 @@ $!data.getMessage()
                                         ## inner column 2 (2)close
                                         ## inner column 3 (2)open
 			 
-		#if($data.getUser().getTemp("modulename6") == "6")
+		##if($data.getUser().getTemp("modulename6") == "6")
                         
 			<td align=center>
                                                 
@@ -615,7 +615,7 @@ $!data.getMessage()
 			</td>
 
                                         
-		#else
+		#*#else
                                         
 			<td align=center>
                                                 
@@ -630,7 +630,7 @@ $!data.getMessage()
 			</td>
 			## inner column 3 (2)close
 		
-		#end
+		#end*#
 
         </tr>
         ## row 2 close
@@ -657,10 +657,10 @@ $!data.getMessage()
 			<td align=center>
                                                 
 				<table border=0>
-                                                        
-					<tr><td align=center><a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none><img border=0 src="$content.getURI("/images/olexam.png")" class="img" ></a> </td></tr>
-                                                        
-					<tr><td align=center><font face="$ui.sansSerifFonts"><a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none> $online_online $brih_examat $brih_system</a><br></td></tr>
+                                          
+					<tr><td align=center><a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none><img border=0 src="$content.getURI("/images/olexam.png")" class="img" ></a> </td></tr>
+
+                                        <tr><td align=center><font face="$ui.sansSerifFonts"><a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","oles").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_exam</a><br></td></tr>         
                                                 
 				</table>
                                         
@@ -755,11 +755,11 @@ $!data.getMessage()
                                                 
 					#if($lang != "english")
 
-                                        <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
+                                        <a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
                                                
 					#else
                                                  
-					<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")/addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_marks $brih_upload</a><br>
+					<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1").addPathInfo("cname",$groupName).addPathInfo("mname","uploadmarks").addPathInfo("actionName","eventSubmit_doModuleInsert").setAction("ModuleLogin") style=text-decoration:none>$brih_upload $brih_marks</a><br>
                                                 
 					#end
                                                 
@@ -776,20 +776,16 @@ $!data.getMessage()
 			<td align=center>
                                         
 				<table border=0>
-                                                
-					<tr><td align=center><a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")" class="img" ></a></td></tr>
-                                                
-					<tr><td align=center><font face="$ui.sansSerifFonts">
-                                                
+                                        <tr><td align=center><a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")" class="img" ></a></td></tr>
+
+	                                <tr><td align=center><font face="$ui.sansSerifFonts"><a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none>
+
 					#if($lang != "english")
-                                                
-					<a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none> $brih_marks $brih_upload</a><br>
-                                                
+						$brih_marks $brih_upload</a><br>
+
 					#else
- 					<a disabled href="#" onclick="javascript:return confirm('$bri_sry, $bri_pdenied !!')" style=text-decoration:none> $brih_marks $brih_upload</a><br>
-                                                
-					#end
-                                                
+						$brih_upload $brih_marks</a><br>
+					#end 
 					</td></tr>
                                         
 				</table>
@@ -802,7 +798,7 @@ $!data.getMessage()
                                          ## inner column 1 (4)close
                                         ## inner column 2 (4)open
 				 
-		#if($data.getUser().getTemp("modulename11") == "11")
+		##if($data.getUser().getTemp("modulename11") == "11")
                                         
 			<td align=center>
                                                 
@@ -816,7 +812,7 @@ $!data.getMessage()
                                         
 			</td>
 		
-		#else
+		#*#else
 			
 			<td align=center>
                                                 
@@ -831,7 +827,7 @@ $!data.getMessage()
 			</td>
 
                                         
-		#end
+		#end*#
 
                                         ## inner column 2 (4)close
                                         ## tracking Report

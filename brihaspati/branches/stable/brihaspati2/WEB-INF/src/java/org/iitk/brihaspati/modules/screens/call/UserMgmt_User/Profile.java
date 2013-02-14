@@ -227,7 +227,7 @@ public class Profile extends SecureScreen
 			context.put("sizecount",rlsize);
 	}
 
-	catch(Exception e){data.setMessage("The error in profile"+e);}
+	catch(Exception e){data.setMessage("The error in profile "+e);}
     }
 
 }

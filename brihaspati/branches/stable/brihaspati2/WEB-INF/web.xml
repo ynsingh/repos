@@ -31,7 +31,6 @@
       <url-pattern>/confsrc/*</url-pattern>
       <url-pattern>/bin/*</url-pattern>
       <url-pattern>/WIKI/*</url-pattern>
-      <url-pattern>/babylonsrc/*</url-pattern>
       <url-pattern>/WebSearchSrc/*</url-pattern>
       <url-pattern>/UserArea/*</url-pattern>
       <url-pattern>/Updationmail/*</url-pattern>
@@ -45,6 +44,10 @@
       <url-pattern>/logs/*</url-pattern>
       <url-pattern>/Courses/*</url-pattern>
       <url-pattern>/InstituteRegistration/*</url-pattern>
+      <url-pattern>/EmailSpooling/*</url-pattern>
+      <url-pattern>/Graph/*</url-pattern>
+      <url-pattern>/SQLscrpts/*</url-pattern>
+      <url-pattern>/reports/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>admin</role-name>

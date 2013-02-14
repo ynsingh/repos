@@ -133,20 +133,6 @@ public class TaskDIUD extends SecureScreen
                                 	}  
                         	}
 			}
-		/*	try{
-			Vector v2=new Vector();
-			crit=new Criteria();
-			crit.add(TaskPeer.PARENT_TASK_ID,0);
-			List v1=TaskPeer.doSelect(crit);
-			for(int x=0;x<=v1.size();x++){
-			
-			v2.add(tid);
-			Object obm = Collections.max(v2);
-							context.put("maxtid",obm);
-			ErrorDumpUtil.ErrorLog("v2----------------->>"+v2+"object----------------------"+obm);
-			}}
-			catch(Exception e) {data.setMessage("The error in select taskasdkjaskdjasljdaskdaskjda====== "+e);}*/
-			
                		/**
                 	 * retrive the task from database and display on the screen.
                 	 */
@@ -175,35 +161,8 @@ public class TaskDIUD extends SecureScreen
 							int pseq=((Task)v.get(i)).getPseqNo();
 							int depth=((Task)v.get(i)).getDepth();
 
-				ErrorDumpUtil.ErrorLog("depth in screens..111........."+depth);
 
-
-						/*		if(pid == 0)
-								 {
-       		
-								plist.add(pid);
-															
-								}
-									
-									if(pid == 0)
-									{
-										int sum = 1;
-										for (int j = 0;j<plist.size(); j++) 
-										{ 
-    										sum += j;
-										
-										}
-									index.add(sum);
-									ErrorDumpUtil.ErrorLog("sum...................<<<<<<<<<<<<<<<<<<<<<<<<<------"+sum);
-									context.put("vlist",sum);
-											
-									}
-					ErrorDumpUtil.ErrorLog("index...................<<<<<<<<<<<<<<<<<<<<<<<<<------"+index);
-					ErrorDumpUtil.ErrorLog("plist ...... in screen file-<<<<<<<<<<------"+plist);
-
-					*/
 							v2.add(tid);
-					ErrorDumpUtil.ErrorLog("tid 1 in screen file-------"+v2);
         	        	                        TaskDetail tDetail=new TaskDetail();
                 	        	                tDetail.setUser_Id(uid);
                         	        	        tDetail.setTask_Id(tid);
@@ -220,8 +179,6 @@ public class TaskDIUD extends SecureScreen
                 		                        String str=Integer.toString(duedate);
                         		                vct.add(str);
 							Object obm = Collections.max(v2);
-					//		ErrorDumpUtil.ErrorLog("======v22222222222------------->>"+v2);
-					//		ErrorDumpUtil.ErrorLog("======max value------------->>"+obm);
 							context.put("maxtid",obm);
 							context.put("vindex",index);	
 							context.put("splist",plist);
@@ -243,9 +200,6 @@ public class TaskDIUD extends SecureScreen
         	                        int pid=((Task)v.get(i)).getParentTaskId();
 					int pseq=((Task)v.get(i)).getPseqNo();
 					int depth=((Task)v.get(i)).getDepth();
-					ErrorDumpUtil.ErrorLog("pid in screen file-------"+pid);
-					ErrorDumpUtil.ErrorLog("tid in scren file-------"+tid);
-					ErrorDumpUtil.ErrorLog("depth in screens..111....2222....."+depth);
 
 	                                TaskDetail tDetail=new TaskDetail();
                                 	tDetail.setUser_Id(uid);

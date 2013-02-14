@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)View.java	
  *
- *  Copyright (c) 2005-2006,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -221,13 +221,13 @@ public class View extends VelocitySecureScreen{
                         User user=data.getUser();
                         String g=user.getTemp("course_id").toString();
 
-                        if (acl==null || (! acl.hasRole("instructor",g) && !acl.hasRole("Author",g) && !acl.hasRole("student",g)&& !acl.hasRole("turbine_root")) )
+                        if (acl==null || (! acl.hasRole("instructor",g) && !acl.hasRole("Author",g) && !acl.hasRole("student",g)&& !acl.hasRole("turbine_root")&& !acl.hasRole("teacher_assistant",g))) 
                         {
                                 data.setScreenTemplate( Turbine.getConfiguration().getString("template.login"));
 
                                 isAuthorized = false;
                         }
-                        else if(acl.hasRole("instructor",g) || acl.hasRole("student",g) || acl.hasRole("turbine_root"))
+                        else if(acl.hasRole("instructor",g) || acl.hasRole("student",g) || acl.hasRole("turbine_root")||acl.hasRole("teacher_assistant",g))
                         {
                                 isAuthorized = true;
                         }

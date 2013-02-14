@@ -20,6 +20,7 @@ $page.setTitle("$brih_home | $brih_course | $brih_student $brih_reg")
 $!data.getMessage()
 ## This java script is called for return alert message and highlighted the field if the input value in the form is missing or incorrect.
 <script type="text/javascript" src="$content.getURI("/scrpts/CommonScripts/CommonScript.js")"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/Formsubmit.js")"></script>
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
@@ -68,48 +69,49 @@ $!data.getMessage()
 ##addStudent.vm
 <form name="frm" method="post" action="$link.setPage("call,UserMgmt_User,StudentManagement.vm").setAction("UserAction_Instructor")">
 ##<table align=left width="100%" bgcolor="$ui.tableColor">
-        ##<tr>
-        ##<td align=left colspan=2>
-          ##      <font size=4><b>$brih_student $brih_reg</b></font>
-        ##</td>
-        ##</tr>
         <tr bgcolor="$ui.menuColor">
-                ###formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
-		#*<td> #if($lang =="hindi") $brih_usr $brih_Of1 $brih_name #else $brih_usr $brih_name #end <font color=red>*</font> </td>
-		<td>
-                            <input type="text" name="UNAME" value="">
-		</td>*#
-                #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
-	<td colspan=3></td>	
-        </tr>
-        <tr>
-                #formPasswordCell ("$brih_pwd" "PASSWD" "")
-	<td colspan=3></td>	
-        </tr>
-        <tr bgcolor="$ui.menuColor">
-                #formCell ("$brih_first $brih_name" "FNAME" "")
-	<td colspan=3></td>	
-        </tr>
-        <tr>
-                #formCell("$brih_last $brih_name" "LNAME" "")
-	<td colspan=3></td>	
-        </tr>
-        #*<tr bgcolor="$ui.menuColor">
-                #formCell("$brih_email $brih_ID" "EMAIL" "")
-	<td colspan=3></td>*#	
-	<tr bgcolor="$ui.menuColor">
-	        <td>$brih_program</td>
-         	<td><select name="prg" class="drop" size=1 onChange="ChkPrg(document.frm,this);"/>
-			<option value="Select Program"> #if($lang=="hindi"  || $lang == "gujarati" ) $brih_program $brih_select #else $brih_select $brih_program #end</option>
-			#foreach($progname in $PrgDetail)
-				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
-			#end
-		</select></td>
-	  	<td colspan=3></td>
-	</tr>
+	#foreach($st in $UsrDetail)
+                #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "$!st.usrname")
+		<td colspan=3></td>	
+	        </tr>
+        	<tr>
+                	#formPasswordCell ("$brih_pwd" "PASSWD" "$!st.Pswd")
+		<td colspan=3></td>	
+        	</tr>
+	        <tr bgcolor="$ui.menuColor">
+        	        #formCell ("$brih_first $brih_name" "FNAME" "$!st.Fstname")
+		<td colspan=3></td>	
+        	</tr>
+	        <tr>
+        	        #formCell("$brih_last $brih_name" "LNAME" "$!st.Lstname")
+		<td colspan=3></td>	
+        	</tr>
+		<tr bgcolor="$ui.menuColor">
+		        <td>$brih_program</td>
+         		<td><select name="PrgName" class="drop" size=1 onChange="checkselect(document.frm,this);"/>
+				#if($st.Pgname!="")
+					<option value="$!st.Pgcode">$!st.Pgname</option>
+				#else
+					<option value="Select Program"> #if($lang=="hindi"  || $lang == "gujarati" ) $brih_program $brih_select #else $brih_select $brih_program #end</option>
+				#end
+				#foreach($progname in $PrgDetail)
+					#if($progname.getPrgName()!=$st.Pgname)
+						<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
+					#end
+				#end
+			</select></td>
+		  	<td colspan=3></td>
+		</tr>
+	#end
 	 <tr>
                 <td>$brih_rollno</td>
-                <td><input type="text" name="rollno" value="" disabled="true"/></td>
+		#if($rollno.size()>0)
+			#foreach($rlno in $rollno)
+				<td><input type="text" name="rollno" value="$rlno.getRollNo()" disabled="true"/></td>
+			#end
+		#else
+	                        <td><input type="text" name="rollno" id="rollno_id" value="" /></td>
+		#end
         <td colspan=3></td>
 
         <tr bgcolor="$ui.menuColor">

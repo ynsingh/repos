@@ -39,9 +39,10 @@ package org.iitk.brihaspati.modules.utils;
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
- * @modify 20-08-2010
  * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
+ * @author: <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modify 20-08-2010,08-02-2013
  */
 public class FileEntry
 {
@@ -54,6 +55,7 @@ public class FileEntry
 	private String alias;
 	private String type;
         private String studentno;
+        private String StudentFullName;
 	private char replacingChar='$'; //default value;
 	
 	private String result;
@@ -430,6 +432,15 @@ public class FileEntry
         {
                 return Access;
         }
+	public void setStudentFullName(String StudentFullName)
+        {
+                this.StudentFullName=StudentFullName;
+        }
+        public String getStudentFullName()
+        {
+                return StudentFullName;
+        }
+
 
 		
 }

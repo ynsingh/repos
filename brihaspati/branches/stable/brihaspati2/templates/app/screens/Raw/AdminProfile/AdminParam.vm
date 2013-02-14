@@ -5,8 +5,10 @@
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:sisaudiya.dewan17@gmail.com">Dewanshu singh sisaudiya</a>
  * modified date: 17-10-2009, 29-09-2010
  * @modified date: 22-11-2010, 15-02-2011
+ * modified date: 01-01-2013, 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -121,10 +123,15 @@ $!data.getMessage()
 	<td width=30><font face="$ui.sansSerifFonts">$brih_upload $brih_size </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="upldsze" value="$!upldsze"></font></td>
    </tr>
-  
-	<tr"$ui.menuColor">
+##--------------------------------------Tweet expiry---------------------
+	<tr bgcolor="$ui.menuColor">
+        <td width=30><font face="$ui.sansSerifFonts">Tweets Expiry(in days)</td>
+        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="TweetExp" value="$!twtexp"></font></td>
+    </tr>
+##---------------------------------------------------------------------------  
+	<tr"$ui.tableColor">
 
-                                <td>$brih_officeno</td>
+                                <td><font face="$ui.sansSerifFonts">$brih_officeno</font></td>
                                 <td><select class="drop" name="Offprefix">
                                         #if($!offprefix=="+")
                                                 #option1()
@@ -151,7 +158,7 @@ $!data.getMessage()
                                 </td>
                         </tr>
 	<tr bgcolor="$ui.tableColor">
-                                <td>$brih_mobileno</td>
+                                <td><font face="$ui.sansSerifFonts">$brih_mobileno</font></td>
                                 <td><select class="drop" name="Mobprefix">
                                         #if($!mobprefix=="+")
                                                 #option1()
@@ -178,7 +185,7 @@ $!data.getMessage()
                                 </td>
                         </tr>
                         <tr bgcolor="$ui.menuColor">
-                                <td>$brih_homeno</td>
+                                <td><font face="$ui.sansSerifFonts">$brih_homeno</font></td>
                                 <td><select class="drop" name="Homeprefix">
                                         #if($!homeprefix=="+")
                                                 #option1()
@@ -252,38 +259,69 @@ $!data.getMessage()
 	##<tr bgcolor="$ui.menuColor">
 	<tr>
         <td>
-                $brih_spring $brih_port $brih_No
+                <font face="$ui.sansSerifFonts">$brih_spring $brih_port $brih_No</font>
         </td>
         <td>
                 <input type="text" id="port" title="Please use port like 80XX" name="port" value="$!port" maxlength="4" onkeypress="return isNumberKey(event)" >
         </td>
         </tr>
 	<tr bgcolor="$ui.menuColor">
-	<td> $brih_data $brih_storage $brih_option</td>
+	<td> <font face="$ui.sansSerifFonts">$brih_data $brih_storage $brih_option</font></td>
 	<td> 
 
 		#if($dstore == "HDFS")
-		<input type="radio" name="datastorage" value="$brih_local"  /> $brih_local
-	 	<input type="radio" name="datastorage" value="$brih_hdfs" checked  /> $brih_hdfs 
-		<input type="radio" name="datastorage" value="$brih_both"  /> $brih_both  
+		<input type="radio" name="datastorage" value="$brih_local" onClick='javascript:hideRow();' /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  onClick='javascript:showRow();' checked  /> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  onClick='javascript:showRow();' /> $brih_both  
 		#elseif($dstore == "Both")				
-		<input type="radio" name="datastorage" value="$brih_local"  /> $brih_local
-	 	<input type="radio" name="datastorage" value="$brih_hdfs"  /> $brih_hdfs 
-		<input type="radio" name="datastorage" value="$brih_both"  checked  /> $brih_both  
+		<input type="radio" name="datastorage" value="$brih_local" onClick='javascript:hideRow();' /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  onClick='javascript:showRow();' /> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  onClick='javascript:showRow();' checked  /> $brih_both  
 		#else
-		<input type="radio" name="datastorage" value="$brih_local"  checked  /> $brih_local
-	 	<input type="radio" name="datastorage" value="$brih_hdfs"  /> $brih_hdfs 
-		<input type="radio" name="datastorage" value="$brih_both"  /> $brih_both  
+		<input type="radio" name="datastorage" value="$brih_local" onClick='javascript:hideRow();' checked  /> $brih_local
+	 	<input type="radio" name="datastorage" value="$brih_hdfs"  onClick='javascript:showRow();'/> $brih_hdfs 
+		<input type="radio" name="datastorage" value="$brih_both"  onClick='javascript:showRow();' /> $brih_both  
 		#end
 	</td>
 	</tr>
+	<tr id='tabl0'>
+                <td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_hdfs $brih_server $brih_Of1 $brih_Url #else $brih_hdfs $brih_server $brih_Url #end </font></td>
+                <td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdfsurl" value="$!hdfsurl"> </font> Ex. http://202.141.40.215:50070 </td>
+       </tr>
+
+	
+	<tr>
+	<td> <font face="$ui.sansSerifFonts">$brih_auth $brih_option </font></td>
+	<td> 
+
+		#if($authm == "LDAP")
+		<input type="radio"  name="authmethod" value="$brih_local" onClick='javascript:hideTable();'/> $brih_local
+	 	<input type="radio"  name="authmethod" value="$brih_ldap" onClick='javascript:showTable();' checked  /> $brih_ldap 
+		#else
+		<input type="radio"  name="authmethod" value="$brih_local" onClick='javascript:hideTable();' checked  /> $brih_local
+	 	<input type="radio"  name="authmethod" value="$brih_ldap" onClick='javascript:showTable();'/> $brih_ldap
+		#end
+	</td>
+	</tr>
+		<tr id='tabl1'>
+		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_server $brih_Of1 $brih_Url #else $brih_ldap $brih_server $brih_Url #end </font></td>
+		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapurl" value="$!ldapurl"> </font> Ex. ldap://abc.example.com:389 </td>
+		</tr>
+		<tr id='tabl2'>
+		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_Of1 $brih_base #else $brih_ldap $brih_base #end </font></td>
+		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapbase" value="$!ldapbase"> </font> Ex.OU=iit,DC=example,DC=com </td>
+		</tr>
+		<tr id='tabl3'>
+		<td> <font face="$ui.sansSerifFonts"> #if($lang != "english") $brih_ldap $brih_Of1 $brih_cat #else $brih_ldap $brih_cat #end </font></td>
+		<td> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ldapcate" value="$!ldapcate"> </font> Ex. staff,faculty,student </td>
+		</tr>
    ##<tr bgcolor="$ui.menuColor">
-     <tr>
-	<td width=30><font face="$ui.sansSerifFonts">$spoolMailResendTime </td>	
+     <tr bgcolor="$ui.menuColor">
+	<td width=30><font face="$ui.sansSerifFonts">$spoolMailResendTime </font></td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="spoolMailResendTime" value="$!spoolingMailResendTime"></font></td>
    </tr>
    <tr>
-	<td width=30><font face="$ui.sansSerifFonts">$emailSpooling_expiry </td>	
+	<td width=30><font face="$ui.sansSerifFonts">$emailSpooling_expiry </font></td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="mailSpoolingExpiry" value="$!mailSpoolingExpiry"></font></td>
    </tr>
    <tr bgcolor="$ui.menuColor">
@@ -298,6 +336,26 @@ $!data.getMessage()
 </table>
 
 <SCRIPT LANGUAGE="javascript">
+
+function showTable(){
+document.getElementById('tabl1').style.display ='table-row';
+document.getElementById('tabl2').style.display ='table-row';
+document.getElementById('tabl3').style.display ='table-row';
+}
+function hideTable(){
+document.getElementById('tabl1').style.display = 'none';
+document.getElementById('tabl2').style.display = 'none';
+document.getElementById('tabl3').style.display = 'none';
+}
+
+function showRow(){
+document.getElementById('tabl0').style.display ='table-row';
+}
+
+function hideRow(){
+document.getElementById('tabl0').style.display = 'none';
+}
+
 function checkValues(frm,field)
 {
 	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="") && (frm.AdminFaqExp.value!="")&& (frm.mailSpoolingExpiry.value !="") && (frm.spoolMailResendTime.value !=""))

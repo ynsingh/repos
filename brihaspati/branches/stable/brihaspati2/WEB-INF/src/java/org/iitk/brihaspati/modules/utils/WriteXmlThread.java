@@ -1,8 +1,8 @@
 package org.iitk.brihaspati.modules.utils;
 /*
- * @(#)MailNotificationThread.java
+ * @(#)WriteXmlThread.java
  *
- *  Copyright (c) 2012 ETRG,IIT Kanpur.
+ *  Copyright (c) 2012, 2013 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -36,35 +36,36 @@ package org.iitk.brihaspati.modules.utils;
  */
 
 import java.io.File;
-import java.text.DateFormat;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.io.FileNotFoundException;
+//import java.text.DateFormat;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Vector;
 
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.om.InstituteAdminUserPeer;
-import org.iitk.brihaspati.om.InstituteAdminUser;
-import org.iitk.brihaspati.om.TurbineUserPeer;
-import org.iitk.brihaspati.om.TurbineUser;
-import org.apache.torque.util.Criteria;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @modified date: 27-12-2012
  */
 
 public class WriteXmlThread implements Runnable {
 
 	private static String attachFile="", temp = "";
-	private static String xmlFilePath="";
+	//private static String xmlFilePath="";
 	private static Vector v=null;
-	private static Vector v1=null;
-	private static LinkedList linkList = new LinkedList();
 	private boolean flag=false;
-	private boolean flag1=false;
 	private static Thread runner=null;
 	private static WriteXmlThread writeXmlThread=null;
+	private static LinkedList linkList = new LinkedList();
 	private static MultilingualUtil mu=new MultilingualUtil();
 
 	/**
@@ -79,8 +80,8 @@ public class WriteXmlThread implements Runnable {
 	/**
  	 * Add message to a vector which store in linkedlist.
 	 */
-	//public String set_Message(String filePath, String mailId, String sub, String msg, String attachedFile, String date, String time, String langFile)
-	public String set_Message(String filePath, String mailId, String sub, String msg, String attachedFile, String date, String time, String langFile)
+	//public String set_Message(String filePath, String mailId, String sub, String msg, String attachedFile, String date, String time, String langFile, String messageFileName)
+	public String set_Message(String filePath, String mailId, String sub, String msg, String attachedFile, String langFile, String messageFileName)
 	{
 		String strng="";
 		//ErrorDumpUtil.ErrorLog("Lang File in MailNotificationThread Class ="+LangFile);
@@ -88,14 +89,13 @@ public class WriteXmlThread implements Runnable {
 		v.add(mailId); //0   
                 v.add(sub);    //1
                 v.add(msg);  //2 
-                v.add(date); //3  
-                v.add(time);//4
-                v.add(langFile);//5
-                v.add(filePath);//6
-                v.add(attachedFile);//7
+                v.add(langFile);//3
+                v.add(filePath);//4
+                v.add(attachedFile);//5
+                v.add(messageFileName);//6
 		//ErrorDumpUtil.ErrorLog("\n\n writeXmlThread.v="+v);
 		linkList.add(0,v);
-		writeXmlThread.xmlFilePath = filePath;
+		//writeXmlThread.xmlFilePath = filePath+"/"+messageFileName;
 		start();
 			strng= mu.ConvertedString("mail_msg", langFile);
 			//"Message is in queue";
@@ -129,69 +129,91 @@ public class WriteXmlThread implements Runnable {
 	/**
 	 * MailNotification thread for send mails.
 	 */
-      	public  void run() {
+      	public synchronized void run() {
 
 		while(flag) {
-			try{ 	Thread.sleep(200); }catch(Exception e){}
+			try{ 	Thread.sleep(200); }catch(Exception e){ErrorDumpUtil.ErrorLog("\nI am  in WriteXmlThread Class  sleep section "+e, TurbineServlet.getRealPath("/logs/Email.txt"));}
 			try { 
 				int j = 0;
-				Criteria crit = null;
+				//Criteria crit = null;
 				Vector mailDetail = new Vector();
-				File f = new File(writeXmlThread.xmlFilePath);
-				while(linkList.size() != 0) {
-					String searchMailId = "", searchMsg = "", searchSub = "", writeinxml = "";
-					boolean boolFlag = false;
-					InstituteFileEntry  InstfileEntry = null;
-					//boolean boolFlag = false;
+				while(linkList.size() > 0) {
+					String writeinxml = "";
                                         Vector mail_data=(Vector)linkList.pop();
                                         String mailId = mail_data.get(0).toString().trim();
                                         String sub = mail_data.get(1).toString();
                                         String msg = mail_data.get(2).toString().trim();
-                                        String date = mail_data.get(3).toString();
-                                        String time = mail_data.get(4).toString();
-                                        String LangFile = mail_data.get(5).toString();
-                                        String filePath = mail_data.get(6).toString().trim();
-                                        String attachedFile = mail_data.get(7).toString();
+                                        String LangFile = mail_data.get(3).toString();
+                                        String filePath = mail_data.get(4).toString().trim();
+                                        String attachedFile = mail_data.get(5).toString();
+                                        String msgFileName = mail_data.get(6).toString().trim();
 					//ErrorDumpUtil.ErrorLog("mailDetail.size()=="+mailDetail.size());
-					if(!f.exists()){ 
-	                                	f.mkdirs();
-						writeinxml=XMLWriter_EmailSpooling.EmailSpoolingXml(filePath+"/EmailSpoolFile.xml", mailId, sub, msg, attachedFile, date, time, LangFile);
-					}
-					else{ //else 1 open
-						mailDetail = XMLWriter_EmailSpooling.getEmailSpoolDetails(writeXmlThread.xmlFilePath+"/EmailSpoolFile.xml");
-						if( mailDetail.size() != 0){
-							for( int i=0; i < mailDetail.size(); i++)
-							{
-						
-								InstfileEntry =  (InstituteFileEntry)mailDetail.get(i);
-								searchMailId = InstfileEntry.getInstituteEmail().trim();
-								searchMsg = InstfileEntry.getMessage().trim();
-								searchSub = InstfileEntry.getSubject().trim();
-								//ErrorDumpUtil.ErrorLog("\nsearchMailId==="+searchMailId+"\t mailId"+ mailId+"\nmsg="+msg.trim()+"\tsearchMsg="+searchMsg.trim());
-								 if( mailId.equals(searchMailId) && msg.equals(searchMsg) && sub.equals(searchSub) ){
-	                                                        	boolFlag = true;
-	                	                                        break;
-        	                                        	}
-
-							} //for  mailDetail.size(); close 
-							InstfileEntry = null;
-							if(!boolFlag)
-        	                       				writeinxml=XMLWriter_EmailSpooling.EmailSpoolingXml(filePath+"/EmailSpoolFile.xml", mailId, sub, msg, attachedFile, date, time, LangFile);
-                			               mailId = "";
-        	        	        	       msg = "";
-	                        	               mailDetail = null;
+					/**
+		                          * @see ExpiryUtil in Utils
+                		         */
 					
-						} // close of if( mailDetail.size() != 0)
-						else
-                               				writeinxml=XMLWriter_EmailSpooling.EmailSpoolingXml(filePath+"/EmailSpoolFile.xml", mailId, sub, msg, attachedFile, date, time, LangFile);
-					} //else 1 close
+                        		String curdate = ExpiryUtil.getCurrentDate("-");
+		                        Long longTime = new Date().getTime();
+                		        String time = longTime.toString();
+					File f = new File(filePath);
+
+					if(!f.exists()){
+	                                	f.mkdirs();
+					}
+					/**
+						While File is read Filename definetly come{
+							if {failure mail & file name is same need not to write }
+							else{ write that mail with new name}
+						}
+						While mail is failure filename is empty
+					*/
+
+					if(!StringUtils.isBlank(msgFileName)){
+						//ErrorDumpUtil.ErrorLog("\n\n msgFileName====="+msgFileName);
+						f = new File(filePath+"/"+msgFileName);
+						if(f.exists()){
+							try{
+								String tmp = StringUtils.substringAfterLast(msgFileName, "_");
+                                        			String searchDate = (StringUtils.substringBeforeLast(tmp, "$")).trim();
+  								File f2 = new File(filePath+"/"+mailId+"_"+searchDate+"$"+curdate+":"+time+".xml");
+								  InputStream in = new FileInputStream(f);
+  
+								  //For Overwrite the file.
+								  OutputStream out = new FileOutputStream(f2);
+
+								  byte[] buf = new byte[1024];
+								  int len;
+								  while ((len = in.read(buf)) > 0){
+									
+									  out.write(buf, 0, len);
+								  }
+								  in.close();
+								  out.close();
+  							}
+							catch(FileNotFoundException ex){
+								 ErrorDumpUtil.ErrorLog(ex.getMessage() + "= in WriteXmlThread class of util directory .");
+								System.exit(0);
+							}
+							f.delete();
+						}
+						else if(!f.exists()){
+
+							writeinxml=XMLWriter_EmailSpooling.EmailSpoolingXml(filePath+"/"+mailId+"_"+curdate+"$"+curdate+":"+time+".xml", sub, msg, attachedFile, LangFile);
+
+						}
+					}
+					else {
+						//writeinxml=XMLWriter_EmailSpooling.EmailSpoolingXml(filePath+"/"+mailId+time+".xml", mailId, sub, msg, attachedFile, curdate, time, LangFile);
+							writeinxml=XMLWriter_EmailSpooling.EmailSpoolingXml(filePath+"/"+mailId+"_"+curdate+"$"+curdate+":"+time+".xml", sub, msg, attachedFile, LangFile);
+					}
+
 					 if(j== (linkList.size())){
                                         	break;
 					}
 					j = j + 1;
 				} //main while close
 				
-			}catch(Exception es){}
+			}catch(Exception es){ErrorDumpUtil.ErrorLog("\nI am  in WriteXmlThread Class  in run method ", TurbineServlet.getRealPath("/logs/Email.txt"));}
 			stop();
 		}	
     	}

@@ -37,7 +37,7 @@ $page.setTitle("Home | $course | Course management")
         #if($uploadStatus=="full")
                 <td align="right">
                 #if($pub=="Publish")
-                $brih_uploadSucessfully  &  $brih_publish
+                $brih_uploadSucessfully $brih_and $brih_published
                 #else
                 $brih_uploadSucessfully
                 #end
@@ -257,19 +257,30 @@ $page.setTitle("Home | $course | Course management")
 	</tr>
 	#if($user_role == "instructor")
 		<tr align="right" width=100% bgcolor="$ui.tableColor">
+			 <td align="right">  
+				<b> $brih_mail $Notice_Send </b> 
+				<INPUT TYPE="CHECKBOX" name="sendMail" value="sendMail"> 
+			</td>
 		        <td align="right">
-			        <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> <b>$brih_publish</b>
+				<b>$brih_publish</b>
+			</td>
+		        <td align="right">
+			        <INPUT TYPE="CHECKBOX" name="publish" value="Publish"> 
 		        </td>
-	        	<td colspan=5 align="right">
+	        	<td colspan="3" align="right">
 			         <INPUT TYPE="hidden" name="unpublish" checked=true  value="" >
-			        <b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
+			        <b> $brih_Exist $brih_topic
+				<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>
 			        <SELECT name=topicList class="drop" onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 					<option></option>
 		        #foreach($topic in $allTopics)
         		        <option>$topic</option>
         		#end
 			        </SELECT>
-				<input type="RADIO" name=topicExisting value="NEWTOPIC" >$brih_new $brih_topic
+			</b> </td>
+			<td> <b> $brih_new $brih_topic </b> </td>
+			<td>
+				<input type="RADIO" name=topicExisting value="NEWTOPIC" >
 		        </td>
         ##</tr>
         ##<tr>

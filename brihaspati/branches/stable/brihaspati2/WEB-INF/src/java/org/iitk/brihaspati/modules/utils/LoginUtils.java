@@ -1,9 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
-
-
 /*@(#)LoginUtils.java
- *  Copyright (c) 2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2011, 2013 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,6 +35,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.Hashtable;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.directory.DirContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpSession ;
 import java.util.Collection;
 import org.apache.turbine.services.session.TurbineSession;
@@ -65,7 +67,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 //import org.apache.turbine.Turbine;
 import org.apache.turbine.services.servlet.TurbineServlet;
-
+import org.apache.turbine.modules.actions.VelocityAction;
 /**
  * This class is used for call the method in mylogin 
  * like Create index for Search, Clean the system 
@@ -113,12 +115,13 @@ public class LoginUtils{
 	 *  Set the user data for session in temp variable
 	 *  @param username String
 	 *  @param password String
+	 *  @param lcat String
 	 *  @param flag String
 	 *  @param lang String
 	 *  @param data RunData
 	 *  @return String
 	 **/
-	public static String SetUserData(String username, String password, String flag, String lang, RunData data){
+	public static String SetUserData(String username, String password, String lcat, String flag, String lang, RunData data){
 		User user=null;
         	String userLanguage = "";
 		String page=new String();
@@ -145,16 +148,77 @@ public class LoginUtils{
 				ErrorDumpUtil.ErrorLog("This Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e+"\n");
                         }
 			if(vec.size() != 0) {
-                       		TurbineUser element=(TurbineUser)vec.get(0);
+				try{
+				String confpath=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			//	String authm = AdminProperties.getValue(confpath,"brihaspati.admin.authmethod.value");
+				if(StringUtils.isNotBlank(lcat)){
+					//add method for ldap
+					try{
+						// the base and ldap url getting from properties
+						String base=AdminProperties.getValue(confpath,"brihaspati.admin.ldapbase.value"); // "OU=SOU,DC=example,DC=com";
+						String ldapURL=AdminProperties.getValue(confpath,"brihaspati.admin.ldapurl.value"); // "ldap://abc.example.com:389";
+						String unm=StringUtils.substringBefore(username,"@");
+						if((StringUtils.isNotBlank(base))&&(StringUtils.isNotBlank(ldapURL))){
+							//String dn = "cn=" + username + "," + base;
+							String dn = "uid="+unm+ ", OU=" +lcat+","+base;
+							// Set up the environment for creating the initial context
+							Hashtable<String, String> env = new Hashtable<String, String>();
+	//						javax.naming.Context cntxt;
+							env.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+							env.put(javax.naming.Context.PROVIDER_URL, ldapURL);
+							env.put(javax.naming.Context.SECURITY_AUTHENTICATION, "simple");
+							env.put(javax.naming.Context.SECURITY_PRINCIPAL, dn); 
+							env.put(javax.naming.Context.SECURITY_CREDENTIALS, password);
+					
+							// Create the initial context
+							DirContext ctx = new InitialDirContext(env);
+							boolean result = ctx != null;
+							if(ctx != null)
+								ctx.close();
+							password="";
+						}
+						else{
+							ErrorDumpUtil.ErrorLog("The auth method is LDAP but ldap url amd base are not present in the Login Utils-SetUserData Facility\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");
+						}
+					}
+					catch (NamingException namEx) {
+						ErrorDumpUtil.ErrorLog("This is ldap Exception comes (in side First try) in the Login Utils-SetUserData Facility"+namEx+"\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");
+          				//	return false;
+	        			} 
+					catch (Exception e)
+					{
+						ErrorDumpUtil.ErrorLog("This is ldap Exception comes (in side First try) in the Login Utils-SetUserData Facility"+e+"\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");
+						//return false;
+					}
+				}
 			
-				// Authenticate with local database of that user and get the object.
-				if(StringUtils.isNotBlank(password)){
-					password=EncryptionUtil.createDigest("MD5",password);
+				}catch (Exception ex){ErrorDumpUtil.ErrorLog("This is reading property file Exception comes (in side First try) in the Login Utils-SetUserData Facility"+ex+"\n", TurbineServlet.getRealPath("/logs")+"/LdapLog.txt");}
+
+                       		TurbineUser element=(TurbineUser)vec.get(0);
+				// make a copy of original password for SHA1 encription 
+				String password1=password;
+				// Authenticate with local database (Brihaspati Database) of that user and get the object.
+				// This is used for SHA1 hash
+				if(StringUtils.isNotEmpty(password)){
+					password=EncryptionUtil.createDigest("SHA1",password);
 				}
 				else{
 					password=element.getPasswordValue().toString();
 				}
-	                        user=TurbineSecurity.getAuthenticatedUser(username, password );
+		/* The above piece will allow one to login when if just space is being used in the password field.
+		*/		try{
+	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
+				}
+				catch (TurbineSecurityException eu){ErrorDumpUtil.ErrorLog(" The value of User ( "+username+ " ) with SHA1 is "+user +" and password is "+ password +" and Exception is "+eu, TurbineServlet.getRealPath("/logs")+"/Loginauth.txt"); }
+
+				//This is used for MD5 hash
+				if((user == null)||(user.equals(null))){
+					if(StringUtils.isNotEmpty(password1)){
+						password=EncryptionUtil.createDigest("MD5",password1);
+					}
+	                        	user=TurbineSecurity.getAuthenticatedUser(username, password );
+				}
+
 				// Store the user object.
 				data.setUser(user);
 				// Mark the user as being logged in.
@@ -229,6 +293,7 @@ public class LoginUtils{
 			log.info("User Name --> "+username + "| Unsuccesfull Login Attempt | Login Time --> "+dt +"| IP Address --> "+data.getRemoteAddr() +"/"+msg);
                         ErrorDumpUtil.ErrorLog("This TurbineSecurityException comes in the Login Utils-SetUserData Facility"+e);
                 }
+
                 catch (NoSuchAlgorithmException e){
                         data.setMessage("Could not find the required implementation");
                         page=Turbine.getConfiguration().getString("screen.login");
@@ -320,6 +385,7 @@ public class LoginUtils{
 				{
 					if(Expirydate.equals(date) || Expirydate.before(date))
                                 	{
+						
                                         	data.setScreenTemplate("call,UserMgmt_User,changePassword.vm");
                                 	}
 				}
