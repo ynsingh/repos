@@ -80,13 +80,17 @@ public class JoinSession {
 				//get reflector ip from indexing server.
 				String ref_ip =HttpsUtil.getController().getReflectorAddress(indexServer);
 				if(!(ref_ip.equals(""))){
-					// Thread for get userlist and other media data from reflector.
-                			new HTTPClient(ref_ip,Lecture_ID).start();
+					System.out.println(ref_ip);
+					if(!(ThreadController.getController().getThreadFlag()))
+			                        ThreadController.getController().setThreadFlag(true);	
 					//start GUI for this lecture id 
 					startGUIThread();
 					StatusPanel.getController().sethttpClient("no");
 					StatusPanel.getController().setdestopClient("no");
 					StatusPanel.getController().setpptClient("no");
+					// Thread for get userlist and other media data from reflector.
+                			new HTTPClient(Lecture_ID).start();
+					org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().start();
 				}else{
 					StatusPanel.getController().setStatus(Language.getController().getLangValue("JoinSession.MessageDialog1"));	
 				}
@@ -102,9 +106,6 @@ public class JoinSession {
 	 */
 	protected void startGUIThread(){
 		// set flag for controle all threads of application.
-
-		if(!(ThreadController.getController().getThreadFlag()))
-			ThreadController.getController().setThreadFlag(true);
 		try {
 			//remove CourseSessionWindow and add gui for view all tools activities.
 	                MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());

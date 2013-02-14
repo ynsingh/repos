@@ -6,13 +6,14 @@ package org.bss.brihaspatisync.network.video_capture;
  * Copyright (c) 2011, ETRG, IIT Kanpur.
  */
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
-
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
 import java.awt.image.BufferedImage;
+
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;                                                                                                                            
+import org.apache.commons.httpclient.methods.GetMethod;
 
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.gui.VideoPanel;
@@ -77,44 +78,38 @@ public class LocalServer implements Runnable {
                 }
         }
 
+	/**
+ 	 * This method is used to get video from localmachine .
+ 	 * and put the image in buffer .
+ 	 */
 	public void run() {
 		while(flag && ThreadController.getController().getThreadFlag()) {
-			
 		        try {
-				HttpClient client = new HttpClient();
-				HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
-		                client.setConnectionTimeout(80000);
-                                method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-				// Http Proxy Handler
-				if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-                                        HostConfiguration config = client.getHostConfiguration();
-                                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-                                        Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                                        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                                        client.getState().setProxyCredentials(authScope, credentials);
-                                }
-                                int statusCode1 = client.executeMethod(method);
-                                byte[] bytes1=method.getResponseBody();
-                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes1));
-                               	method.releaseConnection();
-				try {
+				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
+					
+					HttpClient client = new HttpClient();
+					HttpMethod method= new GetMethod("http://"+runtime_object.getVideoServer()+":"+runtime_object.getVideoServerPort());
+			                client.setConnectionTimeout(80000);
+                        	        method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
+                                	int statusCode1 = client.executeMethod(method);
+	                                byte[] bytes1=method.getResponseBody();
+        	                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes1));
+                	               	method.releaseConnection();
 					if(image!=null) {
 						BufferImage.getController().handleBuffer();
 						BufferImage.getController().put(image);
 						if((clientObject.getUserRole()).equals("instructor")){
 							VideoPanel.getController().runInstructorVidio(image);
 						}else {
-                                                        VideoPanel.getController().runStudentVidio(image);
+                        	        		VideoPanel.getController().runStudentVidio(image);
 						}
+					}else {
+						runner.sleep(4000);runner.yield();
 					}
-				} catch(Exception e){ try { runner.sleep(1000); runner.yield(); System.out.println("Error in loding image in video_panel : "+e.getMessage());}catch(Exception ep){} }
-				try {
-                                	runner.yield();
-				}catch(Exception ex){}
-				System.gc();
-			} catch(Exception e){ 
-				try {   runner.sleep(1000); runner.yield();}catch(Exception ep){}
-			}
+					
+				}	
+				runner.sleep(5000);runner.yield();
+			} catch(Exception e){ }
 		}
 	}
 }

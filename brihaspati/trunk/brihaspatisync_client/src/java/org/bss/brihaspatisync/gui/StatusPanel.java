@@ -77,7 +77,6 @@ public class StatusPanel extends JPanel {
 			east_panel.add(ppt_panel,flowLayout);
 			east_panel.add(reflector_panel,flowLayout);
 			add(east_panel,BorderLayout.EAST);
-			
 		}catch(Exception e){}
 	}
 
@@ -102,7 +101,8 @@ public class StatusPanel extends JPanel {
 	}
 	
 	public void setaudioClient(String message){
-                if(!audioclientmess.equals(message)){
+		message=message.trim();
+                if(!(audioclientmess.equals(message))){
                         audioclientmess=message;
                         if(audioclient != null)
                                 reflector_panel.remove(audioclient);
@@ -118,7 +118,8 @@ public class StatusPanel extends JPanel {
 
 
 	public void sethttpClient(String message){
-		if(!httpclientmess.equals(message)){
+		message=message.trim();
+		if(!(httpclientmess.equals(message))) {
 			httpclientmess=message;	
 			if(httpclient != null)
 				reflector_panel.remove(httpclient);
@@ -133,7 +134,8 @@ public class StatusPanel extends JPanel {
 	}
 	
 	public void setdestopClient(String message){
-        	if(!destopmess.equals(message)){
+		message=message.trim();
+        	if(!(destopmess.equals(message))) {
                         destopmess=message;
                         if(destop != null)
                                 desktop_panel.remove(destop);
@@ -146,11 +148,11 @@ public class StatusPanel extends JPanel {
                         destop.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.desktopShareStatus")+"</b></font></html>");
                         desktop_panel.add(destop,flowLayout);
                         destop.updateUI();
-                       desktop_panel.revalidate();
                 }
         }
 	
 	public void setpptClient(String message){
+		message=message.trim();
 		if(!pptmess.equals(message)){
                         pptmess=message;
                         if(ppt != null)
@@ -163,7 +165,7 @@ public class StatusPanel extends JPanel {
                         ppt.setText("<html><Font size=3 color=white><b>"+Language.getController().getLangValue("StatusPanel.pptStatus")+"</b></font></html>");
                         ppt_panel.add(ppt,flowLayout);
                         ppt.updateUI();
-			ppt_panel.revalidate();
+			//ppt_panel.revalidate();
                 }
         }
 }

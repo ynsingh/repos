@@ -107,7 +107,7 @@ public class UserListPanel extends Thread {
                                 	        userlist.add(str1);
 	                             	}       
         	            	}
-				display_UserList();
+				display_UserList();this.sleep(500);this.yield();
 			}catch(Exception e){}
 		}		
 	}	

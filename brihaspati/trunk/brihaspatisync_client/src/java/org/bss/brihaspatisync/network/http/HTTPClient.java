@@ -10,6 +10,7 @@ package org.bss.brihaspatisync.network.http;
 import java.awt.Frame;
 import java.lang.Long;
 
+import  java.util.LinkedList;
 import java.util.StringTokenizer;
 
 import java.io.DataInputStream;
@@ -18,133 +19,103 @@ import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.util.ThreadController;
+
 import org.bss.brihaspatisync.Client;
-import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 
 import org.bss.brihaspatisync.network.util.Queue;
 import org.bss.brihaspatisync.network.util.UtilObject;
 
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-
-import org.apache.commons.httpclient.*;
-import org.apache.commons.httpclient.auth.AuthScope;
-
 /**
  * @author <a href="mailto: ashish.knp@gmail.com"  >Ashish Yadav</a>
- * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
+ * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a> Modify on 2013
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class HTTPClient extends Thread {
 
+	private int value_count=0;
 	private String lect_id="";
-	
-	private String reflectorIP ="";
-	
+	private String message_diff="";
 	private UtilObject utilObject=UtilObject.getController();
-
         private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private final String refHttpPort=runtime_object.getRefHttpPort();
-	private HttpClient client = new HttpClient();
-	private int value_count=0;
 	public HTTPClient(){ }
 
-	public HTTPClient(String reflectorIP,String lect_id){
-		this.reflectorIP=reflectorIP;
+	public HTTPClient(String lect_id){
 		this.lect_id=lect_id;
-		System.out.println("ssssssss");
+		org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("ch_wb_Data");
         }
 
 	public void run() {
-                try {
-			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
-                        h.setName("session");
-                        h.setValue(this.lect_id+","+clientObject.getUserName());
-			
-			while(ThreadController.getController().getThreadFlag()){
-                        	try {
+		
+		while(ThreadController.getController().getThreadFlag()){
+                     	try {
+				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					String datastr="nodata";
-					try {
-						if(utilObject.getSendQueueSize() != 0) {
-                        	        		datastr=utilObject.getSendQueue();
-							datastr=java.net.URLEncoder.encode(datastr);
-	
-                                		}
-					}catch(Exception e){System.out.println("Error in Send data "+datastr); }
-				
+					if(utilObject.getSendQueueSize() != 0) {
+        	                		datastr=utilObject.getSendQueue();
+						datastr=java.net.URLEncoder.encode(datastr);
+	                	      	}
+					
 					String reg="";
-					if(clientObject.getParentReflectorIP()!= null ){
-        	                                reg=clientObject.getParentReflectorIP();
-                	                        clientObject.setParentReflectorIP("null");
-                        	        }else{
-                                	        reg="null";
-                                	}
-					PostMethod postMethod = new PostMethod("http://"+reflectorIP+":"+refHttpPort);
-                                        client.setConnectionTimeout(80000);
-                                        postMethod.setRequestBody(clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg);
-                                        postMethod.setRequestHeader(h);
-					
-					// Http Proxy Handler
-					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-					
-						HostConfiguration config = client.getHostConfiguration();
-        					config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-        					Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-        					AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-	        				client.getState().setProxyCredentials(authScope, credentials);
+					if(clientObject.getParentReflectorIP()!= null ) {
+        		                	reg=clientObject.getParentReflectorIP();
+                		                clientObject.setParentReflectorIP("null");
+                       			}else {
+                                		reg="null";
+	                                }
+					LinkedList send_queue=UtilObject.getController().getSendQueue("ch_wb_Data");
+					String message=clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg;
+					if(!(message.equals(message_diff)) || (send_queue.size()== 0)) {
+						message_diff=message;
+						send_queue.addLast((message_diff).getBytes());
 					}
-	                        	int statusCode = client.executeMethod(postMethod);
-					byte[] bytes=postMethod.getResponseBody();
-					try {
-						String str=new String(bytes);
+				
+					LinkedList cha_wb_queue=UtilObject.getController().getQueue("ch_wb_Data");
+					if(cha_wb_queue.size()>0) {
+						String str=new String((byte[])cha_wb_queue.get(0));
+						cha_wb_queue.remove(0);		
 						java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
 						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("yes");
 						if (Tok.hasMoreElements()) {
 							String str1=(String)Tok.nextElement();
 							String str2=(String)Tok.nextElement();
 							str2=java.net.URLDecoder.decode(str2);
-							System.out.println("str1 ===========>  "+str1);
-							if(!str1.equals("nodata")){
-								
+							if(!str1.equals("nodata")) {
 								if(str1.equals("sessionlist_timeout") && (value_count>5)){
 									org.bss.brihaspatisync.gui.Logout.getController().sessionOutMessage();
 								}else
 									RuntimeDataObject.getController().setUserList(str1);
 								if(value_count<7)
 									value_count++;
-								
 							}
 							if(!str1.equals("nodata"))
 								utilObject.setRecQueue(str2);	
 						}
-						this.sleep(1000);
-						this.yield();
-					}catch(Exception ww){
-						org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
 					}
-	                        	postMethod.releaseConnection();
-	                  	}catch(Exception ex) { 
-					try {
-						this.sleep(500);
-                                                this.yield();
-                                        }catch(Exception ww){
-                                                org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
-                                        }
-					org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
+					networkHandler();
 				}
-			}
-         	}catch(Exception e){ 
-			try {
-                                this.sleep(500);
-                        	this.yield();
-                        }catch(Exception ww){
-                        	org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
-                    	}
-			org.bss.brihaspatisync.gui.StatusPanel.getController().sethttpClient("no");
+				this.sleep(2000);this.yield();
+			}catch(Exception ex) {	System.out.println("Error in HTTP Client "+ex.getMessage());   }
 		}
   	}
+
+	/**
+	 * This method is used to netwrok very slow . 
+	 * then remove data from sending queue 
+	 */ 
+
+        private void networkHandler() {
+                try {
+                        LinkedList sendqueue=UtilObject.getController().getSendQueue("ch_wb_Data");
+                        if(sendqueue.size()>15) {
+                                for(int i=0;i<5;i++) {
+                                        sendqueue.remove(0);
+                                }
+                        }
+                }catch(Exception epe){System.out.println("Error in networkHandler class "); }
+        }
 }

@@ -40,10 +40,11 @@ public class BufferImage {
          * Return the Buffer head 
          */ 
        	
-	public synchronized BufferedImage get(int temp) throws QueueEmptyException { 
-           	if(isEmpty()) 
-                	throw new QueueEmptyException(); 
-               	 return (BufferedImage)buffer.elementAt(temp); 
+	public synchronized BufferedImage get(int temp) throws Exception { 
+           	if(buffer.size() >0 ) 
+               	 	return (BufferedImage)buffer.elementAt(temp); 
+		else
+			return null;
        	} 
     	
   	/**
@@ -53,47 +54,38 @@ public class BufferImage {
         public synchronized void put(BufferedImage obj) {
         	buffer.addElement(obj);
         }
-	
+	/**
+ 	 * Remove an Obect in the buffer
+ 	 */
 	public synchronized void remove() {
                 if(buffer.size() > 0){
 			buffer.removeElementAt(0);
                 }
         }
 	
-	
+	/**
+	 * Remove an Obect in the buffer if buffer is full .
+	 */
 	public synchronized void handleBuffer(){
-		if(bufferSize()>25) {
-			for(int k=0; k<10; k++){
-				if(k/2==0)
-                	       		buffer.remove(k);
+		if(bufferSize()>10) {
+			for(int k=0; k<5; k++){
+                	       	buffer.remove(0);
 			}
 		}
 	}
-	
 
 	/**
          * Return <b>true</b> if the buffer is empty.
          */
-        
-	
 	private boolean isEmpty() {
                 return buffer.size() == 0;
         }
 	
-		
         /**
          * Return the size of the buffer
          */
 	public synchronized int bufferSize() {
                 return buffer.size();
         }
-	/**
-         * Notify Queue
-         */
-	public synchronized void Notify(){
-        	buffer.notify();
-	}
 }
 
-class QueueEmptyException extends Exception { 
-}

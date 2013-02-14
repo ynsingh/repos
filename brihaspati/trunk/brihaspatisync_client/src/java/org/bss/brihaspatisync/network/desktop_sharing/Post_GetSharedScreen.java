@@ -8,7 +8,7 @@ package org.bss.brihaspatisync.network.desktop_sharing;
  */
 
 import java.io.File;
-import java.io.FileInputStream;
+import  java.util.LinkedList;
 
 import java.awt.AWTException;
 import java.awt.Color;
@@ -27,21 +27,13 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-
 import org.bss.brihaspatisync.gui.Desktop_Sharing;
 import org.bss.brihaspatisync.gui.StatusPanel;
 
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
-
-import org.apache.commons.httpclient.auth.AuthScope;
-
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HostConfiguration;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.bss.brihaspatisync.network.util.UtilObject;
 
 /**
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
@@ -50,17 +42,17 @@ import org.apache.commons.httpclient.UsernamePasswordCredentials;
 
 public class Post_GetSharedScreen implements Runnable {
 	
-	private Thread runner=null;
-	
-	private boolean flag=false;
 	private Robot robot=null;
+	private Thread runner=null;
+	private boolean flag=false;
 	private boolean getflag=false;
 	private String reflectorIP ="";
+	private boolean screen_mode=false;		
 		
+	private static Post_GetSharedScreen post_screen=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private static Post_GetSharedScreen post_screen=null;
-	private boolean screen_mode=false;		
+	
 	/**
  	 * Controller for the class.
  	 */ 
@@ -81,6 +73,7 @@ public class Post_GetSharedScreen implements Runnable {
 			getflag=getscreen;
                         runner = new Thread(this);
                         runner.start();
+			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().addType("Desktop_Data");
 			System.out.println("PostSharedScreen start successfully !!");
 		}
         }
@@ -91,20 +84,23 @@ public class Post_GetSharedScreen implements Runnable {
         
 	public void stop() {
                 if (runner != null) {
+			org.bss.brihaspatisync.network.singleport.SinglePortClient.getController().removeType("Desktop_Data");	
 			flag=false;
                         runner.stop();
 			getflag=false;
-                        runner = null;
+                        runner = null;		
+			robot  = null;
 			System.out.println("PostSharedScreen stop successfully !!");
                 }
         }
 
 	public BufferedImage captureScreen() {
 		BufferedImage image=null;
-		try{
+		try{	
+			if(robot == null)
+				robot = new Robot();
         	      	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
              		Rectangle size = new Rectangle(0, 0, screenSize.width, screenSize.height);
-                
 			Point mousePosition = MouseInfo.getPointerInfo().getLocation();
 			image = robot.createScreenCapture(size);
                 	Polygon pointer = new Polygon(new int[]{0,16,10,8},new int[]{0,8,10,16},4);
@@ -124,64 +120,59 @@ public class Post_GetSharedScreen implements Runnable {
 
 
 	public void run() {
-		try {
-			robot = new Robot();
-			org.apache.commons.httpclient.Header h=new org.apache.commons.httpclient.Header();
-                        h.setName("session");
-                        h.setValue(clientObject.getLectureID()+","+clientObject.getUserName());
-			
-			int port=runtime_object.client_postsharescreen_port(); 
-			while(flag &&ThreadController.getController().getThreadFlag()) {
-				try {
-					HttpClient client = new HttpClient();
-			        	PostMethod postMethod = new PostMethod("http://"+clientObject.getReflectorIP()+":"+port);
-					client.setConnectionTimeout(8000);
+		while(flag && ThreadController.getController().getThreadFlag()) {
+			try {
+				if(ThreadController.getController().getReflectorStatusThreadFlag()) {
 					/****   send the image to reflector **********/
 					if(!getflag) {
 						BufferedImage image=captureScreen();
 						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
 						ImageIO.write(image, "jpeg", os);
-       	                		        postMethod.setRequestBody(new java.io.ByteArrayInputStream(os.toByteArray()));
+						LinkedList send_queue=UtilObject.getController().getSendQueue("Desktop_Data");
+						send_queue.addLast(os.toByteArray());
 						os.flush();	
 						os.close();	
-					}
-	               			postMethod.setRequestHeader(h);
-					
-					// Http Proxy Handler
-					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
-                                	        HostConfiguration config = client.getHostConfiguration();
-	                                        config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
-        	                                Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
-                	                        AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
-                        	                client.getState().setProxyCredentials(authScope, credentials);
-                                	}
-	
-        	               		int statusCode1 = client.executeMethod(postMethod);
-					/****   receive the image from reflector **********/
-					if(getflag) {
-						byte[] bytes1=postMethod.getResponseBody();
-		                                BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(bytes1));
-						try {
-		                                        if(image!=null){
+					}else {
+						LinkedList send_queue=UtilObject.getController().getSendQueue("Desktop_Data");
+                                                send_queue.addLast(null);
+						/****   receive the image from reflector **********/
+						LinkedList desktop_queue=UtilObject.getController().getQueue("Desktop_Data");
+                                                if(desktop_queue.size()>0) {
+							byte[] bytes1=(byte[])desktop_queue.get(0);
+							desktop_queue.remove(0);
+			                                BufferedImage image = ImageIO.read(new java.io.ByteArrayInputStream(bytes1));
+		        	                       	if(image!=null){
 								if(!screen_mode)
-                		                                	Desktop_Sharing.getController().showImage(image);
+                		        	                       	Desktop_Sharing.getController().showImage(image);
 								else
                 		                                	org.bss.brihaspatisync.gui.FullScreen_Mode.getController().showImage(image);
 							}
-                                		}catch(Exception e){ System.out.println("Error in loding image in desktop_sharing panel : "+e.getMessage()); }
+						}
 					}
-                	       		postMethod.getStatusLine();
-                       			postMethod.releaseConnection();
-                       			try {	runner.yield(); }catch(Exception ex){}
+					networkHandler();
 					StatusPanel.getController().setdestopClient("yes");
-				}catch(Exception e){    StatusPanel.getController().setdestopClient("no"); }
-				System.gc();
-			}
-		}catch(Exception e){
-			System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());
-			StatusPanel.getController().setdestopClient("no");
+				}else 
+					StatusPanel.getController().setdestopClient("no");
+                       		runner.sleep(2000); runner.yield();
+			}catch(Exception e){  StatusPanel.getController().setdestopClient("no"); }
 		}
 	}
+	
+	/**
+	 * This method is used to netwrok very slow . 
+	 * then remove data from sending queue 
+	 */
+
+        private void networkHandler() {
+                try {
+                        LinkedList sendqueue=UtilObject.getController().getSendQueue("Desktop_Data");
+                        if(sendqueue.size()>10) {
+                                for(int i=0;i<5;i++) {
+                                        sendqueue.remove(0);
+                                }
+                        }
+                }catch(Exception epe){System.out.println("Error in networkHandler class "); }
+        }	
 	
 	public void setFlag(boolean f){
 		screen_mode=f;

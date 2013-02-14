@@ -85,11 +85,13 @@ public class AudioPlayer implements Runnable {
 		int bufferSize =((int)(audioFormat.getSampleRate())*(audioFormat.getFrameSize()))/4;
 		while(flag && ThreadController.getController().getThreadFlag()){
 			try {
-				
-				if(audioVector.size() > 0){
-					if(sourceDataLine != null ) {
-                                		sourceDataLine.write(audioVector.get(0),0,bufferSize);
-						audioVector.remove(0);
+				if(audioVector.size() > 4){
+					for (int i=0;i<4;i++) {
+						if(sourceDataLine != null ) {
+        	                        		sourceDataLine.write(audioVector.get(0),0,bufferSize);
+							audioVector.remove(0);
+							System.out.println("delete ing audio data ");
+						}	
 					}
 				} 
 				runner.yield();	

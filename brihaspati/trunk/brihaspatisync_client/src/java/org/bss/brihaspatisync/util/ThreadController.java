@@ -14,6 +14,7 @@ public class ThreadController {
 
 	private static ThreadController tc=null;
 	private boolean threadFlag=false;
+	private boolean reflector_status=false;
 
 	public static ThreadController getController(){
 		if(tc==null){
@@ -23,10 +24,19 @@ public class ThreadController {
 	}
 
 	public void setThreadFlag(boolean value){
-		threadFlag=value;
+		this.threadFlag=value;
 	}
 	
 	public boolean getThreadFlag(){
-		return threadFlag;
+		return this.threadFlag;
 	}
+
+	
+	public void setReflectorStatusThreadFlag(boolean value){
+                this.reflector_status=value;
+        }
+
+        public boolean getReflectorStatusThreadFlag(){
+                return this.reflector_status;
+        }	
 }

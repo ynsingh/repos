@@ -124,6 +124,10 @@ public class RuntimeDataObject {
                 return Integer.parseInt(prop.getProperty("client_postsharescreen_port"));
         }
 	
+	public int client_single_port(){
+                return Integer.parseInt(prop.getProperty("single_port"));
+        }	
+
 	public int getPPTPort() {
                 return Integer.parseInt(prop.getProperty("client_ppt_port"));
         }
@@ -176,4 +180,6 @@ public class RuntimeDataObject {
        	public String getVideoServerPort(){
                return videoServerPort;
        	}
+	
+	
 }	
