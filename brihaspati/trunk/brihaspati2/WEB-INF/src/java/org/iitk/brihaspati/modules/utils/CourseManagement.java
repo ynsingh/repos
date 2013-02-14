@@ -108,7 +108,9 @@ public class CourseManagement
 			/**
 		   	  * Concatenate CourseId and UserName
 		   	  */
-                   	  String newcid=groupalias + uname+"_"+institute_id;
+			  groupalias=(groupalias.trim()).replaceAll("\\s","");
+			  uname=uname.trim();
+                   	  String newcid=groupalias+uname+"_"+institute_id;
 		   	  if(!newcid.equals(""))
 			  {
 		  	 	/**
