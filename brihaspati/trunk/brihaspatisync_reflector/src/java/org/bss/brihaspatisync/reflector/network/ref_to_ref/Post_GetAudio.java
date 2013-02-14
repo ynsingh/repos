@@ -46,7 +46,7 @@ public class Post_GetAudio implements Runnable {
 	
 	private boolean flag=false;
 	private String reflectorIP ="";
-	private int port=RuntimeDataObject.getController().getAudioPostPort();;	
+	//private int port=RuntimeDataObject.getController().getAudioPostPort();;	
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
 	private static Post_GetAudio post_screen=null;
 	

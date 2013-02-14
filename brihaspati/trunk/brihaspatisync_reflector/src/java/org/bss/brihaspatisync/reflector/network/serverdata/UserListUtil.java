@@ -39,7 +39,6 @@ public class UserListUtil {
 	
 	public void addDataForVector(String course_id,String userlistdata) {
                 try {
-			System.out.println("Add user list ---->  "+userlistdata+" course_id "+course_id);	
 			if(userlistdata.equals("noUser")){	
 	                       	RuntimeDataObject.getController().resetMastrerReflecterCourseid(course_id);
 				temp_ht.removeCourseIdUserListVector(course_id);
@@ -64,7 +63,6 @@ public class UserListUtil {
 		}catch(Exception e){ System.out.println("Error in UserListUtil.java line no 62 "+e.getMessage());}
 		
 		String temp_string=senduserlist_to_client;
-		System.out.println("send userlist to client "+senduserlist_to_client);
 		senduserlist_to_client="";
 		return temp_string;	
         }

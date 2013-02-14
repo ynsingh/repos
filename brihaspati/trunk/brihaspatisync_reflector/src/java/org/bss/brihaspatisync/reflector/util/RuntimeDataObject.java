@@ -89,42 +89,12 @@ public class RuntimeDataObject {
         public String getcertIssuerName(){
                 return prop.getProperty("cert_Issuer_Name");
         }
-	/*************************************/
 
 	/**
-         * Load Reflector HTTP port from which clients will connect to receive media stream
-         */
-        public int getHttpPort(){
-                return Integer.parseInt(prop.getProperty("ref_http_port"));
-        }
-
-	/**
-         * Load Audio post port 
-         */
-        public int getAudioPostPort(){
-                return Integer.parseInt(prop.getProperty("ref_audio_post_port"));
-        }
-
-	/**
-         * Load Desktop Post port
-         */
-	public int getDesktopPostPort(){
-                return Integer.parseInt(prop.getProperty("desktop_post_port"));
-        }
-
-	/**
-         * Load ppt server port
-         */
-	public int getPPtServerPort(){
-                return Integer.parseInt(prop.getProperty("ppt_server_port"));
-        }
-
-	public int get_inspostVideoPort(){
-                return Integer.parseInt(prop.getProperty("ref_inspostvideo_port"));
-        }
-	
-	public int get_stdpostVideoPort(){
-                return Integer.parseInt(prop.getProperty("ref_stdpostvideo_port"));
+	 * Load Reflector HTTP server port from which clients will connect to receive media stream
+	 */
+        public int getSinglePortServer(){
+                return Integer.parseInt(prop.getProperty("singleport_server"));
         }
 	
 	/**

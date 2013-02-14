@@ -21,10 +21,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
-import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
-
-import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
-import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
 
 
 /**
@@ -64,7 +60,7 @@ public class LogoutReflector {
                 				String str=in.readLine();
 						System.out.println("str "+str);
 						if(str.equals("successfull")){
-						  System.out.println("xml delete !Logout Reflector Successfully !! ");	
+						  	System.out.println("xml delete !Logout Reflector Successfully !! ");	
 						}
                 			}finally {
                        				if(in != null){
@@ -72,13 +68,7 @@ public class LogoutReflector {
                                			}
 					}
                        		}
-                		HttpGetPost.getController().stop();     /** port 9999  */
-       	        		//TCPServer.getController().stop();      /** port 8888  */
-       	        		//Audio Threads
-       	        		PostAudioServer.getController().stopThread();
-       	        		      	        		
-				PPTGetAndPostServer.getController().stopThread();
-              			//log.stop();
+				org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().stop();
 				Timer UL_Timer =riserver.getTimer();
 				if(UL_Timer != null) {
 					UL_Timer.cancel();

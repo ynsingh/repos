@@ -35,7 +35,7 @@ public class PPTGetAndPostServer {
 	private boolean flag=false;
         private HttpServer server =null;
         private static PPTGetAndPostServer pptserver=null;
-	private int ppt_port=RuntimeDataObject.getController().getPPtServerPort();
+	private int ppt_port=0;//RuntimeDataObject.getController().getPPtServerPort();
 
 	public static PPTGetAndPostServer getController() throws Exception {
                 if(pptserver==null)

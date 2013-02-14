@@ -23,15 +23,15 @@ import javax.net.ssl.HttpsURLConnection;
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
-import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
+//import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
 
 import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
-import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopPostServer;
+//import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopPostServer;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
-import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
+//import org.bss.brihaspatisync.reflector.network.audio.PostAudioServer;
 import org.bss.brihaspatisync.reflector.network.nms.PostNmsServer;
 
 import java.util.Timer;
@@ -248,19 +248,7 @@ public class RegisterToIndexServer {
 
 	protected String startThreads(){
 		try {
-			HttpGetPost.getController().start(); 	/** port 9999  */
-			DesktopPostServer.getController().start();
-			org.bss.brihaspatisync.reflector.network.video_server.VideoPostServer.getController().start();//8091
-			
-			org.bss.brihaspatisync.reflector.network.video_server.StudentPostServer.getController().start();//8093
-
-			//Audio Thread
-			PostAudioServer.getController().startThread();
-			//PostNmsServer.getController().startThread();
-
-			//TCPServer.getController().start(); 	/** port 8888  */
-			//TransmitHandlerThread.getControllerofHandler().start();
-			PPTGetAndPostServer.getController().startThread();
+			org.bss.brihaspatisync.reflector.network.singleport.SinglePortServer.getController().start();	
 			try{
 				
         	                UL_Timer=new Timer(true);

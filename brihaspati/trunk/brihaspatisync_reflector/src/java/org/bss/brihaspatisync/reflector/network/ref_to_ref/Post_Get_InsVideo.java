@@ -46,7 +46,7 @@ public class Post_Get_InsVideo implements Runnable {
 	
 	private boolean flag=false;
 	private String reflectorIP ="";
-	private int port=RuntimeDataObject.getController().get_inspostVideoPort();
+	//private int port=RuntimeDataObject.getController().get_inspostVideoPort();
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
 	
 	private static Post_Get_InsVideo post_screen=null;

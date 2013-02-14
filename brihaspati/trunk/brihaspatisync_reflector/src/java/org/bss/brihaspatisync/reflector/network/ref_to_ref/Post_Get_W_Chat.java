@@ -46,7 +46,7 @@ public class Post_Get_W_Chat implements Runnable {
 	
 	private boolean flag=false;
 	private String reflectorIP ="";
-	private int port=RuntimeDataObject.getController().getHttpPort();	
+	//private int port=RuntimeDataObject.getController().getHttpPort();	
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
 	private static Post_GetSharedScreen post_screen=null;
 	private String lecture_id="";		

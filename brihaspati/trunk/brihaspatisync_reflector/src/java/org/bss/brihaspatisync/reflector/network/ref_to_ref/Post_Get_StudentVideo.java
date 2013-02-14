@@ -47,7 +47,7 @@ public class Post_Get_StudentVideo implements Runnable {
 	
 	private boolean flag=false;
 	private String reflectorIP ="";
-	private int port= RuntimeDataObject.getController().get_stdpostVideoPort();
+	//private int port= RuntimeDataObject.getController().get_stdpostVideoPort();
 	private RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
 	
 	private static Post_Get_StudentVideo post_screen=null;
