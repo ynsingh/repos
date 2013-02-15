@@ -99,7 +99,13 @@ public class StudentPostVideoCapture implements Runnable {
         		                       	        jencoder.setJPEGEncodeParam(enParam);
                 		                       	jencoder.encode(bimg);
 							LinkedList send_queue=UtilObject.getController().getSendQueue("stud_video");
-                                        	        send_queue.addLast(os.toByteArray());
+                                                        if(send_queue.size()==0 ){
+                                                                send_queue.addLast(os.toByteArray());
+                                                        }else {
+                                                                int k=compare(os.toByteArray(),(byte[])send_queue.get((send_queue.size())-1));
+                                                                if(k!=0)
+                                                                        send_queue.addLast(os.toByteArray());
+                                                        }
 							os.flush();
 	                                                os.close();
 						}	
@@ -136,5 +142,19 @@ public class StudentPostVideoCapture implements Runnable {
                                 }
                         }
                 }catch(Exception epe){System.out.println("Error in networkHandler class "); }
+        }
+	
+	/**
+	 * This method is used to differeciate between two images .
+	 **/
+	public int compare(byte[] left, byte[] right) {
+                for (int i = 0, j = 0; i < left.length && j < right.length; i++, j++) {
+                        int a = (left[i] & 0xff);
+                        int b = (right[j] & 0xff);
+                        if (a != b) {
+                                return a - b;
+                        }
+                }
+                return left.length - right.length;
         }
 }
