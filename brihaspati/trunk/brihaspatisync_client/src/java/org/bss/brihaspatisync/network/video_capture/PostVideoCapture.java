@@ -32,14 +32,13 @@ import com.sun.image.codec.jpeg.JPEGEncodeParam;
  */
 
 public class PostVideoCapture implements Runnable {
-	
 	private Thread runner=null;
-	
 	private boolean flag=false;
 	private boolean getflag=false;
-	private ClientObject clientObject=ClientObject.getController();
-	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private static PostVideoCapture post_capture=null;
+	private ClientObject clientObject=ClientObject.getController();	
+	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
+	private java.io.ByteArrayOutputStream os=new java.io.ByteArrayOutputStream();
 
 	/**
  	 * Controller for the class.
@@ -93,7 +92,6 @@ public class PostVideoCapture implements Runnable {
 							BufferedImage bimg=BufferImage.getController().get(0);
 							BufferImage.getController().remove();
 							
-							java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
 	                                	        JPEGImageEncoder jencoder = JPEGCodec.createJPEGEncoder(os);
         	                               		JPEGEncodeParam enParam = jencoder.getDefaultJPEGEncodeParam(bimg);
 	        	                               	enParam.setQuality(0.25F, true);
@@ -108,7 +106,7 @@ public class PostVideoCapture implements Runnable {
                                         	                        send_queue.addLast(os.toByteArray());
                                                 	}
 							os.flush();
-        	                                        os.close();
+							os.reset();
 						}
 					}else {
 						LinkedList send_queue=UtilObject.getController().getSendQueue("ins_video");

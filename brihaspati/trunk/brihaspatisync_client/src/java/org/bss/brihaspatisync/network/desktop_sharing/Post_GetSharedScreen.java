@@ -9,6 +9,7 @@ package org.bss.brihaspatisync.network.desktop_sharing;
 
 import java.io.File;
 import  java.util.LinkedList;
+import java.io.ByteArrayOutputStream;
 
 import java.awt.AWTException;
 import java.awt.Color;
@@ -49,6 +50,7 @@ public class Post_GetSharedScreen implements Runnable {
 	private String reflectorIP ="";
 	private boolean screen_mode=false;		
 		
+	private ByteArrayOutputStream os = new ByteArrayOutputStream();
 	private static Post_GetSharedScreen post_screen=null;
 	private ClientObject clientObject=ClientObject.getController();
 	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
@@ -126,7 +128,6 @@ public class Post_GetSharedScreen implements Runnable {
 					/****   send the image to reflector **********/
 					if(!getflag) {
 						BufferedImage image=captureScreen();
-						java.io.ByteArrayOutputStream os = new java.io.ByteArrayOutputStream();
 						ImageIO.write(image, "jpeg", os);
 						LinkedList send_queue=UtilObject.getController().getSendQueue("Desktop_Data");
 						if(send_queue.size()==0 ){
@@ -136,8 +137,8 @@ public class Post_GetSharedScreen implements Runnable {
 							if(k!=0)	
 								send_queue.addLast(os.toByteArray());	
 						}
-						os.flush();	
-						os.close();	
+						os.flush();
+						os.reset();	
 					}else {
 						LinkedList send_queue=UtilObject.getController().getSendQueue("Desktop_Data");
                                                 send_queue.addLast(null);
