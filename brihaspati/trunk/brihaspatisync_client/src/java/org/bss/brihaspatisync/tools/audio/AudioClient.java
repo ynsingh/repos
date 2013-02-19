@@ -97,28 +97,11 @@ public class AudioClient implements Runnable {
 						}
 					}
 					StatusPanel.getController().setaudioClient("yes");
-					networkHandler();
+					UtilObject.getController().networkHandler("Audio_Data");
 				}else
 					StatusPanel.getController().setaudioClient("no");
 				runner.yield();
 			}catch(Exception epe){StatusPanel.getController().setaudioClient("no"); }
         	}
 	}
-	
-	/**
- 	 * This method is used to netwrok is very slow 
- 	 * then remove data from sending queue 
- 	 */
- 
-	private void networkHandler() {
-		try {
-			LinkedList sendqueue=UtilObject.getController().getSendQueue("Audio_Data");
-			if(sendqueue.size()>20) {
-	                        for(int i=0;i<5;i++) {
-					sendqueue.remove(0);
-				}
-			}
-		}catch(Exception epe){System.out.println("Error in networkHandler class "); }
-	}	
-
 }

@@ -7,24 +7,14 @@ package org.bss.brihaspatisync.network.http;
  * Copyright (c) 2012, ETRG, IIT Kanpur.
  */
 
-import java.awt.Frame;
-import java.lang.Long;
-
 import  java.util.LinkedList;
 import java.util.StringTokenizer;
 
-import java.io.DataInputStream;
-import java.io.BufferedInputStream;
-import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.util.ThreadController;
 
-import org.bss.brihaspatisync.Client;
-import org.bss.brihaspatisync.network.ReceiveQueueHandler;
-
-import org.bss.brihaspatisync.network.util.Queue;
 import org.bss.brihaspatisync.network.util.UtilObject;
+import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 
 
 /**
@@ -40,8 +30,6 @@ public class HTTPClient extends Thread {
 	private String message_diff="";
 	private UtilObject utilObject=UtilObject.getController();
         private ClientObject clientObject=ClientObject.getController();
-	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
-	private final String refHttpPort=runtime_object.getRefHttpPort();
 	public HTTPClient(){ }
 
 	public HTTPClient(String lect_id){
@@ -88,7 +76,7 @@ public class HTTPClient extends Thread {
 								if(str1.equals("sessionlist_timeout") && (value_count>5)){
 									org.bss.brihaspatisync.gui.Logout.getController().sessionOutMessage();
 								}else
-									RuntimeDataObject.getController().setUserList(str1);
+									org.bss.brihaspatisync.util.RuntimeDataObject.getController().setUserList(str1);
 								if(value_count<7)
 									value_count++;
 							}
@@ -96,26 +84,10 @@ public class HTTPClient extends Thread {
 								utilObject.setRecQueue(str2);	
 						}
 					}
-					networkHandler();
+					UtilObject.getController().networkHandler("ch_wb_Data");
 				}
 				this.sleep(2000);this.yield();
 			}catch(Exception ex) {	System.out.println("Error in HTTP Client "+ex.getMessage());   }
 		}
   	}
-
-	/**
-	 * This method is used to netwrok very slow . 
-	 * then remove data from sending queue 
-	 */ 
-
-        private void networkHandler() {
-                try {
-                        LinkedList sendqueue=UtilObject.getController().getSendQueue("ch_wb_Data");
-                        if(sendqueue.size()>15) {
-                                for(int i=0;i<5;i++) {
-                                        sendqueue.remove(0);
-                                }
-                        }
-                }catch(Exception epe){System.out.println("Error in networkHandler class "); }
-        }
 }

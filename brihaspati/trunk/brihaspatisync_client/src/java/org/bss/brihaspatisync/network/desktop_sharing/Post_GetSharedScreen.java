@@ -31,9 +31,7 @@ import javax.imageio.ImageIO;
 import org.bss.brihaspatisync.gui.Desktop_Sharing;
 import org.bss.brihaspatisync.gui.StatusPanel;
 
-import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
-import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
 
 /**
@@ -47,13 +45,10 @@ public class Post_GetSharedScreen implements Runnable {
 	private Thread runner=null;
 	private boolean flag=false;
 	private boolean getflag=false;
-	private String reflectorIP ="";
 	private boolean screen_mode=false;		
 		
-	private ByteArrayOutputStream os = new ByteArrayOutputStream();
 	private static Post_GetSharedScreen post_screen=null;
-	private ClientObject clientObject=ClientObject.getController();
-	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
+	private ByteArrayOutputStream os = new ByteArrayOutputStream();
 	
 	/**
  	 * Controller for the class.
@@ -96,6 +91,9 @@ public class Post_GetSharedScreen implements Runnable {
                 }
         }
 
+	/**
+ 	 * This method is used to get screenshot .
+ 	 */  
 	public BufferedImage captureScreen() {
 		BufferedImage image=null;
 		try{	
@@ -156,30 +154,15 @@ public class Post_GetSharedScreen implements Runnable {
 							}
 						}
 					}
-					networkHandler();
+					UtilObject.getController().networkHandler("Desktop_Data");
 					StatusPanel.getController().setdestopClient("yes");
 				}else 
 					StatusPanel.getController().setdestopClient("no");
                        		runner.sleep(2000); runner.yield();
+				System.gc();
 			}catch(Exception e){  StatusPanel.getController().setdestopClient("no"); }
 		}
 	}
-	
-	/**
-	 * This method is used to netwrok very slow . 
-	 * then remove data from sending queue 
-	 */
-
-        private void networkHandler() {
-                try {
-                        LinkedList sendqueue=UtilObject.getController().getSendQueue("Desktop_Data");
-                        if(sendqueue.size()>10) {
-                                for(int i=0;i<5;i++) {
-                                        sendqueue.remove(0);
-                                }
-                        }
-                }catch(Exception epe){System.out.println("Error in networkHandler class "); }
-        }	
 	
 	/**
  	 * This method is used to differeciate between two images .

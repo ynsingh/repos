@@ -91,12 +91,6 @@ public class ReceiveQueueHandler implements Runnable{
 						StringTokenizer st=new StringTokenizer(datastr,"$");
 						while(st.hasMoreTokens()){
 							String type=st.nextToken();
-							if(!type.equals("ppt")){
-								//file write in txt file
-								try {
-									Recorder.getController().Record(type);
-								}catch(Exception e){}
-							}
 							if(type.equals("wb")){
                 	                       			WhiteBoardDraw.getController().getDraw_vector().addElement(datastr); 
 							}else if(type.equals("ch")){

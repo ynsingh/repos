@@ -99,4 +99,19 @@ public class UtilObject {
 	public int getSendQueueSize(){
                 return sendQueue.size();
         }
+	
+	/**
+	 * This method is used to netwrok very slow . 
+	 * then remove data from sending queue 
+	 */
+	public void networkHandler(String type) {
+                try {
+                        LinkedList sendqueue=UtilObject.getController().getSendQueue(type);
+                        if(sendqueue.size()>10) {
+                                for(int i=0;i<5;i++) {
+                                        sendqueue.remove(0);
+                                }
+                        }
+                }catch(Exception epe){System.out.println("Error in networkHandler class "); }
+        }  
 }

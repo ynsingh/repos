@@ -114,7 +114,7 @@ public class SinglePortClient implements Runnable {
 					}else if(type.equals("Desktop_Data")) {
 						try {
 							LinkedList sendqueue=UtilObject.getController().getSendQueue("Desktop_Data");	
-							if(sendqueue.size() >0 ) {
+							if(sendqueue.size() >1 ) {
 	                                                        byte[] send_data=(byte[])sendqueue.get(0);
         	       	                                	sendqueue.remove(0);
                        		                                byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
@@ -136,7 +136,7 @@ public class SinglePortClient implements Runnable {
 					}else if(type.equals("ins_video")) {
 						try {
 							LinkedList sendqueue=UtilObject.getController().getSendQueue("ins_video");
-							if(sendqueue.size() >0 ) {
+							if(sendqueue.size() >1 ) {
 	                                                        byte[] send_data=(byte[])sendqueue.get(0);
         	       	                                        sendqueue.remove(0);
                         	                                byte[] receive_data_fromserver=sendDataToReflector(send_data,type);
@@ -147,7 +147,7 @@ public class SinglePortClient implements Runnable {
 					}else if(type.equals("stud_video")) {
 						try {
 							LinkedList sendqueue=UtilObject.getController().getSendQueue("stud_video");
-							if(sendqueue.size() >0 ) {
+							if(sendqueue.size() >1 ) {
 	                                                        byte[] send_data=(byte[])sendqueue.get(0);
         	                                                sendqueue.remove(0);
                                                                 byte[] receive_data_fromserver=sendDataToReflector(send_data,type);

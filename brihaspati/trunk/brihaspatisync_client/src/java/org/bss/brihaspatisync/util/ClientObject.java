@@ -149,8 +149,6 @@ public class ClientObject {
 	public String getwelcomeUserName(){
                 String name_new=usr_name;
                 try {
-                        //int k=name_new.lastIndexOf("@");
-                        //name_new=name_new.substring(0,k);
                         if(name_new.length()>9){
                                 name_new=name_new.substring(0,7);
                                 name_new=name_new+"..";
@@ -299,7 +297,7 @@ public class ClientObject {
         public javax.sound.sampled.AudioFormat getAudioFormat(){
 		float sampleRate = 8000;    //8000,11025,16000,22050,44100
 		int sampleSizeInBits = 16;  //8,16
-                int channels = 1;           //1,2
+                int channels = 2;           //1,2
 		boolean signed = true;      //true,false
 		boolean bigEndian =false;    //true,false
 		return new javax.sound.sampled.AudioFormat(sampleRate,sampleSizeInBits,channels,signed,bigEndian);

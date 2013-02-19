@@ -90,7 +90,6 @@ public class AudioPlayer implements Runnable {
 						if(sourceDataLine != null ) {
         	                        		sourceDataLine.write(audioVector.get(0),0,bufferSize);
 							audioVector.remove(0);
-							System.out.println("delete ing audio data ");
 						}	
 					}
 				} 

@@ -15,9 +15,7 @@ import java.awt.image.BufferedImage;
 import org.bss.brihaspatisync.gui.StatusPanel;
 import org.bss.brihaspatisync.gui.VideoPanel;
 
-import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.ThreadController;
-import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 import org.bss.brihaspatisync.network.util.UtilObject;
 
@@ -38,8 +36,6 @@ public class StudentPostVideoCapture implements Runnable {
 	private boolean flag=false;
 	private boolean getflag=false;
 	private static StudentPostVideoCapture post_capture=null;
-	private ClientObject clientObject=ClientObject.getController();
-	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	private java.io.ByteArrayOutputStream os=new java.io.ByteArrayOutputStream();
 
 	/**
@@ -122,27 +118,11 @@ public class StudentPostVideoCapture implements Runnable {
 						}
                               		}
 				}
-				networkHandler();
+				UtilObject.getController().networkHandler("stud_video");
                        		runner.sleep(10000);runner.yield();
 			}catch(Exception e){System.out.println("Error in PostMethod of PostSharedScreen : "+e.getMessage());}
 		}
 	}
-	
-	/**
-	 * This method is used to netwrok very slow . 
-	 * then remove data from sending queue 
-	 */
-
-        private void networkHandler() {
-                try {
-                        LinkedList sendqueue=UtilObject.getController().getSendQueue("stud_video");
-                        if(sendqueue.size()>15) {
-                                for(int i=0;i<5;i++) {
-                                        sendqueue.remove(0);
-                                }
-                        }
-                }catch(Exception epe){System.out.println("Error in networkHandler class "); }
-        }
 	
 	/**
 	 * This method is used to differeciate between two images .

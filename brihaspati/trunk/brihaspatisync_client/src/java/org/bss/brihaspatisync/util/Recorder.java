@@ -54,7 +54,7 @@ public class Recorder {
 
         public void Record(String msg)
         {
-                try
+		try
                 {
 			if(LogfilePath.equals(""))
 				createFile();
