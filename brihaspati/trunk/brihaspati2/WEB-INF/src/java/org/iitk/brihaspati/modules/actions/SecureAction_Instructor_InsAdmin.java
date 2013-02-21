@@ -44,7 +44,7 @@ import org.apache.turbine.om.security.User;
  * executing the doBuildtemplate().
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  */
-public class SecureAction_Instructor_InstAdmin extends VelocitySecureAction
+public class SecureAction_Instructor_InsAdmin extends VelocitySecureAction
 {
     	/**
      	* Implement this to add information to the context.
