@@ -186,45 +186,8 @@ $page.setBgColor($ui.bgcolor)
 <SCRIPT LANGUAGE="javascript">
 function checkField(frm,field)
 {
-	var rlid = document.getElementById("rl1");
-        var rlval = rlid.value;
-	if($UDetail.size()!=0)
-        {
-		if(rlval=="")
-                {
-                        alert("Please fill rollno field");
-                        return;
-                }
-                else
-                {
-                        frm.actionName.value=field.name;
-                        frm.submit();
-                }
-	}
-        else
-        {
-                if(document.frm.prg1.value=="Select Program")
-                {
-                        if(rlval=="")
-                        {
-                                frm.actionName.value=field.name;
-                                frm.submit();
-                        }
-                        else
-                        {
-                                alert("Please select program ");
-                        }
-                }
-                else if(rlval=="")
-                {
-                        alert("Please fill rollno field");
-                }
-                else
-                {
-                        frm.actionName.value=field.name;
-                        frm.submit();
-                }
-      }
+	frm.actionName.value=field.name;
+        frm.submit();
 }
 function showList(frm,field)
 {
