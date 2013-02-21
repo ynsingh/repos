@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)TA_Registeration.java     
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2010,2013 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -41,31 +41,29 @@ import java.util.StringTokenizer;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
-//import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-//import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
-//import org.iitk.brihaspati.om.CourseModulePeer;
-//import org.iitk.brihaspati.om.CourseModule;
 import org.iitk.brihaspati.om.ModulePermissionPeer;
+import org.iitk.brihaspati.om.InstructorPermissionsPeer;
 import org.iitk.brihaspati.om.ModulePermission;
-//import org.iitk.brihaspati.om.InstructorPermissions;
-//import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.actions.SecureAction_Instructor;
 
 /**
  * This class is responsible for different actions of Teacher assistant.
  * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * modified date:19-Feb-2013
  */
 
-public class TA_Registeration extends SecureAction_Instructor {
+public class TA_Registeration extends SecureAction_Instructor_InsAdmin {
 	private String LangFile=null;
 	String msg="";
 
@@ -95,10 +93,6 @@ public class TA_Registeration extends SecureAction_Instructor {
 				passwd =starr[0];
 			}
 			String mail_msg="";
-			//String serverName=data.getServerName();
-			//int srvrPort=data.getServerPort();
-			//String serverPort=Integer.toString(srvrPort);
-			//String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gName,"teacher_assistant",serverName,serverPort,LangFile,"","","act");
 			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gName,"teacher_assistant",LangFile,"","","act");
 			data.setMessage(msg +" "+ mail_msg);			
 
@@ -112,19 +106,22 @@ public class TA_Registeration extends SecureAction_Instructor {
 	/*
 	 * This Method is used for Removing Teacher assistant role in course.	
 	 */
-
 	public void doRemoveUser(RunData data, Context context)	 {
-	
                 User user=data.getUser();
 	        ParameterParser pp=data.getParameters();
         	String mid_delete = pp.getString("deleteFileNames","");
-			
+		String Gname=(String)user.getTemp("course_id");
+		if(StringUtils.isBlank(Gname))
+		{
+			Gname = pp.getString("crsname","");
+		}
+                int GID=GroupUtil.getGID(Gname);
+
 		try{
-                        if(!mid_delete.equals("")) {
+                        if(StringUtils.isNotBlank(mid_delete)) {
                                 java.util.StringTokenizer st=new java.util.StringTokenizer(mid_delete,"^");
                                 for(int j=0;st.hasMoreTokens();j++)  {
                                         int uid=UserUtil.getUID(st.nextToken());
-                                        int GID=GroupUtil.getGID((String)user.getTemp("course_id"));
                                         Criteria crit=new Criteria();
                                         crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
                                         crit.add(TurbineUserGroupRolePeer.GROUP_ID,GID);
@@ -132,11 +129,14 @@ public class TA_Registeration extends SecureAction_Instructor {
                                         TurbineUserGroupRolePeer.doDelete(crit);
                                 }
                                 msg=MultilingualUtil.ConvertedString("brih_remta",LangFile);
+                        	data.addMessage(msg);
                         }
-                        data.addMessage(msg);
+			else{
+                                String UsrMsg=MultilingualUtil.ConvertedString("brih_usrmsg",LangFile);
+                                data.addMessage(UsrMsg);
+                        }
                 }catch (Exception ex){ data.setMessage("Error in Removing Teacher Assistant !!  " +ex); }
         }
-
 	
 	/*
 	 * doSelect Method is used for providing course Module authorization 
@@ -222,6 +222,38 @@ public class TA_Registeration extends SecureAction_Instructor {
                 }catch (Exception ex){ data.setMessage("Error in Removing Module Permission !!  " +ex); }
         }
 
+
+	public void doRemoveInstructorMembership(RunData data, Context context)	 {
+	
+                User user=data.getUser();
+	        ParameterParser pp=data.getParameters();
+        	String Instr_delete = pp.getString("deleteInstrList","");
+        	String gName = pp.getString("crsname","");
+		try{
+			if(StringUtils.isNotBlank(Instr_delete)) {
+                                java.util.StringTokenizer st=new java.util.StringTokenizer(Instr_delete,"^");
+                                for(int j=0;st.hasMoreTokens();j++)  {
+                                        String username=st.nextToken();
+                                        String inst_id=(data.getUser().getTemp("Institute_id")).toString();
+                                        int uid=UserUtil.getUID(username);
+                                        int GID=GroupUtil.getGID(gName);
+                                        Criteria crit=new Criteria();
+                                        crit.add(TurbineUserGroupRolePeer.ROLE_ID,2);
+                                        crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                                        crit.add(TurbineUserGroupRolePeer.GROUP_ID,GID);
+                                        crit.add(InstructorPermissionsPeer.INSTITUTE_ID,inst_id);
+                                        TurbineUserGroupRolePeer.doDelete(crit);
+                                }
+				msg=MultilingualUtil.ConvertedString("brih_remsec",LangFile);
+		                data.addMessage(msg);
+			}
+			else{
+                        	String UsrMsg=MultilingualUtil.ConvertedString("brih_usrmsg",LangFile);
+	                        data.addMessage(UsrMsg);
+			}
+                }catch (Exception ex){ data.setMessage("Error in Removing Teacher Assistant !!  " +ex); }
+        }
+
 	
 
 	 public void doPerform(RunData data,Context context) throws Exception{
@@ -235,6 +267,10 @@ public class TA_Registeration extends SecureAction_Instructor {
                         doSelect(data,context);
                 } else if(action.equals("eventSubmit_doRemoveModulePermission")){
                         doRemoveModulePermission(data,context);
+                } else if(action.equals("eventSubmit_doRemoveTeacherAssistant")){
+                        doRemoveUser(data,context);
+                } else if(action.equals("eventSubmit_doRemoveInstructor")){
+                        doRemoveInstructorMembership(data,context);
                 }
 		 else {
                         String c_msg=MultilingualUtil.ConvertedString("c_msg",LangFile);
