@@ -394,7 +394,7 @@ public class UploadAction extends SecureAction
 				if(sendMail.equals("sendMail")){
 					try{
 					int roleId[]={2,3};
-					int userId[]={uid};
+					int userId[]={uid,0};
 					crit = new Criteria();
 			                crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
 			                crit.addIn(TurbineUserGroupRolePeer.ROLE_ID,roleId);
@@ -410,7 +410,7 @@ public class UploadAction extends SecureAction
 							String userEmail = ((TurbineUser) usrList.get(0)).getEmail();
 							String courseName = CourseUtil.getCourseName(courseHome);	
 							//Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile, "","");	
-							Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
+							//Mail_msg=  MailNotificationThread.getController().set_Message("Course content is uploaded in "+courseName+" taught by "+fullName+".", "", "", "", userEmail, "Course content uploaded", "", LangFile);
 						}
 						if(Mail_msg.equals("Success"))
 						{

@@ -1,12 +1,12 @@
 #*
  * @(#)PublishModule.vm
- * Copyright (c) 2005,2009-2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009-2010, 2013 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 30-03-2010, 13-03-2010
+ * @modified date: 30-03-2010, 13-03-2010, 26-02-2013
 *#
 
 $page.setBgColor($ui.bgcolor)
@@ -104,6 +104,7 @@ $!data.getMessage()
 <div style="background-color:$ui.menuColor;text-align:left">
 <input type="checkbox" name=delTopic><b>$brih_topicDelete </b>
 	<input type="button" name=eventSubmit_doDeleteTopic value="$brih_delete" onClick="deleteTopicConfirm(document.frm,this);">
+	<input type="checkbox" name="mailCheck" value="mailCheck"> <b> #if($lang=="hindi" || $lang=="gujarati") $brih_mail $Notice_Send #else $Notice_Send $brih_mail #end </b> &nbsp;&nbsp;&nbsp; </b>
 </div> 
 <table width=100%>
     <tr>
@@ -254,6 +255,7 @@ $!data.getMessage()
 	<input type="hidden" name=visibleList value="$visible">
 	<input type="hidden" name=accessibleList value="$accessible">
 	<input type="hidden" name=unpublishedList value="$unpublished">
+	<input type="hidden" name="mailInfo" value="">
 
 	<input type="hidden" name=deleteVisibleFileNames value="">
 	<input type="hidden" name=deleteAccessibleFileNames value="">
@@ -277,18 +279,55 @@ $!data.getMessage()
 				//invisible
 				case 0:
 					simpleForLoop(document.frm.unpublishedList.value,finalAccessType);
+					if(document.frm.unpublishedList.value != ""){
+						if(finalAccessType == 2)
+                                                {
+                                                        if(!document.frm.mailCheck.checked)
+                                                        {
+                                                                 if(confirm("Do you want to send mail"))
+                                                                        frm.mailInfo.value = "sendMail";
+                                                        }
+                                                        if(document.frm.mailCheck.checked)
+                                                                frm.mailInfo.value = "sendMail";
+                                                }
+                                        }
 					break;
 		
 				//accessible
 				case 1:					
 					simpleForLoop(document.frm.accessibleList.value,finalAccessType);
+					if(document.frm.accessibleList.value != ""){
+						if(finalAccessType == 2)
+                                                {
+                                                        if(!document.frm.mailCheck.checked)
+                                                        {
+                                                                 if(confirm("Do you want to send mail"))
+                                                                        frm.mailInfo.value = "sendMail";
+                                                        }
+                                                        if(document.frm.mailCheck.checked)
+                                                                frm.mailInfo.value = "sendMail";
+                                                }
+
+					}
 					break;
 	
 				//visible
 				case 2:
 					simpleForLoop(document.frm.visibleList.value,finalAccessType);
+					if(document.frm.visibleList.value != ""){
+						if(finalAccessType == 2)
+                                                {
+                                                         if(!document.frm.mailCheck.checked)
+                                                        {
+                                                                 if(confirm("Do you want to send mail"))
+                                                                        frm.mailInfo.value = "sendMail";
+                                                        }
+                                                        if(document.frm.mailCheck.checked)
+                                                                frm.mailInfo.value = "sendMail";
+                                                }
+
+					}
 					break;
-	
 			}
 
 	}
@@ -359,6 +398,18 @@ $!data.getMessage()
 			}
 			else
 			{
+				if(radiobuttonValue == 3)
+				{
+					if(!document.frm.mailCheck.checked)
+					{
+						if(frm.mailInfo.value == ""){
+	                                        	if(confirm("Do you want to send mail"))
+								frm.mailInfo.value = "sendMail";
+						}
+					}
+                                        if(document.frm.mailCheck.checked)
+                                        	frm.mailInfo.value = "sendMail";
+				}
 				if(index!=-1)
 				{
 				preString=actualString.substring(0,index);
@@ -366,6 +417,7 @@ $!data.getMessage()
 				actualString=preString+postString;
 				frm.deleteVisibleFileNames.value=actualString;
 				}	
+				
 			}
 	}
 
@@ -384,6 +436,19 @@ $!data.getMessage()
 			}
 			else
 			{
+				if(radiobuttonValue == 3)
+				{
+                                        if(!document.frm.mailCheck.checked)
+                                        {
+						if(frm.mailInfo.value == ""){
+	                                                if(confirm("Do you want to send mail"))
+        	                                                frm.mailInfo.value = "sendMail";
+						}
+                                        }
+                                        if(document.frm.mailCheck.checked)
+                                                frm.mailInfo.value = "sendMail"; 
+				}
+
 				if(index!=-1)
 				{
 				preString=actualString.substring(0,index);
@@ -391,6 +456,7 @@ $!data.getMessage()
 				actualString=preString+postString;
 				frm.deleteAccessibleFileNames.value=actualString;	
 				}
+
 			}
 	}
 
@@ -409,12 +475,24 @@ $!data.getMessage()
 			}
 			else
 			{
+				if(radiobuttonValue == 3)
+				{
+                                        if(!document.frm.mailCheck.checked)
+                                        {
+						if(frm.mailInfo.value == ""){
+	                                                if(confirm("Do you want to send mail"))
+        	                                                frm.mailInfo.value = "sendMail";
+						}
+                                        }
+                                        if(document.frm.mailCheck.checked)
+                                                frm.mailInfo.value = "sendMail";
+				}
 				if(index!=-1)
 				{
 				preString=actualString.substring(0,index);
 				postString=actualString.substring(index+field.name.length+1);		
 				actualString=preString+postString;
-				frm.deleteUnpublishedFileNames.value=actualString;	
+				frm.deleteUnpublishedFileNames.value=actualString;
 				}
 			}
 	}
