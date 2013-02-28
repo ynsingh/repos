@@ -235,12 +235,14 @@ public class UploadAction extends SecureAction
                                 dc=topicMetaData.getFileDetailsModify();
 				for(int i=0;i<dc.size();i++){
 					String st=((FileEntry) dc.elementAt(i)).getName();
+					String guestaccess=((FileEntry) dc.elementAt(i)).getGuestAccess();	
 					if(st.equals(contentTopic)){
 						flag=true;
 						if(v.size()==0)
 							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"true");
 						else
-							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"false");
+							//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,"false");
+							xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent",st,guestaccess);
                        				xmlWriter.writeXmlFile();
 					}
 				}

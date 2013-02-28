@@ -227,6 +227,9 @@ public class CourseUtil{
 						String courseName=getCourseName(gName);
         		                        String Coursealias=getCourseAlias(gName);
                         		        String weekTime=CourseTimeUtil.getLastweekTime(uid,gName);
+						String loginName=org.apache.commons.lang.StringUtils.substringBetween(gName, Coursealias,"_"+instid);
+						int UID=UserUtil.getUID(loginName);
+						String fullname=UserUtil.getFullName(UID);
                                         	boolean check_act=CourseManagement.CheckcourseIsActive(gid);
 		                                if(check_act==false)
                 		                        act="1";
@@ -256,6 +259,7 @@ public class CourseUtil{
                                                 map.put("crsact", act);
                                                 map.put("gustSts", statc);
                                                 map.put("unreadM", unread);
+                                                map.put("FullName",fullname);
                                                 list.add(map);			
 					}
 				
