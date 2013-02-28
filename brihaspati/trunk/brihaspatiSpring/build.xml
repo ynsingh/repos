@@ -48,14 +48,20 @@
       			filtering="yes"
 		/>
 	</target>
-    <target name="compile" description="Compile main source tree java files">
-        <mkdir dir="${build.dir}"/>
-        <javac destdir="${build.dir}" source="1.5" target="1.5" debug="true"
-               deprecation="false" optimize="false" failonerror="true">
-            <src path="${src.dir}"/>
-            <classpath refid="master-classpath"/>
-        </javac>
-    </target>
+	<target name="b2jar" description="Package into JAR">
+		<jar destfile="WEB-INF/lib/brihaspati2.jar" compress="true">
+			<fileset dir="../brihaspati2/WEB-INF/classes" />
+		</jar>
+	</target>
+		
+    	<target name="compile" description="Compile main source tree java files" depends="b2jar" >
+        	<mkdir dir="${build.dir}"/>
+        	<javac destdir="${build.dir}" source="1.5" target="1.5" debug="true"
+               		deprecation="false" optimize="false" failonerror="true">
+            		<src path="${src.dir}"/>
+        	    	<classpath refid="master-classpath"/>
+        	</javac>
+    	</target>
 
     <target name="deploy" depends="compile" description="Deploy application">
         <copy todir="${deploy.path}/${name}/WEB-INF" preservelastmodified="true">
@@ -64,12 +70,12 @@
             </fileset>
         </copy>
     </target>
-
+<!--
     <target
     name="project-om"
     depends="copy"
     unless="noObjectModel"
-    description="--> generates the peer-based object model for your project">
+    description="--> <!--generates the peer-based object model for your project">
 
     <ant
       antfile="${torque.buildFile}"
@@ -77,7 +83,7 @@
     </ant>
 
     </target>
-
+-->
 
     <target name="deploywar" depends="compile" description="Deploy application as a WAR file">
         <war destfile="${name}.war"
@@ -93,14 +99,9 @@
         </copy>
     </target>
 
-	<target
-    name="init"
-    description="--> generates the full application">
-
-    <antcall target="project-om"/>
-    <antcall target="compile"/>
-
-  </target>
+	<target name="init" description="--> generates the full application">
+		<antcall target="compile"/>
+	</target>
     
 <!-- ============================================================== -->
 <!-- Tomcat tasks - remove these if you don't have Tomcat installed -->
