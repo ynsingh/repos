@@ -1,4 +1,4 @@
-package org.iitk.brihaspati.utils;
+package org.iitk.brihaspatispring.utils;
 
 
 import java.util.Vector;

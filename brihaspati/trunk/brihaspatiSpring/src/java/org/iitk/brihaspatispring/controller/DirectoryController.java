@@ -1,4 +1,4 @@
-package org.iitk.brihaspati.controller;
+package org.iitk.brihaspatispring.controller;
 
 /*
  * @(#)DirectoryController.java
@@ -58,7 +58,7 @@ import java.util.Vector;
 import java.util.List;
 import org.iitk.brihaspati.om.TelephoneDirectory;
 import org.iitk.brihaspati.om.TelephoneDirectoryPeer;
-import org.iitk.brihaspati.utils.Pagination;
+import org.iitk.brihaspatispring.utils.Pagination;
 import org.iitk.brihaspati.utils.ErrorDumpUtil;
 import org.apache.torque.Torque; 
 import javax.servlet.ServletContext;

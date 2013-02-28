@@ -1,4 +1,4 @@
-package org.iitk.brihaspati.controller;
+package org.iitk.brihaspatispring.controller;
 /*
  * @(#)Index.java
  *
